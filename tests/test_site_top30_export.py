@@ -182,6 +182,42 @@ class PublicTop30ParityTests(unittest.TestCase):
         self.assertFalse(any("-untrusted-" in (row.get("image") or {}).get("url","")
                              for row in untrusted["items"]))
 
+    def test_getdaytrends_hourly_source_propagates_exact_ranks(self):
+        names = ["Julián", "Fermín", "#SVSemifinal", "Cancelo"]
+        source = {
+            **RADAR, "country": "ES", "top30": names,
+            "captured_at": "2026-11-08T23:11:37+01:00",
+            "selection_method": "getdaytrends-spain-now",
+            "ranking_provider": "GetDayTrends España",
+            "rank_source_url": "https://getdaytrends.com/es/spain/",
+            "ranking_source_status": "observed",
+            "ranking_source_observed_at": "2026-11-08T23:11:37+01:00",
+            "ranking_provider_update_interval_minutes": 60,
+            "live_verified": False, "fresh_sources": []
+        }
+        exported = make(recent=source)
+        self.assertEqual([row["name"] for row in exported["items"]], names)
+        self.assertEqual(exported["ranking_provider"], "GetDayTrends España")
+        self.assertEqual(exported["ranking_source_url"], "https://getdaytrends.com/es/spain/")
+        self.assertEqual(exported["ranking_source_status"], "observed")
+        self.assertEqual(exported["ranking_provider_update_interval_minutes"], 60)
+        self.assertFalse(exported["radar_live_verified"])
+        self.assertIn("GetDayTrends", exported["ranking_warning"])
+
+    def test_missing_hourly_provider_keeps_last_ranking_without_claiming_fresh(self):
+        exported = make(recent={
+            **RADAR, "country": "ES",
+            "ranking_provider": "GetDayTrends España",
+            "ranking_source_status": "held",
+            "ranking_source_observed_at": "2026-11-08T21:05:00+01:00",
+            "selection_method": "getdaytrends-spain-held",
+            "live_verified": False, "fresh_sources": []
+        })
+        self.assertEqual([row["name"] for row in exported["items"]], RADAR["top30"])
+        self.assertEqual(exported["ranking_source_status"], "held")
+        self.assertIn("última", exported["ranking_warning"])
+        self.assertFalse(exported["radar_live_verified"])
+
     def test_spain_radar_unverified_is_explicit_in_export_without_changing_rows(self):
         uncertain = {
             **RADAR, "country": "ES", "live_verified": False,

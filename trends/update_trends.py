@@ -587,6 +587,27 @@ def getdaytrends_current_ranked(source_data):
     return ranked[:30]
 
 
+def last_known_getdaytrends_spain(previous_doc):
+    """Read only the LAST genuine Spain GetDayTrends list, never peer rankings.
+
+    A missing/corrupt/currently stalled provider must NOT cause the Top30 in
+    the iPhone or the web to jump to another country's or provider's list.
+    The prior list remains explicitly unverified until Spain updates again.
+    """
+    if not isinstance(previous_doc, dict):
+        return []
+    if (previous_doc.get("country") != "ES"
+            or previous_doc.get("primary_source") != "getdaytrends"
+            or previous_doc.get("selection_method") not in {
+                "getdaytrends-spain-now", "getdaytrends-spain-held"}):
+        return []
+    row = (previous_doc.get("sources") or {}).get("getdaytrends") or {}
+    ranked = row.get("trends") or []
+    return ranked[:50] if (len(ranked) >= 30
+                           and sane_trend_list(ranked)
+                           and not obviously_foreign_snapshot(ranked)) else []
+
+
 def source_page_explicitly_foreign(html):
     """Reject an explicitly non-Spain country page (not foreign *topics*).
 
@@ -1103,16 +1124,26 @@ def main():
     source_data = fetch_sources()
     reconcile_source_freshness(source_data, previous_doc, now)
 
-    top10, sources_used, chosen_name, method = choose_top10(source_data)
-    # The editor chose GetDayTrends Spain "Ahora" as the preferred
-    # source for the displayed Top30. Never blend the missing positions
-    # with another provider's rankings or with 24-hour hashtag scores.
+    # The editor selected GetDayTrends España / Ahora as the ONLY Top30
+    # ranking for iPhone, Web and the public Site export. Other sources may
+    # still validate regional freshness or feed the independent upcoming radar,
+    # but must NEVER substitute their ranked names or order.
     direct_spain = getdaytrends_current_ranked(source_data)
     if direct_spain:
-        top10, sources_used = direct_spain[:10], ["getdaytrends"]
-        chosen_name, method = "getdaytrends", "getdaytrends-spain-now"
-    if len(top10) < 10:
-        raise RuntimeError("No se pudo obtener un Top 10 fiable de las fuentes disponibles")
+        source_ranked = list((source_data["getdaytrends"].get("trends") or [])[:50])
+        method = "getdaytrends-spain-now"
+        sources_used = ["getdaytrends"]
+    else:
+        source_ranked = last_known_getdaytrends_spain(previous_doc)
+        method = "getdaytrends-spain-held"
+        sources_used = []
+        if not source_ranked:
+            raise RuntimeError(
+                "GetDayTrends España no ofrece 30 posiciones válidas y no "
+                "existe una captura previa suya: conservar sin sobrescribir el radar"
+            )
+    top10 = source_ranked[:10]
+    chosen_name = "getdaytrends"
     # A user-suppressed trend is not an editorial candidate, even if it is
     # still present in third-party raw rankings. Do not invent a substitute.
     top10 = [name for name in top10 if not is_suppressed(name)]
@@ -1169,11 +1200,7 @@ def main():
     # sin presentar las señales de otras fuentes como posiciones verificadas.
     # Use all 50 genuine GetDayTrends terms only to replace topics that the
     # editor explicitly suppressed. Never borrow missing ranks from a peer.
-    primary_ranked = (
-        (source_data.get("getdaytrends") or {}).get("trends") or []
-        if direct_spain else
-        (source_data.get(chosen_name) or {}).get("trends") or []
-    )
+    primary_ranked = source_ranked
     # In hold-last-good the anchor name is "previous": there is no provider
     # called "previous". Preserve the real 1-10 ranking and complete 11-30
     # from an actual source that currently repeats at least 6 of those ten
@@ -1198,33 +1225,11 @@ def main():
             primary_ranked = aligned[0][2]["trends"]
             print("Top 30: puestos 11-30 observados en", aligned[0][1],
                   "con", aligned[0][0], "coincidencias actuales de Top 10")
-    extend_ranked(primary_ranked[:30])
-    if len(top30) < 30 and not direct_spain:
-        # Only legacy consensus may use independent providers for fill.
-        # A current GetDayTrends Spain ranking never mixes other rankings.
-        # Prefer related, dated secondary snapshots. A disconnected
-        # never-updating undated feed must not fill the remaining places.
-        secondary = []
-        for name, data in source_data.items():
-            if name == chosen_name or not data.get("ok"):
-                continue
-            agreement = overlap(primary_ranked, data.get("trends") or [])
-            age = data.get("age_minutes")
-            dated_recent = age is not None and float(age) <= 120
-            if agreement < 0.20:
-                continue
-            if data.get("freshness") == "stale" and not dated_recent:
-                continue
-            secondary.append((name, data, agreement))
-        secondary.sort(key=lambda row: (
-            -row[2],
-            row[1].get("age_minutes") is None,
-            float(row[1].get("age_minutes") or 9999),
-        ))
-        for name, data, _ in secondary:
-            extend_ranked((data.get("trends") or [])[:50])
-            if len(top30) >= 30:
-                break
+    extend_ranked(primary_ranked)
+    # Never fill missing GetDayTrends ranks with another provider. Retain the
+    # editorial suppression list; the 50-position source can fill 30 safe
+    # display slots when a user explicitly banned a term.
+
     # Si el radar no alcanza 30 entradas fiables, mostrar las observadas;
     # nunca fabricar nombres ni puestos para rellenar.
 
@@ -1263,10 +1268,14 @@ def main():
     non_stale = [n for n, d in source_data.items() if d.get("ok") and d.get("freshness") != "stale"]
     # Distinguish fetch time from the real source observation time. A
     # recently generated recent.json cannot certify a live Top 30 by itself.
+    # Freshness of a DIFFERENT provider must never be advertised as evidence
+    # that the GetDayTrends Spain ranking itself was timestamp-verified.
     fresh = [n for n, d in source_data.items()
-             if d.get("ok") and d.get("freshness") == "fresh"
+             if n == "getdaytrends" and d.get("ok")
+             and d.get("freshness") == "fresh"
              and d.get("age_minutes") is not None
-             and 0 <= float(d["age_minutes"]) <= 45]
+             and 0 <= float(d["age_minutes"]) <= 45
+             and method == "getdaytrends-spain-now"]
     live_verified = bool(fresh) and (
         method == "fresh-anchor" or
         (method == "corroborated-anchor" and bool(
@@ -1292,6 +1301,14 @@ def main():
         "country": "ES",
         "captured_at": now.isoformat(timespec="seconds"),
         "primary_source": chosen_name,
+        "rank_source_url": SOURCES["getdaytrends"],
+        "ranking_provider": "GetDayTrends España",
+        "ranking_provider_update_interval_minutes": 60,
+        "ranking_source_status": "held" if method == "getdaytrends-spain-held" else "observed",
+        "ranking_source_observed_at": (
+            (previous_doc.get("ranking_source_observed_at") or previous_doc.get("captured_at"))
+            if method == "getdaytrends-spain-held" else now.isoformat(timespec="seconds")
+        ),
         "selection_method": method,
         "sources_used": sources_used,
         "source_count": len(valid),
@@ -1305,6 +1322,8 @@ def main():
         "freshness_note": (
             "GetDayTrends España · Ahora: orden directo 1-30; origen X sin verificación independiente"
             if method == "getdaytrends-spain-now" else
+            "Conservada última lista GetDayTrends España: no hay una captura nueva completa"
+            if method == "getdaytrends-spain-held" else
             "Captura actual con fuentes recientes verificadas"
             if live_verified else
             "Top 30 orientativo: no se ha verificado ningún ranking reciente de X"
