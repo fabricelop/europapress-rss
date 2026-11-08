@@ -7,71 +7,90 @@
   "previous_run_id": "tr-autoguard-1794179692",
   "command_id": "tr-1794179931321-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-09T00:20:00+01:00",
-  "updated_at": "2026-11-09T00:20:30+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-09T00:23:30+01:00",
+  "finished_at": "2026-11-09T00:23:30+01:00",
+  "current": 2,
   "total": 2,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
-  "processed_ids": [],
-  "converged_ids": [],
-  "remaining_ids": [
+  "queue_complete": true,
+  "processed_ids": [
     "red-review-48eaf1fc122194897b46",
     "red-review-1e8c87c9286d54fba68d"
   ],
-  "remaining_active_ids": [
+  "converged_ids": [
     "red-review-48eaf1fc122194897b46",
     "red-review-1e8c87c9286d54fba68d"
   ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 2,
     "observed": 2,
-    "closed": 0,
+    "closed": 2,
     "explained": 0,
     "problematic": 0,
-    "updates": 0,
+    "updates": 1,
     "continuity_updates": 0,
-    "distinct_updates": 0,
+    "distinct_updates": 1,
     "unchanged_reviews": 0,
-    "stale_reviews": 0,
+    "stale_reviews": 1,
     "unverified_reviews": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 2
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "red-review-48eaf1fc122194897b46",
+      "revision": 0,
+      "name": "Revisar novedades: Gerard Martín",
+      "outcome": "stale",
+      "applied": true,
+      "apply_commit": "dfde357c95d6e3d6e88e89635c30858da057bd16",
+      "reason": "Barrera JIT del aplicador: la revisión se retiró sin modificar ni resucitar la ficha fuente."
+    },
+    {
+      "id": "red-review-1e8c87c9286d54fba68d",
+      "revision": 0,
+      "name": "Revisar novedades: Karmine Corp-Movistar KOI en Worlds 2026",
+      "outcome": "distinct_update",
+      "applied": true,
+      "created_id": "trend-update-b886568026ba54b2c5a4",
+      "apply_commit": "dfde357c95d6e3d6e88e89635c30858da057bd16"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Procesando revisiones de novedades",
+  "activity": "Pasada editorial completada",
   "last_started_at": "2026-11-09T00:18:17+01:00",
-  "last_completed_at": "2026-11-09T00:19:30+01:00",
+  "last_completed_at": "2026-11-09T00:23:30+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-autoguard-1794179692",
+    "run_id": "tr-1794179931321-manual",
     "status": "DONE",
-    "started_at": "2026-11-09T00:15:00+01:00",
-    "finished_at": "2026-11-09T00:19:30+01:00",
+    "started_at": "2026-11-09T00:20:00+01:00",
+    "finished_at": "2026-11-09T00:23:30+01:00",
     "summary": {
-      "attempted": 1,
-      "observed": 1,
-      "closed": 1,
-      "explained": 1,
+      "attempted": 2,
+      "observed": 2,
+      "closed": 2,
+      "explained": 0,
       "problematic": 0,
-      "updates": 0,
+      "updates": 1,
       "continuity_updates": 0,
-      "distinct_updates": 0,
+      "distinct_updates": 1,
       "unchanged_reviews": 0,
-      "stale_reviews": 0,
+      "stale_reviews": 1,
       "unverified_reviews": 0,
       "queue_remaining": 0,
       "rewrite_pending_remaining": 0,
@@ -79,11 +98,11 @@
       "image_outbox_created": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 0
+      "concurrent_convergence": 2
     },
-    "message": "Pasada tr-autoguard-1794179692 cerrada 1/1. Jong r0 quedó explicado y aplicado en main; barrera final observada con editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "message": "Pasada tr-1794179931321-manual cerrada 2/2 por convergencia JIT: Gerard Martín quedó stale sin resucitar la ficha antigua; Myrwn se materializó como episodio distinto de mercado en trend-update-b886568026ba54b2c5a4. Barrera final observada: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
   },
-  "message": "Pasada manual iniciada con 2 review_red: Gerard Martín y Karmine Corp-Movistar KOI en Worlds 2026. Revalidación JIT de ID/revisión antes de cada resultado. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1794179931321-manual cerrada 2/2 por convergencia JIT: Gerard Martín quedó stale sin resucitar la ficha antigua; Myrwn se materializó como episodio distinto de mercado en trend-update-b886568026ba54b2c5a4. Barrera final observada: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-08T15:07:08+01:00",
@@ -690,6 +709,73 @@
       "at": "2026-11-09T00:20:30+01:00",
       "phase": "preparing",
       "message": "Pasada manual iniciada con 2 review_red: Gerard Martín y Karmine Corp-Movistar KOI en Worlds 2026. Revalidación JIT de ID/revisión antes de cada resultado. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-autoguard-1794179692",
+      "status": "DONE",
+      "started_at": "2026-11-09T00:15:00+01:00",
+      "finished_at": "2026-11-09T00:23:30+01:00",
+      "superseded_by": "tr-1794179931321-manual",
+      "summary": {
+        "attempted": 3,
+        "observed": 3,
+        "closed": 3,
+        "explained": 1,
+        "problematic": 0,
+        "updates": 1,
+        "continuity_updates": 0,
+        "distinct_updates": 1,
+        "unchanged_reviews": 0,
+        "stale_reviews": 1,
+        "unverified_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 2
+      },
+      "processed_ids": [
+        "a6852f36db22",
+        "red-review-48eaf1fc122194897b46",
+        "red-review-1e8c87c9286d54fba68d"
+      ],
+      "outcomes": [
+        {
+          "id": "a6852f36db22",
+          "revision": 0,
+          "name": "Jong",
+          "outcome": "explained",
+          "apply_commit": "7f078e8d396fd57ed7af965ba46bdadfcdce2d6d"
+        },
+        {
+          "id": "red-review-48eaf1fc122194897b46",
+          "revision": 0,
+          "name": "Revisar novedades: Gerard Martín",
+          "outcome": "stale",
+          "applied": true,
+          "apply_commit": "dfde357c95d6e3d6e88e89635c30858da057bd16",
+          "reason": "Barrera JIT del aplicador: la revisión se retiró sin modificar ni resucitar la ficha fuente."
+        },
+        {
+          "id": "red-review-1e8c87c9286d54fba68d",
+          "revision": 0,
+          "name": "Revisar novedades: Karmine Corp-Movistar KOI en Worlds 2026",
+          "outcome": "distinct_update",
+          "applied": true,
+          "created_id": "trend-update-b886568026ba54b2c5a4",
+          "apply_commit": "dfde357c95d6e3d6e88e89635c30858da057bd16"
+        }
+      ],
+      "message": "Pasada tr-autoguard-1794179692 completada 3/3. Jong r0 explicado; durante la barrera entraron dos review_red: Gerard Martín convergió stale y Myrwn quedó como episodio distinto. La pasada manual posterior tomó la telemetría canónica durante el cierre. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794179931321-manual",
+      "status": "DONE",
+      "at": "2026-11-09T00:23:30+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-1794179931321-manual cerrada 2/2 por convergencia JIT: Gerard Martín quedó stale sin resucitar la ficha antigua; Myrwn se materializó como episodio distinto de mercado en trend-update-b886568026ba54b2c5a4. Barrera final observada: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": null
