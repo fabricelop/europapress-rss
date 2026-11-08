@@ -3,57 +3,68 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794097500000-manual",
-  "previous_run_id": "tr-1794096600000-manual",
-  "command_id": "tr-1794097500000-manual",
+  "run_id": "tr-1794097720733-manual",
+  "previous_run_id": "tr-1794097500000-manual",
+  "command_id": "tr-1794097720733-manual",
   "source": "chat",
-  "status": "PROCESSING",
-  "phase": "persisting",
-  "started_at": "2026-11-08T01:25:00+01:00",
-  "updated_at": "2026-11-08T01:39:00+01:00",
-  "finished_at": null,
-  "current": 5,
-  "total": 7,
-  "trend_id": "red-review-4e0ba866c92399136630",
-  "title": "Revisar novedades: Rüdiger",
-  "queue_complete": false,
-  "processed_ids": [
-    "0040b96611d3",
-    "4c41c9b56c12",
-    "755010cb7b21",
-    "ad46f5c26451",
-    "fa26d3affd08"
-  ],
-  "converged_ids": [],
-  "remaining_ids": [
+  "status": "success",
+  "phase": "closing",
+  "started_at": "2026-11-08T01:28:40.733+01:00",
+  "updated_at": "2026-11-08T01:40:00+01:00",
+  "finished_at": "2026-11-08T01:40:00+01:00",
+  "current": 2,
+  "total": 2,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [],
+  "converged_ids": [
     "red-review-cbb32c012470fa8f5174",
     "red-review-4e0ba866c92399136630"
   ],
-  "remaining_active_ids": [
-    "red-review-cbb32c012470fa8f5174",
-    "red-review-4e0ba866c92399136630"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
-    "observed": 5,
-    "closed": 0,
+    "observed": 2,
+    "closed": 2,
     "explained": 0,
     "problematic": 0,
-    "updates": 0,
+    "updates": 1,
     "continuity_updates": 0,
-    "distinct_updates": 0,
+    "distinct_updates": 1,
     "unchanged_reviews": 0,
-    "unverified_reviews": 0,
-    "queue_remaining": 5,
+    "unverified_reviews": 1,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 2
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "red-review-cbb32c012470fa8f5174",
+      "revision": 0,
+      "name": "Revisar novedades: Carvajal",
+      "outcome": "unverified",
+      "applied": true,
+      "via": "concurrent_predecessor",
+      "apply_commit": "394c76c9c66df238b553a85028cbc0e3480ed05c"
+    },
+    {
+      "id": "red-review-4e0ba866c92399136630",
+      "revision": 0,
+      "name": "Revisar novedades: Rudiger",
+      "outcome": "updated_distinct_episode",
+      "applied": true,
+      "created_id": "trend-update-cd405c86697547704c92",
+      "via": "concurrent_predecessor",
+      "apply_commit": "394c76c9c66df238b553a85028cbc0e3480ed05c"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -277,9 +288,19 @@
       "at": "2026-11-08T01:39:00+01:00",
       "phase": "persisting",
       "message": "Carvajal se cierra como unverified: no se acredita un detonante material nuevo respecto al episodio del 28/10. Rüdiger se materializa como episodio distinto del 07/11 por la tangana del túnel de Mestalla, con seguridad interviniendo; se evita afirmar como hecho cualquier agresión no recogida por el acta."
+    },
+    {
+      "at": "2026-11-08T01:28:40.733+01:00",
+      "phase": "preparing",
+      "message": "Comando tr-1794097720733-manual iniciado desde chat. Detectada una pasada inmediatamente anterior ya procesando los 2 review_red vigentes; se evita duplicar persistencia y se verifica convergencia JIT. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-08T01:40:00+01:00",
+      "phase": "closing",
+      "message": "Convergencia verificada: Carvajal aplicado como unverified y Rüdiger como episodio distinto en commit 394c76c9c66df238b553a85028cbc0e3480ed05c. Barrera final main: editorial-queue=0; mobile-decisions sin preparing/update, rewrite_pending/reexplain, anticipate ni review_red activos. Cierre 2/2 por convergencia. Sin ImageGen, sin image-outbox editorial y sin publicaciones."
     }
   ],
-  "last_started_at": "2026-11-08T01:28:08+01:00",
-  "last_completed_at": "2026-11-08T01:28:09+01:00",
+  "last_started_at": "2026-11-08T01:28:40.733+01:00",
+  "last_completed_at": "2026-11-08T01:40:00+01:00",
   "api_failover_enabled": false
 }
