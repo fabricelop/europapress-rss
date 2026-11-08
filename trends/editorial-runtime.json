@@ -10,8 +10,8 @@
   "status": "DONE",
   "phase": "closing",
   "started_at": "2026-11-08T06:55:00+01:00",
-  "updated_at": "2026-11-08T06:59:00+01:00",
-  "finished_at": "2026-11-08T06:59:00+01:00",
+  "updated_at": "2026-11-08T06:59:43+01:00",
+  "finished_at": "2026-11-08T06:59:43+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
@@ -487,6 +487,11 @@
       "at": "2026-11-08T06:59:00+01:00",
       "phase": "closing",
       "message": "Barrera final JIT en main: editorial-queue=0 (actualizada 2026-11-08T06:50:59+01:00); mobile-decisions sin preparing/update, rewrite_pending/reexplain, anticipate ni review_red activos; búsqueda de estado no devuelve flags activos. recent.json capturado a las 2026-11-08T06:50:50+01:00 con live_verified=false. Cierre editorial 0/0. El workflow de refresh manual 42452670432 sigue in_progress en Actions y no se inventan pendientes antes de su persistencia. Sin ImageGen, sin image-outbox editorial y sin publicaciones."
+    },
+    {
+      "at": "2026-11-08T06:59:43+01:00",
+      "phase": "verifying",
+      "message": "Refresh manual 42452670432 completado con éxito. Relectura posterior de main: editorial-queue=0 (actualizada 2026-11-08T06:59:22+01:00) y mobile-decisions sin trabajos activos. Cierre 0/0 confirmado tras el refresco."
     }
   ],
   "last_started_at": "2026-11-08T05:29:16+01:00",
