@@ -936,22 +936,22 @@
       "message": "Cierre 7/7: siete revisiones ordinarias fuera de la cola autoritativa, sin reexplicaciones observadas, ImageGen=0 y publicaciones=0."
     }
   ],
-  "last_started_at": "2026-11-08T21:48:30+01:00",
-  "last_completed_at": "2026-11-08T21:52:30+01:00",
+  "last_started_at": "2026-11-08T21:50:31+01:00",
+  "last_completed_at": "2026-11-08T21:53:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794170750315-manual",
+    "run_id": "tr-1794171031168-manual",
     "status": "DONE",
-    "started_at": "2026-11-08T21:48:30+01:00",
-    "finished_at": "2026-11-08T21:52:30+01:00",
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
+    "started_at": "2026-11-08T21:50:31+01:00",
+    "finished_at": "2026-11-08T21:53:00+01:00",
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
     "explained": 0,
     "problematic": 0,
-    "updates": 2,
+    "updates": 0,
     "continuity_updates": 0,
-    "distinct_updates": 2,
+    "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
@@ -961,33 +961,11 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "validation_retries": 1,
-    "current": 2,
-    "total": 2,
-    "processed_ids": [
-      "red-review-4214bffa4a42fd70ed8d",
-      "red-review-52886e82b36f36595fd8"
-    ],
-    "outcomes": [
-      {
-        "id": "red-review-4214bffa4a42fd70ed8d",
-        "revision": 0,
-        "name": "Revisar novedades: Escribá",
-        "outcome": "distinct_update",
-        "applied": true,
-        "created_id": "trend-update-5e18ed31b3cde5d0d4db",
-        "apply_commit": "6b2da7388526ad6dcf32ba5235f0b48cf07d0f61"
-      },
-      {
-        "id": "red-review-52886e82b36f36595fd8",
-        "revision": 0,
-        "name": "Revisar novedades: #DragRaceEs",
-        "outcome": "distinct_update",
-        "applied": true,
-        "created_id": "trend-update-b46ce17ac9aca3335d73",
-        "apply_commit": "e1524ee0ba6d36db92f116402f3271f3c9043d73"
-      }
-    ]
+    "current": 0,
+    "total": 0,
+    "processed_ids": [],
+    "outcomes": [],
+    "message": "Pasada tr-1794171031168-manual cerrada 0/0 por barrera JIT: editorial-queue=0 y las relecturas de requests, mobile-decisions y telegram-manual-explained no muestran preparing/update, rewrite_pending/reexplain, anticipate ni review_red activos. La pasada anterior tr-1794170750315-manual terminó 2/2 durante esta ventana y dejó su trabajo aplicado en main. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
   "message": "Pasada tr-1794170750315-manual cerrada 2/2. Escribá y #DragRaceEs se verificaron como episodios distintos y quedaron aplicados en nuevas fichas. Escribá requirió una corrección de formato del mismo outbox antes de aplicar. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0.",
   "history": [
@@ -1151,6 +1129,16 @@
       "at": "2026-11-08T21:52:30+01:00",
       "phase": "closing",
       "message": "Pasada tr-1794170750315-manual cerrada 2/2. Escribá y #DragRaceEs se verificaron como episodios distintos y quedaron aplicados en nuevas fichas. Escribá requirió una corrección de formato del mismo outbox antes de aplicar. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-08T21:50:31+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-1794171031168-manual iniciada desde chat. La cola observada estaba vacía tras convergencia con la ejecución anterior; se ejecuta barrera JIT sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-08T21:53:00+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-1794171031168-manual cerrada 0/0 por barrera JIT: editorial-queue=0 y las relecturas de requests, mobile-decisions y telegram-manual-explained no muestran preparing/update, rewrite_pending/reexplain, anticipate ni review_red activos. La pasada anterior tr-1794170750315-manual terminó 2/2 durante esta ventana y dejó su trabajo aplicado en main. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ]
 }
