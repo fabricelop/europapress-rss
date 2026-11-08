@@ -8,11 +8,11 @@
   "command_id": "tr-1794149555656-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "persisting",
   "started_at": "2026-11-08T15:52:35.656+01:00",
-  "updated_at": "2026-11-08T15:52:35.656+01:00",
+  "updated_at": "2026-11-08T15:55:00+01:00",
   "finished_at": null,
-  "current": 0,
+  "current": 3,
   "total": 11,
   "trend_id": "48ef49a80a85",
   "title": "Extremoduro",
@@ -807,6 +807,13 @@
       "at": "2026-11-08T15:52:35.656+01:00",
       "phase": "preparing",
       "message": "Pasada tr-1794149555656-manual iniciada desde chat. Toma relevo JIT de tr-1794149458886-manual; cola main=11 preparing/update. Los cierres concurrentes se contabilizarán como convergencia. Orden antiguo→reciente. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-08T15:55:00+01:00",
+      "phase": "persisting",
+      "trend_id": "48ef49a80a85",
+      "title": "Extremoduro",
+      "message": "Extremoduro r0 validado JIT. Intercambio Sánchez-PP verificado con dos fuentes actuales; texto y remate nuevos enviados por CHAT_OUTBOX. ImageGen=0."
     }
   ],
   "last_started_at": "2026-11-08T15:51:50+01:00",
