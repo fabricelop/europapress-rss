@@ -1,12 +1,30 @@
 {
   "project": "ttittulares",
-  "checked_at": "2026-11-07T22:36:50.584082+00:00",
+  "checked_at": "2026-11-08T01:47:53.747908+00:00",
   "verification": "persisted API acknowledgements, editorial state and Telegram callback ledger; chat history cannot be enumerated",
-  "app_open_count": 0,
+  "app_open_count": 2,
   "telegram_live_count": 13,
   "matched_count": 0,
-  "issues_count": 13,
+  "issues_count": 15,
   "issues": [
+    {
+      "kind": "app_without_telegram",
+      "id": "4f9480a13f99",
+      "title": "La Comunidad de Madrid destinará 10,6 millones de euros al mantenimiento de los trenes de Metro",
+      "source": [
+        "app_listas"
+      ],
+      "repairable": true
+    },
+    {
+      "kind": "app_without_telegram",
+      "id": "0a46d89341e1",
+      "title": "El Cabildo de Gran Canaria ordena suspender toda actividad este domingo por la borrasca",
+      "source": [
+        "app_listas"
+      ],
+      "repairable": true
+    },
     {
       "kind": "telegram_without_app",
       "id": "4788c370b927",
@@ -100,7 +118,10 @@
     }
   ],
   "untracked_top10": [],
-  "app_ids": [],
+  "app_ids": [
+    "0a46d89341e1",
+    "4f9480a13f99"
+  ],
   "telegram_ids": [
     "16218d804d58",
     "4788c370b927",
