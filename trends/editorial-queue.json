@@ -1,73 +1,8 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-08T09:04:15+01:00",
+  "updated_at": "2026-11-08T08:04:53.286797+00:00",
   "count": 2,
   "items": [
-    {
-      "id": "red-review-98b5e92d7311bb4dc401",
-      "name": "Revisar novedades: Paraguay",
-      "rank": 12,
-      "status": "preparing",
-      "requested_at": "2026-11-08T07:28:25.291799+00:00",
-      "revision": 0,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques.",
-      "reexplain": false,
-      "rewrite_with_image": false,
-      "with_image": false,
-      "disable_ai_image": true,
-      "image_strategy": null,
-      "selected_tweet_image": null,
-      "task": "review_red",
-      "anticipation_request": false,
-      "anticipated_name": null,
-      "anticipation_signal": null,
-      "anticipation_origin_id": null,
-      "anticipation_draft": null,
-      "red_review_request": true,
-      "review_source": {
-        "id": "7fb4d179ec62",
-        "revision": 0,
-        "name": "Paraguay",
-        "rank": 22,
-        "explanation": "TT#2 Paraguay sigue siendo tendencia por la crisis de Ueno Bank: tras su destitución y arresto domiciliario, Santiago Peña compareció este sábado ante la Fiscalía mientras se determinan los cargos.\n#UenoBank #SantiagoPeña\n🌶️ El relevo en Palacio vino con turno en Fiscalía.",
-        "explanation_sha256": "1090796b0e0115bfc13ac053da76172dadd982643e9c35d9a789f5ea77d7af96",
-        "explained_at": "2026-11-04T15:10:18.408Z",
-        "verification_sources": [
-          {
-            "url": "https://www.rtve.es/noticias/20261104/madrid-cumbre-iberoamericana-descafeinada-milei-ausentan-lula-sheinbaum/17298187.shtml"
-          },
-          {
-            "url": "https://www.abc.com.py/politica/2026/11/02/pena-se-queda-en-paraguay-no-ira-a-madrid-tras-declaraciones-de-alliana/"
-          }
-        ],
-        "fingerprint": "8d51769ad50f9493920c76723ca63d6b393d54c8f85b11a8bdcd2612be6fc653"
-      },
-      "review_error": null,
-      "automatic_grouping": null,
-      "published_context": null,
-      "listas_grouping_request": false,
-      "grouping_candidates": [],
-      "grouping_state": null,
-      "grouping_error": null,
-      "tremending_origin": false,
-      "tremending_id": null,
-      "article_title": null,
-      "source_url": null,
-      "selected_tweet": null,
-      "batch_id": null,
-      "requested_together": [
-        "Revisar novedades: Paraguay"
-      ],
-      "captured_with": [],
-      "auto_queued": false,
-      "anticipated": false,
-      "anticipated_at": null,
-      "anticipated_best_rank": null,
-      "anticipated_social_source_count": 0,
-      "anticipated_news_source_count": 0,
-      "anticipated_news_title": "",
-      "anticipated_entered_top10_at": null
-    },
     {
       "id": "red-review-c7e476f68780c4ca2a4b",
       "name": "Revisar novedades: Santiago Peña",
@@ -132,6 +67,43 @@
       "anticipated_news_source_count": 0,
       "anticipated_news_title": "",
       "anticipated_entered_top10_at": null
+    },
+    {
+      "id": "red-review-3f5dd3c46afe4236d594",
+      "revision": 0,
+      "name": "Revisar novedades: #FelizDomingo",
+      "rank": 3,
+      "status": "preparing",
+      "requested_at": "2026-11-08T08:04:53.286797+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "b622600f47d4",
+        "revision": 0,
+        "name": "#FelizDomingo",
+        "rank": 2,
+        "explanation": "TT#2 #FelizDomingo es tendencia por los saludos dominicales que vuelven a concentrarse en X cada domingo; hoy coincide además con el 1 de noviembre, Día de Todos los Santos.\n#Domingo\n🌶️ El calendario volvió a fichar de community manager.",
+        "explanation_sha256": "8e4d7f8fbd75b9aacd7fb1ee351b78c8bcea17da5d0b938b0df82124b82b2cfa",
+        "explained_at": "2026-11-01T09:33:57+01:00",
+        "verification_sources": [
+          {
+            "url": "https://twitter-trends.snaplytics.io/spain/2026-10-25/"
+          },
+          {
+            "url": "https://twitter-trends.snaplytics.io/spain/2026-10-04/"
+          },
+          {
+            "url": "https://www.europapress.es/economia/noticia-festivo-noviembre-2026-donde-traslada-lunes-comunidades-tendran-puente-20261021075946.html"
+          }
+        ],
+        "fingerprint": "ced0e55f5bff5c12b510661e2f9f7a718bf51c2faa190b4bbda203c43b703c75"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
     }
   ]
 }
