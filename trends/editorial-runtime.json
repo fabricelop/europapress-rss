@@ -3,42 +3,36 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794179931321-manual",
-  "previous_run_id": "tr-autoguard-1794179692",
-  "command_id": "tr-1794179931321-manual",
+  "run_id": "tr-1794180300000-manual",
+  "previous_run_id": "tr-1794179931321-manual",
+  "command_id": "tr-1794180300000-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-09T00:20:00+01:00",
-  "updated_at": "2026-11-09T00:23:30+01:00",
-  "finished_at": "2026-11-09T00:23:30+01:00",
-  "current": 2,
-  "total": 2,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-09T00:27:00+01:00",
+  "updated_at": "2026-11-09T00:27:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "red-review-48eaf1fc122194897b46",
-    "red-review-1e8c87c9286d54fba68d"
-  ],
-  "converged_ids": [
-    "red-review-48eaf1fc122194897b46",
-    "red-review-1e8c87c9286d54fba68d"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
+  "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
     "explained": 0,
     "problematic": 0,
-    "updates": 1,
+    "updates": 0,
     "continuity_updates": 0,
-    "distinct_updates": 1,
+    "distinct_updates": 0,
     "unchanged_reviews": 0,
-    "stale_reviews": 1,
+    "stale_reviews": 0,
     "unverified_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
@@ -46,32 +40,13 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 2
+    "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "red-review-48eaf1fc122194897b46",
-      "revision": 0,
-      "name": "Revisar novedades: Gerard Martín",
-      "outcome": "stale",
-      "applied": true,
-      "apply_commit": "dfde357c95d6e3d6e88e89635c30858da057bd16",
-      "reason": "Barrera JIT del aplicador: la revisión se retiró sin modificar ni resucitar la ficha fuente."
-    },
-    {
-      "id": "red-review-1e8c87c9286d54fba68d",
-      "revision": 0,
-      "name": "Revisar novedades: Karmine Corp-Movistar KOI en Worlds 2026",
-      "outcome": "distinct_update",
-      "applied": true,
-      "created_id": "trend-update-b886568026ba54b2c5a4",
-      "apply_commit": "dfde357c95d6e3d6e88e89635c30858da057bd16"
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Pasada editorial completada",
+  "activity": "Pasada editorial en ejecución",
   "last_started_at": "2026-11-09T00:18:17+01:00",
   "last_completed_at": "2026-11-09T00:23:30+01:00",
   "api_failover_enabled": false,
@@ -102,7 +77,7 @@
     },
     "message": "Pasada tr-1794179931321-manual cerrada 2/2 por convergencia JIT: Gerard Martín quedó stale sin resucitar la ficha antigua; Myrwn se materializó como episodio distinto de mercado en trend-update-b886568026ba54b2c5a4. Barrera final observada: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794179931321-manual cerrada 2/2 por convergencia JIT: Gerard Martín quedó stale sin resucitar la ficha antigua; Myrwn se materializó como episodio distinto de mercado en trend-update-b886568026ba54b2c5a4. Barrera final observada: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1794180300000-manual iniciada. Cola JIT inicial=0. Se aplica barrera ID/revisión y cierre solo tras releer main. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-08T15:07:08+01:00",
@@ -776,6 +751,11 @@
       "at": "2026-11-09T00:23:30+01:00",
       "phase": "closing",
       "message": "Pasada tr-1794179931321-manual cerrada 2/2 por convergencia JIT: Gerard Martín quedó stale sin resucitar la ficha antigua; Myrwn se materializó como episodio distinto de mercado en trend-update-b886568026ba54b2c5a4. Barrera final observada: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-09T00:27:00+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-1794180300000-manual iniciada. Cola JIT inicial=0. Se aplica barrera ID/revisión y cierre solo tras releer main. ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": null
