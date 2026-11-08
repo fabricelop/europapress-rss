@@ -908,84 +908,36 @@
       "message": "Barrera final: editorial-queue=0; mobile-decisions sin preparing/update, rewrite_pending/reexplain, anticipate ni review_red activos. 4/4 revisiones cerradas; sin ImageGen ni publicaciones."
     }
   ],
-  "last_started_at": "2026-11-08T20:52:30+01:00",
-  "last_completed_at": "2026-11-08T20:57:00+01:00",
+  "last_started_at": "2026-11-08T21:25:00+01:00",
+  "last_completed_at": "2026-11-08T21:28:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794167484200-manual",
-    "status": "DONE",
-    "started_at": "2026-11-08T20:52:30+01:00",
-    "finished_at": "2026-11-08T20:57:00+01:00",
-    "attempted": 4,
-    "observed": 4,
-    "closed": 4,
-    "explained": 1,
+    "run_id": "tr-1794169500000-manual",
+    "status": "DONE_WITH_INCIDENTS",
+    "started_at": "2026-11-08T21:25:00+01:00",
+    "finished_at": "2026-11-08T21:28:00+01:00",
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
-    "updates": 1,
+    "updates": 0,
     "continuity_updates": 0,
-    "distinct_updates": 1,
-    "unchanged_reviews": 1,
-    "stale_reviews": 2,
+    "distinct_updates": 0,
+    "unchanged_reviews": 0,
+    "stale_reviews": 0,
     "unverified_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 0,
-    "processed_ids": [
-      "red-review-45745a370b36ec2c799a",
-      "red-review-2b8c36b362764c37d989",
-      "red-review-dd760f62fefd26c71237",
-      "red-review-2c5c620a098a3e2965b8"
-    ],
-    "converged_ids": [
-      "red-review-45745a370b36ec2c799a",
-      "red-review-2b8c36b362764c37d989",
-      "red-review-dd760f62fefd26c71237",
-      "red-review-2c5c620a098a3e2965b8"
-    ],
-    "outcomes": [
-      {
-        "id": "red-review-45745a370b36ec2c799a",
-        "revision": 0,
-        "name": "Revisar novedades: Robe",
-        "outcome": "unchanged",
-        "applied": true,
-        "via": "maintenance_outbox",
-        "concurrent": true
-      },
-      {
-        "id": "red-review-2b8c36b362764c37d989",
-        "revision": 0,
-        "name": "Revisar novedades: Carvajal",
-        "outcome": "stale",
-        "applied": true,
-        "via": "maintenance_outbox",
-        "concurrent": true
-      },
-      {
-        "id": "red-review-dd760f62fefd26c71237",
-        "revision": 0,
-        "name": "Revisar novedades: Aston Martin",
-        "outcome": "distinct_update",
-        "applied": true,
-        "via": "maintenance_outbox",
-        "created_id": "trend-update-a79b9ee04dbb9b45034a",
-        "concurrent": true
-      },
-      {
-        "id": "red-review-2c5c620a098a3e2965b8",
-        "revision": 0,
-        "name": "Revisar novedades: Russell",
-        "outcome": "stale",
-        "applied": true,
-        "via": "maintenance_outbox",
-        "concurrent": true
-      }
-    ]
+    "incidents": 1,
+    "processed_ids": [],
+    "converged_ids": [],
+    "outcomes": []
   },
-  "message": "Pasada manual tr-1794167484200-manual verificada contra main: 4 revisiones maintenance encontradas durante la ventana. Robe=unchanged; Carvajal=stale por barrera JIT; Aston Martin=episodio distinto aplicado (trend-update-a79b9ee04dbb9b45034a); Russell=stale por barrera JIT y no se fuerza una ficha sobre snapshot obsoleto. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update ni reexplicación activa. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada manual tr-1794169500000-manual: barrera JIT en main con editorial-queue=0 y mobile-decisions sin preparing/update ni reexplicaciones activas. Se lanzó refresco manual del Top 30 mediante commit 1aa1b0b5387a11397e0b3141406dd25ea84aeb2a; el workflow 42520091973 seguía in_progress en checkout y no materializó un ranking nuevo durante esta pasada. recent.json permaneció en 21:20:51, live_verified=false/reliability=unverified. No se inventó trabajo. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-08T15:05:00+01:00",
@@ -1060,6 +1012,27 @@
         "concurrent_convergence": 4
       },
       "message": "Pasada manual tr-1794167484200-manual verificada contra main: 4 revisiones maintenance encontradas durante la ventana. Robe=unchanged; Carvajal=stale por barrera JIT; Aston Martin=episodio distinto aplicado (trend-update-a79b9ee04dbb9b45034a); Russell=stale por barrera JIT y no se fuerza una ficha sobre snapshot obsoleto. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update ni reexplicación activa. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794169500000-manual",
+      "status": "DONE_WITH_INCIDENTS",
+      "started_at": "2026-11-08T21:25:00+01:00",
+      "finished_at": "2026-11-08T21:28:00+01:00",
+      "summary": {
+        "attempted": 0,
+        "observed": 0,
+        "closed": 0,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 1
+      },
+      "message": "Pasada manual tr-1794169500000-manual: barrera JIT en main con editorial-queue=0 y mobile-decisions sin preparing/update ni reexplicaciones activas. Se lanzó refresco manual del Top 30 mediante commit 1aa1b0b5387a11397e0b3141406dd25ea84aeb2a; el workflow 42520091973 seguía in_progress en checkout y no materializó un ranking nuevo durante esta pasada. recent.json permaneció en 21:20:51, live_verified=false/reliability=unverified. No se inventó trabajo. ImageGen=0; publicaciones=0."
     }
   ]
 }
