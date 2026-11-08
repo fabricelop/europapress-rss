@@ -4,7 +4,7 @@ const source=fs.readFileSync(path.join(__dirname,'../TTImageApprovalReceiver.cjs
 for(const project of ['ttittulares','ttendencias'])test(project+' recovers exact closed conversation only in private relay and returns pending receipt',async()=>{
  const base=fs.mkdtempSync(path.join(os.tmpdir(),'tt-intake-test-'));
  try{
- const sha=x=>crypto.createHash('sha256').update(x).digest('hex'),news=project==='ttittulares',text='Texto exacto',at='2026-11-06T08:45:00Z';
+ const sha=x=>crypto.createHash('sha256').update(x).digest('hex'),news=project==='ttittulares',text='Texto exacto',at=new Date(Date.now()-3600000).toISOString();
  const task={project,target_id:'topic-abc',command_id:'job-abc',revision:1,status:'waiting',secret_dpapi:'encrypted',conversation_url:'https://chatgpt.com/c/exact',browser_target_id:'reused',created_at:at,explanation_sha256:sha(text),editorial_sha256:sha([text,'Hechos','Remate'].join('\n'))};
  fs.mkdirSync(path.join(base,project+'-web-images'));fs.writeFileSync(path.join(base,project+'-web-images/job.json'),JSON.stringify(task));
  for(const file of ['TTendenciasWebImages.cjs','TTiTTularesWebImages.cjs'])fs.writeFileSync(path.join(base,file),"return {status:'waiting',reason:'manual_approval_required'}");
