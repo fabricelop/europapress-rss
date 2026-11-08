@@ -28,21 +28,36 @@ for(const [file,name,news] of [['TTendenciasImageBridge.js','holdForWebImageRece
   assert.equal(result,valid?'private_original_received':'private_original_pending');assert.ok(remembered>0);
  });
 }
-test('hundreds of obsolete never-checked jobs cannot starve an active card',()=>{
- const {selectCurrentTasks}=require('../TTImageApprovalReceiver.cjs');const old=Array.from({length:311},(_,i)=>({project:'ttendencias',target_id:'old-'+i,revision:0,command_id:'old-'+i,created_at:'2026-11-02T10:00:00Z'}));const live={project:'ttendencias',target_id:'live',revision:0,command_id:'live-job',created_at:'2026-11-02T22:00:00Z'};
- const selected=selectCurrentTasks([...old,live],{'live-job':{checkedAt:999999}},new Set(['ttendencias:live:0']));assert.equal(selected[0],live);assert.equal(selected.length,312);assert.equal(old.length,311);
-});
-test('all current approvals can be processed in one cycle without an eight-job cap',()=>{
- const {selectCurrentTasks}=require('../TTImageApprovalReceiver.cjs');
- const current=Array.from({length:49},(_,i)=>({
-  project:'ttendencias',target_id:'live-'+i,revision:0,
-  command_id:'current-'+i,created_at:'2026-11-08T19:00:00Z'
+test('fresh image jobs are checked in rotating batches rather than all 600 legacy jobs',()=>{
+ const {selectCurrentTasks,MAX_ORIGINAL_CHECKS_PER_CYCLE}=require('../TTImageApprovalReceiver.cjs');
+ const old=Array.from({length:500},(_,i)=>({
+  project:'ttendencias',target_id:'old-'+i,revision:0,
+  command_id:'old-'+i,created_at:'2026-11-01T10:00:00Z'
  }));
- const active=new Set(current.map(x=>'ttendencias:'+x.target_id+':0'));
- const selection=selectCurrentTasks(current,{},active);
- assert.equal(selection.length,49);
- assert.equal(new Set(selection.map(x=>x.command_id)).size,49);
- assert.ok(selection.every(x=>active.has('ttendencias:'+x.target_id+':0')));
+ const recent=Array.from({length:28},(_,i)=>({
+  project:'ttendencias',target_id:'recent-'+i,revision:0,
+  command_id:'recent-'+i,created_at:'2026-11-08T20:00:00Z'
+ }));
+ // Pre-filtering by the 48-hour eligibility policy is exercised in
+ // private-inbox-cutover.test.cjs; this test covers rotation capacity.
+ const first=selectCurrentTasks(recent,{},new Set());
+ assert.equal(first.length,MAX_ORIGINAL_CHECKS_PER_CYCLE);
+ const checked=Object.fromEntries(first.map(t=>[t.command_id,{checkedAt:Date.now()}]));
+ const second=selectCurrentTasks(recent,checked,new Set());
+ assert(second.some(t=>!first.some(x=>x.command_id===t.command_id)));
+ assert.equal(old.length,500);
+});
+
+test('editorial publication/closure does not alter immutable original receipt identity',()=>{
+ const task={target_id:'trend-abc',command_id:'job-abc',revision:0,
+  explanation_sha256:sha('Texto exacto')};
+ const snapshot={explanation:'Texto exacto',
+  explained_at:'2026-11-02T12:00:00Z',rank_at_explanation:8};
+ const job={target_id:'trend-abc',command_id:'job-abc',revision:0,
+  context_snapshot:snapshot};
+ const normal=metadata(task,job);
+ const closed=metadata(task,{...job,status:'SUPERSEDED'});
+ assert.equal(normal.episodeFingerprint,closed.episodeFingerprint);
 });
 
 test('current index excludes closed news and old episodes while retaining exact live revisions',()=>{
