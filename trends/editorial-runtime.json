@@ -3,70 +3,64 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794120749061-manual",
-  "previous_run_id": "tr-1794120538462-manual",
-  "command_id": "tr-1794120749061-manual",
+  "run_id": "tr-1794140385588-manual",
+  "previous_run_id": "tr-1794120749061-manual",
+  "command_id": "tr-1794140385588-manual",
   "source": "chat",
-  "status": "success",
-  "phase": "closing",
-  "started_at": "2026-11-08T07:53:00+01:00",
-  "updated_at": "2026-11-08T12:03:44+01:00",
-  "finished_at": "2026-11-08T07:55:30+01:00",
-  "current": 2,
-  "total": 2,
+  "status": "running",
+  "phase": "preparing",
+  "started_at": "2026-11-08T14:04:00+01:00",
+  "updated_at": "2026-11-08T14:04:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 9,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "f4bdb3e1fe49"
+  "queue_complete": false,
+  "processed_ids": [],
+  "converged_ids": [],
+  "remaining_ids": [
+    "e2fd4ec01c09",
+    "2dfcf6049e63",
+    "af5a918453c9",
+    "9a3f0bfdde9a",
+    "ba0c2459fd8c",
+    "1943c4a59cd3",
+    "85294e93c44d",
+    "red-review-b39c1bcdb7c287e6270f",
+    "red-review-c46c495a527e6a9cd814"
   ],
-  "converged_ids": [
-    "red-review-75339fd167356c788f2d",
-    "red-review-82c90fc3544822598817"
+  "remaining_active_ids": [
+    "e2fd4ec01c09",
+    "2dfcf6049e63",
+    "af5a918453c9",
+    "9a3f0bfdde9a",
+    "ba0c2459fd8c",
+    "1943c4a59cd3",
+    "85294e93c44d",
+    "red-review-b39c1bcdb7c287e6270f",
+    "red-review-c46c495a527e6a9cd814"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
+    "attempted": 0,
+    "observed": 9,
+    "closed": 0,
     "explained": 0,
     "problematic": 0,
-    "updates": 1,
+    "updates": 0,
     "continuity_updates": 0,
-    "distinct_updates": 1,
-    "unchanged_reviews": 1,
+    "distinct_updates": 0,
+    "unchanged_reviews": 0,
     "unverified_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 9,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 0,
-    "concurrent_convergence": 2
+    "incidents": 0
   },
-  "outcomes": [
-    {
-      "id": "red-review-75339fd167356c788f2d",
-      "revision": 0,
-      "name": "Revisar novedades: Leo Román",
-      "outcome": "distinct_update",
-      "applied": true,
-      "apply_commit": "de25bd43274051bba94b3630e82ae0857cc208ae",
-      "new_id": "trend-update-5f94b8b39a1caaa943ee",
-      "via": "concurrent_convergence"
-    },
-    {
-      "id": "red-review-82c90fc3544822598817",
-      "revision": 0,
-      "name": "Revisar novedades: Fiscalía Europea",
-      "outcome": "unchanged",
-      "applied": true,
-      "apply_commit": "de25bd43274051bba94b3630e82ae0857cc208ae",
-      "via": "concurrent_convergence"
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -559,6 +553,11 @@
       "at": "2026-11-08T07:55:30+01:00",
       "phase": "closing",
       "message": "Barrera final JIT: editorial-queue=0; mobile-decisions sin preparing/update, rewrite_pending/reexplain, anticipation_request ni red_review_request activos. Cierre 2/2 por convergencia. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-08T14:04:00+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-1794140385588-manual iniciada desde chat; cola main=9: siete explain y dos review_red. Procesamiento JIT antiguo→reciente, priorizando explain antes de mantenimiento. Sin ImageGen, sin image-outbox editorial y sin publicaciones."
     }
   ],
   "last_started_at": "2026-11-08T12:03:44+01:00",
@@ -609,5 +608,5 @@
       }
     ]
   },
-  "message": "Pasada tr-1794120749061-manual cerrada 2/2 por convergencia JIT: Leo Román como episodio distinto y Fiscalía Europea unchanged. Barrera final main sin trabajos editoriales activos. Sin ImageGen ni publicaciones."
+  "message": "Pasada tr-1794140385588-manual en ejecución: 0/9; sin ImageGen."
 }
