@@ -3,35 +3,46 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794167585384-manual",
-  "previous_run_id": "tr-autoguard-1794166219",
-  "command_id": "tr-1794167585384-manual",
+  "run_id": "tr-1794167484200-manual",
+  "previous_run_id": "tr-1794167585384-manual",
+  "command_id": "tr-1794167484200-manual",
   "source": "chat",
   "status": "DONE",
   "phase": "closing",
-  "started_at": "2026-11-08T20:54:00+01:00",
-  "updated_at": "2026-11-08T20:55:00+01:00",
-  "finished_at": "2026-11-08T20:55:00+01:00",
-  "current": 0,
-  "total": 0,
+  "started_at": "2026-11-08T20:52:30+01:00",
+  "updated_at": "2026-11-08T20:57:00+01:00",
+  "finished_at": "2026-11-08T20:57:00+01:00",
+  "current": 4,
+  "total": 4,
   "trend_id": null,
-  "title": "Pasada editorial TTendencias",
+  "title": null,
   "queue_complete": true,
-  "processed_ids": [],
-  "converged_ids": [],
+  "processed_ids": [
+    "red-review-45745a370b36ec2c799a",
+    "red-review-2b8c36b362764c37d989",
+    "red-review-dd760f62fefd26c71237",
+    "red-review-2c5c620a098a3e2965b8"
+  ],
+  "converged_ids": [
+    "red-review-45745a370b36ec2c799a",
+    "red-review-2b8c36b362764c37d989",
+    "red-review-dd760f62fefd26c71237",
+    "red-review-2c5c620a098a3e2965b8"
+  ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 0,
-    "closed": 0,
-    "explained": 0,
+    "attempted": 4,
+    "observed": 4,
+    "closed": 4,
+    "explained": 1,
     "problematic": 0,
-    "updates": 0,
+    "updates": 1,
     "continuity_updates": 0,
-    "distinct_updates": 0,
-    "unchanged_reviews": 0,
+    "distinct_updates": 1,
+    "unchanged_reviews": 1,
+    "stale_reviews": 2,
     "unverified_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
@@ -39,9 +50,47 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 4
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "red-review-45745a370b36ec2c799a",
+      "revision": 0,
+      "name": "Revisar novedades: Robe",
+      "outcome": "unchanged",
+      "applied": true,
+      "via": "maintenance_outbox",
+      "concurrent": true
+    },
+    {
+      "id": "red-review-2b8c36b362764c37d989",
+      "revision": 0,
+      "name": "Revisar novedades: Carvajal",
+      "outcome": "stale",
+      "applied": true,
+      "via": "maintenance_outbox",
+      "concurrent": true
+    },
+    {
+      "id": "red-review-dd760f62fefd26c71237",
+      "revision": 0,
+      "name": "Revisar novedades: Aston Martin",
+      "outcome": "distinct_update",
+      "applied": true,
+      "via": "maintenance_outbox",
+      "created_id": "trend-update-a79b9ee04dbb9b45034a",
+      "concurrent": true
+    },
+    {
+      "id": "red-review-2c5c620a098a3e2965b8",
+      "revision": 0,
+      "name": "Revisar novedades: Russell",
+      "outcome": "stale",
+      "applied": true,
+      "via": "maintenance_outbox",
+      "concurrent": true
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -842,25 +891,41 @@
       "at": "2026-11-08T20:55:00+01:00",
       "phase": "closing",
       "message": "Barrera final JIT en main: editorial-queue=0; mobile-decisions sin preparing/update, rewrite_pending/reexplain, anticipation_request ni red_review_request activos; búsqueda del repositorio sin esos estados ni los dos review_red de Aston Martin/Russell que figuraban en telemetría anterior. Cierre editorial 0/0. recent.json 20:51:12+01:00 está live_verified=false/reliability=unverified, por lo que no se inventa trabajo nuevo. Sin ImageGen, sin image-outbox editorial y sin publicaciones."
+    },
+    {
+      "at": "2026-11-08T20:52:30+01:00",
+      "phase": "preparing",
+      "message": "Pasada manual tr-1794167484200-manual: cola inicial JIT con Robe y Carvajal; se respeta convergencia concurrente."
+    },
+    {
+      "at": "2026-11-08T20:53:58+01:00",
+      "phase": "verifying",
+      "message": "Relectura de main detectó dos review_red posteriores: Aston Martin y Russell. Resultados contrastados y revalidados contra el aplicador de mantenimiento."
+    },
+    {
+      "at": "2026-11-08T20:57:00+01:00",
+      "phase": "closing",
+      "message": "Barrera final: editorial-queue=0; mobile-decisions sin preparing/update, rewrite_pending/reexplain, anticipate ni review_red activos. 4/4 revisiones cerradas; sin ImageGen ni publicaciones."
     }
   ],
-  "last_started_at": "2026-11-08T20:54:00+01:00",
-  "last_completed_at": "2026-11-08T20:55:00+01:00",
+  "last_started_at": "2026-11-08T20:52:30+01:00",
+  "last_completed_at": "2026-11-08T20:57:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794167585384-manual",
+    "run_id": "tr-1794167484200-manual",
     "status": "DONE",
-    "started_at": "2026-11-08T20:54:00+01:00",
-    "finished_at": "2026-11-08T20:55:00+01:00",
-    "attempted": 0,
-    "observed": 0,
-    "closed": 0,
-    "explained": 0,
+    "started_at": "2026-11-08T20:52:30+01:00",
+    "finished_at": "2026-11-08T20:57:00+01:00",
+    "attempted": 4,
+    "observed": 4,
+    "closed": 4,
+    "explained": 1,
     "problematic": 0,
-    "updates": 0,
+    "updates": 1,
     "continuity_updates": 0,
-    "distinct_updates": 0,
-    "unchanged_reviews": 0,
+    "distinct_updates": 1,
+    "unchanged_reviews": 1,
+    "stale_reviews": 2,
     "unverified_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
@@ -868,11 +933,59 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "processed_ids": [],
-    "converged_ids": [],
-    "outcomes": []
+    "processed_ids": [
+      "red-review-45745a370b36ec2c799a",
+      "red-review-2b8c36b362764c37d989",
+      "red-review-dd760f62fefd26c71237",
+      "red-review-2c5c620a098a3e2965b8"
+    ],
+    "converged_ids": [
+      "red-review-45745a370b36ec2c799a",
+      "red-review-2b8c36b362764c37d989",
+      "red-review-dd760f62fefd26c71237",
+      "red-review-2c5c620a098a3e2965b8"
+    ],
+    "outcomes": [
+      {
+        "id": "red-review-45745a370b36ec2c799a",
+        "revision": 0,
+        "name": "Revisar novedades: Robe",
+        "outcome": "unchanged",
+        "applied": true,
+        "via": "maintenance_outbox",
+        "concurrent": true
+      },
+      {
+        "id": "red-review-2b8c36b362764c37d989",
+        "revision": 0,
+        "name": "Revisar novedades: Carvajal",
+        "outcome": "stale",
+        "applied": true,
+        "via": "maintenance_outbox",
+        "concurrent": true
+      },
+      {
+        "id": "red-review-dd760f62fefd26c71237",
+        "revision": 0,
+        "name": "Revisar novedades: Aston Martin",
+        "outcome": "distinct_update",
+        "applied": true,
+        "via": "maintenance_outbox",
+        "created_id": "trend-update-a79b9ee04dbb9b45034a",
+        "concurrent": true
+      },
+      {
+        "id": "red-review-2c5c620a098a3e2965b8",
+        "revision": 0,
+        "name": "Revisar novedades: Russell",
+        "outcome": "stale",
+        "applied": true,
+        "via": "maintenance_outbox",
+        "concurrent": true
+      }
+    ]
   },
-  "message": "Barrera final JIT en main: editorial-queue=0; mobile-decisions sin preparing/update, rewrite_pending/reexplain, anticipation_request ni red_review_request activos; búsqueda del repositorio sin esos estados ni los dos review_red de Aston Martin/Russell que figuraban en telemetría anterior. Cierre editorial 0/0. recent.json 20:51:12+01:00 está live_verified=false/reliability=unverified, por lo que no se inventa trabajo nuevo. Sin ImageGen, sin image-outbox editorial y sin publicaciones.",
+  "message": "Pasada manual tr-1794167484200-manual verificada contra main: 4 revisiones maintenance encontradas durante la ventana. Robe=unchanged; Carvajal=stale por barrera JIT; Aston Martin=episodio distinto aplicado (trend-update-a79b9ee04dbb9b45034a); Russell=stale por barrera JIT y no se fuerza una ficha sobre snapshot obsoleto. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update ni reexplicación activa. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-08T15:05:00+01:00",
@@ -920,6 +1033,33 @@
       "at": "2026-11-08T20:55:00+01:00",
       "phase": "closing",
       "message": "tr-1794167585384-manual DONE 0/0: cola final 0, sin reelaboraciones activas; la telemetría previa tr-autoguard-1794166219 quedó superada por el estado autoritativo actual de main. ImageGen=0."
+    },
+    {
+      "run_id": "tr-1794167484200-manual",
+      "status": "DONE",
+      "started_at": "2026-11-08T20:52:30+01:00",
+      "finished_at": "2026-11-08T20:57:00+01:00",
+      "summary": {
+        "attempted": 4,
+        "observed": 4,
+        "closed": 4,
+        "explained": 1,
+        "problematic": 0,
+        "updates": 1,
+        "continuity_updates": 0,
+        "distinct_updates": 1,
+        "unchanged_reviews": 1,
+        "stale_reviews": 2,
+        "unverified_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 4
+      },
+      "message": "Pasada manual tr-1794167484200-manual verificada contra main: 4 revisiones maintenance encontradas durante la ventana. Robe=unchanged; Carvajal=stale por barrera JIT; Aston Martin=episodio distinto aplicado (trend-update-a79b9ee04dbb9b45034a); Russell=stale por barrera JIT y no se fuerza una ficha sobre snapshot obsoleto. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update ni reexplicación activa. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ]
 }
