@@ -7,11 +7,11 @@
   "previous_run_id": "tr-1794143640000-manual",
   "command_id": "tr-1794146582352-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "verifying",
+  "status": "DONE_WITH_INCIDENTS",
+  "phase": "closing",
   "started_at": "2026-11-08T15:10:00+01:00",
-  "updated_at": "2026-11-08T15:10:00+01:00",
-  "finished_at": "2026-11-08T15:08:00+01:00",
+  "updated_at": "2026-11-08T15:11:00+01:00",
+  "finished_at": "2026-11-08T15:11:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
@@ -619,12 +619,13 @@
     }
   ],
   "last_started_at": "2026-11-08T15:10:00+01:00",
-  "last_completed_at": "2026-11-08T15:08:00+01:00",
+  "last_completed_at": "2026-11-08T15:11:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-1794147000000-manual",
-    "status": "RUNNING",
+    "status": "DONE_WITH_INCIDENTS",
     "started_at": "2026-11-08T15:10:00+01:00",
+    "finished_at": "2026-11-08T15:11:00+01:00",
     "attempted": 0,
     "observed": 0,
     "closed": 0,
@@ -639,12 +640,19 @@
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 0,
+    "incidents": 1,
     "processed_ids": [],
     "converged_ids": [],
-    "outcomes": []
+    "outcomes": [],
+    "incident_details": [
+      {
+        "type": "refresh_not_materialized",
+        "message": "El refresh manual fue disparado en main, pero no se observó una nueva captura recent.json ni una cola editorial nueva antes del cierre de esta ejecución.",
+        "trigger_commit": "b0c600ce8e8eda0d15b9ccdc0df9e71a505c793a"
+      }
+    ]
   },
-  "message": "Pasada tr-1794147000000-manual iniciada desde chat. Refresh manual lanzado mediante trends/refresh-trigger.txt; cola editorial inicial=0. Se espera únicamente materialización real en main; sin ImageGen ni publicaciones.",
+  "message": "Pasada tr-1794147000000-manual cerrada 0/0 tras barrera JIT: editorial-queue=0 y mobile-decisions sin preparing/update, rewrite_pending/reexplain, anticipate ni review_red activos. Se lanzó refresh manual (commit b0c600ce8e8eda0d15b9ccdc0df9e71a505c793a), pero durante esta ejecución recent.json siguió en 15:01:24, live_verified=false/reliability=unverified; no se inventaron pendientes. Sin ImageGen ni publicaciones.",
   "history": [
     {
       "at": "2026-11-08T15:05:00+01:00",
@@ -667,6 +675,11 @@
       "at": "2026-11-08T15:10:00+01:00",
       "phase": "preparing",
       "message": "Pasada tr-1794147000000-manual iniciada desde chat. Refresh manual lanzado mediante trends/refresh-trigger.txt; cola editorial inicial=0. Se espera únicamente materialización real en main; sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-08T15:11:00+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-1794147000000-manual cerrada 0/0 tras barrera JIT: editorial-queue=0 y mobile-decisions sin preparing/update, rewrite_pending/reexplain, anticipate ni review_red activos. Se lanzó refresh manual (commit b0c600ce8e8eda0d15b9ccdc0df9e71a505c793a), pero durante esta ejecución recent.json siguió en 15:01:24, live_verified=false/reliability=unverified; no se inventaron pendientes. Sin ImageGen ni publicaciones."
     }
   ]
 }
