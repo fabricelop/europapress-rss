@@ -102,6 +102,16 @@ final class EditorialStore: ObservableObject {
         "trends/editorial-queue.json"
     ]
 
+    // Read the same canonical GitHub radar used by the web. A suspended
+    // iPhone must catch up when the editor returns, without fetching all
+    // editorial ledgers on every foreground notification.
+    func refreshIfOlderThan(_ minimumSeconds: TimeInterval = 3600) async {
+        guard !isLoading else { return }
+        if let last = snapshot.updatedAt,
+           Date().timeIntervalSince(last) < minimumSeconds { return }
+        await refresh()
+    }
+
     func refresh() async {
         guard !isLoading else { return }
         isLoading = true
