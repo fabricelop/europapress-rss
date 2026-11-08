@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-08T06:58:17.936586+00:00",
+  "checked_at": "2026-11-08T08:04:18.337812+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -42,7 +42,7 @@
     "top10": {
       "ok": false,
       "count": 10,
-      "non_stale_sources": 2,
+      "non_stale_sources": 3,
       "verified_fresh_sources": [],
       "live_verified": false,
       "captured_age_minutes": 0.1,
@@ -57,8 +57,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 2.2,
-      "run_id": 42456719051,
+      "age_minutes": 4.6,
+      "run_id": 42461004792,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -79,19 +79,35 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": true,
-      "pending_count": 0,
-      "overdue_count": 0,
-      "oldest_age_minutes": 0,
+      "ok": false,
+      "pending_count": 2,
+      "overdue_count": 2,
+      "oldest_age_minutes": 35.9,
       "warning_after_minutes": 30,
-      "overdue_items": [],
+      "overdue_items": [
+        {
+          "id": "red-review-98b5e92d7311bb4dc401",
+          "name": "Revisar novedades: Paraguay",
+          "status": "preparing",
+          "age_minutes": 35.9
+        },
+        {
+          "id": "red-review-c7e476f68780c4ca2a4b",
+          "name": "Revisar novedades: Santiago Peña",
+          "status": "preparing",
+          "age_minutes": 35.9
+        }
+      ],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": true,
-      "status": "not-required",
-      "queue_complete": true,
-      "remaining_active_ids": [],
+      "ok": false,
+      "status": "overdue",
+      "queue_complete": false,
+      "remaining_active_ids": [
+        "red-review-98b5e92d7311bb4dc401",
+        "red-review-c7e476f68780c4ca2a4b"
+      ],
       "contradictory_success": false
     },
     "telegram_provisional": {
@@ -103,9 +119,10 @@
   "repairs_started": [],
   "blocking": [
     "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos",
-    "cola con 557 estado(s) inválido(s)"
+    "cola con 557 estado(s) inválido(s)",
+    "cola de explicaciones retrasada: 2 pendiente(s) superan 30 min; más antigua 35.9 min"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 557 estado(s) inválido(s)"
+  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 557 estado(s) inválido(s) | cola de explicaciones retrasada: 2 pendiente(s) superan 30 min; más antigua 35.9 min"
 }
