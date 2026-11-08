@@ -10,8 +10,8 @@
   "status": "DONE",
   "phase": "closing",
   "started_at": "2026-11-08T23:24:00+01:00",
-  "updated_at": "2026-11-08T23:28:00+01:00",
-  "finished_at": "2026-11-08T23:28:00+01:00",
+  "updated_at": "2026-11-08T23:29:00+01:00",
+  "finished_at": "2026-11-08T23:29:00+01:00",
   "current": 2,
   "total": 2,
   "trend_id": null,
@@ -31,11 +31,11 @@
     "closed": 2,
     "explained": 0,
     "problematic": 0,
-    "updates": 1,
+    "updates": 2,
     "continuity_updates": 0,
-    "distinct_updates": 1,
+    "distinct_updates": 2,
     "unchanged_reviews": 0,
-    "stale_reviews": 1,
+    "stale_reviews": 0,
     "unverified_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
@@ -43,7 +43,7 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 2
   },
   "outcomes": [
     {
@@ -52,17 +52,17 @@
       "name": "Revisar novedades: Julián Álvarez",
       "outcome": "distinct_update",
       "applied": true,
-      "created_id": "trend-update-08da896cbbe389cf5192",
+      "via": "concurrent_convergence",
       "apply_commit": "7be9a24413111ea387f952106cc373b514e76f1b"
     },
     {
       "id": "red-review-c683874a2ac7fe16e327",
       "revision": 0,
       "name": "Revisar novedades: Gerard Martín",
-      "outcome": "stale",
+      "outcome": "distinct_update",
       "applied": true,
-      "apply_commit": "7be9a24413111ea387f952106cc373b514e76f1b",
-      "reason": "Barrera JIT: existe una entrega terminal de revisión superior (revision 1, status deleted); no se resucita la ficha."
+      "via": "concurrent_convergence",
+      "apply_commit": "7be9a24413111ea387f952106cc373b514e76f1b"
     }
   ],
   "incident_count": 0,
@@ -99,7 +99,7 @@
     },
     "message": "Pasada tr-1794176640252-manual cerrada 2/2. Julián Álvarez se materializó como episodio distinto del Atlético-Barça del 8/11 en trend-update-08da896cbbe389cf5192. Gerard Martín quedó review_completed/stale por barrera JIT al existir una revisión terminal superior eliminada; no se resucitó ni se creó ficha nueva. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794176640252-manual cerrada 2/2. Julián Álvarez se materializó como episodio distinto del Atlético-Barça del 8/11 en trend-update-08da896cbbe389cf5192. Gerard Martín quedó review_completed/stale por barrera JIT al existir una revisión terminal superior eliminada; no se resucitó ni se creó ficha nueva. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1794176640252-manual cerrada 2/2 por convergencia JIT: Julián Álvarez y Gerard Martín fueron verificados como episodios distintos del Atlético-Barcelona del 8/11 y aplicados por el mantenimiento concurrente antes de la escritura propia. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update ni rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-08T15:07:08+01:00",
@@ -585,6 +585,12 @@
         }
       ],
       "message": "Pasada tr-1794176640252-manual cerrada 2/2. Julián Álvarez se materializó como episodio distinto del Atlético-Barça del 8/11 en trend-update-08da896cbbe389cf5192. Gerard Martín quedó review_completed/stale por barrera JIT al existir una revisión terminal superior eliminada; no se resucitó ni se creó ficha nueva. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-08T23:29:00+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-1794176640252-manual cerrada 2/2 por convergencia JIT: Julián Álvarez y Gerard Martín fueron verificados como episodios distintos del Atlético-Barcelona del 8/11 y aplicados por el mantenimiento concurrente antes de la escritura propia. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update ni rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
     }
-  ]
+  ],
+  "current_item": null
 }
