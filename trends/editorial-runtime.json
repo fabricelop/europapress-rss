@@ -7,42 +7,48 @@
   "previous_run_id": "tr-1794147499437-manual",
   "command_id": "tr-1794147605058-manual",
   "source": "chat",
-  "status": "success",
-  "phase": "preparing",
+  "status": "RUNNING",
+  "phase": "investigating",
   "started_at": "2026-11-08T15:20:05.058+01:00",
-  "updated_at": "2026-11-08T15:23:03+01:00",
+  "updated_at": "2026-11-08T15:24:30+01:00",
   "finished_at": null,
-  "current": 0,
-  "total": 4,
-  "trend_id": "e2fd4ec01c09",
-  "title": "#CCubicos441",
-  "queue_complete": true,
+  "current": 4,
+  "total": 6,
+  "trend_id": "red-review-6f470a75ff14308a70e0",
+  "title": "Revisar novedades: Broncano",
+  "queue_complete": false,
   "processed_ids": [
     "3d36913a2caa",
     "e7a443c3aa40"
   ],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-6f470a75ff14308a70e0",
+    "red-review-1bde9d60f94ed2a61c23"
+  ],
+  "remaining_active_ids": [
+    "red-review-6f470a75ff14308a70e0",
+    "red-review-1bde9d60f94ed2a61c23"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
-    "observed": 4,
-    "closed": 0,
-    "explained": 0,
+    "observed": 6,
+    "closed": 4,
+    "explained": 4,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "unverified_reviews": 0,
-    "queue_remaining": 4,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 2
   },
   "outcomes": [],
   "incident_count": 0,
@@ -613,6 +619,13 @@
       "at": "2026-11-08T15:24:30+01:00",
       "phase": "closing",
       "message": "Pasada tr-1794147499437-manual cerrada 4/4 por aplicación verificada y convergencia JIT. #CCubicos441 r1 e Iván Martínez r0 aplicados en 232b0e266aae2b97edfd50922c939df4f1d038bf; elche r0 y Numancia r0 en 169b11a6dcd8828f3698268e2b944f41e8ea6a34. Se respetó la edición concurrente más reciente de elche antes de aplicar. Barrera: editorial-queue=0 y mobile-decisions sin preparing/update ni rewrite_pending/reexplain. ImageGen=0; image-outbox editorial=0; publicaciones=0. La sucesora tr-1794147605058-manual conserva la telemetría canónica."
+    },
+    {
+      "at": "2026-11-08T15:24:30+01:00",
+      "phase": "investigating",
+      "trend_id": "red-review-6f470a75ff14308a70e0",
+      "title": "Revisar novedades: Broncano",
+      "message": "Barrera dinámica: entran 2 review_red (Broncano y Amaia). Broncano r0 validado JIT; se revisan novedades posteriores a la explicación vigente. Sin ImageGen ni publicaciones."
     }
   ],
   "last_started_at": "2026-11-08T15:23:03+01:00",
@@ -685,7 +698,7 @@
     "superseded_by": "tr-1794147605058-manual",
     "incident_details": []
   },
-  "message": "Pasada RUNNING: 0/4 cerrados; validando #CCubicos441.",
+  "message": "Pasada RUNNING: 4/6 cerrados; revisando novedades de Broncano.",
   "history": [
     {
       "at": "2026-11-08T15:05:00+01:00",
