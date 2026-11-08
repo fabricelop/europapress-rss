@@ -7,39 +7,36 @@
   "previous_run_id": "tr-1794147824052-manual",
   "command_id": "tr-1794148104890-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-08T15:28:30+01:00",
-  "updated_at": "2026-11-08T15:33:00+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-08T15:34:00+01:00",
+  "finished_at": "2026-11-08T15:34:00+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "3950f5d82b16",
-  "title": "Abascal",
-  "queue_complete": false,
-  "processed_ids": [],
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
+    "105f7f6dd85b",
+    "3950f5d82b16"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "105f7f6dd85b",
-    "3950f5d82b16"
-  ],
-  "remaining_active_ids": [
-    "105f7f6dd85b",
-    "3950f5d82b16"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 2,
     "observed": 2,
-    "closed": 0,
-    "explained": 0,
+    "closed": 2,
+    "explained": 2,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "unverified_reviews": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -47,7 +44,24 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "105f7f6dd85b",
+      "revision": 0,
+      "name": "maffeo",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "441815d576ab4442d730943ac14bce23b87d5ecd"
+    },
+    {
+      "id": "3950f5d82b16",
+      "revision": 0,
+      "name": "Abascal",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "38ac2b14b8ac17fe51a87d38a758ce43bb6c7d36"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -671,24 +685,34 @@
       "trend_id": "3950f5d82b16",
       "title": "Abascal",
       "message": "Abascal r0 validado JIT. Investigación desde cero: entrevista publicada el 08/11 en Prensa Ibérica; rechaza que Vox quiera privatizar las pensiones y defiende mantener el sistema actual, incluso con Presupuestos o deuda. Sin ImageGen."
+    },
+    {
+      "at": "2026-11-08T15:33:30+01:00",
+      "phase": "verifying",
+      "message": "Aplicación real verificada: maffeo r0 en 441815d576ab4442d730943ac14bce23b87d5ecd y Abascal r0 en 38ac2b14b8ac17fe51a87d38a758ce43bb6c7d36; ambos constan explained en requests.json y telegram-manual-explained.json y fueron retirados de editorial-queue."
+    },
+    {
+      "at": "2026-11-08T15:34:00+01:00",
+      "phase": "closing",
+      "message": "Barrera final JIT: editorial-queue=0; mobile-decisions sin preparing/update ni rewrite_pending/reexplain activos. Cierre 2/2. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "last_started_at": "2026-11-08T15:28:30+01:00",
-  "last_completed_at": "2026-11-08T15:27:00+01:00",
+  "last_completed_at": "2026-11-08T15:34:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794147824052-manual",
+    "run_id": "tr-1794148104890-manual",
     "status": "DONE",
-    "started_at": "2026-11-08T15:23:44.052+01:00",
-    "finished_at": "2026-11-08T15:27:00+01:00",
+    "started_at": "2026-11-08T15:28:30+01:00",
+    "finished_at": "2026-11-08T15:34:00+01:00",
     "attempted": 2,
     "observed": 2,
     "closed": 2,
-    "explained": 0,
+    "explained": 2,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
-    "unchanged_reviews": 2,
+    "unchanged_reviews": 0,
     "unverified_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
@@ -696,33 +720,31 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "processed_ids": [],
-    "converged_ids": [
-      "red-review-6f470a75ff14308a70e0",
-      "red-review-1bde9d60f94ed2a61c23"
+    "processed_ids": [
+      "105f7f6dd85b",
+      "3950f5d82b16"
     ],
+    "converged_ids": [],
     "outcomes": [
       {
-        "id": "red-review-6f470a75ff14308a70e0",
+        "id": "105f7f6dd85b",
         "revision": 0,
-        "name": "Revisar novedades: Broncano",
-        "outcome": "unchanged",
+        "name": "maffeo",
+        "outcome": "explained",
         "applied": true,
-        "apply_commit": "b59423b2f82fc9db12b714e6d41cb09c28ea7f7e",
-        "via": "concurrent_convergence"
+        "apply_commit": "441815d576ab4442d730943ac14bce23b87d5ecd"
       },
       {
-        "id": "red-review-1bde9d60f94ed2a61c23",
+        "id": "3950f5d82b16",
         "revision": 0,
-        "name": "Revisar novedades: Amaia",
-        "outcome": "unchanged",
+        "name": "Abascal",
+        "outcome": "explained",
         "applied": true,
-        "apply_commit": "b59423b2f82fc9db12b714e6d41cb09c28ea7f7e",
-        "via": "concurrent_convergence"
+        "apply_commit": "38ac2b14b8ac17fe51a87d38a758ce43bb6c7d36"
       }
     ]
   },
-  "message": "Pasada tr-1794148104890-manual iniciada: 2 reelaboraciones manuales preparing (maffeo r0 y Abascal r0), antiguo→reciente con validación JIT. Sin ImageGen ni publicaciones.",
+  "message": "Pasada tr-1794148104890-manual cerrada 2/2. maffeo r0 aplicado en 441815d576ab4442d730943ac14bce23b87d5ecd y Abascal r0 en 38ac2b14b8ac17fe51a87d38a758ce43bb6c7d36. Barrera final: editorial-queue=0 y sin preparing/update ni reexplicaciones activas en mobile-decisions. Sin ImageGen, sin image-outbox editorial y sin publicaciones.",
   "history": [
     {
       "at": "2026-11-08T15:05:00+01:00",
@@ -755,6 +777,11 @@
       "at": "2026-11-08T15:24:30+01:00",
       "phase": "closing",
       "message": "tr-1794147499437-manual DONE 4/4 por convergencia; cola 0, sin reexplicaciones activas, ImageGen=0. Telemetría canónica conservada por tr-1794147605058-manual."
+    },
+    {
+      "at": "2026-11-08T15:34:00+01:00",
+      "phase": "closing",
+      "message": "tr-1794148104890-manual DONE 2/2: maffeo y Abascal reelaborados desde cero y aplicados; cola final 0, sin reexplicaciones activas, ImageGen=0."
     }
   ]
 }
