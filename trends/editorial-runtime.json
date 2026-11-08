@@ -3,39 +3,41 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794148669902-manual",
-  "previous_run_id": "tr-1794148104890-manual",
-  "command_id": "tr-1794148669902-manual",
+  "run_id": "tr-1794149205755-manual",
+  "previous_run_id": "tr-1794148669902-manual",
+  "command_id": "tr-1794149205755-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-08T15:38:00+01:00",
-  "updated_at": "2026-11-08T15:43:00+01:00",
-  "finished_at": "2026-11-08T15:43:00+01:00",
-  "current": 1,
+  "status": "RUNNING",
+  "phase": "investigating",
+  "started_at": "2026-11-08T15:47:00+01:00",
+  "updated_at": "2026-11-08T15:47:00+01:00",
+  "finished_at": null,
+  "current": 0,
   "total": 1,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
+  "trend_id": "3d36913a2caa",
+  "title": "elche",
+  "queue_complete": false,
+  "processed_ids": [],
+  "converged_ids": [],
+  "remaining_ids": [
     "3d36913a2caa"
   ],
-  "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "3d36913a2caa"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 1,
     "observed": 1,
-    "closed": 1,
-    "explained": 1,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "unverified_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 1,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -43,16 +45,7 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "3d36913a2caa",
-      "revision": 1,
-      "name": "elche",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "edf02e30bb89df92fc5d6e11871961cad73c1e46"
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -733,9 +726,16 @@
       "at": "2026-11-08T15:43:00+01:00",
       "phase": "closing",
       "message": "Barrera final JIT: editorial-queue=0 y mobile-decisions sin preparing/update ni rewrite_pending/reexplain activos. Cierre 1/1. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-08T15:47:00+01:00",
+      "phase": "investigating",
+      "trend_id": "3d36913a2caa",
+      "title": "elche",
+      "message": "Pasada tr-1794149205755-manual iniciada. Cola main=1: elche r2, reelaboración manual desde cero. La pista del editor indica que el partido no había acabado y Betis había marcado; se contrasta independientemente antes de persistir. Sin ImageGen ni publicaciones."
     }
   ],
-  "last_started_at": "2026-11-08T15:38:00+01:00",
+  "last_started_at": "2026-11-08T15:47:00+01:00",
   "last_completed_at": "2026-11-08T15:43:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -773,7 +773,7 @@
       }
     ]
   },
-  "message": "Pasada tr-1794148669902-manual cerrada 1/1. elche r1 aplicado en edf02e30bb89df92fc5d6e11871961cad73c1e46. Barrera final: editorial-queue=0 y sin preparing/update ni reexplicaciones activas en mobile-decisions. Sin ImageGen, sin image-outbox editorial y sin publicaciones.",
+  "message": "Pasada tr-1794149205755-manual RUNNING. elche r2 validación JIT e investigación nueva desde cero; la revisión r1 se descarta por información de partido incorrecta. Sin ImageGen ni publicaciones.",
   "history": [
     {
       "at": "2026-11-08T15:05:00+01:00",
