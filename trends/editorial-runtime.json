@@ -5,35 +5,37 @@
   "canonical": true,
   "run_id": "tr-1794146582352-manual",
   "previous_run_id": "tr-1794143640000-manual",
-  "command_id": "tr-1794144300000-manual",
+  "command_id": "tr-1794146582352-manual",
   "source": "chat",
-  "status": "running",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-08T15:05:00+01:00",
-  "updated_at": "2026-11-08T15:05:00+01:00",
-  "finished_at": "2026-11-08T14:26:00+01:00",
-  "current": 0,
-  "total": 1,
-  "trend_id": "d8a308614fc9",
-  "title": "#IreneConQueque",
+  "updated_at": "2026-11-08T15:08:00+01:00",
+  "finished_at": "2026-11-08T15:08:00+01:00",
+  "current": 3,
+  "total": 3,
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
-  "processed_ids": [
-    "d8a308614fc9"
+  "processed_ids": [],
+  "converged_ids": [
+    "d8a308614fc9",
+    "red-review-6ac82327dca104b16447",
+    "red-review-e9582fd86742c0639c65"
   ],
-  "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 0,
-    "closed": 0,
-    "explained": 0,
+    "attempted": 3,
+    "observed": 3,
+    "closed": 3,
+    "explained": 1,
     "problematic": 0,
-    "updates": 0,
-    "continuity_updates": 0,
+    "updates": 1,
+    "continuity_updates": 1,
     "distinct_updates": 0,
-    "unchanged_reviews": 0,
+    "unchanged_reviews": 1,
     "unverified_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
@@ -41,9 +43,37 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 3
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "d8a308614fc9",
+      "revision": 0,
+      "name": "#IreneConQueque",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "ac7e76dc874e36f35f7fc4898cb4f052fc64d560",
+      "via": "concurrent_convergence"
+    },
+    {
+      "id": "red-review-6ac82327dca104b16447",
+      "revision": 0,
+      "name": "Revisar novedades: La Séptima",
+      "outcome": "continuity_update",
+      "applied": true,
+      "apply_commit": "4e63050b549101c3f4eeb7732e075aa10b6557e4",
+      "via": "concurrent_convergence"
+    },
+    {
+      "id": "red-review-e9582fd86742c0639c65",
+      "revision": 0,
+      "name": "Revisar novedades: #FelizSábado",
+      "outcome": "unchanged",
+      "applied": true,
+      "apply_commit": "4e63050b549101c3f4eeb7732e075aa10b6557e4",
+      "via": "concurrent_convergence"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -589,20 +619,21 @@
     }
   ],
   "last_started_at": "2026-11-08T15:05:00+01:00",
-  "last_completed_at": "2026-11-08T15:04:49+01:00",
+  "last_completed_at": "2026-11-08T15:08:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794143640000-manual",
+    "run_id": "tr-1794146582352-manual",
     "status": "DONE",
-    "started_at": "2026-11-08T14:14:00+01:00",
-    "finished_at": "2026-11-08T14:17:30+01:00",
+    "started_at": "2026-11-08T15:05:00+01:00",
+    "finished_at": "2026-11-08T15:08:00+01:00",
     "attempted": 3,
     "observed": 3,
     "closed": 3,
-    "explained": 3,
-    "updates": 0,
+    "explained": 1,
+    "updates": 1,
+    "continuity_updates": 1,
     "distinct_updates": 0,
-    "unchanged_reviews": 0,
+    "unchanged_reviews": 1,
     "unverified_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
@@ -610,42 +641,44 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 2,
-    "processed_ids": [
-      "b8319f5f818f",
-      "e986c2c85214",
-      "e4fb8818600e"
+    "concurrent_convergence": 3,
+    "processed_ids": [],
+    "converged_ids": [
+      "d8a308614fc9",
+      "red-review-6ac82327dca104b16447",
+      "red-review-e9582fd86742c0639c65"
     ],
     "outcomes": [
       {
-        "id": "b8319f5f818f",
+        "id": "d8a308614fc9",
         "revision": 0,
-        "name": "#SorteoCOAC2027",
+        "name": "#IreneConQueque",
         "outcome": "explained",
         "applied": true,
-        "apply_commit": "433dccac9f4a9f441ef9e2e439ff2da92657f669",
+        "apply_commit": "ac7e76dc874e36f35f7fc4898cb4f052fc64d560",
         "via": "concurrent_convergence"
       },
       {
-        "id": "e986c2c85214",
+        "id": "red-review-6ac82327dca104b16447",
         "revision": 0,
-        "name": "Nadal",
-        "outcome": "explained",
+        "name": "Revisar novedades: La Séptima",
+        "outcome": "continuity_update",
         "applied": true,
-        "apply_commit": "433dccac9f4a9f441ef9e2e439ff2da92657f669",
+        "apply_commit": "4e63050b549101c3f4eeb7732e075aa10b6557e4",
         "via": "concurrent_convergence"
       },
       {
-        "id": "e4fb8818600e",
+        "id": "red-review-e9582fd86742c0639c65",
         "revision": 0,
-        "name": "Carvajal",
-        "outcome": "explained",
+        "name": "Revisar novedades: #FelizSábado",
+        "outcome": "unchanged",
         "applied": true,
-        "apply_commit": "433dccac9f4a9f441ef9e2e439ff2da92657f669"
+        "apply_commit": "4e63050b549101c3f4eeb7732e075aa10b6557e4",
+        "via": "concurrent_convergence"
       }
     ]
   },
-  "message": "Pasada tr-1794146582352-manual iniciada: d8a308614fc9/r0 validado JIT en preparing. Investigación desde cero del contexto actual; sin ImageGen ni publicaciones.",
+  "message": "Pasada tr-1794146582352-manual cerrada 3/3 por convergencia JIT: #IreneConQueque explained; La Séptima actualizada en continuidad; #FelizSábado unchanged. Barrera final main=0 y mobile-decisions sin rewrite_pending/reexplain. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-08T15:05:00+01:00",
@@ -653,6 +686,16 @@
       "trend_id": "d8a308614fc9",
       "title": "#IreneConQueque",
       "message": "d8a308614fc9/r0 validado JIT. La tendencia se contrasta con la entrevista de Irene Montero en La Comedia Nacional de La Séptima, presentada por Héctor de Miguel «Quequé», anunciada para hoy 8/11 a las 14:00. Sin ImageGen."
+    },
+    {
+      "at": "2026-11-08T15:07:08+01:00",
+      "phase": "verifying",
+      "message": "Convergencia verificada en main: #IreneConQueque aplicado en ac7e76dc874e36f35f7fc4898cb4f052fc64d560; La Séptima continuity y #FelizSábado unchanged aplicados en 4e63050b549101c3f4eeb7732e075aa10b6557e4. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-08T15:08:00+01:00",
+      "phase": "closing",
+      "message": "Barrera final JIT: editorial-queue=0; mobile-decisions sin preparing/update ni rewrite_pending/reexplain activos. Cierre 3/3 por convergencia. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ]
 }
