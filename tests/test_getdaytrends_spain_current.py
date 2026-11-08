@@ -55,10 +55,9 @@ class GetDayTrendsSpainContract(unittest.TestCase):
         self.assertEqual(observed['freshness'],'invalid')
 
     def test_reject_conflicting_positions_and_missing_middle_page(self):
-        conflict=fixture().replace('España actual 16','España actual 16A')
-        conflict=conflict.replace('<table class="table ranking top">',row(16,'Otro puesto 16')+'<table class="table ranking top">')
-        # Conflicting rank inside the same ranked table is rejected.
-        conflict=fixture().replace('</table><h2>Top Hashtags',row(16,'Otro puesto 16')+'</table><h2>Top Hashtags')
+        # Duplicate ordinal inside the second current-trends table.
+        conflict=fixture().replace(row(16,'España actual 16'),
+                                   row(16,'España actual 16')+row(16,'Otro puesto 16'))
         self.assertEqual(mod.parse_getdaytrends(conflict),[])
         no_hidden=fixture().replace('<table class="table ranking trends wider collapse" id="moreTrends">'
                     + ''.join(row(i, f'España actual {i}') for i in range(16,51)) + '</table>','')
