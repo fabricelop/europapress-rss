@@ -7,27 +7,26 @@
   "previous_run_id": "tr-1794147499437-manual",
   "command_id": "tr-1794147605058-manual",
   "source": "chat",
-  "status": "RUNNING",
+  "status": "waiting",
   "phase": "preparing",
   "started_at": "2026-11-08T15:20:05.058+01:00",
-  "updated_at": "2026-11-08T15:20:05.058+01:00",
+  "updated_at": "2026-11-08T15:22:19+01:00",
   "finished_at": null,
   "current": 0,
   "total": 4,
   "trend_id": "e2fd4ec01c09",
   "title": "#CCubicos441",
   "queue_complete": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "8648b034950f",
+    "e2fd4ec01c09"
+  ],
   "converged_ids": [],
   "remaining_ids": [
-    "e2fd4ec01c09",
-    "8648b034950f",
     "3d36913a2caa",
     "e7a443c3aa40"
   ],
   "remaining_active_ids": [
-    "e2fd4ec01c09",
-    "8648b034950f",
     "3d36913a2caa",
     "e7a443c3aa40"
   ],
@@ -617,7 +616,7 @@
       "message": "Pasada tr-1794147605058-manual iniciada desde chat. Cola dinámica=4; toma relevo canónico de tr-1794147499437-manual y procesará preparing/update antiguo→reciente con validación JIT. Sin ImageGen, sin image-outbox editorial y sin publicaciones."
     }
   ],
-  "last_started_at": "2026-11-08T15:19:00+01:00",
+  "last_started_at": "2026-11-08T15:22:18+01:00",
   "last_completed_at": "2026-11-08T15:11:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
