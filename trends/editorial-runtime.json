@@ -8,12 +8,12 @@
   "command_id": "tr-1794149458886-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "persisting",
   "started_at": "2026-11-08T15:51:50+01:00",
-  "updated_at": "2026-11-08T15:51:50+01:00",
+  "updated_at": "2026-11-08T15:52:00+01:00",
   "finished_at": null,
-  "current": 0,
-  "total": 5,
+  "current": 1,
+  "total": 9,
   "trend_id": "3d36913a2caa",
   "title": "elche",
   "queue_complete": false,
@@ -31,12 +31,16 @@
     "3a82af74dabc",
     "48ef49a80a85",
     "16174b2e5cf2",
-    "0baf2af7e494"
+    "0baf2af7e494",
+    "6121d2770c7a",
+    "e4423895dd54",
+    "d7e94e63db2c",
+    "5921c5cfb37a"
   ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 5,
-    "observed": 5,
+    "observed": 9,
     "closed": 0,
     "explained": 0,
     "problematic": 0,
@@ -45,7 +49,7 @@
     "distinct_updates": 0,
     "unchanged_reviews": 0,
     "unverified_reviews": 0,
-    "queue_remaining": 5,
+    "queue_remaining": 9,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -748,6 +752,27 @@
       "trend_id": "3d36913a2caa",
       "title": "elche",
       "message": "Pasada tr-1794149458886-manual RUNNING. Cola inicial=5 preparing: elche r2, Broncano r0, Extremoduro r0, Antony r0 y Nadal r0; antiguo→reciente con validación JIT antes de cada tratamiento. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-08T15:51:30+01:00",
+      "phase": "drafting",
+      "trend_id": "3d36913a2caa",
+      "title": "elche",
+      "message": "elche r2 JIT validado en main. Dos seguimientos independientes corrigen el 0-0 previo: Betis se adelanta en el tramo final; se evita fijar goleador/minuto exacto por discrepancia de feeds."
+    },
+    {
+      "at": "2026-11-08T15:51:45+01:00",
+      "phase": "remate_selection",
+      "trend_id": "3d36913a2caa",
+      "title": "elche",
+      "message": "Texto nuevo <=280 y remate nuevo seleccionados. Sin reutilizar r1. ImageGen=0."
+    },
+    {
+      "at": "2026-11-08T15:52:00+01:00",
+      "phase": "persisting",
+      "trend_id": "3d36913a2caa",
+      "title": "elche",
+      "message": "Persistiendo elche r2 por TTENDENCIAS_CHAT_OUTBOX_V1 tras validación JIT."
     }
   ],
   "last_started_at": "2026-11-08T15:51:50+01:00",
