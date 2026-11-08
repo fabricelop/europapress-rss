@@ -8,14 +8,14 @@
   "command_id": "tr-1794105151194-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "investigating",
+  "phase": "verifying",
   "started_at": "2026-11-08T03:33:15+01:00",
-  "updated_at": "2026-11-08T03:34:30+01:00",
+  "updated_at": "2026-11-08T03:36:20+01:00",
   "finished_at": null,
   "current": 0,
   "total": 2,
-  "trend_id": "red-review-0bfe6d34697e3eb97a6b",
-  "title": "Revisar novedades: #UFCHBOMax",
+  "trend_id": null,
+  "title": null,
   "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
@@ -416,6 +416,11 @@
       "at": "2026-11-08T03:34:30+01:00",
       "phase": "investigating",
       "message": "#UFCHBOMax r0 validado JIT. Se contrasta el episodio del 31/10 con la velada UFC Vegas 124 emitida en HBO Max la madrugada 07→08/11; se verifica si constituye episodio independiente."
+    },
+    {
+      "at": "2026-11-08T03:36:20+01:00",
+      "phase": "persisting",
+      "message": "Resultados materializados en maintenance-outbox: #UFCHBOMax como episodio distinto verificado y Carvajal como unverified. Se espera la aplicación automática del mantenedor y se comprueba estado real en main."
     }
   ],
   "last_started_at": "2026-11-08T03:25:00+01:00",
