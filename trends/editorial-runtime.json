@@ -3,19 +3,19 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794144300000-manual",
+  "run_id": "tr-1794146582352-manual",
   "previous_run_id": "tr-1794143640000-manual",
   "command_id": "tr-1794144300000-manual",
   "source": "chat",
-  "status": "success",
-  "phase": "closing",
-  "started_at": "2026-11-08T14:25:00+01:00",
-  "updated_at": "2026-11-08T15:04:49+01:00",
+  "status": "running",
+  "phase": "investigating",
+  "started_at": "2026-11-08T15:05:00+01:00",
+  "updated_at": "2026-11-08T15:05:00+01:00",
   "finished_at": "2026-11-08T14:26:00+01:00",
   "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": null,
+  "total": 1,
+  "trend_id": "d8a308614fc9",
+  "title": "#IreneConQueque",
   "queue_complete": true,
   "processed_ids": [
     "d8a308614fc9"
@@ -588,7 +588,7 @@
       "message": "Barrera final JIT en main: editorial-queue=0 (actualizada 2026-11-08T14:21:06+01:00); mobile-decisions sin preparing/update, rewrite_pending/reexplain, anticipate ni review_red activos; búsqueda repo sin rewrite_pending/reexplain activos. Cierre editorial 0/0. Sin ImageGen, sin image-outbox editorial y sin publicaciones."
     }
   ],
-  "last_started_at": "2026-11-08T15:04:48+01:00",
+  "last_started_at": "2026-11-08T15:05:00+01:00",
   "last_completed_at": "2026-11-08T15:04:49+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -645,5 +645,14 @@
       }
     ]
   },
-  "message": "Pasada tr-1794143640000-manual cerrada 3/3. Cola final main=0 y reexplicaciones pendientes=0. Sin ImageGen ni publicaciones."
+  "message": "Pasada tr-1794146582352-manual iniciada: d8a308614fc9/r0 validado JIT en preparing. Investigación desde cero del contexto actual; sin ImageGen ni publicaciones.",
+  "history": [
+    {
+      "at": "2026-11-08T15:05:00+01:00",
+      "phase": "investigating",
+      "trend_id": "d8a308614fc9",
+      "title": "#IreneConQueque",
+      "message": "d8a308614fc9/r0 validado JIT. La tendencia se contrasta con la entrevista de Irene Montero en La Comedia Nacional de La Séptima, presentada por Héctor de Miguel «Quequé», anunciada para hoy 8/11 a las 14:00. Sin ImageGen."
+    }
+  ]
 }
