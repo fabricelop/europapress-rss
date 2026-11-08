@@ -7,10 +7,10 @@
   "previous_run_id": "tr-1794111000000-manual",
   "command_id": "tr-1794111900000-manual",
   "source": "chat",
-  "status": "RUNNING",
+  "status": "failure",
   "phase": "persisting",
   "started_at": "2026-11-08T05:25:00+01:00",
-  "updated_at": "2026-11-08T05:27:00+01:00",
+  "updated_at": "2026-11-08T05:27:50+01:00",
   "finished_at": null,
   "current": 0,
   "total": 1,
@@ -45,7 +45,7 @@
   "outcomes": [],
   "incident_count": 0,
   "incidents": [],
-  "error": null,
+  "error": "4a02716868f6-r0.json: ValueError: prepared_item debe tener exactamente 3 alternativas",
   "activity": [
     {
       "at": "2026-11-07T23:10:54.769+01:00",
@@ -574,7 +574,7 @@
       "message": "Se materializa editorial-outbox 4a02716868f6-r0 listo para el aplicador. ImageGen=0; publicaciones=0."
     }
   ],
-  "last_started_at": "2026-11-08T05:25:00+01:00",
+  "last_started_at": "2026-11-08T05:27:50+01:00",
   "last_completed_at": "2026-11-08T05:11:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
