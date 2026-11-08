@@ -3,15 +3,15 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794115500000-manual",
-  "previous_run_id": "tr-1794114683942-manual",
-  "command_id": "tr-1794115500000-manual",
+  "run_id": "tr-1794117300000-manual",
+  "previous_run_id": "tr-1794115500000-manual",
+  "command_id": "tr-1794117300000-manual",
   "source": "chat",
   "status": "DONE",
   "phase": "closing",
-  "started_at": "2026-11-08T06:25:00+01:00",
-  "updated_at": "2026-11-08T06:25:30+01:00",
-  "finished_at": "2026-11-08T06:25:30+01:00",
+  "started_at": "2026-11-08T06:55:00+01:00",
+  "updated_at": "2026-11-08T06:59:00+01:00",
+  "finished_at": "2026-11-08T06:59:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
@@ -477,6 +477,16 @@
       "at": "2026-11-08T06:25:30+01:00",
       "phase": "closing",
       "message": "Barrera final JIT en main: editorial-queue=0 (actualizada 2026-11-08T06:21:08+01:00); mobile-decisions, requests y telegram-manual-explained sin preparing/update, rewrite_pending/reexplain, anticipate ni review_red activos. recent.json capturado a las 2026-11-08T06:21:03+01:00 con live_verified=false. Cierre editorial 0/0. Sin ImageGen, sin image-outbox editorial y sin publicaciones."
+    },
+    {
+      "at": "2026-11-08T06:55:00+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-1794117300000-manual iniciada desde chat. Se lanzó refresh manual Top 30 mediante trends/refresh-trigger.txt; lectura editorial JIT de main con editorial-queue=0. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-08T06:59:00+01:00",
+      "phase": "closing",
+      "message": "Barrera final JIT en main: editorial-queue=0 (actualizada 2026-11-08T06:50:59+01:00); mobile-decisions sin preparing/update, rewrite_pending/reexplain, anticipate ni review_red activos; búsqueda de estado no devuelve flags activos. recent.json capturado a las 2026-11-08T06:50:50+01:00 con live_verified=false. Cierre editorial 0/0. El workflow de refresh manual 42452670432 sigue in_progress en Actions y no se inventan pendientes antes de su persistencia. Sin ImageGen, sin image-outbox editorial y sin publicaciones."
     }
   ],
   "last_started_at": "2026-11-08T05:29:16+01:00",
