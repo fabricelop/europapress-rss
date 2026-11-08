@@ -6,12 +6,13 @@ $ErrorActionPreference='Stop'
 $base='C:\TTiTTulares'
 $file='TTImageApprovalReceiver.cjs'
 $live=Join-Path $base $file
-$pin='f90c0a2764c55c0230bdb746428d10d6076a2d6e'
-$expected='d311fb31975a96c71aab9b14239089d5f55b75d4f2fe23ae55d1525023ac5ca1'
+$pin='0ebc716790e10402fb8ca10b72bb74d982bda551'
+$expected='5726f9aa5c543e4bfffd6b5a2451db2215c8a0f71c52d4f8142de65d1c5b2d0f'
 $accepted=@(
  '5e4105171a9f27a42f619ce3fba7d912c2e5abf50a5fb7828e571491b2d9805a',
  '1dfdca82a23813c1e72a5468dc7e05a14c16b2373f4bd0a94aea27676ebc54e4',
  '340c1d28024d532310c51648794331a541bf93299e4db7a2365d6095b94129f1', # receptor físicamente verificado por el editor 07/11/2026
+ 'd311fb31975a96c71aab9b14239089d5f55b75d4f2fe23ae55d1525023ac5ca1', # misma versión v130 normalizada a CRLF
  $expected
 )
 # Exact SHA-256 of verified historical bridge revisions, normalized to CRLF.
@@ -85,7 +86,7 @@ try {
  & $node --check $download
  if($LASTEXITCODE -ne 0){throw 'RECEIVER_JS_SYNTAX_INVALID'}
  $code=[IO.File]::ReadAllText($download)
- foreach($marker in @('MAX_NEW_RELAY_TABS_PER_CYCLE=1','RELAY_CLEANUP_UNCONFIRMED','Target.closeTarget')){
+ foreach($marker in @('MAX_NEW_RELAY_TABS_PER_CYCLE=1','RELAY_CLEANUP_UNCONFIRMED','Target.closeTarget','listas_and_current_or_at_creation_top30_images_max_48h','MAX_ORIGINAL_CHECKS_PER_CYCLE=16')){
   if(-not $code.Contains($marker)){throw ('RECEIVER_GUARD_MISSING: '+$marker)}
  }
  Copy-Item -LiteralPath $download -Destination $stage -Force
@@ -95,7 +96,7 @@ try {
  [IO.File]::Replace($stage,$live,(Join-Path $backupDir $file),$true)
  $replaced=$true
  if((Get-CanonicalSourceHash $live) -ne $expected){throw 'RECEIVER_REPLACEMENT_SHA_INVALID'}
- Write-Host 'RECEIVER_ONLY_SAFE_OK: receptor actualizado con limite de una pestaña temporal por ciclo.'
+ Write-Host 'RECEIVER_ONLY_SAFE_OK: bandeja Listas/Top30 actual o histórico <=48h; 16 comprobaciones/ciclo, una pestaña temporal máximo.'
  Write-Host 'Los generadores siguen funcionando y no se han cambiado sus archivos.'
  Write-Host 'No se ha iniciado Chrome ni activado ninguna tarea programada.'
  Write-Host ('Copia de seguridad: '+$backupDir)
