@@ -7,47 +7,63 @@
   "previous_run_id": "tr-1794147605058-manual",
   "command_id": "tr-1794147824052-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-08T15:23:44.052+01:00",
-  "updated_at": "2026-11-08T15:26:00+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-08T15:27:00+01:00",
+  "finished_at": "2026-11-08T15:27:00+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "red-review-6f470a75ff14308a70e0",
-  "title": "Revisar novedades: Broncano",
-  "queue_complete": false,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
   "processed_ids": [],
-  "converged_ids": [],
-  "remaining_ids": [
+  "converged_ids": [
     "red-review-6f470a75ff14308a70e0",
     "red-review-1bde9d60f94ed2a61c23"
   ],
-  "remaining_active_ids": [
-    "red-review-6f470a75ff14308a70e0",
-    "red-review-1bde9d60f94ed2a61c23"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 2,
     "observed": 2,
-    "closed": 0,
+    "closed": 2,
     "explained": 0,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
-    "unchanged_reviews": 0,
+    "unchanged_reviews": 2,
     "unverified_reviews": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 2
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "red-review-6f470a75ff14308a70e0",
+      "revision": 0,
+      "name": "Revisar novedades: Broncano",
+      "outcome": "unchanged",
+      "applied": true,
+      "apply_commit": "b59423b2f82fc9db12b714e6d41cb09c28ea7f7e",
+      "via": "concurrent_convergence"
+    },
+    {
+      "id": "red-review-1bde9d60f94ed2a61c23",
+      "revision": 0,
+      "name": "Revisar novedades: Amaia",
+      "outcome": "unchanged",
+      "applied": true,
+      "apply_commit": "b59423b2f82fc9db12b714e6d41cb09c28ea7f7e",
+      "via": "concurrent_convergence"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -640,20 +656,30 @@
       "trend_id": "red-review-6f470a75ff14308a70e0",
       "title": "Revisar novedades: Broncano",
       "message": "Pasada tr-1794147824052-manual iniciada desde chat. Cola observada=2 review_red (Broncano y Amaia), antiguo→reciente con validación JIT. Toma relevo canónico de tr-1794147605058-manual. Sin ImageGen, sin image-outbox editorial y sin publicaciones."
+    },
+    {
+      "at": "2026-11-08T15:26:30+01:00",
+      "phase": "verifying",
+      "message": "Convergencia JIT verificada en b59423b2f82fc9db12b714e6d41cb09c28ea7f7e: Broncano y Amaia constan unchanged y ambos review_red fueron retirados de editorial-queue. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-08T15:27:00+01:00",
+      "phase": "closing",
+      "message": "Barrera final JIT: editorial-queue=0; mobile-decisions sin preparing/update ni rewrite_pending/reexplain activos. Cierre 2/2 por convergencia. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "last_started_at": "2026-11-08T15:23:03+01:00",
-  "last_completed_at": "2026-11-08T15:26:00+01:00",
+  "last_completed_at": "2026-11-08T15:27:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794147605058-manual",
+    "run_id": "tr-1794147824052-manual",
     "status": "DONE",
-    "started_at": "2026-11-08T15:20:05.058+01:00",
-    "finished_at": "2026-11-08T15:26:00+01:00",
-    "attempted": 6,
-    "observed": 6,
-    "closed": 6,
-    "explained": 4,
+    "started_at": "2026-11-08T15:23:44.052+01:00",
+    "finished_at": "2026-11-08T15:27:00+01:00",
+    "attempted": 2,
+    "observed": 2,
+    "closed": 2,
+    "explained": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
@@ -665,53 +691,12 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "processed_ids": [
-      "3d36913a2caa",
-      "e7a443c3aa40",
+    "processed_ids": [],
+    "converged_ids": [
       "red-review-6f470a75ff14308a70e0",
       "red-review-1bde9d60f94ed2a61c23"
     ],
-    "converged_ids": [
-      "e2fd4ec01c09",
-      "8648b034950f"
-    ],
     "outcomes": [
-      {
-        "id": "e2fd4ec01c09",
-        "revision": 1,
-        "name": "#CCubicos441",
-        "outcome": "explained_cause_unconfirmed",
-        "applied": true,
-        "apply_commit": "232b0e266aae2b97edfd50922c939df4f1d038bf",
-        "via": "concurrent_predecessor"
-      },
-      {
-        "id": "8648b034950f",
-        "revision": 0,
-        "name": "Iván Martínez",
-        "outcome": "explained",
-        "applied": true,
-        "apply_commit": "232b0e266aae2b97edfd50922c939df4f1d038bf",
-        "via": "concurrent_predecessor"
-      },
-      {
-        "id": "3d36913a2caa",
-        "revision": 0,
-        "name": "elche",
-        "outcome": "explained",
-        "applied": true,
-        "apply_commit": "169b11a6dcd8828f3698268e2b944f41e8ea6a34",
-        "via": "editorial_outbox"
-      },
-      {
-        "id": "e7a443c3aa40",
-        "revision": 0,
-        "name": "Numancia",
-        "outcome": "explained",
-        "applied": true,
-        "apply_commit": "169b11a6dcd8828f3698268e2b944f41e8ea6a34",
-        "via": "concurrent_outbox_same_apply"
-      },
       {
         "id": "red-review-6f470a75ff14308a70e0",
         "revision": 0,
@@ -719,7 +704,7 @@
         "outcome": "unchanged",
         "applied": true,
         "apply_commit": "b59423b2f82fc9db12b714e6d41cb09c28ea7f7e",
-        "via": "maintenance_outbox"
+        "via": "concurrent_convergence"
       },
       {
         "id": "red-review-1bde9d60f94ed2a61c23",
@@ -728,11 +713,11 @@
         "outcome": "unchanged",
         "applied": true,
         "apply_commit": "b59423b2f82fc9db12b714e6d41cb09c28ea7f7e",
-        "via": "maintenance_outbox"
+        "via": "concurrent_convergence"
       }
     ]
   },
-  "message": "Pasada RUNNING: 0/2; revalidando Broncano y Amaia, sin ImageGen.",
+  "message": "Pasada cerrada 2/2 por convergencia JIT: Broncano y Amaia ya estaban aplicados como unchanged en main. Cola final=0 y sin reexplicaciones activas. Sin ImageGen ni publicaciones.",
   "history": [
     {
       "at": "2026-11-08T15:05:00+01:00",
