@@ -7,16 +7,16 @@
   "previous_run_id": "tr-1794170400000-manual",
   "command_id": "tr-1794171300000-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-08T21:55:00+01:00",
-  "updated_at": "2026-11-08T21:55:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-08T21:57:00+01:00",
+  "finished_at": "2026-11-08T21:57:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -878,6 +878,11 @@
       "at": "2026-11-08T21:55:00+01:00",
       "phase": "preparing",
       "message": "Pasada tr-1794171300000-manual iniciada desde chat. Lectura autoritativa de main: editorial-queue=0; se ejecuta barrera JIT de requests, telegram-manual-explained, mobile-decisions y trabajos especiales. Sin ImageGen, sin image-outbox editorial y sin publicaciones."
+    },
+    {
+      "at": "2026-11-08T21:57:00+01:00",
+      "phase": "closing",
+      "message": "Barrera final JIT en main: editorial-queue=0; mobile-decisions sin preparing/update, rewrite_pending/reexplain, anticipate ni review_red activos. Durante la pasada se aplicó una decisión terminal de publicación para Old Trafford (c3887f1b1ecc), sin reabrir trabajo editorial. El diff de esa escritura solo cambió estados terminales en requests/telegram-manual-explained. Cierre editorial 0/0. Sin ImageGen, sin image-outbox editorial y sin publicaciones realizadas por esta pasada."
     }
   ],
   "last_started_at": "2026-11-08T21:50:31+01:00",
