@@ -10,8 +10,8 @@
   "status": "DONE",
   "phase": "closing",
   "started_at": "2026-11-09T00:39:00+01:00",
-  "updated_at": "2026-11-09T00:44:00+01:00",
-  "finished_at": "2026-11-09T00:44:00+01:00",
+  "updated_at": "2026-11-09T00:45:00+01:00",
+  "finished_at": "2026-11-09T00:45:00+01:00",
   "current": 1,
   "total": 1,
   "trend_id": null,
@@ -20,9 +20,7 @@
   "processed_ids": [
     "bc91860c9bb9"
   ],
-  "converged_ids": [
-    "bc91860c9bb9"
-  ],
+  "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
@@ -44,7 +42,7 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 1
+    "concurrent_convergence": 0
   },
   "outcomes": [
     {
@@ -53,7 +51,7 @@
       "name": "Atleti",
       "outcome": "explained",
       "applied": true,
-      "via": "concurrent_convergence",
+      "via": "chat_outbox",
       "apply_commit": "3f62916d534485e357b13b848f09435380066c26"
     }
   ],
@@ -62,13 +60,13 @@
   "error": null,
   "activity": "Pasada editorial completada",
   "last_started_at": "2026-11-09T00:42:20+01:00",
-  "last_completed_at": "2026-11-09T00:44:00+01:00",
+  "last_completed_at": "2026-11-09T00:45:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-1794181125518-manual",
     "status": "DONE",
     "started_at": "2026-11-09T00:39:00+01:00",
-    "finished_at": "2026-11-09T00:44:00+01:00",
+    "finished_at": "2026-11-09T00:45:00+01:00",
     "summary": {
       "attempted": 1,
       "observed": 1,
@@ -87,11 +85,11 @@
       "image_outbox_created": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 1
+      "concurrent_convergence": 0
     },
-    "message": "Pasada tr-1794181125518-manual cerrada 1/1. Atleti r0 fue investigado desde cero y convergió con la aplicación directa del chat en commit 3f62916d534485e357b13b848f09435380066c26. Verificación final: editorial-queue=0, Atleti r0=explained en requests y telegram-manual-explained; outbox duplicado ausente. ImageGen=0; publicaciones=0."
+    "message": "Pasada tr-1794181125518-manual cerrada 1/1. Atleti r0 reelaborado desde cero y aplicado en requests + telegram-manual-explained (commit 3f62916d534485e357b13b848f09435380066c26). El aplicador posterior confirmó que la revisión ya estaba explained y retiró el outbox residual. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update ni rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794181125518-manual cerrada 1/1. Atleti r0 fue investigado desde cero y convergió con la aplicación directa del chat en commit 3f62916d534485e357b13b848f09435380066c26. Verificación final: editorial-queue=0, Atleti r0=explained en requests y telegram-manual-explained; outbox duplicado ausente. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1794181125518-manual cerrada 1/1. Atleti r0 reelaborado desde cero y aplicado en requests + telegram-manual-explained (commit 3f62916d534485e357b13b848f09435380066c26). El aplicador posterior confirmó que la revisión ya estaba explained y retiró el outbox residual. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update ni rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-08T15:07:08+01:00",
@@ -796,14 +794,14 @@
       "at": "2026-11-09T00:44:00+01:00",
       "phase": "closing",
       "message": "Atleti r0 aplicado y verificado por convergencia en 3f62916d534485e357b13b848f09435380066c26. Barrera final: editorial-queue=0; outbox bc91860c9bb9-r0 ausente. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794181125518-manual",
+      "status": "DONE",
+      "at": "2026-11-09T00:45:00+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-1794181125518-manual cerrada 1/1. Atleti r0 reelaborado desde cero y aplicado en requests + telegram-manual-explained (commit 3f62916d534485e357b13b848f09435380066c26). El aplicador posterior confirmó que la revisión ya estaba explained y retiró el outbox residual. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update ni rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
     }
   ],
-  "current_item": {
-    "id": "bc91860c9bb9",
-    "revision": 0,
-    "name": "Atleti",
-    "rank": 3,
-    "status": "preparing",
-    "phase": "investigating"
-  }
+  "current_item": null
 }
