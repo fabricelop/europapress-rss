@@ -1,5 +1,6 @@
 import SwiftUI
 import UIKit
+// Build trigger: remove TTActualidad X Card from TTendencias compose text.
 
 enum TTTheme {
     static let base = Color(red: 0.035, green: 0.065, blue: 0.13)
