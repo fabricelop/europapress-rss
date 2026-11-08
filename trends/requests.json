@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-08T14:53:44.001334+00:00",
+  "updated_at": "2026-11-08T15:55:00+01:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -262226,7 +262226,7 @@
       "name": "Extremoduro",
       "rank": 9,
       "revision": 0,
-      "status": "preparing",
+      "status": "explained",
       "created_at": "2026-11-08T14:51:18.319013+00:00",
       "requested_at": "2026-11-08T14:51:18.319013+00:00",
       "updated_at": "2026-11-08T14:51:18.319013+00:00",
@@ -262237,13 +262237,43 @@
       "disable_ai_image": false,
       "rewrite_with_image": true,
       "image_strategy": "ai_plus_fallback",
-      "fallback_image_status": "pending",
-      "ai_image_status": "pending",
+      "fallback_image_status": "none",
+      "ai_image_status": "not_requested",
       "requested_together": [
         "Extremoduro"
       ],
       "originated_from_prior_id": "85294e93c44d",
-      "rewrite_instruction": "Investigación desde cero: verifica el contexto ACTUAL de Extremoduro, eventos, marcador y fecha. Redacta texto y remate nuevos y consigue una nueva foto de archivo para esta revisión. No reutilices explicaciones ni imágenes de una versión ya publicada o cerrada."
+      "rewrite_instruction": "Investigación desde cero: verifica el contexto ACTUAL de Extremoduro, eventos, marcador y fecha. Redacta texto y remate nuevos y consigue una nueva foto de archivo para esta revisión. No reutilices explicaciones ni imágenes de una versión ya publicada o cerrada.",
+      "explained_at": "2026-11-08T15:55:00+01:00",
+      "last_attempt_at": "2026-11-08T15:55:00+01:00",
+      "explanation": "TT#9 Extremoduro es tendencia porque Pedro Sánchez ha recomendado hoy «Ama, ama, ama y ensancha el alma» y el PP le ha respondido citando «So payaso».\n#Extremoduro #29N\n🌶️ La precampaña también ha convertido la playlist en réplica.",
+      "closer_text": "🌶️ La precampaña también ha convertido la playlist en réplica.",
+      "rank_at_explanation": 9,
+      "category": "Política",
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        "https://www.huffingtonpost.es/politica/pedro-sanchez-reivindica-extremoduro-respuesta-pp-redes-so-payaso.html",
+        "https://www.eldiario.es/politica/sanchez-reivindica-extremoduro-uso-musica-campana-pp-responde-payaso_1_12748790.html"
+      ],
+      "news_disposition": "ignored",
+      "news_note": "Investigación desde cero, JIT id/revision validado. Texto y remate nuevos; sátira neutral sobre el intercambio público. Sin ImageGen ni publicación.",
+      "group_id": "grp-48ef49a80a85",
+      "explanation_group_id": "grp-48ef49a80a85",
+      "group_title": "Extremoduro",
+      "group_leader_id": "48ef49a80a85",
+      "trend_names": [
+        "Extremoduro"
+      ],
+      "grouped_member_revisions": [
+        {
+          "id": "48ef49a80a85",
+          "name": "Extremoduro",
+          "revision": 0
+        }
+      ],
+      "image_choice": null,
+      "image_status": "none",
+      "image_pending": false
     },
     {
       "id": "16174b2e5cf2",
@@ -262462,5 +262492,5 @@
       "rewrite_instruction": "Investigación desde cero: verifica el contexto ACTUAL de Marc, eventos, marcador y fecha. Redacta texto y remate nuevos y consigue una nueva foto de archivo para esta revisión. No reutilices explicaciones ni imágenes de una versión ya publicada o cerrada."
     }
   ],
-  "count": 1861
+  "count": 1862
 }
