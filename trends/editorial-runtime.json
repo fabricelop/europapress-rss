@@ -3,77 +3,51 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794147000000-manual",
-  "previous_run_id": "tr-1794143640000-manual",
-  "command_id": "tr-1794146582352-manual",
+  "run_id": "tr-1794147499437-manual",
+  "previous_run_id": "tr-1794147000000-manual",
+  "command_id": "tr-1794147499437-manual",
   "source": "chat",
-  "status": "DONE_WITH_INCIDENTS",
-  "phase": "closing",
-  "started_at": "2026-11-08T15:10:00+01:00",
-  "updated_at": "2026-11-08T15:11:00+01:00",
-  "finished_at": "2026-11-08T15:11:00+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-08T15:19:00+01:00",
+  "updated_at": "2026-11-08T15:19:00+01:00",
+  "finished_at": null,
   "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "total": 2,
+  "trend_id": "e2fd4ec01c09",
+  "title": "#CCubicos441",
+  "queue_complete": false,
   "processed_ids": [],
-  "converged_ids": [
-    "d8a308614fc9",
-    "red-review-6ac82327dca104b16447",
-    "red-review-e9582fd86742c0639c65"
+  "converged_ids": [],
+  "remaining_ids": [
+    "e2fd4ec01c09",
+    "8648b034950f"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "e2fd4ec01c09",
+    "8648b034950f"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 3,
-    "observed": 3,
-    "closed": 3,
-    "explained": 1,
+    "attempted": 0,
+    "observed": 2,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
-    "updates": 1,
-    "continuity_updates": 1,
+    "updates": 0,
+    "continuity_updates": 0,
     "distinct_updates": 0,
-    "unchanged_reviews": 1,
+    "unchanged_reviews": 0,
     "unverified_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 3
+    "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "d8a308614fc9",
-      "revision": 0,
-      "name": "#IreneConQueque",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "ac7e76dc874e36f35f7fc4898cb4f052fc64d560",
-      "via": "concurrent_convergence"
-    },
-    {
-      "id": "red-review-6ac82327dca104b16447",
-      "revision": 0,
-      "name": "Revisar novedades: La Séptima",
-      "outcome": "continuity_update",
-      "applied": true,
-      "apply_commit": "4e63050b549101c3f4eeb7732e075aa10b6557e4",
-      "via": "concurrent_convergence"
-    },
-    {
-      "id": "red-review-e9582fd86742c0639c65",
-      "revision": 0,
-      "name": "Revisar novedades: #FelizSábado",
-      "outcome": "unchanged",
-      "applied": true,
-      "apply_commit": "4e63050b549101c3f4eeb7732e075aa10b6557e4",
-      "via": "concurrent_convergence"
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -616,9 +590,16 @@
       "at": "2026-11-08T14:26:00+01:00",
       "phase": "closing",
       "message": "Barrera final JIT en main: editorial-queue=0 (actualizada 2026-11-08T14:21:06+01:00); mobile-decisions sin preparing/update, rewrite_pending/reexplain, anticipate ni review_red activos; búsqueda repo sin rewrite_pending/reexplain activos. Cierre editorial 0/0. Sin ImageGen, sin image-outbox editorial y sin publicaciones."
+    },
+    {
+      "at": "2026-11-08T15:19:00+01:00",
+      "phase": "preparing",
+      "trend_id": "e2fd4ec01c09",
+      "title": "#CCubicos441",
+      "message": "Pasada tr-1794147499437-manual iniciada desde chat. Cola main=2 preparing (#CCubicos441 r1 e Iván Martínez r0), antiguo→reciente con validación JIT. Sin ImageGen, sin image-outbox editorial y sin publicaciones."
     }
   ],
-  "last_started_at": "2026-11-08T15:10:00+01:00",
+  "last_started_at": "2026-11-08T15:19:00+01:00",
   "last_completed_at": "2026-11-08T15:11:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -652,7 +633,7 @@
       }
     ]
   },
-  "message": "Pasada tr-1794147000000-manual cerrada 0/0 tras barrera JIT: editorial-queue=0 y mobile-decisions sin preparing/update, rewrite_pending/reexplain, anticipate ni review_red activos. Se lanzó refresh manual (commit b0c600ce8e8eda0d15b9ccdc0df9e71a505c793a), pero durante esta ejecución recent.json siguió en 15:01:24, live_verified=false/reliability=unverified; no se inventaron pendientes. Sin ImageGen ni publicaciones.",
+  "message": "Pasada tr-1794147499437-manual RUNNING: 0/2 cerrados; procesando #CCubicos441 r1. Sin ImageGen ni publicaciones.",
   "history": [
     {
       "at": "2026-11-08T15:05:00+01:00",
