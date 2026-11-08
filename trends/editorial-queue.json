@@ -1,6 +1,71 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-08T17:00:47+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-08T16:01:13.129518+00:00",
+  "count": 2,
+  "items": [
+    {
+      "id": "red-review-25b52392d06d0bd363ed",
+      "revision": 0,
+      "name": "Revisar novedades: El Hierro",
+      "rank": 22,
+      "status": "preparing",
+      "requested_at": "2026-11-08T16:01:13.129518+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "0bf4872fb836",
+        "revision": 0,
+        "name": "El Hierro",
+        "rank": 30,
+        "explanation": "TT#30 El Hierro es tendencia tras declarar el Cabildo la emergencia social por la presión migratoria: más de 8.000 personas han llegado a la isla en cinco semanas.\n#Canarias #Migración",
+        "explanation_sha256": "b010e25080cdac639850b957b0e764b20b0740050067cda7fe47d0bc7cfbf103",
+        "explained_at": "2026-11-07T16:35:00+01:00",
+        "verification_sources": [
+          "https://www.rtve.es/noticias/20261107/hierro-emergencia-migratoria-cinco-semanas/17304466.shtml",
+          "https://efe.com/espana/2026-11-07/canarias-llegada-migrantes/"
+        ],
+        "fingerprint": "df6614e4e5994569878ae80b4b6960b1d7db8d65f8cdcb6eb9eb4e65bf4068f7"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-a5bd9d8b471b66e62261",
+      "revision": 0,
+      "name": "Revisar novedades: La Séptima",
+      "rank": 14,
+      "status": "preparing",
+      "requested_at": "2026-11-08T16:01:13.129518+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "16ac22023f2b",
+        "revision": 0,
+        "name": "La Séptima",
+        "rank": 11,
+        "explanation": "TT#16 La Séptima sigue siendo tendencia por su arranque en TDT: en su tercer día subió al 3,0%; Fin de semana marcó un 5,7% y La comedia nacional un 4,5%.\n#TDT #Audiencias\n🌶️ El tercer día volvió a sumar una décima.",
+        "explanation_sha256": "4aa374c96f1ccafbb51ab4cfb46fcd2e11c9734a71e24b8ee841ea59682adbb7",
+        "explained_at": "2026-11-07T00:51:00+01:00",
+        "verification_sources": [
+          {
+            "url": "https://ipmark.com/la-septima-alcanza-cobertura-del-10-5-en-primer-dia-de-emisiones/"
+          },
+          {
+            "url": "https://www.elnacional.cat/enblau/es/television/audiencias-tv-ayer-5-noviembre-2026_1721642_102.html"
+          }
+        ],
+        "fingerprint": "85b1ec78cc7321e1cb560dbb38cd06863e843b32218c46ec65df758fc0872968"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
