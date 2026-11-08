@@ -7,23 +7,22 @@
   "previous_run_id": "tr-1794149458886-manual",
   "command_id": "tr-1794149555656-manual",
   "source": "chat",
-  "status": "waiting",
+  "status": "success",
   "phase": "closing",
   "started_at": "2026-11-08T15:52:35.656+01:00",
-  "updated_at": "2026-11-08T18:10:24+01:00",
+  "updated_at": "2026-11-08T18:11:26+01:00",
   "finished_at": "2026-11-08T16:08:00+01:00",
   "current": 14,
   "total": 14,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [
-    "183a9231db29",
-    "596bfe4b0d2a",
-    "765b9dfc934c",
-    "94c226c1a836",
-    "bd22e8c88b4e",
-    "eb5680c855b4"
+    "0c49a82e519b",
+    "6544ca82de98",
+    "6644107e889c",
+    "9b9e90afc051",
+    "bbbe0de89942"
   ],
   "converged_ids": [
     "3d36913a2caa",
@@ -39,24 +38,8 @@
     "ec86fd039cfe",
     "f7e247a958e1"
   ],
-  "remaining_ids": [
-    "0c49a82e519b",
-    "bbbe0de89942",
-    "9b9e90afc051",
-    "6644107e889c",
-    "6544ca82de98",
-    "red-review-d7d37659a0e1a982868f",
-    "red-review-8b41fabfb058e51d64cd"
-  ],
-  "remaining_active_ids": [
-    "0c49a82e519b",
-    "bbbe0de89942",
-    "9b9e90afc051",
-    "6644107e889c",
-    "6544ca82de98",
-    "red-review-d7d37659a0e1a982868f",
-    "red-review-8b41fabfb058e51d64cd"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 14,
@@ -977,8 +960,8 @@
       "message": "Barrera final JIT: editorial-queue=0; mobile-decisions sin preparing/update/rewrite_pending/reexplain; tramo reciente de requests sin preparing/update/rewrite_pending/reexplain. Cierre 14/14. ImageGen=0, image-outbox editorial=0, publicaciones=0."
     }
   ],
-  "last_started_at": "2026-11-08T18:10:23+01:00",
-  "last_completed_at": "2026-11-08T17:00:47+01:00",
+  "last_started_at": "2026-11-08T18:11:25+01:00",
+  "last_completed_at": "2026-11-08T18:11:26+01:00",
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-1794149555656-manual",
