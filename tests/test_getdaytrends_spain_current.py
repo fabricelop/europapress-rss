@@ -73,4 +73,72 @@ class GetDayTrendsSpainContract(unittest.TestCase):
         self.assertFalse(mod.source_page_explicitly_foreign('<h1>Tendencias de Twitter España</h1>'))
         self.assertTrue(mod.source_page_explicitly_foreign('<h1>Twitter trends in Thailand</h1>'))
 
+
+    def test_previous_getdaytrends_spain_only_never_foreign_or_other_provider(self):
+        ranked=mod.parse_getdaytrends(fixture())
+        previous={'country':'ES','primary_source':'getdaytrends',
+                  'selection_method':'getdaytrends-spain-now',
+                  'sources':{'getdaytrends':{'trends':ranked},
+                             'playersells':{'trends':['No España']*50}}}
+        self.assertEqual(mod.last_known_getdaytrends_spain(previous),ranked)
+        self.assertEqual(mod.last_known_getdaytrends_spain({
+            **previous,'primary_source':'playersells'}),[])
+        self.assertEqual(mod.last_known_getdaytrends_spain({
+            **previous,'country':'TH'}),[])
+
+    def test_radar_main_never_uses_another_provider_when_getdaytrends_unavailable(self):
+        import json
+        from tempfile import TemporaryDirectory
+        from unittest.mock import patch
+        ranked=mod.parse_getdaytrends(fixture())
+        old={'country':'ES','primary_source':'getdaytrends',
+             'selection_method':'getdaytrends-spain-now',
+             'captured_at':'2026-11-08T20:00:00+01:00',
+             'top10':ranked[:10], 'top30':ranked[:30],
+             'sources':{'getdaytrends':{'trends':ranked}}}
+        source={'getdaytrends':{'ok':False,'trends':[],'freshness':'error'},
+                'playersells':{'ok':True,
+                               'trends':[f'Otra clasificación {i}' for i in range(1,51)],
+                               'freshness':'fresh','age_minutes':8}}
+        with TemporaryDirectory() as tmp:
+            root=Path(tmp)
+            recent=root/'recent.json'
+            recent.write_text(json.dumps(old),encoding='utf-8')
+            with (patch.object(mod,'RECENT',recent),
+                  patch.object(mod,'REQUESTS',root/'requests.json'),
+                  patch.object(mod,'TTITTULARES_STATUS',root/'status.json'),
+                  patch.object(mod,'TTITTULARES_EVENTS',root/'events.json'),
+                  patch.object(mod,'fetch_sources',return_value=source),
+                  patch.object(mod,'reconcile_source_freshness',lambda *args: None),
+                  patch.object(mod,'is_suppressed',return_value=False)):
+                mod.main()
+            saved=json.loads(recent.read_text())
+        self.assertEqual(saved['primary_source'],'getdaytrends')
+        self.assertEqual(saved['selection_method'],'getdaytrends-spain-held')
+        self.assertEqual(saved['top30'],ranked[:30])
+        self.assertEqual(saved['fresh_sources'],[])
+        self.assertFalse(saved['live_verified'])
+        self.assertNotIn('Otra clasificación 1',saved['top30'])
+
+    def test_no_getdaytrends_and_no_previous_never_overwrites_radar(self):
+        import json
+        from tempfile import TemporaryDirectory
+        from unittest.mock import patch
+        other={'getdaytrends':{'ok':False,'trends':[],'freshness':'error'},
+               'playersells':{'ok':True,'trends':[f'Ajena {i}' for i in range(1,51)],
+                              'freshness':'fresh','age_minutes':9}}
+        with TemporaryDirectory() as tmp:
+            root=Path(tmp)
+            recent=root/'recent.json'
+            prior={'captured_at':'2026-11-08T20:00:00+01:00',
+                   'country':'ES','primary_source':'playersells',
+                   'top10':['guardada']}
+            recent.write_text(json.dumps(prior),encoding='utf-8')
+            with (patch.object(mod,'RECENT',recent),
+                  patch.object(mod,'fetch_sources',return_value=other),
+                  patch.object(mod,'reconcile_source_freshness',lambda *args: None)):
+                with self.assertRaisesRegex(RuntimeError,'GetDayTrends España'):
+                    mod.main()
+            self.assertEqual(json.loads(recent.read_text()),prior)
+
 if __name__=='__main__': unittest.main()
