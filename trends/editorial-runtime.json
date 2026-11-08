@@ -3,35 +3,40 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794111900000-manual",
-  "previous_run_id": "tr-1794111000000-manual",
-  "command_id": "tr-1794111900000-manual",
+  "run_id": "tr-1794112156029-manual",
+  "previous_run_id": "tr-1794111900000-manual",
+  "command_id": "tr-1794112156029-manual",
   "source": "chat",
   "status": "DONE",
   "phase": "closing",
-  "started_at": "2026-11-08T05:25:00+01:00",
-  "updated_at": "2026-11-08T05:34:00+01:00",
-  "finished_at": "2026-11-08T05:34:00+01:00",
-  "current": 3,
-  "total": 3,
+  "started_at": "2026-11-08T05:29:16+01:00",
+  "updated_at": "2026-11-08T05:35:00+01:00",
+  "finished_at": "2026-11-08T05:35:00+01:00",
+  "current": 2,
+  "total": 2,
   "trend_id": null,
-  "title": "Pasada editorial TTendencias",
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
-    "4a02716868f6",
     "red-review-1c184434eff23e2ae2a3",
     "red-review-177fb2cbc0827f4da6c0"
   ],
-  "converged_ids": [],
+  "converged_ids": [
+    "red-review-1c184434eff23e2ae2a3",
+    "red-review-177fb2cbc0827f4da6c0"
+  ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 3,
-    "observed": 3,
-    "closed": 3,
-    "explained": 1,
+    "attempted": 2,
+    "observed": 2,
+    "closed": 2,
+    "explained": 0,
+    "problematic": 0,
     "updates": 2,
+    "continuity_updates": 2,
+    "distinct_updates": 0,
     "unchanged_reviews": 0,
     "unverified_reviews": 0,
     "queue_remaining": 0,
@@ -40,17 +45,9 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 2
   },
   "outcomes": [
-    {
-      "id": "4a02716868f6",
-      "revision": 0,
-      "name": "#UFCVegas124",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "bf03ddc83da420a04a9ca1504e11d70efca71a95"
-    },
     {
       "id": "red-review-1c184434eff23e2ae2a3",
       "revision": 0,
@@ -58,7 +55,8 @@
       "outcome": "continuity_update",
       "applied": true,
       "source_id": "16ac22023f2b",
-      "apply_commit": "6ec4d302a0649bd05711278257bb2e1ef5d7bd8a"
+      "apply_commit": "6ec4d302a0649bd05711278257bb2e1ef5d7bd8a",
+      "via": "concurrent_convergence"
     },
     {
       "id": "red-review-177fb2cbc0827f4da6c0",
@@ -67,7 +65,8 @@
       "outcome": "continuity_update",
       "applied": true,
       "source_id": "50d1a6619b2a",
-      "apply_commit": "6ec4d302a0649bd05711278257bb2e1ef5d7bd8a"
+      "apply_commit": "6ec4d302a0649bd05711278257bb2e1ef5d7bd8a",
+      "via": "concurrent_convergence"
     }
   ],
   "incident_count": 0,
@@ -635,21 +634,37 @@
       "at": "2026-11-08T05:34:00+01:00",
       "phase": "closing",
       "message": "Barrera final real en main: editorial-queue=0; requests sin preparing/update ni rewrite_pending/reexplain. Cierre 3/3. Sin ImageGen, sin image-outbox editorial y sin publicaciones."
+    },
+    {
+      "at": "2026-11-08T05:29:16+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-1794112156029-manual iniciada desde chat. Se detecta una ejecución inmediatamente anterior procesando los mismos dos review_red; se evita duplicar persistencia y se sigue por convergencia JIT. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-08T05:34:30+01:00",
+      "phase": "verifying",
+      "message": "Convergencia verificada en main: La Séptima y Broncano están review_completed/continuity y sus fichas originales coinciden entre requests.json y telegram-manual-explained.json, conservando ID/revisión/explained_at. Commit aplicado: 6ec4d302a0649bd05711278257bb2e1ef5d7bd8a."
+    },
+    {
+      "at": "2026-11-08T05:35:00+01:00",
+      "phase": "closing",
+      "message": "Barrera final JIT de tr-1794112156029-manual: editorial-queue=0; requests y mobile-decisions sin preparing/update, rewrite_pending ni reexplain. Cierre 2/2 por convergencia. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
-  "last_started_at": "2026-11-08T05:28:43+01:00",
-  "last_completed_at": "2026-11-08T05:34:00+01:00",
+  "last_started_at": "2026-11-08T05:29:16+01:00",
+  "last_completed_at": "2026-11-08T05:35:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794111900000-manual",
+    "run_id": "tr-1794112156029-manual",
     "status": "DONE",
-    "started_at": "2026-11-08T05:25:00+01:00",
-    "finished_at": "2026-11-08T05:34:00+01:00",
-    "attempted": 3,
-    "closed": 3,
+    "started_at": "2026-11-08T05:29:16+01:00",
+    "finished_at": "2026-11-08T05:35:00+01:00",
+    "attempted": 2,
+    "closed": 2,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "publications": 0
-  }
+  },
+  "message": "Pasada tr-1794112156029-manual cerrada 2/2 por convergencia JIT. La Séptima y Broncano quedaron actualizados como continuidad en sus mismas fichas; cola final 0 y sin reexplicaciones pendientes. ImageGen=0; publicaciones=0."
 }
