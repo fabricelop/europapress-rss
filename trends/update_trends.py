@@ -104,6 +104,36 @@ def parse_trends24(html):
 
 def parse_getdaytrends(html):
     soup = BeautifulSoup(html, "html.parser")
+    # GetDayTrends Spain "Ahora" spans TWO ranked tables, including
+    # #moreTrends (positions 16-50). Daily hashtags must NEVER be appended.
+    current_tables = soup.select("table.ranking.trends")
+    if current_tables:
+        by_rank = {}
+        for table in current_tables:
+            for tr in table.find_all("tr"):
+                cells = tr.find_all(["td", "th"], recursive=False)
+                if len(cells) < 2:
+                    continue
+                raw_rank = clean(cells[0].get_text(" ", strip=True)).lstrip("#")
+                if not re.fullmatch(r"\d{1,2}", raw_rank):
+                    continue
+                rank = int(raw_rank)
+                if not 1 <= rank <= 50:
+                    continue
+                name = clean_term(cells[1].get_text(" ", strip=True))
+                if not name:
+                    continue
+                if rank in by_rank and term_key(by_rank[rank]) != term_key(name):
+                    return []  # Conflicting ordinal: do not fabricate ranking
+                by_rank[rank] = name
+        ordered = []
+        for rank in range(1, 51):
+            if rank not in by_rank:
+                break
+            ordered.append(by_rank[rank])
+        return unique(ordered) if len(ordered) >= 10 else []
+
+    # Legacy markup fallback; never concatenate unrelated ranking tables.
     for table in soup.find_all("table"):
         rows = []
         for tr in table.find_all("tr"):
@@ -118,6 +148,7 @@ def parse_getdaytrends(html):
         if len(rows) >= 10:
             return unique(rows)[:50]
     return []
+
 
 def parse_tweets24(html):
     soup = BeautifulSoup(html, "html.parser")
@@ -410,6 +441,11 @@ def fetch_source(name):
                     "error": "Cuarentena: la página declara otra región, no España",
                     "age_minutes": None, "freshness": "invalid",
                     "fetched_at": fetched_at.isoformat(timespec="seconds")}
+        if name == "getdaytrends" and not getdaytrends_spain_page(html):
+            return {"ok": False, "trends": [], "update_hint": None,
+                    "error": "Cuarentena: GetDayTrends no confirma región España",
+                    "age_minutes": None, "freshness": "invalid",
+                    "fetched_at": fetched_at.isoformat(timespec="seconds")}
         parser = parsers.get(name, parse_generic_ranked)
         trends = parser(html)
         hint = page_update_hint(html)
@@ -531,6 +567,24 @@ def reconcile_source_freshness(source_data, previous_doc, now):
         if peers:
             row["freshness"] = "corroborated-change"
             row["corroborating_sources"] = peers
+
+
+def getdaytrends_spain_page(html):
+    """Only explicitly identified Spain rankings are eligible."""
+    soup = BeautifulSoup(html, "html.parser")
+    titles = [clean(x.get_text(" ", strip=True)).casefold() for x in soup.find_all("h1")]
+    return any(h.startswith(("tendencias de twitter españa", "twitter trends in spain")) for h in titles)
+
+
+def getdaytrends_current_ranked(source_data):
+    """Display ranks 1-30 from Spain Now, without cross-source blending."""
+    row = (source_data or {}).get("getdaytrends") or {}
+    ranked = row.get("trends") or []
+    if not row.get("ok") or len(ranked) < 30:
+        return []
+    if row.get("freshness") in {"stale", "invalid", "error"}:
+        return []
+    return ranked[:30]
 
 
 def source_page_explicitly_foreign(html):
