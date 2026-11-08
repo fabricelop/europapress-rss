@@ -7,51 +7,35 @@
   "previous_run_id": "tr-1794175800000-manual",
   "command_id": "tr-1794176640252-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-08T23:24:00+01:00",
-  "updated_at": "2026-11-08T23:24:00+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-08T23:28:00+01:00",
+  "finished_at": "2026-11-08T23:28:00+01:00",
+  "current": 2,
   "total": 2,
   "trend_id": null,
-  "title": "TTendencias",
-  "queue_complete": false,
-  "processed_ids": [],
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
+    "red-review-9e32be2848a10d84489c",
+    "red-review-c683874a2ac7fe16e327"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "red-review-9e32be2848a10d84489c",
-    "red-review-c683874a2ac7fe16e327"
-  ],
-  "remaining_active_ids": [
-    "red-review-9e32be2848a10d84489c",
-    "red-review-c683874a2ac7fe16e327"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": null,
-  "outcomes": [],
-  "incident_count": 0,
-  "incidents": [],
-  "error": null,
-  "activity": "Cierre JIT completado: cola autoritativa vacía y sin marcadores activos de reelaboración.",
-  "last_started_at": "2026-11-08T23:24:00+01:00",
-  "last_completed_at": "2026-11-08T23:12:00+01:00",
-  "api_failover_enabled": false,
-  "last_run": {
-    "run_id": "tr-1794175800000-manual",
-    "status": "DONE",
-    "started_at": "2026-11-08T23:10:00+01:00",
-    "finished_at": "2026-11-08T23:12:00+01:00",
-    "attempted": 0,
-    "observed": 0,
-    "closed": 0,
+  "summary": {
+    "attempted": 2,
+    "observed": 2,
+    "closed": 2,
     "explained": 0,
     "problematic": 0,
-    "updates": 0,
+    "updates": 1,
     "continuity_updates": 0,
-    "distinct_updates": 0,
+    "distinct_updates": 1,
     "unchanged_reviews": 0,
-    "stale_reviews": 0,
+    "stale_reviews": 1,
     "unverified_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
@@ -59,13 +43,63 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "current": 0,
-    "total": 0,
-    "processed_ids": [],
-    "outcomes": [],
-    "message": "Pasada manual cerrada 0/0 tras barrera JIT en main: editorial-queue=0 y la búsqueda indexada no encuentra status preparing/update ni rewrite_pending/reexplain activos en trends/requests.json. No se generaron imágenes ni publicaciones."
+    "concurrent_convergence": 0
   },
-  "message": "Pasada manual iniciada con 2 review_red: Julián Álvarez y Gerard Martín; revalidación JIT antes de cada resultado. ImageGen=0; publicaciones=0.",
+  "outcomes": [
+    {
+      "id": "red-review-9e32be2848a10d84489c",
+      "revision": 0,
+      "name": "Revisar novedades: Julián Álvarez",
+      "outcome": "distinct_update",
+      "applied": true,
+      "created_id": "trend-update-08da896cbbe389cf5192",
+      "apply_commit": "7be9a24413111ea387f952106cc373b514e76f1b"
+    },
+    {
+      "id": "red-review-c683874a2ac7fe16e327",
+      "revision": 0,
+      "name": "Revisar novedades: Gerard Martín",
+      "outcome": "stale",
+      "applied": true,
+      "apply_commit": "7be9a24413111ea387f952106cc373b514e76f1b",
+      "reason": "Barrera JIT: existe una entrega terminal de revisión superior (revision 1, status deleted); no se resucita la ficha."
+    }
+  ],
+  "incident_count": 0,
+  "incidents": [],
+  "error": null,
+  "activity": "Cierre JIT completado: cola autoritativa vacía y sin marcadores activos de reelaboración.",
+  "last_started_at": "2026-11-08T23:24:00+01:00",
+  "last_completed_at": "2026-11-08T23:28:00+01:00",
+  "api_failover_enabled": false,
+  "last_run": {
+    "run_id": "tr-1794176640252-manual",
+    "status": "DONE",
+    "started_at": "2026-11-08T23:24:00+01:00",
+    "finished_at": "2026-11-08T23:28:00+01:00",
+    "summary": {
+      "attempted": 2,
+      "observed": 2,
+      "closed": 2,
+      "explained": 0,
+      "problematic": 0,
+      "updates": 1,
+      "continuity_updates": 0,
+      "distinct_updates": 1,
+      "unchanged_reviews": 0,
+      "stale_reviews": 1,
+      "unverified_reviews": 0,
+      "queue_remaining": 0,
+      "rewrite_pending_remaining": 0,
+      "imagegen_calls": 0,
+      "image_outbox_created": 0,
+      "publications": 0,
+      "incidents": 0,
+      "concurrent_convergence": 0
+    },
+    "message": "Pasada tr-1794176640252-manual cerrada 2/2. Julián Álvarez se materializó como episodio distinto del Atlético-Barça del 8/11 en trend-update-08da896cbbe389cf5192. Gerard Martín quedó review_completed/stale por barrera JIT al existir una revisión terminal superior eliminada; no se resucitó ni se creó ficha nueva. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
+  },
+  "message": "Pasada tr-1794176640252-manual cerrada 2/2. Julián Álvarez se materializó como episodio distinto del Atlético-Barça del 8/11 en trend-update-08da896cbbe389cf5192. Gerard Martín quedó review_completed/stale por barrera JIT al existir una revisión terminal superior eliminada; no se resucitó ni se creó ficha nueva. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-08T15:07:08+01:00",
@@ -504,6 +538,53 @@
       "at": "2026-11-08T23:24:00+01:00",
       "phase": "preparing",
       "message": "Pasada manual iniciada con 2 review_red: Julián Álvarez y Gerard Martín; revalidación JIT antes de cada resultado. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794176640252-manual",
+      "status": "DONE",
+      "started_at": "2026-11-08T23:24:00+01:00",
+      "finished_at": "2026-11-08T23:28:00+01:00",
+      "summary": {
+        "attempted": 2,
+        "observed": 2,
+        "closed": 2,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 1,
+        "continuity_updates": 0,
+        "distinct_updates": 1,
+        "unchanged_reviews": 0,
+        "stale_reviews": 1,
+        "unverified_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "outcomes": [
+        {
+          "id": "red-review-9e32be2848a10d84489c",
+          "revision": 0,
+          "name": "Revisar novedades: Julián Álvarez",
+          "outcome": "distinct_update",
+          "applied": true,
+          "created_id": "trend-update-08da896cbbe389cf5192",
+          "apply_commit": "7be9a24413111ea387f952106cc373b514e76f1b"
+        },
+        {
+          "id": "red-review-c683874a2ac7fe16e327",
+          "revision": 0,
+          "name": "Revisar novedades: Gerard Martín",
+          "outcome": "stale",
+          "applied": true,
+          "apply_commit": "7be9a24413111ea387f952106cc373b514e76f1b",
+          "reason": "Barrera JIT: existe una entrega terminal de revisión superior (revision 1, status deleted); no se resucita la ficha."
+        }
+      ],
+      "message": "Pasada tr-1794176640252-manual cerrada 2/2. Julián Álvarez se materializó como episodio distinto del Atlético-Barça del 8/11 en trend-update-08da896cbbe389cf5192. Gerard Martín quedó review_completed/stale por barrera JIT al existir una revisión terminal superior eliminada; no se resucitó ni se creó ficha nueva. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
     }
   ]
 }
