@@ -8,9 +8,9 @@
   "command_id": "tr-1794148669902-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "investigating",
+  "phase": "persisting",
   "started_at": "2026-11-08T15:38:00+01:00",
-  "updated_at": "2026-11-08T15:40:00+01:00",
+  "updated_at": "2026-11-08T15:42:00+01:00",
   "finished_at": null,
   "current": 0,
   "total": 1,
@@ -693,6 +693,27 @@
       "trend_id": "3d36913a2caa",
       "title": "elche",
       "message": "elche r1 validado JIT. Investigación desde cero: el Elche-Real Betis de hoy ha finalizado 0-0 en el Martínez Valero; se descarta el texto anterior de partido aún en juego. Rank observado más reciente: 12. Sin ImageGen."
+    },
+    {
+      "at": "2026-11-08T15:42:00+01:00",
+      "phase": "drafting",
+      "trend_id": "3d36913a2caa",
+      "title": "elche",
+      "message": "Texto nuevo redactado con resultado final 0-0 y puesto observado TT#12; no se reutiliza la explicación r0."
+    },
+    {
+      "at": "2026-11-08T15:42:00+01:00",
+      "phase": "remate_selection",
+      "trend_id": "3d36913a2caa",
+      "title": "elche",
+      "message": "Remate nuevo seleccionado y verificado; texto completo 159 caracteres Unicode, por debajo del límite X."
+    },
+    {
+      "at": "2026-11-08T15:42:00+01:00",
+      "phase": "persisting",
+      "trend_id": "3d36913a2caa",
+      "title": "elche",
+      "message": "Persistiendo elche r1 mediante TTENDENCIAS_CHAT_OUTBOX_V1. Fuentes: Sky Sports y Jornada Perfecta; sin ImageGen, sin image-outbox editorial."
     }
   ],
   "last_started_at": "2026-11-08T15:38:00+01:00",
@@ -742,7 +763,7 @@
       }
     ]
   },
-  "message": "Investigando elche r1: resultado final 0-0 verificado; preparando texto y remate nuevos.",
+  "message": "Persistiendo elche r1 con resultado final 0-0; esperando aplicación real en main.",
   "history": [
     {
       "at": "2026-11-08T15:05:00+01:00",
