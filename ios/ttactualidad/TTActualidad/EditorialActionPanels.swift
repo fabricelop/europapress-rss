@@ -17,6 +17,14 @@ enum TTTheme {
 }
 
 
+// The external X editor does not provide a reliable posted/not-posted receipt.
+// Keep the exact originating episode across the external share sheet.
+private struct TTManualXSharedEpisode: Equatable {
+    let project: String
+    let id: String
+    let revision: Int
+}
+
 struct EditorialActions: View {
     var news: NewsItem? = nil
     var trend: TrendItem? = nil
@@ -33,6 +41,7 @@ struct EditorialActions: View {
     @State private var showManualImage = false
     @State private var manualXPhotoShare: TTManualXPhotoShare?
     @State private var preparingXPhotoShare = false
+    @State private var xPhotoSharedEpisode: TTManualXSharedEpisode?
     @State private var showTTProjectLink = false
     @State private var ttProjectLinkInput = UserDefaults.standard.string(
         forKey: "TTActualidad.chatgpt.projectTT.url") ?? ""
@@ -270,7 +279,12 @@ struct EditorialActions: View {
                     .presentationDetents([.medium, .large])
             }
         }
-        .sheet(item: $manualXPhotoShare) { share in
+        .sheet(item: $manualXPhotoShare, onDismiss: {
+            // User chose one-touch X(F): registering as manually published
+            // is automatic on closing the share flow. No X delivery receipt
+            // is provided; this declaration also happens if X was cancelled.
+            recordManualXPhotoPublished()
+        }) { share in
             TTManualXPhotoShareSheet(text: share.text, image: share.image)
         }
         .sheet(isPresented: $showManualImage, onDismiss: {
@@ -332,6 +346,46 @@ struct EditorialActions: View {
                  ? "Se cancelará la investigación en GitHub y no se añadirá a Listas. Si ya terminó mientras confirmabas, se te avisará para que la quites desde Listas."
                  : "La orden se comprobará contra la revisión vigente de GitHub.")
         }
+    }
+
+    // The single X(F) tap authorizes this explicit manual declaration.
+    // Dismissal is used so an optimistic Listas removal cannot interrupt
+    // the system share sheet. The user intentionally accepts that cancelling
+    // X still causes a published decision to be recorded.
+    private func recordManualXPhotoPublished() {
+        guard let episode = xPhotoSharedEpisode else {
+            outcome = "No hay una publicación manual pendiente de confirmar."
+            return
+        }
+        xPhotoSharedEpisode = nil
+        guard episode.project == project, episode.id == editorialID,
+              episode.revision == revision else {
+            outcome = "La ficha ha cambiado de revisión. Actualiza y " +
+                      "registra la publicación desde la ficha correcta."
+            return
+        }
+        guard news?.status == "LISTA" || trend?.inListas == true else {
+            outcome = "Esta revisión ya no figura en Listas. Actualiza " +
+                      "el estado antes de registrar la publicación."
+            return
+        }
+        guard github.authenticated else {
+            outcome = "Publicado en X, pero falta conectar GitHub para " +
+                      "registrarlo y retirarlo de Listas. Usa «Quitar de " +
+                      "Listas» → «Publicado» después de conectar."
+            showSettings = true
+            return
+        }
+        guard !store.isActionInProgress(project: episode.project,
+                                        id: episode.id,
+                                        revision: episode.revision) else {
+            outcome = "Ya hay una orden pendiente para esta revisión. " +
+                      "Comprueba su resultado antes de volver a marcarla."
+            return
+        }
+        // Reuse standard exact-revision, receipt-verified editorial closure.
+        // Nothing is sent to Buffer or to X from this callback.
+        submit("published")
     }
 
     private func submit(_ decision: String) {
@@ -1016,6 +1070,8 @@ struct EditorialActions: View {
                 outcome = "Compartir manual: elige X y comprueba texto y foto " +
                           "antes de pulsar Publicar. El texto también está " +
                           "copiado para pegar si X lo omite."
+                xPhotoSharedEpisode = TTManualXSharedEpisode(
+                    project: project, id: editorialID, revision: revision)
                 manualXPhotoShare = TTManualXPhotoShare(text: draftText, image: image)
                 return
             } catch {
