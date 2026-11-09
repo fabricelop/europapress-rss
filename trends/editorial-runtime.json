@@ -3,20 +3,20 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261109T1940-manual",
-  "previous_run_id": "tr-1794248770665-manual",
-  "command_id": "tr-20261109T1940-manual",
+  "run_id": "tr-20261109T1955-manual",
+  "previous_run_id": "tr-20261109T1940-manual",
+  "command_id": "tr-20261109T1955-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-09T19:40:00+01:00",
-  "updated_at": "2026-11-09T19:41:30+01:00",
-  "finished_at": "2026-11-09T19:41:30+01:00",
+  "status": "RUNNING",
+  "phase": "verifying",
+  "started_at": "2026-11-09T19:55:00+01:00",
+  "updated_at": "2026-11-09T19:55:00+01:00",
+  "finished_at": null,
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -272,9 +272,14 @@
       "at": "2026-11-09T19:41:30+01:00",
       "phase": "closing",
       "message": "Pasada tr-20261109T1940-manual cerrada 0/0 contra main. Relectura JIT final: editorial-queue=0 (updated_at 2026-11-09T19:41:01+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-09T19:55:00+01:00",
+      "phase": "verifying",
+      "message": "Verificando cola autoritativa y pendientes activos en main."
     }
   ],
-  "last_started_at": "2026-11-09T19:40:00+01:00",
+  "last_started_at": "2026-11-09T19:55:00+01:00",
   "last_completed_at": "2026-11-09T19:41:30+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -306,7 +311,7 @@
     },
     "message": "Pasada tr-20261109T1940-manual cerrada 0/0 contra main. Relectura JIT final: editorial-queue=0 (updated_at 2026-11-09T19:41:01+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-20261109T1940-manual cerrada 0/0 contra main. Relectura JIT final: editorial-queue=0 (updated_at 2026-11-09T19:41:01+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada tr-20261109T1955-manual iniciada contra main. Verificando cola autoritativa, decisiones móviles y pendientes JIT antes de cerrar.",
   "history": [
     {
       "run_id": "tr-1794199200000-manual",
