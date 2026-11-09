@@ -17,6 +17,14 @@ enum TTTheme {
 }
 
 
+// The external X editor does not provide a reliable posted/not-posted receipt.
+// Keep the exact originating episode until the person confirms the actual post.
+private struct TTManualXSharedEpisode: Equatable {
+    let project: String
+    let id: String
+    let revision: Int
+}
+
 struct EditorialActions: View {
     var news: NewsItem? = nil
     var trend: TrendItem? = nil
@@ -33,6 +41,7 @@ struct EditorialActions: View {
     @State private var showManualImage = false
     @State private var manualXPhotoShare: TTManualXPhotoShare?
     @State private var preparingXPhotoShare = false
+    @State private var xPhotoSharedEpisode: TTManualXSharedEpisode?
     @State private var showTTProjectLink = false
     @State private var ttProjectLinkInput = UserDefaults.standard.string(
         forKey: "TTActualidad.chatgpt.projectTT.url") ?? ""
@@ -270,7 +279,15 @@ struct EditorialActions: View {
                     .presentationDetents([.medium, .large])
             }
         }
-        .sheet(item: $manualXPhotoShare) { share in
+        .sheet(item: $manualXPhotoShare, onDismiss: {
+            // Selection in the iOS sheet is NOT evidence of posting to X.
+            // Ask only after returning from the external flow, and never
+            // remove the item from Listas without a separate explicit choice.
+            if xPhotoSharedEpisode != nil {
+                intent = "xPhotoPublished"
+                confirm = true
+            }
+        }) { share in
             TTManualXPhotoShareSheet(text: share.text, image: share.image)
         }
         .sheet(isPresented: $showManualImage, onDismiss: {
@@ -305,14 +322,25 @@ struct EditorialActions: View {
                 Task { await store.refreshIfStale(minInterval: 0) }
             }
         }
-        .confirmationDialog(intent == "deleted" ? "¿Quitar de Listas?" :
+        .confirmationDialog(intent == "xPhotoPublished" ?
+                            "¿Has publicado ya el texto y la foto en X?" :
+                            intent == "deleted" ? "¿Quitar de Listas?" :
                             intent == "discard" && news?.status == "EN ELABORACIÓN" ?
                             "¿Suprimir esta noticia en elaboración?" :
                             intent == "discard" ? "¿Desestimar esta entrada?" :
                             "¿Investigar y redactar desde cero?",
                             isPresented: $confirm, titleVisibility: .visible) {
-            if intent == "deleted" && (news?.status == "LISTA" ||
-                                        trend?.inListas == true) {
+            if intent == "xPhotoPublished" {
+                Button("Sí, publicado · Quitar de Listas") {
+                    confirmManualXPhotoPublished()
+                }
+                Button("No, todavía no", role: .cancel) {
+                    xPhotoSharedEpisode = nil
+                    outcome = "No se ha registrado ninguna publicación. " +
+                              "La entrada permanece en Listas."
+                }
+            } else if intent == "deleted" && (news?.status == "LISTA" ||
+                                               trend?.inListas == true) {
                 Button("Publicado · Quitar de Listas") { submit("published") }
                 Button("No publicado · Quitar de Listas", role: .destructive) {
                     submit("deleted")
@@ -321,9 +349,16 @@ struct EditorialActions: View {
                 Button("Confirmar", role: intent == "deleted" ||
                     intent == "discard" ? .destructive : nil) { submit(intent) }
             }
-            Button("Cancelar", role: .cancel) {}
+            if intent != "xPhotoPublished" {
+                Button("Cancelar", role: .cancel) {}
+            }
         } message: {
-            Text(intent == "deleted" && (news?.status == "LISTA" ||
+            Text(intent == "xPhotoPublished"
+                 ? "Abrir X o elegirlo en Compartir no confirma el envío. " +
+                   "Si has pulsado Publicar dentro de X, se registrará como " +
+                   "publicada y saldrá de Listas solo cuando GitHub lo confirme. " +
+                   "Si has cancelado, elige «No, todavía no»."
+                 : intent == "deleted" && (news?.status == "LISTA" ||
                                          trend?.inListas == true)
                  ? "Ambas opciones retiran esta entrada. Solo «Publicado» suma al contador de publicaciones registradas en las últimas 24 horas, después de que GitHub lo confirme."
                  : intent == "rework" || intent == "prepare"
@@ -332,6 +367,44 @@ struct EditorialActions: View {
                  ? "Se cancelará la investigación en GitHub y no se añadirá a Listas. Si ya terminó mientras confirmabas, se te avisará para que la quites desde Listas."
                  : "La orden se comprobará contra la revisión vigente de GitHub.")
         }
+    }
+
+    // Keep the exact editorial identity from when the photo was shared;
+    // the card may have refreshed while the user was composing in X.
+    // Only the user's explicit YES authorizes the standard "published"
+    // editorial action. A share-sheet completion never authorizes a write.
+    private func confirmManualXPhotoPublished() {
+        guard let episode = xPhotoSharedEpisode else {
+            outcome = "No hay una publicación manual pendiente de confirmar."
+            return
+        }
+        xPhotoSharedEpisode = nil
+        guard episode.project == project, episode.id == editorialID,
+              episode.revision == revision else {
+            outcome = "La ficha ha cambiado de revisión. Actualiza y " +
+                      "registra la publicación desde la ficha correcta."
+            return
+        }
+        guard news?.status == "LISTA" || trend?.inListas == true else {
+            outcome = "Esta revisión ya no figura en Listas. Actualiza " +
+                      "el estado antes de registrar la publicación."
+            return
+        }
+        guard github.authenticated else {
+            outcome = "Publicado en X, pero falta conectar GitHub para " +
+                      "registrarlo y retirarlo de Listas. Usa «Quitar de " +
+                      "Listas» → «Publicado» después de conectar."
+            showSettings = true
+            return
+        }
+        guard !store.isActionInProgress(project: episode.project,
+                                        id: episode.id,
+                                        revision: episode.revision) else {
+            outcome = "Ya hay una orden pendiente para esta revisión. " +
+                      "Comprueba su resultado antes de volver a marcarla."
+            return
+        }
+        submit("published")
     }
 
     private func submit(_ decision: String) {
@@ -1016,6 +1089,8 @@ struct EditorialActions: View {
                 outcome = "Compartir manual: elige X y comprueba texto y foto " +
                           "antes de pulsar Publicar. El texto también está " +
                           "copiado para pegar si X lo omite."
+                xPhotoSharedEpisode = TTManualXSharedEpisode(
+                    project: project, id: editorialID, revision: revision)
                 manualXPhotoShare = TTManualXPhotoShare(text: draftText, image: image)
                 return
             } catch {
