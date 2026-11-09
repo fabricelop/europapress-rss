@@ -85,8 +85,11 @@ async function deliver({project,job,commandId,targetId,secret,cdp,
  // Use exactly the editorial snapshot of this ImageGen command. News may
  // recover its original prepared_at from the same exact prepared/processing row.
  const image=await raster(cdp,source.rasterProbe(commandId,true));
- // Do not fetch editorial job state on every 3-second poll before ImageGen is
- // finished. On transient CDP trouble we may already own a durable original.
+ // Do not hit GitHub on each fast poll before the ImageGen raster exists;
+ // an earlier capture may already be stored for network-error recovery.
+ const cacheFile=path.join(baseDir,'image-approval-receipts','original-cache',commandId+'.json');
+ if(!image?.ready&&!fs.existsSync(cacheFile))
+   return {state:'waiting',reason:String(image?.reason||'raster_not_ready')};
  const initial=await receiver.editorialJob(source,task);
  const meta=receiver.metadata(task,initial);
  let bytes=receiver.cachedOriginal(baseDir,task,meta);
