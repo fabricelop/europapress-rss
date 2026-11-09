@@ -472,7 +472,7 @@ async function ensureVisibleComposerBeforeInput(cdp,{maxPolls=12,delayMs=750}={}
     +"const read=c=>String(c&&(c.value||c.innerText||c.textContent)||'').trim();"
     +"const good=c=>{try{const r=c.getBoundingClientRect(),s=getComputedStyle(c);return c.isConnected&&!c.disabled&&!c.readOnly&&r.width>12&&r.height>10&&s.display!=='none'&&s.visibility!=='hidden'&&!c.closest('[inert],[aria-hidden=\\\"true\\\"]')}catch{return false}};"
     +"const c=cands.find(x=>x.getAttribute('data-tt-image-composer')==='true'&&good(x))||cands.find(good);"
-    +"const generating=!!document.querySelector('button[data-testid=\\\"stop-button\\\"],button[aria-label*=\\\"Stop\\\" i],button[aria-label*=\\\"Detener\\\" i],button[aria-label*=\\\"Cancelar\\\" i]');"
+    +"const generating=!!document.querySelector('button[data-testid=\\\"stop-button\\\"],button[aria-label*=\\\"Stop\\\" i],button[aria-label*=\\\"Detener\\\" i],button[aria-label*=\\\"Cancelar generación\\\" i]');"
     +"const title=document.title||'';const blocked=!!document.querySelector('input[type=\\\"password\\\"]')||/log in|sign in|iniciar sesi[oó]n|verify you are human|comprueba que eres humano/i.test(title);"
     +"const sizes=cands.slice(0,4).map(x=>{const r=x.getBoundingClientRect();return [Math.round(r.width),Math.round(r.height)]});"
     +"return {ok:!!c,found:cands.length,sizes,hidden:document.visibilityState==='hidden',generating,blocked,typedDraft:cands.some(x=>read(x).length>0),url:location.href,title:title.slice(0,90)};})()";
@@ -505,7 +505,7 @@ async function ensureVisibleComposerBeforeInput(cdp,{maxPolls=12,delayMs=750}={}
 
 async function inspectChat(cdp,job){
   const targetName=String(job&&job.target_name||"").trim();
-  return cdp.eval("(()=>{const command="+JSON.stringify(commandId)+";const targetName="+JSON.stringify(targetName)+";const root=document.querySelector('main')||document.body;const bodyText=String((document.body&&document.body.innerText)||'');const composer=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");const composerText=String(composer&&(composer.innerText||composer.textContent||composer.value)||'');const composerMarker=composerText.includes(command);const nodes=[...root.querySelectorAll('div,p,span,article,[data-message-author-role],[data-testid^=\\\"conversation-turn-\\\"]')].filter(el=>{if(composer&&(el===composer||el.contains(composer)||composer.contains(el)))return false;const t=String(el.innerText||el.textContent||'');return t.includes(command)});const bodyMarker=nodes.length>0;const markerOutsideComposer=bodyMarker;const targetMarker=!!targetName&&bodyText.toLocaleLowerCase().includes(targetName.toLocaleLowerCase());const generating=Boolean(document.querySelector('button[data-testid=\\\"stop-button\\\"],button[aria-label*=\\\"Stop\\\" i],button[aria-label*=\\\"Detener\\\" i],button[aria-label*=\\\"Cancelar\\\" i]'));const turns=document.querySelectorAll('[data-message-author-role],[data-testid^=\\\"conversation-turn-\\\"],article').length;const largeImages=[...document.images].filter(img=>Number(img.naturalWidth||0)>=640&&Number(img.naturalHeight||0)>=360);const images=largeImages.length;const imageSrc=largeImages.length?String(largeImages[0].currentSrc||largeImages[0].src||''):'';const title=document.title||'';const imageTitle=/Generar imagen IA|Generate image|Image generation/i.test(title);return {hasMarker:markerOutsideComposer,bodyMarker,composerMarker,targetMarker,imageTitle,generating,turns,images,imageSrc,title,url:location.href}})()")
+  return cdp.eval("(()=>{const command="+JSON.stringify(commandId)+";const targetName="+JSON.stringify(targetName)+";const root=document.querySelector('main')||document.body;const bodyText=String((document.body&&document.body.innerText)||'');const composer=document.querySelector("+JSON.stringify(COMPOSER_SELECTOR)+");const composerText=String(composer&&(composer.innerText||composer.textContent||composer.value)||'');const composerMarker=composerText.includes(command);const nodes=[...root.querySelectorAll('div,p,span,article,[data-message-author-role],[data-testid^=\\\"conversation-turn-\\\"]')].filter(el=>{if(composer&&(el===composer||el.contains(composer)||composer.contains(el)))return false;const t=String(el.innerText||el.textContent||'');return t.includes(command)});const bodyMarker=nodes.length>0;const markerOutsideComposer=bodyMarker;const targetMarker=!!targetName&&bodyText.toLocaleLowerCase().includes(targetName.toLocaleLowerCase());const generating=Boolean(document.querySelector('button[data-testid=\\\"stop-button\\\"],button[aria-label*=\\\"Stop\\\" i],button[aria-label*=\\\"Detener\\\" i],button[aria-label*=\\\"Cancelar generación\\\" i]'));const turns=document.querySelectorAll('[data-message-author-role],[data-testid^=\\\"conversation-turn-\\\"],article').length;const largeImages=[...document.images].filter(img=>Number(img.naturalWidth||0)>=640&&Number(img.naturalHeight||0)>=360);const images=largeImages.length;const imageSrc=largeImages.length?String(largeImages[0].currentSrc||largeImages[0].src||''):'';const title=document.title||'';const imageTitle=/Generar imagen IA|Generate image|Image generation/i.test(title);return {hasMarker:markerOutsideComposer,bodyMarker,composerMarker,targetMarker,imageTitle,generating,turns,images,imageSrc,title,url:location.href}})()")
 }
 
 
@@ -532,7 +532,7 @@ async function injectPromptIntoChat(cdp,job){
     }
     if(attempt===1){
       try{
-        const baseline=await cdp.eval("(()=>({generating:!!document.querySelector('button[data-testid=\\\"stop-button\\\"],button[aria-label*=\\\"Stop\\\" i],button[aria-label*=\\\"Detener\\\" i],button[aria-label*=\\\"Cancelar\\\" i]')}))()");
+        const baseline=await cdp.eval("(()=>({generating:!!document.querySelector('button[data-testid=\\\"stop-button\\\"],button[aria-label*=\\\"Stop\\\" i],button[aria-label*=\\\"Detener\\\" i],button[aria-label*=\\\"Cancelar generación\\\" i]')}))()");
         cdp.preexistingGenerating=Boolean(baseline&&baseline.generating);
       }catch{cdp.preexistingGenerating=true} // Unknown baseline must not certify a stop-button transition.
     }
@@ -572,16 +572,24 @@ async function submitVerifiedDraft(cdp,job){
   // Only click Send if the CURRENT, complete prompt is still visible
   // in the same dedicated composer. Never send a stale/manual draft.
   const message=buildMessage(job);
+  // Lexical can change paragraph whitespace/NBSP without changing the prompt.
+  // Match the COMPLETE draft after canonicalization, never a partial command.
+  function canonicalize(x){
+    return String(x||"").normalize("NFKC")
+      .replace(/[\u200B\uFEFF]/g,"").replace(/\s+/g," ").trim();
+  }
+  const expected=canonicalize(message);
   const expression=[
     "(()=>{",
     "const command="+JSON.stringify(commandId)+";",
-    "const suffix="+JSON.stringify(message.slice(-65))+";",
+    "const expected="+JSON.stringify(expected)+";",
+    "const canonicalDraft="+canonicalize.toString()+";",
     // Important: querySelector(COMPOSER_SELECTOR) returns the first DOM match,
     // even if a hidden/empty editor precedes the marked visible editor.
     // The command text (not DOM order) identifies the editor to submit.
     "const editors=[...document.querySelectorAll("+JSON.stringify(COMPOSER_SELECTOR)+")];",
     "const read=c=>String(c&&(c.value||c.innerText||c.textContent)||'');",
-    "const matches=c=>{const t=read(c);return t.includes(command)&&t.includes(suffix)&&t.length>="+Math.floor(message.length*0.8)+"};",
+    "const matches=c=>canonicalDraft(read(c))===expected;",
     "const c=editors.find(x=>x.getAttribute('data-tt-image-composer')==='true'&&matches(x))||editors.find(matches);",
     "const txt=read(c);",
     "const maxDraftLength=Math.max(0,...editors.map(x=>read(x).length));",
@@ -730,7 +738,7 @@ async function ensureSubmitted(cdp,job){
   while(Date.now()<deadline){
     let st=null;
     try{
-      st=await current.eval("(()=>{const command="+JSON.stringify(commandId)+";const editors=[...document.querySelectorAll("+JSON.stringify(COMPOSER_SELECTOR)+")];const read=c=>String(c&&(c.value||c.innerText||c.textContent)||'');const composer=editors.find(c=>c.getAttribute('data-tt-image-composer')==='true'&&read(c).includes(command))||editors.find(c=>read(c).includes(command))||editors.find(c=>c.getAttribute('data-tt-image-composer')==='true')||editors[0]||null;const composerText=read(composer);const composerMarker=editors.some(c=>read(c).includes(command));const root=document.querySelector('main')||document.body;const bodyText=String((root&&root.innerText)||'');const userTurns=[...root.querySelectorAll('[data-message-author-role=\"user\"],[data-testid*=\"user\" i],[class*=\"user-message\" i]')].filter(el=>String(el.innerText||el.textContent||'').includes(command));const submitted=userTurns.length>0;const generating=Boolean(document.querySelector('button[data-testid=\"stop-button\"],button[aria-label*=\"Stop\" i],button[aria-label*=\"Detener\" i],button[aria-label*=\"Cancelar\" i]'));const send=document.querySelector('button[data-testid=\"send-button\"],button[aria-label*=\"Send\" i],button[aria-label*=\"Enviar\" i],form button[type=\"submit\"]');const inConversation=/\\/c\\//.test(location.pathname);const commandOutsideComposer=bodyText.includes(command)&&!composerMarker;return {composerMarker,submitted,userTurns:userTurns.length,generating,inConversation,commandOutsideComposer,send:!!send,sendDisabled:!!(send&&send.disabled),url:location.href,title:document.title||''}})()");
+      st=await current.eval("(()=>{const command="+JSON.stringify(commandId)+";const editors=[...document.querySelectorAll("+JSON.stringify(COMPOSER_SELECTOR)+")];const read=c=>String(c&&(c.value||c.innerText||c.textContent)||'');const composer=editors.find(c=>c.getAttribute('data-tt-image-composer')==='true'&&read(c).includes(command))||editors.find(c=>read(c).includes(command))||editors.find(c=>c.getAttribute('data-tt-image-composer')==='true')||editors[0]||null;const composerText=read(composer);const composerMarker=editors.some(c=>read(c).includes(command));const root=document.querySelector('main')||document.body;const bodyText=String((root&&root.innerText)||'');const userTurns=[...root.querySelectorAll('[data-message-author-role=\"user\"],[data-testid*=\"user\" i],[class*=\"user-message\" i]')].filter(el=>String(el.innerText||el.textContent||'').includes(command));const submitted=userTurns.length>0;const generating=Boolean(document.querySelector('button[data-testid=\"stop-button\"],button[aria-label*=\"Stop\" i],button[aria-label*=\"Detener\" i],button[aria-label*=\"Cancelar generación\" i]'));const send=document.querySelector('button[data-testid=\"send-button\"],button[aria-label*=\"Send\" i],button[aria-label*=\"Enviar\" i],form button[type=\"submit\"]');const inConversation=/\\/c\\//.test(location.pathname);const commandOutsideComposer=bodyText.includes(command)&&!composerMarker;return {composerMarker,submitted,userTurns:userTurns.length,generating,inConversation,commandOutsideComposer,send:!!send,sendDisabled:!!(send&&send.disabled),url:location.href,title:document.title||''}})()");
     }catch{}
 
     if(!st){
@@ -775,7 +783,7 @@ function probeExpression(){
     "const markerNodes=[...root.querySelectorAll('div,p,span,article,[data-message-author-role],[data-testid^=\\\"conversation-turn-\\\"]')].filter(el=>{if(composer&&(el===composer||el.contains(composer)||composer.contains(el)))return false;const t=String(el.innerText||el.textContent||'');return t.includes(command)&&t.length<7000});",
     "const bodyText=String((document.body&&document.body.innerText)||'');",
     "const marker=markerNodes.length>0||bodyText.includes(command);",
-    "const generating=Boolean(document.querySelector('button[data-testid=\\\"stop-button\\\"],button[aria-label*=\\\"Stop\\\" i],button[aria-label*=\\\"Detener\\\" i],button[aria-label*=\\\"Cancelar\\\" i]'));",
+    "const generating=Boolean(document.querySelector('button[data-testid=\\\"stop-button\\\"],button[aria-label*=\\\"Stop\\\" i],button[aria-label*=\\\"Detener\\\" i],button[aria-label*=\\\"Cancelar generación\\\" i]'));",
     "const commandTurns=[...root.querySelectorAll('[data-message-author-role=\\\"user\\\"],[data-testid^=\\\"conversation-turn-\\\"]')].filter(el=>{if(composer&&(el===composer||el.contains(composer)||composer.contains(el)))return false;const t=String(el.innerText||el.textContent||'');return t.includes(command)&&t.length<9000});",
     "const markerRef=commandTurns.length?commandTurns[commandTurns.length-1]:(markerNodes.length?markerNodes[markerNodes.length-1]:null);",
     "const afterCommand=img=>{if(!markerRef)return false;try{return Boolean(markerRef.compareDocumentPosition(img)&Node.DOCUMENT_POSITION_FOLLOWING)}catch(_){return false}};",

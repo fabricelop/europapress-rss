@@ -46,6 +46,18 @@ const assert=require('node:assert/strict');
     const unrelated=await trial({earlierDraft:'unrelated older hidden editor'});
     assert.equal(unrelated.result,true,'ignore earlier unrelated DOM editor');
     assert.equal(unrelated.clicks,1);
+    if(path.includes('TTiTTularesImageBridge')) {
+      // News: Lexical's harmless NBSP/paragraph insertions cannot block a
+      // COMPLETE prompt, but an altered title/remate must never be sent.
+      const browserSpacing=message.replace('hechos hechos ', 'hechos\u00a0\n\nhechos  ');
+      const normalized=await trial({draft:browserSpacing});
+      assert.equal(normalized.result,true,'news editor should fold browser whitespace');
+      assert.equal(normalized.clicks,1);
+      const changed=await trial({draft:message.replace('FIN_PROMPT_TEST','FIN_PROMPT_FAKE')});
+      assert.equal(changed.result,false,'news editor must reject changed final text');
+      assert.equal(changed.clicks,0);
+      assert.match(source,/Cancelar generación/);
+    }
     for(const wrong of ['','tt-img-test-abcdefg truncated','wrong id '+message.slice(60)]){
       const z=await trial({draft:wrong});
       assert.equal(z.result,false,'must reject incomplete or unrelated text');
