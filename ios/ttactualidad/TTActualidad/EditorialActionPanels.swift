@@ -42,6 +42,11 @@ struct EditorialActions: View {
     private var revision: Int { news?.revision ?? trend?.revision ?? 0 }
     private var editorialID: String { news?.id ?? trend?.editorialID ?? "" }
     private var project: String { news == nil ? "ttendencias" : "ttittulares" }
+    private var trendRelationsCount: (Int, Int)? {
+        guard project == "ttendencias" else { return nil }
+        return relationCounts.counts(trendID: editorialID,
+                                     revision: revision, name: title)
+    }
 
     var body: some View {
         VStack(spacing: 7) {
@@ -158,8 +163,7 @@ struct EditorialActions: View {
             }
                 .disabled(news != nil && news?.status != "LISTA")
             quickButton(
-                relationCounts.counts(trendID: editorialID,
-                                     revision: revision, name: title).map {
+                trendRelationsCount.map {
                     "Relaciones " + String($0.0) + "/" + String($0.1)
                 } ?? "Relaciones",
                 "point.3.connected.trianglepath.dotted"
@@ -168,8 +172,7 @@ struct EditorialActions: View {
             }
             .disabled(editorialID.isEmpty)
             .accessibilityLabel(
-                relationCounts.counts(trendID: editorialID,
-                                     revision: revision, name: title).map {
+                trendRelationsCount.map {
                     "Relaciones confirmadas " + String($0.0) +
                     " de " + String($0.1) + " noticias encontradas"
                 } ?? "Consultar relaciones")
