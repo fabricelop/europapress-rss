@@ -104,6 +104,15 @@ def save_editorial_queue(requests_doc):
             "red_review_request": req.get("red_review_request"),
             "review_source": req.get("review_source"),
             "review_error": req.get("review_error"),
+            # Expose episode-review semantics in the authoritative editorial queue.
+            # The editor must know when a repeated label requires a distinct-event
+            # check instead of treating it as an ordinary fresh explanation.
+            "new_episode_review": bool(req.get("new_episode_review")),
+            "distinct_event_required": bool(req.get("distinct_event_required")),
+            "radar_episode_token": req.get("radar_episode_token") or "",
+            "editor_approval_batch_id": req.get("editor_approval_batch_id") or "",
+            "previous_episode_id": req.get("previous_episode_id") or "",
+            "review_instruction": req.get("review_instruction") or "",
             "automatic_grouping": req.get("automatic_grouping"),
             "published_context": req.get("published_context"),
             "listas_grouping_request": bool(req.get("listas_grouping_request")),
