@@ -1,6 +1,75 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-09T09:01:30+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-09T08:15:23.418882+00:00",
+  "count": 2,
+  "items": [
+    {
+      "id": "red-review-d3f70fc527eec472e964",
+      "revision": 0,
+      "name": "Revisar novedades: maffeo",
+      "rank": 4,
+      "status": "preparing",
+      "requested_at": "2026-11-09T08:15:23.418882+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "1940ad68777c",
+        "revision": 0,
+        "name": "maffeo",
+        "rank": 1,
+        "explanation": "TT#3 maffeo sigue siendo tendencia por el Valencia-Real Madrid: vio amarilla por derribar a Mbappé, criticó el arbitraje y la entrevista de DAZN al descanso, y después pidió disculpas al periodista.\n#ValenciaCF #RealMadrid\n🌶️ Del enfado en directo a la disculpa por escrito.",
+        "explanation_sha256": "f10c55f8325373d0848c4d17fcfc476264248a4f83b092e07405625a72d8d5f5",
+        "explained_at": "2026-11-07T22:13:00+01:00",
+        "verification_sources": [
+          {
+            "url": "https://www.sportschau.de/live-und-ergebnisse/fussball/spanien-primera-division/ma12188143/valencia-cf_real-madrid/liveticker"
+          },
+          {
+            "url": "https://www.rtve.es/deportes/20261107/valencia-real-madrid-directo-hoy-partido-liga-resumen-resultado-goles/17301740.shtml"
+          }
+        ],
+        "fingerprint": "a78e454c41aeb12fc5cf95be76e5d9454f32c4790836c78d6ab1b06634d247d3"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-0abc293c8865e30c19dc",
+      "revision": 0,
+      "name": "Revisar novedades: Valencia",
+      "rank": 7,
+      "status": "preparing",
+      "requested_at": "2026-11-09T08:15:23.418882+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "41998067bb7c",
+        "revision": 0,
+        "name": "Valencia",
+        "rank": 2,
+        "explanation": "TT#2 Valencia es tendencia tras caer 0-3 ante el Real Madrid en Mestalla: Valverde, Arda Güler y Mbappé marcaron los goles.\n#ValenciaCF #LaLiga\n🌶️ La noche pedía reacción y acabó con tres golpes blancos.",
+        "explanation_sha256": "ab56ef7a7820c85c698c904b6d0a4ad34dc6521c0e36e4a519fa347eed2ff7e9",
+        "explained_at": "2026-11-07T23:18:03.455+01:00",
+        "verification_sources": [
+          {
+            "url": "https://www.beinsports.com/en-us/soccer/la-liga/articles/live-blog-valencia-vs-real-madrid-laliga-2026-11-07"
+          },
+          {
+            "url": "https://www.fotmob.com/news/c1y243f8pxst180dm32qosak8-valencia-0-3-real-madrid-mourinhos-men-keep-pressure-barcelona-atletico"
+          }
+        ],
+        "fingerprint": "0273dcb9afba0c0b2cb33453806b1d8f56a788220e1d8f1bf43d8e4efc430109"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
