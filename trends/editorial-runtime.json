@@ -3,38 +3,35 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794186889104-manual",
-  "previous_run_id": "tr-1794185607129-manual",
-  "command_id": "tr-1794186889104-manual",
+  "run_id": "tr-1794187489104-manual",
+  "previous_run_id": "tr-1794186889104-manual",
+  "command_id": "tr-1794187489104-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-09T02:15:00+01:00",
-  "updated_at": "2026-11-09T02:19:00+01:00",
-  "finished_at": "2026-11-09T02:19:00+01:00",
-  "current": 2,
-  "total": 2,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-09T02:25:00+01:00",
+  "updated_at": "2026-11-09T02:25:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": true,
-  "processed_ids": [
-    "red-review-2ecfb2b0dcb9b1e31b8b",
-    "red-review-7ef05919eabf205b079e"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
     "explained": 0,
     "problematic": 0,
-    "updates": 1,
-    "continuity_updates": 1,
+    "updates": 0,
+    "continuity_updates": 0,
     "distinct_updates": 0,
-    "unchanged_reviews": 1,
+    "unchanged_reviews": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
     "queue_remaining": 0,
@@ -43,32 +40,13 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 2
+    "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "red-review-2ecfb2b0dcb9b1e31b8b",
-      "revision": 0,
-      "name": "Revisar novedades: Pantoja",
-      "outcome": "continuity_update",
-      "applied": true,
-      "via": "concurrent_convergence",
-      "apply_commit": "3fc646975735c1b414711766c577c63442860cad"
-    },
-    {
-      "id": "red-review-7ef05919eabf205b079e",
-      "revision": 0,
-      "name": "Revisar novedades: Jurado",
-      "outcome": "unchanged",
-      "applied": true,
-      "via": "concurrent_convergence",
-      "apply_commit": "3fc646975735c1b414711766c577c63442860cad"
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Pasada editorial cerrada",
+  "activity": "Iniciando pasada editorial y refresco manual",
   "last_started_at": "2026-11-09T02:14:10+01:00",
   "last_completed_at": "2026-11-09T02:14:11+01:00",
   "api_failover_enabled": false,
@@ -100,7 +78,7 @@
     },
     "message": "Pasada tr-1794186889104-manual cerrada 2/2 por convergencia JIT. Pantoja: actualización de continuidad del mismo episodio tras la semifinal (Rosa Benito expulsada, Asraf finalista e Isa acepta viajar a Honduras). Jurado: unchanged; siguen coexistiendo los dos focos ya documentados sin novedad que justifique reescritura. Aplicación oficial success en 3fc646975735c1b414711766c577c63442860cad. Barrera final: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794186889104-manual cerrada 2/2 por convergencia JIT. Pantoja: actualización de continuidad del mismo episodio tras la semifinal (Rosa Benito expulsada, Asraf finalista e Isa acepta viajar a Honduras). Jurado: unchanged; siguen coexistiendo los dos focos ya documentados sin novedad que justifique reescritura. Aplicación oficial success en 3fc646975735c1b414711766c577c63442860cad. Barrera final: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1794187489104-manual iniciada desde chat. Cola inicial observada vacía; se lanza refresco manual del Top 30 antes de la barrera JIT. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-08T15:07:08+01:00",
@@ -1260,6 +1238,11 @@
         }
       ],
       "message": "Pasada tr-1794186889104-manual cerrada 2/2 por convergencia JIT. Pantoja: actualización de continuidad del mismo episodio tras la semifinal (Rosa Benito expulsada, Asraf finalista e Isa acepta viajar a Honduras). Jurado: unchanged; siguen coexistiendo los dos focos ya documentados sin novedad que justifique reescritura. Aplicación oficial success en 3fc646975735c1b414711766c577c63442860cad. Barrera final: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-09T02:25:00+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-1794187489104-manual iniciada desde chat. Cola inicial observada vacía; se lanza refresco manual del Top 30 antes de la barrera JIT. ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": null
