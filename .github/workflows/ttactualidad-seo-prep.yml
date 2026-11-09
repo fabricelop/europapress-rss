@@ -1,0 +1,50 @@
+name: TTActualidad SEO - preparar SIN publicar
+on:
+  pull_request:
+    paths:
+      - 'seo-prep/ttactualidad/**'
+      - '.github/workflows/ttactualidad-seo-prep.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'seo-prep/ttactualidad/**'
+      - '.github/workflows/ttactualidad-seo-prep.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  offline-safe-seo:
+    name: Test manifiesto, noindex, URLs y sin despliegue
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Validar reglas SEO sin publicar
+        run: python3 -m unittest discover -s seo-prep/ttactualidad -p 'test_*.py' -v
+      - name: Generar 5 vistas locales NOINDEX en directorio temporal
+        run: |
+          python3 seo-prep/ttactualidad/prepare_seo.py \
+            --input trends/site-top30-current.json \
+            --out "${RUNNER_TEMP}/ttactualidad-seo-preview" \
+            --names 'Broncano,Golden Boy,James Gunn,#TEM9N,TikTok'
+      - name: Garantizar que no sale ningún sitemap ni HTML indexable
+        run: |
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          root=Path(os.environ['RUNNER_TEMP'])/'ttactualidad-seo-preview'
+          doc=json.loads((root/'seo-pilot-DRAFT.json').read_text())
+          assert doc['status']=='DRAFT_ONLY_NEVER_DEPLOYED'
+          assert len(doc['pages'])>=1
+          assert doc['rules']['no_urls_submitted_to_search_engines']
+          assert not list(root.rglob('sitemap.xml'))
+          pages=list((root/'previews').glob('*.html'))
+          assert len(pages)==len(doc['pages'])
+          assert all('noindex,nofollow' in p.read_text() for p in pages)
+          print('SEO PREP ONLY — no Site mutation, deployment or sitemap')
+          PY
