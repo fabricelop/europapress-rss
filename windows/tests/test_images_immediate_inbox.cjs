@@ -138,7 +138,12 @@ test('both bridges retain old fallback and same-process private transfer wiring'
  }
  const updater=fs.readFileSync(path.join(root,'TT-AutoUpdater.ps1'),'utf8');
  assert(updater.indexOf('windows/TTImagesImmediateInbox.cjs')<
+        updater.indexOf('windows/TTImageApprovalReceiver.cjs'));
+ assert(updater.indexOf('windows/TTImageApprovalReceiver.cjs')<
         updater.indexOf('windows/TTendenciasImageBridge.js'));
+ const receiver=fs.readFileSync(path.join(root,'TTImageApprovalReceiver.cjs'),'utf8');
+ assert.match(receiver,/IMMEDIATE_STAGED_ORIGINAL_RECOVERED/);
+ assert.match(receiver,/immediate\.loadStaged\(base,task\)/);
  assert(updater.indexOf('windows/TTImagesImmediateInbox.cjs')<
         updater.indexOf('windows/TTiTTularesImageBridge.js'));
 });
