@@ -306,7 +306,7 @@ function trendRows(){
       hasFreshExplained?'PENDIENTE DE LISTAS':
       priorReason?'MOTIVO ANTERIOR':failure?'REVISIÓN':
       'SIN SOLICITUD EDITORIAL';
-   return {...x,title:x.name,_kind:'tr',_id:String(req.id||x.name||i),
+   return {...x,title:x.name,_kind:'tr',_id:String(req.id||x.name||i),_terminal:!!terminal,
     _status:editorialState,_topOnly:true,_priorReason:priorReason,_inExplained:inExplained,_manualPending:manualPending,_telegramConfirmed:!!(wasDelivered&&!terminal),
     rank:Number(x.rank||i+1),
     explanation:text,closer_text:'',
@@ -317,7 +317,7 @@ function trendRows(){
   // diagnostic tab shows only entries lacking an editorial request; it is
   // not an intermediate workflow stage.
    return state.tab==='pendientes'?mapped.filter(x=>
-     ['SIN SOLICITUD EDITORIAL','REVISIÓN','EXPLICACIÓN SIN ENTREGAR'].includes(x._status)):mapped;
+     !x._terminal&&['SIN SOLICITUD EDITORIAL','REVISIÓN','EXPLICACIÓN SIN ENTREGAR'].includes(x._status)):mapped;
  }
  const latest=new Map();
  for(const x of ledger){
