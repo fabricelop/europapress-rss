@@ -511,18 +511,46 @@ struct TTDashboard: View {
                 .foregroundStyle(TTTheme.muted)
             if let quota = buffer.apiQuota, quota.window_seconds == 2592000,
                quota.limit > 0 {
-                let daily = Double(quota.used) / 30.0
                 let sustainable = Double(quota.limit) / 30.0
+                let activeDays = max(1.0 / 24.0,
+                    min(30.0, Double(max(0, quota.window_seconds -
+                                            quota.resets_in_seconds)) / 86400.0))
+                // The period is currently only a few days old: "used/30"
+                // is NOT the actual observed daily consumption.
+                let pace = Double(quota.used) / activeDays
                 Text("\(quota.used) / \(quota.limit) solicitudes · \(quota.remaining) disponibles")
                     .font(.system(size: 14, weight: .bold))
                     .monospacedDigit()
                 ProgressView(value: Double(quota.used), total: Double(quota.limit))
                     .tint(TTTheme.blue)
-                Text("Media de consumo: \(daily.formatted(.number.precision(.fractionLength(1))))/día" +
-                     " · ritmo sostenible: \(sustainable.formatted(.number.precision(.fractionLength(1))))/día")
+                Text("Ritmo aproximado del periodo activo: " +
+                     pace.formatted(.number.precision(.fractionLength(1))) +
+                     " solicitudes/día · presupuesto sostenible: " +
+                     sustainable.formatted(.number.precision(.fractionLength(1))) +
+                     " solicitudes/día")
                     .font(.system(size: 10)).foregroundStyle(TTTheme.muted)
-                Text("Una sola cuota para ambas cuentas. También consumen las consultas de la API." +
-                     " Ventana móvil; no se reinicia el día 1.")
+                if let observed = ISO8601DateFormatter().date(from: quota.observed_at) {
+                    let windowStart = observed.addingTimeInterval(
+                        -Double(quota.window_seconds))
+                    let nextReset = observed.addingTimeInterval(
+                        Double(quota.resets_in_seconds))
+                    Text("Ventana en la última lectura: " +
+                         windowStart.formatted(date: .abbreviated, time: .shortened) +
+                         " → " +
+                         observed.formatted(date: .abbreviated, time: .shortened))
+                        .font(.system(size: 10)).foregroundStyle(TTTheme.muted)
+                    Text("Próximo vencimiento indicado por Buffer: " +
+                         nextReset.formatted(date: .abbreviated, time: .shortened) +
+                         " (no libera toda la cuota de golpe)")
+                        .font(.system(size: 10)).foregroundStyle(TTTheme.muted)
+                    Text("Última lectura real de Buffer: " +
+                         observed.formatted(date: .abbreviated, time: .shortened) +
+                         ". Los envíos posteriores aún pueden no estar contabilizados.")
+                        .font(.system(size: 10)).foregroundStyle(TTTheme.muted)
+                }
+                Text("Cuota común para ambas cuentas. Las consultas de canales y " +
+                     "comprobaciones de publicaciones también consumen solicitudes. " +
+                     "El ritmo es estimado, no un recuento exacto de las últimas 24 h.")
                     .font(.system(size: 10)).foregroundStyle(TTTheme.muted)
             } else {
                 Text("Cuota aún no verificada. Se mostrará cuando Buffer devuelva sus límites reales.")
@@ -554,9 +582,7 @@ struct TTDashboard: View {
                 .font(.system(size: 10)).foregroundStyle(TTTheme.muted)
                 .lineLimit(1).minimumScaleFactor(0.7)
             if buffer.loaded {
-                Text("30 d: \(buffer.sentLast30Days(account: account)) · Media: " +
-                     (Double(buffer.sentLast30Days(account: account)) / 30.0)
-                       .formatted(.number.precision(.fractionLength(1))) + "/día")
+                Text("Últimos 30 días: \(buffer.sentLast30Days(account: account)) publicaciones confirmadas")
                     .font(.system(size: 10)).foregroundStyle(TTTheme.muted)
                     .lineLimit(1).minimumScaleFactor(0.7)
             }

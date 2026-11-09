@@ -75,6 +75,35 @@ enum EditorialRelationsPolicy {
         id + ":r" + String(revision)
     }
 
+    // A relationship always targets the two exact editorial IDs/revisions.
+    // A server-issued fingerprint is an additional write-time guard, not a
+    // reason for a visible checkbox to lose its state after snapshot refresh.
+    static func pairKey(_ news: EditorialRelationEndpoint,
+                        _ trend: EditorialRelationEndpoint) -> String {
+        newsKey(id: news.id, revision: news.revision) + "↔" +
+            newsKey(id: trend.id, revision: trend.revision)
+    }
+
+    // A successful POST is not proof the relationship is visible on the Site.
+    // Confirm readback from the private authoritative snapshot before clearing
+    // a pending checkbox or reporting a saved relationship to the editor.
+    static func persisted(_ items: [EditorialRelation],
+                          news: EditorialRelationEndpoint,
+                          trend: EditorialRelationEndpoint, action: String) -> Bool {
+        let wanted = action == "link" ? "linked" : "blocked"
+        return canonical(items).contains { row in
+            row.state == wanted &&
+                row.news.id == news.id && row.news.revision == news.revision &&
+                row.trend.id == trend.id && row.trend.revision == trend.revision &&
+                (news.episodeFingerprint.isEmpty ||
+                 row.news.episodeFingerprint.isEmpty ||
+                 news.episodeFingerprint == row.news.episodeFingerprint) &&
+                (trend.episodeFingerprint.isEmpty ||
+                 row.trend.episodeFingerprint.isEmpty ||
+                 trend.episodeFingerprint == row.trend.episodeFingerprint)
+        }
+    }
+
     // The normal Relations screen only lists actual READY/Listas news.
     // Explicit selection can still inspect/edit a historical news episode.
     static func isVisibleNews(_ news: EditorialRelationEndpoint,
