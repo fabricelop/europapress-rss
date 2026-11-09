@@ -3,28 +3,42 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261109T2155-manual",
-  "previous_run_id": "tr-1794256796856-manual",
-  "command_id": "tr-20261109T2155-manual",
+  "run_id": "tr-20261109T2210-manual",
+  "previous_run_id": "tr-20261109T2155-manual",
+  "command_id": "tr-20261109T2210-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-09T21:55:00+01:00",
-  "updated_at": "2026-11-09T21:55:30+01:00",
-  "finished_at": "2026-11-09T21:55:30+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-09T22:10:00+01:00",
+  "updated_at": "2026-11-09T22:10:00+01:00",
+  "finished_at": null,
   "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "total": 6,
+  "trend_id": "ad4cd1930b59",
+  "title": "#SánchezEnLaSéptima",
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "ad4cd1930b59",
+    "a6acd9b7703a",
+    "8090f1b1fec6",
+    "f50198a89b86",
+    "f5060a515233",
+    "02ad9e22e2d9"
+  ],
+  "remaining_active_ids": [
+    "ad4cd1930b59",
+    "a6acd9b7703a",
+    "8090f1b1fec6",
+    "f50198a89b86",
+    "f5060a515233",
+    "02ad9e22e2d9"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
-    "observed": 0,
+    "observed": 6,
     "closed": 0,
     "explained": 0,
     "problematic": 0,
@@ -39,7 +53,7 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 6,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -51,7 +65,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "closing",
+  "activity": "preparing",
   "last_started_at": "2026-11-09T21:55:00+01:00",
   "last_completed_at": "2026-11-09T21:55:30+01:00",
   "api_failover_enabled": false,
@@ -89,7 +103,7 @@
     "outcomes": [],
     "message": "Pasada tr-20261109T2155-manual cerrada 0/0 tras relectura final de main: editorial-queue=0 (actualizada 2026-11-09T21:51:25+01:00) y sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos en requests.json, telegram-manual-explained.json ni mobile-decisions.json. No había trabajo editorial que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-20261109T2155-manual cerrada 0/0 tras relectura final de main: editorial-queue=0 (actualizada 2026-11-09T21:51:25+01:00) y sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos en requests.json, telegram-manual-explained.json ni mobile-decisions.json. No había trabajo editorial que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada tr-20261109T2210-manual RUNNING. Cola inicial JIT=6: #SánchezEnLaSéptima, Snyder, Eldense, Clayface, Ferran y Huelga. Se procesan de más antiguo a más reciente, revalidando ID/revisión antes de investigar y persistir. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794199200000-manual",
@@ -3399,7 +3413,12 @@
       "message": "Pasada tr-20261109T2155-manual cerrada 0/0 tras relectura final de main: editorial-queue=0 (actualizada 2026-11-09T21:51:25+01:00) y sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos en requests.json, telegram-manual-explained.json ni mobile-decisions.json. No había trabajo editorial que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
-  "current_item": null,
+  "current_item": {
+    "id": "ad4cd1930b59",
+    "revision": 0,
+    "name": "#SánchezEnLaSéptima",
+    "phase": "preparing"
+  },
   "withdrawn_ids": [
     "ae7f066f3c94"
   ],
