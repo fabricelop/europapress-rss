@@ -10,33 +10,36 @@
   "status": "DONE",
   "phase": "closing",
   "started_at": "2026-11-09T04:10:00+01:00",
-  "updated_at": "2026-11-09T04:20:00+01:00",
-  "finished_at": "2026-11-09T04:20:00+01:00",
-  "current": 3,
-  "total": 3,
+  "updated_at": "2026-11-09T04:22:00+01:00",
+  "finished_at": "2026-11-09T04:22:00+01:00",
+  "current": 5,
+  "total": 5,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
   "queue_complete": true,
   "processed_ids": [
     "fe8ca12f538d",
     "e5b56efea3f3",
-    "7a1812787343"
+    "7a1812787343",
+    "red-review-00bc0b7be057792bdb0c",
+    "red-review-07cc7fe503c62c1d07b7"
   ],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 3,
-    "observed": 3,
-    "closed": 3,
+    "attempted": 5,
+    "observed": 5,
+    "closed": 5,
     "explained": 1,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 2,
+    "maintenance_reviews": 2,
+    "unchanged_reviews": 2,
     "continuity_updates": 0,
     "distinct_updates": 0,
-    "unchanged_reviews": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
     "queue_remaining": 0,
@@ -73,6 +76,22 @@
       "reason": "no_distinct_event",
       "applied": true,
       "workflow_run_id": 42555740126
+    },
+    {
+      "id": "red-review-00bc0b7be057792bdb0c",
+      "revision": 0,
+      "name": "Revisar novedades: Jong",
+      "outcome": "unchanged",
+      "applied": true,
+      "workflow_run_id": 42555929053
+    },
+    {
+      "id": "red-review-07cc7fe503c62c1d07b7",
+      "revision": 0,
+      "name": "Revisar novedades: Cancelo",
+      "outcome": "unchanged",
+      "applied": true,
+      "workflow_run_id": 42555929053
     }
   ],
   "incident_count": 0,
@@ -80,26 +99,27 @@
   "error": null,
   "activity": "Cierre editorial verificado",
   "last_started_at": "2026-11-09T04:19:46+01:00",
-  "last_completed_at": "2026-11-09T04:20:00+01:00",
+  "last_completed_at": "2026-11-09T04:22:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-1794193800000-manual",
     "status": "DONE",
     "started_at": "2026-11-09T04:10:00+01:00",
-    "finished_at": "2026-11-09T04:20:00+01:00",
-    "at": "2026-11-09T04:20:00+01:00",
+    "finished_at": "2026-11-09T04:22:00+01:00",
+    "at": "2026-11-09T04:22:00+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 3,
-      "observed": 3,
-      "closed": 3,
+      "attempted": 5,
+      "observed": 5,
+      "closed": 5,
       "explained": 1,
       "problematic": 0,
       "updates": 0,
       "review_completed_no_distinct_event": 2,
+      "maintenance_reviews": 2,
+      "unchanged_reviews": 2,
       "continuity_updates": 0,
       "distinct_updates": 0,
-      "unchanged_reviews": 0,
       "stale_reviews": 0,
       "unverified_reviews": 0,
       "queue_remaining": 0,
@@ -113,7 +133,9 @@
     "processed_ids": [
       "fe8ca12f538d",
       "e5b56efea3f3",
-      "7a1812787343"
+      "7a1812787343",
+      "red-review-00bc0b7be057792bdb0c",
+      "red-review-07cc7fe503c62c1d07b7"
     ],
     "outcomes": [
       {
@@ -141,11 +163,27 @@
         "reason": "no_distinct_event",
         "applied": true,
         "workflow_run_id": 42555740126
+      },
+      {
+        "id": "red-review-00bc0b7be057792bdb0c",
+        "revision": 0,
+        "name": "Revisar novedades: Jong",
+        "outcome": "unchanged",
+        "applied": true,
+        "workflow_run_id": 42555929053
+      },
+      {
+        "id": "red-review-07cc7fe503c62c1d07b7",
+        "revision": 0,
+        "name": "Revisar novedades: Cancelo",
+        "outcome": "unchanged",
+        "applied": true,
+        "workflow_run_id": 42555929053
       }
     ],
-    "message": "Pasada tr-1794193800000-manual cerrada 3/3. Jensen Huang explicado y sincronizado en requests + telegram-manual-explained; Jong y Jonathan David cerrados como review_completed/no_distinct_event por corresponder al mismo Atlético-Barça ya tratado, sin nuevas fichas. Aplicador oficial 42555740126 completó success. Barrera final main: editorial-queue=0; requests/mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. Sin agrupaciones nuevas. ImageGen=0; publicaciones=0."
+    "message": "Pasada tr-1794193800000-manual cerrada 5/5. Jensen Huang explicado; las reentradas nuevas de Jong y Jonathan David se cerraron review_completed/no_distinct_event sin nuevas fichas; durante la barrera entraron dos review_red y se aplicaron unchanged para Jong y Cancelo. Barrera final main: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. Sin agrupaciones nuevas. ImageGen=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794193800000-manual cerrada 3/3. Jensen Huang explicado y sincronizado en requests + telegram-manual-explained; Jong y Jonathan David cerrados como review_completed/no_distinct_event por corresponder al mismo Atlético-Barça ya tratado, sin nuevas fichas. Aplicador oficial 42555740126 completó success. Barrera final main: editorial-queue=0; requests/mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. Sin agrupaciones nuevas. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1794193800000-manual cerrada 5/5. Jensen Huang explicado; las reentradas nuevas de Jong y Jonathan David se cerraron review_completed/no_distinct_event sin nuevas fichas; durante la barrera entraron dos review_red y se aplicaron unchanged para Jong y Cancelo. Barrera final main: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. Sin agrupaciones nuevas. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-08T15:07:08+01:00",
@@ -1502,6 +1540,11 @@
       "at": "2026-11-09T04:20:00+01:00",
       "phase": "closing",
       "message": "Pasada tr-1794193800000-manual cerrada 3/3. Jensen Huang explicado y sincronizado en requests + telegram-manual-explained; Jong y Jonathan David cerrados como review_completed/no_distinct_event por corresponder al mismo Atlético-Barça ya tratado, sin nuevas fichas. Aplicador oficial 42555740126 completó success. Barrera final main: editorial-queue=0; requests/mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. Sin agrupaciones nuevas. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-09T04:22:00+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-1794193800000-manual cerrada 5/5. Jensen Huang explicado; las reentradas nuevas de Jong y Jonathan David se cerraron review_completed/no_distinct_event sin nuevas fichas; durante la barrera entraron dos review_red y se aplicaron unchanged para Jong y Cancelo. Barrera final main: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. Sin agrupaciones nuevas. ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": null
