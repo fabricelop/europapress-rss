@@ -7,35 +7,35 @@
   "previous_run_id": "tr-20261109T2140-manual",
   "command_id": "tr-1794256796856-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-09T21:39:56+01:00",
-  "updated_at": "2026-11-09T21:40:00+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-09T21:44:30+01:00",
+  "finished_at": "2026-11-09T21:44:30+01:00",
+  "current": 1,
   "total": 1,
   "trend_id": "red-review-0f3d3e6f438717f5681e",
   "title": "Revisar novedades: Supa",
-  "queue_complete": false,
-  "processed_ids": [],
-  "converged_ids": [],
-  "remaining_ids": [
+  "queue_complete": true,
+  "processed_ids": [
     "red-review-0f3d3e6f438717f5681e"
   ],
-  "remaining_active_ids": [
+  "converged_ids": [
     "red-review-0f3d3e6f438717f5681e"
   ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 1,
     "observed": 1,
-    "closed": 0,
+    "closed": 1,
     "explained": 0,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
     "maintenance_reviews": 1,
-    "unchanged_reviews": 0,
+    "unchanged_reviews": 1,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "stale_reviews": 0,
@@ -43,37 +43,48 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 1,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 1
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "red-review-0f3d3e6f438717f5681e",
+      "revision": 0,
+      "name": "Revisar novedades: Supa",
+      "outcome": "unchanged",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "outbox_commit": "93d5f18f7922c7625f6e3487e57e4066e2c924e9",
+      "apply_commit": "20cce2593df4e71475239e346e8500dfdb80f81e"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "investigating",
+  "activity": "closing",
   "last_started_at": "2026-11-09T21:29:00+01:00",
-  "last_completed_at": "2026-11-09T21:30:00+01:00",
+  "last_completed_at": "2026-11-09T21:44:30+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794255959977-manual",
+    "run_id": "tr-1794256796856-manual",
     "status": "DONE",
-    "started_at": "2026-11-09T21:29:00+01:00",
-    "finished_at": "2026-11-09T21:30:00+01:00",
+    "started_at": "2026-11-09T21:39:56+01:00",
+    "finished_at": "2026-11-09T21:44:30+01:00",
     "summary": {
-      "attempted": 0,
-      "observed": 0,
-      "closed": 0,
+      "attempted": 1,
+      "observed": 1,
+      "closed": 1,
       "explained": 0,
       "problematic": 0,
       "updates": 0,
       "review_completed_no_distinct_event": 0,
-      "maintenance_reviews": 0,
-      "unchanged_reviews": 0,
+      "maintenance_reviews": 1,
+      "unchanged_reviews": 1,
       "continuity_updates": 0,
       "distinct_updates": 0,
       "stale_reviews": 0,
@@ -87,13 +98,26 @@
       "image_outbox_created": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 0
+      "concurrent_convergence": 1
     },
-    "processed_ids": [],
-    "outcomes": [],
-    "message": "Pasada tr-1794255959977-manual cerrada 0/0 contra main. Relectura JIT final: editorial-queue=0 (updated_at 2026-11-09T20:26:57.729628+00:00) y búsqueda dirigida en main sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "processed_ids": [
+      "red-review-0f3d3e6f438717f5681e"
+    ],
+    "outcomes": [
+      {
+        "id": "red-review-0f3d3e6f438717f5681e",
+        "revision": 0,
+        "name": "Revisar novedades: Supa",
+        "outcome": "unchanged",
+        "applied": true,
+        "via": "concurrent_convergence",
+        "outbox_commit": "93d5f18f7922c7625f6e3487e57e4066e2c924e9",
+        "apply_commit": "20cce2593df4e71475239e346e8500dfdb80f81e"
+      }
+    ],
+    "message": "Pasada tr-1794256796856-manual cerrada 1/1 por convergencia JIT. La revisión roja de Supa quedó unchanged: la señal actual es mercado de ADC con rumores no verificados y las fichas posteriores ya fueron eliminadas por el editor, por lo que no se recrea episodio ni se modifica la ficha histórica publicada del 31/10. El resultado fue aplicado por el mantenedor oficial en 20cce2593df4e71475239e346e8500dfdb80f81e. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794256796856-manual RUNNING. Cola JIT=1: revisión roja de Supa r0. Se contrasta el episodio de Worlds del 31/10 con la señal actual del mercado LEC y se comprueba que no exista ya una ficha posterior que cubra el hecho. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1794256796856-manual cerrada 1/1 por convergencia JIT. La revisión roja de Supa quedó unchanged: la señal actual es mercado de ADC con rumores no verificados y las fichas posteriores ya fueron eliminadas por el editor, por lo que no se recrea episodio ni se modifica la ficha histórica publicada del 31/10. El resultado fue aplicado por el mantenedor oficial en 20cce2593df4e71475239e346e8500dfdb80f81e. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794199200000-manual",
@@ -3259,11 +3283,60 @@
         "status": "RUNNING",
         "updated_at": "2026-11-09T21:40:00+01:00"
       }
+    },
+    {
+      "run_id": "tr-1794256796856-manual",
+      "status": "DONE",
+      "started_at": "2026-11-09T21:39:56+01:00",
+      "finished_at": "2026-11-09T21:44:30+01:00",
+      "at": "2026-11-09T21:44:30+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 1,
+        "observed": 1,
+        "closed": 1,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 1,
+        "unchanged_reviews": 1,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 1
+      },
+      "processed_ids": [
+        "red-review-0f3d3e6f438717f5681e"
+      ],
+      "outcomes": [
+        {
+          "id": "red-review-0f3d3e6f438717f5681e",
+          "revision": 0,
+          "name": "Revisar novedades: Supa",
+          "outcome": "unchanged",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "outbox_commit": "93d5f18f7922c7625f6e3487e57e4066e2c924e9",
+          "apply_commit": "20cce2593df4e71475239e346e8500dfdb80f81e"
+        }
+      ],
+      "message": "Pasada tr-1794256796856-manual cerrada 1/1 por convergencia JIT. La revisión roja de Supa quedó unchanged: la señal actual es mercado de ADC con rumores no verificados y las fichas posteriores ya fueron eliminadas por el editor, por lo que no se recrea episodio ni se modifica la ficha histórica publicada del 31/10. El resultado fue aplicado por el mantenedor oficial en 20cce2593df4e71475239e346e8500dfdb80f81e. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": null,
   "withdrawn_ids": [
     "ae7f066f3c94"
   ],
-  "last_finished_at": "2026-11-09T21:27:00+01:00"
+  "last_finished_at": "2026-11-09T21:44:30+01:00"
 }
