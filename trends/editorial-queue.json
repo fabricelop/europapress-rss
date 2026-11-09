@@ -1,6 +1,78 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-09T07:31:29+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-09T06:40:56.013477+00:00",
+  "count": 2,
+  "items": [
+    {
+      "id": "red-review-ec24f58b5ef89a37b108",
+      "revision": 0,
+      "name": "Revisar novedades: Amaia",
+      "rank": 30,
+      "status": "preparing",
+      "requested_at": "2026-11-09T06:40:56.013477+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "011bbdc1877d",
+        "revision": 0,
+        "name": "Amaia",
+        "rank": 29,
+        "explanation": "TT#14 Amaia sigue siendo tendencia por el regreso con La Oreja de Van Gogh: tras reunir a 17.000 personas el viernes, enlazó otro Palau Sant Jordi agotado el sábado.\n#AmaiaMontero #LODVG\n🌶️ Dos noches seguidas y el reencuentro aún pide bis.",
+        "explanation_sha256": "22ab075d152d21929918cda7e4da46e510bbf9e88956a71bf8b6245481daae74",
+        "explained_at": "2026-11-07T10:16:00+01:00",
+        "verification_sources": [
+          {
+            "url": "https://www.elnacional.cat/es/cultura/oreja-van-gogh-amaia-montero-frente-desafina-palau-sant-jordi-barcelona-perdona_1722056_102.html"
+          },
+          {
+            "url": "https://www.heraldo.es/noticias/ocio-y-cultura/2026/11/07/amaia-montero-reaparece-oreja-gogh-concierto-regresan-humillantes-criticas-ridiculo-vestuario-risa-2066563.html"
+          }
+        ],
+        "fingerprint": "90e7d491b3aa33f0e4bd8924c7ff9b73c6a82823f18bc87ae28db5b1868f5446"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-175ed38aeb25b48b294b",
+      "revision": 0,
+      "name": "Revisar novedades: Cracovia",
+      "rank": 14,
+      "status": "preparing",
+      "requested_at": "2026-11-09T06:40:56.013477+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "amarilla",
+      "review_priority": 1,
+      "review_source": {
+        "id": "f4bdb3e1fe49",
+        "revision": 0,
+        "name": "Cracovia",
+        "rank": 5,
+        "explanation": "TT#5 Cracovia es tendencia por el tiroteo en su Plaza Mayor: seis personas murieron y otras 16 resultaron heridas. La Policía detuvo al presunto autor y la investigación sigue abierta.\n#Polonia #TiroteoCracovia",
+        "explanation_sha256": "462e7cd3285716e6d06a6d213cd03e57ebe998ec7c0808a2a9f5b693d12e251d",
+        "explained_at": "2026-11-08T11:03:07.295Z",
+        "verification_sources": [
+          {
+            "url": "https://www.reuters.com/world/europe/two-kiled-least-10-injured-shooting-polish-city-krakow-tvn24-reports-2026-11-07/"
+          },
+          {
+            "url": "https://efe.com/mundo/2026-11-08/tiroteo-cracovia-polonia/"
+          },
+          {
+            "url": "https://www.europapress.es/internacional/noticia-policia-confirma-cuerpos-hallados-casa-autor-tiroteo-cracovia-eran-padres-hermana-20261108105025.html"
+          }
+        ],
+        "fingerprint": "4d5f2f6a3ed2eda00fa64d32dc29378f2364d08d70bb2ef95756f51114d3592c"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
