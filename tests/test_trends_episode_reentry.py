@@ -132,6 +132,39 @@ class EpisodeResearchTest(unittest.TestCase):
         self.assertEqual([r["status"] for r in history], ["explained"] * 10)
         self.assertEqual(len([x for x in rows if x["status"] == "preparing"]), 10)
 
+    def test_recent_baena_adeyemi_singletons_are_not_grouped(self):
+        # A legacy editor could put a fake grp-<same id> on an individual
+        # card. Strip those fields only, not the old closed multi-topic records.
+        current = read(self.folder, "requests.json")
+        manual = read(self.folder, "telegram-manual-explained.json")
+        for name, ident in (("Baena", "baena-new-independent"),
+                            ("Adeyemi", "adeyemi-new-independent")):
+            now = self.now.isoformat(timespec="seconds")
+            row = {"id": ident, "name": name, "revision": 0, "status": "explained",
+                   "requested_at": now, "explained_at": now,
+                   "explanation": "Hechos actuales individuales",
+                   "group_id": "grp-" + ident,
+                   "explanation_group_id": "grp-" + ident,
+                   "group_leader_id": ident,
+                   "grouped_member_revisions": [{"id": ident, "revision": 0}],
+                   "trend_names": [name]}
+            current["requests"].append(row)
+            manual["items"].append(dict(row))
+        write(self.folder, "requests.json", current)
+        write(self.folder, "telegram-manual-explained.json", manual)
+        rows = self.run_editor()
+        manual = read(self.folder, "telegram-manual-explained.json")
+        for ident in ("baena-new-independent", "adeyemi-new-independent"):
+            for doc in (rows, manual["items"]):
+                fixed = next(x for x in doc if x["id"] == ident)
+                self.assertEqual(fixed["status"], "explained")
+                for key in ("group_id", "explanation_group_id", "group_leader_id",
+                            "grouped_member_revisions"):
+                    self.assertNotIn(key, fixed, f"{ident} leaked {key}")
+        old = next(x for x in rows if x["id"] == "old-1")
+        self.assertEqual(old["group_leader_id"], "legacy-group-leader")
+        self.assertEqual(old["status"], "deleted")
+
     def test_refuse_unsafe_radar_even_with_approval(self):
         self.approve()
         doc = read(self.folder, "recent.json")
