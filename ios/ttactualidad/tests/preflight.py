@@ -1022,7 +1022,7 @@ assert '@State private var quotaDetailsExpanded = false' in dashboard
 assert 'Label("CUOTA BUFFER API GLOBAL", systemImage: "chart.pie")' in dashboard
 assert 'if quotaDetailsExpanded {' in dashboard
 assert 'quotaDetailsExpanded.toggle()' in dashboard
-assert '" solicitudes"' in dashboard
+assert ' solicitudes")' in dashboard
 assert 'Text("30 DÍAS MÓVILES")' in dashboard
 # Live updates must not depend on an active editorial queue alone.
 assert 'needsFastProgress ? 45 : 180' in dashboard
