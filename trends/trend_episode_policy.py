@@ -124,7 +124,11 @@ def review_episode_token(name, radar_item, request, treated, now, historical_at=
     entered = _date(radar_item.get("entered_top30_at"))
     if entered and entered <= now and entered >= last + REENTRY_SEPARATION:
         return "reentry:" + entered.isoformat(timespec="seconds")
-    if now >= last + REVIEW_COOLDOWN:
-        # A review-per-day signal does NOT authorize a second post.
+    changed = _date(radar_item.get("last_changed_at"))
+    if (now >= last + REVIEW_COOLDOWN and changed
+            and last < changed <= now):
+        # Require a genuinely observed fresh rank change; an unchanged
+        # evergreen label plus elapsed time is not new-event evidence.
+        # Even this signal only permits research, not another publication.
         return "daily-review:" + now.date().isoformat()
     return None
