@@ -306,49 +306,59 @@ if restored_manual:
     print("Restauradas solicitudes manuales cerradas con explicación antigua:",
           restored_manual)
 
-def canonicalize_explained_groups():
-    """Mantiene una sola tarjeta visible por grupo editorial.
-
-    Si una carrera o una pasada editorial añade miembros del mismo group_id
-    como explained independientes, conserva el líder y marca el resto grouped.
-    """
-    groups = {}
-    for entry in explained_doc.get("items", []) or []:
-        if str(entry.get("status") or "") != "explained":
-            continue
-        group = str(entry.get("explanation_group_id") or entry.get("group_id") or "").strip()
-        if group:
-            groups.setdefault(group, []).append(entry)
-    changed = 0
-    for group, entries in groups.items():
-        if len(entries) < 2:
-            continue
-        leader_id = ""
-        for entry in entries:
-            candidate = str(entry.get("group_leader_id") or "").strip()
-            if candidate:
-                leader_id = candidate
-                break
-        leader = next((x for x in entries if str(x.get("id") or "") == leader_id), None)
-        if leader is None:
-            leader = min(entries, key=lambda x: str(x.get("explained_at") or "9999"))
-            leader_id = str(leader.get("id") or "")
-        for entry in entries:
-            if entry is leader:
-                entry["status"] = "explained"
-                continue
-            entry["status"] = "grouped"
-            entry["group_leader_id"] = leader_id
-            entry["grouped_into"] = leader_id
-            entry["grouped_at"] = now_dt.isoformat(timespec="seconds")
-            changed += 1
-    if changed:
-        explained_doc["updated_at"] = now_dt.isoformat(timespec="seconds")
-    return changed
-
-# Grouping retired. Historical group evidence is immutable; never turn
-# separately explained cards into grouped followers on future refreshes.
+# Legacy grouping is retired. Retain historical groups in their ledger
+# records but never create fresh grouped followers or shared Listas cards.
 canonicalized_groups = 0
+
+
+def strip_live_singleton_group_metadata():
+    """Normalize current independent cards; do not rewrite old joint groups.
+
+    Some older editorial writers still emit a synthetic grp-<own_id> even
+    when there is only ONE trend. That is not a true group and must not leak
+    an 'AGRUPADA' label. Keep historical multi-member groups untouched.
+    """
+    changed_requests = 0
+    changed_explanations = 0
+    oldest = now_dt - timedelta(hours=48)
+    def clean(row):
+        if str(row.get("status") or "") != "explained":
+            return False
+        when = parse_timestamp(row.get("explained_at"))
+        if not when or not oldest <= when <= now_dt + timedelta(hours=1):
+            return False
+        ident = str(row.get("id") or "")
+        if not ident or str(row.get("group_leader_id") or "") != ident:
+            return False
+        names = row.get("trend_names") or [row.get("name")]
+        if len(names) != 1 or norm(names[0]) != norm(row.get("name")):
+            return False
+        members = row.get("grouped_member_revisions") or []
+        if any(str(m.get("id") or "") != ident for m in members if isinstance(m,dict)):
+            return False
+        fields = ("group_id", "explanation_group_id", "group_leader_id",
+                  "grouped_into", "grouped_at", "group_title",
+                  "grouped_member_revisions", "automatic_grouping",
+                  "grouping_candidates", "grouping_state")
+        present = any(field in row for field in fields)
+        for field in fields:
+            row.pop(field, None)
+        return present
+    for row in requests:
+        changed_requests += bool(clean(row))
+    for row in explained_doc.get("items") or []:
+        changed_explanations += bool(clean(row))
+    if changed_explanations:
+        explained_doc["updated_at"] = now_dt.isoformat(timespec="seconds")
+        save("telegram-manual-explained.json", explained_doc)
+    return changed_requests, changed_explanations
+
+
+stripped_request_groups, stripped_explanation_groups = strip_live_singleton_group_metadata()
+if stripped_request_groups or stripped_explanation_groups:
+    reconciled = True
+    print("Singletons editoriales sin agrupación:",
+          stripped_request_groups, stripped_explanation_groups)
 
 def _copy_if_present(dst, src, field):
     if field in src:
