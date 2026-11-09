@@ -3,28 +3,34 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794221700000-manual",
-  "previous_run_id": "tr-1794221018085-manual",
-  "command_id": "tr-1794221700000-manual",
+  "run_id": "tr-1794222455591-manual",
+  "previous_run_id": "tr-1794221700000-manual",
+  "command_id": "tr-1794222455591-manual",
   "source": "chat-manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-09T11:55:00+01:00",
-  "updated_at": "2026-11-09T11:56:00+01:00",
-  "finished_at": "2026-11-09T11:56:00+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-09T12:08:00+01:00",
+  "updated_at": "2026-11-09T12:08:00+01:00",
+  "finished_at": null,
   "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": "Pasada editorial TTendencias",
-  "queue_complete": true,
+  "total": 2,
+  "trend_id": "red-review-86cbd42f3edd8327f2ae",
+  "title": "Revisar novedades: Cracovia",
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-86cbd42f3edd8327f2ae",
+    "red-review-541ad18742a5d11e6d2f"
+  ],
+  "remaining_active_ids": [
+    "red-review-86cbd42f3edd8327f2ae",
+    "red-review-541ad18742a5d11e6d2f"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 0,
+    "attempted": 2,
+    "observed": 2,
     "closed": 0,
     "explained": 0,
     "problematic": 0,
@@ -36,7 +42,7 @@
     "distinct_updates": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -222,9 +228,16 @@
       "at": "2026-11-09T11:56:00+01:00",
       "phase": "closing",
       "message": "Pasada tr-1794221700000-manual cerrada 0/0 contra el estado autoritativo de main. Relectura final: editorial-queue=0 (updated_at 2026-11-09T11:51:09+01:00) y sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos en requests ni mobile-decisions. No había trabajo editorial pendiente que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-09T12:08:00+01:00",
+      "phase": "preparing",
+      "trend_id": "red-review-86cbd42f3edd8327f2ae",
+      "title": "Revisar novedades: Cracovia",
+      "message": "Pasada manual iniciada con 2 review_red: Cracovia y #SVSemifinal. Revalidación JIT por ID/revisión antes de investigar y persistir. ImageGen=0; publicaciones=0."
     }
   ],
-  "last_started_at": "2026-11-09T11:55:00+01:00",
+  "last_started_at": "2026-11-09T12:08:00+01:00",
   "last_completed_at": "2026-11-09T11:56:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -260,7 +273,7 @@
     "outcomes": [],
     "message": "Pasada tr-1794221700000-manual cerrada 0/0 contra el estado autoritativo de main. Relectura final: editorial-queue=0 (updated_at 2026-11-09T11:51:09+01:00) y sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos en requests ni mobile-decisions. No había trabajo editorial pendiente que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794221700000-manual cerrada 0/0 contra el estado autoritativo de main. Relectura final: editorial-queue=0 (updated_at 2026-11-09T11:51:09+01:00) y sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos en requests ni mobile-decisions. No había trabajo editorial pendiente que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada manual iniciada con 2 review_red: Cracovia y #SVSemifinal. Revalidación JIT por ID/revisión antes de investigar y persistir. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T03:17:00+01:00",
@@ -1912,5 +1925,9 @@
       "message": "Pasada tr-1794221700000-manual cerrada 0/0 contra el estado autoritativo de main. Relectura final: editorial-queue=0 (updated_at 2026-11-09T11:51:09+01:00) y sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos en requests ni mobile-decisions. No había trabajo editorial pendiente que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
-  "current_item": null
+  "current_item": {
+    "id": "red-review-86cbd42f3edd8327f2ae",
+    "revision": 0,
+    "name": "Revisar novedades: Cracovia"
+  }
 }
