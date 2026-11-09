@@ -3,34 +3,30 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794215400000-manual",
-  "previous_run_id": "tr-1794213600000-manual",
-  "command_id": "tr-1794215400000-manual",
+  "run_id": "tr-1794216300000-manual",
+  "previous_run_id": "tr-1794215400000-manual",
+  "command_id": "tr-1794216300000-manual",
   "source": "chat",
-  "status": "success",
-  "phase": "closing",
-  "started_at": "2026-11-09T10:10:00+01:00",
-  "updated_at": "2026-11-09T10:15:30+01:00",
-  "finished_at": "2026-11-09T10:15:30+01:00",
-  "current": 3,
-  "total": 3,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-09T10:25:00+01:00",
+  "updated_at": "2026-11-09T10:25:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": true,
-  "processed_ids": [
-    "2b8f257f333f",
-    "65921a4d4f39",
-    "9473798fa162"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 3,
-    "observed": 3,
-    "closed": 3,
-    "explained": 3,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
@@ -48,32 +44,7 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "2b8f257f333f",
-      "revision": 0,
-      "name": "Jensen Huang",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "93c76295a9a1e65ca629d6a188b504c1bd68c7f7"
-    },
-    {
-      "id": "65921a4d4f39",
-      "revision": 0,
-      "name": "Sherlock",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "93c76295a9a1e65ca629d6a188b504c1bd68c7f7"
-    },
-    {
-      "id": "9473798fa162",
-      "revision": 0,
-      "name": "Quedan 20",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "93c76295a9a1e65ca629d6a188b504c1bd68c7f7"
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -116,9 +87,14 @@
       "at": "2026-11-09T10:15:30+01:00",
       "phase": "closing",
       "message": "Barrera final JIT: editorial-queue=0 y mobile-decisions sin trabajo editorial activo. Pasada cerrada 3/3."
+    },
+    {
+      "at": "2026-11-09T10:25:00+01:00",
+      "phase": "preparing",
+      "message": "Pasada manual iniciada desde chat. Relectura inicial de main: editorial-queue=0. Se verifica la barrera JIT antes del cierre; ImageGen=0; publicaciones=0."
     }
   ],
-  "last_started_at": "2026-11-09T10:10:00+01:00",
+  "last_started_at": "2026-11-09T10:25:00+01:00",
   "last_completed_at": "2026-11-09T10:15:30+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -184,7 +160,7 @@
     ],
     "message": "Pasada tr-1794215400000-manual cerrada 3/3. Jensen Huang, Sherlock y Quedan 20 quedaron explicados y sincronizados por el aplicador oficial en requests.json y telegram-manual-explained.json (commit 93c76295a9a1e65ca629d6a188b504c1bd68c7f7). Sherlock sustituyó su borrador Radar al entrar en Top30. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794215400000-manual cerrada 3/3. Jensen Huang, Sherlock y Quedan 20 quedaron explicados y sincronizados por el aplicador oficial en requests.json y telegram-manual-explained.json (commit 93c76295a9a1e65ca629d6a188b504c1bd68c7f7). Sherlock sustituyó su borrador Radar al entrar en Top30. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; publicaciones=0.",
+  "message": "Pasada manual iniciada desde chat. Relectura inicial de main: editorial-queue=0. Se verifica la barrera JIT antes del cierre; ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T03:17:00+01:00",
