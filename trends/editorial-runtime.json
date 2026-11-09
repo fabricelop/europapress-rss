@@ -7,35 +7,33 @@
   "previous_run_id": "tr-autoguard-1794258660",
   "command_id": "tr-1794259644356-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-09T22:27:30+01:00",
-  "updated_at": "2026-11-09T22:29:00+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-09T22:30:30+01:00",
+  "finished_at": "2026-11-09T22:30:30+01:00",
+  "current": 1,
   "total": 1,
-  "trend_id": "red-review-2ae5b8858c6b208c281a",
-  "title": "Revisar novedades: Broncano",
-  "queue_complete": false,
-  "processed_ids": [],
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
+    "red-review-2ae5b8858c6b208c281a"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "red-review-2ae5b8858c6b208c281a"
-  ],
-  "remaining_active_ids": [
-    "red-review-2ae5b8858c6b208c281a"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 1,
     "observed": 1,
-    "closed": 0,
+    "closed": 1,
     "explained": 0,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
     "maintenance_reviews": 1,
-    "unchanged_reviews": 0,
+    "unchanged_reviews": 1,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "stale_reviews": 0,
@@ -43,7 +41,7 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 1,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -51,29 +49,39 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "red-review-2ae5b8858c6b208c281a",
+      "revision": 0,
+      "name": "Revisar novedades: Broncano",
+      "outcome": "unchanged",
+      "applied": true,
+      "apply_commit": "a3a7560af94aaed163e29dd442773cbb5dc1ada9",
+      "outbox_commit": "86b995afa260406bb0adb960f43e4f31975ffae9"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "persisting",
+  "activity": "closing",
   "last_started_at": "2026-11-09T22:27:30+01:00",
-  "last_completed_at": "2026-11-09T22:23:00+01:00",
+  "last_completed_at": "2026-11-09T22:30:30+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-autoguard-1794258660",
+    "run_id": "tr-1794259644356-manual",
     "status": "DONE",
-    "started_at": "2026-11-09T22:22:00+01:00",
-    "finished_at": "2026-11-09T22:23:00+01:00",
+    "started_at": "2026-11-09T22:27:30+01:00",
+    "finished_at": "2026-11-09T22:30:30+01:00",
     "summary": {
-      "attempted": 0,
-      "observed": 0,
-      "closed": 0,
+      "attempted": 1,
+      "observed": 1,
+      "closed": 1,
       "explained": 0,
       "problematic": 0,
       "updates": 0,
       "review_completed_no_distinct_event": 0,
-      "maintenance_reviews": 0,
-      "unchanged_reviews": 0,
+      "maintenance_reviews": 1,
+      "unchanged_reviews": 1,
       "continuity_updates": 0,
       "distinct_updates": 0,
       "stale_reviews": 0,
@@ -89,12 +97,24 @@
       "incidents": 0,
       "concurrent_convergence": 0
     },
-    "processed_ids": [],
+    "processed_ids": [
+      "red-review-2ae5b8858c6b208c281a"
+    ],
     "converged_ids": [],
-    "outcomes": [],
-    "message": "Pasada tr-autoguard-1794258660 cerrada 0/0 tras relectura de main: editorial-queue=0 y sin preparing/update, rewrite_pending ni reexplain detectables. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "outcomes": [
+      {
+        "id": "red-review-2ae5b8858c6b208c281a",
+        "revision": 0,
+        "name": "Revisar novedades: Broncano",
+        "outcome": "unchanged",
+        "applied": true,
+        "apply_commit": "a3a7560af94aaed163e29dd442773cbb5dc1ada9",
+        "outbox_commit": "86b995afa260406bb0adb960f43e4f31975ffae9"
+      }
+    ],
+    "message": "Pasada tr-1794259644356-manual cerrada 1/1. Broncano r0 quedó unchanged: la entrevista con Abascal ya se había grabado y se emitía hoy, pero el cambio de público y asistentes por agencia/contactos ya estaba incorporado y no se verificó un hecho posterior independiente. El aplicador oficial persistió el resultado en a3a7560af94aaed163e29dd442773cbb5dc1ada9 y retiró la revisión. Barrera final: editorial-queue=0; mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
   },
-  "message": "Persistiendo revisión de Broncano r0 como unchanged: la emisión/grabación de hoy continúa el mismo episodio y el cambio de público ya estaba recogido; no hay hecho material independiente. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1794259644356-manual cerrada 1/1. Broncano r0 quedó unchanged: la entrevista con Abascal ya se había grabado y se emitía hoy, pero el cambio de público y asistentes por agencia/contactos ya estaba incorporado y no se verificó un hecho posterior independiente. El aplicador oficial persistió el resultado en a3a7560af94aaed163e29dd442773cbb5dc1ada9 y retiró la revisión. Barrera final: editorial-queue=0; mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794199200000-manual",
@@ -3534,22 +3554,65 @@
       "trend_id": "red-review-2ae5b8858c6b208c281a",
       "title": "Revisar novedades: Broncano",
       "message": "Persistiendo revisión de Broncano r0 como unchanged: la emisión/grabación de hoy continúa el mismo episodio y el cambio de público ya estaba recogido; no hay hecho material independiente. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794259644356-manual",
+      "status": "DONE",
+      "started_at": "2026-11-09T22:27:30+01:00",
+      "finished_at": "2026-11-09T22:30:30+01:00",
+      "at": "2026-11-09T22:30:30+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 1,
+        "observed": 1,
+        "closed": 1,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 1,
+        "unchanged_reviews": 1,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [
+        "red-review-2ae5b8858c6b208c281a"
+      ],
+      "outcomes": [
+        {
+          "id": "red-review-2ae5b8858c6b208c281a",
+          "revision": 0,
+          "name": "Revisar novedades: Broncano",
+          "outcome": "unchanged",
+          "applied": true,
+          "apply_commit": "a3a7560af94aaed163e29dd442773cbb5dc1ada9",
+          "outbox_commit": "86b995afa260406bb0adb960f43e4f31975ffae9"
+        }
+      ],
+      "message": "Pasada tr-1794259644356-manual cerrada 1/1. Broncano r0 quedó unchanged: la entrevista con Abascal ya se había grabado y se emitía hoy, pero el cambio de público y asistentes por agencia/contactos ya estaba incorporado y no se verificó un hecho posterior independiente. El aplicador oficial persistió el resultado en a3a7560af94aaed163e29dd442773cbb5dc1ada9 y retiró la revisión. Barrera final: editorial-queue=0; mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
     }
   ],
-  "current_item": {
-    "id": "red-review-2ae5b8858c6b208c281a",
-    "revision": 0,
-    "name": "Revisar novedades: Broncano",
-    "task": "review_red"
-  },
+  "current_item": null,
   "withdrawn_ids": [
     "ae7f066f3c94"
   ],
-  "last_finished_at": "2026-11-09T22:23:00+01:00",
-  "last_revalidated_at": "2026-11-09T22:23:00+01:00",
+  "last_finished_at": "2026-11-09T22:30:30+01:00",
+  "last_revalidated_at": "2026-11-09T22:30:30+01:00",
   "last_revalidation": {
-    "at": "2026-11-09T22:23:00+01:00",
-    "queue_sha": "340f746f94da17011760efce1fd85d36c6ace6b9",
+    "at": "2026-11-09T22:30:30+01:00",
+    "queue_sha": "77b8b38851ec26e46876c4a566675837541ab062",
     "queue_count": 0,
     "preparing_update": 0,
     "rewrite_pending": 0,
