@@ -253,8 +253,8 @@ assert 'case "SIN EXPLICACIÓN": return "PISTAS"' in dashboard
 assert 'decision == "hints"' in store
 assert '"hints": text' in auth
 assert 'await store.refreshIfStale(minInterval: 45)' in dashboard
-assert 'MARKETING_VERSION: "0.4.81"' in project
-assert 'CURRENT_PROJECT_VERSION: "93"' in project
+assert 'MARKETING_VERSION: "0.4.82"' in project
+assert 'CURRENT_PROJECT_VERSION: "94"' in project
 print("TT_ACTUALIDAD_IOS_HINTS_PREFLIGHT_OK")
 
 # 0.4.45: remove image deletion UI/API and trend→news UI. Keep news functionality.
@@ -287,7 +287,7 @@ assert '"control/ttendencias-run-trigger"' in auth
 assert 'headName.hasPrefix("control/ttittulares-run-trigger")' in auth
 assert 'requestEditorialRun(project: project)' in dashboard
 assert 'Solicitar procesamiento de' in dashboard
-assert 'CURRENT_PROJECT_VERSION: "93"' in project
+assert 'CURRENT_PROJECT_VERSION: "94"' in project
 print("TT_ACTUALIDAD_IOS_0414_EDITORIAL_RUN_PREFLIGHT_OK")
 
 # 0.4.17: cancel PROCESSING without adding to Listas, and separate
@@ -299,7 +299,7 @@ assert '["Enviando", "Esperando GitHub", "Pendiente de GitHub",\n         "Sin c
 assert 'operationHistory.filter(\\.isOutstanding).count' in store
 assert 'Text("Órdenes por confirmar")' in pending_panel
 assert 'terminalMarks["ttittulares:" + draft.id] != nil' in store
-assert 'CURRENT_PROJECT_VERSION: "93"' in project
+assert 'CURRENT_PROJECT_VERSION: "94"' in project
 print("TT_ACTUALIDAD_IOS_0415_SUPPRESS_PREFLIGHT_OK")
 
 # 0.4.17: no Home Screen widgets; the same .appex serves a real Live Activity.
@@ -315,8 +315,8 @@ assert 'publishedCountsAvailable' in shared
 assert 'pilot/ttactualidad-publication-events.json' in widget_source
 assert "retireAbandonedNewsOperations(" in store
 assert 'requestID: requestID' in actions and 'requestID: requestID' in hints_sheet
-assert 'MARKETING_VERSION: "0.4.81"' in project
-assert 'CURRENT_PROJECT_VERSION: "93"' in project
+assert 'MARKETING_VERSION: "0.4.82"' in project
+assert 'CURRENT_PROJECT_VERSION: "94"' in project
 print("TT_ACTUALIDAD_IOS_0417_LIVE_NO_WIDGETS_PREFLIGHT_OK")
 
 
@@ -467,8 +467,8 @@ assert '"TEXTO EDITORIAL EXACTO (SOLO CONTEXTO, JAMÁS ROTULAR):' in actions
 assert 'news?.verifiedFacts' in actions
 assert 'news?.siteImageURL ?? trend?.siteImageURL' in actions
 assert 'EditorialActionPolicy.imageURL(ai: ai' in actions
-assert 'MARKETING_VERSION: "0.4.81"' in project
-assert 'CURRENT_PROJECT_VERSION: "93"' in project
+assert 'MARKETING_VERSION: "0.4.82"' in project
+assert 'CURRENT_PROJECT_VERSION: "94"' in project
 print("TT_ACTUALIDAD_IOS_046_NEWS_AI_PARITY_OK")
 
 # 0.4.47: no regressions to Copiar GAG's v0.4.44 generate+attach+verify+sync contract.
@@ -488,8 +488,8 @@ assert 'IMAGEN GENERADA; SITE Y APP PENDIENTES' in actions
 assert 'IMAGEN GENERADA; WEB Y APP PENDIENTES' in actions
 assert 'No generes una segunda imagen' in actions
 assert 'GitHub' in actions
-assert 'MARKETING_VERSION: "0.4.81"' in project
-assert 'CURRENT_PROJECT_VERSION: "93"' in project
+assert 'MARKETING_VERSION: "0.4.82"' in project
+assert 'CURRENT_PROJECT_VERSION: "94"' in project
 print("TT_ACTUALIDAD_IOS_047_GAG_ATTACH_SYNC_REGRESSION_OK")
 
 # 0.4.47 build 53: one identical image-action panel for news and trends.
@@ -508,7 +508,7 @@ assert 'if let archive = item.imageURL' in live
 assert 'if let current = catalog[key(id, revision)]' in news_ai
 assert '$0.revision < revision' in news_ai
 assert 'bestRevision = old' in catalog
-assert 'CURRENT_PROJECT_VERSION: "93"' in project
+assert 'CURRENT_PROJECT_VERSION: "94"' in project
 print("TT_ACTUALIDAD_IOS_046_BUILD54_DUAL_IMAGES_STABLE_ID_OK")
 
 
@@ -537,8 +537,8 @@ print("TT_ACTUALIDAD_STACKED_DUAL_IMAGES_OK")
 
 # 0.4.47 build57: native-only changes from the installed build55.
 # No reliance on web/Cloudflare deploy or the obsolete iOS code in main.
-assert project.count('CURRENT_PROJECT_VERSION: "93"') == 2
-assert project.count('CFBundleVersion: "93"') == 2
+assert project.count('CURRENT_PROJECT_VERSION: "94"') == 2
+assert project.count('CFBundleVersion: "94"') == 2
 assert 'TTActualidadXPost.payload(' in actions
 x_post = (root / 'TTActualidad' / 'TTActualidadXPost.swift').read_text()
 assert 'private static let contentBudget = 280' in x_post
@@ -710,8 +710,8 @@ focused = store[store.index('func reconcilePendingOperations() async'):store.ind
 assert 'dispatch(' not in focused and 'submit(' not in focused
 assert 'await store.reconcilePendingOperations()' in panel
 assert 'Conciliar órdenes con GitHub' in panel
-assert project.count('CURRENT_PROJECT_VERSION: "93"') == 2
-assert project.count('CFBundleVersion: "93"') == 2
+assert project.count('CURRENT_PROJECT_VERSION: "94"') == 2
+assert project.count('CFBundleVersion: "94"') == 2
 print("NATIVE_BUILD66_PENDING_GITHUB_RECEIPT_RECONCILIATION_OK")
 
 # Build67: no stale "waiting GitHub" indicators after the remote rolling
@@ -738,8 +738,8 @@ assert 'private var showEveryPending = false' in pending_panel
 assert 'visiblePending' in pending_panel
 assert 'store.reconciliationSummary' in pending_panel
 assert 'EditorialPendingPolicy.swift' in project
-assert 'CURRENT_PROJECT_VERSION: "93"' in project
-assert 'CFBundleVersion: "93"' in project
+assert 'CURRENT_PROJECT_VERSION: "94"' in project
+assert 'CFBundleVersion: "94"' in project
 assert 'pendingOperationsDiagnostic' in store
 assert 'request_id=' in store
 assert 'sin-identificador' in store
@@ -787,10 +787,12 @@ inbox = (root / 'TTActualidad/ImageApprovalInbox.swift').read_text()
 assert 'associateVerifiedOriginalInGitHub' in inbox
 # Buffer requires a VERIFIED public GitHub original *after* approval;
 # a Sites published receipt is not evidence the X publisher can read it.
-assert 'response.appVerified == true && response.sitesVerified == true' in inbox
+assert 'response.appVerified == true' in inbox and 'response.sitesVerified == true' in inbox
 assert '_ = try await associateVerifiedOriginalInGitHub(item, using: github)' in inbox
-assert 'catálogo verificado para publicaciones en X' in inbox
-assert 'no está confirmada en GitHub' in inbox
+assert 'Aprobada en APP/Site y asociada en GitHub para X.' in inbox
+assert 'Aprobada en APP/Site, pero falta el espejo IA para X:' in inbox
+assert 'completedIDs.insert(item.id)' in inbox
+assert 'restore(item)' in inbox
 assert 'revision >= 0,  // READY news can legitimately be revision 0.' in auth
 assert 'images.removeAll { $0.id == item.id }' in inbox
 assert 'original.starts(with: [137, 80, 78, 71, 13, 10, 26, 10])' in inbox
@@ -992,3 +994,27 @@ assert 'share in' in actions and 'TTManualXPhotoShareSheet(text: share.text, ima
 assert 'URLComponents(string: "https://twitter.com/intent/tweet")' in actions
 assert 'Comprobar estado de Buffer' not in actions
 print("NATIVE_BUILD93_ONE_TAP_X_PHOTO_EDITORIAL_PUBLISHED_OK")
+
+# Build94: image approval should retire a card on the main actor before
+# any server request. Each action is queued, exact identity is immutable,
+# and failure restores the original for a safe retry. Keep x(F) unchanged.
+inbox = (root / "TTActualidad" / "ImageApprovalInbox.swift").read_text(encoding="utf-8")
+assert 'static let shared = ApprovalInboxModel()' in inbox
+assert 'private var decisionTail: Task<Void, Never>?' in inbox
+assert 'processingIDs.insert(item.id)' in inbox
+assert 'images.removeAll { $0.id == item.id }' in inbox
+assert inbox.index('images.removeAll { $0.id == item.id }') < inbox.index('decisionTail = Task {')
+assert 'await previous?.value' in inbox
+assert 'await persistDecision(item, action: action, using: github)' in inbox
+assert 'func decide(_ item: PendingImage, action: String, using github: GitHubEditor) {' in inbox
+assert 'model.decide(item, action: "approve", using: github)' in inbox
+assert 'model.decide(item, action: "reject", using: github)' in inbox
+assert 'model.actionID' not in inbox
+assert 'response.appVerified == true' in inbox and 'response.sitesVerified == true' in inbox
+assert 'restore(item)' in inbox
+assert 'private func associateVerifiedOriginalInGitHub' in inbox
+assert 'let (original, result) = try await github.privateImageInboxRequest(' in inbox
+assert 'SHA256.hash(data: original)' in inbox
+assert '!processingIDs.contains($0.id) && !completedIDs.contains($0.id)' in inbox
+assert 'approvalID' not in inbox
+print("NATIVE_BUILD94_INSTANT_INBOX_PENDING_OR_ROLLBACK_OK")

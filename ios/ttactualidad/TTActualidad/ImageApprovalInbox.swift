@@ -79,11 +79,19 @@ private enum ApprovalInboxScope {
 
 @MainActor
 private final class ApprovalInboxModel: ObservableObject {
+    // Shared across sheet openings: in-flight decisions keep running and
+    // remain hidden if the editor closes and reopens the inbox.
+    static let shared = ApprovalInboxModel()
     @Published private(set) var images: [PendingImage] = []
     @Published private(set) var previews: [String: UIImage] = [:]
     @Published private(set) var loading = false
-    @Published private(set) var actionID: String?
+    @Published private(set) var processingIDs = Set<String>()
     @Published var notice = ""
+    // A successful receipt must not reappear during an eventually-consistent
+    // refresh, but a failed decision always restores its original card.
+    private var completedIDs = Set<String>()
+    private var decisionTail: Task<Void, Never>?
+
     @Published private(set) var pageDiagnostics = ""
 
     func load(using github: GitHubEditor, readyNews: Set<String>) async {
@@ -122,7 +130,9 @@ private final class ApprovalInboxModel: ObservableObject {
                 " candidatas consultadas · " + String(items.count) +
                 " pendientes elegibles." +
                 (supportsPagination ? "" : " El servidor no confirma paginación; podrían faltar imágenes.")
-            images = items
+            images = items.filter {
+                !processingIDs.contains($0.id) && !completedIDs.contains($0.id)
+            }
             let keys = Set(items.map(\.id))
             previews = previews.filter { keys.contains($0.key) }
             notice = items.isEmpty ?
@@ -191,33 +201,64 @@ private final class ApprovalInboxModel: ObservableObject {
             editorialText: item.editorialText, png: original)
     }
 
-    func decide(_ item: PendingImage, action: String, using github: GitHubEditor) async {
-        guard actionID == nil, ["approve", "reject"].contains(action) else { return }
+    // No await before hiding a card. This method is called directly by the
+    // button on the main actor; each tap immediately exposes the next image.
+    // The private API and the GitHub mirror run in a serial background queue.
+    func decide(_ item: PendingImage, action: String, using github: GitHubEditor) {
+        guard ["approve", "reject"].contains(action),
+              !processingIDs.contains(item.id),
+              !completedIDs.contains(item.id),
+              images.contains(where: { $0.id == item.id }) else { return }
         guard previews[item.id] != nil else {
             notice = "Necesitamos comprobar primero el PNG original antes de tomar una decisión."
             return
         }
-        actionID = item.id
-        defer { actionID = nil }
+        processingIDs.insert(item.id)
+        images.removeAll { $0.id == item.id }
+        notice = "Decisión en curso · " + String(processingIDs.count) +
+                 " pendiente(s). Puedes pasar a la siguiente imagen."
+
+        // Safe one-at-a-time backend write, but zero UI waiting. Keep a strong
+        // reference until completion even if the sheet is dismissed.
+        let previous = decisionTail
+        decisionTail = Task {
+            await previous?.value
+            await persistDecision(item, action: action, using: github)
+        }
+        // Prefetch the next original right away, without waiting for POST.
+        for next in images.prefix(4) where previews[next.id] == nil {
+            Task { await loadOriginal(next, using: github) }
+        }
+    }
+
+    private func restore(_ item: PendingImage) {
+        // Server/association failure: never pretend the image was approved.
+        // Keep the exact original/identity available for explicit retry.
+        if !images.contains(where: { $0.id == item.id }) &&
+           !completedIDs.contains(item.id) {
+            images.insert(item, at: 0)
+        }
+    }
+
+    private func persistDecision(_ item: PendingImage, action: String,
+                                 using github: GitHubEditor) async {
+        defer { processingIDs.remove(item.id) }
         do {
             let body = try JSONEncoder().encode(ApprovalDecision(
                 action: action, expectedIdentity: item.identity))
             let (data, status) = try await github.privateImageInboxRequest(
                 path: "/v1/images/\(item.id)/decision", method: "POST", jsonBody: body)
             if status != 200 {
-                // A transient service outage or stale Listas-only rule does
-                // not revoke the editor's explicit choice to illustrate a
-                // historical card. Use its exact original bytes, never the
-                // preview or an unrelated image. Do not claim Sites success.
+                // Preserve the existing immutable-PNG GitHub fallback. It is
+                // NOT equivalent to an APP+Site receipt: restore for retry.
                 if action == "approve", [404, 409, 503].contains(status) {
-                    let url = try await associateVerifiedOriginalInGitHub(item, using: github)
+                    _ = try await associateVerifiedOriginalInGitHub(item, using: github)
                     await SiteAIImageCatalog.invalidateCache()
                     await NewsAIImageCatalog.invalidateCache()
-                    notice = "Imagen original asociada a la ficha " +
-                        item.identity.editorialId + " en GitHub. " +
-                        "La web aún no ha confirmado la imagen (servicio privado HTTP " +
-                        String(status) + "). La fotografía se conserva."
-                    _ = url
+                    notice = "Original vinculado en GitHub, pero APP/Site aún no " +
+                             "confirma esta aprobación (HTTP " + String(status) +
+                             "). La imagen vuelve para reintentar."
+                    restore(item)
                     return
                 }
                 let payload = (try? JSONSerialization.jsonObject(with: data)) as? [String: Any]
@@ -226,40 +267,37 @@ private final class ApprovalInboxModel: ObservableObject {
             }
             let response = try JSONDecoder().decode(DecisionResponse.self, from: data)
             if action == "approve" && response.state == "approved_awaiting_publication" {
-                notice = "Aprobación guardada. Publicación pendiente; pulsa Aprobar para reintentar sin generar otra imagen."
+                notice = "Aprobación guardada, publicación pendiente. " +
+                         "La imagen ha vuelto para poder reintentar sin regenerarla."
+                restore(item)
                 return
             }
             guard response.state == (action == "approve" ? "published" : "rejected"),
-                  action != "approve" || (response.appVerified == true && response.sitesVerified == true) else {
+                  action != "approve" || (response.appVerified == true &&
+                                          response.sitesVerified == true) else {
                 throw InboxError.unexpectedResponse
             }
+            completedIDs.insert(item.id)
+            previews.removeValue(forKey: item.id)
             if action == "approve" {
                 await SiteAIImageCatalog.invalidateCache()
                 await NewsAIImageCatalog.invalidateCache()
-                // The private service's "published" receipt proves APP/Site,
-                // NOT that Buffer can obtain a verified public IA asset.
-                // Mirror this same approved original into the existing GitHub
-                // manifest that Buffer reads; never mirror a pending/rejected
-                // image. An exact SHA/episode check is performed again.
+                // Same verified PNG and exact editorial identity; a failure
+                // here must not undo a confirmed APP/Site approval.
                 do {
                     _ = try await associateVerifiedOriginalInGitHub(item, using: github)
-                    notice = "Aprobada en APP y Site. IA asociada también al " +
-                        "catálogo verificado para publicaciones en X."
+                    notice = "Aprobada en APP/Site y asociada en GitHub para X."
                 } catch {
-                    // Do not retract or disguise an already accepted Site
-                    // approval if GitHub fails independently. Buffer will
-                    // continue using archive until the mirror succeeds.
-                    notice = "Aprobada en APP y Site. Atención: la IA para X " +
-                        "no está confirmada en GitHub: " + error.localizedDescription
+                    notice = "Aprobada en APP/Site, pero falta el espejo IA para X: " +
+                             error.localizedDescription
                 }
             } else {
-                notice = "Rechazada. Solo se ha retirado de la bandeja; original conservado."
+                notice = "Rechazada. Original conservado; bandeja actualizada."
             }
-            images.removeAll { $0.id == item.id }
-            previews.removeValue(forKey: item.id)
         } catch {
-            notice = "No se ha confirmado la decisión: \(error.localizedDescription)"
-            // Leave card visible, including original, for a deliberate retry.
+            notice = "Decisión no confirmada: " + error.localizedDescription +
+                     ". Se ha restaurado la imagen para reintentar."
+            restore(item)
         }
     }
 
@@ -301,7 +339,7 @@ struct ImageApprovalInbox: View {
     @ObservedObject var github: GitHubEditor
     @EnvironmentObject private var store: EditorialStore
     @Environment(\.dismiss) private var dismiss
-    @StateObject private var model = ApprovalInboxModel()
+    @StateObject private var model = ApprovalInboxModel.shared
 
     private var readyNewsEpisodes: Set<String> {
         Set(store.snapshot.news.map { $0.id + ":r" + String($0.revision) })
@@ -365,17 +403,18 @@ struct ImageApprovalInbox: View {
                                     .font(.caption2).foregroundStyle(.secondary)
                                 HStack(spacing: 12) {
                                     Button("Aprobar") {
-                                        Task { await model.decide(item, action: "approve", using: github) }
+                                        model.decide(item, action: "approve", using: github)
                                     }
                                     .buttonStyle(.borderedProminent)
                                     .tint(.green)
                                     Button("Rechazar") {
-                                        Task { await model.decide(item, action: "reject", using: github) }
+                                        model.decide(item, action: "reject", using: github)
                                     }
                                     .buttonStyle(.bordered)
                                     .tint(.red)
                                 }
-                                .disabled(model.actionID != nil || model.previews[item.id] == nil)
+                                .disabled(model.processingIDs.contains(item.id) ||
+                                          model.previews[item.id] == nil)
                             }
                             .padding(.vertical, 7)
                             .task(id: item.id) { await model.loadOriginal(item, using: github) }
