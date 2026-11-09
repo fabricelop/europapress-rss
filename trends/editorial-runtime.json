@@ -3,20 +3,20 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794191223000-manual",
-  "previous_run_id": "tr-1794190825816-manual",
-  "command_id": "tr-1794191223000-manual",
+  "run_id": "tr-1794192000000-manual",
+  "previous_run_id": "tr-1794191223000-manual",
+  "command_id": "tr-1794192000000-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-09T03:27:03+01:00",
-  "updated_at": "2026-11-09T02:29:03.569Z",
-  "finished_at": "2026-11-09T02:29:03.569Z",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-09T03:40:00+01:00",
+  "updated_at": "2026-11-09T03:40:00+01:00",
+  "finished_at": null,
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -47,8 +47,8 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Sin trabajo editorial activo",
-  "last_started_at": "2026-11-09T03:27:03+01:00",
+  "activity": "Preparando pasada editorial",
+  "last_started_at": "2026-11-09T03:40:00+01:00",
   "last_completed_at": "2026-11-09T02:29:03.569Z",
   "api_failover_enabled": false,
   "last_run": {
@@ -81,7 +81,7 @@
     "outcomes": [],
     "message": "Pasada tr-1794191223000-manual cerrada 0/0 contra estado autoritativo de main. Refresco manual disparado con formato vigente en commit 62b346f4df646464e1eee6a785605577b6eb50ca; durante esta ejecución no se materializó aún un Top 30 posterior. El snapshot vigente seguía capturado 2026-11-09T03:24:40+01:00, con editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain, anticipate ni review_red activos. No se inventó trabajo. ImageGen=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794191223000-manual cerrada 0/0 contra estado autoritativo de main. Refresco manual disparado con formato vigente en commit 62b346f4df646464e1eee6a785605577b6eb50ca; durante esta ejecución no se materializó aún un Top 30 posterior. El snapshot vigente seguía capturado 2026-11-09T03:24:40+01:00, con editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain, anticipate ni review_red activos. No se inventó trabajo. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1794192000000-manual iniciada desde chat. Relectura inicial de main: editorial-queue=0. Se ejecuta refresco manual del Top 30 y barrera JIT; ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-08T15:07:08+01:00",
@@ -1333,6 +1333,11 @@
       "at": "2026-11-09T02:29:03.569Z",
       "phase": "closing",
       "message": "Pasada tr-1794191223000-manual cerrada 0/0 contra estado autoritativo de main. Refresco manual disparado con formato vigente en commit 62b346f4df646464e1eee6a785605577b6eb50ca; durante esta ejecución no se materializó aún un Top 30 posterior. El snapshot vigente seguía capturado 2026-11-09T03:24:40+01:00, con editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain, anticipate ni review_red activos. No se inventó trabajo. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-09T03:40:00+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-1794192000000-manual iniciada desde chat. Relectura inicial de main: editorial-queue=0. Se ejecuta refresco manual del Top 30 y barrera JIT; ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": null
