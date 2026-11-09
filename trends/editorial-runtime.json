@@ -3,45 +3,35 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794244208283-manual",
-  "previous_run_id": "tr-1794243281678-manual",
-  "command_id": "tr-1794244208283-manual",
+  "run_id": "tr-20261109T1825-manual",
+  "previous_run_id": "tr-1794244208283-manual",
+  "command_id": "tr-20261109T1825-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-09T18:10:00+01:00",
-  "updated_at": "2026-11-09T18:16:00+01:00",
-  "finished_at": "2026-11-09T18:16:00+01:00",
-  "current": 6,
-  "total": 6,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-09T18:25:00+01:00",
+  "updated_at": "2026-11-09T18:25:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "red-review-7b64c614c1a27d1754ab",
-    "red-review-1c00edc669ea4e141e96",
-    "a490717779d6",
-    "b16fa61d45ba",
-    "06d9a9f6c06f",
-    "cf3a57628428"
-  ],
-  "converged_ids": [
-    "red-review-7b64c614c1a27d1754ab",
-    "red-review-1c00edc669ea4e141e96"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
+  "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 6,
-    "observed": 6,
-    "closed": 6,
-    "explained": 4,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 2,
-    "unchanged_reviews": 2,
+    "maintenance_reviews": 0,
+    "unchanged_reviews": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "stale_reviews": 0,
@@ -52,62 +42,9 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 2
+    "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "red-review-7b64c614c1a27d1754ab",
-      "revision": 0,
-      "name": "Revisar novedades: Oviedo",
-      "outcome": "unchanged",
-      "applied": true,
-      "via": "concurrent_convergence"
-    },
-    {
-      "id": "red-review-1c00edc669ea4e141e96",
-      "revision": 0,
-      "name": "Revisar novedades: Supa",
-      "outcome": "unchanged",
-      "applied": true,
-      "via": "concurrent_convergence"
-    },
-    {
-      "id": "a490717779d6",
-      "revision": 0,
-      "name": "Pau Cubarsí",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied",
-      "apply_commit": "2a17ed46a7a831ccd7b04573935b8af86ea5fa6b"
-    },
-    {
-      "id": "b16fa61d45ba",
-      "revision": 0,
-      "name": "Broncano",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied",
-      "apply_commit": "2a17ed46a7a831ccd7b04573935b8af86ea5fa6b"
-    },
-    {
-      "id": "06d9a9f6c06f",
-      "revision": 0,
-      "name": "Gamarra",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied",
-      "apply_commit": "2a17ed46a7a831ccd7b04573935b8af86ea5fa6b"
-    },
-    {
-      "id": "cf3a57628428",
-      "revision": 0,
-      "name": "Carzzy",
-      "outcome": "explained_cause_unconfirmed",
-      "applied": true,
-      "via": "editorial_outbox_applied",
-      "apply_commit": "eda85340dbfabc2007c83109cef3236abfb95051"
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -241,9 +178,16 @@
       "at": "2026-11-09T18:16:00+01:00",
       "phase": "closing",
       "message": "Pasada tr-1794244208283-manual cerrada 6/6. Oviedo y Supa quedaron unchanged porque sus episodios nuevos ya habían sido materializados hoy en fichas independientes y el editor las dejó deleted, por lo que no se recrearon. Durante la barrera JIT entraron Pau Cubarsí, Broncano, Gamarra y Carzzy; los cuatro quedaron explained y sincronizados por el aplicador oficial. Relectura final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-20261109T1825-manual",
+      "status": "RUNNING",
+      "at": "2026-11-09T18:25:00+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-20261109T1825-manual RUNNING desde chat. Cola inicial JIT=0 sobre snapshot Top 30 capturado 2026-11-09T18:20:56+01:00; se releerá main antes de cerrar. ImageGen=0; publicaciones=0."
     }
   ],
-  "last_started_at": "2026-11-09T18:15:26+01:00",
+  "last_started_at": "2026-11-09T18:25:00+01:00",
   "last_completed_at": "2026-11-09T18:16:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -275,7 +219,7 @@
     },
     "message": "Pasada tr-1794244208283-manual cerrada 6/6. Oviedo y Supa quedaron unchanged porque sus episodios nuevos ya habían sido materializados hoy en fichas independientes y el editor las dejó deleted, por lo que no se recrearon. Durante la barrera JIT entraron Pau Cubarsí, Broncano, Gamarra y Carzzy; los cuatro quedaron explained y sincronizados por el aplicador oficial. Relectura final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794244208283-manual cerrada 6/6. Oviedo y Supa quedaron unchanged porque sus episodios nuevos ya habían sido materializados hoy en fichas independientes y el editor las dejó deleted, por lo que no se recrearon. Durante la barrera JIT entraron Pau Cubarsí, Broncano, Gamarra y Carzzy; los cuatro quedaron explained y sincronizados por el aplicador oficial. Relectura final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada tr-20261109T1825-manual RUNNING desde chat. Cola inicial JIT=0 sobre snapshot Top 30 capturado 2026-11-09T18:20:56+01:00; se releerá main antes de cerrar. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794199200000-manual",
