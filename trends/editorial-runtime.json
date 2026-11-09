@@ -7,16 +7,16 @@
   "previous_run_id": "tr-20261109T1725-manual",
   "command_id": "tr-20261109T1740-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "verifying",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-09T17:40:00+01:00",
-  "updated_at": "2026-11-09T17:40:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-09T17:41:15+01:00",
+  "finished_at": "2026-11-09T17:41:15+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -109,16 +109,21 @@
       "at": "2026-11-09T17:40:00+01:00",
       "phase": "verifying",
       "message": "Releyendo main y verificando cola autoritativa, decisiones activas y resultados antes del cierre."
+    },
+    {
+      "at": "2026-11-09T17:41:15+01:00",
+      "phase": "closing",
+      "message": "Barrera final superada: cola autoritativa vacía y sin trabajos activos en mobile-decisions."
     }
   ],
   "last_started_at": "2026-11-09T17:40:00+01:00",
   "last_completed_at": "2026-11-09T17:25:45+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261109T1725-manual",
+    "run_id": "tr-20261109T1740-manual",
     "status": "DONE",
-    "started_at": "2026-11-09T17:25:00+01:00",
-    "finished_at": "2026-11-09T17:25:45+01:00",
+    "started_at": "2026-11-09T17:40:00+01:00",
+    "finished_at": "2026-11-09T17:41:15+01:00",
     "summary": {
       "attempted": 0,
       "observed": 0,
@@ -141,7 +146,7 @@
       "incidents": 0,
       "concurrent_convergence": 0
     },
-    "message": "Pasada tr-20261109T1725-manual cerrada 0/0 contra main. Relectura JIT final: editorial-queue=0 (actualizada 2026-11-09T17:21:03+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "message": "Pasada tr-20261109T1740-manual cerrada 0/0 contra main. Relectura JIT final: editorial-queue=0 (actualizada 2026-11-09T17:41:01+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial pendiente. El Top 30 reciente estaba marcado live_verified=false/reliability=unverified; no se forzó ninguna investigación. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
   "message": "Pasada tr-20261109T1725-manual cerrada 0/0 contra main. Relectura JIT final: editorial-queue=0 (actualizada 2026-11-09T17:21:03+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
@@ -2350,5 +2355,6 @@
   "current_item": null,
   "withdrawn_ids": [
     "ae7f066f3c94"
-  ]
+  ],
+  "last_finished_at": "2026-11-09T17:41:15+01:00"
 }
