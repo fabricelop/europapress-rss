@@ -24,6 +24,25 @@ struct EditorialRelationEndpoint: Codable, Identifiable, Equatable {
         self.listedAt = listedAt
     }
 
+    // The Site v85 can return legacy rows with no optional fingerprint,
+    // display text or timestamp. Do not discard all real relations because
+    // a non-identity presentation field was absent. IDs/revisions stay strict.
+    private enum CodingKeys: String, CodingKey {
+        case id, revision, episodeFingerprint, title, text, path, listedAt
+    }
+
+    init(from decoder: Decoder) throws {
+        let value = try decoder.container(keyedBy: CodingKeys.self)
+        id = try value.decode(String.self, forKey: .id)
+        revision = try value.decode(Int.self, forKey: .revision)
+        episodeFingerprint = try value.decodeIfPresent(
+            String.self, forKey: .episodeFingerprint) ?? ""
+        title = try value.decodeIfPresent(String.self, forKey: .title) ?? ""
+        text = try value.decodeIfPresent(String.self, forKey: .text) ?? ""
+        path = try value.decodeIfPresent(String.self, forKey: .path)
+        listedAt = try value.decodeIfPresent(String.self, forKey: .listedAt)
+    }
+
     var stableIdentity: String {
         [id, String(revision), episodeFingerprint].joined(separator: "|")
     }
@@ -50,12 +69,40 @@ struct EditorialRelation: Decodable, Identifiable {
     let state: String
     let origin: String
     let reason: String
+
+    private enum CodingKeys: String, CodingKey {
+        case id, news, trend, state, origin, reason
+    }
+
+    init(from decoder: Decoder) throws {
+        let value = try decoder.container(keyedBy: CodingKeys.self)
+        id = try value.decode(String.self, forKey: .id)
+        news = try value.decode(EditorialRelationEndpoint.self, forKey: .news)
+        trend = try value.decode(EditorialRelationEndpoint.self, forKey: .trend)
+        state = try value.decode(String.self, forKey: .state)
+        origin = try value.decodeIfPresent(String.self, forKey: .origin) ?? ""
+        reason = try value.decodeIfPresent(String.self, forKey: .reason) ?? ""
+    }
 }
 
 struct EditorialRelationsSnapshot: Decodable {
     let items: [EditorialRelation]
     let news: [EditorialRelationEndpoint]
     let trends: [EditorialRelationEndpoint]
+
+    private enum CodingKeys: String, CodingKey {
+        case items, news, trends
+    }
+
+    init(from decoder: Decoder) throws {
+        let value = try decoder.container(keyedBy: CodingKeys.self)
+        items = try value.decodeIfPresent([EditorialRelation].self,
+                                          forKey: .items) ?? []
+        news = try value.decodeIfPresent([EditorialRelationEndpoint].self,
+                                         forKey: .news) ?? []
+        trends = try value.decodeIfPresent([EditorialRelationEndpoint].self,
+                                           forKey: .trends) ?? []
+    }
 }
 
 struct EditorialRelationDecision: Encodable {
@@ -82,6 +129,36 @@ enum EditorialRelationsPolicy {
                         _ trend: EditorialRelationEndpoint) -> String {
         newsKey(id: news.id, revision: news.revision) + "↔" +
             newsKey(id: trend.id, revision: trend.revision)
+    }
+
+    // Sites v85 can expose the same exact pair through an older automatic
+    // suggestion AND a manual confirmed relation, with different fingerprints.
+    // Their identity is still (news ID/rev, trend ID/rev): the manual state wins.
+    // Never let a later suggested row overwrite a confirmed checkbox.
+    static func effectivePairStates(_ items: [EditorialRelation]) -> [String: String] {
+        var best: [String: EditorialRelation] = [:]
+        for item in items {
+            let key = pairKey(item.news, item.trend)
+            if let previous = best[key] {
+                if precedence(item) > precedence(previous) { best[key] = item }
+            } else {
+                best[key] = item
+            }
+        }
+        return best.mapValues { $0.state }
+    }
+
+    static func confirmedCount(_ items: [EditorialRelation],
+                               trendID: String, revision: Int) -> Int {
+        guard !trendID.isEmpty else { return 0 }
+        let states = effectivePairStates(items)
+        return Set(items.compactMap { relation -> String? in
+            guard relation.trend.id == trendID,
+                  relation.trend.revision == revision,
+                  states[pairKey(relation.news, relation.trend)] == "linked"
+            else { return nil }
+            return newsKey(id: relation.news.id, revision: relation.news.revision)
+        }).count
     }
 
     // A successful POST is not proof the relationship is visible on the Site.

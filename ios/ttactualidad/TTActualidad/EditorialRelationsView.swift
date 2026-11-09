@@ -1,6 +1,65 @@
 import Combine
 import SwiftUI
 
+// Single shared read-only summary. EditorialActions is instantiated for many
+// cards; querying Sites separately per card would waste requests and race.
+@MainActor
+final class EditorialRelationCountsStore: ObservableObject {
+    static let shared = EditorialRelationCountsStore()
+    @Published private(set) var revision = 0
+    private(set) var snapshot: EditorialRelationsSnapshot?
+    private(set) var news: [EditorialRelationEndpoint] = []
+    private var loadedAt: Date?
+    private var loading = false
+
+    func refresh(using github: GitHubEditor, force: Bool = false) async {
+        if loading { return }
+        if !force, let loadedAt, Date().timeIntervalSince(loadedAt) < 90 { return }
+        guard github.authenticated else { return }
+        loading = true
+        defer { loading = false }
+        // Do not claim 0/X when GET failed. A verified Site read is required.
+        do {
+            async let history = github.editorialRelationRecentNews()
+            let (raw, status) = try await github.privateEditorialRelationsRequest(
+                path: "/v1/snapshot")
+            guard status == 200 else { return }
+            let verified = try JSONDecoder().decode(
+                EditorialRelationsSnapshot.self, from: raw)
+            let recent = (try? await history) ?? []
+            snapshot = verified
+            var byIdentity: [String: EditorialRelationEndpoint] = [:]
+            let related = EditorialRelationsPolicy.canonical(verified.items)
+            for row in verified.news + related.map(\.news) + recent {
+                let id = EditorialRelationsPolicy.newsKey(
+                    id: row.id, revision: row.revision)
+                if let current = byIdentity[id],
+                   !current.episodeFingerprint.isEmpty &&
+                    row.episodeFingerprint.isEmpty {
+                    continue
+                }
+                byIdentity[id] = row
+            }
+            news = Array(byIdentity.values)
+            loadedAt = Date()
+            revision &+= 1
+        } catch {
+            // Keep previous verified snapshot, never convert an error to zero.
+        }
+    }
+
+    // X = ALL confirmed linked news for this exact editorial trend, including
+    // historical news not in today's Top 5. N = at most 5 matching candidates.
+    // Nothing is considered linked merely because its text mentions a name.
+    func counts(trendID: String, revision: Int, name: String) -> (Int, Int)? {
+        guard let snapshot, !trendID.isEmpty else { return nil }
+        let found = EditorialRelationsPolicy.newsForTrend(news, name: name)
+        let associated = EditorialRelationsPolicy.confirmedCount(
+            snapshot.items, trendID: trendID, revision: revision)
+        return (associated, found.count)
+    }
+}
+
 struct EditorialRelationsScope {
     let project: String
     let id: String
@@ -402,11 +461,11 @@ struct EditorialRelationsView: View {
         let news = buildAllNewsChoices(canonical: canonical)
         let dates = buildFallbackDates()
         let endpoints = (model.snapshot?.trends ?? []) + canonical.map(\.trend)
-        var states: [String: String] = [:]
-        for relation in canonical {
-            let key = pairKey(relation.news, relation.trend)
-            states[key] = relation.state
-        }
+        // A v85 snapshot may carry both a suggested row and a manual link
+        // for the same pair, potentially with enriched fingerprints.
+        // A manual decision must not be overwritten by loop order.
+        let states = EditorialRelationsPolicy.effectivePairStates(
+            model.snapshot?.items ?? [])
         var matches: [String: [EditorialRelationEndpoint]] = [:]
         var trends: [String: EditorialRelationEndpoint] = [:]
         let now = Date()
@@ -589,11 +648,20 @@ struct EditorialRelationsView: View {
             let name = scope.title
             let found = relatedNews(rank: rank, name: name)
             let changes = changesForTrend(found, rank: rank, name: name)
-            Section("Noticias encontradas · " + String(found.count) + "/5") {
-                Text("Búsqueda de «" + name +
-                     "» en titulares y textos de noticias, sin filtros de fecha, " +
-                     "Listas, estado ni publicación. Marca las que quieras " +
-                     "relacionar y pulsa Guardar.")
+            // X includes every confirmed exact link, even when it is older
+            // than the five matching news shown in this picker. An unavailable
+            // snapshot must never masquerade as zero confirmed links.
+            let confirmed = model.snapshot.map {
+                EditorialRelationsPolicy.confirmedCount(
+                    $0.items, trendID: scope.id, revision: scope.revision)
+            }
+            Section("Noticias relacionadas · " +
+                    (confirmed.map { String($0) } ?? "—") + "/" +
+                    String(found.count)) {
+                Text("X = todos los vínculos confirmados en el Site para " +
+                     "esta tendencia; N = noticias candidatas mostradas " +
+                     "(máximo 5). Las relacionadas aparecen marcadas. " +
+                     "Solo los cambios requieren Guardar.")
                     .font(.footnote).foregroundStyle(.secondary)
                 if found.isEmpty {
                     Text(model.loading ? "Buscando noticias…" :
@@ -619,7 +687,8 @@ struct EditorialRelationsView: View {
                               systemImage: "checkmark.circle.fill")
                     }
                     .buttonStyle(.borderedProminent)
-                    .disabled(model.saving)
+                    // The authoritative GET is required before changing links.
+                    .disabled(model.saving || model.snapshot == nil)
                 }
             }
         }
@@ -836,23 +905,33 @@ struct EditorialRelationsView: View {
                     .foregroundStyle(.secondary).lineLimit(3)
             }
             if let trend, selectable {
+                let changed = pendingSwitches[linkKey] != nil
                 Button {
                     toggleSelection(news, trend)
                 } label: {
-                    Label(selected ? "Asociada / seleccionada" : "Marcar para asociar",
-                          systemImage: selected ? "checkmark.square.fill" : "square")
+                    Label(
+                        changed
+                            ? (selected ? "Seleccionada para asociar" :
+                               "Seleccionada para desvincular")
+                            : (linked ? "Ya relacionada · guardada en el Site" :
+                               "Marcar para asociar"),
+                        systemImage: selected ? "checkmark.square.fill" : "square")
                 }
-                .buttonStyle(.plain).foregroundStyle(TTTheme.teal)
+                .buttonStyle(.plain)
+                .foregroundStyle(changed ? .orange : TTTheme.teal)
+                if changed {
+                    Text(selected ? "Se asociará al pulsar Guardar" :
+                         "Se desasociará al pulsar Guardar")
+                        .font(.caption2).foregroundStyle(.orange)
+                } else if linked {
+                    Text("Relación confirmada por el servidor; no requiere guardar de nuevo.")
+                        .font(.caption2).foregroundStyle(TTTheme.teal)
+                } else if model.snapshot == nil {
+                    Text("No se ha podido confirmar el estado remoto. Actualiza antes de guardar.")
+                        .font(.caption2).foregroundStyle(.orange)
+                }
             } else {
-                Text("No se reconoce el identificador de la tendencia.")
-                    .font(.caption).foregroundStyle(.orange)
-            }
-            if pendingSwitches[linkKey] != nil && selectable {
-                Text(selected ? "Se asociará al pulsar Guardar" :
-                     "Se desasociará al pulsar Guardar")
-                    .font(.caption2).foregroundStyle(.orange)
-            } else if !selectable {
-                Text("Identificador de tendencia pendiente.")
+                Text("Identificador de tendencia pendiente o no reconocido.")
                     .font(.caption2).foregroundStyle(.orange)
             }
             if scope?.project != "ttendencias" {

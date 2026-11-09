@@ -361,4 +361,70 @@ final class EditorialRelationsTests: XCTestCase {
         XCTAssertFalse(EditorialRelationsPolicy.persisted(blocked.items,
             news:item.news,trend:item.trend,action:"link"))
     }
+
+    func testJulianManualLinksOverrideSuggestionsAndCountAllLinkedNews() throws {
+        // Site v85 may return a suggestion and a confirmed link with different
+        // fingerprints for the same pair. Ordering must not clear the check.
+        let data = Data(#"""
+        {"items":[
+          {"id":"cerezo-manual","news":{"id":"9ed95352b91b","revision":1,"episodeFingerprint":"N1","title":"Enrique Cerezo sobre Julián","text":""},"trend":{"id":"trend-update-08da896cbbe389cf5192","revision":0,"episodeFingerprint":"T1","title":"Julián","text":""},"state":"linked","origin":"manual","reason":"editor"},
+          {"id":"cerezo-auto","news":{"id":"9ed95352b91b","revision":1,"episodeFingerprint":"","title":"Enrique Cerezo sobre Julián","text":""},"trend":{"id":"trend-update-08da896cbbe389cf5192","revision":0,"episodeFingerprint":"","title":"Julián","text":""},"state":"suggested","origin":"automatic","reason":"match"},
+          {"id":"simeone-manual","news":{"id":"9593c2b869f1","revision":1,"episodeFingerprint":"N2","title":"Simeone: lo necesitamos","text":""},"trend":{"id":"trend-update-08da896cbbe389cf5192","revision":0,"episodeFingerprint":"T1","title":"Julián","text":""},"state":"linked","origin":"manual","reason":"editor"},
+          {"id":"nadal-manual","news":{"id":"some-other-news","revision":1,"episodeFingerprint":"N3","title":"Nadal","text":""},"trend":{"id":"another-trend","revision":0,"episodeFingerprint":"T3","title":"Nadal","text":""},"state":"linked","origin":"manual","reason":"editor"}
+        ],"news":[],"trends":[]}
+        """#.utf8)
+        let snap = try JSONDecoder().decode(EditorialRelationsSnapshot.self, from: data)
+        let first = try XCTUnwrap(snap.items.first)
+        let states = EditorialRelationsPolicy.effectivePairStates(snap.items)
+        XCTAssertEqual(states[EditorialRelationsPolicy.pairKey(first.news, first.trend)], "linked")
+        XCTAssertEqual(
+            EditorialRelationsPolicy.confirmedCount(
+                snap.items,
+                trendID: "trend-update-08da896cbbe389cf5192", revision: 0),
+            2)
+        XCTAssertEqual(
+            EditorialRelationsPolicy.confirmedCount(
+                snap.items,
+                trendID: "trend-update-08da896cbbe389cf5192", revision: 1),
+            0)
+        XCTAssertNil(EditorialRelationsPolicy.actionForSwitch(
+            current: states[EditorialRelationsPolicy.pairKey(first.news, first.trend)],
+            selected: true))
+    }
+
+    func testManualUnlinkWinsOverEarlierLinkedRecordAtExactPair() throws {
+        let data = Data(#"""
+        {"items":[
+          {"id":"link","news":{"id":"9ed95352b91b","revision":1,"episodeFingerprint":"old","title":"Cerezo","text":""},"trend":{"id":"julian","revision":0,"episodeFingerprint":"old","title":"Julián","text":""},"state":"linked","origin":"automatic","reason":""},
+          {"id":"unlink","news":{"id":"9ed95352b91b","revision":1,"episodeFingerprint":"new","title":"Cerezo","text":""},"trend":{"id":"julian","revision":0,"episodeFingerprint":"new","title":"Julián","text":""},"state":"blocked","origin":"manual","reason":"Editor"}
+        ],"news":[],"trends":[]}
+        """#.utf8)
+        let snap = try JSONDecoder().decode(EditorialRelationsSnapshot.self, from: data)
+        XCTAssertEqual(EditorialRelationsPolicy.confirmedCount(
+            snap.items, trendID: "julian", revision: 0), 0)
+    }
+
+    func testV85SnapshotWithMissingOptionalPresentationFieldsPreservesJulianLinks() throws {
+        // Some historical Site rows omit episodeFingerprint, reason, text and
+        // the separate catalog arrays; exact IDs and revisions still verify.
+        let payload = Data(#"""
+        {"items":[
+          {"id":"cerezo-confirmed","news":{"id":"9ed95352b91b","revision":1,"title":"Enrique Cerezo y Julián"},"trend":{"id":"trend-update-08da896cbbe389cf5192","revision":0,"title":"Julián"},"state":"linked"},
+          {"id":"simeone-confirmed","news":{"id":"9593c2b869f1","revision":1,"title":"Simeone y Julián"},"trend":{"id":"trend-update-08da896cbbe389cf5192","revision":0,"title":"Julián"},"state":"linked"}
+        ]}
+        """#.utf8)
+        let snapshot = try JSONDecoder().decode(EditorialRelationsSnapshot.self,
+                                               from: payload)
+        XCTAssertEqual(snapshot.items.count, 2)
+        XCTAssertTrue(snapshot.news.isEmpty)
+        XCTAssertTrue(snapshot.trends.isEmpty)
+        XCTAssertEqual(snapshot.items[0].news.episodeFingerprint, "")
+        XCTAssertEqual(snapshot.items[0].reason, "")
+        XCTAssertEqual(EditorialRelationsPolicy.confirmedCount(snapshot.items,
+            trendID: "trend-update-08da896cbbe389cf5192", revision: 0), 2)
+        let encoded = try JSONEncoder().encode(snapshot.items[0].news)
+        let reparsed = try JSONDecoder().decode(EditorialRelationEndpoint.self,
+                                               from: encoded)
+        XCTAssertEqual(reparsed.id, "9ed95352b91b")
+    }
 }
