@@ -8,7 +8,7 @@
   "command_id": "tr-1794183437001-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "investigating",
+  "phase": "persisting",
   "started_at": "2026-11-09T01:18:30+01:00",
   "updated_at": "2026-11-09T01:19:03+01:00",
   "finished_at": null,
@@ -82,7 +82,7 @@
     },
     "message": "Pasada tr-1794183217485-manual cerrada 2/2 por convergencia JIT. Barça r0 y Asraf r0 figuran explained en requests y telegram-manual-explained con texto/remate sincronizados; editorial-queue=0 y no quedan preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Barrios r0 revalidado JIT. Fuentes actuales confirman el Atlético-Barça del 8/11/2026: Pablo Barrios fue titular junto a Koke y salió en el 78' por Jonathan David con 1-2; AS señala que su sustitución dañó al equipo. Se redacta texto nuevo. ImageGen=0.",
+  "message": "Barrios r0 persistido en editorial-outbox tras revalidación JIT. El aplicador oficial por push debe materializar requests + telegram-manual-explained y retirar la revisión de la cola. ImageGen=0.",
   "history": [
     {
       "at": "2026-11-08T15:07:08+01:00",
@@ -889,6 +889,13 @@
       "trend_id": "daa31c3c4084",
       "title": "Barrios",
       "message": "Barrios r0 revalidado JIT. Fuentes actuales confirman el Atlético-Barça del 8/11/2026: Pablo Barrios fue titular junto a Koke y salió en el 78' por Jonathan David con 1-2; AS señala que su sustitución dañó al equipo. Se redacta texto nuevo. ImageGen=0."
+    },
+    {
+      "at": "2026-11-09T01:19:03+01:00",
+      "phase": "persisting",
+      "trend_id": "daa31c3c4084",
+      "title": "Barrios",
+      "message": "Barrios r0 persistido en editorial-outbox tras revalidación JIT. El aplicador oficial por push debe materializar requests + telegram-manual-explained y retirar la revisión de la cola. ImageGen=0."
     }
   ],
   "current_item": {
@@ -897,6 +904,6 @@
     "name": "Barrios",
     "rank": 17,
     "status": "preparing",
-    "phase": "investigating"
+    "phase": "persisting"
   }
 }
