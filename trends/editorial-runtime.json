@@ -3,19 +3,19 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794211800000-manual",
-  "previous_run_id": "tr-1794211148379-manual",
+  "run_id": "tr-1794212131276-manual",
+  "previous_run_id": "tr-1794211800000-manual",
   "command_id": "tr-1794211800000-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-09T09:10:00+01:00",
-  "updated_at": "2026-11-09T09:11:00+01:00",
-  "finished_at": "2026-11-09T09:11:00+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-09T09:15:31+01:00",
+  "updated_at": "2026-11-09T09:15:31+01:00",
+  "finished_at": null,
   "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": "Pasada editorial TTendencias",
+  "total": 2,
+  "trend_id": "red-review-d3f70fc527eec472e964",
+  "title": "Revisando novedades: maffeo",
   "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
@@ -102,7 +102,7 @@
     "outcomes": [],
     "message": "Pasada tr-1794211800000-manual cerrada 0/0 tras tres lecturas de la cola autoritativa. editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794211148379-manual cerrada 2/2 por convergencia JIT. Cracovia y Atleti ya habían sido investigadas y aplicadas como review_red=unchanged por la ejecución concurrente tr-1794210900000-manual; se verificó su persistencia sincronizada en requests.json y telegram-manual-explained.json, los dos resultados en maintenance-outbox, editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No se reescribieron fichas ni fechas. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Iniciando revisión JIT de maffeo (0/2); cola autoritativa con 2 review_red. ImageGen desactivado en esta pasada.",
   "history": [
     {
       "at": "2026-11-09T03:17:00+01:00",
@@ -1386,5 +1386,11 @@
       "message": "Pasada tr-1794211148379-manual cerrada 2/2 por convergencia JIT. Cracovia y Atleti ya habían sido investigadas y aplicadas como review_red=unchanged por la ejecución concurrente tr-1794210900000-manual; se verificó su persistencia sincronizada en requests.json y telegram-manual-explained.json, los dos resultados en maintenance-outbox, editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No se reescribieron fichas ni fechas. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
-  "current_item": null
+  "current_item": {
+    "id": "red-review-d3f70fc527eec472e964",
+    "revision": 0,
+    "name": "Revisar novedades: maffeo",
+    "task": "review_red",
+    "phase": "preparing"
+  }
 }
