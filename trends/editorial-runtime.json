@@ -7,50 +7,69 @@
   "previous_run_id": "tr-20261109T1710-manual",
   "command_id": "tr-1794240988286-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-09T17:17:00+01:00",
-  "updated_at": "2026-11-09T17:17:00+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-09T17:19:00+01:00",
+  "finished_at": "2026-11-09T17:19:00+01:00",
+  "current": 2,
   "total": 2,
   "trend_id": null,
-  "title": null,
-  "queue_complete": false,
-  "processed_ids": [],
-  "converged_ids": [],
-  "remaining_ids": [
+  "title": "Pasada editorial TTendencias",
+  "queue_complete": true,
+  "processed_ids": [
     "red-review-4332b75ac2142c8881bf",
     "red-review-0f8839836ba3c9c0b5c9"
   ],
-  "remaining_active_ids": [
+  "converged_ids": [
     "red-review-4332b75ac2142c8881bf",
     "red-review-0f8839836ba3c9c0b5c9"
   ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 2,
     "observed": 2,
-    "closed": 0,
+    "closed": 2,
     "explained": 0,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 0,
-    "unchanged_reviews": 0,
+    "maintenance_reviews": 2,
+    "unchanged_reviews": 2,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 2
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "red-review-4332b75ac2142c8881bf",
+      "revision": 0,
+      "name": "Revisar novedades: #Mañaneros9N",
+      "outcome": "unchanged",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "apply_commit": "7697912137e3d1557d74d78e9e29ac00d953a662"
+    },
+    {
+      "id": "red-review-0f8839836ba3c9c0b5c9",
+      "revision": 0,
+      "name": "Revisar novedades: Puigdemont",
+      "outcome": "unchanged",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "apply_commit": "7697912137e3d1557d74d78e9e29ac00d953a662"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -82,26 +101,33 @@
       "at": "2026-11-09T17:17:00+01:00",
       "phase": "preparing",
       "message": "Pasada tr-1794240988286-manual RUNNING. Cola JIT=2 review_red: #Mañaneros9N y Puigdemont; se procesan por orden, revalidando ID/revisión antes de investigar y persistir. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794240988286-manual",
+      "status": "DONE",
+      "at": "2026-11-09T17:19:00+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-1794240988286-manual cerrada 2/2 por convergencia JIT: #Mañaneros9N y Puigdemont ya habían sido aplicados como unchanged por el mantenimiento 7697912137e3d1557d74d78e9e29ac00d953a662 antes de la persistencia de esta sucesora. Barrera final: editorial-queue=0 y sin trabajo editorial activo. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "last_started_at": "2026-11-09T17:15:42+01:00",
-  "last_completed_at": "2026-11-09T17:15:43+01:00",
+  "last_completed_at": "2026-11-09T17:19:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261109T1655-manual",
+    "run_id": "tr-1794240988286-manual",
     "status": "DONE",
-    "started_at": "2026-11-09T16:55:00+01:00",
-    "finished_at": "2026-11-09T16:56:00+01:00",
+    "started_at": "2026-11-09T17:17:00+01:00",
+    "finished_at": "2026-11-09T17:19:00+01:00",
     "summary": {
-      "attempted": 0,
-      "observed": 0,
-      "closed": 0,
+      "attempted": 2,
+      "observed": 2,
+      "closed": 2,
       "explained": 0,
       "problematic": 0,
       "updates": 0,
       "review_completed_no_distinct_event": 0,
-      "maintenance_reviews": 0,
-      "unchanged_reviews": 0,
+      "maintenance_reviews": 2,
+      "unchanged_reviews": 2,
       "continuity_updates": 0,
       "distinct_updates": 0,
       "stale_reviews": 0,
@@ -112,11 +138,11 @@
       "image_outbox_created": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 0
+      "concurrent_convergence": 2
     },
-    "message": "Pasada tr-20261109T1655-manual cerrada 0/0 contra main. Captura vigente 2026-11-09T16:50:58+01:00; editorial-queue actualizada 16:51:05+01:00 y vacía. Barrera final: mobile-decisions y búsqueda dirigida en requests.json sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "message": "Pasada tr-1794240988286-manual cerrada 2/2 por convergencia JIT: #Mañaneros9N y Puigdemont ya habían sido aplicados como unchanged por el mantenimiento 7697912137e3d1557d74d78e9e29ac00d953a662 antes de la persistencia de esta sucesora. Barrera final: editorial-queue=0 y sin trabajo editorial activo. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794240988286-manual RUNNING. Cola JIT=2 review_red: #Mañaneros9N y Puigdemont; se procesan por orden, revalidando ID/revisión antes de investigar y persistir. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1794240988286-manual cerrada 2/2 por convergencia JIT: #Mañaneros9N y Puigdemont ya habían sido aplicados como unchanged por el mantenimiento 7697912137e3d1557d74d78e9e29ac00d953a662 antes de la persistencia de esta sucesora. Barrera final: editorial-queue=0 y sin trabajo editorial activo. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794199200000-manual",
@@ -2064,6 +2090,169 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-20261109T1641-manual cerrada 0/0 contra main. Captura fresca 2026-11-09T16:41:09+01:00 sin nuevas entradas; editorial-queue actualizada 16:41:15+01:00 y vacía. Barrera final: mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos y búsqueda dirigida en requests.json sin esos estados/tareas. No había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-20261109T1710-manual",
+      "status": "DONE",
+      "started_at": "2026-11-09T17:10:00+01:00",
+      "finished_at": "2026-11-09T17:18:03+01:00",
+      "at": "2026-11-09T17:18:03+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 7,
+        "observed": 7,
+        "closed": 7,
+        "explained": 5,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 2,
+        "unchanged_reviews": 2,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [
+        "a1c1e16d0c24",
+        "0f796da9f2d7",
+        "1a58780acbab",
+        "2cf7851e047a",
+        "b76606f8b171",
+        "red-review-4332b75ac2142c8881bf",
+        "red-review-0f8839836ba3c9c0b5c9"
+      ],
+      "outcomes": [
+        {
+          "id": "a1c1e16d0c24",
+          "revision": 0,
+          "name": "#VotoUtilEsPodemos",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "9fe36143c7d9a495850468b9d342fc6b3a8a2711"
+        },
+        {
+          "id": "0f796da9f2d7",
+          "revision": 0,
+          "name": "#TEM9N",
+          "outcome": "explained_cause_unconfirmed",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "9fe36143c7d9a495850468b9d342fc6b3a8a2711"
+        },
+        {
+          "id": "1a58780acbab",
+          "revision": 0,
+          "name": "El Supremo",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "9fe36143c7d9a495850468b9d342fc6b3a8a2711"
+        },
+        {
+          "id": "2cf7851e047a",
+          "revision": 0,
+          "name": "Oviedo",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "9fe36143c7d9a495850468b9d342fc6b3a8a2711"
+        },
+        {
+          "id": "b76606f8b171",
+          "revision": 0,
+          "name": "La Revuelta",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "9fe36143c7d9a495850468b9d342fc6b3a8a2711"
+        },
+        {
+          "id": "red-review-4332b75ac2142c8881bf",
+          "revision": 0,
+          "name": "Revisar novedades: #Mañaneros9N",
+          "outcome": "unchanged",
+          "applied": true,
+          "apply_commit": "7697912137e3d1557d74d78e9e29ac00d953a662"
+        },
+        {
+          "id": "red-review-0f8839836ba3c9c0b5c9",
+          "revision": 0,
+          "name": "Revisar novedades: Puigdemont",
+          "outcome": "unchanged",
+          "applied": true,
+          "apply_commit": "7697912137e3d1557d74d78e9e29ac00d953a662"
+        }
+      ],
+      "superseded_by": "tr-1794240988286-manual",
+      "message": "Pasada tr-20261109T1710-manual completada con 7 trabajos únicos: 5 explicaciones nuevas (#VotoUtilEsPodemos, #TEM9N, El Supremo, Oviedo y La Revuelta) aplicadas en 9fe36143c7d9a495850468b9d342fc6b3a8a2711; en la barrera final aparecieron 2 review_red (#Mañaneros9N y Puigdemont), ambas verificadas y aplicadas como unchanged en 7697912137e3d1557d74d78e9e29ac00d953a662. La pasada sucesora tomó la telemetría canónica cuando esas dos revisiones ya estaban convergidas. Cola final 0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794240988286-manual",
+      "status": "DONE",
+      "started_at": "2026-11-09T17:17:00+01:00",
+      "finished_at": "2026-11-09T17:19:00+01:00",
+      "at": "2026-11-09T17:19:00+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 2,
+        "observed": 2,
+        "closed": 2,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 2,
+        "unchanged_reviews": 2,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 2
+      },
+      "processed_ids": [
+        "red-review-4332b75ac2142c8881bf",
+        "red-review-0f8839836ba3c9c0b5c9"
+      ],
+      "converged_ids": [
+        "red-review-4332b75ac2142c8881bf",
+        "red-review-0f8839836ba3c9c0b5c9"
+      ],
+      "outcomes": [
+        {
+          "id": "red-review-4332b75ac2142c8881bf",
+          "revision": 0,
+          "name": "Revisar novedades: #Mañaneros9N",
+          "outcome": "unchanged",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "apply_commit": "7697912137e3d1557d74d78e9e29ac00d953a662"
+        },
+        {
+          "id": "red-review-0f8839836ba3c9c0b5c9",
+          "revision": 0,
+          "name": "Revisar novedades: Puigdemont",
+          "outcome": "unchanged",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "apply_commit": "7697912137e3d1557d74d78e9e29ac00d953a662"
+        }
+      ],
+      "message": "Pasada tr-1794240988286-manual cerrada 2/2 por convergencia JIT: #Mañaneros9N y Puigdemont ya habían sido aplicados como unchanged por el mantenimiento 7697912137e3d1557d74d78e9e29ac00d953a662 antes de la persistencia de esta sucesora. Barrera final: editorial-queue=0 y sin trabajo editorial activo. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "current_item": null,
