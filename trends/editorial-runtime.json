@@ -3,20 +3,20 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794196500000-manual",
+  "run_id": "tr-1794197400000-manual",
   "previous_run_id": "tr-1794195600000-manual",
-  "command_id": "tr-1794196500000-manual",
+  "command_id": "tr-1794197400000-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-09T04:55:00+01:00",
-  "updated_at": "2026-11-09T04:56:30+01:00",
-  "finished_at": "2026-11-09T04:56:30+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-09T05:10:00+01:00",
+  "updated_at": "2026-11-09T05:10:00+01:00",
+  "finished_at": null,
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -48,7 +48,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "closing",
+  "activity": "preparing",
   "last_started_at": "2026-11-09T04:55:00+01:00",
   "last_completed_at": "2026-11-09T04:56:30+01:00",
   "api_failover_enabled": false,
@@ -85,7 +85,7 @@
     "outcomes": [],
     "message": "Pasada tr-1794196500000-manual cerrada 0/0: barrera final en main con editorial-queue=0 (snapshot 2026-11-09T04:51:29+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. Se solicitó un refresco manual adicional en control/ttendencias-run-trigger, pero el consumidor PC no emitió un ACK nuevo; ese trigger no se usa como prueba de ejecución. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794196500000-manual cerrada 0/0: barrera final en main con editorial-queue=0 (snapshot 2026-11-09T04:51:29+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. Se solicitó un refresco manual adicional en control/ttendencias-run-trigger, pero el consumidor PC no emitió un ACK nuevo; ese trigger no se usa como prueba de ejecución. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada tr-1794197400000-manual RUNNING desde chat. Relectura inicial de main: editorial-queue=0; se verifica la barrera JIT de estados activos antes del cierre. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T03:17:00+01:00",
@@ -350,6 +350,11 @@
       "processed_ids": [],
       "outcomes": [],
       "message": "Pasada tr-1794196500000-manual cerrada 0/0: barrera final en main con editorial-queue=0 (snapshot 2026-11-09T04:51:29+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. Se solicitó un refresco manual adicional en control/ttendencias-run-trigger, pero el consumidor PC no emitió un ACK nuevo; ese trigger no se usa como prueba de ejecución. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-09T05:10:00+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-1794197400000-manual RUNNING desde chat. Relectura inicial de main: editorial-queue=0; se verifica la barrera JIT de estados activos antes del cierre. ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": null
