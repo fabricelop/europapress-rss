@@ -193,13 +193,16 @@ struct TTDashboard: View {
                     (!showCombinedListas &&
                      ((store.section == .news && store.newsFilter == .elaboracion) ||
                       (store.section == .trends && store.trendFilter == .elaboracion)))
-                if EditorialProgressPolicy.shouldPoll(
+                // ActivityKit does not fetch GitHub in the background by itself.
+                // Keep counts alive during ANY foreground visit, not only while
+                // the editor is viewing an active/working queue.
+                guard UIApplication.shared.applicationState == .active else { continue }
+                let needsFastProgress = EditorialProgressPolicy.shouldPoll(
                     pendingOrders: store.pendingOperationsCount,
                     newsWorking: store.snapshot.newsElaboracion.count,
                     trendsWorking: store.snapshot.trendsElaboracion.count,
-                    viewingWorking: viewingWorking) {
-                    await store.refreshIfStale(minInterval: 45)
-                }
+                    viewingWorking: viewingWorking)
+                await store.refreshIfStale(minInterval: needsFastProgress ? 45 : 180)
             }
         }
         .onOpenURL { url in
