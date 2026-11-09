@@ -7,16 +7,16 @@
   "previous_run_id": "tr-1794219000000-manual",
   "command_id": "tr-1794220800000-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-09T11:40:00+01:00",
-  "updated_at": "2026-11-09T11:40:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-09T11:41:10+01:00",
+  "finished_at": "2026-11-09T11:41:10+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -168,28 +168,38 @@
       "at": "2026-11-09T11:40:00+01:00",
       "phase": "preparing",
       "message": "Pasada manual iniciada desde chat. Relectura inicial de main: editorial-queue=0. Se ejecuta barrera JIT antes de cerrar; ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-09T11:40:59+01:00",
+      "phase": "verifying",
+      "message": "Barrera JIT: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos."
+    },
+    {
+      "at": "2026-11-09T11:41:10+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-1794220800000-manual cerrada 0/0 contra el estado autoritativo de main. Relectura final: editorial-queue=0 (updated_at 2026-11-09T11:40:59+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial pendiente que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "last_started_at": "2026-11-09T11:40:00+01:00",
-  "last_completed_at": "2026-11-09T11:15:00+01:00",
+  "last_completed_at": "2026-11-09T11:41:10+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794219000000-manual",
+    "run_id": "tr-1794220800000-manual",
     "status": "DONE",
-    "started_at": "2026-11-09T11:10:00+01:00",
-    "finished_at": "2026-11-09T11:15:00+01:00",
-    "at": "2026-11-09T11:15:00+01:00",
+    "started_at": "2026-11-09T11:40:00+01:00",
+    "finished_at": "2026-11-09T11:41:10+01:00",
+    "at": "2026-11-09T11:41:10+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 4,
-      "observed": 4,
-      "closed": 4,
-      "explained": 2,
+      "attempted": 0,
+      "observed": 0,
+      "closed": 0,
+      "explained": 0,
       "problematic": 0,
       "updates": 0,
       "review_completed_no_distinct_event": 0,
-      "maintenance_reviews": 2,
-      "unchanged_reviews": 2,
+      "maintenance_reviews": 0,
+      "unchanged_reviews": 0,
       "continuity_updates": 0,
       "distinct_updates": 0,
       "stale_reviews": 0,
@@ -200,59 +210,13 @@
       "image_outbox_created": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 2
+      "concurrent_convergence": 0
     },
-    "processed_ids": [
-      "red-review-da276035edf10382b826",
-      "red-review-47e5d8d5ac22fd4f61df",
-      "62728644c75a",
-      "de9c80449aae"
-    ],
-    "converged_ids": [
-      "62728644c75a",
-      "de9c80449aae"
-    ],
-    "outcomes": [
-      {
-        "id": "red-review-da276035edf10382b826",
-        "revision": 0,
-        "name": "Revisar novedades: maffeo",
-        "outcome": "unchanged",
-        "applied": true,
-        "source_id": "1940ad68777c",
-        "apply_commit": "dc5e8442ab67e1a39733f4de7d7bf2c59c1e3596"
-      },
-      {
-        "id": "red-review-47e5d8d5ac22fd4f61df",
-        "revision": 0,
-        "name": "Revisar novedades: Valencia",
-        "outcome": "unchanged",
-        "applied": true,
-        "source_id": "41998067bb7c",
-        "apply_commit": "dc5e8442ab67e1a39733f4de7d7bf2c59c1e3596"
-      },
-      {
-        "id": "62728644c75a",
-        "revision": 0,
-        "name": "Pachuca",
-        "outcome": "explained",
-        "applied": true,
-        "via": "concurrent_convergence",
-        "apply_commit": "d58c1799b85386e65bc0262786b9b7fda350ebce"
-      },
-      {
-        "id": "de9c80449aae",
-        "revision": 0,
-        "name": "Raúl",
-        "outcome": "explained",
-        "applied": true,
-        "via": "concurrent_convergence",
-        "apply_commit": "d58c1799b85386e65bc0262786b9b7fda350ebce"
-      }
-    ],
-    "message": "Pasada tr-1794219000000-manual cerrada 4/4. maffeo y Valencia se revisaron como unchanged y quedaron aplicadas sin alterar explicación ni explained_at. Durante la barrera entraron Pachuca y Raúl; convergieron con el aplicador oficial y quedaron explicadas individualmente en requests.json + telegram-manual-explained.json (commit d58c1799b85386e65bc0262786b9b7fda350ebce). Barrera final main: editorial-queue=0 a las 11:14:27+01:00. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "processed_ids": [],
+    "outcomes": [],
+    "message": "Pasada tr-1794220800000-manual cerrada 0/0 contra el estado autoritativo de main. Relectura final: editorial-queue=0 (updated_at 2026-11-09T11:40:59+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial pendiente que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794220800000-manual RUNNING. Relectura inicial de main: editorial-queue=0; verificando estado autoritativo antes del cierre.",
+  "message": "Pasada tr-1794220800000-manual cerrada 0/0 contra el estado autoritativo de main. Relectura final: editorial-queue=0 (updated_at 2026-11-09T11:40:59+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial pendiente que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T03:17:00+01:00",
@@ -1781,6 +1745,39 @@
         }
       ],
       "message": "Pasada tr-1794219000000-manual cerrada 4/4. maffeo y Valencia se revisaron como unchanged y quedaron aplicadas sin alterar explicación ni explained_at. Durante la barrera entraron Pachuca y Raúl; convergieron con el aplicador oficial y quedaron explicadas individualmente en requests.json + telegram-manual-explained.json (commit d58c1799b85386e65bc0262786b9b7fda350ebce). Barrera final main: editorial-queue=0 a las 11:14:27+01:00. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794220800000-manual",
+      "status": "DONE",
+      "started_at": "2026-11-09T11:40:00+01:00",
+      "finished_at": "2026-11-09T11:41:10+01:00",
+      "at": "2026-11-09T11:41:10+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 0,
+        "observed": 0,
+        "closed": 0,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 0,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [],
+      "outcomes": [],
+      "message": "Pasada tr-1794220800000-manual cerrada 0/0 contra el estado autoritativo de main. Relectura final: editorial-queue=0 (updated_at 2026-11-09T11:40:59+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial pendiente que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "current_item": null
