@@ -8,14 +8,14 @@
   "command_id": "tr-1794221018085-manual",
   "source": "chat-manual",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "investigating",
   "started_at": "2026-11-09T11:44:00+01:00",
-  "updated_at": "2026-11-09T11:44:00+01:00",
+  "updated_at": "2026-11-09T11:45:00+01:00",
   "finished_at": null,
-  "current": 0,
+  "current": 1,
   "total": 2,
-  "trend_id": null,
-  "title": "TTendencias · pasada editorial",
+  "trend_id": "red-review-2e28f53ad05cc3c5bb04",
+  "title": "Revisar novedades: Julián Álvarez",
   "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
@@ -189,6 +189,13 @@
       "at": "2026-11-09T11:44:00+01:00",
       "phase": "preparing",
       "message": "Cola autoritativa leída: 2 revisiones activas."
+    },
+    {
+      "at": "2026-11-09T11:45:00+01:00",
+      "phase": "investigating",
+      "trend_id": "red-review-2e28f53ad05cc3c5bb04",
+      "title": "Revisar novedades: Julián Álvarez",
+      "message": "Revisión JIT válida; contrastando novedades posteriores a la explicación."
     }
   ],
   "last_started_at": "2026-11-09T11:40:00+01:00",
@@ -227,7 +234,7 @@
     "outcomes": [],
     "message": "Pasada tr-1794220800000-manual cerrada 0/0 contra el estado autoritativo de main. Relectura final: editorial-queue=0 (updated_at 2026-11-09T11:40:59+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial pendiente que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794221018085-manual en curso: 2 trabajos activos en cola.",
+  "message": "Revisando novedades de Julián Álvarez frente a la explicación vigente.",
   "history": [
     {
       "at": "2026-11-09T03:17:00+01:00",
@@ -1791,5 +1798,11 @@
       "message": "Pasada tr-1794220800000-manual cerrada 0/0 contra el estado autoritativo de main. Relectura final: editorial-queue=0 (updated_at 2026-11-09T11:40:59+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial pendiente que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
-  "current_item": null
+  "current_item": {
+    "id": "red-review-2e28f53ad05cc3c5bb04",
+    "revision": 0,
+    "name": "Revisar novedades: Julián Álvarez",
+    "task": "review_red",
+    "phase": "investigating"
+  }
 }
