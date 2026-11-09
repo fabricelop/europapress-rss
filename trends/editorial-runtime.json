@@ -7,25 +7,27 @@
   "previous_run_id": "tr-1794243281678-manual",
   "command_id": "tr-1794244208283-manual",
   "source": "chat",
-  "status": "RUNNING",
+  "status": "waiting",
   "phase": "preparing",
   "started_at": "2026-11-09T18:10:00+01:00",
-  "updated_at": "2026-11-09T18:10:00+01:00",
+  "updated_at": "2026-11-09T18:14:39+01:00",
   "finished_at": null,
   "current": 0,
   "total": 2,
   "trend_id": "red-review-7b64c614c1a27d1754ab",
   "title": "Revisar novedades: Oviedo",
   "queue_complete": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "06d9a9f6c06f",
+    "a490717779d6",
+    "b16fa61d45ba"
+  ],
   "converged_ids": [],
   "remaining_ids": [
-    "red-review-7b64c614c1a27d1754ab",
-    "red-review-1c00edc669ea4e141e96"
+    "cf3a57628428"
   ],
   "remaining_active_ids": [
-    "red-review-7b64c614c1a27d1754ab",
-    "red-review-1c00edc669ea4e141e96"
+    "cf3a57628428"
   ],
   "remaining_problematic_ids": [],
   "summary": {
@@ -172,7 +174,7 @@
       "message": "Pasada tr-1794244208283-manual RUNNING. Cola JIT inicial=2 review_red: Oviedo y Supa; se procesan por antigüedad con validación ID/revisión antes de investigar y persistir. ImageGen=0; publicaciones=0."
     }
   ],
-  "last_started_at": "2026-11-09T18:10:00+01:00",
+  "last_started_at": "2026-11-09T18:14:38+01:00",
   "last_completed_at": "2026-11-09T17:59:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
