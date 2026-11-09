@@ -3,39 +3,36 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794237283736-manual",
-  "previous_run_id": "tr-20261109T1610-manual",
-  "command_id": "tr-1794237283736-manual",
-  "source": "chat_manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-09T16:15:30+01:00",
-  "updated_at": "2026-11-09T16:18:00+01:00",
-  "finished_at": "2026-11-09T16:18:00+01:00",
-  "current": 2,
-  "total": 2,
+  "run_id": "tr-20261109T1641-manual",
+  "previous_run_id": "tr-1794237283736-manual",
+  "command_id": "tr-20261109T1641-manual",
+  "source": "chat",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-09T16:41:30+01:00",
+  "updated_at": "2026-11-09T16:41:30+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
-  "converged_ids": [
-    "red-review-b720a70cb095d1c8f705",
-    "red-review-d5c287bb4711d8420f15"
-  ],
+  "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
     "explained": 0,
     "problematic": 0,
-    "updates": 1,
+    "updates": 0,
     "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 2,
-    "unchanged_reviews": 1,
-    "continuity_updates": 1,
+    "maintenance_reviews": 0,
+    "unchanged_reviews": 0,
+    "continuity_updates": 0,
     "distinct_updates": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
@@ -45,35 +42,22 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 2
+    "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "red-review-b720a70cb095d1c8f705",
-      "revision": 0,
-      "name": "Revisar novedades: Raúl",
-      "outcome": "continuity_update",
-      "applied": true,
-      "via": "concurrent_convergence",
-      "source_id": "de9c80449aae",
-      "apply_commit": "fae88fa4e81c3169958a68b2ba6f11dde15600d9"
-    },
-    {
-      "id": "red-review-d5c287bb4711d8420f15",
-      "revision": 0,
-      "name": "Revisar novedades: TikTok",
-      "outcome": "unchanged",
-      "applied": true,
-      "via": "concurrent_convergence",
-      "source_id": "1bb6fcfbf136",
-      "apply_commit": "fae88fa4e81c3169958a68b2ba6f11dde15600d9"
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "closing",
-  "last_started_at": "2026-11-09T16:14:02+01:00",
+  "activity": [
+    {
+      "run_id": "tr-20261109T1641-manual",
+      "status": "RUNNING",
+      "at": "2026-11-09T16:41:30+01:00",
+      "phase": "preparing",
+      "message": "Pasada manual iniciada desde chat. Cola JIT inicial=0 tras captura 16:41:09+01:00 y actualización de editorial-queue 16:41:15+01:00. Se verificará barrera final antes de cerrar. ImageGen=0; publicaciones=0."
+    }
+  ],
+  "last_started_at": "2026-11-09T16:41:30+01:00",
   "last_completed_at": "2026-11-09T16:18:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -2020,7 +2004,7 @@
       "message": "Pasada tr-1794237283736-manual cerrada 2/2 por convergencia JIT. Raúl se actualizó como continuidad: el Real Oviedo oficializó su fichaje hasta junio de 2028, conservando ID/revisión/explained_at y sin volver a Listas. TikTok quedó unchanged al no verificarse novedad sustancial posterior. Aplicador fae88fa4e81c3169958a68b2ba6f11dde15600d9 sincronizó requests.json y telegram-manual-explained.json y retiró ambos review_red. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
-  "current_item": "pucherazo",
+  "current_item": null,
   "withdrawn_ids": [
     "ae7f066f3c94"
   ]
