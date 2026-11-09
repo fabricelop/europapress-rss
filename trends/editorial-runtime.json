@@ -7,29 +7,29 @@
   "previous_run_id": "tr-20261110T002500-manual",
   "command_id": "tr-20261110T004100-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-10T00:41:00+01:00",
-  "updated_at": "2026-11-10T00:41:00+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-10T00:44:30+01:00",
+  "finished_at": "2026-11-10T00:44:30+01:00",
+  "current": 1,
   "total": 1,
-  "trend_id": "radar-prepare-9c30612c78688606a086",
-  "title": "Radar · La 1",
-  "queue_complete": false,
-  "processed_ids": [],
-  "converged_ids": [],
-  "remaining_ids": [
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
     "radar-prepare-9c30612c78688606a086"
   ],
-  "remaining_active_ids": [
+  "converged_ids": [
     "radar-prepare-9c30612c78688606a086"
   ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 1,
     "observed": 1,
-    "closed": 0,
+    "closed": 1,
     "explained": 0,
     "problematic": 0,
     "updates": 0,
@@ -41,33 +41,43 @@
     "stale_reviews": 0,
     "unverified_reviews": 0,
     "anticipation_reviews": 1,
-    "anticipation_prepared": 0,
+    "anticipation_prepared": 1,
     "anticipation_unverified": 0,
-    "queue_remaining": 1,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 1
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "radar-prepare-9c30612c78688606a086",
+      "revision": 0,
+      "name": "Radar · La 1",
+      "outcome": "anticipation_prepared",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "apply_commit": "096d85ba3e1fb11441cd2840c55b29d62a6b9fb6"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "investigating",
+  "activity": "closing",
   "last_started_at": "2026-11-09T23:59:31+01:00",
-  "last_completed_at": "2026-11-10T00:26:00+01:00",
+  "last_completed_at": "2026-11-10T00:44:30+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261110T002500-manual",
+    "run_id": "tr-20261110T004100-manual",
     "status": "DONE",
-    "started_at": "2026-11-10T00:25:00+01:00",
-    "finished_at": "2026-11-10T00:26:00+01:00",
+    "started_at": "2026-11-10T00:41:00+01:00",
+    "finished_at": "2026-11-10T00:44:30+01:00",
     "summary": {
-      "attempted": 0,
-      "observed": 0,
-      "closed": 0,
+      "attempted": 1,
+      "observed": 1,
+      "closed": 1,
       "explained": 0,
       "problematic": 0,
       "updates": 0,
@@ -78,8 +88,8 @@
       "distinct_updates": 0,
       "stale_reviews": 0,
       "unverified_reviews": 0,
-      "anticipation_reviews": 0,
-      "anticipation_prepared": 0,
+      "anticipation_reviews": 1,
+      "anticipation_prepared": 1,
       "anticipation_unverified": 0,
       "queue_remaining": 0,
       "rewrite_pending_remaining": 0,
@@ -87,16 +97,30 @@
       "image_outbox_created": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 0
+      "concurrent_convergence": 1
     },
-    "processed_ids": [],
-    "converged_ids": [],
-    "outcomes": [],
+    "processed_ids": [
+      "radar-prepare-9c30612c78688606a086"
+    ],
+    "converged_ids": [
+      "radar-prepare-9c30612c78688606a086"
+    ],
+    "outcomes": [
+      {
+        "id": "radar-prepare-9c30612c78688606a086",
+        "revision": 0,
+        "name": "Radar · La 1",
+        "outcome": "anticipation_prepared",
+        "applied": true,
+        "via": "concurrent_convergence",
+        "apply_commit": "096d85ba3e1fb11441cd2840c55b29d62a6b9fb6"
+      }
+    ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-20261110T002500-manual cerrada 0/0 tras doble relectura JIT de main. editorial-queue=0 (actualizada 2026-11-10T00:23:30+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial vigente que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "message": "Pasada tr-20261110T004100-manual cerrada 1/1. Radar · La 1 r0 fue investigado y convergió con el aplicador oficial: borrador anticipado verificado y persistido como anticipation_prepared; no se creó ficha Top30. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-20261110T004100-manual RUNNING. Cola autoritativa=1; Radar · La 1 r0 revalidado JIT. Investigando detonante actual para borrador anticipado; sin Listas, ImageGen ni publicaciones.",
+  "message": "Pasada tr-20261110T004100-manual cerrada 1/1. Radar · La 1 r0 fue investigado y convergió con el aplicador oficial: borrador anticipado verificado y persistido como anticipation_prepared; no se creó ficha Top30. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794234841273-manual",
@@ -2461,22 +2485,68 @@
       "trend_id": "radar-prepare-9c30612c78688606a086",
       "title": "Radar · La 1",
       "message": "Pasada tr-20261110T004100-manual RUNNING. Cola autoritativa=1; Radar · La 1 r0 revalidado JIT. Investigando detonante actual para borrador anticipado; sin Listas, ImageGen ni publicaciones."
+    },
+    {
+      "run_id": "tr-20261110T004100-manual",
+      "status": "DONE",
+      "started_at": "2026-11-10T00:41:00+01:00",
+      "finished_at": "2026-11-10T00:44:30+01:00",
+      "at": "2026-11-10T00:44:30+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 1,
+        "observed": 1,
+        "closed": 1,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 0,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 1,
+        "anticipation_prepared": 1,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 1
+      },
+      "processed_ids": [
+        "radar-prepare-9c30612c78688606a086"
+      ],
+      "converged_ids": [
+        "radar-prepare-9c30612c78688606a086"
+      ],
+      "outcomes": [
+        {
+          "id": "radar-prepare-9c30612c78688606a086",
+          "revision": 0,
+          "name": "Radar · La 1",
+          "outcome": "anticipation_prepared",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "apply_commit": "096d85ba3e1fb11441cd2840c55b29d62a6b9fb6"
+        }
+      ],
+      "message": "Pasada tr-20261110T004100-manual cerrada 1/1. Radar · La 1 r0 fue investigado y convergió con el aplicador oficial: borrador anticipado verificado y persistido como anticipation_prepared; no se creó ficha Top30. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
-  "current_item": {
-    "id": "radar-prepare-9c30612c78688606a086",
-    "revision": 0,
-    "name": "Radar · La 1",
-    "task": "anticipate"
-  },
+  "current_item": null,
   "withdrawn_ids": [
     "ae7f066f3c94"
   ],
-  "last_finished_at": "2026-11-10T00:24:30+01:00",
-  "last_revalidated_at": "2026-11-10T00:24:30+01:00",
+  "last_finished_at": "2026-11-10T00:44:30+01:00",
+  "last_revalidated_at": "2026-11-10T00:44:30+01:00",
   "last_revalidation": {
-    "at": "2026-11-10T00:24:30+01:00",
-    "queue_sha": "586ac8851448a7cbc084589e6880d960a5ce88a0",
+    "at": "2026-11-10T00:44:30+01:00",
+    "queue_sha": "8849c8dd5520c9f362428a6375e7a2ffec352289",
     "queue_count": 0,
     "preparing_update": 0,
     "rewrite_pending": 0,
@@ -2714,6 +2784,57 @@
       "trend_id": "radar-prepare-9c30612c78688606a086",
       "title": "Radar · La 1",
       "message": "Pasada tr-20261110T004100-manual RUNNING. Cola autoritativa=1; Radar · La 1 r0 revalidado JIT. Investigando detonante actual para borrador anticipado; sin Listas, ImageGen ni publicaciones."
+    },
+    {
+      "run_id": "tr-20261110T004100-manual",
+      "status": "DONE",
+      "started_at": "2026-11-10T00:41:00+01:00",
+      "finished_at": "2026-11-10T00:44:30+01:00",
+      "at": "2026-11-10T00:44:30+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 1,
+        "observed": 1,
+        "closed": 1,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 0,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 1,
+        "anticipation_prepared": 1,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 1
+      },
+      "processed_ids": [
+        "radar-prepare-9c30612c78688606a086"
+      ],
+      "converged_ids": [
+        "radar-prepare-9c30612c78688606a086"
+      ],
+      "outcomes": [
+        {
+          "id": "radar-prepare-9c30612c78688606a086",
+          "revision": 0,
+          "name": "Radar · La 1",
+          "outcome": "anticipation_prepared",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "apply_commit": "096d85ba3e1fb11441cd2840c55b29d62a6b9fb6"
+        }
+      ],
+      "message": "Pasada tr-20261110T004100-manual cerrada 1/1. Radar · La 1 r0 fue investigado y convergió con el aplicador oficial: borrador anticipado verificado y persistido como anticipation_prepared; no se creó ficha Top30. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ]
 }
