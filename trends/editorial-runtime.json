@@ -3,19 +3,19 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794192000000-manual",
+  "run_id": "tr-1794192890633-manual",
   "previous_run_id": "tr-1794191223000-manual",
-  "command_id": "tr-1794192000000-manual",
+  "command_id": "tr-1794192890633-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-09T03:40:00+01:00",
-  "updated_at": "2026-11-09T03:42:30+01:00",
-  "finished_at": "2026-11-09T03:42:30+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-09T03:55:00+01:00",
+  "updated_at": "2026-11-09T03:55:00+01:00",
+  "finished_at": null,
   "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": "Pasada editorial TTendencias",
+  "total": 2,
+  "trend_id": "red-review-a18f2fcad28d1aee2513",
+  "title": "Revisar novedades: #DragRaceEs",
   "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
@@ -81,7 +81,7 @@
     "outcomes": [],
     "message": "Pasada tr-1794192000000-manual cerrada 0/0 contra main. Refresco real del Top 30 materializado en commit 31db6212aa03c4c7484b4856c83cc4073c067bb3 a las 03:41:36+01:00; Top 30=30 y no se abrieron nuevas pendientes. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794192000000-manual cerrada 0/0 contra main. Refresco real del Top 30 materializado en commit 31db6212aa03c4c7484b4856c83cc4073c067bb3 a las 03:41:36+01:00; Top 30=30 y no se abrieron nuevas pendientes. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1794192890633-manual RUNNING. Cola inicial JIT=2 review_red: #DragRaceEs y Sorloth. Se procesan de más antiguo a más reciente con validación ID/revisión antes de cada resultado. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-08T15:07:08+01:00",
@@ -1343,7 +1343,18 @@
       "at": "2026-11-09T03:42:30+01:00",
       "phase": "closing",
       "message": "Pasada tr-1794192000000-manual cerrada 0/0 contra main. Refresco real del Top 30 materializado en commit 31db6212aa03c4c7484b4856c83cc4073c067bb3 a las 03:41:36+01:00; Top 30=30 y no se abrieron nuevas pendientes. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-09T03:55:00+01:00",
+      "phase": "preparing",
+      "trend_id": "red-review-a18f2fcad28d1aee2513",
+      "title": "Revisar novedades: #DragRaceEs",
+      "message": "Pasada tr-1794192890633-manual RUNNING. Cola inicial JIT=2 review_red: #DragRaceEs y Sorloth. Se procesan de más antiguo a más reciente con validación ID/revisión antes de cada resultado. ImageGen=0; publicaciones=0."
     }
   ],
-  "current_item": null
+  "current_item": {
+    "id": "red-review-a18f2fcad28d1aee2513",
+    "revision": 0,
+    "name": "Revisar novedades: #DragRaceEs"
+  }
 }
