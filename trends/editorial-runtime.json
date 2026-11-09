@@ -15,12 +15,9 @@
   "current": 2,
   "total": 2,
   "trend_id": null,
-  "title": "Pasada editorial TTendencias",
+  "title": null,
   "queue_complete": true,
-  "processed_ids": [
-    "red-review-4332b75ac2142c8881bf",
-    "red-review-0f8839836ba3c9c0b5c9"
-  ],
+  "processed_ids": [],
   "converged_ids": [
     "red-review-4332b75ac2142c8881bf",
     "red-review-0f8839836ba3c9c0b5c9"
@@ -58,6 +55,7 @@
       "outcome": "unchanged",
       "applied": true,
       "via": "concurrent_convergence",
+      "result_commit": "a54e34da872149c50bd88d38227499ac0cc14c90",
       "apply_commit": "7697912137e3d1557d74d78e9e29ac00d953a662"
     },
     {
@@ -67,6 +65,7 @@
       "outcome": "unchanged",
       "applied": true,
       "via": "concurrent_convergence",
+      "result_commit": "55fa4a2deb901aa77506898e00d8f60cea030f41",
       "apply_commit": "7697912137e3d1557d74d78e9e29ac00d953a662"
     }
   ],
@@ -108,9 +107,16 @@
       "at": "2026-11-09T17:19:00+01:00",
       "phase": "closing",
       "message": "Pasada tr-1794240988286-manual cerrada 2/2 por convergencia JIT: #Mañaneros9N y Puigdemont ya habían sido aplicados como unchanged por el mantenimiento 7697912137e3d1557d74d78e9e29ac00d953a662 antes de la persistencia de esta sucesora. Barrera final: editorial-queue=0 y sin trabajo editorial activo. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794240988286-manual",
+      "status": "DONE",
+      "at": "2026-11-09T17:19:00+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-1794240988286-manual cerrada 2/2 por convergencia JIT. #Mañaneros9N y Puigdemont quedaron unchanged; el aplicador oficial 7697912137e3d1557d74d78e9e29ac00d953a662 retiró ambos review_red de la cola y estampó el mantenimiento en los registros editoriales. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; publicaciones=0."
     }
   ],
-  "last_started_at": "2026-11-09T17:15:42+01:00",
+  "last_started_at": "2026-11-09T17:17:00+01:00",
   "last_completed_at": "2026-11-09T17:19:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -140,9 +146,9 @@
       "incidents": 0,
       "concurrent_convergence": 2
     },
-    "message": "Pasada tr-1794240988286-manual cerrada 2/2 por convergencia JIT: #Mañaneros9N y Puigdemont ya habían sido aplicados como unchanged por el mantenimiento 7697912137e3d1557d74d78e9e29ac00d953a662 antes de la persistencia de esta sucesora. Barrera final: editorial-queue=0 y sin trabajo editorial activo. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "message": "Pasada tr-1794240988286-manual cerrada 2/2 por convergencia JIT. #Mañaneros9N y Puigdemont quedaron unchanged; el aplicador oficial 7697912137e3d1557d74d78e9e29ac00d953a662 retiró ambos review_red de la cola y estampó el mantenimiento en los registros editoriales. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794240988286-manual cerrada 2/2 por convergencia JIT: #Mañaneros9N y Puigdemont ya habían sido aplicados como unchanged por el mantenimiento 7697912137e3d1557d74d78e9e29ac00d953a662 antes de la persistencia de esta sucesora. Barrera final: editorial-queue=0 y sin trabajo editorial activo. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada tr-1794240988286-manual cerrada 2/2 por convergencia JIT. #Mañaneros9N y Puigdemont quedaron unchanged; el aplicador oficial 7697912137e3d1557d74d78e9e29ac00d953a662 retiró ambos review_red de la cola y estampó el mantenimiento en los registros editoriales. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794199200000-manual",
@@ -2253,6 +2259,64 @@
         }
       ],
       "message": "Pasada tr-1794240988286-manual cerrada 2/2 por convergencia JIT: #Mañaneros9N y Puigdemont ya habían sido aplicados como unchanged por el mantenimiento 7697912137e3d1557d74d78e9e29ac00d953a662 antes de la persistencia de esta sucesora. Barrera final: editorial-queue=0 y sin trabajo editorial activo. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794240988286-manual",
+      "status": "DONE",
+      "started_at": "2026-11-09T17:17:00+01:00",
+      "finished_at": "2026-11-09T17:19:00+01:00",
+      "at": "2026-11-09T17:19:00+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 2,
+        "observed": 2,
+        "closed": 2,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 2,
+        "unchanged_reviews": 2,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 2
+      },
+      "processed_ids": [],
+      "converged_ids": [
+        "red-review-4332b75ac2142c8881bf",
+        "red-review-0f8839836ba3c9c0b5c9"
+      ],
+      "outcomes": [
+        {
+          "id": "red-review-4332b75ac2142c8881bf",
+          "revision": 0,
+          "name": "Revisar novedades: #Mañaneros9N",
+          "outcome": "unchanged",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "result_commit": "a54e34da872149c50bd88d38227499ac0cc14c90",
+          "apply_commit": "7697912137e3d1557d74d78e9e29ac00d953a662"
+        },
+        {
+          "id": "red-review-0f8839836ba3c9c0b5c9",
+          "revision": 0,
+          "name": "Revisar novedades: Puigdemont",
+          "outcome": "unchanged",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "result_commit": "55fa4a2deb901aa77506898e00d8f60cea030f41",
+          "apply_commit": "7697912137e3d1557d74d78e9e29ac00d953a662"
+        }
+      ],
+      "message": "Pasada tr-1794240988286-manual cerrada 2/2 por convergencia JIT. #Mañaneros9N y Puigdemont quedaron unchanged; el aplicador oficial 7697912137e3d1557d74d78e9e29ac00d953a662 retiró ambos review_red de la cola y estampó el mantenimiento en los registros editoriales. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": null,
