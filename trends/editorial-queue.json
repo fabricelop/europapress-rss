@@ -1,6 +1,81 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-09T16:14:02+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-09T15:14:36.780432+00:00",
+  "count": 2,
+  "items": [
+    {
+      "id": "red-review-b720a70cb095d1c8f705",
+      "revision": 0,
+      "name": "Revisar novedades: Raúl",
+      "rank": 2,
+      "status": "preparing",
+      "requested_at": "2026-11-09T15:14:36.780432+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "verde",
+      "review_priority": 2,
+      "review_source": {
+        "id": "de9c80449aae",
+        "revision": 0,
+        "name": "Raúl",
+        "rank": 11,
+        "explanation": "TT#11 Raúl es tendencia porque Raúl González será el nuevo entrenador del Real Oviedo tras la destitución de Julián Calero.\n#RealOviedo #RaúlGonzález\n🌶️ Su primer banquillo lejos de Valdebebas empieza en el Tartiere.",
+        "explanation_sha256": "13dbce0f71bb2ad8f70eb1de7543852c3a06158d8e23dd1bb9726f4e1369b002",
+        "explained_at": "2026-11-09T11:13:48+01:00",
+        "verification_sources": [
+          {
+            "url": "https://www.relevo.com/futbol/el-real-oviedo-destituye-a-julian-calero-y-raul-gonzalez-sera-el-nuevo-entrenador.html"
+          },
+          {
+            "url": "https://as.com/futbol/segunda/el-oviedo-despide-a-calero-raul-gonzalez-sera-el-nuevo-entrenador-azul-f202611-n/"
+          },
+          {
+            "url": "https://www.lavozdeasturias.es/noticia/azulcarbayon/2026/11/09/real-oviedo-pulsa-boton-calero-destituido-llega-raul-gonzalez/00031794215171829345115.htm"
+          }
+        ],
+        "fingerprint": "bf15abb0cd2be869685a7c54fe92f511660ae896b6bdef42db1e943d89079e89"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-d5c287bb4711d8420f15",
+      "revision": 0,
+      "name": "Revisar novedades: TikTok",
+      "rank": 4,
+      "status": "preparing",
+      "requested_at": "2026-11-09T15:14:36.780432+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "verde",
+      "review_priority": 2,
+      "review_source": {
+        "id": "1bb6fcfbf136",
+        "revision": 0,
+        "name": "TikTok",
+        "rank": 26,
+        "explanation": "TT#26 TikTok es tendencia después de que Juventud e Infancia pidiera a la Fiscalía investigar a la plataforma por contenidos de abuso sexual infantil y planteara suspender su servicio en España.\n#TikTok #Infancia",
+        "explanation_sha256": "fc1c8c1835e1b413dad36563d6fa8876552e7b4abe387cf07a77bbcbb4348729",
+        "explained_at": "2026-11-09T14:14:28+01:00",
+        "verification_sources": [
+          {
+            "url": "https://elpais.com/tecnologia/2026-11-09/el-gobierno-se-plantea-paralizar-los-servicios-de-tiktok-en-espana-por-permitir-abuso-sexual-infantil.html"
+          },
+          {
+            "url": "https://www.europapress.es/videos/video-gobierno-plantea-paralizar-tiktok-espana-denuncias-abuso-sexual-infantil-20261109125702.html"
+          },
+          {
+            "url": "https://www.eldiario.es/sociedad/gobierno-pide-fiscalia-investigue-tik-tok-contenidos-pederastia_1_13649002.html"
+          }
+        ],
+        "fingerprint": "1640debbedab03bb3e81ae1152b9f85f3c555c6cd4dc46c88d20b1fe57d89975"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
