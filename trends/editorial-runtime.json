@@ -3,33 +3,34 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794183217485-manual",
-  "previous_run_id": "tr-1794182383396-manual",
-  "command_id": "tr-1794182517667-manual",
+  "run_id": "tr-1794183437001-manual",
+  "previous_run_id": "tr-1794183217485-manual",
+  "command_id": "tr-1794183437001-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-09T01:14:00+01:00",
-  "updated_at": "2026-11-09T01:18:00+01:00",
-  "finished_at": "2026-11-09T01:18:00+01:00",
-  "current": 2,
-  "total": 2,
-  "trend_id": null,
-  "title": "Pasada editorial TTendencias",
-  "queue_complete": true,
-  "processed_ids": [
-    "07bdc8e364a3",
-    "7ec69c175257"
-  ],
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-09T01:18:30+01:00",
+  "updated_at": "2026-11-09T01:18:30+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 1,
+  "trend_id": "daa31c3c4084",
+  "title": "Barrios",
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "daa31c3c4084"
+  ],
+  "remaining_active_ids": [
+    "daa31c3c4084"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
-    "explained": 2,
+    "attempted": 0,
+    "observed": 1,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
@@ -37,32 +38,15 @@
     "unchanged_reviews": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
-    "queue_remaining": 0,
-    "rewrite_pending_remaining": 0,
+    "queue_remaining": 1,
+    "rewrite_pending_remaining": 1,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 2
+    "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "07bdc8e364a3",
-      "revision": 0,
-      "name": "Barça",
-      "outcome": "explained",
-      "applied": true,
-      "converged": true
-    },
-    {
-      "id": "7ec69c175257",
-      "revision": 0,
-      "name": "Asraf",
-      "outcome": "explained",
-      "applied": true,
-      "converged": true
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -98,7 +82,7 @@
     },
     "message": "Pasada tr-1794183217485-manual cerrada 2/2 por convergencia JIT. Barça r0 y Asraf r0 figuran explained en requests y telegram-manual-explained con texto/remate sincronizados; editorial-queue=0 y no quedan preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794183217485-manual cerrada 2/2 por convergencia JIT. Barça r0 y Asraf r0 figuran explained en requests y telegram-manual-explained con texto/remate sincronizados; editorial-queue=0 y no quedan preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada tr-1794183437001-manual RUNNING. Cola JIT=1: Barrios r0, puesto 17, reelaboración manual desde cero. Se revalida ID/revisión antes de investigar y persistir. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-08T15:07:08+01:00",
@@ -891,7 +875,21 @@
       "at": "2026-11-09T01:18:00+01:00",
       "phase": "closing",
       "message": "Pasada tr-1794183217485-manual cerrada 2/2 por convergencia JIT. Barça r0 y Asraf r0 figuran explained en requests y telegram-manual-explained con texto/remate sincronizados; editorial-queue=0 y no quedan preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-09T01:18:30+01:00",
+      "phase": "preparing",
+      "trend_id": "daa31c3c4084",
+      "title": "Barrios",
+      "message": "Pasada tr-1794183437001-manual RUNNING. Cola JIT=1: Barrios r0, puesto 17, reelaboración manual desde cero. Se revalida ID/revisión antes de investigar y persistir. ImageGen=0; publicaciones=0."
     }
   ],
-  "current_item": null
+  "current_item": {
+    "id": "daa31c3c4084",
+    "revision": 0,
+    "name": "Barrios",
+    "rank": 17,
+    "status": "preparing",
+    "phase": "preparing"
+  }
 }
