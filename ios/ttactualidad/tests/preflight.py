@@ -610,7 +610,9 @@ assert 'Label("Agrupar"' not in dashboard
 assert 'Eliminar agrupadas' not in dashboard
 assert 'removeAllTrendsFromListas' in dashboard
 assert 'Relaciones por revisar' not in dashboard
-assert 'quickButton("Relaciones"' in actions
+assert '"point.3.connected.trianglepath.dotted"' in actions
+assert 'relationCounts.counts(trendID: editorialID' in actions
+assert 'EditorialRelationCountsStore.shared' in actions
 assert 'privateEditorialRelationsRequest' in auth
 assert '/api/editorial-relations' in auth
 assert 'expectedNews: news.identity' in relations
@@ -860,6 +862,11 @@ assert 'indexedMatches: [String: [EditorialRelationEndpoint]]' in relations_view
 assert 'private func rebuildRelationIndex()' in relations_view
 assert 'indexedMatches[trendKey(rank: rank, name: name)] ?? []' in relations_view
 assert 'String(associated) + "/" + String(related.count)' in relations_view
+assert 'EditorialRelationsPolicy.effectivePairStates(' in relations_view
+assert 'Ya relacionada · guardada en el Site' in relations_view
+assert 'Relación confirmada por el servidor' in relations_view
+assert 'final class EditorialRelationCountsStore' in relations_view
+assert 'EditorialRelationsPolicy.confirmedCount(' in relations_view
 assert 'saveTrendChanges(' in relations_view
 assert 'Guardar " + String(changes.count)' in relations_view
 assert 'private func confirmedCount(' in relations_view
@@ -890,6 +897,11 @@ assert 'episodeFingerprint: String?' in relation_models
 assert 'episodeFingerprint.isEmpty ?' in relation_models
 assert 'episodeFingerprint: "", title: row.name' in relations_view
 assert 'String(associated) + "/" + String(related.count)' in relations_view
+assert 'EditorialRelationsPolicy.effectivePairStates(' in relations_view
+assert 'Ya relacionada · guardada en el Site' in relations_view
+assert 'Relación confirmada por el servidor' in relations_view
+assert 'final class EditorialRelationCountsStore' in relations_view
+assert 'EditorialRelationsPolicy.confirmedCount(' in relations_view
 assert 'snapshot = nil' in relations_view
 assert 'buffer.latestReceipt(' in actions
 assert 'project: project, id: editorialID, revision: revision' in actions
@@ -907,7 +919,9 @@ print('NATIVE_0468_BUFFER_STATUS_AND_NO_FAKE_RELATION_SELECTION_OK')
 
 # Build89: per-trend button is the ONLY primary trend relations route;
 # history lookup is scoped to the opened ID/revision and has no other filter.
-assert 'quickButton("Relaciones"' in actions
+assert '"point.3.connected.trianglepath.dotted"' in actions
+assert 'relationCounts.counts(trendID: editorialID' in actions
+assert 'EditorialRelationCountsStore.shared' in actions
 assert 'scope: EditorialRelationsScope(' in actions
 assert '"Relaciones por revisar"' not in dashboard
 assert 'private var scopedTop30Index' not in relations_view
