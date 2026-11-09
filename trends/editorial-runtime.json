@@ -7,16 +7,16 @@
   "previous_run_id": "tr-1794198300000-manual",
   "command_id": "tr-1794199200000-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
+  "status": "RUNNING",
+  "phase": "verifying",
   "started_at": "2026-11-09T05:40:00+01:00",
-  "updated_at": "2026-11-09T05:42:00+01:00",
+  "updated_at": "2026-11-09T05:43:11+01:00",
   "finished_at": "2026-11-09T05:42:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -48,7 +48,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "closing",
+  "activity": "verifying",
   "last_started_at": "2026-11-09T05:40:00+01:00",
   "last_completed_at": "2026-11-09T05:42:00+01:00",
   "api_failover_enabled": false,
@@ -85,7 +85,7 @@
     "outcomes": [],
     "message": "Pasada tr-1794199200000-manual cerrada 0/0 mediante ejecución directa en chat. Refresco manual real materializado en main por el commit 1143e276f729d2d10947a61e080dae25fae72766: recent.json capturado a las 05:40:54+01:00 con Top 30 completo (30), new_entries=[]; editorial-queue=0 a las 05:41:00+01:00. Barrera JIT: requests.json y mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos; 0 agrupaciones nuevas hoy. El trigger fue emitido en control/ttendencias-run-trigger mediante 2b5f04241c0bb1b359c866e8789d8db0fce03405. La fuente del radar sigue live_verified:false (GetDayTrends, observación 20 min), pero no abrió nuevas entradas ni trabajo editorial. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794199200000-manual cerrada 0/0 mediante ejecución directa en chat. Refresco manual real materializado en main por el commit 1143e276f729d2d10947a61e080dae25fae72766: recent.json capturado a las 05:40:54+01:00 con Top 30 completo (30), new_entries=[]; editorial-queue=0 a las 05:41:00+01:00. Barrera JIT: requests.json y mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos; 0 agrupaciones nuevas hoy. El trigger fue emitido en control/ttendencias-run-trigger mediante 2b5f04241c0bb1b359c866e8789d8db0fce03405. La fuente del radar sigue live_verified:false (GetDayTrends, observación 20 min), pero no abrió nuevas entradas ni trabajo editorial. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada tr-1794199200000-manual en verificación final. Top 30 vigente capturado 2026-11-09T05:40:54+01:00; editorial-queue inicial=0 y búsqueda en main sin preparing/update/rewrite_pending/reexplain activos. Últimos mantenimientos Valencia y maffeo siguen unchanged. Relectura JIT final pendiente. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T03:17:00+01:00",
@@ -615,6 +615,11 @@
       "processed_ids": [],
       "outcomes": [],
       "message": "Pasada tr-1794199200000-manual cerrada 0/0 mediante ejecución directa en chat. Refresco manual real materializado en main por el commit 1143e276f729d2d10947a61e080dae25fae72766: recent.json capturado a las 05:40:54+01:00 con Top 30 completo (30), new_entries=[]; editorial-queue=0 a las 05:41:00+01:00. Barrera JIT: requests.json y mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos; 0 agrupaciones nuevas hoy. El trigger fue emitido en control/ttendencias-run-trigger mediante 2b5f04241c0bb1b359c866e8789d8db0fce03405. La fuente del radar sigue live_verified:false (GetDayTrends, observación 20 min), pero no abrió nuevas entradas ni trabajo editorial. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-09T05:43:11+01:00",
+      "phase": "verifying",
+      "message": "Pasada tr-1794199200000-manual en verificación final. Top 30 vigente capturado 2026-11-09T05:40:54+01:00; editorial-queue inicial=0 y búsqueda en main sin preparing/update/rewrite_pending/reexplain activos. Últimos mantenimientos Valencia y maffeo siguen unchanged. Relectura JIT final pendiente. ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": null
