@@ -7,26 +7,25 @@
   "previous_run_id": "tr-1794221700000-manual",
   "command_id": "tr-1794222455591-manual",
   "source": "chat-manual",
-  "status": "RUNNING",
+  "status": "success",
   "phase": "persisting",
   "started_at": "2026-11-09T12:08:00+01:00",
-  "updated_at": "2026-11-09T12:12:00+01:00",
+  "updated_at": "2026-11-09T12:14:20+01:00",
   "finished_at": null,
   "current": 1,
   "total": 6,
   "trend_id": "red-review-541ad18742a5d11e6d2f",
   "title": "Revisar novedades: #SVSemifinal",
-  "queue_complete": false,
-  "processed_ids": [],
+  "queue_complete": true,
+  "processed_ids": [
+    "a12ced307462",
+    "be101248f52d",
+    "df263605ba9b",
+    "f42d94bea3af"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "red-review-86cbd42f3edd8327f2ae",
-    "red-review-541ad18742a5d11e6d2f"
-  ],
-  "remaining_active_ids": [
-    "red-review-86cbd42f3edd8327f2ae",
-    "red-review-541ad18742a5d11e6d2f"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 2,
@@ -258,8 +257,8 @@
       "message": "1/6 cerrado: Cracovia unchanged. #SVSemifinal: se corrige el mismo outbox tras rechazo de formato, usando la fórmula obligatoria «sigue siendo tendencia por…». La cola ha crecido con cuatro trabajos ordinarios."
     }
   ],
-  "last_started_at": "2026-11-09T12:08:00+01:00",
-  "last_completed_at": "2026-11-09T11:56:00+01:00",
+  "last_started_at": "2026-11-09T12:14:20+01:00",
+  "last_completed_at": "2026-11-09T12:14:20+01:00",
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-1794221700000-manual",
