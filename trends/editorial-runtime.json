@@ -7,16 +7,16 @@
   "previous_run_id": "tr-1794201348940-manual",
   "command_id": "tr-1794201900000-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-09T06:25:00+01:00",
-  "updated_at": "2026-11-09T06:25:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-09T06:30:18+01:00",
+  "finished_at": "2026-11-09T06:30:18+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -48,27 +48,27 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "preparing",
-  "last_started_at": "2026-11-09T06:15:17+01:00",
-  "last_completed_at": "2026-11-09T06:20:00+01:00",
+  "activity": "closing",
+  "last_started_at": "2026-11-09T06:25:00+01:00",
+  "last_completed_at": "2026-11-09T06:30:18+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794201348940-manual",
+    "run_id": "tr-1794201900000-manual",
     "status": "DONE",
-    "started_at": "2026-11-09T06:16:00+01:00",
-    "finished_at": "2026-11-09T06:20:00+01:00",
-    "at": "2026-11-09T06:20:00+01:00",
+    "started_at": "2026-11-09T06:25:00+01:00",
+    "finished_at": "2026-11-09T06:30:18+01:00",
+    "at": "2026-11-09T06:30:18+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 2,
-      "observed": 2,
-      "closed": 2,
+      "attempted": 0,
+      "observed": 0,
+      "closed": 0,
       "explained": 0,
       "problematic": 0,
       "updates": 0,
       "review_completed_no_distinct_event": 0,
-      "maintenance_reviews": 2,
-      "unchanged_reviews": 2,
+      "maintenance_reviews": 0,
+      "unchanged_reviews": 0,
       "continuity_updates": 0,
       "distinct_updates": 0,
       "stale_reviews": 0,
@@ -79,35 +79,13 @@
       "image_outbox_created": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 2
+      "concurrent_convergence": 0
     },
-    "processed_ids": [
-      "red-review-580d184137861e4dc8b8",
-      "red-review-8378a471dad3354c6112"
-    ],
-    "outcomes": [
-      {
-        "id": "red-review-580d184137861e4dc8b8",
-        "revision": 0,
-        "name": "Revisar novedades: Amaia",
-        "outcome": "unchanged",
-        "applied": true,
-        "via": "concurrent_convergence",
-        "apply_commit": "fd25921b0ce32944ae958fe9122a4ea781b04357"
-      },
-      {
-        "id": "red-review-8378a471dad3354c6112",
-        "revision": 0,
-        "name": "Revisar novedades: #FelizDomingo",
-        "outcome": "unchanged",
-        "applied": true,
-        "via": "concurrent_convergence",
-        "apply_commit": "fd25921b0ce32944ae958fe9122a4ea781b04357"
-      }
-    ],
-    "message": "Pasada tr-1794201348940-manual cerrada 2/2 por convergencia JIT. Amaia y #FelizDomingo fueron investigadas como revisiones de novedades y aplicadas como unchanged en el commit fd25921b0ce32944ae958fe9122a4ea781b04357; se conservan explicación, explained_at, imagen y estado publicado. Barrera final en main: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. El aplicador oficial persistió el mantenimiento en requests.json y telegram-manual-explained.json. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "processed_ids": [],
+    "outcomes": [],
+    "message": "Pasada tr-1794201900000-manual cerrada 0/0 tras refresco real del Top 30. Trigger a3cb2d58387cf54b6cfa081186ce7593ab18b00f; workflow 42567288570 completado success. Nuevo snapshot capturado 2026-11-09T06:30:00+01:00 con Top 30=30; editorial-queue actualizada 06:30:08 y vacía; mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794201900000-manual RUNNING. Refresco manual del Top 30 disparado a las 06:25; esperando materialización en main antes de releer y procesar la cola JIT. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1794201900000-manual cerrada 0/0 tras refresco real del Top 30. Trigger a3cb2d58387cf54b6cfa081186ce7593ab18b00f; workflow 42567288570 completado success. Nuevo snapshot capturado 2026-11-09T06:30:00+01:00 con Top 30=30; editorial-queue actualizada 06:30:08 y vacía; mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T03:17:00+01:00",
@@ -714,6 +692,15 @@
         "status": "DONE",
         "updated_at": "2026-11-09T06:20:00+01:00"
       }
+    },
+    {
+      "run_id": "tr-1794201900000-manual",
+      "status": "DONE",
+      "at": "2026-11-09T06:30:18+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-1794201900000-manual cerrada 0/0 tras refresco real del Top 30. Trigger a3cb2d58387cf54b6cfa081186ce7593ab18b00f; workflow 42567288570 completado success. Nuevo snapshot capturado 2026-11-09T06:30:00+01:00 con Top 30=30; editorial-queue actualizada 06:30:08 y vacía; mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+      "workflow_run_id": 42567288570,
+      "trigger_commit": "a3cb2d58387cf54b6cfa081186ce7593ab18b00f"
     }
   ],
   "current_item": null
