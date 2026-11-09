@@ -7,16 +7,16 @@
   "previous_run_id": "tr-1794230148758-manual",
   "command_id": "tr-1794230700000-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-09T14:25:00+01:00",
-  "updated_at": "2026-11-09T14:25:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-09T14:26:00+01:00",
+  "finished_at": "2026-11-09T14:26:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -396,17 +396,27 @@
       "at": "2026-11-09T14:25:00+01:00",
       "phase": "preparing",
       "message": "Pasada manual iniciada desde chat. editorial-queue=0; verificando requests/mobile-decisions y barrera JIT antes de cerrar."
+    },
+    {
+      "at": "2026-11-09T14:26:00+01:00",
+      "phase": "verifying",
+      "message": "Barrera JIT final: editorial-queue=0; mobile-decisions sin estados activos y búsqueda dirigida en requests.json sin preparing/update/rewrite_pending/reexplain/anticipate/review_red."
+    },
+    {
+      "at": "2026-11-09T14:26:00+01:00",
+      "phase": "closing",
+      "message": "Pasada cerrada 0/0; no había trabajo editorial pendiente. ImageGen=0; publicaciones=0."
     }
   ],
   "last_started_at": "2026-11-09T14:25:00+01:00",
-  "last_completed_at": "2026-11-09T14:16:43.982+01:00",
+  "last_completed_at": "2026-11-09T14:26:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794230148758-manual",
+    "run_id": "tr-1794230700000-manual",
     "status": "DONE",
-    "started_at": "2026-11-09T14:15:48.758+01:00",
-    "finished_at": "2026-11-09T14:16:43.982+01:00",
-    "at": "2026-11-09T14:16:43.982+01:00",
+    "started_at": "2026-11-09T14:25:00+01:00",
+    "finished_at": "2026-11-09T14:26:00+01:00",
+    "at": "2026-11-09T14:26:00+01:00",
     "phase": "closing",
     "summary": {
       "attempted": 0,
@@ -434,9 +444,9 @@
     "outcomes": [],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-1794230148758-manual cerrada 0/0 contra main. Relectura final: editorial-queue=0 (updated_at 2026-11-09T13:16:43.981920+00:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. Búsqueda dirigida en requests.json sin rewrite_pending/reexplain/status preparing/status update. No había trabajo editorial pendiente que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "message": "Pasada tr-1794230700000-manual cerrada 0/0 contra main. Relectura final: editorial-queue=0 (updated_at 2026-11-09T14:21:05+01:00), mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos y búsqueda dirigida en requests.json sin status preparing/status update/rewrite_pending/reexplain/task anticipate/task review_red. No había trabajo editorial pendiente que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada manual iniciada desde chat. Relectura inicial/JIT de main: editorial-queue=0; se verifica la barrera de estados activos antes del cierre. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1794230700000-manual cerrada 0/0 contra main. Relectura final: editorial-queue=0 (updated_at 2026-11-09T14:21:05+01:00), mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos y búsqueda dirigida en requests.json sin status preparing/status update/rewrite_pending/reexplain/task anticipate/task review_red. No había trabajo editorial pendiente que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794199200000-manual",
@@ -1949,6 +1959,41 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-1794229800000-manual cerrada 7/7. #Mañaneros9N, TikTok, Sorloth, Feliz Domingo y Real Oviedo quedaron explained y sincronizadas en requests.json + telegram-manual-explained.json. Las revisiones de maffeo y Valencia quedaron unchanged, conservando texto e explained_at. Barrera final: editorial-queue=0, requests sin preparing/update/rewrite_pending/reexplain y mobile-decisions sin pendientes. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794230700000-manual",
+      "status": "DONE",
+      "started_at": "2026-11-09T14:25:00+01:00",
+      "finished_at": "2026-11-09T14:26:00+01:00",
+      "at": "2026-11-09T14:26:00+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 0,
+        "observed": 0,
+        "closed": 0,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 0,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [],
+      "outcomes": [],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-1794230700000-manual cerrada 0/0 contra main. Relectura final: editorial-queue=0 (updated_at 2026-11-09T14:21:05+01:00), mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos y búsqueda dirigida en requests.json sin status preparing/status update/rewrite_pending/reexplain/task anticipate/task review_red. No había trabajo editorial pendiente que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "current_item": null
