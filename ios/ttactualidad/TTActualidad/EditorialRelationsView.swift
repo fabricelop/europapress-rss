@@ -1,6 +1,70 @@
 import Combine
 import SwiftUI
 
+// Single shared read-only summary. EditorialActions is instantiated for many
+// cards; querying Sites separately per card would waste requests and race.
+@MainActor
+final class EditorialRelationCountsStore: ObservableObject {
+    static let shared = EditorialRelationCountsStore()
+    @Published private(set) var revision = 0
+    private(set) var snapshot: EditorialRelationsSnapshot?
+    private(set) var news: [EditorialRelationEndpoint] = []
+    private var loadedAt: Date?
+    private var loading = false
+
+    func refresh(using github: GitHubEditor, force: Bool = false) async {
+        if loading { return }
+        if !force, let loadedAt, Date().timeIntervalSince(loadedAt) < 90 { return }
+        guard github.authenticated else { return }
+        loading = true
+        defer { loading = false }
+        // Do not claim 0/X when GET failed. A verified Site read is required.
+        do {
+            async let history = github.editorialRelationRecentNews()
+            let (raw, status) = try await github.privateEditorialRelationsRequest(
+                path: "/v1/snapshot")
+            guard status == 200 else { return }
+            let verified = try JSONDecoder().decode(
+                EditorialRelationsSnapshot.self, from: raw)
+            let recent = (try? await history) ?? []
+            snapshot = verified
+            var byIdentity: [String: EditorialRelationEndpoint] = [:]
+            let related = EditorialRelationsPolicy.canonical(verified.items)
+            for row in verified.news + related.map(\.news) + recent {
+                let id = EditorialRelationsPolicy.newsKey(
+                    id: row.id, revision: row.revision)
+                if let current = byIdentity[id],
+                   !current.episodeFingerprint.isEmpty &&
+                    row.episodeFingerprint.isEmpty {
+                    continue
+                }
+                byIdentity[id] = row
+            }
+            news = Array(byIdentity.values)
+            loadedAt = Date()
+            revision &+= 1
+        } catch {
+            // Keep previous verified snapshot, never convert an error to zero.
+        }
+    }
+
+    // X = server-confirmed links among the same N <= 5 textual suggestions.
+    // No links are inferred merely because the headline mentions the trend.
+    func counts(trendID: String, revision: Int, name: String) -> (Int, Int)? {
+        guard let snapshot, !trendID.isEmpty else { return nil }
+        let found = EditorialRelationsPolicy.newsForTrend(news, name: name)
+        let links = EditorialRelationsPolicy.canonical(snapshot.items)
+        let associated = found.filter { news in
+            links.contains { pair in
+                pair.state == "linked" &&
+                    pair.news.id == news.id && pair.news.revision == news.revision &&
+                    pair.trend.id == trendID && pair.trend.revision == revision
+            }
+        }.count
+        return (associated, found.count)
+    }
+}
+
 struct EditorialRelationsScope {
     let project: String
     let id: String
