@@ -8,9 +8,9 @@
   "command_id": "tr-20261109T1755-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "persisting",
   "started_at": "2026-11-09T17:55:00+01:00",
-  "updated_at": "2026-11-09T17:55:00+01:00",
+  "updated_at": "2026-11-09T17:57:00+01:00",
   "finished_at": null,
   "current": 0,
   "total": 2,
@@ -129,6 +129,15 @@
       "trend_id": "red-review-552a4db6826b8ff36c0b",
       "title": "Revisar novedades: Pachuca",
       "message": "Pasada tr-20261109T1755-manual RUNNING. Cola inicial JIT=2 review_red: Pachuca y dubai; se procesan por antigüedad, revalidando ID/revisión antes de investigar y persistir. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-20261109T1755-manual",
+      "status": "RUNNING",
+      "at": "2026-11-09T17:57:00+01:00",
+      "phase": "persisting",
+      "trend_id": "red-review-552a4db6826b8ff36c0b",
+      "title": "Revisar novedades: Pachuca",
+      "message": "Pachuca: sin novedad sustancial posterior al episodio ya explicado; se persiste mantenimiento unchanged con fuentes actuales."
     }
   ],
   "last_started_at": "2026-11-09T17:55:00+01:00",
@@ -163,7 +172,7 @@
     },
     "message": "Pasada tr-20261109T1740-manual cerrada 0/0 contra main. Relectura JIT final: editorial-queue=0 (actualizada 2026-11-09T17:41:01+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial pendiente. El Top 30 reciente estaba marcado live_verified=false/reliability=unverified; no se forzó ninguna investigación. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-20261109T1755-manual RUNNING. Cola inicial JIT=2 review_red: Pachuca y dubai; se procesan por antigüedad, revalidando ID/revisión antes de investigar y persistir. ImageGen=0; publicaciones=0.",
+  "message": "Pachuca: sin novedad sustancial posterior al episodio ya explicado; se persiste mantenimiento unchanged con fuentes actuales.",
   "history": [
     {
       "run_id": "tr-1794199200000-manual",
