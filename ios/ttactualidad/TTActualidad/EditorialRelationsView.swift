@@ -57,8 +57,10 @@ private final class EditorialRelationsModel: ObservableObject {
 
     private func commandKey(news: EditorialRelationEndpoint,
                             trend: EditorialRelationEndpoint, action: String) -> String {
-        [action, news.id, String(news.revision), news.episodeFingerprint,
-         trend.id, String(trend.revision), trend.episodeFingerprint].joined(separator: "|")
+        // A Sites refresh may add fingerprints without changing the pair.
+        // Keep retries idempotent across that identity enrichment.
+        [action, news.id, String(news.revision), trend.id,
+         String(trend.revision)].joined(separator: "|")
     }
 
     private func retireVerifiedCommand(news: EditorialRelationEndpoint,
