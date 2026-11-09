@@ -7,16 +7,16 @@
   "previous_run_id": "tr-1794227558563-manual",
   "command_id": "tr-1794228000000-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-09T13:40:00+01:00",
-  "updated_at": "2026-11-09T13:40:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-09T13:41:10+01:00",
+  "finished_at": "2026-11-09T13:41:10+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -346,29 +346,39 @@
       "at": "2026-11-09T13:40:00+01:00",
       "phase": "preparing",
       "message": "Pasada tr-1794228000000-manual iniciada sobre main. Cola inicial=0; revalidación JIT antes de procesar o cerrar. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-09T13:41:00+01:00",
+      "phase": "verifying",
+      "message": "Barrera JIT final: captura recent.json 13:40:53+01:00; editorial-queue=0 actualizado 13:40:59+01:00; mobile-decisions y búsquedas dirigidas sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos."
+    },
+    {
+      "at": "2026-11-09T13:41:10+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-1794228000000-manual cerrada 0/0 contra main. No había trabajo editorial pendiente que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
-  "last_started_at": "2026-11-09T13:29:00+01:00",
-  "last_completed_at": "2026-11-09T13:35:34+01:00",
+  "last_started_at": "2026-11-09T13:40:00+01:00",
+  "last_completed_at": "2026-11-09T13:41:10+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794227336353-manual",
+    "run_id": "tr-1794228000000-manual",
     "status": "DONE",
-    "started_at": "2026-11-09T13:29:00+01:00",
-    "finished_at": "2026-11-09T13:35:34+01:00",
-    "at": "2026-11-09T13:35:34+01:00",
+    "started_at": "2026-11-09T13:40:00+01:00",
+    "finished_at": "2026-11-09T13:41:10+01:00",
+    "at": "2026-11-09T13:41:10+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 2,
-      "observed": 2,
-      "closed": 2,
+      "attempted": 0,
+      "observed": 0,
+      "closed": 0,
       "explained": 0,
       "problematic": 0,
-      "updates": 1,
+      "updates": 0,
       "review_completed_no_distinct_event": 0,
-      "maintenance_reviews": 2,
-      "unchanged_reviews": 1,
-      "continuity_updates": 1,
+      "maintenance_reviews": 0,
+      "unchanged_reviews": 0,
+      "continuity_updates": 0,
       "distinct_updates": 0,
       "stale_reviews": 0,
       "unverified_reviews": 0,
@@ -380,33 +390,13 @@
       "incidents": 0,
       "concurrent_convergence": 0
     },
-    "processed_ids": [
-      "red-review-cbb0f7ca88573e6e9724",
-      "red-review-0d23561e2d0147cc70d9"
-    ],
-    "outcomes": [
-      {
-        "id": "red-review-cbb0f7ca88573e6e9724",
-        "revision": 0,
-        "name": "Revisar novedades: Cracovia",
-        "outcome": "unchanged",
-        "applied": true,
-        "apply_commit": "91d4098c76d7408c2ef6879211627d1d0f1c8580"
-      },
-      {
-        "id": "red-review-0d23561e2d0147cc70d9",
-        "revision": 0,
-        "name": "Revisar novedades: Asraf",
-        "outcome": "continuity",
-        "applied": true,
-        "apply_commit": "0fe19dbe9c169034e66f631e68f0d7e2df44f378"
-      }
-    ],
+    "processed_ids": [],
+    "outcomes": [],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-1794227336353-manual cerrada 2/2. Cracovia quedó unchanged al no verificarse un acontecimiento posterior e independiente. Asraf se actualizó como continuidad del mismo episodio tras confirmarse la expulsión de Rosa Benito y su clasificación para la final, conservando ID, revisión e explained_at y sin volver a Listas. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "message": "Pasada tr-1794228000000-manual cerrada 0/0. Captura nueva 13:40:53+01:00; cola final 0 a las 13:40:59+01:00; sin preparing/update ni rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794228000000-manual en ejecución; cola inicial 0.",
+  "message": "Pasada tr-1794228000000-manual cerrada 0/0. Captura nueva 13:40:53+01:00; cola final 0 a las 13:40:59+01:00; sin preparing/update ni rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T03:17:00+01:00",
