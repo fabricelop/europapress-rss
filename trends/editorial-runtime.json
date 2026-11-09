@@ -3,19 +3,19 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-autoguard-1794229870",
+  "run_id": "tr-1794229800000-manual",
   "previous_run_id": "tr-1794229800000-manual",
   "command_id": "tr-autoguard-1794229870",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "investigating",
   "started_at": "2026-11-09T14:11:20+01:00",
-  "updated_at": "2026-11-09T14:11:20+01:00",
+  "updated_at": "2026-11-09T14:12:00+01:00",
   "finished_at": null,
   "current": 0,
   "total": 5,
-  "trend_id": null,
-  "title": "Pasada editorial TTendencias",
+  "trend_id": "efa3b6ffade2",
+  "title": "#Mañaneros9N",
   "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
@@ -428,7 +428,7 @@
     "incidents": [],
     "message": "Pasada tr-1794228900000-manual cerrada 0/0 contra main. Relectura final: editorial-queue=0 (updated_at 2026-11-09T13:50:58+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. Captura recent.json 2026-11-09T13:50:54+01:00. No había trabajo editorial pendiente que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Preparando 5 investigaciones activas de la cola autoritativa.",
+  "message": "Verificando emisión y contenido actual de Mañaneros 360.",
   "history": [
     {
       "at": "2026-11-09T03:17:00+01:00",
@@ -2332,5 +2332,9 @@
       "message": "Pasada tr-1794227336353-manual cerrada 2/2. Cracovia quedó unchanged al no verificarse un acontecimiento posterior e independiente. Asraf se actualizó como continuidad del mismo episodio tras confirmarse la expulsión de Rosa Benito y su clasificación para la final, conservando ID, revisión e explained_at y sin volver a Listas. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
-  "current_item": null
+  "current_item": {
+    "id": "efa3b6ffade2",
+    "title": "#Mañaneros9N",
+    "phase": "investigating"
+  }
 }
