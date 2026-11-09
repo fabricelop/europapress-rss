@@ -31,6 +31,8 @@ struct EditorialActions: View {
     @State private var showHints = false
     @State private var showRelations = false
     @State private var showManualImage = false
+    @State private var manualXPhotoShare: TTManualXPhotoShare?
+    @State private var preparingXPhotoShare = false
     @State private var showTTProjectLink = false
     @State private var ttProjectLinkInput = UserDefaults.standard.string(
         forKey: "TTActualidad.chatgpt.projectTT.url") ?? ""
@@ -74,6 +76,18 @@ struct EditorialActions: View {
                     .disabled(fullText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                 quickButton("Copiar Texto", "doc.on.doc") { copy(xText) }
                     .disabled(fullText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+            }
+            // Separate experimental manual share: NEVER replace the existing
+            // text-only X intent or dispatch a Buffer publication.
+            quickButton("Publicar en X (F)", "photo.on.rectangle.angled") {
+                Task { await prepareManualXPhotoShare() }
+            }
+            .disabled(preparingXPhotoShare ||
+                      fullText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
+                      (aiPhotoURL == nil && archivePhotoURL == nil))
+            if preparingXPhotoShare {
+                Text("Preparando fotografía para compartir…")
+                    .font(.caption2).foregroundStyle(TTTheme.muted)
             }
             quickButton("Publicar directo · Buffer", "paperplane.fill") {
                 guard github.authenticated else { showSettings = true; return }
@@ -122,24 +136,6 @@ struct EditorialActions: View {
                    verified.path.contains("/status/") {
                     quickButton("Ver publicación en X", "arrow.up.right.square") {
                         openURL(verified)
-                    }
-                }
-            }
-            quickButton("Comprobar estado de Buffer", "arrow.clockwise") {
-                Task {
-                    await buffer.refresh()
-                    if let receipt = buffer.latestReceipt(project: project, id: editorialID,
-                                                         revision: revision),
-                       receipt.state == "sent" && receipt.closure_verified == true {
-                        outcome = "Publicado en X y retirado de Listas (recibos confirmados)"
-                        await store.refreshIfStale(minInterval: 0)
-                    } else if let receipt = buffer.latestReceipt(project: project,
-                                                                 id: editorialID,
-                                                                 revision: revision) {
-                        outcome = "Buffer: " + receipt.state +
-                                  ". La retirada de Listas necesita un recibo independiente."
-                    } else {
-                        outcome = "No hay recibo definitivo de Buffer para esta revisión."
                     }
                 }
             }
@@ -273,6 +269,9 @@ struct EditorialActions: View {
                     .environmentObject(store)
                     .presentationDetents([.medium, .large])
             }
+        }
+        .sheet(item: $manualXPhotoShare) { share in
+            TTManualXPhotoShareSheet(text: share.text, image: share.image)
         }
         .sheet(isPresented: $showManualImage, onDismiss: {
             Task { await store.refreshIfStale(minInterval: 0) }
@@ -985,6 +984,46 @@ struct EditorialActions: View {
         parts?.queryItems = [URLQueryItem(name: "text",
                                           value: xText)]
         if let url = parts?.url { openURL(url) }
+    }
+
+    // The iOS share extension may decide which provided items it accepts.
+    // Require the editor to verify both the text and the image in X before
+    // tapping X's final Publish control. No publishing API is invoked here.
+    @MainActor
+    private func prepareManualXPhotoShare() async {
+        guard !preparingXPhotoShare,
+              !fullText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
+        preparingXPhotoShare = true
+        defer { preparingXPhotoShare = false }
+        let draftText = xText
+        // Exactly the same editorial sources as the existing photo buttons:
+        // verified AI first, archive second. Failed downloads are not shared.
+        let candidates = [aiPhotoURL, archivePhotoURL].compactMap { $0 }
+        var attempted = Set<URL>()
+        for photoURL in candidates {
+            guard attempted.insert(photoURL).inserted,
+                  photoURL.scheme?.lowercased() == "https" else { continue }
+            do {
+                var request = URLRequest(url: photoURL, cachePolicy: .reloadIgnoringLocalCacheData)
+                request.timeoutInterval = 20
+                let (data, response) = try await URLSession.shared.data(for: request)
+                guard let http = response as? HTTPURLResponse, http.statusCode == 200,
+                      !data.isEmpty, data.count <= 20_000_000,
+                      let image = UIImage(data: data) else { continue }
+                outcome = "Compartir manual: elige X y comprueba texto y foto " +
+                          "antes de pulsar Publicar. Algunas versiones de X " +
+                          "pueden omitir uno de los dos elementos."
+                manualXPhotoShare = TTManualXPhotoShare(text: draftText, image: image)
+                return
+            } catch {
+                // Try the next known editorial source, without generating or
+                // attaching any different picture.
+                continue
+            }
+        }
+        outcome = candidates.isEmpty
+            ? "No hay foto asociada. Usa el botón original «Publicar en X»."
+            : "No se pudo preparar ninguna foto válida. No se ha publicado nada."
     }
 
     private func copyPhoto(ai: Bool) async {
