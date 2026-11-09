@@ -7,16 +7,16 @@
   "previous_run_id": "tr-20261109T2210-manual",
   "command_id": "tr-autoguard-1794258660",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "verifying",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-09T22:22:00+01:00",
-  "updated_at": "2026-11-09T22:22:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-09T22:23:00+01:00",
+  "finished_at": "2026-11-09T22:23:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -53,18 +53,18 @@
   "error": null,
   "activity": "closing",
   "last_started_at": "2026-11-09T22:22:00+01:00",
-  "last_completed_at": "2026-11-09T22:14:00+01:00",
+  "last_completed_at": "2026-11-09T22:23:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261109T2210-manual",
+    "run_id": "tr-autoguard-1794258660",
     "status": "DONE",
-    "started_at": "2026-11-09T22:10:00+01:00",
-    "finished_at": "2026-11-09T22:14:00+01:00",
+    "started_at": "2026-11-09T22:22:00+01:00",
+    "finished_at": "2026-11-09T22:23:00+01:00",
     "summary": {
-      "attempted": 6,
-      "observed": 6,
-      "closed": 6,
-      "explained": 5,
+      "attempted": 0,
+      "observed": 0,
+      "closed": 0,
+      "explained": 0,
       "problematic": 0,
       "updates": 0,
       "review_completed_no_distinct_event": 0,
@@ -83,73 +83,14 @@
       "image_outbox_created": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 1
+      "concurrent_convergence": 0
     },
-    "processed_ids": [
-      "ad4cd1930b59",
-      "a6acd9b7703a",
-      "8090f1b1fec6",
-      "f50198a89b86",
-      "02ad9e22e2d9"
-    ],
-    "converged_ids": [
-      "f5060a515233"
-    ],
-    "outcomes": [
-      {
-        "id": "ad4cd1930b59",
-        "revision": 0,
-        "name": "#SánchezEnLaSéptima",
-        "outcome": "explained",
-        "applied": true,
-        "apply_commit": "2e26b3a2de306016be06dc2a5bb5d44c32c5ede3"
-      },
-      {
-        "id": "a6acd9b7703a",
-        "revision": 0,
-        "name": "Snyder",
-        "outcome": "explained",
-        "applied": true,
-        "apply_commit": "2e26b3a2de306016be06dc2a5bb5d44c32c5ede3"
-      },
-      {
-        "id": "8090f1b1fec6",
-        "revision": 0,
-        "name": "Eldense",
-        "outcome": "explained",
-        "applied": true,
-        "apply_commit": "2e26b3a2de306016be06dc2a5bb5d44c32c5ede3"
-      },
-      {
-        "id": "f50198a89b86",
-        "revision": 0,
-        "name": "Clayface",
-        "outcome": "explained",
-        "applied": true,
-        "apply_commit": "2e26b3a2de306016be06dc2a5bb5d44c32c5ede3"
-      },
-      {
-        "id": "02ad9e22e2d9",
-        "revision": 0,
-        "name": "Huelga",
-        "outcome": "explained",
-        "applied": true,
-        "apply_commit": "2e26b3a2de306016be06dc2a5bb5d44c32c5ede3"
-      },
-      {
-        "id": "f5060a515233",
-        "revision": 0,
-        "name": "Ferran",
-        "outcome": "withdrawn_jit",
-        "applied": false,
-        "via": "concurrent_refresh",
-        "source_commit": "e5b37a83aee0ec38cf3c84fd4d082942b653d0d2",
-        "reason": "El refresco autoritativo retiró Ferran de editorial-queue y cambió su tarjeta de EN ELABORACIÓN a PENDIENTE antes de la persistencia; se respetó la barrera JIT."
-      }
-    ],
-    "message": "Pasada tr-20261109T2210-manual cerrada 6/6 observados: 5 tendencias explicadas y aplicadas en main por el commit 2e26b3a2de306016be06dc2a5bb5d44c32c5ede3 (#SánchezEnLaSéptima, Snyder, Eldense, Clayface y Huelga). Ferran r0 fue retirado por el refresco autoritativo JIT e5b37a83aee0ec38cf3c84fd4d082942b653d0d2 antes de persistir (EN ELABORACIÓN→PENDIENTE), por lo que no se sobrescribió. Barrera final: editorial-queue=0. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "processed_ids": [],
+    "converged_ids": [],
+    "outcomes": [],
+    "message": "Pasada tr-autoguard-1794258660 cerrada 0/0 tras relectura de main: editorial-queue=0 y sin preparing/update, rewrite_pending ni reexplain detectables. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Verificando barrera autoritativa en main: cola compacta observada en 0; comprobando preparing/update y reexplicaciones pendientes antes de cerrar.",
+  "message": "Pasada tr-autoguard-1794258660 cerrada 0/0 tras relectura de main: editorial-queue=0 y sin preparing/update, rewrite_pending ni reexplain detectables. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794199200000-manual",
@@ -3560,23 +3501,27 @@
       "phase": "verifying",
       "at": "2026-11-09T22:22:00+01:00",
       "message": "Verificando barrera autoritativa en main: cola compacta observada en 0; comprobando preparing/update y reexplicaciones pendientes antes de cerrar."
+    },
+    {
+      "run_id": "tr-autoguard-1794258660",
+      "status": "DONE",
+      "phase": "closing",
+      "at": "2026-11-09T22:23:00+01:00",
+      "message": "Pasada tr-autoguard-1794258660 cerrada 0/0 tras relectura de main: editorial-queue=0 y sin preparing/update, rewrite_pending ni reexplain detectables. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "current_item": null,
   "withdrawn_ids": [
     "ae7f066f3c94"
   ],
-  "last_finished_at": "2026-11-09T22:14:00+01:00",
-  "last_revalidated_at": "2026-11-09T22:14:00+01:00",
+  "last_finished_at": "2026-11-09T22:23:00+01:00",
+  "last_revalidated_at": "2026-11-09T22:23:00+01:00",
   "last_revalidation": {
-    "at": "2026-11-09T22:14:00+01:00",
-    "source": "final_jit_barrier",
+    "at": "2026-11-09T22:23:00+01:00",
+    "queue_sha": "340f746f94da17011760efce1fd85d36c6ace6b9",
     "queue_count": 0,
-    "preparing_update_pending": 0,
-    "rewrite_or_reexplain_pending": 0,
-    "anticipate_or_review_red_pending": 0,
-    "imagegen_calls": 0,
-    "publications": 0,
-    "note": "Barrera final limpia tras aplicar cinco cierres; Ferran fue retirado previamente por refresco autoritativo y no se persistió."
+    "preparing_update": 0,
+    "rewrite_pending": 0,
+    "reexplain": 0
   }
 }
