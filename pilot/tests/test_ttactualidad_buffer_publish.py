@@ -1,6 +1,7 @@
 import importlib.util
 import json
 import hashlib
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from email.message import Message
 import tempfile
@@ -59,6 +60,72 @@ class DirectBufferPublisherTests(unittest.TestCase):
     def payload(self):
         return {"project": "ttittulares", "event_id": "news123456",
                 "revision": 1, "request_id": "11111111-1111-4111-8111-111111111111"}
+
+
+    def test_recent_verified_channel_avoids_two_buffer_lookups(self):
+        now = datetime.now(timezone.utc)
+        sent = (now - timedelta(minutes=40)).isoformat()
+        row = {"account": "ttittulares", "state": "sent",
+               "channel_id": "trusted-channel-1", "sent_at": sent,
+               "post_url": "https://x.com/ttittulares/status/1234567890123456789"}
+        ledger = {"items": [row]}
+        self.assertEqual(publisher.recent_verified_channel(
+            ledger, "ttittulares", now), "trusted-channel-1")
+        self.assertIsNone(publisher.recent_verified_channel(
+            ledger, "ttendenciasesp", now))
+        expired = now + timedelta(hours=8)
+        self.assertIsNone(publisher.recent_verified_channel(
+            ledger, "ttittulares", expired))
+        row["post_url"] = "https://x.com/otheraccount/status/1234567890123456789"
+        self.assertIsNone(publisher.recent_verified_channel(
+            ledger, "ttittulares", now))
+
+    def test_disconnected_channel_invalidates_verified_cache(self):
+        now = datetime.now(timezone.utc)
+        sent = (now - timedelta(minutes=40)).isoformat()
+        row = {"account": "ttittulares", "state": "sent",
+               "channel_id": "trusted-channel-1", "sent_at": sent,
+               "post_url": "https://x.com/ttittulares/status/1234567890123456789"}
+        ledger = {"items": [row], "channel_cache_invalid_after":
+                  {"ttittulares": now.isoformat()}}
+        self.assertIsNone(publisher.recent_verified_channel(
+            ledger, "ttittulares", now))
+
+    def test_stale_pending_does_not_poll_every_quarter_hour(self):
+        now = datetime.now(timezone.utc)
+        item = {"state": "pending", "buffer_post_id": "buffer-123",
+                "requested_at": (now - timedelta(hours=34)).isoformat(),
+                "last_buffer_check_at": (now - timedelta(minutes=20)).isoformat()}
+        self.assertFalse(publisher.pending_check_due(item, now))
+        with mock.patch.object(publisher, "graphql") as api:
+            publisher.reconcile({"items": [item]}, "test-key")
+            api.assert_not_called()
+        self.assertEqual(item["state"], "pending")
+
+    def test_old_pending_is_rechecked_after_twelve_hours_without_new_post(self):
+        now = datetime.now(timezone.utc)
+        item = {"state": "pending", "buffer_post_id": "buffer-123",
+                "requested_at": (now - timedelta(hours=34)).isoformat(),
+                "last_buffer_check_at": (now - timedelta(hours=13)).isoformat(),
+                "account": "ttittulares", "channel_id": "channel-1"}
+        response = {"post": {"id": "buffer-123", "channelId": "channel-1",
+                             "status": "queued"}}
+        with mock.patch.object(publisher, "graphql", return_value=response) as api:
+            publisher.reconcile({"items": [item]}, "test-key")
+            self.assertEqual(api.call_count, 1)
+        self.assertEqual(item["state"], "pending")
+        self.assertEqual(item["buffer_poll_attempts"], 1)
+        self.assertTrue(item.get("last_buffer_check_at"))
+        self.assertFalse(publisher.pending_check_due(item, now))
+
+    def test_recent_pending_checks_still_run_each_fifteen_minutes(self):
+        now = datetime.now(timezone.utc)
+        item = {"state": "pending", "buffer_post_id": "new-post",
+                "requested_at": (now - timedelta(minutes=25)).isoformat(),
+                "last_buffer_check_at": (now - timedelta(minutes=17)).isoformat()}
+        self.assertTrue(publisher.pending_check_due(item, now))
+        item["last_buffer_check_at"] = (now - timedelta(minutes=9)).isoformat()
+        self.assertFalse(publisher.pending_check_due(item, now))
 
     def test_reservation_commits_ledger_before_external_request(self):
         # A git diff --quiet code of 1 means there ARE staged changes.
