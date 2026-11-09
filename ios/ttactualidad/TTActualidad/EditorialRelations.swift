@@ -101,6 +101,19 @@ enum EditorialRelationsPolicy {
         return best.mapValues { $0.state }
     }
 
+    static func confirmedCount(_ items: [EditorialRelation],
+                               trendID: String, revision: Int) -> Int {
+        guard !trendID.isEmpty else { return 0 }
+        let states = effectivePairStates(items)
+        return Set(items.compactMap { relation -> String? in
+            guard relation.trend.id == trendID,
+                  relation.trend.revision == revision,
+                  states[pairKey(relation.news, relation.trend)] == "linked"
+            else { return nil }
+            return newsKey(id: relation.news.id, revision: relation.news.revision)
+        }).count
+    }
+
     // A successful POST is not proof the relationship is visible on the Site.
     // Confirm readback from the private authoritative snapshot before clearing
     // a pending checkbox or reporting a saved relationship to the editor.
