@@ -699,14 +699,21 @@ for batch in approved_batches:
     if not (started <= now_dt <= expires and snap <= snapshot_date):
         continue
     for term in batch.get("names") or []:
-        approved_by_name[norm(term)] = batch_id
+        approved_by_name[norm(term)] = {"id": batch_id, "approved_at": started}
 
 to_queue = []
 for item in current:
     key = norm(item["name"])
     req = by_name.get(key)
     status = str((req or {}).get("status") or "")
-    approval_id = approved_by_name.get(key, "")
+    approval = approved_by_name.get(key) or {}
+    approval_id = approval.get("id", "")
+    # Another concurrent editorial pass may have ALREADY prepared a fresh
+    # independent explanation after this instruction. Never duplicate it.
+    completed_after_approval = (approval_id and latest_explanation.get(key)
+                                and latest_explanation[key] >= approval["approved_at"])
+    if completed_after_approval:
+        approval_id = ""
     if approval_id and any(
         norm(old.get("name")) == key and old.get("editor_approval_batch_id") == approval_id
         for old in requests
