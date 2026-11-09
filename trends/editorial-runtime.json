@@ -7,19 +7,17 @@
   "previous_run_id": "tr-autoguard-1794266117",
   "command_id": "tr-1794266303300-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-10T00:18:00+01:00",
-  "updated_at": "2026-11-10T00:18:00+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-10T00:24:30+01:00",
+  "finished_at": "2026-11-10T00:24:30+01:00",
+  "current": 15,
   "total": 15,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
-  "processed_ids": [],
-  "converged_ids": [],
-  "remaining_ids": [
+  "queue_complete": true,
+  "processed_ids": [
     "6485ff64586c",
     "db1a689b7f75",
     "252b4f0e011a",
@@ -36,7 +34,7 @@
     "bd016ccdb9b6",
     "de1de154b01a"
   ],
-  "remaining_active_ids": [
+  "converged_ids": [
     "6485ff64586c",
     "db1a689b7f75",
     "252b4f0e011a",
@@ -53,15 +51,17 @@
     "bd016ccdb9b6",
     "de1de154b01a"
   ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 15,
     "observed": 15,
-    "closed": 0,
-    "explained": 0,
+    "closed": 15,
+    "explained": 13,
     "problematic": 0,
     "updates": 0,
-    "review_completed_no_distinct_event": 0,
+    "review_completed_no_distinct_event": 2,
     "maintenance_reviews": 0,
     "unchanged_reviews": 0,
     "continuity_updates": 0,
@@ -71,35 +71,171 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 15,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 15
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "6485ff64586c",
+      "revision": 0,
+      "name": "#LaIslaDeLasTentaciones18",
+      "outcome": "explained",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "apply_commit": "621a66b073cc4254c3686b4d27e7e2a8a1f1c74f"
+    },
+    {
+      "id": "db1a689b7f75",
+      "revision": 0,
+      "name": "RTVE",
+      "outcome": "explained",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "apply_commit": "621a66b073cc4254c3686b4d27e7e2a8a1f1c74f"
+    },
+    {
+      "id": "252b4f0e011a",
+      "revision": 0,
+      "name": "Jordi Wild",
+      "outcome": "review_completed_no_distinct_event",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "apply_commit": "621a66b073cc4254c3686b4d27e7e2a8a1f1c74f"
+    },
+    {
+      "id": "36c513707af2",
+      "revision": 0,
+      "name": "Manolete",
+      "outcome": "explained",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "apply_commit": "621a66b073cc4254c3686b4d27e7e2a8a1f1c74f"
+    },
+    {
+      "id": "dae325d91836",
+      "revision": 0,
+      "name": "Arévalo",
+      "outcome": "explained",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "apply_commit": "621a66b073cc4254c3686b4d27e7e2a8a1f1c74f"
+    },
+    {
+      "id": "5a9fee711d35",
+      "revision": 0,
+      "name": "Candela Peña",
+      "outcome": "review_completed_no_distinct_event",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "apply_commit": "621a66b073cc4254c3686b4d27e7e2a8a1f1c74f"
+    },
+    {
+      "id": "6fb89bd65d53",
+      "revision": 0,
+      "name": "#ElComite",
+      "outcome": "explained",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "apply_commit": "621a66b073cc4254c3686b4d27e7e2a8a1f1c74f"
+    },
+    {
+      "id": "0386deb62e6f",
+      "revision": 0,
+      "name": "Brincando",
+      "outcome": "explained",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "apply_commit": "621a66b073cc4254c3686b4d27e7e2a8a1f1c74f"
+    },
+    {
+      "id": "c502abc80a52",
+      "revision": 0,
+      "name": "La Vida Moderna",
+      "outcome": "explained",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "apply_commit": "621a66b073cc4254c3686b4d27e7e2a8a1f1c74f"
+    },
+    {
+      "id": "682a8cab1c48",
+      "revision": 0,
+      "name": "Dictador",
+      "outcome": "explained",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "apply_commit": "621a66b073cc4254c3686b4d27e7e2a8a1f1c74f"
+    },
+    {
+      "id": "d6769598d6e3",
+      "revision": 0,
+      "name": "Pablo Motos",
+      "outcome": "explained",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "apply_commit": "621a66b073cc4254c3686b4d27e7e2a8a1f1c74f"
+    },
+    {
+      "id": "299d9b265fff",
+      "revision": 0,
+      "name": "Con Sánchez",
+      "outcome": "explained",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "apply_commit": "621a66b073cc4254c3686b4d27e7e2a8a1f1c74f"
+    },
+    {
+      "id": "24733e06cc03",
+      "revision": 0,
+      "name": "Gaza",
+      "outcome": "explained",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "apply_commit": "621a66b073cc4254c3686b4d27e7e2a8a1f1c74f"
+    },
+    {
+      "id": "bd016ccdb9b6",
+      "revision": 0,
+      "name": "Masterchef",
+      "outcome": "explained",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "apply_commit": "621a66b073cc4254c3686b4d27e7e2a8a1f1c74f"
+    },
+    {
+      "id": "de1de154b01a",
+      "revision": 0,
+      "name": "Hamas",
+      "outcome": "explained",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "apply_commit": "b12bca5b8d226d652401b0d6f047cf9b8f790cb1"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "preparing",
+  "activity": "closing",
   "last_started_at": "2026-11-09T23:59:31+01:00",
-  "last_completed_at": "2026-11-09T23:59:42+01:00",
+  "last_completed_at": "2026-11-10T00:24:30+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794264900000-manual",
-    "status": "DONE_WITH_INCIDENTS",
-    "started_at": "2026-11-09T23:57:49.750+01:00",
-    "finished_at": "2026-11-10T00:01:30+01:00",
+    "run_id": "tr-1794266303300-manual",
+    "status": "DONE",
+    "started_at": "2026-11-10T00:18:00+01:00",
+    "finished_at": "2026-11-10T00:24:30+01:00",
     "summary": {
-      "attempted": 1,
-      "observed": 1,
-      "closed": 1,
-      "explained": 1,
+      "attempted": 15,
+      "observed": 15,
+      "closed": 15,
+      "explained": 13,
       "problematic": 0,
       "updates": 0,
-      "review_completed_no_distinct_event": 0,
+      "review_completed_no_distinct_event": 2,
       "maintenance_reviews": 0,
       "unchanged_reviews": 0,
       "continuity_updates": 0,
@@ -114,40 +250,185 @@
       "imagegen_calls": 0,
       "image_outbox_created": 0,
       "publications": 0,
-      "incidents": 1,
-      "concurrent_convergence": 0
+      "incidents": 0,
+      "concurrent_convergence": 15
     },
     "processed_ids": [
-      "839aaa8d29b3"
+      "6485ff64586c",
+      "db1a689b7f75",
+      "252b4f0e011a",
+      "36c513707af2",
+      "dae325d91836",
+      "5a9fee711d35",
+      "6fb89bd65d53",
+      "0386deb62e6f",
+      "c502abc80a52",
+      "682a8cab1c48",
+      "d6769598d6e3",
+      "299d9b265fff",
+      "24733e06cc03",
+      "bd016ccdb9b6",
+      "de1de154b01a"
     ],
-    "converged_ids": [],
+    "converged_ids": [
+      "6485ff64586c",
+      "db1a689b7f75",
+      "252b4f0e011a",
+      "36c513707af2",
+      "dae325d91836",
+      "5a9fee711d35",
+      "6fb89bd65d53",
+      "0386deb62e6f",
+      "c502abc80a52",
+      "682a8cab1c48",
+      "d6769598d6e3",
+      "299d9b265fff",
+      "24733e06cc03",
+      "bd016ccdb9b6",
+      "de1de154b01a"
+    ],
     "outcomes": [
       {
-        "id": "839aaa8d29b3",
-        "revision": 1,
-        "name": "Tartamudea",
+        "id": "6485ff64586c",
+        "revision": 0,
+        "name": "#LaIslaDeLasTentaciones18",
         "outcome": "explained",
         "applied": true,
-        "outbox_commit": "afce135d9ce997c200312ebd347205c0fb4bf552",
-        "apply_commit": "870bf98bfd0cdf5aba8c283deb5740fe7a8629b1"
-      }
-    ],
-    "incident_count": 1,
-    "incidents": [
+        "via": "concurrent_convergence",
+        "apply_commit": "621a66b073cc4254c3686b4d27e7e2a8a1f1c74f"
+      },
       {
-        "type": "refresh_workflow_stuck_checkout",
-        "workflow_run_id": 42716411372,
-        "trigger_commit": "e07c7d4f652e2323ca9ffd0aaf4a503e7c8afd86",
-        "status": "in_progress",
-        "step": "actions/checkout@v4",
-        "observed_at": "2026-11-10T00:01:30+01:00",
-        "last_radar_captured_at": "2026-11-09T23:51:03+01:00",
-        "note": "El refresco manual real arrancó pero permanecía atascado en checkout al cierre. No se usó como prueba de éxito. La barrera editorial final en main sí quedó a 0 tras aplicar Tartamudea r1."
+        "id": "db1a689b7f75",
+        "revision": 0,
+        "name": "RTVE",
+        "outcome": "explained",
+        "applied": true,
+        "via": "concurrent_convergence",
+        "apply_commit": "621a66b073cc4254c3686b4d27e7e2a8a1f1c74f"
+      },
+      {
+        "id": "252b4f0e011a",
+        "revision": 0,
+        "name": "Jordi Wild",
+        "outcome": "review_completed_no_distinct_event",
+        "applied": true,
+        "via": "concurrent_convergence",
+        "apply_commit": "621a66b073cc4254c3686b4d27e7e2a8a1f1c74f"
+      },
+      {
+        "id": "36c513707af2",
+        "revision": 0,
+        "name": "Manolete",
+        "outcome": "explained",
+        "applied": true,
+        "via": "concurrent_convergence",
+        "apply_commit": "621a66b073cc4254c3686b4d27e7e2a8a1f1c74f"
+      },
+      {
+        "id": "dae325d91836",
+        "revision": 0,
+        "name": "Arévalo",
+        "outcome": "explained",
+        "applied": true,
+        "via": "concurrent_convergence",
+        "apply_commit": "621a66b073cc4254c3686b4d27e7e2a8a1f1c74f"
+      },
+      {
+        "id": "5a9fee711d35",
+        "revision": 0,
+        "name": "Candela Peña",
+        "outcome": "review_completed_no_distinct_event",
+        "applied": true,
+        "via": "concurrent_convergence",
+        "apply_commit": "621a66b073cc4254c3686b4d27e7e2a8a1f1c74f"
+      },
+      {
+        "id": "6fb89bd65d53",
+        "revision": 0,
+        "name": "#ElComite",
+        "outcome": "explained",
+        "applied": true,
+        "via": "concurrent_convergence",
+        "apply_commit": "621a66b073cc4254c3686b4d27e7e2a8a1f1c74f"
+      },
+      {
+        "id": "0386deb62e6f",
+        "revision": 0,
+        "name": "Brincando",
+        "outcome": "explained",
+        "applied": true,
+        "via": "concurrent_convergence",
+        "apply_commit": "621a66b073cc4254c3686b4d27e7e2a8a1f1c74f"
+      },
+      {
+        "id": "c502abc80a52",
+        "revision": 0,
+        "name": "La Vida Moderna",
+        "outcome": "explained",
+        "applied": true,
+        "via": "concurrent_convergence",
+        "apply_commit": "621a66b073cc4254c3686b4d27e7e2a8a1f1c74f"
+      },
+      {
+        "id": "682a8cab1c48",
+        "revision": 0,
+        "name": "Dictador",
+        "outcome": "explained",
+        "applied": true,
+        "via": "concurrent_convergence",
+        "apply_commit": "621a66b073cc4254c3686b4d27e7e2a8a1f1c74f"
+      },
+      {
+        "id": "d6769598d6e3",
+        "revision": 0,
+        "name": "Pablo Motos",
+        "outcome": "explained",
+        "applied": true,
+        "via": "concurrent_convergence",
+        "apply_commit": "621a66b073cc4254c3686b4d27e7e2a8a1f1c74f"
+      },
+      {
+        "id": "299d9b265fff",
+        "revision": 0,
+        "name": "Con Sánchez",
+        "outcome": "explained",
+        "applied": true,
+        "via": "concurrent_convergence",
+        "apply_commit": "621a66b073cc4254c3686b4d27e7e2a8a1f1c74f"
+      },
+      {
+        "id": "24733e06cc03",
+        "revision": 0,
+        "name": "Gaza",
+        "outcome": "explained",
+        "applied": true,
+        "via": "concurrent_convergence",
+        "apply_commit": "621a66b073cc4254c3686b4d27e7e2a8a1f1c74f"
+      },
+      {
+        "id": "bd016ccdb9b6",
+        "revision": 0,
+        "name": "Masterchef",
+        "outcome": "explained",
+        "applied": true,
+        "via": "concurrent_convergence",
+        "apply_commit": "621a66b073cc4254c3686b4d27e7e2a8a1f1c74f"
+      },
+      {
+        "id": "de1de154b01a",
+        "revision": 0,
+        "name": "Hamas",
+        "outcome": "explained",
+        "applied": true,
+        "via": "concurrent_convergence",
+        "apply_commit": "b12bca5b8d226d652401b0d6f047cf9b8f790cb1"
       }
     ],
-    "message": "Pasada tr-1794264900000-manual cerrada 1/1 con incidencia. Tartamudea r1 fue investigada desde cero y aplicada en main por 870bf98bfd0cdf5aba8c283deb5740fe7a8629b1; la pista del editor quedó contrastada con dos crónicas independientes que describen tartamudeos y nervios de David Broncano durante la entrevista a Santiago Abascal. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. El refresco manual 42716411372 seguía atascado en actions/checkout@v4 y se registra como incidencia; recent.json conserva captura 2026-11-09T23:51:03+01:00. ImageGen=0; publicaciones=0."
+    "incident_count": 0,
+    "incidents": [],
+    "message": "Pasada tr-1794266303300-manual cerrada 15/15 por convergencia JIT. Trece revisiones quedaron explained; Jordi Wild y Candela Peña se cerraron review_completed/no_distinct_event, sin nueva ficha ni imagen. Hamas r0 fue reelaborado desde cero y aplicado con cierre factual sin remate. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794266303300-manual RUNNING. Cola autoritativa inicial=15; processing preparing/update antiguo→reciente con revalidación JIT id+revision. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1794266303300-manual cerrada 15/15 por convergencia JIT. Trece revisiones quedaron explained; Jordi Wild y Candela Peña se cerraron review_completed/no_distinct_event, sin nueva ficha ni imagen. Hamas r0 fue reelaborado desde cero y aplicado con cierre factual sin remate. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794234841273-manual",
@@ -2289,17 +2570,188 @@
       "at": "2026-11-10T00:18:00+01:00",
       "phase": "preparing",
       "message": "Pasada tr-1794266303300-manual RUNNING. Cola autoritativa inicial=15; processing preparing/update antiguo→reciente con revalidación JIT id+revision. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794266303300-manual",
+      "status": "DONE",
+      "started_at": "2026-11-10T00:18:00+01:00",
+      "finished_at": "2026-11-10T00:24:30+01:00",
+      "at": "2026-11-10T00:24:30+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 15,
+        "observed": 15,
+        "closed": 15,
+        "explained": 13,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 2,
+        "maintenance_reviews": 0,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 15
+      },
+      "outcomes": [
+        {
+          "id": "6485ff64586c",
+          "revision": 0,
+          "name": "#LaIslaDeLasTentaciones18",
+          "outcome": "explained",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "apply_commit": "621a66b073cc4254c3686b4d27e7e2a8a1f1c74f"
+        },
+        {
+          "id": "db1a689b7f75",
+          "revision": 0,
+          "name": "RTVE",
+          "outcome": "explained",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "apply_commit": "621a66b073cc4254c3686b4d27e7e2a8a1f1c74f"
+        },
+        {
+          "id": "252b4f0e011a",
+          "revision": 0,
+          "name": "Jordi Wild",
+          "outcome": "review_completed_no_distinct_event",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "apply_commit": "621a66b073cc4254c3686b4d27e7e2a8a1f1c74f"
+        },
+        {
+          "id": "36c513707af2",
+          "revision": 0,
+          "name": "Manolete",
+          "outcome": "explained",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "apply_commit": "621a66b073cc4254c3686b4d27e7e2a8a1f1c74f"
+        },
+        {
+          "id": "dae325d91836",
+          "revision": 0,
+          "name": "Arévalo",
+          "outcome": "explained",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "apply_commit": "621a66b073cc4254c3686b4d27e7e2a8a1f1c74f"
+        },
+        {
+          "id": "5a9fee711d35",
+          "revision": 0,
+          "name": "Candela Peña",
+          "outcome": "review_completed_no_distinct_event",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "apply_commit": "621a66b073cc4254c3686b4d27e7e2a8a1f1c74f"
+        },
+        {
+          "id": "6fb89bd65d53",
+          "revision": 0,
+          "name": "#ElComite",
+          "outcome": "explained",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "apply_commit": "621a66b073cc4254c3686b4d27e7e2a8a1f1c74f"
+        },
+        {
+          "id": "0386deb62e6f",
+          "revision": 0,
+          "name": "Brincando",
+          "outcome": "explained",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "apply_commit": "621a66b073cc4254c3686b4d27e7e2a8a1f1c74f"
+        },
+        {
+          "id": "c502abc80a52",
+          "revision": 0,
+          "name": "La Vida Moderna",
+          "outcome": "explained",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "apply_commit": "621a66b073cc4254c3686b4d27e7e2a8a1f1c74f"
+        },
+        {
+          "id": "682a8cab1c48",
+          "revision": 0,
+          "name": "Dictador",
+          "outcome": "explained",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "apply_commit": "621a66b073cc4254c3686b4d27e7e2a8a1f1c74f"
+        },
+        {
+          "id": "d6769598d6e3",
+          "revision": 0,
+          "name": "Pablo Motos",
+          "outcome": "explained",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "apply_commit": "621a66b073cc4254c3686b4d27e7e2a8a1f1c74f"
+        },
+        {
+          "id": "299d9b265fff",
+          "revision": 0,
+          "name": "Con Sánchez",
+          "outcome": "explained",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "apply_commit": "621a66b073cc4254c3686b4d27e7e2a8a1f1c74f"
+        },
+        {
+          "id": "24733e06cc03",
+          "revision": 0,
+          "name": "Gaza",
+          "outcome": "explained",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "apply_commit": "621a66b073cc4254c3686b4d27e7e2a8a1f1c74f"
+        },
+        {
+          "id": "bd016ccdb9b6",
+          "revision": 0,
+          "name": "Masterchef",
+          "outcome": "explained",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "apply_commit": "621a66b073cc4254c3686b4d27e7e2a8a1f1c74f"
+        },
+        {
+          "id": "de1de154b01a",
+          "revision": 0,
+          "name": "Hamas",
+          "outcome": "explained",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "apply_commit": "b12bca5b8d226d652401b0d6f047cf9b8f790cb1"
+        }
+      ],
+      "message": "Pasada tr-1794266303300-manual cerrada 15/15 por convergencia JIT. Trece revisiones quedaron explained; Jordi Wild y Candela Peña se cerraron review_completed/no_distinct_event, sin nueva ficha ni imagen. Hamas r0 fue reelaborado desde cero y aplicado con cierre factual sin remate. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "current_item": null,
   "withdrawn_ids": [
     "ae7f066f3c94"
   ],
-  "last_finished_at": "2026-11-10T00:01:30+01:00",
-  "last_revalidated_at": "2026-11-10T00:01:30+01:00",
+  "last_finished_at": "2026-11-10T00:24:30+01:00",
+  "last_revalidated_at": "2026-11-10T00:24:30+01:00",
   "last_revalidation": {
-    "at": "2026-11-10T00:01:30+01:00",
-    "queue_sha": "c73f69b30fec4efc7e999631437f69d84e061170",
+    "at": "2026-11-10T00:24:30+01:00",
+    "queue_sha": "586ac8851448a7cbc084589e6880d960a5ce88a0",
     "queue_count": 0,
     "preparing_update": 0,
     "rewrite_pending": 0,
