@@ -1,6 +1,75 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-09T06:15:18+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-09T05:15:42.969010+00:00",
+  "count": 2,
+  "items": [
+    {
+      "id": "red-review-580d184137861e4dc8b8",
+      "revision": 0,
+      "name": "Revisar novedades: Amaia",
+      "rank": 30,
+      "status": "preparing",
+      "requested_at": "2026-11-09T05:15:42.969010+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "011bbdc1877d",
+        "revision": 0,
+        "name": "Amaia",
+        "rank": 29,
+        "explanation": "TT#14 Amaia sigue siendo tendencia por el regreso con La Oreja de Van Gogh: tras reunir a 17.000 personas el viernes, enlazó otro Palau Sant Jordi agotado el sábado.\n#AmaiaMontero #LODVG\n🌶️ Dos noches seguidas y el reencuentro aún pide bis.",
+        "explanation_sha256": "22ab075d152d21929918cda7e4da46e510bbf9e88956a71bf8b6245481daae74",
+        "explained_at": "2026-11-07T10:16:00+01:00",
+        "verification_sources": [
+          {
+            "url": "https://www.elnacional.cat/es/cultura/oreja-van-gogh-amaia-montero-frente-desafina-palau-sant-jordi-barcelona-perdona_1722056_102.html"
+          },
+          {
+            "url": "https://www.heraldo.es/noticias/ocio-y-cultura/2026/11/07/amaia-montero-reaparece-oreja-gogh-concierto-regresan-humillantes-criticas-ridiculo-vestuario-risa-2066563.html"
+          }
+        ],
+        "fingerprint": "90e7d491b3aa33f0e4bd8924c7ff9b73c6a82823f18bc87ae28db5b1868f5446"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-8378a471dad3354c6112",
+      "revision": 0,
+      "name": "Revisar novedades: #FelizDomingo",
+      "rank": 20,
+      "status": "preparing",
+      "requested_at": "2026-11-09T05:15:42.969010+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "amarilla",
+      "review_priority": 1,
+      "review_source": {
+        "id": "a9d7e1af9f56",
+        "revision": 0,
+        "name": "#FelizDomingo",
+        "rank": 3,
+        "explanation": "TT#3 #FelizDomingo es tendencia por los saludos y buenos deseos que se comparten cada domingo en X; la etiqueta vuelve a aparecer hoy, 8 de noviembre.\n#Domingo #BuenosDeseos\n🌶️ El calendario volvió a pasar lista en la conversación.",
+        "explanation_sha256": "162249c332b6398d86fc7df653b4742113314d61744842a3688e4b5b78d49606",
+        "explained_at": "2026-11-08T09:08:45.369Z",
+        "verification_sources": [
+          {
+            "url": "https://getdaytrends.com/spain/top/longest/year/"
+          },
+          {
+            "url": "https://alert.gosocialsuite.com/tendencias/resumen/es"
+          }
+        ],
+        "fingerprint": "646b45011f5cbe156205aaf77bee594ca9c5e8eecf8f91fe7a21d1bef48d5797"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
