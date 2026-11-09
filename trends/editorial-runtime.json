@@ -8,9 +8,9 @@
   "command_id": "tr-1794211800000-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "verifying",
   "started_at": "2026-11-09T09:15:31+01:00",
-  "updated_at": "2026-11-09T09:15:31+01:00",
+  "updated_at": "2026-11-09T09:18:00+01:00",
   "finished_at": null,
   "current": 0,
   "total": 2,
@@ -102,7 +102,7 @@
     "outcomes": [],
     "message": "Pasada tr-1794211800000-manual cerrada 0/0 tras tres lecturas de la cola autoritativa. editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Iniciando revisión JIT de maffeo (0/2); cola autoritativa con 2 review_red. ImageGen desactivado en esta pasada.",
+  "message": "Investigación completada: sin novedad material independiente; revalidando ID/revisión y estado persistido antes de escribir maintenance-outbox.",
   "history": [
     {
       "at": "2026-11-09T03:17:00+01:00",
@@ -1391,6 +1391,6 @@
     "revision": 0,
     "name": "Revisar novedades: maffeo",
     "task": "review_red",
-    "phase": "preparing"
+    "phase": "verifying"
   }
 }
