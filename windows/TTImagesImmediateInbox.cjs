@@ -84,14 +84,16 @@ async function deliver({project,job,commandId,targetId,secret,cdp,
    './TTendenciasWebImages.cjs':'./TTiTTularesWebImages.cjs');
  // Use exactly the editorial snapshot of this ImageGen command. News may
  // recover its original prepared_at from the same exact prepared/processing row.
+ const image=await raster(cdp,source.rasterProbe(commandId,true));
+ // Do not fetch editorial job state on every 3-second poll before ImageGen is
+ // finished. On transient CDP trouble we may already own a durable original.
  const initial=await receiver.editorialJob(source,task);
  const meta=receiver.metadata(task,initial);
  let bytes=receiver.cachedOriginal(baseDir,task,meta);
  if(!bytes){
-  const result=await raster(cdp,source.rasterProbe(commandId,true));
-  if(!result?.ready)return {state:'waiting',reason:String(result?.reason||'raster_not_ready')};
-  bytes=parsePNG(result);
-  // Preserve original locally before any remote call or browser reuse.
+  if(!image?.ready)return {state:'waiting',reason:String(image?.reason||'raster_not_ready')};
+  bytes=parsePNG(image);
+  // Preserve the actual PNG locally before any remote call or browser reuse.
   receiver.persistOriginal(baseDir,task,meta,bytes);
  }
  // Compare the live command + revision + exact content to the frozen episode.
