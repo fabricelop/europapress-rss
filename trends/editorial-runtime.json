@@ -7,15 +7,15 @@
   "previous_run_id": "tr-autoguard-1794258660",
   "command_id": "tr-1794260243896-manual",
   "source": "chat",
-  "status": "success",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-09T22:38:00+01:00",
-  "updated_at": "2026-11-09T22:41:12+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-09T22:42:38.089+01:00",
+  "finished_at": "2026-11-09T22:42:38.089+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "835c9153b13e",
-  "title": "Broncano",
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
     "835c9153b13e",
@@ -25,16 +25,49 @@
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": null,
+  "summary": {
+    "attempted": 2,
+    "observed": 2,
+    "closed": 2,
+    "explained": 2,
+    "problematic": 0,
+    "updates": 0,
+    "review_completed_no_distinct_event": 0,
+    "maintenance_reviews": 0,
+    "unchanged_reviews": 0,
+    "continuity_updates": 0,
+    "distinct_updates": 0,
+    "stale_reviews": 0,
+    "unverified_reviews": 0,
+    "anticipation_reviews": 0,
+    "anticipation_prepared": 0,
+    "anticipation_unverified": 0,
+    "queue_remaining": 0,
+    "rewrite_pending_remaining": 0,
+    "imagegen_calls": 0,
+    "image_outbox_created": 0,
+    "publications": 0,
+    "incidents": 0,
+    "concurrent_convergence": 0
+  },
   "outcomes": [
     {
-      "id": "red-review-2ae5b8858c6b208c281a",
+      "id": "835c9153b13e",
       "revision": 0,
-      "name": "Revisar novedades: Broncano",
-      "outcome": "unchanged",
+      "name": "Broncano",
+      "outcome": "explained",
       "applied": true,
-      "apply_commit": "a3a7560af94aaed163e29dd442773cbb5dc1ada9",
-      "outbox_commit": "86b995afa260406bb0adb960f43e4f31975ffae9"
+      "apply_commit": "36275132727e16a1e5acf505963a3430059862c2",
+      "outbox_commit": "3cc5ffa74f353a55ff83918df3a2adeaaa9157b7"
+    },
+    {
+      "id": "e94c1b14b44b",
+      "revision": 0,
+      "name": "La Revuelta",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "36275132727e16a1e5acf505963a3430059862c2",
+      "outbox_commit": "58c17d7a58ff40d77c6dddcaea01807d9f555b65"
     }
   ],
   "incident_count": 0,
@@ -42,23 +75,23 @@
   "error": null,
   "activity": "closing",
   "last_started_at": "2026-11-09T22:41:12+01:00",
-  "last_completed_at": "2026-11-09T22:41:12+01:00",
+  "last_completed_at": "2026-11-09T22:42:38.089+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794259644356-manual",
+    "run_id": "tr-1794260243896-manual",
     "status": "DONE",
-    "started_at": "2026-11-09T22:27:30+01:00",
-    "finished_at": "2026-11-09T22:30:30+01:00",
+    "started_at": "2026-11-09T22:38:00+01:00",
+    "finished_at": "2026-11-09T22:42:38.089+01:00",
     "summary": {
-      "attempted": 1,
-      "observed": 1,
-      "closed": 1,
-      "explained": 0,
+      "attempted": 2,
+      "observed": 2,
+      "closed": 2,
+      "explained": 2,
       "problematic": 0,
       "updates": 0,
       "review_completed_no_distinct_event": 0,
-      "maintenance_reviews": 1,
-      "unchanged_reviews": 1,
+      "maintenance_reviews": 0,
+      "unchanged_reviews": 0,
       "continuity_updates": 0,
       "distinct_updates": 0,
       "stale_reviews": 0,
@@ -75,23 +108,33 @@
       "concurrent_convergence": 0
     },
     "processed_ids": [
-      "red-review-2ae5b8858c6b208c281a"
+      "835c9153b13e",
+      "e94c1b14b44b"
     ],
     "converged_ids": [],
     "outcomes": [
       {
-        "id": "red-review-2ae5b8858c6b208c281a",
+        "id": "835c9153b13e",
         "revision": 0,
-        "name": "Revisar novedades: Broncano",
-        "outcome": "unchanged",
+        "name": "Broncano",
+        "outcome": "explained",
         "applied": true,
-        "apply_commit": "a3a7560af94aaed163e29dd442773cbb5dc1ada9",
-        "outbox_commit": "86b995afa260406bb0adb960f43e4f31975ffae9"
+        "apply_commit": "36275132727e16a1e5acf505963a3430059862c2",
+        "outbox_commit": "3cc5ffa74f353a55ff83918df3a2adeaaa9157b7"
+      },
+      {
+        "id": "e94c1b14b44b",
+        "revision": 0,
+        "name": "La Revuelta",
+        "outcome": "explained",
+        "applied": true,
+        "apply_commit": "36275132727e16a1e5acf505963a3430059862c2",
+        "outbox_commit": "58c17d7a58ff40d77c6dddcaea01807d9f555b65"
       }
     ],
-    "message": "Pasada tr-1794259644356-manual cerrada 1/1. Broncano r0 quedó unchanged: la entrevista con Abascal ya se había grabado y se emitía hoy, pero el cambio de público y asistentes por agencia/contactos ya estaba incorporado y no se verificó un hecho posterior independiente. El aplicador oficial persistió el resultado en a3a7560af94aaed163e29dd442773cbb5dc1ada9 y retiró la revisión. Barrera final: editorial-queue=0; mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
+    "message": "Pasada tr-1794260243896-manual cerrada 2/2. Broncano r0 y La Revuelta r0 fueron reelaborados desde cero con el desarrollo emitido el 9/11: Broncano explicó que el equipo de Santiago Abascal pidió gestionar el público y el programa aceptó; después expresó reparos por el apoyo uniforme. Ambos textos quedaron persistidos y sincronizados en requests.json y telegram-manual-explained.json por el aplicador oficial. Barrera final: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain en requests ni mobile-decisions. ImageGen=0; publicaciones=0."
   },
-  "message": "Resultados editoriales de Broncano r0 y La Revuelta r0 revalidados JIT y escritos en editorial-outbox; esperando persistencia del aplicador oficial en requests.json y telegram-manual-explained.json. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1794260243896-manual cerrada 2/2. Broncano r0 y La Revuelta r0 fueron reelaborados desde cero con el desarrollo emitido el 9/11: Broncano explicó que el equipo de Santiago Abascal pidió gestionar el público y el programa aceptó; después expresó reparos por el apoyo uniforme. Ambos textos quedaron persistidos y sincronizados en requests.json y telegram-manual-explained.json por el aplicador oficial. Barrera final: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain en requests ni mobile-decisions. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794199200000-manual",
@@ -3611,22 +3654,75 @@
       "trend_id": "e94c1b14b44b",
       "title": "La Revuelta",
       "message": "La Revuelta r0 revalidada JIT. Resultado textual nuevo persistido en editorial-outbox; el cierre no espera imagen. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794260243896-manual",
+      "status": "DONE",
+      "started_at": "2026-11-09T22:38:00+01:00",
+      "finished_at": "2026-11-09T22:42:38.089+01:00",
+      "at": "2026-11-09T22:42:38.089+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 2,
+        "observed": 2,
+        "closed": 2,
+        "explained": 2,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 0,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [
+        "835c9153b13e",
+        "e94c1b14b44b"
+      ],
+      "outcomes": [
+        {
+          "id": "835c9153b13e",
+          "revision": 0,
+          "name": "Broncano",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "36275132727e16a1e5acf505963a3430059862c2",
+          "outbox_commit": "3cc5ffa74f353a55ff83918df3a2adeaaa9157b7"
+        },
+        {
+          "id": "e94c1b14b44b",
+          "revision": 0,
+          "name": "La Revuelta",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "36275132727e16a1e5acf505963a3430059862c2",
+          "outbox_commit": "58c17d7a58ff40d77c6dddcaea01807d9f555b65"
+        }
+      ],
+      "message": "Pasada tr-1794260243896-manual cerrada 2/2. Broncano r0 y La Revuelta r0 fueron reelaborados desde cero con el desarrollo emitido el 9/11: Broncano explicó que el equipo de Santiago Abascal pidió gestionar el público y el programa aceptó; después expresó reparos por el apoyo uniforme. Ambos textos quedaron persistidos y sincronizados en requests.json y telegram-manual-explained.json por el aplicador oficial. Barrera final: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain en requests ni mobile-decisions. ImageGen=0; publicaciones=0."
     }
   ],
-  "current_item": {
-    "id": "835c9153b13e",
-    "revision": 0,
-    "name": "Broncano",
-    "phase": "persisting"
-  },
+  "current_item": null,
   "withdrawn_ids": [
     "ae7f066f3c94"
   ],
-  "last_finished_at": "2026-11-09T22:30:30+01:00",
-  "last_revalidated_at": "2026-11-09T22:30:30+01:00",
+  "last_finished_at": "2026-11-09T22:42:38.089+01:00",
+  "last_revalidated_at": "2026-11-09T22:42:38.089+01:00",
   "last_revalidation": {
-    "at": "2026-11-09T22:30:30+01:00",
-    "queue_sha": "77b8b38851ec26e46876c4a566675837541ab062",
+    "at": "2026-11-09T22:42:38.089+01:00",
+    "queue_sha": "bbca44c0fbfc2a83f4b833ef1a0a15766c9ea85b",
     "queue_count": 0,
     "preparing_update": 0,
     "rewrite_pending": 0,
