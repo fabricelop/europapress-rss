@@ -220,7 +220,7 @@ function verifiedNewsAI(x){
 function verifiedTrendSiteAI(x){
  // WEB TAKEDOWN: do not render withdrawn artwork even if a stale cache still holds it.
  if(['b88d2954e28e','c1f986a9e525','3e340be4de18'].includes(String(x?._id||x?.id||'')))return '';
- if(x?._kind!=='tr'||!['EXPLICADA','AGRUPADA','CONJUNTA'].includes(x?._status))return '';
+ if(x?._kind!=='tr'||!['EXPLICADA'].includes(x?._status))return '';
  const id=String(x._id||x.id||''),rev=Number(x.revision||0);
  const explanation=String(x.explanation||''),at=String(x.explained_at||'');
  const m=state.data.trendSiteAi;
@@ -248,7 +248,7 @@ function imageWorkflowPrompt(x,associationOnly=false){
  const literal=String(news?x.tweet?.text||'':x.explanation||'');
  if(!/^[A-Za-z0-9_-]{3,160}$/.test(id)||!Number.isInteger(revision)||
      revision<(news?1:0)||!timestamp||!literal||
-     (news?x._status!=='LISTA':!['EXPLICADA','AGRUPADA','CONJUNTA'].includes(x._status))){
+     (news?x._status!=='LISTA':!['EXPLICADA'].includes(x._status))){
   return 'BLOQUEADO: primero debe existir una noticia READY o tendencia EXPLICADA con ID, revisión, texto y fecha literales. No generar ni asociar sin estos datos.';
  }
  const identity=JSON.stringify(news?
@@ -657,38 +657,8 @@ function trendRows(){
    const status=String(row.status||row.telegram_package_status||'').toLowerCase();
    registerClosed(row.name||row.title||row.display_name,row.id||row.event_id,status,ts(row));
   }
-  // An editorial group has ONE Telegram card. Its followers inherit the
-  // confirmed closure of that card; they must not be shown as "not sent".
-  // Use explicit group IDs only, never fuzzy text matching.
-  const groupLeaders=new Map();
-  for(const row of requests){
-   const leader=String(row.group_leader_id||'');
-   const group=String(row.explanation_group_id||row.group_id||'');
-   if(leader&&group&&leader===String(row.id||'')){
-    groupLeaders.set(group,leader);
-   }
-  }
-  for(const row of requests){
-   const own=String(row.id||''),group=String(row.explanation_group_id||row.group_id||'');
-   const leader=String(row.group_leader_id||groupLeaders.get(group)||'');
-   if(!own||!group||!leader||leader===own)continue;
-   const closure=closedById.get(leader);
-   if(closure&&!closedById.has(own)){
-    // Keep source identity for diagnostic visibility.
-    closedById.set(own,{...closure,groupLeaderId:leader});
-   }
-  }
-  for(const delivery of ledger){
-   const status=String(delivery.status||'').toLowerCase();
-   if(!closedStatuses.has(status))continue;
-   const base=closedById.get(String(delivery.event_id||''));
-   if(!base)continue;
-   for(const member of delivery.group_member_ids||[]){
-    const id=String(member||'');
-    if(id&&!closedById.has(id))
-      closedById.set(id,{...base,groupLeaderId:String(delivery.event_id||'')});
-   }
-  }
+  // Group inheritance retired: old joint-story closures stay attached to
+  // their historical IDs, never to a different current name/episode.
   for(const row of requests){
    const name=normal(row.name);if(!name)continue;
    const existing=requestsByName.get(name);
@@ -703,8 +673,7 @@ function trendRows(){
    const id=String(delivery.event_id||'');
    const related=[...requests,...explained].filter(x=>String(x.id||x.event_id||'')===id);
    const names=[delivery.name,delivery.title];
-   for(const x of related)names.push(x.name,x.display_name,...(x.trend_names||[]),
-      ...(Array.isArray(x.trend_context)?x.trend_context:[]).map(v=>v.name));
+   for(const x of related)names.push(x.name,x.display_name);
    for(const value of names){
     const normalized=normal(value);if(!normalized)continue;
     const previous=confirmedTelegramByName.get(normalized)||[];
@@ -725,22 +694,21 @@ function trendRows(){
     if(name)activeInExplained.add(name);
    }
    for(const item of related){
-    const values=[item.name,item.display_name,...(item.trend_names||[]),
-       ...(Array.isArray(item.trend_context)?item.trend_context:[]).map(x=>x.name)];
+    const values=[item.name,item.display_name];
     for(const value of values){const name=normal(value);if(name)activeInExplained.add(name)}
    }
   }
   for(const row of [...explained,...requests]){
    const expl=String(row.explanation||'').trim();
    if(!expl)continue;
-   const names=[row.name,row.display_name,...(row.trend_names||[]),...(Array.isArray(row.trend_context)?row.trend_context:[]).map(x=>x.name)];
+   const names=[row.name,row.display_name];
    for(const value of names){
     const name=normal(value);if(!name)continue;
     const previous=completedByName.get(name);
     if(!previous||ts(row)>=ts(previous))completedByName.set(name,row);
    }
   }
-  const liveListasNames=new Set(trendListasRows(state.data).flatMap(x=>[x.name,x.display_name,x.title,...(x.trend_names||[])].map(normal).filter(Boolean)));
+  const liveListasNames=new Set(trendListasRows(state.data).flatMap(x=>[x.name,x.display_name,x.title].map(normal).filter(Boolean)));
   const mapped=currentTop30(recent).map((x,i)=>{
    const req=requestsByName.get(normal(x.name))||{};
    const finished=completedByName.get(normal(x.name))||{};
@@ -766,10 +734,8 @@ function trendRows(){
    const manualPending=['preparing','update','ready','problematic'].includes(status)&&
     req.auto_queued===false&&
     ['github_pages_authorized_issue','telegram_reexplain','telegram_private_deeplink_native'].includes(String(req.request_source||''));
-   const directClosed=closedById.get(currentId)||closedByName.get(nameKey);
-   const groupedClosed=closedByTopic.get(topic(x.name))||null;
-   const topicClosed=groupedClosed&&groupedClosed.at>Date.now()-7*86400000?groupedClosed:null;
-   const terminal=manualPending?null:(directClosed||topicClosed);
+   const directClosed=(currentId&&closedById.get(currentId))||(!currentId&&closedByName.get(nameKey));
+   const terminal=manualPending?null:directClosed;
    const inExplained=!terminal&&activeInExplained.has(nameKey);
    const currentRevision=Number(finished.revision??req.revision??0);
    const explainedTime=Date.parse(finished.explained_at||req.explained_at||'')||0;
@@ -796,7 +762,7 @@ function trendRows(){
        alreadyExplained?(priorReason?'EXPLICADA (ANTERIOR)':'EXPLICADA'):
        inListas?'EN LISTAS':hasNewExplanation?'PENDIENTE DE LISTAS':
        priorReason?'MOTIVO ANTERIOR':failure?'REVISIÓN':
-       Number(x.rank||i+1)>10?'PREPARACIÓN MANUAL':'PENDIENTE';
+       'SIN SOLICITUD EDITORIAL';
    return {...x,title:x.name,_kind:'tr',_id:String(req.id||finished.id||x.name||i),
     _status:editorialState,_topOnly:true,_alreadyExplained:alreadyExplained,_priorReason:priorReason,_inExplained:inExplained,_manualPending:manualPending,
     _telegramConfirmed:!!(wasDelivered&&!terminal),_reworkable:!working&&!activelyEditing&&!reworkPending,
@@ -805,10 +771,9 @@ function trendRows(){
     explained_at:readyText&&Number.isFinite(Date.parse(latestAt))?latestAt:'',revision:Number(req.revision??finished.revision??0),
     _queuedAt:queueItem?.requested_at||req.requested_at||'',_queuePosition:queueItem?1:0};
   });
-  // Top 10 enters Pendientes automatically. Top 11-30 only after Preparar novedad.
+  // Every valid Top30 entry is enqueued without an intermediate Pendientes stage.
    return state.tab==='pendientes'?mapped.filter(x=>
-     ['EN COLA','EN ELABORACIÓN','PENDIENTE','REVISIÓN','EXPLICACIÓN SIN ENTREGAR'].includes(x._status)&&
-     (x.rank<=10||x._manualPending)):mapped;
+     ['SIN SOLICITUD EDITORIAL','REVISIÓN'].includes(x._status)):mapped;
 
   }catch(e){
    console.warn('Top 30: metadatos editoriales inválidos; mostrando radar sin bloquear',e);
@@ -1385,7 +1350,7 @@ function rowCard(x,i){
   if(['prepare','deleted','discard','published','rework'].includes(action))return btn(label,()=>pilotSend(x,action),action==='prepare');
   return btn(label+' (próximamente)',()=>showToast('No conectada todavía'));
  }
- if(!x._topOnly&&!x._historical&&(x._status==='LISTA'||['EXPLICADA','AGRUPADA','CONJUNTA'].includes(x._status))){
+ if(!x._topOnly&&!x._historical&&(x._status==='LISTA'||['EXPLICADA'].includes(x._status))){
   // Exactly four rows, two buttons each; no Telegram command callbacks.
   a.classList.add('ready-actions');
   const external=(label,url)=>{
