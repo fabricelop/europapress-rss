@@ -24,6 +24,25 @@ struct EditorialRelationEndpoint: Codable, Identifiable, Equatable {
         self.listedAt = listedAt
     }
 
+    // The Site v85 can return legacy rows with no optional fingerprint,
+    // display text or timestamp. Do not discard all real relations because
+    // a non-identity presentation field was absent. IDs/revisions stay strict.
+    private enum CodingKeys: String, CodingKey {
+        case id, revision, episodeFingerprint, title, text, path, listedAt
+    }
+
+    init(from decoder: Decoder) throws {
+        let value = try decoder.container(keyedBy: CodingKeys.self)
+        id = try value.decode(String.self, forKey: .id)
+        revision = try value.decode(Int.self, forKey: .revision)
+        episodeFingerprint = try value.decodeIfPresent(
+            String.self, forKey: .episodeFingerprint) ?? ""
+        title = try value.decodeIfPresent(String.self, forKey: .title) ?? ""
+        text = try value.decodeIfPresent(String.self, forKey: .text) ?? ""
+        path = try value.decodeIfPresent(String.self, forKey: .path)
+        listedAt = try value.decodeIfPresent(String.self, forKey: .listedAt)
+    }
+
     var stableIdentity: String {
         [id, String(revision), episodeFingerprint].joined(separator: "|")
     }
@@ -50,12 +69,40 @@ struct EditorialRelation: Decodable, Identifiable {
     let state: String
     let origin: String
     let reason: String
+
+    private enum CodingKeys: String, CodingKey {
+        case id, news, trend, state, origin, reason
+    }
+
+    init(from decoder: Decoder) throws {
+        let value = try decoder.container(keyedBy: CodingKeys.self)
+        id = try value.decode(String.self, forKey: .id)
+        news = try value.decode(EditorialRelationEndpoint.self, forKey: .news)
+        trend = try value.decode(EditorialRelationEndpoint.self, forKey: .trend)
+        state = try value.decode(String.self, forKey: .state)
+        origin = try value.decodeIfPresent(String.self, forKey: .origin) ?? ""
+        reason = try value.decodeIfPresent(String.self, forKey: .reason) ?? ""
+    }
 }
 
 struct EditorialRelationsSnapshot: Decodable {
     let items: [EditorialRelation]
     let news: [EditorialRelationEndpoint]
     let trends: [EditorialRelationEndpoint]
+
+    private enum CodingKeys: String, CodingKey {
+        case items, news, trends
+    }
+
+    init(from decoder: Decoder) throws {
+        let value = try decoder.container(keyedBy: CodingKeys.self)
+        items = try value.decodeIfPresent([EditorialRelation].self,
+                                          forKey: .items) ?? []
+        news = try value.decodeIfPresent([EditorialRelationEndpoint].self,
+                                         forKey: .news) ?? []
+        trends = try value.decodeIfPresent([EditorialRelationEndpoint].self,
+                                           forKey: .trends) ?? []
+    }
 }
 
 struct EditorialRelationDecision: Encodable {
