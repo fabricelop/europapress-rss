@@ -94640,11 +94640,28 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
-      "image_choice": "none",
-      "image_pending": true,
-      "telegram_package_status": "pending"
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false,
+      "telegram_package_status": "pending",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://www.formulatv.com/images/programas/2000/2201-f1.jpg",
+        "source": "www.formulatv.com",
+        "source_url": "https://www.formulatv.com/programas/el-sotano-club/",
+        "alt": "Imagen de archivo relacionada con #ElSótano09N",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://www.formulatv.com/images/programas/2000/2201-f1.jpg",
+        "source": "www.formulatv.com",
+        "source_url": "https://www.formulatv.com/programas/el-sotano-club/",
+        "alt": "Imagen de archivo relacionada con #ElSótano09N",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "b05f51e78129",
@@ -94671,11 +94688,13 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
+      "fallback_image_status": "none",
+      "image_status": "none",
       "image_choice": "none",
-      "image_pending": true,
-      "telegram_package_status": "pending"
+      "image_pending": false,
+      "telegram_package_status": "pending",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
     },
     {
       "id": "c767f00460c3",
@@ -94702,13 +94721,30 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
-      "image_choice": "none",
-      "image_pending": true,
-      "telegram_package_status": "pending"
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false,
+      "telegram_package_status": "pending",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://cdn.tuttosport.com/images/2026/11/09/160353798-56a07bf1-27cd-4cda-8def-160378e3d2db.jpg",
+        "source": "www.tuttosport.com",
+        "source_url": "https://www.tuttosport.com/video/calcio/golden-boy/2026/11/09-152495304/pau_cubarsi_il_golden_boy_2026_un_orgoglio_grazie_a_tutti",
+        "alt": "Imagen de archivo relacionada con Golden Boy",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://cdn.tuttosport.com/images/2026/11/09/160353798-56a07bf1-27cd-4cda-8def-160378e3d2db.jpg",
+        "source": "www.tuttosport.com",
+        "source_url": "https://www.tuttosport.com/video/calcio/golden-boy/2026/11/09-152495304/pau_cubarsi_il_golden_boy_2026_un_orgoglio_grazie_a_tutti",
+        "alt": "Imagen de archivo relacionada con Golden Boy",
+        "rights_status": "unverified",
+        "generated": false
+      }
     }
   ],
-  "updated_at": "2026-11-09T18:17:20.706143+00:00",
+  "updated_at": "2026-11-09T18:19:28.473257Z",
   "count": 1609
 }
