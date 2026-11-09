@@ -3,35 +3,29 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794190200000-manual",
-  "previous_run_id": "tr-1794187489104-manual",
-  "command_id": "tr-1794190200000-manual",
+  "run_id": "tr-1794190825816-manual",
+  "previous_run_id": "tr-1794190200000-manual",
+  "command_id": "tr-1794190825816-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "persisting",
-  "started_at": "2026-11-09T03:11:30+01:00",
-  "updated_at": "2026-11-09T03:17:00+01:00",
+  "phase": "preparing",
+  "started_at": "2026-11-09T03:20:25.816+01:00",
+  "updated_at": "2026-11-09T03:20:25.816+01:00",
   "finished_at": null,
   "current": 0,
-  "total": 5,
-  "trend_id": "e66798dae072",
-  "title": "Doran",
+  "total": 2,
+  "trend_id": null,
+  "title": "Pasada editorial TTendencias",
   "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [
-    "e66798dae072",
-    "f32194b977fd",
-    "639ad93bd705",
-    "a9073fde3cbe",
-    "5f70621d794b"
+    "red-review-f2af8f644e9555ab549c",
+    "red-review-20d37a7fb7e048a77eab"
   ],
   "remaining_active_ids": [
-    "e66798dae072",
-    "f32194b977fd",
-    "639ad93bd705",
-    "a9073fde3cbe",
-    "5f70621d794b"
+    "red-review-f2af8f644e9555ab549c",
+    "red-review-20d37a7fb7e048a77eab"
   ],
   "remaining_problematic_ids": [],
   "summary": null,
@@ -39,8 +33,8 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Pasada editorial cerrada",
-  "last_started_at": "2026-11-09T03:11:30+01:00",
+  "activity": "Revisando novedades",
+  "last_started_at": "2026-11-09T03:20:25.816+01:00",
   "last_completed_at": "2026-11-09T02:31:27+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -71,7 +65,7 @@
     },
     "message": "Pasada tr-1794187489104-manual cerrada 0/0 tras refresco manual real. Workflow TTendencias 42545539983 completado success; recent.json capturado 2026-11-09T02:30:47+01:00 y editorial-queue actualizado 2026-11-09T02:30:55+01:00 con count=0. Barrera final: mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
   },
-  "message": "5/5 trabajos identificados tras refresco 03:11: Doran, Barça, #Worlds2026, Faker y Supervivientes. Cuatro explicaciones preparadas; Barça se cierra como review_completed/no_distinct_event por corresponder al mismo Atlético-Barça ya tratado. Persistencia en lote sin agrupaciones. ImageGen=0; publicaciones=0.",
+  "message": "Pasada manual iniciada con 2 review_red: Fermín y Simeone. Se procesan del más antiguo al más reciente con revalidación JIT de ID/revisión antes de cada resultado. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-08T15:07:08+01:00",
@@ -1288,6 +1282,19 @@
       "at": "2026-11-09T03:17:00+01:00",
       "phase": "persisting",
       "message": "5/5 trabajos identificados tras refresco 03:11: Doran, Barça, #Worlds2026, Faker y Supervivientes. Cuatro explicaciones preparadas; Barça se cierra como review_completed/no_distinct_event por corresponder al mismo Atlético-Barça ya tratado. Persistencia en lote sin agrupaciones. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-09T03:20:25.816+01:00",
+      "phase": "preparing",
+      "message": "Pasada manual iniciada con 2 review_red: Fermín y Simeone. Se procesan del más antiguo al más reciente con revalidación JIT de ID/revisión antes de cada resultado. ImageGen=0; publicaciones=0.",
+      "prior_runtime_observed": {
+        "run_id": "tr-1794190200000-manual",
+        "status": "RUNNING",
+        "phase": "persisting",
+        "updated_at": "2026-11-09T03:17:00+01:00",
+        "current": 0,
+        "total": 5
+      }
     }
   ],
   "current_item": null
