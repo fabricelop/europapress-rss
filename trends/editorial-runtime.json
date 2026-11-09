@@ -7,16 +7,16 @@
   "previous_run_id": "tr-1794263668174-manual",
   "command_id": "tr-1794264030000-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-09T23:40:30+01:00",
-  "updated_at": "2026-11-09T23:40:30+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-09T23:44:00+01:00",
+  "finished_at": "2026-11-09T23:44:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -51,29 +51,29 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "preparing",
+  "activity": "closing",
   "last_started_at": "2026-11-09T23:40:30+01:00",
-  "last_completed_at": "2026-11-09T23:40:00+01:00",
+  "last_completed_at": "2026-11-09T23:44:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794263668174-manual",
+    "run_id": "tr-1794264030000-manual",
     "status": "DONE",
-    "started_at": "2026-11-09T23:34:30+01:00",
-    "finished_at": "2026-11-09T23:40:00+01:00",
+    "started_at": "2026-11-09T23:40:30+01:00",
+    "finished_at": "2026-11-09T23:44:00+01:00",
     "summary": {
-      "attempted": 1,
-      "observed": 1,
-      "closed": 1,
+      "attempted": 0,
+      "observed": 0,
+      "closed": 0,
       "explained": 0,
       "problematic": 0,
       "updates": 0,
       "review_completed_no_distinct_event": 0,
-      "maintenance_reviews": 1,
+      "maintenance_reviews": 0,
       "unchanged_reviews": 0,
       "continuity_updates": 0,
       "distinct_updates": 0,
       "stale_reviews": 0,
-      "unverified_reviews": 1,
+      "unverified_reviews": 0,
       "anticipation_reviews": 0,
       "anticipation_prepared": 0,
       "anticipation_unverified": 0,
@@ -83,30 +83,24 @@
       "image_outbox_created": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 1
+      "concurrent_convergence": 0
     },
-    "processed_ids": [
-      "red-review-61d494cc18e2321aaa5b"
-    ],
-    "converged_ids": [
-      "red-review-61d494cc18e2321aaa5b"
-    ],
-    "outcomes": [
-      {
-        "id": "red-review-61d494cc18e2321aaa5b",
-        "revision": 0,
-        "name": "Revisar novedades: Supa",
-        "outcome": "unverified",
-        "applied": true,
-        "via": "maintenance_outbox_concurrent_convergence",
-        "outbox_commit": "68a0d8ce5507798aa47c8737a9c81c2954516373",
-        "apply_commit": "0a835cfee474c12e1cf4b7b1d3e6af9aeeef1ae8",
-        "converged_with": "tr-1794262515713-manual"
-      }
-    ],
-    "message": "Pasada tr-1794263668174-manual cerrada 1/1. La revisión roja de Supa quedó unverified: la señal actual es mercado LEC 2027 (conversaciones con Fnatic e interés atribuido a NAVI/Vitality), pero las fuentes disponibles la presentan como rumor sin confirmación independiente. Se conservaron explicación, explained_at y estado publicado del 31/10. El resultado quedó aplicado en requests.json y telegram-manual-explained.json por 0a835cfee474c12e1cf4b7b1d3e6af9aeeef1ae8. Barrera final: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain en requests, explained ni mobile-decisions. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "processed_ids": [],
+    "converged_ids": [],
+    "outcomes": [],
+    "refresh_snapshot": {
+      "captured_at": "2026-11-09T23:40:55+01:00",
+      "queue_updated_at": "2026-11-09T23:41:00+01:00",
+      "commit": "fa8d91a61d4925f1f95fb3a1f4955cd1d0a8fb18"
+    },
+    "redundant_manual_refresh": {
+      "trigger_commit": "dfad289e92362fa387571ee1dd375337df2cfc2f",
+      "workflow_run_id": 42714168494,
+      "status_at_close": "in_progress"
+    },
+    "message": "Pasada tr-1794264030000-manual cerrada 0/0. Durante la ejecución convergió un refresco automático fresco: captura 2026-11-09T23:40:55+01:00 y cola recalculada 2026-11-09T23:41:00+01:00 por fa8d91a61d4925f1f95fb3a1f4955cd1d0a8fb18. Barrera final: editorial-queue=0 y requests/mobile-decisions/telegram-manual-explained sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. El refresco manual redundante disparado por dfad289e92362fa387571ee1dd375337df2cfc2f (workflow 42714168494) seguía in_progress al cierre y no se usó como prueba de ejecución. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794264030000-manual RUNNING desde chat. Se fuerza refresco manual real del Top 30 y después se releerá main con barrera JIT antes de cerrar. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1794264030000-manual cerrada 0/0. Durante la ejecución convergió un refresco automático fresco: captura 2026-11-09T23:40:55+01:00 y cola recalculada 2026-11-09T23:41:00+01:00 por fa8d91a61d4925f1f95fb3a1f4955cd1d0a8fb18. Barrera final: editorial-queue=0 y requests/mobile-decisions/telegram-manual-explained sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. El refresco manual redundante disparado por dfad289e92362fa387571ee1dd375337df2cfc2f (workflow 42714168494) seguía in_progress al cierre y no se usó como prueba de ejecución. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794234841273-manual",
@@ -2134,6 +2128,52 @@
       "message": "Pasada tr-1794264030000-manual RUNNING desde chat. Se fuerza refresco manual real del Top 30 y después se releerá main con barrera JIT antes de cerrar. ImageGen=0; publicaciones=0.",
       "run_id": "tr-1794264030000-manual",
       "status": "RUNNING"
+    },
+    {
+      "run_id": "tr-1794264030000-manual",
+      "status": "DONE",
+      "started_at": "2026-11-09T23:40:30+01:00",
+      "finished_at": "2026-11-09T23:44:00+01:00",
+      "at": "2026-11-09T23:44:00+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 0,
+        "observed": 0,
+        "closed": 0,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 0,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [],
+      "outcomes": [],
+      "refresh_snapshot": {
+        "captured_at": "2026-11-09T23:40:55+01:00",
+        "queue_updated_at": "2026-11-09T23:41:00+01:00",
+        "commit": "fa8d91a61d4925f1f95fb3a1f4955cd1d0a8fb18"
+      },
+      "redundant_manual_refresh": {
+        "trigger_commit": "dfad289e92362fa387571ee1dd375337df2cfc2f",
+        "workflow_run_id": 42714168494,
+        "status_at_close": "in_progress"
+      },
+      "message": "Pasada tr-1794264030000-manual cerrada 0/0. Durante la ejecución convergió un refresco automático fresco: captura 2026-11-09T23:40:55+01:00 y cola recalculada 2026-11-09T23:41:00+01:00 por fa8d91a61d4925f1f95fb3a1f4955cd1d0a8fb18. Barrera final: editorial-queue=0 y requests/mobile-decisions/telegram-manual-explained sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. El refresco manual redundante disparado por dfad289e92362fa387571ee1dd375337df2cfc2f (workflow 42714168494) seguía in_progress al cierre y no se usó como prueba de ejecución. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "current_item": null,
@@ -2158,5 +2198,8 @@
   "apply_workflow_run_id": 42712886314,
   "apply_commit": "2246ee9c5547f1eab2c58e3c510786976b61bc04",
   "maintenance_workflow_run_id": 42713522083,
-  "maintenance_job_id": "red-review-61d494cc18e2321aaa5b"
+  "maintenance_job_id": "red-review-61d494cc18e2321aaa5b",
+  "workflow_run_id": 42714168494,
+  "trigger_commit": "dfad289e92362fa387571ee1dd375337df2cfc2f",
+  "refresh_convergence_commit": "fa8d91a61d4925f1f95fb3a1f4955cd1d0a8fb18"
 }
