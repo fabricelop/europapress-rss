@@ -7,16 +7,16 @@
   "previous_run_id": "tr-1794208275000-manual",
   "command_id": "tr-1794209100000-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-09T08:25:00+01:00",
-  "updated_at": "2026-11-09T08:25:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-09T08:26:30+01:00",
+  "finished_at": "2026-11-09T08:26:30+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -55,26 +55,33 @@
       "trend_id": null,
       "title": "Pasada editorial TTendencias",
       "message": "Pasada manual iniciada desde chat. Relectura inicial de main: editorial-queue=0. Se verifican preparing/update/rewrite_pending/reexplain y se aplicará barrera JIT antes del cierre. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-09T08:26:30+01:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": "Pasada editorial TTendencias",
+      "message": "Barrera final JIT limpia: cola=0 y sin reexplicaciones/revisiones activas. Cierre 0/0 sin ImageGen ni publicaciones."
     }
   ],
   "last_started_at": "2026-11-09T08:25:00+01:00",
-  "last_completed_at": "2026-11-09T08:13:37+01:00",
+  "last_completed_at": "2026-11-09T08:26:30+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794208275000-manual",
+    "run_id": "tr-1794209100000-manual",
     "status": "DONE",
-    "started_at": "2026-11-09T08:12:19.165+01:00",
-    "finished_at": "2026-11-09T08:14:31.332+01:00",
-    "at": "2026-11-09T08:14:31.332+01:00",
+    "started_at": "2026-11-09T08:25:00+01:00",
+    "finished_at": "2026-11-09T08:26:30+01:00",
+    "at": "2026-11-09T08:26:30+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 1,
-      "observed": 1,
-      "closed": 1,
+      "attempted": 0,
+      "observed": 0,
+      "closed": 0,
       "explained": 0,
       "problematic": 0,
       "updates": 0,
-      "review_completed_no_distinct_event": 1,
+      "review_completed_no_distinct_event": 0,
       "maintenance_reviews": 0,
       "unchanged_reviews": 0,
       "continuity_updates": 0,
@@ -89,23 +96,11 @@
       "incidents": 0,
       "concurrent_convergence": 0
     },
-    "processed_ids": [
-      "8253716316e9"
-    ],
-    "outcomes": [
-      {
-        "id": "8253716316e9",
-        "revision": 0,
-        "name": "#Buenosdías",
-        "outcome": "review_completed_no_distinct_event",
-        "applied": true,
-        "via": "editorial_outbox",
-        "review_completed_at": "2026-11-09T08:13:36+01:00"
-      }
-    ],
-    "message": "Pasada tr-1794208275000-manual cerrada 1/1. #Buenosdías se revisó como reentrada y quedó review_completed/no_distinct_event: no se acreditó un acontecimiento nuevo respecto al episodio 74ced1b85461. No se creó ficha nueva, imagen ni publicación. Barrera final: editorial-queue=0, requests/mobile-decisions sin preparing/update/rewrite_pending/reexplain activos."
+    "processed_ids": [],
+    "outcomes": [],
+    "message": "Pasada tr-1794209100000-manual cerrada 0/0: tras releer main, editorial-queue=0; mobile-decisions no contiene preparing/update/rewrite_pending/reexplain/anticipate/review_red activos y la búsqueda en main no encuentra marcas activas de preparing/update/rewrite_pending/reexplain. No había trabajos editoriales ni revisiones pendientes que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada en ejecución: verificación de cola y reexplicaciones activas en main.",
+  "message": "Pasada tr-1794209100000-manual cerrada 0/0: tras releer main, editorial-queue=0; mobile-decisions no contiene preparing/update/rewrite_pending/reexplain/anticipate/review_red activos y la búsqueda en main no encuentra marcas activas de preparing/update/rewrite_pending/reexplain. No había trabajos editoriales ni revisiones pendientes que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T03:17:00+01:00",
@@ -1098,6 +1093,39 @@
       "at": "2026-11-09T08:09:30+01:00",
       "phase": "closing",
       "message": "Pasada tr-1794207954297-manual cerrada 2/2 por convergencia JIT. #IreneConQueque y Robe quedaron actualizados como continuidad en las fichas originales por el commit 2d5b97d23052081a4613f634bbf02751bc2c1c59: se conservan explained_at, identidad, imágenes y estado publicado; no se crean episodios ni fichas nuevas. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794209100000-manual",
+      "status": "DONE",
+      "started_at": "2026-11-09T08:25:00+01:00",
+      "finished_at": "2026-11-09T08:26:30+01:00",
+      "at": "2026-11-09T08:26:30+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 0,
+        "observed": 0,
+        "closed": 0,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 0,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [],
+      "outcomes": [],
+      "message": "Pasada tr-1794209100000-manual cerrada 0/0: tras releer main, editorial-queue=0; mobile-decisions no contiene preparing/update/rewrite_pending/reexplain/anticipate/review_red activos y la búsqueda en main no encuentra marcas activas de preparing/update/rewrite_pending/reexplain. No había trabajos editoriales ni revisiones pendientes que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "current_item": null
