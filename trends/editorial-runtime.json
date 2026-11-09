@@ -21,10 +21,7 @@
     "red-review-552a4db6826b8ff36c0b",
     "red-review-79367de7b4b5938e30a3"
   ],
-  "converged_ids": [
-    "red-review-552a4db6826b8ff36c0b",
-    "red-review-79367de7b4b5938e30a3"
-  ],
+  "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
@@ -48,7 +45,7 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 2
+    "concurrent_convergence": 0
   },
   "outcomes": [
     {
@@ -57,7 +54,6 @@
       "name": "Revisar novedades: Pachuca",
       "outcome": "unchanged",
       "applied": true,
-      "via": "concurrent_convergence",
       "apply_commit": "aad624d4de770f1cb1e37f8e1859a18547bd66cb"
     },
     {
@@ -66,7 +62,6 @@
       "name": "Revisar novedades: dubai",
       "outcome": "unchanged",
       "applied": true,
-      "via": "concurrent_convergence",
       "apply_commit": "aad624d4de770f1cb1e37f8e1859a18547bd66cb"
     }
   ],
@@ -173,13 +168,20 @@
       "at": "2026-11-09T17:59:00+01:00",
       "phase": "closing",
       "message": "Pasada tr-1794243281678-manual cerrada 2/2 por convergencia JIT. Pachuca y dubai quedaron unchanged y el aplicador oficial aad624d4de770f1cb1e37f8e1859a18547bd66cb persistió ambos mantenimientos en requests.json y telegram-manual-explained.json y retiró las dos revisiones de editorial-queue. Barrera final: editorial-queue=0. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-20261109T1755-manual",
+      "status": "DONE",
+      "at": "2026-11-09T17:59:00+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-20261109T1755-manual cerrada 2/2. Pachuca y dubai fueron investigadas como review_red y aplicadas como unchanged por el mantenedor oficial en aad624d4de770f1cb1e37f8e1859a18547bd66cb; se conservaron explicación, explained_at e imágenes sin volver a Listas. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "last_started_at": "2026-11-09T17:55:00+01:00",
   "last_completed_at": "2026-11-09T17:59:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794243281678-manual",
+    "run_id": "tr-20261109T1755-manual",
     "status": "DONE",
     "started_at": "2026-11-09T17:55:00+01:00",
     "finished_at": "2026-11-09T17:59:00+01:00",
@@ -203,11 +205,11 @@
       "image_outbox_created": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 2
+      "concurrent_convergence": 0
     },
-    "message": "Pasada tr-1794243281678-manual cerrada 2/2 por convergencia JIT. Pachuca y dubai quedaron unchanged y el aplicador oficial aad624d4de770f1cb1e37f8e1859a18547bd66cb persistió ambos mantenimientos en requests.json y telegram-manual-explained.json y retiró las dos revisiones de editorial-queue. Barrera final: editorial-queue=0. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "message": "Pasada tr-20261109T1755-manual cerrada 2/2. Pachuca y dubai fueron investigadas como review_red y aplicadas como unchanged por el mantenedor oficial en aad624d4de770f1cb1e37f8e1859a18547bd66cb; se conservaron explicación, explained_at e imágenes sin volver a Listas. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794243281678-manual cerrada 2/2 por convergencia JIT. Pachuca y dubai quedaron unchanged y el aplicador oficial aad624d4de770f1cb1e37f8e1859a18547bd66cb persistió ambos mantenimientos en requests.json y telegram-manual-explained.json y retiró las dos revisiones de editorial-queue. Barrera final: editorial-queue=0. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada tr-20261109T1755-manual cerrada 2/2. Pachuca y dubai fueron investigadas como review_red y aplicadas como unchanged por el mantenedor oficial en aad624d4de770f1cb1e37f8e1859a18547bd66cb; se conservaron explicación, explained_at e imágenes sin volver a Listas. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794199200000-manual",
@@ -2468,16 +2470,64 @@
         }
       ],
       "message": "Pasada tr-1794243281678-manual cerrada 2/2 por convergencia JIT. Pachuca y dubai quedaron unchanged y el aplicador oficial aad624d4de770f1cb1e37f8e1859a18547bd66cb persistió ambos mantenimientos en requests.json y telegram-manual-explained.json y retiró las dos revisiones de editorial-queue. Barrera final: editorial-queue=0. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-20261109T1755-manual",
+      "status": "DONE",
+      "started_at": "2026-11-09T17:55:00+01:00",
+      "finished_at": "2026-11-09T17:59:00+01:00",
+      "at": "2026-11-09T17:59:00+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 2,
+        "observed": 2,
+        "closed": 2,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 2,
+        "unchanged_reviews": 2,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [
+        "red-review-552a4db6826b8ff36c0b",
+        "red-review-79367de7b4b5938e30a3"
+      ],
+      "outcomes": [
+        {
+          "id": "red-review-552a4db6826b8ff36c0b",
+          "revision": 0,
+          "name": "Revisar novedades: Pachuca",
+          "outcome": "unchanged",
+          "applied": true,
+          "apply_commit": "aad624d4de770f1cb1e37f8e1859a18547bd66cb"
+        },
+        {
+          "id": "red-review-79367de7b4b5938e30a3",
+          "revision": 0,
+          "name": "Revisar novedades: dubai",
+          "outcome": "unchanged",
+          "applied": true,
+          "apply_commit": "aad624d4de770f1cb1e37f8e1859a18547bd66cb"
+        }
+      ],
+      "message": "Pasada tr-20261109T1755-manual cerrada 2/2. Pachuca y dubai fueron investigadas como review_red y aplicadas como unchanged por el mantenedor oficial en aad624d4de770f1cb1e37f8e1859a18547bd66cb; se conservaron explicación, explained_at e imágenes sin volver a Listas. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
-  "current_item": {
-    "id": "red-review-79367de7b4b5938e30a3",
-    "revision": 0,
-    "name": "Revisar novedades: dubai",
-    "task": "review_red"
-  },
+  "current_item": null,
   "withdrawn_ids": [
     "ae7f066f3c94"
   ],
-  "last_finished_at": "2026-11-09T17:41:15+01:00"
+  "last_finished_at": "2026-11-09T17:59:00+01:00"
 }
