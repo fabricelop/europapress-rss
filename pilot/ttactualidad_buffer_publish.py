@@ -556,12 +556,46 @@ def closure_receipt(request_id):
         return None
 
 
+def pending_check_due(item, now=None):
+    """Budget-safe verification; never re-posts a pending X publication.
+
+    The GitHub cron runs every 15 minutes. A pending item older than a few
+    hours would otherwise consume up to 96 Buffer API requests every day
+    forever, without additional publications. Back off stale checks but keep
+    the original reservation and continue occasional readback.
+    """
+    if item.get("state") != "pending" or not item.get("buffer_post_id"):
+        return False
+    now = now or datetime.now(timezone.utc)
+    def date(value):
+        if not value:
+            return None
+        try:
+            d = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+            return d if d.tzinfo is not None else None
+        except (ValueError, TypeError):
+            return None
+    since = date(item.get("requested_at"))
+    if since is None:
+        return True
+    age = max(0, (now - since).total_seconds())
+    interval = 15 * 60 if age < 60 * 60 else (
+        60 * 60 if age < 6 * 60 * 60 else 12 * 60 * 60)
+    last = date(item.get("last_buffer_check_at"))
+    return last is None or (now - last).total_seconds() >= interval
+
+
 def reconcile(data, key):
     changed = False
     for item in data["items"]:
-        if item.get("state") != "pending" or not item.get("buffer_post_id"):
+        if not pending_check_due(item):
             continue
         post_id = item["buffer_post_id"]
+        # Record the check even if Buffer times out; the next scheduled job
+        # must respect the same backoff instead of hammering the quota.
+        item["last_buffer_check_at"] = utc_now()
+        item["buffer_poll_attempts"] = int(item.get("buffer_poll_attempts") or 0) + 1
+        changed = True
         try:
             result = graphql(key, "query($input: PostInput!) { post(input: $input) {"
                              " id status sentAt externalLink channelId } }",
