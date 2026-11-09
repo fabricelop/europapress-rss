@@ -7,75 +7,94 @@
   "previous_run_id": "tr-1794204600000-manual",
   "command_id": "tr-1794204852814-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-09T07:15:30+01:00",
-  "updated_at": "2026-11-09T07:15:30+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-09T07:16:30+01:00",
+  "finished_at": "2026-11-09T07:16:30+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "red-review-71cffa72182e4b0708c4",
-  "title": "Revisar novedades: maffeo",
-  "queue_complete": false,
-  "processed_ids": [],
-  "converged_ids": [],
-  "remaining_ids": [
+  "trend_id": null,
+  "title": "Pasada editorial TTendencias",
+  "queue_complete": true,
+  "processed_ids": [
     "red-review-71cffa72182e4b0708c4",
     "red-review-882d5106e6c1728c5ae8"
   ],
-  "remaining_active_ids": [
+  "converged_ids": [
     "red-review-71cffa72182e4b0708c4",
     "red-review-882d5106e6c1728c5ae8"
   ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 2,
     "observed": 2,
-    "closed": 0,
+    "closed": 2,
     "explained": 0,
     "problematic": 0,
-    "updates": 0,
+    "updates": 1,
     "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 0,
-    "unchanged_reviews": 0,
-    "continuity_updates": 0,
+    "maintenance_reviews": 2,
+    "unchanged_reviews": 1,
+    "continuity_updates": 1,
     "distinct_updates": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 2
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "red-review-71cffa72182e4b0708c4",
+      "revision": 0,
+      "name": "Revisar novedades: maffeo",
+      "outcome": "continuity",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "apply_commit": "c1208a7930b4a9c6a6315178624c52ad445c1e64"
+    },
+    {
+      "id": "red-review-882d5106e6c1728c5ae8",
+      "revision": 0,
+      "name": "Revisar novedades: Valencia",
+      "outcome": "unchanged",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "apply_commit": "c1208a7930b4a9c6a6315178624c52ad445c1e64"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "preparing",
+  "activity": "closing",
   "last_started_at": "2026-11-09T07:13:33+01:00",
-  "last_completed_at": "2026-11-09T07:13:33+01:00",
+  "last_completed_at": "2026-11-09T07:16:30+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794202800000-manual",
+    "run_id": "tr-1794204852814-manual",
     "status": "DONE",
-    "started_at": "2026-11-09T06:40:00+01:00",
-    "finished_at": "2026-11-09T06:42:00+01:00",
-    "at": "2026-11-09T06:42:00+01:00",
+    "started_at": "2026-11-09T07:15:30+01:00",
+    "finished_at": "2026-11-09T07:16:30+01:00",
+    "at": "2026-11-09T07:16:30+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 0,
-      "observed": 0,
-      "closed": 0,
+      "attempted": 2,
+      "observed": 2,
+      "closed": 2,
       "explained": 0,
       "problematic": 0,
-      "updates": 0,
+      "updates": 1,
       "review_completed_no_distinct_event": 0,
-      "maintenance_reviews": 0,
-      "unchanged_reviews": 0,
-      "continuity_updates": 0,
+      "maintenance_reviews": 2,
+      "unchanged_reviews": 1,
+      "continuity_updates": 1,
       "distinct_updates": 0,
       "stale_reviews": 0,
       "unverified_reviews": 0,
@@ -85,13 +104,35 @@
       "image_outbox_created": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 0
+      "concurrent_convergence": 2
     },
-    "processed_ids": [],
-    "outcomes": [],
-    "message": "Pasada tr-1794202800000-manual cerrada 0/0 tras refresco real del Top 30. Trigger e5b926119c9a9484cb8a225ad02f43239036c4f2; nuevo snapshot capturado 2026-11-09T06:40:50+01:00 con Top 30=30 y new_entries=0; editorial-queue actualizada 2026-11-09T06:40:55+01:00 y vacía; mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "processed_ids": [
+      "red-review-71cffa72182e4b0708c4",
+      "red-review-882d5106e6c1728c5ae8"
+    ],
+    "outcomes": [
+      {
+        "id": "red-review-71cffa72182e4b0708c4",
+        "revision": 0,
+        "name": "Revisar novedades: maffeo",
+        "outcome": "continuity",
+        "applied": true,
+        "via": "concurrent_convergence",
+        "apply_commit": "c1208a7930b4a9c6a6315178624c52ad445c1e64"
+      },
+      {
+        "id": "red-review-882d5106e6c1728c5ae8",
+        "revision": 0,
+        "name": "Revisar novedades: Valencia",
+        "outcome": "unchanged",
+        "applied": true,
+        "via": "concurrent_convergence",
+        "apply_commit": "c1208a7930b4a9c6a6315178624c52ad445c1e64"
+      }
+    ],
+    "message": "Pasada tr-1794204852814-manual cerrada 2/2 por convergencia JIT. maffeo quedó actualizado en continuidad con su disculpa posterior, conservando explained_at y estado publicado; Valencia quedó unchanged. La reentrada #FelizLunes ya había sido cerrada en esta ejecución como review_completed/no_distinct_event mediante el aplicador oficial 42571682843. Refresco real #799 (42571516169) completado success. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794204852814-manual RUNNING. Cola inicial JIT=2 review_red: maffeo y Valencia; se procesan de más antiguo a más reciente, revalidando ID/revisión antes de investigar y persistir. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1794204852814-manual cerrada 2/2 por convergencia JIT. maffeo quedó actualizado en continuidad con su disculpa posterior, conservando explained_at y estado publicado; Valencia quedó unchanged. La reentrada #FelizLunes ya había sido cerrada en esta ejecución como review_completed/no_distinct_event mediante el aplicador oficial 42571682843. Refresco real #799 (42571516169) completado success. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T03:17:00+01:00",
@@ -772,13 +813,72 @@
         "status": "success",
         "updated_at": "2026-11-09T07:13:33+01:00"
       }
+    },
+    {
+      "run_id": "tr-1794204600000-manual",
+      "status": "DONE",
+      "started_at": "2026-11-09T07:10:00+01:00",
+      "finished_at": "2026-11-09T07:16:30+01:00",
+      "at": "2026-11-09T07:16:30+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 3,
+        "observed": 3,
+        "closed": 3,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 1,
+        "review_completed_no_distinct_event": 1,
+        "maintenance_reviews": 2,
+        "unchanged_reviews": 1,
+        "continuity_updates": 1,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 2
+      },
+      "outcomes": [
+        {
+          "id": "079d8fa051cd",
+          "revision": 0,
+          "name": "#FelizLunes",
+          "outcome": "review_completed",
+          "review_reason": "no_distinct_event",
+          "applied": true,
+          "workflow_run_id": 42571682843
+        },
+        {
+          "id": "red-review-71cffa72182e4b0708c4",
+          "revision": 0,
+          "name": "Revisar novedades: maffeo",
+          "outcome": "continuity",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "apply_commit": "c1208a7930b4a9c6a6315178624c52ad445c1e64"
+        },
+        {
+          "id": "red-review-882d5106e6c1728c5ae8",
+          "revision": 0,
+          "name": "Revisar novedades: Valencia",
+          "outcome": "unchanged",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "apply_commit": "c1208a7930b4a9c6a6315178624c52ad445c1e64"
+        }
+      ],
+      "message": "Pasada solicitada desde chat cerrada 3/3 tras refresco real #799: #FelizLunes review_completed/no_distinct_event; maffeo continuity update; Valencia unchanged. Barrera final limpia. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-09T07:16:30+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-1794204852814-manual cerrada 2/2 por convergencia JIT. maffeo quedó actualizado en continuidad con su disculpa posterior, conservando explained_at y estado publicado; Valencia quedó unchanged. La reentrada #FelizLunes ya había sido cerrada en esta ejecución como review_completed/no_distinct_event mediante el aplicador oficial 42571682843. Refresco real #799 (42571516169) completado success. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
-  "current_item": {
-    "id": "red-review-71cffa72182e4b0708c4",
-    "revision": 0,
-    "name": "Revisar novedades: maffeo",
-    "task": "review_red",
-    "review_source_id": "1940ad68777c"
-  }
+  "current_item": null
 }
