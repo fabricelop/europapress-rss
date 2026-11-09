@@ -62,6 +62,35 @@ class DirectBufferPublisherTests(unittest.TestCase):
                 "revision": 1, "request_id": "11111111-1111-4111-8111-111111111111"}
 
 
+    def test_recent_verified_channel_avoids_two_buffer_lookups(self):
+        now = datetime.now(timezone.utc)
+        sent = (now - timedelta(minutes=40)).isoformat()
+        row = {"account": "ttittulares", "state": "sent",
+               "channel_id": "trusted-channel-1", "sent_at": sent,
+               "post_url": "https://x.com/ttittulares/status/1234567890123456789"}
+        ledger = {"items": [row]}
+        self.assertEqual(publisher.recent_verified_channel(
+            ledger, "ttittulares", now), "trusted-channel-1")
+        self.assertIsNone(publisher.recent_verified_channel(
+            ledger, "ttendenciasesp", now))
+        expired = now + timedelta(hours=8)
+        self.assertIsNone(publisher.recent_verified_channel(
+            ledger, "ttittulares", expired))
+        row["post_url"] = "https://x.com/otheraccount/status/1234567890123456789"
+        self.assertIsNone(publisher.recent_verified_channel(
+            ledger, "ttittulares", now))
+
+    def test_disconnected_channel_invalidates_verified_cache(self):
+        now = datetime.now(timezone.utc)
+        sent = (now - timedelta(minutes=40)).isoformat()
+        row = {"account": "ttittulares", "state": "sent",
+               "channel_id": "trusted-channel-1", "sent_at": sent,
+               "post_url": "https://x.com/ttittulares/status/1234567890123456789"}
+        ledger = {"items": [row], "channel_cache_invalid_after":
+                  {"ttittulares": now.isoformat()}}
+        self.assertIsNone(publisher.recent_verified_channel(
+            ledger, "ttittulares", now))
+
     def test_stale_pending_does_not_poll_every_quarter_hour(self):
         now = datetime.now(timezone.utc)
         item = {"state": "pending", "buffer_post_id": "buffer-123",
