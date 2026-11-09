@@ -268,6 +268,20 @@ async function once(base=__dirname){
     }
     const meta=metadata(task,job);
     let bytes=cachedOriginal(base,task,meta);
+    // The generator may have captured the exact original BEFORE a temporary
+    // editorial/API outage. Recover its immutable command-bound PNG locally,
+    // without reopening Chrome, if its identity still matches this live job.
+    if(!bytes){
+     try{
+      const immediate=require('./TTImagesImmediateInbox.cjs');
+      const staged=immediate.loadStaged(base,task);
+      if(staged){
+       persistOriginal(base,task,meta,staged);
+       bytes=staged;
+       report(task,'IMMEDIATE_STAGED_ORIGINAL_RECOVERED');
+      }
+     }catch(e){report(task,'IMMEDIATE_STAGED_ORIGINAL_CONFLICT');continue;}
+    }
     if(!bytes){
     if(!source.chatURL(task.conversation_url)){const known=source.chatURL(job.conversation_url||job.chat_url);if(known)task.conversation_url=known;}
     if(!source.chatURL(task.conversation_url)){const found=await source.discoverConversation(task.command_id,task.browser_target_id,true);if(found?.url)task.conversation_url=found.url;}
@@ -361,6 +375,8 @@ async function once(base=__dirname){
     const receipt=await send(meta,bytes,unprotect(task.secret_dpapi));
     const temp=receiptFile+'.tmp';fs.writeFileSync(temp,JSON.stringify({project:meta.project,revision:meta.revision,commandId:meta.commandId,editorialId:meta.editorialId,...receipt,receivedAt:new Date().toISOString()},null,2),{mode:0o600});fs.renameSync(temp,receiptFile);
     discardOriginal(base,task);
+    // Remove the preliminary original only after a durable private receipt.
+    try{require('./TTImagesImmediateInbox.cjs').discardStaged(base,task);}catch{}
     report(task,'RECEIVED_'+receipt.state);
    }catch(e){const message=String(e?.message||'');const safe=/^(STALE_EXACT_JOB|EPISODE_CHANGED|CDP_[A-Z_]+|RASTER_READ_FAILED|ORIGINAL_PNG_REQUIRED|PRIVATE_RECEIPT_HTTP_\d+|PRIVATE_RECEIPT_REJECTED|PRIVATE_RECEIPT_BAD_JSON|PRIVATE_RECEIPT_NETWORK_UNAVAILABLE|PREPARED_DATE_NOT_RECOVERABLE|CACHED_ORIGINAL_CONFLICT|image_job_[A-Za-z0-9_ -]+)$/.test(message)?message:'RECEIVER_STEP_FAILED';report(task,safe)}finally{
     cdp?.close();
