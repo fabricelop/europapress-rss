@@ -7,15 +7,15 @@
   "previous_run_id": "tr-1794263668174-manual",
   "command_id": "tr-1794264656976-manual",
   "source": "chat",
-  "status": "success",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-09T23:52:00+01:00",
-  "updated_at": "2026-11-09T23:53:45+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-09T23:54:30+01:00",
+  "finished_at": "2026-11-09T23:54:30+01:00",
+  "current": 1,
   "total": 1,
-  "trend_id": "c2fdc85ccd3b",
-  "title": "Nervioso",
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
     "c2fdc85ccd3b"
@@ -25,10 +25,10 @@
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 0,
-    "closed": 0,
-    "explained": 0,
+    "attempted": 1,
+    "observed": 1,
+    "closed": 1,
+    "explained": 1,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
@@ -49,7 +49,17 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "c2fdc85ccd3b",
+      "revision": 1,
+      "name": "Nervioso",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "e92b3999bd4941e22e1cbada4d60bfc65a02120f",
+      "outbox_commit": "64c933e3dffd0a776bb5d4a43ac5acc5993cfb73"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -102,7 +112,7 @@
     },
     "message": "Pasada tr-1794264030000-manual cerrada 0/0. Durante la ejecución convergió un refresco automático fresco: captura 2026-11-09T23:40:55+01:00 y cola recalculada 2026-11-09T23:41:00+01:00 por fa8d91a61d4925f1f95fb3a1f4955cd1d0a8fb18. Barrera final: editorial-queue=0 y requests/mobile-decisions/telegram-manual-explained sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. El refresco manual redundante disparado por dfad289e92362fa387571ee1dd375337df2cfc2f (workflow 42714168494) seguía in_progress al cierre y no se usó como prueba de ejecución. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Nervioso r1 revalidado JIT. Dos fuentes independientes describen a Broncano como nervioso/en tensión durante la entrevista; resultado textual enviado al aplicador oficial. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1794264656976-manual cerrada 1/1. Nervioso r1 fue investigado desde cero y aplicado en main: dos fuentes independientes publicadas durante/tras la entrevista describen a David Broncano como nervioso o en tensión, coincidiendo con la entrada de «Nervioso» en el Top 10. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794234841273-manual",
@@ -2178,20 +2188,15 @@
       "message": "Pasada tr-1794264030000-manual cerrada 0/0. Durante la ejecución convergió un refresco automático fresco: captura 2026-11-09T23:40:55+01:00 y cola recalculada 2026-11-09T23:41:00+01:00 por fa8d91a61d4925f1f95fb3a1f4955cd1d0a8fb18. Barrera final: editorial-queue=0 y requests/mobile-decisions/telegram-manual-explained sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. El refresco manual redundante disparado por dfad289e92362fa387571ee1dd375337df2cfc2f (workflow 42714168494) seguía in_progress al cierre y no se usó como prueba de ejecución. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
-  "current_item": {
-    "id": "c2fdc85ccd3b",
-    "revision": 1,
-    "name": "Nervioso",
-    "status": "preparing"
-  },
+  "current_item": null,
   "withdrawn_ids": [
     "ae7f066f3c94"
   ],
-  "last_finished_at": "2026-11-09T23:40:00+01:00",
-  "last_revalidated_at": "2026-11-09T23:40:00+01:00",
+  "last_finished_at": "2026-11-09T23:54:30+01:00",
+  "last_revalidated_at": "2026-11-09T23:54:30+01:00",
   "last_revalidation": {
-    "at": "2026-11-09T23:40:00+01:00",
-    "queue_sha": "b30c56cb08123bccb48794a9c6cad668396389f1",
+    "at": "2026-11-09T23:54:30+01:00",
+    "queue_sha": "454b0bee447ecb9ef6c872dafed4c2bc36c9040d",
     "queue_count": 0,
     "preparing_update": 0,
     "rewrite_pending": 0,
@@ -2228,6 +2233,54 @@
       "title": "Nervioso",
       "message": "Nervioso r1 revalidado JIT. Dos fuentes independientes describen a Broncano como nervioso/en tensión durante la entrevista; resultado textual enviado al aplicador oficial. ImageGen=0; publicaciones=0.",
       "outbox_commit": "64c933e3dffd0a776bb5d4a43ac5acc5993cfb73"
+    },
+    {
+      "run_id": "tr-1794264656976-manual",
+      "status": "DONE",
+      "started_at": "2026-11-09T23:52:00+01:00",
+      "finished_at": "2026-11-09T23:54:30+01:00",
+      "at": "2026-11-09T23:54:30+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 1,
+        "observed": 1,
+        "closed": 1,
+        "explained": 1,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 0,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [
+        "c2fdc85ccd3b"
+      ],
+      "outcomes": [
+        {
+          "id": "c2fdc85ccd3b",
+          "revision": 1,
+          "name": "Nervioso",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "e92b3999bd4941e22e1cbada4d60bfc65a02120f",
+          "outbox_commit": "64c933e3dffd0a776bb5d4a43ac5acc5993cfb73"
+        }
+      ],
+      "message": "Pasada tr-1794264656976-manual cerrada 1/1. Nervioso r1 fue investigado desde cero y aplicado en main: dos fuentes independientes publicadas durante/tras la entrevista describen a David Broncano como nervioso o en tensión, coincidiendo con la entrada de «Nervioso» en el Top 10. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ]
 }
