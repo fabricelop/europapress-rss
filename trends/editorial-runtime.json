@@ -7,16 +7,16 @@
   "previous_run_id": "tr-1794228000000-manual",
   "command_id": "tr-1794228900000-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-09T13:55:00+01:00",
-  "updated_at": "2026-11-09T13:55:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-09T13:56:00+01:00",
+  "finished_at": "2026-11-09T13:56:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -361,17 +361,27 @@
       "at": "2026-11-09T13:55:00+01:00",
       "phase": "preparing",
       "message": "Pasada tr-1794228900000-manual iniciada sobre main. Cola inicial observada=0; se ejecuta barrera JIT antes de procesar o cerrar. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-09T13:56:00+01:00",
+      "phase": "verifying",
+      "message": "Barrera JIT final: editorial-queue=0 (2026-11-09T13:50:58+01:00); mobile-decisions sin trabajo editorial activo; recent.json 2026-11-09T13:50:54+01:00."
+    },
+    {
+      "at": "2026-11-09T13:56:00+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-1794228900000-manual cerrada 0/0 contra main. Relectura final: editorial-queue=0 (updated_at 2026-11-09T13:50:58+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. Captura recent.json 2026-11-09T13:50:54+01:00. No había trabajo editorial pendiente que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "last_started_at": "2026-11-09T13:55:00+01:00",
-  "last_completed_at": "2026-11-09T13:41:10+01:00",
+  "last_completed_at": "2026-11-09T13:56:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794228000000-manual",
+    "run_id": "tr-1794228900000-manual",
     "status": "DONE",
-    "started_at": "2026-11-09T13:40:00+01:00",
-    "finished_at": "2026-11-09T13:41:10+01:00",
-    "at": "2026-11-09T13:41:10+01:00",
+    "started_at": "2026-11-09T13:55:00+01:00",
+    "finished_at": "2026-11-09T13:56:00+01:00",
+    "at": "2026-11-09T13:56:00+01:00",
     "phase": "closing",
     "summary": {
       "attempted": 0,
@@ -399,9 +409,9 @@
     "outcomes": [],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-1794228000000-manual cerrada 0/0. Captura nueva 13:40:53+01:00; cola final 0 a las 13:40:59+01:00; sin preparing/update ni rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; publicaciones=0."
+    "message": "Pasada tr-1794228900000-manual cerrada 0/0 contra main. Relectura final: editorial-queue=0 (updated_at 2026-11-09T13:50:58+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. Captura recent.json 2026-11-09T13:50:54+01:00. No había trabajo editorial pendiente que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794228900000-manual iniciada sobre main. Cola inicial observada=0; se ejecuta barrera JIT antes de procesar o cerrar. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1794228900000-manual cerrada 0/0 contra main. Relectura final: editorial-queue=0 (updated_at 2026-11-09T13:50:58+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. Captura recent.json 2026-11-09T13:50:54+01:00. No había trabajo editorial pendiente que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T03:17:00+01:00",
