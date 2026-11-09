@@ -3,34 +3,34 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261109T1710-manual",
-  "previous_run_id": "tr-20261109T1655-manual",
-  "command_id": "tr-20261109T1710-manual",
+  "run_id": "tr-1794240988286-manual",
+  "previous_run_id": "tr-20261109T1710-manual",
+  "command_id": "tr-1794240988286-manual",
   "source": "chat",
-  "status": "success",
-  "phase": "persisting",
-  "started_at": "2026-11-09T17:10:00+01:00",
-  "updated_at": "2026-11-09T17:15:43+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-09T17:17:00+01:00",
+  "updated_at": "2026-11-09T17:17:00+01:00",
   "finished_at": null,
   "current": 0,
-  "total": 5,
-  "trend_id": "a1c1e16d0c24",
-  "title": "#VotoUtilEsPodemos",
-  "queue_complete": true,
-  "processed_ids": [
-    "0f796da9f2d7",
-    "1a58780acbab",
-    "2cf7851e047a",
-    "a1c1e16d0c24",
-    "b76606f8b171"
-  ],
+  "total": 2,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-4332b75ac2142c8881bf",
+    "red-review-0f8839836ba3c9c0b5c9"
+  ],
+  "remaining_active_ids": [
+    "red-review-4332b75ac2142c8881bf",
+    "red-review-0f8839836ba3c9c0b5c9"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
-    "observed": 0,
+    "observed": 2,
     "closed": 0,
     "explained": 0,
     "problematic": 0,
@@ -42,7 +42,7 @@
     "distinct_updates": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -75,6 +75,13 @@
       "at": "2026-11-09T17:10:00+01:00",
       "phase": "preparing",
       "message": "Pasada tr-20261109T1710-manual RUNNING desde chat. Cola inicial observada=0; se fuerza refresco real del Top 30 y después se releerá main con barrera JIT antes de cerrar. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794240988286-manual",
+      "status": "RUNNING",
+      "at": "2026-11-09T17:17:00+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-1794240988286-manual RUNNING. Cola JIT=2 review_red: #Mañaneros9N y Puigdemont; se procesan por orden, revalidando ID/revisión antes de investigar y persistir. ImageGen=0; publicaciones=0."
     }
   ],
   "last_started_at": "2026-11-09T17:15:42+01:00",
@@ -109,7 +116,7 @@
     },
     "message": "Pasada tr-20261109T1655-manual cerrada 0/0 contra main. Captura vigente 2026-11-09T16:50:58+01:00; editorial-queue actualizada 16:51:05+01:00 y vacía. Barrera final: mobile-decisions y búsqueda dirigida en requests.json sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-20261109T1710-manual persistiendo 5 resultados editoriales revalidados JIT. #TEM9N se cierra con causa concreta no confirmada; los otros cuatro con detonante actual verificado. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1794240988286-manual RUNNING. Cola JIT=2 review_red: #Mañaneros9N y Puigdemont; se procesan por orden, revalidando ID/revisión antes de investigar y persistir. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794199200000-manual",
