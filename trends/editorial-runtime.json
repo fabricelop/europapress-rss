@@ -7,29 +7,27 @@
   "previous_run_id": "tr-20261109T2010-manual",
   "command_id": "tr-autoguard-1794253266",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-09T20:52:00+01:00",
-  "updated_at": "2026-11-09T20:53:00+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-09T20:56:00+01:00",
+  "finished_at": "2026-11-09T20:56:00+01:00",
+  "current": 1,
   "total": 1,
-  "trend_id": "radar-prepare-0d76ad06e07959ee2f19",
-  "title": "Radar · Supergirl",
-  "queue_complete": false,
-  "processed_ids": [],
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
+    "radar-prepare-0d76ad06e07959ee2f19"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "radar-prepare-0d76ad06e07959ee2f19"
-  ],
-  "remaining_active_ids": [
-    "radar-prepare-0d76ad06e07959ee2f19"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 1,
     "observed": 1,
-    "closed": 0,
+    "closed": 1,
     "explained": 0,
     "problematic": 0,
     "updates": 0,
@@ -40,10 +38,10 @@
     "distinct_updates": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
-    "anticipation_reviews": 0,
-    "anticipation_prepared": 0,
+    "anticipation_reviews": 1,
+    "anticipation_prepared": 1,
     "anticipation_unverified": 0,
-    "queue_remaining": 1,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -51,33 +49,46 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "radar-prepare-0d76ad06e07959ee2f19",
+      "revision": 0,
+      "name": "Radar · Supergirl",
+      "outcome": "anticipation_prepared",
+      "applied": true,
+      "apply_commit": "d86d0d3caac023f3095e92af28c0e731ef442b63",
+      "outbox_commit": "88209cb988588874239c9943441cf91827a43fbd"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "investigating",
-  "last_started_at": "2026-11-09T20:17:23+01:00",
-  "last_completed_at": "2026-11-09T20:20:00+01:00",
+  "activity": "closing",
+  "last_started_at": "2026-11-09T20:52:00+01:00",
+  "last_completed_at": "2026-11-09T20:56:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261109T2010-manual",
+    "run_id": "tr-autoguard-1794253266",
     "status": "DONE",
-    "started_at": "2026-11-09T20:10:00+01:00",
-    "finished_at": "2026-11-09T20:20:00+01:00",
+    "started_at": "2026-11-09T20:52:00+01:00",
+    "finished_at": "2026-11-09T20:56:00+01:00",
     "summary": {
-      "attempted": 22,
-      "observed": 22,
-      "closed": 22,
-      "explained": 21,
+      "attempted": 1,
+      "observed": 1,
+      "closed": 1,
+      "explained": 0,
       "problematic": 0,
-      "updates": 1,
+      "updates": 0,
       "review_completed_no_distinct_event": 0,
-      "maintenance_reviews": 1,
+      "maintenance_reviews": 0,
       "unchanged_reviews": 0,
-      "continuity_updates": 1,
+      "continuity_updates": 0,
       "distinct_updates": 0,
       "stale_reviews": 0,
       "unverified_reviews": 0,
+      "anticipation_reviews": 1,
+      "anticipation_prepared": 1,
+      "anticipation_unverified": 0,
       "queue_remaining": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
@@ -87,167 +98,22 @@
       "concurrent_convergence": 0
     },
     "processed_ids": [
-      "4a9a8be6fb8a",
-      "3ce0fda03a6f",
-      "0d1f96edc813",
-      "224b53803d74",
-      "48a701aad516",
-      "4ef5ae2a02c7",
-      "f3bc74ed66ce",
-      "27d5233ddd89",
-      "db7fa34c0781",
-      "9016c8d6f361",
-      "536dd9779fe0",
-      "4917f2ad6688",
-      "a90234d394fa",
-      "a59eb64e9590",
-      "4fdf9581e93d",
-      "ff018dd029ce",
-      "242086511690",
-      "bf10d276fe6f",
-      "e9b0fcf932bd",
-      "726c9b3957f8",
-      "92337b452934"
+      "radar-prepare-0d76ad06e07959ee2f19"
     ],
     "outcomes": [
       {
-        "id": "4a9a8be6fb8a",
+        "id": "radar-prepare-0d76ad06e07959ee2f19",
         "revision": 0,
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "3ce0fda03a6f",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "0d1f96edc813",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "224b53803d74",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "48a701aad516",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "4ef5ae2a02c7",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "f3bc74ed66ce",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "27d5233ddd89",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "db7fa34c0781",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "9016c8d6f361",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "536dd9779fe0",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "4917f2ad6688",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "a90234d394fa",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "a59eb64e9590",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "4fdf9581e93d",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "ff018dd029ce",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "242086511690",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "bf10d276fe6f",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "e9b0fcf932bd",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "726c9b3957f8",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "92337b452934",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "red-review-466caab57b75143bc60d",
-        "revision": 0,
-        "name": "Revisar novedades: Broncano",
-        "outcome": "continuity_update",
+        "name": "Radar · Supergirl",
+        "outcome": "anticipation_prepared",
         "applied": true,
-        "apply_commit": "23651e5c5b309430060033a4b04858081875f672"
+        "apply_commit": "d86d0d3caac023f3095e92af28c0e731ef442b63",
+        "outbox_commit": "88209cb988588874239c9943441cf91827a43fbd"
       }
     ],
-    "message": "Pasada tr-20261109T2010-manual cerrada 22/22: 21 tendencias ordinarias explicadas y aplicadas en Listas/Top30; durante la barrera final entró una revisión de Broncano y se aplicó como actualización de continuidad en el mismo ID/revisión, conservando explained_at, publicación e imagen. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; publicaciones=0."
+    "message": "Pasada tr-autoguard-1794253266 cerrada 1/1: Radar · Supergirl r0 investigado y preparado como borrador anticipado; el aplicador oficial lo marcó anticipation_prepared y retiró el ID/revisión de la cola en d86d0d3caac023f3095e92af28c0e731ef442b63. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No se creó ficha en Listas. ImageGen=0; publicaciones=0."
   },
-  "message": "Investigando Radar · Supergirl r0 tras revalidación JIT: la señal sigue preparing/anticipate. Se contrasta el relevo de DC Studios anunciado hoy y su vínculo factual con Supergirl; salida solo anticipation-outbox. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-autoguard-1794253266 cerrada 1/1: Radar · Supergirl r0 investigado y preparado como borrador anticipado; el aplicador oficial lo marcó anticipation_prepared y retiró el ID/revisión de la cola en d86d0d3caac023f3095e92af28c0e731ef442b63. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No se creó ficha en Listas. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794199200000-manual",
@@ -3022,6 +2888,54 @@
         }
       ],
       "message": "Pasada tr-1794251881833-manual cerrada 1/1 por convergencia JIT. La revisión de Broncano fue aplicada como actualización de continuidad por el circuito oficial en 23651e5c5b309430060033a4b04858081875f672: misma ficha publicada, mismo explained_at e imagen, sin nueva entrada en Listas. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-autoguard-1794253266",
+      "status": "DONE",
+      "started_at": "2026-11-09T20:52:00+01:00",
+      "finished_at": "2026-11-09T20:56:00+01:00",
+      "at": "2026-11-09T20:56:00+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 1,
+        "observed": 1,
+        "closed": 1,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 0,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 1,
+        "anticipation_prepared": 1,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [
+        "radar-prepare-0d76ad06e07959ee2f19"
+      ],
+      "outcomes": [
+        {
+          "id": "radar-prepare-0d76ad06e07959ee2f19",
+          "revision": 0,
+          "name": "Radar · Supergirl",
+          "outcome": "anticipation_prepared",
+          "applied": true,
+          "apply_commit": "d86d0d3caac023f3095e92af28c0e731ef442b63",
+          "outbox_commit": "88209cb988588874239c9943441cf91827a43fbd"
+        }
+      ],
+      "message": "Pasada tr-autoguard-1794253266 cerrada 1/1: Radar · Supergirl r0 investigado y preparado como borrador anticipado; el aplicador oficial lo marcó anticipation_prepared y retiró el ID/revisión de la cola en d86d0d3caac023f3095e92af28c0e731ef442b63. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No se creó ficha en Listas. ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": null,
