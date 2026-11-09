@@ -3,28 +3,32 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261110T002500-manual",
-  "previous_run_id": "tr-1794266303300-manual",
-  "command_id": "tr-20261110T002500-manual",
+  "run_id": "tr-20261110T004100-manual",
+  "previous_run_id": "tr-20261110T002500-manual",
+  "command_id": "tr-20261110T004100-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-10T00:25:00+01:00",
-  "updated_at": "2026-11-10T00:26:00+01:00",
-  "finished_at": "2026-11-10T00:26:00+01:00",
+  "status": "RUNNING",
+  "phase": "investigating",
+  "started_at": "2026-11-10T00:41:00+01:00",
+  "updated_at": "2026-11-10T00:41:00+01:00",
+  "finished_at": null,
   "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "total": 1,
+  "trend_id": "radar-prepare-9c30612c78688606a086",
+  "title": "Radar · La 1",
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "radar-prepare-9c30612c78688606a086"
+  ],
+  "remaining_active_ids": [
+    "radar-prepare-9c30612c78688606a086"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 0,
+    "attempted": 1,
+    "observed": 1,
     "closed": 0,
     "explained": 0,
     "problematic": 0,
@@ -36,10 +40,10 @@
     "distinct_updates": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
-    "anticipation_reviews": 0,
+    "anticipation_reviews": 1,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 1,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -51,7 +55,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "closing",
+  "activity": "investigating",
   "last_started_at": "2026-11-09T23:59:31+01:00",
   "last_completed_at": "2026-11-10T00:26:00+01:00",
   "api_failover_enabled": false,
@@ -92,7 +96,7 @@
     "incidents": [],
     "message": "Pasada tr-20261110T002500-manual cerrada 0/0 tras doble relectura JIT de main. editorial-queue=0 (actualizada 2026-11-10T00:23:30+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial vigente que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-20261110T002500-manual cerrada 0/0 tras doble relectura JIT de main. editorial-queue=0 (actualizada 2026-11-10T00:23:30+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial vigente que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada tr-20261110T004100-manual RUNNING. Cola autoritativa=1; Radar · La 1 r0 revalidado JIT. Investigando detonante actual para borrador anticipado; sin Listas, ImageGen ni publicaciones.",
   "history": [
     {
       "run_id": "tr-1794234841273-manual",
@@ -2448,9 +2452,23 @@
       "processed_ids": [],
       "outcomes": [],
       "message": "Pasada tr-20261110T002500-manual cerrada 0/0 tras doble relectura JIT de main. editorial-queue=0 (actualizada 2026-11-10T00:23:30+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial vigente que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-20261110T004100-manual",
+      "status": "RUNNING",
+      "at": "2026-11-10T00:41:00+01:00",
+      "phase": "investigating",
+      "trend_id": "radar-prepare-9c30612c78688606a086",
+      "title": "Radar · La 1",
+      "message": "Pasada tr-20261110T004100-manual RUNNING. Cola autoritativa=1; Radar · La 1 r0 revalidado JIT. Investigando detonante actual para borrador anticipado; sin Listas, ImageGen ni publicaciones."
     }
   ],
-  "current_item": null,
+  "current_item": {
+    "id": "radar-prepare-9c30612c78688606a086",
+    "revision": 0,
+    "name": "Radar · La 1",
+    "task": "anticipate"
+  },
   "withdrawn_ids": [
     "ae7f066f3c94"
   ],
@@ -2687,6 +2705,15 @@
       "trend_id": "6485ff64586c",
       "title": "#LaIslaDeLasTentaciones18",
       "message": "14/14 revisiones revalidadas JIT en main. 12 resultados textuales listos para persistir y 2 reentradas (Jordi Wild, Candela Peña) se cierran review_completed/no_distinct_event. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-20261110T004100-manual",
+      "status": "RUNNING",
+      "at": "2026-11-10T00:41:00+01:00",
+      "phase": "investigating",
+      "trend_id": "radar-prepare-9c30612c78688606a086",
+      "title": "Radar · La 1",
+      "message": "Pasada tr-20261110T004100-manual RUNNING. Cola autoritativa=1; Radar · La 1 r0 revalidado JIT. Investigando detonante actual para borrador anticipado; sin Listas, ImageGen ni publicaciones."
     }
   ]
 }
