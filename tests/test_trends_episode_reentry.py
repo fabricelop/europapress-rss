@@ -85,7 +85,7 @@ class EpisodeResearchTest(unittest.TestCase):
         self.assertEqual(read(self.folder, "editorial-queue.json")["count"], 10)
         self.assertEqual(len({r["id"] for r in current}), 10)
         self.assertTrue(all(r["status"] == "preparing" and
-                            not r["new_episode_review"] and
+                            r["new_episode_review"] and
                             not r["distinct_event_required"] and
                             r["recurring_top30_name"] for r in current))
         self.assertTrue(all(r["requested_together"] == [r["name"]] and
@@ -196,7 +196,7 @@ class EpisodeResearchTest(unittest.TestCase):
                          ["buenos-old", "buenos-review"])
         self.assertEqual(after[-1]["status"], "preparing")
         self.assertFalse(after[-1]["distinct_event_required"])
-        self.assertFalse(after[-1]["new_episode_review"])
+        self.assertTrue(after[-1]["new_episode_review"])
         self.assertEqual(read(self.folder, "editorial-queue.json")["count"], 1)
         self.assertEqual(read(self.folder, "editorial-queue.json")["items"][0]["id"],
                          "buenos-review")
