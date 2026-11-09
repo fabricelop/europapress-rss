@@ -252,7 +252,7 @@ assert 'store.snapshot.unexplainedTrends' in dashboard
 assert 'case "SIN EXPLICACIÓN": return "PISTAS"' in dashboard
 assert 'decision == "hints"' in store
 assert '"hints": text' in auth
-assert 'await store.refreshIfStale(minInterval: 45)' in dashboard
+assert 'await store.refreshIfStale(minInterval: needsFastProgress ? 45 : 180)' in dashboard
 assert 'MARKETING_VERSION: "0.4.83"' in project
 assert 'CURRENT_PROJECT_VERSION: "95"' in project
 print("TT_ACTUALIDAD_IOS_HINTS_PREFLIGHT_OK")
