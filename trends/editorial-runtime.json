@@ -7,12 +7,12 @@
   "previous_run_id": "tr-1794234841273-manual",
   "command_id": "tr-1794236100000-manual",
   "source": "chat_manual",
-  "status": "success",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-09T16:10:00+01:00",
-  "updated_at": "2026-11-09T16:14:02+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-09T16:14:30+01:00",
+  "finished_at": "2026-11-09T16:14:30+01:00",
+  "current": 7,
   "total": 7,
   "trend_id": null,
   "title": null,
@@ -24,12 +24,93 @@
     "c43139196d57",
     "fbd3edced3e4"
   ],
-  "converged_ids": [],
+  "converged_ids": [
+    "60849355f544",
+    "d6093547e2f0"
+  ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": null,
-  "outcomes": [],
+  "summary": {
+    "attempted": 7,
+    "observed": 7,
+    "closed": 7,
+    "explained": 5,
+    "problematic": 0,
+    "updates": 0,
+    "review_completed_no_distinct_event": 0,
+    "maintenance_reviews": 0,
+    "unchanged_reviews": 0,
+    "continuity_updates": 0,
+    "distinct_updates": 0,
+    "stale_reviews": 0,
+    "unverified_reviews": 0,
+    "queue_remaining": 0,
+    "rewrite_pending_remaining": 0,
+    "imagegen_calls": 0,
+    "image_outbox_created": 0,
+    "publications": 0,
+    "incidents": 0,
+    "concurrent_convergence": 2
+  },
+  "outcomes": [
+    {
+      "id": "654d9257a9a4",
+      "revision": 0,
+      "name": "pucherazo",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox_applied"
+    },
+    {
+      "id": "60849355f544",
+      "revision": 0,
+      "name": "Supremo",
+      "outcome": "closed_concurrently",
+      "applied": true,
+      "via": "concurrent_convergence"
+    },
+    {
+      "id": "fbd3edced3e4",
+      "revision": 0,
+      "name": "Russell Brand",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox_applied"
+    },
+    {
+      "id": "8f1999cd5f2e",
+      "revision": 0,
+      "name": "SUPA",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox_applied"
+    },
+    {
+      "id": "c43139196d57",
+      "revision": 0,
+      "name": "Charles",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox_applied"
+    },
+    {
+      "id": "d6093547e2f0",
+      "revision": 0,
+      "name": "Margarita Robles",
+      "outcome": "closed_concurrently",
+      "applied": true,
+      "via": "concurrent_convergence"
+    },
+    {
+      "id": "4ff8c83f90d2",
+      "revision": 0,
+      "name": "El Hierro",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox_applied"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -38,15 +119,15 @@
   "last_completed_at": "2026-11-09T16:14:02+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794236100000-manual",
+    "run_id": "tr-20261109T1610-manual",
     "status": "DONE",
-    "started_at": "2026-11-09T15:55:00+01:00",
-    "finished_at": "2026-11-09T16:00:00+01:00",
+    "started_at": "2026-11-09T16:10:00+01:00",
+    "finished_at": "2026-11-09T16:14:30+01:00",
     "summary": {
-      "attempted": 0,
-      "observed": 0,
-      "closed": 0,
-      "explained": 0,
+      "attempted": 7,
+      "observed": 7,
+      "closed": 7,
+      "explained": 5,
       "problematic": 0,
       "updates": 0,
       "review_completed_no_distinct_event": 0,
@@ -62,11 +143,11 @@
       "image_outbox_created": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 0
+      "concurrent_convergence": 2
     },
-    "message": "Pasada tr-1794236100000-manual cerrada 0/0 tras refresco manual real. Trigger 42e1650c5ffe6fb7754a3475ea4f27f2144e652c; workflow 42639669259 completado success. Nuevo snapshot capturado 2026-11-09T15:59:25+01:00 con Top 30=30 y new_entries=[]; editorial-queue actualizada 2026-11-09T15:59:29+01:00 y vacía; mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos y requests sin trabajo editorial activo. No había trabajo editorial que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "message": "Pasada tr-20261109T1610-manual cerrada 7/7. pucherazo, Russell Brand, SUPA, Charles y El Hierro quedaron aplicados por el outbox editorial oficial; Supremo y Margarita Robles salieron de la cola por convergencia JIT antes de la escritura de esta pasada. Barrera final: editorial-queue=0, remaining_ids=[] y error=null. ImageGen=0; image-outbox editorial creado por esta pasada=0; publicaciones=0."
   },
-  "message": "Preparando 7 pendientes editoriales",
+  "message": "Pasada tr-20261109T1610-manual cerrada 7/7. pucherazo, Russell Brand, SUPA, Charles y El Hierro quedaron aplicados por el outbox editorial oficial; Supremo y Margarita Robles salieron de la cola por convergencia JIT antes de la escritura de esta pasada. Barrera final: editorial-queue=0, remaining_ids=[] y error=null. ImageGen=0; image-outbox editorial creado por esta pasada=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794199200000-manual",
@@ -1811,6 +1892,108 @@
       "message": "Pasada tr-1794236100000-manual cerrada 0/0 tras refresco manual real. Trigger 42e1650c5ffe6fb7754a3475ea4f27f2144e652c; workflow 42639669259 completado success. Nuevo snapshot capturado 2026-11-09T15:59:25+01:00 con Top 30=30 y new_entries=[]; editorial-queue actualizada 2026-11-09T15:59:29+01:00 y vacía; mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos y requests sin trabajo editorial activo. No había trabajo editorial que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
       "workflow_run_id": 42639669259,
       "trigger_commit": "42e1650c5ffe6fb7754a3475ea4f27f2144e652c"
+    },
+    {
+      "run_id": "tr-20261109T1610-manual",
+      "status": "DONE",
+      "started_at": "2026-11-09T16:10:00+01:00",
+      "finished_at": "2026-11-09T16:14:30+01:00",
+      "at": "2026-11-09T16:14:30+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 7,
+        "observed": 7,
+        "closed": 7,
+        "explained": 5,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 0,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 2
+      },
+      "processed_ids": [
+        "4ff8c83f90d2",
+        "654d9257a9a4",
+        "8f1999cd5f2e",
+        "c43139196d57",
+        "fbd3edced3e4"
+      ],
+      "converged_ids": [
+        "60849355f544",
+        "d6093547e2f0"
+      ],
+      "outcomes": [
+        {
+          "id": "654d9257a9a4",
+          "revision": 0,
+          "name": "pucherazo",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied"
+        },
+        {
+          "id": "60849355f544",
+          "revision": 0,
+          "name": "Supremo",
+          "outcome": "closed_concurrently",
+          "applied": true,
+          "via": "concurrent_convergence"
+        },
+        {
+          "id": "fbd3edced3e4",
+          "revision": 0,
+          "name": "Russell Brand",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied"
+        },
+        {
+          "id": "8f1999cd5f2e",
+          "revision": 0,
+          "name": "SUPA",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied"
+        },
+        {
+          "id": "c43139196d57",
+          "revision": 0,
+          "name": "Charles",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied"
+        },
+        {
+          "id": "d6093547e2f0",
+          "revision": 0,
+          "name": "Margarita Robles",
+          "outcome": "closed_concurrently",
+          "applied": true,
+          "via": "concurrent_convergence"
+        },
+        {
+          "id": "4ff8c83f90d2",
+          "revision": 0,
+          "name": "El Hierro",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-20261109T1610-manual cerrada 7/7. pucherazo, Russell Brand, SUPA, Charles y El Hierro quedaron aplicados por el outbox editorial oficial; Supremo y Margarita Robles salieron de la cola por convergencia JIT antes de la escritura de esta pasada. Barrera final: editorial-queue=0, remaining_ids=[] y error=null. ImageGen=0; image-outbox editorial creado por esta pasada=0; publicaciones=0."
     }
   ],
   "current_item": "pucherazo",
