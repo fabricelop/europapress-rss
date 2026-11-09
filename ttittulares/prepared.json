@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-11-09T19:09:54.257Z",
+  "updated_at": "2026-11-09T19:10:46.103Z",
   "items": [
     {
       "event_id": "c2c5fea57972",
@@ -487,7 +487,7 @@
       "with_image": true,
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "none",
+      "ai_image_status": "failed",
       "archive_image_status": "ready",
       "fallback_image_status": "none",
       "sensitive_editorial": false,
@@ -506,7 +506,10 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "El PP acepta la propuesta del PSOE para que la Academia de Televisión organice los debates electorales"
-      }
+      },
+      "ai_image_last_attempt_status": "failed",
+      "ai_image_last_attempt_at": "2026-11-09T19:10:46.103Z",
+      "ai_image_failure_reason": "CDP timeout Runtime.evaluate"
     }
   ],
   "count": 8,
