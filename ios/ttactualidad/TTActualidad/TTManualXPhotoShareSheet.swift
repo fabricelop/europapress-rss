@@ -18,7 +18,7 @@ struct TTManualXPhotoShareSheet: UIViewControllerRepresentable {
 
     func makeUIViewController(context: Context) -> UIActivityViewController {
         UIActivityViewController(
-            activityItems: [text, image],
+            activityItems: [image, text],
             applicationActivities: nil)
     }
 
