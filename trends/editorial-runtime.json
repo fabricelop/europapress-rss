@@ -10,12 +10,12 @@
   "status": "RUNNING",
   "phase": "verifying",
   "started_at": "2026-11-09T09:15:31+01:00",
-  "updated_at": "2026-11-09T09:18:00+01:00",
+  "updated_at": "2026-11-09T09:19:00+01:00",
   "finished_at": null,
   "current": 0,
   "total": 2,
-  "trend_id": "red-review-d3f70fc527eec472e964",
-  "title": "Revisando novedades: maffeo",
+  "trend_id": "red-review-0abc293c8865e30c19dc",
+  "title": "Revisando novedades: Valencia",
   "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
@@ -102,7 +102,7 @@
     "outcomes": [],
     "message": "Pasada tr-1794211800000-manual cerrada 0/0 tras tres lecturas de la cola autoritativa. editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Investigación completada: sin novedad material independiente; revalidando ID/revisión y estado persistido antes de escribir maintenance-outbox.",
+  "message": "Maffeo ya tiene resultado de mantenimiento persistido; revisando Valencia y revalidando ID/revisión antes de escribir su resultado.",
   "history": [
     {
       "at": "2026-11-09T03:17:00+01:00",
@@ -1387,9 +1387,9 @@
     }
   ],
   "current_item": {
-    "id": "red-review-d3f70fc527eec472e964",
+    "id": "red-review-0abc293c8865e30c19dc",
     "revision": 0,
-    "name": "Revisar novedades: maffeo",
+    "name": "Revisar novedades: Valencia",
     "task": "review_red",
     "phase": "verifying"
   }
