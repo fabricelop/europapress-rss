@@ -28,11 +28,13 @@ struct TTBufferAPIQuota: Decodable {
     let window_seconds: Int
     let resets_in_seconds: Int
     let observed_at: String
+    let other_windows: [TTBufferQuotaShortWindow]?
 }
 
 private struct TTBufferLedger: Decodable {
     let items: [TTBufferPublication]
     let api_quota: TTBufferAPIQuota?
+    let api_quota_history: [TTBufferQuotaObservation]?
 }
 
 @MainActor
@@ -44,6 +46,7 @@ final class BufferPublishTracker: ObservableObject {
     // pretend a Buffer/X publisher exists.
     @Published private(set) var backendAvailable = false
     @Published private(set) var apiQuota: TTBufferAPIQuota?
+    @Published private(set) var quotaHistory: [TTBufferQuotaObservation] = []
     @Published private(set) var notice = ""
     @Published private(set) var change = 0
     @Published private(set) var sending = Set<String>()
@@ -214,6 +217,7 @@ final class BufferPublishTracker: ObservableObject {
                 }
             }
             apiQuota = ledger.api_quota
+            quotaHistory = ledger.api_quota_history ?? []
             loaded = true
             backendAvailable = true
         } catch {

@@ -512,44 +512,71 @@ struct TTDashboard: View {
             if let quota = buffer.apiQuota, quota.window_seconds == 2592000,
                quota.limit > 0 {
                 let sustainable = Double(quota.limit) / 30.0
-                let activeDays = max(1.0 / 24.0,
-                    min(30.0, Double(max(0, quota.window_seconds -
-                                            quota.resets_in_seconds)) / 86400.0))
-                // The period is currently only a few days old: "used/30"
-                // is NOT the actual observed daily consumption.
-                let pace = Double(quota.used) / activeDays
+                // These are real response-header totals, not daily metrics.
+                // In a rolling 30-day window, reset countdown does NOT mean
+                // that 30 days of measurements have been collected.
+                let observedRate = TTBufferQuotaPolicy.recentRate(buffer.quotaHistory)
                 Text("\(quota.used) / \(quota.limit) solicitudes · \(quota.remaining) disponibles")
                     .font(.system(size: 14, weight: .bold))
                     .monospacedDigit()
                 ProgressView(value: Double(quota.used), total: Double(quota.limit))
                     .tint(TTTheme.blue)
-                Text("Ritmo aproximado del periodo activo: " +
-                     pace.formatted(.number.precision(.fractionLength(1))) +
-                     " solicitudes/día · presupuesto sostenible: " +
+                Text("Presupuesto medio de referencia: " +
                      sustainable.formatted(.number.precision(.fractionLength(1))) +
-                     " solicitudes/día")
+                     " solicitudes/día para ambas cuentas.")
                     .font(.system(size: 10)).foregroundStyle(TTTheme.muted)
-                if pace > sustainable * 1.1 {
-                    Text("Atención: el ritmo registrado supera el presupuesto " +
-                         "medio para mantener publicaciones durante 30 días.")
-                        .font(.system(size: 10, weight: .semibold))
-                        .foregroundStyle(.orange)
+                if let observedRate {
+                    Text("Variación neta entre dos lecturas reales: " +
+                         String(observedRate.netRequests) + " solicitudes en " +
+                         observedRate.days.formatted(.number.precision(.fractionLength(1))) +
+                         " días · ritmo observado ≈" +
+                         observedRate.netRequestsPerDay.formatted(
+                             .number.precision(.fractionLength(1))) +
+                         " solicitudes/día.")
+                        .font(.system(size: 10)).foregroundStyle(TTTheme.muted)
+                    if observedRate.netRequestsPerDay > sustainable * 1.1 {
+                        Text("Aviso: la variación observada supera el presupuesto " +
+                             "medio sostenible de 30 días.")
+                            .font(.system(size: 10, weight: .semibold))
+                            .foregroundStyle(.orange)
+                    }
+                    if let cost = observedRate.observedRequestsPerNewPost {
+                        let guidance = Int((sustainable * 0.85 / cost)
+                                            .rounded(.down))
+                        Text("En este intervalo: " +
+                             String(observedRate.newConfirmedPosts) +
+                             " publicaciones nuevas confirmadas y ≈" +
+                             cost.formatted(.number.precision(.fractionLength(2))) +
+                             " solicitudes netas por publicación; referencia " +
+                             "prudente ≈" + String(max(0, guidance)) +
+                             " publicaciones/día entre ambas cuentas.")
+                            .font(.system(size: 10)).foregroundStyle(TTTheme.muted)
+                    } else {
+                        Text("Sin publicaciones confirmadas adicionales entre " +
+                             "estas lecturas: no se estima coste por tuit.")
+                            .font(.system(size: 10)).foregroundStyle(TTTheme.muted)
+                    }
+                    Text("Las ventanas son móviles: la caducidad de peticiones " +
+                         "antiguas puede reducir la variación neta. Esta " +
+                         "estimación no impone límites a publicar.")
+                        .font(.system(size: 10)).foregroundStyle(TTTheme.muted)
+                } else {
+                    Text("Ritmo aún no medible: faltan dos lecturas comparables " +
+                         "separadas por al menos una hora. No se inventa una " +
+                         "media a partir de las 30 jornadas de cuota.")
+                        .font(.system(size: 10)).foregroundStyle(TTTheme.muted)
                 }
-                let sentBoth = buffer.sentLast30Days(account: "ttittulares") +
-                               buffer.sentLast30Days(account: "ttendenciasesp")
-                if buffer.loaded && sentBoth > 0 && quota.used > 0 {
-                    let estimatedCalls = Double(quota.used) / Double(sentBoth)
-                    let guidance = Int((sustainable * 0.85 / estimatedCalls)
-                                       .rounded(.down))
-                    Text("Coste observado aproximado: " +
-                         estimatedCalls.formatted(.number.precision(.fractionLength(1))) +
-                         " solicitudes por publicación confirmada; " +
-                         "orientación prudente: ≈" + String(max(0, guidance)) +
-                         " publicaciones/día entre las dos cuentas.")
-                        .font(.system(size: 10)).foregroundStyle(TTTheme.muted)
-                    Text("Es una orientación, no un bloqueo de publicaciones: " +
-                         "incluye consultas extra y depende de las lecturas disponibles.")
-                        .font(.system(size: 10)).foregroundStyle(TTTheme.muted)
+                if let windows = quota.other_windows {
+                    ForEach(windows, id: \.window_seconds) { window in
+                        if window.window_seconds == 900 ||
+                           window.window_seconds == 86400 {
+                            Text((window.window_seconds == 900 ? "15 minutos" : "24 horas") +
+                                 ": " + String(window.used) + "/" + String(window.limit) +
+                                 " solicitudes · " + String(window.remaining) +
+                                 " disponibles en la última lectura.")
+                                .font(.system(size: 10)).foregroundStyle(TTTheme.muted)
+                        }
+                    }
                 }
                 if let observed = ISO8601DateFormatter().date(from: quota.observed_at) {
                     let windowStart = observed.addingTimeInterval(
@@ -569,6 +596,12 @@ struct TTDashboard: View {
                          observed.formatted(date: .abbreviated, time: .shortened) +
                          ". Los envíos posteriores aún pueden no estar contabilizados.")
                         .font(.system(size: 10)).foregroundStyle(TTTheme.muted)
+                    if Date().timeIntervalSince(observed) > 6 * 3600 {
+                        Text("Datos antiguos: la app no ha recibido una " +
+                             "nueva lectura de Buffer en más de seis horas.")
+                            .font(.system(size: 10, weight: .semibold))
+                            .foregroundStyle(.orange)
+                    }
                 }
                 Text("Cuota común para ambas cuentas. Las consultas de canales y " +
                      "comprobaciones de publicaciones también consumen solicitudes. " +
