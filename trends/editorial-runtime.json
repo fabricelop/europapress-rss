@@ -8,9 +8,9 @@
   "command_id": "tr-1794260243896-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "persisting",
   "started_at": "2026-11-09T22:38:00+01:00",
-  "updated_at": "2026-11-09T22:38:00+01:00",
+  "updated_at": "2026-11-09T22:42:00+01:00",
   "finished_at": null,
   "current": 0,
   "total": 2,
@@ -90,7 +90,7 @@
     ],
     "message": "Pasada tr-1794259644356-manual cerrada 1/1. Broncano r0 quedó unchanged: la entrevista con Abascal ya se había grabado y se emitía hoy, pero el cambio de público y asistentes por agencia/contactos ya estaba incorporado y no se verificó un hecho posterior independiente. El aplicador oficial persistió el resultado en a3a7560af94aaed163e29dd442773cbb5dc1ada9 y retiró la revisión. Barrera final: editorial-queue=0; mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794260243896-manual RUNNING. Cola autoritativa inicial=2: Broncano r0 y La Revuelta r0; se procesan por antigüedad con revalidación JIT antes de cada persistencia. ImageGen=0; publicaciones=0.",
+  "message": "Resultados editoriales de Broncano r0 y La Revuelta r0 revalidados JIT y escritos en editorial-outbox; esperando persistencia del aplicador oficial en requests.json y telegram-manual-explained.json. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794199200000-manual",
@@ -3592,13 +3592,31 @@
         "status": "DONE",
         "updated_at": "2026-11-09T22:30:30+01:00"
       }
+    },
+    {
+      "run_id": "tr-1794260243896-manual",
+      "status": "RUNNING",
+      "at": "2026-11-09T22:42:00+01:00",
+      "phase": "investigating",
+      "trend_id": "835c9153b13e",
+      "title": "Broncano",
+      "message": "Broncano r0 revalidado JIT. La emisión del 9/11 aporta un hecho nuevo: Broncano explica que el equipo de Abascal pidió gestionar el público y que el programa aceptó. Se redacta texto nuevo; ImageGen=0."
+    },
+    {
+      "run_id": "tr-1794260243896-manual",
+      "status": "RUNNING",
+      "at": "2026-11-09T22:42:00+01:00",
+      "phase": "persisting",
+      "trend_id": "e94c1b14b44b",
+      "title": "La Revuelta",
+      "message": "La Revuelta r0 revalidada JIT. Resultado textual nuevo persistido en editorial-outbox; el cierre no espera imagen. ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": {
     "id": "835c9153b13e",
     "revision": 0,
     "name": "Broncano",
-    "phase": "preparing"
+    "phase": "persisting"
   },
   "withdrawn_ids": [
     "ae7f066f3c94"
