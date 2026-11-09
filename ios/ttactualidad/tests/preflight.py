@@ -787,7 +787,7 @@ inbox = (root / 'TTActualidad/ImageApprovalInbox.swift').read_text()
 assert 'associateVerifiedOriginalInGitHub' in inbox
 # Buffer requires a VERIFIED public GitHub original *after* approval;
 # a Sites published receipt is not evidence the X publisher can read it.
-assert 'response.appVerified == true && response.sitesVerified == true' in inbox
+assert 'response.appVerified == true' in inbox and 'response.sitesVerified == true' in inbox
 assert '_ = try await associateVerifiedOriginalInGitHub(item, using: github)' in inbox
 assert 'catálogo verificado para publicaciones en X' in inbox
 assert 'no está confirmada en GitHub' in inbox
