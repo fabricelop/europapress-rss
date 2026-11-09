@@ -3,17 +3,17 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794182517667-manual",
+  "run_id": "tr-1794183217485-manual",
   "previous_run_id": "tr-1794182383396-manual",
   "command_id": "tr-1794182517667-manual",
   "source": "chat",
   "status": "RUNNING",
   "phase": "preparing",
-  "started_at": "2026-11-09T01:12:00+01:00",
-  "updated_at": "2026-11-09T01:12:00+01:00",
+  "started_at": "2026-11-09T01:14:00+01:00",
+  "updated_at": "2026-11-09T01:14:30+01:00",
   "finished_at": null,
   "current": 0,
-  "total": 0,
+  "total": 2,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
   "queue_complete": false,
@@ -856,7 +856,19 @@
       "at": "2026-11-09T01:12:00+01:00",
       "phase": "preparing",
       "message": "Pasada tr-1794182517667-manual RUNNING. Cola inicial autoritativa=0; se revisan preparing/update y rewrite_pending/reexplain antes del cierre. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-09T01:14:30+01:00",
+      "phase": "preparing",
+      "trend_id": "07bdc8e364a3",
+      "title": "Barça",
+      "message": "Pasada tr-1794183217485-manual RUNNING. Cola JIT=2: Barça r0 y Asraf r0. Se revalida ID/revisión antes de investigar y persistir. ImageGen=0; publicaciones=0."
     }
   ],
-  "current_item": null
+  "current_item": {
+    "id": "07bdc8e364a3",
+    "revision": 0,
+    "name": "Barça",
+    "phase": "preparing"
+  }
 }
