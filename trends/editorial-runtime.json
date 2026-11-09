@@ -8,14 +8,14 @@
   "command_id": "tr-1794264900000-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "persisting",
   "started_at": "2026-11-09T23:55:00+01:00",
-  "updated_at": "2026-11-09T23:55:00+01:00",
+  "updated_at": "2026-11-09T23:59:00+01:00",
   "finished_at": null,
-  "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": null,
+  "current": 1,
+  "total": 1,
+  "trend_id": "839aaa8d29b3",
+  "title": "Tartamudea",
   "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
@@ -51,7 +51,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "preparing",
+  "activity": "persisting",
   "last_started_at": "2026-11-09T23:53:44+01:00",
   "last_completed_at": "2026-11-09T23:53:45+01:00",
   "api_failover_enabled": false,
@@ -100,7 +100,7 @@
     },
     "message": "Pasada tr-1794264030000-manual cerrada 0/0. Durante la ejecución convergió un refresco automático fresco: captura 2026-11-09T23:40:55+01:00 y cola recalculada 2026-11-09T23:41:00+01:00 por fa8d91a61d4925f1f95fb3a1f4955cd1d0a8fb18. Barrera final: editorial-queue=0 y requests/mobile-decisions/telegram-manual-explained sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. El refresco manual redundante disparado por dfad289e92362fa387571ee1dd375337df2cfc2f (workflow 42714168494) seguía in_progress al cierre y no se usó como prueba de ejecución. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794264900000-manual RUNNING desde chat. Cola inicial autoritativa observada en 0; se fuerza refresco manual real del Top 30 y después se releerá main con barrera JIT antes de cerrar. ImageGen=0; publicaciones=0.",
+  "message": "Tartamudea r1 revalidada JIT. La pista editorial se contrastó desde cero: dos crónicas independientes posteriores a la entrevista describen a David Broncano con tartamudeos y nervios. Persistiendo resultado textual por el aplicador oficial. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794234841273-manual",
@@ -2176,7 +2176,14 @@
       "message": "Pasada tr-1794264030000-manual cerrada 0/0. Durante la ejecución convergió un refresco automático fresco: captura 2026-11-09T23:40:55+01:00 y cola recalculada 2026-11-09T23:41:00+01:00 por fa8d91a61d4925f1f95fb3a1f4955cd1d0a8fb18. Barrera final: editorial-queue=0 y requests/mobile-decisions/telegram-manual-explained sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. El refresco manual redundante disparado por dfad289e92362fa387571ee1dd375337df2cfc2f (workflow 42714168494) seguía in_progress al cierre y no se usó como prueba de ejecución. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
-  "current_item": null,
+  "current_item": {
+    "id": "839aaa8d29b3",
+    "revision": 1,
+    "name": "Tartamudea",
+    "rank": 4,
+    "status": "preparing",
+    "task": "explain"
+  },
   "withdrawn_ids": [
     "ae7f066f3c94"
   ],
@@ -2276,6 +2283,15 @@
       "at": "2026-11-09T23:55:00+01:00",
       "phase": "preparing",
       "message": "Pasada tr-1794264900000-manual RUNNING desde chat. Cola inicial autoritativa observada en 0; se fuerza refresco manual real del Top 30 y después se releerá main con barrera JIT antes de cerrar. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794264900000-manual",
+      "status": "RUNNING",
+      "at": "2026-11-09T23:59:00+01:00",
+      "phase": "persisting",
+      "trend_id": "839aaa8d29b3",
+      "title": "Tartamudea",
+      "message": "Tartamudea r1 revalidada JIT. La pista editorial se contrastó desde cero: dos crónicas independientes posteriores a la entrevista describen a David Broncano con tartamudeos y nervios. Persistiendo resultado textual por el aplicador oficial. ImageGen=0; publicaciones=0."
     }
   ]
 }
