@@ -7,16 +7,16 @@
   "previous_run_id": "tr-1794204852814-manual",
   "command_id": "tr-1794205500000-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-09T07:25:00+01:00",
-  "updated_at": "2026-11-09T07:25:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-09T07:32:00+01:00",
+  "finished_at": "2026-11-09T07:32:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
-  "title": "Pasada editorial TTendencias",
-  "queue_complete": false,
+  "title": null,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -48,28 +48,28 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "preparing",
+  "activity": "closing",
   "last_started_at": "2026-11-09T07:25:00+01:00",
-  "last_completed_at": "2026-11-09T07:16:30+01:00",
+  "last_completed_at": "2026-11-09T07:32:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794204852814-manual",
+    "run_id": "tr-1794205500000-manual",
     "status": "DONE",
-    "started_at": "2026-11-09T07:15:30+01:00",
-    "finished_at": "2026-11-09T07:16:30+01:00",
-    "at": "2026-11-09T07:16:30+01:00",
+    "started_at": "2026-11-09T07:25:00+01:00",
+    "finished_at": "2026-11-09T07:32:00+01:00",
+    "at": "2026-11-09T07:32:00+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 2,
-      "observed": 2,
-      "closed": 2,
+      "attempted": 0,
+      "observed": 0,
+      "closed": 0,
       "explained": 0,
       "problematic": 0,
-      "updates": 1,
+      "updates": 0,
       "review_completed_no_distinct_event": 0,
-      "maintenance_reviews": 2,
-      "unchanged_reviews": 1,
-      "continuity_updates": 1,
+      "maintenance_reviews": 0,
+      "unchanged_reviews": 0,
+      "continuity_updates": 0,
       "distinct_updates": 0,
       "stale_reviews": 0,
       "unverified_reviews": 0,
@@ -79,37 +79,13 @@
       "image_outbox_created": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 2
+      "concurrent_convergence": 0
     },
-    "processed_ids": [
-      "red-review-71cffa72182e4b0708c4",
-      "red-review-882d5106e6c1728c5ae8"
-    ],
-    "outcomes": [
-      {
-        "id": "red-review-71cffa72182e4b0708c4",
-        "revision": 0,
-        "name": "Revisar novedades: maffeo",
-        "outcome": "continuity",
-        "applied": true,
-        "via": "concurrent_convergence",
-        "result_commit": "c0209c4f5957fb746125971ccd5527eaedc5cb27",
-        "apply_commit": "c1208a7930b4a9c6a6315178624c52ad445c1e64"
-      },
-      {
-        "id": "red-review-882d5106e6c1728c5ae8",
-        "revision": 0,
-        "name": "Revisar novedades: Valencia",
-        "outcome": "unchanged",
-        "applied": true,
-        "via": "concurrent_convergence",
-        "result_commit": "9ae209c59c184d46966d0d2218b90f9db46ab2e0",
-        "apply_commit": "c1208a7930b4a9c6a6315178624c52ad445c1e64"
-      }
-    ],
-    "message": "Pasada tr-1794204852814-manual cerrada 2/2 por convergencia JIT. maffeo quedó actualizado como continuidad del mismo Valencia-Real Madrid incorporando la disculpa posterior, sin nuevo episodio ni nueva imagen; Valencia quedó unchanged. El aplicador c1208a7930b4a9c6a6315178624c52ad445c1e64 persistió ambos resultados en requests.json y telegram-manual-explained.json y retiró las dos revisiones de editorial-queue. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "processed_ids": [],
+    "outcomes": [],
+    "message": "Pasada tr-1794205500000-manual cerrada 0/0 tras refresco real del Top 30. Trigger 8d6b834449512e6e76efc8badd9686b14796f0bc; workflow 42573085423 completado success; refresco materializado en d26a8a81cc2b47fff134fc1a57ade7cfe95245b9 con snapshot capturado 2026-11-09T07:30:55+01:00. Barrera final tras actualización posterior del Top 10: editorial-queue=0 (updated_at 2026-11-09T07:31:29+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794205500000-manual RUNNING desde chat. Cola inicial JIT=0; se fuerza refresco real del Top 30 y después se releerá main antes del cierre. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1794205500000-manual cerrada 0/0 tras refresco real del Top 30. Trigger 8d6b834449512e6e76efc8badd9686b14796f0bc; workflow 42573085423 completado success; refresco materializado en d26a8a81cc2b47fff134fc1a57ade7cfe95245b9 con snapshot capturado 2026-11-09T07:30:55+01:00. Barrera final tras actualización posterior del Top 10: editorial-queue=0 (updated_at 2026-11-09T07:31:29+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T03:17:00+01:00",
@@ -918,6 +894,11 @@
       "at": "2026-11-09T07:25:00+01:00",
       "phase": "preparing",
       "message": "Pasada tr-1794205500000-manual RUNNING desde chat. Cola inicial JIT=0; se fuerza refresco real del Top 30 y después se releerá main antes del cierre. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-09T07:32:00+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-1794205500000-manual cerrada 0/0 tras refresco real del Top 30. Trigger 8d6b834449512e6e76efc8badd9686b14796f0bc; workflow 42573085423 completado success; refresco materializado en d26a8a81cc2b47fff134fc1a57ade7cfe95245b9 con snapshot capturado 2026-11-09T07:30:55+01:00. Barrera final tras actualización posterior del Top 10: editorial-queue=0 (updated_at 2026-11-09T07:31:29+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "current_item": null
