@@ -934,6 +934,66 @@
       "at": "2026-11-09T01:23:30+01:00",
       "phase": "closing",
       "message": "Pasada tr-1794183629966-manual cerrada 2/2 por convergencia JIT. Levante 0-2 Atlético y #SalvadosEmilioDelgado quedaron unchanged y aplicados por la ejecución concurrente tr-1794183437001-manual; commit de aplicación 1cf9ed791231e95a8511cb5f7d1ed66dcabd76ae. Barrera final main: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794183437001-manual",
+      "status": "DONE",
+      "started_at": "2026-11-09T01:18:30+01:00",
+      "finished_at": "2026-11-09T01:23:04+01:00",
+      "at": "2026-11-09T01:23:04+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 3,
+        "observed": 3,
+        "closed": 3,
+        "explained": 1,
+        "problematic": 0,
+        "updates": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "unchanged_reviews": 2,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [
+        "daa31c3c4084",
+        "red-review-7ac1bd151b9efc3131ed",
+        "red-review-23a49be63b26309c4fd1"
+      ],
+      "outcomes": [
+        {
+          "id": "daa31c3c4084",
+          "revision": 0,
+          "name": "Barrios",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "df8914a57815aea6c2f464e91acf4e515c96f543"
+        },
+        {
+          "id": "red-review-7ac1bd151b9efc3131ed",
+          "revision": 0,
+          "name": "Revisar novedades: Levante 0-2 Atlético",
+          "outcome": "unchanged",
+          "applied": true,
+          "apply_commit": "1cf9ed791231e95a8511cb5f7d1ed66dcabd76ae"
+        },
+        {
+          "id": "red-review-23a49be63b26309c4fd1",
+          "revision": 0,
+          "name": "Revisar novedades: #SalvadosEmilioDelgado",
+          "outcome": "unchanged",
+          "applied": true,
+          "apply_commit": "1cf9ed791231e95a8511cb5f7d1ed66dcabd76ae"
+        }
+      ],
+      "message": "Pasada tr-1794183437001-manual cerrada 3/3. Barrios r0 fue reelaborado desde cero y aplicado como explained; durante la barrera final entraron dos review_red, Levante 0-2 Atlético y #SalvadosEmilioDelgado, ambos cerrados unchanged. Barrera final main: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. La ejecución concurrente tr-1794183629966-manual convergió sobre estos dos resultados sin duplicarlos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "current_item": null
