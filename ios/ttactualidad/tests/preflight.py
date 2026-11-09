@@ -662,7 +662,17 @@ assert 'canonical.map(\\.news) + model.historicalNews' in relations
 assert 'let candidates = (model.snapshot?.news ?? []) +' in relations
 assert 'private func rebuildRelationIndex()' in relations
 assert 'news.episodeFingerprint.isEmpty' in relations
-assert '!news.episodeFingerprint.isEmpty else { return ([], []) }' in relations
+# Exact IDs/revisions remain verified server-side; a missing optional fingerprint
+# must never exclude a news candidate the editor can see and select.
+assert '!news.episodeFingerprint.isEmpty else { return ([], []) }' not in relations
+assert 'let endpoints = Array(indexedTrendEndpoints.values) +' in relations
+assert 'EditorialRelationsPolicy.pairKey(news, trend)' in relations
+assert 'static func pairKey(_ news:' in relation_models
+assert 'static func persisted(_ items: [EditorialRelation]' in relation_models
+assert 'EditorialRelationsPolicy.persisted(' in relations
+assert 'snapshot?.items ?? []' in relations
+assert 'No se dará por guardada hasta confirmarla en la web.' in relations
+assert 'de los últimos 7 días que la mencionan' not in relations
 assert '!candidate.episodeFingerprint.isEmpty' not in relation_models
 assert 'func editorialRelationRecentNews() async throws' in auth
 assert 'telegram/editorial-processing.json' in auth
