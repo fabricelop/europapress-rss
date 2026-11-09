@@ -8,9 +8,9 @@
   "command_id": "tr-autoguard-1794253266",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "investigating",
   "started_at": "2026-11-09T20:52:00+01:00",
-  "updated_at": "2026-11-09T20:52:00+01:00",
+  "updated_at": "2026-11-09T20:53:00+01:00",
   "finished_at": null,
   "current": 0,
   "total": 1,
@@ -55,7 +55,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "preparing",
+  "activity": "investigating",
   "last_started_at": "2026-11-09T20:17:23+01:00",
   "last_completed_at": "2026-11-09T20:20:00+01:00",
   "api_failover_enabled": false,
@@ -247,7 +247,7 @@
     ],
     "message": "Pasada tr-20261109T2010-manual cerrada 22/22: 21 tendencias ordinarias explicadas y aplicadas en Listas/Top30; durante la barrera final entró una revisión de Broncano y se aplicó como actualización de continuidad en el mismo ID/revisión, conservando explained_at, publicación e imagen. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; publicaciones=0."
   },
-  "message": "Pasada tr-autoguard-1794253266 RUNNING. Cola inicial JIT=1: Radar · Supergirl r0 (task:anticipate). Se revalida el ID/revisión y se investiga el detonante actual para anticipation-outbox; no se crea ficha Top30, no se genera imagen y no se publica.",
+  "message": "Investigando Radar · Supergirl r0 tras revalidación JIT: la señal sigue preparing/anticipate. Se contrasta el relevo de DC Studios anunciado hoy y su vínculo factual con Supergirl; salida solo anticipation-outbox. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794199200000-manual",
