@@ -777,6 +777,7 @@ final class EditorialStore: ObservableObject {
               docs["trends/mobile-decisions.json"] != nil,
               docs["trends/editorial-queue.json"] != nil else {
             message = "Datos incompletos: conservando los últimos contadores"
+            await markLiveCountsUnavailable()
             return
         }
         let fresh = !downloaded.isEmpty
@@ -2430,6 +2431,17 @@ final class EditorialStore: ObservableObject {
         }.sorted { $0.name < $1.name }
     }
 
+    private func markLiveCountsUnavailable() async {
+        // A failed GitHub read cannot become a verified new timestamp or 0/0.
+        // Retain the last exact counts and original check time on the lock screen.
+        for activity in Activity<LiveCountsAttributes>.activities {
+            var previous = activity.content.state
+            previous.partialData = true
+            await activity.update(ActivityContent(state: previous, staleDate: Date()))
+        }
+        liveStatus = "Live Activity · última lectura conservada; faltan datos de GitHub"
+    }
+
     private func publishLiveCounts(checkedAt: Date, partial: Bool) async {
         guard ActivityAuthorizationInfo().areActivitiesEnabled else {
             liveStatus = "Activa las Live Activities en Ajustes del iPhone"
@@ -2454,15 +2466,20 @@ final class EditorialStore: ObservableObject {
         )
         let content = ActivityContent(state: state, staleDate: checkedAt.addingTimeInterval(30 * 60))
         do {
-            if let active = Activity<LiveCountsAttributes>.activities.first {
-                await active.update(content)
-            } else {
+            let activities = Activity<LiveCountsAttributes>.activities
+            if activities.isEmpty {
                 _ = try Activity<LiveCountsAttributes>.request(
                     attributes: LiveCountsAttributes(title: "TTActualidad"),
                     content: content, pushType: nil
                 )
+            } else {
+                // A restored/older lock-screen activity can coexist with a
+                // newer one after an update. Keep every active instance in sync.
+                for activity in activities {
+                    await activity.update(content)
+                }
             }
-            liveStatus = "Live Activity activa · actualización al abrir la app"
+            liveStatus = "Live Activity activa · sincronización al abrir y durante el uso"
         } catch {
             liveStatus = "No se pudo iniciar la Live Activity: \(error.localizedDescription)"
         }
