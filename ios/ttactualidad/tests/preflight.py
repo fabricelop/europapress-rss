@@ -789,8 +789,10 @@ assert 'associateVerifiedOriginalInGitHub' in inbox
 # a Sites published receipt is not evidence the X publisher can read it.
 assert 'response.appVerified == true' in inbox and 'response.sitesVerified == true' in inbox
 assert '_ = try await associateVerifiedOriginalInGitHub(item, using: github)' in inbox
-assert 'catálogo verificado para publicaciones en X' in inbox
-assert 'no está confirmada en GitHub' in inbox
+assert 'Aprobada en APP/Site y asociada en GitHub para X.' in inbox
+assert 'Aprobada en APP/Site, pero falta el espejo IA para X:' in inbox
+assert 'completedIDs.insert(item.id)' in inbox
+assert 'restore(item)' in inbox
 assert 'revision >= 0,  // READY news can legitimately be revision 0.' in auth
 assert 'images.removeAll { $0.id == item.id }' in inbox
 assert 'original.starts(with: [137, 80, 78, 71, 13, 10, 26, 10])' in inbox
