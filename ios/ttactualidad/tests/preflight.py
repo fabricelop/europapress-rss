@@ -253,8 +253,8 @@ assert 'case "SIN EXPLICACIÓN": return "PISTAS"' in dashboard
 assert 'decision == "hints"' in store
 assert '"hints": text' in auth
 assert 'await store.refreshIfStale(minInterval: 45)' in dashboard
-assert 'MARKETING_VERSION: "0.4.77"' in project
-assert 'CURRENT_PROJECT_VERSION: "89"' in project
+assert 'MARKETING_VERSION: "0.4.79"' in project
+assert 'CURRENT_PROJECT_VERSION: "91"' in project
 print("TT_ACTUALIDAD_IOS_HINTS_PREFLIGHT_OK")
 
 # 0.4.45: remove image deletion UI/API and trend→news UI. Keep news functionality.
@@ -287,7 +287,7 @@ assert '"control/ttendencias-run-trigger"' in auth
 assert 'headName.hasPrefix("control/ttittulares-run-trigger")' in auth
 assert 'requestEditorialRun(project: project)' in dashboard
 assert 'Solicitar procesamiento de' in dashboard
-assert 'CURRENT_PROJECT_VERSION: "89"' in project
+assert 'CURRENT_PROJECT_VERSION: "91"' in project
 print("TT_ACTUALIDAD_IOS_0414_EDITORIAL_RUN_PREFLIGHT_OK")
 
 # 0.4.17: cancel PROCESSING without adding to Listas, and separate
@@ -299,7 +299,7 @@ assert '["Enviando", "Esperando GitHub", "Pendiente de GitHub",\n         "Sin c
 assert 'operationHistory.filter(\\.isOutstanding).count' in store
 assert 'Text("Órdenes por confirmar")' in pending_panel
 assert 'terminalMarks["ttittulares:" + draft.id] != nil' in store
-assert 'CURRENT_PROJECT_VERSION: "89"' in project
+assert 'CURRENT_PROJECT_VERSION: "91"' in project
 print("TT_ACTUALIDAD_IOS_0415_SUPPRESS_PREFLIGHT_OK")
 
 # 0.4.17: no Home Screen widgets; the same .appex serves a real Live Activity.
@@ -315,8 +315,8 @@ assert 'publishedCountsAvailable' in shared
 assert 'pilot/ttactualidad-publication-events.json' in widget_source
 assert "retireAbandonedNewsOperations(" in store
 assert 'requestID: requestID' in actions and 'requestID: requestID' in hints_sheet
-assert 'MARKETING_VERSION: "0.4.77"' in project
-assert 'CURRENT_PROJECT_VERSION: "89"' in project
+assert 'MARKETING_VERSION: "0.4.79"' in project
+assert 'CURRENT_PROJECT_VERSION: "91"' in project
 print("TT_ACTUALIDAD_IOS_0417_LIVE_NO_WIDGETS_PREFLIGHT_OK")
 
 
@@ -467,8 +467,8 @@ assert '"TEXTO EDITORIAL EXACTO (SOLO CONTEXTO, JAMÁS ROTULAR):' in actions
 assert 'news?.verifiedFacts' in actions
 assert 'news?.siteImageURL ?? trend?.siteImageURL' in actions
 assert 'EditorialActionPolicy.imageURL(ai: ai' in actions
-assert 'MARKETING_VERSION: "0.4.77"' in project
-assert 'CURRENT_PROJECT_VERSION: "89"' in project
+assert 'MARKETING_VERSION: "0.4.79"' in project
+assert 'CURRENT_PROJECT_VERSION: "91"' in project
 print("TT_ACTUALIDAD_IOS_046_NEWS_AI_PARITY_OK")
 
 # 0.4.47: no regressions to Copiar GAG's v0.4.44 generate+attach+verify+sync contract.
@@ -488,8 +488,8 @@ assert 'IMAGEN GENERADA; SITE Y APP PENDIENTES' in actions
 assert 'IMAGEN GENERADA; WEB Y APP PENDIENTES' in actions
 assert 'No generes una segunda imagen' in actions
 assert 'GitHub' in actions
-assert 'MARKETING_VERSION: "0.4.77"' in project
-assert 'CURRENT_PROJECT_VERSION: "89"' in project
+assert 'MARKETING_VERSION: "0.4.79"' in project
+assert 'CURRENT_PROJECT_VERSION: "91"' in project
 print("TT_ACTUALIDAD_IOS_047_GAG_ATTACH_SYNC_REGRESSION_OK")
 
 # 0.4.47 build 53: one identical image-action panel for news and trends.
@@ -508,7 +508,7 @@ assert 'if let archive = item.imageURL' in live
 assert 'if let current = catalog[key(id, revision)]' in news_ai
 assert '$0.revision < revision' in news_ai
 assert 'bestRevision = old' in catalog
-assert 'CURRENT_PROJECT_VERSION: "89"' in project
+assert 'CURRENT_PROJECT_VERSION: "91"' in project
 print("TT_ACTUALIDAD_IOS_046_BUILD54_DUAL_IMAGES_STABLE_ID_OK")
 
 
@@ -537,8 +537,8 @@ print("TT_ACTUALIDAD_STACKED_DUAL_IMAGES_OK")
 
 # 0.4.47 build57: native-only changes from the installed build55.
 # No reliance on web/Cloudflare deploy or the obsolete iOS code in main.
-assert project.count('CURRENT_PROJECT_VERSION: "89"') == 2
-assert project.count('CFBundleVersion: "89"') == 2
+assert project.count('CURRENT_PROJECT_VERSION: "91"') == 2
+assert project.count('CFBundleVersion: "91"') == 2
 assert 'TTActualidadXPost.payload(' in actions
 x_post = (root / 'TTActualidad' / 'TTActualidadXPost.swift').read_text()
 assert 'private static let contentBudget = 280' in x_post
@@ -710,8 +710,8 @@ focused = store[store.index('func reconcilePendingOperations() async'):store.ind
 assert 'dispatch(' not in focused and 'submit(' not in focused
 assert 'await store.reconcilePendingOperations()' in panel
 assert 'Conciliar órdenes con GitHub' in panel
-assert project.count('CURRENT_PROJECT_VERSION: "89"') == 2
-assert project.count('CFBundleVersion: "89"') == 2
+assert project.count('CURRENT_PROJECT_VERSION: "91"') == 2
+assert project.count('CFBundleVersion: "91"') == 2
 print("NATIVE_BUILD66_PENDING_GITHUB_RECEIPT_RECONCILIATION_OK")
 
 # Build67: no stale "waiting GitHub" indicators after the remote rolling
@@ -738,8 +738,8 @@ assert 'private var showEveryPending = false' in pending_panel
 assert 'visiblePending' in pending_panel
 assert 'store.reconciliationSummary' in pending_panel
 assert 'EditorialPendingPolicy.swift' in project
-assert 'CURRENT_PROJECT_VERSION: "89"' in project
-assert 'CFBundleVersion: "89"' in project
+assert 'CURRENT_PROJECT_VERSION: "91"' in project
+assert 'CFBundleVersion: "91"' in project
 assert 'pendingOperationsDiagnostic' in store
 assert 'request_id=' in store
 assert 'sin-identificador' in store
@@ -944,3 +944,10 @@ assert 'for (key, requestID) in Array(pendingRequestIDs)' in buffer
 assert 'confirmedSentKeys.union(confirmed)' in buffer
 assert 'UserDefaults.standard.stringArray(forKey: BufferPublishTracker.pendingHideStorageKey)' in buffer
 print('NATIVE_BUILD89_SCOPED_RELATIONS_BUFFER_DURABLE_EXACT_REQUEST_OK')
+
+# Build91: no misleading Buffer usage/30d median or a hard publication cap.
+quota_policy = (ROOT / "TTActualidad" / "BufferQuotaPolicy.swift").read_text(encoding="utf-8")
+assert "recentRate(_ records:" in quota_policy
+assert "delta >= 3600" in quota_policy
+assert "observedRequestsPerNewPost" in quota_policy
+assert "api_quota_history" in (ROOT / "TTActualidad" / "BufferPublishTracker.swift").read_text(encoding="utf-8")
