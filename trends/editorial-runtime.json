@@ -3,28 +3,34 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261109T1840-manual",
-  "previous_run_id": "tr-20261109T1825-manual",
-  "command_id": "tr-20261109T1840-manual",
+  "run_id": "tr-1794246075875-manual",
+  "previous_run_id": "tr-20261109T1840-manual",
+  "command_id": "tr-1794246075875-manual",
   "source": "chat",
   "status": "RUNNING",
   "phase": "preparing",
-  "started_at": "2026-11-09T18:40:00+01:00",
-  "updated_at": "2026-11-09T18:40:00+01:00",
+  "started_at": "2026-11-09T18:42:00+01:00",
+  "updated_at": "2026-11-09T18:42:00+01:00",
   "finished_at": null,
   "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": null,
+  "total": 2,
+  "trend_id": "red-review-440e4514ba82e440cf02",
+  "title": "Revisar novedades: Broncano",
   "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-440e4514ba82e440cf02",
+    "red-review-374f82c8eab8f470478c"
+  ],
+  "remaining_active_ids": [
+    "red-review-440e4514ba82e440cf02",
+    "red-review-374f82c8eab8f470478c"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
-    "observed": 0,
+    "observed": 2,
     "closed": 0,
     "explained": 0,
     "problematic": 0,
@@ -36,7 +42,7 @@
     "distinct_updates": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -203,6 +209,15 @@
         "run_id": "tr-20261109T1825-manual",
         "status": "DONE"
       }
+    },
+    {
+      "run_id": "tr-1794246075875-manual",
+      "status": "RUNNING",
+      "at": "2026-11-09T18:42:00+01:00",
+      "phase": "preparing",
+      "trend_id": "red-review-440e4514ba82e440cf02",
+      "title": "Revisar novedades: Broncano",
+      "message": "Pasada tr-1794246075875-manual RUNNING. Cola JIT=2 review_red: Broncano y #HuelgaGeneral; se procesan por antigüedad con validación ID/revisión antes de investigar y persistir. ImageGen=0; publicaciones=0."
     }
   ],
   "last_started_at": "2026-11-09T18:40:00+01:00",
@@ -237,7 +252,7 @@
     },
     "message": "Pasada tr-20261109T1825-manual cerrada 0/0 contra main. Top 30 vigente capturado 2026-11-09T18:20:56+01:00 sin nuevas entradas; editorial-queue actualizada 2026-11-09T18:21:02+01:00 y vacía. Barrera JIT final: mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-20261109T1840-manual RUNNING desde chat. Se fuerza un refresco real del Top 30 y después se releerá main con barrera JIT antes de cerrar. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1794246075875-manual RUNNING. Cola JIT=2 review_red: Broncano y #HuelgaGeneral; se procesan por antigüedad con validación ID/revisión antes de investigar y persistir. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794199200000-manual",
@@ -2687,7 +2702,12 @@
       "message": "Pasada tr-20261109T1825-manual cerrada 0/0 contra main. Top 30 vigente capturado 2026-11-09T18:20:56+01:00 sin nuevas entradas; editorial-queue actualizada 2026-11-09T18:21:02+01:00 y vacía. Barrera JIT final: mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
-  "current_item": null,
+  "current_item": {
+    "id": "red-review-440e4514ba82e440cf02",
+    "revision": 0,
+    "name": "Broncano",
+    "task": "review_red"
+  },
   "withdrawn_ids": [
     "ae7f066f3c94"
   ],
