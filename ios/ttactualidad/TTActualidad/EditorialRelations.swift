@@ -84,6 +84,23 @@ enum EditorialRelationsPolicy {
             newsKey(id: trend.id, revision: trend.revision)
     }
 
+    // Sites v85 can expose the same exact pair through an older automatic
+    // suggestion AND a manual confirmed relation, with different fingerprints.
+    // Their identity is still (news ID/rev, trend ID/rev): the manual state wins.
+    // Never let a later suggested row overwrite a confirmed checkbox.
+    static func effectivePairStates(_ items: [EditorialRelation]) -> [String: String] {
+        var best: [String: EditorialRelation] = [:]
+        for item in items {
+            let key = pairKey(item.news, item.trend)
+            if let previous = best[key] {
+                if precedence(item) > precedence(previous) { best[key] = item }
+            } else {
+                best[key] = item
+            }
+        }
+        return best.mapValues { $0.state }
+    }
+
     // A successful POST is not proof the relationship is visible on the Site.
     // Confirm readback from the private authoritative snapshot before clearing
     // a pending checkbox or reporting a saved relationship to the editor.
