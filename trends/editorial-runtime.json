@@ -10,15 +10,14 @@
   "status": "DONE",
   "phase": "closing",
   "started_at": "2026-11-09T08:06:45+01:00",
-  "updated_at": "2026-11-09T08:08:15+01:00",
-  "finished_at": "2026-11-09T08:08:15+01:00",
-  "current": 3,
-  "total": 3,
-  "trend_id": "red-review-f158d9e1a9f2db70877e",
-  "title": "Revisar novedades: #IreneConQueque",
+  "updated_at": "2026-11-09T08:09:30+01:00",
+  "finished_at": "2026-11-09T08:09:30+01:00",
+  "current": 2,
+  "total": 2,
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
-    "8604d67ab205",
     "red-review-f158d9e1a9f2db70877e",
     "red-review-557c7fef00efdd3d810b"
   ],
@@ -27,10 +26,10 @@
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 3,
-    "observed": 3,
-    "closed": 3,
-    "explained": 1,
+    "attempted": 2,
+    "observed": 2,
+    "closed": 2,
+    "explained": 0,
     "problematic": 0,
     "updates": 2,
     "review_completed_no_distinct_event": 0,
@@ -46,23 +45,16 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 2
   },
   "outcomes": [
-    {
-      "id": "8604d67ab205",
-      "revision": 0,
-      "name": "#FelizLunes",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "f4e035d6a6cd4baae90b08c9462fb92a1193a3e9"
-    },
     {
       "id": "red-review-f158d9e1a9f2db70877e",
       "revision": 0,
       "name": "Revisar novedades: #IreneConQueque",
       "outcome": "continuity",
       "applied": true,
+      "via": "concurrent_convergence",
       "apply_commit": "2d5b97d23052081a4613f634bbf02751bc2c1c59"
     },
     {
@@ -71,6 +63,7 @@
       "name": "Revisar novedades: Robe",
       "outcome": "continuity",
       "applied": true,
+      "via": "concurrent_convergence",
       "apply_commit": "2d5b97d23052081a4613f634bbf02751bc2c1c59"
     }
   ],
@@ -79,20 +72,20 @@
   "error": null,
   "activity": "closing",
   "last_started_at": "2026-11-09T08:05:12+01:00",
-  "last_completed_at": "2026-11-09T08:08:15+01:00",
+  "last_completed_at": "2026-11-09T08:09:30+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794207689958-manual",
+    "run_id": "tr-1794207954297-manual",
     "status": "DONE",
     "started_at": "2026-11-09T08:06:45+01:00",
-    "finished_at": "2026-11-09T08:08:15+01:00",
-    "at": "2026-11-09T08:08:15+01:00",
+    "finished_at": "2026-11-09T08:09:30+01:00",
+    "at": "2026-11-09T08:09:30+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 3,
-      "observed": 3,
-      "closed": 3,
-      "explained": 1,
+      "attempted": 2,
+      "observed": 2,
+      "closed": 2,
+      "explained": 0,
       "problematic": 0,
       "updates": 2,
       "review_completed_no_distinct_event": 0,
@@ -108,28 +101,20 @@
       "image_outbox_created": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 0
+      "concurrent_convergence": 2
     },
     "processed_ids": [
-      "8604d67ab205",
       "red-review-f158d9e1a9f2db70877e",
       "red-review-557c7fef00efdd3d810b"
     ],
     "outcomes": [
-      {
-        "id": "8604d67ab205",
-        "revision": 0,
-        "name": "#FelizLunes",
-        "outcome": "explained",
-        "applied": true,
-        "apply_commit": "f4e035d6a6cd4baae90b08c9462fb92a1193a3e9"
-      },
       {
         "id": "red-review-f158d9e1a9f2db70877e",
         "revision": 0,
         "name": "Revisar novedades: #IreneConQueque",
         "outcome": "continuity",
         "applied": true,
+        "via": "concurrent_convergence",
         "apply_commit": "2d5b97d23052081a4613f634bbf02751bc2c1c59"
       },
       {
@@ -138,12 +123,13 @@
         "name": "Revisar novedades: Robe",
         "outcome": "continuity",
         "applied": true,
+        "via": "concurrent_convergence",
         "apply_commit": "2d5b97d23052081a4613f634bbf02751bc2c1c59"
       }
     ],
-    "message": "Pasada tr-1794207689958-manual cerrada 3/3. #FelizLunes r0 fue reelaborado desde cero y explicado como TT#4 por el uso recurrente del hashtag para saludos de inicio de semana, sin acontecimiento ni marcador específico verificado; aplicador f4e035d6a6cd4baae90b08c9462fb92a1193a3e9. Durante la barrera entraron dos review_red: #IreneConQueque y Robe, ambos actualizados como continuidad del mismo episodio en 2d5b97d23052081a4613f634bbf02751bc2c1c59, conservando ID/revisión, explained_at, imagen y estado publicado. Barrera final main: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "message": "Pasada tr-1794207954297-manual cerrada 2/2 por convergencia JIT. #IreneConQueque y Robe quedaron actualizados como continuidad en las fichas originales por el commit 2d5b97d23052081a4613f634bbf02751bc2c1c59: se conservan explained_at, identidad, imágenes y estado publicado; no se crean episodios ni fichas nuevas. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794207689958-manual cerrada 3/3. #FelizLunes r0 fue reelaborado desde cero y explicado como TT#4 por el uso recurrente del hashtag para saludos de inicio de semana, sin acontecimiento ni marcador específico verificado; aplicador f4e035d6a6cd4baae90b08c9462fb92a1193a3e9. Durante la barrera entraron dos review_red: #IreneConQueque y Robe, ambos actualizados como continuidad del mismo episodio en 2d5b97d23052081a4613f634bbf02751bc2c1c59, conservando ID/revisión, explained_at, imagen y estado publicado. Barrera final main: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada tr-1794207954297-manual cerrada 2/2 por convergencia JIT. #IreneConQueque y Robe quedaron actualizados como continuidad en las fichas originales por el commit 2d5b97d23052081a4613f634bbf02751bc2c1c59: se conservan explained_at, identidad, imágenes y estado publicado; no se crean episodios ni fichas nuevas. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T03:17:00+01:00",
@@ -1126,6 +1112,16 @@
       "at": "2026-11-09T08:08:15+01:00",
       "phase": "closing",
       "message": "Pasada tr-1794207689958-manual cerrada 3/3. #FelizLunes r0 fue reelaborado desde cero y explicado como TT#4 por el uso recurrente del hashtag para saludos de inicio de semana, sin acontecimiento ni marcador específico verificado; aplicador f4e035d6a6cd4baae90b08c9462fb92a1193a3e9. Durante la barrera entraron dos review_red: #IreneConQueque y Robe, ambos actualizados como continuidad del mismo episodio en 2d5b97d23052081a4613f634bbf02751bc2c1c59, conservando ID/revisión, explained_at, imagen y estado publicado. Barrera final main: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-09T08:09:30+01:00",
+      "phase": "verifying",
+      "message": "Barrera final JIT: editorial-queue=0; mobile-decisions activos=0. Los dos review_red están aplicados en continuidad en commit 2d5b97d23052081a4613f634bbf02751bc2c1c59."
+    },
+    {
+      "at": "2026-11-09T08:09:30+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-1794207954297-manual cerrada 2/2 por convergencia JIT. #IreneConQueque y Robe quedaron actualizados como continuidad en las fichas originales por el commit 2d5b97d23052081a4613f634bbf02751bc2c1c59: se conservan explained_at, identidad, imágenes y estado publicado; no se crean episodios ni fichas nuevas. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": null
