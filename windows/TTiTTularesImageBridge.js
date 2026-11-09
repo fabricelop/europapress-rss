@@ -989,6 +989,19 @@ async function holdForHeadlineOriginalReceipt(handoff,job,maxMs=360000){
   const deadline=Date.now()+maxMs;
   while(Date.now()<deadline){
     if(handoff)await optionalWebHandoff(handoff,true);
+    // Capture + private ingestion run in the SAME process as this ImageGen
+    // command, while the exact generator conversation remains open.
+    if(handoff?.captureCDP&&handoff?.secret){
+      try{
+        const result=await require('./TTImagesImmediateInbox.cjs').deliver({
+          project:'ttittulares',job,commandId,targetId,
+          secret:handoff.secret,cdp:handoff.captureCDP,baseDir:__dirname});
+        if(result.state==='received')console.log('PRIVATE_INBOX_IMMEDIATE_RECEIVED '+commandId);
+      }catch(e){
+        console.log('PRIVATE_INBOX_IMMEDIATE_DEFERRED '+commandId+' reason='+
+          String(e?.message||'unavailable').replace(/https?:\/\/\S+/g,'[url]').slice(0,95));
+      }
+    }
     try{const receipt=JSON.parse(fs.readFileSync(receiptPath,'utf8'));
       if(String(receipt.commandId)===commandId&&receipt.editorialId===targetId&&Number(receipt.revision||0)===Number(job.revision||0)&&/^[a-f0-9]{64}$/.test(receipt.rasterSHA256||'')&&receipt.id){
         console.log('PRIVATE_ORIGINAL_RECEIVED '+commandId);return 'private_original_received';
@@ -1007,8 +1020,9 @@ async function holdForHeadlineOriginalReceipt(handoff,job,maxMs=360000){
     const job=await fetchJob();
     const isAutomatic=String(job.mode||"")==="automatic_ready_repair";
     const launchOnly=String(job.delivery_mode||"")==="launch_only";
-    // Safety invariant: this bridge may submit prompts only, never capture,
-    // download, rasterize, upload, or forward generated images.
+    // The legacy uploader remains disabled. After ImageGen is launched,
+    // this SAME process may forward only its verified original to the
+    // PRIVATE approval inbox; no automatic approval or publication.
     if(!launchOnly)throw Error("legacy_raster_mode_disabled_request_launch_only_job");
     // Mirror TTendencias: a launched ImageGen job MUST have an installed,
     // independent receiver before the prompt is sent. Otherwise LAUNCHED
@@ -1039,14 +1053,15 @@ async function holdForHeadlineOriginalReceipt(handoff,job,maxMs=360000){
         await confirmPromptLaunched();
       }
       if(launchOnly){
-        // The bridge never captures/forwards bytes. Enroll an independent,
-        // command-scoped consumer before allowing the fixed tab to be reused.
+        // Enroll the independent recovery consumer, then capture and send
+        // this exact original to the PRIVATE inbox in the same process.
         webHandoff={job,commandId,targetId,browserTargetId:await originalImageTargetId(cdp),secret};
         await optionalWebHandoff(webHandoff,false);
         for(let n=0;n<5;n++){
           if(await optionalWebHandoff(webHandoff,true))break;
           await sleep(800);
         }
+        webHandoff.captureCDP=cdp;
         const receipt=await holdForHeadlineOriginalReceipt(webHandoff,job);
         console.log("BRIDGE LAUNCH ONLY CONFIRMED; WEB RECEIPT INDEPENDENT "+
           commandId+" status="+receipt);

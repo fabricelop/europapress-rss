@@ -1,6 +1,11 @@
 name: 'TT Actualidad Top 30: estados y entrega real'
 on:
   workflow_dispatch:
+  pull_request:
+    paths:
+      - "docs/index.html"
+      - ".github/scripts/test_tt_actualidad_top30_states.cjs"
+      - ".github/workflows/tt-actualidad-top30-state-tests.yml"
   push:
     branches: [main]
     paths:

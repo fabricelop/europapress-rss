@@ -963,6 +963,19 @@ async function holdForWebImageReceipt(handoff,cdp,job,maxMs=360000,pollMs=3000){
   const deadline=Date.now()+maxMs;
   while(Date.now()<deadline){
     if(handoff)await optionalWebHandoff(handoff,true);
+    // Same-process delivery before the generator tab can be reused.
+    // Failure is nonfatal: the scheduled original-only receiver still retries.
+    if(handoff?.secret&&typeof cdp?.call==='function'){
+      try{
+        const result=await require('./TTImagesImmediateInbox.cjs').deliver({
+          project:'ttendencias',job,commandId,targetId,
+          secret:handoff.secret,cdp,baseDir:__dirname});
+        if(result.state==='received')console.log('PRIVATE_INBOX_IMMEDIATE_RECEIVED '+commandId);
+      }catch(e){
+        console.log('PRIVATE_INBOX_IMMEDIATE_DEFERRED '+commandId+' reason='+
+          String(e?.message||'unavailable').replace(/https?:\/\/\S+/g,'[url]').slice(0,95));
+      }
+    }
     try{const receipt=JSON.parse(fs.readFileSync(receiptPath,'utf8'));
       if(String(receipt.commandId)===commandId&&receipt.editorialId===targetId&&Number(receipt.revision||0)===Number(job.revision||0)&&/^[a-f0-9]{64}$/.test(receipt.rasterSHA256||'')&&receipt.id){
         console.log('PRIVATE_ORIGINAL_RECEIVED '+commandId);return 'private_original_received';
@@ -1026,8 +1039,9 @@ async function optionalWebHandoff(handoff,remember=false){
     console.log("BRIDGE START "+commandId);
     const job=await fetchJob();
     const launchOnly=String(job.delivery_mode||"")==="launch_only";
-    // Safety invariant: this bridge may submit prompts only, never capture,
-    // download, rasterize, upload, or forward generated images.
+    // The legacy uploader remains disabled. After ImageGen is launched,
+    // this SAME process may forward only its verified original to the
+    // PRIVATE approval inbox; no automatic approval or publication.
     if(!launchOnly)throw Error("legacy_raster_mode_disabled_request_launch_only_job");
     // Only this boundary is provably before typing or submitting this job.
     try{cdp=await openFreshDedicatedConversation();}
@@ -1054,6 +1068,9 @@ async function optionalWebHandoff(handoff,remember=false){
       if(launchOnly){
         // Generation is already acknowledged. Resolve only the URL whose
         // last user turn proves this command; never save a guessed location.
+        // Register the immutable task even if Chrome has not yet exposed
+        // its permanent conversation URL. This enables scheduled recovery.
+        await optionalWebHandoff(webHandoff,false);
         for(let n=0;n<5;n++){
           if(await optionalWebHandoff(webHandoff,true))break;
           await sleep(700);
@@ -1068,7 +1085,7 @@ async function optionalWebHandoff(handoff,remember=false){
         try{siteReturn=await sendSiteReturnAfterImage(cdp,job)}
         catch(e){siteReturn="pending:"+String(e&&e.message||e).slice(0,120)}
         console.log("TTENDENCIAS SITE RETURN "+siteReturn+" for "+commandId);
-        console.log("TTENDENCIAS LAUNCH_ONLY CONFIRMED receipt="+receipt+"; bridge sin captura ni subida");
+        console.log("TTENDENCIAS LAUNCH_ONLY CONFIRMED receipt="+receipt+"; sin subida pública ni aprobación automática");
         return;
       }
       await progress("capture_wait","Esperando el raster generado por ImageGen en la misma pestaña. Intento "+generationAttempt+"/2.");
