@@ -1,54 +1,56 @@
 {
   "project": "TTendencias",
-  "engine": "chatgpt-automation-outbox",
+  "engine": "chatgpt-editorial",
   "version": 1,
   "canonical": true,
   "run_id": "tr-1794210900000-manual",
   "previous_run_id": "tr-1794210000000-manual",
   "command_id": "tr-1794210900000-manual",
   "source": "chat",
-  "status": "success",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-09T08:55:00+01:00",
-  "updated_at": "2026-11-09T08:58:37+01:00",
-  "finished_at": null,
-  "current": 0,
-  "total": 11,
-  "trend_id": "33cc628ab41c",
-  "title": "maffeo",
+  "updated_at": "2026-11-09T09:01:00+01:00",
+  "finished_at": "2026-11-09T09:01:00+01:00",
+  "current": 13,
+  "total": 13,
+  "trend_id": null,
+  "title": "Pasada editorial TTendencias",
   "queue_complete": true,
   "processed_ids": [
     "33cc628ab41c",
+    "c580dcde5e09",
+    "a6059952d4de",
+    "abc3325ed2e9",
+    "647aa2cc8ae5",
+    "8968330b6712",
+    "a1fe74b9657a",
     "39284cfb900a",
     "4ef2ea1a9026",
     "5a62d6821fac",
-    "647aa2cc8ae5",
     "8253716316e9",
-    "8968330b6712",
-    "a1fe74b9657a",
-    "a6059952d4de",
-    "abc3325ed2e9",
-    "c580dcde5e09"
+    "red-review-7ce02c8bbf433c0d7d7c",
+    "red-review-7e5e6b391da85b02dbbe"
   ],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 11,
-    "closed": 0,
-    "explained": 0,
+    "attempted": 13,
+    "observed": 13,
+    "closed": 13,
+    "explained": 11,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 0,
-    "unchanged_reviews": 0,
+    "maintenance_reviews": 2,
+    "unchanged_reviews": 2,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
-    "queue_remaining": 11,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -56,7 +58,112 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "33cc628ab41c",
+      "revision": 0,
+      "name": "maffeo",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox_applied"
+    },
+    {
+      "id": "c580dcde5e09",
+      "revision": 0,
+      "name": "Valencia",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox_applied"
+    },
+    {
+      "id": "a6059952d4de",
+      "revision": 0,
+      "name": "Mestalla",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox_applied"
+    },
+    {
+      "id": "abc3325ed2e9",
+      "revision": 0,
+      "name": "De Jong",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox_applied"
+    },
+    {
+      "id": "647aa2cc8ae5",
+      "revision": 0,
+      "name": "Extremoduro",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox_applied"
+    },
+    {
+      "id": "8968330b6712",
+      "revision": 0,
+      "name": "Robe",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox_applied"
+    },
+    {
+      "id": "a1fe74b9657a",
+      "revision": 0,
+      "name": "Bernabéu",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox_applied"
+    },
+    {
+      "id": "39284cfb900a",
+      "revision": 0,
+      "name": "gordon",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox_applied"
+    },
+    {
+      "id": "4ef2ea1a9026",
+      "revision": 0,
+      "name": "Flick",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox_applied"
+    },
+    {
+      "id": "5a62d6821fac",
+      "revision": 0,
+      "name": "Amaia",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox_applied"
+    },
+    {
+      "id": "8253716316e9",
+      "revision": 0,
+      "name": "#Buenosdías",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox_applied"
+    },
+    {
+      "id": "red-review-7ce02c8bbf433c0d7d7c",
+      "revision": 0,
+      "name": "Revisar novedades: Cracovia",
+      "outcome": "unchanged",
+      "applied": true,
+      "via": "maintenance_outbox_applied"
+    },
+    {
+      "id": "red-review-7e5e6b391da85b02dbbe",
+      "revision": 0,
+      "name": "Revisar novedades: Atleti",
+      "outcome": "unchanged",
+      "applied": true,
+      "via": "maintenance_outbox_applied"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -136,28 +243,38 @@
         "phase": "closing",
         "updated_at": "2026-11-09T08:41:05+01:00"
       }
+    },
+    {
+      "at": "2026-11-09T09:00:29+01:00",
+      "phase": "verifying",
+      "message": "Barrera JIT tras mantenimiento: Cracovia y Atleti aplicados como unchanged; editorial-queue=0 y mobile-decisions sin estados editoriales activos. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-09T09:01:00+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-1794210900000-manual cerrada 13/13. Se explicaron 11 tendencias nuevas de forma individual y el aplicador oficial las sincronizó en requests.json y telegram-manual-explained.json. Durante la barrera final entraron 2 review_red: Cracovia y Atleti, ambos verificados como unchanged y aplicados por mantenimiento sin alterar texto ni explained_at. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. Sin agrupaciones nuevas, ImageGen=0, image-outbox editorial=0 y publicaciones=0."
     }
   ],
-  "last_started_at": "2026-11-09T08:58:37+01:00",
-  "last_completed_at": "2026-11-09T08:58:37+01:00",
+  "last_started_at": "2026-11-09T08:55:00+01:00",
+  "last_completed_at": "2026-11-09T09:01:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794210000000-manual",
+    "run_id": "tr-1794210900000-manual",
     "status": "DONE",
-    "started_at": "2026-11-09T08:40:00+01:00",
-    "finished_at": "2026-11-09T08:41:05+01:00",
-    "at": "2026-11-09T08:41:05+01:00",
+    "started_at": "2026-11-09T08:55:00+01:00",
+    "finished_at": "2026-11-09T09:01:00+01:00",
+    "at": "2026-11-09T09:01:00+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 0,
-      "observed": 0,
-      "closed": 0,
-      "explained": 0,
+      "attempted": 13,
+      "observed": 13,
+      "closed": 13,
+      "explained": 11,
       "problematic": 0,
       "updates": 0,
       "review_completed_no_distinct_event": 0,
-      "maintenance_reviews": 0,
-      "unchanged_reviews": 0,
+      "maintenance_reviews": 2,
+      "unchanged_reviews": 2,
       "continuity_updates": 0,
       "distinct_updates": 0,
       "stale_reviews": 0,
@@ -170,11 +287,130 @@
       "incidents": 0,
       "concurrent_convergence": 0
     },
-    "processed_ids": [],
-    "outcomes": [],
-    "message": "Pasada tr-1794210000000-manual cerrada 0/0: relectura JIT de main a las 08:41 confirma editorial-queue=0 (updated_at 2026-11-09T08:41:01+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajos editoriales ni revisiones pendientes que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "processed_ids": [
+      "33cc628ab41c",
+      "c580dcde5e09",
+      "a6059952d4de",
+      "abc3325ed2e9",
+      "647aa2cc8ae5",
+      "8968330b6712",
+      "a1fe74b9657a",
+      "39284cfb900a",
+      "4ef2ea1a9026",
+      "5a62d6821fac",
+      "8253716316e9",
+      "red-review-7ce02c8bbf433c0d7d7c",
+      "red-review-7e5e6b391da85b02dbbe"
+    ],
+    "outcomes": [
+      {
+        "id": "33cc628ab41c",
+        "revision": 0,
+        "name": "maffeo",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox_applied"
+      },
+      {
+        "id": "c580dcde5e09",
+        "revision": 0,
+        "name": "Valencia",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox_applied"
+      },
+      {
+        "id": "a6059952d4de",
+        "revision": 0,
+        "name": "Mestalla",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox_applied"
+      },
+      {
+        "id": "abc3325ed2e9",
+        "revision": 0,
+        "name": "De Jong",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox_applied"
+      },
+      {
+        "id": "647aa2cc8ae5",
+        "revision": 0,
+        "name": "Extremoduro",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox_applied"
+      },
+      {
+        "id": "8968330b6712",
+        "revision": 0,
+        "name": "Robe",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox_applied"
+      },
+      {
+        "id": "a1fe74b9657a",
+        "revision": 0,
+        "name": "Bernabéu",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox_applied"
+      },
+      {
+        "id": "39284cfb900a",
+        "revision": 0,
+        "name": "gordon",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox_applied"
+      },
+      {
+        "id": "4ef2ea1a9026",
+        "revision": 0,
+        "name": "Flick",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox_applied"
+      },
+      {
+        "id": "5a62d6821fac",
+        "revision": 0,
+        "name": "Amaia",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox_applied"
+      },
+      {
+        "id": "8253716316e9",
+        "revision": 0,
+        "name": "#Buenosdías",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox_applied"
+      },
+      {
+        "id": "red-review-7ce02c8bbf433c0d7d7c",
+        "revision": 0,
+        "name": "Revisar novedades: Cracovia",
+        "outcome": "unchanged",
+        "applied": true,
+        "via": "maintenance_outbox_applied"
+      },
+      {
+        "id": "red-review-7e5e6b391da85b02dbbe",
+        "revision": 0,
+        "name": "Revisar novedades: Atleti",
+        "outcome": "unchanged",
+        "applied": true,
+        "via": "maintenance_outbox_applied"
+      }
+    ],
+    "message": "Pasada tr-1794210900000-manual cerrada 13/13. Se explicaron 11 tendencias nuevas de forma individual y el aplicador oficial las sincronizó en requests.json y telegram-manual-explained.json. Durante la barrera final entraron 2 review_red: Cracovia y Atleti, ambos verificados como unchanged y aplicados por mantenimiento sin alterar texto ni explained_at. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. Sin agrupaciones nuevas, ImageGen=0, image-outbox editorial=0 y publicaciones=0."
   },
-  "message": "Pasada tr-1794210900000-manual RUNNING. Cola JIT=11 nuevas investigaciones r0; se procesan del estado autoritativo de main con validación ID/revisión y sin ImageGen ni publicaciones.",
+  "message": "Pasada tr-1794210900000-manual cerrada 13/13. Se explicaron 11 tendencias nuevas de forma individual y el aplicador oficial las sincronizó en requests.json y telegram-manual-explained.json. Durante la barrera final entraron 2 review_red: Cracovia y Atleti, ambos verificados como unchanged y aplicados por mantenimiento sin alterar texto ni explained_at. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. Sin agrupaciones nuevas, ImageGen=0, image-outbox editorial=0 y publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T03:17:00+01:00",
@@ -1233,6 +1469,158 @@
       "processed_ids": [],
       "outcomes": [],
       "message": "Pasada tr-1794210000000-manual cerrada 0/0: relectura JIT de main a las 08:41 confirma editorial-queue=0 (updated_at 2026-11-09T08:41:01+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajos editoriales ni revisiones pendientes que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794210900000-manual",
+      "status": "DONE",
+      "started_at": "2026-11-09T08:55:00+01:00",
+      "finished_at": "2026-11-09T09:01:00+01:00",
+      "at": "2026-11-09T09:01:00+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 13,
+        "observed": 13,
+        "closed": 13,
+        "explained": 11,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 2,
+        "unchanged_reviews": 2,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [
+        "33cc628ab41c",
+        "c580dcde5e09",
+        "a6059952d4de",
+        "abc3325ed2e9",
+        "647aa2cc8ae5",
+        "8968330b6712",
+        "a1fe74b9657a",
+        "39284cfb900a",
+        "4ef2ea1a9026",
+        "5a62d6821fac",
+        "8253716316e9",
+        "red-review-7ce02c8bbf433c0d7d7c",
+        "red-review-7e5e6b391da85b02dbbe"
+      ],
+      "outcomes": [
+        {
+          "id": "33cc628ab41c",
+          "revision": 0,
+          "name": "maffeo",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied"
+        },
+        {
+          "id": "c580dcde5e09",
+          "revision": 0,
+          "name": "Valencia",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied"
+        },
+        {
+          "id": "a6059952d4de",
+          "revision": 0,
+          "name": "Mestalla",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied"
+        },
+        {
+          "id": "abc3325ed2e9",
+          "revision": 0,
+          "name": "De Jong",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied"
+        },
+        {
+          "id": "647aa2cc8ae5",
+          "revision": 0,
+          "name": "Extremoduro",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied"
+        },
+        {
+          "id": "8968330b6712",
+          "revision": 0,
+          "name": "Robe",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied"
+        },
+        {
+          "id": "a1fe74b9657a",
+          "revision": 0,
+          "name": "Bernabéu",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied"
+        },
+        {
+          "id": "39284cfb900a",
+          "revision": 0,
+          "name": "gordon",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied"
+        },
+        {
+          "id": "4ef2ea1a9026",
+          "revision": 0,
+          "name": "Flick",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied"
+        },
+        {
+          "id": "5a62d6821fac",
+          "revision": 0,
+          "name": "Amaia",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied"
+        },
+        {
+          "id": "8253716316e9",
+          "revision": 0,
+          "name": "#Buenosdías",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied"
+        },
+        {
+          "id": "red-review-7ce02c8bbf433c0d7d7c",
+          "revision": 0,
+          "name": "Revisar novedades: Cracovia",
+          "outcome": "unchanged",
+          "applied": true,
+          "via": "maintenance_outbox_applied"
+        },
+        {
+          "id": "red-review-7e5e6b391da85b02dbbe",
+          "revision": 0,
+          "name": "Revisar novedades: Atleti",
+          "outcome": "unchanged",
+          "applied": true,
+          "via": "maintenance_outbox_applied"
+        }
+      ],
+      "message": "Pasada tr-1794210900000-manual cerrada 13/13. Se explicaron 11 tendencias nuevas de forma individual y el aplicador oficial las sincronizó en requests.json y telegram-manual-explained.json. Durante la barrera final entraron 2 review_red: Cracovia y Atleti, ambos verificados como unchanged y aplicados por mantenimiento sin alterar texto ni explained_at. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. Sin agrupaciones nuevas, ImageGen=0, image-outbox editorial=0 y publicaciones=0."
     }
   ],
   "current_item": null
