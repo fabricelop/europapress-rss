@@ -7,50 +7,99 @@
   "previous_run_id": "tr-1794193039425-manual",
   "command_id": "tr-1794193800000-manual",
   "source": "chat",
-  "status": "success",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-09T04:10:00+01:00",
-  "updated_at": "2026-11-09T04:19:46+01:00",
-  "finished_at": null,
-  "current": 0,
-  "total": 0,
+  "updated_at": "2026-11-09T04:20:00+01:00",
+  "finished_at": "2026-11-09T04:20:00+01:00",
+  "current": 3,
+  "total": 3,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
   "queue_complete": true,
   "processed_ids": [
-    "7a1812787343",
+    "fe8ca12f538d",
     "e5b56efea3f3",
-    "fe8ca12f538d"
+    "7a1812787343"
   ],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": null,
-  "outcomes": [],
+  "summary": {
+    "attempted": 3,
+    "observed": 3,
+    "closed": 3,
+    "explained": 1,
+    "problematic": 0,
+    "updates": 0,
+    "review_completed_no_distinct_event": 2,
+    "continuity_updates": 0,
+    "distinct_updates": 0,
+    "unchanged_reviews": 0,
+    "stale_reviews": 0,
+    "unverified_reviews": 0,
+    "queue_remaining": 0,
+    "rewrite_pending_remaining": 0,
+    "imagegen_calls": 0,
+    "image_outbox_created": 0,
+    "publications": 0,
+    "incidents": 0,
+    "concurrent_convergence": 0
+  },
+  "outcomes": [
+    {
+      "id": "fe8ca12f538d",
+      "revision": 0,
+      "name": "Jong",
+      "outcome": "review_completed",
+      "reason": "no_distinct_event",
+      "applied": true,
+      "workflow_run_id": 42555740126
+    },
+    {
+      "id": "e5b56efea3f3",
+      "revision": 0,
+      "name": "Jensen Huang",
+      "outcome": "explained",
+      "applied": true,
+      "workflow_run_id": 42555740126
+    },
+    {
+      "id": "7a1812787343",
+      "revision": 0,
+      "name": "Jonathan David",
+      "outcome": "review_completed",
+      "reason": "no_distinct_event",
+      "applied": true,
+      "workflow_run_id": 42555740126
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Refrescando Top 30 y releyendo cola",
+  "activity": "Cierre editorial verificado",
   "last_started_at": "2026-11-09T04:19:46+01:00",
-  "last_completed_at": "2026-11-09T04:19:46+01:00",
+  "last_completed_at": "2026-11-09T04:20:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794192890633-manual",
-    "command_id": "tr-1794192890633-manual",
+    "run_id": "tr-1794193800000-manual",
     "status": "DONE",
-    "started_at": "2026-11-09T03:55:00+01:00",
-    "finished_at": "2026-11-09T03:59:00+01:00",
+    "started_at": "2026-11-09T04:10:00+01:00",
+    "finished_at": "2026-11-09T04:20:00+01:00",
+    "at": "2026-11-09T04:20:00+01:00",
+    "phase": "closing",
     "summary": {
-      "attempted": 2,
-      "observed": 2,
-      "closed": 2,
-      "explained": 0,
+      "attempted": 3,
+      "observed": 3,
+      "closed": 3,
+      "explained": 1,
       "problematic": 0,
       "updates": 0,
+      "review_completed_no_distinct_event": 2,
       "continuity_updates": 0,
       "distinct_updates": 0,
-      "unchanged_reviews": 2,
+      "unchanged_reviews": 0,
       "stale_reviews": 0,
       "unverified_reviews": 0,
       "queue_remaining": 0,
@@ -61,27 +110,42 @@
       "incidents": 0,
       "concurrent_convergence": 0
     },
+    "processed_ids": [
+      "fe8ca12f538d",
+      "e5b56efea3f3",
+      "7a1812787343"
+    ],
     "outcomes": [
       {
-        "id": "red-review-a18f2fcad28d1aee2513",
+        "id": "fe8ca12f538d",
         "revision": 0,
-        "name": "Revisar novedades: #DragRaceEs",
-        "outcome": "unchanged",
+        "name": "Jong",
+        "outcome": "review_completed",
+        "reason": "no_distinct_event",
         "applied": true,
-        "workflow_run_id": 42553674377
+        "workflow_run_id": 42555740126
       },
       {
-        "id": "red-review-c403c0a2de4526534b5a",
+        "id": "e5b56efea3f3",
         "revision": 0,
-        "name": "Revisar novedades: Sorloth",
-        "outcome": "unchanged",
+        "name": "Jensen Huang",
+        "outcome": "explained",
         "applied": true,
-        "workflow_run_id": 42553750341
+        "workflow_run_id": 42555740126
+      },
+      {
+        "id": "7a1812787343",
+        "revision": 0,
+        "name": "Jonathan David",
+        "outcome": "review_completed",
+        "reason": "no_distinct_event",
+        "applied": true,
+        "workflow_run_id": 42555740126
       }
     ],
-    "message": "Pasada tr-1794192890633-manual cerrada 2/2. #DragRaceEs y Sorloth revisados contra fuentes actuales y aplicados como unchanged: se conservan explicación, explained_at, imágenes y estado de publicación. Workflows de mantenimiento 42553674377 y 42553750341 completaron success. Barrera final main: editorial-queue=0; mobile-decisions sin preparing/update/rewrite_pending/reexplain; búsqueda en main sin rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "message": "Pasada tr-1794193800000-manual cerrada 3/3. Jensen Huang explicado y sincronizado en requests + telegram-manual-explained; Jong y Jonathan David cerrados como review_completed/no_distinct_event por corresponder al mismo Atlético-Barça ya tratado, sin nuevas fichas. Aplicador oficial 42555740126 completó success. Barrera final main: editorial-queue=0; requests/mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. Sin agrupaciones nuevas. ImageGen=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794193800000-manual RUNNING desde chat. Cola inicial JIT=0; se dispara refresco manual real del Top 30 y después se releerá main antes del cierre. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1794193800000-manual cerrada 3/3. Jensen Huang explicado y sincronizado en requests + telegram-manual-explained; Jong y Jonathan David cerrados como review_completed/no_distinct_event por corresponder al mismo Atlético-Barça ya tratado, sin nuevas fichas. Aplicador oficial 42555740126 completó success. Barrera final main: editorial-queue=0; requests/mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. Sin agrupaciones nuevas. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-08T15:07:08+01:00",
@@ -1433,6 +1497,11 @@
       "at": "2026-11-09T04:10:00+01:00",
       "phase": "preparing",
       "message": "Pasada tr-1794193800000-manual RUNNING desde chat. Cola inicial JIT=0; se dispara refresco manual real del Top 30 y después se releerá main antes del cierre. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-09T04:20:00+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-1794193800000-manual cerrada 3/3. Jensen Huang explicado y sincronizado en requests + telegram-manual-explained; Jong y Jonathan David cerrados como review_completed/no_distinct_event por corresponder al mismo Atlético-Barça ya tratado, sin nuevas fichas. Aplicador oficial 42555740126 completó success. Barrera final main: editorial-queue=0; requests/mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. Sin agrupaciones nuevas. ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": null
