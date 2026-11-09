@@ -3,32 +3,34 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261109T1855-manual",
-  "previous_run_id": "tr-1794246075875-manual",
-  "command_id": "tr-20261109T1855-manual",
+  "run_id": "tr-1794248007175-manual",
+  "previous_run_id": "tr-20261109T1855-manual",
+  "command_id": "tr-1794248007175-manual",
   "source": "chat",
-  "status": "success",
-  "phase": "closing",
-  "started_at": "2026-11-09T18:55:00+01:00",
-  "updated_at": "2026-11-09T19:12:34+01:00",
-  "finished_at": "2026-11-09T18:55:45+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-09T19:14:00+01:00",
+  "updated_at": "2026-11-09T19:14:00+01:00",
+  "finished_at": null,
   "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "6d406ef31553",
-    "b05f51e78129",
-    "c767f00460c3"
-  ],
+  "total": 2,
+  "trend_id": "red-review-1c959131fe088375078a",
+  "title": "Revisar novedades: Oviedo",
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-1c959131fe088375078a",
+    "red-review-d98c8c9f8e841f002d23"
+  ],
+  "remaining_active_ids": [
+    "red-review-1c959131fe088375078a",
+    "red-review-d98c8c9f8e841f002d23"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
-    "observed": 0,
+    "observed": 2,
     "closed": 0,
     "explained": 0,
     "problematic": 0,
@@ -40,7 +42,7 @@
     "distinct_updates": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -246,9 +248,18 @@
       "at": "2026-11-09T18:55:45+01:00",
       "phase": "closing",
       "message": "Pasada tr-20261109T1855-manual cerrada 0/0 contra main. Relectura JIT final: editorial-queue=0 (actualizada 2026-11-09T18:51:02+01:00), captura Top 30 2026-11-09T18:50:55+01:00 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794248007175-manual",
+      "status": "RUNNING",
+      "at": "2026-11-09T19:14:00+01:00",
+      "phase": "preparing",
+      "trend_id": "red-review-1c959131fe088375078a",
+      "title": "Revisar novedades: Oviedo",
+      "message": "Pasada tr-1794248007175-manual RUNNING. Cola JIT=2 review_red: Oviedo y Supa; se procesan por antigüedad con validación ID/revisión antes de investigar y persistir. ImageGen=0; publicaciones=0."
     }
   ],
-  "last_started_at": "2026-11-09T19:12:34+01:00",
+  "last_started_at": "2026-11-09T19:14:00+01:00",
   "last_completed_at": "2026-11-09T19:12:34+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -2788,7 +2799,12 @@
       "message": "Pasada tr-1794246075875-manual cerrada 2/2 por convergencia JIT. Broncano y #HuelgaGeneral quedaron unchanged; el aplicador oficial f7a6674554494b364feef5c3ec73867c32971acc registró ambos mantenimientos y retiró las dos revisiones de editorial-queue. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
-  "current_item": null,
+  "current_item": {
+    "id": "red-review-1c959131fe088375078a",
+    "revision": 0,
+    "name": "Revisar novedades: Oviedo",
+    "task": "review_red"
+  },
   "withdrawn_ids": [
     "ae7f066f3c94"
   ],
