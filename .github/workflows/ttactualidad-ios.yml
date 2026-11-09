@@ -81,20 +81,20 @@ jobs:
           # Version INSIDE the signed payload matters to PlumeImpactor, not only ZIP name.
           /usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$APP/Info.plist" | grep -Fx '94'
           /usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$APP/PlugIns/TTActualidadLive.appex/Info.plist" | grep -Fx '94'
-          /usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" "$APP/Info.plist" | grep -Fx '0.4.82'
+          /usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" "$APP/Info.plist" | grep -Fx '0.4.83'
           /usr/libexec/PlistBuddy -c "Print :CFBundleIdentifier" "$APP/Info.plist" | grep -Fx 'com.fabricelop.ttactualidad.native'
           /usr/libexec/PlistBuddy -c "Print :NSSupportsLiveActivities" "$APP/Info.plist" | grep -qi true
           mkdir -p dist/Payload
           cp -R "$APP" dist/Payload/
           cd dist
-          zip -qr TTActualidad-0.4.82-build94-PlumeImpactor-unsigned.ipa Payload
-          unzip -l TTActualidad-0.4.82-build94-PlumeImpactor-unsigned.ipa | grep 'TTActualidadLive.appex/Info.plist'
-          shasum -a 256 TTActualidad-0.4.82-build94-PlumeImpactor-unsigned.ipa
+          zip -qr TTActualidad-0.4.83-build95-PlumeImpactor-unsigned.ipa Payload
+          unzip -l TTActualidad-0.4.83-build95-PlumeImpactor-unsigned.ipa | grep 'TTActualidadLive.appex/Info.plist'
+          shasum -a 256 TTActualidad-0.4.83-build95-PlumeImpactor-unsigned.ipa
       - name: Upload unsigned IPA
         uses: actions/upload-artifact@v4
         with:
-          name: TTActualidad-0.4.82-build94-PlumeImpactor-IPA
-          path: ios/ttactualidad/dist/TTActualidad-0.4.82-build94-PlumeImpactor-unsigned.ipa
+          name: TTActualidad-0.4.83-build95-PlumeImpactor-IPA
+          path: ios/ttactualidad/dist/TTActualidad-0.4.83-build95-PlumeImpactor-unsigned.ipa
           retention-days: 30
           if-no-files-found: error
 
