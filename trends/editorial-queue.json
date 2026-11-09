@@ -1,6 +1,78 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-09T12:07:03+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-09T11:07:29.361715+00:00",
+  "count": 2,
+  "items": [
+    {
+      "id": "red-review-86cbd42f3edd8327f2ae",
+      "revision": 0,
+      "name": "Revisar novedades: Cracovia",
+      "rank": 17,
+      "status": "preparing",
+      "requested_at": "2026-11-09T11:07:29.361715+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "f4bdb3e1fe49",
+        "revision": 0,
+        "name": "Cracovia",
+        "rank": 5,
+        "explanation": "TT#14 Cracovia sigue siendo tendencia por el tiroteo en su Plaza Mayor: la Fiscalía polaca lo investiga como terrorismo y la Policía informó este lunes de que el sospechoso murió en el hospital. Seis personas murieron.\n#Polonia #Cracovia",
+        "explanation_sha256": "d71c9e67c5c78d742c5f503f04488f0cceafde6c8545c25f0940693167844f4b",
+        "explained_at": "2026-11-08T11:03:07.295Z",
+        "verification_sources": [
+          {
+            "url": "https://www.reuters.com/world/europe/two-kiled-least-10-injured-shooting-polish-city-krakow-tvn24-reports-2026-11-07/"
+          },
+          {
+            "url": "https://efe.com/mundo/2026-11-08/tiroteo-cracovia-polonia/"
+          },
+          {
+            "url": "https://www.europapress.es/internacional/noticia-policia-confirma-cuerpos-hallados-casa-autor-tiroteo-cracovia-eran-padres-hermana-20261108105025.html"
+          }
+        ],
+        "fingerprint": "9c79afe77a88f5cbd5ccd249e0f72165b8e99c1df6e2a4ebedeacb78ac5f44fe"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-541ad18742a5d11e6d2f",
+      "revision": 0,
+      "name": "Revisar novedades: #SVSemifinal",
+      "rank": 1,
+      "status": "preparing",
+      "requested_at": "2026-11-09T11:07:29.361715+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "amarilla",
+      "review_priority": 1,
+      "review_source": {
+        "id": "9e1649b8ed38",
+        "revision": 0,
+        "name": "#SVSemifinal",
+        "rank": 3,
+        "explanation": "TT#3 #SVSemifinal es tendencia por la semifinal de Supervivientes All Stars 3: Asraf, Rosa Benito y Víctor Janeiro se juegan la última expulsión y cuatro plazas de finalista.\n#SupervivientesAllStars\n🌶️ La última criba llega con la final ya llamando a la puerta.",
+        "explanation_sha256": "cd7a72bc157159778c1fb46e05edcea6bdcec9bf03623dd563c49544162d4eee",
+        "explained_at": "2026-11-08T23:55:10+01:00",
+        "verification_sources": [
+          {
+            "url": "https://www.mediaset.es/comunicacion/television/telecinco/20261106/supervivientes-stars-semifinal_18_020644721.html?amp=true"
+          },
+          {
+            "url": "https://www.formulatv.com/noticias/asraf-rosa-benito-victor-janeiro-supervivientes-138707/"
+          }
+        ],
+        "fingerprint": "717bc613ad74b37a43944ab9b7237a9f34f30e6a67f8d6b0be40b614c1fc9f75"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
