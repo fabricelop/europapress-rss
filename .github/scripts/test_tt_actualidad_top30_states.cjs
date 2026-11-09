@@ -62,13 +62,13 @@ const state={app:'tr',tab:'top',data:{recent,requests,
 const rows=vm.runInNewContext(code+'\ntrendRows()', {state, Date, Intl, console});
 const status=name=>rows.find(row=>row.name===name)?._status;
 // Top 30 is an index of current work, never a publication surface.
-assert.equal(status('Hispanidad'),'PENDIENTE');
-assert.equal(status('Feliz 12'),'EN COLA');
+assert.equal(status('Hispanidad'),'SIN SOLICITUD EDITORIAL');
+assert.equal(status('Feliz 12'),'EN ELABORACIÓN');
 assert.equal(status('Tendencia sin entrega'),'PENDIENTE DE LISTAS');
 assert.equal(status('Tendencia entregada'),'PENDIENTE DE LISTAS');
-assert.equal(status('Tendencia nueva'),'PREPARACIÓN MANUAL');
-assert.equal(status('Tendencia manual'),'EN COLA');
-assert.equal(status('Top diez sin elaborar'),'PENDIENTE');
+assert.equal(status('Tendencia nueva'),'SIN SOLICITUD EDITORIAL');
+assert.equal(status('Tendencia manual'),'EN ELABORACIÓN');
+assert.equal(status('Top diez sin elaborar'),'SIN SOLICITUD EDITORIAL');
 assert.ok(rows.every(row=>row.explanation===''),
   'No explanation, including September historical text, may appear in Top 30');
 assert.ok(rows.every(row=>!row.closer_text),
@@ -77,10 +77,14 @@ const pending=vm.runInNewContext(code+'\ntrendRows()', {
  state:{...state,tab:'pendientes'},Date,Intl,console});
 const pendingNames=pending.map(row=>row.name);
 assert.ok(pendingNames.includes('Top diez sin elaborar'));
-assert.ok(pendingNames.includes('Tendencia manual'));
+assert.ok(!pendingNames.includes('Tendencia manual'));
+assert.ok(pendingNames.includes('Tendencia nueva'));
+assert.ok(!pendingNames.includes('Feliz 12'));
+assert.ok(html.includes("['pendientes','Sin elaborar']"));
 assert.ok(!pendingNames.includes('Tendencia sin entrega'));
 assert.ok(pendingNames.includes('Hispanidad'));
-assert.ok(!pendingNames.includes('Tendencia nueva'));
+assert.ok(pendingNames.every(name=>!['Tendencia manual','Feliz 12'].includes(name)));
+// This diagnostics tab is no longer a sequential pending queue.
 assert.ok(!pendingNames.includes('Tendencia cerrada'));
 assert.ok(html.includes("command('Volver a elaborar','rework')"),
   'Every current Top 30 trend must provide fresh elaboration on demand');
