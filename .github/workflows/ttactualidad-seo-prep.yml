@@ -48,3 +48,10 @@ jobs:
           assert all('noindex,nofollow' in p.read_text() for p in pages)
           print('SEO PREP ONLY — no Site mutation, deployment or sitemap')
           PY
+      - name: Conservar borradores para revisión de Work, NO desplegar
+        uses: actions/upload-artifact@v4
+        with:
+          name: TTActualidad-SEO-PILOTO-NO-PUBLICADO
+          path: ${{ runner.temp }}/ttactualidad-seo-preview
+          retention-days: 30
+          if-no-files-found: error
