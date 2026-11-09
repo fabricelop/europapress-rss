@@ -321,6 +321,12 @@ def sync_queue(requests_doc):
             "red_review_request": req.get("red_review_request"),
             "review_source": req.get("review_source"),
             "review_error": req.get("review_error"),
+            "new_episode_review": bool(req.get("new_episode_review")),
+            "distinct_event_required": bool(req.get("distinct_event_required")),
+            "radar_episode_token": req.get("radar_episode_token") or "",
+            "editor_approval_batch_id": req.get("editor_approval_batch_id") or "",
+            "previous_episode_id": req.get("previous_episode_id") or "",
+            "review_instruction": req.get("review_instruction") or "",
             "automatic_grouping": req.get("automatic_grouping"),
             "published_context": req.get("published_context"),
             "task": req.get("task"),
@@ -432,7 +438,117 @@ def main():
                 raise ValueError("Los borradores Radar solo se aplican por anticipation-outbox; no son Listas")
 
             result_status = str(payload.get("status") or "")
-            if result_status == "ready":
+            if result_status == "review_completed":
+                reason = str(payload.get("review_reason") or "").strip()
+                if reason != "no_distinct_event":
+                    raise ValueError("review_completed requiere review_reason=no_distinct_event")
+                raw_sources = payload.get("verification_sources") or []
+                verification_sources = []
+                for source in raw_sources:
+                    url = str(source.get("url") if isinstance(source, dict) else source or "").strip()
+                    if url:
+                        verification_sources.append({"url": url})
+                req.update({
+                    "status": "review_completed",
+                    "updated_at": now,
+                    "last_attempt_at": now,
+                    "review_completed_at": now,
+                    "review_reason": reason,
+                    "verification_sources": verification_sources,
+                })
+                note = str(payload.get("note") or "").strip()
+                if note:
+                    history = req.get("investigation_history")
+                    if not isinstance(history, list):
+                        history = []
+                    history.append({
+                        "at": now,
+                        "outcome": "no_distinct_event",
+                        "note": note,
+                        "sources": verification_sources,
+                    })
+                    req["investigation_history"] = history
+                for field in ("problem_reason", "problematic_at", "problematic_attempts", "ready_at", "delivery_confirmation"):
+                    req.pop(field, None)
+                if req_id not in processed:
+                    processed.append(req_id)
+
+            elif result_status == "explained_direct":
+                explanation = str(payload.get("explanation") or "").strip()
+                closer_text = str(payload.get("closer_text") or "").strip()
+                if not explanation or len(explanation) >= 280 or not explanation.startswith("TT#"):
+                    raise ValueError("explicación directa inválida")
+                if closer_text and (not closer_text.startswith("🌶️ ") or explanation.count(closer_text) != 1):
+                    raise ValueError("closer_text directo inválido")
+                raw_sources = payload.get("verification_sources") or []
+                verification_sources = []
+                for source in raw_sources:
+                    url = str(source.get("url") if isinstance(source, dict) else source or "").strip()
+                    if url:
+                        verification_sources.append({"url": url})
+                explained_at = str(payload.get("explained_at") or now)
+                rank = int(payload.get("rank") or req.get("rank") or 0)
+                category = str(payload.get("category") or req.get("category") or "Otros")
+                name = str(payload.get("name") or req.get("name") or "")
+                manual_item = {
+                    "id": req_id,
+                    "name": name,
+                    "revision": revision,
+                    "status": "explained",
+                    "explained_at": explained_at,
+                    "updated_at": explained_at,
+                    "explanation": explanation,
+                    "closer_text": closer_text,
+                    "rank": rank,
+                    "rank_at_explanation": rank,
+                    "category": category,
+                    "source": "editorial_chat_direct",
+                    "editorial_engine": "chatgpt-automation-outbox",
+                    "verification_sources": verification_sources,
+                    "with_image": bool(req.get("with_image")),
+                    "image_strategy": "ai_plus_fallback",
+                    "ai_image_status": "pending" if bool(req.get("with_image")) else "none",
+                    "fallback_image_status": "pending" if bool(req.get("with_image")) else "none",
+                    "image_status": "pending" if bool(req.get("with_image")) else "none",
+                    "image_choice": "none",
+                    "image_pending": bool(req.get("with_image")),
+                    "telegram_package_status": "pending",
+                }
+                manual_doc["items"] = [
+                    existing for existing in (manual_doc.get("items") or [])
+                    if not (
+                        str(existing.get("id") or "") == req_id
+                        and int(existing.get("revision") or 0) == revision
+                    )
+                ] + [manual_item]
+                manual_doc["updated_at"] = explained_at
+                manual_doc["count"] = len(manual_doc["items"])
+                req.update({
+                    "status": "explained",
+                    "updated_at": explained_at,
+                    "explained_at": explained_at,
+                    "last_attempt_at": explained_at,
+                    "explanation": explanation,
+                    "closer_text": closer_text,
+                    "rank_at_explanation": rank,
+                    "category": category,
+                    "source": "editorial_chat_direct",
+                    "editorial_engine": "chatgpt-automation-outbox",
+                    "verification_sources": verification_sources,
+                    "image_strategy": manual_item["image_strategy"],
+                    "ai_image_status": manual_item["ai_image_status"],
+                    "fallback_image_status": manual_item["fallback_image_status"],
+                    "image_status": manual_item["image_status"],
+                    "image_choice": "none",
+                    "image_pending": manual_item["image_pending"],
+                    "telegram_package_status": "pending",
+                })
+                for field in ("problem_reason", "problematic_at", "problematic_attempts", "ready_at", "delivery_confirmation"):
+                    req.pop(field, None)
+                if req_id not in processed:
+                    processed.append(req_id)
+
+            elif result_status == "ready":
                 # El texto se cierra aunque un productor antiguo intente incluir
                 # IA inline; el raster solo se admite por image-outbox V3.
                 checkpoint_ai_image(payload, req_id, revision)
