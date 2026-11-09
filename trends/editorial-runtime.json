@@ -3,47 +3,41 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794222455591-manual",
-  "previous_run_id": "tr-1794221700000-manual",
-  "command_id": "tr-1794222455591-manual",
+  "run_id": "tr-1794222640495-manual",
+  "previous_run_id": "tr-1794222455591-manual",
+  "command_id": "tr-1794222640495-manual",
   "source": "chat-manual",
-  "status": "DONE_WITH_INCIDENTS",
+  "status": "DONE",
   "phase": "closing",
-  "started_at": "2026-11-09T12:08:00+01:00",
-  "updated_at": "2026-11-09T12:16:00+01:00",
-  "finished_at": "2026-11-09T12:16:00+01:00",
-  "current": 6,
-  "total": 6,
+  "started_at": "2026-11-09T12:11:11+01:00",
+  "updated_at": "2026-11-09T12:16:30+01:00",
+  "finished_at": "2026-11-09T12:16:30+01:00",
+  "current": 5,
+  "total": 5,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
   "queue_complete": true,
-  "processed_ids": [
-    "red-review-86cbd42f3edd8327f2ae",
-    "red-review-541ad18742a5d11e6d2f",
-    "be101248f52d",
-    "a12ced307462",
-    "f42d94bea3af",
-    "df263605ba9b"
-  ],
+  "processed_ids": [],
   "converged_ids": [
     "be101248f52d",
     "a12ced307462",
     "f42d94bea3af",
-    "df263605ba9b"
+    "df263605ba9b",
+    "red-review-541ad18742a5d11e6d2f"
   ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 6,
-    "observed": 6,
-    "closed": 6,
+    "attempted": 5,
+    "observed": 5,
+    "closed": 5,
     "explained": 4,
     "problematic": 0,
     "updates": 1,
     "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 2,
-    "unchanged_reviews": 1,
+    "maintenance_reviews": 1,
+    "unchanged_reviews": 0,
     "continuity_updates": 1,
     "distinct_updates": 0,
     "stale_reviews": 0,
@@ -53,26 +47,10 @@
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 1,
-    "concurrent_convergence": 4
+    "incidents": 0,
+    "concurrent_convergence": 5
   },
   "outcomes": [
-    {
-      "id": "red-review-86cbd42f3edd8327f2ae",
-      "revision": 0,
-      "name": "Revisar novedades: Cracovia",
-      "outcome": "unchanged",
-      "applied": true,
-      "via": "maintenance_outbox"
-    },
-    {
-      "id": "red-review-541ad18742a5d11e6d2f",
-      "revision": 0,
-      "name": "Revisar novedades: #SVSemifinal",
-      "outcome": "continuity_update",
-      "applied": true,
-      "apply_commit": "18259591d535beca4732104f9ece7b09f16d1676"
-    },
     {
       "id": "be101248f52d",
       "revision": 0,
@@ -108,17 +86,19 @@
       "applied": true,
       "via": "concurrent_convergence",
       "apply_commit": "59d0d44d16a73e034c5b68b1f0174154ed2a53f0"
-    }
-  ],
-  "incident_count": 1,
-  "incidents": [
+    },
     {
       "id": "red-review-541ad18742a5d11e6d2f",
       "revision": 0,
-      "resolved": true,
-      "message": "Primer resultado updated rechazado por longitud/formato ponderado; se corrigió sobre el mismo job y quedó aplicado como continuity sin nueva ficha ni cambio de explained_at."
+      "name": "Revisar novedades: #SVSemifinal",
+      "outcome": "continuity_update",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "apply_commit": "18259591d535beca4732104f9ece7b09f16d1676"
     }
   ],
+  "incident_count": 0,
+  "incidents": [],
   "error": null,
   "activity": [
     {
@@ -332,28 +312,38 @@
       "at": "2026-11-09T12:16:00+01:00",
       "phase": "closing",
       "message": "Pasada tr-1794222455591-manual cerrada 6/6. Cracovia unchanged; #SVSemifinal actualizado en continuidad sobre la ficha original; #EnBocaDeTodos, #DragRaceEs, Canarias y Sorloth convergieron con el aplicador oficial y quedaron explained. Barrera final main: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain. ImageGen=0; image-outbox editorial creado por esta pasada=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-09T12:11:11+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-1794222640495-manual iniciada sobre main. Se observaron cinco trabajos activos y se revalidaron ID/revisión JIT; una ejecución concurrente ya estaba materializando sus resultados. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-09T12:16:30+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-1794222640495-manual cerrada 5/5 por convergencia JIT con la ejecución inmediatamente anterior. #EnBocaDeTodos, #DragRaceEs, Canarias y Sorloth quedaron explained; #SVSemifinal quedó actualizado como continuidad sobre su ficha original. Barrera final main: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain. ImageGen=0; image-outbox editorial creado por esta pasada=0; publicaciones=0."
     }
   ],
   "last_started_at": "2026-11-09T12:14:20+01:00",
-  "last_completed_at": "2026-11-09T12:16:00+01:00",
+  "last_completed_at": "2026-11-09T12:16:30+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794222455591-manual",
-    "status": "DONE_WITH_INCIDENTS",
-    "started_at": "2026-11-09T12:08:00+01:00",
-    "finished_at": "2026-11-09T12:16:00+01:00",
-    "at": "2026-11-09T12:16:00+01:00",
+    "run_id": "tr-1794222640495-manual",
+    "status": "DONE",
+    "started_at": "2026-11-09T12:11:11+01:00",
+    "finished_at": "2026-11-09T12:16:30+01:00",
+    "at": "2026-11-09T12:16:30+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 6,
-      "observed": 6,
-      "closed": 6,
+      "attempted": 5,
+      "observed": 5,
+      "closed": 5,
       "explained": 4,
       "problematic": 0,
       "updates": 1,
       "review_completed_no_distinct_event": 0,
-      "maintenance_reviews": 2,
-      "unchanged_reviews": 1,
+      "maintenance_reviews": 1,
+      "unchanged_reviews": 0,
       "continuity_updates": 1,
       "distinct_updates": 0,
       "stale_reviews": 0,
@@ -363,40 +353,18 @@
       "imagegen_calls": 0,
       "image_outbox_created": 0,
       "publications": 0,
-      "incidents": 1,
-      "concurrent_convergence": 4
+      "incidents": 0,
+      "concurrent_convergence": 5
     },
-    "processed_ids": [
-      "red-review-86cbd42f3edd8327f2ae",
-      "red-review-541ad18742a5d11e6d2f",
-      "be101248f52d",
-      "a12ced307462",
-      "f42d94bea3af",
-      "df263605ba9b"
-    ],
+    "processed_ids": [],
     "converged_ids": [
       "be101248f52d",
       "a12ced307462",
       "f42d94bea3af",
-      "df263605ba9b"
+      "df263605ba9b",
+      "red-review-541ad18742a5d11e6d2f"
     ],
     "outcomes": [
-      {
-        "id": "red-review-86cbd42f3edd8327f2ae",
-        "revision": 0,
-        "name": "Revisar novedades: Cracovia",
-        "outcome": "unchanged",
-        "applied": true,
-        "via": "maintenance_outbox"
-      },
-      {
-        "id": "red-review-541ad18742a5d11e6d2f",
-        "revision": 0,
-        "name": "Revisar novedades: #SVSemifinal",
-        "outcome": "continuity_update",
-        "applied": true,
-        "apply_commit": "18259591d535beca4732104f9ece7b09f16d1676"
-      },
       {
         "id": "be101248f52d",
         "revision": 0,
@@ -432,20 +400,22 @@
         "applied": true,
         "via": "concurrent_convergence",
         "apply_commit": "59d0d44d16a73e034c5b68b1f0174154ed2a53f0"
-      }
-    ],
-    "incident_count": 1,
-    "incidents": [
+      },
       {
         "id": "red-review-541ad18742a5d11e6d2f",
         "revision": 0,
-        "resolved": true,
-        "message": "Primer resultado updated rechazado por longitud/formato ponderado; se corrigió sobre el mismo job y quedó aplicado como continuity sin nueva ficha ni cambio de explained_at."
+        "name": "Revisar novedades: #SVSemifinal",
+        "outcome": "continuity_update",
+        "applied": true,
+        "via": "concurrent_convergence",
+        "apply_commit": "18259591d535beca4732104f9ece7b09f16d1676"
       }
     ],
-    "message": "Pasada tr-1794222455591-manual cerrada 6/6. Cracovia unchanged; #SVSemifinal actualizado en continuidad sobre la ficha original; #EnBocaDeTodos, #DragRaceEs, Canarias y Sorloth convergieron con el aplicador oficial y quedaron explained. Barrera final main: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain. ImageGen=0; image-outbox editorial creado por esta pasada=0; publicaciones=0."
+    "incident_count": 0,
+    "incidents": [],
+    "message": "Pasada tr-1794222640495-manual cerrada 5/5 por convergencia JIT con la ejecución inmediatamente anterior. #EnBocaDeTodos, #DragRaceEs, Canarias y Sorloth quedaron explained; #SVSemifinal quedó actualizado como continuidad sobre su ficha original. Barrera final main: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain. ImageGen=0; image-outbox editorial creado por esta pasada=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794222455591-manual cerrada 6/6. Cracovia unchanged; #SVSemifinal actualizado en continuidad sobre la ficha original; #EnBocaDeTodos, #DragRaceEs, Canarias y Sorloth convergieron con el aplicador oficial y quedaron explained. Barrera final main: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain. ImageGen=0; image-outbox editorial creado por esta pasada=0; publicaciones=0.",
+  "message": "Pasada tr-1794222640495-manual cerrada 5/5 por convergencia JIT con la ejecución inmediatamente anterior. #EnBocaDeTodos, #DragRaceEs, Canarias y Sorloth quedaron explained; #SVSemifinal quedó actualizado como continuidad sobre su ficha original. Barrera final main: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain. ImageGen=0; image-outbox editorial creado por esta pasada=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T03:17:00+01:00",
@@ -2095,6 +2065,94 @@
       "processed_ids": [],
       "outcomes": [],
       "message": "Pasada tr-1794221700000-manual cerrada 0/0 contra el estado autoritativo de main. Relectura final: editorial-queue=0 (updated_at 2026-11-09T11:51:09+01:00) y sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos en requests ni mobile-decisions. No había trabajo editorial pendiente que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794222640495-manual",
+      "status": "DONE",
+      "started_at": "2026-11-09T12:11:11+01:00",
+      "finished_at": "2026-11-09T12:16:30+01:00",
+      "at": "2026-11-09T12:16:30+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 5,
+        "observed": 5,
+        "closed": 5,
+        "explained": 4,
+        "problematic": 0,
+        "updates": 1,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 1,
+        "unchanged_reviews": 0,
+        "continuity_updates": 1,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 5
+      },
+      "processed_ids": [],
+      "converged_ids": [
+        "be101248f52d",
+        "a12ced307462",
+        "f42d94bea3af",
+        "df263605ba9b",
+        "red-review-541ad18742a5d11e6d2f"
+      ],
+      "outcomes": [
+        {
+          "id": "be101248f52d",
+          "revision": 0,
+          "name": "#EnBocaDeTodos",
+          "outcome": "explained",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "apply_commit": "59d0d44d16a73e034c5b68b1f0174154ed2a53f0"
+        },
+        {
+          "id": "a12ced307462",
+          "revision": 0,
+          "name": "#DragRaceEs",
+          "outcome": "explained",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "apply_commit": "59d0d44d16a73e034c5b68b1f0174154ed2a53f0"
+        },
+        {
+          "id": "f42d94bea3af",
+          "revision": 0,
+          "name": "Canarias",
+          "outcome": "explained",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "apply_commit": "59d0d44d16a73e034c5b68b1f0174154ed2a53f0"
+        },
+        {
+          "id": "df263605ba9b",
+          "revision": 0,
+          "name": "Sorloth",
+          "outcome": "explained",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "apply_commit": "59d0d44d16a73e034c5b68b1f0174154ed2a53f0"
+        },
+        {
+          "id": "red-review-541ad18742a5d11e6d2f",
+          "revision": 0,
+          "name": "Revisar novedades: #SVSemifinal",
+          "outcome": "continuity_update",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "apply_commit": "18259591d535beca4732104f9ece7b09f16d1676"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-1794222640495-manual cerrada 5/5 por convergencia JIT con la ejecución inmediatamente anterior. #EnBocaDeTodos, #DragRaceEs, Canarias y Sorloth quedaron explained; #SVSemifinal quedó actualizado como continuidad sobre su ficha original. Barrera final main: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain. ImageGen=0; image-outbox editorial creado por esta pasada=0; publicaciones=0."
     }
   ],
   "current_item": null
