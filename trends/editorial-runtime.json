@@ -10,26 +10,23 @@
   "status": "RUNNING",
   "phase": "verifying",
   "started_at": "2026-11-09T01:01:00+01:00",
-  "updated_at": "2026-11-09T01:03:00+01:00",
+  "updated_at": "2026-11-09T01:05:00+01:00",
   "finished_at": null,
-  "current": 1,
+  "current": 2,
   "total": 2,
-  "trend_id": "red-review-5153f5115507a82f8c43",
-  "title": "Revisar novedades: Levante 0-2 Atlético",
+  "trend_id": "red-review-a3afa5c9f23be20dc00c",
+  "title": "Revisar novedades: #SVSemifinal",
   "queue_complete": false,
   "processed_ids": [
-    "red-review-5153f5115507a82f8c43"
+    "red-review-5153f5115507a82f8c43",
+    "red-review-a3afa5c9f23be20dc00c"
   ],
   "converged_ids": [],
-  "remaining_ids": [
-    "red-review-a3afa5c9f23be20dc00c"
-  ],
-  "remaining_active_ids": [
-    "red-review-a3afa5c9f23be20dc00c"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
+    "attempted": 2,
     "observed": 2,
     "closed": 0,
     "explained": 0,
@@ -37,7 +34,7 @@
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
-    "unchanged_reviews": 1,
+    "unchanged_reviews": 2,
     "stale_reviews": 0,
     "unverified_reviews": 0,
     "queue_remaining": 2,
@@ -53,6 +50,14 @@
       "id": "red-review-5153f5115507a82f8c43",
       "revision": 0,
       "name": "Revisar novedades: Levante 0-2 Atlético",
+      "outcome": "unchanged",
+      "applied": false,
+      "via": "maintenance_outbox"
+    },
+    {
+      "id": "red-review-a3afa5c9f23be20dc00c",
+      "revision": 0,
+      "name": "Revisar novedades: #SVSemifinal",
       "outcome": "unchanged",
       "applied": false,
       "via": "maintenance_outbox"
@@ -92,7 +97,7 @@
     },
     "message": "Pasada tr-1794181995232-manual cerrada 3/3: Sorloth, Cancelo y Flick reelaborados desde cero y aplicados. Barrera final en main: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. Incidencia resuelta: el outbox heredado llevaba alternatives:[] y el aplicador exige 3; Flick fue normalizado y el workflow de respaldo terminó success. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "1/2 Levante 0-2 Atlético: revisión JIT válida. El Atlético-Barça del 8/11 es un episodio distinto y no cambia el motivo histórico del grupo; resultado unchanged materializado en maintenance-outbox. ImageGen=0.",
+  "message": "2/2 #SVSemifinal: revisión JIT válida. No se verifica todavía una resolución sustancial posterior que cambie la explicación; resultado unchanged materializado en maintenance-outbox. ImageGen=0.",
   "history": [
     {
       "at": "2026-11-08T15:07:08+01:00",
@@ -852,6 +857,13 @@
       "trend_id": "red-review-5153f5115507a82f8c43",
       "title": "Revisar novedades: Levante 0-2 Atlético",
       "message": "1/2 Levante 0-2 Atlético: revisión JIT válida. El Atlético-Barça del 8/11 es un episodio distinto y no cambia el motivo histórico del grupo; resultado unchanged materializado en maintenance-outbox. ImageGen=0."
+    },
+    {
+      "at": "2026-11-09T01:05:00+01:00",
+      "phase": "verifying",
+      "trend_id": "red-review-a3afa5c9f23be20dc00c",
+      "title": "Revisar novedades: #SVSemifinal",
+      "message": "2/2 #SVSemifinal: revisión JIT válida. No se verifica todavía una resolución sustancial posterior que cambie la explicación; resultado unchanged materializado en maintenance-outbox. ImageGen=0."
     }
   ],
   "current_item": null
