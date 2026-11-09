@@ -10,8 +10,8 @@
   "status": "DONE",
   "phase": "closing",
   "started_at": "2026-11-09T01:45:00+01:00",
-  "updated_at": "2026-11-09T01:54:23+01:00",
-  "finished_at": "2026-11-09T01:54:23+01:00",
+  "updated_at": "2026-11-09T01:54:58+01:00",
+  "finished_at": "2026-11-09T01:54:58+01:00",
   "current": 10,
   "total": 10,
   "trend_id": null,
@@ -29,7 +29,18 @@
     "e4ddee79e78c",
     "a1c78ad6f0d5"
   ],
-  "converged_ids": [],
+  "converged_ids": [
+    "18df282228a9",
+    "5760b09e15f0",
+    "288ff80bcf5b",
+    "5e7e3f932194",
+    "bfa85ea0b4d4",
+    "7242c9da276f",
+    "7a4344cf60ab",
+    "88d4c8e01a7f",
+    "e4ddee79e78c",
+    "a1c78ad6f0d5"
+  ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
@@ -41,7 +52,7 @@
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
-    "distinct_updates": 9,
+    "distinct_updates": 0,
     "unchanged_reviews": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
@@ -51,7 +62,7 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 10
   },
   "outcomes": [
     {
@@ -60,7 +71,7 @@
       "name": "Metropolitano",
       "rank": 19,
       "outcome": "explained",
-      "via": "existing_active"
+      "via": "concurrent_convergence"
     },
     {
       "id": "5760b09e15f0",
@@ -68,7 +79,7 @@
       "name": "Baena",
       "rank": 20,
       "outcome": "explained",
-      "via": "reopened_distinct_episode"
+      "via": "concurrent_convergence"
     },
     {
       "id": "288ff80bcf5b",
@@ -76,7 +87,7 @@
       "name": "#NASCARenDAZN",
       "rank": 21,
       "outcome": "explained",
-      "via": "reopened_distinct_episode"
+      "via": "concurrent_convergence"
     },
     {
       "id": "5e7e3f932194",
@@ -84,7 +95,7 @@
       "name": "Koke",
       "rank": 22,
       "outcome": "explained",
-      "via": "reopened_distinct_episode"
+      "via": "concurrent_convergence"
     },
     {
       "id": "bfa85ea0b4d4",
@@ -92,7 +103,7 @@
       "name": "Jonathan David",
       "rank": 23,
       "outcome": "explained",
-      "via": "reopened_distinct_episode"
+      "via": "concurrent_convergence"
     },
     {
       "id": "7242c9da276f",
@@ -100,7 +111,7 @@
       "name": "Omar",
       "rank": 24,
       "outcome": "explained",
-      "via": "reopened_distinct_episode"
+      "via": "concurrent_convergence"
     },
     {
       "id": "7a4344cf60ab",
@@ -108,7 +119,7 @@
       "name": "Rosa Benito",
       "rank": 25,
       "outcome": "explained",
-      "via": "reopened_distinct_episode"
+      "via": "concurrent_convergence"
     },
     {
       "id": "88d4c8e01a7f",
@@ -116,7 +127,7 @@
       "name": "#CuartoMilenio",
       "rank": 26,
       "outcome": "explained",
-      "via": "reopened_distinct_episode"
+      "via": "concurrent_convergence"
     },
     {
       "id": "e4ddee79e78c",
@@ -124,7 +135,7 @@
       "name": "Adeyemi",
       "rank": 27,
       "outcome": "explained",
-      "via": "reopened_distinct_episode"
+      "via": "concurrent_convergence"
     },
     {
       "id": "a1c78ad6f0d5",
@@ -132,7 +143,7 @@
       "name": "Fariñas",
       "rank": 30,
       "outcome": "explained",
-      "via": "reopened_distinct_episode"
+      "via": "concurrent_convergence"
     }
   ],
   "incident_count": 0,
@@ -147,7 +158,7 @@
     "command_id": "tr-1794185100000-manual",
     "status": "DONE",
     "started_at": "2026-11-09T01:45:00+01:00",
-    "finished_at": "2026-11-09T01:54:23+01:00",
+    "finished_at": "2026-11-09T01:54:58+01:00",
     "summary": {
       "attempted": 10,
       "observed": 10,
@@ -156,7 +167,7 @@
       "problematic": 0,
       "updates": 0,
       "continuity_updates": 0,
-      "distinct_updates": 9,
+      "distinct_updates": 0,
       "unchanged_reviews": 0,
       "stale_reviews": 0,
       "unverified_reviews": 0,
@@ -166,7 +177,7 @@
       "image_outbox_created": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 0
+      "concurrent_convergence": 10
     },
     "message": "Pasada tr-1794185100000-manual cerrada 10/10. Episodios actuales verificados sin reutilizar cierres históricos. ImageGen=0; publicaciones=0."
   },
