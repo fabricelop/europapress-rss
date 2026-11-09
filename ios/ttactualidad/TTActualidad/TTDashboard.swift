@@ -529,6 +529,28 @@ struct TTDashboard: View {
                      sustainable.formatted(.number.precision(.fractionLength(1))) +
                      " solicitudes/día")
                     .font(.system(size: 10)).foregroundStyle(TTTheme.muted)
+                if pace > sustainable * 1.1 {
+                    Text("Atención: el ritmo registrado supera el presupuesto " +
+                         "medio para mantener publicaciones durante 30 días.")
+                        .font(.system(size: 10, weight: .semibold))
+                        .foregroundStyle(.orange)
+                }
+                let sentBoth = buffer.sentLast30Days(account: "ttittulares") +
+                               buffer.sentLast30Days(account: "ttendenciasesp")
+                if buffer.loaded && sentBoth > 0 && quota.used > 0 {
+                    let estimatedCalls = Double(quota.used) / Double(sentBoth)
+                    let guidance = Int((sustainable * 0.85 / estimatedCalls)
+                                       .rounded(.down))
+                    Text("Coste observado aproximado: " +
+                         estimatedCalls.formatted(.number.precision(.fractionLength(1))) +
+                         " solicitudes por publicación confirmada; " +
+                         "orientación prudente: ≈" + String(max(0, guidance)) +
+                         " publicaciones/día entre las dos cuentas.")
+                        .font(.system(size: 10)).foregroundStyle(TTTheme.muted)
+                    Text("Es una orientación, no un bloqueo de publicaciones: " +
+                         "incluye consultas extra y depende de las lecturas disponibles.")
+                        .font(.system(size: 10)).foregroundStyle(TTTheme.muted)
+                }
                 if let observed = ISO8601DateFormatter().date(from: quota.observed_at) {
                     let windowStart = observed.addingTimeInterval(
                         -Double(quota.window_seconds))
