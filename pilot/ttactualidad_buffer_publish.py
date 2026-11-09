@@ -139,13 +139,59 @@ def observe_rate_limits(headers):
                 "resets_in_seconds": int(match.group(3)),
                 "observed_at": utc_now(),
             }
+            # The same existing GraphQL response also carries 15-minute and
+            # 24-hour limits. Reading those headers costs zero additional calls.
+            other = []
+            for policy in re.finditer(
+                r'"([^"]+)"\s*;\s*q\s*=\s*(\d+)\s*;\s*w\s*=\s*(\d+)', policies
+            ):
+                window = int(policy.group(3))
+                if window not in (900, 86400):
+                    continue
+                for current in re.finditer(
+                    r'"([^"]+)"\s*;\s*r\s*=\s*(\d+)\s*;\s*t\s*=\s*(\d+)', limits
+                ):
+                    if current.group(1) != policy.group(1):
+                        continue
+                    maximum = int(policy.group(2))
+                    remaining_short = min(maximum, int(current.group(2)))
+                    other.append({
+                        "window_seconds": window, "limit": maximum,
+                        "remaining": remaining_short,
+                        "used": max(0, maximum - remaining_short),
+                        "resets_in_seconds": int(current.group(3)),
+                    })
+                    break
+            LAST_API_QUOTA["other_windows"] = sorted(
+                other, key=lambda row: row["window_seconds"])
             return
 
 
 def attach_latest_quota(data):
-    """Store one global usage snapshot alongside per-account post receipts."""
-    if LAST_API_QUOTA is not None:
-        data["api_quota"] = dict(LAST_API_QUOTA)
+    """Persist real response-header readings without ANY additional API calls.
+
+    The bounded history allows the app to compare two observed readings.
+    It is not a second quota, and a change in rolling-window used tokens
+    can reflect expiry of older requests, not just new usage.
+    """
+    if LAST_API_QUOTA is None:
+        return
+    data["api_quota"] = dict(LAST_API_QUOTA)
+    sample = {
+        "observed_at": LAST_API_QUOTA["observed_at"],
+        "limit": LAST_API_QUOTA["limit"],
+        "used": LAST_API_QUOTA["used"],
+        "sent_total": sum(
+            1 for row in data.get("items", []) if row.get("state") == "sent"
+        ),
+    }
+    old = data.get("api_quota_history")
+    history = list(old) if isinstance(old, list) else []
+    if history and history[-1].get("observed_at") == sample["observed_at"]:
+        history[-1] = sample
+    else:
+        history.append(sample)
+    data["api_quota_history"] = history[-240:]
 
 
 

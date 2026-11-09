@@ -26,6 +26,9 @@ class DirectBufferPublisherTests(unittest.TestCase):
         self.patch = mock.patch.object(publisher, "ROOT", self.root)
         self.patch.start()
         self.addCleanup(self.patch.stop)
+        reset_quota = mock.patch.object(publisher, "LAST_API_QUOTA", None)
+        reset_quota.start()
+        self.addCleanup(reset_quota.stop)
         p = mock.patch.object(publisher, "LEDGER",
                               self.root / "pilot/ttactualidad-buffer-posts.json")
         p.start()
@@ -522,6 +525,55 @@ class DirectBufferPublisherTests(unittest.TestCase):
         self.assertEqual(data["api_quota"]["used"], 268)
         self.assertEqual(data["api_quota"]["window_seconds"], 2592000)
         self.assertNotIn("account", data["api_quota"])
+
+    def test_all_buffer_windows_from_one_existing_response(self):
+        headers = Message()
+        for name, q, w, remaining, reset in [
+            ("short", 150, 900, 137, 500),
+            ("day", 600, 86400, 573, 75000),
+            ("month", 2000, 2592000, 1787, 2400000),
+        ]:
+            headers.add_header("RateLimit-Policy",
+                f'"{name}"; q={q}; w={w}; pk=:shared:')
+            headers.add_header("RateLimit",
+                f'"{name}"; r={remaining}; t={reset}')
+        publisher.observe_rate_limits(headers)
+        quota = publisher.LAST_API_QUOTA
+        self.assertEqual(quota["used"], 213)
+        self.assertEqual(quota["other_windows"], [
+            {"window_seconds": 900, "limit": 150, "remaining": 137,
+             "used": 13, "resets_in_seconds": 500},
+            {"window_seconds": 86400, "limit": 600, "remaining": 573,
+             "used": 27, "resets_in_seconds": 75000},
+        ])
+
+    def test_quota_history_uses_existing_headers_and_is_bounded(self):
+        publisher.LAST_API_QUOTA = {
+            "observed_at": "2026-11-09T08:00:00+00:00",
+            "limit": 2000, "used": 193, "remaining": 1807,
+            "window_seconds": 2592000, "resets_in_seconds": 2000000,
+        }
+        data = {"items": [{"state": "sent"}, {"state": "sent"},
+                           {"state": "pending"}]}
+        publisher.attach_latest_quota(data)
+        publisher.attach_latest_quota(data)
+        self.assertEqual(len(data["api_quota_history"]), 1)
+        self.assertEqual(data["api_quota_history"][0]["sent_total"], 2)
+        publisher.LAST_API_QUOTA["observed_at"] = "2026-11-09T10:00:00+00:00"
+        publisher.LAST_API_QUOTA["used"] = 206
+        data["items"][2]["state"] = "sent"
+        publisher.attach_latest_quota(data)
+        self.assertEqual(len(data["api_quota_history"]), 2)
+        self.assertEqual(data["api_quota_history"][-1]["sent_total"], 3)
+        self.assertEqual(data["api_quota_history"][-1]["used"], 206)
+        data["api_quota_history"] = [
+            {"observed_at": f"2026-10-{day:02d}T00:00:00Z",
+             "used": day, "limit": 2000, "sent_total": day}
+            for day in range(1, 31)
+        ] * 12
+        publisher.attach_latest_quota(data)
+        self.assertEqual(len(data["api_quota_history"]), 240)
+        self.assertEqual(data["api_quota_history"][-1]["used"], 206)
 
     def test_buffer_quota_policy_name_is_not_hardcoded(self):
         headers = Message()
