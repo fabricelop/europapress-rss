@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-11-09T20:36:44.667134Z",
+  "updated_at": "2026-11-09T20:38:53.463Z",
   "items": [
     {
       "event_id": "c2c5fea57972",
@@ -343,7 +343,7 @@
       "with_image": true,
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "none",
+      "ai_image_status": "failed",
       "archive_image_status": "ready",
       "fallback_image_status": "ready",
       "image_choice": "fallback",
@@ -371,7 +371,10 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "Puigdemont dice que quiere «dejar de ser español» y no descarta pedir la nacionalidad belga"
-      }
+      },
+      "ai_image_last_attempt_status": "failed",
+      "ai_image_last_attempt_at": "2026-11-09T20:38:53.463Z",
+      "ai_image_failure_reason": "CDP timeout Runtime.evaluate"
     }
   ],
   "count": 6,
