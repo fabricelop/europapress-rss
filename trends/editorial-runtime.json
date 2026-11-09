@@ -3,25 +3,21 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794212131276-manual",
-  "previous_run_id": "tr-1794211800000-manual",
-  "command_id": "tr-1794211800000-manual",
+  "run_id": "tr-1794213600000-manual",
+  "previous_run_id": "tr-1794212131276-manual",
+  "command_id": "tr-1794213600000-manual",
   "source": "chat",
-  "status": "success",
-  "phase": "closing",
-  "started_at": "2026-11-09T09:15:31+01:00",
-  "updated_at": "2026-11-09T09:28:56+01:00",
-  "finished_at": "2026-11-09T09:20:00+01:00",
-  "current": 2,
-  "total": 2,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-09T09:40:00+01:00",
+  "updated_at": "2026-11-09T09:40:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": true,
-  "processed_ids": [
-    "a04f5f160038",
-    "bf042f714bb2",
-    "bfd14c9108b9"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
@@ -54,22 +50,12 @@
   "error": null,
   "activity": [
     {
-      "at": "2026-11-09T09:10:00+01:00",
+      "at": "2026-11-09T09:40:00+01:00",
       "phase": "preparing",
       "message": "Leyendo estado autoritativo de main y preparando la pasada editorial."
-    },
-    {
-      "at": "2026-11-09T09:11:00+01:00",
-      "phase": "verifying",
-      "message": "Barrera final JIT: editorial-queue=0 y mobile-decisions sin trabajo editorial activo."
-    },
-    {
-      "at": "2026-11-09T09:11:00+01:00",
-      "phase": "closing",
-      "message": "Pasada cerrada 0/0; no había trabajo pendiente en main."
     }
   ],
-  "last_started_at": "2026-11-09T09:28:56+01:00",
+  "last_started_at": "2026-11-09T09:40:00+01:00",
   "last_completed_at": "2026-11-09T09:28:56+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -126,7 +112,7 @@
     ],
     "message": "Pasada tr-1794212131276-manual cerrada 2/2: maffeo y Valencia revisadas como unchanged y aplicadas en requests.json + telegram-manual-explained.json; cola=0 y sin reexplicaciones activas. ImageGen=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794212131276-manual cerrada 2/2: maffeo y Valencia revisadas como unchanged y aplicadas en requests.json + telegram-manual-explained.json; cola=0 y sin reexplicaciones activas. ImageGen=0; publicaciones=0.",
+  "message": "Pasada manual iniciada; relectura autoritativa de main y barrera JIT en curso. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T03:17:00+01:00",
