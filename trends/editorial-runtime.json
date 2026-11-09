@@ -7,71 +7,90 @@
   "previous_run_id": "tr-1794183437001-manual",
   "command_id": "tr-1794183629966-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-09T01:21:30+01:00",
-  "updated_at": "2026-11-09T01:21:30+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-09T01:23:30+01:00",
+  "finished_at": "2026-11-09T01:23:30+01:00",
+  "current": 2,
   "total": 2,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": false,
-  "processed_ids": [],
-  "converged_ids": [],
-  "remaining_ids": [
+  "queue_complete": true,
+  "processed_ids": [
     "red-review-7ac1bd151b9efc3131ed",
     "red-review-23a49be63b26309c4fd1"
   ],
-  "remaining_active_ids": [
+  "converged_ids": [
     "red-review-7ac1bd151b9efc3131ed",
     "red-review-23a49be63b26309c4fd1"
   ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 2,
     "observed": 2,
-    "closed": 0,
+    "closed": 2,
     "explained": 0,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
-    "unchanged_reviews": 0,
+    "unchanged_reviews": 2,
     "stale_reviews": 0,
     "unverified_reviews": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 2
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "red-review-7ac1bd151b9efc3131ed",
+      "revision": 0,
+      "name": "Revisar novedades: Levante 0-2 Atlético",
+      "outcome": "unchanged",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "apply_commit": "1cf9ed791231e95a8511cb5f7d1ed66dcabd76ae"
+    },
+    {
+      "id": "red-review-23a49be63b26309c4fd1",
+      "revision": 0,
+      "name": "Revisar novedades: #SalvadosEmilioDelgado",
+      "outcome": "unchanged",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "apply_commit": "1cf9ed791231e95a8511cb5f7d1ed66dcabd76ae"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Revisando novedades",
+  "activity": "Pasada editorial cerrada",
   "last_started_at": "2026-11-09T01:19:56+01:00",
-  "last_completed_at": "2026-11-09T01:19:56+01:00",
+  "last_completed_at": "2026-11-09T01:23:30+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794183217485-manual",
-    "command_id": "tr-1794182517667-manual",
+    "run_id": "tr-1794183629966-manual",
+    "command_id": "tr-1794183629966-manual",
     "status": "DONE",
-    "started_at": "2026-11-09T01:14:00+01:00",
-    "finished_at": "2026-11-09T01:18:00+01:00",
+    "started_at": "2026-11-09T01:21:30+01:00",
+    "finished_at": "2026-11-09T01:23:30+01:00",
     "summary": {
       "attempted": 2,
       "observed": 2,
       "closed": 2,
-      "explained": 2,
+      "explained": 0,
       "problematic": 0,
       "updates": 0,
       "continuity_updates": 0,
       "distinct_updates": 0,
-      "unchanged_reviews": 0,
+      "unchanged_reviews": 2,
       "stale_reviews": 0,
       "unverified_reviews": 0,
       "queue_remaining": 0,
@@ -82,9 +101,9 @@
       "incidents": 0,
       "concurrent_convergence": 2
     },
-    "message": "Pasada tr-1794183217485-manual cerrada 2/2 por convergencia JIT. Barça r0 y Asraf r0 figuran explained en requests y telegram-manual-explained con texto/remate sincronizados; editorial-queue=0 y no quedan preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "message": "Pasada tr-1794183629966-manual cerrada 2/2 por convergencia JIT. Levante 0-2 Atlético y #SalvadosEmilioDelgado quedaron unchanged y aplicados por la ejecución concurrente tr-1794183437001-manual; commit de aplicación 1cf9ed791231e95a8511cb5f7d1ed66dcabd76ae. Barrera final main: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794183629966-manual RUNNING. Cola JIT=2 review_red: Levante 0-2 Atlético y #SalvadosEmilioDelgado. Orden por antigüedad y revalidación ID/revisión antes de cada resultado. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1794183629966-manual cerrada 2/2 por convergencia JIT. Levante 0-2 Atlético y #SalvadosEmilioDelgado quedaron unchanged y aplicados por la ejecución concurrente tr-1794183437001-manual; commit de aplicación 1cf9ed791231e95a8511cb5f7d1ed66dcabd76ae. Barrera final main: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-08T15:07:08+01:00",
@@ -908,6 +927,13 @@
       "at": "2026-11-09T01:21:30+01:00",
       "phase": "preparing",
       "message": "Pasada tr-1794183629966-manual RUNNING. Cola JIT=2 review_red: Levante 0-2 Atlético y #SalvadosEmilioDelgado. Orden por antigüedad y revalidación ID/revisión antes de cada resultado. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794183629966-manual",
+      "status": "DONE",
+      "at": "2026-11-09T01:23:30+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-1794183629966-manual cerrada 2/2 por convergencia JIT. Levante 0-2 Atlético y #SalvadosEmilioDelgado quedaron unchanged y aplicados por la ejecución concurrente tr-1794183437001-manual; commit de aplicación 1cf9ed791231e95a8511cb5f7d1ed66dcabd76ae. Barrera final main: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "current_item": null
