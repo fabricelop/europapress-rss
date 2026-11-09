@@ -7,47 +7,89 @@
   "previous_run_id": "tr-1794218100000-manual",
   "command_id": "tr-1794219000000-manual",
   "source": "chat",
-  "status": "success",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-09T11:10:00+01:00",
-  "updated_at": "2026-11-09T11:13:48+01:00",
-  "finished_at": null,
-  "current": 1,
+  "updated_at": "2026-11-09T11:15:00+01:00",
+  "finished_at": "2026-11-09T11:15:00+01:00",
+  "current": 4,
   "total": 4,
-  "trend_id": "red-review-47e5d8d5ac22fd4f61df",
-  "title": "Revisar novedades: Valencia",
+  "trend_id": null,
+  "title": "Pasada editorial TTendencias",
   "queue_complete": true,
   "processed_ids": [
+    "red-review-da276035edf10382b826",
+    "red-review-47e5d8d5ac22fd4f61df",
     "62728644c75a",
     "de9c80449aae"
   ],
-  "converged_ids": [],
+  "converged_ids": [
+    "62728644c75a",
+    "de9c80449aae"
+  ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 2,
-    "closed": 0,
-    "explained": 0,
+    "attempted": 4,
+    "observed": 4,
+    "closed": 4,
+    "explained": 2,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 0,
-    "unchanged_reviews": 0,
+    "maintenance_reviews": 2,
+    "unchanged_reviews": 2,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 2
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "red-review-da276035edf10382b826",
+      "revision": 0,
+      "name": "Revisar novedades: maffeo",
+      "outcome": "unchanged",
+      "applied": true,
+      "source_id": "1940ad68777c",
+      "apply_commit": "dc5e8442ab67e1a39733f4de7d7bf2c59c1e3596"
+    },
+    {
+      "id": "red-review-47e5d8d5ac22fd4f61df",
+      "revision": 0,
+      "name": "Revisar novedades: Valencia",
+      "outcome": "unchanged",
+      "applied": true,
+      "source_id": "41998067bb7c",
+      "apply_commit": "dc5e8442ab67e1a39733f4de7d7bf2c59c1e3596"
+    },
+    {
+      "id": "62728644c75a",
+      "revision": 0,
+      "name": "Pachuca",
+      "outcome": "explained",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "apply_commit": "d58c1799b85386e65bc0262786b9b7fda350ebce"
+    },
+    {
+      "id": "de9c80449aae",
+      "revision": 0,
+      "name": "Raúl",
+      "outcome": "explained",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "apply_commit": "d58c1799b85386e65bc0262786b9b7fda350ebce"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -156,28 +198,38 @@
       "trend_id": "red-review-47e5d8d5ac22fd4f61df",
       "title": "Revisar novedades: Valencia",
       "message": "2/2 · Revisando novedades de Valencia. La cobertura nueva sigue siendo consecuencia de la derrota 0-3 y preparación del partido copero del 10/11; no hay aún un acontecimiento posterior consumado que cambie la explicación vigente."
+    },
+    {
+      "at": "2026-11-09T11:14:40+01:00",
+      "phase": "verifying",
+      "message": "Barrera JIT final: los dos review_red están aplicados como unchanged; Pachuca y Raúl aparecen sincronizadas como explicadas por el aplicador oficial; editorial-queue=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-09T11:15:00+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-1794219000000-manual cerrada 4/4. maffeo y Valencia se revisaron como unchanged y quedaron aplicadas sin alterar explicación ni explained_at. Durante la barrera entraron Pachuca y Raúl; convergieron con el aplicador oficial y quedaron explicadas individualmente en requests.json + telegram-manual-explained.json (commit d58c1799b85386e65bc0262786b9b7fda350ebce). Barrera final main: editorial-queue=0 a las 11:14:27+01:00. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
-  "last_started_at": "2026-11-09T11:13:48+01:00",
-  "last_completed_at": "2026-11-09T11:13:48+01:00",
+  "last_started_at": "2026-11-09T11:10:00+01:00",
+  "last_completed_at": "2026-11-09T11:15:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794218100000-manual",
+    "run_id": "tr-1794219000000-manual",
     "status": "DONE",
-    "started_at": "2026-11-09T10:55:00+01:00",
-    "finished_at": "2026-11-09T10:56:00+01:00",
-    "at": "2026-11-09T10:56:00+01:00",
+    "started_at": "2026-11-09T11:10:00+01:00",
+    "finished_at": "2026-11-09T11:15:00+01:00",
+    "at": "2026-11-09T11:15:00+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 0,
-      "observed": 0,
-      "closed": 0,
-      "explained": 0,
+      "attempted": 4,
+      "observed": 4,
+      "closed": 4,
+      "explained": 2,
       "problematic": 0,
       "updates": 0,
       "review_completed_no_distinct_event": 0,
-      "maintenance_reviews": 0,
-      "unchanged_reviews": 0,
+      "maintenance_reviews": 2,
+      "unchanged_reviews": 2,
       "continuity_updates": 0,
       "distinct_updates": 0,
       "stale_reviews": 0,
@@ -188,14 +240,59 @@
       "image_outbox_created": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 0
+      "concurrent_convergence": 2
     },
-    "processed_ids": [],
-    "converged_ids": [],
-    "outcomes": [],
-    "message": "Pasada tr-1794218100000-manual cerrada 0/0 contra el estado autoritativo de main. Relectura final: editorial-queue=0; mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos; búsqueda dirigida en main sin marcas activas. Top 30 capturado a las 10:50:52+01:00. ImageGen=0; publicaciones=0."
+    "processed_ids": [
+      "red-review-da276035edf10382b826",
+      "red-review-47e5d8d5ac22fd4f61df",
+      "62728644c75a",
+      "de9c80449aae"
+    ],
+    "converged_ids": [
+      "62728644c75a",
+      "de9c80449aae"
+    ],
+    "outcomes": [
+      {
+        "id": "red-review-da276035edf10382b826",
+        "revision": 0,
+        "name": "Revisar novedades: maffeo",
+        "outcome": "unchanged",
+        "applied": true,
+        "source_id": "1940ad68777c",
+        "apply_commit": "dc5e8442ab67e1a39733f4de7d7bf2c59c1e3596"
+      },
+      {
+        "id": "red-review-47e5d8d5ac22fd4f61df",
+        "revision": 0,
+        "name": "Revisar novedades: Valencia",
+        "outcome": "unchanged",
+        "applied": true,
+        "source_id": "41998067bb7c",
+        "apply_commit": "dc5e8442ab67e1a39733f4de7d7bf2c59c1e3596"
+      },
+      {
+        "id": "62728644c75a",
+        "revision": 0,
+        "name": "Pachuca",
+        "outcome": "explained",
+        "applied": true,
+        "via": "concurrent_convergence",
+        "apply_commit": "d58c1799b85386e65bc0262786b9b7fda350ebce"
+      },
+      {
+        "id": "de9c80449aae",
+        "revision": 0,
+        "name": "Raúl",
+        "outcome": "explained",
+        "applied": true,
+        "via": "concurrent_convergence",
+        "apply_commit": "d58c1799b85386e65bc0262786b9b7fda350ebce"
+      }
+    ],
+    "message": "Pasada tr-1794219000000-manual cerrada 4/4. maffeo y Valencia se revisaron como unchanged y quedaron aplicadas sin alterar explicación ni explained_at. Durante la barrera entraron Pachuca y Raúl; convergieron con el aplicador oficial y quedaron explicadas individualmente en requests.json + telegram-manual-explained.json (commit d58c1799b85386e65bc0262786b9b7fda350ebce). Barrera final main: editorial-queue=0 a las 11:14:27+01:00. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794219000000-manual RUNNING. Cola inicial JIT=2; se procesan primero las revisiones de novedades vigentes con validación ID/revisión. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1794219000000-manual cerrada 4/4. maffeo y Valencia se revisaron como unchanged y quedaron aplicadas sin alterar explicación ni explained_at. Durante la barrera entraron Pachuca y Raúl; convergieron con el aplicador oficial y quedaron explicadas individualmente en requests.json + telegram-manual-explained.json (commit d58c1799b85386e65bc0262786b9b7fda350ebce). Barrera final main: editorial-queue=0 a las 11:14:27+01:00. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T03:17:00+01:00",
@@ -1645,77 +1742,86 @@
       },
       "outcomes": [],
       "message": "Pasada tr-1794217200000-manual cerrada 0/0 contra el estado autoritativo de main. Relectura final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial pendiente que procesar. ImageGen=0; publicaciones=0."
-    }
-  ],
-  "current_item": {
-    "id": "red-review-47e5d8d5ac22fd4f61df",
-    "name": "Revisar novedades: Valencia",
-    "rank": 12,
-    "status": "preparing",
-    "requested_at": "2026-11-09T10:00:13.572972+00:00",
-    "revision": 0,
-    "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques.",
-    "reexplain": false,
-    "rewrite_with_image": false,
-    "with_image": false,
-    "disable_ai_image": true,
-    "image_strategy": null,
-    "selected_tweet_image": null,
-    "task": "review_red",
-    "anticipation_request": false,
-    "anticipated_name": null,
-    "anticipation_signal": null,
-    "anticipation_origin_id": null,
-    "anticipation_draft": null,
-    "red_review_request": true,
-    "review_source": {
-      "id": "41998067bb7c",
-      "revision": 0,
-      "name": "Valencia",
-      "rank": 2,
-      "explanation": "TT#2 Valencia es tendencia tras caer 0-3 ante el Real Madrid en Mestalla: Valverde, Arda Güler y Mbappé marcaron los goles.\n#ValenciaCF #LaLiga\n🌶️ La noche pedía reacción y acabó con tres golpes blancos.",
-      "explanation_sha256": "ab56ef7a7820c85c698c904b6d0a4ad34dc6521c0e36e4a519fa347eed2ff7e9",
-      "explained_at": "2026-11-07T23:18:03.455+01:00",
-      "verification_sources": [
+    },
+    {
+      "run_id": "tr-1794219000000-manual",
+      "status": "DONE",
+      "started_at": "2026-11-09T11:10:00+01:00",
+      "finished_at": "2026-11-09T11:15:00+01:00",
+      "at": "2026-11-09T11:15:00+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 4,
+        "observed": 4,
+        "closed": 4,
+        "explained": 2,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 2,
+        "unchanged_reviews": 2,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 2
+      },
+      "processed_ids": [
+        "red-review-da276035edf10382b826",
+        "red-review-47e5d8d5ac22fd4f61df",
+        "62728644c75a",
+        "de9c80449aae"
+      ],
+      "converged_ids": [
+        "62728644c75a",
+        "de9c80449aae"
+      ],
+      "outcomes": [
         {
-          "url": "https://www.beinsports.com/en-us/soccer/la-liga/articles/live-blog-valencia-vs-real-madrid-laliga-2026-11-07"
+          "id": "red-review-da276035edf10382b826",
+          "revision": 0,
+          "name": "Revisar novedades: maffeo",
+          "outcome": "unchanged",
+          "applied": true,
+          "source_id": "1940ad68777c",
+          "apply_commit": "dc5e8442ab67e1a39733f4de7d7bf2c59c1e3596"
         },
         {
-          "url": "https://www.fotmob.com/news/c1y243f8pxst180dm32qosak8-valencia-0-3-real-madrid-mourinhos-men-keep-pressure-barcelona-atletico"
+          "id": "red-review-47e5d8d5ac22fd4f61df",
+          "revision": 0,
+          "name": "Revisar novedades: Valencia",
+          "outcome": "unchanged",
+          "applied": true,
+          "source_id": "41998067bb7c",
+          "apply_commit": "dc5e8442ab67e1a39733f4de7d7bf2c59c1e3596"
+        },
+        {
+          "id": "62728644c75a",
+          "revision": 0,
+          "name": "Pachuca",
+          "outcome": "explained",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "apply_commit": "d58c1799b85386e65bc0262786b9b7fda350ebce"
+        },
+        {
+          "id": "de9c80449aae",
+          "revision": 0,
+          "name": "Raúl",
+          "outcome": "explained",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "apply_commit": "d58c1799b85386e65bc0262786b9b7fda350ebce"
         }
       ],
-      "fingerprint": "0273dcb9afba0c0b2cb33453806b1d8f56a788220e1d8f1bf43d8e4efc430109"
-    },
-    "review_error": null,
-    "new_episode_review": false,
-    "distinct_event_required": false,
-    "radar_episode_token": "",
-    "editor_approval_batch_id": "",
-    "previous_episode_id": "",
-    "review_instruction": "",
-    "automatic_grouping": null,
-    "published_context": null,
-    "listas_grouping_request": false,
-    "grouping_candidates": [],
-    "grouping_state": null,
-    "grouping_error": null,
-    "tremending_origin": false,
-    "tremending_id": null,
-    "article_title": null,
-    "source_url": null,
-    "selected_tweet": null,
-    "batch_id": null,
-    "requested_together": [
-      "Revisar novedades: Valencia"
-    ],
-    "captured_with": [],
-    "auto_queued": false,
-    "anticipated": false,
-    "anticipated_at": null,
-    "anticipated_best_rank": null,
-    "anticipated_social_source_count": 0,
-    "anticipated_news_source_count": 0,
-    "anticipated_news_title": "",
-    "anticipated_entered_top10_at": null
-  }
+      "message": "Pasada tr-1794219000000-manual cerrada 4/4. maffeo y Valencia se revisaron como unchanged y quedaron aplicadas sin alterar explicación ni explained_at. Durante la barrera entraron Pachuca y Raúl; convergieron con el aplicador oficial y quedaron explicadas individualmente en requests.json + telegram-manual-explained.json (commit d58c1799b85386e65bc0262786b9b7fda350ebce). Barrera final main: editorial-queue=0 a las 11:14:27+01:00. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    }
+  ],
+  "current_item": null
 }
