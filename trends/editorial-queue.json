@@ -1,6 +1,72 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-09T11:40:59+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-09T10:43:31.035640+00:00",
+  "count": 2,
+  "items": [
+    {
+      "id": "red-review-2e28f53ad05cc3c5bb04",
+      "revision": 0,
+      "name": "Revisar novedades: Julián Álvarez",
+      "rank": 2,
+      "status": "preparing",
+      "requested_at": "2026-11-09T10:43:31.035640+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "amarilla",
+      "review_priority": 1,
+      "review_source": {
+        "id": "trend-update-08da896cbbe389cf5192",
+        "revision": 0,
+        "name": "Julián Álvarez",
+        "rank": 1,
+        "explanation": "TT#1 Julián es tendencia por el Atlético-Barça: asistió a Giuliano en el 1-0 y tuvo varias ocasiones, pero Joan García evitó sus goles y el Barça remontó 1-2.\n#JuliánÁlvarez #Atleti #Barça\n🌶️ Su asistencia encendió el Metropolitano, pero no sostuvo el marcador.",
+        "explanation_sha256": "82cdc67d81161ea8014b22691e232f278347a2e662cd025e3aa6424af4f2383f",
+        "explained_at": "2026-11-08T22:26:47.342212+00:00",
+        "verification_sources": [
+          {
+            "url": "https://www.infobae.com/espana/agencias/2026/11/08/1-2-fermin-es-el-lider/"
+          },
+          {
+            "url": "https://www.europapress.es/deportes/partidos-en-directo/noticia-atletico-madrid-barcelona-directo-hoy-sigue-partido-laliga-ea-sports-minuto-minuto-20261108200055.html"
+          }
+        ],
+        "fingerprint": "38be93ccfb38c1785bac3278eff381d1517aceb4458e366a1f93f7fca285216f"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-2be0949c883c500c4d31",
+      "revision": 0,
+      "name": "Revisar novedades: Robe",
+      "rank": 29,
+      "status": "preparing",
+      "requested_at": "2026-11-09T10:43:31.035640+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "amarilla",
+      "review_priority": 1,
+      "review_source": {
+        "id": "1943c4a59cd3",
+        "revision": 0,
+        "name": "Robe",
+        "rank": 28,
+        "explanation": "TT#24 Robe sigue siendo tendencia por el cruce electoral con Extremoduro: Sánchez compartió «Ama, ama, ama y ensancha el alma», el PP respondió con «So payaso» y el PSOE replicó: «No os habéis leído la letra».\n#Extremoduro\n🌶️ La playlist ya tiene réplica y contrarréplica.",
+        "explanation_sha256": "4e2fddc23fea0aa4e30b56e9907f510199832c94930f5ee23c13d9cc5711963a",
+        "explained_at": "2026-11-08T14:06:00+01:00",
+        "verification_sources": [
+          {
+            "url": "https://www.eldiario.es/politica/ultima-hora-actualidad-politica-directo_6_13647552_1126399.html"
+          }
+        ],
+        "fingerprint": "8738ed6624337e62b78c3b69db6e240ef26d5cebd17926df3fb28910427b532c"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
