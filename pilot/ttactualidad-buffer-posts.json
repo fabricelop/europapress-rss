@@ -709,35 +709,39 @@
       "event_id": "manual-a3461789-716b-4c87-b5ca-e8c6b45c8dbc",
       "revision": 1,
       "account": "ttittulares",
-      "state": "pending",
+      "state": "sent",
       "requested_at": "2026-11-09T13:19:51+00:00",
       "channel_id": "6aeed01ae29c69a1719020c2",
       "media_type": "ai",
-      "checked_at": "2026-11-09T13:19:59+00:00",
-      "buffer_post_id": "6af1c87c98ae1c26b8e7e2ab"
+      "checked_at": "2026-11-09T13:20:00+00:00",
+      "buffer_post_id": "6af1c87c98ae1c26b8e7e2ab",
+      "last_buffer_check_at": "2026-11-09T13:20:00+00:00",
+      "buffer_poll_attempts": 1,
+      "sent_at": "2026-11-09T13:19:58.618Z",
+      "post_url": "https://twitter.com/TTiTTulares/status/2119782046893478084"
     }
   ],
   "api_quota": {
     "limit": 2000,
-    "remaining": 1791,
-    "used": 209,
+    "remaining": 1790,
+    "used": 210,
     "window_seconds": 2592000,
-    "resets_in_seconds": 2399735,
-    "observed_at": "2026-11-09T13:19:59+00:00",
+    "resets_in_seconds": 2399730,
+    "observed_at": "2026-11-09T13:20:00+00:00",
     "other_windows": [
       {
         "window_seconds": 900,
         "limit": 150,
-        "remaining": 149,
-        "used": 1,
-        "resets_in_seconds": 900
+        "remaining": 148,
+        "used": 2,
+        "resets_in_seconds": 895
       },
       {
         "window_seconds": 86400,
         "limit": 600,
-        "remaining": 588,
-        "used": 12,
-        "resets_in_seconds": 73521
+        "remaining": 587,
+        "used": 13,
+        "resets_in_seconds": 73516
       }
     ]
   },
@@ -783,6 +787,12 @@
       "limit": 2000,
       "used": 209,
       "sent_total": 36
+    },
+    {
+      "observed_at": "2026-11-09T13:20:00+00:00",
+      "limit": 2000,
+      "used": 210,
+      "sent_total": 37
     }
   ]
 }
