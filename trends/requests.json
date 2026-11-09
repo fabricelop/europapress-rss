@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-09T23:18:32.551160+00:00",
+  "updated_at": "2026-11-10T00:22:00+01:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -279542,7 +279542,7 @@
       "id": "6485ff64586c",
       "name": "#LaIslaDeLasTentaciones18",
       "rank": 3,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-11-10T00:06:00+01:00",
       "revision": 0,
       "reexplain": false,
@@ -279555,7 +279555,6 @@
       "captured_with": [
         "#LaIslaDeLasTentaciones18"
       ],
-      "automatic_grouping": false,
       "grouping_disabled": true,
       "auto_queued": true,
       "auto_queue_scope": "top30",
@@ -279566,13 +279565,42 @@
       "editor_approval_batch_id": "",
       "previous_episode_id": "",
       "distinct_event_required": false,
-      "review_instruction": ""
+      "review_instruction": "",
+      "explained_at": "2026-11-10T00:22:00+01:00",
+      "last_attempt_at": "2026-11-10T00:22:00+01:00",
+      "explanation": "TT#3 #LaIslaDeLasTentaciones18 aparece entre las tendencias durante la primera de tres noches seguidas con las hogueras finales de La isla de las tentaciones 11, desde las 23:00 en Telecinco.\n#LaIslaDeLasTentaciones #Telecinco",
+      "closer_text": "",
+      "rank_at_explanation": 3,
+      "category": "Televisión",
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        {
+          "title": "Mediaset: semana de hogueras de La isla de las tentaciones",
+          "url": "https://www.mediaset.es/comunicacion/television/telecinco/20261106/isla-tentaciones-hogueras-solteros_18_020641327.html",
+          "published_at": "2026-11-06"
+        },
+        {
+          "title": "El País: triplete de La isla de las tentaciones 11",
+          "url": "https://elpais.com/television/2026-11-09/triplete-de-la-isla-de-las-tentaciones-11-en-telecinco-tres-noches-consecutivas-de-encuentros-y-hogueras-finales-de-gran-tension.html",
+          "published_at": "2026-11-09"
+        }
+      ],
+      "news_disposition": "ignored",
+      "news_note": "Aparición actual verificada en Top 30; contexto de emisión verificado, sin atribuir un detonante algorítmico exacto a la etiqueta.",
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "pending",
+      "fallback_image_status": "pending",
+      "image_choice": "none",
+      "image_status": "pending",
+      "image_pending": true,
+      "telegram_package_status": "pending"
     },
     {
       "id": "db1a689b7f75",
       "name": "RTVE",
       "rank": 4,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-11-10T00:06:00+01:00",
       "revision": 0,
       "reexplain": false,
@@ -279585,7 +279613,6 @@
       "captured_with": [
         "RTVE"
       ],
-      "automatic_grouping": false,
       "grouping_disabled": true,
       "auto_queued": true,
       "auto_queue_scope": "top30",
@@ -279596,17 +279623,51 @@
       "editor_approval_batch_id": "",
       "previous_episode_id": "d7783f7a9db9",
       "distinct_event_required": true,
-      "review_instruction": "Investiga POR QUÉ ha vuelto al Top 30 tras más de 24 h de la última explicación (o por solicitud expresa). Contrasta hechos actuales con la ficha anterior. Solo un acontecimiento material, nuevo e independiente permite otra ficha en Listas. Si sigue el mismo motivo, conservar la explicación previa y cerrar como review_completed/no_distinct_event, sin publicación ni imagen. Un cambio de puesto o seguir en el ranking NO es un retorno."
+      "review_instruction": "Investiga POR QUÉ ha vuelto al Top 30 tras más de 24 h de la última explicación (o por solicitud expresa). Contrasta hechos actuales con la ficha anterior. Solo un acontecimiento material, nuevo e independiente permite otra ficha en Listas. Si sigue el mismo motivo, conservar la explicación previa y cerrar como review_completed/no_distinct_event, sin publicación ni imagen. Un cambio de puesto o seguir en el ranking NO es un retorno.",
+      "explained_at": "2026-11-10T00:22:00+01:00",
+      "last_attempt_at": "2026-11-10T00:22:00+01:00",
+      "explanation": "TT#4 RTVE vuelve a ser tendencia por la entrevista de Santiago Abascal en La Revuelta: se cambió el público habitual y RTVE negó que la Junta Electoral obligara a invitarle.\n#LaRevuelta #SantiagoAbascal\n🌶️ La noche empezó con casting y acabó sin guion.",
+      "closer_text": "🌶️ La noche empezó con casting y acabó sin guion.",
+      "rank_at_explanation": 4,
+      "category": "Política",
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        {
+          "title": "RTVE: entrevista de Santiago Abascal en La Revuelta",
+          "url": "https://www.rtve.es/noticias/20261109/la-revuelta-entrevista-santiago-abascal-vox-david-broncano-titulares/17307024.shtml",
+          "published_at": "2026-11-09"
+        },
+        {
+          "title": "elDiario/Vertele: cambio de público en La Revuelta",
+          "url": "https://www.eldiario.es/vertele/noticias/broncano-confirma-veto-vox-publico-revuelta-temor-abucheos-abascal-solicitaron-encargarse-rtve_1_13650728.html",
+          "published_at": "2026-11-09"
+        },
+        {
+          "title": "El Periódico/Yotele: RTVE niega obligación de la JEC",
+          "url": "https://www.elperiodico.cat/yotele/20261109/no-broncano-obligat-entrevistar-abascal-revuelta-dos-precedents-demostren-136251450",
+          "published_at": "2026-11-09"
+        }
+      ],
+      "news_disposition": "ignored",
+      "news_note": "Reentrada >24 h: episodio material nuevo verificado, la emisión efectiva del 9/11 y la controversia concreta sobre público/obligación electoral.",
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "pending",
+      "fallback_image_status": "pending",
+      "image_choice": "none",
+      "image_status": "pending",
+      "image_pending": true,
+      "telegram_package_status": "pending"
     },
     {
       "id": "252b4f0e011a",
       "name": "Jordi Wild",
       "rank": 5,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-11-10T00:06:00+01:00",
       "revision": 0,
       "reexplain": false,
-      "with_image": true,
+      "with_image": false,
       "alternatives_target": 0,
       "batch_id": "096041f38c41",
       "requested_together": [
@@ -279615,7 +279676,6 @@
       "captured_with": [
         "Jordi Wild"
       ],
-      "automatic_grouping": false,
       "grouping_disabled": true,
       "auto_queued": true,
       "auto_queue_scope": "top30",
@@ -279626,13 +279686,22 @@
       "editor_approval_batch_id": "",
       "previous_episode_id": "",
       "distinct_event_required": true,
-      "review_instruction": "Investiga POR QUÉ ha vuelto al Top 30 tras más de 24 h de la última explicación (o por solicitud expresa). Contrasta hechos actuales con la ficha anterior. Solo un acontecimiento material, nuevo e independiente permite otra ficha en Listas. Si sigue el mismo motivo, conservar la explicación previa y cerrar como review_completed/no_distinct_event, sin publicación ni imagen. Un cambio de puesto o seguir en el ranking NO es un retorno."
+      "review_instruction": "Investiga POR QUÉ ha vuelto al Top 30 tras más de 24 h de la última explicación (o por solicitud expresa). Contrasta hechos actuales con la ficha anterior. Solo un acontecimiento material, nuevo e independiente permite otra ficha en Listas. Si sigue el mismo motivo, conservar la explicación previa y cerrar como review_completed/no_distinct_event, sin publicación ni imagen. Un cambio de puesto o seguir en el ranking NO es un retorno.",
+      "review_completed_at": "2026-11-10T00:22:00+01:00",
+      "review_reason": "no_distinct_event",
+      "last_attempt_at": "2026-11-10T00:22:00+01:00",
+      "disable_ai_image": true,
+      "image_pending": false,
+      "image_status": "none",
+      "ai_image_status": "none",
+      "fallback_image_status": "none",
+      "telegram_package_status": "none"
     },
     {
       "id": "36c513707af2",
       "name": "Manolete",
       "rank": 6,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-11-10T00:06:00+01:00",
       "revision": 0,
       "reexplain": false,
@@ -279645,7 +279714,6 @@
       "captured_with": [
         "Manolete"
       ],
-      "automatic_grouping": false,
       "grouping_disabled": true,
       "auto_queued": true,
       "auto_queue_scope": "top30",
@@ -279656,13 +279724,31 @@
       "editor_approval_batch_id": "",
       "previous_episode_id": "",
       "distinct_event_required": false,
-      "review_instruction": ""
+      "review_instruction": "",
+      "explained_at": "2026-11-10T00:22:00+01:00",
+      "last_attempt_at": "2026-11-10T00:22:00+01:00",
+      "explanation": "TT#6 Manolete aparece entre las tendencias en España, pero tras contrastar la actualidad no se ha podido confirmar qué hecho concreto ha impulsado el término.",
+      "closer_text": "",
+      "rank_at_explanation": 6,
+      "category": "Otros",
+      "source": "editorial_chat_direct",
+      "verification_sources": [],
+      "news_disposition": "ignored",
+      "news_note": "Primera investigación ordinaria. Top 30 actual verificado; búsquedas independientes sin detonante fiable.",
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "pending",
+      "fallback_image_status": "pending",
+      "image_choice": "none",
+      "image_status": "pending",
+      "image_pending": true,
+      "telegram_package_status": "pending"
     },
     {
       "id": "dae325d91836",
       "name": "Arévalo",
       "rank": 9,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-11-10T00:06:00+01:00",
       "revision": 0,
       "reexplain": false,
@@ -279675,7 +279761,6 @@
       "captured_with": [
         "Arévalo"
       ],
-      "automatic_grouping": false,
       "grouping_disabled": true,
       "auto_queued": true,
       "auto_queue_scope": "top30",
@@ -279686,17 +279771,41 @@
       "editor_approval_batch_id": "",
       "previous_episode_id": "",
       "distinct_event_required": false,
-      "review_instruction": ""
+      "review_instruction": "",
+      "explained_at": "2026-11-10T00:22:00+01:00",
+      "last_attempt_at": "2026-11-10T00:22:00+01:00",
+      "explanation": "TT#9 Arévalo aparece entre las tendencias en España, pero tras contrastar la actualidad no se ha podido confirmar qué hecho concreto ha impulsado el término.",
+      "closer_text": "",
+      "rank_at_explanation": 9,
+      "category": "Otros",
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        {
+          "title": "Resultado actual sobre Arévalo no relacionado con un detonante social claro",
+          "url": "https://calentamientoglobal.es/prensa/noticia/2026-11-09-otono-pluviometro-a-pluviometro/avila/",
+          "published_at": "2026-11-09"
+        }
+      ],
+      "news_disposition": "ignored",
+      "news_note": "Primera investigación ordinaria. Top 30 actual verificado; no se encontró un detonante actual suficientemente fiable.",
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "pending",
+      "fallback_image_status": "pending",
+      "image_choice": "none",
+      "image_status": "pending",
+      "image_pending": true,
+      "telegram_package_status": "pending"
     },
     {
       "id": "5a9fee711d35",
       "name": "Candela Peña",
       "rank": 10,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-11-10T00:06:00+01:00",
       "revision": 0,
       "reexplain": false,
-      "with_image": true,
+      "with_image": false,
       "alternatives_target": 0,
       "batch_id": "096041f38c41",
       "requested_together": [
@@ -279705,7 +279814,6 @@
       "captured_with": [
         "Candela Peña"
       ],
-      "automatic_grouping": false,
       "grouping_disabled": true,
       "auto_queued": true,
       "auto_queue_scope": "top30",
@@ -279716,13 +279824,22 @@
       "editor_approval_batch_id": "",
       "previous_episode_id": "",
       "distinct_event_required": true,
-      "review_instruction": "Investiga POR QUÉ ha vuelto al Top 30 tras más de 24 h de la última explicación (o por solicitud expresa). Contrasta hechos actuales con la ficha anterior. Solo un acontecimiento material, nuevo e independiente permite otra ficha en Listas. Si sigue el mismo motivo, conservar la explicación previa y cerrar como review_completed/no_distinct_event, sin publicación ni imagen. Un cambio de puesto o seguir en el ranking NO es un retorno."
+      "review_instruction": "Investiga POR QUÉ ha vuelto al Top 30 tras más de 24 h de la última explicación (o por solicitud expresa). Contrasta hechos actuales con la ficha anterior. Solo un acontecimiento material, nuevo e independiente permite otra ficha en Listas. Si sigue el mismo motivo, conservar la explicación previa y cerrar como review_completed/no_distinct_event, sin publicación ni imagen. Un cambio de puesto o seguir en el ranking NO es un retorno.",
+      "review_completed_at": "2026-11-10T00:22:00+01:00",
+      "review_reason": "no_distinct_event",
+      "last_attempt_at": "2026-11-10T00:22:00+01:00",
+      "disable_ai_image": true,
+      "image_pending": false,
+      "image_status": "none",
+      "ai_image_status": "none",
+      "fallback_image_status": "none",
+      "telegram_package_status": "none"
     },
     {
       "id": "6fb89bd65d53",
       "name": "#ElComite",
       "rank": 12,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-11-10T00:06:00+01:00",
       "revision": 0,
       "reexplain": false,
@@ -279735,7 +279852,6 @@
       "captured_with": [
         "#ElComite"
       ],
-      "automatic_grouping": false,
       "grouping_disabled": true,
       "auto_queued": true,
       "auto_queue_scope": "top30",
@@ -279746,13 +279862,42 @@
       "editor_approval_batch_id": "",
       "previous_episode_id": "",
       "distinct_event_required": false,
-      "review_instruction": ""
+      "review_instruction": "",
+      "explained_at": "2026-11-10T00:22:00+01:00",
+      "last_attempt_at": "2026-11-10T00:22:00+01:00",
+      "explanation": "TT#12 #ElComite es tendencia por el estreno esta noche en Cuatro del nuevo programa de actualidad de Risto Mejide, que reúne a especialistas para analizar política, economía y sociedad.\n#RistoMejide #Cuatro\n🌶️ El prime time ha convocado expertos con acta de reunión.",
+      "closer_text": "🌶️ El prime time ha convocado expertos con acta de reunión.",
+      "rank_at_explanation": 12,
+      "category": "Televisión",
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        {
+          "title": "Mediaset Infinity: estreno de El Comité",
+          "url": "https://www.mediasetinfinity.es/programas-tv/todo-es-mentira/2026/top-videos/risto-mejide-presenta-el-comite-nuevo-programa-cuatro-40_020542971/player/",
+          "published_at": "2026-11-09"
+        },
+        {
+          "title": "Granada Hoy: nuevo programa político de Risto Mejide",
+          "url": "https://www.granadahoy.com/television/debes-nuevo-programa-politico-risto_0_2008451160.html",
+          "published_at": "2026-11-08"
+        }
+      ],
+      "news_disposition": "ignored",
+      "news_note": "Estreno actual verificado.",
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "pending",
+      "fallback_image_status": "pending",
+      "image_choice": "none",
+      "image_status": "pending",
+      "image_pending": true,
+      "telegram_package_status": "pending"
     },
     {
       "id": "0386deb62e6f",
       "name": "Brincando",
       "rank": 15,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-11-10T00:06:00+01:00",
       "revision": 0,
       "reexplain": false,
@@ -279765,7 +279910,6 @@
       "captured_with": [
         "Brincando"
       ],
-      "automatic_grouping": false,
       "grouping_disabled": true,
       "auto_queued": true,
       "auto_queue_scope": "top30",
@@ -279776,7 +279920,25 @@
       "editor_approval_batch_id": "",
       "previous_episode_id": "",
       "distinct_event_required": false,
-      "review_instruction": ""
+      "review_instruction": "",
+      "explained_at": "2026-11-10T00:22:00+01:00",
+      "last_attempt_at": "2026-11-10T00:22:00+01:00",
+      "explanation": "TT#15 Brincando aparece entre las tendencias en España, pero tras contrastar la actualidad no se ha podido confirmar qué hecho concreto ha impulsado el término.",
+      "closer_text": "",
+      "rank_at_explanation": 15,
+      "category": "Otros",
+      "source": "editorial_chat_direct",
+      "verification_sources": [],
+      "news_disposition": "ignored",
+      "news_note": "Primera investigación ordinaria. Top 30 actual verificado; búsquedas independientes sin detonante fiable.",
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "pending",
+      "fallback_image_status": "pending",
+      "image_choice": "none",
+      "image_status": "pending",
+      "image_pending": true,
+      "telegram_package_status": "pending"
     },
     {
       "id": "658de3359f22",
@@ -279813,7 +279975,7 @@
       "id": "c502abc80a52",
       "name": "La Vida Moderna",
       "rank": 19,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-11-10T00:06:00+01:00",
       "revision": 0,
       "reexplain": false,
@@ -279826,7 +279988,6 @@
       "captured_with": [
         "La Vida Moderna"
       ],
-      "automatic_grouping": false,
       "grouping_disabled": true,
       "auto_queued": true,
       "auto_queue_scope": "top30",
@@ -279837,13 +279998,37 @@
       "editor_approval_batch_id": "",
       "previous_episode_id": "",
       "distinct_event_required": false,
-      "review_instruction": ""
+      "review_instruction": "",
+      "explained_at": "2026-11-10T00:22:00+01:00",
+      "last_attempt_at": "2026-11-10T00:22:00+01:00",
+      "explanation": "TT#19 La Vida Moderna aparece entre las tendencias durante la noche de la entrevista de Abascal a Broncano, que ha reactivado referencias a la etapa radiofónica del presentador. No se ha podido confirmar un detonante único.\n#LaRevuelta #Broncano",
+      "closer_text": "",
+      "rank_at_explanation": 19,
+      "category": "Televisión",
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        {
+          "title": "Diario de Navarra: contexto de la entrevista a Abascal y referencias a Quequé/La Vida Moderna",
+          "url": "https://www.diariodenavarra.es/noticias/magazine/television/2026/11/09/expectacion-polemica-entrevista-abascal-revuelta-841785-107.html",
+          "published_at": "2026-11-09"
+        }
+      ],
+      "news_disposition": "ignored",
+      "news_note": "Contexto actual verificado; detonante exacto del nombre del antiguo programa no confirmado.",
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "pending",
+      "fallback_image_status": "pending",
+      "image_choice": "none",
+      "image_status": "pending",
+      "image_pending": true,
+      "telegram_package_status": "pending"
     },
     {
       "id": "682a8cab1c48",
       "name": "Dictador",
       "rank": 20,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-11-10T00:06:00+01:00",
       "revision": 0,
       "reexplain": false,
@@ -279856,7 +280041,6 @@
       "captured_with": [
         "Dictador"
       ],
-      "automatic_grouping": false,
       "grouping_disabled": true,
       "auto_queued": true,
       "auto_queue_scope": "top30",
@@ -279867,13 +280051,42 @@
       "editor_approval_batch_id": "",
       "previous_episode_id": "",
       "distinct_event_required": false,
-      "review_instruction": ""
+      "review_instruction": "",
+      "explained_at": "2026-11-10T00:22:00+01:00",
+      "last_attempt_at": "2026-11-10T00:22:00+01:00",
+      "explanation": "TT#20 Dictador es tendencia porque Santiago Abascal defendió ante David Broncano aplicar ese término a Pedro Sánchez y lo vinculó a su crítica sobre las instituciones.\n#LaRevuelta #SantiagoAbascal #PedroSánchez\n🌶️ La palabra llegó al sofá antes que el consenso.",
+      "closer_text": "🌶️ La palabra llegó al sofá antes que el consenso.",
+      "rank_at_explanation": 20,
+      "category": "Política",
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        {
+          "title": "elDiario: Abascal defiende ante Broncano llamar dictador a Sánchez",
+          "url": "https://www.eldiario.es/politica/abascal-justifica-broncano-llamar-dictador-pedro-sanchez-asegura-asalto-instituciones_1_13649863.html",
+          "published_at": "2026-11-09"
+        },
+        {
+          "title": "El Español: entrevista de Abascal en La Revuelta",
+          "url": "https://www.elespanol.com/espana/20261109/abascal-revuelta-elecciones-directo-ultima-hora-entrevista-lider-vox-tve-pedro-sanchez-septima/1003744451641_10.html",
+          "published_at": "2026-11-09"
+        }
+      ],
+      "news_disposition": "ignored",
+      "news_note": "Detonante actual directamente documentado durante la emisión.",
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "pending",
+      "fallback_image_status": "pending",
+      "image_choice": "none",
+      "image_status": "pending",
+      "image_pending": true,
+      "telegram_package_status": "pending"
     },
     {
       "id": "d6769598d6e3",
       "name": "Pablo Motos",
       "rank": 22,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-11-10T00:06:00+01:00",
       "revision": 0,
       "reexplain": false,
@@ -279886,7 +280099,6 @@
       "captured_with": [
         "Pablo Motos"
       ],
-      "automatic_grouping": false,
       "grouping_disabled": true,
       "auto_queued": true,
       "auto_queue_scope": "top30",
@@ -279897,13 +280109,42 @@
       "editor_approval_batch_id": "",
       "previous_episode_id": "",
       "distinct_event_required": false,
-      "review_instruction": ""
+      "review_instruction": "",
+      "explained_at": "2026-11-10T00:22:00+01:00",
+      "last_attempt_at": "2026-11-10T00:22:00+01:00",
+      "explanation": "TT#22 Pablo Motos aparece entre las tendencias en medio de las comparaciones entre La Revuelta y El Hormiguero durante la visita de Abascal, y con Feijóo anunciado para el programa de Antena 3 el día 11.\n#ElHormiguero #LaRevuelta #Feijóo",
+      "closer_text": "",
+      "rank_at_explanation": 22,
+      "category": "Televisión",
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        {
+          "title": "elDiario/Vertele: bromas sobre El Hormiguero durante la entrevista de Abascal",
+          "url": "https://www.eldiario.es/vertele/noticias/broncano-confirma-veto-vox-publico-revuelta-temor-abucheos-abascal-solicitaron-encargarse-rtve_1_13650728.html",
+          "published_at": "2026-11-09"
+        },
+        {
+          "title": "Europa Press: Feijóo acudirá a El Hormiguero el 11 de noviembre",
+          "url": "https://www.europapress.es/nacional/noticia-feijoo-acudira-hormiguero-dia-11-noviembre-pp-no-cierra-puerta-asista-revuelta-20261106134841.html",
+          "published_at": "2026-11-06"
+        }
+      ],
+      "news_disposition": "ignored",
+      "news_note": "Contexto actual fuerte, pero sin atribuir un único detonante algorítmico.",
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "pending",
+      "fallback_image_status": "pending",
+      "image_choice": "none",
+      "image_status": "pending",
+      "image_pending": true,
+      "telegram_package_status": "pending"
     },
     {
       "id": "299d9b265fff",
       "name": "Con Sánchez",
       "rank": 23,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-11-10T00:06:00+01:00",
       "revision": 0,
       "reexplain": false,
@@ -279916,7 +280157,6 @@
       "captured_with": [
         "Con Sánchez"
       ],
-      "automatic_grouping": false,
       "grouping_disabled": true,
       "auto_queued": true,
       "auto_queue_scope": "top30",
@@ -279927,13 +280167,42 @@
       "editor_approval_batch_id": "",
       "previous_episode_id": "",
       "distinct_event_required": false,
-      "review_instruction": ""
+      "review_instruction": "",
+      "explained_at": "2026-11-10T00:22:00+01:00",
+      "last_attempt_at": "2026-11-10T00:22:00+01:00",
+      "explanation": "TT#23 Con Sánchez aparece entre las tendencias mientras Pedro Sánchez era entrevistado esta noche por Javier Ruiz en La Séptima, en paralelo a la entrevista de Abascal en La Revuelta.\n#PedroSánchez #LaSéptima #29N",
+      "closer_text": "",
+      "rank_at_explanation": 23,
+      "category": "Política",
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        {
+          "title": "Demócrata: Sánchez y Abascal se contraprograman en prime time",
+          "url": "https://www.democrata.es/elecciones-generales-espana/sanchez-abascal-entrevistas-septima-revuelta-9-noviembre/",
+          "published_at": "2026-11-09"
+        },
+        {
+          "title": "La Voz de Galicia: entrevista de Sánchez en La Séptima",
+          "url": "https://www.lavozdegalicia.es/noticia/espana/2026/11/09/sanchez-pp-vox-van-devolver-siglo-xx/00031794262873196775594.htm",
+          "published_at": "2026-11-09"
+        }
+      ],
+      "news_disposition": "ignored",
+      "news_note": "Contexto contemporáneo verificado; la frase exacta 'Con Sánchez' no permite atribuir un detonante más preciso.",
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "pending",
+      "fallback_image_status": "pending",
+      "image_choice": "none",
+      "image_status": "pending",
+      "image_pending": true,
+      "telegram_package_status": "pending"
     },
     {
       "id": "24733e06cc03",
       "name": "Gaza",
       "rank": 25,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-11-10T00:06:00+01:00",
       "revision": 0,
       "reexplain": false,
@@ -279946,7 +280215,6 @@
       "captured_with": [
         "Gaza"
       ],
-      "automatic_grouping": false,
       "grouping_disabled": true,
       "auto_queued": true,
       "auto_queue_scope": "top30",
@@ -279957,13 +280225,42 @@
       "editor_approval_batch_id": "",
       "previous_episode_id": "",
       "distinct_event_required": false,
-      "review_instruction": ""
+      "review_instruction": "",
+      "explained_at": "2026-11-10T00:22:00+01:00",
+      "last_attempt_at": "2026-11-10T00:22:00+01:00",
+      "explanation": "TT#25 Gaza es tendencia tras el choque entre Broncano y Abascal sobre la guerra: el presentador reprochó al líder de Vox su posición ante Israel y su relación con Netanyahu.\n#LaRevuelta #SantiagoAbascal #Gaza",
+      "closer_text": "",
+      "rank_at_explanation": 25,
+      "category": "Internacional",
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        {
+          "title": "ARA: choque entre Broncano y Abascal sobre Israel y Gaza",
+          "url": "https://en.ara.cat/politics/you-didn-t-have-the-balls-to-denounce-israel-s-genocide-broncano-and-abascal-clash-revuelta_1_5905688.html",
+          "published_at": "2026-11-09"
+        },
+        {
+          "title": "elDiario: entrevista de Abascal en La Revuelta",
+          "url": "https://www.eldiario.es/politica/abascal-justifica-broncano-llamar-dictador-pedro-sanchez-asegura-asalto-instituciones_1_13649863.html",
+          "published_at": "2026-11-09"
+        }
+      ],
+      "news_disposition": "ignored",
+      "news_note": "Tema sensible; se cierra sin remate humorístico.",
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "pending",
+      "fallback_image_status": "pending",
+      "image_choice": "none",
+      "image_status": "pending",
+      "image_pending": true,
+      "telegram_package_status": "pending"
     },
     {
       "id": "bd016ccdb9b6",
       "name": "Masterchef",
       "rank": 26,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-11-10T00:06:00+01:00",
       "revision": 0,
       "reexplain": false,
@@ -279976,7 +280273,6 @@
       "captured_with": [
         "Masterchef"
       ],
-      "automatic_grouping": false,
       "grouping_disabled": true,
       "auto_queued": true,
       "auto_queue_scope": "top30",
@@ -279987,7 +280283,31 @@
       "editor_approval_batch_id": "",
       "previous_episode_id": "",
       "distinct_event_required": false,
-      "review_instruction": ""
+      "review_instruction": "",
+      "explained_at": "2026-11-10T00:22:00+01:00",
+      "last_attempt_at": "2026-11-10T00:22:00+01:00",
+      "explanation": "TT#26 Masterchef es tendencia por la semifinal de MasterChef Celebrity Legends en La 1, emitida esta noche después de La Revuelta con cinco aspirantes buscando plaza en la final.\n#MasterChefCelebrity #RTVE\n🌶️ La semifinal sirve los nervios a temperatura de servicio.",
+      "closer_text": "🌶️ La semifinal sirve los nervios a temperatura de servicio.",
+      "rank_at_explanation": 26,
+      "category": "Televisión",
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        {
+          "title": "RTVE: semifinal de MasterChef Celebrity Legends",
+          "url": "https://www.rtve.es/rtve/20261106/semifinal-masterchef-celebrity-legends-llega-con-ingredientes-mas-extremos/17303280.shtml",
+          "published_at": "2026-11-06"
+        }
+      ],
+      "news_disposition": "ignored",
+      "news_note": "Emisión de semifinal actual verificada.",
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "pending",
+      "fallback_image_status": "pending",
+      "image_choice": "none",
+      "image_status": "pending",
+      "image_pending": true,
+      "telegram_package_status": "pending"
     },
     {
       "id": "de1de154b01a",
@@ -280014,5 +280334,5 @@
       "rewrite_instruction": "Investigación desde cero: verifica el contexto ACTUAL de Hamas, eventos, marcador y fecha. Redacta texto y remate nuevos y consigue una nueva foto de archivo para esta revisión. No reutilices explicaciones ni imágenes de una versión ya publicada o cerrada."
     }
   ],
-  "count": 2161
+  "count": 2195
 }
