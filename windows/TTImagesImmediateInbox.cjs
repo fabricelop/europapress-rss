@@ -169,4 +169,4 @@ async function deliver({project,job,commandId,targetId,secret,cdp,
  discardStaged(baseDir,task);
  return {state:'received',reason:'private_inbox_'+receipt.state,id:receipt.id};
 }
-module.exports={deliver,makeTask,readReceipt,parsePNG,saveReceipt,loadStaged,stageOriginal};
+module.exports={deliver,makeTask,readReceipt,parsePNG,saveReceipt,loadStaged,stageOriginal,discardStaged};
