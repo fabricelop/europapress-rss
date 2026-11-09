@@ -302,6 +302,7 @@ function trendRows(){
       Date.parse(item.explained_at||'')>=Date.now()-48*3600000&&
       (!req.explained_at||Math.abs(Date.parse(item.explained_at)-Date.parse(req.explained_at))<60000));
    const editorialState=activelyEditing?'EN ELABORACIÓN':working?'EN ELABORACIÓN':
+      terminal?'CERRADA':
       hasFreshExplained&&listasRow?'EN LISTAS':
       hasFreshExplained?'PENDIENTE DE LISTAS':
       priorReason?'MOTIVO ANTERIOR':failure?'REVISIÓN':
