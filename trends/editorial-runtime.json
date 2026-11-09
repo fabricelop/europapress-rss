@@ -3,49 +3,35 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794229800000-manual",
+  "run_id": "tr-1794230148758-manual",
   "previous_run_id": "tr-1794229800000-manual",
-  "command_id": "tr-1794229800000-manual",
+  "command_id": "tr-1794230148758-manual",
   "source": "chat",
   "status": "DONE",
   "phase": "closing",
-  "started_at": "2026-11-09T14:11:20+01:00",
-  "updated_at": "2026-11-09T14:18:00+01:00",
-  "finished_at": "2026-11-09T14:18:00+01:00",
-  "current": 7,
-  "total": 7,
+  "started_at": "2026-11-09T14:15:48.758+01:00",
+  "updated_at": "2026-11-09T14:16:43.982+01:00",
+  "finished_at": "2026-11-09T14:16:43.982+01:00",
+  "current": 0,
+  "total": 0,
   "trend_id": null,
-  "title": "Pasada editorial TTendencias",
+  "title": null,
   "queue_complete": true,
-  "processed_ids": [
-    "efa3b6ffade2",
-    "1bb6fcfbf136",
-    "5252e3ff7a8a",
-    "8eabdd62bb5c",
-    "b7e6219a46fc",
-    "red-review-1363f720882a64109445",
-    "red-review-890f9cda420eaa082725"
-  ],
-  "converged_ids": [
-    "5252e3ff7a8a",
-    "8eabdd62bb5c",
-    "b7e6219a46fc",
-    "red-review-1363f720882a64109445",
-    "red-review-890f9cda420eaa082725"
-  ],
+  "processed_ids": [],
+  "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 7,
-    "observed": 7,
-    "closed": 7,
-    "explained": 5,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 2,
-    "unchanged_reviews": 2,
+    "maintenance_reviews": 0,
+    "unchanged_reviews": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "stale_reviews": 0,
@@ -56,66 +42,9 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 5
+    "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "efa3b6ffade2",
-      "revision": 0,
-      "name": "#Mañaneros9N",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied"
-    },
-    {
-      "id": "1bb6fcfbf136",
-      "revision": 0,
-      "name": "TikTok",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied"
-    },
-    {
-      "id": "5252e3ff7a8a",
-      "revision": 0,
-      "name": "Sorloth",
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence"
-    },
-    {
-      "id": "8eabdd62bb5c",
-      "revision": 0,
-      "name": "Feliz Domingo",
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence"
-    },
-    {
-      "id": "b7e6219a46fc",
-      "revision": 0,
-      "name": "Real Oviedo",
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence"
-    },
-    {
-      "id": "red-review-1363f720882a64109445",
-      "revision": 0,
-      "name": "Revisar novedades: maffeo",
-      "outcome": "unchanged",
-      "applied": true,
-      "via": "concurrent_convergence"
-    },
-    {
-      "id": "red-review-890f9cda420eaa082725",
-      "revision": 0,
-      "name": "Revisar novedades: Valencia",
-      "outcome": "unchanged",
-      "applied": true,
-      "via": "concurrent_convergence"
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -447,28 +376,43 @@
       "at": "2026-11-09T14:11:20+01:00",
       "phase": "preparing",
       "message": "Pasada autoguard iniciada sobre main con 5 trabajos preparing. Revalidación JIT por ID/revisión antes de cada investigación y persistencia. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-09T14:15:48.758+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-1794230148758-manual iniciada sobre main. La primera lectura autoritativa ya encontró editorial-queue=0; se ejecuta barrera JIT antes de cerrar. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-09T14:16:43.982+01:00",
+      "phase": "verifying",
+      "message": "Barrera JIT final: editorial-queue=0; mobile-decisions sin trabajo editorial activo; búsqueda dirigida en requests.json sin preparing/update/rewrite_pending/reexplain."
+    },
+    {
+      "at": "2026-11-09T14:16:43.982+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-1794230148758-manual cerrada 0/0 contra main. Relectura final: editorial-queue=0 (updated_at 2026-11-09T13:16:43.981920+00:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. Búsqueda dirigida en requests.json sin rewrite_pending/reexplain/status preparing/status update. No había trabajo editorial pendiente que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
-  "last_started_at": "2026-11-09T14:15:52+01:00",
-  "last_completed_at": "2026-11-09T14:18:00+01:00",
+  "last_started_at": "2026-11-09T14:15:48.758+01:00",
+  "last_completed_at": "2026-11-09T14:16:43.982+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794229800000-manual",
+    "run_id": "tr-1794230148758-manual",
     "status": "DONE",
-    "started_at": "2026-11-09T14:10:00+01:00",
-    "finished_at": "2026-11-09T14:18:00+01:00",
-    "at": "2026-11-09T14:18:00+01:00",
+    "started_at": "2026-11-09T14:15:48.758+01:00",
+    "finished_at": "2026-11-09T14:16:43.982+01:00",
+    "at": "2026-11-09T14:16:43.982+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 7,
-      "observed": 7,
-      "closed": 7,
-      "explained": 5,
+      "attempted": 0,
+      "observed": 0,
+      "closed": 0,
+      "explained": 0,
       "problematic": 0,
       "updates": 0,
       "review_completed_no_distinct_event": 0,
-      "maintenance_reviews": 2,
-      "unchanged_reviews": 2,
+      "maintenance_reviews": 0,
+      "unchanged_reviews": 0,
       "continuity_updates": 0,
       "distinct_updates": 0,
       "stale_reviews": 0,
@@ -479,85 +423,13 @@
       "image_outbox_created": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 5
+      "concurrent_convergence": 0
     },
-    "processed_ids": [
-      "efa3b6ffade2",
-      "1bb6fcfbf136",
-      "5252e3ff7a8a",
-      "8eabdd62bb5c",
-      "b7e6219a46fc",
-      "red-review-1363f720882a64109445",
-      "red-review-890f9cda420eaa082725"
-    ],
-    "converged_ids": [
-      "5252e3ff7a8a",
-      "8eabdd62bb5c",
-      "b7e6219a46fc",
-      "red-review-1363f720882a64109445",
-      "red-review-890f9cda420eaa082725"
-    ],
-    "outcomes": [
-      {
-        "id": "efa3b6ffade2",
-        "revision": 0,
-        "name": "#Mañaneros9N",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox_applied"
-      },
-      {
-        "id": "1bb6fcfbf136",
-        "revision": 0,
-        "name": "TikTok",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox_applied"
-      },
-      {
-        "id": "5252e3ff7a8a",
-        "revision": 0,
-        "name": "Sorloth",
-        "outcome": "explained",
-        "applied": true,
-        "via": "concurrent_convergence"
-      },
-      {
-        "id": "8eabdd62bb5c",
-        "revision": 0,
-        "name": "Feliz Domingo",
-        "outcome": "explained",
-        "applied": true,
-        "via": "concurrent_convergence"
-      },
-      {
-        "id": "b7e6219a46fc",
-        "revision": 0,
-        "name": "Real Oviedo",
-        "outcome": "explained",
-        "applied": true,
-        "via": "concurrent_convergence"
-      },
-      {
-        "id": "red-review-1363f720882a64109445",
-        "revision": 0,
-        "name": "Revisar novedades: maffeo",
-        "outcome": "unchanged",
-        "applied": true,
-        "via": "concurrent_convergence"
-      },
-      {
-        "id": "red-review-890f9cda420eaa082725",
-        "revision": 0,
-        "name": "Revisar novedades: Valencia",
-        "outcome": "unchanged",
-        "applied": true,
-        "via": "concurrent_convergence"
-      }
-    ],
+    "processed_ids": [],
+    "outcomes": [],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-1794229800000-manual cerrada 7/7. #Mañaneros9N, TikTok, Sorloth, Feliz Domingo y Real Oviedo quedaron explained y sincronizadas en requests.json + telegram-manual-explained.json. Las revisiones de maffeo y Valencia quedaron unchanged, conservando texto e explained_at. Barrera final: editorial-queue=0, requests sin preparing/update/rewrite_pending/reexplain y mobile-decisions sin pendientes. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "message": "Pasada tr-1794230148758-manual cerrada 0/0 contra main. Relectura final: editorial-queue=0 (updated_at 2026-11-09T13:16:43.981920+00:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. Búsqueda dirigida en requests.json sin rewrite_pending/reexplain/status preparing/status update. No había trabajo editorial pendiente que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
   "message": "Pasada tr-1794229800000-manual cerrada 7/7. #Mañaneros9N, TikTok, Sorloth, Feliz Domingo y Real Oviedo quedaron explained y sincronizadas en requests.json + telegram-manual-explained.json. Las revisiones de maffeo y Valencia quedaron unchanged, conservando texto e explained_at. Barrera final: editorial-queue=0, requests sin preparing/update/rewrite_pending/reexplain y mobile-decisions sin pendientes. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
