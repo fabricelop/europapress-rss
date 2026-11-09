@@ -7,16 +7,16 @@
   "previous_run_id": "tr-1794231600000-manual",
   "command_id": "tr-1794232500000-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-09T14:55:00+01:00",
-  "updated_at": "2026-11-09T14:55:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-09T14:55:45+01:00",
+  "finished_at": "2026-11-09T14:55:45+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -426,6 +426,16 @@
       "at": "2026-11-09T14:55:00+01:00",
       "phase": "preparing",
       "message": "Pasada tr-1794232500000-manual iniciada desde chat. Se relee main y se ejecuta barrera JIT completa antes de procesar o cerrar. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-09T14:55:45+01:00",
+      "phase": "verifying",
+      "message": "Barrera JIT final: editorial-queue=0 (updated_at 2026-11-09T14:51:17+01:00); mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos; búsqueda dirigida en requests.json sin marcas activas."
+    },
+    {
+      "at": "2026-11-09T14:55:45+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-1794232500000-manual cerrada 0/0 contra main. No había trabajo editorial pendiente que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "last_started_at": "2026-11-09T14:40:00+01:00",
