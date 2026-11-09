@@ -1,6 +1,41 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-09T21:25:19+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-09T20:25:50.568498+00:00",
+  "count": 1,
+  "items": [
+    {
+      "id": "red-review-facf29f9d9dd5ac98d7c",
+      "revision": 0,
+      "name": "Revisar novedades: Broncano",
+      "rank": 5,
+      "status": "preparing",
+      "requested_at": "2026-11-09T20:25:50.568498+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "50d1a6619b2a",
+        "revision": 0,
+        "name": "Broncano",
+        "rank": 18,
+        "explanation": "TT#7 Broncano sigue siendo tendencia por la entrevista a Abascal: tras cancelar al público previsto, asistentes dijeron llegar por agencia o contactos; RTVE aún no explica el proceso.\n#LaRevuelta #SantiagoAbascal\n🌶️ El sofá tiene invitado; la grada estrenó casting.",
+        "explanation_sha256": "6ff255c9075f60204ca77605cc16d5d3be7ddd2116020a5803635119d7a29d06",
+        "explained_at": "2026-11-07T00:53:00+01:00",
+        "verification_sources": [
+          {
+            "url": "https://www.rtve.es/play/videos/la-revuelta/broncano-confirma-santiago-abascal-como-invitado/17302195/"
+          },
+          {
+            "url": "https://cadenaser.com/nacional/2026/11/05/santiago-abascal-asistira-a-la-revuelta-de-tve-el-lunes-9-de-noviembre-y-afronta-la-entrevista-como-un-ahora-o-nunca-cadena-ser/"
+          }
+        ],
+        "fingerprint": "e935c499c1ac8f5755dfafd495847885b81a1aeac5aa7f4f1f626cf38a4b321d"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
