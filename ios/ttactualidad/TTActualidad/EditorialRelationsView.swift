@@ -55,11 +55,22 @@ private final class EditorialRelationsModel: ObservableObject {
         dataRevision &+= 1
     }
 
+    private func commandKey(news: EditorialRelationEndpoint,
+                            trend: EditorialRelationEndpoint, action: String) -> String {
+        [action, news.id, String(news.revision), news.episodeFingerprint,
+         trend.id, String(trend.revision), trend.episodeFingerprint].joined(separator: "|")
+    }
+
+    private func retireVerifiedCommand(news: EditorialRelationEndpoint,
+                                       trend: EditorialRelationEndpoint, action: String) {
+        commands.removeValue(forKey: commandKey(news: news, trend: trend, action: action))
+        UserDefaults.standard.set(commands, forKey: commandStorageKey)
+    }
+
     private func postDecision(news: EditorialRelationEndpoint,
                               trend: EditorialRelationEndpoint,
                               action: String, using github: GitHubEditor) async throws {
-        let key = [action, news.id, String(news.revision), news.episodeFingerprint,
-                   trend.id, String(trend.revision), trend.episodeFingerprint].joined(separator: "|")
+        let key = commandKey(news: news, trend: trend, action: action)
         let command = commands[key] ?? UUID().uuidString.lowercased()
         commands[key] = command
         UserDefaults.standard.set(commands, forKey: commandStorageKey)
@@ -78,8 +89,8 @@ private final class EditorialRelationsModel: ObservableObject {
         guard EditorialRelationsPolicy.confirms(receipt, action: action) else {
             throw RelationsError.unconfirmed
         }
-        commands.removeValue(forKey: key)
-        UserDefaults.standard.set(commands, forKey: commandStorageKey)
+        // Keep the same commandId until a fresh Site snapshot exposes the
+        // relation. A stale GET must not create a new command on retry.
     }
 
     func decide(news: EditorialRelationEndpoint, trend: EditorialRelationEndpoint,
@@ -92,6 +103,9 @@ private final class EditorialRelationsModel: ObservableObject {
             await load(using: github)
             let persisted = EditorialRelationsPolicy.persisted(
                 snapshot?.items ?? [], news: news, trend: trend, action: action)
+            if persisted {
+                retireVerifiedCommand(news: news, trend: trend, action: action)
+            }
             notice = persisted ?
                 (action == "link" ? "Relación guardada y comprobada en el Site." :
                  "Relación bloqueada y comprobada en el Site.") :
@@ -153,6 +167,11 @@ private final class EditorialRelationsModel: ObservableObject {
                         trend: change.trend, action: change.action)
             }
         }
+        for change in changes where visible.contains(
+            EditorialRelationsPolicy.pairKey(change.news, change.trend)) {
+            retireVerifiedCommand(news: change.news, trend: change.trend,
+                                  action: change.action)
+        }
         if visible.count < confirmed.count {
             errors.append("El Site aún no devuelve " +
                 String(confirmed.count - visible.count) +
@@ -209,6 +228,14 @@ private final class EditorialRelationsModel: ObservableObject {
             EditorialRelationsPolicy.persisted(
                 snapshot?.items ?? [], news: news, trend: $0, action: "unlink")
         }.count
+        for trend in links where EditorialRelationsPolicy.persisted(
+            snapshot?.items ?? [], news: news, trend: trend, action: "link") {
+            retireVerifiedCommand(news: news, trend: trend, action: "link")
+        }
+        for trend in unlinks where EditorialRelationsPolicy.persisted(
+            snapshot?.items ?? [], news: news, trend: trend, action: "unlink") {
+            retireVerifiedCommand(news: news, trend: trend, action: "unlink")
+        }
         if checkedLinks != linked || checkedUnlinks != unlinked {
             errorMessage = "El Site todavía no muestra todas las relaciones aceptadas."
         }
