@@ -12,8 +12,8 @@
   "started_at": "2026-11-09T21:25:55+01:00",
   "updated_at": "2026-11-09T21:27:00+01:00",
   "finished_at": null,
-  "current": 0,
-  "total": 1,
+  "current": 2,
+  "total": 3,
   "trend_id": "red-review-facf29f9d9dd5ac98d7c",
   "title": "Revisar novedades: Broncano",
   "queue_complete": false,
@@ -197,7 +197,7 @@
     ],
     "message": "Pasada tr-autoguard-1794253266 cerrada 12/12 tras relectura JIT: 8 explicaciones nuevas persistidas; Cera y Zubimendi convergieron a estado deleted y no se resucitaron; #ElSótano09N y Gamarra ya tenían explicación vigente publicada y se preservaron sin crear ficha duplicada. Barrera final: editorial-queue=0, sin preparing/update ni reexplicaciones pendientes. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Revisando novedades de Broncano r0: se contrasta la explicación vigente con información posterior y se preservará la misma ficha si no hay cambio material. ImageGen=0; publicaciones=0.",
+  "message": "Revisando novedades de Broncano r0: contraste posterior a la explicación vigente; por ahora no aparece un hecho material nuevo respecto al cambio de público ya incorporado. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794199200000-manual",
@@ -3181,12 +3181,19 @@
       "trend_id": "78100e73b601",
       "title": "Gamarra",
       "message": "Persistiendo Gamarra r0 tras investigación actual y revalidación JIT. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-09T21:27:00+01:00",
+      "phase": "investigating",
+      "trend_id": "red-review-facf29f9d9dd5ac98d7c",
+      "title": "Revisar novedades: Broncano",
+      "message": "Revisando novedades de Broncano r0: contraste posterior a la explicación vigente; por ahora no aparece un hecho material nuevo respecto al cambio de público ya incorporado. ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": {
     "id": "red-review-facf29f9d9dd5ac98d7c",
     "revision": 0,
-    "name": "Broncano"
+    "name": "Revisar novedades: Broncano"
   },
   "withdrawn_ids": [
     "ae7f066f3c94"
