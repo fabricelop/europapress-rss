@@ -1,5 +1,6 @@
 """Regression for Top30 returns after an episode has already been treated."""
 import importlib.util
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 import unittest
 
@@ -53,6 +54,51 @@ class TrendEpisodePolicyTests(unittest.TestCase):
                       "explanation": "Por la dimisión de hoy"}]
         history = policy.treated_terms([], explained)
         self.assertFalse(policy.should_reopen_from_radar("Oscar Puente", history, None))
+
+    def test_dated_top30_return_after_24h_opens_one_research_token(self):
+        now = datetime(2026, 11, 9, 21, 30, tzinfo=timezone.utc)
+        explained = now - timedelta(days=3)
+        entry = now - timedelta(minutes=15)
+        req = {"id": "published", "name": "La Peter", "status": "deleted",
+               "explained_at": explained.isoformat(), "explanation": "Old explanation"}
+        token = policy.review_episode_token(
+            "La Peter", {"entered_top30_at": entry.isoformat(),
+                         "last_changed_at": now.isoformat()},
+            req, {"la peter"}, now, explained)
+        self.assertEqual(token, "reentry:" + entry.isoformat(timespec="seconds"))
+        self.assertIsNone(policy.review_episode_token(
+            "La Peter", {"last_changed_at": now.isoformat()},
+            req, {"la peter"}, now, explained))
+        self.assertEqual(token, policy.review_episode_token(
+            "La Peter", {"entered_top30_at": entry.isoformat()},
+            req, {"la peter"}, now, explained))
+
+    def test_green_yellow_and_exactly_24h_keep_original(self):
+        now = datetime(2026, 11, 9, 21, 30, tzinfo=timezone.utc)
+        for hours in (3, 18, 24):
+            original = now - timedelta(hours=hours)
+            self.assertIsNone(policy.review_episode_token(
+                "Example", {"entered_top30_at": now.isoformat()},
+                {"name": "Example", "status": "explained",
+                 "explained_at": original.isoformat()},
+                {"example"}, now, original))
+        self.assertIsNone(policy.review_episode_token(
+            "Example", {"entered_top30_at": (now-timedelta(hours=4)).isoformat(),
+                        "last_changed_at": now.isoformat()},
+            {"name": "Example", "status": "deleted",
+             "explained_at": (now-timedelta(days=5)).isoformat()},
+            {"example"}, now, now-timedelta(hours=3)))
+
+    def test_no_verified_explanation_or_pending_research_never_reopens(self):
+        now = datetime(2026, 11, 9, 21, 30, tzinfo=timezone.utc)
+        entry = now - timedelta(minutes=2)
+        self.assertIsNone(policy.review_episode_token(
+            "Example", {"entered_top30_at": entry.isoformat()},
+            {"name": "Example", "status": "deleted"}, {"example"}, now))
+        self.assertIsNone(policy.review_episode_token(
+            "Example", {"entered_top30_at": entry.isoformat()},
+            {"name": "Example", "status": "preparing"},
+            {"example"}, now, now-timedelta(days=4)))
 
     def test_red_review_job_is_not_evidence_of_treated_trend(self):
         history = policy.treated_terms([
