@@ -7,16 +7,16 @@
   "previous_run_id": "tr-1794186889104-manual",
   "command_id": "tr-1794187489104-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-09T02:25:00+01:00",
-  "updated_at": "2026-11-09T02:25:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-09T02:31:27+01:00",
+  "finished_at": "2026-11-09T02:31:27+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -46,26 +46,26 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Iniciando pasada editorial y refresco manual",
+  "activity": "Pasada editorial cerrada",
   "last_started_at": "2026-11-09T02:14:10+01:00",
-  "last_completed_at": "2026-11-09T02:14:11+01:00",
+  "last_completed_at": "2026-11-09T02:31:27+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794186889104-manual",
-    "command_id": "tr-1794186889104-manual",
+    "run_id": "tr-1794187489104-manual",
+    "command_id": "tr-1794187489104-manual",
     "status": "DONE",
-    "started_at": "2026-11-09T02:15:00+01:00",
-    "finished_at": "2026-11-09T02:19:00+01:00",
+    "started_at": "2026-11-09T02:25:00+01:00",
+    "finished_at": "2026-11-09T02:31:27+01:00",
     "summary": {
-      "attempted": 2,
-      "observed": 2,
-      "closed": 2,
+      "attempted": 0,
+      "observed": 0,
+      "closed": 0,
       "explained": 0,
       "problematic": 0,
-      "updates": 1,
-      "continuity_updates": 1,
+      "updates": 0,
+      "continuity_updates": 0,
       "distinct_updates": 0,
-      "unchanged_reviews": 1,
+      "unchanged_reviews": 0,
       "stale_reviews": 0,
       "unverified_reviews": 0,
       "queue_remaining": 0,
@@ -74,11 +74,11 @@
       "image_outbox_created": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 2
+      "concurrent_convergence": 0
     },
-    "message": "Pasada tr-1794186889104-manual cerrada 2/2 por convergencia JIT. Pantoja: actualización de continuidad del mismo episodio tras la semifinal (Rosa Benito expulsada, Asraf finalista e Isa acepta viajar a Honduras). Jurado: unchanged; siguen coexistiendo los dos focos ya documentados sin novedad que justifique reescritura. Aplicación oficial success en 3fc646975735c1b414711766c577c63442860cad. Barrera final: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
+    "message": "Pasada tr-1794187489104-manual cerrada 0/0 tras refresco manual real. Workflow TTendencias 42545539983 completado success; recent.json capturado 2026-11-09T02:30:47+01:00 y editorial-queue actualizado 2026-11-09T02:30:55+01:00 con count=0. Barrera final: mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794187489104-manual iniciada desde chat. Cola inicial observada vacía; se lanza refresco manual del Top 30 antes de la barrera JIT. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1794187489104-manual cerrada 0/0 tras refresco manual real. Workflow TTendencias 42545539983 completado success; recent.json capturado 2026-11-09T02:30:47+01:00 y editorial-queue actualizado 2026-11-09T02:30:55+01:00 con count=0. Barrera final: mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-08T15:07:08+01:00",
@@ -1243,6 +1243,11 @@
       "at": "2026-11-09T02:25:00+01:00",
       "phase": "preparing",
       "message": "Pasada tr-1794187489104-manual iniciada desde chat. Cola inicial observada vacía; se lanza refresco manual del Top 30 antes de la barrera JIT. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-09T02:31:27+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-1794187489104-manual cerrada 0/0 tras refresco manual real. Workflow TTendencias 42545539983 completado success; recent.json capturado 2026-11-09T02:30:47+01:00 y editorial-queue actualizado 2026-11-09T02:30:55+01:00 con count=0. Barrera final: mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": null
