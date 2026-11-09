@@ -3,32 +3,60 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794264900000-manual",
+  "run_id": "tr-autoguard-1794266117",
   "previous_run_id": "tr-1794264900000-manual",
-  "command_id": "tr-1794264900000-manual",
+  "command_id": "tr-autoguard-1794266117",
   "source": "chat",
-  "status": "DONE_WITH_INCIDENTS",
-  "phase": "closing",
-  "started_at": "2026-11-09T23:57:49.750+01:00",
-  "updated_at": "2026-11-10T00:01:30+01:00",
-  "finished_at": "2026-11-10T00:01:30+01:00",
-  "current": 1,
-  "total": 1,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-10T00:16:00+01:00",
+  "updated_at": "2026-11-10T00:16:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 14,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "839aaa8d29b3"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "6485ff64586c",
+    "db1a689b7f75",
+    "252b4f0e011a",
+    "36c513707af2",
+    "dae325d91836",
+    "5a9fee711d35",
+    "6fb89bd65d53",
+    "0386deb62e6f",
+    "c502abc80a52",
+    "682a8cab1c48",
+    "d6769598d6e3",
+    "299d9b265fff",
+    "24733e06cc03",
+    "bd016ccdb9b6"
+  ],
+  "remaining_active_ids": [
+    "6485ff64586c",
+    "db1a689b7f75",
+    "252b4f0e011a",
+    "36c513707af2",
+    "dae325d91836",
+    "5a9fee711d35",
+    "6fb89bd65d53",
+    "0386deb62e6f",
+    "c502abc80a52",
+    "682a8cab1c48",
+    "d6769598d6e3",
+    "299d9b265fff",
+    "24733e06cc03",
+    "bd016ccdb9b6"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
-    "observed": 1,
-    "closed": 1,
-    "explained": 1,
+    "attempted": 0,
+    "observed": 14,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
@@ -41,40 +69,19 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 14,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 1,
+    "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "839aaa8d29b3",
-      "revision": 1,
-      "name": "Tartamudea",
-      "outcome": "explained",
-      "applied": true,
-      "outbox_commit": "afce135d9ce997c200312ebd347205c0fb4bf552",
-      "apply_commit": "870bf98bfd0cdf5aba8c283deb5740fe7a8629b1"
-    }
-  ],
-  "incident_count": 1,
-  "incidents": [
-    {
-      "type": "refresh_workflow_stuck_checkout",
-      "workflow_run_id": 42716411372,
-      "trigger_commit": "e07c7d4f652e2323ca9ffd0aaf4a503e7c8afd86",
-      "status": "in_progress",
-      "step": "actions/checkout@v4",
-      "observed_at": "2026-11-10T00:01:30+01:00",
-      "last_radar_captured_at": "2026-11-09T23:51:03+01:00",
-      "note": "El refresco manual real arrancó pero permanecía atascado en checkout al cierre. No se usó como prueba de éxito. La barrera editorial final en main sí quedó a 0 tras aplicar Tartamudea r1."
-    }
-  ],
+  "outcomes": [],
+  "incident_count": 0,
+  "incidents": [],
   "error": null,
-  "activity": "closing",
+  "activity": "preparing",
   "last_started_at": "2026-11-09T23:59:31+01:00",
   "last_completed_at": "2026-11-09T23:59:42+01:00",
   "api_failover_enabled": false,
@@ -138,7 +145,7 @@
     ],
     "message": "Pasada tr-1794264900000-manual cerrada 1/1 con incidencia. Tartamudea r1 fue investigada desde cero y aplicada en main por 870bf98bfd0cdf5aba8c283deb5740fe7a8629b1; la pista del editor quedó contrastada con dos crónicas independientes que describen tartamudeos y nervios de David Broncano durante la entrevista a Santiago Abascal. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. El refresco manual 42716411372 seguía atascado en actions/checkout@v4 y se registra como incidencia; recent.json conserva captura 2026-11-09T23:51:03+01:00. ImageGen=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794264900000-manual cerrada 1/1 con incidencia. Tartamudea r1 fue investigada desde cero y aplicada en main por 870bf98bfd0cdf5aba8c283deb5740fe7a8629b1; la pista del editor quedó contrastada con dos crónicas independientes que describen tartamudeos y nervios de David Broncano durante la entrevista a Santiago Abascal. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. El refresco manual 42716411372 seguía atascado en actions/checkout@v4 y se registra como incidencia; recent.json conserva captura 2026-11-09T23:51:03+01:00. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-autoguard-1794266117 RUNNING. Cola autoritativa inicial=14; se procesarán preparing/update de antiguo a reciente con revalidación JIT de id+revision. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794234841273-manual",
@@ -2496,6 +2503,13 @@
         }
       ],
       "message": "Pasada tr-1794264900000-manual cerrada 1/1 con incidencia. Tartamudea r1 fue investigada desde cero y aplicada en main por 870bf98bfd0cdf5aba8c283deb5740fe7a8629b1; la pista del editor quedó contrastada con dos crónicas independientes que describen tartamudeos y nervios de David Broncano durante la entrevista a Santiago Abascal. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. El refresco manual 42716411372 seguía atascado en actions/checkout@v4 y se registra como incidencia; recent.json conserva captura 2026-11-09T23:51:03+01:00. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-autoguard-1794266117",
+      "status": "RUNNING",
+      "at": "2026-11-10T00:16:00+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-autoguard-1794266117 RUNNING. Cola autoritativa inicial=14; se procesarán preparing/update de antiguo a reciente con revalidación JIT de id+revision. ImageGen=0; publicaciones=0."
     }
   ]
 }
