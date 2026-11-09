@@ -8,19 +8,31 @@
   "command_id": "tr-1794190200000-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "persisting",
   "started_at": "2026-11-09T03:11:30+01:00",
-  "updated_at": "2026-11-09T03:11:30+01:00",
+  "updated_at": "2026-11-09T03:17:00+01:00",
   "finished_at": null,
   "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": "Pasada editorial TTendencias",
+  "total": 5,
+  "trend_id": "e66798dae072",
+  "title": "Doran",
   "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "e66798dae072",
+    "f32194b977fd",
+    "639ad93bd705",
+    "a9073fde3cbe",
+    "5f70621d794b"
+  ],
+  "remaining_active_ids": [
+    "e66798dae072",
+    "f32194b977fd",
+    "639ad93bd705",
+    "a9073fde3cbe",
+    "5f70621d794b"
+  ],
   "remaining_problematic_ids": [],
   "summary": null,
   "outcomes": [],
@@ -59,7 +71,7 @@
     },
     "message": "Pasada tr-1794187489104-manual cerrada 0/0 tras refresco manual real. Workflow TTendencias 42545539983 completado success; recent.json capturado 2026-11-09T02:30:47+01:00 y editorial-queue actualizado 2026-11-09T02:30:55+01:00 con count=0. Barrera final: mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794190200000-manual RUNNING. Se ha lanzado refresco manual real del Top 30 (workflow 42549505095) antes de releer la cola JIT. ImageGen=0; publicaciones=0.",
+  "message": "5/5 trabajos identificados tras refresco 03:11: Doran, Barça, #Worlds2026, Faker y Supervivientes. Cuatro explicaciones preparadas; Barça se cierra como review_completed/no_distinct_event por corresponder al mismo Atlético-Barça ya tratado. Persistencia en lote sin agrupaciones. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-08T15:07:08+01:00",
@@ -1236,6 +1248,46 @@
       "at": "2026-11-09T03:11:30+01:00",
       "phase": "preparing",
       "message": "Pasada tr-1794190200000-manual RUNNING. Se ha lanzado refresco manual real del Top 30 (workflow 42549505095) antes de releer la cola JIT. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-09T03:17:00+01:00",
+      "phase": "investigating",
+      "trend_id": "e66798dae072",
+      "title": "Doran",
+      "message": "Doran r0: contexto actual verificado en la semifinal BLG-T1 de Worlds 2026; causa individual exacta no demostrada, se usa redacción prudente. ImageGen=0."
+    },
+    {
+      "at": "2026-11-09T03:17:00+01:00",
+      "phase": "investigating",
+      "trend_id": "f32194b977fd",
+      "title": "Barça",
+      "message": "Barça r0: reentrada contrastada con el episodio anterior. Sigue remitiendo al Atlético 1-2 Barça del 8/11; no hay acontecimiento distinto verificable. Se cerrará review_completed/no_distinct_event, sin Listas ni imagen."
+    },
+    {
+      "at": "2026-11-09T03:17:00+01:00",
+      "phase": "investigating",
+      "trend_id": "639ad93bd705",
+      "title": "#Worlds2026",
+      "message": "#Worlds2026 r0: semifinal BLG-T1 verificada como foco actual del Mundial de League of Legends. Texto individual preparado. ImageGen=0."
+    },
+    {
+      "at": "2026-11-09T03:17:00+01:00",
+      "phase": "investigating",
+      "trend_id": "a9073fde3cbe",
+      "title": "Faker",
+      "message": "Faker r0: participación de Faker con T1 en la semifinal ante BLG verificada; texto individual preparado. ImageGen=0."
+    },
+    {
+      "at": "2026-11-09T03:17:00+01:00",
+      "phase": "investigating",
+      "trend_id": "5f70621d794b",
+      "title": "Supervivientes",
+      "message": "Supervivientes r0: semifinal verificada; Rosa Benito expulsada y cuatro finalistas proclamados. Texto individual preparado. ImageGen=0."
+    },
+    {
+      "at": "2026-11-09T03:17:00+01:00",
+      "phase": "persisting",
+      "message": "5/5 trabajos identificados tras refresco 03:11: Doran, Barça, #Worlds2026, Faker y Supervivientes. Cuatro explicaciones preparadas; Barça se cierra como review_completed/no_distinct_event por corresponder al mismo Atlético-Barça ya tratado. Persistencia en lote sin agrupaciones. ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": null
