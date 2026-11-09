@@ -3,28 +3,40 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794199200000-manual",
-  "previous_run_id": "tr-1794198300000-manual",
-  "command_id": "tr-1794199200000-manual",
+  "run_id": "tr-autoguard-1794201116",
+  "previous_run_id": "tr-1794199200000-manual",
+  "command_id": "tr-autoguard-1794201116",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-09T05:40:00+01:00",
-  "updated_at": "2026-11-09T05:43:30+01:00",
-  "finished_at": "2026-11-09T05:43:30+01:00",
+  "status": "RUNNING",
+  "phase": "investigating",
+  "started_at": "2026-11-09T06:12:00+01:00",
+  "updated_at": "2026-11-09T06:12:00+01:00",
+  "finished_at": null,
   "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": "Pasada editorial TTendencias",
-  "queue_complete": true,
+  "total": 5,
+  "trend_id": "409ed14a3382",
+  "title": "#NASCARenDAZN",
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "409ed14a3382",
+    "a1fe74b9657a",
+    "39284cfb900a",
+    "4ef2ea1a9026",
+    "5a62d6821fac"
+  ],
+  "remaining_active_ids": [
+    "409ed14a3382",
+    "a1fe74b9657a",
+    "39284cfb900a",
+    "4ef2ea1a9026",
+    "5a62d6821fac"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 0,
+    "attempted": 5,
+    "observed": 5,
     "closed": 0,
     "explained": 0,
     "problematic": 0,
@@ -36,7 +48,7 @@
     "distinct_updates": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 5,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -48,8 +60,8 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "closing",
-  "last_started_at": "2026-11-09T05:40:00+01:00",
+  "activity": "investigating",
+  "last_started_at": "2026-11-09T06:12:00+01:00",
   "last_completed_at": "2026-11-09T05:43:30+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -85,7 +97,7 @@
     "outcomes": [],
     "message": "Pasada tr-1794199200000-manual cerrada 0/0 tras relectura final de main: editorial-queue=0 (actualizada 2026-11-09T05:41:00+01:00), Top 30 vigente=30 (capturado 2026-11-09T05:40:54+01:00), mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos y búsqueda en main sin marcas activas de preparing/update/rewrite_pending/reexplain. Últimos mantenimientos Valencia y maffeo permanecen unchanged. No había trabajo editorial que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794199200000-manual cerrada 0/0 tras relectura final de main: editorial-queue=0 (actualizada 2026-11-09T05:41:00+01:00), Top 30 vigente=30 (capturado 2026-11-09T05:40:54+01:00), mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos y búsqueda en main sin marcas activas de preparing/update/rewrite_pending/reexplain. Últimos mantenimientos Valencia y maffeo permanecen unchanged. No había trabajo editorial que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada tr-autoguard-1794201116 RUNNING. Cola JIT=5 reentradas de posible episodio nuevo; se comparan contra sus IDs históricos y fuentes actuales. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T03:17:00+01:00",
@@ -653,7 +665,19 @@
       "processed_ids": [],
       "outcomes": [],
       "message": "Pasada tr-1794199200000-manual cerrada 0/0 tras relectura final de main: editorial-queue=0 (actualizada 2026-11-09T05:41:00+01:00), Top 30 vigente=30 (capturado 2026-11-09T05:40:54+01:00), mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos y búsqueda en main sin marcas activas de preparing/update/rewrite_pending/reexplain. Últimos mantenimientos Valencia y maffeo permanecen unchanged. No había trabajo editorial que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-09T06:12:00+01:00",
+      "phase": "investigating",
+      "trend_id": "409ed14a3382",
+      "title": "#NASCARenDAZN",
+      "message": "Pasada tr-autoguard-1794201116 RUNNING. Cola JIT=5: #NASCARenDAZN, Bernabéu, gordon, Flick y Amaia. Todas son new_episode_review/distinct_event_required; se investiga si existe acontecimiento independiente respecto al episodio previo. ImageGen=0; publicaciones=0."
     }
   ],
-  "current_item": null
+  "current_item": {
+    "id": "409ed14a3382",
+    "revision": 0,
+    "name": "#NASCARenDAZN",
+    "phase": "investigating"
+  }
 }
