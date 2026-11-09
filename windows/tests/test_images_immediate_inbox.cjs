@@ -88,6 +88,26 @@ for(const project of ['ttendencias','ttittulares']){
   }finally{fs.rmSync(f.tmp,{recursive:true,force:true});}
  });
 }
+for(const project of ['ttendencias','ttittulares']){
+ test(project+': capture survives missing editorial network before private ingest',async()=>{
+  const f=fixture(project);
+  const original=f.receiver.editorialJob;
+  try{
+   f.receiver.editorialJob=async()=>{throw Error('EDITORIAL_NETWORK_UNAVAILABLE');};
+   await assert.rejects(f.run(),/EDITORIAL_NETWORK_UNAVAILABLE/);
+   const task=immediate.makeTask(project,f.job,'job-1234','target-1234');
+   assert.deepEqual(immediate.loadStaged(f.tmp,task),png,
+    'Original must exist even if the FIRST remote editorial read fails');
+   f.receiver.editorialJob=original;
+   f.setReady(false);
+   const recovered=await f.run();
+   assert.equal(recovered.state,'received');
+   assert.equal(f.counts().sent,1);
+   assert.equal(immediate.loadStaged(f.tmp,task),null);
+  }finally{fs.rmSync(f.tmp,{recursive:true,force:true});}
+ });
+}
+
 test('wrong exact command or missing editorial identity is rejected before capture',()=>{
  const job={command_id:'different',target_id:'target-1234',revision:2,
   context_snapshot:{explanation:'Text'}};
