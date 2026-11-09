@@ -3,20 +3,20 @@
   "engine": "chatgpt-editorial",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794209100000-manual",
-  "previous_run_id": "tr-1794208275000-manual",
-  "command_id": "tr-1794209100000-manual",
+  "run_id": "tr-1794210000000-manual",
+  "previous_run_id": "tr-1794209100000-manual",
+  "command_id": "tr-1794210000000-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-09T08:25:00+01:00",
-  "updated_at": "2026-11-09T08:26:30+01:00",
-  "finished_at": "2026-11-09T08:26:30+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-09T08:40:00+01:00",
+  "updated_at": "2026-11-09T08:40:00+01:00",
+  "finished_at": null,
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -62,9 +62,20 @@
       "trend_id": null,
       "title": "Pasada editorial TTendencias",
       "message": "Barrera final JIT limpia: cola=0 y sin reexplicaciones/revisiones activas. Cierre 0/0 sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-09T08:40:00+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-1794210000000-manual RUNNING desde chat. Cola inicial JIT=0; se releerá main antes del cierre. ImageGen=0; publicaciones=0.",
+      "prior_runtime_observed": {
+        "run_id": "tr-1794209100000-manual",
+        "status": "DONE",
+        "phase": "closing",
+        "updated_at": "2026-11-09T08:26:30+01:00"
+      }
     }
   ],
-  "last_started_at": "2026-11-09T08:25:00+01:00",
+  "last_started_at": "2026-11-09T08:40:00+01:00",
   "last_completed_at": "2026-11-09T08:26:30+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -100,7 +111,7 @@
     "outcomes": [],
     "message": "Pasada tr-1794209100000-manual cerrada 0/0: tras releer main, editorial-queue=0; mobile-decisions no contiene preparing/update/rewrite_pending/reexplain/anticipate/review_red activos y la búsqueda en main no encuentra marcas activas de preparing/update/rewrite_pending/reexplain. No había trabajos editoriales ni revisiones pendientes que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794209100000-manual cerrada 0/0: tras releer main, editorial-queue=0; mobile-decisions no contiene preparing/update/rewrite_pending/reexplain/anticipate/review_red activos y la búsqueda en main no encuentra marcas activas de preparing/update/rewrite_pending/reexplain. No había trabajos editoriales ni revisiones pendientes que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada tr-1794210000000-manual RUNNING desde chat. Cola inicial JIT=0; se releerá main antes del cierre. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T03:17:00+01:00",
