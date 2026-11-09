@@ -3,25 +3,26 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794183437001-manual",
-  "previous_run_id": "tr-1794183217485-manual",
-  "command_id": "tr-1794183437001-manual",
+  "run_id": "tr-1794183629966-manual",
+  "previous_run_id": "tr-1794183437001-manual",
+  "command_id": "tr-1794183629966-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "verifying",
-  "started_at": "2026-11-09T01:18:30+01:00",
-  "updated_at": "2026-11-09T01:20:33+01:00",
+  "phase": "preparing",
+  "started_at": "2026-11-09T01:21:30+01:00",
+  "updated_at": "2026-11-09T01:21:30+01:00",
   "finished_at": null,
-  "current": 1,
-  "total": 3,
-  "trend_id": "daa31c3c4084",
-  "title": "Barrios",
+  "current": 0,
+  "total": 2,
+  "trend_id": null,
+  "title": "Pasada editorial TTendencias",
   "queue_complete": false,
-  "processed_ids": [
-    "daa31c3c4084"
-  ],
+  "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
+  "remaining_ids": [
+    "red-review-7ac1bd151b9efc3131ed",
+    "red-review-23a49be63b26309c4fd1"
+  ],
   "remaining_active_ids": [
     "red-review-7ac1bd151b9efc3131ed",
     "red-review-23a49be63b26309c4fd1"
@@ -29,7 +30,7 @@
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
-    "observed": 1,
+    "observed": 2,
     "closed": 0,
     "explained": 0,
     "problematic": 0,
@@ -39,8 +40,8 @@
     "unchanged_reviews": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
-    "queue_remaining": 1,
-    "rewrite_pending_remaining": 1,
+    "queue_remaining": 2,
+    "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
@@ -51,7 +52,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Pasada editorial cerrada",
+  "activity": "Revisando novedades",
   "last_started_at": "2026-11-09T01:19:56+01:00",
   "last_completed_at": "2026-11-09T01:19:56+01:00",
   "api_failover_enabled": false,
@@ -83,7 +84,7 @@
     },
     "message": "Pasada tr-1794183217485-manual cerrada 2/2 por convergencia JIT. Barça r0 y Asraf r0 figuran explained en requests y telegram-manual-explained con texto/remate sincronizados; editorial-queue=0 y no quedan preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Barrios r0 ya aplicado. La barrera final incorporó 2 review_red nuevos; se procesan en orden JIT: Levante 0-2 Atlético y #SalvadosEmilioDelgado. ImageGen=0.",
+  "message": "Pasada tr-1794183629966-manual RUNNING. Cola JIT=2 review_red: Levante 0-2 Atlético y #SalvadosEmilioDelgado. Orden por antigüedad y revalidación ID/revisión antes de cada resultado. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-08T15:07:08+01:00",
@@ -902,13 +903,12 @@
       "at": "2026-11-09T01:20:33+01:00",
       "phase": "preparing",
       "message": "Barrios r0 ya aplicado. La barrera final incorporó 2 review_red nuevos; se procesan en orden JIT: Levante 0-2 Atlético y #SalvadosEmilioDelgado. ImageGen=0."
+    },
+    {
+      "at": "2026-11-09T01:21:30+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-1794183629966-manual RUNNING. Cola JIT=2 review_red: Levante 0-2 Atlético y #SalvadosEmilioDelgado. Orden por antigüedad y revalidación ID/revisión antes de cada resultado. ImageGen=0; publicaciones=0."
     }
   ],
-  "current_item": {
-    "id": "red-review-7ac1bd151b9efc3131ed",
-    "revision": 0,
-    "name": "Revisar novedades: Levante 0-2 Atlético",
-    "status": "preparing",
-    "phase": "verifying"
-  }
+  "current_item": null
 }
