@@ -112,7 +112,7 @@ function setApp(app){
  try{state.data=JSON.parse(sessionStorage.getItem('tt-web-snapshot-'+app)||'{}')||{}}catch{state.data={}}
  render();load(true)
 }
-function tabs(){return state.app==='tti'?[]:[['top','Top 30'],['elaboracion','En elaboración'],['pendientes','Pendientes'],['explicadas','Explicadas'],['historico','Histórico']]}
+function tabs(){return state.app==='tti'?[]:[['top','Top 30'],['elaboracion','En elaboración'],['pendientes','Sin elaborar'],['explicadas','Explicadas'],['historico','Histórico']]}
 function ttiRows(){
  const s=state.data.status||{},d=decisions(),prepared=(state.data.prepared?.items||[]).filter(x=>!isClosed(d.get(String(x.event_id))));
  if(state.tab==='listas')return prepared.map(x=>({...x,_kind:'tti',_id:String(x.event_id),_status:'LISTA'}));
@@ -301,11 +301,11 @@ function trendRows(){
       String(item.explanation||'').trim()&&
       Date.parse(item.explained_at||'')>=Date.now()-48*3600000&&
       (!req.explained_at||Math.abs(Date.parse(item.explained_at)-Date.parse(req.explained_at))<60000));
-   const editorialState=activelyEditing?'EN ELABORACIÓN':working?'EN COLA':
+   const editorialState=activelyEditing?'EN ELABORACIÓN':working?'EN ELABORACIÓN':
       hasFreshExplained&&listasRow?'EN LISTAS':
       hasFreshExplained?'PENDIENTE DE LISTAS':
       priorReason?'MOTIVO ANTERIOR':failure?'REVISIÓN':
-      Number(x.rank||i+1)>10?'PREPARACIÓN MANUAL':'PENDIENTE';
+      'SIN SOLICITUD EDITORIAL';
    return {...x,title:x.name,_kind:'tr',_id:String(req.id||x.name||i),
     _status:editorialState,_topOnly:true,_priorReason:priorReason,_inExplained:inExplained,_manualPending:manualPending,_telegramConfirmed:!!(wasDelivered&&!terminal),
     rank:Number(x.rank||i+1),
@@ -313,10 +313,11 @@ function trendRows(){
     explained_at:listasRow?latestAt:'',revision:finished.revision||req.revision||0,
     _queuedAt:queueItem?.requested_at||req.requested_at||'',_queuePosition:queueItem?1:0};
   });
-  // Top 10 enters Pendientes automatically. Top 11-30 only after Preparar novedad.
+  // All eligible Top30 enter preparing in the same radar pass. The legacy
+  // diagnostic tab shows only entries lacking an editorial request; it is
+  // not an intermediate workflow stage.
    return state.tab==='pendientes'?mapped.filter(x=>
-     ['EN COLA','EN ELABORACIÓN','PENDIENTE','REVISIÓN','EXPLICACIÓN SIN ENTREGAR'].includes(x._status)&&
-     (x.rank<=10||x._manualPending)):mapped;
+     ['SIN SOLICITUD EDITORIAL','REVISIÓN','EXPLICACIÓN SIN ENTREGAR'].includes(x._status)):mapped;
  }
  const latest=new Map();
  for(const x of ledger){
@@ -427,7 +428,7 @@ function rowCard(x,i){
  if(x._topOnly){
   out.classList.add('trend-top');
   if(x._queuedAt&&['EN COLA','EN ELABORACIÓN'].includes(x._status)){
-   const note=document.createElement('p');note.className='fact';note.textContent='En cola desde '+stamp(x._queuedAt)+(x._status==='EN COLA'?' · Aún no consta elaboración activa':' · Elaboración activa confirmada');out.querySelector('.card-body').insertBefore(note,a);
+   const note=document.createElement('p');note.className='fact';note.textContent='En elaboración desde '+stamp(x._queuedAt)+' · Solicitud editorial registrada';out.querySelector('.card-body').insertBefore(note,a);
   }
   if(x._priorReason){
    const note=document.createElement('p');note.className='fact';
