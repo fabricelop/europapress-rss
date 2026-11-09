@@ -10,23 +10,36 @@ struct RefreshLiveCountsIntent: AppIntent {
     static var openAppWhenRun: Bool = false
 
     func perform() async throws -> some IntentResult {
-        let source = try await LiveCountsSource.load()
-        let now = Date()
-        for activity in Activity<LiveCountsAttributes>.activities {
-            // Pending writes live in the native app, not the public GitHub JSON.
-            // Preserve that unresolved status when refreshing from the Island.
-            let awaiting = activity.content.state.pendingActions
-            let state = LiveCountsAttributes.ContentState(
-                newsReady: source.news, trendsReady: source.trends,
-                newsWorking: source.newsWorking, trendsWorking: source.trendsWorking,
-                pendingActions: awaiting, checkedAt: now, partialData: false,
-                recentHeadline: source.latestHeadline,
-                newsPublished24h: source.newsPublished24h,
-                trendsPublished24h: source.trendsPublished24h,
-                publishedCountsAvailable: true)
-            let content = ActivityContent(state: state,
-                                          staleDate: now.addingTimeInterval(1800))
-            await activity.update(content)
+        // The lock-screen button is a user-initiated refresh. A single GitHub
+        // timeout must never silently erase verified figures or pretend that
+        // old counts have a fresh timestamp.
+        do {
+            let source = try await LiveCountsSource.load()
+            let now = Date()
+            for activity in Activity<LiveCountsAttributes>.activities {
+                // Pending writes live in the app, never in public GitHub JSON.
+                let awaiting = activity.content.state.pendingActions
+                let state = LiveCountsAttributes.ContentState(
+                    newsReady: source.news, trendsReady: source.trends,
+                    newsWorking: source.newsWorking, trendsWorking: source.trendsWorking,
+                    pendingActions: awaiting, checkedAt: now, partialData: false,
+                    recentHeadline: source.latestHeadline,
+                    newsPublished24h: source.newsPublished24h,
+                    trendsPublished24h: source.trendsPublished24h,
+                    publishedCountsAvailable: true)
+                let content = ActivityContent(state: state,
+                                              staleDate: now.addingTimeInterval(1800))
+                await activity.update(content)
+            }
+        } catch {
+            // Show the failure on the Live Activity and retain last validated
+            // checkedAt/counts. The editor may open the app for a full retry.
+            for activity in Activity<LiveCountsAttributes>.activities {
+                var previous = activity.content.state
+                previous.partialData = true
+                await activity.update(ActivityContent(state: previous,
+                                                      staleDate: Date()))
+            }
         }
         return .result()
     }
