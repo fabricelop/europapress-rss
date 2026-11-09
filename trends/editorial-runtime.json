@@ -8,9 +8,9 @@
   "command_id": "tr-1794263668174-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "persisting",
   "started_at": "2026-11-09T23:34:30+01:00",
-  "updated_at": "2026-11-09T23:34:30+01:00",
+  "updated_at": "2026-11-09T23:36:30+01:00",
   "finished_at": null,
   "current": 0,
   "total": 1,
@@ -55,7 +55,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Revisando novedades",
+  "activity": "Verificando aplicación",
   "last_started_at": "2026-11-09T23:34:30+01:00",
   "last_completed_at": "2026-11-09T23:33:47+01:00",
   "api_failover_enabled": false,
@@ -116,7 +116,7 @@
     ],
     "message": "Pasada tr-1794260243896-manual cerrada 2/2. Broncano r0 y La Revuelta r0 fueron reelaborados desde cero con el desarrollo emitido el 9/11: Broncano explicó que el equipo de Santiago Abascal pidió gestionar el público y el programa aceptó; después expresó reparos por el apoyo uniforme. Ambos textos quedaron persistidos y sincronizados en requests.json y telegram-manual-explained.json por el aplicador oficial. Barrera final: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain en requests ni mobile-decisions. ImageGen=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794263668174-manual RUNNING. Cola JIT=1: review_red Supa r0. Se revalida ID/revisión y se investigan novedades sustanciales posteriores al episodio de Worlds 2026. ImageGen=0; publicaciones=0.",
+  "message": "Supa r0 investigado. El posible detonante actual es mercado LEC 2027, pero las fuentes consultadas lo marcan como rumor sin confirmación independiente. Resultado unverified persistido en maintenance-outbox; se verifica ahora su aplicación. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794199200000-manual",
