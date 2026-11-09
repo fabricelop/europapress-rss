@@ -3,39 +3,36 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794234841273-manual",
-  "previous_run_id": "tr-1794234300000-manual",
-  "command_id": "tr-1794234841273-manual",
+  "run_id": "tr-1794236100000-manual",
+  "previous_run_id": "tr-1794234841273-manual",
+  "command_id": "tr-1794236100000-manual",
   "source": "chat_manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-09T15:34:01+01:00",
-  "updated_at": "2026-11-09T15:36:30+01:00",
-  "finished_at": "2026-11-09T15:36:30+01:00",
-  "current": 2,
-  "total": 2,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-09T15:55:00+01:00",
+  "updated_at": "2026-11-09T15:55:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
-  "converged_ids": [
-    "red-review-7a070b0ade968f1a5082",
-    "red-review-9fad78d38a6a0bd1d739"
-  ],
+  "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
     "explained": 0,
     "problematic": 0,
-    "updates": 2,
+    "updates": 0,
     "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 2,
+    "maintenance_reviews": 0,
     "unchanged_reviews": 0,
-    "continuity_updates": 2,
+    "continuity_updates": 0,
     "distinct_updates": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
@@ -45,35 +42,14 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 2
+    "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "red-review-7a070b0ade968f1a5082",
-      "revision": 0,
-      "name": "Revisar novedades: Almudena",
-      "outcome": "continuity_update",
-      "applied": true,
-      "via": "concurrent_convergence",
-      "apply_commit": "eb54acfe1ccfb1cd65e732ba986155acf387cca8",
-      "source_id": "a04f5f160038"
-    },
-    {
-      "id": "red-review-9fad78d38a6a0bd1d739",
-      "revision": 0,
-      "name": "Revisar novedades: Jensen Huang",
-      "outcome": "continuity_update",
-      "applied": true,
-      "via": "concurrent_convergence",
-      "apply_commit": "eb54acfe1ccfb1cd65e732ba986155acf387cca8",
-      "source_id": "2b8f257f333f"
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "closing",
-  "last_started_at": "2026-11-09T15:34:01+01:00",
+  "activity": "preparing",
+  "last_started_at": "2026-11-09T15:55:00+01:00",
   "last_completed_at": "2026-11-09T15:36:30+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -106,7 +82,7 @@
     },
     "message": "Pasada editorial TTendencias completada: 18 explicaciones nuevas aplicadas, 2 revisiones de mantenimiento actualizadas por continuidad (Almudena y Jensen Huang) y Oyarzabal retirado de la cola por el refresco JIT antes de persistir. Cola final 0; ImageGen=0; image-outbox=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794234841273-manual cerrada 2/2 por convergencia JIT. Almudena y Jensen Huang fueron actualizados como continuidad del mismo episodio por el aplicador concurrente eb54acfe1ccfb1cd65e732ba986155acf387cca8, conservando ID/revisión y explained_at, sin volver a Listas. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada tr-1794236100000-manual RUNNING desde chat. Se fuerza refresco manual real del Top 30 y después se releerá main con barrera JIT antes de cerrar. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794199200000-manual",
@@ -1809,6 +1785,13 @@
         "status": "DONE",
         "finished_at": "2026-11-09T15:36:00+01:00"
       }
+    },
+    {
+      "at": "2026-11-09T15:55:00+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-1794236100000-manual RUNNING desde chat. Se fuerza refresco manual real del Top 30 y después se releerá main con barrera JIT antes de cerrar. ImageGen=0; publicaciones=0.",
+      "run_id": "tr-1794236100000-manual",
+      "status": "RUNNING"
     }
   ],
   "current_item": null,
