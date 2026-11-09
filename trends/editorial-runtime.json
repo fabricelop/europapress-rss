@@ -3,24 +3,30 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261109T1740-manual",
-  "previous_run_id": "tr-20261109T1725-manual",
-  "command_id": "tr-20261109T1740-manual",
+  "run_id": "tr-20261109T1755-manual",
+  "previous_run_id": "tr-20261109T1740-manual",
+  "command_id": "tr-20261109T1755-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-09T17:40:00+01:00",
-  "updated_at": "2026-11-09T17:41:15+01:00",
-  "finished_at": "2026-11-09T17:41:15+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-09T17:55:00+01:00",
+  "updated_at": "2026-11-09T17:55:00+01:00",
+  "finished_at": null,
   "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "total": 2,
+  "trend_id": "red-review-552a4db6826b8ff36c0b",
+  "title": "Revisar novedades: Pachuca",
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-552a4db6826b8ff36c0b",
+    "red-review-79367de7b4b5938e30a3"
+  ],
+  "remaining_active_ids": [
+    "red-review-552a4db6826b8ff36c0b",
+    "red-review-79367de7b4b5938e30a3"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
@@ -114,9 +120,18 @@
       "at": "2026-11-09T17:41:15+01:00",
       "phase": "closing",
       "message": "Barrera final superada: cola autoritativa vacía y sin trabajos activos en mobile-decisions."
+    },
+    {
+      "run_id": "tr-20261109T1755-manual",
+      "status": "RUNNING",
+      "at": "2026-11-09T17:55:00+01:00",
+      "phase": "preparing",
+      "trend_id": "red-review-552a4db6826b8ff36c0b",
+      "title": "Revisar novedades: Pachuca",
+      "message": "Pasada tr-20261109T1755-manual RUNNING. Cola inicial JIT=2 review_red: Pachuca y dubai; se procesan por antigüedad, revalidando ID/revisión antes de investigar y persistir. ImageGen=0; publicaciones=0."
     }
   ],
-  "last_started_at": "2026-11-09T17:40:00+01:00",
+  "last_started_at": "2026-11-09T17:55:00+01:00",
   "last_completed_at": "2026-11-09T17:25:45+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -148,7 +163,7 @@
     },
     "message": "Pasada tr-20261109T1740-manual cerrada 0/0 contra main. Relectura JIT final: editorial-queue=0 (actualizada 2026-11-09T17:41:01+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial pendiente. El Top 30 reciente estaba marcado live_verified=false/reliability=unverified; no se forzó ninguna investigación. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-20261109T1725-manual cerrada 0/0 contra main. Relectura JIT final: editorial-queue=0 (actualizada 2026-11-09T17:21:03+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada tr-20261109T1755-manual RUNNING. Cola inicial JIT=2 review_red: Pachuca y dubai; se procesan por antigüedad, revalidando ID/revisión antes de investigar y persistir. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794199200000-manual",
@@ -2352,7 +2367,12 @@
       "message": "Pasada tr-20261109T1725-manual cerrada 0/0 contra main. Relectura JIT final: editorial-queue=0 (actualizada 2026-11-09T17:21:03+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
-  "current_item": null,
+  "current_item": {
+    "id": "red-review-552a4db6826b8ff36c0b",
+    "revision": 0,
+    "name": "Revisar novedades: Pachuca",
+    "task": "review_red"
+  },
   "withdrawn_ids": [
     "ae7f066f3c94"
   ],
