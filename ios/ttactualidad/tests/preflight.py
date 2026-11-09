@@ -946,8 +946,8 @@ assert 'UserDefaults.standard.stringArray(forKey: BufferPublishTracker.pendingHi
 print('NATIVE_BUILD89_SCOPED_RELATIONS_BUFFER_DURABLE_EXACT_REQUEST_OK')
 
 # Build91: no misleading Buffer usage/30d median or a hard publication cap.
-quota_policy = (ROOT / "TTActualidad" / "BufferQuotaPolicy.swift").read_text(encoding="utf-8")
+quota_policy = (root / "TTActualidad" / "BufferQuotaPolicy.swift").read_text(encoding="utf-8")
 assert "recentRate(_ records:" in quota_policy
 assert "delta >= 3600" in quota_policy
 assert "observedRequestsPerNewPost" in quota_policy
-assert "api_quota_history" in (ROOT / "TTActualidad" / "BufferPublishTracker.swift").read_text(encoding="utf-8")
+assert "api_quota_history" in (root / "TTActualidad" / "BufferPublishTracker.swift").read_text(encoding="utf-8")
