@@ -8,9 +8,9 @@
   "command_id": "tr-1794246075875-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "investigating",
   "started_at": "2026-11-09T18:42:00+01:00",
-  "updated_at": "2026-11-09T18:42:00+01:00",
+  "updated_at": "2026-11-09T18:43:00+01:00",
   "finished_at": null,
   "current": 0,
   "total": 2,
@@ -218,6 +218,15 @@
       "trend_id": "red-review-440e4514ba82e440cf02",
       "title": "Revisar novedades: Broncano",
       "message": "Pasada tr-1794246075875-manual RUNNING. Cola JIT=2 review_red: Broncano y #HuelgaGeneral; se procesan por antigüedad con validación ID/revisión antes de investigar y persistir. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794246075875-manual",
+      "status": "RUNNING",
+      "at": "2026-11-09T18:43:00+01:00",
+      "phase": "investigating",
+      "trend_id": "red-review-440e4514ba82e440cf02",
+      "title": "Revisar novedades: Broncano",
+      "message": "Broncano: revisión de novedades en curso; fuentes actuales confirman el mismo episodio de la entrevista a Abascal y la cancelación del público, sin hecho independiente posterior."
     }
   ],
   "last_started_at": "2026-11-09T18:40:00+01:00",
@@ -252,7 +261,7 @@
     },
     "message": "Pasada tr-20261109T1825-manual cerrada 0/0 contra main. Top 30 vigente capturado 2026-11-09T18:20:56+01:00 sin nuevas entradas; editorial-queue actualizada 2026-11-09T18:21:02+01:00 y vacía. Barrera JIT final: mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794246075875-manual RUNNING. Cola JIT=2 review_red: Broncano y #HuelgaGeneral; se procesan por antigüedad con validación ID/revisión antes de investigar y persistir. ImageGen=0; publicaciones=0.",
+  "message": "Broncano: revisión de novedades en curso; fuentes actuales confirman el mismo episodio de la entrevista a Abascal y la cancelación del público, sin hecho independiente posterior.",
   "history": [
     {
       "run_id": "tr-1794199200000-manual",
