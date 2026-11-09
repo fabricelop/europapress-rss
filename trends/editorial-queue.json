@@ -1,6 +1,41 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-09T20:17:23+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-09T19:17:53.972151+00:00",
+  "count": 1,
+  "items": [
+    {
+      "id": "red-review-466caab57b75143bc60d",
+      "revision": 0,
+      "name": "Revisar novedades: Broncano",
+      "rank": 10,
+      "status": "preparing",
+      "requested_at": "2026-11-09T19:17:53.972151+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "50d1a6619b2a",
+        "revision": 0,
+        "name": "Broncano",
+        "rank": 18,
+        "explanation": "TT#7 Broncano sigue siendo tendencia por la entrevista a Santiago Abascal del lunes 9: el público previsto recibió la cancelación de asistencia y RTVE no aclaró el motivo.\n#LaRevuelta #SantiagoAbascal\n🌶️ El sofá tendrá candidato, pero la grada queda en interrogante.",
+        "explanation_sha256": "6516cb115bd5e0c98a50a12c699722ec39ef08cdb8b0864346dd8c41f948bbad",
+        "explained_at": "2026-11-07T00:53:00+01:00",
+        "verification_sources": [
+          {
+            "url": "https://www.rtve.es/play/videos/la-revuelta/broncano-confirma-santiago-abascal-como-invitado/17302195/"
+          },
+          {
+            "url": "https://cadenaser.com/nacional/2026/11/05/santiago-abascal-asistira-a-la-revuelta-de-tve-el-lunes-9-de-noviembre-y-afronta-la-entrevista-como-un-ahora-o-nunca-cadena-ser/"
+          }
+        ],
+        "fingerprint": "04d1c315b76e9d03b216c5ba5219009429b0de5d8efd5e06bba7aa38df8b35d4"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
