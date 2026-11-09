@@ -1,6 +1,74 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-09T18:01:30+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-09T17:09:57.228300+00:00",
+  "count": 2,
+  "items": [
+    {
+      "id": "red-review-7b64c614c1a27d1754ab",
+      "revision": 0,
+      "name": "Revisar novedades: Oviedo",
+      "rank": 10,
+      "status": "preparing",
+      "requested_at": "2026-11-09T17:09:57.228300+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "1cb3ab9f8367",
+        "revision": 0,
+        "name": "Oviedo",
+        "rank": 9,
+        "explanation": "TT#9 Oviedo es tendencia porque el Real Oviedo quedó eliminado de la Copa del Rey ante el Numancia: remontó un 2-0, empató 3-3 y cayó 4-2 en los penaltis.\n#RealOviedo #Numancia #CopaDelRey\n🌶️ La remontada llegó hasta la tanda, no hasta la siguiente ronda.",
+        "explanation_sha256": "44971ea41498ad82bb7155be69ddc130287b4d3715253242a4d59a5279598e39",
+        "explained_at": "2026-10-29T21:46:20+01:00",
+        "verification_sources": [
+          "https://www.realoviedo.es/noticias/el-oviedo-cae-en-los-penaltis-ante-el-numancia-y-se-despide-de-la-copa",
+          "https://as.com/futbol/copa_del_rey/el-numancia-se-lleva-el-pase-en-los-penaltis-tras-un-partido-loco-f202610-n/"
+        ],
+        "fingerprint": "c0007f647dfdda716b9249859c7e55a05d969d80bffc52b6e8323e56e2f8eb80"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-1c00edc669ea4e141e96",
+      "revision": 0,
+      "name": "Revisar novedades: Supa",
+      "rank": 14,
+      "status": "preparing",
+      "requested_at": "2026-11-09T17:09:57.228300+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "69709b2f4154",
+        "revision": 0,
+        "name": "Supa",
+        "rank": 7,
+        "explanation": "TT#7 Supa es tendencia por el duelo decisivo de Worlds 2026 entre Movistar KOI y Karmine Corp: el ganador pasa a cuartos y el perdedor queda eliminado.\n#Worlds2026 #MKOI\n🌶️ Tres mapas como máximo para comprarse un billete a cuartos.",
+        "explanation_sha256": "baac6f537f54ba3c98b4666a3b384637da2ebbd99622b8bb4b871052cf64bd9f",
+        "explained_at": "2026-10-31T19:45:00+01:00",
+        "verification_sources": [
+          {
+            "url": "https://movistaresports.com/movistar-koi-vs-karmine-corp-en-worlds-2026/"
+          },
+          {
+            "url": "https://compo.mortseb.com/es/jugador/supa/"
+          },
+          {
+            "url": "https://mid.gg/esports/matches/karmine-corp-vs-movistar-koi"
+          }
+        ],
+        "fingerprint": "fd77fab6d1fb0635b21d797589b2012a8d9be8341e8e282c8331a2f2dcf22e16"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
