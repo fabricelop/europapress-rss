@@ -3,34 +3,34 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261109T2125-manual",
+  "run_id": "tr-autoguard-1794255077",
   "previous_run_id": "tr-autoguard-1794255077",
-  "command_id": "tr-20261109T2125-manual",
+  "command_id": "tr-autoguard-1794255077",
   "source": "chat",
   "status": "DONE",
   "phase": "closing",
   "started_at": "2026-11-09T21:25:55+01:00",
-  "updated_at": "2026-11-09T21:28:00+01:00",
-  "finished_at": "2026-11-09T21:28:00+01:00",
-  "current": 1,
-  "total": 1,
+  "updated_at": "2026-11-09T21:27:00+01:00",
+  "finished_at": "2026-11-09T21:27:00+01:00",
+  "current": 3,
+  "total": 3,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
   "processed_ids": [
+    "b9af40846bbe",
+    "78100e73b601",
     "red-review-facf29f9d9dd5ac98d7c"
   ],
-  "converged_ids": [
-    "red-review-facf29f9d9dd5ac98d7c"
-  ],
+  "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
-    "observed": 1,
-    "closed": 1,
-    "explained": 0,
+    "attempted": 3,
+    "observed": 3,
+    "closed": 3,
+    "explained": 2,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
@@ -49,17 +49,29 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 1
+    "concurrent_convergence": 0
   },
   "outcomes": [
+    {
+      "id": "b9af40846bbe",
+      "revision": 0,
+      "name": "#ElSótano09N",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "78100e73b601",
+      "revision": 0,
+      "name": "Gamarra",
+      "outcome": "explained",
+      "applied": true
+    },
     {
       "id": "red-review-facf29f9d9dd5ac98d7c",
       "revision": 0,
       "name": "Revisar novedades: Broncano",
       "outcome": "unchanged",
-      "applied": true,
-      "via": "concurrent_convergence",
-      "outbox_sha": "be236e4c544a9c748f51a8f30545717dee2b5459"
+      "applied": true
     }
   ],
   "incident_count": 0,
@@ -67,18 +79,18 @@
   "error": null,
   "activity": "closing",
   "last_started_at": "2026-11-09T21:25:18+01:00",
-  "last_completed_at": "2026-11-09T21:28:00+01:00",
+  "last_completed_at": "2026-11-09T21:27:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261109T2125-manual",
+    "run_id": "tr-autoguard-1794255077",
     "status": "DONE",
     "started_at": "2026-11-09T21:25:55+01:00",
-    "finished_at": "2026-11-09T21:28:00+01:00",
+    "finished_at": "2026-11-09T21:27:00+01:00",
     "summary": {
-      "attempted": 1,
-      "observed": 1,
-      "closed": 1,
-      "explained": 0,
+      "attempted": 3,
+      "observed": 3,
+      "closed": 3,
+      "explained": 2,
       "problematic": 0,
       "updates": 0,
       "review_completed_no_distinct_event": 0,
@@ -97,28 +109,39 @@
       "image_outbox_created": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 1
+      "concurrent_convergence": 0
     },
     "processed_ids": [
-      "red-review-facf29f9d9dd5ac98d7c"
-    ],
-    "converged_ids": [
+      "b9af40846bbe",
+      "78100e73b601",
       "red-review-facf29f9d9dd5ac98d7c"
     ],
     "outcomes": [
+      {
+        "id": "b9af40846bbe",
+        "revision": 0,
+        "name": "#ElSótano09N",
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "78100e73b601",
+        "revision": 0,
+        "name": "Gamarra",
+        "outcome": "explained",
+        "applied": true
+      },
       {
         "id": "red-review-facf29f9d9dd5ac98d7c",
         "revision": 0,
         "name": "Revisar novedades: Broncano",
         "outcome": "unchanged",
-        "applied": true,
-        "via": "concurrent_convergence",
-        "outbox_sha": "be236e4c544a9c748f51a8f30545717dee2b5459"
+        "applied": true
       }
     ],
-    "message": "Pasada tr-20261109T2125-manual cerrada 1/1 por convergencia JIT. La revisión de Broncano quedó unchanged: la explicación vigente ya incorporaba el cambio de público y no se verificó un desarrollo material posterior antes de la emisión. El resultado fue aplicado y la cola quedó vacía; no se creó nueva ficha ni imagen. Barrera final: editorial-queue=0 y mobile-decisions/requests sin preparing, update, rewrite_pending, reexplain, anticipate o review_red activos. ImageGen=0; publicaciones=0."
+    "message": "Pasada tr-autoguard-1794255077 cerrada 3/3 tras barrera JIT final: #ElSótano09N y Gamarra quedaron explicadas como nuevas fichas independientes con sus IDs de reentrada; la revisión roja de Broncano quedó unchanged porque no había novedad sustancial respecto a la actualización ya vigente. editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-20261109T2125-manual cerrada 1/1 por convergencia JIT. La revisión de Broncano quedó unchanged: la explicación vigente ya incorporaba el cambio de público y no se verificó un desarrollo material posterior antes de la emisión. El resultado fue aplicado y la cola quedó vacía; no se creó nueva ficha ni imagen. Barrera final: editorial-queue=0 y mobile-decisions/requests sin preparing, update, rewrite_pending, reexplain, anticipate o review_red activos. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-autoguard-1794255077 cerrada 3/3 tras barrera JIT final: #ElSótano09N y Gamarra quedaron explicadas como nuevas fichas independientes con sus IDs de reentrada; la revisión roja de Broncano quedó unchanged porque no había novedad sustancial respecto a la actualización ya vigente. editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794199200000-manual",
@@ -3160,11 +3183,73 @@
         }
       ],
       "message": "Pasada tr-20261109T2125-manual cerrada 1/1 por convergencia JIT. La revisión de Broncano quedó unchanged: la explicación vigente ya incorporaba el cambio de público y no se verificó un desarrollo material posterior antes de la emisión. El resultado fue aplicado y la cola quedó vacía; no se creó nueva ficha ni imagen. Barrera final: editorial-queue=0 y mobile-decisions/requests sin preparing, update, rewrite_pending, reexplain, anticipate o review_red activos. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-autoguard-1794255077",
+      "status": "DONE",
+      "started_at": "2026-11-09T21:25:55+01:00",
+      "finished_at": "2026-11-09T21:27:00+01:00",
+      "at": "2026-11-09T21:27:00+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 3,
+        "observed": 3,
+        "closed": 3,
+        "explained": 2,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 1,
+        "unchanged_reviews": 1,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [
+        "b9af40846bbe",
+        "78100e73b601",
+        "red-review-facf29f9d9dd5ac98d7c"
+      ],
+      "outcomes": [
+        {
+          "id": "b9af40846bbe",
+          "revision": 0,
+          "name": "#ElSótano09N",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "78100e73b601",
+          "revision": 0,
+          "name": "Gamarra",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "red-review-facf29f9d9dd5ac98d7c",
+          "revision": 0,
+          "name": "Revisar novedades: Broncano",
+          "outcome": "unchanged",
+          "applied": true
+        }
+      ],
+      "message": "Pasada tr-autoguard-1794255077 cerrada 3/3 tras barrera JIT final: #ElSótano09N y Gamarra quedaron explicadas como nuevas fichas independientes con sus IDs de reentrada; la revisión roja de Broncano quedó unchanged porque no había novedad sustancial respecto a la actualización ya vigente. editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "current_item": null,
   "withdrawn_ids": [
     "ae7f066f3c94"
   ],
-  "last_finished_at": "2026-11-09T21:28:00+01:00"
+  "last_finished_at": "2026-11-09T21:27:00+01:00"
 }
