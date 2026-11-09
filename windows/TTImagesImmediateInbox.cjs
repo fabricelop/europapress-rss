@@ -102,6 +102,9 @@ function stageOriginal(base,task,bytes){
  }
  const p=stagePaths(base,task);
  fs.mkdirSync(p.dir,{recursive:true,mode:0o700});
+ // A half-written crash artifact must never be overwritten by a new raster.
+ if(fs.existsSync(p.png)||fs.existsSync(p.meta))
+   throw Error('IMMEDIATE_STAGED_ORIGINAL_CONFLICT');
  const suffix='.'+process.pid+'.'+crypto.randomBytes(5).toString('hex')+'.tmp';
  try{
   fs.writeFileSync(p.png+suffix,bytes,{mode:0o600,flag:'wx'});
