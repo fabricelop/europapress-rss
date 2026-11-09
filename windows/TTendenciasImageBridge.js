@@ -1068,6 +1068,9 @@ async function optionalWebHandoff(handoff,remember=false){
       if(launchOnly){
         // Generation is already acknowledged. Resolve only the URL whose
         // last user turn proves this command; never save a guessed location.
+        // Register the immutable task even if Chrome has not yet exposed
+        // its permanent conversation URL. This enables scheduled recovery.
+        await optionalWebHandoff(webHandoff,false);
         for(let n=0;n<5;n++){
           if(await optionalWebHandoff(webHandoff,true))break;
           await sleep(700);
