@@ -10,12 +10,12 @@
   "status": "RUNNING",
   "phase": "persisting",
   "started_at": "2026-11-09T21:22:00+01:00",
-  "updated_at": "2026-11-09T21:24:00+01:00",
+  "updated_at": "2026-11-09T21:25:00+01:00",
   "finished_at": null,
   "current": 0,
   "total": 2,
-  "trend_id": "b9af40846bbe",
-  "title": "#ElSótano09N",
+  "trend_id": "78100e73b601",
+  "title": "Gamarra",
   "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
@@ -199,7 +199,7 @@
     ],
     "message": "Pasada tr-autoguard-1794253266 cerrada 12/12 tras relectura JIT: 8 explicaciones nuevas persistidas; Cera y Zubimendi convergieron a estado deleted y no se resucitaron; #ElSótano09N y Gamarra ya tenían explicación vigente publicada y se preservaron sin crear ficha duplicada. Barrera final: editorial-queue=0, sin preparing/update ni reexplicaciones pendientes. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Persistiendo #ElSótano09N r0 tras investigación actual y revalidación JIT. ImageGen=0; publicaciones=0.",
+  "message": "Persistiendo Gamarra r0 tras investigación actual y revalidación JIT. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794199200000-manual",
@@ -3176,12 +3176,19 @@
       "trend_id": "b9af40846bbe",
       "title": "#ElSótano09N",
       "message": "Persistiendo #ElSótano09N r0 tras investigación actual y revalidación JIT. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-09T21:25:00+01:00",
+      "phase": "persisting",
+      "trend_id": "78100e73b601",
+      "title": "Gamarra",
+      "message": "Persistiendo Gamarra r0 tras investigación actual y revalidación JIT. ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": {
-    "id": "b9af40846bbe",
+    "id": "78100e73b601",
     "revision": 0,
-    "name": "#ElSótano09N"
+    "name": "Gamarra"
   },
   "withdrawn_ids": [
     "ae7f066f3c94"
