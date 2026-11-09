@@ -54,14 +54,8 @@ final class EditorialRelationCountsStore: ObservableObject {
     func counts(trendID: String, revision: Int, name: String) -> (Int, Int)? {
         guard let snapshot, !trendID.isEmpty else { return nil }
         let found = EditorialRelationsPolicy.newsForTrend(news, name: name)
-        let states = EditorialRelationsPolicy.effectivePairStates(snapshot.items)
-        let associated = Set(snapshot.items.compactMap { pair -> String? in
-            guard pair.trend.id == trendID, pair.trend.revision == revision,
-                  states[EditorialRelationsPolicy.pairKey(pair.news, pair.trend)] == "linked"
-            else { return nil }
-            return EditorialRelationsPolicy.newsKey(
-                id: pair.news.id, revision: pair.news.revision)
-        }).count
+        let associated = EditorialRelationsPolicy.confirmedCount(
+            snapshot.items, trendID: trendID, revision: revision)
         return (associated, found.count)
     }
 }
