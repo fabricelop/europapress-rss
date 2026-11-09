@@ -281,4 +281,84 @@ final class EditorialRelationsTests: XCTestCase {
             [publishedOld, undated], name: "#Interlagos", limit: 1).count, 1)
     }
 
+
+    func testJulianAllowsSavingDisplayedHistoricalNewsWithoutExtraFingerprint() throws {
+        let news = EditorialRelationEndpoint(
+            id: "e1f64f5801b7", revision: 1, episodeFingerprint: "",
+            title: "Julián participa en el Atlético-Barça", text: "Julián dio una asistencia",
+            path: nil)
+        let trend = EditorialRelationEndpoint(
+            id: "trend-update-08da896cbbe389cf5192", revision: 0,
+            episodeFingerprint: "", title: "Julián", text: "Atlético-Barça",
+            path: nil)
+        XCTAssertTrue(EditorialRelationsPolicy.newsMentionsTrend(news, name: "Julián"))
+        XCTAssertEqual(EditorialRelationsPolicy.actionForSwitch(
+            current: nil, selected: true), "link")
+        let decision = EditorialRelationDecision(
+            action: "link", expectedNews: news.identity, expectedTrend: trend.identity,
+            commandId: "julian-manual-link-0001")
+        let body = try JSONSerialization.jsonObject(with: JSONEncoder().encode(decision))
+            as? [String: Any]
+        let expectedNews = body?["expectedNews"] as? [String: Any]
+        XCTAssertEqual(expectedNews?["id"] as? String, news.id)
+        XCTAssertEqual(expectedNews?["revision"] as? Int, 1)
+        XCTAssertNil(expectedNews?["episodeFingerprint"])
+        XCTAssertEqual(EditorialRelationsPolicy.pairKey(news, trend),
+            "e1f64f5801b7:r1↔trend-update-08da896cbbe389cf5192:r0")
+    }
+
+    func testReadbackRequiresActualWebRelationNotJustAcceptedPost() throws {
+        let snapshot = try JSONDecoder().decode(EditorialRelationsSnapshot.self,
+            from: Data(#"""
+            {"items":[{
+                "id":"linked-julian",
+                "news":{"id":"news-julian","revision":2,"episodeFingerprint":"server-news","title":"Julián en el campo","text":""},
+                "trend":{"id":"trend-julian","revision":0,"episodeFingerprint":"server-trend","title":"Julián","text":""},
+                "state":"linked","origin":"manual","reason":"Editor"}
+            ],"news":[],"trends":[]}
+            """#.utf8))
+        let linked = try XCTUnwrap(snapshot.items.first)
+        let localNews = EditorialRelationEndpoint(
+            id:"news-julian",revision:2,episodeFingerprint:"",
+            title:"Julián en el campo",text:"",path:nil)
+        let localTrend = EditorialRelationEndpoint(
+            id:"trend-julian",revision:0,episodeFingerprint:"",
+            title:"Julián",text:"",path:nil)
+        XCTAssertTrue(EditorialRelationsPolicy.persisted(snapshot.items,
+            news:localNews,trend:localTrend,action:"link"))
+        XCTAssertFalse(EditorialRelationsPolicy.persisted([],
+            news:localNews,trend:localTrend,action:"link"))
+        XCTAssertFalse(EditorialRelationsPolicy.persisted(snapshot.items,
+            news:localNews,trend:localTrend,action:"unlink"))
+        let wrongRevision = EditorialRelationEndpoint(
+            id:localNews.id,revision:3,episodeFingerprint:"",
+            title:localNews.title,text:"",path:nil)
+        XCTAssertFalse(EditorialRelationsPolicy.persisted(snapshot.items,
+            news:wrongRevision,trend:localTrend,action:"link"))
+        let wrongFingerprint = EditorialRelationEndpoint(
+            id:linked.news.id,revision:linked.news.revision,
+            episodeFingerprint:"stale-or-untrusted",title:linked.news.title,
+            text:"",path:nil)
+        XCTAssertFalse(EditorialRelationsPolicy.persisted(snapshot.items,
+            news:wrongFingerprint,trend:localTrend,action:"link"))
+        XCTAssertEqual(EditorialRelationsPolicy.pairKey(localNews,localTrend),
+            EditorialRelationsPolicy.pairKey(linked.news,linked.trend))
+    }
+
+    func testUnlinkAppearsOnlyAfterServerReadback() throws {
+        let blocked = try JSONDecoder().decode(EditorialRelationsSnapshot.self,
+            from: Data(#"""
+            {"items":[{
+                "id":"blocked-julian",
+                "news":{"id":"news-julian","revision":1,"episodeFingerprint":"N","title":"Noticia","text":""},
+                "trend":{"id":"trend-julian","revision":0,"episodeFingerprint":"T","title":"Julián","text":""},
+                "state":"blocked","origin":"manual","reason":"Editor"}
+            ],"news":[],"trends":[]}
+            """#.utf8))
+        let item = try XCTUnwrap(blocked.items.first)
+        XCTAssertTrue(EditorialRelationsPolicy.persisted(blocked.items,
+            news:item.news,trend:item.trend,action:"unlink"))
+        XCTAssertFalse(EditorialRelationsPolicy.persisted(blocked.items,
+            news:item.news,trend:item.trend,action:"link"))
+    }
 }
