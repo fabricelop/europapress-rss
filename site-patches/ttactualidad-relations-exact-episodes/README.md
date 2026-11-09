@@ -95,3 +95,62 @@ estado editorial no son filtros para la relación manual.
 **No confundir la compilación de pruebas en GitHub con la reparación real
 del servidor Site:** el backend privado vive fuera del repo y necesita un
 despliegue nativo propio antes de declarar que las dos relaciones funcionan.
+
+
+## 09/11/2026 — Julián: 2/2 rechazados HTTP 400 (READY y WAITING)
+
+**Evidencia del editor:** en la app, «Relaciones → Julián», las dos noticias
+coincidentes se seleccionan correctamente, pero Guardar devuelve 0/2 con
+HTTP 400 en ambas. No es un fallo del buscador ni una ausencia de las
+noticias. IDs y revisiones comprobados contra GitHub main:
+
+| Noticia | Fuente autoritativa | Identidad | Estado |
+|---|---|---|---|
+| Enrique Cerezo: «El mejor perdón de Julián Álvarez no es un gol, sino dos» | telegram/editorial-processing.json | 9ed95352b91b:r1 | READY |
+| El mensaje cariñoso de Simeone a Julián: «Lo necesitamos» | ttittulares/status.json → events | 9593c2b869f1:r1 | WAITING |
+| Tendencia Julián | trends/site-top30-current.json | trend-update-08da896cbbe389cf5192:r0 | EXPLICADA |
+
+**Contrato funcional:** toda noticia visible recuperada de un catálogo
+editorial fiable, con ID y revisión reales, debe poder vincularse manualmente,
+independientemente de READY, WAITING, publicación, antigüedad, Listas o foto.
+La identidad se valida por ID/revisión en el servidor, sin exigir que
+existiera previamente en snapshot.news ni que el iPhone conozca una
+huella. Si se proporciona fingerprint, el servidor verifica que coincide;
+si falta, los identificadores exactos son suficientes. Nunca desactivar
+la autenticación, aceptar IDs inventados ni crear asociaciones por nombre.
+
+**Integración requerida en el servicio privado del Site:**
+
+1. En POST /api/editorial-relations/v1/decisions, después de autenticar
+   al editor y antes de la escritura existente, obtener los catálogos
+   oficiales en el propio servidor y ejecutar
+   resolveManualDecision(decision, trustedCatalogs).
+   Los catálogos autorizados incluyen processing, prepared, status, treated,
+   publicationEvents, siteTop30, explained y el snapshot persistido. No aplicar
+   filtros editoriales de READY, WAITING, Listas o fecha. Continuar la
+   persistencia que ya funciona con las otras relaciones y la idempotencia
+   del commandId, sin instalar otra base.
+2. En GET /api/editorial-relations/v1/snapshot, ampliar las listas de episodios
+   con exposeLinkableEpisodes(existingSnapshot, buildTrustedRelationIndexes(
+   trustedCatalogs)). Esta función añade noticias/tendencias elegibles a
+   news[] y trends[] sin inventar enlaces en items[]; una huella opcional
+   inexistente se serializa como cadena vacía, y cualquier huella auténtica
+   previa se conserva.
+3. La web debe presentar los vínculos manuales de snapshot.items en la misma
+   vista «Noticias relacionadas» que ya muestra relaciones de Nadal o Mestalla,
+   con tarjetas existentes, sin otro sistema de datos ni pantalla adicional.
+   Coincidencia textual no equivale a vínculo persistido.
+4. Prueba autorizada: enviar link para Cerezo y Simeone → dos recibos 200
+   con state=linked y relationId válidos → GET devuelve ambos pares → al
+   recargar web y reabrir iPhone persisten 2/2. Desvincular uno no altera
+   el otro; probar reintentos idempotentes, revisión errónea (409) y
+   acceso no autorizado (401/403).
+
+Las pruebas resolve-exact-episodes.test.cjs reproducen ambos IDs reales,
+incluido WAITING, exponen los endpoints en el snapshot y conservan dos
+asociaciones distintas. **Esta corrección está en GitHub, no desplegada en
+ChatGPT Sites.** Las herramientas disponibles no pueden modificar el backend
+privado del Site: el HTTP 400 solo se dará por resuelto tras integrar
+el adaptador en el servicio real y confirmar los dos recibos.
+La PR #365 contiene arreglos de la APP iOS, que por sí solos no eliminan
+un rechazo HTTP 400 del servidor.

@@ -4,7 +4,8 @@ const test = require("node:test");
 const assert = require("node:assert/strict");
 const {
   EpisodeResolutionError, makeTrustedNewsIndex, makeTrustedTrendIndex,
-  buildTrustedRelationIndexes, resolveValidatedPair
+  buildTrustedRelationIndexes, exposeLinkableEpisodes,
+  resolveManualDecision, resolveValidatedPair
 } = require("./resolve-exact-episodes.cjs");
 
 const news = makeTrustedNewsIndex({
@@ -169,4 +170,118 @@ test("rejects forged fingerprint despite a valid historical ID and revision", ()
     expectedTrend:{id:"f4bdb3e1fe49",revision:0,
                    episodeFingerprint:"trend-authentic"}
   },indexes), err => err.status===409 && err.code==="episode_fingerprint_conflict");
+});
+
+
+const julianCatalogs = {
+  processing: {items: [{
+    event_id: "9ed95352b91b", revision: 1, status: "READY",
+    canonical_title: 'Enrique Cerezo: "El mejor perdón de Julián Álvarez no es un gol, sino dos"'
+  }]},
+  status: {events: {
+    "9593c2b869f1": {
+      revision: 1, status: "WAITING",
+      title: 'El mensaje cariñoso de Simeone a Julián: "Lo necesitamos"'
+    }
+  }},
+  siteTop30: {items: [{
+    editorial_id: "trend-update-08da896cbbe389cf5192",
+    revision: 0, name: "Julián", status: "EXPLICADA"
+  }]}
+};
+
+const makeJulian = (id, commandId) => ({
+  action: "link", commandId,
+  expectedNews: {id, revision: 1},
+  expectedTrend: {
+    id: "trend-update-08da896cbbe389cf5192", revision: 0
+  }
+});
+
+test("Julián: READY and WAITING are both eligible for manual linking, without extra restrictions", () => {
+  for (const [id, cmd] of [
+    ["9ed95352b91b", "julian-cerezo-unique-001"],
+    ["9593c2b869f1", "julian-simeone-unique-001"]
+  ]) {
+    const resolved = resolveManualDecision(makeJulian(id, cmd), julianCatalogs);
+    assert.equal(resolved.news.id, id);
+    assert.equal(resolved.news.revision, 1);
+    assert.equal(resolved.trend.id, "trend-update-08da896cbbe389cf5192");
+    assert.equal(resolved.trend.revision, 0);
+  }
+});
+
+test("all known exact episodes appear in the existing Site snapshot without inventing automatic links", () => {
+  const indexes = buildTrustedRelationIndexes(julianCatalogs);
+  const original = {items: [{
+    id: "existing-nadal", state: "linked", origin: "manual",
+    news: {id: "previous-news", revision: 1, title: "Nadal"},
+    trend: {id: "previous-trend", revision: 0, title: "Nadal"}
+  }], news: [], trends: []};
+  const expanded = exposeLinkableEpisodes(original, indexes);
+  assert.equal(expanded.items.length, 1);
+  assert.equal(expanded.items[0].id, "existing-nadal");
+  assert.deepEqual(expanded.news.map(x => x.id).sort(),
+                   ["9593c2b869f1", "9ed95352b91b"].sort());
+  assert.deepEqual(expanded.news.map(x => x.episodeFingerprint), ["", ""]);
+  assert.equal(expanded.trends[0].id,
+               "trend-update-08da896cbbe389cf5192");
+  assert.equal(expanded.trends[0].episodeFingerprint, "");
+  assert.equal(expanded.items.filter(x => x.trend?.id ===
+    "trend-update-08da896cbbe389cf5192").length, 0);
+});
+
+test("Site readback preserves both independently saved links to Julián", () => {
+  const indexes = buildTrustedRelationIndexes(julianCatalogs);
+  const persistedItems = ["9ed95352b91b", "9593c2b869f1"].map((id, i) => ({
+    id: "site-link-julian-" + i, state: "linked", origin: "manual",
+    news: {id, revision: 1, episodeFingerprint: "site-issued-" + i,
+           title: "Noticia Julián " + i, text: ""},
+    trend: {
+      id: "trend-update-08da896cbbe389cf5192",
+      revision: 0, episodeFingerprint: "site-issued-trend-julian",
+      title: "Julián", text: ""
+    }
+  }));
+  const snapshot = {
+    items: persistedItems,
+    news: persistedItems.map(x => x.news),
+    trends: [persistedItems[0].trend]
+  };
+  const expanded = exposeLinkableEpisodes(
+    snapshot, buildTrustedRelationIndexes({...julianCatalogs, snapshot}));
+  assert.equal(expanded.items.filter(x => x.state === "linked").length, 2);
+  assert.equal(expanded.news.length, 2);
+  assert.deepEqual(expanded.news.map(x => x.episodeFingerprint).sort(),
+                   ["site-issued-0", "site-issued-1"]);
+  assert.equal(expanded.trends[0].episodeFingerprint,
+               "site-issued-trend-julian");
+});
+
+test("no editorial state filters, but an unknown ID or revision remains invalid", () => {
+  assert.throws(() => resolveManualDecision(
+    makeJulian("invented-news-id", "julian-invalid-news-001"),
+    julianCatalogs
+  ), error => error instanceof EpisodeResolutionError && error.status === 409);
+  const wrong = makeJulian("9593c2b869f1", "julian-invalid-rev-001");
+  wrong.expectedNews.revision = 3;
+  assert.throws(() => resolveManualDecision(wrong, julianCatalogs),
+    error => error.status === 409);
+});
+
+test("published historical news with a real ID/revision/title remains linkable", () => {
+  const index = buildTrustedRelationIndexes({
+    publicationEvents: {items: [{
+      project: "ttittulares", event_id: "published-julian-001",
+      revision: 4, title: "Julián, ya publicada", state: "sent"
+    }]},
+    siteTop30: julianCatalogs.siteTop30
+  });
+  assert.equal(index.news.get("published-julian-001:r4").title,
+               "Julián, ya publicada");
+  assert.equal(resolveValidatedPair({
+    action: "link", commandId: "julian-published-test-001",
+    expectedNews: {id: "published-julian-001", revision: 4},
+    expectedTrend: {id: "trend-update-08da896cbbe389cf5192", revision: 0}
+  }, index).news.id, "published-julian-001");
 });
