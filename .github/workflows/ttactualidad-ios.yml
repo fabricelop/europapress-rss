@@ -79,8 +79,8 @@ jobs:
           test -d "$APP/PlugIns/TTActualidadLive.appex"
           test -s "$APP/Assets.car"
           # Version INSIDE the signed payload matters to PlumeImpactor, not only ZIP name.
-          /usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$APP/Info.plist" | grep -Fx '94'
-          /usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$APP/PlugIns/TTActualidadLive.appex/Info.plist" | grep -Fx '94'
+          /usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$APP/Info.plist" | grep -Fx '95'
+          /usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$APP/PlugIns/TTActualidadLive.appex/Info.plist" | grep -Fx '95'
           /usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" "$APP/Info.plist" | grep -Fx '0.4.83'
           /usr/libexec/PlistBuddy -c "Print :CFBundleIdentifier" "$APP/Info.plist" | grep -Fx 'com.fabricelop.ttactualidad.native'
           /usr/libexec/PlistBuddy -c "Print :NSSupportsLiveActivities" "$APP/Info.plist" | grep -qi true
