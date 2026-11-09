@@ -7,32 +7,26 @@
   "previous_run_id": "tr-20261109T1655-manual",
   "command_id": "tr-20261109T1710-manual",
   "source": "chat",
-  "status": "RUNNING",
+  "status": "success",
   "phase": "persisting",
   "started_at": "2026-11-09T17:10:00+01:00",
-  "updated_at": "2026-11-09T17:15:00+01:00",
+  "updated_at": "2026-11-09T17:15:43+01:00",
   "finished_at": null,
   "current": 0,
   "total": 5,
   "trend_id": "a1c1e16d0c24",
   "title": "#VotoUtilEsPodemos",
-  "queue_complete": false,
-  "processed_ids": [],
+  "queue_complete": true,
+  "processed_ids": [
+    "0f796da9f2d7",
+    "1a58780acbab",
+    "2cf7851e047a",
+    "a1c1e16d0c24",
+    "b76606f8b171"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "a1c1e16d0c24",
-    "0f796da9f2d7",
-    "1a58780acbab",
-    "2cf7851e047a",
-    "b76606f8b171"
-  ],
-  "remaining_active_ids": [
-    "a1c1e16d0c24",
-    "0f796da9f2d7",
-    "1a58780acbab",
-    "2cf7851e047a",
-    "b76606f8b171"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
@@ -83,8 +77,8 @@
       "message": "Pasada tr-20261109T1710-manual RUNNING desde chat. Cola inicial observada=0; se fuerza refresco real del Top 30 y después se releerá main con barrera JIT antes de cerrar. ImageGen=0; publicaciones=0."
     }
   ],
-  "last_started_at": "2026-11-09T17:10:00+01:00",
-  "last_completed_at": "2026-11-09T16:18:00+01:00",
+  "last_started_at": "2026-11-09T17:15:42+01:00",
+  "last_completed_at": "2026-11-09T17:15:43+01:00",
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-20261109T1655-manual",
