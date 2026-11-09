@@ -8,14 +8,14 @@
   "command_id": "tr-autoguard-1794266117",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "persisting",
   "started_at": "2026-11-10T00:16:00+01:00",
-  "updated_at": "2026-11-10T00:16:00+01:00",
+  "updated_at": "2026-11-10T00:22:00+01:00",
   "finished_at": null,
   "current": 0,
   "total": 14,
-  "trend_id": null,
-  "title": null,
+  "trend_id": "6485ff64586c",
+  "title": "#LaIslaDeLasTentaciones18",
   "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
@@ -81,7 +81,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "preparing",
+  "activity": "persisting",
   "last_started_at": "2026-11-09T23:59:31+01:00",
   "last_completed_at": "2026-11-09T23:59:42+01:00",
   "api_failover_enabled": false,
@@ -145,7 +145,7 @@
     ],
     "message": "Pasada tr-1794264900000-manual cerrada 1/1 con incidencia. Tartamudea r1 fue investigada desde cero y aplicada en main por 870bf98bfd0cdf5aba8c283deb5740fe7a8629b1; la pista del editor quedó contrastada con dos crónicas independientes que describen tartamudeos y nervios de David Broncano durante la entrevista a Santiago Abascal. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. El refresco manual 42716411372 seguía atascado en actions/checkout@v4 y se registra como incidencia; recent.json conserva captura 2026-11-09T23:51:03+01:00. ImageGen=0; publicaciones=0."
   },
-  "message": "Pasada tr-autoguard-1794266117 RUNNING. Cola autoritativa inicial=14; se procesarán preparing/update de antiguo a reciente con revalidación JIT de id+revision. ImageGen=0; publicaciones=0.",
+  "message": "14/14 revisiones revalidadas JIT en main. 12 resultados textuales listos para persistir y 2 reentradas (Jordi Wild, Candela Peña) se cierran review_completed/no_distinct_event. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794234841273-manual",
@@ -2282,7 +2282,11 @@
       "message": "Pasada tr-1794264900000-manual cerrada 1/1 con incidencia. Tartamudea r1 fue investigada desde cero y aplicada en main por 870bf98bfd0cdf5aba8c283deb5740fe7a8629b1; la pista del editor quedó contrastada con dos crónicas independientes que describen tartamudeos y nervios de David Broncano durante la entrevista a Santiago Abascal. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. El refresco manual 42716411372 seguía atascado en actions/checkout@v4 y se registra como incidencia; recent.json conserva captura 2026-11-09T23:51:03+01:00. ImageGen=0; publicaciones=0."
     }
   ],
-  "current_item": null,
+  "current_item": {
+    "id": "6485ff64586c",
+    "revision": 0,
+    "name": "#LaIslaDeLasTentaciones18"
+  },
   "withdrawn_ids": [
     "ae7f066f3c94"
   ],
@@ -2510,6 +2514,15 @@
       "at": "2026-11-10T00:16:00+01:00",
       "phase": "preparing",
       "message": "Pasada tr-autoguard-1794266117 RUNNING. Cola autoritativa inicial=14; se procesarán preparing/update de antiguo a reciente con revalidación JIT de id+revision. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-autoguard-1794266117",
+      "status": "RUNNING",
+      "at": "2026-11-10T00:22:00+01:00",
+      "phase": "persisting",
+      "trend_id": "6485ff64586c",
+      "title": "#LaIslaDeLasTentaciones18",
+      "message": "14/14 revisiones revalidadas JIT en main. 12 resultados textuales listos para persistir y 2 reentradas (Jordi Wild, Candela Peña) se cierran review_completed/no_distinct_event. ImageGen=0; publicaciones=0."
     }
   ]
 }
