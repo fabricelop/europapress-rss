@@ -7,17 +7,21 @@
   "previous_run_id": "tr-1794246075875-manual",
   "command_id": "tr-20261109T1855-manual",
   "source": "chat",
-  "status": "DONE",
+  "status": "success",
   "phase": "closing",
   "started_at": "2026-11-09T18:55:00+01:00",
-  "updated_at": "2026-11-09T18:55:45+01:00",
+  "updated_at": "2026-11-09T19:12:34+01:00",
   "finished_at": "2026-11-09T18:55:45+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
-  "processed_ids": [],
+  "processed_ids": [
+    "6d406ef31553",
+    "b05f51e78129",
+    "c767f00460c3"
+  ],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
@@ -244,8 +248,8 @@
       "message": "Pasada tr-20261109T1855-manual cerrada 0/0 contra main. Relectura JIT final: editorial-queue=0 (actualizada 2026-11-09T18:51:02+01:00), captura Top 30 2026-11-09T18:50:55+01:00 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
-  "last_started_at": "2026-11-09T18:40:00+01:00",
-  "last_completed_at": "2026-11-09T18:45:00+01:00",
+  "last_started_at": "2026-11-09T19:12:34+01:00",
+  "last_completed_at": "2026-11-09T19:12:34+01:00",
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-1794246075875-manual",
