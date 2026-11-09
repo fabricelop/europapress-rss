@@ -7,6 +7,9 @@ $Managed=@(
   # Always stage the same-process ingestion module BEFORE updating bridges.
   # Missing optional helpers must never cause a new ImageGen prompt.
   @{Path="windows/TTImagesImmediateInbox.cjs";Local="TTImagesImmediateInbox.cjs";Kind="js";Pattern=""},
+  # The scheduled receiver recognizes staged originals. Update only its JS
+  # file, never its task or running browser; Node uses it on its next run.
+  @{Path="windows/TTImageApprovalReceiver.cjs";Local="TTImageApprovalReceiver.cjs";Kind="js";Pattern=""},
   @{Path="windows/TTendenciasWebImages.cjs";Local="TTendenciasWebImages.cjs";Kind="js";Pattern=""},
   @{Path="windows/TTiTTularesGithubOutbox.cjs";Local="TTiTTularesGithubOutbox.cjs";Kind="js";Pattern=""},
   @{Path="windows/TTiTTularesWebImages.cjs";Local="TTiTTularesWebImages.cjs";Kind="js";Pattern=""},
