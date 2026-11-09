@@ -3,20 +3,20 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794264030000-manual",
+  "run_id": "tr-1794264656976-manual",
   "previous_run_id": "tr-1794263668174-manual",
-  "command_id": "tr-1794264030000-manual",
+  "command_id": "tr-1794264656976-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-09T23:40:30+01:00",
-  "updated_at": "2026-11-09T23:44:00+01:00",
-  "finished_at": "2026-11-09T23:44:00+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-09T23:52:00+01:00",
+  "updated_at": "2026-11-09T23:52:00+01:00",
+  "finished_at": null,
   "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "total": 1,
+  "trend_id": "c2fdc85ccd3b",
+  "title": "Nervioso",
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -100,7 +100,7 @@
     },
     "message": "Pasada tr-1794264030000-manual cerrada 0/0. Durante la ejecución convergió un refresco automático fresco: captura 2026-11-09T23:40:55+01:00 y cola recalculada 2026-11-09T23:41:00+01:00 por fa8d91a61d4925f1f95fb3a1f4955cd1d0a8fb18. Barrera final: editorial-queue=0 y requests/mobile-decisions/telegram-manual-explained sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. El refresco manual redundante disparado por dfad289e92362fa387571ee1dd375337df2cfc2f (workflow 42714168494) seguía in_progress al cierre y no se usó como prueba de ejecución. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794264030000-manual cerrada 0/0. Durante la ejecución convergió un refresco automático fresco: captura 2026-11-09T23:40:55+01:00 y cola recalculada 2026-11-09T23:41:00+01:00 por fa8d91a61d4925f1f95fb3a1f4955cd1d0a8fb18. Barrera final: editorial-queue=0 y requests/mobile-decisions/telegram-manual-explained sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. El refresco manual redundante disparado por dfad289e92362fa387571ee1dd375337df2cfc2f (workflow 42714168494) seguía in_progress al cierre y no se usó como prueba de ejecución. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada tr-1794264656976-manual RUNNING. Cola autoritativa inicial=1; Nervioso r1 revalidado JIT y entra en investigación desde cero. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794234841273-manual",
@@ -2176,7 +2176,12 @@
       "message": "Pasada tr-1794264030000-manual cerrada 0/0. Durante la ejecución convergió un refresco automático fresco: captura 2026-11-09T23:40:55+01:00 y cola recalculada 2026-11-09T23:41:00+01:00 por fa8d91a61d4925f1f95fb3a1f4955cd1d0a8fb18. Barrera final: editorial-queue=0 y requests/mobile-decisions/telegram-manual-explained sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. El refresco manual redundante disparado por dfad289e92362fa387571ee1dd375337df2cfc2f (workflow 42714168494) seguía in_progress al cierre y no se usó como prueba de ejecución. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
-  "current_item": null,
+  "current_item": {
+    "id": "c2fdc85ccd3b",
+    "revision": 1,
+    "name": "Nervioso",
+    "status": "preparing"
+  },
   "withdrawn_ids": [
     "ae7f066f3c94"
   ],
@@ -2191,9 +2196,9 @@
     "reexplain": 0
   },
   "prior_runtime_observed": {
-    "run_id": "tr-1794262515713-manual",
+    "run_id": "tr-1794264030000-manual",
     "status": "DONE",
-    "updated_at": "2026-11-09T23:39:00+01:00"
+    "updated_at": "2026-11-09T23:44:00+01:00"
   },
   "apply_workflow_run_id": 42712886314,
   "apply_commit": "2246ee9c5547f1eab2c58e3c510786976b61bc04",
@@ -2201,5 +2206,16 @@
   "maintenance_job_id": "red-review-61d494cc18e2321aaa5b",
   "workflow_run_id": 42714168494,
   "trigger_commit": "dfad289e92362fa387571ee1dd375337df2cfc2f",
-  "refresh_convergence_commit": "fa8d91a61d4925f1f95fb3a1f4955cd1d0a8fb18"
+  "refresh_convergence_commit": "fa8d91a61d4925f1f95fb3a1f4955cd1d0a8fb18",
+  "runs": [
+    {
+      "run_id": "tr-1794264656976-manual",
+      "status": "RUNNING",
+      "at": "2026-11-09T23:52:00+01:00",
+      "phase": "preparing",
+      "trend_id": "c2fdc85ccd3b",
+      "title": "Nervioso",
+      "message": "Pasada tr-1794264656976-manual RUNNING. Cola autoritativa inicial=1; Nervioso r1 revalidado JIT y entra en investigación desde cero. ImageGen=0; publicaciones=0."
+    }
+  ]
 }
