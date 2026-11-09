@@ -3,16 +3,16 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261109T2140-manual",
-  "previous_run_id": "tr-1794255959977-manual",
-  "command_id": "tr-20261109T2140-manual",
+  "run_id": "tr-1794256796856-manual",
+  "previous_run_id": "tr-20261109T2140-manual",
+  "command_id": "tr-1794256796856-manual",
   "source": "chat",
   "status": "RUNNING",
   "phase": "investigating",
-  "started_at": "2026-11-09T21:40:00+01:00",
+  "started_at": "2026-11-09T21:39:56+01:00",
   "updated_at": "2026-11-09T21:40:00+01:00",
   "finished_at": null,
-  "current": 1,
+  "current": 0,
   "total": 1,
   "trend_id": "red-review-0f3d3e6f438717f5681e",
   "title": "Revisar novedades: Supa",
@@ -27,14 +27,14 @@
   ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 0,
+    "attempted": 1,
+    "observed": 1,
     "closed": 0,
     "explained": 0,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 0,
+    "maintenance_reviews": 1,
     "unchanged_reviews": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
@@ -43,7 +43,7 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 1,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -93,7 +93,7 @@
     "outcomes": [],
     "message": "Pasada tr-1794255959977-manual cerrada 0/0 contra main. Relectura JIT final: editorial-queue=0 (updated_at 2026-11-09T20:26:57.729628+00:00) y búsqueda dirigida en main sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-20261109T2140-manual RUNNING. Cola JIT inicial=1 review_red: Supa r0. Se contrasta si existe un desarrollo material posterior al Worlds del 31/10, respetando terminales y revalidando ID/revisión antes de persistir. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1794256796856-manual RUNNING. Cola JIT=1: revisión roja de Supa r0. Se contrasta el episodio de Worlds del 31/10 con la señal actual del mercado LEC y se comprueba que no exista ya una ficha posterior que cubra el hecho. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794199200000-manual",
@@ -3247,6 +3247,18 @@
       "trend_id": "red-review-0f3d3e6f438717f5681e",
       "title": "Revisar novedades: Supa",
       "message": "Pasada tr-20261109T2140-manual RUNNING. Cola JIT inicial=1 review_red: Supa r0. Se contrasta si existe un desarrollo material posterior al Worlds del 31/10, respetando terminales y revalidando ID/revisión antes de persistir. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-09T21:40:00+01:00",
+      "phase": "investigating",
+      "trend_id": "red-review-0f3d3e6f438717f5681e",
+      "title": "Revisar novedades: Supa",
+      "message": "Pasada tr-1794256796856-manual RUNNING. Cola JIT=1: revisión roja de Supa r0. Se contrasta el episodio de Worlds del 31/10 con la señal actual del mercado LEC y se comprueba que no exista ya una ficha posterior que cubra el hecho. ImageGen=0; publicaciones=0.",
+      "prior_runtime_observed": {
+        "run_id": "tr-20261109T2140-manual",
+        "status": "RUNNING",
+        "updated_at": "2026-11-09T21:40:00+01:00"
+      }
     }
   ],
   "current_item": null,
