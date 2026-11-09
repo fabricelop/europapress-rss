@@ -968,7 +968,8 @@ assert 'let candidates = [aiPhotoURL, archivePhotoURL].compactMap { $0 }' in act
 assert 'manualXPhotoShare = TTManualXPhotoShare(text: draftText, image: image)' in actions
 assert 'TTManualXPhotoShareSheet(text: share.text, image: share.image)' in actions
 assert 'UIActivityViewController(' in manual_share
-assert 'activityItems: [text, image]' in manual_share
+assert 'activityItems: [image, text]' in manual_share
+assert 'UIPasteboard.general.string = draftText' in actions
 assert 'No se ha publicado nada.' in actions
 assert 'quickButton("Publicar directo · Buffer", "paperplane.fill")' in actions
 assert 'quickButton("Copiar F Archivo", "photo")' in actions
