@@ -15,10 +15,10 @@ except ImportError:
     from trends.suppression import active_request, purge_pending
 try:
     # Direct script invocation from the trends directory.
-    from trend_episode_policy import treated_terms, editor_initiated, should_reopen_from_radar
+    from trend_episode_policy import treated_terms, editor_initiated, review_episode_token
 except ImportError:
     # Also support the package invocation used by some CI callers.
-    from trends.trend_episode_policy import treated_terms, editor_initiated, should_reopen_from_radar
+    from trends.trend_episode_policy import treated_terms, editor_initiated, review_episode_token
 
 ROOT = Path(__file__).resolve().parent
 MADRID = ZoneInfo("Europe/Madrid")
@@ -306,47 +306,59 @@ if restored_manual:
     print("Restauradas solicitudes manuales cerradas con explicación antigua:",
           restored_manual)
 
-def canonicalize_explained_groups():
-    """Mantiene una sola tarjeta visible por grupo editorial.
+# Legacy grouping is retired. Retain historical groups in their ledger
+# records but never create fresh grouped followers or shared Listas cards.
+canonicalized_groups = 0
 
-    Si una carrera o una pasada editorial añade miembros del mismo group_id
-    como explained independientes, conserva el líder y marca el resto grouped.
+
+def strip_live_singleton_group_metadata():
+    """Normalize current independent cards; do not rewrite old joint groups.
+
+    Some older editorial writers still emit a synthetic grp-<own_id> even
+    when there is only ONE trend. That is not a true group and must not leak
+    an 'AGRUPADA' label. Keep historical multi-member groups untouched.
     """
-    groups = {}
-    for entry in explained_doc.get("items", []) or []:
-        if str(entry.get("status") or "") != "explained":
-            continue
-        group = str(entry.get("explanation_group_id") or entry.get("group_id") or "").strip()
-        if group:
-            groups.setdefault(group, []).append(entry)
-    changed = 0
-    for group, entries in groups.items():
-        if len(entries) < 2:
-            continue
-        leader_id = ""
-        for entry in entries:
-            candidate = str(entry.get("group_leader_id") or "").strip()
-            if candidate:
-                leader_id = candidate
-                break
-        leader = next((x for x in entries if str(x.get("id") or "") == leader_id), None)
-        if leader is None:
-            leader = min(entries, key=lambda x: str(x.get("explained_at") or "9999"))
-            leader_id = str(leader.get("id") or "")
-        for entry in entries:
-            if entry is leader:
-                entry["status"] = "explained"
-                continue
-            entry["status"] = "grouped"
-            entry["group_leader_id"] = leader_id
-            entry["grouped_into"] = leader_id
-            entry["grouped_at"] = now_dt.isoformat(timespec="seconds")
-            changed += 1
-    if changed:
+    changed_requests = 0
+    changed_explanations = 0
+    oldest = now_dt - timedelta(hours=48)
+    def clean(row):
+        if str(row.get("status") or "") != "explained":
+            return False
+        when = parse_timestamp(row.get("explained_at"))
+        if not when or not oldest <= when <= now_dt + timedelta(hours=1):
+            return False
+        ident = str(row.get("id") or "")
+        if not ident or str(row.get("group_leader_id") or "") != ident:
+            return False
+        names = row.get("trend_names") or [row.get("name")]
+        if len(names) != 1 or norm(names[0]) != norm(row.get("name")):
+            return False
+        members = row.get("grouped_member_revisions") or []
+        if any(str(m.get("id") or "") != ident for m in members if isinstance(m,dict)):
+            return False
+        fields = ("group_id", "explanation_group_id", "group_leader_id",
+                  "grouped_into", "grouped_at", "group_title",
+                  "grouped_member_revisions", "automatic_grouping",
+                  "grouping_candidates", "grouping_state")
+        present = any(field in row for field in fields)
+        for field in fields:
+            row.pop(field, None)
+        return present
+    for row in requests:
+        changed_requests += bool(clean(row))
+    for row in explained_doc.get("items") or []:
+        changed_explanations += bool(clean(row))
+    if changed_explanations:
         explained_doc["updated_at"] = now_dt.isoformat(timespec="seconds")
-    return changed
+        save("telegram-manual-explained.json", explained_doc)
+    return changed_requests, changed_explanations
 
-canonicalized_groups = canonicalize_explained_groups()
+
+stripped_request_groups, stripped_explanation_groups = strip_live_singleton_group_metadata()
+if stripped_request_groups or stripped_explanation_groups:
+    reconciled = True
+    print("Singletons editoriales sin agrupación:",
+          stripped_request_groups, stripped_explanation_groups)
 
 def _copy_if_present(dst, src, field):
     if field in src:
@@ -667,6 +679,7 @@ for prior in requests:
     if (prior.get("auto_queued") is True
             and not editor_initiated(prior)
             and norm(prior.get("name")) in historically_treated
+            and not prior.get("new_episode_review")
             and str(prior.get("status") or "") in {"preparing", "update", "problematic", "ready"}):
         prior["status"] = "inactive"
         prior["inactive_reason"] = "historical_episode_already_treated"
@@ -679,21 +692,65 @@ for prior in requests:
 if suppressed_reentries:
     print("Reentradas automáticas sin novedades bloqueadas:", suppressed_reentries)
 
+# Explicit editor-requested research is one-shot per (batch, literal name).
+# Its approval never authorizes publication or restoration of closed episodes.
+approved_batches = load("editor-approved-reviews.json", {"batches": []}).get("batches") or []
+approved_by_name = {}
+snapshot_date = parse_timestamp(recent.get("captured_at"))
+for batch in approved_batches:
+    if not isinstance(batch, dict) or batch.get("intent") != "research_new_episode":
+        continue
+    started = parse_timestamp(batch.get("approved_at"))
+    expires = parse_timestamp(batch.get("valid_until"))
+    snap = parse_timestamp(batch.get("radar_captured_at"))
+    batch_id = str(batch.get("id") or "")
+    if not batch_id or not started or not expires or not snap or not snapshot_date:
+        continue
+    if not (started <= now_dt <= expires and snap <= snapshot_date):
+        continue
+    for term in batch.get("names") or []:
+        approved_by_name[norm(term)] = {"id": batch_id, "approved_at": started}
+
 to_queue = []
 for item in current:
     key = norm(item["name"])
     req = by_name.get(key)
-    if not should_reopen_from_radar(item["name"], historically_treated, req):
-        continue
-    # Existing dated explanations are conditionally reviewed by editorial maintenance.
-    # Neither 24h nor 48h alone permits a duplicate publication or ID resurrection.
     status = str((req or {}).get("status") or "")
-    if key in explained or key in latest_explanation:
+    approval = approved_by_name.get(key) or {}
+    approval_id = approval.get("id", "")
+    # Another concurrent editorial pass may have ALREADY prepared a fresh
+    # independent explanation after this instruction. Never duplicate it.
+    completed_after_approval = (approval_id and latest_explanation.get(key)
+                                and latest_explanation[key] >= approval["approved_at"])
+    if completed_after_approval:
+        approval_id = ""
+    if approval_id and any(
+        norm(old.get("name")) == key and old.get("editor_approval_batch_id") == approval_id
+        for old in requests
+    ):
+        approval_id = ""  # The approved review was already created.
+    radar_item = next((
+        row for row in (recent.get("items") or [])[:30]
+        if norm(row.get("name")) == key), item)
+    episode_token = (
+        "editor:" + approval_id if approval_id else
+        review_episode_token(item["name"], radar_item, req,
+                             historically_treated, now_dt,
+                             latest_explanation.get(key))
+    )
+    historical = key in historically_treated
+    distinct_review = bool(historical and episode_token)
+    if historical and not distinct_review and not editor_initiated(req):
+        continue
+    # A prior explanation is not a reason to skip a DIFFERENT research
+    # episode. Every return remains fact-check only, not duplicate publishing.
+    if (key in explained or key in latest_explanation) and not distinct_review:
         if status not in {"preparing", "update", "problematic", "ready"}:
             continue
-    if key in recently_closed_names:
+    if key in recently_closed_names and not distinct_review:
         continue
     if (editorial_topic(item["name"]) in recently_closed_topics
+            and not distinct_review
             and (req is None or req.get("auto_queued") is True)
             and str((req or {}).get("request_source") or "") not in {
                 "github_pages_authorized_issue", "telegram_reexplain", "telegram_private_deeplink_native"}):
@@ -746,10 +803,19 @@ for item in current:
                 req["rank"] = item["rank"]
                 reconciled = True
             continue
-        if status in {"preparing", "update", "explained", "grouped", "dismissed",
-                       "published", "removed", "deleted"}:
+        if status in {"preparing", "update", "problematic", "ready"}:
             continue
-    to_queue.append(item)
+        if status in {"explained", "grouped", "dismissed",
+                      "published", "removed", "deleted", "review_completed"} and not distinct_review:
+            continue
+    if episode_token and any(
+        norm(old.get("name")) == key and old.get("radar_episode_token") == episode_token
+        for old in requests
+    ):
+        continue
+    to_queue.append({**item, "new_episode_review": distinct_review,
+                     "radar_episode_token": episode_token or "",
+                     "editor_approval_batch_id": approval_id})
 
 def finish_anticipation():
     metrics = sync_anticipation(recent, requests_doc, explained_doc, mobile_decisions, now_dt)
@@ -776,10 +842,12 @@ for item in to_queue:
     name = item["name"]
     key = norm(name)
     req = by_name.get(key)
-    inactive_reentry = bool(req and str(req.get("status") or "") == "inactive")
-    independent_episode = inactive_reentry
+    independent_episode = bool(item.get("new_episode_review") or
+        (req and str(req.get("status") or "") == "inactive"))
+    episode_token = str(item.get("radar_episode_token") or "")
     req_id = (
-        hashlib.sha256(("top10-reentry|" + key + "|" + now + "|" +
+        hashlib.sha256(("top30-episode-v2|" + key + "|" +
+                        (episode_token or now) + "|" +
                         str((req or {}).get("id") or "")).encode("utf-8")).hexdigest()[:12]
         if independent_episode else
         str((req or {}).get("id") or hashlib.sha256(name.encode("utf-8")).hexdigest()[:12])
@@ -795,12 +863,27 @@ for item in to_queue:
         "with_image": True,
         "alternatives_target": 0,
         "batch_id": batch_id,
-        # Auto-queueing at the same capture time is NOT evidence that trends
-        # belong to the same story. Keep semantic grouping conservative.
+        # No new cross-trend group or shared editorial card.
         "requested_together": [name],
-        "captured_with": names,
+        "captured_with": [name],
+        "automatic_grouping": False,
+        "grouping_disabled": True,
         "auto_queued": True,
         "auto_queue_scope": "top30",
+        "new_episode_review": bool(item.get("new_episode_review")),
+        "radar_episode_token": episode_token,
+        "radar_episode_started_at": next((
+            x.get("entered_top30_at") for x in (recent.get("items") or [])[:30]
+            if norm(x.get("name")) == key), None),
+        "editor_approval_batch_id": item.get("editor_approval_batch_id") or "",
+        "previous_episode_id": str((req or {}).get("id") or "") if independent_episode else "",
+        "distinct_event_required": bool(item.get("new_episode_review")),
+        "review_instruction": (
+            "Investiga el motivo ACTUAL como posible episodio NUEVO, distinto del historial. "
+            "No copies ni reactives la ficha anterior. Si no acreditas ninguna novedad "
+            "diferenciada, registra review_completed sin crear Listas, imagen ni publicación."
+            if item.get("new_episode_review") else ""
+        ),
     }
     if req is None or independent_episode:
         # Keep historical episodes, their decisions and image jobs untouched.

@@ -1,0 +1,43 @@
+name: TTendencias episodios nuevos sin agrupaciones
+on:
+  pull_request:
+    paths:
+      - 'trends/auto_queue_new.py'
+      - 'trends/trend_episode_policy.py'
+      - 'trends/rank_movement.py'
+      - 'trends/editor-approved-reviews.json'
+      - 'trends/editorial-run-prompt.md'
+      - 'tests/test_trends_episode_reentry.py'
+      - '.github/scripts/test_ttendencias_top30_queue.py'
+      - 'pilot/ttactualidad-live/index.html'
+      - '.github/workflows/ttendencias-episode-tests.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'trends/auto_queue_new.py'
+      - 'trends/trend_episode_policy.py'
+      - 'trends/rank_movement.py'
+      - 'tests/test_trends_episode_reentry.py'
+      - '.github/workflows/ttendencias-episode-tests.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  episode-protection:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compilación Python
+        run: python -m py_compile trends/auto_queue_new.py trends/trend_episode_policy.py trends/rank_movement.py
+      - name: Nuevos episodios y protección de fichas históricas
+        run: python -m unittest discover -s tests -p 'test_trends_episode_reentry.py' -v
+      - name: Regresión completa de selección Top 30
+        run: python .github/scripts/test_ttendencias_top30_queue.py
+      - name: Historial y movimientos de ranking
+        run: python -m unittest discover -s tests -p 'test_site_top30_movement.py' -v
+      - name: TTActualidad top30 sin herencia de grupos
+        run: node pilot/ttactualidad-live/test_top30.mjs
