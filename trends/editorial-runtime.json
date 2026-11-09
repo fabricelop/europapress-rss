@@ -3,20 +3,20 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794201900000-manual",
-  "previous_run_id": "tr-1794201348940-manual",
-  "command_id": "tr-1794201900000-manual",
+  "run_id": "tr-1794202800000-manual",
+  "previous_run_id": "tr-1794201900000-manual",
+  "command_id": "tr-1794202800000-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-09T06:25:00+01:00",
-  "updated_at": "2026-11-09T06:30:18+01:00",
-  "finished_at": "2026-11-09T06:30:18+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-09T06:40:00+01:00",
+  "updated_at": "2026-11-09T06:40:00+01:00",
+  "finished_at": null,
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -48,8 +48,8 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "closing",
-  "last_started_at": "2026-11-09T06:25:00+01:00",
+  "activity": "preparing",
+  "last_started_at": "2026-11-09T06:40:00+01:00",
   "last_completed_at": "2026-11-09T06:30:18+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -85,7 +85,7 @@
     "outcomes": [],
     "message": "Pasada tr-1794201900000-manual cerrada 0/0 tras refresco real del Top 30. Trigger a3cb2d58387cf54b6cfa081186ce7593ab18b00f; workflow 42567288570 completado success. Nuevo snapshot capturado 2026-11-09T06:30:00+01:00 con Top 30=30; editorial-queue actualizada 06:30:08 y vacía; mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794201900000-manual cerrada 0/0 tras refresco real del Top 30. Trigger a3cb2d58387cf54b6cfa081186ce7593ab18b00f; workflow 42567288570 completado success. Nuevo snapshot capturado 2026-11-09T06:30:00+01:00 con Top 30=30; editorial-queue actualizada 06:30:08 y vacía; mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada tr-1794202800000-manual RUNNING desde chat. Se fuerza refresco manual real del Top 30 y después se releerá main con barrera JIT antes de cerrar. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T03:17:00+01:00",
@@ -701,6 +701,16 @@
       "message": "Pasada tr-1794201900000-manual cerrada 0/0 tras refresco real del Top 30. Trigger a3cb2d58387cf54b6cfa081186ce7593ab18b00f; workflow 42567288570 completado success. Nuevo snapshot capturado 2026-11-09T06:30:00+01:00 con Top 30=30; editorial-queue actualizada 06:30:08 y vacía; mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
       "workflow_run_id": 42567288570,
       "trigger_commit": "a3cb2d58387cf54b6cfa081186ce7593ab18b00f"
+    },
+    {
+      "at": "2026-11-09T06:40:00+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-1794202800000-manual RUNNING desde chat. Se fuerza refresco manual real del Top 30 y después se releerá main con barrera JIT antes de cerrar. ImageGen=0; publicaciones=0.",
+      "prior_runtime_observed": {
+        "run_id": "tr-1794201900000-manual",
+        "status": "DONE",
+        "updated_at": "2026-11-09T06:30:18+01:00"
+      }
     }
   ],
   "current_item": null
