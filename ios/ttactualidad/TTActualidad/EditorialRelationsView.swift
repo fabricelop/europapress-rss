@@ -648,13 +648,20 @@ struct EditorialRelationsView: View {
             let name = scope.title
             let found = relatedNews(rank: rank, name: name)
             let changes = changesForTrend(found, rank: rank, name: name)
-            let confirmed = confirmedCount(found, rank: rank, name: name)
-            Section("Noticias relacionadas · " + String(confirmed) + "/" +
+            // X includes every confirmed exact link, even when it is older
+            // than the five matching news shown in this picker. An unavailable
+            // snapshot must never masquerade as zero confirmed links.
+            let confirmed = model.snapshot.map {
+                EditorialRelationsPolicy.confirmedCount(
+                    $0.items, trendID: scope.id, revision: scope.revision)
+            }
+            Section("Noticias relacionadas · " +
+                    (confirmed.map { String($0) } ?? "—") + "/" +
                     String(found.count)) {
-                Text("X = vínculos confirmados en el Site entre estas " +
-                     "N noticias encontradas (máximo 5). Las ya relacionadas " +
-                     "se muestran marcadas. Solo las modificaciones que " +
-                     "hagas requieren pulsar Guardar.")
+                Text("X = todos los vínculos confirmados en el Site para " +
+                     "esta tendencia; N = noticias candidatas mostradas " +
+                     "(máximo 5). Las relacionadas aparecen marcadas. " +
+                     "Solo los cambios requieren Guardar.")
                     .font(.footnote).foregroundStyle(.secondary)
                 if found.isEmpty {
                     Text(model.loading ? "Buscando noticias…" :
@@ -680,7 +687,8 @@ struct EditorialRelationsView: View {
                               systemImage: "checkmark.circle.fill")
                     }
                     .buttonStyle(.borderedProminent)
-                    .disabled(model.saving)
+                    // The authoritative GET is required before changing links.
+                    .disabled(model.saving || model.snapshot == nil)
                 }
             }
         }
