@@ -8,27 +8,31 @@
   "command_id": "tr-1794215400000-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "investigating",
   "started_at": "2026-11-09T10:10:00+01:00",
-  "updated_at": "2026-11-09T10:10:00+01:00",
+  "updated_at": "2026-11-09T10:13:00+01:00",
   "finished_at": null,
   "current": 0,
-  "total": 1,
-  "trend_id": "radar-prepare-ad8f95afb1dcb41054e1",
-  "title": "Radar · Sherlock",
+  "total": 3,
+  "trend_id": "2b8f257f333f",
+  "title": "Jensen Huang",
   "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [
-    "radar-prepare-ad8f95afb1dcb41054e1"
+    "2b8f257f333f",
+    "65921a4d4f39",
+    "9473798fa162"
   ],
   "remaining_active_ids": [
-    "radar-prepare-ad8f95afb1dcb41054e1"
+    "2b8f257f333f",
+    "65921a4d4f39",
+    "9473798fa162"
   ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
-    "observed": 1,
+    "attempted": 3,
+    "observed": 3,
     "closed": 0,
     "explained": 0,
     "problematic": 0,
@@ -40,7 +44,7 @@
     "distinct_updates": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
-    "queue_remaining": 1,
+    "queue_remaining": 3,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -74,6 +78,13 @@
       "trend_id": "radar-prepare-ad8f95afb1dcb41054e1",
       "title": "Radar · Sherlock",
       "message": "Pasada manual iniciada con 1 borrador Radar: Sherlock. Se revalida ID/revisión y se investiga el detonante actual; sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-09T10:13:00+01:00",
+      "phase": "investigating",
+      "trend_id": "2b8f257f333f",
+      "title": "Jensen Huang",
+      "message": "La cola JIT cambió a 3 trabajos ordinarios: Jensen Huang, Sherlock y Quedan 20. Sherlock entró en Top30 y sustituye el borrador Radar. Se investigan los tres antes de persistir; ImageGen=0."
     }
   ],
   "last_started_at": "2026-11-09T10:10:00+01:00",
@@ -113,7 +124,7 @@
     "outcomes": [],
     "message": "Pasada tr-1794213600000-manual cerrada 0/0: editorial-queue=0 tras relectura JIT de main y sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794215400000-manual RUNNING. Cola inicial JIT=1: Radar · Sherlock r0 (anticipate). Investigación factual y persistencia solo en anticipation-outbox; ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1794215400000-manual RUNNING. Cola JIT=3 tras refresco: Jensen Huang, Sherlock y Quedan 20. Investigación actual completándose con revalidación previa a persistencia.",
   "history": [
     {
       "at": "2026-11-09T03:17:00+01:00",
@@ -1477,9 +1488,9 @@
     }
   ],
   "current_item": {
-    "id": "radar-prepare-ad8f95afb1dcb41054e1",
+    "id": "2b8f257f333f",
     "revision": 0,
-    "name": "Radar · Sherlock",
-    "task": "anticipate"
+    "name": "Jensen Huang",
+    "task": "explain"
   }
 }
