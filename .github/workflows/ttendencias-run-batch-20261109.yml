@@ -1,0 +1,171 @@
+name: TTendencias batch editorial from chat 20261109
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'trends/run-batch-20261109.json'
+      - '.github/workflows/ttendencias-run-batch-20261109.yml'
+permissions:
+  contents: write
+  actions: write
+concurrency:
+  group: ttendencias-chat-batch-20261109
+  cancel-in-progress: false
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Reopen current episodes and persist verified editorial text
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json,sys,unicodedata
+          from pathlib import Path
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+          ROOT=Path('.')
+          T=ROOT/'trends'
+          sys.path.insert(0,str(ROOT/'pilot'))
+          from trends_rework import rework_top30
+          MADRID=ZoneInfo('Europe/Madrid')
+          def load(p,d):
+              try:return json.loads(Path(p).read_text(encoding='utf-8'))
+              except FileNotFoundError:return d
+          def save(p,o):
+              Path(p).write_text(json.dumps(o,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          def key(v):
+              s=unicodedata.normalize('NFD',str(v or '').strip().casefold())
+              return ''.join(c for c in s if unicodedata.category(c)!='Mn').lstrip('#')
+          cmd=load(T/'run-batch-20261109.json',{})
+          if cmd.get('project')!='TTendencias': raise SystemExit('bad command')
+          req=load(T/'requests.json',{'requests':[]})
+          manual=load(T/'telegram-manual-explained.json',{'items':[]})
+          queue=load(T/'editorial-queue.json',{'items':[]})
+          mobile=load(T/'mobile-decisions.json',{'items':[]})
+          deliveries=load(T/'telegram-image-deliveries.json',{'items':[]})
+          prepared=load(T/'prepared.json',{'items':[]})
+          recent=load(T/'recent.json',{'items':[]})
+          runtime=load(T/'editorial-runtime.json',{'project':'TTendencias'})
+          now=datetime.now(MADRID).isoformat(timespec='seconds')
+          outcomes=[]
+          for spec in cmd.get('items',[]):
+              name=spec['name']
+              active=[r for r in req.get('requests',[]) if key(r.get('name'))==key(name) and str(r.get('status') or '').lower() in {'preparing','update','problematic'}]
+              active.sort(key=lambda r:(int(r.get('revision') or 0),str(r.get('requested_at') or '')),reverse=True)
+              if active:
+                  row=active[0]
+                  item_id=str(row['id']); rev=int(row.get('revision') or 0)
+                  via='existing_active'
+              else:
+                  item_id=rework_top30(spec['prior_id'],None,now,recent.get('items') or [],req,manual,queue,mobile,'chat_batch_reopen',trend_name=name)
+                  row=next(r for r in req['requests'] if str(r.get('id'))==item_id)
+                  rev=int(row.get('revision') or 0); via='reopened'
+              # JIT: the row must still be the exact active revision before persistence.
+              if str(row.get('status') or '').lower() not in {'preparing','update','problematic'}:
+                  raise SystemExit(f'JIT state changed {name}: {row.get("status")}')
+              text=str(spec['text']).strip()
+              closer=str(spec.get('closer') or '').strip()
+              if not text.startswith('TT#') or len(text)>=280: raise SystemExit(f'invalid tweet {name} len={len(text)}')
+              if closer and (not closer.startswith('🌶️ ') or text.count(closer)!=1): raise SystemExit(f'invalid closer {name}')
+              sources=[{'url':u} for u in spec.get('sources',[]) if str(u).startswith('https://')]
+              rank=int(next((x.get('rank') for x in recent.get('items',[]) if key(x.get('name'))==key(name)),spec.get('rank') or 0) or 0)
+              group_id='grp-'+item_id
+              row.update({
+                'name':name,'rank':rank,'status':'explained','updated_at':now,'explained_at':now,
+                'last_attempt_at':now,'reexplain':False,'rewrite_pending':False,
+                'explanation':text,'closer_text':closer,'rank_at_explanation':rank,
+                'category':spec.get('category') or 'Actualidad','source':'editorial_chat_batch_direct',
+                'editorial_engine':'chat-direct','verification_sources':sources,
+                'news_note':'Episodio actual verificado en la pasada editorial; identidad nueva para no reutilizar un cierre histórico.',
+                'group_id':group_id,'explanation_group_id':group_id,'group_title':name,
+                'group_leader_id':item_id,'trend_names':[name],
+                'grouped_member_revisions':[{'id':item_id,'revision':rev}],
+                'with_image':True,'image_strategy':'ai_plus_fallback','ai_image_status':'pending',
+                'fallback_image_status':'pending','image_status':'pending','image_choice':'none',
+                'image_pending':True,'telegram_package_status':'pending'
+              })
+              for f in ('deleted_at','dismissed_at','published_at','removed_at','problem_reason','problematic_at'):
+                  row.pop(f,None)
+              manual['items']=[x for x in manual.get('items',[]) if not (str(x.get('id') or '')==item_id and int(x.get('revision') or 0)==rev)]
+              manual['items'].append({
+                'id':item_id,'name':name,'revision':rev,'status':'explained','explained_at':now,'updated_at':now,
+                'explanation':text,'closer_text':closer,'rank':rank,'rank_at_explanation':rank,
+                'category':spec.get('category') or 'Actualidad','source':'editorial_chat_batch_direct',
+                'editorial_engine':'chat-direct','verification_sources':sources,
+                'news_note':'Episodio actual verificado en la pasada editorial; identidad nueva para no reutilizar un cierre histórico.',
+                'group_id':group_id,'explanation_group_id':group_id,'group_title':name,'group_leader_id':item_id,
+                'trend_names':[name],'grouped_member_revisions':[{'id':item_id,'revision':rev}],
+                'with_image':True,'image_strategy':'ai_plus_fallback','ai_image_status':'pending',
+                'fallback_image_status':'pending','image_status':'pending','image_choice':'none',
+                'image_pending':True,'telegram_package_status':'pending'
+              })
+              prepared['items']=[x for x in prepared.get('items',[]) if str(x.get('id') or '')!=item_id and key(x.get('trend_name'))!=key(name)]
+              prepared['items'].append({
+                'id':item_id,'revision':rev,'trend_name':name,'rank':rank,'category':spec.get('category') or 'Actualidad',
+                'generated_at':now,'explanation':text,'closer_text':closer,'primary':{'text':text},
+                'alternatives':[{'tweet_text':text},{'tweet_text':text},{'tweet_text':text}],
+                'verification_sources':sources,'related_trends':[name],'trend_names':[name],
+                'group_id':group_id,'explanation_group_id':group_id,'group_title':name,'group_leader_id':item_id,
+                'grouped_member_revisions':[{'id':item_id,'revision':rev}],
+                'with_image':True,'image_strategy':'ai_plus_fallback','ai_image_status':'pending',
+                'fallback_image_status':'pending','image_status':'pending','image_choice':'none','image_pending':True
+              })
+              queue['items']=[x for x in queue.get('items',[]) if not (str(x.get('id') or '')==item_id and int(x.get('revision') or 0)==rev)]
+              outcomes.append({'id':item_id,'revision':rev,'name':name,'rank':rank,'outcome':'explained','via':via})
+          req['updated_at']=now
+          manual['updated_at']=now; manual['count']=len(manual.get('items',[]))
+          prepared['updated_at']=now; prepared['count']=len(prepared.get('items',[]))
+          queue['updated_at']=now
+          queue['count']=sum(str(x.get('status') or '').lower() in {'preparing','update','problematic'} for x in queue.get('items',[]))
+          mobile['updated_at']=now
+          run_id=cmd.get('run_id') or 'chat-batch'
+          runtime.update({
+            'project':'TTendencias','canonical':True,'run_id':run_id,'command_id':run_id,'source':'chat',
+            'status':'DONE','phase':'closing','started_at':cmd.get('created_at') or now,'updated_at':now,'finished_at':now,
+            'current':len(outcomes),'total':len(outcomes),'trend_id':None,'title':'Pasada editorial TTendencias',
+            'queue_complete':queue['count']==0,'processed_ids':[x['id'] for x in outcomes],'converged_ids':[],
+            'remaining_ids':[],'remaining_active_ids':[],'remaining_problematic_ids':[],
+            'summary':{'attempted':len(outcomes),'observed':len(outcomes),'closed':len(outcomes),'explained':len(outcomes),
+              'problematic':0,'updates':0,'continuity_updates':0,'distinct_updates':len(outcomes),'unchanged_reviews':0,
+              'stale_reviews':0,'unverified_reviews':0,'queue_remaining':queue['count'],'rewrite_pending_remaining':0,
+              'imagegen_calls':0,'image_outbox_created':0,'publications':0,'incidents':0,'concurrent_convergence':0},
+            'outcomes':outcomes,'incident_count':0,'incidents':[],'error':None,
+            'message':f'Pasada {run_id} cerrada {len(outcomes)}/{len(outcomes)}: episodios actuales distintos reabiertos y explicados. ImageGen=0; publicaciones=0.',
+            'last_run':{'run_id':run_id,'command_id':run_id,'status':'DONE','started_at':cmd.get('created_at') or now,'finished_at':now,
+                        'summary':{'attempted':len(outcomes),'observed':len(outcomes),'closed':len(outcomes),'explained':len(outcomes),
+                                   'queue_remaining':queue['count'],'rewrite_pending_remaining':0,'imagegen_calls':0,
+                                   'image_outbox_created':0,'publications':0,'incidents':0,'concurrent_convergence':0},
+                        'message':f'Pasada {run_id} cerrada {len(outcomes)}/{len(outcomes)}.'}
+          })
+          save(T/'requests.json',req); save(T/'telegram-manual-explained.json',manual)
+          save(T/'editorial-queue.json',queue); save(T/'mobile-decisions.json',mobile)
+          save(T/'prepared.json',prepared); save(T/'editorial-runtime.json',runtime)
+          print('TTENDENCIAS_CHAT_BATCH_DONE',len(outcomes),queue['count'])
+          PY
+          python3 trends/export_site_top30.py
+      - name: Commit batch result against latest main
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "ttendencias-editorial"
+          git config user.email "actions@users.noreply.github.com"
+          git add trends/requests.json trends/telegram-manual-explained.json trends/editorial-queue.json trends/mobile-decisions.json trends/prepared.json trends/editorial-runtime.json trends/site-top30-current.json
+          git commit -m "TTendencias: cerrar lote editorial tr-1794185100000-manual" || exit 0
+          for i in 1 2 3 4 5 6 7 8; do
+            git fetch --depth=1 origin main
+            if ! git rebase origin/main; then git rebase --abort || true; exit 1; fi
+            if git push origin HEAD:main; then exit 0; fi
+            sleep 1
+          done
+          exit 1
+      - name: Wake visual repair
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: gh workflow run repair-ttendencias-explicadas.yml --repo "$REPO" --ref main
