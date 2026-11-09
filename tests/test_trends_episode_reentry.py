@@ -86,7 +86,7 @@ class EpisodeResearchTest(unittest.TestCase):
         self.assertEqual(len({r["id"] for r in current}), 10)
         self.assertTrue(all(r["status"] == "preparing" and
                             r["new_episode_review"] and
-                            not r["distinct_event_required"] and
+                            r["distinct_event_required"] and
                             r["recurring_top30_name"] for r in current))
         self.assertTrue(all(r["requested_together"] == [r["name"]] and
                             r["captured_with"] == [r["name"]] and
@@ -110,7 +110,7 @@ class EpisodeResearchTest(unittest.TestCase):
         self.assertEqual(len(rows), 10)
         self.assertEqual(read(self.folder, "editorial-queue.json")["count"], 0)
 
-    def test_returning_name_with_new_entry_marker_gets_new_id(self):
+    def test_returning_name_with_new_entry_marker_never_gets_new_id(self):
         doc = read(self.folder, "recent.json")
         doc["items"][1]["entered_top30_at"] = (
             self.now - timedelta(hours=1)).isoformat(timespec="seconds")
@@ -120,19 +120,17 @@ class EpisodeResearchTest(unittest.TestCase):
                 row.pop("last_changed_at", None)
         write(self.folder, "recent.json", doc)
         rows = self.run_editor()
-        self.assertEqual(len(rows), 11)
-        fresh = [r for r in rows if r["name"] == "Baena" and r["status"] == "preparing"]
-        self.assertEqual(len(fresh), 1)
-        self.assertNotEqual(fresh[0]["id"], "old-1")
-        self.assertEqual(fresh[0]["radar_episode_token"][:8], "reentry:")
-        self.assertEqual(len(self.run_editor()), 11)
+        self.assertEqual(len(rows), 10)
+        self.assertFalse(any(r["name"] == "Baena" and r["status"] == "preparing" for r in rows))
+        self.assertEqual(read(self.folder, "editorial-queue.json")["count"], 0)
+        self.assertEqual(len(self.run_editor()), 10)
 
     def test_no_new_grouped_status_created_from_two_old_group_members(self):
         rows = self.run_editor()
-        self.assertEqual(len(rows), 20)  # All ten have distinct fresh radar movement.
+        self.assertEqual(len(rows), 10)  # Historical labels are not new episodes.
         history = read(self.folder, "telegram-manual-explained.json")["items"]
         self.assertEqual([r["status"] for r in history], ["explained"] * 10)
-        self.assertEqual(len([x for x in rows if x["status"] == "preparing"]), 10)
+        self.assertEqual(len([x for x in rows if x["status"] == "preparing"]), 0)
 
     def test_recent_baena_adeyemi_singletons_are_not_grouped(self):
         # A legacy editor could put a fake grp-<same id> on an individual
@@ -168,10 +166,9 @@ class EpisodeResearchTest(unittest.TestCase):
         self.assertEqual(old["status"], "deleted")
 
 
-    def test_buenosdias_review_completed_reopens_current_episode_without_new_event(self):
-        # Reproduce 09/11: all past #Buenosdías explanations were deleted;
-        # today it has a review_completed/no_distinct_event but no active
-        # explained ID. This must become preparing, not Pendientes.
+    def test_buenosdias_review_completed_never_reopens_without_new_event(self):
+        # Previous investigation found no distinct event. Returning to
+        # Top30 must not reactivate its finished review.
         entry = self.now.isoformat(timespec="seconds")
         doc = read(self.folder, "recent.json")
         doc["items"] = [{"rank": 17, "name": "#Buenosdías",
@@ -194,14 +191,30 @@ class EpisodeResearchTest(unittest.TestCase):
         after = self.run_editor()
         self.assertEqual([x["id"] for x in after],
                          ["buenos-old", "buenos-review"])
-        self.assertEqual(after[-1]["status"], "preparing")
-        self.assertFalse(after[-1]["distinct_event_required"])
-        self.assertTrue(after[-1]["new_episode_review"])
-        self.assertEqual(read(self.folder, "editorial-queue.json")["count"], 1)
-        self.assertEqual(read(self.folder, "editorial-queue.json")["items"][0]["id"],
-                         "buenos-review")
+        self.assertEqual(after[-1]["status"], "review_completed")
+        self.assertEqual(after[-1]["review_reason"], "no_distinct_event")
+        self.assertEqual(read(self.folder, "editorial-queue.json")["count"], 0)
         self.assertEqual(len(self.run_editor()), 2)
-        self.assertEqual(read(self.folder, "editorial-queue.json")["count"], 1)
+        self.assertEqual(read(self.folder, "editorial-queue.json")["count"], 0)
+
+    def test_green_yellow_and_red_do_not_requeue_on_rank_or_reentry(self):
+        now = self.now
+        old = [dict(self.originals[i], name=name, status="explained",
+                    explained_at=(now - timedelta(hours=hours)).isoformat(timespec="seconds"),
+                    explanation="Motivo ya explicado")
+               for i, (name, hours) in enumerate((("Verde", 3), ("Amarilla", 18), ("Roja", 30)))]
+        doc = read(self.folder, "recent.json")
+        doc["items"] = [{"rank": i + 1, "name": row["name"],
+                         "entered_top30_at": now.isoformat(timespec="seconds"),
+                         "last_changed_at": now.isoformat(timespec="seconds")}
+                        for i, row in enumerate(old)]
+        write(self.folder, "recent.json", doc)
+        write(self.folder, "requests.json", {"requests": old})
+        write(self.folder, "telegram-manual-explained.json", {"items": old})
+        rows = self.run_editor()
+        self.assertEqual(rows, old)
+        self.assertEqual(read(self.folder, "editorial-queue.json")["count"], 0)
+        self.assertEqual(self.run_editor(), old)
 
     def test_felizlunes_current_explanation_stays_explained_without_new_listas(self):
         entry = self.now.isoformat(timespec="seconds")

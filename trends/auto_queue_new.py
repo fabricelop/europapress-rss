@@ -15,10 +15,10 @@ except ImportError:
     from trends.suppression import active_request, purge_pending
 try:
     # Direct script invocation from the trends directory.
-    from trend_episode_policy import treated_terms, editor_initiated, review_episode_token
+    from trend_episode_policy import treated_terms, editor_initiated
 except ImportError:
     # Also support the package invocation used by some CI callers.
-    from trends.trend_episode_policy import treated_terms, editor_initiated, review_episode_token
+    from trends.trend_episode_policy import treated_terms, editor_initiated
 
 ROOT = Path(__file__).resolve().parent
 MADRID = ZoneInfo("Europe/Madrid")
@@ -728,67 +728,14 @@ for batch in approved_batches:
     for term in batch.get("names") or []:
         approved_by_name[norm(term)] = {"id": batch_id, "approved_at": started}
 
-# Editorial passes before this policy sometimes marked a reentrant hashtag
-# review_completed solely because its subject had no distinct NEW event.
-# If that very same observed Top30 entry still lacks an active explanation,
-# recover the existing independent request instead of sending it back to
-# Pendientes. Preserve previous deleted/published IDs and user decisions.
-resumed_recurrent = 0
-for item in current:
-    name_key = norm(item["name"])
-    if name_key in active_explained_names:
-        continue
-    candidate = by_name.get(name_key)
-    if not candidate or candidate.get("status") != "review_completed":
-        continue
-    if candidate.get("auto_queued") is not True:
-        continue
-    if str(candidate.get("review_reason") or "") != "no_distinct_event":
-        continue
-    current_item = next((row for row in (recent.get("items") or [])[:30]
-                         if norm(row.get("name")) == name_key), None)
-    if not current_item:
-        continue
-    current_entry = parse_timestamp(current_item.get("entered_top30_at"))
-    old_entry = parse_timestamp(candidate.get("radar_episode_started_at"))
-    if not current_entry or current_entry != old_entry:
-        continue
-    # Re-open exactly the same independent research ID once. The next
-    # auto-queue call sees status preparing and never duplicates this ticket.
-    candidate["status"] = "preparing"
-    candidate["new_episode_review"] = True
-    candidate["distinct_event_required"] = False
-    candidate["task"] = "explain"
-    candidate["rank"] = item["rank"]
-    candidate["requested_at"] = now_dt.isoformat(timespec="seconds")
-    candidate["updated_at"] = now_dt.isoformat(timespec="seconds")
-    candidate["review_instruction"] = (
-        "Investiga por qué aparece AHORA. Si es un saludo recurrente, "
-        "descríbelo con contexto actual y sin inventar un detonante nuevo. "
-        "No reutilices ni reactives fichas antiguas; guarda una nueva "
-        "explicación individual solo porque no hay ninguna vigente."
-    )
-    candidate["recurrent_explanation_reopened_at"] = now_dt.isoformat(timespec="seconds")
-    candidate.pop("review_completed_at", None)
-    candidate.pop("review_reason", None)
-    resumed_recurrent += 1
-    reconciled = True
-if resumed_recurrent:
-    print("Tendencias recurrentes sin explicación vigente reanudadas:",
-          resumed_recurrent)
+# Completed reviews remain closed. A recurring Top30 label, whatever its color,
+# never reopens historical work without an explicit editor request.
 
 to_queue = []
 for item in current:
     key = norm(item["name"])
     req = by_name.get(key)
     status = str((req or {}).get("status") or "")
-    # An already explained and active label stays explained in the Top30;
-    # mere reappearance never starts another Listas package.
-    if key in active_explained_names and not (
-        req and editor_initiated(req)
-        and status in {"preparing", "update", "problematic"}
-    ):
-        continue
     approval = approved_by_name.get(key) or {}
     approval_id = approval.get("id", "")
     # Another concurrent editorial pass may have ALREADY prepared a fresh
@@ -802,15 +749,18 @@ for item in current:
         for old in requests
     ):
         approval_id = ""  # The approved review was already created.
+    # Neither a current explanation nor a recurring rank allows automatic
+    # re-listing. Preserve explicit manual investigations and approved batches.
+    if key in active_explained_names and not (
+        approval_id or (req and editor_initiated(req)
+                        and status in {"preparing", "update", "problematic"})
+    ):
+        continue
     radar_item = next((
         row for row in (recent.get("items") or [])[:30]
         if norm(row.get("name")) == key), item)
-    episode_token = (
-        "editor:" + approval_id if approval_id else
-        review_episode_token(item["name"], radar_item, req,
-                             historically_treated, now_dt,
-                             latest_explanation.get(key))
-    )
+    # Rank changes, elapsed time and Top30 reentry are not new-event evidence.
+    episode_token = "editor:" + approval_id if approval_id else ""
     historical = key in historically_treated
     distinct_review = bool(historical and episode_token)
     if historical and not distinct_review and not editor_initiated(req):
@@ -957,12 +907,12 @@ for item in to_queue:
             if norm(x.get("name")) == key), None),
         "editor_approval_batch_id": item.get("editor_approval_batch_id") or "",
         "previous_episode_id": str((req or {}).get("id") or "") if independent_episode else "",
-        "distinct_event_required": False,
+        "distinct_event_required": bool(item.get("new_episode_review")),
         "review_instruction": (
-            "Investiga el motivo ACTUAL y guarda una explicación individual "
-            "aunque sea la aparición recurrente de una etiqueta sin evento "
-            "distinto. No inventes un detonante ni reutilices una ficha "
-            "anterior eliminada o publicada."
+            "Investigación expresamente solicitada. Exigir un acontecimiento "
+            "material, nuevo y verificado frente a la ficha anterior. Si no "
+            "existe, cerrar como review_completed/no_distinct_event sin "
+            "generar otra ficha ni imagen. No duplicar por ranking o reentrada."
             if item.get("new_episode_review") else ""
         ),
     }
