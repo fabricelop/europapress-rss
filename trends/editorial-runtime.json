@@ -3,37 +3,21 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794262515713-manual",
+  "run_id": "tr-1794263668174-manual",
   "previous_run_id": "tr-1794262515713-manual",
-  "command_id": "tr-1794262515713-manual",
+  "command_id": "tr-1794263668174-manual",
   "source": "chat",
   "status": "DONE",
   "phase": "closing",
   "started_at": "2026-11-09T23:34:30+01:00",
-  "updated_at": "2026-11-09T23:39:00+01:00",
-  "finished_at": "2026-11-09T23:39:00+01:00",
-  "current": 17,
-  "total": 17,
+  "updated_at": "2026-11-09T23:40:00+01:00",
+  "finished_at": "2026-11-09T23:40:00+01:00",
+  "current": 1,
+  "total": 1,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
   "processed_ids": [
-    "63a056c511d3",
-    "b621bbd168f0",
-    "1e6fa34ad115",
-    "6c546f5c926c",
-    "e94c1b14b44b",
-    "835c9153b13e",
-    "207f8ad251cf",
-    "839aaa8d29b3",
-    "c2fdc85ccd3b",
-    "5597caa1398e",
-    "b29a4d5645d8",
-    "d006b0a0fd9f",
-    "51ef245682ef",
-    "30eaedeb2cc2",
-    "a8963036b538",
-    "e48dafe864dc",
     "red-review-61d494cc18e2321aaa5b"
   ],
   "converged_ids": [
@@ -43,10 +27,10 @@
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 17,
-    "observed": 17,
-    "closed": 17,
-    "explained": 16,
+    "attempted": 1,
+    "observed": 1,
+    "closed": 1,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
@@ -56,7 +40,6 @@
     "distinct_updates": 0,
     "stale_reviews": 0,
     "unverified_reviews": 1,
-    "cause_unconfirmed_explanations": 4,
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
@@ -70,125 +53,15 @@
   },
   "outcomes": [
     {
-      "id": "63a056c511d3",
-      "revision": 0,
-      "name": "La Peter",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "b621bbd168f0",
-      "revision": 0,
-      "name": "Ferran",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "1e6fa34ad115",
-      "revision": 0,
-      "name": "Cera",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "6c546f5c926c",
-      "revision": 0,
-      "name": "Zubimendi",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "e94c1b14b44b",
-      "revision": 1,
-      "name": "La Revuelta",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "835c9153b13e",
-      "revision": 1,
-      "name": "Broncano",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "207f8ad251cf",
-      "revision": 0,
-      "name": "#AbascalEnLaRevuelta",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "839aaa8d29b3",
-      "revision": 0,
-      "name": "Tartamudea",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "c2fdc85ccd3b",
-      "revision": 0,
-      "name": "Nervioso",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "5597caa1398e",
-      "revision": 0,
-      "name": "Gabi",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "b29a4d5645d8",
-      "revision": 0,
-      "name": "Grison",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "d006b0a0fd9f",
-      "revision": 0,
-      "name": "agenda 2030",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "51ef245682ef",
-      "revision": 0,
-      "name": "Fachascal",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "30eaedeb2cc2",
-      "revision": 0,
-      "name": "La Resistencia",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "a8963036b538",
-      "revision": 0,
-      "name": "Ley de Nietos",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "e48dafe864dc",
-      "revision": 0,
-      "name": "#UzakŞehir",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
       "id": "red-review-61d494cc18e2321aaa5b",
       "revision": 0,
       "name": "Revisar novedades: Supa",
       "outcome": "unverified",
       "applied": true,
-      "source_id": "69709b2f4154",
-      "note": "Rumores de mercado LEC 2027 sin confirmación material suficiente; se conserva explicación y explained_at originales."
+      "via": "maintenance_outbox_concurrent_convergence",
+      "outbox_commit": "68a0d8ce5507798aa47c8737a9c81c2954516373",
+      "apply_commit": "0a835cfee474c12e1cf4b7b1d3e6af9aeeef1ae8",
+      "converged_with": "tr-1794262515713-manual"
     }
   ],
   "incident_count": 0,
@@ -196,43 +69,18 @@
   "error": null,
   "activity": "closing",
   "last_started_at": "2026-11-09T23:34:30+01:00",
-  "last_completed_at": "2026-11-09T23:39:00+01:00",
+  "last_completed_at": "2026-11-09T23:40:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794262515713-manual",
+    "run_id": "tr-1794263668174-manual",
     "status": "DONE",
     "started_at": "2026-11-09T23:34:30+01:00",
-    "finished_at": "2026-11-09T23:39:00+01:00",
-    "current": 17,
-    "total": 17,
-    "processed_ids": [
-      "63a056c511d3",
-      "b621bbd168f0",
-      "1e6fa34ad115",
-      "6c546f5c926c",
-      "e94c1b14b44b",
-      "835c9153b13e",
-      "207f8ad251cf",
-      "839aaa8d29b3",
-      "c2fdc85ccd3b",
-      "5597caa1398e",
-      "b29a4d5645d8",
-      "d006b0a0fd9f",
-      "51ef245682ef",
-      "30eaedeb2cc2",
-      "a8963036b538",
-      "e48dafe864dc",
-      "red-review-61d494cc18e2321aaa5b"
-    ],
-    "ordinary_apply_commit": "2246ee9c5547f1eab2c58e3c510786976b61bc04",
-    "maintenance_job_id": "red-review-61d494cc18e2321aaa5b",
-    "maintenance_outcome": "unverified",
-    "queue_complete": true,
+    "finished_at": "2026-11-09T23:40:00+01:00",
     "summary": {
-      "attempted": 17,
-      "observed": 17,
-      "closed": 17,
-      "explained": 16,
+      "attempted": 1,
+      "observed": 1,
+      "closed": 1,
+      "explained": 0,
       "problematic": 0,
       "updates": 0,
       "review_completed_no_distinct_event": 0,
@@ -242,7 +90,6 @@
       "distinct_updates": 0,
       "stale_reviews": 0,
       "unverified_reviews": 1,
-      "cause_unconfirmed_explanations": 4,
       "anticipation_reviews": 0,
       "anticipation_prepared": 0,
       "anticipation_unverified": 0,
@@ -253,9 +100,29 @@
       "publications": 0,
       "incidents": 0,
       "concurrent_convergence": 1
-    }
+    },
+    "processed_ids": [
+      "red-review-61d494cc18e2321aaa5b"
+    ],
+    "converged_ids": [
+      "red-review-61d494cc18e2321aaa5b"
+    ],
+    "outcomes": [
+      {
+        "id": "red-review-61d494cc18e2321aaa5b",
+        "revision": 0,
+        "name": "Revisar novedades: Supa",
+        "outcome": "unverified",
+        "applied": true,
+        "via": "maintenance_outbox_concurrent_convergence",
+        "outbox_commit": "68a0d8ce5507798aa47c8737a9c81c2954516373",
+        "apply_commit": "0a835cfee474c12e1cf4b7b1d3e6af9aeeef1ae8",
+        "converged_with": "tr-1794262515713-manual"
+      }
+    ],
+    "message": "Pasada tr-1794263668174-manual cerrada 1/1. La revisión roja de Supa quedó unverified: la señal actual es mercado LEC 2027 (conversaciones con Fnatic e interés atribuido a NAVI/Vitality), pero las fuentes disponibles la presentan como rumor sin confirmación independiente. Se conservaron explicación, explained_at y estado publicado del 31/10. El resultado quedó aplicado en requests.json y telegram-manual-explained.json por 0a835cfee474c12e1cf4b7b1d3e6af9aeeef1ae8. Barrera final: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain en requests, explained ni mobile-decisions. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "DONE 17/17. Cerradas 16 explicaciones ordinarias y 1 revisión roja de Supa (unverified, sin alterar texto/fecha previos). Relectura final de main: editorial-queue=0, rewrite_pending=0, reexplain=0. ImageGen=0; image-outbox=0; publicaciones=0; incidencias=0.",
+  "message": "Pasada tr-1794263668174-manual cerrada 1/1. La revisión roja de Supa quedó unverified: la señal actual es mercado LEC 2027 (conversaciones con Fnatic e interés atribuido a NAVI/Vitality), pero las fuentes disponibles la presentan como rumor sin confirmación independiente. Se conservaron explicación, explained_at y estado publicado del 31/10. El resultado quedó aplicado en requests.json y telegram-manual-explained.json por 0a835cfee474c12e1cf4b7b1d3e6af9aeeef1ae8. Barrera final: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain en requests, explained ni mobile-decisions. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794234841273-manual",
@@ -2223,26 +2090,79 @@
         "incidents": 0,
         "concurrent_convergence": 1
       }
+    },
+    {
+      "run_id": "tr-1794263668174-manual",
+      "status": "DONE",
+      "started_at": "2026-11-09T23:34:30+01:00",
+      "finished_at": "2026-11-09T23:40:00+01:00",
+      "at": "2026-11-09T23:40:00+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 1,
+        "observed": 1,
+        "closed": 1,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 1,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 1,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 1
+      },
+      "processed_ids": [
+        "red-review-61d494cc18e2321aaa5b"
+      ],
+      "converged_ids": [
+        "red-review-61d494cc18e2321aaa5b"
+      ],
+      "outcomes": [
+        {
+          "id": "red-review-61d494cc18e2321aaa5b",
+          "revision": 0,
+          "name": "Revisar novedades: Supa",
+          "outcome": "unverified",
+          "applied": true,
+          "via": "maintenance_outbox_concurrent_convergence",
+          "outbox_commit": "68a0d8ce5507798aa47c8737a9c81c2954516373",
+          "apply_commit": "0a835cfee474c12e1cf4b7b1d3e6af9aeeef1ae8",
+          "converged_with": "tr-1794262515713-manual"
+        }
+      ],
+      "message": "Pasada tr-1794263668174-manual cerrada 1/1. La revisión roja de Supa quedó unverified: la señal actual es mercado LEC 2027 (conversaciones con Fnatic e interés atribuido a NAVI/Vitality), pero las fuentes disponibles la presentan como rumor sin confirmación independiente. Se conservaron explicación, explained_at y estado publicado del 31/10. El resultado quedó aplicado en requests.json y telegram-manual-explained.json por 0a835cfee474c12e1cf4b7b1d3e6af9aeeef1ae8. Barrera final: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain en requests, explained ni mobile-decisions. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "current_item": null,
   "withdrawn_ids": [
     "ae7f066f3c94"
   ],
-  "last_finished_at": "2026-11-09T22:42:38.089+01:00",
-  "last_revalidated_at": "2026-11-09T22:42:38.089+01:00",
+  "last_finished_at": "2026-11-09T23:40:00+01:00",
+  "last_revalidated_at": "2026-11-09T23:40:00+01:00",
   "last_revalidation": {
-    "at": "2026-11-09T22:42:38.089+01:00",
-    "queue_sha": "bbca44c0fbfc2a83f4b833ef1a0a15766c9ea85b",
+    "at": "2026-11-09T23:40:00+01:00",
+    "queue_sha": "b30c56cb08123bccb48794a9c6cad668396389f1",
     "queue_count": 0,
     "preparing_update": 0,
     "rewrite_pending": 0,
     "reexplain": 0
   },
   "prior_runtime_observed": {
-    "run_id": "tr-1794260243896-manual",
+    "run_id": "tr-1794262515713-manual",
     "status": "DONE",
-    "updated_at": "2026-11-09T22:42:38.089+01:00"
+    "updated_at": "2026-11-09T23:39:00+01:00"
   },
   "apply_workflow_run_id": 42712886314,
   "apply_commit": "2246ee9c5547f1eab2c58e3c510786976b61bc04",
