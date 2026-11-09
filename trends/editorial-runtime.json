@@ -7,22 +7,25 @@
   "previous_run_id": "tr-1794183217485-manual",
   "command_id": "tr-1794183437001-manual",
   "source": "chat",
-  "status": "success",
-  "phase": "persisting",
+  "status": "RUNNING",
+  "phase": "verifying",
   "started_at": "2026-11-09T01:18:30+01:00",
-  "updated_at": "2026-11-09T01:19:56+01:00",
+  "updated_at": "2026-11-09T01:20:33+01:00",
   "finished_at": null,
-  "current": 0,
-  "total": 1,
+  "current": 1,
+  "total": 3,
   "trend_id": "daa31c3c4084",
   "title": "Barrios",
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [
     "daa31c3c4084"
   ],
   "converged_ids": [],
   "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "red-review-7ac1bd151b9efc3131ed",
+    "red-review-23a49be63b26309c4fd1"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
@@ -80,7 +83,7 @@
     },
     "message": "Pasada tr-1794183217485-manual cerrada 2/2 por convergencia JIT. Barça r0 y Asraf r0 figuran explained en requests y telegram-manual-explained con texto/remate sincronizados; editorial-queue=0 y no quedan preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Barrios r0 persistido en editorial-outbox tras revalidación JIT. El aplicador oficial por push debe materializar requests + telegram-manual-explained y retirar la revisión de la cola. ImageGen=0.",
+  "message": "Barrios r0 ya aplicado. La barrera final incorporó 2 review_red nuevos; se procesan en orden JIT: Levante 0-2 Atlético y #SalvadosEmilioDelgado. ImageGen=0.",
   "history": [
     {
       "at": "2026-11-08T15:07:08+01:00",
@@ -894,14 +897,18 @@
       "trend_id": "daa31c3c4084",
       "title": "Barrios",
       "message": "Barrios r0 persistido en editorial-outbox tras revalidación JIT. El aplicador oficial por push debe materializar requests + telegram-manual-explained y retirar la revisión de la cola. ImageGen=0."
+    },
+    {
+      "at": "2026-11-09T01:20:33+01:00",
+      "phase": "preparing",
+      "message": "Barrios r0 ya aplicado. La barrera final incorporó 2 review_red nuevos; se procesan en orden JIT: Levante 0-2 Atlético y #SalvadosEmilioDelgado. ImageGen=0."
     }
   ],
   "current_item": {
-    "id": "daa31c3c4084",
+    "id": "red-review-7ac1bd151b9efc3131ed",
     "revision": 0,
-    "name": "Barrios",
-    "rank": 17,
+    "name": "Revisar novedades: Levante 0-2 Atlético",
     "status": "preparing",
-    "phase": "persisting"
+    "phase": "verifying"
   }
 }
