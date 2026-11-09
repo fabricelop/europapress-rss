@@ -100,6 +100,8 @@ struct TTDashboard: View {
     @State private var publicationSheet: PublicationSheetRoute?
     @State private var requestingEditorialRun = false
     @State private var editorialRunMessage = ""
+    // Presentation-only: keep the global request count visible, details opt-in.
+    @State private var quotaDetailsExpanded = false
 
     // Presentation-only overlay. The canonical editorial snapshot is never
     // modified until the exact GitHub closure receipt has been verified.
@@ -505,10 +507,49 @@ struct TTDashboard: View {
 
     private var bufferAPIQuota: some View {
         VStack(alignment: .leading, spacing: 7) {
-            Label("CUOTA BUFFER API GLOBAL · 30 DÍAS MÓVILES",
-                  systemImage: "chart.pie")
-                .font(.system(size: 10, weight: .bold))
-                .foregroundStyle(TTTheme.muted)
+            Button {
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    quotaDetailsExpanded.toggle()
+                }
+            } label: {
+                HStack(spacing: 7) {
+                    Label("CUOTA BUFFER API GLOBAL", systemImage: "chart.pie")
+                        .font(.system(size: 10, weight: .bold))
+                        .foregroundStyle(TTTheme.muted)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.75)
+                        .layoutPriority(1)
+                    Spacer(minLength: 2)
+                    if let quota = buffer.apiQuota, quota.window_seconds == 2592000,
+                       quota.limit > 0 {
+                        Text("\(quota.used)/\(quota.limit) solicitudes")
+                            .font(.system(size: 11, weight: .bold))
+                            .monospacedDigit()
+                            .foregroundStyle(.white)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.8)
+                    } else {
+                        Text("— solicitudes")
+                            .font(.system(size: 11, weight: .semibold))
+                            .foregroundStyle(TTTheme.muted)
+                            .lineLimit(1)
+                    }
+                    Image(systemName: quotaDetailsExpanded ? "chevron.up" : "chevron.down")
+                        .font(.system(size: 10, weight: .bold))
+                        .foregroundStyle(TTTheme.blue)
+                }
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel("Cuota Buffer API global")
+            .accessibilityValue(buffer.apiQuota.map {
+                "\($0.used) de \($0.limit) solicitudes"
+            } ?? "Sin lectura verificada")
+            .accessibilityHint(quotaDetailsExpanded ? "Plegar detalles de cuota" : "Desplegar detalles de cuota")
+            if quotaDetailsExpanded {
+                Text("30 DÍAS MÓVILES")
+                    .font(.system(size: 10, weight: .semibold))
+                    .foregroundStyle(TTTheme.muted)
             if let quota = buffer.apiQuota, quota.window_seconds == 2592000,
                quota.limit > 0 {
                 let sustainable = Double(quota.limit) / 30.0
@@ -610,6 +651,7 @@ struct TTDashboard: View {
             } else {
                 Text("Cuota aún no verificada. Se mostrará cuando Buffer devuelva sus límites reales.")
                     .font(.system(size: 10)).foregroundStyle(TTTheme.muted)
+            }
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
