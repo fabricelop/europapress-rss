@@ -7,74 +7,93 @@
   "previous_run_id": "tr-autoguard-1794201116",
   "command_id": "tr-1794201348940-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-09T06:16:00+01:00",
-  "updated_at": "2026-11-09T06:16:00+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-09T06:20:00+01:00",
+  "finished_at": "2026-11-09T06:20:00+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "red-review-580d184137861e4dc8b8",
-  "title": "Revisar novedades: Amaia",
-  "queue_complete": false,
-  "processed_ids": [],
-  "converged_ids": [],
-  "remaining_ids": [
+  "trend_id": null,
+  "title": "Pasada editorial TTendencias",
+  "queue_complete": true,
+  "processed_ids": [
     "red-review-580d184137861e4dc8b8",
     "red-review-8378a471dad3354c6112"
   ],
-  "remaining_active_ids": [
+  "converged_ids": [
     "red-review-580d184137861e4dc8b8",
     "red-review-8378a471dad3354c6112"
   ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 2,
     "observed": 2,
-    "closed": 0,
+    "closed": 2,
     "explained": 0,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 0,
-    "unchanged_reviews": 0,
+    "maintenance_reviews": 2,
+    "unchanged_reviews": 2,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 2
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "red-review-580d184137861e4dc8b8",
+      "revision": 0,
+      "name": "Revisar novedades: Amaia",
+      "outcome": "unchanged",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "apply_commit": "fd25921b0ce32944ae958fe9122a4ea781b04357"
+    },
+    {
+      "id": "red-review-8378a471dad3354c6112",
+      "revision": 0,
+      "name": "Revisar novedades: #FelizDomingo",
+      "outcome": "unchanged",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "apply_commit": "fd25921b0ce32944ae958fe9122a4ea781b04357"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "preparing",
+  "activity": "closing",
   "last_started_at": "2026-11-09T06:15:17+01:00",
-  "last_completed_at": "2026-11-09T06:15:18+01:00",
+  "last_completed_at": "2026-11-09T06:20:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794199200000-manual",
+    "run_id": "tr-1794201348940-manual",
     "status": "DONE",
-    "started_at": "2026-11-09T05:40:00+01:00",
-    "finished_at": "2026-11-09T05:43:30+01:00",
-    "at": "2026-11-09T05:43:30+01:00",
+    "started_at": "2026-11-09T06:16:00+01:00",
+    "finished_at": "2026-11-09T06:20:00+01:00",
+    "at": "2026-11-09T06:20:00+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 0,
-      "observed": 0,
-      "closed": 0,
+      "attempted": 2,
+      "observed": 2,
+      "closed": 2,
       "explained": 0,
       "problematic": 0,
       "updates": 0,
       "review_completed_no_distinct_event": 0,
-      "maintenance_reviews": 0,
-      "unchanged_reviews": 0,
+      "maintenance_reviews": 2,
+      "unchanged_reviews": 2,
       "continuity_updates": 0,
       "distinct_updates": 0,
       "stale_reviews": 0,
@@ -85,13 +104,35 @@
       "image_outbox_created": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 0
+      "concurrent_convergence": 2
     },
-    "processed_ids": [],
-    "outcomes": [],
-    "message": "Pasada tr-1794199200000-manual cerrada 0/0 tras relectura final de main: editorial-queue=0 (actualizada 2026-11-09T05:41:00+01:00), Top 30 vigente=30 (capturado 2026-11-09T05:40:54+01:00), mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos y búsqueda en main sin marcas activas de preparing/update/rewrite_pending/reexplain. Últimos mantenimientos Valencia y maffeo permanecen unchanged. No había trabajo editorial que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "processed_ids": [
+      "red-review-580d184137861e4dc8b8",
+      "red-review-8378a471dad3354c6112"
+    ],
+    "outcomes": [
+      {
+        "id": "red-review-580d184137861e4dc8b8",
+        "revision": 0,
+        "name": "Revisar novedades: Amaia",
+        "outcome": "unchanged",
+        "applied": true,
+        "via": "concurrent_convergence",
+        "apply_commit": "fd25921b0ce32944ae958fe9122a4ea781b04357"
+      },
+      {
+        "id": "red-review-8378a471dad3354c6112",
+        "revision": 0,
+        "name": "Revisar novedades: #FelizDomingo",
+        "outcome": "unchanged",
+        "applied": true,
+        "via": "concurrent_convergence",
+        "apply_commit": "fd25921b0ce32944ae958fe9122a4ea781b04357"
+      }
+    ],
+    "message": "Pasada tr-1794201348940-manual cerrada 2/2 por convergencia JIT. Amaia y #FelizDomingo fueron investigadas como revisiones de novedades y aplicadas como unchanged en el commit fd25921b0ce32944ae958fe9122a4ea781b04357; se conservan explicación, explained_at, imagen y estado publicado. Barrera final en main: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. El aplicador oficial persistió el mantenimiento en requests.json y telegram-manual-explained.json. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794201348940-manual RUNNING. Cola inicial JIT=2 review_red: Amaia y #FelizDomingo. Se procesan de más antiguo a más reciente, revalidando ID/revisión antes de investigar y persistir. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1794201348940-manual cerrada 2/2 por convergencia JIT. Amaia y #FelizDomingo fueron investigadas como revisiones de novedades y aplicadas como unchanged en el commit fd25921b0ce32944ae958fe9122a4ea781b04357; se conservan explicación, explained_at, imagen y estado publicado. Barrera final en main: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. El aplicador oficial persistió el mantenimiento en requests.json y telegram-manual-explained.json. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T03:17:00+01:00",
@@ -678,6 +719,16 @@
         "status": "success",
         "updated_at": "2026-11-09T06:15:18+01:00"
       }
+    },
+    {
+      "at": "2026-11-09T06:19:00+01:00",
+      "phase": "verifying",
+      "message": "Barrera JIT final: editorial-queue=0. El commit oficial fd25921b0ce32944ae958fe9122a4ea781b04357 retiró ambos review_red y estampó los resultados unchanged; mobile-decisions no contiene preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-09T06:20:00+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-1794201348940-manual cerrada 2/2 por convergencia JIT. Amaia y #FelizDomingo fueron investigadas como revisiones de novedades y aplicadas como unchanged en el commit fd25921b0ce32944ae958fe9122a4ea781b04357; se conservan explicación, explained_at, imagen y estado publicado. Barrera final en main: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. El aplicador oficial persistió el mantenimiento en requests.json y telegram-manual-explained.json. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "current_item": {
