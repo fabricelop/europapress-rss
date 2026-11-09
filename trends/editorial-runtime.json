@@ -5,34 +5,34 @@
   "canonical": true,
   "run_id": "tr-1794186660000-manual",
   "previous_run_id": "tr-1794185607129-manual",
-  "command_id": "tr-1794185700000-manual",
+  "command_id": "tr-1794186660000-manual",
   "source": "chat",
-  "status": "success",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-09T02:11:00+01:00",
-  "updated_at": "2026-11-09T02:14:11+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-09T02:15:00+01:00",
+  "finished_at": "2026-11-09T02:15:00+01:00",
+  "current": 5,
   "total": 5,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
   "queue_complete": true,
   "processed_ids": [
-    "023e69ba589c",
-    "26f1d7597d71",
     "495c3ee47d45",
     "83d6c8f7b73e",
-    "9a8107a5eb11"
+    "9a8107a5eb11",
+    "023e69ba589c",
+    "26f1d7597d71"
   ],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 0,
-    "closed": 0,
-    "explained": 0,
+    "attempted": 5,
+    "observed": 5,
+    "closed": 5,
+    "explained": 5,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
@@ -48,7 +48,48 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "495c3ee47d45",
+      "revision": 0,
+      "name": "Atleti",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "52ec698af0448f0f306381a097a4790faa4ab5f8"
+    },
+    {
+      "id": "83d6c8f7b73e",
+      "revision": 0,
+      "name": "Victor",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "52ec698af0448f0f306381a097a4790faa4ab5f8"
+    },
+    {
+      "id": "9a8107a5eb11",
+      "revision": 0,
+      "name": "De Jong",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "52ec698af0448f0f306381a097a4790faa4ab5f8"
+    },
+    {
+      "id": "023e69ba589c",
+      "revision": 0,
+      "name": "#ElChiringuitoenCuatro",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "52ec698af0448f0f306381a097a4790faa4ab5f8"
+    },
+    {
+      "id": "26f1d7597d71",
+      "revision": 0,
+      "name": "Venenito",
+      "outcome": "explained_cause_unconfirmed",
+      "applied": true,
+      "apply_commit": "52ec698af0448f0f306381a097a4790faa4ab5f8"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -84,7 +125,7 @@
     },
     "message": "Pasada tr-1794185700000-manual cerrada 0/0 tras refresco manual completo. Workflow 42542851760 terminó success y actualizó el Top 30 a 2026-11-09T01:58:38+01:00. Barrera JIT final: editorial-queue=0 y mobile-decisions sin preparing/update ni rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794186660000-manual RUNNING. Cola inicial JIT=5: Atleti, Victor, De Jong, #ElChiringuitoenCuatro y Venenito. Procesamiento individual sin agrupaciones; ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1794186660000-manual cerrada 5/5. Atleti, Victor, De Jong y #ElChiringuitoenCuatro explicados; Venenito cerrado con causa no confirmada para no inventar el detonante. Aplicación oficial confirmada en 52ec698af0448f0f306381a097a4790faa4ab5f8. Barrera final: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-08T15:07:08+01:00",
@@ -1029,6 +1070,75 @@
       "at": "2026-11-09T02:11:00+01:00",
       "phase": "preparing",
       "message": "Pasada tr-1794186660000-manual RUNNING. Cola inicial JIT=5: Atleti, Victor, De Jong, #ElChiringuitoenCuatro y Venenito. Procesamiento individual sin agrupaciones; ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794186660000-manual",
+      "status": "DONE",
+      "at": "2026-11-09T02:15:00+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 5,
+        "observed": 5,
+        "closed": 5,
+        "explained": 5,
+        "problematic": 0,
+        "updates": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "outcomes": [
+        {
+          "id": "495c3ee47d45",
+          "revision": 0,
+          "name": "Atleti",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "52ec698af0448f0f306381a097a4790faa4ab5f8"
+        },
+        {
+          "id": "83d6c8f7b73e",
+          "revision": 0,
+          "name": "Victor",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "52ec698af0448f0f306381a097a4790faa4ab5f8"
+        },
+        {
+          "id": "9a8107a5eb11",
+          "revision": 0,
+          "name": "De Jong",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "52ec698af0448f0f306381a097a4790faa4ab5f8"
+        },
+        {
+          "id": "023e69ba589c",
+          "revision": 0,
+          "name": "#ElChiringuitoenCuatro",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "52ec698af0448f0f306381a097a4790faa4ab5f8"
+        },
+        {
+          "id": "26f1d7597d71",
+          "revision": 0,
+          "name": "Venenito",
+          "outcome": "explained_cause_unconfirmed",
+          "applied": true,
+          "apply_commit": "52ec698af0448f0f306381a097a4790faa4ab5f8"
+        }
+      ],
+      "message": "Pasada tr-1794186660000-manual cerrada 5/5. Atleti, Victor, De Jong y #ElChiringuitoenCuatro explicados; Venenito cerrado con causa no confirmada para no inventar el detonante. Aplicación oficial confirmada en 52ec698af0448f0f306381a097a4790faa4ab5f8. Barrera final: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": null
