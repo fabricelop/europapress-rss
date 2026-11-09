@@ -7,52 +7,126 @@
   "previous_run_id": "tr-1794190200000-manual",
   "command_id": "tr-1794190825816-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-09T03:20:25.816+01:00",
-  "updated_at": "2026-11-09T03:20:25.816+01:00",
-  "finished_at": null,
-  "current": 0,
-  "total": 2,
+  "updated_at": "2026-11-09T03:23:15+01:00",
+  "finished_at": "2026-11-09T03:23:15+01:00",
+  "current": 7,
+  "total": 7,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": false,
-  "processed_ids": [],
-  "converged_ids": [],
-  "remaining_ids": [
+  "queue_complete": true,
+  "processed_ids": [
+    "e66798dae072",
+    "f32194b977fd",
+    "639ad93bd705",
+    "a9073fde3cbe",
+    "5f70621d794b",
     "red-review-f2af8f644e9555ab549c",
     "red-review-20d37a7fb7e048a77eab"
   ],
-  "remaining_active_ids": [
-    "red-review-f2af8f644e9555ab549c",
-    "red-review-20d37a7fb7e048a77eab"
+  "converged_ids": [
+    "a9073fde3cbe"
   ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": null,
-  "outcomes": [],
+  "summary": {
+    "attempted": 7,
+    "observed": 7,
+    "closed": 7,
+    "explained": 3,
+    "problematic": 0,
+    "updates": 0,
+    "review_completed_no_distinct_event": 1,
+    "terminal_convergence": 1,
+    "maintenance_reviews": 2,
+    "unchanged_reviews": 2,
+    "continuity_updates": 0,
+    "distinct_updates": 0,
+    "stale_reviews": 0,
+    "unverified_reviews": 0,
+    "queue_remaining": 0,
+    "rewrite_pending_remaining": 0,
+    "imagegen_calls": 0,
+    "image_outbox_created": 0,
+    "publications": 0,
+    "incidents": 0,
+    "concurrent_convergence": 1
+  },
+  "outcomes": [
+    {
+      "id": "e66798dae072",
+      "revision": 0,
+      "name": "Doran",
+      "outcome": "explained"
+    },
+    {
+      "id": "f32194b977fd",
+      "revision": 0,
+      "name": "Barça",
+      "outcome": "review_completed",
+      "reason": "no_distinct_event"
+    },
+    {
+      "id": "639ad93bd705",
+      "revision": 0,
+      "name": "#Worlds2026",
+      "outcome": "explained"
+    },
+    {
+      "id": "a9073fde3cbe",
+      "revision": 0,
+      "name": "Faker",
+      "outcome": "converged_terminal",
+      "status": "deleted"
+    },
+    {
+      "id": "5f70621d794b",
+      "revision": 0,
+      "name": "Supervivientes",
+      "outcome": "explained"
+    },
+    {
+      "id": "red-review-f2af8f644e9555ab549c",
+      "revision": 0,
+      "name": "Revisar novedades: Fermín",
+      "outcome": "unchanged"
+    },
+    {
+      "id": "red-review-20d37a7fb7e048a77eab",
+      "revision": 0,
+      "name": "Revisar novedades: Simeone",
+      "outcome": "unchanged"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
   "activity": "Revisando novedades",
   "last_started_at": "2026-11-09T03:20:25.816+01:00",
-  "last_completed_at": "2026-11-09T02:31:27+01:00",
+  "last_completed_at": "2026-11-09T03:23:15+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794187489104-manual",
-    "command_id": "tr-1794187489104-manual",
+    "run_id": "tr-1794190200000-manual",
+    "command_id": "tr-1794190200000-manual",
     "status": "DONE",
-    "started_at": "2026-11-09T02:25:00+01:00",
-    "finished_at": "2026-11-09T02:31:27+01:00",
+    "started_at": "2026-11-09T03:20:25.816+01:00",
+    "finished_at": "2026-11-09T03:23:15+01:00",
     "summary": {
-      "attempted": 0,
-      "observed": 0,
-      "closed": 0,
-      "explained": 0,
+      "attempted": 7,
+      "observed": 7,
+      "closed": 7,
+      "explained": 3,
       "problematic": 0,
       "updates": 0,
+      "review_completed_no_distinct_event": 1,
+      "terminal_convergence": 1,
+      "maintenance_reviews": 2,
+      "unchanged_reviews": 2,
       "continuity_updates": 0,
       "distinct_updates": 0,
-      "unchanged_reviews": 0,
       "stale_reviews": 0,
       "unverified_reviews": 0,
       "queue_remaining": 0,
@@ -61,11 +135,57 @@
       "image_outbox_created": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 0
+      "concurrent_convergence": 1
     },
-    "message": "Pasada tr-1794187489104-manual cerrada 0/0 tras refresco manual real. Workflow TTendencias 42545539983 completado success; recent.json capturado 2026-11-09T02:30:47+01:00 y editorial-queue actualizado 2026-11-09T02:30:55+01:00 con count=0. Barrera final: mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
+    "outcomes": [
+      {
+        "id": "e66798dae072",
+        "revision": 0,
+        "name": "Doran",
+        "outcome": "explained"
+      },
+      {
+        "id": "f32194b977fd",
+        "revision": 0,
+        "name": "Barça",
+        "outcome": "review_completed",
+        "reason": "no_distinct_event"
+      },
+      {
+        "id": "639ad93bd705",
+        "revision": 0,
+        "name": "#Worlds2026",
+        "outcome": "explained"
+      },
+      {
+        "id": "a9073fde3cbe",
+        "revision": 0,
+        "name": "Faker",
+        "outcome": "converged_terminal",
+        "status": "deleted"
+      },
+      {
+        "id": "5f70621d794b",
+        "revision": 0,
+        "name": "Supervivientes",
+        "outcome": "explained"
+      },
+      {
+        "id": "red-review-f2af8f644e9555ab549c",
+        "revision": 0,
+        "name": "Revisar novedades: Fermín",
+        "outcome": "unchanged"
+      },
+      {
+        "id": "red-review-20d37a7fb7e048a77eab",
+        "revision": 0,
+        "name": "Revisar novedades: Simeone",
+        "outcome": "unchanged"
+      }
+    ],
+    "message": "Pasada tr-1794190200000-manual DONE 7/7. Explicadas: Doran, #Worlds2026 y Supervivientes. Barça cerrado review_completed/no_distinct_event sin nueva ficha. Faker convergió a decisión terminal deleted y no se reabrió. Revisiones de novedades de Fermín y Simeone aplicadas como unchanged. Barrera final: editorial-queue=0 y requests sin preparing/update/rewrite_pending/reexplain. Sin agrupaciones nuevas, ImageGen=0 y publicaciones=0."
   },
-  "message": "Pasada manual iniciada con 2 review_red: Fermín y Simeone. Se procesan del más antiguo al más reciente con revalidación JIT de ID/revisión antes de cada resultado. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1794190200000-manual DONE 7/7. Explicadas: Doran, #Worlds2026 y Supervivientes. Barça cerrado review_completed/no_distinct_event sin nueva ficha. Faker convergió a decisión terminal deleted y no se reabrió. Revisiones de novedades de Fermín y Simeone aplicadas como unchanged. Barrera final: editorial-queue=0 y requests sin preparing/update/rewrite_pending/reexplain. Sin agrupaciones nuevas, ImageGen=0 y publicaciones=0.",
   "history": [
     {
       "at": "2026-11-08T15:07:08+01:00",
@@ -1295,6 +1415,16 @@
         "current": 0,
         "total": 5
       }
+    },
+    {
+      "at": "2026-11-09T03:23:15+01:00",
+      "phase": "verifying",
+      "message": "Barrera JIT: editorial-queue=0; requests activos preparing/update/rewrite_pending/reexplain=0. Tres fichas nuevas verificadas sin metadatos de agrupación; Barça review_completed; Faker deleted terminal; dos review_red aplicados unchanged."
+    },
+    {
+      "at": "2026-11-09T03:23:15+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-1794190200000-manual DONE 7/7. Explicadas: Doran, #Worlds2026 y Supervivientes. Barça cerrado review_completed/no_distinct_event sin nueva ficha. Faker convergió a decisión terminal deleted y no se reabrió. Revisiones de novedades de Fermín y Simeone aplicadas como unchanged. Barrera final: editorial-queue=0 y requests sin preparing/update/rewrite_pending/reexplain. Sin agrupaciones nuevas, ImageGen=0 y publicaciones=0."
     }
   ],
   "current_item": null
