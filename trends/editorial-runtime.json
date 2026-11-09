@@ -8,9 +8,9 @@
   "command_id": "tr-1794207689958-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "investigating",
   "started_at": "2026-11-09T08:01:29+01:00",
-  "updated_at": "2026-11-09T08:01:29+01:00",
+  "updated_at": "2026-11-09T08:02:30+01:00",
   "finished_at": null,
   "current": 0,
   "total": 1,
@@ -52,7 +52,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "preparing",
+  "activity": "investigating",
   "last_started_at": "2026-11-09T08:01:29+01:00",
   "last_completed_at": "2026-11-09T08:00:09+01:00",
   "api_failover_enabled": false,
@@ -91,7 +91,7 @@
     "refresh_commit": "1d0d47c7449438382124a9e70ebf55ac579824cd",
     "message": "Pasada tr-1794207300000-manual cerrada 0/0 tras refresco real del Top 30. Trigger 75162ed5a7fd66a86a83e95bdf6a911d92f6e55f; refresco materializado en 1d0d47c7449438382124a9e70ebf55ac579824cd con snapshot capturado 2026-11-09T07:59:43+01:00. Barrera final: editorial-queue=0 (updated_at 2026-11-09T07:59:50+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794207689958-manual RUNNING. Cola JIT=1: #FelizLunes r0 (8604d67ab205), reelaboración manual desde cero. Se valida ID/revisión antes de investigar; ImageGen=0 y publicaciones=0.",
+  "message": "Investigando #FelizLunes r0 desde cero: se contrasta el ranking actual con fuentes independientes y se comprueba si existe un detonante concreto distinto de un saludo recurrente. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T03:17:00+01:00",
@@ -1040,6 +1040,13 @@
         "phase": "closing",
         "updated_at": "2026-11-09T08:00:09+01:00"
       }
+    },
+    {
+      "at": "2026-11-09T08:02:30+01:00",
+      "phase": "investigating",
+      "trend_id": "8604d67ab205",
+      "title": "#FelizLunes",
+      "message": "Investigando #FelizLunes r0 desde cero: se contrasta el ranking actual con fuentes independientes y se comprueba si existe un detonante concreto distinto de un saludo recurrente. ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": {
