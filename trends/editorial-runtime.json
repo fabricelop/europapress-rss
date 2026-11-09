@@ -3,66 +3,32 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794193039425-manual",
-  "previous_run_id": "tr-1794192890633-manual",
-  "command_id": "tr-1794193039425-manual",
+  "run_id": "tr-1794193800000-manual",
+  "previous_run_id": "tr-1794193039425-manual",
+  "command_id": "tr-1794193800000-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-09T03:57:00+01:00",
-  "updated_at": "2026-11-09T03:59:00+01:00",
-  "finished_at": "2026-11-09T03:59:00+01:00",
-  "current": 1,
-  "total": 1,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-09T04:10:00+01:00",
+  "updated_at": "2026-11-09T04:10:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": true,
-  "processed_ids": [
-    "red-review-c403c0a2de4526534b5a"
-  ],
-  "converged_ids": [
-    "red-review-c403c0a2de4526534b5a"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
+  "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": {
-    "attempted": 0,
-    "observed": 1,
-    "closed": 1,
-    "explained": 0,
-    "problematic": 0,
-    "updates": 0,
-    "maintenance_reviews": 1,
-    "unchanged_reviews": 1,
-    "continuity_updates": 0,
-    "distinct_updates": 0,
-    "stale_reviews": 0,
-    "unverified_reviews": 0,
-    "queue_remaining": 0,
-    "rewrite_pending_remaining": 0,
-    "imagegen_calls": 0,
-    "image_outbox_created": 0,
-    "publications": 0,
-    "incidents": 0,
-    "concurrent_convergence": 1
-  },
-  "outcomes": [
-    {
-      "id": "red-review-c403c0a2de4526534b5a",
-      "revision": 0,
-      "name": "Revisar novedades: Sorloth",
-      "outcome": "unchanged",
-      "applied": true,
-      "via": "concurrent_convergence",
-      "apply_commit": "6c13765fae204c465cd8827664e347c0efe3fb73"
-    }
-  ],
+  "summary": null,
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Cierre editorial verificado",
-  "last_started_at": "2026-11-09T03:57:00+01:00",
+  "activity": "Refrescando Top 30 y releyendo cola",
+  "last_started_at": "2026-11-09T04:10:00+01:00",
   "last_completed_at": "2026-11-09T03:59:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -111,7 +77,7 @@
     ],
     "message": "Pasada tr-1794192890633-manual cerrada 2/2. #DragRaceEs y Sorloth revisados contra fuentes actuales y aplicados como unchanged: se conservan explicación, explained_at, imágenes y estado de publicación. Workflows de mantenimiento 42553674377 y 42553750341 completaron success. Barrera final main: editorial-queue=0; mobile-decisions sin preparing/update/rewrite_pending/reexplain; búsqueda en main sin rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794193039425-manual cerrada 1/1 por convergencia JIT. Sorloth r0 quedó review_red=unchanged y aplicado en main; se conservaron explicación, explained_at, imágenes y estado publicado. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada tr-1794193800000-manual RUNNING desde chat. Cola inicial JIT=0; se dispara refresco manual real del Top 30 y después se releerá main antes del cierre. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-08T15:07:08+01:00",
@@ -1458,6 +1424,11 @@
       "at": "2026-11-09T03:59:00+01:00",
       "phase": "closing",
       "message": "Pasada tr-1794193039425-manual cerrada 1/1 por convergencia JIT. Sorloth r0 ya había sido aplicado como review_red=unchanged en 6c13765fae204c465cd8827664e347c0efe3fb73 por la ejecución concurrente; no se reescribió ni reabrió. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-09T04:10:00+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-1794193800000-manual RUNNING desde chat. Cola inicial JIT=0; se dispara refresco manual real del Top 30 y después se releerá main antes del cierre. ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": null
