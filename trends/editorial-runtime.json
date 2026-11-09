@@ -7,44 +7,54 @@
   "previous_run_id": "tr-20261109T1955-manual",
   "command_id": "tr-20261109T2010-manual",
   "source": "chat",
-  "status": "success",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-09T20:10:00+01:00",
-  "updated_at": "2026-11-09T20:17:23+01:00",
-  "finished_at": null,
-  "current": 0,
-  "total": 21,
-  "trend_id": "4a9a8be6fb8a",
-  "title": "Julián",
+  "updated_at": "2026-11-09T20:20:00+01:00",
+  "finished_at": "2026-11-09T20:20:00+01:00",
+  "current": 22,
+  "total": 22,
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
-    "242086511690",
-    "4917f2ad6688",
-    "4fdf9581e93d",
+    "4a9a8be6fb8a",
+    "3ce0fda03a6f",
+    "0d1f96edc813",
+    "224b53803d74",
+    "48a701aad516",
+    "4ef5ae2a02c7",
+    "f3bc74ed66ce",
+    "27d5233ddd89",
+    "db7fa34c0781",
+    "9016c8d6f361",
     "536dd9779fe0",
-    "726c9b3957f8",
-    "92337b452934",
-    "a59eb64e9590",
+    "4917f2ad6688",
     "a90234d394fa",
+    "a59eb64e9590",
+    "4fdf9581e93d",
+    "ff018dd029ce",
+    "242086511690",
     "bf10d276fe6f",
     "e9b0fcf932bd",
-    "ff018dd029ce"
+    "726c9b3957f8",
+    "92337b452934"
   ],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 0,
-    "closed": 0,
-    "explained": 0,
+    "attempted": 22,
+    "observed": 22,
+    "closed": 22,
+    "explained": 21,
     "problematic": 0,
-    "updates": 0,
+    "updates": 1,
     "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 0,
+    "maintenance_reviews": 1,
     "unchanged_reviews": 0,
-    "continuity_updates": 0,
+    "continuity_updates": 1,
     "distinct_updates": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
@@ -60,261 +70,26 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": [
-    {
-      "run_id": "tr-20261109T1710-manual",
-      "status": "RUNNING",
-      "at": "2026-11-09T17:10:00+01:00",
-      "phase": "preparing",
-      "message": "Pasada tr-20261109T1710-manual RUNNING desde chat. Cola inicial observada=0; se fuerza refresco real del Top 30 y después se releerá main con barrera JIT antes de cerrar. ImageGen=0; publicaciones=0."
-    },
-    {
-      "run_id": "tr-1794240988286-manual",
-      "status": "RUNNING",
-      "at": "2026-11-09T17:17:00+01:00",
-      "phase": "preparing",
-      "message": "Pasada tr-1794240988286-manual RUNNING. Cola JIT=2 review_red: #Mañaneros9N y Puigdemont; se procesan por orden, revalidando ID/revisión antes de investigar y persistir. ImageGen=0; publicaciones=0."
-    },
-    {
-      "run_id": "tr-1794240988286-manual",
-      "status": "DONE",
-      "at": "2026-11-09T17:19:00+01:00",
-      "phase": "closing",
-      "message": "Pasada tr-1794240988286-manual cerrada 2/2 por convergencia JIT: #Mañaneros9N y Puigdemont ya habían sido aplicados como unchanged por el mantenimiento 7697912137e3d1557d74d78e9e29ac00d953a662 antes de la persistencia de esta sucesora. Barrera final: editorial-queue=0 y sin trabajo editorial activo. ImageGen=0; image-outbox editorial=0; publicaciones=0."
-    },
-    {
-      "run_id": "tr-1794240988286-manual",
-      "status": "DONE",
-      "at": "2026-11-09T17:19:00+01:00",
-      "phase": "closing",
-      "message": "Pasada tr-1794240988286-manual cerrada 2/2 por convergencia JIT. #Mañaneros9N y Puigdemont quedaron unchanged; el aplicador oficial 7697912137e3d1557d74d78e9e29ac00d953a662 retiró ambos review_red de la cola y estampó el mantenimiento en los registros editoriales. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; publicaciones=0."
-    },
-    {
-      "run_id": "tr-20261109T1725-manual",
-      "status": "RUNNING",
-      "at": "2026-11-09T17:25:00+01:00",
-      "phase": "preparing",
-      "message": "Pasada tr-20261109T1725-manual RUNNING desde chat. Cola inicial JIT=0; se releerá main con barrera final antes de cerrar. ImageGen=0; publicaciones=0."
-    },
-    {
-      "run_id": "tr-20261109T1725-manual",
-      "status": "DONE",
-      "at": "2026-11-09T17:25:45+01:00",
-      "phase": "closing",
-      "message": "Pasada tr-20261109T1725-manual cerrada 0/0 contra main. Relectura JIT final: editorial-queue=0 (actualizada 2026-11-09T17:21:03+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-09T17:40:00+01:00",
-      "phase": "verifying",
-      "message": "Releyendo main y verificando cola autoritativa, decisiones activas y resultados antes del cierre."
-    },
-    {
-      "at": "2026-11-09T17:41:15+01:00",
-      "phase": "closing",
-      "message": "Barrera final superada: cola autoritativa vacía y sin trabajos activos en mobile-decisions."
-    },
-    {
-      "run_id": "tr-20261109T1755-manual",
-      "status": "RUNNING",
-      "at": "2026-11-09T17:55:00+01:00",
-      "phase": "preparing",
-      "trend_id": "red-review-552a4db6826b8ff36c0b",
-      "title": "Revisar novedades: Pachuca",
-      "message": "Pasada tr-20261109T1755-manual RUNNING. Cola inicial JIT=2 review_red: Pachuca y dubai; se procesan por antigüedad, revalidando ID/revisión antes de investigar y persistir. ImageGen=0; publicaciones=0."
-    },
-    {
-      "run_id": "tr-20261109T1755-manual",
-      "status": "RUNNING",
-      "at": "2026-11-09T17:57:00+01:00",
-      "phase": "persisting",
-      "trend_id": "red-review-552a4db6826b8ff36c0b",
-      "title": "Revisar novedades: Pachuca",
-      "message": "Pachuca: sin novedad sustancial posterior al episodio ya explicado; se persiste mantenimiento unchanged con fuentes actuales."
-    },
-    {
-      "run_id": "tr-20261109T1755-manual",
-      "status": "RUNNING",
-      "at": "2026-11-09T17:58:00+01:00",
-      "phase": "persisting",
-      "trend_id": "red-review-79367de7b4b5938e30a3",
-      "title": "Revisar novedades: dubai",
-      "message": "dubai: el Dubai Premier Padel P1 sigue en curso y el término permanece en tendencias, pero no hay nueva evidencia que confirme el detonante; se persiste unchanged."
-    },
-    {
-      "run_id": "tr-1794243281678-manual",
-      "status": "DONE",
-      "at": "2026-11-09T17:59:00+01:00",
-      "phase": "closing",
-      "message": "Pasada tr-1794243281678-manual cerrada 2/2 por convergencia JIT. Pachuca y dubai quedaron unchanged y el aplicador oficial aad624d4de770f1cb1e37f8e1859a18547bd66cb persistió ambos mantenimientos en requests.json y telegram-manual-explained.json y retiró las dos revisiones de editorial-queue. Barrera final: editorial-queue=0. ImageGen=0; image-outbox editorial=0; publicaciones=0."
-    },
-    {
-      "run_id": "tr-20261109T1755-manual",
-      "status": "DONE",
-      "at": "2026-11-09T17:59:00+01:00",
-      "phase": "closing",
-      "message": "Pasada tr-20261109T1755-manual cerrada 2/2. Pachuca y dubai fueron investigadas como review_red y aplicadas como unchanged por el mantenedor oficial en aad624d4de770f1cb1e37f8e1859a18547bd66cb; se conservaron explicación, explained_at e imágenes sin volver a Listas. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
-    },
-    {
-      "run_id": "tr-1794244208283-manual",
-      "status": "RUNNING",
-      "at": "2026-11-09T18:10:00+01:00",
-      "phase": "preparing",
-      "trend_id": "red-review-7b64c614c1a27d1754ab",
-      "title": "Revisar novedades: Oviedo",
-      "message": "Pasada tr-1794244208283-manual RUNNING. Cola JIT inicial=2 review_red: Oviedo y Supa; se procesan por antigüedad con validación ID/revisión antes de investigar y persistir. ImageGen=0; publicaciones=0."
-    },
-    {
-      "run_id": "tr-1794244208283-manual",
-      "status": "RUNNING",
-      "at": "2026-11-09T18:15:45+01:00",
-      "phase": "verifying",
-      "message": "Barrera JIT final: editorial-queue=0; mobile-decisions sin trabajo editorial activo; se verifica aplicación en requests/manual/site."
-    },
-    {
-      "run_id": "tr-1794244208283-manual",
-      "status": "DONE",
-      "at": "2026-11-09T18:16:00+01:00",
-      "phase": "closing",
-      "message": "Pasada tr-1794244208283-manual cerrada 6/6. Oviedo y Supa quedaron unchanged porque sus episodios nuevos ya habían sido materializados hoy en fichas independientes y el editor las dejó deleted, por lo que no se recrearon. Durante la barrera JIT entraron Pau Cubarsí, Broncano, Gamarra y Carzzy; los cuatro quedaron explained y sincronizados por el aplicador oficial. Relectura final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
-    },
-    {
-      "run_id": "tr-20261109T1825-manual",
-      "status": "RUNNING",
-      "at": "2026-11-09T18:25:00+01:00",
-      "phase": "preparing",
-      "message": "Pasada tr-20261109T1825-manual RUNNING desde chat. Cola inicial JIT=0 sobre snapshot Top 30 capturado 2026-11-09T18:20:56+01:00; se releerá main antes de cerrar. ImageGen=0; publicaciones=0."
-    },
-    {
-      "run_id": "tr-20261109T1825-manual",
-      "status": "DONE",
-      "at": "2026-11-09T18:25:45+01:00",
-      "phase": "closing",
-      "message": "Pasada tr-20261109T1825-manual cerrada 0/0 contra main. Top 30 vigente capturado 2026-11-09T18:20:56+01:00 sin nuevas entradas; editorial-queue actualizada 2026-11-09T18:21:02+01:00 y vacía. Barrera JIT final: mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
-    },
-    {
-      "run_id": "tr-20261109T1840-manual",
-      "status": "RUNNING",
-      "at": "2026-11-09T18:40:00+01:00",
-      "phase": "preparing",
-      "message": "Pasada tr-20261109T1840-manual RUNNING desde chat. Se fuerza un refresco real del Top 30 y después se releerá main con barrera JIT antes de cerrar. ImageGen=0; publicaciones=0.",
-      "prior_runtime_observed": {
-        "run_id": "tr-20261109T1825-manual",
-        "status": "DONE"
-      }
-    },
-    {
-      "run_id": "tr-1794246075875-manual",
-      "status": "RUNNING",
-      "at": "2026-11-09T18:42:00+01:00",
-      "phase": "preparing",
-      "trend_id": "red-review-440e4514ba82e440cf02",
-      "title": "Revisar novedades: Broncano",
-      "message": "Pasada tr-1794246075875-manual RUNNING. Cola JIT=2 review_red: Broncano y #HuelgaGeneral; se procesan por antigüedad con validación ID/revisión antes de investigar y persistir. ImageGen=0; publicaciones=0."
-    },
-    {
-      "run_id": "tr-1794246075875-manual",
-      "status": "RUNNING",
-      "at": "2026-11-09T18:43:00+01:00",
-      "phase": "investigating",
-      "trend_id": "red-review-440e4514ba82e440cf02",
-      "title": "Revisar novedades: Broncano",
-      "message": "Broncano: revisión de novedades en curso; fuentes actuales confirman el mismo episodio de la entrevista a Abascal y la cancelación del público, sin hecho independiente posterior."
-    },
-    {
-      "run_id": "tr-1794246075875-manual",
-      "status": "DONE",
-      "at": "2026-11-09T18:45:00+01:00",
-      "phase": "closing",
-      "message": "Pasada tr-1794246075875-manual cerrada 2/2 por convergencia JIT. Broncano y #HuelgaGeneral quedaron unchanged; el aplicador oficial f7a6674554494b364feef5c3ec73867c32971acc registró ambos mantenimientos y retiró las dos revisiones de editorial-queue. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
-    },
-    {
-      "run_id": "tr-20261109T1855-manual",
-      "status": "RUNNING",
-      "at": "2026-11-09T18:55:00+01:00",
-      "phase": "preparing",
-      "message": "Pasada tr-20261109T1855-manual RUNNING desde chat. Cola JIT inicial=0 sobre captura Top 30 de 2026-11-09T18:50:55+01:00 y editorial-queue actualizada 2026-11-09T18:51:02+01:00. Se releerá main antes de cerrar. ImageGen=0; publicaciones=0."
-    },
-    {
-      "run_id": "tr-20261109T1855-manual",
-      "status": "DONE",
-      "at": "2026-11-09T18:55:45+01:00",
-      "phase": "closing",
-      "message": "Pasada tr-20261109T1855-manual cerrada 0/0 contra main. Relectura JIT final: editorial-queue=0 (actualizada 2026-11-09T18:51:02+01:00), captura Top 30 2026-11-09T18:50:55+01:00 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
-    },
-    {
-      "run_id": "tr-1794248007175-manual",
-      "status": "RUNNING",
-      "at": "2026-11-09T19:14:00+01:00",
-      "phase": "preparing",
-      "trend_id": "red-review-1c959131fe088375078a",
-      "title": "Revisar novedades: Oviedo",
-      "message": "Pasada tr-1794248007175-manual RUNNING. Cola JIT=2 review_red: Oviedo y Supa; se procesan por antigüedad con validación ID/revisión antes de investigar y persistir. ImageGen=0; publicaciones=0."
-    },
-    {
-      "run_id": "tr-1794248007175-manual",
-      "status": "DONE",
-      "at": "2026-11-09T19:18:00+01:00",
-      "phase": "closing",
-      "message": "Pasada tr-1794248007175-manual cerrada 2/2. Oviedo y Supa quedaron unchanged: sus episodios posteriores ya habían sido materializados hoy en fichas independientes y eliminados por decisión editorial, por lo que no se recrearon ni se alteraron las fichas históricas publicadas. El aplicador oficial 875722276c4c31b0d249387e7ac5a49fa1e3bf76 estampó ambos mantenimientos y retiró los dos review_red. Barrera final: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
-    },
-    {
-      "run_id": "tr-1794248770665-manual",
-      "status": "RUNNING",
-      "at": "2026-11-09T19:27:00+01:00",
-      "phase": "preparing",
-      "message": "Pasada tr-1794248770665-manual RUNNING desde chat. Cola inicial JIT=0; se releerá main y se comprobarán preparing/update/reexplicaciones antes del cierre. ImageGen=0; publicaciones=0."
-    },
-    {
-      "run_id": "tr-1794248770665-manual",
-      "status": "DONE",
-      "at": "2026-11-09T19:28:00+01:00",
-      "phase": "closing",
-      "message": "Pasada tr-1794248770665-manual cerrada 0/0 contra main. Relectura JIT final: editorial-queue=0 (updated_at 2026-11-09T18:17:20.706143+00:00), mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos y búsqueda dirigida en main sin preparing/update/rewrite_pending. No había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
-    },
-    {
-      "run_id": "tr-20261109T1940-manual",
-      "status": "RUNNING",
-      "at": "2026-11-09T19:40:00+01:00",
-      "phase": "verifying",
-      "message": "Releyendo main y verificando cola editorial, decisiones móviles y pendientes de reelaboración antes del cierre."
-    },
-    {
-      "run_id": "tr-20261109T1940-manual",
-      "status": "DONE",
-      "at": "2026-11-09T19:41:30+01:00",
-      "phase": "closing",
-      "message": "Pasada tr-20261109T1940-manual cerrada 0/0 contra main. Relectura JIT final: editorial-queue=0 (updated_at 2026-11-09T19:41:01+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-09T19:55:00+01:00",
-      "phase": "verifying",
-      "message": "Verificando cola autoritativa y pendientes activos en main."
-    },
-    {
-      "at": "2026-11-09T19:56:00+01:00",
-      "phase": "closing",
-      "message": "Cierre JIT: cola 0, sin pendientes activos; ejecución completada 0/0."
-    }
-  ],
+  "activity": "closing",
   "last_started_at": "2026-11-09T20:17:23+01:00",
-  "last_completed_at": "2026-11-09T20:17:23+01:00",
+  "last_completed_at": "2026-11-09T20:20:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261109T1955-manual",
+    "run_id": "tr-20261109T2010-manual",
     "status": "DONE",
-    "started_at": "2026-11-09T19:55:00+01:00",
-    "finished_at": "2026-11-09T19:56:00+01:00",
+    "started_at": "2026-11-09T20:10:00+01:00",
+    "finished_at": "2026-11-09T20:20:00+01:00",
     "summary": {
-      "attempted": 0,
-      "observed": 0,
-      "closed": 0,
-      "explained": 0,
+      "attempted": 22,
+      "observed": 22,
+      "closed": 22,
+      "explained": 21,
       "problematic": 0,
-      "updates": 0,
+      "updates": 1,
       "review_completed_no_distinct_event": 0,
-      "maintenance_reviews": 0,
+      "maintenance_reviews": 1,
       "unchanged_reviews": 0,
-      "continuity_updates": 0,
+      "continuity_updates": 1,
       "distinct_updates": 0,
       "stale_reviews": 0,
       "unverified_reviews": 0,
@@ -326,9 +101,168 @@
       "incidents": 0,
       "concurrent_convergence": 0
     },
-    "message": "Pasada tr-20261109T1955-manual cerrada 0/0 contra main. Relectura JIT final: editorial-queue=0 (updated_at 2026-11-09T19:51:01+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "processed_ids": [
+      "4a9a8be6fb8a",
+      "3ce0fda03a6f",
+      "0d1f96edc813",
+      "224b53803d74",
+      "48a701aad516",
+      "4ef5ae2a02c7",
+      "f3bc74ed66ce",
+      "27d5233ddd89",
+      "db7fa34c0781",
+      "9016c8d6f361",
+      "536dd9779fe0",
+      "4917f2ad6688",
+      "a90234d394fa",
+      "a59eb64e9590",
+      "4fdf9581e93d",
+      "ff018dd029ce",
+      "242086511690",
+      "bf10d276fe6f",
+      "e9b0fcf932bd",
+      "726c9b3957f8",
+      "92337b452934"
+    ],
+    "outcomes": [
+      {
+        "id": "4a9a8be6fb8a",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "3ce0fda03a6f",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "0d1f96edc813",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "224b53803d74",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "48a701aad516",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "4ef5ae2a02c7",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "f3bc74ed66ce",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "27d5233ddd89",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "db7fa34c0781",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "9016c8d6f361",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "536dd9779fe0",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "4917f2ad6688",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "a90234d394fa",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "a59eb64e9590",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "4fdf9581e93d",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "ff018dd029ce",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "242086511690",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "bf10d276fe6f",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "e9b0fcf932bd",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "726c9b3957f8",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "92337b452934",
+        "revision": 0,
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "red-review-466caab57b75143bc60d",
+        "revision": 0,
+        "name": "Revisar novedades: Broncano",
+        "outcome": "continuity_update",
+        "applied": true,
+        "apply_commit": "23651e5c5b309430060033a4b04858081875f672"
+      }
+    ],
+    "message": "Pasada tr-20261109T2010-manual cerrada 22/22: 21 tendencias ordinarias explicadas y aplicadas en Listas/Top30; durante la barrera final entró una revisión de Broncano y se aplicó como actualización de continuidad en el mismo ID/revisión, conservando explained_at, publicación e imagen. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; publicaciones=0."
   },
-  "message": "Pasada tr-20261109T2010-manual RUNNING. Cola JIT=21 preparing/update, del más antiguo al más reciente. Se investiga cada ID/revisión y se persistirá mediante el circuito editorial vigente. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-20261109T2010-manual cerrada 22/22: 21 tendencias ordinarias explicadas y aplicadas en Listas/Top30; durante la barrera final entró una revisión de Broncano y se aplicó como actualización de continuidad en el mismo ID/revisión, conservando explained_at, publicación e imagen. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794199200000-manual",
@@ -2993,6 +2927,68 @@
       "trend_id": "4a9a8be6fb8a",
       "title": "Julián",
       "message": "Pasada tr-20261109T2010-manual RUNNING. Cola JIT=21 preparing/update, del más antiguo al más reciente. Se investiga cada ID/revisión y se persistirá mediante el circuito editorial vigente. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-20261109T2010-manual",
+      "status": "DONE",
+      "at": "2026-11-09T20:20:00+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 22,
+        "observed": 22,
+        "closed": 22,
+        "explained": 21,
+        "problematic": 0,
+        "updates": 1,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 1,
+        "unchanged_reviews": 0,
+        "continuity_updates": 1,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [
+        "4a9a8be6fb8a",
+        "3ce0fda03a6f",
+        "0d1f96edc813",
+        "224b53803d74",
+        "48a701aad516",
+        "4ef5ae2a02c7",
+        "f3bc74ed66ce",
+        "27d5233ddd89",
+        "db7fa34c0781",
+        "9016c8d6f361",
+        "536dd9779fe0",
+        "4917f2ad6688",
+        "a90234d394fa",
+        "a59eb64e9590",
+        "4fdf9581e93d",
+        "ff018dd029ce",
+        "242086511690",
+        "bf10d276fe6f",
+        "e9b0fcf932bd",
+        "726c9b3957f8",
+        "92337b452934"
+      ],
+      "outcomes": [
+        {
+          "id": "red-review-466caab57b75143bc60d",
+          "revision": 0,
+          "name": "Revisar novedades: Broncano",
+          "outcome": "continuity_update",
+          "applied": true,
+          "apply_commit": "23651e5c5b309430060033a4b04858081875f672"
+        }
+      ],
+      "message": "Pasada tr-20261109T2010-manual cerrada 22/22: 21 tendencias ordinarias explicadas y aplicadas en Listas/Top30; durante la barrera final entró una revisión de Broncano y se aplicó como actualización de continuidad en el mismo ID/revisión, conservando explained_at, publicación e imagen. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": null,
