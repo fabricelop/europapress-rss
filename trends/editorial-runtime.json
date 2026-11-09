@@ -7,40 +7,34 @@
   "previous_run_id": "tr-20261109T2155-manual",
   "command_id": "tr-20261109T2210-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-09T22:10:00+01:00",
-  "updated_at": "2026-11-09T22:10:00+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-09T22:14:00+01:00",
+  "finished_at": "2026-11-09T22:14:00+01:00",
+  "current": 6,
   "total": 6,
-  "trend_id": "ad4cd1930b59",
-  "title": "#SánchezEnLaSéptima",
-  "queue_complete": false,
-  "processed_ids": [],
-  "converged_ids": [],
-  "remaining_ids": [
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
     "ad4cd1930b59",
     "a6acd9b7703a",
     "8090f1b1fec6",
     "f50198a89b86",
-    "f5060a515233",
     "02ad9e22e2d9"
   ],
-  "remaining_active_ids": [
-    "ad4cd1930b59",
-    "a6acd9b7703a",
-    "8090f1b1fec6",
-    "f50198a89b86",
-    "f5060a515233",
-    "02ad9e22e2d9"
+  "converged_ids": [
+    "f5060a515233"
   ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 6,
     "observed": 6,
-    "closed": 0,
-    "explained": 0,
+    "closed": 6,
+    "explained": 5,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
@@ -53,32 +47,83 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 6,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 1
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "ad4cd1930b59",
+      "revision": 0,
+      "name": "#SánchezEnLaSéptima",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "2e26b3a2de306016be06dc2a5bb5d44c32c5ede3"
+    },
+    {
+      "id": "a6acd9b7703a",
+      "revision": 0,
+      "name": "Snyder",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "2e26b3a2de306016be06dc2a5bb5d44c32c5ede3"
+    },
+    {
+      "id": "8090f1b1fec6",
+      "revision": 0,
+      "name": "Eldense",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "2e26b3a2de306016be06dc2a5bb5d44c32c5ede3"
+    },
+    {
+      "id": "f50198a89b86",
+      "revision": 0,
+      "name": "Clayface",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "2e26b3a2de306016be06dc2a5bb5d44c32c5ede3"
+    },
+    {
+      "id": "02ad9e22e2d9",
+      "revision": 0,
+      "name": "Huelga",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "2e26b3a2de306016be06dc2a5bb5d44c32c5ede3"
+    },
+    {
+      "id": "f5060a515233",
+      "revision": 0,
+      "name": "Ferran",
+      "outcome": "withdrawn_jit",
+      "applied": false,
+      "via": "concurrent_refresh",
+      "source_commit": "e5b37a83aee0ec38cf3c84fd4d082942b653d0d2",
+      "reason": "El refresco autoritativo retiró Ferran de editorial-queue y cambió su tarjeta de EN ELABORACIÓN a PENDIENTE antes de la persistencia; se respetó la barrera JIT."
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "preparing",
+  "activity": "closing",
   "last_started_at": "2026-11-09T21:55:00+01:00",
-  "last_completed_at": "2026-11-09T21:55:30+01:00",
+  "last_completed_at": "2026-11-09T22:14:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261109T2155-manual",
+    "run_id": "tr-20261109T2210-manual",
     "status": "DONE",
-    "started_at": "2026-11-09T21:55:00+01:00",
-    "finished_at": "2026-11-09T21:55:30+01:00",
+    "started_at": "2026-11-09T22:10:00+01:00",
+    "finished_at": "2026-11-09T22:14:00+01:00",
     "summary": {
-      "attempted": 0,
-      "observed": 0,
-      "closed": 0,
-      "explained": 0,
+      "attempted": 6,
+      "observed": 6,
+      "closed": 6,
+      "explained": 5,
       "problematic": 0,
       "updates": 0,
       "review_completed_no_distinct_event": 0,
@@ -97,13 +142,73 @@
       "image_outbox_created": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 0
+      "concurrent_convergence": 1
     },
-    "processed_ids": [],
-    "outcomes": [],
-    "message": "Pasada tr-20261109T2155-manual cerrada 0/0 tras relectura final de main: editorial-queue=0 (actualizada 2026-11-09T21:51:25+01:00) y sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos en requests.json, telegram-manual-explained.json ni mobile-decisions.json. No había trabajo editorial que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "processed_ids": [
+      "ad4cd1930b59",
+      "a6acd9b7703a",
+      "8090f1b1fec6",
+      "f50198a89b86",
+      "02ad9e22e2d9"
+    ],
+    "converged_ids": [
+      "f5060a515233"
+    ],
+    "outcomes": [
+      {
+        "id": "ad4cd1930b59",
+        "revision": 0,
+        "name": "#SánchezEnLaSéptima",
+        "outcome": "explained",
+        "applied": true,
+        "apply_commit": "2e26b3a2de306016be06dc2a5bb5d44c32c5ede3"
+      },
+      {
+        "id": "a6acd9b7703a",
+        "revision": 0,
+        "name": "Snyder",
+        "outcome": "explained",
+        "applied": true,
+        "apply_commit": "2e26b3a2de306016be06dc2a5bb5d44c32c5ede3"
+      },
+      {
+        "id": "8090f1b1fec6",
+        "revision": 0,
+        "name": "Eldense",
+        "outcome": "explained",
+        "applied": true,
+        "apply_commit": "2e26b3a2de306016be06dc2a5bb5d44c32c5ede3"
+      },
+      {
+        "id": "f50198a89b86",
+        "revision": 0,
+        "name": "Clayface",
+        "outcome": "explained",
+        "applied": true,
+        "apply_commit": "2e26b3a2de306016be06dc2a5bb5d44c32c5ede3"
+      },
+      {
+        "id": "02ad9e22e2d9",
+        "revision": 0,
+        "name": "Huelga",
+        "outcome": "explained",
+        "applied": true,
+        "apply_commit": "2e26b3a2de306016be06dc2a5bb5d44c32c5ede3"
+      },
+      {
+        "id": "f5060a515233",
+        "revision": 0,
+        "name": "Ferran",
+        "outcome": "withdrawn_jit",
+        "applied": false,
+        "via": "concurrent_refresh",
+        "source_commit": "e5b37a83aee0ec38cf3c84fd4d082942b653d0d2",
+        "reason": "El refresco autoritativo retiró Ferran de editorial-queue y cambió su tarjeta de EN ELABORACIÓN a PENDIENTE antes de la persistencia; se respetó la barrera JIT."
+      }
+    ],
+    "message": "Pasada tr-20261109T2210-manual cerrada 6/6 observados: 5 tendencias explicadas y aplicadas en main por el commit 2e26b3a2de306016be06dc2a5bb5d44c32c5ede3 (#SánchezEnLaSéptima, Snyder, Eldense, Clayface y Huelga). Ferran r0 fue retirado por el refresco autoritativo JIT e5b37a83aee0ec38cf3c84fd4d082942b653d0d2 antes de persistir (EN ELABORACIÓN→PENDIENTE), por lo que no se sobrescribió. Barrera final: editorial-queue=0. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-20261109T2210-manual RUNNING. Cola inicial JIT=6: #SánchezEnLaSéptima, Snyder, Eldense, Clayface, Ferran y Huelga. Se procesan de más antiguo a más reciente, revalidando ID/revisión antes de investigar y persistir. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-20261109T2210-manual cerrada 6/6 observados: 5 tendencias explicadas y aplicadas en main por el commit 2e26b3a2de306016be06dc2a5bb5d44c32c5ede3 (#SánchezEnLaSéptima, Snyder, Eldense, Clayface y Huelga). Ferran r0 fue retirado por el refresco autoritativo JIT e5b37a83aee0ec38cf3c84fd4d082942b653d0d2 antes de persistir (EN ELABORACIÓN→PENDIENTE), por lo que no se sobrescribió. Barrera final: editorial-queue=0. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794199200000-manual",
@@ -3411,28 +3516,119 @@
       "processed_ids": [],
       "outcomes": [],
       "message": "Pasada tr-20261109T2155-manual cerrada 0/0 tras relectura final de main: editorial-queue=0 (actualizada 2026-11-09T21:51:25+01:00) y sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos en requests.json, telegram-manual-explained.json ni mobile-decisions.json. No había trabajo editorial que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-20261109T2210-manual",
+      "status": "DONE",
+      "started_at": "2026-11-09T22:10:00+01:00",
+      "finished_at": "2026-11-09T22:14:00+01:00",
+      "at": "2026-11-09T22:14:00+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 6,
+        "observed": 6,
+        "closed": 6,
+        "explained": 5,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 0,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 1
+      },
+      "processed_ids": [
+        "ad4cd1930b59",
+        "a6acd9b7703a",
+        "8090f1b1fec6",
+        "f50198a89b86",
+        "02ad9e22e2d9"
+      ],
+      "converged_ids": [
+        "f5060a515233"
+      ],
+      "outcomes": [
+        {
+          "id": "ad4cd1930b59",
+          "revision": 0,
+          "name": "#SánchezEnLaSéptima",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "2e26b3a2de306016be06dc2a5bb5d44c32c5ede3"
+        },
+        {
+          "id": "a6acd9b7703a",
+          "revision": 0,
+          "name": "Snyder",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "2e26b3a2de306016be06dc2a5bb5d44c32c5ede3"
+        },
+        {
+          "id": "8090f1b1fec6",
+          "revision": 0,
+          "name": "Eldense",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "2e26b3a2de306016be06dc2a5bb5d44c32c5ede3"
+        },
+        {
+          "id": "f50198a89b86",
+          "revision": 0,
+          "name": "Clayface",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "2e26b3a2de306016be06dc2a5bb5d44c32c5ede3"
+        },
+        {
+          "id": "02ad9e22e2d9",
+          "revision": 0,
+          "name": "Huelga",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "2e26b3a2de306016be06dc2a5bb5d44c32c5ede3"
+        },
+        {
+          "id": "f5060a515233",
+          "revision": 0,
+          "name": "Ferran",
+          "outcome": "withdrawn_jit",
+          "applied": false,
+          "via": "concurrent_refresh",
+          "source_commit": "e5b37a83aee0ec38cf3c84fd4d082942b653d0d2",
+          "reason": "El refresco autoritativo retiró Ferran de editorial-queue y cambió su tarjeta de EN ELABORACIÓN a PENDIENTE antes de la persistencia; se respetó la barrera JIT."
+        }
+      ],
+      "message": "Pasada tr-20261109T2210-manual cerrada 6/6 observados: 5 tendencias explicadas y aplicadas en main por el commit 2e26b3a2de306016be06dc2a5bb5d44c32c5ede3 (#SánchezEnLaSéptima, Snyder, Eldense, Clayface y Huelga). Ferran r0 fue retirado por el refresco autoritativo JIT e5b37a83aee0ec38cf3c84fd4d082942b653d0d2 antes de persistir (EN ELABORACIÓN→PENDIENTE), por lo que no se sobrescribió. Barrera final: editorial-queue=0. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
-  "current_item": {
-    "id": "ad4cd1930b59",
-    "revision": 0,
-    "name": "#SánchezEnLaSéptima",
-    "phase": "preparing"
-  },
+  "current_item": null,
   "withdrawn_ids": [
     "ae7f066f3c94"
   ],
-  "last_finished_at": "2026-11-09T21:44:09+01:00",
-  "last_revalidated_at": "2026-11-09T21:51:25+01:00",
+  "last_finished_at": "2026-11-09T22:14:00+01:00",
+  "last_revalidated_at": "2026-11-09T22:14:00+01:00",
   "last_revalidation": {
-    "at": "2026-11-09T21:51:25+01:00",
-    "source": "idempotent_replay",
+    "at": "2026-11-09T22:14:00+01:00",
+    "source": "final_jit_barrier",
     "queue_count": 0,
     "preparing_update_pending": 0,
     "rewrite_or_reexplain_pending": 0,
     "anticipate_or_review_red_pending": 0,
     "imagegen_calls": 0,
     "publications": 0,
-    "note": "Relectura JIT solicitada de nuevo con el mismo run_id; se preserva el cierre histórico 1/1 y no se crea un falso 0/0."
+    "note": "Barrera final limpia tras aplicar cinco cierres; Ferran fue retirado previamente por refresco autoritativo y no se persistió."
   }
 }
