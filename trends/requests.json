@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-09T22:55:37.667135+00:00",
+  "updated_at": "2026-11-09T22:57:44.252946+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -278980,55 +278980,44 @@
       "id": "839aaa8d29b3",
       "name": "Tartamudea",
       "rank": 4,
-      "status": "explained",
-      "requested_at": "2026-11-09T23:11:00+01:00",
-      "revision": 0,
+      "revision": 1,
+      "status": "preparing",
+      "requested_at": "2026-11-09T22:57:44.252946+00:00",
+      "updated_at": "2026-11-09T22:57:44.252946+00:00",
       "reexplain": false,
+      "rewrite_pending": false,
+      "task": "explain",
+      "auto_queued": false,
+      "request_source": "ttactualidad_editor_hints",
       "with_image": true,
-      "alternatives_target": 0,
-      "batch_id": "8871b88031c9",
+      "disable_ai_image": false,
+      "rewrite_with_image": true,
+      "image_strategy": "ai_plus_fallback",
+      "image_choice": "none",
+      "image_pending": true,
+      "fallback_image_status": "pending",
+      "ai_image_status": "pending",
       "requested_together": [
         "Tartamudea"
       ],
-      "captured_with": [
-        "Tartamudea"
-      ],
-      "automatic_grouping": false,
-      "grouping_disabled": true,
-      "auto_queued": true,
-      "auto_queue_scope": "top30",
-      "new_episode_review": false,
-      "recurring_top30_name": false,
-      "radar_episode_token": "",
-      "radar_episode_started_at": "2026-11-09T23:10:55+01:00",
-      "editor_approval_batch_id": "",
-      "previous_episode_id": "",
-      "distinct_event_required": false,
-      "review_instruction": "",
-      "updated_at": "2026-11-09T23:33:47+01:00",
-      "explained_at": "2026-11-09T23:33:47+01:00",
-      "last_attempt_at": "2026-11-09T23:33:47+01:00",
-      "explanation": "TT#4 Tartamudea aparece entre las tendencias de España durante la emisión de la entrevista de Santiago Abascal en La Revuelta. No se ha podido confirmar qué intervención concreta impulsó el término.\n#LaRevuelta #29N",
-      "closer_text": "",
-      "rank_at_explanation": 4,
-      "category": "Actualidad",
-      "source": "editorial_chat_direct",
-      "editorial_engine": "chatgpt-automation-outbox",
-      "verification_sources": [
+      "rewrite_instruction": "INVESTIGACIÓN NUEVA DESDE CERO. Pistas de un editor SIN verificar:\\nEl que ha tartamudeado toda la entrevista es broncano\\nContrasta cada dato, fecha, publicación y fuente con búsquedas independientes. Si no se verifica el detonante actual, deja el caso SIN EXPLICACIÓN VERIFICADA; nunca presentes las pistas como hechos. Si se verifica, escribe explicación factual completa y remate nuevo. No reutilices texto, remate ni imágenes de otra revisión.",
+      "user_pistas": [
         {
-          "url": "https://www.rtve.es/play/noticias/20261109/broncano-explica-revuelta-cambio-publico-entrevista-santiago-abascal/17307090.shtml"
-        },
-        {
-          "url": "https://www.20minutos.es/nacional/santiago-abascal-revuelta-directo-broncano-entrevista-lider-vox-marcada-por-cambios-publico-previsto_7058937_6.html"
+          "at": "2026-11-09T22:57:44.252946+00:00",
+          "source_revision": 0,
+          "text": "El que ha tartamudeado toda la entrevista es broncano",
+          "verification": "unverified_editor_context"
         }
       ],
-      "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
-      "image_choice": "none",
-      "image_pending": true,
-      "telegram_package_status": "pending"
+      "investigation_history": [
+        {
+          "revision": 0,
+          "status": "explained",
+          "problem_reason": "",
+          "last_attempt_at": "2026-11-09T23:33:47+01:00"
+        }
+      ],
+      "hints_verification_status": "unverified"
     },
     {
       "id": "c2fdc85ccd3b",
