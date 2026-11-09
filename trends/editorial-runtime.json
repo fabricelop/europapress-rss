@@ -7,16 +7,16 @@
   "previous_run_id": "tr-1794183629966-manual",
   "command_id": "tr-1794183900000-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-09T01:25:00+01:00",
-  "updated_at": "2026-11-09T01:25:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-09T01:26:00+01:00",
+  "finished_at": "2026-11-09T01:26:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -46,26 +46,26 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Preparando pasada editorial",
+  "activity": "Pasada editorial cerrada",
   "last_started_at": "2026-11-09T01:25:00+01:00",
-  "last_completed_at": "2026-11-09T01:23:30+01:00",
+  "last_completed_at": "2026-11-09T01:26:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794183629966-manual",
-    "command_id": "tr-1794183629966-manual",
+    "run_id": "tr-1794183900000-manual",
+    "command_id": "tr-1794183900000-manual",
     "status": "DONE",
-    "started_at": "2026-11-09T01:21:30+01:00",
-    "finished_at": "2026-11-09T01:23:30+01:00",
+    "started_at": "2026-11-09T01:25:00+01:00",
+    "finished_at": "2026-11-09T01:26:00+01:00",
     "summary": {
-      "attempted": 2,
-      "observed": 2,
-      "closed": 2,
+      "attempted": 0,
+      "observed": 0,
+      "closed": 0,
       "explained": 0,
       "problematic": 0,
       "updates": 0,
       "continuity_updates": 0,
       "distinct_updates": 0,
-      "unchanged_reviews": 2,
+      "unchanged_reviews": 0,
       "stale_reviews": 0,
       "unverified_reviews": 0,
       "queue_remaining": 0,
@@ -74,11 +74,11 @@
       "image_outbox_created": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 2
+      "concurrent_convergence": 0
     },
-    "message": "Pasada tr-1794183629966-manual cerrada 2/2 por convergencia JIT. Levante 0-2 Atlético y #SalvadosEmilioDelgado quedaron unchanged y aplicados por la ejecución concurrente tr-1794183437001-manual; commit de aplicación 1cf9ed791231e95a8511cb5f7d1ed66dcabd76ae. Barrera final main: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "message": "Pasada tr-1794183900000-manual cerrada 0/0 tras barrera JIT en main: editorial-queue=0; mobile-decisions sin preparing/update, anticipate ni review_red activos; búsqueda en requests sin rewrite_pending/reexplain activos. No se inventó trabajo. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794183900000-manual iniciada desde chat. Cola JIT inicial=0; se ejecuta barrera final contra main antes de cerrar. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1794183900000-manual cerrada 0/0 tras barrera JIT en main: editorial-queue=0; mobile-decisions sin preparing/update, anticipate ni review_red activos; búsqueda en requests sin rewrite_pending/reexplain activos. No se inventó trabajo. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-08T15:07:08+01:00",
@@ -974,6 +974,11 @@
       "at": "2026-11-09T01:25:00+01:00",
       "phase": "preparing",
       "message": "Pasada tr-1794183900000-manual RUNNING desde chat. Cola JIT inicial=0; se revalidan editorial-queue, mobile-decisions y requests antes del cierre. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-09T01:26:00+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-1794183900000-manual cerrada 0/0 tras barrera JIT en main: editorial-queue=0; mobile-decisions sin preparing/update, anticipate ni review_red activos; búsqueda en requests sin rewrite_pending/reexplain activos. No se inventó trabajo. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "current_item": null
