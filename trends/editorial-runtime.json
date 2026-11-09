@@ -8,19 +8,31 @@
   "command_id": "tr-20261109T1710-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "persisting",
   "started_at": "2026-11-09T17:10:00+01:00",
-  "updated_at": "2026-11-09T17:10:00+01:00",
+  "updated_at": "2026-11-09T17:15:00+01:00",
   "finished_at": null,
   "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": "Pasada editorial TTendencias",
+  "total": 5,
+  "trend_id": "a1c1e16d0c24",
+  "title": "#VotoUtilEsPodemos",
   "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "a1c1e16d0c24",
+    "0f796da9f2d7",
+    "1a58780acbab",
+    "2cf7851e047a",
+    "b76606f8b171"
+  ],
+  "remaining_active_ids": [
+    "a1c1e16d0c24",
+    "0f796da9f2d7",
+    "1a58780acbab",
+    "2cf7851e047a",
+    "b76606f8b171"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
@@ -103,7 +115,7 @@
     },
     "message": "Pasada tr-20261109T1655-manual cerrada 0/0 contra main. Captura vigente 2026-11-09T16:50:58+01:00; editorial-queue actualizada 16:51:05+01:00 y vacía. Barrera final: mobile-decisions y búsqueda dirigida en requests.json sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-20261109T1710-manual RUNNING desde chat. Cola inicial observada=0; se fuerza refresco real del Top 30 y después se releerá main con barrera JIT antes de cerrar. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-20261109T1710-manual persistiendo 5 resultados editoriales revalidados JIT. #TEM9N se cierra con causa concreta no confirmada; los otros cuatro con detonante actual verificado. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794199200000-manual",
