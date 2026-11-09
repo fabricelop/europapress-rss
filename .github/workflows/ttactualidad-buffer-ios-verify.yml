@@ -46,7 +46,7 @@ jobs:
           test -d "$APP/PlugIns/TTActualidadLive.appex"
           test -s "$APP/Assets.car"
           /usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" "$APP/Info.plist" | grep -Fx "0.4.83"
-          /usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$APP/Info.plist" | grep -Fx "94"
+          /usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$APP/Info.plist" | grep -Fx "95"
           mkdir -p dist/Payload
           cp -R "$APP" dist/Payload/
           cd dist
