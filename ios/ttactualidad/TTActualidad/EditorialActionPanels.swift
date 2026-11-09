@@ -1010,9 +1010,12 @@ struct EditorialActions: View {
                 guard let http = response as? HTTPURLResponse, http.statusCode == 200,
                       !data.isEmpty, data.count <= 20_000_000,
                       let image = UIImage(data: data) else { continue }
+                // If X accepts the photo but drops the caption, the
+                // exact X-ready text remains pasteable without API calls.
+                UIPasteboard.general.string = draftText
                 outcome = "Compartir manual: elige X y comprueba texto y foto " +
-                          "antes de pulsar Publicar. Algunas versiones de X " +
-                          "pueden omitir uno de los dos elementos."
+                          "antes de pulsar Publicar. El texto también está " +
+                          "copiado para pegar si X lo omite."
                 manualXPhotoShare = TTManualXPhotoShare(text: draftText, image: image)
                 return
             } catch {
