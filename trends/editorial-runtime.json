@@ -3,19 +3,19 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-autoguard-1794266117",
-  "previous_run_id": "tr-1794264900000-manual",
-  "command_id": "tr-autoguard-1794266117",
+  "run_id": "tr-1794266303300-manual",
+  "previous_run_id": "tr-autoguard-1794266117",
+  "command_id": "tr-1794266303300-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "persisting",
-  "started_at": "2026-11-10T00:16:00+01:00",
-  "updated_at": "2026-11-10T00:22:00+01:00",
+  "phase": "preparing",
+  "started_at": "2026-11-10T00:18:00+01:00",
+  "updated_at": "2026-11-10T00:18:00+01:00",
   "finished_at": null,
   "current": 0,
-  "total": 14,
-  "trend_id": "6485ff64586c",
-  "title": "#LaIslaDeLasTentaciones18",
+  "total": 15,
+  "trend_id": null,
+  "title": null,
   "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
@@ -33,7 +33,8 @@
     "d6769598d6e3",
     "299d9b265fff",
     "24733e06cc03",
-    "bd016ccdb9b6"
+    "bd016ccdb9b6",
+    "de1de154b01a"
   ],
   "remaining_active_ids": [
     "6485ff64586c",
@@ -49,12 +50,13 @@
     "d6769598d6e3",
     "299d9b265fff",
     "24733e06cc03",
-    "bd016ccdb9b6"
+    "bd016ccdb9b6",
+    "de1de154b01a"
   ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
-    "observed": 14,
+    "observed": 15,
     "closed": 0,
     "explained": 0,
     "problematic": 0,
@@ -69,7 +71,7 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 14,
+    "queue_remaining": 15,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -81,7 +83,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "persisting",
+  "activity": "preparing",
   "last_started_at": "2026-11-09T23:59:31+01:00",
   "last_completed_at": "2026-11-09T23:59:42+01:00",
   "api_failover_enabled": false,
@@ -145,7 +147,7 @@
     ],
     "message": "Pasada tr-1794264900000-manual cerrada 1/1 con incidencia. Tartamudea r1 fue investigada desde cero y aplicada en main por 870bf98bfd0cdf5aba8c283deb5740fe7a8629b1; la pista del editor quedó contrastada con dos crónicas independientes que describen tartamudeos y nervios de David Broncano durante la entrevista a Santiago Abascal. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. El refresco manual 42716411372 seguía atascado en actions/checkout@v4 y se registra como incidencia; recent.json conserva captura 2026-11-09T23:51:03+01:00. ImageGen=0; publicaciones=0."
   },
-  "message": "14/14 revisiones revalidadas JIT en main. 12 resultados textuales listos para persistir y 2 reentradas (Jordi Wild, Candela Peña) se cierran review_completed/no_distinct_event. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1794266303300-manual RUNNING. Cola autoritativa inicial=15; processing preparing/update antiguo→reciente con revalidación JIT id+revision. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794234841273-manual",
@@ -2280,13 +2282,16 @@
         }
       ],
       "message": "Pasada tr-1794264900000-manual cerrada 1/1 con incidencia. Tartamudea r1 fue investigada desde cero y aplicada en main por 870bf98bfd0cdf5aba8c283deb5740fe7a8629b1; la pista del editor quedó contrastada con dos crónicas independientes que describen tartamudeos y nervios de David Broncano durante la entrevista a Santiago Abascal. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. El refresco manual 42716411372 seguía atascado en actions/checkout@v4 y se registra como incidencia; recent.json conserva captura 2026-11-09T23:51:03+01:00. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794266303300-manual",
+      "status": "RUNNING",
+      "at": "2026-11-10T00:18:00+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-1794266303300-manual RUNNING. Cola autoritativa inicial=15; processing preparing/update antiguo→reciente con revalidación JIT id+revision. ImageGen=0; publicaciones=0."
     }
   ],
-  "current_item": {
-    "id": "6485ff64586c",
-    "revision": 0,
-    "name": "#LaIslaDeLasTentaciones18"
-  },
+  "current_item": null,
   "withdrawn_ids": [
     "ae7f066f3c94"
   ],
@@ -2301,9 +2306,9 @@
     "reexplain": 0
   },
   "prior_runtime_observed": {
-    "run_id": "tr-1794264030000-manual",
-    "status": "DONE",
-    "updated_at": "2026-11-09T23:44:00+01:00"
+    "run_id": "tr-autoguard-1794266117",
+    "status": "RUNNING",
+    "updated_at": "2026-11-10T00:22:00+01:00"
   },
   "apply_workflow_run_id": 42716594814,
   "apply_commit": "870bf98bfd0cdf5aba8c283deb5740fe7a8629b1",
