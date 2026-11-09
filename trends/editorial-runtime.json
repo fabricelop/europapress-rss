@@ -3,19 +3,19 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794192900000-manual",
+  "run_id": "tr-1794192890633-manual",
   "previous_run_id": "tr-1794192890633-manual",
-  "command_id": "tr-1794192900000-manual",
+  "command_id": "tr-1794192890633-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-09T03:55:00+01:00",
   "updated_at": "2026-11-09T03:59:00+01:00",
-  "finished_at": null,
-  "current": 1,
+  "finished_at": "2026-11-09T03:59:00+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "red-review-c403c0a2de4526534b5a",
-  "title": "Revisar novedades: Sorloth",
+  "trend_id": null,
+  "title": "Pasada editorial TTendencias",
   "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
@@ -29,19 +29,18 @@
   ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 2,
     "observed": 2,
-    "closed": 0,
+    "closed": 2,
     "explained": 0,
     "problematic": 0,
     "updates": 0,
-    "maintenance_reviews": 2,
-    "unchanged_reviews": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
+    "unchanged_reviews": 2,
     "stale_reviews": 0,
     "unverified_reviews": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -49,7 +48,24 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "red-review-a18f2fcad28d1aee2513",
+      "revision": 0,
+      "name": "Revisar novedades: #DragRaceEs",
+      "outcome": "unchanged",
+      "applied": true,
+      "workflow_run_id": 42553674377
+    },
+    {
+      "id": "red-review-c403c0a2de4526534b5a",
+      "revision": 0,
+      "name": "Revisar novedades: Sorloth",
+      "outcome": "unchanged",
+      "applied": true,
+      "workflow_run_id": 42553750341
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -58,22 +74,19 @@
   "last_completed_at": "2026-11-09T03:42:30+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794192000000-manual",
-    "command_id": "tr-1794192000000-manual",
+    "run_id": "tr-1794192890633-manual",
     "status": "DONE",
-    "started_at": "2026-11-09T03:40:00+01:00",
-    "finished_at": "2026-11-09T03:42:30+01:00",
+    "finished_at": "2026-11-09T03:59:00+01:00",
     "summary": {
-      "attempted": 0,
-      "observed": 0,
-      "closed": 0,
+      "attempted": 2,
+      "observed": 2,
+      "closed": 2,
       "explained": 0,
       "problematic": 0,
       "updates": 0,
-      "maintenance_reviews": 0,
-      "unchanged_reviews": 0,
       "continuity_updates": 0,
       "distinct_updates": 0,
+      "unchanged_reviews": 2,
       "stale_reviews": 0,
       "unverified_reviews": 0,
       "queue_remaining": 0,
@@ -84,10 +97,27 @@
       "incidents": 0,
       "concurrent_convergence": 0
     },
-    "outcomes": [],
-    "message": "Pasada tr-1794192000000-manual cerrada 0/0 contra main. Refresco real del Top 30 materializado en commit 31db6212aa03c4c7484b4856c83cc4073c067bb3 a las 03:41:36+01:00; Top 30=30 y no se abrieron nuevas pendientes. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; publicaciones=0."
+    "outcomes": [
+      {
+        "id": "red-review-a18f2fcad28d1aee2513",
+        "revision": 0,
+        "name": "Revisar novedades: #DragRaceEs",
+        "outcome": "unchanged",
+        "applied": true,
+        "workflow_run_id": 42553674377
+      },
+      {
+        "id": "red-review-c403c0a2de4526534b5a",
+        "revision": 0,
+        "name": "Revisar novedades: Sorloth",
+        "outcome": "unchanged",
+        "applied": true,
+        "workflow_run_id": 42553750341
+      }
+    ],
+    "message": "Pasada tr-1794192890633-manual cerrada 2/2. #DragRaceEs y Sorloth revisados contra fuentes actuales y aplicados como unchanged: se conservan explicación, explained_at, imágenes y estado de publicación. Workflows de mantenimiento 42553674377 y 42553750341 completaron success. Barrera final main: editorial-queue=0; mobile-decisions sin preparing/update/rewrite_pending/reexplain; búsqueda en main sin rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "1/2 cerrado y aplicado: #DragRaceEs unchanged. Sorloth r0: revisión del Atlético 1-2 Barça; fuentes oficiales mantienen el mismo partido y la entrada de Sørloth en el 60', sin acontecimiento posterior que cambie la explicación. Se prepara unchanged. ImageGen=0.",
+  "message": "Pasada tr-1794192890633-manual cerrada 2/2. #DragRaceEs y Sorloth revisados contra fuentes actuales y aplicados como unchanged: se conservan explicación, explained_at, imágenes y estado de publicación. Workflows de mantenimiento 42553674377 y 42553750341 completaron success. Barrera final main: editorial-queue=0; mobile-decisions sin preparing/update/rewrite_pending/reexplain; búsqueda en main sin rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-08T15:07:08+01:00",
@@ -1382,11 +1412,54 @@
       "trend_id": "red-review-c403c0a2de4526534b5a",
       "title": "Revisar novedades: Sorloth",
       "message": "1/2 cerrado y aplicado: #DragRaceEs unchanged. Sorloth r0: revisión del Atlético 1-2 Barça; fuentes oficiales mantienen el mismo partido y la entrada de Sørloth en el 60', sin acontecimiento posterior que cambie la explicación. Se prepara unchanged. ImageGen=0."
+    },
+    {
+      "run_id": "tr-1794192890633-manual",
+      "status": "DONE",
+      "started_at": "2026-11-09T03:55:00+01:00",
+      "finished_at": "2026-11-09T03:59:00+01:00",
+      "at": "2026-11-09T03:59:00+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 2,
+        "observed": 2,
+        "closed": 2,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "unchanged_reviews": 2,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "outcomes": [
+        {
+          "id": "red-review-a18f2fcad28d1aee2513",
+          "revision": 0,
+          "name": "Revisar novedades: #DragRaceEs",
+          "outcome": "unchanged",
+          "applied": true,
+          "workflow_run_id": 42553674377
+        },
+        {
+          "id": "red-review-c403c0a2de4526534b5a",
+          "revision": 0,
+          "name": "Revisar novedades: Sorloth",
+          "outcome": "unchanged",
+          "applied": true,
+          "workflow_run_id": 42553750341
+        }
+      ],
+      "message": "Pasada tr-1794192890633-manual cerrada 2/2. #DragRaceEs y Sorloth revisados contra fuentes actuales y aplicados como unchanged: se conservan explicación, explained_at, imágenes y estado de publicación. Workflows de mantenimiento 42553674377 y 42553750341 completaron success. Barrera final main: editorial-queue=0; mobile-decisions sin preparing/update/rewrite_pending/reexplain; búsqueda en main sin rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
-  "current_item": {
-    "id": "red-review-c403c0a2de4526534b5a",
-    "revision": 0,
-    "name": "Revisar novedades: Sorloth"
-  }
+  "current_item": null
 }
