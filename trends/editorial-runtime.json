@@ -3,28 +3,34 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794218100000-manual",
-  "previous_run_id": "tr-1794217200000-manual",
-  "command_id": "tr-1794218100000-manual",
+  "run_id": "tr-1794219000000-manual",
+  "previous_run_id": "tr-1794218100000-manual",
+  "command_id": "tr-1794219000000-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-09T10:55:00+01:00",
-  "updated_at": "2026-11-09T10:56:00+01:00",
-  "finished_at": "2026-11-09T10:56:00+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-09T11:10:00+01:00",
+  "updated_at": "2026-11-09T11:10:00+01:00",
+  "finished_at": null,
   "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": "Pasada editorial TTendencias",
-  "queue_complete": true,
+  "total": 2,
+  "trend_id": "red-review-da276035edf10382b826",
+  "title": "Revisar novedades: maffeo",
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-da276035edf10382b826",
+    "red-review-47e5d8d5ac22fd4f61df"
+  ],
+  "remaining_active_ids": [
+    "red-review-da276035edf10382b826",
+    "red-review-47e5d8d5ac22fd4f61df"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
-    "observed": 0,
+    "observed": 2,
     "closed": 0,
     "explained": 0,
     "problematic": 0,
@@ -36,7 +42,7 @@
     "distinct_updates": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -132,9 +138,16 @@
       "at": "2026-11-09T10:56:00+01:00",
       "phase": "closing",
       "message": "Pasada tr-1794218100000-manual cerrada 0/0 contra el estado autoritativo de main. Relectura final: editorial-queue=0; mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos; búsqueda dirigida en main sin marcas activas. Top 30 capturado a las 10:50:52+01:00. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-09T11:10:00+01:00",
+      "phase": "preparing",
+      "trend_id": "red-review-da276035edf10382b826",
+      "title": "Revisar novedades: maffeo",
+      "message": "Pasada tr-1794219000000-manual iniciada desde chat con 2 review_red en la cola autoritativa. Revalidación JIT por ID/revisión antes de cada investigación; ImageGen=0; publicaciones=0."
     }
   ],
-  "last_started_at": "2026-11-09T10:55:00+01:00",
+  "last_started_at": "2026-11-09T11:10:00+01:00",
   "last_completed_at": "2026-11-09T10:56:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -171,7 +184,7 @@
     "outcomes": [],
     "message": "Pasada tr-1794218100000-manual cerrada 0/0 contra el estado autoritativo de main. Relectura final: editorial-queue=0; mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos; búsqueda dirigida en main sin marcas activas. Top 30 capturado a las 10:50:52+01:00. ImageGen=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794218100000-manual cerrada 0/0 contra el estado autoritativo de main. Relectura final: editorial-queue=0; mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos; búsqueda dirigida en main sin marcas activas. Top 30 capturado a las 10:50:52+01:00. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1794219000000-manual RUNNING. Cola inicial JIT=2; se procesan primero las revisiones de novedades vigentes con validación ID/revisión. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T03:17:00+01:00",
@@ -1623,5 +1636,75 @@
       "message": "Pasada tr-1794217200000-manual cerrada 0/0 contra el estado autoritativo de main. Relectura final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial pendiente que procesar. ImageGen=0; publicaciones=0."
     }
   ],
-  "current_item": null
+  "current_item": {
+    "id": "red-review-da276035edf10382b826",
+    "name": "Revisar novedades: maffeo",
+    "rank": 7,
+    "status": "preparing",
+    "requested_at": "2026-11-09T10:00:13.572972+00:00",
+    "revision": 0,
+    "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques.",
+    "reexplain": false,
+    "rewrite_with_image": false,
+    "with_image": false,
+    "disable_ai_image": true,
+    "image_strategy": null,
+    "selected_tweet_image": null,
+    "task": "review_red",
+    "anticipation_request": false,
+    "anticipated_name": null,
+    "anticipation_signal": null,
+    "anticipation_origin_id": null,
+    "anticipation_draft": null,
+    "red_review_request": true,
+    "review_source": {
+      "id": "1940ad68777c",
+      "revision": 0,
+      "name": "maffeo",
+      "rank": 1,
+      "explanation": "TT#3 maffeo sigue siendo tendencia por el Valencia-Real Madrid: vio amarilla por derribar a Mbappé, criticó el arbitraje y la entrevista de DAZN al descanso, y después pidió disculpas al periodista.\n#ValenciaCF #RealMadrid\n🌶️ Del enfado en directo a la disculpa por escrito.",
+      "explanation_sha256": "f10c55f8325373d0848c4d17fcfc476264248a4f83b092e07405625a72d8d5f5",
+      "explained_at": "2026-11-07T22:13:00+01:00",
+      "verification_sources": [
+        {
+          "url": "https://www.sportschau.de/live-und-ergebnisse/fussball/spanien-primera-division/ma12188143/valencia-cf_real-madrid/liveticker"
+        },
+        {
+          "url": "https://www.rtve.es/deportes/20261107/valencia-real-madrid-directo-hoy-partido-liga-resumen-resultado-goles/17301740.shtml"
+        }
+      ],
+      "fingerprint": "a78e454c41aeb12fc5cf95be76e5d9454f32c4790836c78d6ab1b06634d247d3"
+    },
+    "review_error": null,
+    "new_episode_review": false,
+    "distinct_event_required": false,
+    "radar_episode_token": "",
+    "editor_approval_batch_id": "",
+    "previous_episode_id": "",
+    "review_instruction": "",
+    "automatic_grouping": null,
+    "published_context": null,
+    "listas_grouping_request": false,
+    "grouping_candidates": [],
+    "grouping_state": null,
+    "grouping_error": null,
+    "tremending_origin": false,
+    "tremending_id": null,
+    "article_title": null,
+    "source_url": null,
+    "selected_tweet": null,
+    "batch_id": null,
+    "requested_together": [
+      "Revisar novedades: maffeo"
+    ],
+    "captured_with": [],
+    "auto_queued": false,
+    "anticipated": false,
+    "anticipated_at": null,
+    "anticipated_best_rank": null,
+    "anticipated_social_source_count": 0,
+    "anticipated_news_source_count": 0,
+    "anticipated_news_title": "",
+    "anticipated_entered_top10_at": null
+  }
 }
