@@ -6,6 +6,9 @@ on:
     paths:
       - "windows/TTiTTularesImageBridge.js"
       - "windows/TTendenciasImageBridge.js"
+      - "windows/TTImagesImmediateInbox.cjs"
+      - "windows/tests/test_images_immediate_inbox.cjs"
+      - "windows/TT-AutoUpdater.ps1"
       - "windows/tests/test_trends_composer_preflight.cjs"
       - "windows/Install-TTendencias-Composer-Fix.ps1"
       - "windows/tests/test_image_prompt_injection.cjs"
@@ -20,6 +23,9 @@ on:
       - "windows/TTiTTularesDedicatedListener.ps1"
       - "windows/TTendenciasDedicatedListener.ps1"
       - "windows/TTendenciasImageBridge.js"
+      - "windows/TTImagesImmediateInbox.cjs"
+      - "windows/tests/test_images_immediate_inbox.cjs"
+      - "windows/TT-AutoUpdater.ps1"
       - "windows/tests/test_trends_target_close.cjs"
       - "windows/tests/test_chrome9223_spa_reuse.cjs"
       - "windows/tests/test_image_prompt_injection.cjs"
@@ -45,6 +51,9 @@ jobs:
             /windows/TTiTTularesImageBridge.js
             /windows/TTiTTularesDedicatedListener.ps1
             /windows/TTendenciasImageBridge.js
+            /windows/TTImagesImmediateInbox.cjs
+            /windows/tests/test_images_immediate_inbox.cjs
+            /windows/TT-AutoUpdater.ps1
             /windows/tests/test_trends_target_close.cjs
             /windows/tests/test_chrome9223_spa_reuse.cjs
             /windows/tests/test_image_prompt_injection.cjs
@@ -62,6 +71,8 @@ jobs:
         run: |
           node --check windows/TTiTTularesImageBridge.js
           node --check windows/TTendenciasImageBridge.js
+          node --check windows/TTImagesImmediateInbox.cjs
+          node --test windows/tests/test_images_immediate_inbox.cjs
       - name: Validar sintaxis PowerShell
         shell: pwsh
         run: |
