@@ -143,13 +143,13 @@ def observe_rate_limits(headers):
             # 24-hour limits. Reading those headers costs zero additional calls.
             other = []
             for policy in re.finditer(
-                r'"([^"]+)"\\s*;\\s*q\\s*=\\s*(\\d+)\\s*;\\s*w\\s*=\\s*(\\d+)', policies
+                r'"([^"]+)"\s*;\s*q\s*=\s*(\d+)\s*;\s*w\s*=\s*(\d+)', policies
             ):
                 window = int(policy.group(3))
                 if window not in (900, 86400):
                     continue
                 for current in re.finditer(
-                    r'"([^"]+)"\\s*;\\s*r\\s*=\\s*(\\d+)\\s*;\\s*t\\s*=\\s*(\\d+)', limits
+                    r'"([^"]+)"\s*;\s*r\s*=\s*(\d+)\s*;\s*t\s*=\s*(\d+)', limits
                 ):
                     if current.group(1) != policy.group(1):
                         continue
