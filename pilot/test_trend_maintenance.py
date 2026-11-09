@@ -55,62 +55,79 @@ class MaintenanceTests(unittest.TestCase):
     def review_jobs(self):
         return [x for x in self.state[g.REQUESTS]['requests'] if x.get('red_review_request')]
 
-    def test_priority_red_then_yellow_then_green_with_two_per_period(self):
+    def test_only_red_older_than_24_hours_auto_reviewed(self):
         self.colors()
         m.schedule_reviews(self.state, self.now, g.grouping_api())
         jobs = self.review_jobs()
-        self.assertEqual([x['review_source']['id'] for x in jobs], ['red', 'yellow'])
-        self.assertEqual([x['review_color'] for x in jobs], ['roja', 'amarilla'])
+        self.assertEqual([x['review_source']['id'] for x in jobs], ['red'])
+        self.assertEqual([x['review_color'] for x in jobs], ['roja'])
+        self.assertFalse(any(x['review_source']['id'] in {'green', 'yellow'} for x in jobs))
 
-    def test_completed_batch_does_not_refill_before_fifteen_minutes(self):
+    def test_exact_24h_is_yellow_not_automatically_reviewed(self):
+        self.state[g.MANUAL]['items'][0]['explained_at'] = (
+            self.now-timedelta(hours=24)).isoformat()
+        self.state[g.REQUESTS]['requests'][0]['explained_at'] = (
+            self.now-timedelta(hours=24)).isoformat()
+        self.assertFalse(self.schedule())
+
+    def test_completed_batch_no_yellow_green_refill(self):
         self.colors()
         m.schedule_reviews(self.state, self.now, g.grouping_api())
         for job in self.review_jobs():
-            command = dict(job_id=job['id'], outcome='unchanged', reason='Sin cambios comprobados',
+            command = dict(job_id=job['id'], outcome='unchanged',
+                           reason='Sin cambios comprobados',
                            verification_sources=[{'url': 'https://example.org/fuente'}])
             self.state, _ = m.apply_review(self.state, command, self.now, g.grouping_api())
-        for minutes in [1, 5, 14]:
+        for minutes in [1, 5, 14, 15]:
             m.schedule_reviews(self.state, self.now+timedelta(minutes=minutes), g.grouping_api())
-            self.assertEqual(len(self.review_jobs()), 2)
-        m.schedule_reviews(self.state, self.now+timedelta(minutes=15), g.grouping_api())
-        self.assertEqual([x['review_source']['id'] for x in self.review_jobs()], ['red', 'yellow', 'green'])
+            self.assertEqual([x['review_source']['id'] for x in self.review_jobs()], ['red'])
 
-    def test_active_reviews_occupy_slots_even_in_a_later_period(self):
+    def test_active_red_reviews_occupy_slots(self):
         self.colors()
         m.schedule_reviews(self.state, self.now, g.grouping_api())
         m.schedule_reviews(self.state, self.now+timedelta(minutes=30), g.grouping_api())
-        self.assertEqual(len(self.review_jobs()), 2)
+        self.assertEqual([x['review_source']['id'] for x in self.review_jobs()], ['red'])
 
-    def test_green_can_receive_verified_update_without_waiting_to_turn_red(self):
-        for path, field in [(g.MANUAL, 'items'), (g.REQUESTS, 'requests')]:
-            self.state[path][field][0]['explained_at'] = (self.now-timedelta(hours=1)).isoformat()
-        command = self.result('updated')
-        command.update(explanation='TT#30 Adif sigue siendo tendencia por el anuncio de su rueda de prensa.\n#Adif #Trenes',
-                       new_facts='Anuncio verificado durante una nueva rueda de prensa')
-        state, _ = m.apply_review(self.state, command, self.now, g.grouping_api())
-        self.assertEqual(state[g.REQUESTS]['requests'][-1]['review_color'], 'verde')
-        self.assertEqual(state[g.REQUESTS]['requests'][-1]['review_outcome'], 'continuity')
-        self.assertEqual(len(state[g.MANUAL]['items']), 1)
-        self.assertEqual(state[g.MANUAL]['items'][0]['id'], 'a')
-        self.assertEqual(
-            state[g.MANUAL]['items'][0]['explanation'],
-            'TT#30 Adif sigue siendo tendencia por el anuncio de su rueda de prensa.\n#Adif #Trenes')
-        self.assertEqual(state[g.MANUAL]['items'][0]['red_review_previous_explanation'],
-                         self.row['explanation'])
-        self.assertEqual(state[g.MANUAL]['items'][0]['explained_at'],
-                         (self.now-timedelta(hours=1)).isoformat())
-        self.assertEqual(state[g.MANUAL]['items'][0]['revision'], self.row['revision'])
-        self.assertEqual(state[g.REQUESTS]['requests'][0]['explanation'],
-                         state[g.MANUAL]['items'][0]['explanation'])
-        self.assertEqual(state[g.MANUAL]['items'][0]['red_review_outcome'], 'continuity')
-        self.assertFalse(state[g.MANUAL]['items'][0].get('ai_image_status') == 'pending')
-
-    def test_manual_rework_precedes_automatic_reviews_of_every_color(self):
+    def test_manual_green_or_yellow_rework_still_has_priority(self):
         self.colors()
-        self.state[g.REQUESTS]['requests'].append(dict(id='manual', revision=2, status='update',
-                                                      name='Óscar Puente', auto_queued=False))
+        self.state[g.REQUESTS]['requests'].append(dict(id='manual', revision=2,
+                           status='update', name='green', auto_queued=False))
         self.schedule()
         self.assertFalse(self.review_jobs())
+        self.assertEqual(self.state[g.REQUESTS]['requests'][-1]['status'], 'update')
+
+    def test_queued_automatic_nonred_jobs_cancelled_without_closing_manual(self):
+        self.colors()
+        for color in ('amarilla', 'verde'):
+            job = {'id': 'auto-'+color, 'status': 'preparing',
+                   'red_review_request': True, 'review_color': color,
+                   'review_source': {'id': color}}
+            self.state[g.REQUESTS]['requests'].append(copy.deepcopy(job))
+            self.state[g.QUEUE]['items'].append(copy.deepcopy(job))
+        self.state[g.REQUESTS]['requests'].append(
+            {'id': 'manual', 'status': 'explained', 'review_color': 'verde'})
+        m.schedule(self.state, self.now, g.grouping_api())
+        self.assertFalse(any(x['id'].startswith('auto-') for x in self.state[g.QUEUE]['items']))
+        self.assertTrue(all(x['status'] == 'review_cancelled_nonred'
+                            for x in self.state[g.REQUESTS]['requests']
+                            if x['id'].startswith('auto-')))
+        self.assertEqual([x['review_source']['id'] for x in self.review_jobs()
+                          if x['status'] == 'preparing'], ['red'])
+
+    def test_inflight_old_green_job_never_applies_editorial_changes(self):
+        job = dict(id='old-green', revision=0, red_review_request=True,
+                   review_color='verde', status='preparing',
+                   review_source={**self.row, 'fingerprint': m.fingerprint(self.row)})
+        self.state[g.REQUESTS]['requests'].append(copy.deepcopy(job))
+        self.state[g.QUEUE]['items'].append(copy.deepcopy(job))
+        before = self.state[g.MANUAL]['items'][0]['explanation']
+        result, applied = m.apply_review(
+            self.state, dict(job_id='old-green', outcome='updated',
+                             reason='Comprobación manual', explanation='Otro texto',
+                             new_facts='Cambio'), self.now, g.grouping_api())
+        self.assertFalse(applied)
+        self.assertEqual(result[g.MANUAL]['items'][0]['explanation'], before)
+        self.assertEqual(result[g.REQUESTS]['requests'][-1]['status'], 'review_cancelled_nonred')
 
     def test_unchanged_preserves_text_date_and_color_age(self):
         command = self.result()
