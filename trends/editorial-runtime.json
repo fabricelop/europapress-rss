@@ -7,26 +7,23 @@
   "previous_run_id": "tr-autoguard-1794253266",
   "command_id": "tr-autoguard-1794255077",
   "source": "chat",
-  "status": "RUNNING",
+  "status": "success",
   "phase": "persisting",
   "started_at": "2026-11-09T21:22:00+01:00",
-  "updated_at": "2026-11-09T21:25:00+01:00",
+  "updated_at": "2026-11-09T21:25:19+01:00",
   "finished_at": null,
   "current": 0,
   "total": 2,
   "trend_id": "78100e73b601",
   "title": "Gamarra",
-  "queue_complete": false,
-  "processed_ids": [],
+  "queue_complete": true,
+  "processed_ids": [
+    "78100e73b601",
+    "b9af40846bbe"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "b9af40846bbe",
-    "78100e73b601"
-  ],
-  "remaining_active_ids": [
-    "b9af40846bbe",
-    "78100e73b601"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
@@ -58,8 +55,8 @@
   "incidents": [],
   "error": null,
   "activity": "persisting",
-  "last_started_at": "2026-11-09T21:02:00+01:00",
-  "last_completed_at": "2026-11-09T21:12:41.131+01:00",
+  "last_started_at": "2026-11-09T21:25:18+01:00",
+  "last_completed_at": "2026-11-09T21:25:19+01:00",
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-autoguard-1794253266",
