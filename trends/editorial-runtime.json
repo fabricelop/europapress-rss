@@ -7,16 +7,16 @@
   "previous_run_id": "tr-1794222640495-manual",
   "command_id": "tr-1794224400000-manual",
   "source": "chat-manual",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-09T12:40:00+01:00",
-  "updated_at": "2026-11-09T12:40:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-09T12:42:30+01:00",
+  "finished_at": "2026-11-09T12:42:30+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -275,6 +275,16 @@
       "at": "2026-11-09T12:40:00+01:00",
       "phase": "preparing",
       "message": "Pasada manual iniciada desde chat. Se fuerza actualización del Top 30 y se releerá la cola autoritativa antes de procesar o cerrar. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-09T12:41:15+01:00",
+      "phase": "verifying",
+      "message": "Captura nueva materializada a las 12:41:04+01:00. editorial-queue actualizado a las 12:41:12+01:00 con 0 items; mobile-decisions sin estados editoriales activos."
+    },
+    {
+      "at": "2026-11-09T12:42:30+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-1794224400000-manual cerrada 0/0 contra main. La cola autoritativa permanece vacía tras la nueva captura; no había trabajo editorial que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "last_started_at": "2026-11-09T12:14:20+01:00",
