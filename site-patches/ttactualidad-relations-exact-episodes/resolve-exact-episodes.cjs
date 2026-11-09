@@ -38,7 +38,9 @@ function identity(value) {
           episodeFingerprint: fp || null};
 }
 
-function makeTrustedNewsIndex({processing, prepared, status, treated, existing} = {}) {
+function makeTrustedNewsIndex({
+  processing, prepared, status, treated, publicationEvents, existing
+} = {}) {
   // The caller must fetch these from authoritative GitHub main or its own
   // authenticated editorial store. NEVER accept documents from the iPhone.
   const result = new Map();
@@ -66,6 +68,14 @@ function makeTrustedNewsIndex({processing, prepared, status, treated, existing} 
   for (const row of (treated?.items || [])) {
     if (Number.isSafeInteger(row.revision)) {
       ingest(row.event_id, row.revision, row.title);
+    }
+  }
+  // A published article does not stop being linkable when it leaves Listas
+  // or a rolling editorial queue. Only accept trusted server-side records
+  // that actually contain the article identity and title.
+  for (const row of (publicationEvents?.items || [])) {
+    if (row.project === "ttittulares") {
+      ingest(row.event_id, row.revision, row.title || row.canonical_title);
     }
   }
   // The current Site snapshots and persisted links are authoritative for
@@ -112,12 +122,13 @@ function makeTrustedTrendIndex({siteTop30, existing, explained} = {}) {
 // sources and its persisted snapshot. No writes, auth bypass, or second
 // relation database are performed here.
 function buildTrustedRelationIndexes({
-  processing, prepared, status, treated, siteTop30, explained, snapshot
+  processing, prepared, status, treated, publicationEvents,
+  siteTop30, explained, snapshot
 } = {}) {
   const oldLinks = snapshot?.items || [];
   return {
     news: makeTrustedNewsIndex({
-      processing, prepared, status, treated,
+      processing, prepared, status, treated, publicationEvents,
       existing: [...(snapshot?.news || []), ...oldLinks]
     }),
     trends: makeTrustedTrendIndex({
@@ -159,7 +170,63 @@ function resolveValidatedPair(decision, indexes) {
   };
 }
 
+
+/**
+ * Optional GET /v1/snapshot integration for the existing private Site service.
+ * It exposes the same authoritative news/trend episodes accepted by POST,
+ * including WAITING, READY, archived and published articles. It NEVER creates
+ * relation items: only the existing relation store supplies snapshot.items.
+ * On wire use an empty string for an as-yet-unissued fingerprint so existing
+ * iOS Codable endpoints can decode it; POST still resolves by ID/revision.
+ */
+function exposeLinkableEpisodes(snapshot, indexes) {
+  if (!(indexes?.news instanceof Map) || !(indexes?.trends instanceof Map)) {
+    throw new Error("Trusted catalogs missing: fail closed.");
+  }
+  const original = snapshot || {items: [], news: [], trends: []};
+  const canonical = (rows, index) => {
+    const result = new Map();
+    for (const row of index.values()) {
+      result.set(key(row.id, row.revision), {
+        id: row.id, revision: row.revision,
+        episodeFingerprint: row.episodeFingerprint || "",
+        title: row.title || "", text: row.text || "",
+        path: row.path || null, listedAt: row.listedAt || null
+      });
+    }
+    // The existing Site snapshot is authoritative for full endpoint payload,
+    // including genuine stored fingerprints, text, paths and timestamps.
+    for (const row of rows || []) {
+      if (!row || !index.has(key(row.id, row.revision))) continue;
+      const k = key(row.id, row.revision);
+      const candidate = result.get(k);
+      result.set(k, {
+        ...candidate, ...row,
+        episodeFingerprint: row.episodeFingerprint || candidate.episodeFingerprint
+      });
+    }
+    return [...result.values()];
+  };
+  return {
+    ...original,
+    items: [...(original.items || [])],
+    news: canonical(original.news, indexes.news),
+    trends: canonical(original.trends, indexes.trends)
+  };
+}
+
+/**
+ * Drop-in validation entrypoint for Site's EXISTING authenticated decision
+ * handler, before invoking its normal idempotent relation-store writes.
+ * Authorization, persistence, and receipt production stay in the Site.
+ */
+function resolveManualDecision(decision, trustedCatalogs) {
+  return resolveValidatedPair(
+    decision, buildTrustedRelationIndexes(trustedCatalogs));
+}
+
 module.exports = {
   EpisodeResolutionError, makeTrustedNewsIndex, makeTrustedTrendIndex,
-  buildTrustedRelationIndexes, resolveValidatedPair
+  buildTrustedRelationIndexes, exposeLinkableEpisodes,
+  resolveManualDecision, resolveValidatedPair
 };
