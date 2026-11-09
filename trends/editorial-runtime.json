@@ -8,14 +8,14 @@
   "command_id": "tr-1794262515713-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "persisting",
   "started_at": "2026-11-09T23:26:00+01:00",
-  "updated_at": "2026-11-09T23:26:00+01:00",
+  "updated_at": "2026-11-09T23:34:00+01:00",
   "finished_at": null,
   "current": 0,
   "total": 16,
-  "trend_id": "63a056c511d3",
-  "title": "La Peter",
+  "trend_id": null,
+  "title": null,
   "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
@@ -85,7 +85,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "preparing",
+  "activity": "persisting",
   "last_started_at": "2026-11-09T22:41:12+01:00",
   "last_completed_at": "2026-11-09T22:42:38.089+01:00",
   "api_failover_enabled": false,
@@ -146,7 +146,7 @@
     ],
     "message": "Pasada tr-1794260243896-manual cerrada 2/2. Broncano r0 y La Revuelta r0 fueron reelaborados desde cero con el desarrollo emitido el 9/11: Broncano explicó que el equipo de Santiago Abascal pidió gestionar el público y el programa aceptó; después expresó reparos por el apoyo uniforme. Ambos textos quedaron persistidos y sincronizados en requests.json y telegram-manual-explained.json por el aplicador oficial. Barrera final: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain en requests ni mobile-decisions. ImageGen=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794262515713-manual RUNNING. Cola JIT inicial: 16 preparing/update, de La Peter a #UzakŞehir, ordenados por requested_at. Se validará cada ID/revisión antes de investigar y persistir. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1794262515713-manual: 16/16 revisiones validadas JIT e investigadas; resultados textuales publicados en editorial-outbox por el commit 2e5ed9d6331f14a3bad1562454cd081624ca8f4a. Aplicador oficial en ejecución; ninguna revisión se considera cerrada hasta verificar requests+telegram-manual-explained+cola. ImageGen=0; image-outbox=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794199200000-manual",
@@ -3744,5 +3744,6 @@
     "run_id": "tr-1794260243896-manual",
     "status": "DONE",
     "updated_at": "2026-11-09T22:42:38.089+01:00"
-  }
+  },
+  "apply_workflow_run_id": 42712886314
 }
