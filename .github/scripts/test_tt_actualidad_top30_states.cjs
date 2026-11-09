@@ -62,7 +62,7 @@ const state={app:'tr',tab:'top',data:{recent,requests,
 const rows=vm.runInNewContext(code+'\ntrendRows()', {state, Date, Intl, console});
 const status=name=>rows.find(row=>row.name===name)?._status;
 // Top 30 is an index of current work, never a publication surface.
-assert.equal(status('Hispanidad'),'SIN SOLICITUD EDITORIAL');
+assert.equal(status('Hispanidad'),'CERRADA');
 assert.equal(status('Feliz 12'),'EN ELABORACIÓN');
 assert.equal(status('Tendencia sin entrega'),'PENDIENTE DE LISTAS');
 assert.equal(status('Tendencia entregada'),'PENDIENTE DE LISTAS');
@@ -82,10 +82,11 @@ assert.ok(pendingNames.includes('Tendencia nueva'));
 assert.ok(!pendingNames.includes('Feliz 12'));
 assert.ok(html.includes("['pendientes','Sin elaborar']"));
 assert.ok(!pendingNames.includes('Tendencia sin entrega'));
-assert.ok(pendingNames.includes('Hispanidad'));
+assert.ok(!pendingNames.includes('Hispanidad'));
 assert.ok(pendingNames.every(name=>!['Tendencia manual','Feliz 12'].includes(name)));
 // This diagnostics tab is no longer a sequential pending queue.
 assert.ok(!pendingNames.includes('Tendencia cerrada'));
+assert.equal(status('Tendencia cerrada'),'CERRADA');
 assert.ok(html.includes("command('Volver a elaborar','rework')"),
   'Every current Top 30 trend must provide fresh elaboration on demand');
 assert.ok(html.includes("btn('Volver a elaborar',()=>showToast("),
