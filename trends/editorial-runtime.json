@@ -15,7 +15,7 @@
   "current": 2,
   "total": 2,
   "trend_id": null,
-  "title": "Pasada editorial TTendencias",
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
     "red-review-71cffa72182e4b0708c4",
@@ -58,6 +58,7 @@
       "outcome": "continuity",
       "applied": true,
       "via": "concurrent_convergence",
+      "result_commit": "c0209c4f5957fb746125971ccd5527eaedc5cb27",
       "apply_commit": "c1208a7930b4a9c6a6315178624c52ad445c1e64"
     },
     {
@@ -67,6 +68,7 @@
       "outcome": "unchanged",
       "applied": true,
       "via": "concurrent_convergence",
+      "result_commit": "9ae209c59c184d46966d0d2218b90f9db46ab2e0",
       "apply_commit": "c1208a7930b4a9c6a6315178624c52ad445c1e64"
     }
   ],
@@ -118,6 +120,7 @@
         "outcome": "continuity",
         "applied": true,
         "via": "concurrent_convergence",
+        "result_commit": "c0209c4f5957fb746125971ccd5527eaedc5cb27",
         "apply_commit": "c1208a7930b4a9c6a6315178624c52ad445c1e64"
       },
       {
@@ -127,12 +130,13 @@
         "outcome": "unchanged",
         "applied": true,
         "via": "concurrent_convergence",
+        "result_commit": "9ae209c59c184d46966d0d2218b90f9db46ab2e0",
         "apply_commit": "c1208a7930b4a9c6a6315178624c52ad445c1e64"
       }
     ],
-    "message": "Pasada tr-1794204852814-manual cerrada 2/2 por convergencia JIT. maffeo quedó actualizado en continuidad con su disculpa posterior, conservando explained_at y estado publicado; Valencia quedó unchanged. La reentrada #FelizLunes ya había sido cerrada en esta ejecución como review_completed/no_distinct_event mediante el aplicador oficial 42571682843. Refresco real #799 (42571516169) completado success. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "message": "Pasada tr-1794204852814-manual cerrada 2/2 por convergencia JIT. maffeo quedó actualizado como continuidad del mismo Valencia-Real Madrid incorporando la disculpa posterior, sin nuevo episodio ni nueva imagen; Valencia quedó unchanged. El aplicador c1208a7930b4a9c6a6315178624c52ad445c1e64 persistió ambos resultados en requests.json y telegram-manual-explained.json y retiró las dos revisiones de editorial-queue. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794204852814-manual cerrada 2/2 por convergencia JIT. maffeo quedó actualizado en continuidad con su disculpa posterior, conservando explained_at y estado publicado; Valencia quedó unchanged. La reentrada #FelizLunes ya había sido cerrada en esta ejecución como review_completed/no_distinct_event mediante el aplicador oficial 42571682843. Refresco real #799 (42571516169) completado success. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada tr-1794204852814-manual cerrada 2/2 por convergencia JIT. maffeo quedó actualizado como continuidad del mismo Valencia-Real Madrid incorporando la disculpa posterior, sin nuevo episodio ni nueva imagen; Valencia quedó unchanged. El aplicador c1208a7930b4a9c6a6315178624c52ad445c1e64 persistió ambos resultados en requests.json y telegram-manual-explained.json y retiró las dos revisiones de editorial-queue. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T03:17:00+01:00",
@@ -878,6 +882,64 @@
       "at": "2026-11-09T07:16:30+01:00",
       "phase": "closing",
       "message": "Pasada tr-1794204852814-manual cerrada 2/2 por convergencia JIT. maffeo quedó actualizado en continuidad con su disculpa posterior, conservando explained_at y estado publicado; Valencia quedó unchanged. La reentrada #FelizLunes ya había sido cerrada en esta ejecución como review_completed/no_distinct_event mediante el aplicador oficial 42571682843. Refresco real #799 (42571516169) completado success. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-09T07:16:20+01:00",
+      "phase": "verifying",
+      "message": "Barrera JIT final verificada: editorial-queue=0; ambos review_red están review_completed y aplicados en requests.json y telegram-manual-explained.json; mobile-decisions sin estados editoriales activos. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794204852814-manual",
+      "status": "DONE",
+      "started_at": "2026-11-09T07:15:30+01:00",
+      "finished_at": "2026-11-09T07:16:30+01:00",
+      "at": "2026-11-09T07:16:30+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 2,
+        "observed": 2,
+        "closed": 2,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 1,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 2,
+        "unchanged_reviews": 1,
+        "continuity_updates": 1,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 2
+      },
+      "outcomes": [
+        {
+          "id": "red-review-71cffa72182e4b0708c4",
+          "revision": 0,
+          "name": "Revisar novedades: maffeo",
+          "outcome": "continuity",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "result_commit": "c0209c4f5957fb746125971ccd5527eaedc5cb27",
+          "apply_commit": "c1208a7930b4a9c6a6315178624c52ad445c1e64"
+        },
+        {
+          "id": "red-review-882d5106e6c1728c5ae8",
+          "revision": 0,
+          "name": "Revisar novedades: Valencia",
+          "outcome": "unchanged",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "result_commit": "9ae209c59c184d46966d0d2218b90f9db46ab2e0",
+          "apply_commit": "c1208a7930b4a9c6a6315178624c52ad445c1e64"
+        }
+      ],
+      "message": "Pasada tr-1794204852814-manual cerrada 2/2 por convergencia JIT. maffeo quedó actualizado como continuidad del mismo Valencia-Real Madrid incorporando la disculpa posterior, sin nuevo episodio ni nueva imagen; Valencia quedó unchanged. El aplicador c1208a7930b4a9c6a6315178624c52ad445c1e64 persistió ambos resultados en requests.json y telegram-manual-explained.json y retiró las dos revisiones de editorial-queue. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "current_item": null
