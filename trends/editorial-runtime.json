@@ -8,9 +8,9 @@
   "command_id": "tr-1794259644356-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "investigating",
+  "phase": "persisting",
   "started_at": "2026-11-09T22:27:30+01:00",
-  "updated_at": "2026-11-09T22:27:30+01:00",
+  "updated_at": "2026-11-09T22:29:00+01:00",
   "finished_at": null,
   "current": 0,
   "total": 1,
@@ -55,7 +55,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "investigating",
+  "activity": "persisting",
   "last_started_at": "2026-11-09T22:27:30+01:00",
   "last_completed_at": "2026-11-09T22:23:00+01:00",
   "api_failover_enabled": false,
@@ -94,7 +94,7 @@
     "outcomes": [],
     "message": "Pasada tr-autoguard-1794258660 cerrada 0/0 tras relectura de main: editorial-queue=0 y sin preparing/update, rewrite_pending ni reexplain detectables. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794259644356-manual RUNNING. Revisión roja de Broncano r0 revalidada JIT en main; investigando novedades posteriores a la explicación del 07/11. ImageGen=0; publicaciones=0.",
+  "message": "Persistiendo revisión de Broncano r0 como unchanged: la emisión/grabación de hoy continúa el mismo episodio y el cambio de público ya estaba recogido; no hay hecho material independiente. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794199200000-manual",
@@ -3525,6 +3525,15 @@
         "run_id": "tr-autoguard-1794258660",
         "status": "DONE"
       }
+    },
+    {
+      "run_id": "tr-1794259644356-manual",
+      "status": "RUNNING",
+      "at": "2026-11-09T22:29:00+01:00",
+      "phase": "persisting",
+      "trend_id": "red-review-2ae5b8858c6b208c281a",
+      "title": "Revisar novedades: Broncano",
+      "message": "Persistiendo revisión de Broncano r0 como unchanged: la emisión/grabación de hoy continúa el mismo episodio y el cambio de público ya estaba recogido; no hay hecho material independiente. ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": {
