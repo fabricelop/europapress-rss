@@ -15,10 +15,10 @@ except ImportError:
     from trends.suppression import active_request, purge_pending
 try:
     # Direct script invocation from the trends directory.
-    from trend_episode_policy import treated_terms, editor_initiated
+    from trend_episode_policy import treated_terms, editor_initiated, review_episode_token
 except ImportError:
     # Also support the package invocation used by some CI callers.
-    from trends.trend_episode_policy import treated_terms, editor_initiated
+    from trends.trend_episode_policy import treated_terms, editor_initiated, review_episode_token
 
 ROOT = Path(__file__).resolve().parent
 MADRID = ZoneInfo("Europe/Madrid")
@@ -267,6 +267,7 @@ for request in requests:
     group = editorial_topic(request.get("name"))
     if (group in recently_closed_topics and request.get("auto_queued") is True
             and state in {"preparing", "update", "problematic", "ready"}
+            and not request.get("new_episode_review")
             and str(request.get("request_source") or "") not in {
               "github_pages_authorized_issue", "telegram_reexplain",
               "telegram_private_deeplink_native"}):
@@ -513,7 +514,10 @@ for req in requests:
             # A real, current explanation is enough. Do not manufacture a new
             # Listas card solely because the same hashtag returns to Top30.
             active_explained_names.add(key)
-        if str(req.get("status") or "") == "explained":
+        # A published/deleted record can retain a real old explanation even
+        # after it leaves Listas. Count its *explained_at*, never its removal.
+        if (str(req.get("explanation") or "").strip() and req.get("explained_at")
+                and not req.get("red_review_request")):
             values = [req.get("name")] + list(req.get("trend_names") or [])
             for value in values:
                 remember_explanation(value, req.get("explained_at"))
@@ -684,10 +688,9 @@ if retired_problematic:
     reconciled = True
     print("Problemáticas antiguas retiradas:", retired_problematic)
 
-# A returning Top30 label is NOT an independent news episode. Decisions and
-# earlier explained requests remain authoritative even when explained.json is
-# compacted, a request fell out of Listas, or a later stale auto request became
-# inactive. No new ID/revision/image without an explicit editorial command.
+# The >24h return opens *research*, not a new publication. Previously
+# published/deleted requests remain authoritative for their exact ID/revision.
+# Unverified repeats and within-24h entries still cannot create another ID.
 historically_treated = treated_terms(
     requests, explained_doc.get("items") or [],
     deliveries.get("items") or [], mobile_decisions.get("items") or [])
@@ -728,8 +731,8 @@ for batch in approved_batches:
     for term in batch.get("names") or []:
         approved_by_name[norm(term)] = {"id": batch_id, "approved_at": started}
 
-# Completed reviews remain closed. A recurring Top30 label, whatever its color,
-# never reopens historical work without an explicit editor request.
+# A review_completed token remains closed for that observed reentry. A NEW,
+# separately dated return after >24h can receive a different research token.
 
 to_queue = []
 for item in current:
@@ -749,24 +752,27 @@ for item in current:
         for old in requests
     ):
         approval_id = ""  # The approved review was already created.
-    # Neither a current explanation nor a recurring rank allows automatic
-    # re-listing. Preserve explicit manual investigations and approved batches.
-    if key in active_explained_names and not (
-        approval_id or (req and editor_initiated(req)
-                        and status in {"preparing", "update", "problematic"})
-    ):
-        continue
     radar_item = next((
         row for row in (recent.get("items") or [])[:30]
         if norm(row.get("name")) == key), item)
-    # Rank changes, elapsed time and Top30 reentry are not new-event evidence.
-    episode_token = "editor:" + approval_id if approval_id else ""
+    # An OBSERVED Top30 return more than 24 h after the last explanation
+    # deserves investigation. Rank movement/age alone never do. Approval
+    # remains an independent explicit route and overrides automatic tokens.
     historical = key in historically_treated
+    automatic_token = review_episode_token(
+        item["name"], radar_item, req, historically_treated,
+        now_dt, latest_explanation.get(key))
+    episode_token = "editor:" + approval_id if approval_id else (automatic_token or "")
     distinct_review = bool(historical and episode_token)
+    if key in active_explained_names and not (
+        distinct_review or (req and editor_initiated(req)
+                            and status in {"preparing", "update", "problematic"})
+    ):
+        continue
     if historical and not distinct_review and not editor_initiated(req):
         continue
-    # A prior explanation is not a reason to skip a DIFFERENT research
-    # episode. Every return remains fact-check only, not duplicate publishing.
+    # An old explanation protects its old editorial card, not research into
+    # a verified return after the 24-hour boundary.
     if (key in explained or key in latest_explanation) and not distinct_review:
         if status not in {"preparing", "update", "problematic", "ready"}:
             continue
@@ -894,11 +900,8 @@ for item in to_queue:
         "grouping_disabled": True,
         "auto_queued": True,
         "auto_queue_scope": "top30",
-        # Episode history may justify a fresh ID, but cannot impose a
-        # different-event requirement on ordinary current-day explanation.
-        # Keep this flag to protect the independent research ID from
-        # legacy same-name suppression. It no longer means that a different
-        # news event is required for an explanation.
+        # A unique ID here is an isolated RESEARCH job, not a new Listas card.
+        # Its previous episode and user's publication/deletion remain intact.
         "new_episode_review": bool(item.get("new_episode_review")),
         "recurring_top30_name": bool(item.get("new_episode_review")),
         "radar_episode_token": episode_token,
@@ -909,10 +912,13 @@ for item in to_queue:
         "previous_episode_id": str((req or {}).get("id") or "") if independent_episode else "",
         "distinct_event_required": bool(item.get("new_episode_review")),
         "review_instruction": (
-            "Investigación expresamente solicitada. Exigir un acontecimiento "
-            "material, nuevo y verificado frente a la ficha anterior. Si no "
-            "existe, cerrar como review_completed/no_distinct_event sin "
-            "generar otra ficha ni imagen. No duplicar por ranking o reentrada."
+            "Investiga POR QUÉ ha vuelto al Top 30 tras más de 24 h de la "
+            "última explicación (o por solicitud expresa). Contrasta hechos "
+            "actuales con la ficha anterior. Solo un acontecimiento material, "
+            "nuevo e independiente permite otra ficha en Listas. Si sigue el "
+            "mismo motivo, conservar la explicación previa y cerrar como "
+            "review_completed/no_distinct_event, sin publicación ni imagen. "
+            "Un cambio de puesto o seguir en el ranking NO es un retorno."
             if item.get("new_episode_review") else ""
         ),
     }
