@@ -48,19 +48,20 @@ final class EditorialRelationCountsStore: ObservableObject {
         }
     }
 
-    // X = server-confirmed links among the same N <= 5 textual suggestions.
-    // No links are inferred merely because the headline mentions the trend.
+    // X = ALL confirmed linked news for this exact editorial trend, including
+    // historical news not in today's Top 5. N = at most 5 matching candidates.
+    // Nothing is considered linked merely because its text mentions a name.
     func counts(trendID: String, revision: Int, name: String) -> (Int, Int)? {
         guard let snapshot, !trendID.isEmpty else { return nil }
         let found = EditorialRelationsPolicy.newsForTrend(news, name: name)
-        let links = EditorialRelationsPolicy.canonical(snapshot.items)
-        let associated = found.filter { news in
-            links.contains { pair in
-                pair.state == "linked" &&
-                    pair.news.id == news.id && pair.news.revision == news.revision &&
-                    pair.trend.id == trendID && pair.trend.revision == revision
-            }
-        }.count
+        let states = EditorialRelationsPolicy.effectivePairStates(snapshot.items)
+        let associated = Set(snapshot.items.compactMap { pair -> String? in
+            guard pair.trend.id == trendID, pair.trend.revision == revision,
+                  states[EditorialRelationsPolicy.pairKey(pair.news, pair.trend)] == "linked"
+            else { return nil }
+            return EditorialRelationsPolicy.newsKey(
+                id: pair.news.id, revision: pair.news.revision)
+        }).count
         return (associated, found.count)
     }
 }
@@ -466,11 +467,11 @@ struct EditorialRelationsView: View {
         let news = buildAllNewsChoices(canonical: canonical)
         let dates = buildFallbackDates()
         let endpoints = (model.snapshot?.trends ?? []) + canonical.map(\.trend)
-        var states: [String: String] = [:]
-        for relation in canonical {
-            let key = pairKey(relation.news, relation.trend)
-            states[key] = relation.state
-        }
+        // A v85 snapshot may carry both a suggested row and a manual link
+        // for the same pair, potentially with enriched fingerprints.
+        // A manual decision must not be overwritten by loop order.
+        let states = EditorialRelationsPolicy.effectivePairStates(
+            model.snapshot?.items ?? [])
         var matches: [String: [EditorialRelationEndpoint]] = [:]
         var trends: [String: EditorialRelationEndpoint] = [:]
         let now = Date()
@@ -653,11 +654,13 @@ struct EditorialRelationsView: View {
             let name = scope.title
             let found = relatedNews(rank: rank, name: name)
             let changes = changesForTrend(found, rank: rank, name: name)
-            Section("Noticias encontradas · " + String(found.count) + "/5") {
-                Text("Búsqueda de «" + name +
-                     "» en titulares y textos de noticias, sin filtros de fecha, " +
-                     "Listas, estado ni publicación. Marca las que quieras " +
-                     "relacionar y pulsa Guardar.")
+            let confirmed = confirmedCount(found, rank: rank, name: name)
+            Section("Noticias relacionadas · " + String(confirmed) + "/" +
+                    String(found.count)) {
+                Text("X = vínculos confirmados en el Site entre estas " +
+                     "N noticias encontradas (máximo 5). Las ya relacionadas " +
+                     "se muestran marcadas. Solo las modificaciones que " +
+                     "hagas requieren pulsar Guardar.")
                     .font(.footnote).foregroundStyle(.secondary)
                 if found.isEmpty {
                     Text(model.loading ? "Buscando noticias…" :
@@ -900,23 +903,33 @@ struct EditorialRelationsView: View {
                     .foregroundStyle(.secondary).lineLimit(3)
             }
             if let trend, selectable {
+                let changed = pendingSwitches[linkKey] != nil
                 Button {
                     toggleSelection(news, trend)
                 } label: {
-                    Label(selected ? "Asociada / seleccionada" : "Marcar para asociar",
-                          systemImage: selected ? "checkmark.square.fill" : "square")
+                    Label(
+                        changed
+                            ? (selected ? "Seleccionada para asociar" :
+                               "Seleccionada para desvincular")
+                            : (linked ? "Ya relacionada · guardada en el Site" :
+                               "Marcar para asociar"),
+                        systemImage: selected ? "checkmark.square.fill" : "square")
                 }
-                .buttonStyle(.plain).foregroundStyle(TTTheme.teal)
+                .buttonStyle(.plain)
+                .foregroundStyle(changed ? .orange : TTTheme.teal)
+                if changed {
+                    Text(selected ? "Se asociará al pulsar Guardar" :
+                         "Se desasociará al pulsar Guardar")
+                        .font(.caption2).foregroundStyle(.orange)
+                } else if linked {
+                    Text("Relación confirmada por el servidor; no requiere guardar de nuevo.")
+                        .font(.caption2).foregroundStyle(TTTheme.teal)
+                } else if model.snapshot == nil {
+                    Text("No se ha podido confirmar el estado remoto. Actualiza antes de guardar.")
+                        .font(.caption2).foregroundStyle(.orange)
+                }
             } else {
-                Text("No se reconoce el identificador de la tendencia.")
-                    .font(.caption).foregroundStyle(.orange)
-            }
-            if pendingSwitches[linkKey] != nil && selectable {
-                Text(selected ? "Se asociará al pulsar Guardar" :
-                     "Se desasociará al pulsar Guardar")
-                    .font(.caption2).foregroundStyle(.orange)
-            } else if !selectable {
-                Text("Identificador de tendencia pendiente.")
+                Text("Identificador de tendencia pendiente o no reconocido.")
                     .font(.caption2).foregroundStyle(.orange)
             }
             if scope?.project != "ttendencias" {
