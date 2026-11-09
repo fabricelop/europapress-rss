@@ -7,15 +7,15 @@
   "previous_run_id": "tr-1794211800000-manual",
   "command_id": "tr-1794211800000-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "verifying",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-09T09:15:31+01:00",
-  "updated_at": "2026-11-09T09:19:00+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-09T09:20:00+01:00",
+  "finished_at": "2026-11-09T09:20:00+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "red-review-0abc293c8865e30c19dc",
-  "title": "Revisando novedades: Valencia",
+  "trend_id": null,
+  "title": "Pasada editorial TTendencias",
   "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
@@ -69,22 +69,22 @@
   "last_completed_at": "2026-11-09T09:02:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794211800000-manual",
+    "run_id": "tr-1794212131276-manual",
     "status": "DONE",
-    "started_at": "2026-11-09T09:10:00+01:00",
-    "finished_at": "2026-11-09T09:11:00+01:00",
-    "at": "2026-11-09T09:11:00+01:00",
+    "started_at": "2026-11-09T09:15:31+01:00",
+    "finished_at": "2026-11-09T09:20:00+01:00",
+    "at": "2026-11-09T09:20:00+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 0,
-      "observed": 0,
-      "closed": 0,
+      "attempted": 2,
+      "observed": 2,
+      "closed": 2,
       "explained": 0,
       "problematic": 0,
       "updates": 0,
       "review_completed_no_distinct_event": 0,
-      "maintenance_reviews": 0,
-      "unchanged_reviews": 0,
+      "maintenance_reviews": 2,
+      "unchanged_reviews": 2,
       "continuity_updates": 0,
       "distinct_updates": 0,
       "stale_reviews": 0,
@@ -97,12 +97,32 @@
       "incidents": 0,
       "concurrent_convergence": 0
     },
-    "processed_ids": [],
+    "processed_ids": [
+      "red-review-d3f70fc527eec472e964",
+      "red-review-0abc293c8865e30c19dc"
+    ],
     "converged_ids": [],
-    "outcomes": [],
-    "message": "Pasada tr-1794211800000-manual cerrada 0/0 tras tres lecturas de la cola autoritativa. editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "outcomes": [
+      {
+        "id": "red-review-d3f70fc527eec472e964",
+        "revision": 0,
+        "name": "Revisar novedades: maffeo",
+        "outcome": "unchanged",
+        "applied": true,
+        "source_id": "1940ad68777c"
+      },
+      {
+        "id": "red-review-0abc293c8865e30c19dc",
+        "revision": 0,
+        "name": "Revisar novedades: Valencia",
+        "outcome": "unchanged",
+        "applied": true,
+        "source_id": "41998067bb7c"
+      }
+    ],
+    "message": "Pasada tr-1794212131276-manual cerrada 2/2: maffeo y Valencia revisadas como unchanged y aplicadas en requests.json + telegram-manual-explained.json; cola=0 y sin reexplicaciones activas. ImageGen=0; publicaciones=0."
   },
-  "message": "Maffeo ya tiene resultado de mantenimiento persistido; revisando Valencia y revalidando ID/revisión antes de escribir su resultado.",
+  "message": "Pasada tr-1794212131276-manual cerrada 2/2: maffeo y Valencia revisadas como unchanged y aplicadas en requests.json + telegram-manual-explained.json; cola=0 y sin reexplicaciones activas. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T03:17:00+01:00",
@@ -1384,13 +1404,54 @@
         }
       ],
       "message": "Pasada tr-1794211148379-manual cerrada 2/2 por convergencia JIT. Cracovia y Atleti ya habían sido investigadas y aplicadas como review_red=unchanged por la ejecución concurrente tr-1794210900000-manual; se verificó su persistencia sincronizada en requests.json y telegram-manual-explained.json, los dos resultados en maintenance-outbox, editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No se reescribieron fichas ni fechas. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794212131276-manual",
+      "status": "DONE",
+      "started_at": "2026-11-09T09:15:31+01:00",
+      "finished_at": "2026-11-09T09:20:00+01:00",
+      "summary": {
+        "attempted": 2,
+        "observed": 2,
+        "closed": 2,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 2,
+        "unchanged_reviews": 2,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "outcomes": [
+        {
+          "id": "red-review-d3f70fc527eec472e964",
+          "revision": 0,
+          "name": "Revisar novedades: maffeo",
+          "outcome": "unchanged",
+          "applied": true,
+          "source_id": "1940ad68777c"
+        },
+        {
+          "id": "red-review-0abc293c8865e30c19dc",
+          "revision": 0,
+          "name": "Revisar novedades: Valencia",
+          "outcome": "unchanged",
+          "applied": true,
+          "source_id": "41998067bb7c"
+        }
+      ],
+      "message": "Pasada tr-1794212131276-manual cerrada 2/2: maffeo y Valencia revisadas como unchanged y aplicadas en requests.json + telegram-manual-explained.json; cola=0 y sin reexplicaciones activas. ImageGen=0; publicaciones=0."
     }
   ],
-  "current_item": {
-    "id": "red-review-0abc293c8865e30c19dc",
-    "revision": 0,
-    "name": "Revisar novedades: Valencia",
-    "task": "review_red",
-    "phase": "verifying"
-  }
+  "current_item": null
 }
