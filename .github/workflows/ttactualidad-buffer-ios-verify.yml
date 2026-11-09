@@ -45,17 +45,17 @@ jobs:
           APP=".build/Build/Products/Release-iphoneos/TTActualidad.app"
           test -d "$APP/PlugIns/TTActualidadLive.appex"
           test -s "$APP/Assets.car"
-          /usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" "$APP/Info.plist" | grep -Fx "0.4.82"
+          /usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" "$APP/Info.plist" | grep -Fx "0.4.83"
           /usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$APP/Info.plist" | grep -Fx "94"
           mkdir -p dist/Payload
           cp -R "$APP" dist/Payload/
           cd dist
-          zip -qr TTActualidad-0.4.82-build94-Buffer-unsigned.ipa Payload
-          unzip -l TTActualidad-0.4.82-build94-Buffer-unsigned.ipa | grep 'TTActualidadLive.appex/Info.plist'
-          shasum -a 256 TTActualidad-0.4.82-build94-Buffer-unsigned.ipa
+          zip -qr TTActualidad-0.4.83-build95-Buffer-unsigned.ipa Payload
+          unzip -l TTActualidad-0.4.83-build95-Buffer-unsigned.ipa | grep 'TTActualidadLive.appex/Info.plist'
+          shasum -a 256 TTActualidad-0.4.83-build95-Buffer-unsigned.ipa
       - uses: actions/upload-artifact@v4
         with:
-          name: TTActualidad-0.4.82-build94-Buffer-IPA
-          path: ios/ttactualidad/dist/TTActualidad-0.4.82-build94-Buffer-unsigned.ipa
+          name: TTActualidad-0.4.83-build95-Buffer-IPA
+          path: ios/ttactualidad/dist/TTActualidad-0.4.83-build95-Buffer-unsigned.ipa
           retention-days: 30
           if-no-files-found: error
