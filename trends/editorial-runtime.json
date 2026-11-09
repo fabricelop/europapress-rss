@@ -3,67 +3,28 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794185100000-manual",
-  "previous_run_id": "tr-1794183629966-manual",
-  "command_id": "tr-1794185100000-manual",
+  "run_id": "tr-1794185607129-manual",
+  "previous_run_id": "tr-1794185100000-manual",
+  "command_id": "tr-1794185607129-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-09T01:45:00+01:00",
-  "updated_at": "2026-11-09T01:54:58+01:00",
-  "finished_at": "2026-11-09T01:54:58+01:00",
-  "current": 10,
-  "total": 10,
-  "trend_id": null,
-  "title": "Pasada editorial TTendencias",
-  "queue_complete": true,
-  "processed_ids": [
-    "18df282228a9",
-    "5760b09e15f0",
-    "288ff80bcf5b",
-    "5e7e3f932194",
-    "bfa85ea0b4d4",
-    "7242c9da276f",
-    "7a4344cf60ab",
-    "88d4c8e01a7f",
-    "e4ddee79e78c",
-    "a1c78ad6f0d5"
-  ],
+  "status": "RUNNING",
+  "phase": "verifying",
+  "started_at": "2026-11-09T01:53:27.129+01:00",
+  "updated_at": "2026-11-09T01:55:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 1,
+  "trend_id": "18df282228a9",
+  "title": "Metropolitano",
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [
-    "18df282228a9",
-    "5760b09e15f0",
-    "288ff80bcf5b",
-    "5e7e3f932194",
-    "bfa85ea0b4d4",
-    "7242c9da276f",
-    "7a4344cf60ab",
-    "88d4c8e01a7f",
-    "e4ddee79e78c",
-    "a1c78ad6f0d5"
+    "18df282228a9"
   ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": {
-    "attempted": 10,
-    "observed": 10,
-    "closed": 10,
-    "explained": 10,
-    "problematic": 0,
-    "updates": 0,
-    "continuity_updates": 0,
-    "distinct_updates": 0,
-    "unchanged_reviews": 0,
-    "stale_reviews": 0,
-    "unverified_reviews": 0,
-    "queue_remaining": 0,
-    "rewrite_pending_remaining": 0,
-    "imagegen_calls": 0,
-    "image_outbox_created": 0,
-    "publications": 0,
-    "incidents": 0,
-    "concurrent_convergence": 10
-  },
+  "summary": null,
   "outcomes": [
     {
       "id": "18df282228a9",
@@ -149,7 +110,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Pasada editorial cerrada",
+  "activity": "Verificando convergencia JIT de Metropolitano",
   "last_started_at": "2026-11-09T01:25:00+01:00",
   "last_completed_at": "2026-11-09T01:26:00+01:00",
   "api_failover_enabled": false,
@@ -181,7 +142,7 @@
     },
     "message": "Pasada tr-1794185100000-manual cerrada 10/10. Episodios actuales verificados sin reutilizar cierres históricos. ImageGen=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794185100000-manual cerrada 10/10. Episodios actuales verificados sin reutilizar cierres históricos. ImageGen=0; publicaciones=0.",
+  "message": "La revisión 18df282228a9/r0 estaba preparing al inicio de esta orden y fue materializada por la pasada inmediatamente anterior antes de nuestra persistencia. Se verifica coincidencia requests/Listas, fuentes y barrera final antes de cerrar. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-08T15:07:08+01:00",
@@ -1082,7 +1043,20 @@
       "at": "2026-11-09T01:26:00+01:00",
       "phase": "closing",
       "message": "Pasada tr-1794183900000-manual cerrada 0/0 tras barrera JIT en main: editorial-queue=0; mobile-decisions sin preparing/update, anticipate ni review_red activos; búsqueda en requests sin rewrite_pending/reexplain activos. No se inventó trabajo. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-09T01:55:00+01:00",
+      "phase": "verifying",
+      "trend_id": "18df282228a9",
+      "title": "Metropolitano",
+      "message": "Convergencia JIT: 18df282228a9/r0 ya aparece explained en requests y telegram-manual-explained tras cierre de la pasada tr-1794185100000-manual. Verificando fuentes y ausencia de trabajo activo antes del cierre."
     }
   ],
-  "current_item": null
+  "current_item": {
+    "id": "18df282228a9",
+    "revision": 0,
+    "name": "Metropolitano",
+    "status": "explained",
+    "mode": "concurrent_convergence"
+  }
 }
