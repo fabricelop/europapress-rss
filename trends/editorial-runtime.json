@@ -3,39 +3,36 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794206462514-manual",
-  "previous_run_id": "tr-1794206400000-manual",
-  "command_id": "tr-1794206462514-manual",
+  "run_id": "tr-1794207300000-manual",
+  "previous_run_id": "tr-1794206462514-manual",
+  "command_id": "tr-1794207300000-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-09T07:41:00+01:00",
-  "updated_at": "2026-11-09T07:45:00+01:00",
-  "finished_at": "2026-11-09T07:45:00+01:00",
-  "current": 2,
-  "total": 2,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-09T07:55:00+01:00",
+  "updated_at": "2026-11-09T07:58:28+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "title": "Pasada editorial TTendencias",
+  "queue_complete": false,
   "processed_ids": [],
-  "converged_ids": [
-    "red-review-ec24f58b5ef89a37b108",
-    "red-review-175ed38aeb25b48b294b"
-  ],
+  "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
     "explained": 0,
     "problematic": 0,
-    "updates": 1,
+    "updates": 0,
     "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 2,
-    "unchanged_reviews": 1,
-    "continuity_updates": 1,
+    "maintenance_reviews": 0,
+    "unchanged_reviews": 0,
+    "continuity_updates": 0,
     "distinct_updates": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
@@ -45,33 +42,14 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 2
+    "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "red-review-ec24f58b5ef89a37b108",
-      "revision": 0,
-      "name": "Revisar novedades: Amaia",
-      "outcome": "unchanged",
-      "applied": true,
-      "via": "concurrent_convergence",
-      "apply_commit": "8a85179f482091f5ed2b7d3be69a9217b19270b0"
-    },
-    {
-      "id": "red-review-175ed38aeb25b48b294b",
-      "revision": 0,
-      "name": "Revisar novedades: Cracovia",
-      "outcome": "continuity",
-      "applied": true,
-      "via": "concurrent_convergence",
-      "apply_commit": "8a85179f482091f5ed2b7d3be69a9217b19270b0"
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "closing",
-  "last_started_at": "2026-11-09T07:41:00+01:00",
+  "activity": "preparing",
+  "last_started_at": "2026-11-09T07:55:00+01:00",
   "last_completed_at": "2026-11-09T07:45:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -126,7 +104,7 @@
     ],
     "message": "Pasada tr-1794206462514-manual cerrada 2/2 por convergencia JIT. Amaia quedó unchanged; Cracovia quedó actualizada como continuidad del mismo tiroteo, incorporando la investigación por terrorismo y la muerte posterior del sospechoso, sin nuevo episodio, imagen ni publicación. El aplicador 8a85179f482091f5ed2b7d3be69a9217b19270b0 sincronizó requests.json y telegram-manual-explained.json y vació editorial-queue. Barrera final: queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794206462514-manual cerrada 2/2 por convergencia JIT. Amaia quedó unchanged; Cracovia quedó actualizada como continuidad del mismo tiroteo, incorporando la investigación por terrorismo y la muerte posterior del sospechoso, sin nuevo episodio, imagen ni publicación. El aplicador 8a85179f482091f5ed2b7d3be69a9217b19270b0 sincronizó requests.json y telegram-manual-explained.json y vació editorial-queue. Barrera final: queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1794207300000-manual RUNNING desde chat. Trigger manual 75162ed5a7fd66a86a83e95bdf6a911d92f6e55f emitido a las 07:55. Relectura JIT actual: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos; todavía no se ha materializado un snapshot Top 30 posterior al trigger. Se mantiene la pasada abierta hasta la barrera final. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T03:17:00+01:00",
@@ -1016,6 +994,16 @@
         "phase": "investigating",
         "updated_at": "2026-11-09T07:43:00+01:00",
         "message": "Revisando novedades: Cracovia. Se comprueban desarrollos posteriores del mismo tiroteo con tratamiento factual y sin humor sobre víctimas."
+      }
+    },
+    {
+      "at": "2026-11-09T07:58:28+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-1794207300000-manual RUNNING desde chat. Trigger manual 75162ed5a7fd66a86a83e95bdf6a911d92f6e55f emitido a las 07:55. Relectura JIT actual: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos; todavía no se ha materializado un snapshot Top 30 posterior al trigger. Se mantiene la pasada abierta hasta la barrera final. ImageGen=0; publicaciones=0.",
+      "prior_runtime_observed": {
+        "run_id": "tr-1794206462514-manual",
+        "status": "DONE",
+        "updated_at": "2026-11-09T07:45:00+01:00"
       }
     }
   ],
