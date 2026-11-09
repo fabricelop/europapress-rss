@@ -1,0 +1,38 @@
+name: TTActualidad Top30 expanded image regression
+on:
+  push:
+    branches:
+      - fix/ttactualidad-manual-image-in-expanded-card-20261104
+    paths:
+      - 'pilot/ttactualidad-live/index.html'
+      - 'docs/ttactualidad/index.html'
+      - 'tests/test_ttactualidad_dual_images.cjs'
+      - '.github/workflows/ttactualidad-expanded-images-test.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate both HTML scripts and image rendering rules
+        run: node tests/test_ttactualidad_dual_images.cjs
+      - name: Verify no unexpected changed behavior in Top30 media rules
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          for name in ('pilot/ttactualidad-live/index.html','docs/ttactualidad/index.html'):
+              s=Path(name).read_text()
+              assert ("out.replaceChildren(detail,quickImage)" in s or
+                      "out.replaceChildren(detail)" in s)
+              assert "if(media!==body&&media.matches('.news-photo-set,img.pic'))content.append(media)" in s
+              assert ".card.trend-top .top30-expanded .pic{display:block" in s
+              assert "u.hostname==='raw.githubusercontent.com'" in s
+              assert 'function verifiedTrendSiteAI(x)' in s
+              assert '<figcaption>Imagen IA</figcaption>' in s
+              print(name, "MANUAL_TOP30_RENDER_OK")
+          PY
