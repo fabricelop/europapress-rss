@@ -99,8 +99,32 @@ def add_job(state, job, at):
     state[QUEUE].update(count=len(state[QUEUE]['items']), updated_at=at)
 
 
+def retire_nonred_automatic_reviews(state, now):
+    """Cancel only legacy automatic yellow/green review jobs, never manual work.
+
+    Older schedulers could enqueue non-red reviews. They must not be processed
+    after this policy change, including when the editorial runner has already
+    picked up a stale queue snapshot.
+    """
+    cancelled = set()
+    for row in state[REQUESTS]['requests']:
+        if (row.get('red_review_request') is True
+                and row.get('review_color') != 'roja'
+                and row.get('status') in ACTIVE):
+            row.update(status='review_cancelled_nonred', completed_at=now.isoformat())
+            cancelled.add(row.get('id'))
+    if cancelled:
+        state[QUEUE]['items'] = [
+            row for row in state[QUEUE]['items'] if row.get('id') not in cancelled
+        ]
+        state[QUEUE].update(count=len(state[QUEUE]['items']),
+                            updated_at=now.isoformat())
+        state[REQUESTS]['updated_at'] = now.isoformat()
+
+
 def schedule(state, now, grouping):
-    """Only schedule factual reviews; grouping is retired."""
+    """Only schedule RED (>24h) automatic reviews; manual work stays available."""
+    retire_nonred_automatic_reviews(state, now)
     if state[QUEUE].get('maintenance_pause'):
         return
     live = [x for x in state[REQUESTS]['requests'] if x.get('status') in ACTIVE]
@@ -182,10 +206,14 @@ def schedule_reviews(state, now, grouping):
         if not explained or now < explained or checked and now-checked < REVIEW_COOLDOWN:
             continue
         age = now-explained
-        priority, color = ((0, 'roja') if age > timedelta(hours=24) else
-                           (1, 'amarilla') if age >= timedelta(hours=12) else (2, 'verde'))
-        # Within each color prefer those least recently checked, then the
-        # oldest explanation, using IDs for deterministic ordering.
+        # Exactly match the iPhone's ageBand: green <12 h, yellow 12..24 h,
+        # red strictly >24 h. Importance/manual red badges do NOT qualify.
+        # Yellow and green can still be re-evaluated on an explicit user request
+        # via the existing manual editorial action.
+        if age <= timedelta(hours=24):
+            continue
+        priority, color = 0, 'roja'
+        # Within red prefer those least recently checked, then oldest.
         candidates.append((priority, checked is not None, checked or explained, explained, ident, name, row, color))
     for priority, _, _, _, ident, name, row, color in sorted(candidates, key=lambda x: x[:5]):
         if budget <= 0:
@@ -209,6 +237,15 @@ def apply_review(state, command, now, grouping):
     if not job:
         raise ValueError('Revisión de tendencia inexistente')
     if job.get('status') not in ACTIVE:
+        return state, False
+    if job.get('review_color') != 'roja':
+        # An old queued yellow/green automatic job must not change an episode
+        # even if an editorial runner already started it. Manual requests do
+        # not use red_review_request and are unaffected.
+        job.update(status='review_cancelled_nonred', completed_at=now.isoformat())
+        state[QUEUE]['items'] = [x for x in state[QUEUE]['items'] if x.get('id') != job['id']]
+        state[QUEUE].update(count=len(state[QUEUE]['items']), updated_at=now.isoformat())
+        state[REQUESTS]['updated_at'] = now.isoformat()
         return state, False
     snap = job['review_source']
     source = grouping.latest(state[MANUAL]['items']).get(snap['id'])
