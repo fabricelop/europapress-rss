@@ -93354,13 +93354,28 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "none",
-      "image_status": "none",
-      "image_choice": "none",
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
       "image_pending": false,
       "telegram_package_status": "pending",
       "fallback_image_strategy": "existing_web_image",
-      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+      "fallback_image": {
+        "url": "https://efe.com/wp-content/uploads/2026/11/huelga-general-preguntas.webp",
+        "source": "efe.com",
+        "source_url": "https://efe.com/economia/2026-11-09/huelga-general-preguntas-respuestas/",
+        "alt": "Imagen de archivo relacionada con CCOO y UGT",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://efe.com/wp-content/uploads/2026/11/huelga-general-preguntas.webp",
+        "source": "efe.com",
+        "source_url": "https://efe.com/economia/2026-11-09/huelga-general-preguntas-respuestas/",
+        "alt": "Imagen de archivo relacionada con CCOO y UGT",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "4eebdf9d035a",
@@ -94587,6 +94602,6 @@
       "decision_source": "listas_bulk_not_published"
     }
   ],
-  "updated_at": "2026-11-09T17:41:07.008888+00:00",
+  "updated_at": "2026-11-09T17:43:46.953381Z",
   "count": 1606
 }
