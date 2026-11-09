@@ -2989,11 +2989,59 @@
         }
       ],
       "message": "Pasada tr-20261109T2010-manual cerrada 22/22: 21 tendencias ordinarias explicadas y aplicadas en Listas/Top30; durante la barrera final entró una revisión de Broncano y se aplicó como actualización de continuidad en el mismo ID/revisión, conservando explained_at, publicación e imagen. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794251881833-manual",
+      "status": "DONE",
+      "started_at": "2026-11-09T20:18:01.833+01:00",
+      "finished_at": "2026-11-09T20:20:00+01:00",
+      "at": "2026-11-09T20:20:00+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 1,
+        "observed": 1,
+        "closed": 1,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 1,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 1,
+        "unchanged_reviews": 0,
+        "continuity_updates": 1,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 1
+      },
+      "processed_ids": [
+        "red-review-466caab57b75143bc60d"
+      ],
+      "converged_ids": [
+        "red-review-466caab57b75143bc60d"
+      ],
+      "outcomes": [
+        {
+          "id": "red-review-466caab57b75143bc60d",
+          "revision": 0,
+          "name": "Revisar novedades: Broncano",
+          "outcome": "continuity_update",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "apply_commit": "23651e5c5b309430060033a4b04858081875f672"
+        }
+      ],
+      "message": "Pasada tr-1794251881833-manual cerrada 1/1 por convergencia JIT. La revisión de Broncano fue aplicada como actualización de continuidad por el circuito oficial en 23651e5c5b309430060033a4b04858081875f672: misma ficha publicada, mismo explained_at e imagen, sin nueva entrada en Listas. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "current_item": null,
   "withdrawn_ids": [
     "ae7f066f3c94"
   ],
-  "last_finished_at": "2026-11-09T19:56:00+01:00"
+  "last_finished_at": "2026-11-09T20:20:00+01:00"
 }
