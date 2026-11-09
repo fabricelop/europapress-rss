@@ -7,16 +7,16 @@
   "previous_run_id": "tr-1794217200000-manual",
   "command_id": "tr-1794218100000-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-09T10:55:00+01:00",
-  "updated_at": "2026-11-09T10:55:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-09T10:56:00+01:00",
+  "finished_at": "2026-11-09T10:56:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -122,17 +122,27 @@
       "at": "2026-11-09T10:55:00+01:00",
       "phase": "preparing",
       "message": "Pasada manual iniciada desde chat. Relectura JIT de main antes de procesar o cerrar. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-09T10:55:45+01:00",
+      "phase": "verifying",
+      "message": "Barrera JIT: editorial-queue=0; mobile-decisions sin estados editoriales activos; búsqueda dirigida en main sin rewrite_pending/preparing/update/reexplain/anticipate/review_red."
+    },
+    {
+      "at": "2026-11-09T10:56:00+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-1794218100000-manual cerrada 0/0 contra el estado autoritativo de main. Relectura final: editorial-queue=0; mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos; búsqueda dirigida en main sin marcas activas. Top 30 capturado a las 10:50:52+01:00. ImageGen=0; publicaciones=0."
     }
   ],
   "last_started_at": "2026-11-09T10:55:00+01:00",
-  "last_completed_at": "2026-11-09T10:41:00+01:00",
+  "last_completed_at": "2026-11-09T10:56:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794217200000-manual",
+    "run_id": "tr-1794218100000-manual",
     "status": "DONE",
-    "started_at": "2026-11-09T10:40:00+01:00",
-    "finished_at": "2026-11-09T10:41:00+01:00",
-    "at": "2026-11-09T10:41:00+01:00",
+    "started_at": "2026-11-09T10:55:00+01:00",
+    "finished_at": "2026-11-09T10:56:00+01:00",
+    "at": "2026-11-09T10:56:00+01:00",
     "phase": "closing",
     "summary": {
       "attempted": 0,
@@ -159,9 +169,9 @@
     "processed_ids": [],
     "converged_ids": [],
     "outcomes": [],
-    "message": "Pasada tr-1794217200000-manual cerrada 0/0 contra el estado autoritativo de main. Relectura final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial pendiente que procesar. ImageGen=0; publicaciones=0."
+    "message": "Pasada tr-1794218100000-manual cerrada 0/0 contra el estado autoritativo de main. Relectura final: editorial-queue=0; mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos; búsqueda dirigida en main sin marcas activas. Top 30 capturado a las 10:50:52+01:00. ImageGen=0; publicaciones=0."
   },
-  "message": "Pasada manual iniciada desde chat. Se relee main y se aplica barrera JIT; ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1794218100000-manual cerrada 0/0 contra el estado autoritativo de main. Relectura final: editorial-queue=0; mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos; búsqueda dirigida en main sin marcas activas. Top 30 capturado a las 10:50:52+01:00. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T03:17:00+01:00",
