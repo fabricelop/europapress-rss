@@ -39,3 +39,5 @@ jobs:
         run: python .github/scripts/test_ttendencias_top30_queue.py
       - name: Historial y movimientos de ranking
         run: python -m unittest discover -s tests -p 'test_site_top30_movement.py' -v
+      - name: TTActualidad top30 sin herencia de grupos
+        run: node pilot/ttactualidad-live/test_top30.mjs
