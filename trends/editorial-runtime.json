@@ -7,16 +7,16 @@
   "previous_run_id": "tr-1794194420305-manual",
   "command_id": "tr-1794194700000-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-09T04:25:00+01:00",
-  "updated_at": "2026-11-09T04:25:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-09T04:26:00+01:00",
+  "finished_at": "2026-11-09T04:26:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -48,27 +48,27 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "preparing",
+  "activity": "closing",
   "last_started_at": "2026-11-09T04:25:00+01:00",
-  "last_completed_at": "2026-11-09T04:22:00+01:00",
+  "last_completed_at": "2026-11-09T04:26:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794194420305-manual",
+    "run_id": "tr-1794194700000-manual",
     "status": "DONE",
-    "started_at": "2026-11-09T04:20:20.305+01:00",
-    "finished_at": "2026-11-09T04:22:00+01:00",
-    "at": "2026-11-09T04:22:00+01:00",
+    "started_at": "2026-11-09T04:25:00+01:00",
+    "finished_at": "2026-11-09T04:26:00+01:00",
+    "at": "2026-11-09T04:26:00+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 2,
-      "observed": 2,
-      "closed": 2,
+      "attempted": 0,
+      "observed": 0,
+      "closed": 0,
       "explained": 0,
       "problematic": 0,
       "updates": 0,
       "review_completed_no_distinct_event": 0,
-      "maintenance_reviews": 2,
-      "unchanged_reviews": 2,
+      "maintenance_reviews": 0,
+      "unchanged_reviews": 0,
       "continuity_updates": 0,
       "distinct_updates": 0,
       "stale_reviews": 0,
@@ -79,731 +79,14 @@
       "image_outbox_created": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 2
+      "concurrent_convergence": 0
     },
-    "processed_ids": [
-      "red-review-00bc0b7be057792bdb0c",
-      "red-review-07cc7fe503c62c1d07b7"
-    ],
-    "outcomes": [
-      {
-        "id": "red-review-00bc0b7be057792bdb0c",
-        "revision": 0,
-        "name": "Revisar novedades: Jong",
-        "outcome": "unchanged",
-        "applied": true,
-        "via": "concurrent_convergence",
-        "workflow_run_id": 42555929053
-      },
-      {
-        "id": "red-review-07cc7fe503c62c1d07b7",
-        "revision": 0,
-        "name": "Revisar novedades: Cancelo",
-        "outcome": "unchanged",
-        "applied": true,
-        "via": "concurrent_convergence",
-        "workflow_run_id": 42555929053
-      }
-    ],
-    "message": "Pasada tr-1794194420305-manual cerrada 2/2 por convergencia JIT: Jong y Cancelo quedaron review_completed/unchanged por la ejecución concurrente, sincronizados en requests.json y telegram-manual-explained.json sin cambiar texto ni explained_at. Barrera final main: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
+    "processed_ids": [],
+    "outcomes": [],
+    "message": "Pasada tr-1794194700000-manual cerrada 0/0: tras releer main, editorial-queue=0 y mobile-decisions no contiene preparing/update/rewrite_pending/reexplain activos. No había trabajos editoriales ni revisiones pendientes que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Iniciando pasada editorial; releyendo estado y cola autoritativa de main.",
+  "message": "Pasada tr-1794194700000-manual cerrada 0/0: tras releer main, editorial-queue=0 y mobile-decisions no contiene preparing/update/rewrite_pending/reexplain activos. No había trabajos editoriales ni revisiones pendientes que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
-    {
-      "at": "2026-11-08T23:56:30+01:00",
-      "phase": "investigating",
-      "trend_id": "e714e4de2209",
-      "title": "Pantoja",
-      "message": "Contexto actual verificado: cumpleaños de Isa Pantoja y choque público con Rosa Benito por Asraf/Supervivientes."
-    },
-    {
-      "at": "2026-11-08T23:56:30+01:00",
-      "phase": "investigating",
-      "trend_id": "c5fb8b304b6e",
-      "title": "Jurado",
-      "message": "Dos focos actuales verificados; causalidad única no confirmada, se redacta con incertidumbre explícita."
-    },
-    {
-      "at": "2026-11-08T23:56:30+01:00",
-      "phase": "investigating",
-      "trend_id": "312f7bce521d",
-      "title": "Liak",
-      "message": "Detonante verificado: episodio Las Campanadrags de Drag Race España estrenado hoy."
-    },
-    {
-      "at": "2026-11-08T23:56:30+01:00",
-      "phase": "investigating",
-      "trend_id": "9731285d0638",
-      "title": "Fermín",
-      "message": "Reelaboración desde cero: doblete de Fermín en el 1-2 del Barça al Atlético verificado."
-    },
-    {
-      "at": "2026-11-08T23:56:30+01:00",
-      "phase": "persisting",
-      "trend_id": "9e1649b8ed38",
-      "title": "#SVSemifinal",
-      "message": "Lote editorial ordenado persistido en editorial-outbox y workflow 42532478303 en ejecución. No se ha generado ninguna imagen."
-    },
-    {
-      "at": "2026-11-08T23:57:00+01:00",
-      "phase": "preparing",
-      "message": "Pasada tr-1794178498903-manual iniciada. Cola JIT=2 review_red; se procesan del más antiguo al más reciente con revalidación ID/revisión. ImageGen=0; publicaciones=0."
-    },
-    {
-      "run_id": "tr-1794178498903-manual",
-      "status": "DONE",
-      "at": "2026-11-08T23:58:00+01:00",
-      "phase": "closing",
-      "message": "Pasada tr-1794178498903-manual cerrada 2/2. «Levante 0-2 Atlético» quedó unchanged; «Simeone» se verificó como episodio distinto del Atlético-Barça del 8/11 y quedó aplicado en trend-update-a6ba2247d4ace88428d6. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update ni rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-09T00:15:00+01:00",
-      "phase": "preparing",
-      "trend_id": "a6852f36db22",
-      "title": "Jong",
-      "message": "Pasada tr-autoguard-1794179692 RUNNING. Cola inicial JIT=1: Jong r0 (puesto 8). Se revalida ID/revisión antes de investigar y persistir. ImageGen=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-09T00:16:30+01:00",
-      "phase": "investigating",
-      "trend_id": "a6852f36db22",
-      "title": "Jong",
-      "message": "Jong r0 revalidado JIT. Fuentes actuales sitúan a Frenkie de Jong en el Atlético-Barça: entró al descanso por Brian Fariñas con 1-1 y el Barça ganó 1-2. Se contrasta el detonante antes de redactar."
-    },
-    {
-      "at": "2026-11-09T00:18:30+01:00",
-      "phase": "persisting",
-      "trend_id": "a6852f36db22",
-      "title": "Jong",
-      "message": "Resultado de Jong r0 persistido en editorial-outbox tras revalidación JIT. Aplicador oficial disparado por push; se verifica materialización en requests y telegram-manual-explained. ImageGen=0."
-    },
-    {
-      "at": "2026-11-09T00:19:10+01:00",
-      "phase": "verifying",
-      "trend_id": "a6852f36db22",
-      "title": "Jong",
-      "message": "Aplicador oficial completado con éxito (workflow 42534472747, commit 7f078e8d396fd57ed7af965ba46bdadfcdce2d6d). Jong r0 figura EXPLICADA y la cola está a 0; mobile-decisions no contiene reelaboraciones activas."
-    },
-    {
-      "at": "2026-11-09T00:19:30+01:00",
-      "phase": "closing",
-      "message": "Cierre 1/1: Jong r0 aplicado. Cola=0, sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-09T00:20:00+01:00",
-      "phase": "preparing",
-      "message": "La barrera final detectó 2 review_red nuevos: Gerard Martín y Karmine Corp-Movistar KOI en Worlds 2026. Se reabre la pasada y se procesan JIT tras Jong r0 ya cerrado. ImageGen=0."
-    },
-    {
-      "at": "2026-11-09T00:20:30+01:00",
-      "phase": "preparing",
-      "message": "Pasada manual iniciada con 2 review_red: Gerard Martín y Karmine Corp-Movistar KOI en Worlds 2026. Revalidación JIT de ID/revisión antes de cada resultado. ImageGen=0; publicaciones=0."
-    },
-    {
-      "run_id": "tr-autoguard-1794179692",
-      "status": "DONE",
-      "started_at": "2026-11-09T00:15:00+01:00",
-      "finished_at": "2026-11-09T00:23:30+01:00",
-      "superseded_by": "tr-1794179931321-manual",
-      "summary": {
-        "attempted": 3,
-        "observed": 3,
-        "closed": 3,
-        "explained": 1,
-        "problematic": 0,
-        "updates": 1,
-        "continuity_updates": 0,
-        "distinct_updates": 1,
-        "unchanged_reviews": 0,
-        "stale_reviews": 1,
-        "unverified_reviews": 0,
-        "queue_remaining": 0,
-        "rewrite_pending_remaining": 0,
-        "imagegen_calls": 0,
-        "image_outbox_created": 0,
-        "publications": 0,
-        "incidents": 0,
-        "concurrent_convergence": 2
-      },
-      "processed_ids": [
-        "a6852f36db22",
-        "red-review-48eaf1fc122194897b46",
-        "red-review-1e8c87c9286d54fba68d"
-      ],
-      "outcomes": [
-        {
-          "id": "a6852f36db22",
-          "revision": 0,
-          "name": "Jong",
-          "outcome": "explained",
-          "apply_commit": "7f078e8d396fd57ed7af965ba46bdadfcdce2d6d"
-        },
-        {
-          "id": "red-review-48eaf1fc122194897b46",
-          "revision": 0,
-          "name": "Revisar novedades: Gerard Martín",
-          "outcome": "stale",
-          "applied": true,
-          "apply_commit": "dfde357c95d6e3d6e88e89635c30858da057bd16",
-          "reason": "Barrera JIT del aplicador: la revisión se retiró sin modificar ni resucitar la ficha fuente."
-        },
-        {
-          "id": "red-review-1e8c87c9286d54fba68d",
-          "revision": 0,
-          "name": "Revisar novedades: Karmine Corp-Movistar KOI en Worlds 2026",
-          "outcome": "distinct_update",
-          "applied": true,
-          "created_id": "trend-update-b886568026ba54b2c5a4",
-          "apply_commit": "dfde357c95d6e3d6e88e89635c30858da057bd16"
-        }
-      ],
-      "message": "Pasada tr-autoguard-1794179692 completada 3/3. Jong r0 explicado; durante la barrera entraron dos review_red: Gerard Martín convergió stale y Myrwn quedó como episodio distinto. La pasada manual posterior tomó la telemetría canónica durante el cierre. ImageGen=0; publicaciones=0."
-    },
-    {
-      "run_id": "tr-1794179931321-manual",
-      "status": "DONE",
-      "at": "2026-11-09T00:23:30+01:00",
-      "phase": "closing",
-      "message": "Pasada tr-1794179931321-manual cerrada 2/2 por convergencia JIT: Gerard Martín quedó stale sin resucitar la ficha antigua; Myrwn se materializó como episodio distinto de mercado en trend-update-b886568026ba54b2c5a4. Barrera final observada: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-09T00:27:00+01:00",
-      "phase": "preparing",
-      "message": "Pasada tr-1794180300000-manual iniciada. Cola JIT inicial=0. Se aplica barrera ID/revisión y cierre solo tras releer main. ImageGen=0; publicaciones=0."
-    },
-    {
-      "run_id": "tr-1794180300000-manual",
-      "status": "DONE",
-      "at": "2026-11-09T00:29:00+01:00",
-      "phase": "closing",
-      "message": "Pasada tr-1794180300000-manual cerrada 0/0 tras barrera final JIT en main: editorial-queue=0 y requests, telegram-manual-explained y mobile-decisions sin preparing/update ni rewrite_pending/reexplain activos. Se verificaron los últimos resultados de mantenimiento ya aplicados; no se resucitó trabajo terminal. ImageGen=0; image-outbox editorial=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-09T00:39:00+01:00",
-      "phase": "preparing",
-      "trend_id": "bc91860c9bb9",
-      "title": "Atleti",
-      "message": "Pasada tr-1794181125518-manual RUNNING. Cola inicial JIT=1: Atleti r0, puesto 3, reelaboración manual desde cero. Se revalida ID/revisión antes de investigar y persistir. ImageGen=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-09T00:42:00+01:00",
-      "phase": "investigating",
-      "trend_id": "bc91860c9bb9",
-      "title": "Atleti",
-      "message": "Atleti r0 revalidado JIT. Dos fuentes actuales confirman Atlético 1-2 Barcelona el 8/11/2026 en el Metropolitano: Giuliano Simeone abrió el marcador y Fermín remontó con dos goles. Se redacta texto nuevo; ImageGen=0."
-    },
-    {
-      "at": "2026-11-09T00:44:00+01:00",
-      "phase": "closing",
-      "message": "Atleti r0 aplicado y verificado por convergencia en 3f62916d534485e357b13b848f09435380066c26. Barrera final: editorial-queue=0; outbox bc91860c9bb9-r0 ausente. ImageGen=0; publicaciones=0."
-    },
-    {
-      "run_id": "tr-1794181125518-manual",
-      "status": "DONE",
-      "at": "2026-11-09T00:45:00+01:00",
-      "phase": "closing",
-      "message": "Pasada tr-1794181125518-manual cerrada 1/1. Atleti r0 reelaborado desde cero y aplicado en requests + telegram-manual-explained (commit 3f62916d534485e357b13b848f09435380066c26). El aplicador posterior confirmó que la revisión ya estaba explained y retiró el outbox residual. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update ni rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-09T00:43:30+01:00",
-      "phase": "preparing",
-      "message": "Pasada tr-1794181380662-manual iniciada con 2 review_red en preparing: #DragRaceEs y Julián Álvarez. Se procesan por orden de cola con validación JIT de ID/revisión. ImageGen=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-09T00:44:30+01:00",
-      "phase": "investigating",
-      "trend_id": "red-review-cad0a5180831ea2c7cbf",
-      "title": "Revisar novedades: #DragRaceEs",
-      "message": "1/2 #DragRaceEs: episodio 7 «Las Campanadrags» del 8/11 verificado como acontecimiento posterior e independiente respecto al episodio 6 del 1/11; preparando resultado material con barrera JIT."
-    },
-    {
-      "at": "2026-11-09T00:45:30+01:00",
-      "phase": "investigating",
-      "trend_id": "red-review-68306421b6f4570feebe",
-      "title": "Revisar novedades: Julián Álvarez",
-      "message": "2/2 Julián Álvarez: las comprobaciones posteriores mantienen el mismo Atlético-Barça 1-2, con asistencia a Giuliano y ocasiones falladas; no hay episodio posterior independiente. Resultado unchanged preparado tras barrera JIT."
-    },
-    {
-      "at": "2026-11-09T00:46:10+01:00",
-      "phase": "closing",
-      "message": "Pasada tr-1794181380662-manual cerrada 2/2. #DragRaceEs: episodio 7 «Las Campanadrags» verificado como episodio distinto y aplicado como trend-update-f02baf4f1a564be2eac8. Julián Álvarez: revisión unchanged, sin episodio posterior independiente. Aplicación conjunta commit 97bcc54fedcb15c46b06149af7f28a0ed92f7a6b. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update ni rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-09T00:53:20+01:00",
-      "phase": "preparing",
-      "message": "Pasada tr-1794181995232-manual iniciada con 3 reelaboraciones preparing: Sorloth r0, Cancelo r0 y Flick r0. Orden por antigüedad, barrera JIT ID/revisión antes de cada investigación y persistencia. ImageGen=0; publicaciones=0."
-    },
-    {
-      "run_id": "tr-1794181995232-manual",
-      "status": "DONE_WITH_INCIDENTS",
-      "at": "2026-11-09T01:00:00+01:00",
-      "phase": "closing",
-      "message": "Pasada tr-1794181995232-manual cerrada 3/3: Sorloth, Cancelo y Flick reelaborados desde cero y aplicados. Barrera final en main: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. Incidencia resuelta: el outbox heredado llevaba alternatives:[] y el aplicador exige 3; Flick fue normalizado y el workflow de respaldo terminó success. ImageGen=0; image-outbox editorial=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-09T01:01:00+01:00",
-      "phase": "preparing",
-      "message": "Pasada tr-1794182383396-manual iniciada con 2 review_red preparing: Levante 0-2 Atlético y #SVSemifinal. Orden de cola y barrera JIT ID/revisión antes de cada resultado. ImageGen=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-09T01:03:00+01:00",
-      "phase": "verifying",
-      "trend_id": "red-review-5153f5115507a82f8c43",
-      "title": "Revisar novedades: Levante 0-2 Atlético",
-      "message": "1/2 Levante 0-2 Atlético: revisión JIT válida. El Atlético-Barça del 8/11 es un episodio distinto y no cambia el motivo histórico del grupo; resultado unchanged materializado en maintenance-outbox. ImageGen=0."
-    },
-    {
-      "at": "2026-11-09T01:05:00+01:00",
-      "phase": "verifying",
-      "trend_id": "red-review-a3afa5c9f23be20dc00c",
-      "title": "Revisar novedades: #SVSemifinal",
-      "message": "2/2 #SVSemifinal: revisión JIT válida. No se verifica todavía una resolución sustancial posterior que cambie la explicación; resultado unchanged materializado en maintenance-outbox. ImageGen=0."
-    },
-    {
-      "run_id": "tr-1794182383396-manual",
-      "status": "DONE",
-      "at": "2026-11-09T01:04:32+01:00",
-      "phase": "closing",
-      "message": "Pasada tr-1794182383396-manual cerrada 2/2: Levante 0-2 Atlético quedó stale por barrera JIT al estar superado por una explicación posterior; #SVSemifinal quedó unchanged, sin novedad sustancial verificada. Aplicación oficial acf4f789f79fb1f6341f8dfc21bc0ca207f77c5b. Barrera final en main: editorial-queue=0 y mobile-decisions sin preparing/update ni rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-09T01:12:00+01:00",
-      "phase": "preparing",
-      "message": "Pasada tr-1794182517667-manual RUNNING. Cola inicial autoritativa=0; se revisan preparing/update y rewrite_pending/reexplain antes del cierre. ImageGen=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-09T01:14:30+01:00",
-      "phase": "preparing",
-      "trend_id": "07bdc8e364a3",
-      "title": "Barça",
-      "message": "Pasada tr-1794183217485-manual RUNNING. Cola JIT=2: Barça r0 y Asraf r0. Se revalida ID/revisión antes de investigar y persistir. ImageGen=0; publicaciones=0."
-    },
-    {
-      "run_id": "tr-1794183217485-manual",
-      "status": "DONE",
-      "at": "2026-11-09T01:18:00+01:00",
-      "phase": "closing",
-      "message": "Pasada tr-1794183217485-manual cerrada 2/2 por convergencia JIT. Barça r0 y Asraf r0 figuran explained en requests y telegram-manual-explained con texto/remate sincronizados; editorial-queue=0 y no quedan preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-09T01:18:30+01:00",
-      "phase": "preparing",
-      "trend_id": "daa31c3c4084",
-      "title": "Barrios",
-      "message": "Pasada tr-1794183437001-manual RUNNING. Cola JIT=1: Barrios r0, puesto 17, reelaboración manual desde cero. Se revalida ID/revisión antes de investigar y persistir. ImageGen=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-09T01:19:03+01:00",
-      "phase": "investigating",
-      "trend_id": "daa31c3c4084",
-      "title": "Barrios",
-      "message": "Barrios r0 revalidado JIT. Fuentes actuales confirman el Atlético-Barça del 8/11/2026: Pablo Barrios fue titular junto a Koke y salió en el 78' por Jonathan David con 1-2; AS señala que su sustitución dañó al equipo. Se redacta texto nuevo. ImageGen=0."
-    },
-    {
-      "at": "2026-11-09T01:19:03+01:00",
-      "phase": "persisting",
-      "trend_id": "daa31c3c4084",
-      "title": "Barrios",
-      "message": "Barrios r0 persistido en editorial-outbox tras revalidación JIT. El aplicador oficial por push debe materializar requests + telegram-manual-explained y retirar la revisión de la cola. ImageGen=0."
-    },
-    {
-      "at": "2026-11-09T01:20:33+01:00",
-      "phase": "preparing",
-      "message": "Barrios r0 ya aplicado. La barrera final incorporó 2 review_red nuevos; se procesan en orden JIT: Levante 0-2 Atlético y #SalvadosEmilioDelgado. ImageGen=0."
-    },
-    {
-      "at": "2026-11-09T01:21:30+01:00",
-      "phase": "preparing",
-      "message": "Pasada tr-1794183629966-manual RUNNING. Cola JIT=2 review_red: Levante 0-2 Atlético y #SalvadosEmilioDelgado. Orden por antigüedad y revalidación ID/revisión antes de cada resultado. ImageGen=0; publicaciones=0."
-    },
-    {
-      "run_id": "tr-1794183629966-manual",
-      "status": "DONE",
-      "at": "2026-11-09T01:23:30+01:00",
-      "phase": "closing",
-      "message": "Pasada tr-1794183629966-manual cerrada 2/2 por convergencia JIT. Levante 0-2 Atlético y #SalvadosEmilioDelgado quedaron unchanged y aplicados por la ejecución concurrente tr-1794183437001-manual; commit de aplicación 1cf9ed791231e95a8511cb5f7d1ed66dcabd76ae. Barrera final main: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
-    },
-    {
-      "run_id": "tr-1794183437001-manual",
-      "status": "DONE",
-      "started_at": "2026-11-09T01:18:30+01:00",
-      "finished_at": "2026-11-09T01:23:04+01:00",
-      "at": "2026-11-09T01:23:04+01:00",
-      "phase": "closing",
-      "summary": {
-        "attempted": 3,
-        "observed": 3,
-        "closed": 3,
-        "explained": 1,
-        "problematic": 0,
-        "updates": 0,
-        "continuity_updates": 0,
-        "distinct_updates": 0,
-        "unchanged_reviews": 2,
-        "stale_reviews": 0,
-        "unverified_reviews": 0,
-        "queue_remaining": 0,
-        "rewrite_pending_remaining": 0,
-        "imagegen_calls": 0,
-        "image_outbox_created": 0,
-        "publications": 0,
-        "incidents": 0,
-        "concurrent_convergence": 0
-      },
-      "processed_ids": [
-        "daa31c3c4084",
-        "red-review-7ac1bd151b9efc3131ed",
-        "red-review-23a49be63b26309c4fd1"
-      ],
-      "outcomes": [
-        {
-          "id": "daa31c3c4084",
-          "revision": 0,
-          "name": "Barrios",
-          "outcome": "explained",
-          "applied": true,
-          "apply_commit": "df8914a57815aea6c2f464e91acf4e515c96f543"
-        },
-        {
-          "id": "red-review-7ac1bd151b9efc3131ed",
-          "revision": 0,
-          "name": "Revisar novedades: Levante 0-2 Atlético",
-          "outcome": "unchanged",
-          "applied": true,
-          "apply_commit": "1cf9ed791231e95a8511cb5f7d1ed66dcabd76ae"
-        },
-        {
-          "id": "red-review-23a49be63b26309c4fd1",
-          "revision": 0,
-          "name": "Revisar novedades: #SalvadosEmilioDelgado",
-          "outcome": "unchanged",
-          "applied": true,
-          "apply_commit": "1cf9ed791231e95a8511cb5f7d1ed66dcabd76ae"
-        }
-      ],
-      "message": "Pasada tr-1794183437001-manual cerrada 3/3. Barrios r0 fue reelaborado desde cero y aplicado como explained; durante la barrera final entraron dos review_red, Levante 0-2 Atlético y #SalvadosEmilioDelgado, ambos cerrados unchanged. Barrera final main: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. La ejecución concurrente tr-1794183629966-manual convergió sobre estos dos resultados sin duplicarlos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-09T01:25:00+01:00",
-      "phase": "preparing",
-      "message": "Pasada tr-1794183900000-manual RUNNING desde chat. Cola JIT inicial=0; se revalidan editorial-queue, mobile-decisions y requests antes del cierre. ImageGen=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-09T01:26:00+01:00",
-      "phase": "closing",
-      "message": "Pasada tr-1794183900000-manual cerrada 0/0 tras barrera JIT en main: editorial-queue=0; mobile-decisions sin preparing/update, anticipate ni review_red activos; búsqueda en requests sin rewrite_pending/reexplain activos. No se inventó trabajo. ImageGen=0; image-outbox editorial=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-09T01:55:00+01:00",
-      "phase": "verifying",
-      "trend_id": "18df282228a9",
-      "title": "Metropolitano",
-      "message": "Convergencia JIT: 18df282228a9/r0 ya aparece explained en requests y telegram-manual-explained tras cierre de la pasada tr-1794185100000-manual. Verificando fuentes y ausencia de trabajo activo antes del cierre."
-    },
-    {
-      "at": "2026-11-09T01:56:00+01:00",
-      "phase": "closing",
-      "message": "Cierre 1/1 por convergencia JIT: 18df282228a9/r0 sincronizado exactamente entre requests y telegram-manual-explained; hechos verificados en Atlético de Madrid y Mundo Deportivo. editorial-queue=0; requests/mobile-decisions sin preparing/update ni rewrite_pending/reexplain. ImageGen=0; publicaciones=0."
-    },
-    {
-      "run_id": "tr-1794185700000-manual",
-      "status": "DONE",
-      "started_at": "2026-11-09T01:55:00+01:00",
-      "finished_at": "2026-11-09T02:00:00+01:00",
-      "summary": {
-        "attempted": 0,
-        "observed": 0,
-        "closed": 0,
-        "explained": 0,
-        "problematic": 0,
-        "updates": 0,
-        "continuity_updates": 0,
-        "distinct_updates": 0,
-        "unchanged_reviews": 0,
-        "stale_reviews": 0,
-        "unverified_reviews": 0,
-        "queue_remaining": 0,
-        "rewrite_pending_remaining": 0,
-        "imagegen_calls": 0,
-        "image_outbox_created": 0,
-        "publications": 0,
-        "incidents": 0,
-        "concurrent_convergence": 0
-      },
-      "message": "Pasada tr-1794185700000-manual cerrada 0/0 tras refresco manual completo. Workflow 42542851760 terminó success y actualizó el Top 30 a 2026-11-09T01:58:38+01:00. Barrera JIT final: editorial-queue=0 y mobile-decisions sin preparing/update ni rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-09T02:11:00+01:00",
-      "phase": "preparing",
-      "message": "Pasada tr-1794186660000-manual RUNNING. Cola inicial JIT=5: Atleti, Victor, De Jong, #ElChiringuitoenCuatro y Venenito. Procesamiento individual sin agrupaciones; ImageGen=0; publicaciones=0."
-    },
-    {
-      "run_id": "tr-1794186660000-manual",
-      "status": "DONE",
-      "at": "2026-11-09T02:15:00+01:00",
-      "phase": "closing",
-      "summary": {
-        "attempted": 5,
-        "observed": 5,
-        "closed": 5,
-        "explained": 5,
-        "problematic": 0,
-        "updates": 0,
-        "continuity_updates": 0,
-        "distinct_updates": 0,
-        "unchanged_reviews": 0,
-        "stale_reviews": 0,
-        "unverified_reviews": 0,
-        "queue_remaining": 0,
-        "rewrite_pending_remaining": 0,
-        "imagegen_calls": 0,
-        "image_outbox_created": 0,
-        "publications": 0,
-        "incidents": 0,
-        "concurrent_convergence": 0
-      },
-      "outcomes": [
-        {
-          "id": "495c3ee47d45",
-          "revision": 0,
-          "name": "Atleti",
-          "outcome": "explained",
-          "applied": true,
-          "apply_commit": "52ec698af0448f0f306381a097a4790faa4ab5f8"
-        },
-        {
-          "id": "83d6c8f7b73e",
-          "revision": 0,
-          "name": "Victor",
-          "outcome": "explained",
-          "applied": true,
-          "apply_commit": "52ec698af0448f0f306381a097a4790faa4ab5f8"
-        },
-        {
-          "id": "9a8107a5eb11",
-          "revision": 0,
-          "name": "De Jong",
-          "outcome": "explained",
-          "applied": true,
-          "apply_commit": "52ec698af0448f0f306381a097a4790faa4ab5f8"
-        },
-        {
-          "id": "023e69ba589c",
-          "revision": 0,
-          "name": "#ElChiringuitoenCuatro",
-          "outcome": "explained",
-          "applied": true,
-          "apply_commit": "52ec698af0448f0f306381a097a4790faa4ab5f8"
-        },
-        {
-          "id": "26f1d7597d71",
-          "revision": 0,
-          "name": "Venenito",
-          "outcome": "explained_cause_unconfirmed",
-          "applied": true,
-          "apply_commit": "52ec698af0448f0f306381a097a4790faa4ab5f8"
-        }
-      ],
-      "message": "Pasada tr-1794186660000-manual cerrada 5/5. Atleti, Victor, De Jong y #ElChiringuitoenCuatro explicados; Venenito cerrado con causa no confirmada para no inventar el detonante. Aplicación oficial confirmada en 52ec698af0448f0f306381a097a4790faa4ab5f8. Barrera final: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-09T02:15:00+01:00",
-      "phase": "preparing",
-      "trend_id": "red-review-2ecfb2b0dcb9b1e31b8b",
-      "title": "Revisar novedades: Pantoja",
-      "message": "Pasada tr-1794186889104-manual RUNNING. Cola inicial JIT=2 review_red: Pantoja y Jurado. Orden por antigüedad y validación ID/revisión antes de cada investigación. ImageGen=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-09T02:16:00+01:00",
-      "phase": "verifying",
-      "message": "Barrera final reabierta: entraron 2 review_red nuevos, Pantoja y Jurado. Se procesan JIT tras los cinco cierres ordinarios ya aplicados; ImageGen=0; publicaciones=0."
-    },
-    {
-      "run_id": "tr-1794186660000-manual",
-      "status": "DONE",
-      "at": "2026-11-09T02:18:00+01:00",
-      "phase": "closing",
-      "summary": {
-        "attempted": 7,
-        "observed": 7,
-        "closed": 7,
-        "explained": 5,
-        "problematic": 0,
-        "updates": 1,
-        "continuity_updates": 1,
-        "distinct_updates": 0,
-        "unchanged_reviews": 1,
-        "stale_reviews": 0,
-        "unverified_reviews": 0,
-        "queue_remaining": 0,
-        "rewrite_pending_remaining": 0,
-        "imagegen_calls": 0,
-        "image_outbox_created": 0,
-        "publications": 0,
-        "incidents": 0,
-        "concurrent_convergence": 0
-      },
-      "outcomes": [
-        {
-          "id": "495c3ee47d45",
-          "revision": 0,
-          "name": "Atleti",
-          "outcome": "explained",
-          "applied": true,
-          "apply_commit": "52ec698af0448f0f306381a097a4790faa4ab5f8"
-        },
-        {
-          "id": "83d6c8f7b73e",
-          "revision": 0,
-          "name": "Victor",
-          "outcome": "explained",
-          "applied": true,
-          "apply_commit": "52ec698af0448f0f306381a097a4790faa4ab5f8"
-        },
-        {
-          "id": "9a8107a5eb11",
-          "revision": 0,
-          "name": "De Jong",
-          "outcome": "explained",
-          "applied": true,
-          "apply_commit": "52ec698af0448f0f306381a097a4790faa4ab5f8"
-        },
-        {
-          "id": "023e69ba589c",
-          "revision": 0,
-          "name": "#ElChiringuitoenCuatro",
-          "outcome": "explained",
-          "applied": true,
-          "apply_commit": "52ec698af0448f0f306381a097a4790faa4ab5f8"
-        },
-        {
-          "id": "26f1d7597d71",
-          "revision": 0,
-          "name": "Venenito",
-          "outcome": "explained_cause_unconfirmed",
-          "applied": true,
-          "apply_commit": "52ec698af0448f0f306381a097a4790faa4ab5f8"
-        },
-        {
-          "id": "red-review-2ecfb2b0dcb9b1e31b8b",
-          "revision": 0,
-          "name": "Revisar novedades: Pantoja",
-          "outcome": "continuity_update",
-          "applied": true,
-          "apply_commit": "3fc646975735c1b414711766c577c63442860cad"
-        },
-        {
-          "id": "red-review-7ef05919eabf205b079e",
-          "revision": 0,
-          "name": "Revisar novedades: Jurado",
-          "outcome": "unchanged",
-          "applied": true,
-          "apply_commit": "3fc646975735c1b414711766c577c63442860cad"
-        }
-      ],
-      "message": "Pasada tr-1794186660000-manual cerrada 7/7. Cinco explicaciones ordinarias aplicadas; Pantoja actualizada como continuidad del mismo episodio y Jurado revisada sin cambios. Aplicación editorial 52ec698af0448f0f306381a097a4790faa4ab5f8 y mantenimiento 3fc646975735c1b414711766c577c63442860cad. Barrera final: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
-    },
-    {
-      "run_id": "tr-1794186889104-manual",
-      "status": "DONE",
-      "started_at": "2026-11-09T02:15:00+01:00",
-      "finished_at": "2026-11-09T02:19:00+01:00",
-      "at": "2026-11-09T02:19:00+01:00",
-      "phase": "closing",
-      "summary": {
-        "attempted": 2,
-        "observed": 2,
-        "closed": 2,
-        "explained": 0,
-        "problematic": 0,
-        "updates": 1,
-        "continuity_updates": 1,
-        "distinct_updates": 0,
-        "unchanged_reviews": 1,
-        "stale_reviews": 0,
-        "unverified_reviews": 0,
-        "queue_remaining": 0,
-        "rewrite_pending_remaining": 0,
-        "imagegen_calls": 0,
-        "image_outbox_created": 0,
-        "publications": 0,
-        "incidents": 0,
-        "concurrent_convergence": 2
-      },
-      "outcomes": [
-        {
-          "id": "red-review-2ecfb2b0dcb9b1e31b8b",
-          "revision": 0,
-          "name": "Revisar novedades: Pantoja",
-          "outcome": "continuity_update",
-          "applied": true,
-          "via": "concurrent_convergence",
-          "apply_commit": "3fc646975735c1b414711766c577c63442860cad"
-        },
-        {
-          "id": "red-review-7ef05919eabf205b079e",
-          "revision": 0,
-          "name": "Revisar novedades: Jurado",
-          "outcome": "unchanged",
-          "applied": true,
-          "via": "concurrent_convergence",
-          "apply_commit": "3fc646975735c1b414711766c577c63442860cad"
-        }
-      ],
-      "message": "Pasada tr-1794186889104-manual cerrada 2/2 por convergencia JIT. Pantoja: actualización de continuidad del mismo episodio tras la semifinal (Rosa Benito expulsada, Asraf finalista e Isa acepta viajar a Honduras). Jurado: unchanged; siguen coexistiendo los dos focos ya documentados sin novedad que justifique reescritura. Aplicación oficial success en 3fc646975735c1b414711766c577c63442860cad. Barrera final: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-09T02:25:00+01:00",
-      "phase": "preparing",
-      "message": "Pasada tr-1794187489104-manual iniciada desde chat. Cola inicial observada vacía; se lanza refresco manual del Top 30 antes de la barrera JIT. ImageGen=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-09T02:31:27+01:00",
-      "phase": "closing",
-      "message": "Pasada tr-1794187489104-manual cerrada 0/0 tras refresco manual real. Workflow TTendencias 42545539983 completado success; recent.json capturado 2026-11-09T02:30:47+01:00 y editorial-queue actualizado 2026-11-09T02:30:55+01:00 con count=0. Barrera final: mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
-    },
-    {
-      "run_id": "tr-1794190200000-manual",
-      "status": "RUNNING",
-      "at": "2026-11-09T03:11:30+01:00",
-      "phase": "preparing",
-      "message": "Pasada tr-1794190200000-manual RUNNING. Se ha lanzado refresco manual real del Top 30 (workflow 42549505095) antes de releer la cola JIT. ImageGen=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-09T03:17:00+01:00",
-      "phase": "investigating",
-      "trend_id": "e66798dae072",
-      "title": "Doran",
-      "message": "Doran r0: contexto actual verificado en la semifinal BLG-T1 de Worlds 2026; causa individual exacta no demostrada, se usa redacción prudente. ImageGen=0."
-    },
-    {
-      "at": "2026-11-09T03:17:00+01:00",
-      "phase": "investigating",
-      "trend_id": "f32194b977fd",
-      "title": "Barça",
-      "message": "Barça r0: reentrada contrastada con el episodio anterior. Sigue remitiendo al Atlético 1-2 Barça del 8/11; no hay acontecimiento distinto verificable. Se cerrará review_completed/no_distinct_event, sin Listas ni imagen."
-    },
-    {
-      "at": "2026-11-09T03:17:00+01:00",
-      "phase": "investigating",
-      "trend_id": "639ad93bd705",
-      "title": "#Worlds2026",
-      "message": "#Worlds2026 r0: semifinal BLG-T1 verificada como foco actual del Mundial de League of Legends. Texto individual preparado. ImageGen=0."
-    },
-    {
-      "at": "2026-11-09T03:17:00+01:00",
-      "phase": "investigating",
-      "trend_id": "a9073fde3cbe",
-      "title": "Faker",
-      "message": "Faker r0: participación de Faker con T1 en la semifinal ante BLG verificada; texto individual preparado. ImageGen=0."
-    },
-    {
-      "at": "2026-11-09T03:17:00+01:00",
-      "phase": "investigating",
-      "trend_id": "5f70621d794b",
-      "title": "Supervivientes",
-      "message": "Supervivientes r0: semifinal verificada; Rosa Benito expulsada y cuatro finalistas proclamados. Texto individual preparado. ImageGen=0."
-    },
     {
       "at": "2026-11-09T03:17:00+01:00",
       "phase": "persisting",
@@ -958,6 +241,39 @@
       "at": "2026-11-09T04:22:00+01:00",
       "phase": "closing",
       "message": "Pasada tr-1794194420305-manual cerrada 2/2 por convergencia JIT: Jong y Cancelo quedaron review_completed/unchanged por la ejecución concurrente, sincronizados en requests.json y telegram-manual-explained.json sin cambiar texto ni explained_at. Barrera final main: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794194700000-manual",
+      "status": "DONE",
+      "started_at": "2026-11-09T04:25:00+01:00",
+      "finished_at": "2026-11-09T04:26:00+01:00",
+      "at": "2026-11-09T04:26:00+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 0,
+        "observed": 0,
+        "closed": 0,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 0,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [],
+      "outcomes": [],
+      "message": "Pasada tr-1794194700000-manual cerrada 0/0: tras releer main, editorial-queue=0 y mobile-decisions no contiene preparing/update/rewrite_pending/reexplain activos. No había trabajos editoriales ni revisiones pendientes que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "current_item": null
