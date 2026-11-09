@@ -7,77 +7,242 @@
   "previous_run_id": "tr-1794262515713-manual",
   "command_id": "tr-1794262515713-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-09T23:34:30+01:00",
-  "updated_at": "2026-11-09T23:38:00+01:00",
-  "finished_at": null,
-  "current": 16,
+  "updated_at": "2026-11-09T23:39:00+01:00",
+  "finished_at": "2026-11-09T23:39:00+01:00",
+  "current": 17,
   "total": 17,
-  "trend_id": "red-review-61d494cc18e2321aaa5b",
-  "title": "Revisar novedades: Supa",
-  "queue_complete": false,
-  "processed_ids": [],
-  "converged_ids": [],
-  "remaining_ids": [
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
+    "63a056c511d3",
+    "b621bbd168f0",
+    "1e6fa34ad115",
+    "6c546f5c926c",
+    "e94c1b14b44b",
+    "835c9153b13e",
+    "207f8ad251cf",
+    "839aaa8d29b3",
+    "c2fdc85ccd3b",
+    "5597caa1398e",
+    "b29a4d5645d8",
+    "d006b0a0fd9f",
+    "51ef245682ef",
+    "30eaedeb2cc2",
+    "a8963036b538",
+    "e48dafe864dc",
     "red-review-61d494cc18e2321aaa5b"
   ],
-  "remaining_active_ids": [
+  "converged_ids": [
     "red-review-61d494cc18e2321aaa5b"
   ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 1,
-    "closed": 0,
-    "explained": 0,
+    "attempted": 17,
+    "observed": 17,
+    "closed": 17,
+    "explained": 16,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 0,
+    "maintenance_reviews": 1,
     "unchanged_reviews": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "stale_reviews": 0,
-    "unverified_reviews": 0,
+    "unverified_reviews": 1,
+    "cause_unconfirmed_explanations": 4,
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 1,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 1
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "63a056c511d3",
+      "revision": 0,
+      "name": "La Peter",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "b621bbd168f0",
+      "revision": 0,
+      "name": "Ferran",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "1e6fa34ad115",
+      "revision": 0,
+      "name": "Cera",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "6c546f5c926c",
+      "revision": 0,
+      "name": "Zubimendi",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "e94c1b14b44b",
+      "revision": 1,
+      "name": "La Revuelta",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "835c9153b13e",
+      "revision": 1,
+      "name": "Broncano",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "207f8ad251cf",
+      "revision": 0,
+      "name": "#AbascalEnLaRevuelta",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "839aaa8d29b3",
+      "revision": 0,
+      "name": "Tartamudea",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "c2fdc85ccd3b",
+      "revision": 0,
+      "name": "Nervioso",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "5597caa1398e",
+      "revision": 0,
+      "name": "Gabi",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "b29a4d5645d8",
+      "revision": 0,
+      "name": "Grison",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "d006b0a0fd9f",
+      "revision": 0,
+      "name": "agenda 2030",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "51ef245682ef",
+      "revision": 0,
+      "name": "Fachascal",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "30eaedeb2cc2",
+      "revision": 0,
+      "name": "La Resistencia",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "a8963036b538",
+      "revision": 0,
+      "name": "Ley de Nietos",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "e48dafe864dc",
+      "revision": 0,
+      "name": "#UzakŞehir",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "red-review-61d494cc18e2321aaa5b",
+      "revision": 0,
+      "name": "Revisar novedades: Supa",
+      "outcome": "unverified",
+      "applied": true,
+      "source_id": "69709b2f4154",
+      "note": "Rumores de mercado LEC 2027 sin confirmación material suficiente; se conserva explicación y explained_at originales."
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Revisando novedades",
+  "activity": "closing",
   "last_started_at": "2026-11-09T23:34:30+01:00",
-  "last_completed_at": "2026-11-09T23:33:47+01:00",
+  "last_completed_at": "2026-11-09T23:39:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794260243896-manual",
+    "run_id": "tr-1794262515713-manual",
     "status": "DONE",
-    "started_at": "2026-11-09T22:38:00+01:00",
-    "finished_at": "2026-11-09T22:42:38.089+01:00",
+    "started_at": "2026-11-09T23:34:30+01:00",
+    "finished_at": "2026-11-09T23:39:00+01:00",
+    "current": 17,
+    "total": 17,
+    "processed_ids": [
+      "63a056c511d3",
+      "b621bbd168f0",
+      "1e6fa34ad115",
+      "6c546f5c926c",
+      "e94c1b14b44b",
+      "835c9153b13e",
+      "207f8ad251cf",
+      "839aaa8d29b3",
+      "c2fdc85ccd3b",
+      "5597caa1398e",
+      "b29a4d5645d8",
+      "d006b0a0fd9f",
+      "51ef245682ef",
+      "30eaedeb2cc2",
+      "a8963036b538",
+      "e48dafe864dc",
+      "red-review-61d494cc18e2321aaa5b"
+    ],
+    "ordinary_apply_commit": "2246ee9c5547f1eab2c58e3c510786976b61bc04",
+    "maintenance_job_id": "red-review-61d494cc18e2321aaa5b",
+    "maintenance_outcome": "unverified",
+    "queue_complete": true,
     "summary": {
-      "attempted": 2,
-      "observed": 2,
-      "closed": 2,
-      "explained": 2,
+      "attempted": 17,
+      "observed": 17,
+      "closed": 17,
+      "explained": 16,
       "problematic": 0,
       "updates": 0,
       "review_completed_no_distinct_event": 0,
-      "maintenance_reviews": 0,
+      "maintenance_reviews": 1,
       "unchanged_reviews": 0,
       "continuity_updates": 0,
       "distinct_updates": 0,
       "stale_reviews": 0,
-      "unverified_reviews": 0,
+      "unverified_reviews": 1,
+      "cause_unconfirmed_explanations": 4,
       "anticipation_reviews": 0,
       "anticipation_prepared": 0,
       "anticipation_unverified": 0,
@@ -87,1681 +252,11 @@
       "image_outbox_created": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 0
-    },
-    "processed_ids": [
-      "835c9153b13e",
-      "e94c1b14b44b"
-    ],
-    "converged_ids": [],
-    "outcomes": [
-      {
-        "id": "835c9153b13e",
-        "revision": 0,
-        "name": "Broncano",
-        "outcome": "explained",
-        "applied": true,
-        "apply_commit": "36275132727e16a1e5acf505963a3430059862c2",
-        "outbox_commit": "3cc5ffa74f353a55ff83918df3a2adeaaa9157b7"
-      },
-      {
-        "id": "e94c1b14b44b",
-        "revision": 0,
-        "name": "La Revuelta",
-        "outcome": "explained",
-        "applied": true,
-        "apply_commit": "36275132727e16a1e5acf505963a3430059862c2",
-        "outbox_commit": "58c17d7a58ff40d77c6dddcaea01807d9f555b65"
-      }
-    ],
-    "message": "Pasada tr-1794260243896-manual cerrada 2/2. Broncano r0 y La Revuelta r0 fueron reelaborados desde cero con el desarrollo emitido el 9/11: Broncano explicó que el equipo de Santiago Abascal pidió gestionar el público y el programa aceptó; después expresó reparos por el apoyo uniforme. Ambos textos quedaron persistidos y sincronizados en requests.json y telegram-manual-explained.json por el aplicador oficial. Barrera final: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain en requests ni mobile-decisions. ImageGen=0; publicaciones=0."
+      "concurrent_convergence": 1
+    }
   },
-  "message": "Pasada tr-1794262515713-manual: 16 revisiones ordinarias cerradas. Entró después la revisión roja de Supa; existe resultado concurrente unverified para el mismo job y se respeta sin sobrescribir. Workflow de mantenimiento 42713522083 aplicándolo. ImageGen=0; image-outbox=0; publicaciones=0.",
+  "message": "DONE 17/17. Cerradas 16 explicaciones ordinarias y 1 revisión roja de Supa (unverified, sin alterar texto/fecha previos). Relectura final de main: editorial-queue=0, rewrite_pending=0, reexplain=0. ImageGen=0; image-outbox=0; publicaciones=0; incidencias=0.",
   "history": [
-    {
-      "run_id": "tr-1794199200000-manual",
-      "status": "DONE",
-      "started_at": "2026-11-09T05:40:00+01:00",
-      "finished_at": "2026-11-09T05:42:00+01:00",
-      "at": "2026-11-09T05:42:00+01:00",
-      "phase": "closing",
-      "summary": {
-        "attempted": 0,
-        "observed": 0,
-        "closed": 0,
-        "explained": 0,
-        "problematic": 0,
-        "updates": 0,
-        "review_completed_no_distinct_event": 0,
-        "maintenance_reviews": 0,
-        "unchanged_reviews": 0,
-        "continuity_updates": 0,
-        "distinct_updates": 0,
-        "stale_reviews": 0,
-        "unverified_reviews": 0,
-        "queue_remaining": 0,
-        "rewrite_pending_remaining": 0,
-        "imagegen_calls": 0,
-        "image_outbox_created": 0,
-        "publications": 0,
-        "incidents": 0,
-        "concurrent_convergence": 0
-      },
-      "processed_ids": [],
-      "outcomes": [],
-      "message": "Pasada tr-1794199200000-manual cerrada 0/0 mediante ejecución directa en chat. Refresco manual real materializado en main por el commit 1143e276f729d2d10947a61e080dae25fae72766: recent.json capturado a las 05:40:54+01:00 con Top 30 completo (30), new_entries=[]; editorial-queue=0 a las 05:41:00+01:00. Barrera JIT: requests.json y mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos; 0 agrupaciones nuevas hoy. El trigger fue emitido en control/ttendencias-run-trigger mediante 2b5f04241c0bb1b359c866e8789d8db0fce03405. La fuente del radar sigue live_verified:false (GetDayTrends, observación 20 min), pero no abrió nuevas entradas ni trabajo editorial. ImageGen=0; image-outbox editorial=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-09T05:43:11+01:00",
-      "phase": "verifying",
-      "message": "Pasada tr-1794199200000-manual en verificación final. Top 30 vigente capturado 2026-11-09T05:40:54+01:00; editorial-queue inicial=0 y búsqueda en main sin preparing/update/rewrite_pending/reexplain activos. Últimos mantenimientos Valencia y maffeo siguen unchanged. Relectura JIT final pendiente. ImageGen=0; publicaciones=0."
-    },
-    {
-      "run_id": "tr-1794199200000-manual",
-      "status": "DONE",
-      "started_at": "2026-11-09T05:40:00+01:00",
-      "finished_at": "2026-11-09T05:43:30+01:00",
-      "at": "2026-11-09T05:43:30+01:00",
-      "phase": "closing",
-      "summary": {
-        "attempted": 0,
-        "observed": 0,
-        "closed": 0,
-        "explained": 0,
-        "problematic": 0,
-        "updates": 0,
-        "review_completed_no_distinct_event": 0,
-        "maintenance_reviews": 0,
-        "unchanged_reviews": 0,
-        "continuity_updates": 0,
-        "distinct_updates": 0,
-        "stale_reviews": 0,
-        "unverified_reviews": 0,
-        "queue_remaining": 0,
-        "rewrite_pending_remaining": 0,
-        "imagegen_calls": 0,
-        "image_outbox_created": 0,
-        "publications": 0,
-        "incidents": 0,
-        "concurrent_convergence": 0
-      },
-      "processed_ids": [],
-      "outcomes": [],
-      "message": "Pasada tr-1794199200000-manual cerrada 0/0 tras relectura final de main: editorial-queue=0 (actualizada 2026-11-09T05:41:00+01:00), Top 30 vigente=30 (capturado 2026-11-09T05:40:54+01:00), mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos y búsqueda en main sin marcas activas de preparing/update/rewrite_pending/reexplain. Últimos mantenimientos Valencia y maffeo permanecen unchanged. No había trabajo editorial que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-09T06:12:00+01:00",
-      "phase": "investigating",
-      "trend_id": "409ed14a3382",
-      "title": "#NASCARenDAZN",
-      "message": "Pasada tr-autoguard-1794201116 RUNNING. Cola JIT=5: #NASCARenDAZN, Bernabéu, gordon, Flick y Amaia. Todas son new_episode_review/distinct_event_required; se investiga si existe acontecimiento independiente respecto al episodio previo. ImageGen=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-09T06:16:00+01:00",
-      "phase": "preparing",
-      "trend_id": "red-review-580d184137861e4dc8b8",
-      "title": "Revisar novedades: Amaia",
-      "message": "Pasada tr-1794201348940-manual RUNNING. Cola inicial JIT=2 review_red: Amaia y #FelizDomingo. Se procesan de más antiguo a más reciente, revalidando ID/revisión antes de investigar y persistir. ImageGen=0; publicaciones=0.",
-      "prior_runtime_observed": {
-        "run_id": "tr-autoguard-1794201116",
-        "status": "success",
-        "updated_at": "2026-11-09T06:15:18+01:00"
-      }
-    },
-    {
-      "at": "2026-11-09T06:19:00+01:00",
-      "phase": "verifying",
-      "message": "Barrera JIT final: editorial-queue=0. El commit oficial fd25921b0ce32944ae958fe9122a4ea781b04357 retiró ambos review_red y estampó los resultados unchanged; mobile-decisions no contiene preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-09T06:20:00+01:00",
-      "phase": "closing",
-      "message": "Pasada tr-1794201348940-manual cerrada 2/2 por convergencia JIT. Amaia y #FelizDomingo fueron investigadas como revisiones de novedades y aplicadas como unchanged en el commit fd25921b0ce32944ae958fe9122a4ea781b04357; se conservan explicación, explained_at, imagen y estado publicado. Barrera final en main: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. El aplicador oficial persistió el mantenimiento en requests.json y telegram-manual-explained.json. ImageGen=0; image-outbox editorial=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-09T06:25:00+01:00",
-      "phase": "preparing",
-      "message": "Pasada tr-1794201900000-manual RUNNING. Refresco manual del Top 30 disparado a las 06:25; esperando materialización en main antes de releer y procesar la cola JIT. ImageGen=0; publicaciones=0.",
-      "prior_runtime_observed": {
-        "run_id": "tr-1794201348940-manual",
-        "status": "DONE",
-        "updated_at": "2026-11-09T06:20:00+01:00"
-      }
-    },
-    {
-      "run_id": "tr-1794201900000-manual",
-      "status": "DONE",
-      "at": "2026-11-09T06:30:18+01:00",
-      "phase": "closing",
-      "message": "Pasada tr-1794201900000-manual cerrada 0/0 tras refresco real del Top 30. Trigger a3cb2d58387cf54b6cfa081186ce7593ab18b00f; workflow 42567288570 completado success. Nuevo snapshot capturado 2026-11-09T06:30:00+01:00 con Top 30=30; editorial-queue actualizada 06:30:08 y vacía; mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
-      "workflow_run_id": 42567288570,
-      "trigger_commit": "a3cb2d58387cf54b6cfa081186ce7593ab18b00f"
-    },
-    {
-      "at": "2026-11-09T06:40:00+01:00",
-      "phase": "preparing",
-      "message": "Pasada tr-1794202800000-manual RUNNING desde chat. Se fuerza refresco manual real del Top 30 y después se releerá main con barrera JIT antes de cerrar. ImageGen=0; publicaciones=0.",
-      "prior_runtime_observed": {
-        "run_id": "tr-1794201900000-manual",
-        "status": "DONE",
-        "updated_at": "2026-11-09T06:30:18+01:00"
-      }
-    },
-    {
-      "run_id": "tr-1794202800000-manual",
-      "status": "DONE",
-      "started_at": "2026-11-09T06:40:00+01:00",
-      "finished_at": "2026-11-09T06:42:00+01:00",
-      "at": "2026-11-09T06:42:00+01:00",
-      "phase": "closing",
-      "summary": {
-        "attempted": 0,
-        "observed": 0,
-        "closed": 0,
-        "explained": 0,
-        "problematic": 0,
-        "updates": 0,
-        "review_completed_no_distinct_event": 0,
-        "maintenance_reviews": 0,
-        "unchanged_reviews": 0,
-        "continuity_updates": 0,
-        "distinct_updates": 0,
-        "stale_reviews": 0,
-        "unverified_reviews": 0,
-        "queue_remaining": 0,
-        "rewrite_pending_remaining": 0,
-        "imagegen_calls": 0,
-        "image_outbox_created": 0,
-        "publications": 0,
-        "incidents": 0,
-        "concurrent_convergence": 0
-      },
-      "processed_ids": [],
-      "outcomes": [],
-      "message": "Pasada tr-1794202800000-manual cerrada 0/0 tras refresco real del Top 30. Trigger e5b926119c9a9484cb8a225ad02f43239036c4f2; nuevo snapshot capturado 2026-11-09T06:40:50+01:00 con Top 30=30 y new_entries=0; editorial-queue actualizada 2026-11-09T06:40:55+01:00 y vacía; mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
-      "trigger_commit": "e5b926119c9a9484cb8a225ad02f43239036c4f2",
-      "refresh_workflow_run_id": 42568757399,
-      "refresh_workflow_status_observed": "in_progress_after_outputs_materialized"
-    },
-    {
-      "at": "2026-11-09T07:12:00+01:00",
-      "phase": "investigating",
-      "trend_id": "079d8fa051cd",
-      "title": "#FelizLunes",
-      "message": "Pasada tr-1794204600000-manual RUNNING. Refresco manual real del Top 30 lanzado; cola JIT=1: #FelizLunes r0, reentrada marcada new_episode_review/distinct_event_required. Se investiga si existe un acontecimiento nuevo verificable respecto al episodio previo. ImageGen=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-09T07:15:30+01:00",
-      "phase": "preparing",
-      "trend_id": "red-review-71cffa72182e4b0708c4",
-      "title": "Revisar novedades: maffeo",
-      "message": "Pasada tr-1794204852814-manual RUNNING. Cola inicial JIT=2 review_red: maffeo y Valencia; se procesan de más antiguo a más reciente, revalidando ID/revisión antes de investigar y persistir. ImageGen=0; publicaciones=0.",
-      "prior_runtime_observed": {
-        "run_id": "tr-1794204600000-manual",
-        "status": "success",
-        "updated_at": "2026-11-09T07:13:33+01:00"
-      }
-    },
-    {
-      "run_id": "tr-1794204600000-manual",
-      "status": "DONE",
-      "started_at": "2026-11-09T07:10:00+01:00",
-      "finished_at": "2026-11-09T07:16:30+01:00",
-      "at": "2026-11-09T07:16:30+01:00",
-      "phase": "closing",
-      "summary": {
-        "attempted": 3,
-        "observed": 3,
-        "closed": 3,
-        "explained": 0,
-        "problematic": 0,
-        "updates": 1,
-        "review_completed_no_distinct_event": 1,
-        "maintenance_reviews": 2,
-        "unchanged_reviews": 1,
-        "continuity_updates": 1,
-        "distinct_updates": 0,
-        "stale_reviews": 0,
-        "unverified_reviews": 0,
-        "queue_remaining": 0,
-        "rewrite_pending_remaining": 0,
-        "imagegen_calls": 0,
-        "image_outbox_created": 0,
-        "publications": 0,
-        "incidents": 0,
-        "concurrent_convergence": 2
-      },
-      "outcomes": [
-        {
-          "id": "079d8fa051cd",
-          "revision": 0,
-          "name": "#FelizLunes",
-          "outcome": "review_completed",
-          "review_reason": "no_distinct_event",
-          "applied": true,
-          "workflow_run_id": 42571682843
-        },
-        {
-          "id": "red-review-71cffa72182e4b0708c4",
-          "revision": 0,
-          "name": "Revisar novedades: maffeo",
-          "outcome": "continuity",
-          "applied": true,
-          "via": "concurrent_convergence",
-          "apply_commit": "c1208a7930b4a9c6a6315178624c52ad445c1e64"
-        },
-        {
-          "id": "red-review-882d5106e6c1728c5ae8",
-          "revision": 0,
-          "name": "Revisar novedades: Valencia",
-          "outcome": "unchanged",
-          "applied": true,
-          "via": "concurrent_convergence",
-          "apply_commit": "c1208a7930b4a9c6a6315178624c52ad445c1e64"
-        }
-      ],
-      "message": "Pasada solicitada desde chat cerrada 3/3 tras refresco real #799: #FelizLunes review_completed/no_distinct_event; maffeo continuity update; Valencia unchanged. Barrera final limpia. ImageGen=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-09T07:16:30+01:00",
-      "phase": "closing",
-      "message": "Pasada tr-1794204852814-manual cerrada 2/2 por convergencia JIT. maffeo quedó actualizado en continuidad con su disculpa posterior, conservando explained_at y estado publicado; Valencia quedó unchanged. La reentrada #FelizLunes ya había sido cerrada en esta ejecución como review_completed/no_distinct_event mediante el aplicador oficial 42571682843. Refresco real #799 (42571516169) completado success. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-09T07:16:20+01:00",
-      "phase": "verifying",
-      "message": "Barrera JIT final verificada: editorial-queue=0; ambos review_red están review_completed y aplicados en requests.json y telegram-manual-explained.json; mobile-decisions sin estados editoriales activos. ImageGen=0; publicaciones=0."
-    },
-    {
-      "run_id": "tr-1794204852814-manual",
-      "status": "DONE",
-      "started_at": "2026-11-09T07:15:30+01:00",
-      "finished_at": "2026-11-09T07:16:30+01:00",
-      "at": "2026-11-09T07:16:30+01:00",
-      "phase": "closing",
-      "summary": {
-        "attempted": 2,
-        "observed": 2,
-        "closed": 2,
-        "explained": 0,
-        "problematic": 0,
-        "updates": 1,
-        "review_completed_no_distinct_event": 0,
-        "maintenance_reviews": 2,
-        "unchanged_reviews": 1,
-        "continuity_updates": 1,
-        "distinct_updates": 0,
-        "stale_reviews": 0,
-        "unverified_reviews": 0,
-        "queue_remaining": 0,
-        "rewrite_pending_remaining": 0,
-        "imagegen_calls": 0,
-        "image_outbox_created": 0,
-        "publications": 0,
-        "incidents": 0,
-        "concurrent_convergence": 2
-      },
-      "outcomes": [
-        {
-          "id": "red-review-71cffa72182e4b0708c4",
-          "revision": 0,
-          "name": "Revisar novedades: maffeo",
-          "outcome": "continuity",
-          "applied": true,
-          "via": "concurrent_convergence",
-          "result_commit": "c0209c4f5957fb746125971ccd5527eaedc5cb27",
-          "apply_commit": "c1208a7930b4a9c6a6315178624c52ad445c1e64"
-        },
-        {
-          "id": "red-review-882d5106e6c1728c5ae8",
-          "revision": 0,
-          "name": "Revisar novedades: Valencia",
-          "outcome": "unchanged",
-          "applied": true,
-          "via": "concurrent_convergence",
-          "result_commit": "9ae209c59c184d46966d0d2218b90f9db46ab2e0",
-          "apply_commit": "c1208a7930b4a9c6a6315178624c52ad445c1e64"
-        }
-      ],
-      "message": "Pasada tr-1794204852814-manual cerrada 2/2 por convergencia JIT. maffeo quedó actualizado como continuidad del mismo Valencia-Real Madrid incorporando la disculpa posterior, sin nuevo episodio ni nueva imagen; Valencia quedó unchanged. El aplicador c1208a7930b4a9c6a6315178624c52ad445c1e64 persistió ambos resultados en requests.json y telegram-manual-explained.json y retiró las dos revisiones de editorial-queue. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-09T07:25:00+01:00",
-      "phase": "preparing",
-      "message": "Pasada tr-1794205500000-manual RUNNING desde chat. Cola inicial JIT=0; se fuerza refresco real del Top 30 y después se releerá main antes del cierre. ImageGen=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-09T07:32:00+01:00",
-      "phase": "closing",
-      "message": "Pasada tr-1794205500000-manual cerrada 0/0 tras refresco real del Top 30. Trigger 8d6b834449512e6e76efc8badd9686b14796f0bc; workflow 42573085423 completado success; refresco materializado en d26a8a81cc2b47fff134fc1a57ade7cfe95245b9 con snapshot capturado 2026-11-09T07:30:55+01:00. Barrera final tras actualización posterior del Top 10: editorial-queue=0 (updated_at 2026-11-09T07:31:29+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-09T07:40:00+01:00",
-      "phase": "preparing",
-      "message": "Pasada tr-1794206400000-manual RUNNING desde chat. Cola inicial JIT=0; se fuerza refresco real del Top 30 y después se releerá main antes del cierre. ImageGen=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-09T07:42:00+01:00",
-      "phase": "investigating",
-      "trend_id": "red-review-ec24f58b5ef89a37b108",
-      "title": "Revisar novedades: Amaia",
-      "message": "Revisando novedades: Amaia. Se contrasta el episodio vigente con información posterior; no se reabre por mero cambio de puesto."
-    },
-    {
-      "at": "2026-11-09T07:43:00+01:00",
-      "phase": "investigating",
-      "trend_id": "red-review-175ed38aeb25b48b294b",
-      "title": "Revisar novedades: Cracovia",
-      "message": "Revisando novedades: Cracovia. Se comprueban desarrollos posteriores del mismo tiroteo con tratamiento factual y sin humor sobre víctimas."
-    },
-    {
-      "run_id": "tr-1794206462514-manual",
-      "status": "DONE",
-      "started_at": "2026-11-09T07:41:00+01:00",
-      "finished_at": "2026-11-09T07:45:00+01:00",
-      "at": "2026-11-09T07:45:00+01:00",
-      "phase": "closing",
-      "summary": {
-        "attempted": 2,
-        "observed": 2,
-        "closed": 2,
-        "explained": 0,
-        "problematic": 0,
-        "updates": 1,
-        "review_completed_no_distinct_event": 0,
-        "maintenance_reviews": 2,
-        "unchanged_reviews": 1,
-        "continuity_updates": 1,
-        "distinct_updates": 0,
-        "stale_reviews": 0,
-        "unverified_reviews": 0,
-        "queue_remaining": 0,
-        "rewrite_pending_remaining": 0,
-        "imagegen_calls": 0,
-        "image_outbox_created": 0,
-        "publications": 0,
-        "incidents": 0,
-        "concurrent_convergence": 2
-      },
-      "outcomes": [
-        {
-          "id": "red-review-ec24f58b5ef89a37b108",
-          "revision": 0,
-          "name": "Revisar novedades: Amaia",
-          "outcome": "unchanged",
-          "applied": true,
-          "via": "concurrent_convergence",
-          "apply_commit": "8a85179f482091f5ed2b7d3be69a9217b19270b0"
-        },
-        {
-          "id": "red-review-175ed38aeb25b48b294b",
-          "revision": 0,
-          "name": "Revisar novedades: Cracovia",
-          "outcome": "continuity",
-          "applied": true,
-          "via": "concurrent_convergence",
-          "apply_commit": "8a85179f482091f5ed2b7d3be69a9217b19270b0"
-        }
-      ],
-      "message": "Pasada tr-1794206462514-manual cerrada 2/2 por convergencia JIT. Amaia quedó unchanged; Cracovia quedó actualizada como continuidad del mismo tiroteo, incorporando la investigación por terrorismo y la muerte posterior del sospechoso, sin nuevo episodio, imagen ni publicación. El aplicador 8a85179f482091f5ed2b7d3be69a9217b19270b0 sincronizó requests.json y telegram-manual-explained.json y vació editorial-queue. Barrera final: queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; publicaciones=0.",
-      "prior_runtime_observed": {
-        "run_id": "tr-1794206400000-manual",
-        "status": "RUNNING",
-        "phase": "investigating",
-        "updated_at": "2026-11-09T07:43:00+01:00",
-        "message": "Revisando novedades: Cracovia. Se comprueban desarrollos posteriores del mismo tiroteo con tratamiento factual y sin humor sobre víctimas."
-      }
-    },
-    {
-      "at": "2026-11-09T07:58:28+01:00",
-      "phase": "preparing",
-      "message": "Pasada tr-1794207300000-manual RUNNING desde chat. Trigger manual 75162ed5a7fd66a86a83e95bdf6a911d92f6e55f emitido a las 07:55. Relectura JIT actual: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos; todavía no se ha materializado un snapshot Top 30 posterior al trigger. Se mantiene la pasada abierta hasta la barrera final. ImageGen=0; publicaciones=0.",
-      "prior_runtime_observed": {
-        "run_id": "tr-1794206462514-manual",
-        "status": "DONE",
-        "updated_at": "2026-11-09T07:45:00+01:00"
-      }
-    },
-    {
-      "run_id": "tr-1794207300000-manual",
-      "status": "DONE",
-      "started_at": "2026-11-09T07:55:00+01:00",
-      "finished_at": "2026-11-09T08:00:09+01:00",
-      "at": "2026-11-09T08:00:09+01:00",
-      "phase": "closing",
-      "summary": {
-        "attempted": 0,
-        "observed": 0,
-        "closed": 0,
-        "explained": 0,
-        "problematic": 0,
-        "updates": 0,
-        "review_completed_no_distinct_event": 0,
-        "maintenance_reviews": 0,
-        "unchanged_reviews": 0,
-        "continuity_updates": 0,
-        "distinct_updates": 0,
-        "stale_reviews": 0,
-        "unverified_reviews": 0,
-        "queue_remaining": 0,
-        "rewrite_pending_remaining": 0,
-        "imagegen_calls": 0,
-        "image_outbox_created": 0,
-        "publications": 0,
-        "incidents": 0,
-        "concurrent_convergence": 0
-      },
-      "processed_ids": [],
-      "outcomes": [],
-      "trigger_commit": "75162ed5a7fd66a86a83e95bdf6a911d92f6e55f",
-      "refresh_commit": "1d0d47c7449438382124a9e70ebf55ac579824cd",
-      "message": "Pasada tr-1794207300000-manual cerrada 0/0 tras refresco real del Top 30. Trigger 75162ed5a7fd66a86a83e95bdf6a911d92f6e55f; refresco materializado en 1d0d47c7449438382124a9e70ebf55ac579824cd con snapshot capturado 2026-11-09T07:59:43+01:00. Barrera final: editorial-queue=0 (updated_at 2026-11-09T07:59:50+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-09T08:01:29+01:00",
-      "phase": "preparing",
-      "trend_id": "8604d67ab205",
-      "title": "#FelizLunes",
-      "message": "Pasada tr-1794207689958-manual RUNNING. Cola JIT=1: #FelizLunes r0 (8604d67ab205), reelaboración manual desde cero. Se valida ID/revisión antes de investigar; ImageGen=0 y publicaciones=0.",
-      "prior_runtime_observed": {
-        "run_id": "tr-1794207300000-manual",
-        "status": "DONE",
-        "phase": "closing",
-        "updated_at": "2026-11-09T08:00:09+01:00"
-      }
-    },
-    {
-      "at": "2026-11-09T08:02:30+01:00",
-      "phase": "investigating",
-      "trend_id": "8604d67ab205",
-      "title": "#FelizLunes",
-      "message": "Investigando #FelizLunes r0 desde cero: se contrasta el ranking actual con fuentes independientes y se comprueba si existe un detonante concreto distinto de un saludo recurrente. ImageGen=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-09T08:06:45+01:00",
-      "phase": "preparing",
-      "trend_id": "red-review-f158d9e1a9f2db70877e",
-      "title": "Revisar novedades: #IreneConQueque",
-      "message": "Pasada tr-1794207954297-manual RUNNING. Cola JIT=2 review_red: #IreneConQueque y Robe; se procesan de más antiguo a más reciente, revalidando ID/revisión antes de investigar y persistir. ImageGen=0; publicaciones=0.",
-      "prior_runtime_observed": {
-        "run_id": "tr-1794207689958-manual",
-        "status": "success",
-        "phase": "investigating",
-        "updated_at": "2026-11-09T08:05:12+01:00",
-        "current": 0,
-        "total": 1,
-        "trend_id": "8604d67ab205",
-        "title": "#FelizLunes"
-      }
-    },
-    {
-      "at": "2026-11-09T08:07:34+01:00",
-      "phase": "verifying",
-      "message": "Barrera JIT final: editorial-queue=0 tras aplicar #IreneConQueque y Robe como continuidad; mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-09T08:08:15+01:00",
-      "phase": "closing",
-      "message": "Pasada tr-1794207689958-manual cerrada 3/3. #FelizLunes r0 fue reelaborado desde cero y explicado como TT#4 por el uso recurrente del hashtag para saludos de inicio de semana, sin acontecimiento ni marcador específico verificado; aplicador f4e035d6a6cd4baae90b08c9462fb92a1193a3e9. Durante la barrera entraron dos review_red: #IreneConQueque y Robe, ambos actualizados como continuidad del mismo episodio en 2d5b97d23052081a4613f634bbf02751bc2c1c59, conservando ID/revisión, explained_at, imagen y estado publicado. Barrera final main: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-09T08:09:30+01:00",
-      "phase": "verifying",
-      "message": "Barrera final JIT: editorial-queue=0; mobile-decisions activos=0. Los dos review_red están aplicados en continuidad en commit 2d5b97d23052081a4613f634bbf02751bc2c1c59."
-    },
-    {
-      "at": "2026-11-09T08:09:30+01:00",
-      "phase": "closing",
-      "message": "Pasada tr-1794207954297-manual cerrada 2/2 por convergencia JIT. #IreneConQueque y Robe quedaron actualizados como continuidad en las fichas originales por el commit 2d5b97d23052081a4613f634bbf02751bc2c1c59: se conservan explained_at, identidad, imágenes y estado publicado; no se crean episodios ni fichas nuevas. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; publicaciones=0."
-    },
-    {
-      "run_id": "tr-1794209100000-manual",
-      "status": "DONE",
-      "started_at": "2026-11-09T08:25:00+01:00",
-      "finished_at": "2026-11-09T08:26:30+01:00",
-      "at": "2026-11-09T08:26:30+01:00",
-      "phase": "closing",
-      "summary": {
-        "attempted": 0,
-        "observed": 0,
-        "closed": 0,
-        "explained": 0,
-        "problematic": 0,
-        "updates": 0,
-        "review_completed_no_distinct_event": 0,
-        "maintenance_reviews": 0,
-        "unchanged_reviews": 0,
-        "continuity_updates": 0,
-        "distinct_updates": 0,
-        "stale_reviews": 0,
-        "unverified_reviews": 0,
-        "queue_remaining": 0,
-        "rewrite_pending_remaining": 0,
-        "imagegen_calls": 0,
-        "image_outbox_created": 0,
-        "publications": 0,
-        "incidents": 0,
-        "concurrent_convergence": 0
-      },
-      "processed_ids": [],
-      "outcomes": [],
-      "message": "Pasada tr-1794209100000-manual cerrada 0/0: tras releer main, editorial-queue=0; mobile-decisions no contiene preparing/update/rewrite_pending/reexplain/anticipate/review_red activos y la búsqueda en main no encuentra marcas activas de preparing/update/rewrite_pending/reexplain. No había trabajos editoriales ni revisiones pendientes que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
-    },
-    {
-      "run_id": "tr-1794210000000-manual",
-      "status": "DONE",
-      "started_at": "2026-11-09T08:40:00+01:00",
-      "finished_at": "2026-11-09T08:41:05+01:00",
-      "at": "2026-11-09T08:41:05+01:00",
-      "phase": "closing",
-      "summary": {
-        "attempted": 0,
-        "observed": 0,
-        "closed": 0,
-        "explained": 0,
-        "problematic": 0,
-        "updates": 0,
-        "review_completed_no_distinct_event": 0,
-        "maintenance_reviews": 0,
-        "unchanged_reviews": 0,
-        "continuity_updates": 0,
-        "distinct_updates": 0,
-        "stale_reviews": 0,
-        "unverified_reviews": 0,
-        "queue_remaining": 0,
-        "rewrite_pending_remaining": 0,
-        "imagegen_calls": 0,
-        "image_outbox_created": 0,
-        "publications": 0,
-        "incidents": 0,
-        "concurrent_convergence": 0
-      },
-      "processed_ids": [],
-      "outcomes": [],
-      "message": "Pasada tr-1794210000000-manual cerrada 0/0: relectura JIT de main a las 08:41 confirma editorial-queue=0 (updated_at 2026-11-09T08:41:01+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajos editoriales ni revisiones pendientes que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
-    },
-    {
-      "run_id": "tr-1794210900000-manual",
-      "status": "DONE",
-      "started_at": "2026-11-09T08:55:00+01:00",
-      "finished_at": "2026-11-09T09:01:00+01:00",
-      "at": "2026-11-09T09:01:00+01:00",
-      "phase": "closing",
-      "summary": {
-        "attempted": 13,
-        "observed": 13,
-        "closed": 13,
-        "explained": 11,
-        "problematic": 0,
-        "updates": 0,
-        "review_completed_no_distinct_event": 0,
-        "maintenance_reviews": 2,
-        "unchanged_reviews": 2,
-        "continuity_updates": 0,
-        "distinct_updates": 0,
-        "stale_reviews": 0,
-        "unverified_reviews": 0,
-        "queue_remaining": 0,
-        "rewrite_pending_remaining": 0,
-        "imagegen_calls": 0,
-        "image_outbox_created": 0,
-        "publications": 0,
-        "incidents": 0,
-        "concurrent_convergence": 0
-      },
-      "processed_ids": [
-        "33cc628ab41c",
-        "c580dcde5e09",
-        "a6059952d4de",
-        "abc3325ed2e9",
-        "647aa2cc8ae5",
-        "8968330b6712",
-        "a1fe74b9657a",
-        "39284cfb900a",
-        "4ef2ea1a9026",
-        "5a62d6821fac",
-        "8253716316e9",
-        "red-review-7ce02c8bbf433c0d7d7c",
-        "red-review-7e5e6b391da85b02dbbe"
-      ],
-      "outcomes": [
-        {
-          "id": "33cc628ab41c",
-          "revision": 0,
-          "name": "maffeo",
-          "outcome": "explained",
-          "applied": true,
-          "via": "editorial_outbox_applied"
-        },
-        {
-          "id": "c580dcde5e09",
-          "revision": 0,
-          "name": "Valencia",
-          "outcome": "explained",
-          "applied": true,
-          "via": "editorial_outbox_applied"
-        },
-        {
-          "id": "a6059952d4de",
-          "revision": 0,
-          "name": "Mestalla",
-          "outcome": "explained",
-          "applied": true,
-          "via": "editorial_outbox_applied"
-        },
-        {
-          "id": "abc3325ed2e9",
-          "revision": 0,
-          "name": "De Jong",
-          "outcome": "explained",
-          "applied": true,
-          "via": "editorial_outbox_applied"
-        },
-        {
-          "id": "647aa2cc8ae5",
-          "revision": 0,
-          "name": "Extremoduro",
-          "outcome": "explained",
-          "applied": true,
-          "via": "editorial_outbox_applied"
-        },
-        {
-          "id": "8968330b6712",
-          "revision": 0,
-          "name": "Robe",
-          "outcome": "explained",
-          "applied": true,
-          "via": "editorial_outbox_applied"
-        },
-        {
-          "id": "a1fe74b9657a",
-          "revision": 0,
-          "name": "Bernabéu",
-          "outcome": "explained",
-          "applied": true,
-          "via": "editorial_outbox_applied"
-        },
-        {
-          "id": "39284cfb900a",
-          "revision": 0,
-          "name": "gordon",
-          "outcome": "explained",
-          "applied": true,
-          "via": "editorial_outbox_applied"
-        },
-        {
-          "id": "4ef2ea1a9026",
-          "revision": 0,
-          "name": "Flick",
-          "outcome": "explained",
-          "applied": true,
-          "via": "editorial_outbox_applied"
-        },
-        {
-          "id": "5a62d6821fac",
-          "revision": 0,
-          "name": "Amaia",
-          "outcome": "explained",
-          "applied": true,
-          "via": "editorial_outbox_applied"
-        },
-        {
-          "id": "8253716316e9",
-          "revision": 0,
-          "name": "#Buenosdías",
-          "outcome": "explained",
-          "applied": true,
-          "via": "editorial_outbox_applied"
-        },
-        {
-          "id": "red-review-7ce02c8bbf433c0d7d7c",
-          "revision": 0,
-          "name": "Revisar novedades: Cracovia",
-          "outcome": "unchanged",
-          "applied": true,
-          "via": "maintenance_outbox_applied"
-        },
-        {
-          "id": "red-review-7e5e6b391da85b02dbbe",
-          "revision": 0,
-          "name": "Revisar novedades: Atleti",
-          "outcome": "unchanged",
-          "applied": true,
-          "via": "maintenance_outbox_applied"
-        }
-      ],
-      "message": "Pasada tr-1794210900000-manual cerrada 13/13. Se explicaron 11 tendencias nuevas de forma individual y el aplicador oficial las sincronizó en requests.json y telegram-manual-explained.json. Durante la barrera final entraron 2 review_red: Cracovia y Atleti, ambos verificados como unchanged y aplicados por mantenimiento sin alterar texto ni explained_at. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. Sin agrupaciones nuevas, ImageGen=0, image-outbox editorial=0 y publicaciones=0."
-    },
-    {
-      "at": "2026-11-09T08:59:08.379+01:00",
-      "phase": "verifying",
-      "trend_id": "red-review-7ce02c8bbf433c0d7d7c",
-      "title": "Revisiones de novedades: Cracovia y Atleti",
-      "message": "Pasada tr-1794211148379-manual iniciada contra main. La cola observada contenía 2 review_red; la barrera JIT detectó que una ejecución concurrente las absorbió y aplicó antes de persistir desde este run. Se verifica convergencia, sin ImageGen ni publicaciones.",
-      "prior_runtime_observed": {
-        "run_id": "tr-1794210900000-manual",
-        "status": "DONE",
-        "phase": "closing",
-        "updated_at": "2026-11-09T09:01:00+01:00",
-        "current": 13,
-        "total": 13
-      }
-    },
-    {
-      "run_id": "tr-1794211148379-manual",
-      "status": "DONE",
-      "started_at": "2026-11-09T08:59:08.379+01:00",
-      "finished_at": "2026-11-09T09:02:00+01:00",
-      "at": "2026-11-09T09:02:00+01:00",
-      "phase": "closing",
-      "summary": {
-        "attempted": 2,
-        "observed": 2,
-        "closed": 2,
-        "explained": 0,
-        "problematic": 0,
-        "updates": 0,
-        "review_completed_no_distinct_event": 0,
-        "maintenance_reviews": 2,
-        "unchanged_reviews": 2,
-        "continuity_updates": 0,
-        "distinct_updates": 0,
-        "stale_reviews": 0,
-        "unverified_reviews": 0,
-        "queue_remaining": 0,
-        "rewrite_pending_remaining": 0,
-        "imagegen_calls": 0,
-        "image_outbox_created": 0,
-        "publications": 0,
-        "incidents": 0,
-        "concurrent_convergence": 2
-      },
-      "processed_ids": [],
-      "converged_ids": [
-        "red-review-7ce02c8bbf433c0d7d7c",
-        "red-review-7e5e6b391da85b02dbbe"
-      ],
-      "outcomes": [
-        {
-          "id": "red-review-7ce02c8bbf433c0d7d7c",
-          "revision": 0,
-          "name": "Revisar novedades: Cracovia",
-          "outcome": "unchanged",
-          "applied": true,
-          "via": "concurrent_convergence",
-          "result_sha": "20c7074179516fdba7c17fc1d3b821383bfe6c76"
-        },
-        {
-          "id": "red-review-7e5e6b391da85b02dbbe",
-          "revision": 0,
-          "name": "Revisar novedades: Atleti",
-          "outcome": "unchanged",
-          "applied": true,
-          "via": "concurrent_convergence",
-          "result_sha": "190163cce4c9900ee2a514ddae20b3e819cd55a6"
-        }
-      ],
-      "message": "Pasada tr-1794211148379-manual cerrada 2/2 por convergencia JIT. Cracovia y Atleti ya habían sido investigadas y aplicadas como review_red=unchanged por la ejecución concurrente tr-1794210900000-manual; se verificó su persistencia sincronizada en requests.json y telegram-manual-explained.json, los dos resultados en maintenance-outbox, editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No se reescribieron fichas ni fechas. ImageGen=0; image-outbox editorial=0; publicaciones=0."
-    },
-    {
-      "run_id": "tr-1794212131276-manual",
-      "status": "DONE",
-      "started_at": "2026-11-09T09:15:31+01:00",
-      "finished_at": "2026-11-09T09:20:00+01:00",
-      "summary": {
-        "attempted": 2,
-        "observed": 2,
-        "closed": 2,
-        "explained": 0,
-        "problematic": 0,
-        "updates": 0,
-        "review_completed_no_distinct_event": 0,
-        "maintenance_reviews": 2,
-        "unchanged_reviews": 2,
-        "continuity_updates": 0,
-        "distinct_updates": 0,
-        "stale_reviews": 0,
-        "unverified_reviews": 0,
-        "queue_remaining": 0,
-        "rewrite_pending_remaining": 0,
-        "imagegen_calls": 0,
-        "image_outbox_created": 0,
-        "publications": 0,
-        "incidents": 0,
-        "concurrent_convergence": 0
-      },
-      "outcomes": [
-        {
-          "id": "red-review-d3f70fc527eec472e964",
-          "revision": 0,
-          "name": "Revisar novedades: maffeo",
-          "outcome": "unchanged",
-          "applied": true,
-          "source_id": "1940ad68777c"
-        },
-        {
-          "id": "red-review-0abc293c8865e30c19dc",
-          "revision": 0,
-          "name": "Revisar novedades: Valencia",
-          "outcome": "unchanged",
-          "applied": true,
-          "source_id": "41998067bb7c"
-        }
-      ],
-      "message": "Pasada tr-1794212131276-manual cerrada 2/2: maffeo y Valencia revisadas como unchanged y aplicadas en requests.json + telegram-manual-explained.json; cola=0 y sin reexplicaciones activas. ImageGen=0; publicaciones=0."
-    },
-    {
-      "run_id": "tr-1794213600000-manual",
-      "status": "DONE",
-      "started_at": "2026-11-09T09:40:00+01:00",
-      "finished_at": "2026-11-09T09:41:30+01:00",
-      "at": "2026-11-09T09:41:30+01:00",
-      "phase": "closing",
-      "summary": {
-        "attempted": 0,
-        "observed": 0,
-        "closed": 0,
-        "explained": 0,
-        "problematic": 0,
-        "updates": 0,
-        "review_completed_no_distinct_event": 0,
-        "maintenance_reviews": 0,
-        "unchanged_reviews": 0,
-        "continuity_updates": 0,
-        "distinct_updates": 0,
-        "stale_reviews": 0,
-        "unverified_reviews": 0,
-        "queue_remaining": 0,
-        "rewrite_pending_remaining": 0,
-        "imagegen_calls": 0,
-        "image_outbox_created": 0,
-        "publications": 0,
-        "incidents": 0,
-        "concurrent_convergence": 0
-      },
-      "outcomes": [],
-      "message": "Pasada tr-1794213600000-manual cerrada 0/0: editorial-queue=0 tras relectura JIT de main y sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; publicaciones=0."
-    },
-    {
-      "run_id": "tr-1794215400000-manual",
-      "status": "DONE",
-      "started_at": "2026-11-09T10:10:00+01:00",
-      "finished_at": "2026-11-09T10:15:30+01:00",
-      "at": "2026-11-09T10:15:30+01:00",
-      "phase": "closing",
-      "summary": {
-        "attempted": 3,
-        "observed": 3,
-        "closed": 3,
-        "explained": 3,
-        "problematic": 0,
-        "updates": 0,
-        "review_completed_no_distinct_event": 0,
-        "maintenance_reviews": 0,
-        "unchanged_reviews": 0,
-        "continuity_updates": 0,
-        "distinct_updates": 0,
-        "stale_reviews": 0,
-        "unverified_reviews": 0,
-        "queue_remaining": 0,
-        "rewrite_pending_remaining": 0,
-        "imagegen_calls": 0,
-        "image_outbox_created": 0,
-        "publications": 0,
-        "incidents": 0,
-        "concurrent_convergence": 0
-      },
-      "outcomes": [
-        {
-          "id": "2b8f257f333f",
-          "revision": 0,
-          "name": "Jensen Huang",
-          "outcome": "explained",
-          "applied": true,
-          "apply_commit": "93c76295a9a1e65ca629d6a188b504c1bd68c7f7"
-        },
-        {
-          "id": "65921a4d4f39",
-          "revision": 0,
-          "name": "Sherlock",
-          "outcome": "explained",
-          "applied": true,
-          "apply_commit": "93c76295a9a1e65ca629d6a188b504c1bd68c7f7"
-        },
-        {
-          "id": "9473798fa162",
-          "revision": 0,
-          "name": "Quedan 20",
-          "outcome": "explained",
-          "applied": true,
-          "apply_commit": "93c76295a9a1e65ca629d6a188b504c1bd68c7f7"
-        }
-      ],
-      "message": "Pasada tr-1794215400000-manual cerrada 3/3. Jensen Huang, Sherlock y Quedan 20 quedaron explicados y sincronizados por el aplicador oficial en requests.json y telegram-manual-explained.json (commit 93c76295a9a1e65ca629d6a188b504c1bd68c7f7). Sherlock sustituyó su borrador Radar al entrar en Top30. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; publicaciones=0."
-    },
-    {
-      "run_id": "tr-1794217200000-manual",
-      "status": "DONE",
-      "started_at": "2026-11-09T10:40:00+01:00",
-      "finished_at": "2026-11-09T10:41:00+01:00",
-      "at": "2026-11-09T10:41:00+01:00",
-      "phase": "closing",
-      "summary": {
-        "attempted": 0,
-        "observed": 0,
-        "closed": 0,
-        "explained": 0,
-        "problematic": 0,
-        "updates": 0,
-        "review_completed_no_distinct_event": 0,
-        "maintenance_reviews": 0,
-        "unchanged_reviews": 0,
-        "continuity_updates": 0,
-        "distinct_updates": 0,
-        "stale_reviews": 0,
-        "unverified_reviews": 0,
-        "queue_remaining": 0,
-        "rewrite_pending_remaining": 0,
-        "imagegen_calls": 0,
-        "image_outbox_created": 0,
-        "publications": 0,
-        "incidents": 0,
-        "concurrent_convergence": 0
-      },
-      "outcomes": [],
-      "message": "Pasada tr-1794217200000-manual cerrada 0/0 contra el estado autoritativo de main. Relectura final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial pendiente que procesar. ImageGen=0; publicaciones=0."
-    },
-    {
-      "run_id": "tr-1794219000000-manual",
-      "status": "DONE",
-      "started_at": "2026-11-09T11:10:00+01:00",
-      "finished_at": "2026-11-09T11:15:00+01:00",
-      "at": "2026-11-09T11:15:00+01:00",
-      "phase": "closing",
-      "summary": {
-        "attempted": 4,
-        "observed": 4,
-        "closed": 4,
-        "explained": 2,
-        "problematic": 0,
-        "updates": 0,
-        "review_completed_no_distinct_event": 0,
-        "maintenance_reviews": 2,
-        "unchanged_reviews": 2,
-        "continuity_updates": 0,
-        "distinct_updates": 0,
-        "stale_reviews": 0,
-        "unverified_reviews": 0,
-        "queue_remaining": 0,
-        "rewrite_pending_remaining": 0,
-        "imagegen_calls": 0,
-        "image_outbox_created": 0,
-        "publications": 0,
-        "incidents": 0,
-        "concurrent_convergence": 2
-      },
-      "processed_ids": [
-        "red-review-da276035edf10382b826",
-        "red-review-47e5d8d5ac22fd4f61df",
-        "62728644c75a",
-        "de9c80449aae"
-      ],
-      "converged_ids": [
-        "62728644c75a",
-        "de9c80449aae"
-      ],
-      "outcomes": [
-        {
-          "id": "red-review-da276035edf10382b826",
-          "revision": 0,
-          "name": "Revisar novedades: maffeo",
-          "outcome": "unchanged",
-          "applied": true,
-          "source_id": "1940ad68777c",
-          "apply_commit": "dc5e8442ab67e1a39733f4de7d7bf2c59c1e3596"
-        },
-        {
-          "id": "red-review-47e5d8d5ac22fd4f61df",
-          "revision": 0,
-          "name": "Revisar novedades: Valencia",
-          "outcome": "unchanged",
-          "applied": true,
-          "source_id": "41998067bb7c",
-          "apply_commit": "dc5e8442ab67e1a39733f4de7d7bf2c59c1e3596"
-        },
-        {
-          "id": "62728644c75a",
-          "revision": 0,
-          "name": "Pachuca",
-          "outcome": "explained",
-          "applied": true,
-          "via": "concurrent_convergence",
-          "apply_commit": "d58c1799b85386e65bc0262786b9b7fda350ebce"
-        },
-        {
-          "id": "de9c80449aae",
-          "revision": 0,
-          "name": "Raúl",
-          "outcome": "explained",
-          "applied": true,
-          "via": "concurrent_convergence",
-          "apply_commit": "d58c1799b85386e65bc0262786b9b7fda350ebce"
-        }
-      ],
-      "message": "Pasada tr-1794219000000-manual cerrada 4/4. maffeo y Valencia se revisaron como unchanged y quedaron aplicadas sin alterar explicación ni explained_at. Durante la barrera entraron Pachuca y Raúl; convergieron con el aplicador oficial y quedaron explicadas individualmente en requests.json + telegram-manual-explained.json (commit d58c1799b85386e65bc0262786b9b7fda350ebce). Barrera final main: editorial-queue=0 a las 11:14:27+01:00. ImageGen=0; image-outbox editorial=0; publicaciones=0."
-    },
-    {
-      "run_id": "tr-1794220800000-manual",
-      "status": "DONE",
-      "started_at": "2026-11-09T11:40:00+01:00",
-      "finished_at": "2026-11-09T11:41:10+01:00",
-      "at": "2026-11-09T11:41:10+01:00",
-      "phase": "closing",
-      "summary": {
-        "attempted": 0,
-        "observed": 0,
-        "closed": 0,
-        "explained": 0,
-        "problematic": 0,
-        "updates": 0,
-        "review_completed_no_distinct_event": 0,
-        "maintenance_reviews": 0,
-        "unchanged_reviews": 0,
-        "continuity_updates": 0,
-        "distinct_updates": 0,
-        "stale_reviews": 0,
-        "unverified_reviews": 0,
-        "queue_remaining": 0,
-        "rewrite_pending_remaining": 0,
-        "imagegen_calls": 0,
-        "image_outbox_created": 0,
-        "publications": 0,
-        "incidents": 0,
-        "concurrent_convergence": 0
-      },
-      "processed_ids": [],
-      "outcomes": [],
-      "message": "Pasada tr-1794220800000-manual cerrada 0/0 contra el estado autoritativo de main. Relectura final: editorial-queue=0 (updated_at 2026-11-09T11:40:59+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial pendiente que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
-    },
-    {
-      "run_id": "tr-1794221018085-manual",
-      "status": "DONE",
-      "started_at": "2026-11-09T11:44:00+01:00",
-      "finished_at": "2026-11-09T11:47:00+01:00",
-      "at": "2026-11-09T11:47:00+01:00",
-      "phase": "closing",
-      "summary": {
-        "attempted": 2,
-        "observed": 2,
-        "closed": 2,
-        "explained": 0,
-        "problematic": 0,
-        "updates": 0,
-        "review_completed_no_distinct_event": 0,
-        "maintenance_reviews": 2,
-        "unchanged_reviews": 2,
-        "continuity_updates": 0,
-        "distinct_updates": 0,
-        "stale_reviews": 0,
-        "unverified_reviews": 0,
-        "queue_remaining": 0,
-        "rewrite_pending_remaining": 0,
-        "imagegen_calls": 0,
-        "image_outbox_created": 0,
-        "publications": 0,
-        "incidents": 0,
-        "concurrent_convergence": 0
-      },
-      "processed_ids": [
-        "red-review-2e28f53ad05cc3c5bb04",
-        "red-review-2be0949c883c500c4d31"
-      ],
-      "outcomes": [
-        {
-          "id": "red-review-2e28f53ad05cc3c5bb04",
-          "revision": 0,
-          "name": "Revisar novedades: Julián Álvarez",
-          "outcome": "unchanged",
-          "applied": true,
-          "via": "maintenance_outbox_applied",
-          "apply_commit": "a6d22bd019c53bc8d9d31a43ba9d7692ff459f19"
-        },
-        {
-          "id": "red-review-2be0949c883c500c4d31",
-          "revision": 0,
-          "name": "Revisar novedades: Robe",
-          "outcome": "unchanged",
-          "applied": true,
-          "via": "maintenance_outbox_applied",
-          "apply_commit": "a6d22bd019c53bc8d9d31a43ba9d7692ff459f19"
-        }
-      ],
-      "message": "Pasada tr-1794221018085-manual cerrada 2/2. Julián Álvarez y Robe revisados como unchanged y aplicados en main; se conservan explicación, ID/revisión, imagen y explained_at. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
-    },
-    {
-      "run_id": "tr-1794221700000-manual",
-      "status": "DONE",
-      "started_at": "2026-11-09T11:55:00+01:00",
-      "finished_at": "2026-11-09T11:56:00+01:00",
-      "at": "2026-11-09T11:56:00+01:00",
-      "phase": "closing",
-      "summary": {
-        "attempted": 0,
-        "observed": 0,
-        "closed": 0,
-        "explained": 0,
-        "problematic": 0,
-        "updates": 0,
-        "review_completed_no_distinct_event": 0,
-        "maintenance_reviews": 0,
-        "unchanged_reviews": 0,
-        "continuity_updates": 0,
-        "distinct_updates": 0,
-        "stale_reviews": 0,
-        "unverified_reviews": 0,
-        "queue_remaining": 0,
-        "rewrite_pending_remaining": 0,
-        "imagegen_calls": 0,
-        "image_outbox_created": 0,
-        "publications": 0,
-        "incidents": 0,
-        "concurrent_convergence": 0
-      },
-      "processed_ids": [],
-      "outcomes": [],
-      "message": "Pasada tr-1794221700000-manual cerrada 0/0 contra el estado autoritativo de main. Relectura final: editorial-queue=0 (updated_at 2026-11-09T11:51:09+01:00) y sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos en requests ni mobile-decisions. No había trabajo editorial pendiente que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
-    },
-    {
-      "run_id": "tr-1794222640495-manual",
-      "status": "DONE",
-      "started_at": "2026-11-09T12:11:11+01:00",
-      "finished_at": "2026-11-09T12:16:30+01:00",
-      "at": "2026-11-09T12:16:30+01:00",
-      "phase": "closing",
-      "summary": {
-        "attempted": 5,
-        "observed": 5,
-        "closed": 5,
-        "explained": 4,
-        "problematic": 0,
-        "updates": 1,
-        "review_completed_no_distinct_event": 0,
-        "maintenance_reviews": 1,
-        "unchanged_reviews": 0,
-        "continuity_updates": 1,
-        "distinct_updates": 0,
-        "stale_reviews": 0,
-        "unverified_reviews": 0,
-        "queue_remaining": 0,
-        "rewrite_pending_remaining": 0,
-        "imagegen_calls": 0,
-        "image_outbox_created": 0,
-        "publications": 0,
-        "incidents": 0,
-        "concurrent_convergence": 5
-      },
-      "processed_ids": [],
-      "converged_ids": [
-        "be101248f52d",
-        "a12ced307462",
-        "f42d94bea3af",
-        "df263605ba9b",
-        "red-review-541ad18742a5d11e6d2f"
-      ],
-      "outcomes": [
-        {
-          "id": "be101248f52d",
-          "revision": 0,
-          "name": "#EnBocaDeTodos",
-          "outcome": "explained",
-          "applied": true,
-          "via": "concurrent_convergence",
-          "apply_commit": "59d0d44d16a73e034c5b68b1f0174154ed2a53f0"
-        },
-        {
-          "id": "a12ced307462",
-          "revision": 0,
-          "name": "#DragRaceEs",
-          "outcome": "explained",
-          "applied": true,
-          "via": "concurrent_convergence",
-          "apply_commit": "59d0d44d16a73e034c5b68b1f0174154ed2a53f0"
-        },
-        {
-          "id": "f42d94bea3af",
-          "revision": 0,
-          "name": "Canarias",
-          "outcome": "explained",
-          "applied": true,
-          "via": "concurrent_convergence",
-          "apply_commit": "59d0d44d16a73e034c5b68b1f0174154ed2a53f0"
-        },
-        {
-          "id": "df263605ba9b",
-          "revision": 0,
-          "name": "Sorloth",
-          "outcome": "explained",
-          "applied": true,
-          "via": "concurrent_convergence",
-          "apply_commit": "59d0d44d16a73e034c5b68b1f0174154ed2a53f0"
-        },
-        {
-          "id": "red-review-541ad18742a5d11e6d2f",
-          "revision": 0,
-          "name": "Revisar novedades: #SVSemifinal",
-          "outcome": "continuity_update",
-          "applied": true,
-          "via": "concurrent_convergence",
-          "apply_commit": "18259591d535beca4732104f9ece7b09f16d1676"
-        }
-      ],
-      "incident_count": 0,
-      "incidents": [],
-      "message": "Pasada tr-1794222640495-manual cerrada 5/5 por convergencia JIT con la ejecución inmediatamente anterior. #EnBocaDeTodos, #DragRaceEs, Canarias y Sorloth quedaron explained; #SVSemifinal quedó actualizado como continuidad sobre su ficha original. Barrera final main: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain. ImageGen=0; image-outbox editorial creado por esta pasada=0; publicaciones=0."
-    },
-    {
-      "run_id": "tr-1794226200000-manual",
-      "status": "DONE",
-      "started_at": "2026-11-09T13:10:00+01:00",
-      "finished_at": "2026-11-09T13:16:00+01:00",
-      "at": "2026-11-09T13:16:00+01:00",
-      "phase": "closing",
-      "summary": {
-        "attempted": 5,
-        "observed": 5,
-        "closed": 5,
-        "explained": 3,
-        "problematic": 0,
-        "updates": 0,
-        "review_completed_no_distinct_event": 0,
-        "maintenance_reviews": 2,
-        "unchanged_reviews": 2,
-        "continuity_updates": 0,
-        "distinct_updates": 0,
-        "stale_reviews": 0,
-        "unverified_reviews": 0,
-        "queue_remaining": 0,
-        "rewrite_pending_remaining": 0,
-        "imagegen_calls": 0,
-        "image_outbox_created": 0,
-        "publications": 0,
-        "incidents": 0,
-        "concurrent_convergence": 0
-      },
-      "processed_ids": [
-        "0890f456684a",
-        "dd697964f54f",
-        "cf34ab1f1c1a",
-        "red-review-94f3bc317254fc60cc3a",
-        "red-review-66053363e6b98151f249"
-      ],
-      "outcomes": [
-        {
-          "id": "0890f456684a",
-          "revision": 0,
-          "name": "NVIDIA",
-          "outcome": "explained",
-          "applied": true
-        },
-        {
-          "id": "dd697964f54f",
-          "revision": 0,
-          "name": "Pantoja",
-          "outcome": "explained",
-          "applied": true
-        },
-        {
-          "id": "cf34ab1f1c1a",
-          "revision": 0,
-          "name": "Paunovic",
-          "outcome": "explained",
-          "applied": true
-        },
-        {
-          "id": "red-review-94f3bc317254fc60cc3a",
-          "revision": 0,
-          "name": "Revisar novedades: maffeo",
-          "outcome": "unchanged",
-          "applied": true
-        },
-        {
-          "id": "red-review-66053363e6b98151f249",
-          "revision": 0,
-          "name": "Revisar novedades: Valencia",
-          "outcome": "unchanged",
-          "applied": true
-        }
-      ],
-      "incident_count": 0,
-      "incidents": [],
-      "message": "Pasada tr-1794226200000-manual cerrada 5/5. NVIDIA, Pantoja y Paunovic quedaron explicadas individualmente mediante el aplicador oficial. Las revisiones de maffeo y Valencia se cerraron como unchanged al no verificarse un acontecimiento posterior e independiente. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial creado por esta pasada=0; publicaciones=0."
-    },
-    {
-      "run_id": "tr-1794227100000-manual",
-      "status": "DONE",
-      "started_at": "2026-11-09T13:25:00+01:00",
-      "finished_at": "2026-11-09T13:27:00+01:00",
-      "at": "2026-11-09T13:27:00+01:00",
-      "phase": "closing",
-      "summary": {
-        "attempted": 0,
-        "observed": 0,
-        "closed": 0,
-        "explained": 0,
-        "problematic": 0,
-        "updates": 0,
-        "review_completed_no_distinct_event": 0,
-        "maintenance_reviews": 0,
-        "unchanged_reviews": 0,
-        "continuity_updates": 0,
-        "distinct_updates": 0,
-        "stale_reviews": 0,
-        "unverified_reviews": 0,
-        "queue_remaining": 0,
-        "rewrite_pending_remaining": 0,
-        "imagegen_calls": 0,
-        "image_outbox_created": 0,
-        "publications": 0,
-        "incidents": 0,
-        "concurrent_convergence": 0
-      },
-      "outcomes": [],
-      "message": "Pasada tr-1794227100000-manual cerrada 0/0 contra el estado autoritativo de main. Relectura final: editorial-queue=0 (updated_at 2026-11-09T13:20:59+01:00) y búsqueda dirigida sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial pendiente que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
-    },
-    {
-      "run_id": "tr-1794227336353-manual",
-      "status": "DONE",
-      "started_at": "2026-11-09T13:29:00+01:00",
-      "finished_at": "2026-11-09T13:35:34+01:00",
-      "at": "2026-11-09T13:35:34+01:00",
-      "phase": "closing",
-      "summary": {
-        "attempted": 2,
-        "observed": 2,
-        "closed": 2,
-        "explained": 0,
-        "problematic": 0,
-        "updates": 1,
-        "review_completed_no_distinct_event": 0,
-        "maintenance_reviews": 2,
-        "unchanged_reviews": 1,
-        "continuity_updates": 1,
-        "distinct_updates": 0,
-        "stale_reviews": 0,
-        "unverified_reviews": 0,
-        "queue_remaining": 0,
-        "rewrite_pending_remaining": 0,
-        "imagegen_calls": 0,
-        "image_outbox_created": 0,
-        "publications": 0,
-        "incidents": 0,
-        "concurrent_convergence": 0
-      },
-      "processed_ids": [
-        "red-review-cbb0f7ca88573e6e9724",
-        "red-review-0d23561e2d0147cc70d9"
-      ],
-      "outcomes": [
-        {
-          "id": "red-review-cbb0f7ca88573e6e9724",
-          "revision": 0,
-          "name": "Revisar novedades: Cracovia",
-          "outcome": "unchanged",
-          "applied": true,
-          "apply_commit": "91d4098c76d7408c2ef6879211627d1d0f1c8580"
-        },
-        {
-          "id": "red-review-0d23561e2d0147cc70d9",
-          "revision": 0,
-          "name": "Revisar novedades: Asraf",
-          "outcome": "continuity",
-          "applied": true,
-          "apply_commit": "0fe19dbe9c169034e66f631e68f0d7e2df44f378"
-        }
-      ],
-      "incident_count": 0,
-      "incidents": [],
-      "message": "Pasada tr-1794227336353-manual cerrada 2/2. Cracovia quedó unchanged al no verificarse un acontecimiento posterior e independiente. Asraf se actualizó como continuidad del mismo episodio tras confirmarse la expulsión de Rosa Benito y su clasificación para la final, conservando ID, revisión e explained_at y sin volver a Listas. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
-    },
-    {
-      "run_id": "tr-1794229800000-manual",
-      "status": "DONE",
-      "started_at": "2026-11-09T14:10:00+01:00",
-      "finished_at": "2026-11-09T14:18:00+01:00",
-      "at": "2026-11-09T14:18:00+01:00",
-      "phase": "closing",
-      "summary": {
-        "attempted": 7,
-        "observed": 7,
-        "closed": 7,
-        "explained": 5,
-        "problematic": 0,
-        "updates": 0,
-        "review_completed_no_distinct_event": 0,
-        "maintenance_reviews": 2,
-        "unchanged_reviews": 2,
-        "continuity_updates": 0,
-        "distinct_updates": 0,
-        "stale_reviews": 0,
-        "unverified_reviews": 0,
-        "queue_remaining": 0,
-        "rewrite_pending_remaining": 0,
-        "imagegen_calls": 0,
-        "image_outbox_created": 0,
-        "publications": 0,
-        "incidents": 0,
-        "concurrent_convergence": 5
-      },
-      "processed_ids": [
-        "efa3b6ffade2",
-        "1bb6fcfbf136",
-        "5252e3ff7a8a",
-        "8eabdd62bb5c",
-        "b7e6219a46fc",
-        "red-review-1363f720882a64109445",
-        "red-review-890f9cda420eaa082725"
-      ],
-      "converged_ids": [
-        "5252e3ff7a8a",
-        "8eabdd62bb5c",
-        "b7e6219a46fc",
-        "red-review-1363f720882a64109445",
-        "red-review-890f9cda420eaa082725"
-      ],
-      "outcomes": [
-        {
-          "id": "efa3b6ffade2",
-          "revision": 0,
-          "name": "#Mañaneros9N",
-          "outcome": "explained",
-          "applied": true,
-          "via": "editorial_outbox_applied"
-        },
-        {
-          "id": "1bb6fcfbf136",
-          "revision": 0,
-          "name": "TikTok",
-          "outcome": "explained",
-          "applied": true,
-          "via": "editorial_outbox_applied"
-        },
-        {
-          "id": "5252e3ff7a8a",
-          "revision": 0,
-          "name": "Sorloth",
-          "outcome": "explained",
-          "applied": true,
-          "via": "concurrent_convergence"
-        },
-        {
-          "id": "8eabdd62bb5c",
-          "revision": 0,
-          "name": "Feliz Domingo",
-          "outcome": "explained",
-          "applied": true,
-          "via": "concurrent_convergence"
-        },
-        {
-          "id": "b7e6219a46fc",
-          "revision": 0,
-          "name": "Real Oviedo",
-          "outcome": "explained",
-          "applied": true,
-          "via": "concurrent_convergence"
-        },
-        {
-          "id": "red-review-1363f720882a64109445",
-          "revision": 0,
-          "name": "Revisar novedades: maffeo",
-          "outcome": "unchanged",
-          "applied": true,
-          "via": "concurrent_convergence"
-        },
-        {
-          "id": "red-review-890f9cda420eaa082725",
-          "revision": 0,
-          "name": "Revisar novedades: Valencia",
-          "outcome": "unchanged",
-          "applied": true,
-          "via": "concurrent_convergence"
-        }
-      ],
-      "incident_count": 0,
-      "incidents": [],
-      "message": "Pasada tr-1794229800000-manual cerrada 7/7. #Mañaneros9N, TikTok, Sorloth, Feliz Domingo y Real Oviedo quedaron explained y sincronizadas en requests.json + telegram-manual-explained.json. Las revisiones de maffeo y Valencia quedaron unchanged, conservando texto e explained_at. Barrera final: editorial-queue=0, requests sin preparing/update/rewrite_pending/reexplain y mobile-decisions sin pendientes. ImageGen=0; image-outbox editorial=0; publicaciones=0."
-    },
-    {
-      "run_id": "tr-1794230700000-manual",
-      "status": "DONE",
-      "started_at": "2026-11-09T14:25:00+01:00",
-      "finished_at": "2026-11-09T14:26:00+01:00",
-      "at": "2026-11-09T14:26:00+01:00",
-      "phase": "closing",
-      "summary": {
-        "attempted": 0,
-        "observed": 0,
-        "closed": 0,
-        "explained": 0,
-        "problematic": 0,
-        "updates": 0,
-        "review_completed_no_distinct_event": 0,
-        "maintenance_reviews": 0,
-        "unchanged_reviews": 0,
-        "continuity_updates": 0,
-        "distinct_updates": 0,
-        "stale_reviews": 0,
-        "unverified_reviews": 0,
-        "queue_remaining": 0,
-        "rewrite_pending_remaining": 0,
-        "imagegen_calls": 0,
-        "image_outbox_created": 0,
-        "publications": 0,
-        "incidents": 0,
-        "concurrent_convergence": 0
-      },
-      "processed_ids": [],
-      "outcomes": [],
-      "incident_count": 0,
-      "incidents": [],
-      "message": "Pasada tr-1794230700000-manual cerrada 0/0 contra main. Relectura final: editorial-queue=0 (updated_at 2026-11-09T14:21:05+01:00), mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos y búsqueda dirigida en requests.json sin status preparing/status update/rewrite_pending/reexplain/task anticipate/task review_red. No había trabajo editorial pendiente que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
-    },
-    {
-      "run_id": "tr-1794231600000-manual",
-      "status": "DONE",
-      "started_at": "2026-11-09T14:40:00+01:00",
-      "finished_at": "2026-11-09T14:40:45+01:00",
-      "at": "2026-11-09T14:40:45+01:00",
-      "phase": "closing",
-      "summary": {
-        "attempted": 0,
-        "observed": 0,
-        "closed": 0,
-        "explained": 0,
-        "problematic": 0,
-        "updates": 0,
-        "review_completed_no_distinct_event": 0,
-        "maintenance_reviews": 0,
-        "unchanged_reviews": 0,
-        "continuity_updates": 0,
-        "distinct_updates": 0,
-        "stale_reviews": 0,
-        "unverified_reviews": 0,
-        "queue_remaining": 0,
-        "rewrite_pending_remaining": 0,
-        "imagegen_calls": 0,
-        "image_outbox_created": 0,
-        "publications": 0,
-        "incidents": 0,
-        "concurrent_convergence": 0
-      },
-      "processed_ids": [],
-      "outcomes": [],
-      "incident_count": 0,
-      "incidents": [],
-      "message": "Pasada tr-1794231600000-manual cerrada 0/0 contra main. Relectura final: editorial-queue=0 (updated_at 2026-11-09T14:31:25+01:00), mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos y búsqueda dirigida en requests.json sin status preparing/status update/rewrite_pending/task anticipate/task review_red. No había trabajo editorial pendiente que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
-    },
-    {
-      "run_id": "tr-1794233400000-manual",
-      "status": "DONE",
-      "started_at": "2026-11-09T15:10:00+01:00",
-      "finished_at": "2026-11-09T15:11:00+01:00",
-      "at": "2026-11-09T15:11:00+01:00",
-      "phase": "closing",
-      "summary": {
-        "attempted": 0,
-        "observed": 0,
-        "closed": 0,
-        "explained": 0,
-        "problematic": 0,
-        "updates": 0,
-        "review_completed_no_distinct_event": 0,
-        "maintenance_reviews": 0,
-        "unchanged_reviews": 0,
-        "continuity_updates": 0,
-        "distinct_updates": 0,
-        "stale_reviews": 0,
-        "unverified_reviews": 0,
-        "queue_remaining": 0,
-        "rewrite_pending_remaining": 0,
-        "imagegen_calls": 0,
-        "image_outbox_created": 0,
-        "publications": 0,
-        "incidents": 0,
-        "concurrent_convergence": 0
-      },
-      "processed_ids": [],
-      "outcomes": [],
-      "incident_count": 0,
-      "incidents": [],
-      "message": "Pasada tr-1794233400000-manual cerrada 0/0 contra main. Relectura final: editorial-queue=0 (updated_at 2026-11-09T15:01:31+01:00), mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos y requests.json sin cambios respecto a la lectura validada sin pendientes (SHA 42caefea965bcc8ccfb1243e5c3ec09eecb24a37). No había trabajo editorial pendiente que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-09T15:25:00+01:00",
-      "phase": "preparing",
-      "trend_id": "bb84c43fd4ee",
-      "title": "Calero",
-      "message": "Pasada editorial TTendencias RUNNING: 19 revisiones preparing detectadas en main, captura 15:20:59+01:00. Se procesarán de más antigua a más reciente con validación JIT. ImageGen=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-09T15:34:01+01:00",
-      "phase": "preparing",
-      "trend_id": "red-review-7a070b0ade968f1a5082",
-      "title": "Revisar novedades: Almudena",
-      "message": "Pasada tr-1794234841273-manual RUNNING: 2 review_red preparing en main (Almudena y Jensen Huang). Se procesan por antigüedad con validación JIT antes de investigar y persistir. ImageGen=0; publicaciones=0.",
-      "prior_runtime_observed": {
-        "run_id": "tr-1794234300000-manual",
-        "status": "success",
-        "phase": "preparing",
-        "updated_at": "2026-11-09T15:33:22+01:00",
-        "current": 0,
-        "total": 19
-      }
-    },
-    {
-      "at": "2026-11-09T15:36:00+01:00",
-      "phase": "closing",
-      "message": "Pasada editorial TTendencias completada: 18 explicaciones nuevas aplicadas, 2 revisiones de mantenimiento actualizadas por continuidad (Almudena y Jensen Huang) y Oyarzabal retirado de la cola por el refresco JIT antes de persistir. Cola final 0; ImageGen=0; image-outbox=0; publicaciones=0."
-    },
     {
       "run_id": "tr-1794234841273-manual",
       "status": "DONE",
@@ -3694,6 +2189,40 @@
         }
       ],
       "message": "Pasada tr-1794260243896-manual cerrada 2/2. Broncano r0 y La Revuelta r0 fueron reelaborados desde cero con el desarrollo emitido el 9/11: Broncano explicó que el equipo de Santiago Abascal pidió gestionar el público y el programa aceptó; después expresó reparos por el apoyo uniforme. Ambos textos quedaron persistidos y sincronizados en requests.json y telegram-manual-explained.json por el aplicador oficial. Barrera final: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain en requests ni mobile-decisions. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794262515713-manual",
+      "status": "DONE",
+      "started_at": "2026-11-09T23:34:30+01:00",
+      "finished_at": "2026-11-09T23:39:00+01:00",
+      "current": 17,
+      "total": 17,
+      "summary": {
+        "attempted": 17,
+        "observed": 17,
+        "closed": 17,
+        "explained": 16,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 1,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 1,
+        "cause_unconfirmed_explanations": 4,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 1
+      }
     }
   ],
   "current_item": null,
@@ -3715,5 +2244,8 @@
     "status": "DONE",
     "updated_at": "2026-11-09T22:42:38.089+01:00"
   },
-  "apply_workflow_run_id": 42712886314
+  "apply_workflow_run_id": 42712886314,
+  "apply_commit": "2246ee9c5547f1eab2c58e3c510786976b61bc04",
+  "maintenance_workflow_run_id": 42713522083,
+  "maintenance_job_id": "red-review-61d494cc18e2321aaa5b"
 }
