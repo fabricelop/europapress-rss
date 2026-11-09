@@ -84,8 +84,10 @@ class EpisodeResearchTest(unittest.TestCase):
         self.assertEqual({r["name"] for r in current}, set(NAMES))
         self.assertEqual(read(self.folder, "editorial-queue.json")["count"], 10)
         self.assertEqual(len({r["id"] for r in current}), 10)
-        self.assertTrue(all(r["status"] == "preparing" and r["new_episode_review"]
-                            and r["distinct_event_required"] for r in current))
+        self.assertTrue(all(r["status"] == "preparing" and
+                            not r["new_episode_review"] and
+                            not r["distinct_event_required"] and
+                            r["recurring_top30_name"] for r in current))
         self.assertTrue(all(r["requested_together"] == [r["name"]] and
                             r["captured_with"] == [r["name"]] and
                             r["grouping_disabled"] is True and
@@ -164,6 +166,66 @@ class EpisodeResearchTest(unittest.TestCase):
         old = next(x for x in rows if x["id"] == "old-1")
         self.assertEqual(old["group_leader_id"], "legacy-group-leader")
         self.assertEqual(old["status"], "deleted")
+
+
+    def test_buenosdias_review_completed_reopens_current_episode_without_new_event(self):
+        # Reproduce 09/11: all past #Buenosdías explanations were deleted;
+        # today it has a review_completed/no_distinct_event but no active
+        # explained ID. This must become preparing, not Pendientes.
+        entry = self.now.isoformat(timespec="seconds")
+        doc = read(self.folder, "recent.json")
+        doc["items"] = [{"rank": 17, "name": "#Buenosdías",
+                          "entered_top30_at": entry,
+                          "last_changed_at": entry}]
+        write(self.folder, "recent.json", doc)
+        historical = {"id": "buenos-old", "name": "#Buenosdías",
+                      "status": "deleted", "revision": 0,
+                      "requested_at": self.old, "deleted_at": self.old,
+                      "explained_at": self.old, "explanation": "Viejo saludo"}
+        reviewed = {"id": "buenos-review", "name": "#Buenosdías",
+                    "status": "review_completed", "auto_queued": True,
+                    "revision": 0, "rank": 17, "review_reason": "no_distinct_event",
+                    "radar_episode_started_at": entry,
+                    "radar_episode_token": "reentry:" + entry,
+                    "requested_at": entry, "review_completed_at": entry}
+        write(self.folder, "requests.json", {"requests": [historical, reviewed]})
+        write(self.folder, "telegram-manual-explained.json",
+              {"items": [historical]})
+        after = self.run_editor()
+        self.assertEqual([x["id"] for x in after],
+                         ["buenos-old", "buenos-review"])
+        self.assertEqual(after[-1]["status"], "preparing")
+        self.assertFalse(after[-1]["distinct_event_required"])
+        self.assertFalse(after[-1]["new_episode_review"])
+        self.assertEqual(read(self.folder, "editorial-queue.json")["count"], 1)
+        self.assertEqual(read(self.folder, "editorial-queue.json")["items"][0]["id"],
+                         "buenos-review")
+        self.assertEqual(len(self.run_editor()), 2)
+        self.assertEqual(read(self.folder, "editorial-queue.json")["count"], 1)
+
+    def test_felizlunes_current_explanation_stays_explained_without_new_listas(self):
+        entry = self.now.isoformat(timespec="seconds")
+        doc = read(self.folder, "recent.json")
+        doc["items"] = [{"rank": 2, "name": "#FelizLunes",
+                          "entered_top30_at": entry,
+                          "last_changed_at": entry}]
+        write(self.folder, "recent.json", doc)
+        previous = {"id": "old-feliz", "name": "#FelizLunes",
+                    "revision": 0, "status": "deleted",
+                    "deleted_at": self.old, "explained_at": self.old,
+                    "explanation": "Lunes anterior"}
+        current = {"id": "current-feliz", "name": "#FelizLunes",
+                   "revision": 0, "status": "explained",
+                   "requested_at": entry, "explained_at": entry,
+                   "explanation": "Saludo recurrente actual"}
+        write(self.folder, "requests.json", {"requests": [previous, current]})
+        write(self.folder, "telegram-manual-explained.json",
+              {"items": [previous, current]})
+        after = self.run_editor()
+        self.assertEqual(len(after), 2)
+        self.assertEqual(after[-1]["status"], "explained")
+        self.assertEqual(read(self.folder, "editorial-queue.json")["count"], 0)
+        self.assertEqual(len(self.run_editor()), 2)
 
     def test_refuse_unsafe_radar_even_with_approval(self):
         self.approve()
