@@ -3,6 +3,7 @@ import unicodedata
 from datetime import datetime, timedelta
 NEW_WINDOW = timedelta(hours=1)
 HISTORY_WINDOW = timedelta(days=7)
+REENTRY_GAP = timedelta(minutes=30)  # Distinguish a new observed Top30 stay from short collection gaps.
 
 def name_key(value):
     folded = unicodedata.normalize('NFD', ' '.join(str(value).casefold().split()).lstrip('#'))
@@ -38,6 +39,10 @@ def rank_items(names, previous, now, key=name_key):
                     'first_seen_at':row.get('first_detected_at') or now.isoformat(timespec='seconds'),
                     'last_seen_at':row['last_seen_at']}
     initialized = bool(previous.get('rank_movement_history'))
+    prior_top30 = {key(row.get('name')) for row in (previous.get('items') or [])[:30]
+                   if isinstance(row,dict) and row.get('name')}
+    prior_top30.update(key(name) for name in (previous.get('top30') or [])[:30]
+                       if isinstance(name,str) and name.strip())
     for i,name in enumerate((previous.get('top30') or [])[:30]):
         if isinstance(name,str) and name.strip():
             old.setdefault(key(name),{'name':name,'rank':i+1})
@@ -52,7 +57,14 @@ def rank_items(names, previous, now, key=name_key):
                    'previous_rank':None,'rank_delta':None,'last_changed_at':None,
                    'entered_top30_at':prior.get('entered_top30_at') if prior else None,
                    'first_seen_at':prior.get('first_seen_at',at) if prior else at}
-        if prior is None:
+        last_seen = parsed(prior.get('last_seen_at')) if prior else None
+        departed = (initialized and key(name) not in prior_top30 and last_seen is not None
+                    and REENTRY_GAP <= now-last_seen <= HISTORY_WINDOW and len(names)>=30)
+        if departed:
+            # Stable identity for this new visit; a changed rank alone is not
+            # evidence of a new episode, but a real 30-minute absence is.
+            current.update(movement='new',last_changed_at=at,entered_top30_at=at)
+        elif prior is None:
             # Migration establishes a baseline; untrusted legacy 'new' is not history.
             if initialized and len(names)>=30:
                 current.update(movement='new',last_changed_at=at,entered_top30_at=at)
