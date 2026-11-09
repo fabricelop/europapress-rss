@@ -7,35 +7,35 @@
   "previous_run_id": "tr-autoguard-1794255077",
   "command_id": "tr-20261109T2125-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-09T21:25:55+01:00",
-  "updated_at": "2026-11-09T21:27:00+01:00",
-  "finished_at": null,
-  "current": 2,
-  "total": 3,
-  "trend_id": "red-review-facf29f9d9dd5ac98d7c",
-  "title": "Revisar novedades: Broncano",
-  "queue_complete": false,
-  "processed_ids": [],
-  "converged_ids": [],
-  "remaining_ids": [
+  "updated_at": "2026-11-09T21:28:00+01:00",
+  "finished_at": "2026-11-09T21:28:00+01:00",
+  "current": 1,
+  "total": 1,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
     "red-review-facf29f9d9dd5ac98d7c"
   ],
-  "remaining_active_ids": [
+  "converged_ids": [
     "red-review-facf29f9d9dd5ac98d7c"
   ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 1,
     "observed": 1,
-    "closed": 0,
+    "closed": 1,
     "explained": 0,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
     "maintenance_reviews": 1,
-    "unchanged_reviews": 0,
+    "unchanged_reviews": 1,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "stale_reviews": 0,
@@ -43,37 +43,47 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 1,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 1
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "red-review-facf29f9d9dd5ac98d7c",
+      "revision": 0,
+      "name": "Revisar novedades: Broncano",
+      "outcome": "unchanged",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "outbox_sha": "be236e4c544a9c748f51a8f30545717dee2b5459"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "investigating",
+  "activity": "closing",
   "last_started_at": "2026-11-09T21:25:18+01:00",
-  "last_completed_at": "2026-11-09T21:25:19+01:00",
+  "last_completed_at": "2026-11-09T21:28:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-autoguard-1794253266",
+    "run_id": "tr-20261109T2125-manual",
     "status": "DONE",
-    "started_at": "2026-11-09T21:02:00+01:00",
-    "finished_at": "2026-11-09T21:12:41.131+01:00",
+    "started_at": "2026-11-09T21:25:55+01:00",
+    "finished_at": "2026-11-09T21:28:00+01:00",
     "summary": {
-      "attempted": 12,
-      "observed": 12,
-      "closed": 12,
-      "explained": 8,
+      "attempted": 1,
+      "observed": 1,
+      "closed": 1,
+      "explained": 0,
       "problematic": 0,
       "updates": 0,
-      "review_completed_no_distinct_event": 2,
-      "maintenance_reviews": 0,
-      "unchanged_reviews": 0,
+      "review_completed_no_distinct_event": 0,
+      "maintenance_reviews": 1,
+      "unchanged_reviews": 1,
       "continuity_updates": 0,
       "distinct_updates": 0,
       "stale_reviews": 0,
@@ -87,117 +97,28 @@
       "image_outbox_created": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 2,
-      "terminal_deleted_during_apply": 2,
-      "existing_current_explanation_preserved": 2
+      "concurrent_convergence": 1
     },
     "processed_ids": [
-      "7ad041e01cf1",
-      "fbedd11e1e0b",
-      "11d2909f978d",
-      "2e39d0210d48",
-      "629594b46505",
-      "bd9b74a682cd",
-      "bde417ed1711",
-      "b9af40846bbe",
-      "a4bbeb23f1fb",
-      "79666c46d60d",
-      "e531dbe189c6",
-      "78100e73b601"
+      "red-review-facf29f9d9dd5ac98d7c"
+    ],
+    "converged_ids": [
+      "red-review-facf29f9d9dd5ac98d7c"
     ],
     "outcomes": [
       {
-        "id": "7ad041e01cf1",
+        "id": "red-review-facf29f9d9dd5ac98d7c",
         "revision": 0,
-        "name": "Fable 5.2",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "fbedd11e1e0b",
-        "revision": 0,
-        "name": "Cera",
-        "outcome": "terminal_deleted_during_apply",
-        "applied": true
-      },
-      {
-        "id": "11d2909f978d",
-        "revision": 0,
-        "name": "Supergirl",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "2e39d0210d48",
-        "revision": 0,
-        "name": "Marvel",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "629594b46505",
-        "revision": 0,
-        "name": "Zubimendi",
-        "outcome": "terminal_deleted_during_apply",
-        "applied": true
-      },
-      {
-        "id": "bd9b74a682cd",
-        "revision": 0,
-        "name": "Batman",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "bde417ed1711",
-        "revision": 0,
-        "name": "Pau Cubarsí",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "b9af40846bbe",
-        "revision": 0,
-        "name": "#ElSótano09N",
-        "outcome": "existing_current_explanation_preserved",
-        "stored_status": "review_completed",
+        "name": "Revisar novedades: Broncano",
+        "outcome": "unchanged",
         "applied": true,
-        "existing_id": "6d406ef31553"
-      },
-      {
-        "id": "a4bbeb23f1fb",
-        "revision": 0,
-        "name": "SUPA",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "79666c46d60d",
-        "revision": 0,
-        "name": "Carzzy",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "e531dbe189c6",
-        "revision": 0,
-        "name": "#GHVIP9",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "78100e73b601",
-        "revision": 0,
-        "name": "Gamarra",
-        "outcome": "existing_current_explanation_preserved",
-        "stored_status": "review_completed",
-        "applied": true,
-        "existing_id": "06d9a9f6c06f"
+        "via": "concurrent_convergence",
+        "outbox_sha": "be236e4c544a9c748f51a8f30545717dee2b5459"
       }
     ],
-    "message": "Pasada tr-autoguard-1794253266 cerrada 12/12 tras relectura JIT: 8 explicaciones nuevas persistidas; Cera y Zubimendi convergieron a estado deleted y no se resucitaron; #ElSótano09N y Gamarra ya tenían explicación vigente publicada y se preservaron sin crear ficha duplicada. Barrera final: editorial-queue=0, sin preparing/update ni reexplicaciones pendientes. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "message": "Pasada tr-20261109T2125-manual cerrada 1/1 por convergencia JIT. La revisión de Broncano quedó unchanged: la explicación vigente ya incorporaba el cambio de público y no se verificó un desarrollo material posterior antes de la emisión. El resultado fue aplicado y la cola quedó vacía; no se creó nueva ficha ni imagen. Barrera final: editorial-queue=0 y mobile-decisions/requests sin preparing, update, rewrite_pending, reexplain, anticipate o review_red activos. ImageGen=0; publicaciones=0."
   },
-  "message": "Revisando novedades de Broncano r0: contraste posterior a la explicación vigente; por ahora no aparece un hecho material nuevo respecto al cambio de público ya incorporado. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-20261109T2125-manual cerrada 1/1 por convergencia JIT. La revisión de Broncano quedó unchanged: la explicación vigente ya incorporaba el cambio de público y no se verificó un desarrollo material posterior antes de la emisión. El resultado fue aplicado y la cola quedó vacía; no se creó nueva ficha ni imagen. Barrera final: editorial-queue=0 y mobile-decisions/requests sin preparing, update, rewrite_pending, reexplain, anticipate o review_red activos. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794199200000-manual",
@@ -3188,15 +3109,62 @@
       "trend_id": "red-review-facf29f9d9dd5ac98d7c",
       "title": "Revisar novedades: Broncano",
       "message": "Revisando novedades de Broncano r0: contraste posterior a la explicación vigente; por ahora no aparece un hecho material nuevo respecto al cambio de público ya incorporado. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-20261109T2125-manual",
+      "status": "DONE",
+      "started_at": "2026-11-09T21:25:55+01:00",
+      "finished_at": "2026-11-09T21:28:00+01:00",
+      "at": "2026-11-09T21:28:00+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 1,
+        "observed": 1,
+        "closed": 1,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 1,
+        "unchanged_reviews": 1,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 1
+      },
+      "processed_ids": [
+        "red-review-facf29f9d9dd5ac98d7c"
+      ],
+      "converged_ids": [
+        "red-review-facf29f9d9dd5ac98d7c"
+      ],
+      "outcomes": [
+        {
+          "id": "red-review-facf29f9d9dd5ac98d7c",
+          "revision": 0,
+          "name": "Revisar novedades: Broncano",
+          "outcome": "unchanged",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "outbox_sha": "be236e4c544a9c748f51a8f30545717dee2b5459"
+        }
+      ],
+      "message": "Pasada tr-20261109T2125-manual cerrada 1/1 por convergencia JIT. La revisión de Broncano quedó unchanged: la explicación vigente ya incorporaba el cambio de público y no se verificó un desarrollo material posterior antes de la emisión. El resultado fue aplicado y la cola quedó vacía; no se creó nueva ficha ni imagen. Barrera final: editorial-queue=0 y mobile-decisions/requests sin preparing, update, rewrite_pending, reexplain, anticipate o review_red activos. ImageGen=0; publicaciones=0."
     }
   ],
-  "current_item": {
-    "id": "red-review-facf29f9d9dd5ac98d7c",
-    "revision": 0,
-    "name": "Revisar novedades: Broncano"
-  },
+  "current_item": null,
   "withdrawn_ids": [
     "ae7f066f3c94"
   ],
-  "last_finished_at": "2026-11-09T20:20:00+01:00"
+  "last_finished_at": "2026-11-09T21:28:00+01:00"
 }
