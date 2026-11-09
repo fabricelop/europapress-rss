@@ -756,7 +756,7 @@ for item in current:
     # Re-open exactly the same independent research ID once. The next
     # auto-queue call sees status preparing and never duplicates this ticket.
     candidate["status"] = "preparing"
-    candidate["new_episode_review"] = False
+    candidate["new_episode_review"] = True
     candidate["distinct_event_required"] = False
     candidate["task"] = "explain"
     candidate["rank"] = item["rank"]
@@ -946,7 +946,10 @@ for item in to_queue:
         "auto_queue_scope": "top30",
         # Episode history may justify a fresh ID, but cannot impose a
         # different-event requirement on ordinary current-day explanation.
-        "new_episode_review": False,
+        # Keep this flag to protect the independent research ID from
+        # legacy same-name suppression. It no longer means that a different
+        # news event is required for an explanation.
+        "new_episode_review": bool(item.get("new_episode_review")),
         "recurring_top30_name": bool(item.get("new_episode_review")),
         "radar_episode_token": episode_token,
         "radar_episode_started_at": next((
