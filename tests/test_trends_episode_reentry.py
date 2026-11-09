@@ -110,7 +110,7 @@ class EpisodeResearchTest(unittest.TestCase):
         self.assertEqual(len(rows), 10)
         self.assertEqual(read(self.folder, "editorial-queue.json")["count"], 0)
 
-    def test_returning_name_with_new_entry_marker_never_gets_new_id(self):
+    def test_return_after_24h_gets_one_new_research_id(self):
         doc = read(self.folder, "recent.json")
         doc["items"][1]["entered_top30_at"] = (
             self.now - timedelta(hours=1)).isoformat(timespec="seconds")
@@ -120,10 +120,17 @@ class EpisodeResearchTest(unittest.TestCase):
                 row.pop("last_changed_at", None)
         write(self.folder, "recent.json", doc)
         rows = self.run_editor()
-        self.assertEqual(len(rows), 10)
-        self.assertFalse(any(r["name"] == "Baena" and r["status"] == "preparing" for r in rows))
-        self.assertEqual(read(self.folder, "editorial-queue.json")["count"], 0)
-        self.assertEqual(len(self.run_editor()), 10)
+        self.assertEqual(len(rows), 11)
+        new = [r for r in rows if r["name"] == "Baena" and r["status"] == "preparing"]
+        self.assertEqual(len(new), 1)
+        self.assertNotEqual(new[0]["id"], "old-1")
+        self.assertTrue(new[0]["new_episode_review"])
+        self.assertTrue(new[0]["distinct_event_required"])
+        self.assertTrue(new[0]["radar_episode_token"].startswith("reentry:"))
+        self.assertEqual(read(self.folder, "editorial-queue.json")["count"], 1)
+        self.assertEqual(len(self.run_editor()), 11)
+        self.assertEqual(next(r for r in self.run_editor() if r["id"] == "old-1")["status"],
+                         self.originals[1]["status"])
 
     def test_no_new_grouped_status_created_from_two_old_group_members(self):
         rows = self.run_editor()
@@ -197,7 +204,7 @@ class EpisodeResearchTest(unittest.TestCase):
         self.assertEqual(len(self.run_editor()), 2)
         self.assertEqual(read(self.folder, "editorial-queue.json")["count"], 0)
 
-    def test_green_yellow_and_red_do_not_requeue_on_rank_or_reentry(self):
+    def test_green_yellow_keep_explanations_red_reentry_gets_research(self):
         now = self.now
         old = [dict(self.originals[i], name=name, status="explained",
                     explained_at=(now - timedelta(hours=hours)).isoformat(timespec="seconds"),
@@ -212,9 +219,70 @@ class EpisodeResearchTest(unittest.TestCase):
         write(self.folder, "requests.json", {"requests": old})
         write(self.folder, "telegram-manual-explained.json", {"items": old})
         rows = self.run_editor()
-        self.assertEqual(rows, old)
+        self.assertEqual(len(rows), 4)
+        self.assertEqual(rows[:3], old)
+        research = rows[-1]
+        self.assertEqual(research["name"], "Roja")
+        self.assertTrue(research["new_episode_review"])
+        self.assertEqual(research["status"], "preparing")
+        self.assertTrue(research["distinct_event_required"])
+        self.assertEqual(read(self.folder, "editorial-queue.json")["count"], 1)
+        self.assertEqual(len(self.run_editor()), 4)
+        self.assertEqual(read(self.folder, "editorial-queue.json")["count"], 1)
+
+    def test_old_explanation_without_observed_return_stays_closed(self):
+        # A recent rank change cannot substitute for leaving/reentering Top30.
+        doc = read(self.folder, "recent.json")
+        doc["items"] = [{"rank": 8, "name": "Baena",
+                         "last_changed_at": self.now.isoformat(timespec="seconds")}]
+        write(self.folder, "recent.json", doc)
+        rows = self.run_editor()
+        self.assertEqual(len(rows), 10)
         self.assertEqual(read(self.folder, "editorial-queue.json")["count"], 0)
-        self.assertEqual(self.run_editor(), old)
+
+    def test_previous_reentry_closure_is_deduped_but_later_return_is_new(self):
+        entry = self.now.isoformat(timespec="seconds")
+        doc = read(self.folder, "recent.json")
+        doc["items"] = [{"rank": 1, "name": "Baena", "entered_top30_at": entry}]
+        write(self.folder, "recent.json", doc)
+        prior = dict(self.originals[1])
+        previous_review = {"id": "baena-review-finished", "name": "Baena",
+                           "status": "review_completed", "revision": 0,
+                           "auto_queued": True, "new_episode_review": True,
+                           "radar_episode_token": "reentry:" + entry,
+                           "review_completed_at": entry, "requested_at": entry,
+                           "review_reason": "no_distinct_event"}
+        write(self.folder, "requests.json", {"requests": [prior, previous_review]})
+        write(self.folder, "telegram-manual-explained.json", {
+            "items": [{"id": prior["id"], "name": "Baena", "status": "explained",
+                       "explained_at": self.old, "explanation": "Old verified occurrence"}]})
+        self.assertEqual(len(self.run_editor()), 2)
+        # Distinct subsequent radar entry should make a different token/ID.
+        later_entry = (self.now + timedelta(days=2)).isoformat(timespec="seconds")
+        # The original explanation is still old; use a fresh clock from now
+        # by changing the fixture to an older observed reentry instead.
+        previous_review["radar_episode_token"] = "reentry:" + self.old
+        write(self.folder, "requests.json", {"requests": [prior, previous_review]})
+        rows = self.run_editor()
+        self.assertEqual(len(rows), 3)
+        self.assertEqual(rows[-1]["status"], "preparing")
+        self.assertEqual(read(self.folder, "editorial-queue.json")["count"], 1)
+
+    def test_24h_boundary_not_a_red_return(self):
+        at = self.now.isoformat(timespec="seconds")
+        doc = read(self.folder, "recent.json")
+        doc["items"] = [{"rank": 1, "name": "Verde", "entered_top30_at": at}]
+        write(self.folder, "recent.json", doc)
+        prior = {"id": "old-boundary", "name": "Verde", "status": "deleted",
+                 "revision": 1, "requested_at": (self.now - timedelta(days=2)).isoformat(),
+                 "explained_at": (self.now - timedelta(hours=24)).isoformat(),
+                 "explanation": "Existing verified reason", "auto_queued": True}
+        write(self.folder, "requests.json", {"requests": [prior]})
+        write(self.folder, "telegram-manual-explained.json",
+              {"items": [dict(prior, status="explained")]})
+        rows = self.run_editor()
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(read(self.folder, "editorial-queue.json")["count"], 0)
 
     def test_felizlunes_current_explanation_stays_explained_without_new_listas(self):
         entry = self.now.isoformat(timespec="seconds")

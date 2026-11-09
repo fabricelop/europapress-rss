@@ -1,9 +1,8 @@
-"""Prevent a returning Top30 label from silently creating a second editorial card.
+"""Research a dated Top30 reentry when the last explanation is older than 24h.
 
-The ranking is a signal to INVESTIGATE, not evidence of a new news episode.
-Only explicit editorial new-episode requests can bypass a previously treated
-term. The durable ledgers are consulted even when the transient explained
-snapshot is compacted or the latest request status is 'inactive'.
+A ranking reentry is a reason to INVESTIGATE, never evidence of a new
+publishable news event. Historical editorial IDs, decisions, photos and posts
+are preserved. Mere rank movement and evergreen presence are not reentries.
 """
 from __future__ import annotations
 
@@ -72,14 +71,16 @@ def should_reopen_from_radar(name, history, request):
     """Never auto-create a second card solely because ranking reappeared."""
     return key(name) not in history or editor_initiated(request)
 
-# A name is an entity/label, NOT an editorial episode ID. A fresh reentry
-# or a 24h review can start fact checking again, never auto-publish an old event.
-REENTRY_SEPARATION = timedelta(minutes=30)
+# An explicitly observed Top30 entry is distinct from a rank change.
+# The age is measured from the most recent VERIFIED explanation, not from a
+# deletion, publication or subsequent ranking movement.
 REVIEW_COOLDOWN = timedelta(hours=24)
 ACTIVE_RESEARCH = frozenset({"preparing", "update", "ready", "problematic"})
 
 
 def _date(value):
+    if isinstance(value, datetime):
+        return value if value.tzinfo else None
     if not value:
         return None
     try:
@@ -90,7 +91,7 @@ def _date(value):
 
 
 def latest_episode_activity(request, historical_at=None):
-    """Recent research/decision, not an arbitrary last-modified DB timestamp."""
+    """Compatibility helper for historical UI/audit consumers."""
     candidates = [historical_at] if historical_at else []
     if request:
         for field in ("review_completed_at", "reviewed_at", "requested_at",
@@ -103,12 +104,13 @@ def latest_episode_activity(request, historical_at=None):
 
 
 def review_episode_token(name, radar_item, request, treated, now, historical_at=None):
-    """Return a stable NEW research episode token or None.
+    """One stable research token for a verified return >24h after explanation.
 
-    A term returning after an observed departure is a signal for investigation.
-    If it has stayed ranked, a once-per-24h review may check for NEW facts.
-    Neither a rank change nor a repeated label proves a new story, so callers
-    must mark this as research-only and require distinct-event verification.
+    entered_top30_at must be a real radar entry after the last explanation:
+    last_changed_at/ranking changes, age alone, and missing dates NEVER
+    authorize new work. The caller must check fresh Top30 evidence and
+    idempotently reject already handled tokens. A new fact remains necessary
+    before creating any new public-facing editorial card or image.
     """
     if key(name) not in treated:
         return None
@@ -116,19 +118,11 @@ def review_episode_token(name, radar_item, request, treated, now, historical_at=
         return None
     if request and str(request.get("status") or "").lower() in ACTIVE_RESEARCH:
         return None
-    last = latest_episode_activity(request, historical_at)
-    if not last or last.tzinfo is None:
-        return None  # Never infer a new event from undated historical data.
-    if last > now:
-        return None
+    last_explained = _date(historical_at) or _date((request or {}).get("explained_at"))
+    if not last_explained or last_explained > now:
+        return None  # No verified explanation timestamp => no auto-research.
     entered = _date(radar_item.get("entered_top30_at"))
-    if entered and entered <= now and entered >= last + REENTRY_SEPARATION:
-        return "reentry:" + entered.isoformat(timespec="seconds")
-    changed = _date(radar_item.get("last_changed_at"))
-    if (now >= last + REVIEW_COOLDOWN and changed
-            and last < changed <= now):
-        # Require a genuinely observed fresh rank change; an unchanged
-        # evergreen label plus elapsed time is not new-event evidence.
-        # Even this signal only permits research, not another publication.
-        return "daily-review:" + now.date().isoformat()
-    return None
+    if (not entered or entered > now
+            or entered <= last_explained + REVIEW_COOLDOWN):
+        return None
+    return "reentry:" + entered.isoformat(timespec="seconds")
