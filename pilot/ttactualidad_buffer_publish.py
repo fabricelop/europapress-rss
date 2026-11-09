@@ -689,6 +689,36 @@ def reconcile(data, key):
             item["closure_error"] = "Resultado de cierre sin confirmar: " + str(exc)[:100]
             save(data, "guardar fallo o incertidumbre del cierre")
 
+def recent_verified_channel(data, account, now=None):
+    """Re-use a channel only after Buffer confirmed the exact X account.
+
+    target_channel otherwise costs two GraphQL queries before EVERY post.
+    Six-hour TTL ensures account changes eventually force a fresh lookup.
+    A channel with no matching X permalink is never eligible for reuse.
+    """
+    now = now or datetime.now(timezone.utc)
+    invalid_after = (data.get("channel_cache_invalid_after") or {}).get(account)
+    for row in reversed(data.get("items") or []):
+        if (row.get("account") != account or row.get("state") != "sent"
+            or not row.get("channel_id")
+            or not verified_x_link(row.get("post_url"), account)):
+            continue
+        try:
+            sent = datetime.fromisoformat(str(row["sent_at"]).replace("Z", "+00:00"))
+            if sent.tzinfo is None:
+                continue
+            if invalid_after:
+                invalid = datetime.fromisoformat(str(invalid_after).replace("Z", "+00:00"))
+                if sent <= invalid:
+                    continue
+            age = (now - sent).total_seconds()
+            if 0 <= age <= 6 * 60 * 60:
+                return row["channel_id"]
+        except (KeyError, TypeError, ValueError):
+            continue
+    return None
+
+
 def publish(data, payload, key):
     project, event_id, revision = (payload.get("project"),
                                    payload.get("event_id"), payload.get("revision"))
@@ -715,7 +745,8 @@ def publish(data, payload, key):
             raise ValueError("Falta BUFFER_API_KEY en GitHub Actions Secrets")
         text, image_url, media_type = editorial(project, event_id, revision)
         text = x_payload(project, text)
-        channel = target_channel(key, PROJECT_ACCOUNT[project])
+        channel = (recent_verified_channel(data, PROJECT_ACCOUNT[project])
+                   or target_channel(key, PROJECT_ACCOUNT[project]))
     except Exception as exc:
         set_state(row, "failed", error=str(exc)[:230])
         data["items"].append(row)
@@ -749,6 +780,10 @@ def publish(data, payload, key):
         if not post:
             set_state(row, "failed", error=str(outcome.get("message") or
                                                "Buffer rechazó la publicación")[:230])
+            # If a cached channel was disconnected or replaced, force the
+            # next EXPLICIT editor action to revalidate through Buffer.
+            if "channel" in str(row.get("error") or "").casefold():
+                data.setdefault("channel_cache_invalid_after", {})[row["account"]] = utc_now()
         elif post.get("id") and post.get("channelId") == channel:
             # Mutation acknowledgement alone is NOT proof X has published.
             # A separate Buffer post readback must verify sentAt + X permalink.
