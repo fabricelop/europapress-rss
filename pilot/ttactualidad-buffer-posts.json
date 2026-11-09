@@ -793,35 +793,39 @@
       "event_id": "ac7e794a0afb",
       "revision": 0,
       "account": "ttendenciasesp",
-      "state": "pending",
+      "state": "sent",
       "requested_at": "2026-11-09T17:13:03+00:00",
       "channel_id": "6aeed045e29c69a171902233",
       "media_type": "archive",
-      "checked_at": "2026-11-09T17:13:12+00:00",
-      "buffer_post_id": "6af1ff260b813b46506937de"
+      "checked_at": "2026-11-09T17:13:15+00:00",
+      "buffer_post_id": "6af1ff260b813b46506937de",
+      "last_buffer_check_at": "2026-11-09T17:13:15+00:00",
+      "buffer_poll_attempts": 1,
+      "sent_at": "2026-11-09T17:13:11.982Z",
+      "post_url": "https://twitter.com/TTendenciasESP/status/2119840738800222240"
     }
   ],
   "api_quota": {
     "limit": 2000,
-    "remaining": 1781,
-    "used": 219,
+    "remaining": 1780,
+    "used": 220,
     "window_seconds": 2592000,
-    "resets_in_seconds": 2385741,
-    "observed_at": "2026-11-09T17:13:12+00:00",
+    "resets_in_seconds": 2385736,
+    "observed_at": "2026-11-09T17:13:15+00:00",
     "other_windows": [
       {
         "window_seconds": 900,
         "limit": 150,
-        "remaining": 145,
-        "used": 5,
-        "resets_in_seconds": 676
+        "remaining": 144,
+        "used": 6,
+        "resets_in_seconds": 671
       },
       {
         "window_seconds": 86400,
         "limit": 600,
-        "remaining": 578,
-        "used": 22,
-        "resets_in_seconds": 59527
+        "remaining": 577,
+        "used": 23,
+        "resets_in_seconds": 59521
       }
     ]
   },
@@ -921,6 +925,12 @@
       "limit": 2000,
       "used": 219,
       "sent_total": 40
+    },
+    {
+      "observed_at": "2026-11-09T17:13:15+00:00",
+      "limit": 2000,
+      "used": 220,
+      "sent_total": 41
     }
   ]
 }
