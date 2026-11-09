@@ -3,36 +3,33 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794226200000-manual",
-  "previous_run_id": "tr-1794226431228-manual",
-  "command_id": "tr-1794226200000-manual",
-  "source": "chat",
+  "run_id": "tr-1794226431228-manual",
+  "previous_run_id": "tr-1794226200000-manual",
+  "command_id": "tr-1794226431228-manual",
+  "source": "chat-manual",
   "status": "DONE",
   "phase": "closing",
-  "started_at": "2026-11-09T13:10:00+01:00",
-  "updated_at": "2026-11-09T13:16:00+01:00",
-  "finished_at": "2026-11-09T13:16:00+01:00",
-  "current": 5,
-  "total": 5,
+  "started_at": "2026-11-09T13:14:00+01:00",
+  "updated_at": "2026-11-09T13:17:00+01:00",
+  "finished_at": "2026-11-09T13:17:00+01:00",
+  "current": 2,
+  "total": 2,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
   "queue_complete": true,
-  "processed_ids": [
-    "0890f456684a",
-    "dd697964f54f",
-    "cf34ab1f1c1a",
+  "processed_ids": [],
+  "converged_ids": [
     "red-review-94f3bc317254fc60cc3a",
     "red-review-66053363e6b98151f249"
   ],
-  "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 5,
-    "observed": 5,
-    "closed": 5,
-    "explained": 3,
+    "attempted": 2,
+    "observed": 2,
+    "closed": 2,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
@@ -48,43 +45,26 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 2
   },
   "outcomes": [
-    {
-      "id": "0890f456684a",
-      "revision": 0,
-      "name": "NVIDIA",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "dd697964f54f",
-      "revision": 0,
-      "name": "Pantoja",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "cf34ab1f1c1a",
-      "revision": 0,
-      "name": "Paunovic",
-      "outcome": "explained",
-      "applied": true
-    },
     {
       "id": "red-review-94f3bc317254fc60cc3a",
       "revision": 0,
       "name": "Revisar novedades: maffeo",
       "outcome": "unchanged",
-      "applied": true
+      "applied": true,
+      "via": "concurrent_convergence",
+      "converged_with": "tr-1794226200000-manual"
     },
     {
       "id": "red-review-66053363e6b98151f249",
       "revision": 0,
       "name": "Revisar novedades: Valencia",
       "outcome": "unchanged",
-      "applied": true
+      "applied": true,
+      "via": "concurrent_convergence",
+      "converged_with": "tr-1794226200000-manual"
     }
   ],
   "incident_count": 0,
@@ -344,23 +324,47 @@
       "trend_id": null,
       "title": null,
       "message": "Pasada tr-1794226431228-manual iniciada sobre main con 0 trabajos activos. Revalidación JIT por ID/revisión; ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-09T13:14:00+01:00",
+      "phase": "investigating",
+      "trend_id": "red-review-94f3bc317254fc60cc3a",
+      "title": "Revisar novedades: maffeo",
+      "message": "Revisión contrastada: la cobertura actual sigue correspondiendo al mismo episodio del Valencia-Real Madrid, incluida la protesta en DAZN y las disculpas; sin hecho posterior independiente."
+    },
+    {
+      "at": "2026-11-09T13:15:00+01:00",
+      "phase": "investigating",
+      "trend_id": "red-review-66053363e6b98151f249",
+      "title": "Revisar novedades: Valencia",
+      "message": "Revisión contrastada: la actualidad sigue referida al 0-3 ante el Real Madrid y a la previa copera; sin acontecimiento posterior consumado que cambie la explicación vigente."
+    },
+    {
+      "at": "2026-11-09T13:17:00+01:00",
+      "phase": "verifying",
+      "message": "Convergencia JIT verificada con tr-1794226200000-manual: ambos review_red ya estaban aplicados como unchanged. Relectura final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos."
+    },
+    {
+      "at": "2026-11-09T13:17:00+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-1794226431228-manual cerrada 2/2 por convergencia. maffeo y Valencia unchanged; no se alteraron explicación ni explained_at. ImageGen=0; publicaciones=0."
     }
   ],
-  "last_started_at": "2026-11-09T13:10:00+01:00",
-  "last_completed_at": "2026-11-09T13:16:00+01:00",
+  "last_started_at": "2026-11-09T13:14:00+01:00",
+  "last_completed_at": "2026-11-09T13:17:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794226200000-manual",
+    "run_id": "tr-1794226431228-manual",
     "status": "DONE",
-    "started_at": "2026-11-09T13:10:00+01:00",
-    "finished_at": "2026-11-09T13:16:00+01:00",
-    "at": "2026-11-09T13:16:00+01:00",
+    "started_at": "2026-11-09T13:14:00+01:00",
+    "finished_at": "2026-11-09T13:17:00+01:00",
+    "at": "2026-11-09T13:17:00+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 5,
-      "observed": 5,
-      "closed": 5,
-      "explained": 3,
+      "attempted": 2,
+      "observed": 2,
+      "closed": 2,
+      "explained": 0,
       "problematic": 0,
       "updates": 0,
       "review_completed_no_distinct_event": 0,
@@ -376,57 +380,38 @@
       "image_outbox_created": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 0
+      "concurrent_convergence": 2
     },
-    "processed_ids": [
-      "0890f456684a",
-      "dd697964f54f",
-      "cf34ab1f1c1a",
+    "processed_ids": [],
+    "converged_ids": [
       "red-review-94f3bc317254fc60cc3a",
       "red-review-66053363e6b98151f249"
     ],
     "outcomes": [
       {
-        "id": "0890f456684a",
-        "revision": 0,
-        "name": "NVIDIA",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "dd697964f54f",
-        "revision": 0,
-        "name": "Pantoja",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "cf34ab1f1c1a",
-        "revision": 0,
-        "name": "Paunovic",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
         "id": "red-review-94f3bc317254fc60cc3a",
         "revision": 0,
         "name": "Revisar novedades: maffeo",
         "outcome": "unchanged",
-        "applied": true
+        "applied": true,
+        "via": "concurrent_convergence",
+        "converged_with": "tr-1794226200000-manual"
       },
       {
         "id": "red-review-66053363e6b98151f249",
         "revision": 0,
         "name": "Revisar novedades: Valencia",
         "outcome": "unchanged",
-        "applied": true
+        "applied": true,
+        "via": "concurrent_convergence",
+        "converged_with": "tr-1794226200000-manual"
       }
     ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-1794226200000-manual cerrada 5/5. NVIDIA, Pantoja y Paunovic quedaron explicadas individualmente mediante el aplicador oficial. Las revisiones de maffeo y Valencia se cerraron como unchanged al no verificarse un acontecimiento posterior e independiente. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial creado por esta pasada=0; publicaciones=0."
+    "message": "Pasada tr-1794226431228-manual cerrada 2/2 por convergencia JIT con tr-1794226200000-manual. maffeo y Valencia quedaron unchanged. Barrera final main: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain. ImageGen=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794226200000-manual cerrada 5/5. NVIDIA, Pantoja y Paunovic quedaron explicadas individualmente mediante el aplicador oficial. Las revisiones de maffeo y Valencia se cerraron como unchanged al no verificarse un acontecimiento posterior e independiente. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial creado por esta pasada=0; publicaciones=0.",
+  "message": "Pasada tr-1794226431228-manual cerrada 2/2 por convergencia JIT con tr-1794226200000-manual. maffeo y Valencia quedaron unchanged. Barrera final main: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T03:17:00+01:00",
