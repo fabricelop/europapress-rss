@@ -3,38 +3,35 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794248007175-manual",
-  "previous_run_id": "tr-20261109T1855-manual",
-  "command_id": "tr-1794248007175-manual",
+  "run_id": "tr-1794248770665-manual",
+  "previous_run_id": "tr-1794248007175-manual",
+  "command_id": "tr-1794248770665-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-09T19:14:00+01:00",
-  "updated_at": "2026-11-09T19:18:00+01:00",
-  "finished_at": "2026-11-09T19:18:00+01:00",
-  "current": 2,
-  "total": 2,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-09T19:27:00+01:00",
+  "updated_at": "2026-11-09T19:27:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "red-review-1c959131fe088375078a",
-    "red-review-d98c8c9f8e841f002d23"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
     "explained": 0,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 2,
-    "unchanged_reviews": 2,
+    "maintenance_reviews": 0,
+    "unchanged_reviews": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "stale_reviews": 0,
@@ -47,24 +44,7 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "red-review-1c959131fe088375078a",
-      "revision": 0,
-      "name": "Revisar novedades: Oviedo",
-      "outcome": "unchanged",
-      "applied": true,
-      "apply_commit": "875722276c4c31b0d249387e7ac5a49fa1e3bf76"
-    },
-    {
-      "id": "red-review-d98c8c9f8e841f002d23",
-      "revision": 0,
-      "name": "Revisar novedades: Supa",
-      "outcome": "unchanged",
-      "applied": true,
-      "apply_commit": "875722276c4c31b0d249387e7ac5a49fa1e3bf76"
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -278,9 +258,16 @@
       "at": "2026-11-09T19:18:00+01:00",
       "phase": "closing",
       "message": "Pasada tr-1794248007175-manual cerrada 2/2. Oviedo y Supa quedaron unchanged: sus episodios posteriores ya habían sido materializados hoy en fichas independientes y eliminados por decisión editorial, por lo que no se recrearon ni se alteraron las fichas históricas publicadas. El aplicador oficial 875722276c4c31b0d249387e7ac5a49fa1e3bf76 estampó ambos mantenimientos y retiró los dos review_red. Barrera final: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794248770665-manual",
+      "status": "RUNNING",
+      "at": "2026-11-09T19:27:00+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-1794248770665-manual RUNNING desde chat. Cola inicial JIT=0; se releerá main y se comprobarán preparing/update/reexplicaciones antes del cierre. ImageGen=0; publicaciones=0."
     }
   ],
-  "last_started_at": "2026-11-09T19:14:00+01:00",
+  "last_started_at": "2026-11-09T19:27:00+01:00",
   "last_completed_at": "2026-11-09T19:18:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -312,7 +299,7 @@
     },
     "message": "Pasada tr-1794248007175-manual cerrada 2/2. Oviedo y Supa quedaron unchanged: sus episodios posteriores ya habían sido materializados hoy en fichas independientes y eliminados por decisión editorial, por lo que no se recrearon ni se alteraron las fichas históricas publicadas. El aplicador oficial 875722276c4c31b0d249387e7ac5a49fa1e3bf76 estampó ambos mantenimientos y retiró los dos review_red. Barrera final: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794246075875-manual cerrada 2/2 por convergencia JIT. Broncano y #HuelgaGeneral quedaron unchanged; el aplicador oficial f7a6674554494b364feef5c3ec73867c32971acc registró ambos mantenimientos y retiró las dos revisiones de editorial-queue. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada tr-1794248770665-manual RUNNING desde chat. Cola inicial JIT=0; se releerá main y se comprobarán preparing/update/reexplicaciones antes del cierre. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794199200000-manual",
