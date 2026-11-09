@@ -10,12 +10,12 @@
   "status": "RUNNING",
   "phase": "investigating",
   "started_at": "2026-11-09T11:10:00+01:00",
-  "updated_at": "2026-11-09T11:12:00+01:00",
+  "updated_at": "2026-11-09T11:13:00+01:00",
   "finished_at": null,
-  "current": 0,
+  "current": 1,
   "total": 4,
-  "trend_id": "red-review-da276035edf10382b826",
-  "title": "Revisar novedades: maffeo",
+  "trend_id": "red-review-47e5d8d5ac22fd4f61df",
+  "title": "Revisar novedades: Valencia",
   "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
@@ -152,6 +152,13 @@
       "trend_id": "red-review-da276035edf10382b826",
       "title": "Revisar novedades: maffeo",
       "message": "1/2 · Revisando novedades materiales de maffeo posteriores a la explicación vigente del Valencia-Real Madrid. Fuentes actuales confirman la misma entrevista, protesta y disculpas; no aparece un episodio posterior independiente."
+    },
+    {
+      "at": "2026-11-09T11:13:00+01:00",
+      "phase": "investigating",
+      "trend_id": "red-review-47e5d8d5ac22fd4f61df",
+      "title": "Revisar novedades: Valencia",
+      "message": "2/2 · Revisando novedades de Valencia. La cobertura nueva sigue siendo consecuencia de la derrota 0-3 y preparación del partido copero del 10/11; no hay aún un acontecimiento posterior consumado que cambie la explicación vigente."
     }
   ],
   "last_started_at": "2026-11-09T11:10:00+01:00",
@@ -1644,9 +1651,9 @@
     }
   ],
   "current_item": {
-    "id": "red-review-da276035edf10382b826",
-    "name": "Revisar novedades: maffeo",
-    "rank": 7,
+    "id": "red-review-47e5d8d5ac22fd4f61df",
+    "name": "Revisar novedades: Valencia",
+    "rank": 12,
     "status": "preparing",
     "requested_at": "2026-11-09T10:00:13.572972+00:00",
     "revision": 0,
@@ -1665,22 +1672,22 @@
     "anticipation_draft": null,
     "red_review_request": true,
     "review_source": {
-      "id": "1940ad68777c",
+      "id": "41998067bb7c",
       "revision": 0,
-      "name": "maffeo",
-      "rank": 1,
-      "explanation": "TT#3 maffeo sigue siendo tendencia por el Valencia-Real Madrid: vio amarilla por derribar a Mbappé, criticó el arbitraje y la entrevista de DAZN al descanso, y después pidió disculpas al periodista.\n#ValenciaCF #RealMadrid\n🌶️ Del enfado en directo a la disculpa por escrito.",
-      "explanation_sha256": "f10c55f8325373d0848c4d17fcfc476264248a4f83b092e07405625a72d8d5f5",
-      "explained_at": "2026-11-07T22:13:00+01:00",
+      "name": "Valencia",
+      "rank": 2,
+      "explanation": "TT#2 Valencia es tendencia tras caer 0-3 ante el Real Madrid en Mestalla: Valverde, Arda Güler y Mbappé marcaron los goles.\n#ValenciaCF #LaLiga\n🌶️ La noche pedía reacción y acabó con tres golpes blancos.",
+      "explanation_sha256": "ab56ef7a7820c85c698c904b6d0a4ad34dc6521c0e36e4a519fa347eed2ff7e9",
+      "explained_at": "2026-11-07T23:18:03.455+01:00",
       "verification_sources": [
         {
-          "url": "https://www.sportschau.de/live-und-ergebnisse/fussball/spanien-primera-division/ma12188143/valencia-cf_real-madrid/liveticker"
+          "url": "https://www.beinsports.com/en-us/soccer/la-liga/articles/live-blog-valencia-vs-real-madrid-laliga-2026-11-07"
         },
         {
-          "url": "https://www.rtve.es/deportes/20261107/valencia-real-madrid-directo-hoy-partido-liga-resumen-resultado-goles/17301740.shtml"
+          "url": "https://www.fotmob.com/news/c1y243f8pxst180dm32qosak8-valencia-0-3-real-madrid-mourinhos-men-keep-pressure-barcelona-atletico"
         }
       ],
-      "fingerprint": "a78e454c41aeb12fc5cf95be76e5d9454f32c4790836c78d6ab1b06634d247d3"
+      "fingerprint": "0273dcb9afba0c0b2cb33453806b1d8f56a788220e1d8f1bf43d8e4efc430109"
     },
     "review_error": null,
     "new_episode_review": false,
@@ -1702,7 +1709,7 @@
     "selected_tweet": null,
     "batch_id": null,
     "requested_together": [
-      "Revisar novedades: maffeo"
+      "Revisar novedades: Valencia"
     ],
     "captured_with": [],
     "auto_queued": false,
