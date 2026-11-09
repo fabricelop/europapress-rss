@@ -3,41 +3,41 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261109T1755-manual",
-  "previous_run_id": "tr-20261109T1740-manual",
-  "command_id": "tr-20261109T1755-manual",
+  "run_id": "tr-1794243281678-manual",
+  "previous_run_id": "tr-20261109T1755-manual",
+  "command_id": "tr-1794243281678-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-09T17:55:00+01:00",
-  "updated_at": "2026-11-09T17:58:00+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-09T17:59:00+01:00",
+  "finished_at": "2026-11-09T17:59:00+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "red-review-79367de7b4b5938e30a3",
-  "title": "Revisar novedades: dubai",
-  "queue_complete": false,
-  "processed_ids": [],
-  "converged_ids": [],
-  "remaining_ids": [
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
     "red-review-552a4db6826b8ff36c0b",
     "red-review-79367de7b4b5938e30a3"
   ],
-  "remaining_active_ids": [
+  "converged_ids": [
     "red-review-552a4db6826b8ff36c0b",
     "red-review-79367de7b4b5938e30a3"
   ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 0,
-    "closed": 0,
+    "attempted": 2,
+    "observed": 2,
+    "closed": 2,
     "explained": 0,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 0,
-    "unchanged_reviews": 0,
+    "maintenance_reviews": 2,
+    "unchanged_reviews": 2,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "stale_reviews": 0,
@@ -48,9 +48,28 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 2
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "red-review-552a4db6826b8ff36c0b",
+      "revision": 0,
+      "name": "Revisar novedades: Pachuca",
+      "outcome": "unchanged",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "apply_commit": "aad624d4de770f1cb1e37f8e1859a18547bd66cb"
+    },
+    {
+      "id": "red-review-79367de7b4b5938e30a3",
+      "revision": 0,
+      "name": "Revisar novedades: dubai",
+      "outcome": "unchanged",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "apply_commit": "aad624d4de770f1cb1e37f8e1859a18547bd66cb"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -147,26 +166,33 @@
       "trend_id": "red-review-79367de7b4b5938e30a3",
       "title": "Revisar novedades: dubai",
       "message": "dubai: el Dubai Premier Padel P1 sigue en curso y el término permanece en tendencias, pero no hay nueva evidencia que confirme el detonante; se persiste unchanged."
+    },
+    {
+      "run_id": "tr-1794243281678-manual",
+      "status": "DONE",
+      "at": "2026-11-09T17:59:00+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-1794243281678-manual cerrada 2/2 por convergencia JIT. Pachuca y dubai quedaron unchanged y el aplicador oficial aad624d4de770f1cb1e37f8e1859a18547bd66cb persistió ambos mantenimientos en requests.json y telegram-manual-explained.json y retiró las dos revisiones de editorial-queue. Barrera final: editorial-queue=0. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "last_started_at": "2026-11-09T17:55:00+01:00",
-  "last_completed_at": "2026-11-09T17:25:45+01:00",
+  "last_completed_at": "2026-11-09T17:59:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261109T1740-manual",
+    "run_id": "tr-1794243281678-manual",
     "status": "DONE",
-    "started_at": "2026-11-09T17:40:00+01:00",
-    "finished_at": "2026-11-09T17:41:15+01:00",
+    "started_at": "2026-11-09T17:55:00+01:00",
+    "finished_at": "2026-11-09T17:59:00+01:00",
     "summary": {
-      "attempted": 0,
-      "observed": 0,
-      "closed": 0,
+      "attempted": 2,
+      "observed": 2,
+      "closed": 2,
       "explained": 0,
       "problematic": 0,
       "updates": 0,
       "review_completed_no_distinct_event": 0,
-      "maintenance_reviews": 0,
-      "unchanged_reviews": 0,
+      "maintenance_reviews": 2,
+      "unchanged_reviews": 2,
       "continuity_updates": 0,
       "distinct_updates": 0,
       "stale_reviews": 0,
@@ -177,11 +203,11 @@
       "image_outbox_created": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 0
+      "concurrent_convergence": 2
     },
-    "message": "Pasada tr-20261109T1740-manual cerrada 0/0 contra main. Relectura JIT final: editorial-queue=0 (actualizada 2026-11-09T17:41:01+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial pendiente. El Top 30 reciente estaba marcado live_verified=false/reliability=unverified; no se forzó ninguna investigación. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "message": "Pasada tr-1794243281678-manual cerrada 2/2 por convergencia JIT. Pachuca y dubai quedaron unchanged y el aplicador oficial aad624d4de770f1cb1e37f8e1859a18547bd66cb persistió ambos mantenimientos en requests.json y telegram-manual-explained.json y retiró las dos revisiones de editorial-queue. Barrera final: editorial-queue=0. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "dubai: el Dubai Premier Padel P1 sigue en curso y el término permanece en tendencias, pero no hay nueva evidencia que confirme el detonante; se persiste unchanged.",
+  "message": "Pasada tr-1794243281678-manual cerrada 2/2 por convergencia JIT. Pachuca y dubai quedaron unchanged y el aplicador oficial aad624d4de770f1cb1e37f8e1859a18547bd66cb persistió ambos mantenimientos en requests.json y telegram-manual-explained.json y retiró las dos revisiones de editorial-queue. Barrera final: editorial-queue=0. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794199200000-manual",
@@ -2383,6 +2409,65 @@
       "processed_ids": [],
       "outcomes": [],
       "message": "Pasada tr-20261109T1725-manual cerrada 0/0 contra main. Relectura JIT final: editorial-queue=0 (actualizada 2026-11-09T17:21:03+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794243281678-manual",
+      "status": "DONE",
+      "started_at": "2026-11-09T17:55:00+01:00",
+      "finished_at": "2026-11-09T17:59:00+01:00",
+      "at": "2026-11-09T17:59:00+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 2,
+        "observed": 2,
+        "closed": 2,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 2,
+        "unchanged_reviews": 2,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 2
+      },
+      "processed_ids": [
+        "red-review-552a4db6826b8ff36c0b",
+        "red-review-79367de7b4b5938e30a3"
+      ],
+      "converged_ids": [
+        "red-review-552a4db6826b8ff36c0b",
+        "red-review-79367de7b4b5938e30a3"
+      ],
+      "outcomes": [
+        {
+          "id": "red-review-552a4db6826b8ff36c0b",
+          "revision": 0,
+          "name": "Revisar novedades: Pachuca",
+          "outcome": "unchanged",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "apply_commit": "aad624d4de770f1cb1e37f8e1859a18547bd66cb"
+        },
+        {
+          "id": "red-review-79367de7b4b5938e30a3",
+          "revision": 0,
+          "name": "Revisar novedades: dubai",
+          "outcome": "unchanged",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "apply_commit": "aad624d4de770f1cb1e37f8e1859a18547bd66cb"
+        }
+      ],
+      "message": "Pasada tr-1794243281678-manual cerrada 2/2 por convergencia JIT. Pachuca y dubai quedaron unchanged y el aplicador oficial aad624d4de770f1cb1e37f8e1859a18547bd66cb persistió ambos mantenimientos en requests.json y telegram-manual-explained.json y retiró las dos revisiones de editorial-queue. Barrera final: editorial-queue=0. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "current_item": {
