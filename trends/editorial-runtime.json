@@ -3,49 +3,39 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-autoguard-1794253266",
+  "run_id": "tr-autoguard-1794255077",
   "previous_run_id": "tr-autoguard-1794253266",
-  "command_id": "tr-autoguard-1794253266",
+  "command_id": "tr-autoguard-1794255077",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-09T21:02:00+01:00",
-  "updated_at": "2026-11-09T21:12:41.131+01:00",
-  "finished_at": "2026-11-09T21:12:41.131+01:00",
-  "current": 12,
-  "total": 12,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "7ad041e01cf1",
-    "fbedd11e1e0b",
-    "11d2909f978d",
-    "2e39d0210d48",
-    "629594b46505",
-    "bd9b74a682cd",
-    "bde417ed1711",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-09T21:22:00+01:00",
+  "updated_at": "2026-11-09T21:22:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 2,
+  "trend_id": "b9af40846bbe",
+  "title": "#ElSótano09N",
+  "queue_complete": false,
+  "processed_ids": [],
+  "converged_ids": [],
+  "remaining_ids": [
     "b9af40846bbe",
-    "a4bbeb23f1fb",
-    "79666c46d60d",
-    "e531dbe189c6",
     "78100e73b601"
   ],
-  "converged_ids": [
-    "fbedd11e1e0b",
-    "629594b46505"
+  "remaining_active_ids": [
+    "b9af40846bbe",
+    "78100e73b601"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 12,
-    "observed": 12,
-    "closed": 12,
-    "explained": 8,
+    "attempted": 0,
+    "observed": 2,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
-    "review_completed_no_distinct_event": 2,
+    "review_completed_no_distinct_event": 0,
     "maintenance_reviews": 0,
     "unchanged_reviews": 0,
     "continuity_updates": 0,
@@ -55,110 +45,19 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 2,
-    "terminal_deleted_during_apply": 2,
-    "existing_current_explanation_preserved": 2
+    "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "7ad041e01cf1",
-      "revision": 0,
-      "name": "Fable 5.2",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "fbedd11e1e0b",
-      "revision": 0,
-      "name": "Cera",
-      "outcome": "terminal_deleted_during_apply",
-      "applied": true
-    },
-    {
-      "id": "11d2909f978d",
-      "revision": 0,
-      "name": "Supergirl",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "2e39d0210d48",
-      "revision": 0,
-      "name": "Marvel",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "629594b46505",
-      "revision": 0,
-      "name": "Zubimendi",
-      "outcome": "terminal_deleted_during_apply",
-      "applied": true
-    },
-    {
-      "id": "bd9b74a682cd",
-      "revision": 0,
-      "name": "Batman",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "bde417ed1711",
-      "revision": 0,
-      "name": "Pau Cubarsí",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "b9af40846bbe",
-      "revision": 0,
-      "name": "#ElSótano09N",
-      "outcome": "existing_current_explanation_preserved",
-      "stored_status": "review_completed",
-      "applied": true,
-      "existing_id": "6d406ef31553"
-    },
-    {
-      "id": "a4bbeb23f1fb",
-      "revision": 0,
-      "name": "SUPA",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "79666c46d60d",
-      "revision": 0,
-      "name": "Carzzy",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "e531dbe189c6",
-      "revision": 0,
-      "name": "#GHVIP9",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "78100e73b601",
-      "revision": 0,
-      "name": "Gamarra",
-      "outcome": "existing_current_explanation_preserved",
-      "stored_status": "review_completed",
-      "applied": true,
-      "existing_id": "06d9a9f6c06f"
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "closing",
+  "activity": "preparing",
   "last_started_at": "2026-11-09T21:02:00+01:00",
   "last_completed_at": "2026-11-09T21:12:41.131+01:00",
   "api_failover_enabled": false,
@@ -300,7 +199,7 @@
     ],
     "message": "Pasada tr-autoguard-1794253266 cerrada 12/12 tras relectura JIT: 8 explicaciones nuevas persistidas; Cera y Zubimendi convergieron a estado deleted y no se resucitaron; #ElSótano09N y Gamarra ya tenían explicación vigente publicada y se preservaron sin crear ficha duplicada. Barrera final: editorial-queue=0, sin preparing/update ni reexplicaciones pendientes. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-autoguard-1794253266 cerrada 12/12 tras relectura JIT: 8 explicaciones nuevas persistidas; Cera y Zubimendi convergieron a estado deleted y no se resucitaron; #ElSótano09N y Gamarra ya tenían explicación vigente publicada y se preservaron sin crear ficha duplicada. Barrera final: editorial-queue=0, sin preparing/update ni reexplicaciones pendientes. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada tr-autoguard-1794255077 RUNNING. Cola inicial JIT=2 preparing: #ElSótano09N y Gamarra. Se procesan del más antiguo al más reciente, revalidando ID/revisión antes de investigar y persistir. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794199200000-manual",
@@ -3263,9 +3162,20 @@
         }
       ],
       "message": "Pasada tr-autoguard-1794253266 cerrada 12/12 tras relectura JIT: 8 explicaciones nuevas persistidas; Cera y Zubimendi convergieron a estado deleted y no se resucitaron; #ElSótano09N y Gamarra ya tenían explicación vigente publicada y se preservaron sin crear ficha duplicada. Barrera final: editorial-queue=0, sin preparing/update ni reexplicaciones pendientes. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-09T21:22:00+01:00",
+      "phase": "preparing",
+      "trend_id": "b9af40846bbe",
+      "title": "#ElSótano09N",
+      "message": "Pasada tr-autoguard-1794255077 RUNNING. Cola inicial JIT=2 preparing: #ElSótano09N y Gamarra. Se procesan del más antiguo al más reciente, revalidando ID/revisión antes de investigar y persistir. ImageGen=0; publicaciones=0."
     }
   ],
-  "current_item": null,
+  "current_item": {
+    "id": "b9af40846bbe",
+    "revision": 0,
+    "name": "#ElSótano09N"
+  },
   "withdrawn_ids": [
     "ae7f066f3c94"
   ],
