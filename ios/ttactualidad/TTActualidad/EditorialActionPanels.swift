@@ -23,6 +23,7 @@ struct EditorialActions: View {
     @ObservedObject var github: GitHubEditor
     @EnvironmentObject private var store: EditorialStore
     @EnvironmentObject private var buffer: BufferPublishTracker
+    @ObservedObject private var relationCounts = EditorialRelationCountsStore.shared
     @Binding var showSettings: Bool
     @State private var confirm = false
     @State private var intent = "deleted"
@@ -156,10 +157,22 @@ struct EditorialActions: View {
                 if github.authenticated { showHints = true } else { showSettings = true }
             }
                 .disabled(news != nil && news?.status != "LISTA")
-            quickButton("Relaciones", "point.3.connected.trianglepath.dotted") {
+            quickButton(
+                relationCounts.counts(trendID: editorialID,
+                                     revision: revision, name: title).map {
+                    "Relaciones " + String($0.0) + "/" + String($0.1)
+                } ?? "Relaciones",
+                "point.3.connected.trianglepath.dotted"
+            ) {
                 if github.authenticated { showRelations = true } else { showSettings = true }
             }
             .disabled(editorialID.isEmpty)
+            .accessibilityLabel(
+                relationCounts.counts(trendID: editorialID,
+                                     revision: revision, name: title).map {
+                    "Relaciones confirmadas " + String($0.0) +
+                    " de " + String($0.1) + " noticias encontradas"
+                } ?? "Consultar relaciones")
             HStack(spacing: 7) {
                 quickButton("Crear Foto IA", "photo.badge.plus") {
                     copy(imageOnlyPrompt)
@@ -267,7 +280,9 @@ struct EditorialActions: View {
                 .environmentObject(store)
                 .presentationDetents([.large])
         }
-        .sheet(isPresented: $showRelations) {
+        .sheet(isPresented: $showRelations, onDismiss: {
+            Task { await relationCounts.refresh(using: github, force: true) }
+        }) {
             EditorialRelationsView(github: github,
                                    scope: EditorialRelationsScope(
                 project: project, id: editorialID, revision: revision, title: title),
@@ -275,6 +290,11 @@ struct EditorialActions: View {
                                    top30Trends: store.snapshot.top30,
                                    listasNews: store.snapshot.news)
                 .presentationDetents([.large])
+        }
+        .task {
+            guard project == "ttendencias" && !editorialID.isEmpty &&
+                  github.authenticated else { return }
+            await relationCounts.refresh(using: github)
         }
         .onChange(of: buffer.change) { _, _ in
             outcome = buffer.notice
