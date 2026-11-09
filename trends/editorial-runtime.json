@@ -1,21 +1,21 @@
 {
   "project": "TTendencias",
-  "engine": "chatgpt-automation-outbox",
+  "engine": "chatgpt-editorial",
   "version": 1,
   "canonical": true,
   "run_id": "tr-1794208275000-manual",
   "previous_run_id": "tr-1794207954297-manual",
   "command_id": "tr-1794208275000-manual",
   "source": "chat",
-  "status": "success",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-09T08:12:19.165+01:00",
-  "updated_at": "2026-11-09T08:13:37+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-09T08:14:31.332+01:00",
+  "finished_at": "2026-11-09T08:14:31.332+01:00",
+  "current": 1,
   "total": 1,
-  "trend_id": "8253716316e9",
-  "title": "#Buenosdías",
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
     "8253716316e9"
@@ -24,8 +24,39 @@
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": null,
-  "outcomes": [],
+  "summary": {
+    "attempted": 1,
+    "observed": 1,
+    "closed": 1,
+    "explained": 0,
+    "problematic": 0,
+    "updates": 0,
+    "review_completed_no_distinct_event": 1,
+    "maintenance_reviews": 0,
+    "unchanged_reviews": 0,
+    "continuity_updates": 0,
+    "distinct_updates": 0,
+    "stale_reviews": 0,
+    "unverified_reviews": 0,
+    "queue_remaining": 0,
+    "rewrite_pending_remaining": 0,
+    "imagegen_calls": 0,
+    "image_outbox_created": 0,
+    "publications": 0,
+    "incidents": 0,
+    "concurrent_convergence": 0
+  },
+  "outcomes": [
+    {
+      "id": "8253716316e9",
+      "revision": 0,
+      "name": "#Buenosdías",
+      "outcome": "review_completed_no_distinct_event",
+      "applied": true,
+      "via": "editorial_outbox",
+      "review_completed_at": "2026-11-09T08:13:36+01:00"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -36,29 +67,36 @@
       "trend_id": "8253716316e9",
       "title": "#Buenosdías",
       "message": "Comparando la reentrada actual con el episodio anterior; verificación de posible acontecimiento distinto."
+    },
+    {
+      "at": "2026-11-09T08:14:31.332+01:00",
+      "phase": "closing",
+      "trend_id": "8253716316e9",
+      "title": "#Buenosdías",
+      "message": "Revisión cerrada sin episodio distinto; cola final vacía y sin reexplicaciones activas."
     }
   ],
-  "last_started_at": "2026-11-09T08:13:36+01:00",
+  "last_started_at": "2026-11-09T08:12:19.165+01:00",
   "last_completed_at": "2026-11-09T08:13:37+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794207954297-manual",
+    "run_id": "tr-1794208275000-manual",
     "status": "DONE",
-    "started_at": "2026-11-09T08:06:45+01:00",
-    "finished_at": "2026-11-09T08:09:30+01:00",
-    "at": "2026-11-09T08:09:30+01:00",
+    "started_at": "2026-11-09T08:12:19.165+01:00",
+    "finished_at": "2026-11-09T08:14:31.332+01:00",
+    "at": "2026-11-09T08:14:31.332+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 2,
-      "observed": 2,
-      "closed": 2,
+      "attempted": 1,
+      "observed": 1,
+      "closed": 1,
       "explained": 0,
       "problematic": 0,
-      "updates": 2,
-      "review_completed_no_distinct_event": 0,
-      "maintenance_reviews": 2,
+      "updates": 0,
+      "review_completed_no_distinct_event": 1,
+      "maintenance_reviews": 0,
       "unchanged_reviews": 0,
-      "continuity_updates": 2,
+      "continuity_updates": 0,
       "distinct_updates": 0,
       "stale_reviews": 0,
       "unverified_reviews": 0,
@@ -68,33 +106,23 @@
       "image_outbox_created": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 2
+      "concurrent_convergence": 0
     },
     "processed_ids": [
-      "red-review-f158d9e1a9f2db70877e",
-      "red-review-557c7fef00efdd3d810b"
+      "8253716316e9"
     ],
     "outcomes": [
       {
-        "id": "red-review-f158d9e1a9f2db70877e",
+        "id": "8253716316e9",
         "revision": 0,
-        "name": "Revisar novedades: #IreneConQueque",
-        "outcome": "continuity",
+        "name": "#Buenosdías",
+        "outcome": "review_completed_no_distinct_event",
         "applied": true,
-        "via": "concurrent_convergence",
-        "apply_commit": "2d5b97d23052081a4613f634bbf02751bc2c1c59"
-      },
-      {
-        "id": "red-review-557c7fef00efdd3d810b",
-        "revision": 0,
-        "name": "Revisar novedades: Robe",
-        "outcome": "continuity",
-        "applied": true,
-        "via": "concurrent_convergence",
-        "apply_commit": "2d5b97d23052081a4613f634bbf02751bc2c1c59"
+        "via": "editorial_outbox",
+        "review_completed_at": "2026-11-09T08:13:36+01:00"
       }
     ],
-    "message": "Pasada tr-1794207954297-manual cerrada 2/2 por convergencia JIT. #IreneConQueque y Robe quedaron actualizados como continuidad en las fichas originales por el commit 2d5b97d23052081a4613f634bbf02751bc2c1c59: se conservan explained_at, identidad, imágenes y estado publicado; no se crean episodios ni fichas nuevas. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; publicaciones=0."
+    "message": "Pasada tr-1794208275000-manual cerrada 1/1. #Buenosdías se revisó como reentrada y quedó review_completed/no_distinct_event: no se acreditó un acontecimiento nuevo respecto al episodio 74ced1b85461. No se creó ficha nueva, imagen ni publicación. Barrera final: editorial-queue=0, requests/mobile-decisions sin preparing/update/rewrite_pending/reexplain activos."
   },
   "message": "Pasada tr-1794207954297-manual cerrada 2/2 por convergencia JIT. #IreneConQueque y Robe quedaron actualizados como continuidad en las fichas originales por el commit 2d5b97d23052081a4613f634bbf02751bc2c1c59: se conservan explained_at, identidad, imágenes y estado publicado; no se crean episodios ni fichas nuevas. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; publicaciones=0.",
   "history": [
