@@ -3,32 +3,30 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794185607129-manual",
-  "previous_run_id": "tr-1794185100000-manual",
-  "command_id": "tr-1794185607129-manual",
+  "run_id": "tr-1794185700000-manual",
+  "previous_run_id": "tr-1794185607129-manual",
+  "command_id": "tr-1794185700000-manual",
   "source": "chat",
   "status": "DONE",
   "phase": "closing",
-  "started_at": "2026-11-09T01:53:27.129+01:00",
-  "updated_at": "2026-11-09T01:56:00+01:00",
-  "finished_at": "2026-11-09T01:56:00+01:00",
-  "current": 1,
-  "total": 1,
+  "started_at": "2026-11-09T01:55:00+01:00",
+  "updated_at": "2026-11-09T02:00:00+01:00",
+  "finished_at": "2026-11-09T02:00:00+01:00",
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
   "queue_complete": true,
   "processed_ids": [],
-  "converged_ids": [
-    "18df282228a9"
-  ],
+  "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
-    "observed": 1,
-    "closed": 1,
-    "explained": 1,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
     "continuity_updates": 0,
@@ -42,120 +40,27 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 1
+    "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "18df282228a9",
-      "revision": 0,
-      "name": "Metropolitano",
-      "rank": 19,
-      "outcome": "explained",
-      "via": "concurrent_convergence"
-    },
-    {
-      "id": "5760b09e15f0",
-      "revision": 0,
-      "name": "Baena",
-      "rank": 20,
-      "outcome": "explained",
-      "via": "concurrent_convergence"
-    },
-    {
-      "id": "288ff80bcf5b",
-      "revision": 0,
-      "name": "#NASCARenDAZN",
-      "rank": 21,
-      "outcome": "explained",
-      "via": "concurrent_convergence"
-    },
-    {
-      "id": "5e7e3f932194",
-      "revision": 0,
-      "name": "Koke",
-      "rank": 22,
-      "outcome": "explained",
-      "via": "concurrent_convergence"
-    },
-    {
-      "id": "bfa85ea0b4d4",
-      "revision": 0,
-      "name": "Jonathan David",
-      "rank": 23,
-      "outcome": "explained",
-      "via": "concurrent_convergence"
-    },
-    {
-      "id": "7242c9da276f",
-      "revision": 0,
-      "name": "Omar",
-      "rank": 24,
-      "outcome": "explained",
-      "via": "concurrent_convergence"
-    },
-    {
-      "id": "7a4344cf60ab",
-      "revision": 0,
-      "name": "Rosa Benito",
-      "rank": 25,
-      "outcome": "explained",
-      "via": "concurrent_convergence"
-    },
-    {
-      "id": "88d4c8e01a7f",
-      "revision": 0,
-      "name": "#CuartoMilenio",
-      "rank": 26,
-      "outcome": "explained",
-      "via": "concurrent_convergence"
-    },
-    {
-      "id": "e4ddee79e78c",
-      "revision": 0,
-      "name": "Adeyemi",
-      "rank": 27,
-      "outcome": "explained",
-      "via": "concurrent_convergence"
-    },
-    {
-      "id": "a1c78ad6f0d5",
-      "revision": 0,
-      "name": "Fariñas",
-      "rank": 30,
-      "outcome": "explained",
-      "via": "concurrent_convergence"
-    },
-    {
-      "run_id": "tr-1794185607129-manual",
-      "id": "18df282228a9",
-      "revision": 0,
-      "name": "Metropolitano",
-      "rank": 19,
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence",
-      "source_run": "tr-1794185100000-manual",
-      "verified_identical": true
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
   "activity": "Pasada editorial cerrada",
   "last_started_at": "2026-11-09T01:25:00+01:00",
-  "last_completed_at": "2026-11-09T01:56:00+01:00",
+  "last_completed_at": "2026-11-09T02:00:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794185607129-manual",
-    "command_id": "tr-1794185607129-manual",
+    "run_id": "tr-1794185700000-manual",
+    "command_id": "tr-1794185700000-manual",
     "status": "DONE",
-    "started_at": "2026-11-09T01:53:27.129+01:00",
-    "finished_at": "2026-11-09T01:56:00+01:00",
+    "started_at": "2026-11-09T01:55:00+01:00",
+    "finished_at": "2026-11-09T02:00:00+01:00",
     "summary": {
-      "attempted": 1,
-      "observed": 1,
-      "closed": 1,
-      "explained": 1,
+      "attempted": 0,
+      "observed": 0,
+      "closed": 0,
+      "explained": 0,
       "problematic": 0,
       "updates": 0,
       "continuity_updates": 0,
@@ -169,11 +74,11 @@
       "image_outbox_created": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 1
+      "concurrent_convergence": 0
     },
-    "message": "Pasada tr-1794185607129-manual cerrada 1/1 por convergencia JIT. Metropolitano 18df282228a9/r0 quedó explained en requests y telegram-manual-explained por la pasada inmediatamente anterior; coincidencia exacta verificada y hechos contrastados en dos fuentes actuales. Barrera final: cola=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0."
+    "message": "Pasada tr-1794185700000-manual cerrada 0/0 tras refresco manual completo. Workflow 42542851760 terminó success y actualizó el Top 30 a 2026-11-09T01:58:38+01:00. Barrera JIT final: editorial-queue=0 y mobile-decisions sin preparing/update ni rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794185607129-manual cerrada 1/1 por convergencia JIT. Metropolitano 18df282228a9/r0 quedó explained en requests y telegram-manual-explained por la pasada inmediatamente anterior; coincidencia exacta verificada y hechos contrastados en dos fuentes actuales. Barrera final: cola=0, preparing/update=0 y rewrite_pending/reexplain=0. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1794185700000-manual cerrada 0/0 tras refresco manual completo. Workflow 42542851760 terminó success y actualizó el Top 30 a 2026-11-09T01:58:38+01:00. Barrera JIT final: editorial-queue=0 y mobile-decisions sin preparing/update ni rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-08T15:07:08+01:00",
@@ -1086,6 +991,33 @@
       "at": "2026-11-09T01:56:00+01:00",
       "phase": "closing",
       "message": "Cierre 1/1 por convergencia JIT: 18df282228a9/r0 sincronizado exactamente entre requests y telegram-manual-explained; hechos verificados en Atlético de Madrid y Mundo Deportivo. editorial-queue=0; requests/mobile-decisions sin preparing/update ni rewrite_pending/reexplain. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794185700000-manual",
+      "status": "DONE",
+      "started_at": "2026-11-09T01:55:00+01:00",
+      "finished_at": "2026-11-09T02:00:00+01:00",
+      "summary": {
+        "attempted": 0,
+        "observed": 0,
+        "closed": 0,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "unchanged_reviews": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "message": "Pasada tr-1794185700000-manual cerrada 0/0 tras refresco manual completo. Workflow 42542851760 terminó success y actualizó el Top 30 a 2026-11-09T01:58:38+01:00. Barrera JIT final: editorial-queue=0 y mobile-decisions sin preparing/update ni rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "current_item": null
