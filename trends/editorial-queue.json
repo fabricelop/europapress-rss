@@ -1,6 +1,75 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-09T17:51:19+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-09T16:54:34.858587+00:00",
+  "count": 2,
+  "items": [
+    {
+      "id": "red-review-552a4db6826b8ff36c0b",
+      "revision": 0,
+      "name": "Revisar novedades: Pachuca",
+      "rank": 26,
+      "status": "preparing",
+      "requested_at": "2026-11-09T16:54:34.858587+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "verde",
+      "review_priority": 2,
+      "review_source": {
+        "id": "1de6a26cb8a6",
+        "revision": 0,
+        "name": "Pachuca",
+        "rank": 13,
+        "explanation": "TT#13 Pachuca es tendencia porque el Grupo Pachuca, propietario del Real Oviedo, ha destituido a Julián Calero y ha apostado por Raúl González para el banquillo.\n#RealOviedo #RaúlGonzález\n🌶️ El relevo llegó desde la propiedad sin pedir tiempo muerto.",
+        "explanation_sha256": "6dc95c33d84f24e7b0633d0ce1069e8cbaa70ba3177e1aadb19691d13079023f",
+        "explained_at": "2026-11-09T15:33:00+01:00",
+        "verification_sources": [
+          {
+            "url": "https://as.com/futbol/segunda/oficial-raul-gonzalez-nuevo-entrenador-del-oviedo-f202611-n/"
+          },
+          {
+            "url": "https://www.rtve.es/deportes/20261109/raul-gonzalez-nuevo-entrenador-real-oviedo-sustitucion-julian-calero/17306298.shtml"
+          }
+        ],
+        "fingerprint": "84229095c79d2eb7ca02ee5af000eb3cfce4238e0787e2c1162c5c81458b360b"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-79367de7b4b5938e30a3",
+      "revision": 0,
+      "name": "Revisar novedades: dubai",
+      "rank": 18,
+      "status": "preparing",
+      "requested_at": "2026-11-09T16:54:34.858587+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "verde",
+      "review_priority": 2,
+      "review_source": {
+        "id": "22ff277b10da",
+        "revision": 0,
+        "name": "dubai",
+        "rank": 14,
+        "explanation": "TT#14 dubai aparece entre las tendencias mientras se disputa el Dubai Premier Padel P1. No se ha podido confirmar que el torneo sea el detonante del término.\n#PremierPadel\n🌶️ Dubái tiene pista; el motivo del ranking, todavía no.",
+        "explanation_sha256": "4b06b536acb9019f75e1f53a359e916d946135a020468ea25ce01124077a7aed",
+        "explained_at": "2026-11-09T15:33:00+01:00",
+        "verification_sources": [
+          {
+            "url": "https://www.visitdubai.com/en/articles/sports-events-in-dubai"
+          },
+          {
+            "url": "https://getdaytrends.com/spain/"
+          }
+        ],
+        "fingerprint": "3cb0c08dd84632dcb016d4c2f0fdbe4514b5c226ae7158488fe052b8342765e9"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
