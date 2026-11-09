@@ -403,4 +403,28 @@ final class EditorialRelationsTests: XCTestCase {
         XCTAssertEqual(EditorialRelationsPolicy.confirmedCount(
             snap.items, trendID: "julian", revision: 0), 0)
     }
+
+    func testV85SnapshotWithMissingOptionalPresentationFieldsPreservesJulianLinks() throws {
+        // Some historical Site rows omit episodeFingerprint, reason, text and
+        // the separate catalog arrays; exact IDs and revisions still verify.
+        let payload = Data(#"""
+        {"items":[
+          {"id":"cerezo-confirmed","news":{"id":"9ed95352b91b","revision":1,"title":"Enrique Cerezo y Julián"},"trend":{"id":"trend-update-08da896cbbe389cf5192","revision":0,"title":"Julián"},"state":"linked"},
+          {"id":"simeone-confirmed","news":{"id":"9593c2b869f1","revision":1,"title":"Simeone y Julián"},"trend":{"id":"trend-update-08da896cbbe389cf5192","revision":0,"title":"Julián"},"state":"linked"}
+        ]}
+        """#.utf8)
+        let snapshot = try JSONDecoder().decode(EditorialRelationsSnapshot.self,
+                                               from: payload)
+        XCTAssertEqual(snapshot.items.count, 2)
+        XCTAssertTrue(snapshot.news.isEmpty)
+        XCTAssertTrue(snapshot.trends.isEmpty)
+        XCTAssertEqual(snapshot.items[0].news.episodeFingerprint, "")
+        XCTAssertEqual(snapshot.items[0].reason, "")
+        XCTAssertEqual(EditorialRelationsPolicy.confirmedCount(snapshot.items,
+            trendID: "trend-update-08da896cbbe389cf5192", revision: 0), 2)
+        let encoded = try JSONEncoder().encode(snapshot.items[0].news)
+        let reparsed = try JSONDecoder().decode(EditorialRelationEndpoint.self,
+                                               from: encoded)
+        XCTAssertEqual(reparsed.id, "9ed95352b91b")
+    }
 }
