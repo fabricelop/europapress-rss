@@ -3,19 +3,19 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261110T164000-manual",
-  "previous_run_id": "tr-1794323989653-manual",
-  "command_id": "tr-20261110T164000-manual",
+  "run_id": "tr-20261110T165500-manual",
+  "previous_run_id": "tr-20261110T164000-manual",
+  "command_id": "tr-20261110T165500-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-10T16:40:00+01:00",
-  "updated_at": "2026-11-10T16:41:30+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-10T16:55:00+01:00",
+  "updated_at": "2026-11-10T16:55:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -50,7 +50,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Pasada editorial cerrada",
+  "activity": "Verificando cola editorial",
   "last_started_at": "2026-11-10T16:40:00+01:00",
   "last_completed_at": "2026-11-10T16:41:30+01:00",
   "api_failover_enabled": false,
@@ -93,7 +93,7 @@
     "incidents": [],
     "message": "Pasada editorial real cerrada 0/0. Barrera final JIT en main: editorial-queue actualizado 2026-11-10T16:41:26+01:00 con count=0; mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; publicaciones=0."
   },
-  "message": "Pasada editorial real cerrada 0/0. Barrera final JIT en main: editorial-queue actualizado 2026-11-10T16:41:26+01:00 con count=0; mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-20261110T165500-manual RUNNING. Relectura inicial de main: editorial-queue observada vacía; verificando preparing/update/rewrite_pending/reexplain/anticipate/review_red antes del cierre. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
@@ -5200,6 +5200,15 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada editorial real cerrada 0/0. Barrera final JIT en main: editorial-queue actualizado 2026-11-10T16:41:26+01:00 con count=0; mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-20261110T165500-manual",
+      "status": "RUNNING",
+      "at": "2026-11-10T16:55:00+01:00",
+      "phase": "preparing",
+      "current": 0,
+      "total": 0,
+      "message": "Pasada tr-20261110T165500-manual RUNNING. Relectura inicial de main: editorial-queue observada vacía; verificando preparing/update/rewrite_pending/reexplain/anticipate/review_red antes del cierre. ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": null,
@@ -6381,7 +6390,7 @@
   ],
   "outbox_comment_id": 5848965032,
   "editorial_apply_commit": "76e7e728a222ee21fee34fda64da43cfd7ecd90a",
-  "finished_at": "2026-11-10T16:41:30+01:00",
+  "finished_at": null,
   "refresh_workflow_run_id": 42839275825,
   "refresh_conclusion": "success"
 }
