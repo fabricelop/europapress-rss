@@ -3,19 +3,19 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261110T184130-manual",
-  "previous_run_id": "tr-autoguard-1794331272",
-  "command_id": "tr-20261110T184130-manual",
+  "run_id": "tr-20261110T185500-manual",
+  "previous_run_id": "tr-20261110T184130-manual",
+  "command_id": "tr-20261110T185500-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-10T18:41:30+01:00",
-  "updated_at": "2026-11-10T18:43:00+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-10T18:55:00+01:00",
+  "updated_at": "2026-11-10T18:55:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -52,17 +52,12 @@
   "error": null,
   "activity": [
     {
-      "at": "2026-11-10T18:41:30+01:00",
+      "at": "2026-11-10T18:55:00+01:00",
       "phase": "preparing",
-      "message": "Pasada manual iniciada; verificando cola autoritativa y barrera de estado."
-    },
-    {
-      "at": "2026-11-10T18:43:00+01:00",
-      "phase": "closing",
-      "message": "Barrera final: editorial-queue=0; no preparing/update, rewrite_pending ni reexplicación pendiente detectados en main. Pasada cerrada 0/0."
+      "message": "Pasada manual iniciada; verificando cola autoritativa, revisiones y barrera de estado en main."
     }
   ],
-  "last_started_at": "2026-11-10T18:41:30+01:00",
+  "last_started_at": "2026-11-10T18:55:00+01:00",
   "last_completed_at": "2026-11-10T18:43:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -140,7 +135,7 @@
     "incidents": [],
     "message": "Pasada tr-autoguard-1794331272 cerrada 3/3 por convergencia JIT con el aplicador oficial. Bolivia r0 y GTA VI r0 quedaron explicadas y persistidas en requests.json + telegram-manual-explained.json; la reentrada #ProfesionDeRiesgoYa r0 fue cerrada concurrentemente como review_completed/no_distinct_event y se respeta ese estado terminal sin reabrirla. Barrera final sobre main: editorial-queue=0 (updated_at 2026-11-10T18:25:30+01:00) y sin preparing/update/rewrite_pending/reexplain activos en requests.json ni mobile-decisions.json. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-20261110T184130-manual completada 0/0. Relectura final sobre main: editorial-queue=0 (updated_at 2026-11-10T18:41:19+01:00) y sin señales activas de preparing/update, rewrite_pending o reexplicación pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada manual RUNNING. Cola inicial observada en 0; verificando requests/mobile y releyendo main antes de cerrar. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
@@ -6856,7 +6851,7 @@
   ],
   "outbox_comment_id": 5848965032,
   "editorial_apply_commit": "76e7e728a222ee21fee34fda64da43cfd7ecd90a",
-  "finished_at": "2026-11-10T18:43:00+01:00",
+  "finished_at": null,
   "refresh_workflow_run_id": 42839275825,
   "refresh_conclusion": "success"
 }
