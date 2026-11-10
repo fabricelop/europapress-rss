@@ -8,13 +8,13 @@
   "command_id": "tr-1794308555826-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "investigating",
+  "phase": "persisting",
   "started_at": "2026-11-10T12:02:00+01:00",
-  "updated_at": "2026-11-10T12:03:00+01:00",
-  "current": 0,
-  "total": 6,
-  "trend_id": "red-review-616f03ec3b4930b9a6b4",
-  "title": "Revisar novedades: #FelizMartes",
+  "updated_at": "2026-11-10T12:05:00+01:00",
+  "current": 5,
+  "total": 11,
+  "trend_id": "ec3b92ed181d",
+  "title": "Ione",
   "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
@@ -65,7 +65,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Investigando #FelizMartes",
+  "activity": "Persistiendo Ione",
   "last_started_at": "2026-11-10T11:58:56+01:00",
   "last_completed_at": "2026-11-10T11:58:56+01:00",
   "api_failover_enabled": false,
@@ -135,7 +135,7 @@
     "incidents": [],
     "message": "Pasada tr-1794306091211-manual cerrada 3/3: Almudena sin novedad sustancial; Oviedo con episodio materialmente distinto por la explosión de hoy; anoche cerrada con causa no confirmada tras verificar su presencia actual en el Top de España. Barrera JIT final: editorial-queue=0 y mobile-decisions sin trabajo activo. ImageGen=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794308555826-manual RUNNING. Cola autoritativa=6; se procesan todas las revisiones preparing/update por antigüedad, revalidando ID+revision antes de cada resultado. ImageGen=0; publicaciones=0.",
+  "message": "Ione r0 validada JIT. Se identifica a Ione Belarra dentro de la conversación de Podemos sobre la huelga del 11N y la campaña del 29N, sin poder aislar un único detonante actual; se explicita esa incertidumbre. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
@@ -3545,6 +3545,13 @@
       "trend_id": "b7bcf914927c",
       "title": "Villafría",
       "message": "Villafría r0 validada JIT. El término corresponde al barrio de Oviedo donde se produjo el tiroteo y la explosión de una mochila; por tratarse de un fallecido y un herido grave, se cierra sin remate. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-10T12:05:00+01:00",
+      "phase": "persisting",
+      "trend_id": "ec3b92ed181d",
+      "title": "Ione",
+      "message": "Ione r0 validada JIT. Se identifica a Ione Belarra dentro de la conversación de Podemos sobre la huelga del 11N y la campaña del 29N, sin poder aislar un único detonante actual; se explicita esa incertidumbre. ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": null,
