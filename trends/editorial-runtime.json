@@ -3,40 +3,36 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794333897195-manual",
+  "run_id": "tr-1794334648285-manual",
   "previous_run_id": "tr-20261110T184130-manual",
-  "command_id": "tr-1794333897195-manual",
+  "command_id": "tr-1794334648285-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "persisting",
-  "started_at": "2026-11-10T19:05:00+01:00",
-  "updated_at": "2026-11-10T19:17:00+01:00",
-  "current": 8,
-  "total": 9,
-  "trend_id": "red-review-cea1951097694d0efe9a",
-  "title": "Revisar novedades: #HuelgaGeneral",
+  "phase": "preparing",
+  "started_at": "2026-11-10T19:18:00+01:00",
+  "updated_at": "2026-11-10T19:18:00+01:00",
+  "current": 0,
+  "total": 1,
+  "trend_id": "red-review-6063a0fec943f6f62efb",
+  "title": "Revisar novedades: #ProfesionDeRiesgoYa",
   "queue_complete": false,
-  "processed_ids": [
-    "38594e89765a",
-    "325e11e6bb76",
-    "c566b61409aa",
-    "371bd59a1f6a",
-    "d00281da8767",
-    "60eebdd4e3d4",
-    "bba097913444"
-  ],
+  "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-6063a0fec943f6f62efb"
+  ],
+  "remaining_active_ids": [
+    "red-review-6063a0fec943f6f62efb"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 7,
-    "observed": 7,
-    "closed": 7,
-    "explained": 6,
+    "attempted": 0,
+    "observed": 1,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
-    "review_completed_no_distinct_event": 1,
+    "review_completed_no_distinct_event": 0,
     "maintenance_reviews": 0,
     "unchanged_reviews": 0,
     "continuity_updates": 0,
@@ -46,7 +42,7 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 1,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -54,64 +50,7 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "38594e89765a",
-      "revision": 0,
-      "name": "Bianca",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "4b0374291347a5631e723b66f328f6107d7f2a60"
-    },
-    {
-      "id": "325e11e6bb76",
-      "revision": 0,
-      "name": "Rochos",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "4b0374291347a5631e723b66f328f6107d7f2a60"
-    },
-    {
-      "id": "c566b61409aa",
-      "revision": 0,
-      "name": "#HuelgaGeneral11N",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "4b0374291347a5631e723b66f328f6107d7f2a60"
-    },
-    {
-      "id": "371bd59a1f6a",
-      "revision": 0,
-      "name": "La Audiencia Nacional",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "0e10d644a312d6e3f2ec42646407ff523eec458e"
-    },
-    {
-      "id": "d00281da8767",
-      "revision": 0,
-      "name": "#ElSótano10N",
-      "outcome": "explained_cause_unconfirmed",
-      "applied": true,
-      "apply_commit": "d0d9b7ec53650c05a0e88db573b03a6d98349d6b"
-    },
-    {
-      "id": "60eebdd4e3d4",
-      "revision": 0,
-      "name": "#HuelgaGeneral",
-      "outcome": "review_completed_no_distinct_event",
-      "applied": true,
-      "apply_commit": "f27aba233e18e2393faabcdf085d6d556a5b082b"
-    },
-    {
-      "id": "bba097913444",
-      "revision": 0,
-      "name": "Cintora",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "fcf7c5a02aecb58ff3570d0d45be8e973a5eee2a"
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -130,6 +69,11 @@
       "at": "2026-11-10T19:14:43+01:00",
       "phase": "closing",
       "message": "Barrera final verificada: cola=0, mobile-decisions activo=0; 7/7 cerrados. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-10T19:18:00+01:00",
+      "phase": "preparing",
+      "message": "Pasada manual RUNNING. Cola autoritativa revalidada en main; revisando 1 mantenimiento red_review de #ProfesionDeRiesgoYa. ImageGen=0; publicaciones=0."
     }
   ],
   "last_started_at": "2026-11-10T19:14:42+01:00",
@@ -239,7 +183,7 @@
     "incidents": [],
     "message": "Pasada tr-1794333897195-manual cerrada 7/7. Bianca, Rochos, #HuelgaGeneral11N, La Audiencia Nacional, #ElSótano10N y Cintora quedaron explicadas y aplicadas; la reentrada #HuelgaGeneral se cerró review_completed/no_distinct_event al corresponder a la misma huelga del 11N, sin nueva ficha. Barrera final: editorial-queue=0 y mobile-decisions sin trabajo editorial activo. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Revisando novedades: continuidad verificada. La huelga sigue siendo el mismo episodio del 11N; hoy se concretan servicios mínimos. Se actualiza la misma ficha, sin nueva publicación ni imagen.",
+  "message": "Pasada manual RUNNING. Cola autoritativa revalidada en main; revisando 1 mantenimiento red_review de #ProfesionDeRiesgoYa. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
