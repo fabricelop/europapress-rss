@@ -10,8 +10,8 @@
   "status": "DONE",
   "phase": "closing",
   "started_at": "2026-11-10T05:46:40+01:00",
-  "updated_at": "2026-11-10T05:49:10+01:00",
-  "finished_at": "2026-11-10T05:49:10+01:00",
+  "updated_at": "2026-11-10T05:48:49+01:00",
+  "finished_at": "2026-11-10T05:48:49+01:00",
   "current": 2,
   "total": 2,
   "trend_id": null,
@@ -57,9 +57,7 @@
       "name": "Revisar novedades: #IreneConQueque",
       "outcome": "unchanged",
       "applied": true,
-      "via": "concurrent_convergence",
-      "apply_commit": "cfc8a4b8d243c9dff20a1b0e93bb136d678e491d",
-      "source_id": "d8a308614fc9"
+      "via": "maintenance_outbox_applied"
     },
     {
       "id": "red-review-ddd1f8e4108bf3667a60",
@@ -67,9 +65,7 @@
       "name": "Revisar novedades: #SVSemifinal",
       "outcome": "unchanged",
       "applied": true,
-      "via": "concurrent_convergence",
-      "apply_commit": "cfc8a4b8d243c9dff20a1b0e93bb136d678e491d",
-      "source_id": "9e1649b8ed38"
+      "via": "maintenance_outbox_applied"
     }
   ],
   "incident_count": 0,
@@ -139,14 +135,14 @@
     "message": "Pasada tr-1794285955712-manual cerrada 2/2 por convergencia JIT. #IreneConQueque r0 y #SVSemifinal r0 quedaron revisadas como unchanged por el aplicador concurrente cfc8a4b8d243c9dff20a1b0e93bb136d678e491d; se conservaron sus explicaciones y fechas, sin nueva ficha, imagen ni publicación. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
   "last_started_at": "2026-11-10T05:46:40+01:00",
-  "last_completed_at": "2026-11-10T05:49:10+01:00",
+  "last_completed_at": "2026-11-10T05:48:49+01:00",
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-1794285955712-manual",
     "status": "DONE",
     "started_at": "2026-11-10T05:46:40+01:00",
-    "finished_at": "2026-11-10T05:49:10+01:00",
-    "at": "2026-11-10T05:49:10+01:00",
+    "finished_at": "2026-11-10T05:48:49+01:00",
+    "at": "2026-11-10T05:48:49+01:00",
     "phase": "closing",
     "summary": {
       "attempted": 2,
@@ -185,9 +181,7 @@
         "name": "Revisar novedades: #IreneConQueque",
         "outcome": "unchanged",
         "applied": true,
-        "via": "concurrent_convergence",
-        "apply_commit": "cfc8a4b8d243c9dff20a1b0e93bb136d678e491d",
-        "source_id": "d8a308614fc9"
+        "via": "maintenance_outbox_applied"
       },
       {
         "id": "red-review-ddd1f8e4108bf3667a60",
@@ -195,17 +189,14 @@
         "name": "Revisar novedades: #SVSemifinal",
         "outcome": "unchanged",
         "applied": true,
-        "via": "concurrent_convergence",
-        "apply_commit": "cfc8a4b8d243c9dff20a1b0e93bb136d678e491d",
-        "source_id": "9e1649b8ed38"
+        "via": "maintenance_outbox_applied"
       }
     ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-1794285955712-manual cerrada 2/2 por convergencia JIT. #IreneConQueque r0 y #SVSemifinal r0 quedaron revisadas como unchanged por el aplicador concurrente cfc8a4b8d243c9dff20a1b0e93bb136d678e491d; se conservaron sus explicaciones y fechas, sin nueva ficha, imagen ni publicación. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
-    "apply_commit": "cfc8a4b8d243c9dff20a1b0e93bb136d678e491d"
+    "message": "Pasada tr-1794285955712-manual cerrada 2/2 por convergencia JIT. Las revisiones rojas de #IreneConQueque y #SVSemifinal quedaron unchanged, conservando texto y fecha. Barrera final observada: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794285955712-manual cerrada 2/2 por convergencia JIT. #IreneConQueque r0 y #SVSemifinal r0 quedaron revisadas como unchanged por el aplicador concurrente cfc8a4b8d243c9dff20a1b0e93bb136d678e491d; se conservaron sus explicaciones y fechas, sin nueva ficha, imagen ni publicación. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada tr-1794285955712-manual cerrada 2/2 por convergencia JIT. Las revisiones rojas de #IreneConQueque y #SVSemifinal quedaron unchanged, conservando texto y fecha. Barrera final observada: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794234841273-manual",
@@ -3740,8 +3731,8 @@
   "withdrawn_ids": [
     "ae7f066f3c94"
   ],
-  "last_finished_at": "2026-11-10T05:45:20+01:00",
-  "last_revalidated_at": "2026-11-10T05:45:20+01:00",
+  "last_finished_at": "2026-11-10T05:48:49+01:00",
+  "last_revalidated_at": "2026-11-10T05:48:49+01:00",
   "last_revalidation": {
     "at": "2026-11-10T04:32:39+01:00",
     "queue_sha": "79c175af1695fc0fb576c6f201a8c32363000466",
