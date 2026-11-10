@@ -3,114 +3,40 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261110T021000-manual",
-  "previous_run_id": "tr-20261110T015500-manual",
-  "command_id": "tr-20261110T021000-manual",
+  "run_id": "tr-20261110T022500-manual",
+  "previous_run_id": "tr-20261110T021000-manual",
+  "command_id": "tr-20261110T022500-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-10T02:10:00+01:00",
-  "updated_at": "2026-11-10T02:15:56+01:00",
-  "finished_at": "2026-11-10T02:15:56+01:00",
-  "current": 6,
-  "total": 6,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-10T02:25:00+01:00",
+  "updated_at": "2026-11-10T02:25:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "73f7c3a05c38",
-    "0c086cdc772a",
-    "a634924a1c4b",
-    "5273405ce991",
-    "c0de3303bec7",
-    "f6691d76871e"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": {
-    "attempted": 6,
-    "observed": 6,
-    "closed": 6,
-    "explained": 6,
-    "problematic": 0,
-    "updates": 0,
-    "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 0,
-    "unchanged_reviews": 0,
-    "continuity_updates": 0,
-    "distinct_updates": 2,
-    "stale_reviews": 0,
-    "unverified_reviews": 0,
-    "anticipation_reviews": 0,
-    "anticipation_prepared": 0,
-    "anticipation_unverified": 0,
-    "queue_remaining": 0,
-    "rewrite_pending_remaining": 0,
-    "imagegen_calls": 0,
-    "image_outbox_created": 0,
-    "publications": 0,
-    "incidents": 0,
-    "concurrent_convergence": 0
-  },
-  "outcomes": [
-    {
-      "id": "73f7c3a05c38",
-      "revision": 0,
-      "name": "neus",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "9af2be7ef008b6d88cec033200ba6e43f47eed62"
-    },
-    {
-      "id": "0c086cdc772a",
-      "revision": 0,
-      "name": "paula",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "9af2be7ef008b6d88cec033200ba6e43f47eed62"
-    },
-    {
-      "id": "a634924a1c4b",
-      "revision": 0,
-      "name": "IRINI",
-      "outcome": "explained",
-      "applied": true,
-      "distinct_episode": true,
-      "apply_commit": "9af2be7ef008b6d88cec033200ba6e43f47eed62"
-    },
-    {
-      "id": "5273405ce991",
-      "revision": 0,
-      "name": "Nieves",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "9af2be7ef008b6d88cec033200ba6e43f47eed62"
-    },
-    {
-      "id": "c0de3303bec7",
-      "revision": 0,
-      "name": "#MCCLegends",
-      "outcome": "explained",
-      "applied": true,
-      "distinct_episode": true,
-      "apply_commit": "9af2be7ef008b6d88cec033200ba6e43f47eed62"
-    },
-    {
-      "id": "f6691d76871e",
-      "revision": 0,
-      "name": "José Pablo López",
-      "outcome": "explained_cause_unconfirmed",
-      "applied": true,
-      "apply_commit": "9af2be7ef008b6d88cec033200ba6e43f47eed62"
-    }
-  ],
+  "summary": null,
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "closing",
-  "last_started_at": "2026-11-10T02:15:18+01:00",
+  "activity": {
+    "run_id": "tr-20261110T022500-manual",
+    "status": "RUNNING",
+    "at": "2026-11-10T02:25:00+01:00",
+    "phase": "preparing",
+    "current": 0,
+    "total": 0,
+    "message": "Pasada tr-20261110T022500-manual RUNNING desde chat. Revalidando cola autoritativa y barrera JIT en main con snapshot Top 30 reciente; ImageGen=0; publicaciones=0."
+  },
+  "last_started_at": "2026-11-10T02:25:00+01:00",
   "last_completed_at": "2026-11-10T02:15:56+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -207,7 +133,7 @@
     "incidents": [],
     "message": "Pasada tr-20261110T021000-manual cerrada 6/6. neus, paula, IRINI, Nieves, #MCCLegends y José Pablo López r0 quedaron aplicados en main por 9af2be7ef008b6d88cec033200ba6e43f47eed62; IRINI y #MCCLegends acreditaron episodios materiales nuevos. José Pablo López se cerró con causa concreta no confirmada, sin inventar detonante. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-20261110T021000-manual cerrada 6/6. neus, paula, IRINI, Nieves, #MCCLegends y José Pablo López r0 quedaron aplicados en main por 9af2be7ef008b6d88cec033200ba6e43f47eed62; IRINI y #MCCLegends acreditaron episodios materiales nuevos. José Pablo López se cerró con causa concreta no confirmada, sin inventar detonante. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada tr-20261110T022500-manual RUNNING desde chat. Revalidando cola autoritativa y barrera JIT en main con snapshot Top 30 reciente; ImageGen=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794234841273-manual",
@@ -3044,6 +2970,15 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-20261110T021000-manual cerrada 6/6. neus, paula, IRINI, Nieves, #MCCLegends y José Pablo López r0 quedaron aplicados en main por 9af2be7ef008b6d88cec033200ba6e43f47eed62; IRINI y #MCCLegends acreditaron episodios materiales nuevos. José Pablo López se cerró con causa concreta no confirmada, sin inventar detonante. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-20261110T022500-manual",
+      "status": "RUNNING",
+      "at": "2026-11-10T02:25:00+01:00",
+      "phase": "preparing",
+      "current": 0,
+      "total": 0,
+      "message": "Pasada tr-20261110T022500-manual RUNNING desde chat. Revalidando cola autoritativa y barrera JIT en main con snapshot Top 30 reciente; ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": null,
@@ -3543,6 +3478,15 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-20261110T021000-manual cerrada 6/6. neus, paula, IRINI, Nieves, #MCCLegends y José Pablo López r0 quedaron aplicados en main por 9af2be7ef008b6d88cec033200ba6e43f47eed62; IRINI y #MCCLegends acreditaron episodios materiales nuevos. José Pablo López se cerró con causa concreta no confirmada, sin inventar detonante. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-20261110T022500-manual",
+      "status": "RUNNING",
+      "at": "2026-11-10T02:25:00+01:00",
+      "phase": "preparing",
+      "current": 0,
+      "total": 0,
+      "message": "Pasada tr-20261110T022500-manual RUNNING desde chat. Revalidando cola autoritativa y barrera JIT en main con snapshot Top 30 reciente; ImageGen=0; publicaciones=0."
     }
   ],
   "outbox_comment_id": 6755274210
