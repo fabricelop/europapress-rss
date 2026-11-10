@@ -7,37 +7,34 @@
   "previous_run_id": "tr-20261110T084000-manual",
   "command_id": "tr-20261110T085500-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-10T08:55:00+01:00",
-  "updated_at": "2026-11-10T08:58:00+01:00",
-  "finished_at": null,
-  "current": 1,
+  "updated_at": "2026-11-10T08:59:00+01:00",
+  "finished_at": "2026-11-10T08:59:00+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "red-review-45207bf1f8f0bd0eb556",
-  "title": "Revisar novedades: #FelizMartes",
-  "queue_complete": false,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
   "processed_ids": [
-    "red-review-48cfbc5303efdb98a72c"
+    "red-review-48cfbc5303efdb98a72c",
+    "red-review-45207bf1f8f0bd0eb556"
   ],
   "converged_ids": [],
-  "remaining_ids": [
-    "red-review-45207bf1f8f0bd0eb556"
-  ],
-  "remaining_active_ids": [
-    "red-review-45207bf1f8f0bd0eb556"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 2,
     "observed": 2,
-    "closed": 1,
+    "closed": 2,
     "explained": 0,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
     "maintenance_reviews": 2,
-    "unchanged_reviews": 1,
+    "unchanged_reviews": 2,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "stale_reviews": 0,
@@ -45,7 +42,7 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 1,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -59,9 +56,20 @@
       "revision": 0,
       "name": "Revisar novedades: Barça",
       "outcome": "unchanged",
-      "applied": false,
+      "applied": true,
       "via": "maintenance_outbox",
-      "result_commit": "ced156daee375d0bdc61393d72d4796b2d11c375"
+      "result_commit": "ced156daee375d0bdc61393d72d4796b2d11c375",
+      "apply_commit": "48f2fe3f47371bde7b518c9bd404982c219e8881"
+    },
+    {
+      "id": "red-review-45207bf1f8f0bd0eb556",
+      "revision": 0,
+      "name": "Revisar novedades: #FelizMartes",
+      "outcome": "unchanged",
+      "applied": true,
+      "via": "maintenance_outbox",
+      "result_commit": "5c188801378b0a09440a528d5edc4d30e113261b",
+      "apply_commit": "48f2fe3f47371bde7b518c9bd404982c219e8881"
     }
   ],
   "incident_count": 0,
@@ -102,28 +110,35 @@
       "trend_id": "red-review-45207bf1f8f0bd0eb556",
       "title": "Revisar novedades: #FelizMartes",
       "message": "#FelizMartes r0 revalidada JIT; recurrencia semanal sin hecho material nuevo. Persistiendo unchanged."
+    },
+    {
+      "at": "2026-11-10T08:59:00+01:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "Pasada tr-20261110T085500-manual cerrada 2/2. Barça y #FelizMartes quedaron unchanged tras comprobación de novedades; el aplicador oficial 48f2fe3f47371bde7b518c9bd404982c219e8881 actualizó requests.json y telegram-manual-explained.json y retiró ambas revisiones de editorial-queue. Barrera final: cola 0; requests/mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "last_started_at": "2026-11-10T08:55:00+01:00",
-  "last_completed_at": "2026-11-10T08:43:00+01:00",
+  "last_completed_at": "2026-11-10T08:59:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261110T084000-manual",
-    "status": "DONE_WITH_INCIDENTS",
-    "started_at": "2026-11-10T08:40:00+01:00",
-    "finished_at": "2026-11-10T08:43:00+01:00",
-    "at": "2026-11-10T08:43:00+01:00",
+    "run_id": "tr-20261110T085500-manual",
+    "status": "DONE",
+    "started_at": "2026-11-10T08:55:00+01:00",
+    "finished_at": "2026-11-10T08:59:00+01:00",
+    "at": "2026-11-10T08:59:00+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 0,
-      "observed": 0,
-      "closed": 0,
+      "attempted": 2,
+      "observed": 2,
+      "closed": 2,
       "explained": 0,
       "problematic": 0,
       "updates": 0,
       "review_completed_no_distinct_event": 0,
-      "maintenance_reviews": 0,
-      "unchanged_reviews": 0,
+      "maintenance_reviews": 2,
+      "unchanged_reviews": 2,
       "continuity_updates": 0,
       "distinct_updates": 0,
       "stale_reviews": 0,
@@ -136,41 +151,43 @@
       "imagegen_calls": 0,
       "image_outbox_created": 0,
       "publications": 0,
-      "incidents": 1,
+      "incidents": 0,
       "concurrent_convergence": 0
     },
-    "processed_ids": [],
+    "processed_ids": [
+      "red-review-48cfbc5303efdb98a72c",
+      "red-review-45207bf1f8f0bd0eb556"
+    ],
     "converged_ids": [],
-    "outcomes": [],
-    "incident_count": 1,
-    "incidents": [
+    "outcomes": [
       {
-        "type": "manual_refresh_stuck_checkout_concurrent_refresh_observed",
-        "workflow_run_id": 42777002989,
-        "trigger_commit": "74825af0ed1added55e6135b29e3fb886259a269",
-        "status": "in_progress",
-        "step": "actions/checkout@v4",
-        "observed_at": "2026-11-10T08:43:00+01:00",
-        "last_radar_captured_at": "2026-11-10T08:41:06+01:00",
-        "latest_queue_updated_at": "2026-11-10T08:41:11+01:00",
-        "concurrent_refresh_commit": "3081c83e995712ef9a60c06c2de4b2af44cfecc6",
-        "note": "El refresco manual sigue marcado en curso en actions/checkout@v4 y no se usa como prueba de éxito. Un refresco concurrente actualizó main a las 08:41:06/08:41:11, pero recent.json quedó live_verified=false/reliability=unverified. La cola autoritativa está vacía y no hay trabajo editorial activo."
+        "id": "red-review-48cfbc5303efdb98a72c",
+        "revision": 0,
+        "name": "Revisar novedades: Barça",
+        "outcome": "unchanged",
+        "applied": true,
+        "via": "maintenance_outbox",
+        "result_commit": "ced156daee375d0bdc61393d72d4796b2d11c375",
+        "apply_commit": "48f2fe3f47371bde7b518c9bd404982c219e8881"
+      },
+      {
+        "id": "red-review-45207bf1f8f0bd0eb556",
+        "revision": 0,
+        "name": "Revisar novedades: #FelizMartes",
+        "outcome": "unchanged",
+        "applied": true,
+        "via": "maintenance_outbox",
+        "result_commit": "5c188801378b0a09440a528d5edc4d30e113261b",
+        "apply_commit": "48f2fe3f47371bde7b518c9bd404982c219e8881"
       }
     ],
-    "message": "Pasada tr-20261110T084000-manual cerrada 0/0 con incidencia. Trigger manual 74825af0ed1added55e6135b29e3fb886259a269 / workflow 42777002989 sigue in_progress en actions/checkout@v4 y no se cuenta como refresco completado. Main sí recibió un refresco concurrente (3081c83e995712ef9a60c06c2de4b2af44cfecc6): recent.json 08:41:06 live_verified=false/reliability=unverified; editorial-queue 08:41:11 vacía; mobile-decisions y búsqueda dirigida en requests.json sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
-    "workflow_run_id": 42777002989,
-    "trigger_commit": "74825af0ed1added55e6135b29e3fb886259a269",
-    "refresh_convergence_commit": "3081c83e995712ef9a60c06c2de4b2af44cfecc6"
+    "incident_count": 0,
+    "incidents": [],
+    "message": "Pasada tr-20261110T085500-manual cerrada 2/2. Barça y #FelizMartes quedaron unchanged tras comprobación de novedades; el aplicador oficial 48f2fe3f47371bde7b518c9bd404982c219e8881 actualizó requests.json y telegram-manual-explained.json y retiró ambas revisiones de editorial-queue. Barrera final: cola 0; requests/mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+    "apply_commit": "48f2fe3f47371bde7b518c9bd404982c219e8881"
   },
-  "message": "#FelizMartes r0 revalidada JIT; recurrencia semanal sin hecho material nuevo. Persistiendo unchanged.",
+  "message": "Pasada tr-20261110T085500-manual cerrada 2/2. Barça y #FelizMartes quedaron unchanged tras comprobación de novedades; el aplicador oficial 48f2fe3f47371bde7b518c9bd404982c219e8881 actualizó requests.json y telegram-manual-explained.json y retiró ambas revisiones de editorial-queue. Barrera final: cola 0; requests/mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
-    {
-      "at": "2026-11-09T21:25:00+01:00",
-      "phase": "persisting",
-      "trend_id": "78100e73b601",
-      "title": "Gamarra",
-      "message": "Persistiendo Gamarra r0 tras investigación actual y revalidación JIT. ImageGen=0; publicaciones=0."
-    },
     {
       "at": "2026-11-09T21:27:00+01:00",
       "phase": "investigating",
@@ -2804,6 +2821,70 @@
       "current": 0,
       "total": 2,
       "message": "Pasada tr-20261110T085500-manual RUNNING. Procesando 2 revisiones de mantenimiento revalidadas en main; sin ImageGen ni publicaciones."
+    },
+    {
+      "run_id": "tr-20261110T085500-manual",
+      "status": "DONE",
+      "started_at": "2026-11-10T08:55:00+01:00",
+      "finished_at": "2026-11-10T08:59:00+01:00",
+      "at": "2026-11-10T08:59:00+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 2,
+        "observed": 2,
+        "closed": 2,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 2,
+        "unchanged_reviews": 2,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [
+        "red-review-48cfbc5303efdb98a72c",
+        "red-review-45207bf1f8f0bd0eb556"
+      ],
+      "converged_ids": [],
+      "outcomes": [
+        {
+          "id": "red-review-48cfbc5303efdb98a72c",
+          "revision": 0,
+          "name": "Revisar novedades: Barça",
+          "outcome": "unchanged",
+          "applied": true,
+          "via": "maintenance_outbox",
+          "result_commit": "ced156daee375d0bdc61393d72d4796b2d11c375",
+          "apply_commit": "48f2fe3f47371bde7b518c9bd404982c219e8881"
+        },
+        {
+          "id": "red-review-45207bf1f8f0bd0eb556",
+          "revision": 0,
+          "name": "Revisar novedades: #FelizMartes",
+          "outcome": "unchanged",
+          "applied": true,
+          "via": "maintenance_outbox",
+          "result_commit": "5c188801378b0a09440a528d5edc4d30e113261b",
+          "apply_commit": "48f2fe3f47371bde7b518c9bd404982c219e8881"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-20261110T085500-manual cerrada 2/2. Barça y #FelizMartes quedaron unchanged tras comprobación de novedades; el aplicador oficial 48f2fe3f47371bde7b518c9bd404982c219e8881 actualizó requests.json y telegram-manual-explained.json y retiró ambas revisiones de editorial-queue. Barrera final: cola 0; requests/mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+      "apply_commit": "48f2fe3f47371bde7b518c9bd404982c219e8881"
     }
   ],
   "current_item": null,
