@@ -2,6 +2,15 @@
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
 
+## Gráficos de lluvia accionables v0.17.51 (solo rama de prueba)
+- Sustituye la cuadrícula de barras de 0–180 min por una **onda de intensidad de cinco minutos** con el pico visible y tramos explícitos de lluvia, posible lluvia y ausencia de lluvia relevante.
+- El mensaje superior de la onda deriva del **mismo veredicto canónico** que el ETA; se respetan pausas observadas, episodios terminados antes de tiempo y señales de radar no confirmadas. Si faltan pronósticos, se muestra ausencia de datos, no tiempo seco inventado.
+- Sustituye las barras horarias de 24/48/72 h por una onda azul y una banda continua que diferencia lluvia probable, señal posible y periodo sin lluvia relevante. Sigue permitiendo seleccionar cada hora y consultar temperatura, probabilidad, intensidad, nubosidad, nieve y confianza; el gráfico es desplazable en pantallas estrechas.
+- La onda dibuja solo intervalos clasificados como húmedos; una señal posible lleva marca violeta de incertidumbre, nunca pico de lluvia confirmado. La altura es **relativa al máximo del periodo**, con pico numérico en mm/h, no una escala absoluta común entre horizontes.
+- Los detalles del relevo radar→modelos siguen disponibles bajo «Fuentes y fiabilidad del gráfico». Radar, ETA, mapa, fuentes meteorológicas, botón «HASTA LLUVIA» y feedback de lluvia permanecen intactos.
+- **Estado:** implementación experimental; no se ha publicado en producción ni validado visualmente en un dispositivo real.
+
+
 ## Continuidad espacial v0.17.50
 - El futuro radar visible ya **no calcula movimiento por tesela XYZ**. RainETA decodifica los últimos frames sobre una única zona georreferenciada que cubre la vista y estima un campo de movimiento compartido.
 - La advección es continua sobre el campo completo mediante muestreo espacial; después se renderiza una sola imagen georreferenciada. Así la lluvia puede cruzar antiguos límites de tiles sin costuras horizontales/verticales ni cambios de dirección por frontera.
