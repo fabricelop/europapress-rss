@@ -7,15 +7,15 @@
   "previous_run_id": "tr-1794346138390-manual",
   "command_id": "tr-1794346800000-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-10T22:40:00+01:00",
-  "updated_at": "2026-11-10T22:40:00+01:00",
+  "updated_at": "2026-11-10T22:41:10+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -331,28 +331,33 @@
       "at": "2026-11-10T22:40:00+01:00",
       "phase": "preparing",
       "message": "Pasada tr-1794346800000-manual RUNNING. Relectura inicial de main: editorial-queue=0; verificando barrera JIT de preparing/update/rewrite_pending/reexplain/anticipate/review_red antes del cierre. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-10T22:41:10+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-1794346800000-manual cerrada 0/0 contra main. Relectura JIT final: editorial-queue=0 (updated_at 2026-11-10T22:40:58+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. Captura reciente recalculada a las 22:40:53+01:00; no había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "last_started_at": "2026-11-10T22:40:00+01:00",
-  "last_completed_at": "2026-11-10T22:32:00+01:00",
+  "last_completed_at": "2026-11-10T22:41:10+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794346138390-manual",
+    "run_id": "tr-1794346800000-manual",
     "status": "DONE",
-    "started_at": "2026-11-10T22:30:00+01:00",
-    "finished_at": "2026-11-10T22:32:00+01:00",
-    "at": "2026-11-10T22:32:00+01:00",
+    "started_at": "2026-11-10T22:40:00+01:00",
+    "finished_at": "2026-11-10T22:41:10+01:00",
+    "at": "2026-11-10T22:41:10+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 1,
-      "observed": 1,
-      "closed": 1,
+      "attempted": 0,
+      "observed": 0,
+      "closed": 0,
       "explained": 0,
       "problematic": 0,
       "updates": 0,
       "review_completed_no_distinct_event": 0,
-      "maintenance_reviews": 1,
-      "unchanged_reviews": 1,
+      "maintenance_reviews": 0,
+      "unchanged_reviews": 0,
       "continuity_updates": 0,
       "distinct_updates": 0,
       "stale_reviews": 0,
@@ -368,28 +373,14 @@
       "incidents": 0,
       "concurrent_convergence": 0
     },
-    "processed_ids": [
-      "red-review-8d111bd426152df38cdd"
-    ],
+    "processed_ids": [],
     "converged_ids": [],
-    "outcomes": [
-      {
-        "id": "red-review-8d111bd426152df38cdd",
-        "revision": 0,
-        "name": "Revisar novedades: Charles",
-        "outcome": "unchanged",
-        "applied": true,
-        "via": "editorial_outbox",
-        "source_id": "c43139196d57",
-        "apply_commit": "d1f8d4f76e61418b89b7dac3a089e63cde876482",
-        "verification": "misma explicación y explained_at conservados; editorial-queue=0"
-      }
-    ],
+    "outcomes": [],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-1794346138390-manual cerrada 1/1. Charles revisado sin acontecimiento material independiente: se conserva la explicación vigente. Barrera final editorial-queue=0. ImageGen=0; publicaciones=0."
+    "message": "Pasada tr-1794346800000-manual cerrada 0/0 contra main. Relectura JIT final: editorial-queue=0 (updated_at 2026-11-10T22:40:58+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. Captura reciente recalculada a las 22:40:53+01:00; no había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794346800000-manual RUNNING. Relectura inicial de main: editorial-queue=0; verificando barrera JIT de preparing/update/rewrite_pending/reexplain/anticipate/review_red antes del cierre. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1794346800000-manual cerrada 0/0 contra main. Relectura JIT final: editorial-queue=0 (updated_at 2026-11-10T22:40:58+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. Captura reciente recalculada a las 22:40:53+01:00; no había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
@@ -6769,17 +6760,56 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-1794342867542-manual cerrada 0/0 contra main. Relectura JIT final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794346800000-manual",
+      "status": "DONE",
+      "started_at": "2026-11-10T22:40:00+01:00",
+      "finished_at": "2026-11-10T22:41:10+01:00",
+      "at": "2026-11-10T22:41:10+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 0,
+        "observed": 0,
+        "closed": 0,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 0,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [],
+      "converged_ids": [],
+      "outcomes": [],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-1794346800000-manual cerrada 0/0 contra main. Relectura JIT final: editorial-queue=0 (updated_at 2026-11-10T22:40:58+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. Captura reciente recalculada a las 22:40:53+01:00; no había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "current_item": null,
   "withdrawn_ids": [
     "ae7f066f3c94"
   ],
-  "last_finished_at": "2026-11-10T21:37:10+01:00",
-  "last_revalidated_at": "2026-11-10T20:20:30+01:00",
+  "last_finished_at": "2026-11-10T22:41:10+01:00",
+  "last_revalidated_at": "2026-11-10T22:41:10+01:00",
   "last_revalidation": {
-    "queue_sha": "b77d00987d94c18f2020c6deac435ec515ff61cb",
-    "queue_updated_at": "2026-11-10T19:18:30.798496+00:00",
+    "queue_sha": "20ca61cecf7ece63bb8bd69b952f9a5bcd5d3737",
+    "queue_updated_at": "2026-11-10T22:40:58+01:00",
     "queue_count": 0
   },
   "prior_runtime_observed": {
@@ -8446,6 +8476,45 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-1794342718304-manual cerrada 1/1 por convergencia JIT. Carzzy quedó actualizada en continuidad con el rumor de mercado hacia Movistar KOI expresamente no confirmado; se conservan ID, revisión y explained_at. Barrera final: editorial-queue=0. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794346800000-manual",
+      "status": "DONE",
+      "started_at": "2026-11-10T22:40:00+01:00",
+      "finished_at": "2026-11-10T22:41:10+01:00",
+      "at": "2026-11-10T22:41:10+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 0,
+        "observed": 0,
+        "closed": 0,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 0,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [],
+      "converged_ids": [],
+      "outcomes": [],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-1794346800000-manual cerrada 0/0 contra main. Relectura JIT final: editorial-queue=0 (updated_at 2026-11-10T22:40:58+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. Captura reciente recalculada a las 22:40:53+01:00; no había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "outbox_comment_id": 6721989528,
@@ -8455,5 +8524,6 @@
   "maintenance_apply_commits": [
     "61f2f146a926eae3568074e8e0d9947db37bc9f5",
     "5b26ed05be444fecd3e641d64eae7eba5201f9b0"
-  ]
+  ],
+  "finished_at": "2026-11-10T22:41:10+01:00"
 }
