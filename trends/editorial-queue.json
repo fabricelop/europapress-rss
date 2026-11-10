@@ -1,6 +1,41 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-10T20:14:32+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-10T19:15:03.774412+00:00",
+  "count": 1,
+  "items": [
+    {
+      "id": "red-review-6e8f56f2fa80797cd60f",
+      "revision": 0,
+      "name": "Revisar novedades: Catedral de Toledo",
+      "rank": 4,
+      "status": "preparing",
+      "requested_at": "2026-11-10T19:15:03.774412+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "3586cf6ab34c",
+        "revision": 0,
+        "name": "Catedral de Toledo",
+        "rank": 17,
+        "explanation": "TT#17 Catedral de Toledo es tendencia porque acogerá el 12 de noviembre, a las 19:00, el funeral por las 69 víctimas del accidente de Urda. Asistirán los Reyes.\n#CatedralDeToledo #Urda",
+        "explanation_sha256": "861bb74e62f7b91f08622a15288b38cf9e74e79818773d13dbfc8b1ef9f3e783",
+        "explained_at": "2026-11-04T15:09:55.238Z",
+        "verification_sources": [
+          {
+            "url": "https://www.rtve.es/noticias/20261104/catedral-toledo-acogera-funeral-victimas-accidente-tren-12-noviembre/17299152.shtml"
+          },
+          {
+            "url": "https://efe.com/espana/2026-11-04/funeral-victimas-urda-catedral-toledo-12-noviembre/"
+          }
+        ],
+        "fingerprint": "430564e8b5403077a9b8bb312e4e5af2c8ba1e9a30578308eaa5a7e022df5ef7"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
