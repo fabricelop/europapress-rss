@@ -54,7 +54,18 @@ function enroll({job,commandId,targetId,conversationUrl,browserTargetId,secret,s
   fs.mkdirSync(ROOT,{recursive:true});const file=path.join(ROOT,commandId+'.json');
   if(fs.existsSync(file)){
     const old=JSON.parse(fs.readFileSync(file,'utf8'));
-    if(!old.conversation_url&&url&&old.target_id===targetId&&old.command_id===commandId){atomic(file,{...old,conversation_url:url});}
+    // A fixed Chrome tab can be recreated after a lost ACK. Refresh only
+    // the matching command's target hint and exact conversation URL.
+    // Never attach an unrelated job or replace its encrypted key.
+    if(old.target_id!==targetId||old.command_id!==commandId||
+       Number(old.revision)!==Number(job.revision||0)||
+       old.editorial_sha256!==editorial)throw Error('existing_web_image_identity_conflict');
+    const next={...old};
+    if(!old.conversation_url&&url)next.conversation_url=url;
+    if(safeID(browserTargetId)&&String(old.browser_target_id||'')!==String(browserTargetId))
+      next.browser_target_id=String(browserTargetId);
+    if(next.conversation_url!==old.conversation_url||next.browser_target_id!==old.browser_target_id)
+      atomic(file,next);
     if(startPublisher)wakePublisher();return;
   }
   atomic(file,{version:1,target_id:targetId,command_id:commandId,revision:Number(job.revision||0),conversation_url:url,browser_target_id:String(browserTargetId||''),
