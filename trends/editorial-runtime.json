@@ -7,15 +7,15 @@
   "previous_run_id": "tr-20261110T025500-manual",
   "command_id": "tr-20261110T031000-manual",
   "source": "chat",
-  "status": "success",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-10T03:10:00+01:00",
   "updated_at": "2026-11-10T03:13:37+01:00",
-  "finished_at": null,
-  "current": 0,
+  "finished_at": "2026-11-10T03:13:37+01:00",
+  "current": 1,
   "total": 1,
-  "trend_id": "23f88d52777e",
-  "title": "Espinosa",
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
     "23f88d52777e"
@@ -24,8 +24,41 @@
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": null,
-  "outcomes": [],
+  "summary": {
+    "attempted": 1,
+    "observed": 1,
+    "closed": 1,
+    "explained": 1,
+    "problematic": 0,
+    "updates": 0,
+    "review_completed_no_distinct_event": 0,
+    "maintenance_reviews": 0,
+    "unchanged_reviews": 0,
+    "continuity_updates": 0,
+    "distinct_updates": 0,
+    "stale_reviews": 0,
+    "unverified_reviews": 0,
+    "anticipation_reviews": 0,
+    "anticipation_prepared": 0,
+    "anticipation_unverified": 0,
+    "queue_remaining": 0,
+    "rewrite_pending_remaining": 0,
+    "imagegen_calls": 0,
+    "image_outbox_created": 0,
+    "publications": 0,
+    "incidents": 0,
+    "concurrent_convergence": 0
+  },
+  "outcomes": [
+    {
+      "id": "23f88d52777e",
+      "revision": 0,
+      "name": "Espinosa",
+      "outcome": "explained_cause_unconfirmed",
+      "applied": true,
+      "apply_commit": "5311a3d99893c024fe4fec81081c06e65ee321a1"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -71,17 +104,17 @@
   "last_completed_at": "2026-11-10T03:13:37+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261110T025500-manual",
+    "run_id": "tr-20261110T031000-manual",
     "status": "DONE",
-    "started_at": "2026-11-10T02:55:00+01:00",
-    "finished_at": "2026-11-10T02:56:00+01:00",
-    "at": "2026-11-10T02:56:00+01:00",
+    "started_at": "2026-11-10T03:10:00+01:00",
+    "finished_at": "2026-11-10T03:13:37+01:00",
+    "at": "2026-11-10T03:13:37+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 0,
-      "observed": 0,
-      "closed": 0,
-      "explained": 0,
+      "attempted": 1,
+      "observed": 1,
+      "closed": 1,
+      "explained": 1,
       "problematic": 0,
       "updates": 0,
       "review_completed_no_distinct_event": 0,
@@ -102,13 +135,24 @@
       "incidents": 0,
       "concurrent_convergence": 0
     },
-    "processed_ids": [],
-    "outcomes": [],
+    "processed_ids": [
+      "23f88d52777e"
+    ],
+    "outcomes": [
+      {
+        "id": "23f88d52777e",
+        "revision": 0,
+        "name": "Espinosa",
+        "outcome": "explained_cause_unconfirmed",
+        "applied": true,
+        "apply_commit": "5311a3d99893c024fe4fec81081c06e65ee321a1"
+      }
+    ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-20261110T025500-manual cerrada 0/0 tras relectura JIT de main. Snapshot Top 30 capturado 2026-11-10T02:50:52+01:00; editorial-queue actualizada 2026-11-10T02:50:57+01:00 y vacía. Barrera final: mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial vigente que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "message": "Pasada tr-20261110T031000-manual cerrada 1/1. Espinosa r0 fue investigada con dos búsquedas independientes y aplicada en main por 5311a3d99893c024fe4fec81081c06e65ee321a1 con contexto actual verificado y detonante concreto no confirmado. Barrera final: editorial-queue=0. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-20261110T031000-manual RUNNING desde chat. Espinosa r0 revalidada en la cola autoritativa; investigando el detonante actual con dos búsquedas independientes. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-20261110T031000-manual cerrada 1/1. Espinosa r0 fue investigada con dos búsquedas independientes y aplicada en main por 5311a3d99893c024fe4fec81081c06e65ee321a1 con contexto actual verificado y detonante concreto no confirmado. Barrera final: editorial-queue=0. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794234841273-manual",
@@ -3050,21 +3094,63 @@
       "trend_id": "23f88d52777e",
       "title": "Espinosa",
       "message": "Pasada tr-20261110T031000-manual RUNNING desde chat. Espinosa r0 revalidada en la cola autoritativa; investigando el detonante actual con dos búsquedas independientes. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-20261110T031000-manual",
+      "status": "DONE",
+      "started_at": "2026-11-10T03:10:00+01:00",
+      "finished_at": "2026-11-10T03:13:37+01:00",
+      "at": "2026-11-10T03:13:37+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 1,
+        "observed": 1,
+        "closed": 1,
+        "explained": 1,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 0,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [
+        "23f88d52777e"
+      ],
+      "outcomes": [
+        {
+          "id": "23f88d52777e",
+          "revision": 0,
+          "name": "Espinosa",
+          "outcome": "explained_cause_unconfirmed",
+          "applied": true,
+          "apply_commit": "5311a3d99893c024fe4fec81081c06e65ee321a1"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-20261110T031000-manual cerrada 1/1. Espinosa r0 fue investigada con dos búsquedas independientes y aplicada en main por 5311a3d99893c024fe4fec81081c06e65ee321a1 con contexto actual verificado y detonante concreto no confirmado. Barrera final: editorial-queue=0. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
-  "current_item": {
-    "id": "23f88d52777e",
-    "revision": 0,
-    "name": "Espinosa",
-    "rank": 26,
-    "status": "preparing",
-    "task": "explain"
-  },
+  "current_item": null,
   "withdrawn_ids": [
     "ae7f066f3c94"
   ],
-  "last_finished_at": "2026-11-10T02:56:00+01:00",
-  "last_revalidated_at": "2026-11-10T02:56:00+01:00",
+  "last_finished_at": "2026-11-10T03:13:37+01:00",
+  "last_revalidated_at": "2026-11-10T03:13:37+01:00",
   "last_revalidation": {
     "queue_count": 0,
     "queue_updated_at": "2026-11-10T02:50:57+01:00",
@@ -3075,8 +3161,8 @@
     "run_id": "tr-20261110T004100-manual",
     "updated_at": "2026-11-10T00:55:00+01:00"
   },
-  "apply_workflow_run_id": 42716594814,
-  "apply_commit": "9af2be7ef008b6d88cec033200ba6e43f47eed62",
+  "apply_workflow_run_id": 42741202811,
+  "apply_commit": "5311a3d99893c024fe4fec81081c06e65ee321a1",
   "maintenance_workflow_run_id": 42713522083,
   "maintenance_job_id": "red-review-61d494cc18e2321aaa5b",
   "workflow_run_id": 42716411372,
@@ -3659,6 +3745,55 @@
       "trend_id": "23f88d52777e",
       "title": "Espinosa",
       "message": "Pasada tr-20261110T031000-manual RUNNING desde chat. Espinosa r0 revalidada en la cola autoritativa; investigando el detonante actual con dos búsquedas independientes. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-20261110T031000-manual",
+      "status": "DONE",
+      "started_at": "2026-11-10T03:10:00+01:00",
+      "finished_at": "2026-11-10T03:13:37+01:00",
+      "at": "2026-11-10T03:13:37+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 1,
+        "observed": 1,
+        "closed": 1,
+        "explained": 1,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 0,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [
+        "23f88d52777e"
+      ],
+      "outcomes": [
+        {
+          "id": "23f88d52777e",
+          "revision": 0,
+          "name": "Espinosa",
+          "outcome": "explained_cause_unconfirmed",
+          "applied": true,
+          "apply_commit": "5311a3d99893c024fe4fec81081c06e65ee321a1"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-20261110T031000-manual cerrada 1/1. Espinosa r0 fue investigada con dos búsquedas independientes y aplicada en main por 5311a3d99893c024fe4fec81081c06e65ee321a1 con contexto actual verificado y detonante concreto no confirmado. Barrera final: editorial-queue=0. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "outbox_comment_id": 6755274210
