@@ -261,8 +261,8 @@
       "checked_at": "2026-11-07T17:09:35+00:00",
       "buffer_post_id": "6aef5b4d51492b796eecec0c",
       "verification_note": "Buffer indicó enviado, sin enlace verificable a X de esta cuenta.",
-      "last_buffer_check_at": "2026-11-10T02:44:58+00:00",
-      "buffer_poll_attempts": 2
+      "last_buffer_check_at": "2026-11-10T17:20:53+00:00",
+      "buffer_poll_attempts": 3
     },
     {
       "request_id": "78fd6926-5baf-42a3-8a8d-3fd50e59a696",
@@ -853,35 +853,39 @@
       "event_id": "77a00f1856b1",
       "revision": 1,
       "account": "ttittulares",
-      "state": "pending",
+      "state": "sent",
       "requested_at": "2026-11-10T17:20:43+00:00",
       "channel_id": "6aeed01ae29c69a1719020c2",
       "media_type": "ai",
-      "checked_at": "2026-11-10T17:20:51+00:00",
-      "buffer_post_id": "6af352700649793ed2f9c01f"
+      "checked_at": "2026-11-10T17:20:53+00:00",
+      "buffer_post_id": "6af352700649793ed2f9c01f",
+      "last_buffer_check_at": "2026-11-10T17:20:53+00:00",
+      "buffer_poll_attempts": 1,
+      "sent_at": "2026-11-10T17:20:51.099Z",
+      "post_url": "https://twitter.com/TTiTTulares/status/2120205052962824462"
     }
   ],
   "api_quota": {
     "limit": 2000,
-    "remaining": 1770,
-    "used": 230,
+    "remaining": 1768,
+    "used": 232,
     "window_seconds": 2592000,
-    "resets_in_seconds": 2298883,
-    "observed_at": "2026-11-10T17:20:51+00:00",
+    "resets_in_seconds": 2298877,
+    "observed_at": "2026-11-10T17:20:53+00:00",
     "other_windows": [
       {
         "window_seconds": 900,
         "limit": 150,
-        "remaining": 147,
-        "used": 3,
-        "resets_in_seconds": 899
+        "remaining": 145,
+        "used": 5,
+        "resets_in_seconds": 893
       },
       {
         "window_seconds": 86400,
         "limit": 600,
-        "remaining": 597,
-        "used": 3,
-        "resets_in_seconds": 86399
+        "remaining": 595,
+        "used": 5,
+        "resets_in_seconds": 86393
       }
     ]
   },
@@ -1035,6 +1039,12 @@
       "limit": 2000,
       "used": 230,
       "sent_total": 42
+    },
+    {
+      "observed_at": "2026-11-10T17:20:53+00:00",
+      "limit": 2000,
+      "used": 232,
+      "sent_total": 43
     }
   ]
 }
