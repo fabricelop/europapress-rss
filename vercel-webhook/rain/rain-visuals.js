@@ -53,7 +53,7 @@ export function rainWaveSvg(points=[],{id='rain-wave'}={}){
   const width=960,base=124,top=12,n=points.length;
   const prefix=String(id).replace(/[^a-zA-Z0-9_-]/g,'')||'rain-wave';
   const rates=points.map(p=>rainVisualSignal(p)==='wet'?Math.max(0,finite(p.rate??p.precipitation)):0);
-  const maxRate=Math.max(2,Math.min(20,...rates));
+  const maxRate=Math.max(2,Math.min(20,Math.max(...rates)));
   const x=i=>Number((i/(Math.max(1,n-1))*width).toFixed(2));
   const y=i=>Number((base-Math.sqrt(Math.min(rates[i],maxRate)/maxRate)*(base-top)).toFixed(2));
   const coords=points.map((p,i)=>x(i)+' '+y(i));
