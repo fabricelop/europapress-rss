@@ -3,19 +3,19 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261110T175500-manual",
-  "previous_run_id": "tr-20261110T174000-manual",
-  "command_id": "tr-20261110T175500-manual",
+  "run_id": "tr-20261110T181000-manual",
+  "previous_run_id": "tr-20261110T175500-manual",
+  "command_id": "tr-20261110T181000-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-10T17:55:00+01:00",
-  "updated_at": "2026-11-10T17:56:00+01:00",
+  "status": "RUNNING",
+  "phase": "verifying",
+  "started_at": "2026-11-10T18:10:00+01:00",
+  "updated_at": "2026-11-10T18:10:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -50,8 +50,8 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Pasada editorial completada",
-  "last_started_at": "2026-11-10T17:55:00+01:00",
+  "activity": "Verificando cola editorial",
+  "last_started_at": "2026-11-10T18:10:00+01:00",
   "last_completed_at": "2026-11-10T17:56:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -93,7 +93,7 @@
     "incidents": [],
     "message": "Pasada tr-20261110T175500-manual cerrada 0/0 contra main. Barrera JIT final: editorial-queue=0 (updated_at 2026-11-10T17:51:08+01:00) y sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos en los registros comprobados. Últimos mantenimientos revisados: Charles (continuidad actualizada) y Supa (unverified), ambos ya cerrados. No había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-20261110T175500-manual cerrada 0/0 contra main. Barrera JIT final: editorial-queue=0 (updated_at 2026-11-10T17:51:08+01:00) y sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos en los registros comprobados. Últimos mantenimientos revisados: Charles (continuidad actualizada) y Supa (unverified), ambos ya cerrados. No había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada tr-20261110T181000-manual RUNNING. Cola autoritativa inicial observada en 0; verificando main y releyendo la barrera JIT antes de cerrar. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
@@ -5463,6 +5463,13 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-20261110T175500-manual cerrada 0/0 contra main. Barrera JIT final: editorial-queue=0 (updated_at 2026-11-10T17:51:08+01:00) y sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos en los registros comprobados. Últimos mantenimientos revisados: Charles (continuidad actualizada) y Supa (unverified), ambos ya cerrados. No había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-10T18:10:00+01:00",
+      "run_id": "tr-20261110T181000-manual",
+      "status": "RUNNING",
+      "phase": "verifying",
+      "message": "Pasada tr-20261110T181000-manual RUNNING. Cola autoritativa inicial observada en 0; verificando main y releyendo la barrera JIT antes de cerrar. ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": null,
@@ -6683,7 +6690,7 @@
   ],
   "outbox_comment_id": 5848965032,
   "editorial_apply_commit": "76e7e728a222ee21fee34fda64da43cfd7ecd90a",
-  "finished_at": "2026-11-10T17:56:00+01:00",
+  "finished_at": null,
   "refresh_workflow_run_id": 42839275825,
   "refresh_conclusion": "success"
 }
