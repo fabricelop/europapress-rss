@@ -485,20 +485,20 @@
     }
   ],
   "last_started_at": "2026-11-10T23:28:17+01:00",
-  "last_completed_at": "2026-11-10T23:29:00+01:00",
+  "last_completed_at": "2026-11-10T23:42:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794349301598-manual",
+    "run_id": "tr-1794350400000-manual",
     "status": "DONE",
-    "started_at": "2026-11-10T23:22:00+01:00",
-    "finished_at": "2026-11-10T23:29:00+01:00",
-    "at": "2026-11-10T23:29:00+01:00",
+    "started_at": "2026-11-10T23:40:00+01:00",
+    "finished_at": "2026-11-10T23:42:00+01:00",
+    "at": "2026-11-10T23:42:00+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 2,
-      "observed": 2,
-      "closed": 2,
-      "explained": 2,
+      "attempted": 0,
+      "observed": 0,
+      "closed": 0,
+      "explained": 0,
       "problematic": 0,
       "updates": 0,
       "review_completed_no_distinct_event": 0,
@@ -519,36 +519,14 @@
       "incidents": 0,
       "concurrent_convergence": 0
     },
-    "processed_ids": [
-      "60c664dd6336",
-      "0faac9574459"
-    ],
+    "processed_ids": [],
     "converged_ids": [],
-    "outcomes": [
-      {
-        "id": "60c664dd6336",
-        "revision": 0,
-        "name": "Hugo Duro",
-        "outcome": "explained",
-        "applied": true,
-        "apply_commit": "8046c636ec22a84f69b40d962a2999770d63a275",
-        "verification": "requests.json + telegram-manual-explained.json modified atomically; site Top30 EXPLICADA; queue removed"
-      },
-      {
-        "id": "0faac9574459",
-        "revision": 0,
-        "name": "Ada Colau",
-        "outcome": "explained",
-        "applied": true,
-        "apply_commit": "012e53349fbddccadebe5cde7f1d20a26aacd7dc",
-        "verification": "requests.json + telegram-manual-explained.json modified atomically; site Top30 EXPLICADA; queue removed"
-      }
-    ],
+    "outcomes": [],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-1794349301598-manual cerrada 2/2. Hugo Duro y Ada Colau reelaborados desde cero y aplicados por el circuito oficial. Barrera final repetida sobre main: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "message": "Pasada tr-1794350400000-manual cerrada 0/0 contra main. Barrera final verificada: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos en los registros editoriales. No había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794349301598-manual cerrada 2/2 por convergencia JIT. Hugo Duro r0 y Ada Colau r0 quedaron aplicados como explained en main; cola final=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada tr-1794350400000-manual cerrada 0/0 contra main. Barrera final verificada: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos en los registros editoriales. No había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
@@ -7083,18 +7061,59 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-1794349301598-manual cerrada 2/2 por convergencia JIT. Hugo Duro r0 y Ada Colau r0 quedaron aplicados como explained en main; cola final=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794350400000-manual",
+      "status": "DONE",
+      "started_at": "2026-11-10T23:40:00+01:00",
+      "finished_at": "2026-11-10T23:42:00+01:00",
+      "at": "2026-11-10T23:42:00+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 0,
+        "observed": 0,
+        "closed": 0,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 0,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [],
+      "converged_ids": [],
+      "outcomes": [],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-1794350400000-manual cerrada 0/0 contra main. Barrera final verificada: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos en los registros editoriales. No había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "current_item": null,
   "withdrawn_ids": [
     "ae7f066f3c94"
   ],
-  "last_finished_at": "2026-11-10T23:29:27+01:00",
-  "last_revalidated_at": "2026-11-10T23:29:27+01:00",
+  "last_finished_at": "2026-11-10T23:42:00+01:00",
+  "last_revalidated_at": "2026-11-10T23:42:00+01:00",
   "last_revalidation": {
     "queue_count": 0,
     "mobile_active_count": 0,
-    "at": "2026-11-10T23:29:27+01:00"
+    "request_active_count": 0,
+    "rewrite_pending_count": 0,
+    "at": "2026-11-10T23:42:00+01:00"
   },
   "prior_runtime_observed": {
     "run_id": "tr-20261110T131000-manual",
@@ -8860,6 +8879,45 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-1794349301598-manual cerrada 2/2 por convergencia JIT. Hugo Duro r0 y Ada Colau r0 quedaron aplicados como explained en main; cola final=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794350400000-manual",
+      "status": "DONE",
+      "started_at": "2026-11-10T23:40:00+01:00",
+      "finished_at": "2026-11-10T23:42:00+01:00",
+      "at": "2026-11-10T23:42:00+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 0,
+        "observed": 0,
+        "closed": 0,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 0,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [],
+      "converged_ids": [],
+      "outcomes": [],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-1794350400000-manual cerrada 0/0 contra main. Barrera final verificada: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos en los registros editoriales. No había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "outbox_comment_id": 6721989528,
