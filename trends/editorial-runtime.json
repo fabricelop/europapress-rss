@@ -7,14 +7,14 @@
   "previous_run_id": "tr-20261110T205500-manual",
   "command_id": "tr-1794340649326-manual",
   "source": "chat",
-  "status": "success",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-10T20:58:30+01:00",
-  "updated_at": "2026-11-10T21:00:40+01:00",
-  "current": 0,
+  "updated_at": "2026-11-10T21:01:30+01:00",
+  "current": 1,
   "total": 1,
-  "trend_id": "601c5a8a93e2",
-  "title": "Catedral de Toledo",
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
     "601c5a8a93e2"
@@ -24,10 +24,10 @@
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 0,
-    "closed": 0,
-    "explained": 0,
+    "attempted": 1,
+    "observed": 1,
+    "closed": 1,
+    "explained": 1,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
@@ -48,7 +48,19 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "601c5a8a93e2",
+      "revision": 0,
+      "name": "Catedral de Toledo",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "2939b4d2b5415ed3b8ebf6ba2332692f9d37c1cd",
+      "verification": "site-top30/manual explained exact match; queue empty",
+      "closer_text": "",
+      "image_status": "pending_separate_visual_flow"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -162,23 +174,33 @@
       "trend_id": "601c5a8a93e2",
       "title": "Catedral de Toledo",
       "message": "Preparando resultado explained_direct r0 para aplicación atómica en ambos registros."
+    },
+    {
+      "at": "2026-11-10T21:01:30+01:00",
+      "phase": "verifying",
+      "message": "Aplicador 2939b4d2 aplicado; ficha r0 visible como EXPLICADA con texto, fuentes y closer vacío. Cola=0 y sin rewrite_pending/reexplain activos."
+    },
+    {
+      "at": "2026-11-10T21:01:30+01:00",
+      "phase": "closing",
+      "message": "Pasada 1/1 cerrada. ImageGen=0; imágenes quedan pendientes en flujo visual separado; publicaciones=0."
     }
   ],
   "last_started_at": "2026-11-10T21:00:40+01:00",
   "last_completed_at": "2026-11-10T21:00:40+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261110T205500-manual",
+    "run_id": "tr-1794340649326-manual",
     "status": "DONE",
-    "started_at": "2026-11-10T20:55:00+01:00",
-    "finished_at": "2026-11-10T20:56:30+01:00",
-    "at": "2026-11-10T20:56:30+01:00",
+    "started_at": "2026-11-10T20:58:30+01:00",
+    "finished_at": "2026-11-10T21:01:30+01:00",
+    "at": "2026-11-10T21:01:30+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 0,
-      "observed": 0,
-      "closed": 0,
-      "explained": 0,
+      "attempted": 1,
+      "observed": 1,
+      "closed": 1,
+      "explained": 1,
       "problematic": 0,
       "updates": 0,
       "review_completed_no_distinct_event": 0,
@@ -199,12 +221,27 @@
       "incidents": 0,
       "concurrent_convergence": 0
     },
-    "processed_ids": [],
+    "processed_ids": [
+      "601c5a8a93e2"
+    ],
     "converged_ids": [],
-    "outcomes": [],
+    "outcomes": [
+      {
+        "id": "601c5a8a93e2",
+        "revision": 0,
+        "name": "Catedral de Toledo",
+        "outcome": "explained",
+        "applied": true,
+        "apply_commit": "2939b4d2b5415ed3b8ebf6ba2332692f9d37c1cd",
+        "verification": "site-top30/manual explained exact match; queue empty",
+        "closer_text": "",
+        "image_status": "pending_separate_visual_flow"
+      }
+    ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-20261110T205500-manual cerrada 0/0 contra main. Relectura JIT final: editorial-queue=0 (updated_at 2026-11-10T20:50:58+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial textual pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "message": "Pasada tr-1794340649326-manual cerrada 1/1. Catedral de Toledo r0 reelaborada desde cero con causa actual verificada: misa funeral del 10/11 por las 69 víctimas de Urda con asistencia de los Reyes. Sin remate por sensibilidad. Aplicación verificada y cola final 0; sin rewrite_pending/reexplain. ImageGen=0; flujo visual separado pendiente; publicaciones=0.",
+    "editorial_apply_commit": "2939b4d2b5415ed3b8ebf6ba2332692f9d37c1cd"
   },
   "message": "Pasada tr-20261110T205500-manual cerrada 0/0 contra main. Relectura JIT final: editorial-queue=0 (updated_at 2026-11-10T20:50:58+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial textual pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
@@ -7725,8 +7762,8 @@
     }
   ],
   "outbox_comment_id": 6721989528,
-  "editorial_apply_commit": "2b4368e6ef771e755d369c6505d2029906789abf",
-  "finished_at": "2026-11-10T20:56:30+01:00",
+  "editorial_apply_commit": "2939b4d2b5415ed3b8ebf6ba2332692f9d37c1cd",
+  "finished_at": "2026-11-10T21:01:30+01:00",
   "refresh_workflow_run_id": 42839275825,
   "refresh_conclusion": "success"
 }
