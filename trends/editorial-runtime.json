@@ -8,13 +8,13 @@
   "command_id": "tr-1794337800000-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "persisting",
   "started_at": "2026-11-10T20:10:00+01:00",
-  "updated_at": "2026-11-10T20:10:00+01:00",
+  "updated_at": "2026-11-10T20:12:30+01:00",
   "current": 0,
   "total": 4,
-  "trend_id": null,
-  "title": null,
+  "trend_id": "f4646f4e00c3",
+  "title": "Catedral de Toledo",
   "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
@@ -120,7 +120,7 @@
     "incidents": [],
     "message": "Pasada tr-1794336900000-manual cerrada 0/0 tras barrera JIT. editorial-queue sigue en 0 (updated_at 2026-11-10T19:51:50+01:00); mobile-decisions no contiene preparing/update ni rewrite_pending/reexplain activos y las búsquedas de control no detectan reelaboraciones vigentes. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794337800000-manual iniciada con 4 item(s) en la cola autoritativa.",
+  "message": "Investigación cerrada para 4 item(s); persistiendo resultados JIT.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
@@ -5912,7 +5912,12 @@
       "message": "Pasada tr-1794336117018-manual cerrada 1/1 por convergencia JIT. Radar · Dictadura ya había quedado anticipation_prepared y aplicado por la pasada solapada tr-1794335896172-manual; se verificó el detonante con fuentes actuales, la cola autoritativa quedó en 0 y no quedan preparing/update ni reelaboraciones activas en decisiones móviles. Se reconcilió anticipation-metrics con el estado aplicado. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
-  "current_item": null,
+  "current_item": {
+    "id": "f4646f4e00c3",
+    "revision": 0,
+    "name": "Catedral de Toledo",
+    "phase": "persisting"
+  },
   "withdrawn_ids": [
     "ae7f066f3c94"
   ],
