@@ -3,33 +3,30 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794291762595-manual",
-  "previous_run_id": "tr-20261110T071000-manual",
-  "command_id": "tr-1794291762595-manual",
+  "run_id": "tr-20261110T075500-manual",
+  "previous_run_id": "tr-1794291762595-manual",
+  "command_id": "tr-20261110T075500-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-10T07:23:00+01:00",
-  "updated_at": "2026-11-10T07:26:30+01:00",
-  "finished_at": "2026-11-10T07:26:30+01:00",
-  "current": 2,
-  "total": 2,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-10T07:55:00+01:00",
+  "updated_at": "2026-11-10T07:55:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "3fcb30738b29",
-    "03e0b7b74f2c"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
-    "explained": 2,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
@@ -50,114 +47,17 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "3fcb30738b29",
-      "revision": 0,
-      "name": "#FelizMartes",
-      "outcome": "explained",
-      "applied": true,
-      "workflow_run_id": 42768741920,
-      "verification": "requests/explained exact match"
-    },
-    {
-      "id": "03e0b7b74f2c",
-      "revision": 0,
-      "name": "israel",
-      "outcome": "explained",
-      "applied": true,
-      "workflow_run_id": 42768994276,
-      "verification": "requests/explained exact match",
-      "closer_omitted": "sensitive_topic"
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
   "activity": [
     {
-      "at": "2026-11-10T07:23:30+01:00",
-      "phase": "investigating",
-      "trend_id": "3fcb30738b29",
-      "title": "#FelizMartes",
-      "message": "#FelizMartes r0: contraste actual desde cero; ranking JIT confirmado en main y patrón recurrente contrastado con históricos públicos."
-    },
-    {
-      "at": "2026-11-10T07:23:30+01:00",
-      "phase": "drafting",
-      "trend_id": "3fcb30738b29",
-      "title": "#FelizMartes",
-      "message": "#FelizMartes r0: texto nuevo redactado sin reutilizar la explicación anterior; sin evento, partido ni marcador concreto verificado."
-    },
-    {
-      "at": "2026-11-10T07:23:30+01:00",
-      "phase": "remate_selection",
-      "trend_id": "3fcb30738b29",
-      "title": "#FelizMartes",
-      "message": "#FelizMartes r0: remate nuevo seleccionado y texto completo validado por debajo de 280 caracteres."
-    },
-    {
-      "at": "2026-11-10T07:23:30+01:00",
-      "phase": "persisting",
-      "trend_id": "3fcb30738b29",
-      "title": "#FelizMartes",
-      "message": "#FelizMartes r0: persistiendo la revisión exacta mediante el transporte editorial vigente."
-    },
-    {
-      "at": "2026-11-10T07:24:30+01:00",
-      "phase": "verifying",
-      "trend_id": "3fcb30738b29",
-      "title": "#FelizMartes",
-      "message": "#FelizMartes r0 verificada como explained en requests.json y telegram-manual-explained.json con texto, closer y explained_at idénticos; retirada de la cola."
-    },
-    {
-      "at": "2026-11-10T07:24:30+01:00",
+      "at": "2026-11-10T07:55:00+01:00",
       "phase": "preparing",
-      "trend_id": "03e0b7b74f2c",
-      "title": "israel",
-      "message": "israel r0 es la única preparing/update restante y conserva id+revision exactos."
-    },
-    {
-      "at": "2026-11-10T07:24:30+01:00",
-      "phase": "investigating",
-      "trend_id": "03e0b7b74f2c",
-      "title": "israel",
-      "message": "Contrastando el contexto actual de israel/Gaza y el cruce Broncano-Abascal antes de redactar."
-    },
-    {
-      "at": "2026-11-10T07:25:30+01:00",
-      "phase": "drafting",
-      "trend_id": "03e0b7b74f2c",
-      "title": "israel",
-      "message": "Contexto predominante verificado: cruce Broncano-Abascal en La Revuelta sobre los contactos con Israel y la ausencia de Gaza en esas conversaciones."
-    },
-    {
-      "at": "2026-11-10T07:25:30+01:00",
-      "phase": "remate_selection",
-      "trend_id": "03e0b7b74f2c",
-      "title": "israel",
-      "message": "Sin remate por sensibilidad del conflicto y de la situación humanitaria; closer_text vacío conforme al contrato."
-    },
-    {
-      "at": "2026-11-10T07:25:30+01:00",
-      "phase": "persisting",
-      "trend_id": "03e0b7b74f2c",
-      "title": "israel",
-      "message": "Revisión r0 revalidada JIT; persistiendo texto factual mediante el transporte editorial oficial."
-    },
-    {
-      "at": "2026-11-10T07:26:30+01:00",
-      "phase": "verifying",
-      "trend_id": "03e0b7b74f2c",
-      "title": "israel",
-      "message": "israel r0 verificada como explained en requests.json y telegram-manual-explained.json con texto y explained_at idénticos; retirada de la cola."
-    },
-    {
-      "at": "2026-11-10T07:26:30+01:00",
-      "phase": "closing",
       "trend_id": null,
       "title": null,
-      "message": "Barrera final main limpia: queue=0 y sin preparing/update/rewrite_pending/reexplain. Cierre 2/2; ImageGen=0."
+      "message": "Pasada manual iniciada contra main. Captura radar 07:51:06 y cola autoritativa 07:51:12 observada vacía; verificando barrera final y estados activos. ImageGen=0; publicaciones=0."
     }
   ],
   "last_started_at": "2026-11-10T07:23:00+01:00",
@@ -225,7 +125,7 @@
     "incidents": [],
     "message": "Pasada tr-1794291762595-manual cerrada 2/2. #FelizMartes r0 e israel r0 fueron investigadas desde cero, revalidadas JIT y persistidas como explained con coincidencia exacta entre requests.json y telegram-manual-explained.json. israel queda sin remate por sensibilidad. Barrera final en main: editorial-queue=0 y requests sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794291762595-manual cerrada 2/2. #FelizMartes r0 e israel r0 fueron investigadas desde cero, revalidadas JIT y persistidas como explained con coincidencia exacta entre requests.json y telegram-manual-explained.json. israel queda sin remate por sensibilidad. Barrera final en main: editorial-queue=0 y requests sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada manual RUNNING: verificando main y barrera final antes de cerrar.",
   "history": [
     {
       "run_id": "tr-1794237283736-manual",
