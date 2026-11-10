@@ -7,21 +7,27 @@
   "previous_run_id": "tr-20261110T205500-manual",
   "command_id": "tr-1794340649326-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
+  "status": "RUNNING",
+  "phase": "investigating",
   "started_at": "2026-11-10T20:58:30+01:00",
-  "updated_at": "2026-11-10T21:01:30+01:00",
+  "updated_at": "2026-11-10T21:02:00+01:00",
   "current": 1,
-  "total": 1,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "total": 3,
+  "trend_id": "red-review-68d91ea6ffac56fadb4d",
+  "title": "Revisar novedades: Supa",
+  "queue_complete": false,
   "processed_ids": [
     "601c5a8a93e2"
   ],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-68d91ea6ffac56fadb4d",
+    "red-review-7ec3c52ef28add881531"
+  ],
+  "remaining_active_ids": [
+    "red-review-68d91ea6ffac56fadb4d",
+    "red-review-7ec3c52ef28add881531"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 1,
@@ -40,7 +46,7 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -184,6 +190,13 @@
       "at": "2026-11-10T21:01:30+01:00",
       "phase": "closing",
       "message": "Pasada 1/1 cerrada. ImageGen=0; imágenes quedan pendientes en flujo visual separado; publicaciones=0."
+    },
+    {
+      "at": "2026-11-10T21:02:00+01:00",
+      "phase": "investigating",
+      "trend_id": "red-review-68d91ea6ffac56fadb4d",
+      "title": "Revisar novedades: Supa",
+      "message": "Barrera final detectó dos revisiones rojas nuevas. Se reabre la pasada y se procesa Supa primero, con validación JIT."
     }
   ],
   "last_started_at": "2026-11-10T21:00:40+01:00",
@@ -7763,7 +7776,7 @@
   ],
   "outbox_comment_id": 6721989528,
   "editorial_apply_commit": "2939b4d2b5415ed3b8ebf6ba2332692f9d37c1cd",
-  "finished_at": "2026-11-10T21:01:30+01:00",
+  "finished_at": null,
   "refresh_workflow_run_id": 42839275825,
   "refresh_conclusion": "success"
 }
