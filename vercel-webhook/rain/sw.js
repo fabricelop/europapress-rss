@@ -1,5 +1,5 @@
-const CACHE='raineta-v76';
-const ASSETS=['/rain/','/rain/index.html','/rain/app.js?v=0.17.50','/rain/core.js','/rain/radar-core.js','/rain/manifest.webmanifest','/rain/icon.svg'];
+const CACHE='raineta-v77';
+const ASSETS=['/rain/','/rain/index.html','/rain/app.js?v=0.17.51','/rain/rain-visuals.js','/rain/core.js','/rain/radar-core.js','/rain/manifest.webmanifest','/rain/icon.svg'];
 
 self.addEventListener('install',event=>{
   event.waitUntil(
