@@ -7,15 +7,15 @@
   "previous_run_id": "tr-20261110T202500-manual",
   "command_id": "tr-20261110T204000-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-10T20:40:00+01:00",
-  "updated_at": "2026-11-10T20:40:00+01:00",
+  "updated_at": "2026-11-10T20:41:15+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -117,17 +117,22 @@
       "at": "2026-11-10T20:40:00+01:00",
       "phase": "preparing",
       "message": "Pasada manual RUNNING. Cola autoritativa observada inicialmente en 0; verificando estado editorial y barrera JIT final antes de cerrar. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-10T20:41:15+01:00",
+      "phase": "closing",
+      "message": "Barrera final verificada: editorial-queue=0, mobile activo=0 y sin reelaboraciones pendientes; pasada cerrada 0/0. ImageGen=0; publicaciones=0."
     }
   ],
   "last_started_at": "2026-11-10T20:40:00+01:00",
-  "last_completed_at": "2026-11-10T20:26:00+01:00",
+  "last_completed_at": "2026-11-10T20:41:15+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261110T202500-manual",
+    "run_id": "tr-20261110T204000-manual",
     "status": "DONE",
-    "started_at": "2026-11-10T20:25:00+01:00",
-    "finished_at": "2026-11-10T20:26:00+01:00",
-    "at": "2026-11-10T20:26:00+01:00",
+    "started_at": "2026-11-10T20:40:00+01:00",
+    "finished_at": "2026-11-10T20:41:15+01:00",
+    "at": "2026-11-10T20:41:15+01:00",
     "phase": "closing",
     "summary": {
       "attempted": 0,
@@ -159,7 +164,7 @@
     "outcomes": [],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-20261110T202500-manual cerrada 0/0 contra main. Relectura JIT final: editorial-queue=0 (updated_at 2026-11-10T20:22:15+01:00), mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos y sin reelaboraciones detectadas por búsqueda dirigida. Últimos mantenimientos ya aplicados. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "message": "Pasada tr-20261110T204000-manual cerrada 0/0 contra main. Relectura JIT final: editorial-queue=0 (updated_at 2026-11-10T20:41:01+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
   "message": "Pasada tr-20261110T202500-manual cerrada 0/0 contra main. Relectura JIT final: editorial-queue=0 (updated_at 2026-11-10T20:22:15+01:00), mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos y sin reelaboraciones detectadas por búsqueda dirigida. Últimos mantenimientos ya aplicados. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
@@ -7642,7 +7647,7 @@
   ],
   "outbox_comment_id": 6721989528,
   "editorial_apply_commit": "2b4368e6ef771e755d369c6505d2029906789abf",
-  "finished_at": "2026-11-10T20:26:00+01:00",
+  "finished_at": "2026-11-10T20:41:15+01:00",
   "refresh_workflow_run_id": 42839275825,
   "refresh_conclusion": "success"
 }
