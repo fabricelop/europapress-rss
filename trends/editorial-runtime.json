@@ -7,16 +7,16 @@
   "previous_run_id": "tr-20261110T034000-manual",
   "command_id": "tr-20261110T035500-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE_WITH_INCIDENTS",
+  "phase": "closing",
   "started_at": "2026-11-10T03:55:00+01:00",
-  "updated_at": "2026-11-10T03:55:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-10T03:58:00+01:00",
+  "finished_at": "2026-11-10T03:58:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
-  "title": "Pasada editorial TTendencias",
-  "queue_complete": false,
+  "title": null,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -44,19 +44,25 @@
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 0,
+    "incidents": 1,
     "concurrent_convergence": 0
   },
   "outcomes": [],
-  "incident_count": 0,
-  "incidents": [],
+  "incident_count": 1,
+  "incidents": [
+    {
+      "at": "2026-11-10T03:58:00+01:00",
+      "phase": "verifying",
+      "reason": "Trigger manual de refresco registrado pero sin snapshot posterior/ACK observable antes del cierre; main seguía limpio y sin trabajo editorial activo."
+    }
+  ],
   "error": null,
   "activity": {
-    "run_id": "tr-20261110T034000-manual",
-    "status": "DONE",
-    "started_at": "2026-11-10T03:40:00+01:00",
-    "finished_at": "2026-11-10T03:42:00+01:00",
-    "at": "2026-11-10T03:42:00+01:00",
+    "run_id": "tr-20261110T035500-manual",
+    "status": "DONE_WITH_INCIDENTS",
+    "started_at": "2026-11-10T03:55:00+01:00",
+    "finished_at": "2026-11-10T03:58:00+01:00",
+    "at": "2026-11-10T03:58:00+01:00",
     "phase": "closing",
     "summary": {
       "attempted": 0,
@@ -80,24 +86,30 @@
       "imagegen_calls": 0,
       "image_outbox_created": 0,
       "publications": 0,
-      "incidents": 0,
+      "incidents": 1,
       "concurrent_convergence": 0
     },
     "processed_ids": [],
     "outcomes": [],
-    "incident_count": 0,
-    "incidents": [],
-    "message": "Pasada tr-20261110T034000-manual cerrada 0/0 tras refresco y relectura JIT de main. Snapshot Top 30 capturado 2026-11-10T03:40:52+01:00; editorial-queue actualizada 2026-11-10T03:40:57+01:00 y vacía. Barrera final: requests sin preparing/update/problematic/rewrite_pending/reexplain activos; los review_red/anticipate existentes están terminales, mobile-decisions sin trabajo editorial activo y cola=0. Fuente del ranking sigue live_verified:false/reliability:unverified, pero no se creó ninguna ficha nueva. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "incident_count": 1,
+    "incidents": [
+      {
+        "at": "2026-11-10T03:58:00+01:00",
+        "phase": "verifying",
+        "reason": "Trigger manual de refresco registrado pero sin snapshot posterior/ACK observable antes del cierre; main seguía limpio y sin trabajo editorial activo."
+      }
+    ],
+    "message": "Pasada tr-20261110T035500-manual cerrada 0/0 tras relectura JIT de main. Snapshot Top 30 más reciente observado: 2026-11-10T03:51:01+01:00; editorial-queue actualizada 2026-11-10T03:51:06+01:00 y vacía. Barrera final: sin preparing/update/problematic/rewrite_pending/reexplain/review_red/anticipate activos en requests o mobile-decisions. El trigger manual 4a566373c022b27127635d29d4e7c57df9d2647d quedó registrado, pero antes del cierre no apareció un snapshot posterior ni ACK de refresco; se registra como incidencia de telemetría, no como trabajo editorial pendiente. ImageGen=0; publicaciones=0."
   },
   "last_started_at": "2026-11-10T03:55:00+01:00",
-  "last_completed_at": "2026-11-10T03:42:00+01:00",
+  "last_completed_at": "2026-11-10T03:58:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261110T034000-manual",
-    "status": "DONE",
-    "started_at": "2026-11-10T03:40:00+01:00",
-    "finished_at": "2026-11-10T03:42:00+01:00",
-    "at": "2026-11-10T03:42:00+01:00",
+    "run_id": "tr-20261110T035500-manual",
+    "status": "DONE_WITH_INCIDENTS",
+    "started_at": "2026-11-10T03:55:00+01:00",
+    "finished_at": "2026-11-10T03:58:00+01:00",
+    "at": "2026-11-10T03:58:00+01:00",
     "phase": "closing",
     "summary": {
       "attempted": 0,
@@ -121,16 +133,23 @@
       "imagegen_calls": 0,
       "image_outbox_created": 0,
       "publications": 0,
-      "incidents": 0,
+      "incidents": 1,
       "concurrent_convergence": 0
     },
     "processed_ids": [],
     "outcomes": [],
-    "incident_count": 0,
-    "incidents": [],
-    "message": "Pasada tr-20261110T034000-manual cerrada 0/0 tras refresco y relectura JIT de main. Snapshot Top 30 capturado 2026-11-10T03:40:52+01:00; editorial-queue actualizada 2026-11-10T03:40:57+01:00 y vacía. Barrera final: requests sin preparing/update/problematic/rewrite_pending/reexplain activos; los review_red/anticipate existentes están terminales, mobile-decisions sin trabajo editorial activo y cola=0. Fuente del ranking sigue live_verified:false/reliability:unverified, pero no se creó ninguna ficha nueva. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "incident_count": 1,
+    "incidents": [
+      {
+        "at": "2026-11-10T03:58:00+01:00",
+        "phase": "verifying",
+        "reason": "Trigger manual de refresco registrado pero sin snapshot posterior/ACK observable antes del cierre; main seguía limpio y sin trabajo editorial activo."
+      }
+    ],
+    "message": "Pasada tr-20261110T035500-manual cerrada 0/0 tras relectura JIT de main. Snapshot Top 30 más reciente observado: 2026-11-10T03:51:01+01:00; editorial-queue actualizada 2026-11-10T03:51:06+01:00 y vacía. Barrera final: sin preparing/update/problematic/rewrite_pending/reexplain/review_red/anticipate activos en requests o mobile-decisions. El trigger manual 4a566373c022b27127635d29d4e7c57df9d2647d quedó registrado, pero antes del cierre no apareció un snapshot posterior ni ACK de refresco; se registra como incidencia de telemetría, no como trabajo editorial pendiente. ImageGen=0; publicaciones=0.",
+    "trigger_commit": "4a566373c022b27127635d29d4e7c57df9d2647d"
   },
-  "message": "Pasada tr-20261110T035500-manual RUNNING desde chat. Se fuerza refresco manual real del ranking y después se releerá main con barrera JIT antes de cerrar. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-20261110T035500-manual cerrada 0/0 tras relectura JIT de main. Snapshot Top 30 más reciente observado: 2026-11-10T03:51:01+01:00; editorial-queue actualizada 2026-11-10T03:51:06+01:00 y vacía. Barrera final: sin preparing/update/problematic/rewrite_pending/reexplain/review_red/anticipate activos en requests o mobile-decisions. El trigger manual 4a566373c022b27127635d29d4e7c57df9d2647d quedó registrado, pero antes del cierre no apareció un snapshot posterior ni ACK de refresco; se registra como incidencia de telemetría, no como trabajo editorial pendiente. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794234841273-manual",
@@ -3225,6 +3244,51 @@
       "at": "2026-11-10T03:55:00+01:00",
       "phase": "preparing",
       "message": "Pasada tr-20261110T035500-manual RUNNING desde chat. Se fuerza refresco manual real del ranking y después se releerá main con barrera JIT antes de cerrar. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-20261110T035500-manual",
+      "status": "DONE_WITH_INCIDENTS",
+      "started_at": "2026-11-10T03:55:00+01:00",
+      "finished_at": "2026-11-10T03:58:00+01:00",
+      "at": "2026-11-10T03:58:00+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 0,
+        "observed": 0,
+        "closed": 0,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 0,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 1,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [],
+      "outcomes": [],
+      "incident_count": 1,
+      "incidents": [
+        {
+          "at": "2026-11-10T03:58:00+01:00",
+          "phase": "verifying",
+          "reason": "Trigger manual de refresco registrado pero sin snapshot posterior/ACK observable antes del cierre; main seguía limpio y sin trabajo editorial activo."
+        }
+      ],
+      "message": "Pasada tr-20261110T035500-manual cerrada 0/0 tras relectura JIT de main. Snapshot Top 30 más reciente observado: 2026-11-10T03:51:01+01:00; editorial-queue actualizada 2026-11-10T03:51:06+01:00 y vacía. Barrera final: sin preparing/update/problematic/rewrite_pending/reexplain/review_red/anticipate activos en requests o mobile-decisions. El trigger manual 4a566373c022b27127635d29d4e7c57df9d2647d quedó registrado, pero antes del cierre no apareció un snapshot posterior ni ACK de refresco; se registra como incidencia de telemetría, no como trabajo editorial pendiente. ImageGen=0; publicaciones=0.",
+      "trigger_commit": "4a566373c022b27127635d29d4e7c57df9d2647d"
     }
   ],
   "current_item": null,
