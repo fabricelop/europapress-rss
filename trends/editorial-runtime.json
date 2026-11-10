@@ -7,18 +7,21 @@
   "previous_run_id": "tr-1794323730023-manual",
   "command_id": "tr-1794323989653-manual",
   "source": "chat",
-  "status": "RUNNING",
+  "status": "waiting",
   "phase": "preparing",
   "started_at": "2026-11-10T16:20:00+01:00",
-  "updated_at": "2026-11-10T16:20:00+01:00",
+  "updated_at": "2026-11-10T16:22:19+01:00",
   "current": 0,
   "total": 2,
   "trend_id": null,
   "title": null,
   "queue_complete": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "9a057d15cf0b"
+  ],
   "converged_ids": [],
   "remaining_ids": [
+    "red-review-6af8bb75a0ea3deef6bf",
     "ac07072690a5",
     "74c7648389eb",
     "8d7431b7b1d7",
@@ -27,8 +30,7 @@
     "9357e6b6a21b"
   ],
   "remaining_active_ids": [
-    "red-review-6af8bb75a0ea3deef6bf",
-    "9a057d15cf0b"
+    "red-review-6af8bb75a0ea3deef6bf"
   ],
   "remaining_problematic_ids": [
     "ac07072690a5",
@@ -130,7 +132,7 @@
   ],
   "error": null,
   "activity": "Preparando pasada editorial real",
-  "last_started_at": "2026-11-10T16:14:48+01:00",
+  "last_started_at": "2026-11-10T16:22:18+01:00",
   "last_completed_at": "2026-11-10T16:15:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
