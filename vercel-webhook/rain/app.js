@@ -1,6 +1,7 @@
 import {aggregateEnsembleModel,buildConsensus,compactTimeline,detectQuarterHourEvents,detectRainEvents,chooseNextEvent,median,percentile,classifyRainHour,bestDryWindow} from './core.js';
 import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,combineLocalFlows,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,nowcastUncertaintyMinutes,wetNear,flowVectorAt,buildRadarProjectionRgba,projectRadarFieldContinuous,evaluateOverlaySourceState,radarProjectionRenderMode,radarViewportProjectionZoom} from './radar-core.js';
 import {selectSpatialForecastTimeBlend,hybridFutureBlend,futureVisualLabel} from './model-map-core.js';
+import {rainVisualSignal,rainVisualWindows,rainWaveSvg} from './rain-visuals.js';
 
 const DET_MODELS=[
   {id:'aemet_harmonie_arome',label:'AEMET HARMONIE-AROME 2,5 km',family:'AEMET',weight:1.48,provider:'rain-harmonie',metaDomains:[]},
@@ -1352,13 +1353,43 @@ function renderShortNowcast(){
   }
   renderRadarSkill();
 
-  const maxRate=Math.max(.35,Math.min(12,Math.max(...points.map(p=>p.rate))));
-  $('minuteStrip').innerHTML=points.map((p,i)=>{
-    const wet=Boolean(p.wet);
-    const band=probabilityBand(p.probability);
-    const height=wet?Math.max(8,Math.min(100,8+Math.sqrt(Math.min(p.rate,maxRate)/maxRate)*92)):3;
-    return '<div class="minuteCol src-'+p.dominantSource+' '+(wet?'wet '+band+' ':'')+(i===0?'now':'')+'" title="'+fmtTime(p.time)+' · '+(p.dominantSource==='radar'?'radar':p.dominantSource==='mixed'?'radar + modelos':'modelos')+' · prob. '+Math.round(p.probability*100)+'% · intensidad '+p.rate.toFixed(1)+' mm/h"><i class="minuteMark" style="height:'+height+'%"></i></div>';
-  }).join('');
+  // An explanatory rain wave, not a second independently computed ETA.
+  // Keep the canonical decision as the source of the headline.
+  const hasForecast=Boolean(state.data?.timeline?.length||state.nowcast?.series?.length);
+  const windows=rainVisualWindows(points,5);
+  const firstWet=windows.find(w=>w.signal==='wet');
+  const imminent=Boolean(near&&ev?.start&&Date.parse(ev.start)<=now+SHORT_HORIZON_MINUTES*60_000);
+  const visualHeadline=!hasForecast?'Previsión temporal no disponible'
+    : decision.mode==='episode_pause'?'Pausa seca observada'
+    : decision.mode==='episode_ended_early'?'El episodio anterior ha terminado'
+    : decision.mode==='possible_now'?'Señal de lluvia sin confirmar'
+    : rain.raining?'Está lloviendo ahora'
+    : imminent?'Lluvia prevista hacia las '+fmtTime(ev.start)
+    : decision.mode==='stable_now'?'Sin lluvia prevista a corto plazo'
+    : firstWet?'Posible tramo de lluvia en las próximas horas'
+    : 'Sin lluvia relevante prevista en esta franja';
+  const subtitle=!hasForecast?'No mostramos tiempo seco cuando faltan datos'
+    : decision.mode==='episode_pause'?'Una pausa observada no garantiza que el episodio haya terminado'
+    : decision.mode==='episode_ended_early'?'Radar y observación local han corregido el tramo anterior'
+    : decision.mode==='possible_now'?'El radar no confirma lluvia en superficie'
+    : rain.raining&&ev?.end?'Final estimado hacia las '+fmtTime(ev.end)
+    : imminent&&ev?.end?'Fin estimado hacia las '+fmtTime(ev.end)
+    : delayedByRadar?'Sin eco proyectado de momento; después continúa el riesgo según modelos'
+    : 'Onda azul: intensidad prevista · marcas violetas: señal incierta';
+  $('rainStoryTitle').textContent=visualHeadline;
+  $('rainStorySubtitle').textContent=subtitle+(state.data?.degradedForecast?' · previsión guardada':'');
+  const peak=Math.max(0,...points.filter(p=>p.wet).map(p=>p.rate));
+  $('rainWavePeak').textContent=hasForecast&&peak>0?'Pico ~'+peak.toFixed(1).replace('.',',')+' mm/h':'Sin pico significativo';
+  $('minuteStrip').innerHTML=hasForecast?rainWaveSvg(points,{id:'minute-rain-wave'}):'<span class="waveEmpty">Sin datos suficientes para el gráfico</span>';
+  $('minuteStrip').setAttribute('aria-label',hasForecast
+    ? 'Evolución prevista de la lluvia en intervalos de cinco minutos; '+visualHeadline
+    : 'Previsión no disponible');
+  const selectedWindows=windows.filter(w=>w.end-w.start>=10*60_000||w.signal==='wet').slice(0,5);
+  $('rainWindows').innerHTML=hasForecast?selectedWindows.map(w=>{
+    const title=w.signal==='wet'?'Lluvia':w.signal==='possible'?'Posible lluvia':'Sin lluvia relevante';
+    const times=fmtTime(w.start)+'–'+fmtTime(w.end);
+    return '<span class="rainWindow '+w.signal+'"><b>'+title+'</b><small>'+times+'</small></span>';
+  }).join(''):'';
   const ticks=[],lastIndex=points.length-1;
   for(let i=0;i<=lastIndex;i+=6){
     const left=lastIndex?i/lastIndex*100:0;
@@ -2987,17 +3018,38 @@ function renderTimeline(){
   const full=canonicalTimelineRows(),a=full.slice(0,state.timelineHours);
   $('timelineTitle').textContent='Próximas '+state.timelineHours+' horas';
   document.querySelectorAll('.rangeBtn').forEach(btn=>btn.classList.toggle('active',Number(btn.dataset.hours)===state.timelineHours));
-  const maxIntensity=Math.max(.25,Math.min(6,Math.max(...a.map(x=>Number(x.precipitation)||0))));
-  $('timeline').innerHTML=a.map((x,index)=>{
-    const probability=(Number(x.probability)||0)/100,precipitation=Number(x.precipitation)||0;
-    const signal=x.canonicalSignal||classifyRainHour({probability,expectedPrecipitation:precipitation});
-    const band=probabilityBand(probability);
-    const cls=signal==='wet'?band:signal==='possible'?band+' possible':'dry';
-    const height=signal==='wet'
-      ?Math.max(8,Math.round(10+Math.sqrt(Math.min(precipitation,maxIntensity)/maxIntensity)*90))
-      :signal==='possible'?Math.max(5,Math.min(18,Math.round(5+precipitation/maxIntensity*20))):0;
-    const selected=state.selectedHourIndex===index?' selected':'',visual=conditionVisual(x);
-    return '<button type="button" class="bar '+cls+' wx-'+visual.key+selected+'" data-hour-index="'+index+'" style="height:'+height+'%" aria-label="'+fmtDateTime(x.time)+' · '+visual.label+'" title="'+fmtDateTime(x.time)+' · '+visual.label+' · prob. '+x.probability+'% · intensidad '+precipitation.toFixed(1)+' mm/h"></button>';
+  if(!a.length){
+    $('timelineTakeaway').textContent='Previsión horaria no disponible';
+    $('timeline').innerHTML='<span class="waveEmpty">Esperando previsión</span>';
+    $('timelineRibbon').innerHTML='';
+    $('timelineAxis').innerHTML='';
+    return;
+  }
+  const points=a.map(row=>{
+    const probability=(Number(row.probability)||0)/100;
+    const rate=Math.max(0,Number(row.precipitation)||0);
+    return{time:row.time,rate,probability,
+      canonicalSignal:row.canonicalSignal||classifyRainHour({probability,expectedPrecipitation:rate})};
+  });
+  const windows=rainVisualWindows(points,60),wet=windows.find(w=>w.signal==='wet'),possible=windows.find(w=>w.signal==='possible');
+  $('timelineTakeaway').textContent=wet
+    ? 'Lluvia probable desde '+fmtDateTime(wet.start)+' · pico del tramo ~'+wet.peakRate.toFixed(1).replace('.',',')+' mm/h'
+    : possible?'No hay lluvia probable confirmada · hay señales débiles o inciertas'
+    : 'Sin lluvia relevante prevista en este horizonte';
+  const plot=$('timelinePlot');
+  if(plot)plot.style.minWidth=Math.max(400,a.length*20)+'px';
+  const intervals=windows.map(w=>{
+    const title=(w.signal==='wet'?'Lluvia probable':w.signal==='possible'?'Lluvia posible':'Sin lluvia relevante')+' · '+fmtTime(w.start)+'–'+fmtTime(w.end);
+    return '<span class="ribbonPart '+w.signal+'" style="width:'+(100*w.count/a.length).toFixed(3)+'%" title="'+title+'"></span>';
+  }).join('');
+  $('timelineRibbon').innerHTML=intervals;
+  $('timeline').innerHTML=rainWaveSvg(points,{id:'hour-rain-wave'})+a.map((x,index)=>{
+    const visual=conditionVisual(x),probability=Math.round(Number(x.probability)||0);
+    const precipitation=Math.max(0,Number(x.precipitation)||0);
+    const label=(fmtDateTime(x.time)+' · '+visual.label+' · probabilidad '+probability+'% · intensidad '+precipitation.toFixed(1)+' mm/h')
+      .replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+    const selected=state.selectedHourIndex===index;
+    return '<button type="button" class="waveHourHit'+(selected?' selected':'')+'" data-hour-index="'+index+'" style="left:'+(index/a.length*100)+'%;width:'+(100/a.length)+'%" aria-label="'+label+'" title="'+label+'" aria-pressed="'+selected+'"></button>';
   }).join('');
   $('timeline').querySelectorAll('[data-hour-index]').forEach(el=>el.onclick=()=>selectTimelineHour(el.dataset.hourIndex));
   const ticks=[],lines=[],tickEvery=state.timelineHours<=24?3:6;
@@ -3015,7 +3067,6 @@ function renderTimeline(){
   }
   $('timelineAxis').innerHTML=lines.join('')+ticks.join('');
 }
-
 function renderEvents(){
   const decision=buildRainDecision(),now=decision.now;
   const events=canonicalEvents().filter(e=>Date.parse(e.end)>now).slice(0,8),radarDry=decision.dry;
