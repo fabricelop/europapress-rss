@@ -98488,13 +98488,30 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
-      "image_choice": "none",
-      "image_pending": true,
-      "telegram_package_status": "pending"
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false,
+      "telegram_package_status": "pending",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://img.rtve.es/imagenes/entrevista-pedro-sanchez-septima-cronica-rtve/01794247557528.jpg",
+        "source": "www.rtve.es",
+        "source_url": "https://www.rtve.es/noticias/20261110/entrevista-pedro-sanchez-septima-cronica-rtve/17306951.shtml",
+        "alt": "Imagen de archivo relacionada con Pedro Sánchez",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://img.rtve.es/imagenes/entrevista-pedro-sanchez-septima-cronica-rtve/01794247557528.jpg",
+        "source": "www.rtve.es",
+        "source_url": "https://www.rtve.es/noticias/20261110/entrevista-pedro-sanchez-septima-cronica-rtve/17306951.shtml",
+        "alt": "Imagen de archivo relacionada con Pedro Sánchez",
+        "rights_status": "unverified",
+        "generated": false
+      }
     }
   ],
-  "updated_at": "2026-11-10T04:13:45+01:00",
+  "updated_at": "2026-11-10T03:16:38.493873Z",
   "count": 1691
 }
