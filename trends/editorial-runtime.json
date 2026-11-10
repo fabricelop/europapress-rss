@@ -3,35 +3,39 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261110T071000-manual",
-  "previous_run_id": "tr-20261110T065500-manual",
-  "command_id": "tr-20261110T071000-manual",
+  "run_id": "tr-1794291762595-manual",
+  "previous_run_id": "tr-20261110T071000-manual",
+  "command_id": "tr-1794291762595-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-10T07:10:00+01:00",
-  "updated_at": "2026-11-10T07:16:45+01:00",
-  "finished_at": "2026-11-10T07:16:45+01:00",
-  "current": 1,
-  "total": 1,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "5d11fa05aa4d"
-  ],
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-10T07:23:00+01:00",
+  "updated_at": "2026-11-10T07:23:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 2,
+  "trend_id": "3fcb30738b29",
+  "title": "#FelizMartes",
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "3fcb30738b29",
+    "03e0b7b74f2c"
+  ],
+  "remaining_active_ids": [
+    "3fcb30738b29",
+    "03e0b7b74f2c"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
-    "observed": 1,
-    "closed": 1,
+    "attempted": 0,
+    "observed": 2,
+    "closed": 0,
     "explained": 0,
     "problematic": 0,
     "updates": 0,
-    "review_completed_no_distinct_event": 1,
+    "review_completed_no_distinct_event": 0,
     "maintenance_reviews": 0,
     "unchanged_reviews": 0,
     "continuity_updates": 0,
@@ -41,25 +45,15 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 0,
-    "rewrite_pending_remaining": 0,
+    "queue_remaining": 2,
+    "rewrite_pending_remaining": 2,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "5d11fa05aa4d",
-      "revision": 0,
-      "name": "#FelizMartes",
-      "outcome": "review_completed_no_distinct_event",
-      "applied": true,
-      "review_reason": "no_distinct_event",
-      "apply_commit": "733bb24e755ce9f37aa77df55a0bdfe6fb30424c"
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -118,7 +112,7 @@
     "editorial_apply_commit": "733bb24e755ce9f37aa77df55a0bdfe6fb30424c",
     "refresh_convergence_commit": "3c4fac0635ce0ade346ab8f97ecfa7a64aac016d"
   },
-  "last_started_at": "2026-11-10T07:10:00+01:00",
+  "last_started_at": "2026-11-10T07:23:00+01:00",
   "last_completed_at": "2026-11-10T07:16:45+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -176,66 +170,8 @@
     "editorial_apply_commit": "733bb24e755ce9f37aa77df55a0bdfe6fb30424c",
     "refresh_convergence_commit": "3c4fac0635ce0ade346ab8f97ecfa7a64aac016d"
   },
-  "message": "Pasada tr-20261110T071000-manual cerrada 1/1. #FelizMartes r0 se revisó como reentrada >24 h y quedó review_completed/no_distinct_event: el patrón sigue siendo el saludo recurrente de los martes y no se acreditó un acontecimiento material nuevo e independiente, por lo que se conserva la ficha anterior sin nueva imagen ni publicación. Trigger beb8ae62b245c9352be047a33c0e4705d4a9ee5c; workflow 42766907852 completado success; aplicador 733bb24e755ce9f37aa77df55a0bdfe6fb30424c; convergencia Top 30 3c4fac0635ce0ade346ab8f97ecfa7a64aac016d. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Inicio tr-1794291762595-manual: 2 reelaboraciones preparing/update vigentes en main, en orden JIT #FelizMartes r0 → israel r0. Se investigarán desde cero y se persistirá texto verificado; ImageGen=0, image-outbox editorial=0, publicaciones=0.",
   "history": [
-    {
-      "run_id": "tr-1794234841273-manual",
-      "status": "DONE",
-      "started_at": "2026-11-09T15:34:01+01:00",
-      "finished_at": "2026-11-09T15:36:30+01:00",
-      "at": "2026-11-09T15:36:30+01:00",
-      "phase": "closing",
-      "summary": {
-        "attempted": 2,
-        "observed": 2,
-        "closed": 2,
-        "explained": 0,
-        "problematic": 0,
-        "updates": 2,
-        "review_completed_no_distinct_event": 0,
-        "maintenance_reviews": 2,
-        "unchanged_reviews": 0,
-        "continuity_updates": 2,
-        "distinct_updates": 0,
-        "stale_reviews": 0,
-        "unverified_reviews": 0,
-        "queue_remaining": 0,
-        "rewrite_pending_remaining": 0,
-        "imagegen_calls": 0,
-        "image_outbox_created": 0,
-        "publications": 0,
-        "incidents": 0,
-        "concurrent_convergence": 2
-      },
-      "outcomes": [
-        {
-          "id": "red-review-7a070b0ade968f1a5082",
-          "revision": 0,
-          "name": "Revisar novedades: Almudena",
-          "outcome": "continuity_update",
-          "applied": true,
-          "via": "concurrent_convergence",
-          "apply_commit": "eb54acfe1ccfb1cd65e732ba986155acf387cca8",
-          "source_id": "a04f5f160038"
-        },
-        {
-          "id": "red-review-9fad78d38a6a0bd1d739",
-          "revision": 0,
-          "name": "Revisar novedades: Jensen Huang",
-          "outcome": "continuity_update",
-          "applied": true,
-          "via": "concurrent_convergence",
-          "apply_commit": "eb54acfe1ccfb1cd65e732ba986155acf387cca8",
-          "source_id": "2b8f257f333f"
-        }
-      ],
-      "message": "Pasada tr-1794234841273-manual cerrada 2/2 por convergencia JIT. Almudena y Jensen Huang fueron actualizados como continuidad del mismo episodio por el aplicador concurrente eb54acfe1ccfb1cd65e732ba986155acf387cca8, conservando ID/revisión y explained_at, sin volver a Listas. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
-      "prior_runtime_observed": {
-        "run_id": "tr-1794234300000-manual",
-        "status": "DONE",
-        "finished_at": "2026-11-09T15:36:00+01:00"
-      }
-    },
     {
       "at": "2026-11-09T15:55:00+01:00",
       "phase": "preparing",
@@ -3905,9 +3841,25 @@
       "workflow_run_id": 42766907852,
       "editorial_apply_commit": "733bb24e755ce9f37aa77df55a0bdfe6fb30424c",
       "refresh_convergence_commit": "3c4fac0635ce0ade346ab8f97ecfa7a64aac016d"
+    },
+    {
+      "run_id": "tr-1794291762595-manual",
+      "status": "RUNNING",
+      "at": "2026-11-10T07:23:00+01:00",
+      "phase": "preparing",
+      "current": 0,
+      "total": 2,
+      "trend_id": "3fcb30738b29",
+      "title": "#FelizMartes",
+      "message": "Inicio tr-1794291762595-manual: 2 reelaboraciones preparing/update vigentes en main, en orden JIT #FelizMartes r0 → israel r0. Se investigarán desde cero y se persistirá texto verificado; ImageGen=0, image-outbox editorial=0, publicaciones=0."
     }
   ],
-  "current_item": null,
+  "current_item": {
+    "id": "3fcb30738b29",
+    "revision": 0,
+    "name": "#FelizMartes",
+    "phase": "preparing"
+  },
   "withdrawn_ids": [
     "ae7f066f3c94"
   ],
@@ -3922,8 +3874,9 @@
     "mobile_active_count": 0
   },
   "prior_runtime_observed": {
-    "run_id": "tr-20261110T004100-manual",
-    "updated_at": "2026-11-10T00:55:00+01:00"
+    "run_id": "tr-20261110T071000-manual",
+    "status": "DONE",
+    "finished_at": "2026-11-10T07:16:45+01:00"
   },
   "apply_workflow_run_id": 42747986726,
   "apply_commit": "7886e2a",
