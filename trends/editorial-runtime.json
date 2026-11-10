@@ -3,37 +3,35 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261110T1110-manual",
-  "previous_run_id": "tr-20261110T1055-manual",
-  "command_id": "tr-20261110T1110-manual",
+  "run_id": "tr-1794306091211-manual",
+  "previous_run_id": "tr-20261110T1110-manual",
+  "command_id": "tr-1794306091211-manual",
   "source": "chat",
-  "status": "success",
-  "phase": "investigating",
-  "started_at": "2026-11-10T11:10:00+01:00",
-  "updated_at": "2026-11-10T11:20:40+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-10T11:22:00+01:00",
+  "updated_at": "2026-11-10T11:22:00+01:00",
   "current": 0,
-  "total": 14,
+  "total": 2,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "011d1365ac1a",
-    "08042b223d91",
-    "17790e2eb031",
-    "1e40d3b94071",
-    "a7f3faa7558e"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [
-    "5fd14e2dd9b6"
+    "red-review-e90d4fe55caa6ee84529",
+    "red-review-d235e334431eb57c64e1"
   ],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "red-review-e90d4fe55caa6ee84529",
+    "red-review-d235e334431eb57c64e1"
+  ],
   "remaining_problematic_ids": [
     "5fd14e2dd9b6"
   ],
   "summary": {
     "attempted": 0,
-    "observed": 0,
+    "observed": 2,
     "closed": 0,
     "explained": 0,
     "problematic": 0,
@@ -48,7 +46,7 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -61,7 +59,7 @@
   "incidents": [],
   "error": null,
   "activity": "Investigando 14 pendientes de la cola fresca",
-  "last_started_at": "2026-11-10T11:20:40+01:00",
+  "last_started_at": "2026-11-10T11:22:00+01:00",
   "last_completed_at": "2026-11-10T11:20:40+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -103,7 +101,7 @@
     "incidents": [],
     "message": "Pasada tr-20261110T1055-manual cerrada 0/0 contra main. Barrera JIT final: editorial-queue=0 (updated_at 2026-11-10T10:52:52+01:00) y mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-20261110T1110-manual: 14 pendientes detectados tras refresco 11:10:56/11:11:02. Investigación editorial en curso, de antiguo a reciente, con JIT por id/revisión. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1794306091211-manual RUNNING desde chat. Cola JIT: 2 revisiones de novedades pendientes (Almudena y Oviedo), en orden de solicitud. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
@@ -3122,6 +3120,15 @@
       "current": 0,
       "total": 14,
       "message": "Pasada tr-20261110T1110-manual: 14 pendientes detectados tras refresco 11:10:56/11:11:02. Investigación editorial en curso, de antiguo a reciente, con JIT por id/revisión. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794306091211-manual",
+      "status": "RUNNING",
+      "at": "2026-11-10T11:22:00+01:00",
+      "phase": "preparing",
+      "current": 0,
+      "total": 2,
+      "message": "Pasada tr-1794306091211-manual RUNNING desde chat. Cola JIT: 2 revisiones de novedades pendientes (Almudena y Oviedo), en orden de solicitud. ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": null,
@@ -3138,11 +3145,7 @@
     "rewrite_pending_remaining": 0,
     "reexplain_pending_remaining": 0
   },
-  "prior_runtime_observed": {
-    "run_id": "tr-20261110T071000-manual",
-    "status": "DONE",
-    "finished_at": "2026-11-10T07:16:45+01:00"
-  },
+  "prior_runtime_observed": "tr-20261110T1110-manual",
   "apply_workflow_run_id": 42747986726,
   "apply_commit": "5ccf4a17477f1c3ad3d044b6c9f40215df99d23a",
   "maintenance_workflow_run_id": 42713522083,
