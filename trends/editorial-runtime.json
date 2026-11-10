@@ -3,16 +3,16 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794308370806-manual",
+  "run_id": "tr-1794307429333-manual",
   "previous_run_id": "tr-1794307429333-manual",
-  "command_id": "tr-1794308370806-manual",
+  "command_id": "tr-1794307429333-manual",
   "source": "chat",
   "status": "RUNNING",
   "phase": "investigating",
   "started_at": "2026-11-10T12:00:00+01:00",
-  "updated_at": "2026-11-10T12:00:00+01:00",
-  "current": 0,
-  "total": 1,
+  "updated_at": "2026-11-10T12:01:00+01:00",
+  "current": 3,
+  "total": 4,
   "trend_id": "red-review-616f03ec3b4930b9a6b4",
   "title": "Revisar novedades: #FelizMartes",
   "queue_complete": false,
@@ -124,7 +124,7 @@
     "incidents": [],
     "message": "Pasada tr-1794306091211-manual cerrada 3/3: Almudena sin novedad sustancial; Oviedo con episodio materialmente distinto por la explosión de hoy; anoche cerrada con causa no confirmada tras verificar su presencia actual en el Top de España. Barrera JIT final: editorial-queue=0 y mobile-decisions sin trabajo activo. ImageGen=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794308370806-manual RUNNING. Cola autoritativa=1: revisión roja de #FelizMartes r0. Se contrasta si existe un desarrollo material posterior a la explicación vigente, revalidando ID/revisión antes de aplicar. ImageGen=0; publicaciones=0.",
+  "message": "Barrera de cierre reabierta: apareció la revisión roja de #FelizMartes r0. JIT validado; se comprueba la reaparición actual del hashtag y si cambia materialmente el episodio. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
@@ -3506,6 +3506,13 @@
       "trend_id": "red-review-616f03ec3b4930b9a6b4",
       "title": "Revisar novedades: #FelizMartes",
       "message": "Pasada tr-1794308370806-manual RUNNING. Cola autoritativa=1: revisión roja de #FelizMartes r0. Se contrasta si existe un desarrollo material posterior a la explicación vigente, revalidando ID/revisión antes de aplicar. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-10T12:01:00+01:00",
+      "phase": "investigating",
+      "trend_id": "red-review-616f03ec3b4930b9a6b4",
+      "title": "Revisar novedades: #FelizMartes",
+      "message": "Barrera de cierre reabierta: apareció la revisión roja de #FelizMartes r0. JIT validado; se comprueba la reaparición actual del hashtag y si cambia materialmente el episodio. ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": null,
