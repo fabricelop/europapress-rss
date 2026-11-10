@@ -180,3 +180,25 @@ test('pre-enrollment may refresh a known tab only for the same exact news comman
  assert.match(source,/old\.editorial_sha256!==editorial/);
  assert.match(source,/next\.browser_target_id=String\(browserTargetId\)/);
 });
+
+
+test('trends pre-enroll private inbox before submitting ImageGen and recover exact original on lost ACK',()=>{
+ const code=fs.readFileSync(path.join(__dirname,'../TTendenciasImageBridge.js'),'utf8');
+ const enrolled=code.indexOf('BRIDGE TREND PRIVATE INBOX PRE_ENROLLED');
+ const submit=code.indexOf('cdp=await injectPromptIntoChat(cdp,job);');
+ const ack=code.indexOf('await confirmPromptLaunched();');
+ assert(enrolled>0&&submit>enrolled&&ack>submit);
+ assert.match(code,/require\('\.\/TTendenciasWebImages\.cjs'\)\.enroll\(webHandoff\)/);
+ assert.match(code,/if\(promptAttempted&&webHandoff&&activeJob&&cdp\)/);
+ assert.match(code,/holdForWebImageReceipt\(webHandoff,cdp,activeJob,180000\)/);
+ assert.match(code,/RECOVERED_AFTER_ACK_FAILURE/);
+ const recovery=code.slice(code.indexOf('if(promptAttempted&&webHandoff&&activeJob&&cdp)'),
+   code.indexOf('console.error("BRIDGE ERROR'));
+ assert.doesNotMatch(recovery,/injectPromptIntoChat|submitVerifiedDraft|openFreshDedicatedConversation|generateImage|uploadImage/);
+});
+test('trend receipt rejects changing the command identity and safely refreshes its target hint',()=>{
+ const code=fs.readFileSync(path.join(__dirname,'../TTendenciasWebImages.cjs'),'utf8');
+ assert.match(code,/existing_trend_image_identity_conflict/);
+ assert.match(code,/old\.explanation_sha256!==expected/);
+ assert.match(code,/next\.browser_target_id=String\(browserTargetId\)/);
+});
