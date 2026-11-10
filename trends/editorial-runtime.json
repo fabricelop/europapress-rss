@@ -7,15 +7,15 @@
   "previous_run_id": "tr-20261110T184130-manual",
   "command_id": "tr-20261110T185500-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-10T18:55:00+01:00",
-  "updated_at": "2026-11-10T18:55:00+01:00",
+  "updated_at": "2026-11-10T18:56:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -55,26 +55,31 @@
       "at": "2026-11-10T18:55:00+01:00",
       "phase": "preparing",
       "message": "Pasada manual iniciada; verificando cola autoritativa, revisiones y barrera de estado en main."
+    },
+    {
+      "at": "2026-11-10T18:56:00+01:00",
+      "phase": "closing",
+      "message": "Barrera final: editorial-queue=0 y sin trabajo editorial activo; pasada cerrada 0/0."
     }
   ],
   "last_started_at": "2026-11-10T18:55:00+01:00",
-  "last_completed_at": "2026-11-10T18:43:00+01:00",
+  "last_completed_at": "2026-11-10T18:56:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-autoguard-1794331272",
+    "run_id": "tr-20261110T185500-manual",
     "status": "DONE",
-    "started_at": "2026-11-10T18:22:00+01:00",
-    "finished_at": "2026-11-10T18:31:00+01:00",
-    "at": "2026-11-10T18:31:00+01:00",
+    "started_at": "2026-11-10T18:55:00+01:00",
+    "finished_at": "2026-11-10T18:56:00+01:00",
+    "at": "2026-11-10T18:56:00+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 3,
-      "observed": 3,
-      "closed": 3,
-      "explained": 2,
+      "attempted": 0,
+      "observed": 0,
+      "closed": 0,
+      "explained": 0,
       "problematic": 0,
       "updates": 0,
-      "review_completed_no_distinct_event": 1,
+      "review_completed_no_distinct_event": 0,
       "maintenance_reviews": 0,
       "unchanged_reviews": 0,
       "continuity_updates": 0,
@@ -90,52 +95,16 @@
       "image_outbox_created": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 3
+      "concurrent_convergence": 0
     },
-    "processed_ids": [
-      "9621c0736440",
-      "ea3b5e4dcab3",
-      "55c3a83a7e63"
-    ],
-    "converged_ids": [
-      "9621c0736440",
-      "ea3b5e4dcab3",
-      "55c3a83a7e63"
-    ],
-    "outcomes": [
-      {
-        "id": "9621c0736440",
-        "revision": 0,
-        "name": "Bolivia",
-        "outcome": "explained",
-        "applied": true,
-        "via": "concurrent_convergence",
-        "apply_commit": "d9a641a7cb78f95827d6ee04d0866f1fb3f16cc9"
-      },
-      {
-        "id": "ea3b5e4dcab3",
-        "revision": 0,
-        "name": "GTA VI",
-        "outcome": "explained",
-        "applied": true,
-        "via": "concurrent_convergence",
-        "apply_commit": "d9a641a7cb78f95827d6ee04d0866f1fb3f16cc9"
-      },
-      {
-        "id": "55c3a83a7e63",
-        "revision": 0,
-        "name": "#ProfesionDeRiesgoYa",
-        "outcome": "review_completed_no_distinct_event",
-        "applied": true,
-        "via": "concurrent_convergence",
-        "apply_commit": "d9a641a7cb78f95827d6ee04d0866f1fb3f16cc9"
-      }
-    ],
+    "processed_ids": [],
+    "converged_ids": [],
+    "outcomes": [],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-autoguard-1794331272 cerrada 3/3 por convergencia JIT con el aplicador oficial. Bolivia r0 y GTA VI r0 quedaron explicadas y persistidas en requests.json + telegram-manual-explained.json; la reentrada #ProfesionDeRiesgoYa r0 fue cerrada concurrentemente como review_completed/no_distinct_event y se respeta ese estado terminal sin reabrirla. Barrera final sobre main: editorial-queue=0 (updated_at 2026-11-10T18:25:30+01:00) y sin preparing/update/rewrite_pending/reexplain activos en requests.json ni mobile-decisions.json. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "message": "Pasada tr-20261110T185500-manual completada 0/0. Relectura final sobre main: editorial-queue=0 (updated_at 2026-11-10T18:45:22+01:00); búsqueda dirigida sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos y mobile-decisions sin trabajo editorial activo. Último mantenimiento revisado: Supa r0 quedó unverified por rumores sin confirmación suficiente; ya está cerrado. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada manual RUNNING. Cola inicial observada en 0; verificando requests/mobile y releyendo main antes de cerrar. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-20261110T185500-manual completada 0/0. Relectura final sobre main: editorial-queue=0 (updated_at 2026-11-10T18:45:22+01:00); búsqueda dirigida sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos y mobile-decisions sin trabajo editorial activo. Último mantenimiento revisado: Supa r0 quedó unverified por rumores sin confirmación suficiente; ya está cerrado. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
@@ -5631,6 +5600,45 @@
         }
       ],
       "message": "Pasada tr-autoguard-1794331272 cerrada 3/3 por convergencia JIT con el aplicador oficial. Bolivia r0 y GTA VI r0 quedaron explicadas y persistidas en requests.json + telegram-manual-explained.json; la reentrada #ProfesionDeRiesgoYa r0 fue cerrada concurrentemente como review_completed/no_distinct_event y se respeta ese estado terminal sin reabrirla. Barrera final sobre main: editorial-queue=0 (updated_at 2026-11-10T18:25:30+01:00) y sin preparing/update/rewrite_pending/reexplain activos en requests.json ni mobile-decisions.json. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-20261110T185500-manual",
+      "status": "DONE",
+      "started_at": "2026-11-10T18:55:00+01:00",
+      "finished_at": "2026-11-10T18:56:00+01:00",
+      "at": "2026-11-10T18:56:00+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 0,
+        "observed": 0,
+        "closed": 0,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 0,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [],
+      "converged_ids": [],
+      "outcomes": [],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-20261110T185500-manual completada 0/0. Relectura final sobre main: editorial-queue=0 (updated_at 2026-11-10T18:45:22+01:00); búsqueda dirigida sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos y mobile-decisions sin trabajo editorial activo. Último mantenimiento revisado: Supa r0 quedó unverified por rumores sin confirmación suficiente; ya está cerrado. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "current_item": null,
@@ -6851,7 +6859,7 @@
   ],
   "outbox_comment_id": 5848965032,
   "editorial_apply_commit": "76e7e728a222ee21fee34fda64da43cfd7ecd90a",
-  "finished_at": null,
+  "finished_at": "2026-11-10T18:56:00+01:00",
   "refresh_workflow_run_id": 42839275825,
   "refresh_conclusion": "success"
 }
