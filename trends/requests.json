@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-10T06:28:24.748943+00:00",
+  "updated_at": "2026-11-10T07:23:30+01:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -281827,7 +281827,7 @@
       "name": "#FelizMartes",
       "rank": 5,
       "revision": 0,
-      "status": "preparing",
+      "status": "explained",
       "created_at": "2026-11-10T06:22:37.729670+00:00",
       "requested_at": "2026-11-10T06:22:37.729670+00:00",
       "updated_at": "2026-11-10T06:22:37.729670+00:00",
@@ -281844,7 +281844,34 @@
         "#FelizMartes"
       ],
       "originated_from_prior_id": "5d11fa05aa4d",
-      "rewrite_instruction": "Investigación desde cero: verifica el contexto ACTUAL de #FelizMartes, eventos, marcador y fecha. Redacta texto y remate nuevos y consigue una nueva foto de archivo para esta revisión. No reutilices explicaciones ni imágenes de una versión ya publicada o cerrada."
+      "rewrite_instruction": "Investigación desde cero: verifica el contexto ACTUAL de #FelizMartes, eventos, marcador y fecha. Redacta texto y remate nuevos y consigue una nueva foto de archivo para esta revisión. No reutilices explicaciones ni imágenes de una versión ya publicada o cerrada.",
+      "explained_at": "2026-11-10T07:23:30+01:00",
+      "last_attempt_at": "2026-11-10T07:23:30+01:00",
+      "explanation": "TT#5 #FelizMartes vuelve al Top 10 de España este martes 10 de noviembre como saludo matutino recurrente; las búsquedas actuales no lo vinculan a un evento, partido o marcador concreto.\n#BuenosDías\n🌶️ A falta de marcador, ganó el saludo.",
+      "closer_text": "🌶️ A falta de marcador, ganó el saludo.",
+      "rank_at_explanation": 5,
+      "category": "Redes",
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        {
+          "title": "GetDayTrends España: historial anual de hashtags",
+          "url": "https://getdaytrends.com/es/spain/top/longest/year/",
+          "published_at": "2026-11-10"
+        },
+        {
+          "title": "Snaplytics: historial de tendencias de España del martes anterior",
+          "url": "https://twitter-trends.snaplytics.io/spain/2026-11-03/",
+          "published_at": "2026-11-03"
+        }
+      ],
+      "news_disposition": "ignored",
+      "news_note": "Reelaboración manual desde cero. El snapshot vigente de TTendencias sitúa #FelizMartes en el puesto 5 el martes 10/11; los históricos públicos confirman que es un saludo recurrente de los martes. No se verificó evento, partido ni marcador concreto asociado.",
+      "reexplain": false,
+      "grouping_disabled": true,
+      "image_choice": "none",
+      "image_status": "pending",
+      "image_pending": true,
+      "telegram_package_status": "pending"
     },
     {
       "id": "03e0b7b74f2c",
@@ -281871,5 +281898,5 @@
       "rewrite_instruction": "Investigación desde cero: verifica el contexto ACTUAL de israel, eventos, marcador y fecha. Redacta texto y remate nuevos y consigue una nueva foto de archivo para esta revisión. No reutilices explicaciones ni imágenes de una versión ya publicada o cerrada."
     }
   ],
-  "count": 2221
+  "count": 2223
 }
