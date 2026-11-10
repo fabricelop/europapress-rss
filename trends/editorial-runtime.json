@@ -3,23 +3,27 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261110T205500-manual",
-  "previous_run_id": "tr-20261110T204000-manual",
-  "command_id": "tr-20261110T205500-manual",
+  "run_id": "tr-1794340649326-manual",
+  "previous_run_id": "tr-20261110T205500-manual",
+  "command_id": "tr-1794340649326-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-10T20:55:00+01:00",
-  "updated_at": "2026-11-10T20:56:30+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-10T20:58:30+01:00",
+  "updated_at": "2026-11-10T20:58:30+01:00",
   "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "total": 1,
+  "trend_id": "601c5a8a93e2",
+  "title": "Catedral de Toledo",
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "601c5a8a93e2"
+  ],
+  "remaining_active_ids": [
+    "601c5a8a93e2"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
@@ -132,6 +136,13 @@
       "at": "2026-11-10T20:56:30+01:00",
       "phase": "closing",
       "message": "Barrera final verificada: editorial-queue=0, mobile activo=0 y sin reelaboraciones/revisiones pendientes; pasada cerrada 0/0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-10T20:58:30+01:00",
+      "phase": "preparing",
+      "trend_id": "601c5a8a93e2",
+      "title": "Catedral de Toledo",
+      "message": "Iniciada reelaboración r0 desde cero; validación JIT y comprobación de contexto actual. Sin ImageGen."
     }
   ],
   "last_started_at": "2026-11-10T20:55:00+01:00",
