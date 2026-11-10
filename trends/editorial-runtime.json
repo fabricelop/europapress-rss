@@ -3,16 +3,16 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794341095501-manual",
+  "run_id": "tr-1794340878832-manual",
   "previous_run_id": "tr-1794340649326-manual",
   "command_id": "tr-1794341095501-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "verifying",
-  "started_at": "2026-11-10T21:05:00+01:00",
+  "status": "DONE",
+  "phase": "closing",
+  "started_at": "2026-11-10T21:02:00+01:00",
   "updated_at": "2026-11-10T21:08:00+01:00",
-  "current": 0,
-  "total": 0,
+  "current": 2,
+  "total": 2,
   "trend_id": null,
   "title": null,
   "queue_complete": false,
@@ -205,17 +205,17 @@
   "last_completed_at": "2026-11-10T21:00:40+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794340649326-manual",
+    "run_id": "tr-1794340878832-manual",
     "status": "DONE",
-    "started_at": "2026-11-10T20:58:30+01:00",
-    "finished_at": "2026-11-10T21:07:00+01:00",
-    "at": "2026-11-10T21:07:00+01:00",
+    "started_at": "2026-11-10T21:02:00+01:00",
+    "finished_at": "2026-11-10T21:08:00+01:00",
+    "at": "2026-11-10T21:08:00+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 3,
-      "observed": 3,
-      "closed": 3,
-      "explained": 1,
+      "attempted": 2,
+      "observed": 2,
+      "closed": 2,
+      "explained": 0,
       "problematic": 0,
       "updates": 1,
       "review_completed_no_distinct_event": 0,
@@ -234,30 +234,21 @@
       "image_outbox_created": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 0
+      "concurrent_convergence": 2
     },
-    "processed_ids": [
-      "601c5a8a93e2",
+    "processed_ids": [],
+    "converged_ids": [
       "red-review-68d91ea6ffac56fadb4d",
       "red-review-7ec3c52ef28add881531"
     ],
-    "converged_ids": [],
     "outcomes": [
-      {
-        "id": "601c5a8a93e2",
-        "revision": 0,
-        "name": "Catedral de Toledo",
-        "outcome": "explained",
-        "applied": true,
-        "apply_commit": "2939b4d2b5415ed3b8ebf6ba2332692f9d37c1cd",
-        "verification": "site-top30-current + telegram-manual-explained exact match"
-      },
       {
         "id": "red-review-68d91ea6ffac56fadb4d",
         "revision": 0,
         "name": "Revisar novedades: Supa",
         "outcome": "unverified",
         "applied": true,
+        "via": "concurrent_convergence",
         "apply_commit": "61f2f146a926eae3568074e8e0d9947db37bc9f5",
         "verification": "maintenance applied; source text/date preserved"
       },
@@ -267,16 +258,17 @@
         "name": "Revisar novedades: Charles",
         "outcome": "continuity_update",
         "applied": true,
-        "apply_commit": "5b26ed05be444fecd3e641d64eae7eba5201f9b0",
+        "via": "concurrent_convergence",
         "source_id": "c43139196d57",
+        "apply_commit": "5b26ed05be444fecd3e641d64eae7eba5201f9b0",
         "verification": "maintenance continuity applied; same source identity/explained_at"
       }
     ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-1794340649326-manual cerrada 3/3. Catedral de Toledo r0 explicada desde cero y aplicada; Supa revisada unverified por rumores de mercado sin acuerdo confirmado; Charles actualizado en continuidad con la situación de alerta en Portugal. Barrera final main: editorial-queue=0 y sin reexplicación pendiente detectable. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "message": "Pasada tr-1794340878832-manual cerrada 2/2 por convergencia JIT con la ejecución anterior reabierta al entrar estas revisiones. Supa quedó unverified por rumores de mercado sin acuerdo confirmado; Charles quedó actualizado en continuidad con la situación de alerta en Portugal. Barrera observada: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada manual iniciada. Relectura inicial sin preparing/update ni reexplicaciones; verificando barrera JIT final en main. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1794340878832-manual cerrada 2/2 por convergencia JIT con la ejecución anterior reabierta al entrar estas revisiones. Supa quedó unverified por rumores de mercado sin acuerdo confirmado; Charles quedó actualizado en continuidad con la situación de alerta en Portugal. Barrera observada: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
@@ -6291,14 +6283,81 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-20261110T205500-manual cerrada 0/0 contra main. Relectura JIT final: editorial-queue=0 (updated_at 2026-11-10T20:50:58+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial textual pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794340649326-manual",
+      "status": "DONE",
+      "started_at": "2026-11-10T20:58:30+01:00",
+      "finished_at": "2026-11-10T21:07:00+01:00",
+      "at": "2026-11-10T21:07:00+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 3,
+        "observed": 3,
+        "closed": 3,
+        "explained": 1,
+        "problematic": 0,
+        "updates": 1,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 2,
+        "unchanged_reviews": 0,
+        "continuity_updates": 1,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 1,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [
+        "601c5a8a93e2",
+        "red-review-68d91ea6ffac56fadb4d",
+        "red-review-7ec3c52ef28add881531"
+      ],
+      "converged_ids": [],
+      "outcomes": [
+        {
+          "id": "601c5a8a93e2",
+          "revision": 0,
+          "name": "Catedral de Toledo",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "2939b4d2b5415ed3b8ebf6ba2332692f9d37c1cd",
+          "verification": "site-top30-current + telegram-manual-explained exact match"
+        },
+        {
+          "id": "red-review-68d91ea6ffac56fadb4d",
+          "revision": 0,
+          "name": "Revisar novedades: Supa",
+          "outcome": "unverified",
+          "applied": true,
+          "apply_commit": "61f2f146a926eae3568074e8e0d9947db37bc9f5",
+          "verification": "maintenance applied; source text/date preserved"
+        },
+        {
+          "id": "red-review-7ec3c52ef28add881531",
+          "revision": 0,
+          "name": "Revisar novedades: Charles",
+          "outcome": "continuity_update",
+          "applied": true,
+          "apply_commit": "5b26ed05be444fecd3e641d64eae7eba5201f9b0",
+          "source_id": "c43139196d57",
+          "verification": "maintenance continuity applied; same source identity/explained_at"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-1794340649326-manual cerrada 3/3. Catedral de Toledo r0 explicada desde cero y aplicada; Supa revisada unverified por rumores de mercado sin acuerdo confirmado; Charles actualizado en continuidad con la situación de alerta en Portugal. Barrera final main: editorial-queue=0 y sin reexplicación pendiente detectable. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
-  "current_item": {
-    "id": "red-review-68d91ea6ffac56fadb4d",
-    "revision": 0,
-    "name": "Revisar novedades: Supa",
-    "phase": "investigating"
-  },
+  "current_item": null,
   "withdrawn_ids": [
     "ae7f066f3c94"
   ],
@@ -7801,7 +7860,7 @@
   ],
   "outbox_comment_id": 6721989528,
   "editorial_apply_commit": "2939b4d2b5415ed3b8ebf6ba2332692f9d37c1cd",
-  "finished_at": "2026-11-10T21:07:00+01:00",
+  "finished_at": "2026-11-10T21:08:00+01:00",
   "refresh_workflow_run_id": 42839275825,
   "refresh_conclusion": "success",
   "maintenance_apply_commits": [
