@@ -7,24 +7,22 @@
   "previous_run_id": "tr-20261110T025500-manual",
   "command_id": "tr-20261110T031000-manual",
   "source": "chat",
-  "status": "RUNNING",
+  "status": "success",
   "phase": "investigating",
   "started_at": "2026-11-10T03:10:00+01:00",
-  "updated_at": "2026-11-10T03:10:00+01:00",
+  "updated_at": "2026-11-10T03:13:37+01:00",
   "finished_at": null,
   "current": 0,
   "total": 1,
   "trend_id": "23f88d52777e",
   "title": "Espinosa",
-  "queue_complete": false,
-  "processed_ids": [],
+  "queue_complete": true,
+  "processed_ids": [
+    "23f88d52777e"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "23f88d52777e"
-  ],
-  "remaining_active_ids": [
-    "23f88d52777e"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": null,
   "outcomes": [],
@@ -69,8 +67,8 @@
     "incidents": [],
     "message": "Pasada tr-20261110T025500-manual cerrada 0/0 tras relectura JIT de main. Snapshot Top 30 capturado 2026-11-10T02:50:52+01:00; editorial-queue actualizada 2026-11-10T02:50:57+01:00 y vacía. Barrera final: mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial vigente que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "last_started_at": "2026-11-10T03:10:00+01:00",
-  "last_completed_at": "2026-11-10T02:56:00+01:00",
+  "last_started_at": "2026-11-10T03:13:37+01:00",
+  "last_completed_at": "2026-11-10T03:13:37+01:00",
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-20261110T025500-manual",
