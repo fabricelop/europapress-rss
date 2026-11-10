@@ -1,6 +1,74 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-10T09:16:32+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-10T08:17:03.085543+00:00",
+  "count": 2,
+  "items": [
+    {
+      "id": "red-review-2047804b54c6aa68bda3",
+      "revision": 0,
+      "name": "Revisar novedades: Simeone",
+      "rank": 14,
+      "status": "preparing",
+      "requested_at": "2026-11-10T08:17:03.085543+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "trend-update-a6ba2247d4ace88428d6",
+        "revision": 0,
+        "name": "Simeone",
+        "rank": 10,
+        "explanation": "TT#10 Simeone es tendencia por el Atlético-Barça: Giuliano marcó el 1-0 y Diego se quedó sin superar el récord de victorias en LaLiga tras la remontada azulgrana (1-2).\n#Atleti #Barça\n🌶️ Un Simeone abrió el marcador y el otro dejó el récord para otro día.",
+        "explanation_sha256": "f298a96c1a1ffe4f6ece3a7f11be25ec79c5ab938585c7e48fff263fb36c541b",
+        "explained_at": "2026-11-08T22:56:55.135609+00:00",
+        "verification_sources": [
+          {
+            "url": "https://www.reuters.com/sports/soccer/fermin-double-gives-laliga-leaders-barca-2-1-win-atletico-2026-11-08/"
+          },
+          {
+            "url": "https://www.lavanguardia.com/deportes/atletico-de-madrid/20261108/11678898/simeone-partido-partido-record-historico.html"
+          },
+          {
+            "url": "https://www.fcbarcelona.com/en/matches/138391/atletico-fc-barcelona-la-liga-2026-2027"
+          }
+        ],
+        "fingerprint": "70ce7724442430f59dc96c171f7b0a1136b3ed8bf58f7480a380c0131df7ee45"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-d9f594a4f9ea375b31a4",
+      "revision": 0,
+      "name": "Revisar novedades: Atleti",
+      "rank": 24,
+      "status": "preparing",
+      "requested_at": "2026-11-10T08:17:03.085543+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "bc91860c9bb9",
+        "revision": 0,
+        "name": "Atleti",
+        "rank": 3,
+        "explanation": "TT#3 Atleti es tendencia por la derrota 1-2 ante el Barça este 8 de noviembre en el Metropolitano: Giuliano Simeone hizo el 1-0 y Fermín remontó con un doblete.\n#AtletiBarça #LaLiga\n🌶️ El liderato se asomó al Metropolitano y Fermín le dio la vuelta al cartel.",
+        "explanation_sha256": "68412a32c6a973f4e89a5b0342e36360aa35f438b778606566957de4cc0a7d98",
+        "explained_at": "2026-11-09T00:43:00+01:00",
+        "verification_sources": [
+          "https://www.mundodeportivo.com/futbol/fc-barcelona/20261108/1004248754/metropolitano.html",
+          "https://as.com/futbol/primera/julian-perdona-fermin-no-f202611-n/"
+        ],
+        "fingerprint": "213af51ef56fc4585666e33813195674300121f2663ca98c6d21e7c27131cb33"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
