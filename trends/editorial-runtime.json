@@ -7,54 +7,81 @@
   "previous_run_id": "tr-20261110T192500-manual",
   "command_id": "tr-1794335896172-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-10T19:38:20+01:00",
-  "updated_at": "2026-11-10T19:42:00+01:00",
-  "current": 0,
+  "updated_at": "2026-11-10T19:44:44+01:00",
+  "current": 3,
   "total": 3,
-  "trend_id": "red-review-b535f753c2b9aaacf721",
-  "title": "Revisar novedades: Charles",
-  "queue_complete": false,
-  "processed_ids": [],
-  "converged_ids": [],
-  "remaining_ids": [
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
     "radar-prepare-5fc717151f768845d4d7",
-    "red-review-fa9bfc4992f8c28abfef",
+    "red-review-fa9bfc4992f8c28abfef"
+  ],
+  "converged_ids": [
     "red-review-b535f753c2b9aaacf721"
   ],
-  "remaining_active_ids": [
-    "radar-prepare-5fc717151f768845d4d7",
-    "red-review-fa9bfc4992f8c28abfef",
-    "red-review-b535f753c2b9aaacf721"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 3,
     "observed": 3,
-    "closed": 0,
+    "closed": 3,
     "explained": 0,
     "problematic": 0,
-    "updates": 0,
+    "updates": 1,
     "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 0,
+    "maintenance_reviews": 2,
     "unchanged_reviews": 0,
-    "continuity_updates": 0,
+    "continuity_updates": 1,
     "distinct_updates": 0,
     "stale_reviews": 0,
-    "unverified_reviews": 0,
-    "anticipation_reviews": 0,
-    "anticipation_prepared": 0,
+    "unverified_reviews": 1,
+    "anticipation_reviews": 1,
+    "anticipation_prepared": 1,
     "anticipation_unverified": 0,
-    "queue_remaining": 3,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 1
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "radar-prepare-5fc717151f768845d4d7",
+      "revision": 0,
+      "name": "Radar · Dictadura",
+      "outcome": "anticipation_prepared",
+      "applied": true,
+      "outbox_commit": "537a59f91377a8db38626fb69f7eaed4b7249caa",
+      "apply_commit": "42aa529db6456e56fc5d5325712556b212398f20"
+    },
+    {
+      "id": "red-review-fa9bfc4992f8c28abfef",
+      "revision": 0,
+      "name": "Revisar novedades: Supa",
+      "outcome": "unverified",
+      "applied": true,
+      "outbox_commit": "8a6e17bd66e84931666d5b2d727affb5874aa5bd",
+      "apply_commit": "d8b1dceb17436c68750d344acb74b4027b5a416b"
+    },
+    {
+      "id": "red-review-b535f753c2b9aaacf721",
+      "revision": 0,
+      "name": "Revisar novedades: Charles",
+      "outcome": "continuity_update",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "source_id": "c43139196d57",
+      "outbox_commit": "38aec3101cdb6b171015553a1d780541ce4206aa",
+      "apply_commit": "d8b1dceb17436c68750d344acb74b4027b5a416b"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -93,34 +120,39 @@
       "at": "2026-11-10T19:26:00+01:00",
       "phase": "closing",
       "message": "Barrera final verificada: cola=0, mobile activo=0, sin rewrite_pending/reexplain_pending; pasada cerrada 0/0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-10T19:44:44+01:00",
+      "phase": "closing",
+      "message": "Barrera final verificada: editorial-queue=0; 3/3 cerrados y aplicados. ImageGen=0; publicaciones=0."
     }
   ],
   "last_started_at": "2026-11-10T19:38:20+01:00",
-  "last_completed_at": "2026-11-10T19:26:00+01:00",
+  "last_completed_at": "2026-11-10T19:44:44+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261110T192500-manual",
+    "run_id": "tr-1794335896172-manual",
     "status": "DONE",
-    "started_at": "2026-11-10T19:25:00+01:00",
-    "finished_at": "2026-11-10T19:26:00+01:00",
-    "at": "2026-11-10T19:26:00+01:00",
+    "started_at": "2026-11-10T19:38:20+01:00",
+    "finished_at": "2026-11-10T19:44:44+01:00",
+    "at": "2026-11-10T19:44:44+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 0,
-      "observed": 0,
-      "closed": 0,
+      "attempted": 3,
+      "observed": 3,
+      "closed": 3,
       "explained": 0,
       "problematic": 0,
-      "updates": 0,
+      "updates": 1,
       "review_completed_no_distinct_event": 0,
-      "maintenance_reviews": 0,
+      "maintenance_reviews": 2,
       "unchanged_reviews": 0,
-      "continuity_updates": 0,
+      "continuity_updates": 1,
       "distinct_updates": 0,
       "stale_reviews": 0,
-      "unverified_reviews": 0,
-      "anticipation_reviews": 0,
-      "anticipation_prepared": 0,
+      "unverified_reviews": 1,
+      "anticipation_reviews": 1,
+      "anticipation_prepared": 1,
       "anticipation_unverified": 0,
       "queue_remaining": 0,
       "rewrite_pending_remaining": 0,
@@ -128,16 +160,51 @@
       "image_outbox_created": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 0
+      "concurrent_convergence": 1
     },
-    "processed_ids": [],
-    "converged_ids": [],
-    "outcomes": [],
+    "processed_ids": [
+      "radar-prepare-5fc717151f768845d4d7",
+      "red-review-fa9bfc4992f8c28abfef"
+    ],
+    "converged_ids": [
+      "red-review-b535f753c2b9aaacf721"
+    ],
+    "outcomes": [
+      {
+        "id": "radar-prepare-5fc717151f768845d4d7",
+        "revision": 0,
+        "name": "Radar · Dictadura",
+        "outcome": "anticipation_prepared",
+        "applied": true,
+        "outbox_commit": "537a59f91377a8db38626fb69f7eaed4b7249caa",
+        "apply_commit": "42aa529db6456e56fc5d5325712556b212398f20"
+      },
+      {
+        "id": "red-review-fa9bfc4992f8c28abfef",
+        "revision": 0,
+        "name": "Revisar novedades: Supa",
+        "outcome": "unverified",
+        "applied": true,
+        "outbox_commit": "8a6e17bd66e84931666d5b2d727affb5874aa5bd",
+        "apply_commit": "d8b1dceb17436c68750d344acb74b4027b5a416b"
+      },
+      {
+        "id": "red-review-b535f753c2b9aaacf721",
+        "revision": 0,
+        "name": "Revisar novedades: Charles",
+        "outcome": "continuity_update",
+        "applied": true,
+        "via": "concurrent_convergence",
+        "source_id": "c43139196d57",
+        "outbox_commit": "38aec3101cdb6b171015553a1d780541ce4206aa",
+        "apply_commit": "d8b1dceb17436c68750d344acb74b4027b5a416b"
+      }
+    ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-20261110T192500-manual cerrada 0/0 contra main. Barrera JIT final: editorial-queue=0 (updated_at 2026-11-10T18:19:13.372802+00:00), mobile-decisions sin trabajo editorial activo y búsquedas dirigidas sin rewrite_pending/reexplain_pending. Se revisaron los mantenimientos más recientes (#ProfesionDeRiesgoYa, ya aplicados) y no quedaba trabajo textual pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "message": "Pasada tr-1794335896172-manual cerrada 3/3. Radar · Dictadura quedó anticipation_prepared y fue retirado de la cola tras corregir la estructura exigida por el aplicador; Supa quedó unverified, conservando su explicación histórica; Charles recibió una actualización de continuidad con nuevos impactos verificados, conservando identidad y sin crear episodio independiente. Barrera final en main: editorial-queue=0, sin preparing/update ni reexplicación pendiente en la cola autoritativa. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Revisando novedades de Charles: el aviso oficial vigente mantiene el mismo episodio ya incorporado.",
+  "message": "Pasada tr-1794335896172-manual cerrada 3/3. Radar · Dictadura quedó anticipation_prepared y fue retirado de la cola tras corregir la estructura exigida por el aplicador; Supa quedó unverified, conservando su explicación histórica; Charles recibió una actualización de continuidad con nuevos impactos verificados, conservando identidad y sin crear episodio independiente. Barrera final en main: editorial-queue=0, sin preparing/update ni reexplicación pendiente en la cola autoritativa. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
@@ -5870,17 +5937,11 @@
       "message": "Pasada tr-1794333897195-manual cerrada 9/9 tras barrera ampliada: 6 explicaciones aplicadas, 1 reentrada cerrada review_completed/no_distinct_event y 2 revisiones de mantenimiento actualizadas en continuidad (#HuelgaGeneral y #ProfesionDeRiesgoYa), sin nueva publicación ni imagen. La última revisión convergió con la pasada posterior tr-1794334648285-manual. Barrera final verificada en main: editorial-queue=0. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
-  "current_item": {
-    "id": "red-review-b535f753c2b9aaacf721",
-    "revision": 0,
-    "name": "Revisar novedades: Charles",
-    "phase": "investigating",
-    "message": "Revisando el aviso especial vigente de AEMET frente a la explicación ya actualizada."
-  },
+  "current_item": null,
   "withdrawn_ids": [
     "ae7f066f3c94"
   ],
-  "last_finished_at": "2026-11-10T19:19:13+01:00",
+  "last_finished_at": "2026-11-10T19:44:44+01:00",
   "last_revalidated_at": "2026-11-10T17:26:00+01:00",
   "last_revalidation": {
     "at": "2026-11-10T17:26:00+01:00",
@@ -7155,11 +7216,85 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-1794334519228-manual cerrada 2/2 por convergencia JIT con ejecuciones concurrentes. #HuelgaGeneral quedó actualizada en continuidad con servicios mínimos del 11N; #ProfesionDeRiesgoYa quedó actualizada en continuidad con la reiteración de JUCIL/JUPOL del 10/11. Ambas conservan su ficha y explained_at originales, sin nueva publicación ni imagen. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794335896172-manual",
+      "status": "DONE",
+      "started_at": "2026-11-10T19:38:20+01:00",
+      "finished_at": "2026-11-10T19:44:44+01:00",
+      "at": "2026-11-10T19:44:44+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 3,
+        "observed": 3,
+        "closed": 3,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 1,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 2,
+        "unchanged_reviews": 0,
+        "continuity_updates": 1,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 1,
+        "anticipation_reviews": 1,
+        "anticipation_prepared": 1,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 1
+      },
+      "processed_ids": [
+        "radar-prepare-5fc717151f768845d4d7",
+        "red-review-fa9bfc4992f8c28abfef"
+      ],
+      "converged_ids": [
+        "red-review-b535f753c2b9aaacf721"
+      ],
+      "outcomes": [
+        {
+          "id": "radar-prepare-5fc717151f768845d4d7",
+          "revision": 0,
+          "name": "Radar · Dictadura",
+          "outcome": "anticipation_prepared",
+          "applied": true,
+          "outbox_commit": "537a59f91377a8db38626fb69f7eaed4b7249caa",
+          "apply_commit": "42aa529db6456e56fc5d5325712556b212398f20"
+        },
+        {
+          "id": "red-review-fa9bfc4992f8c28abfef",
+          "revision": 0,
+          "name": "Revisar novedades: Supa",
+          "outcome": "unverified",
+          "applied": true,
+          "outbox_commit": "8a6e17bd66e84931666d5b2d727affb5874aa5bd",
+          "apply_commit": "d8b1dceb17436c68750d344acb74b4027b5a416b"
+        },
+        {
+          "id": "red-review-b535f753c2b9aaacf721",
+          "revision": 0,
+          "name": "Revisar novedades: Charles",
+          "outcome": "continuity_update",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "source_id": "c43139196d57",
+          "outbox_commit": "38aec3101cdb6b171015553a1d780541ce4206aa",
+          "apply_commit": "d8b1dceb17436c68750d344acb74b4027b5a416b"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-1794335896172-manual cerrada 3/3. Radar · Dictadura quedó anticipation_prepared y fue retirado de la cola tras corregir la estructura exigida por el aplicador; Supa quedó unverified, conservando su explicación histórica; Charles recibió una actualización de continuidad con nuevos impactos verificados, conservando identidad y sin crear episodio independiente. Barrera final en main: editorial-queue=0, sin preparing/update ni reexplicación pendiente en la cola autoritativa. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "outbox_comment_id": 5848965032,
   "editorial_apply_commit": "76e7e728a222ee21fee34fda64da43cfd7ecd90a",
-  "finished_at": null,
+  "finished_at": "2026-11-10T19:44:44+01:00",
   "refresh_workflow_run_id": 42839275825,
   "refresh_conclusion": "success"
 }
