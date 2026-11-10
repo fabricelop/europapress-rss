@@ -7,21 +7,21 @@
   "previous_run_id": "tr-20261110T015500-manual",
   "command_id": "tr-20261110T021000-manual",
   "source": "chat",
-  "status": "success",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-10T02:10:00+01:00",
-  "updated_at": "2026-11-10T02:15:19+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-10T02:15:56+01:00",
+  "finished_at": "2026-11-10T02:15:56+01:00",
+  "current": 6,
   "total": 6,
-  "trend_id": "73f7c3a05c38",
-  "title": "neus",
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
-    "0c086cdc772a",
-    "5273405ce991",
     "73f7c3a05c38",
+    "0c086cdc772a",
     "a634924a1c4b",
+    "5273405ce991",
     "c0de3303bec7",
     "f6691d76871e"
   ],
@@ -29,32 +29,107 @@
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": null,
-  "outcomes": [],
+  "summary": {
+    "attempted": 6,
+    "observed": 6,
+    "closed": 6,
+    "explained": 6,
+    "problematic": 0,
+    "updates": 0,
+    "review_completed_no_distinct_event": 0,
+    "maintenance_reviews": 0,
+    "unchanged_reviews": 0,
+    "continuity_updates": 0,
+    "distinct_updates": 2,
+    "stale_reviews": 0,
+    "unverified_reviews": 0,
+    "anticipation_reviews": 0,
+    "anticipation_prepared": 0,
+    "anticipation_unverified": 0,
+    "queue_remaining": 0,
+    "rewrite_pending_remaining": 0,
+    "imagegen_calls": 0,
+    "image_outbox_created": 0,
+    "publications": 0,
+    "incidents": 0,
+    "concurrent_convergence": 0
+  },
+  "outcomes": [
+    {
+      "id": "73f7c3a05c38",
+      "revision": 0,
+      "name": "neus",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "9af2be7ef008b6d88cec033200ba6e43f47eed62"
+    },
+    {
+      "id": "0c086cdc772a",
+      "revision": 0,
+      "name": "paula",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "9af2be7ef008b6d88cec033200ba6e43f47eed62"
+    },
+    {
+      "id": "a634924a1c4b",
+      "revision": 0,
+      "name": "IRINI",
+      "outcome": "explained",
+      "applied": true,
+      "distinct_episode": true,
+      "apply_commit": "9af2be7ef008b6d88cec033200ba6e43f47eed62"
+    },
+    {
+      "id": "5273405ce991",
+      "revision": 0,
+      "name": "Nieves",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "9af2be7ef008b6d88cec033200ba6e43f47eed62"
+    },
+    {
+      "id": "c0de3303bec7",
+      "revision": 0,
+      "name": "#MCCLegends",
+      "outcome": "explained",
+      "applied": true,
+      "distinct_episode": true,
+      "apply_commit": "9af2be7ef008b6d88cec033200ba6e43f47eed62"
+    },
+    {
+      "id": "f6691d76871e",
+      "revision": 0,
+      "name": "José Pablo López",
+      "outcome": "explained_cause_unconfirmed",
+      "applied": true,
+      "apply_commit": "9af2be7ef008b6d88cec033200ba6e43f47eed62"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
   "activity": "closing",
   "last_started_at": "2026-11-10T02:15:18+01:00",
-  "last_completed_at": "2026-11-10T02:15:19+01:00",
+  "last_completed_at": "2026-11-10T02:15:56+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261110T015500-manual",
+    "run_id": "tr-20261110T021000-manual",
     "status": "DONE",
-    "started_at": "2026-11-10T01:55:00+01:00",
-    "finished_at": "2026-11-10T01:57:30+01:00",
+    "started_at": "2026-11-10T02:10:00+01:00",
+    "finished_at": "2026-11-10T02:15:56+01:00",
     "summary": {
-      "attempted": 0,
-      "observed": 0,
-      "closed": 0,
-      "explained": 0,
+      "attempted": 6,
+      "observed": 6,
+      "closed": 6,
+      "explained": 6,
       "problematic": 0,
       "updates": 0,
       "review_completed_no_distinct_event": 0,
       "maintenance_reviews": 0,
       "unchanged_reviews": 0,
       "continuity_updates": 0,
-      "distinct_updates": 0,
+      "distinct_updates": 2,
       "stale_reviews": 0,
       "unverified_reviews": 0,
       "anticipation_reviews": 0,
@@ -68,13 +143,71 @@
       "incidents": 0,
       "concurrent_convergence": 0
     },
-    "processed_ids": [],
-    "outcomes": [],
+    "processed_ids": [
+      "73f7c3a05c38",
+      "0c086cdc772a",
+      "a634924a1c4b",
+      "5273405ce991",
+      "c0de3303bec7",
+      "f6691d76871e"
+    ],
+    "outcomes": [
+      {
+        "id": "73f7c3a05c38",
+        "revision": 0,
+        "name": "neus",
+        "outcome": "explained",
+        "applied": true,
+        "apply_commit": "9af2be7ef008b6d88cec033200ba6e43f47eed62"
+      },
+      {
+        "id": "0c086cdc772a",
+        "revision": 0,
+        "name": "paula",
+        "outcome": "explained",
+        "applied": true,
+        "apply_commit": "9af2be7ef008b6d88cec033200ba6e43f47eed62"
+      },
+      {
+        "id": "a634924a1c4b",
+        "revision": 0,
+        "name": "IRINI",
+        "outcome": "explained",
+        "applied": true,
+        "distinct_episode": true,
+        "apply_commit": "9af2be7ef008b6d88cec033200ba6e43f47eed62"
+      },
+      {
+        "id": "5273405ce991",
+        "revision": 0,
+        "name": "Nieves",
+        "outcome": "explained",
+        "applied": true,
+        "apply_commit": "9af2be7ef008b6d88cec033200ba6e43f47eed62"
+      },
+      {
+        "id": "c0de3303bec7",
+        "revision": 0,
+        "name": "#MCCLegends",
+        "outcome": "explained",
+        "applied": true,
+        "distinct_episode": true,
+        "apply_commit": "9af2be7ef008b6d88cec033200ba6e43f47eed62"
+      },
+      {
+        "id": "f6691d76871e",
+        "revision": 0,
+        "name": "José Pablo López",
+        "outcome": "explained_cause_unconfirmed",
+        "applied": true,
+        "apply_commit": "9af2be7ef008b6d88cec033200ba6e43f47eed62"
+      }
+    ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-20261110T015500-manual cerrada 0/0 tras relectura JIT de main. Snapshot Top 30 capturado 2026-11-10T01:50:51+01:00; editorial-queue actualizada 2026-11-10T01:50:56+01:00 y vacía. Barrera final: requests y mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. Último mantenimiento leído: Supa quedó unverified al no existir confirmación independiente suficiente de un hecho material nuevo. No había trabajo editorial vigente que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "message": "Pasada tr-20261110T021000-manual cerrada 6/6. neus, paula, IRINI, Nieves, #MCCLegends y José Pablo López r0 quedaron aplicados en main por 9af2be7ef008b6d88cec033200ba6e43f47eed62; IRINI y #MCCLegends acreditaron episodios materiales nuevos. José Pablo López se cerró con causa concreta no confirmada, sin inventar detonante. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-20261110T021000-manual: detectadas 6 revisiones nuevas en main; investigación cerrada y comenzando persistencia JIT. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-20261110T021000-manual cerrada 6/6. neus, paula, IRINI, Nieves, #MCCLegends y José Pablo López r0 quedaron aplicados en main por 9af2be7ef008b6d88cec033200ba6e43f47eed62; IRINI y #MCCLegends acreditaron episodios materiales nuevos. José Pablo López se cerró con causa concreta no confirmada, sin inventar detonante. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794234841273-manual",
@@ -2815,21 +2948,113 @@
       "trend_id": "73f7c3a05c38",
       "title": "neus",
       "message": "Pasada tr-20261110T021000-manual: detectadas 6 revisiones nuevas en main; investigación cerrada y comenzando persistencia JIT. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-20261110T021000-manual",
+      "status": "DONE",
+      "started_at": "2026-11-10T02:10:00+01:00",
+      "finished_at": "2026-11-10T02:15:56+01:00",
+      "at": "2026-11-10T02:15:56+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 6,
+        "observed": 6,
+        "closed": 6,
+        "explained": 6,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 0,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 2,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [
+        "73f7c3a05c38",
+        "0c086cdc772a",
+        "a634924a1c4b",
+        "5273405ce991",
+        "c0de3303bec7",
+        "f6691d76871e"
+      ],
+      "outcomes": [
+        {
+          "id": "73f7c3a05c38",
+          "revision": 0,
+          "name": "neus",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "9af2be7ef008b6d88cec033200ba6e43f47eed62"
+        },
+        {
+          "id": "0c086cdc772a",
+          "revision": 0,
+          "name": "paula",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "9af2be7ef008b6d88cec033200ba6e43f47eed62"
+        },
+        {
+          "id": "a634924a1c4b",
+          "revision": 0,
+          "name": "IRINI",
+          "outcome": "explained",
+          "applied": true,
+          "distinct_episode": true,
+          "apply_commit": "9af2be7ef008b6d88cec033200ba6e43f47eed62"
+        },
+        {
+          "id": "5273405ce991",
+          "revision": 0,
+          "name": "Nieves",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "9af2be7ef008b6d88cec033200ba6e43f47eed62"
+        },
+        {
+          "id": "c0de3303bec7",
+          "revision": 0,
+          "name": "#MCCLegends",
+          "outcome": "explained",
+          "applied": true,
+          "distinct_episode": true,
+          "apply_commit": "9af2be7ef008b6d88cec033200ba6e43f47eed62"
+        },
+        {
+          "id": "f6691d76871e",
+          "revision": 0,
+          "name": "José Pablo López",
+          "outcome": "explained_cause_unconfirmed",
+          "applied": true,
+          "apply_commit": "9af2be7ef008b6d88cec033200ba6e43f47eed62"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-20261110T021000-manual cerrada 6/6. neus, paula, IRINI, Nieves, #MCCLegends y José Pablo López r0 quedaron aplicados en main por 9af2be7ef008b6d88cec033200ba6e43f47eed62; IRINI y #MCCLegends acreditaron episodios materiales nuevos. José Pablo López se cerró con causa concreta no confirmada, sin inventar detonante. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
-  "current_item": {
-    "id": "73f7c3a05c38",
-    "revision": 0,
-    "name": "neus"
-  },
+  "current_item": null,
   "withdrawn_ids": [
     "ae7f066f3c94"
   ],
-  "last_finished_at": "2026-11-10T01:41:10+01:00",
-  "last_revalidated_at": "2026-11-10T01:41:10+01:00",
+  "last_finished_at": "2026-11-10T02:15:56+01:00",
+  "last_revalidated_at": "2026-11-10T02:15:56+01:00",
   "last_revalidation": {
-    "at": "2026-11-10T01:41:10+01:00",
-    "queue_sha": "d35e8a3a732fd5b800777290e8fd7b0554df0b9a",
+    "at": "2026-11-10T02:15:56+01:00",
+    "queue_sha": "dddac82ee184cf38a047b6240bcf940db495fcf5",
     "queue_count": 0,
     "preparing_update": 0,
     "rewrite_pending": 0,
@@ -2840,7 +3065,7 @@
     "updated_at": "2026-11-10T00:55:00+01:00"
   },
   "apply_workflow_run_id": 42716594814,
-  "apply_commit": "e11a8743dc547c506eaaa37f3d274eaf6fe35a50",
+  "apply_commit": "9af2be7ef008b6d88cec033200ba6e43f47eed62",
   "maintenance_workflow_run_id": 42713522083,
   "maintenance_job_id": "red-review-61d494cc18e2321aaa5b",
   "workflow_run_id": 42716411372,
@@ -3222,6 +3447,102 @@
       "trend_id": "73f7c3a05c38",
       "title": "neus",
       "message": "Pasada tr-20261110T021000-manual: detectadas 6 revisiones nuevas en main; investigación cerrada y comenzando persistencia JIT. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-20261110T021000-manual",
+      "status": "DONE",
+      "started_at": "2026-11-10T02:10:00+01:00",
+      "finished_at": "2026-11-10T02:15:56+01:00",
+      "at": "2026-11-10T02:15:56+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 6,
+        "observed": 6,
+        "closed": 6,
+        "explained": 6,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 0,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 2,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [
+        "73f7c3a05c38",
+        "0c086cdc772a",
+        "a634924a1c4b",
+        "5273405ce991",
+        "c0de3303bec7",
+        "f6691d76871e"
+      ],
+      "outcomes": [
+        {
+          "id": "73f7c3a05c38",
+          "revision": 0,
+          "name": "neus",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "9af2be7ef008b6d88cec033200ba6e43f47eed62"
+        },
+        {
+          "id": "0c086cdc772a",
+          "revision": 0,
+          "name": "paula",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "9af2be7ef008b6d88cec033200ba6e43f47eed62"
+        },
+        {
+          "id": "a634924a1c4b",
+          "revision": 0,
+          "name": "IRINI",
+          "outcome": "explained",
+          "applied": true,
+          "distinct_episode": true,
+          "apply_commit": "9af2be7ef008b6d88cec033200ba6e43f47eed62"
+        },
+        {
+          "id": "5273405ce991",
+          "revision": 0,
+          "name": "Nieves",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "9af2be7ef008b6d88cec033200ba6e43f47eed62"
+        },
+        {
+          "id": "c0de3303bec7",
+          "revision": 0,
+          "name": "#MCCLegends",
+          "outcome": "explained",
+          "applied": true,
+          "distinct_episode": true,
+          "apply_commit": "9af2be7ef008b6d88cec033200ba6e43f47eed62"
+        },
+        {
+          "id": "f6691d76871e",
+          "revision": 0,
+          "name": "José Pablo López",
+          "outcome": "explained_cause_unconfirmed",
+          "applied": true,
+          "apply_commit": "9af2be7ef008b6d88cec033200ba6e43f47eed62"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-20261110T021000-manual cerrada 6/6. neus, paula, IRINI, Nieves, #MCCLegends y José Pablo López r0 quedaron aplicados en main por 9af2be7ef008b6d88cec033200ba6e43f47eed62; IRINI y #MCCLegends acreditaron episodios materiales nuevos. José Pablo López se cerró con causa concreta no confirmada, sin inventar detonante. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "outbox_comment_id": 6755274210
