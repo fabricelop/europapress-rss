@@ -8,26 +8,36 @@
   "command_id": "tr-1794307429333-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "investigating",
+  "phase": "persisting",
   "started_at": "2026-11-10T12:00:00+01:00",
-  "updated_at": "2026-11-10T12:01:00+01:00",
-  "current": 3,
-  "total": 4,
+  "updated_at": "2026-11-10T12:02:00+01:00",
+  "current": 0,
+  "total": 6,
   "trend_id": "red-review-616f03ec3b4930b9a6b4",
   "title": "Revisar novedades: #FelizMartes",
   "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [
+    "689a0c2a4d65",
+    "b7bcf914927c",
+    "ec3b92ed181d",
+    "a159cc7909f0",
+    "bcc4155d44b1",
     "red-review-616f03ec3b4930b9a6b4"
   ],
   "remaining_active_ids": [
+    "689a0c2a4d65",
+    "b7bcf914927c",
+    "ec3b92ed181d",
+    "a159cc7909f0",
+    "bcc4155d44b1",
     "red-review-616f03ec3b4930b9a6b4"
   ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
-    "observed": 1,
+    "attempted": 6,
+    "observed": 6,
     "closed": 0,
     "explained": 0,
     "problematic": 0,
@@ -42,19 +52,20 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 1,
+    "queue_remaining": 6,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 0,
+    "total": 6
   },
   "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Revisando novedades",
+  "activity": "Persistiendo #FelizMartes",
   "last_started_at": "2026-11-10T11:58:56+01:00",
   "last_completed_at": "2026-11-10T11:58:56+01:00",
   "api_failover_enabled": false,
@@ -124,7 +135,7 @@
     "incidents": [],
     "message": "Pasada tr-1794306091211-manual cerrada 3/3: Almudena sin novedad sustancial; Oviedo con episodio materialmente distinto por la explosión de hoy; anoche cerrada con causa no confirmada tras verificar su presencia actual en el Top de España. Barrera JIT final: editorial-queue=0 y mobile-decisions sin trabajo activo. ImageGen=0; publicaciones=0."
   },
-  "message": "Barrera de cierre reabierta: apareció la revisión roja de #FelizMartes r0. JIT validado; se comprueba la reaparición actual del hashtag y si cambia materialmente el episodio. ImageGen=0; publicaciones=0.",
+  "message": "#FelizMartes r0 revalidada JIT. La señal actual mantiene el patrón recurrente de saludo de los martes; no se verifica un acontecimiento material nuevo. Persistiendo unchanged.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
@@ -3513,6 +3524,13 @@
       "trend_id": "red-review-616f03ec3b4930b9a6b4",
       "title": "Revisar novedades: #FelizMartes",
       "message": "Barrera de cierre reabierta: apareció la revisión roja de #FelizMartes r0. JIT validado; se comprueba la reaparición actual del hashtag y si cambia materialmente el episodio. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-10T12:02:00+01:00",
+      "phase": "persisting",
+      "trend_id": "red-review-616f03ec3b4930b9a6b4",
+      "title": "Revisar novedades: #FelizMartes",
+      "message": "#FelizMartes r0 revalidada JIT. La señal actual mantiene el patrón recurrente de saludo de los martes; no se verifica un acontecimiento material nuevo. Persistiendo unchanged."
     }
   ],
   "current_item": null,
