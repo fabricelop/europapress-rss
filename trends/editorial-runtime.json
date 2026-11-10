@@ -3,36 +3,36 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794307429333-manual",
+  "run_id": "tr-1794308555826-manual",
   "previous_run_id": "tr-1794307429333-manual",
-  "command_id": "tr-1794307429333-manual",
+  "command_id": "tr-1794308555826-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "persisting",
-  "started_at": "2026-11-10T12:00:00+01:00",
-  "updated_at": "2026-11-10T12:04:00+01:00",
-  "current": 4,
-  "total": 10,
-  "trend_id": "b7bcf914927c",
-  "title": "Villafría",
+  "phase": "investigating",
+  "started_at": "2026-11-10T12:02:00+01:00",
+  "updated_at": "2026-11-10T12:03:00+01:00",
+  "current": 0,
+  "total": 6,
+  "trend_id": "red-review-616f03ec3b4930b9a6b4",
+  "title": "Revisar novedades: #FelizMartes",
   "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [
+    "red-review-616f03ec3b4930b9a6b4",
     "689a0c2a4d65",
     "b7bcf914927c",
     "ec3b92ed181d",
     "a159cc7909f0",
-    "bcc4155d44b1",
-    "red-review-616f03ec3b4930b9a6b4"
+    "bcc4155d44b1"
   ],
   "remaining_active_ids": [
+    "red-review-616f03ec3b4930b9a6b4",
     "689a0c2a4d65",
     "b7bcf914927c",
     "ec3b92ed181d",
     "a159cc7909f0",
-    "bcc4155d44b1",
-    "red-review-616f03ec3b4930b9a6b4"
+    "bcc4155d44b1"
   ],
   "remaining_problematic_ids": [],
   "summary": {
@@ -65,7 +65,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Persistiendo Villafría",
+  "activity": "Investigando #FelizMartes",
   "last_started_at": "2026-11-10T11:58:56+01:00",
   "last_completed_at": "2026-11-10T11:58:56+01:00",
   "api_failover_enabled": false,
@@ -135,7 +135,7 @@
     "incidents": [],
     "message": "Pasada tr-1794306091211-manual cerrada 3/3: Almudena sin novedad sustancial; Oviedo con episodio materialmente distinto por la explosión de hoy; anoche cerrada con causa no confirmada tras verificar su presencia actual en el Top de España. Barrera JIT final: editorial-queue=0 y mobile-decisions sin trabajo activo. ImageGen=0; publicaciones=0."
   },
-  "message": "Villafría r0 validada JIT. El término corresponde al barrio de Oviedo donde se produjo el tiroteo y la explosión de una mochila; por tratarse de un fallecido y un herido grave, se cierra sin remate. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1794308555826-manual RUNNING. Cola autoritativa=6; se procesan todas las revisiones preparing/update por antigüedad, revalidando ID+revision antes de cada resultado. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
