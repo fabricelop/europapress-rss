@@ -3,31 +3,28 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261110T132900-manual",
-  "previous_run_id": "tr-1794313029404-manual",
-  "command_id": "tr-20261110T132900-manual",
+  "run_id": "tr-20261110T134000-manual",
+  "previous_run_id": "tr-20261110T132900-manual",
+  "command_id": "tr-20261110T134000-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-10T13:29:00+01:00",
-  "updated_at": "2026-11-10T13:37:00+01:00",
-  "current": 2,
-  "total": 2,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-10T13:40:00+01:00",
+  "updated_at": "2026-11-10T13:40:00+01:00",
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "radar-prepare-06bcc77818dcc3aacb7d",
-    "radar-prepare-a10e6db8461d43911b40"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
     "explained": 0,
     "problematic": 0,
     "updates": 0,
@@ -38,9 +35,9 @@
     "distinct_updates": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
-    "anticipation_reviews": 2,
-    "anticipation_prepared": 1,
-    "anticipation_unverified": 1,
+    "anticipation_reviews": 0,
+    "anticipation_prepared": 0,
+    "anticipation_unverified": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
@@ -49,32 +46,12 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "radar-prepare-06bcc77818dcc3aacb7d",
-      "revision": 0,
-      "name": "Radar · Presidente del Gobierno",
-      "outcome": "anticipation_unverified",
-      "applied": true,
-      "outbox_commit": "ddad68ca271dc28fa744f6386561d92cc99a6c6d",
-      "verification": "retirado de editorial-queue tras aplicación"
-    },
-    {
-      "id": "radar-prepare-a10e6db8461d43911b40",
-      "revision": 0,
-      "name": "Radar · Mónica",
-      "outcome": "anticipation_prepared",
-      "applied": true,
-      "outbox_commit": "cafe3e1010b6d723bd83ce727a7fc7b94607d514",
-      "apply_commit": "739d6c2390257dcdd6e5754f43732c37b6634c31",
-      "verification": "retirado de editorial-queue tras aplicación"
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
   "activity": "Cierre editorial",
-  "last_started_at": "2026-11-10T13:29:00+01:00",
+  "last_started_at": "2026-11-10T13:40:00+01:00",
   "last_completed_at": "2026-11-10T13:37:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -139,7 +116,7 @@
     "incidents": [],
     "message": "Pasada tr-20261110T132900-manual cerrada 2/2. Los dos trabajos Radar llegados durante la barrera JIT fueron revalidados por (id,revision) y procesados en orden: «Presidente del Gobierno» quedó anticipation_unverified al no poder aislar un detonante único verificable; «Mónica» quedó anticipation_prepared con borrador factual y dos fuentes actuales. Barrera final en main: editorial-queue=0 (updated_at 2026-11-10T12:35:32.335154+00:00) y sin rewrite_pending/reexplain pendientes detectables. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-20261110T132900-manual cerrada 2/2. Los dos trabajos Radar llegados durante la barrera JIT fueron revalidados por (id,revision) y procesados en orden: «Presidente del Gobierno» quedó anticipation_unverified al no poder aislar un detonante único verificable; «Mónica» quedó anticipation_prepared con borrador factual y dos fuentes actuales. Barrera final en main: editorial-queue=0 (updated_at 2026-11-10T12:35:32.335154+00:00) y sin rewrite_pending/reexplain pendientes detectables. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada manual iniciada; revalidando editorial-queue y pendientes vigentes en main.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
@@ -5651,5 +5628,5 @@
   ],
   "outbox_comment_id": 5848965032,
   "editorial_apply_commit": "76e7e728a222ee21fee34fda64da43cfd7ecd90a",
-  "finished_at": "2026-11-10T13:37:00+01:00"
+  "finished_at": null
 }
