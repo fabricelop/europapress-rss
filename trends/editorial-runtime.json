@@ -3,31 +3,21 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-autoguard-1794270082",
-  "previous_run_id": "tr-20261110T011000-manual",
-  "command_id": "tr-autoguard-1794270082",
+  "run_id": "tr-20261110T014000-manual",
+  "previous_run_id": "tr-autoguard-1794270082",
+  "command_id": "tr-20261110T014000-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-10T01:21:30+01:00",
-  "updated_at": "2026-11-10T01:29:30+01:00",
-  "finished_at": "2026-11-10T01:29:30+01:00",
-  "current": 9,
-  "total": 9,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-10T01:40:00+01:00",
+  "updated_at": "2026-11-10T01:40:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "45fa69d32860",
-    "e58e8b1cf105",
-    "e8ab34285cf2",
-    "b048f4473f70",
-    "4494bb86ac6f",
-    "0d82714192ae",
-    "993d30dcbb88",
-    "0579e393dc6d",
-    "4b176cbba41b"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
@@ -143,8 +133,8 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "closing",
-  "last_started_at": "2026-11-10T01:21:30+01:00",
+  "activity": "preparing",
+  "last_started_at": "2026-11-10T01:40:00+01:00",
   "last_completed_at": "2026-11-10T01:29:30+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -2908,6 +2898,13 @@
         }
       ],
       "message": "Pasada tr-autoguard-1794270082 cerrada 9/9. Nueve revisiones r0 fueron revalidadas JIT, investigadas y aplicadas en main por e11a8743dc547c506eaaa37f3d274eaf6fe35a50; el commit modificó editorial-queue.json, requests.json y telegram-manual-explained.json, con los 9 IDs presentes en ambos registros de persistencia. Cuatro reentradas >24 h (Kico, Josue, Silvia Intxaurrondo y Ruben) acreditaron acontecimiento material nuevo; Tartaja y Antonio Ozores se cerraron con causa concreta no confirmada, sin inventar detonante. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-20261110T014000-manual",
+      "status": "RUNNING",
+      "at": "2026-11-10T01:40:00+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-20261110T014000-manual RUNNING desde chat. Revalidando cola autoritativa y barrera JIT en main; ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": null,
@@ -2915,10 +2912,9 @@
     "ae7f066f3c94"
   ],
   "last_finished_at": "2026-11-10T01:29:30+01:00",
-  "last_revalidated_at": "2026-11-10T01:29:30+01:00",
+  "last_revalidated_at": "2026-11-10T01:40:00+01:00",
   "last_revalidation": {
-    "at": "2026-11-10T01:29:30+01:00",
-    "queue_sha": "979c0f8e364776adb2628d2eb20d23631eaa3f61",
+    "at": "2026-11-10T01:40:00+01:00",
     "queue_count": 0,
     "preparing_update": 0,
     "rewrite_pending": 0,
@@ -3248,6 +3244,13 @@
       },
       "outcomes": [],
       "message": "Pasada tr-20261110T005500-manual cerrada 0/0 tras relectura JIT de main. editorial-queue=0 (actualizada 2026-11-10T00:51:01+01:00) y mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial vigente que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-20261110T014000-manual",
+      "status": "RUNNING",
+      "at": "2026-11-10T01:40:00+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-20261110T014000-manual RUNNING desde chat. Revalidando cola autoritativa y barrera JIT en main; ImageGen=0; publicaciones=0."
     }
   ],
   "outbox_comment_id": 6755274210
