@@ -3,27 +3,43 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261110T125500-manual",
-  "previous_run_id": "tr-1794310948341-manual",
-  "command_id": "tr-20261110T125500-manual",
+  "run_id": "tr-20261110T131000-manual",
+  "previous_run_id": "tr-20261110T125500-manual",
+  "command_id": "tr-20261110T131000-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-10T12:55:00+01:00",
-  "updated_at": "2026-11-10T12:56:00+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-10T13:10:00+01:00",
+  "updated_at": "2026-11-10T13:11:00+01:00",
   "current": 0,
-  "total": 0,
+  "total": 7,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "0fab07dae580",
+    "a41a30105487",
+    "facf16198650",
+    "2046b2f68596",
+    "e7b0be28f5e7",
+    "0aad1b2ca106",
+    "2c16342e8ec6"
+  ],
+  "remaining_active_ids": [
+    "0fab07dae580",
+    "a41a30105487",
+    "facf16198650",
+    "2046b2f68596",
+    "e7b0be28f5e7",
+    "0aad1b2ca106",
+    "2c16342e8ec6"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 0,
+    "attempted": 7,
+    "observed": 7,
     "closed": 0,
     "explained": 0,
     "problematic": 0,
@@ -38,7 +54,7 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 7,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -50,8 +66,8 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Cierre editorial",
-  "last_started_at": "2026-11-10T12:55:00+01:00",
+  "activity": "Preparando 7 trabajos editoriales",
+  "last_started_at": "2026-11-10T13:10:00+01:00",
   "last_completed_at": "2026-11-10T12:56:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -93,7 +109,7 @@
     "incidents": [],
     "message": "Pasada tr-20261110T125500-manual cerrada 0/0 contra main. Barrera JIT final: editorial-queue=0 (updated_at 2026-11-10T12:52:37+01:00) y búsqueda dirigida sin preparing/update/rewrite_pending/reexplain activos. Se revisó el estado editorial vigente y el último mantenimiento aplicado; no había trabajo textual pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-20261110T125500-manual cerrada 0/0 contra main. Barrera JIT final: editorial-queue=0 (updated_at 2026-11-10T12:52:37+01:00) y búsqueda dirigida sin preparing/update/rewrite_pending/reexplain activos. Se revisó el estado editorial vigente y el último mantenimiento aplicado; no había trabajo textual pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada tr-20261110T131000-manual RUNNING. Cola autoritativa inicial=7; revalidación JIT e investigación textual en curso. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
@@ -3997,6 +4013,14 @@
       "trend_id": null,
       "title": null,
       "message": "Pasada tr-20261110T125500-manual cerrada 0/0 contra main. Barrera JIT final: editorial-queue=0 (updated_at 2026-11-10T12:52:37+01:00) y búsqueda dirigida sin preparing/update/rewrite_pending/reexplain activos. Se revisó el estado editorial vigente y el último mantenimiento aplicado; no había trabajo textual pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-10T13:11:00+01:00",
+      "phase": "preparing",
+      "run_id": "tr-20261110T131000-manual",
+      "trend_id": null,
+      "title": null,
+      "message": "Pasada tr-20261110T131000-manual RUNNING. Cola autoritativa inicial=7; revalidación JIT e investigación textual en curso. ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": null,
@@ -5007,6 +5031,5 @@
     }
   ],
   "outbox_comment_id": 5848965032,
-  "editorial_apply_commit": "76e7e728a222ee21fee34fda64da43cfd7ecd90a",
-  "finished_at": "2026-11-10T12:56:00+01:00"
+  "editorial_apply_commit": "76e7e728a222ee21fee34fda64da43cfd7ecd90a"
 }
