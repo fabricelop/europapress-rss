@@ -3,38 +3,35 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794285955712-manual",
-  "previous_run_id": "tr-autoguard-1794285659",
-  "command_id": "tr-1794285955712-manual",
+  "run_id": "tr-20261110T055500-manual",
+  "previous_run_id": "tr-1794285955712-manual",
+  "command_id": "tr-20261110T055500-manual",
   "source": "chat",
-  "status": "DONE",
+  "status": "DONE_WITH_INCIDENTS",
   "phase": "closing",
-  "started_at": "2026-11-10T05:46:40+01:00",
-  "updated_at": "2026-11-10T05:48:49+01:00",
-  "finished_at": "2026-11-10T05:48:49+01:00",
-  "current": 2,
-  "total": 2,
+  "started_at": "2026-11-10T05:55:00+01:00",
+  "updated_at": "2026-11-10T05:57:42+01:00",
+  "finished_at": "2026-11-10T05:57:42+01:00",
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
   "processed_ids": [],
-  "converged_ids": [
-    "red-review-58718f2f5cdb183ba121",
-    "red-review-ddd1f8e4108bf3667a60"
-  ],
+  "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
     "explained": 0,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 2,
-    "unchanged_reviews": 2,
+    "maintenance_reviews": 0,
+    "unchanged_reviews": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "stale_reviews": 0,
@@ -47,47 +44,38 @@
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 0,
-    "concurrent_convergence": 2
+    "incidents": 1,
+    "concurrent_convergence": 0
   },
-  "outcomes": [
+  "outcomes": [],
+  "incident_count": 1,
+  "incidents": [
     {
-      "id": "red-review-58718f2f5cdb183ba121",
-      "revision": 0,
-      "name": "Revisar novedades: #IreneConQueque",
-      "outcome": "unchanged",
-      "applied": true,
-      "via": "maintenance_outbox_applied"
-    },
-    {
-      "id": "red-review-ddd1f8e4108bf3667a60",
-      "revision": 0,
-      "name": "Revisar novedades: #SVSemifinal",
-      "outcome": "unchanged",
-      "applied": true,
-      "via": "maintenance_outbox_applied"
+      "type": "manual_refresh_not_converged_before_close",
+      "trigger_commit": "664d67065c65469ec38ddf838c2db9eccec022b7",
+      "observed_at": "2026-11-10T05:57:42+01:00",
+      "last_radar_captured_at": "2026-11-10T05:50:50+01:00",
+      "note": "El trigger manual quedó persistido, pero antes del cierre no había un snapshot posterior observable. Se usó la barrera JIT de main: snapshot live_verified/high de las 05:50:50, editorial-queue 05:50:55 vacía y sin trabajo activo en mobile-decisions."
     }
   ],
-  "incident_count": 0,
-  "incidents": [],
   "error": null,
   "activity": {
-    "run_id": "tr-1794285955712-manual",
-    "status": "DONE",
-    "started_at": "2026-11-10T05:46:40+01:00",
-    "finished_at": "2026-11-10T05:49:10+01:00",
-    "at": "2026-11-10T05:49:10+01:00",
+    "run_id": "tr-20261110T055500-manual",
+    "status": "DONE_WITH_INCIDENTS",
+    "started_at": "2026-11-10T05:55:00+01:00",
+    "finished_at": "2026-11-10T05:57:42+01:00",
+    "at": "2026-11-10T05:57:42+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 2,
-      "observed": 2,
-      "closed": 2,
+      "attempted": 0,
+      "observed": 0,
+      "closed": 0,
       "explained": 0,
       "problematic": 0,
       "updates": 0,
       "review_completed_no_distinct_event": 0,
-      "maintenance_reviews": 2,
-      "unchanged_reviews": 2,
+      "maintenance_reviews": 0,
+      "unchanged_reviews": 0,
       "continuity_updates": 0,
       "distinct_updates": 0,
       "stale_reviews": 0,
@@ -100,60 +88,44 @@
       "imagegen_calls": 0,
       "image_outbox_created": 0,
       "publications": 0,
-      "incidents": 0,
-      "concurrent_convergence": 2
+      "incidents": 1,
+      "concurrent_convergence": 0
     },
     "processed_ids": [],
-    "converged_ids": [
-      "red-review-58718f2f5cdb183ba121",
-      "red-review-ddd1f8e4108bf3667a60"
-    ],
-    "outcomes": [
+    "converged_ids": [],
+    "outcomes": [],
+    "incident_count": 1,
+    "incidents": [
       {
-        "id": "red-review-58718f2f5cdb183ba121",
-        "revision": 0,
-        "name": "Revisar novedades: #IreneConQueque",
-        "outcome": "unchanged",
-        "applied": true,
-        "via": "concurrent_convergence",
-        "apply_commit": "cfc8a4b8d243c9dff20a1b0e93bb136d678e491d",
-        "source_id": "d8a308614fc9"
-      },
-      {
-        "id": "red-review-ddd1f8e4108bf3667a60",
-        "revision": 0,
-        "name": "Revisar novedades: #SVSemifinal",
-        "outcome": "unchanged",
-        "applied": true,
-        "via": "concurrent_convergence",
-        "apply_commit": "cfc8a4b8d243c9dff20a1b0e93bb136d678e491d",
-        "source_id": "9e1649b8ed38"
+        "type": "manual_refresh_not_converged_before_close",
+        "trigger_commit": "664d67065c65469ec38ddf838c2db9eccec022b7",
+        "observed_at": "2026-11-10T05:57:42+01:00",
+        "last_radar_captured_at": "2026-11-10T05:50:50+01:00",
+        "note": "El trigger manual quedó persistido, pero antes del cierre no había un snapshot posterior observable. Se usó la barrera JIT de main: snapshot live_verified/high de las 05:50:50, editorial-queue 05:50:55 vacía y sin trabajo activo en mobile-decisions."
       }
     ],
-    "incident_count": 0,
-    "incidents": [],
-    "message": "Pasada tr-1794285955712-manual cerrada 2/2 por convergencia JIT. #IreneConQueque r0 y #SVSemifinal r0 quedaron revisadas como unchanged por el aplicador concurrente cfc8a4b8d243c9dff20a1b0e93bb136d678e491d; se conservaron sus explicaciones y fechas, sin nueva ficha, imagen ni publicación. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "message": "Pasada tr-20261110T055500-manual cerrada 0/0 con incidencia de refresco no convergido antes del cierre. Barrera JIT real en main: recent.json 05:50:50 live_verified/high; editorial-queue 05:50:55 vacía; mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "last_started_at": "2026-11-10T05:46:40+01:00",
-  "last_completed_at": "2026-11-10T05:48:49+01:00",
+  "last_started_at": "2026-11-10T05:55:00+01:00",
+  "last_completed_at": "2026-11-10T05:57:42+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794285955712-manual",
-    "status": "DONE",
-    "started_at": "2026-11-10T05:46:40+01:00",
-    "finished_at": "2026-11-10T05:48:49+01:00",
-    "at": "2026-11-10T05:48:49+01:00",
+    "run_id": "tr-20261110T055500-manual",
+    "status": "DONE_WITH_INCIDENTS",
+    "started_at": "2026-11-10T05:55:00+01:00",
+    "finished_at": "2026-11-10T05:57:42+01:00",
+    "at": "2026-11-10T05:57:42+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 2,
-      "observed": 2,
-      "closed": 2,
+      "attempted": 0,
+      "observed": 0,
+      "closed": 0,
       "explained": 0,
       "problematic": 0,
       "updates": 0,
       "review_completed_no_distinct_event": 0,
-      "maintenance_reviews": 2,
-      "unchanged_reviews": 2,
+      "maintenance_reviews": 0,
+      "unchanged_reviews": 0,
       "continuity_updates": 0,
       "distinct_updates": 0,
       "stale_reviews": 0,
@@ -166,37 +138,26 @@
       "imagegen_calls": 0,
       "image_outbox_created": 0,
       "publications": 0,
-      "incidents": 0,
-      "concurrent_convergence": 2
+      "incidents": 1,
+      "concurrent_convergence": 0
     },
     "processed_ids": [],
-    "converged_ids": [
-      "red-review-58718f2f5cdb183ba121",
-      "red-review-ddd1f8e4108bf3667a60"
-    ],
-    "outcomes": [
+    "converged_ids": [],
+    "outcomes": [],
+    "incident_count": 1,
+    "incidents": [
       {
-        "id": "red-review-58718f2f5cdb183ba121",
-        "revision": 0,
-        "name": "Revisar novedades: #IreneConQueque",
-        "outcome": "unchanged",
-        "applied": true,
-        "via": "maintenance_outbox_applied"
-      },
-      {
-        "id": "red-review-ddd1f8e4108bf3667a60",
-        "revision": 0,
-        "name": "Revisar novedades: #SVSemifinal",
-        "outcome": "unchanged",
-        "applied": true,
-        "via": "maintenance_outbox_applied"
+        "type": "manual_refresh_not_converged_before_close",
+        "trigger_commit": "664d67065c65469ec38ddf838c2db9eccec022b7",
+        "observed_at": "2026-11-10T05:57:42+01:00",
+        "last_radar_captured_at": "2026-11-10T05:50:50+01:00",
+        "note": "El trigger manual quedó persistido, pero antes del cierre no había un snapshot posterior observable. Se usó la barrera JIT de main: snapshot live_verified/high de las 05:50:50, editorial-queue 05:50:55 vacía y sin trabajo activo en mobile-decisions."
       }
     ],
-    "incident_count": 0,
-    "incidents": [],
-    "message": "Pasada tr-1794285955712-manual cerrada 2/2 por convergencia JIT. Las revisiones rojas de #IreneConQueque y #SVSemifinal quedaron unchanged, conservando texto y fecha. Barrera final observada: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "message": "Pasada tr-20261110T055500-manual cerrada 0/0 con incidencia de refresco no convergido antes del cierre. Barrera JIT real en main: recent.json 05:50:50 live_verified/high; editorial-queue 05:50:55 vacía; mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+    "trigger_commit": "664d67065c65469ec38ddf838c2db9eccec022b7"
   },
-  "message": "Pasada tr-1794285955712-manual cerrada 2/2 por convergencia JIT. Las revisiones rojas de #IreneConQueque y #SVSemifinal quedaron unchanged, conservando texto y fecha. Barrera final observada: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada tr-20261110T055500-manual cerrada 0/0 con incidencia de refresco no convergido antes del cierre. Barrera JIT real en main: recent.json 05:50:50 live_verified/high; editorial-queue 05:50:55 vacía; mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794234841273-manual",
@@ -3725,23 +3686,69 @@
       "incidents": [],
       "message": "Pasada tr-1794285955712-manual cerrada 2/2 por convergencia JIT. #IreneConQueque r0 y #SVSemifinal r0 quedaron revisadas como unchanged por el aplicador concurrente cfc8a4b8d243c9dff20a1b0e93bb136d678e491d; se conservaron sus explicaciones y fechas, sin nueva ficha, imagen ni publicación. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
       "apply_commit": "cfc8a4b8d243c9dff20a1b0e93bb136d678e491d"
+    },
+    {
+      "run_id": "tr-20261110T055500-manual",
+      "status": "DONE_WITH_INCIDENTS",
+      "started_at": "2026-11-10T05:55:00+01:00",
+      "finished_at": "2026-11-10T05:57:42+01:00",
+      "at": "2026-11-10T05:57:42+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 0,
+        "observed": 0,
+        "closed": 0,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 0,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 1,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [],
+      "converged_ids": [],
+      "outcomes": [],
+      "incident_count": 1,
+      "incidents": [
+        {
+          "type": "manual_refresh_not_converged_before_close",
+          "trigger_commit": "664d67065c65469ec38ddf838c2db9eccec022b7",
+          "observed_at": "2026-11-10T05:57:42+01:00",
+          "last_radar_captured_at": "2026-11-10T05:50:50+01:00",
+          "note": "El trigger manual quedó persistido, pero antes del cierre no había un snapshot posterior observable. Se usó la barrera JIT de main: snapshot live_verified/high de las 05:50:50, editorial-queue 05:50:55 vacía y sin trabajo activo en mobile-decisions."
+        }
+      ],
+      "message": "Pasada tr-20261110T055500-manual cerrada 0/0 con incidencia de refresco no convergido antes del cierre. Barrera JIT real en main: recent.json 05:50:50 live_verified/high; editorial-queue 05:50:55 vacía; mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+      "trigger_commit": "664d67065c65469ec38ddf838c2db9eccec022b7"
     }
   ],
   "current_item": null,
   "withdrawn_ids": [
     "ae7f066f3c94"
   ],
-  "last_finished_at": "2026-11-10T05:48:49+01:00",
-  "last_revalidated_at": "2026-11-10T05:48:49+01:00",
+  "last_finished_at": "2026-11-10T05:57:42+01:00",
+  "last_revalidated_at": "2026-11-10T05:57:42+01:00",
   "last_revalidation": {
-    "at": "2026-11-10T04:32:39+01:00",
-    "queue_sha": "79c175af1695fc0fb576c6f201a8c32363000466",
+    "queue_updated_at": "2026-11-10T05:50:55+01:00",
+    "recent_captured_at": "2026-11-10T05:50:50+01:00",
+    "live_verified": true,
+    "reliability": "high",
     "queue_count": 0,
-    "preparing_update": 0,
-    "rewrite_pending": 0,
-    "reexplain": 0,
-    "anticipate": 0,
-    "review_red": 0
+    "mobile_active_count": 0
   },
   "prior_runtime_observed": {
     "run_id": "tr-20261110T004100-manual",
@@ -3752,7 +3759,7 @@
   "maintenance_workflow_run_id": 42713522083,
   "maintenance_job_id": "red-review-61d494cc18e2321aaa5b",
   "workflow_run_id": 42755893515,
-  "trigger_commit": "1217c27f2c298f410d82f5941c76ef80d5bcc746",
+  "trigger_commit": "664d67065c65469ec38ddf838c2db9eccec022b7",
   "refresh_convergence_commit": "fa8d91a61d4925f1f95fb3a1f4955cd1d0a8fb18",
   "runs": [
     {
@@ -4432,6 +4439,54 @@
       "message": "Pasada tr-20261110T052500-manual cerrada 0/0 con incidencia. El refresco manual 42755893515 arrancó sobre 1217c27f2c298f410d82f5941c76ef80d5bcc746 pero seguía atascado en actions/checkout@v4, por lo que no se cuenta como refresco completado. Barrera JIT en main: recent.json capturado 2026-11-10T05:21:15+01:00, live_verified=true, fiabilidad high; editorial-queue actualizada 2026-11-10T05:21:21+01:00 y vacía; mobile-decisions sin trabajo editorial activo. No había preparing/update/rewrite_pending/reexplain/anticipate/review_red que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
       "workflow_run_id": 42755893515,
       "trigger_commit": "1217c27f2c298f410d82f5941c76ef80d5bcc746"
+    },
+    {
+      "run_id": "tr-20261110T055500-manual",
+      "status": "DONE_WITH_INCIDENTS",
+      "started_at": "2026-11-10T05:55:00+01:00",
+      "finished_at": "2026-11-10T05:57:42+01:00",
+      "at": "2026-11-10T05:57:42+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 0,
+        "observed": 0,
+        "closed": 0,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 0,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 1,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [],
+      "converged_ids": [],
+      "outcomes": [],
+      "incident_count": 1,
+      "incidents": [
+        {
+          "type": "manual_refresh_not_converged_before_close",
+          "trigger_commit": "664d67065c65469ec38ddf838c2db9eccec022b7",
+          "observed_at": "2026-11-10T05:57:42+01:00",
+          "last_radar_captured_at": "2026-11-10T05:50:50+01:00",
+          "note": "El trigger manual quedó persistido, pero antes del cierre no había un snapshot posterior observable. Se usó la barrera JIT de main: snapshot live_verified/high de las 05:50:50, editorial-queue 05:50:55 vacía y sin trabajo activo en mobile-decisions."
+        }
+      ],
+      "message": "Pasada tr-20261110T055500-manual cerrada 0/0 con incidencia de refresco no convergido antes del cierre. Barrera JIT real en main: recent.json 05:50:50 live_verified/high; editorial-queue 05:50:55 vacía; mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+      "trigger_commit": "664d67065c65469ec38ddf838c2db9eccec022b7"
     }
   ],
   "outbox_comment_id": 6755274210
