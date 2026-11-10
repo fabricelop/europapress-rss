@@ -7,11 +7,11 @@
   "previous_run_id": "tr-autoguard-1794345708",
   "command_id": "tr-1794346138390-manual",
   "source": "chat",
-  "status": "success",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-10T22:30:00+01:00",
-  "updated_at": "2026-11-10T22:31:00+01:00",
-  "current": 0,
+  "updated_at": "2026-11-10T22:32:00+01:00",
+  "current": 1,
   "total": 1,
   "trend_id": "red-review-8d111bd426152df38cdd",
   "title": "Revisar novedades: Charles",
@@ -24,15 +24,15 @@
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 1,
     "observed": 1,
-    "closed": 0,
+    "closed": 1,
     "explained": 0,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 0,
-    "unchanged_reviews": 0,
+    "maintenance_reviews": 1,
+    "unchanged_reviews": 1,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "stale_reviews": 0,
@@ -40,7 +40,7 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 1,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -48,7 +48,19 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "red-review-8d111bd426152df38cdd",
+      "revision": 0,
+      "name": "Revisar novedades: Charles",
+      "outcome": "unchanged",
+      "applied": true,
+      "via": "editorial_outbox",
+      "source_id": "c43139196d57",
+      "apply_commit": "d1f8d4f76e61418b89b7dac3a089e63cde876482",
+      "verification": "misma explicación y explained_at conservados; editorial-queue=0"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -323,28 +335,33 @@
         "status": "RUNNING",
         "updated_at": "2026-11-10T22:29:00+01:00"
       }
+    },
+    {
+      "at": "2026-11-10T22:32:00+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-1794346138390-manual cerrada 1/1. Charles revisado sin acontecimiento material independiente: se conserva la explicación vigente. Barrera final editorial-queue=0. ImageGen=0; publicaciones=0."
     }
   ],
   "last_started_at": "2026-11-10T22:31:00+01:00",
-  "last_completed_at": "2026-11-10T22:31:00+01:00",
+  "last_completed_at": "2026-11-10T22:32:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794344067313-manual",
+    "run_id": "tr-1794346138390-manual",
     "status": "DONE",
-    "started_at": "2026-11-10T21:54:00+01:00",
-    "finished_at": "2026-11-10T21:59:30+01:00",
-    "at": "2026-11-10T21:59:30+01:00",
+    "started_at": "2026-11-10T22:30:00+01:00",
+    "finished_at": "2026-11-10T22:32:00+01:00",
+    "at": "2026-11-10T22:32:00+01:00",
     "phase": "closing",
     "summary": {
       "attempted": 1,
       "observed": 1,
       "closed": 1,
-      "explained": 1,
+      "explained": 0,
       "problematic": 0,
       "updates": 0,
       "review_completed_no_distinct_event": 0,
-      "maintenance_reviews": 0,
-      "unchanged_reviews": 0,
+      "maintenance_reviews": 1,
+      "unchanged_reviews": 1,
       "continuity_updates": 0,
       "distinct_updates": 0,
       "stale_reviews": 0,
@@ -361,25 +378,27 @@
       "concurrent_convergence": 0
     },
     "processed_ids": [
-      "59f406cdb428"
+      "red-review-8d111bd426152df38cdd"
     ],
     "converged_ids": [],
     "outcomes": [
       {
-        "id": "59f406cdb428",
+        "id": "red-review-8d111bd426152df38cdd",
         "revision": 0,
-        "name": "Los Reyes",
-        "outcome": "explained",
+        "name": "Revisar novedades: Charles",
+        "outcome": "unchanged",
         "applied": true,
-        "apply_commit": "1fb452cf618494f88271c61876c8d8269ed82773",
-        "verification": "queue=0; site card EXPLICADA; telegram-manual-explained updated; requests.json changed by same apply commit"
+        "via": "editorial_outbox",
+        "source_id": "c43139196d57",
+        "apply_commit": "d1f8d4f76e61418b89b7dac3a089e63cde876482",
+        "verification": "misma explicación y explained_at conservados; editorial-queue=0"
       }
     ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-1794344067313-manual cerrada 1/1. Los Reyes r0 quedó explicada desde cero por la asistencia de Felipe VI y Letizia al funeral de Urda en Toledo; closer vacío por sensibilidad. Barrera final: cola=0 y sin reelaboraciones pendientes. ImageGen=0; publicaciones=0."
+    "message": "Pasada tr-1794346138390-manual cerrada 1/1. Charles revisado sin acontecimiento material independiente: se conserva la explicación vigente. Barrera final editorial-queue=0. ImageGen=0; publicaciones=0."
   },
-  "message": "Pasada manual RUNNING. Cola JIT=1: revisión roja de Charles r0. Se comprueba si hay novedades materiales posteriores a la explicación vigente del 09/11; sin ImageGen ni publicaciones.",
+  "message": "Pasada tr-1794346138390-manual cerrada 1/1. Charles revisado sin acontecimiento material independiente: se conserva la explicación vigente. Barrera final editorial-queue=0. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
