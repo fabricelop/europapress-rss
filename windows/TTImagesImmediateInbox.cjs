@@ -6,6 +6,7 @@ const fs=require('node:fs');
 const path=require('node:path');
 const crypto=require('node:crypto');
 const digest=bytes=>crypto.createHash('sha256').update(bytes).digest('hex');
+const {isNewImageJob}=require('./TTImageApprovalReceiver.cjs');
 const validID=value=>/^[A-Za-z0-9_.-]{3,160}$/.test(String(value||''));
 
 function makeTask(project,job,commandId,targetId){
@@ -124,6 +125,8 @@ function discardStaged(base,task){
 
 async function deliver({project,job,commandId,targetId,secret,cdp,
                         baseDir=__dirname,dependencies={}}){
+ // Never recover or deliver jobs requested before the user's cutover.
+ if(!isNewImageJob(job))return {state:'skipped',reason:'before_inbox_cutover'};
  if(typeof secret!=='string'||secret.length<32)throw Error('IMMEDIATE_SECRET_MISSING');
  const task=makeTask(project,job,commandId,targetId);
  if(readReceipt(baseDir,task))return {state:'received',reason:'existing_local_receipt'};

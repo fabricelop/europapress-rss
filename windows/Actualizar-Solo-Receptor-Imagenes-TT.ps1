@@ -6,11 +6,11 @@ $ErrorActionPreference='Stop'
 $base='C:\TTiTTulares'
 $file='TTImageApprovalReceiver.cjs'
 $live=Join-Path $base $file
-$pin='7c120aaf85f9351c05fa6b894d43e58139d2cfe4'
-$expected='7a393cf5cb760f7b4a3d1fe5b7d059757666494311fad5657fdb96b2d0a7b9c9'
+$pin='96001f9053dfc674dd69c1a60535f9cde42744a8'
+$expected='cbef9c4091c8328aa14e6fde7d662ce05b2aa7505bb159396739a7b12f0abef4'
 $accepted=@(
  '5726f9aa5c543e4bfffd6b5a2451db2215c8a0f71c52d4f8142de65d1c5b2d0f',
- '7a393cf5cb760f7b4a3d1fe5b7d059757666494311fad5657fdb96b2d0a7b9c9',
+ '7a393cf5cb760f7b4a3d1fe5b7d059757666494311fad5657fdb96b2d0a7b9c9', # verified prior target
  '5e4105171a9f27a42f619ce3fba7d912c2e5abf50a5fb7828e571491b2d9805a',
  '1dfdca82a23813c1e72a5468dc7e05a14c16b2373f4bd0a94aea27676ebc54e4',
  '340c1d28024d532310c51648794331a541bf93299e4db7a2365d6095b94129f1', # receptor físicamente verificado por el editor 07/11/2026
@@ -88,7 +88,7 @@ try {
  & $node --check $download
  if($LASTEXITCODE -ne 0){throw 'RECEIVER_JS_SYNTAX_INVALID'}
  $code=[IO.File]::ReadAllText($download)
- foreach($marker in @('MAX_NEW_RELAY_TABS_PER_CYCLE=1','RELAY_CLEANUP_UNCONFIRMED','Target.closeTarget','listas_and_current_or_at_creation_top30_images_max_48h','MAX_ORIGINAL_CHECKS_PER_CYCLE=16')){
+ foreach($marker in @('MAX_NEW_RELAY_TABS_PER_CYCLE=1','RELAY_CLEANUP_UNCONFIRMED','Target.closeTarget','new_image_jobs_only_no_listas_or_top30','MAX_ORIGINAL_CHECKS_PER_CYCLE=16')){
   if(-not $code.Contains($marker)){throw ('RECEIVER_GUARD_MISSING: '+$marker)}
  }
  Copy-Item -LiteralPath $download -Destination $stage -Force
@@ -98,7 +98,7 @@ try {
  [IO.File]::Replace($stage,$live,(Join-Path $backupDir $file),$true)
  $replaced=$true
  if((Get-CanonicalSourceHash $live) -ne $expected){throw 'RECEIVER_REPLACEMENT_SHA_INVALID'}
- Write-Host 'RECEIVER_ONLY_SAFE_OK: bandeja Listas/Top30 actual o histórico <=48h; 16 comprobaciones/ciclo, una pestaña temporal máximo.'
+ Write-Host 'RECEIVER_ONLY_SAFE_OK: solo imagenes NUEVAS, sin filtro Listas/Top30 ni recuperacion anterior. 16 verificaciones/ciclo, una pestana temporal maximo.'
  Write-Host 'Los generadores siguen funcionando y no se han cambiado sus archivos.'
  Write-Host 'No se ha iniciado Chrome ni activado ninguna tarea programada.'
  Write-Host ('Copia de seguridad: '+$backupDir)
