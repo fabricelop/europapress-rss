@@ -3,19 +3,19 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261110T134000-manual",
-  "previous_run_id": "tr-20261110T132900-manual",
-  "command_id": "tr-20261110T134000-manual",
+  "run_id": "tr-20261110T135500-manual",
+  "previous_run_id": "tr-20261110T134000-manual",
+  "command_id": "tr-20261110T135500-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-10T13:40:00+01:00",
-  "updated_at": "2026-11-10T13:41:00+01:00",
+  "status": "RUNNING",
+  "phase": "verifying",
+  "started_at": "2026-11-10T13:55:00+01:00",
+  "updated_at": "2026-11-10T13:55:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -50,8 +50,8 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Cierre editorial",
-  "last_started_at": "2026-11-10T13:40:00+01:00",
+  "activity": "Verificando cola editorial",
+  "last_started_at": "2026-11-10T13:55:00+01:00",
   "last_completed_at": "2026-11-10T13:41:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -93,7 +93,7 @@
     "incidents": [],
     "message": "Pasada tr-20261110T134000-manual cerrada 0/0 tras barrera JIT sobre main: editorial-queue=0 (updated_at 2026-11-10T13:40:57+01:00), sin preparing/update ni rewrite_pending/reexplain_pending detectables. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-20261110T134000-manual cerrada 0/0 tras barrera JIT sobre main: editorial-queue=0 (updated_at 2026-11-10T13:40:57+01:00), sin preparing/update ni rewrite_pending/reexplain_pending detectables. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada tr-20261110T135500-manual RUNNING. Cola inicial autoritativa observada en 0; revalidando main y barrera JIT antes de cerrar. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
@@ -4501,6 +4501,13 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-20261110T134000-manual cerrada 0/0 tras barrera JIT sobre main: editorial-queue=0 (updated_at 2026-11-10T13:40:57+01:00), sin preparing/update ni rewrite_pending/reexplain_pending detectables. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-10T13:55:00+01:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Pasada tr-20261110T135500-manual RUNNING. Cola inicial autoritativa observada en 0; revalidando main y barrera JIT antes de cerrar. ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": null,
