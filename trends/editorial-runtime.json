@@ -8,9 +8,9 @@
   "command_id": "tr-1794344067313-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "persisting",
   "started_at": "2026-11-10T21:54:00+01:00",
-  "updated_at": "2026-11-10T21:54:00+01:00",
+  "updated_at": "2026-11-10T21:55:30+01:00",
   "current": 0,
   "total": 1,
   "trend_id": "59f406cdb428",
@@ -235,6 +235,34 @@
       "trend_id": "59f406cdb428",
       "title": "Los Reyes",
       "message": "Pasada tr-1794344067313-manual RUNNING. Cola JIT=1: reelaboración Los Reyes r0 desde cero; verificando contexto actual, evento/marcador/fecha y barrera de estado. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-10T21:54:40+01:00",
+      "phase": "investigating",
+      "trend_id": "59f406cdb428",
+      "title": "Los Reyes",
+      "message": "Contexto actual contrastado: Felipe VI y Letizia asisten hoy a la misa funeral de las 19:00 en la Catedral de Toledo por las 69 víctimas de Urda; Kings–Magic aún no ha comenzado. ImageGen=0."
+    },
+    {
+      "at": "2026-11-10T21:55:00+01:00",
+      "phase": "drafting",
+      "trend_id": "59f406cdb428",
+      "title": "Los Reyes",
+      "message": "Redacción nueva desde cero, centrada en el acto actual de Toledo y sin reutilizar la explicación anterior."
+    },
+    {
+      "at": "2026-11-10T21:55:10+01:00",
+      "phase": "remate_selection",
+      "trend_id": "59f406cdb428",
+      "title": "Los Reyes",
+      "message": "Por tratarse de una tragedia con 69 víctimas, se omite remate humorístico conforme a la regla de sensibilidad; closer_text vacío."
+    },
+    {
+      "at": "2026-11-10T21:55:30+01:00",
+      "phase": "persisting",
+      "trend_id": "59f406cdb428",
+      "title": "Los Reyes",
+      "message": "Validación JIT superada para id/revision exactos; preparando explained_direct r0 sin imagen inline."
     }
   ],
   "last_started_at": "2026-11-10T21:54:00+01:00",
@@ -279,7 +307,7 @@
     "incidents": [],
     "message": "Pasada tr-1794342867542-manual cerrada 0/0 contra main. Relectura JIT final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Procesando 1/1: Los Reyes r0. Investigación desde cero; ImageGen=0.",
+  "message": "Persistiendo 1/1: Los Reyes r0; texto verificado y closer vacío por sensibilidad. ImageGen=0.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
