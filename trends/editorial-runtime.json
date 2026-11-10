@@ -3,39 +3,35 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794342718304-manual",
-  "previous_run_id": "tr-autoguard-1794342077",
-  "command_id": "tr-1794342718304-manual",
+  "run_id": "tr-1794343259000-manual",
+  "previous_run_id": "tr-1794342718304-manual",
+  "command_id": "tr-1794343259000-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-10T21:32:00+01:00",
-  "updated_at": "2026-11-10T21:37:10+01:00",
-  "current": 1,
-  "total": 1,
-  "trend_id": "red-review-a16509bee1957d1c2eed",
-  "title": "Revisar novedades: Carzzy",
-  "queue_complete": true,
-  "processed_ids": [
-    "red-review-a16509bee1957d1c2eed"
-  ],
-  "converged_ids": [
-    "red-review-a16509bee1957d1c2eed"
-  ],
+  "status": "RUNNING",
+  "phase": "verifying",
+  "started_at": "2026-11-10T21:40:59+01:00",
+  "updated_at": "2026-11-10T21:41:20+01:00",
+  "current": 0,
+  "total": 0,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": false,
+  "processed_ids": [],
+  "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
-    "observed": 1,
-    "closed": 1,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
     "explained": 0,
     "problematic": 0,
-    "updates": 1,
+    "updates": 0,
     "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 1,
+    "maintenance_reviews": 0,
     "unchanged_reviews": 0,
-    "continuity_updates": 1,
+    "continuity_updates": 0,
     "distinct_updates": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
@@ -48,20 +44,9 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 1
+    "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "red-review-a16509bee1957d1c2eed",
-      "revision": 0,
-      "name": "Revisar novedades: Carzzy",
-      "outcome": "continuity_update",
-      "applied": true,
-      "source_id": "79666c46d60d",
-      "apply_commit": "e22fdc0ba34137e313ee5f2466de315aea9051e8",
-      "verification": "same source id/revision/explained_at preserved; queue=0"
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -219,9 +204,14 @@
       "at": "2026-11-10T21:10:00+01:00",
       "phase": "closing",
       "message": "Barrera final repetida tras convergencia concurrente: cola=0 y sin trabajo editorial activo; pasada tr-1794341095501-manual cerrada 0/0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-10T21:41:20+01:00",
+      "phase": "verifying",
+      "message": "Pasada manual RUNNING. Cola autoritativa en 0; barrera dirigida sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. Relectura final pendiente. ImageGen=0; publicaciones=0."
     }
   ],
-  "last_started_at": "2026-11-10T21:31:23+01:00",
+  "last_started_at": "2026-11-10T21:40:59+01:00",
   "last_completed_at": "2026-11-10T21:37:10+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -278,7 +268,7 @@
     "incidents": [],
     "message": "Pasada tr-1794342718304-manual cerrada 1/1 por convergencia JIT. Carzzy quedó actualizada en continuidad con el rumor de mercado hacia Movistar KOI expresamente no confirmado; se conservan ID, revisión y explained_at. Barrera final: editorial-queue=0. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794342718304-manual cerrada 1/1 por convergencia JIT. Carzzy quedó actualizada en continuidad con el rumor de mercado hacia Movistar KOI expresamente no confirmado; se conservan ID, revisión y explained_at. Barrera final: editorial-queue=0. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada manual RUNNING. Cola autoritativa en 0; barrera dirigida sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. Relectura final pendiente. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
