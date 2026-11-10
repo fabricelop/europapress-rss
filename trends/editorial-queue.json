@@ -1,6 +1,72 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-11T00:26:30+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-10T23:26:59.521666+00:00",
+  "count": 2,
+  "items": [
+    {
+      "id": "red-review-949e8e88fce9d415e5c6",
+      "revision": 0,
+      "name": "Revisar novedades: #HuelgaGeneral",
+      "rank": 3,
+      "status": "preparing",
+      "requested_at": "2026-11-10T23:26:59.521666+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "4f1dae5df224",
+        "revision": 0,
+        "name": "#HuelgaGeneral",
+        "rank": 9,
+        "explanation": "TT#10 #HuelgaGeneral sigue siendo tendencia por la huelga general del 11N: ya están fijados servicios mínimos en transporte, sanidad y seguridad, con vivienda, salarios y coste de vida entre las reivindicaciones.\n#11N #Vivienda\n🌶️ La víspera ya viene con horario mínimo.",
+        "explanation_sha256": "845e3e4c725bbb69ad6d9a5819f85bcd445eebe23fb38a27561bb08b6fd42f9c",
+        "explained_at": "2026-11-09T15:33:00+01:00",
+        "verification_sources": [
+          {
+            "url": "https://www.rtve.es/noticias/20261109/huelga-general-11-noviembre-hora-recorrido-manifestaciones/17301386.shtml"
+          },
+          {
+            "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-23371&lang=es"
+          }
+        ],
+        "fingerprint": "8dada6c23c31c62f8b95940c78a898f01e80bee2983ca777f92f06d19b873ff1"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-ccb2ba560eecf7c893ea",
+      "revision": 0,
+      "name": "Revisar novedades: Charles",
+      "rank": 19,
+      "status": "preparing",
+      "requested_at": "2026-11-10T23:26:59.521666+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "c43139196d57",
+        "revision": 0,
+        "name": "Charles",
+        "rank": 18,
+        "explanation": "TT#19 Charles sigue siendo tendencia por la borrasca: Canarias prevé rachas >130 km/h y alerta máxima en La Palma y cumbres de Tenerife; Portugal cerrará escuelas y servicios no esenciales el miércoles.\n#BorrascaCharles #Portugal\n🌶️ El relevo llega con avisos al máximo.",
+        "explanation_sha256": "a335377e4ca3a8f796f7e428fd0c3b7c34824b0ae20e55a5c2189040a0198dae",
+        "explained_at": "2026-11-09T16:16:00+01:00",
+        "verification_sources": [
+          {
+            "url": "https://www.rtve.es/noticias/20261109/borrasca-origen-subtropical-charles-provocara-fuerte-temporal-lluvia-viento-hasta-jueves/17305977.shtml"
+          }
+        ],
+        "fingerprint": "1b9a1984964f6a2b1fb0f26f307c37d04909f4c6286fe0c5174287ec44839a83"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
