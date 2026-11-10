@@ -7,15 +7,15 @@
   "previous_run_id": "tr-20261110T154000-manual",
   "command_id": "tr-20261110T155500-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE_WITH_INCIDENTS",
+  "phase": "closing",
   "started_at": "2026-11-10T15:55:00+01:00",
-  "updated_at": "2026-11-10T15:55:00+01:00",
+  "updated_at": "2026-11-10T15:59:14+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -43,23 +43,31 @@
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 0,
+    "incidents": 1,
     "concurrent_convergence": 0
   },
   "outcomes": [],
-  "incident_count": 0,
-  "incidents": [],
+  "incident_count": 1,
+  "incidents": [
+    {
+      "type": "manual_refresh_workflow_still_in_progress_at_close",
+      "workflow_run_id": 42839275825,
+      "trigger_commit": "bf49e482132d7bfad0d2a28fa230ede2f05727d1",
+      "observed_at": "2026-11-10T15:59:14+01:00",
+      "note": "El refresco manual seguía in_progress y detenido en actions/checkout@v4 al cierre. No se usa como prueba de éxito. La barrera JIT sobre main mantiene editorial-queue=0 (updated_at 2026-11-10T15:51:20+01:00), recent.json capturado a las 15:51:15 y sin estados activos detectados en mobile-decisions ni búsquedas dirigidas de preparing/update/rewrite_pending/reexplain/anticipate/review_red."
+    }
+  ],
   "error": null,
-  "activity": "Refrescando Top 30 y releyendo cola",
+  "activity": "Pasada cerrada con incidencia de refresco",
   "last_started_at": "2026-11-10T15:55:00+01:00",
-  "last_completed_at": "2026-11-10T15:41:12+01:00",
+  "last_completed_at": "2026-11-10T15:59:14+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261110T154000-manual",
-    "status": "DONE",
-    "started_at": "2026-11-10T15:40:56+01:00",
-    "finished_at": "2026-11-10T15:41:12+01:00",
-    "at": "2026-11-10T15:41:12+01:00",
+    "run_id": "tr-20261110T155500-manual",
+    "status": "DONE_WITH_INCIDENTS",
+    "started_at": "2026-11-10T15:55:00+01:00",
+    "finished_at": "2026-11-10T15:59:14+01:00",
+    "at": "2026-11-10T15:59:14+01:00",
     "phase": "closing",
     "summary": {
       "attempted": 0,
@@ -83,17 +91,25 @@
       "imagegen_calls": 0,
       "image_outbox_created": 0,
       "publications": 0,
-      "incidents": 0,
+      "incidents": 1,
       "concurrent_convergence": 0
     },
     "processed_ids": [],
     "converged_ids": [],
     "outcomes": [],
-    "incident_count": 0,
-    "incidents": [],
-    "message": "Pasada tr-20261110T154000-manual cerrada 0/0 contra main tras refresco real de TTendencias. El trigger manual quedó en 64d2748286cb11205a5f53d09d11f9ade385da50 y Actions actualizó el Top 30 en 029b7c0c9408be1b8c8bf4cf35da8e6fc3d1120c (captured_at 2026-11-10T15:41:07+01:00). Barrera final: editorial-queue=0, updated_at 2026-11-10T15:41:11+01:00; mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo textual que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "incident_count": 1,
+    "incidents": [
+      {
+        "type": "manual_refresh_workflow_still_in_progress_at_close",
+        "workflow_run_id": 42839275825,
+        "trigger_commit": "bf49e482132d7bfad0d2a28fa230ede2f05727d1",
+        "observed_at": "2026-11-10T15:59:14+01:00",
+        "note": "El refresco manual seguía in_progress y detenido en actions/checkout@v4 al cierre. No se usa como prueba de éxito. La barrera JIT sobre main mantiene editorial-queue=0 (updated_at 2026-11-10T15:51:20+01:00), recent.json capturado a las 15:51:15 y sin estados activos detectados en mobile-decisions ni búsquedas dirigidas de preparing/update/rewrite_pending/reexplain/anticipate/review_red."
+      }
+    ],
+    "message": "Pasada tr-20261110T155500-manual cerrada 0/0 con incidencia de refresco no convergido. El trigger manual quedó en bf49e482132d7bfad0d2a28fa230ede2f05727d1 y el workflow 42839275825 seguía in_progress, detenido en checkout, por lo que no se toma como prueba de actualización. Barrera JIT real en main: recent.json 15:51:15, editorial-queue=0 (updated_at 15:51:20), mobile-decisions sin estados editoriales activos y búsquedas dirigidas sin preparing/update/rewrite_pending/reexplain/anticipate/review_red. No había trabajo textual pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-20261110T155500-manual RUNNING. Se fuerza refresco real de TTendencias y se releerá editorial-queue.json antes de cerrar. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-20261110T155500-manual cerrada 0/0 con incidencia de refresco no convergido. El trigger manual quedó en bf49e482132d7bfad0d2a28fa230ede2f05727d1 y el workflow 42839275825 seguía in_progress, detenido en checkout, por lo que no se toma como prueba de actualización. Barrera JIT real en main: recent.json 15:51:15, editorial-queue=0 (updated_at 15:51:20), mobile-decisions sin estados editoriales activos y búsquedas dirigidas sin preparing/update/rewrite_pending/reexplain/anticipate/review_red. No había trabajo textual pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
@@ -4959,6 +4975,53 @@
       "trend_id": null,
       "title": null,
       "message": "Pasada tr-20261110T155500-manual RUNNING. Se fuerza refresco real de TTendencias y se releerá editorial-queue.json antes de cerrar. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-20261110T155500-manual",
+      "status": "DONE_WITH_INCIDENTS",
+      "started_at": "2026-11-10T15:55:00+01:00",
+      "finished_at": "2026-11-10T15:59:14+01:00",
+      "at": "2026-11-10T15:59:14+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 0,
+        "observed": 0,
+        "closed": 0,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 0,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 1,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [],
+      "converged_ids": [],
+      "outcomes": [],
+      "incident_count": 1,
+      "incidents": [
+        {
+          "type": "manual_refresh_workflow_still_in_progress_at_close",
+          "workflow_run_id": 42839275825,
+          "trigger_commit": "bf49e482132d7bfad0d2a28fa230ede2f05727d1",
+          "observed_at": "2026-11-10T15:59:14+01:00",
+          "note": "El refresco manual seguía in_progress y detenido en actions/checkout@v4 al cierre. No se usa como prueba de éxito. La barrera JIT sobre main mantiene editorial-queue=0 (updated_at 2026-11-10T15:51:20+01:00), recent.json capturado a las 15:51:15 y sin estados activos detectados en mobile-decisions ni búsquedas dirigidas de preparing/update/rewrite_pending/reexplain/anticipate/review_red."
+        }
+      ],
+      "message": "Pasada tr-20261110T155500-manual cerrada 0/0 con incidencia de refresco no convergido. El trigger manual quedó en bf49e482132d7bfad0d2a28fa230ede2f05727d1 y el workflow 42839275825 seguía in_progress, detenido en checkout, por lo que no se toma como prueba de actualización. Barrera JIT real en main: recent.json 15:51:15, editorial-queue=0 (updated_at 15:51:20), mobile-decisions sin estados editoriales activos y búsquedas dirigidas sin preparing/update/rewrite_pending/reexplain/anticipate/review_red. No había trabajo textual pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "current_item": null,
@@ -4988,7 +5051,7 @@
   "maintenance_workflow_run_id": 42713522083,
   "maintenance_job_id": "red-review-61d494cc18e2321aaa5b",
   "workflow_run_id": 42765220776,
-  "trigger_commit": "dd4bf5c91909adf5abaa376dbf51148162ee0e3e",
+  "trigger_commit": "bf49e482132d7bfad0d2a28fa230ede2f05727d1",
   "refresh_convergence_commit": "34eadb58c44175ada2ac3c9547745d40d79d38f5",
   "runs": [
     {
@@ -6140,5 +6203,6 @@
   ],
   "outbox_comment_id": 5848965032,
   "editorial_apply_commit": "76e7e728a222ee21fee34fda64da43cfd7ecd90a",
-  "finished_at": "2026-11-10T15:22:00+01:00"
+  "finished_at": "2026-11-10T15:59:14+01:00",
+  "refresh_workflow_run_id": 42839275825
 }
