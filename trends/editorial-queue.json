@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-10T11:20:40+01:00",
-  "count": 1,
+  "updated_at": "2026-11-10T10:21:23.248833+00:00",
+  "count": 3,
   "items": [
     {
       "red_review_request": null,
@@ -50,6 +50,70 @@
       "anticipated_news_source_count": 0,
       "anticipated_news_title": "",
       "anticipated_entered_top10_at": null
+    },
+    {
+      "id": "red-review-e90d4fe55caa6ee84529",
+      "revision": 0,
+      "name": "Revisar novedades: Almudena",
+      "rank": 8,
+      "status": "preparing",
+      "requested_at": "2026-11-10T10:21:23.248833+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "a04f5f160038",
+        "revision": 0,
+        "name": "Almudena",
+        "rank": 12,
+        "explanation": "TT#12 Almudena sigue siendo tendencia por la fiesta de la patrona de Madrid: la lluvia ha obligado a cancelar la procesión, aunque se han mantenido la misa y otros actos.\n#Madrid #VirgenDeLaAlmudena\n🌶️ La patrona se quedó bajo techo; la fiesta no.",
+        "explanation_sha256": "54aab6c16f14feaad554bc571d32397ada66e53358c1bba78ac56d3603bc11d7",
+        "explained_at": "2026-11-09T09:28:56+01:00",
+        "verification_sources": [
+          {
+            "url": "https://diario.madrid.es/blog/2026/11/05/fiesta-de-la-almudena-2026-programa-actos-actividades/"
+          },
+          {
+            "url": "https://www.madrid.es/portales/munimadrid/es/Inicio/El-Ayuntamiento/Todas-las-noticias/Madrid-celebra-el-dia-de-su-patrona-con-musica-tradicion-y-la-gran-corona-de-la-Almudena-en-la-plaza-Mayor/?vgnextchannel=e40362215c483510VgnVCM2000001f4a900aRCRD&vgnextfmt=default&vgnextoid=8db8228653ba1a10VgnVCM100000891ecb1aRCRD"
+          }
+        ],
+        "fingerprint": "d0dc97b34fd2fe3f7a6ade05e2197aed13baff315c9782036a30d35aecb83499"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-d235e334431eb57c64e1",
+      "revision": 0,
+      "name": "Revisar novedades: Oviedo",
+      "rank": 3,
+      "status": "preparing",
+      "requested_at": "2026-11-10T10:21:23.248833+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "1cb3ab9f8367",
+        "revision": 0,
+        "name": "Oviedo",
+        "rank": 9,
+        "explanation": "TT#9 Oviedo es tendencia porque el Real Oviedo quedó eliminado de la Copa del Rey ante el Numancia: remontó un 2-0, empató 3-3 y cayó 4-2 en los penaltis.\n#RealOviedo #Numancia #CopaDelRey\n🌶️ La remontada llegó hasta la tanda, no hasta la siguiente ronda.",
+        "explanation_sha256": "44971ea41498ad82bb7155be69ddc130287b4d3715253242a4d59a5279598e39",
+        "explained_at": "2026-10-29T21:46:20+01:00",
+        "verification_sources": [
+          "https://www.realoviedo.es/noticias/el-oviedo-cae-en-los-penaltis-ante-el-numancia-y-se-despide-de-la-copa",
+          "https://as.com/futbol/copa_del_rey/el-numancia-se-lleva-el-pase-en-los-penaltis-tras-un-partido-loco-f202610-n/"
+        ],
+        "fingerprint": "c0007f647dfdda716b9249859c7e55a05d969d80bffc52b6e8323e56e2f8eb80"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
     }
   ]
 }
