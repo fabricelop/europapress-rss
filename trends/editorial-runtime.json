@@ -3,19 +3,19 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794327332740-manual",
-  "previous_run_id": "tr-autoguard-1794327073",
-  "command_id": "tr-1794327332740-manual",
+  "run_id": "tr-20261110T172500-manual",
+  "previous_run_id": "tr-1794327332740-manual",
+  "command_id": "tr-20261110T172500-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-10T17:16:00+01:00",
-  "updated_at": "2026-11-10T17:19:00+01:00",
-  "current": 2,
-  "total": 2,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-10T17:25:00+01:00",
+  "updated_at": "2026-11-10T17:25:00+01:00",
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [
     "red-review-08cf9dd90548bc0aaead",
@@ -141,7 +141,7 @@
     "incidents": [],
     "message": "Pasada tr-1794327332740-manual cerrada 2/2 por convergencia JIT. Charles: actualización de continuidad aplicada; Supa: revisión unverified, conservando explicación y fecha. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794327332740-manual cerrada 2/2 por convergencia JIT. Charles: actualización de continuidad aplicada; Supa: revisión unverified, conservando explicación y fecha. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Inicio de pasada manual real: validando main y barrera editorial JIT; cola inicial observada 0. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
@@ -6557,7 +6557,7 @@
   ],
   "outbox_comment_id": 5848965032,
   "editorial_apply_commit": "76e7e728a222ee21fee34fda64da43cfd7ecd90a",
-  "finished_at": "2026-11-10T17:19:00+01:00",
+  "finished_at": null,
   "refresh_workflow_run_id": 42839275825,
   "refresh_conclusion": "success"
 }
