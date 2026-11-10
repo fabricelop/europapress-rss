@@ -1,6 +1,75 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-10T21:00:40+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-10T20:01:12.441311+00:00",
+  "count": 2,
+  "items": [
+    {
+      "id": "red-review-68d91ea6ffac56fadb4d",
+      "revision": 0,
+      "name": "Revisar novedades: Supa",
+      "rank": 19,
+      "status": "preparing",
+      "requested_at": "2026-11-10T20:01:12.441311+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "69709b2f4154",
+        "revision": 0,
+        "name": "Supa",
+        "rank": 7,
+        "explanation": "TT#7 Supa es tendencia por el duelo decisivo de Worlds 2026 entre Movistar KOI y Karmine Corp: el ganador pasa a cuartos y el perdedor queda eliminado.\n#Worlds2026 #MKOI\n🌶️ Tres mapas como máximo para comprarse un billete a cuartos.",
+        "explanation_sha256": "baac6f537f54ba3c98b4666a3b384637da2ebbd99622b8bb4b871052cf64bd9f",
+        "explained_at": "2026-10-31T19:45:00+01:00",
+        "verification_sources": [
+          {
+            "url": "https://movistaresports.com/movistar-koi-vs-karmine-corp-en-worlds-2026/"
+          },
+          {
+            "url": "https://compo.mortseb.com/es/jugador/supa/"
+          },
+          {
+            "url": "https://mid.gg/esports/matches/karmine-corp-vs-movistar-koi"
+          }
+        ],
+        "fingerprint": "fd77fab6d1fb0635b21d797589b2012a8d9be8341e8e282c8331a2f2dcf22e16"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-7ec3c52ef28add881531",
+      "revision": 0,
+      "name": "Revisar novedades: Charles",
+      "rank": 10,
+      "status": "preparing",
+      "requested_at": "2026-11-10T20:01:12.441311+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "c43139196d57",
+        "revision": 0,
+        "name": "Charles",
+        "rank": 18,
+        "explanation": "TT#18 Charles sigue siendo tendencia por la borrasca: AEMET actualiza el aviso y prevé rachas de más de 130 km/h en Canarias y más de 120 l/m² en 12 h en puntos del Sistema Central.\n#BorrascaCharles #AEMET\n🌶️ El relevo llega con avisos al máximo.",
+        "explanation_sha256": "55d93068b49d6466742dc8c5eaf498921bbf6dc9940bbd0a1b2296ec2dbda7f1",
+        "explained_at": "2026-11-09T16:16:00+01:00",
+        "verification_sources": [
+          {
+            "url": "https://www.rtve.es/noticias/20261109/borrasca-origen-subtropical-charles-provocara-fuerte-temporal-lluvia-viento-hasta-jueves/17305977.shtml"
+          }
+        ],
+        "fingerprint": "fdad77110a84e8ba2162ced4ca8afc03fe827aeda6bdd3c9f8f4ed5f5ed3b28f"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
