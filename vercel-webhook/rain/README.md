@@ -1,4 +1,4 @@
-# RainETA v0.17.50
+# RainETA v0.17.51 (rama visual experimental)
 
 PWA estática y móvil para responder a una pregunta: **cuándo empieza y cuándo termina la lluvia en un punto concreto**.
 
@@ -551,3 +551,4 @@ El CI valida:
 - movimiento/proyección de radar con máscaras sintéticas;
 - calibración de confianza por familias;
 - disponibilidad real de modelos, ensembles, radar y geocodificación.
+
