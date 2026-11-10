@@ -8,9 +8,9 @@
   "command_id": "tr-20261110T042500-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "persisting",
+  "phase": "verifying",
   "started_at": "2026-11-10T04:25:00+01:00",
-  "updated_at": "2026-11-10T04:30:05+01:00",
+  "updated_at": "2026-11-10T04:31:40+01:00",
   "finished_at": null,
   "current": 0,
   "total": 1,
@@ -59,8 +59,8 @@
     "run_id": "tr-20261110T042500-manual",
     "status": "RUNNING",
     "started_at": "2026-11-10T04:25:00+01:00",
-    "at": "2026-11-10T04:30:05+01:00",
-    "phase": "persisting",
+    "at": "2026-11-10T04:31:40+01:00",
+    "phase": "verifying",
     "current": 0,
     "total": 1,
     "trend_id": "radar-prepare-d9c46470661694846685",
@@ -94,7 +94,7 @@
     "outcomes": [],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-20261110T042500-manual: Radar · #GTAVI r0 revalidado JIT e investigado. Persistiendo borrador anticipado factual; sin Listas, ImageGen ni publicaciones."
+    "message": "Pasada tr-20261110T042500-manual: borrador anticipado de #GTAVI validado en formato; verificando aplicación oficial y retirada JIT de la cola. ImageGen=0; publicaciones=0."
   },
   "last_started_at": "2026-11-10T04:25:00+01:00",
   "last_completed_at": "2026-11-10T04:14:57+01:00",
@@ -157,7 +157,7 @@
     "trigger_commit": "af462aa08c1f84d608002b0a60ea12062bc972b1",
     "apply_commit": "7886e2a"
   },
-  "message": "Pasada tr-20261110T042500-manual: Radar · #GTAVI r0 revalidado JIT e investigado. Persistiendo borrador anticipado factual; sin Listas, ImageGen ni publicaciones.",
+  "message": "Pasada tr-20261110T042500-manual: borrador anticipado de #GTAVI validado en formato; verificando aplicación oficial y retirada JIT de la cola. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794234841273-manual",
@@ -3382,6 +3382,17 @@
       "trend_id": "radar-prepare-d9c46470661694846685",
       "title": "Radar · #GTAVI",
       "message": "Pasada tr-20261110T042500-manual: Radar · #GTAVI r0 revalidado JIT e investigado. Persistiendo borrador anticipado factual; sin Listas, ImageGen ni publicaciones."
+    },
+    {
+      "run_id": "tr-20261110T042500-manual",
+      "status": "RUNNING",
+      "at": "2026-11-10T04:31:40+01:00",
+      "phase": "verifying",
+      "current": 0,
+      "total": 1,
+      "trend_id": "radar-prepare-d9c46470661694846685",
+      "title": "Radar · #GTAVI",
+      "message": "Pasada tr-20261110T042500-manual: borrador anticipado de #GTAVI validado en formato; verificando aplicación oficial y retirada JIT de la cola. ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": null,
