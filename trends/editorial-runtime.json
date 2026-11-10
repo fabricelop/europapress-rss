@@ -10,7 +10,7 @@
   "status": "DONE",
   "phase": "closing",
   "started_at": "2026-11-10T21:54:00+01:00",
-  "updated_at": "2026-11-10T21:59:30+01:00",
+  "updated_at": "2026-11-10T21:59:15+01:00",
   "current": 1,
   "total": 1,
   "trend_id": null,
@@ -56,7 +56,8 @@
       "outcome": "explained",
       "applied": true,
       "apply_commit": "1fb452cf618494f88271c61876c8d8269ed82773",
-      "verification": "queue=0; site card EXPLICADA; telegram-manual-explained updated; requests.json changed by same apply commit"
+      "via": "editorial_outbox_applied",
+      "reason": "Contexto actual verificado: asistencia de Felipe VI y Letizia al funeral de Urda en la Catedral de Toledo; sin remate por sensibilidad."
     }
   ],
   "incident_count": 0,
@@ -283,6 +284,18 @@
       "at": "2026-11-10T21:59:30+01:00",
       "phase": "closing",
       "message": "Barrera final JIT: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain_pending activos. Pasada 1/1 cerrada. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-10T21:59:15+01:00",
+      "phase": "verifying",
+      "trend_id": "59f406cdb428",
+      "title": "Los Reyes",
+      "message": "Resultado r0 verificado en requests.json y telegram-manual-explained.json con texto y explained_at idénticos; editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain activos."
+    },
+    {
+      "at": "2026-11-10T21:59:15+01:00",
+      "phase": "closing",
+      "message": "Pasada cerrada 1/1. Los Reyes explicado con causa actual verificada; sin remate por sensibilidad. ImageGen=0; imagen pendiente en flujo visual separado; publicaciones=0."
     }
   ],
   "last_started_at": "2026-11-10T21:58:07+01:00",
@@ -8400,7 +8413,7 @@
   ],
   "outbox_comment_id": 6721989528,
   "editorial_apply_commit": "1fb452cf618494f88271c61876c8d8269ed82773",
-  "finished_at": "2026-11-10T21:59:30+01:00",
+  "finished_at": "2026-11-10T21:59:15+01:00",
   "refresh_workflow_run_id": 42839275825,
   "refresh_conclusion": "success",
   "maintenance_apply_commits": [
