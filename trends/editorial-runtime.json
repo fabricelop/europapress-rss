@@ -8,13 +8,13 @@
   "command_id": "tr-autoguard-1794345708",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "investigating",
   "started_at": "2026-11-10T22:22:00+01:00",
-  "updated_at": "2026-11-10T22:22:00+01:00",
+  "updated_at": "2026-11-10T22:27:00+01:00",
   "current": 0,
   "total": 3,
-  "trend_id": null,
-  "title": null,
+  "trend_id": "f9ceb04e1ecc",
+  "title": "Alquiler Seguro",
   "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
@@ -296,6 +296,13 @@
       "at": "2026-11-10T22:22:00+01:00",
       "phase": "preparing",
       "message": "Pasada tr-autoguard-1794345708 RUNNING. Cola autoritativa inicial=3: Alquiler Seguro, Foulquier y El Sindicato de Inquilinas r0; validación JIT por ID+revisión antes de cada tratamiento. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-10T22:27:00+01:00",
+      "phase": "investigating",
+      "trend_id": "f9ceb04e1ecc",
+      "title": "Alquiler Seguro",
+      "message": "Investigando Alquiler Seguro r0: piquete del Sindicato de Inquilinas en Madrid y denuncia empresarial de incidencias en 27 oficinas ante el 11N; validación JIT pendiente antes de persistir. ImageGen=0; publicaciones=0."
     }
   ],
   "last_started_at": "2026-11-10T22:22:00+01:00",
@@ -352,7 +359,7 @@
     "incidents": [],
     "message": "Pasada tr-1794344067313-manual cerrada 1/1. Los Reyes r0 quedó explicada desde cero por la asistencia de Felipe VI y Letizia al funeral de Urda en Toledo; closer vacío por sensibilidad. Barrera final: cola=0 y sin reelaboraciones pendientes. ImageGen=0; publicaciones=0."
   },
-  "message": "Pasada tr-autoguard-1794345708 RUNNING. Cola autoritativa inicial=3: Alquiler Seguro, Foulquier y El Sindicato de Inquilinas r0; validación JIT por ID+revisión antes de cada tratamiento. ImageGen=0; publicaciones=0.",
+  "message": "Investigando Alquiler Seguro r0: piquete del Sindicato de Inquilinas en Madrid y denuncia empresarial de incidencias en 27 oficinas ante el 11N; validación JIT pendiente antes de persistir. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
