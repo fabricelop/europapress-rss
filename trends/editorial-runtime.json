@@ -5684,6 +5684,71 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-20261110T185500-manual completada 0/0. Relectura final sobre main: editorial-queue=0 (updated_at 2026-11-10T18:45:22+01:00); búsqueda dirigida sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos y mobile-decisions sin trabajo editorial activo. Último mantenimiento revisado: Supa r0 quedó unverified por rumores sin confirmación suficiente; ya está cerrado. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794334519228-manual",
+      "status": "DONE",
+      "started_at": "2026-11-10T19:16:00+01:00",
+      "finished_at": "2026-11-10T19:20:00+01:00",
+      "at": "2026-11-10T19:20:00+01:00",
+      "phase": "closing",
+      "canonical": false,
+      "superseded_by": "tr-1794334648285-manual",
+      "summary": {
+        "attempted": 2,
+        "observed": 2,
+        "closed": 2,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 2,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 2,
+        "unchanged_reviews": 0,
+        "continuity_updates": 2,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 2
+      },
+      "processed_ids": [],
+      "converged_ids": [
+        "red-review-cea1951097694d0efe9a",
+        "red-review-6063a0fec943f6f62efb"
+      ],
+      "outcomes": [
+        {
+          "id": "red-review-cea1951097694d0efe9a",
+          "revision": 0,
+          "name": "Revisar novedades: #HuelgaGeneral",
+          "outcome": "continuity_update",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "source_id": "4f1dae5df224",
+          "apply_commit": "b15492119278f8f9f3fa472baf92e99a32636d18"
+        },
+        {
+          "id": "red-review-6063a0fec943f6f62efb",
+          "revision": 0,
+          "name": "Revisar novedades: #ProfesionDeRiesgoYa",
+          "outcome": "continuity_update",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "source_id": "11d228488dea",
+          "apply_commit": "f4e0e6f25d2052eba22d414d7de1bc3465305e77"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-1794334519228-manual cerrada 2/2 por convergencia JIT con ejecuciones concurrentes. #HuelgaGeneral quedó actualizada en continuidad con servicios mínimos del 11N; #ProfesionDeRiesgoYa quedó actualizada en continuidad con la reiteración de JUCIL/JUPOL del 10/11. Ambas conservan su ficha y explained_at originales, sin nueva publicación ni imagen. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "current_item": null,
@@ -6900,6 +6965,71 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-20261110T172500-manual cerrada 0/0 contra main. Barrera JIT final: editorial-queue=0 (updated_at 2026-11-10T17:21:06+01:00) y búsquedas dirigidas sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos; mobile-decisions sin trabajo editorial activo. Últimos mantenimientos revisados: Charles continuidad aplicada y Supa unverified, ambos ya cerrados. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794334519228-manual",
+      "status": "DONE",
+      "started_at": "2026-11-10T19:16:00+01:00",
+      "finished_at": "2026-11-10T19:20:00+01:00",
+      "at": "2026-11-10T19:20:00+01:00",
+      "phase": "closing",
+      "canonical": false,
+      "superseded_by": "tr-1794334648285-manual",
+      "summary": {
+        "attempted": 2,
+        "observed": 2,
+        "closed": 2,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 2,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 2,
+        "unchanged_reviews": 0,
+        "continuity_updates": 2,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 2
+      },
+      "processed_ids": [],
+      "converged_ids": [
+        "red-review-cea1951097694d0efe9a",
+        "red-review-6063a0fec943f6f62efb"
+      ],
+      "outcomes": [
+        {
+          "id": "red-review-cea1951097694d0efe9a",
+          "revision": 0,
+          "name": "Revisar novedades: #HuelgaGeneral",
+          "outcome": "continuity_update",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "source_id": "4f1dae5df224",
+          "apply_commit": "b15492119278f8f9f3fa472baf92e99a32636d18"
+        },
+        {
+          "id": "red-review-6063a0fec943f6f62efb",
+          "revision": 0,
+          "name": "Revisar novedades: #ProfesionDeRiesgoYa",
+          "outcome": "continuity_update",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "source_id": "11d228488dea",
+          "apply_commit": "f4e0e6f25d2052eba22d414d7de1bc3465305e77"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-1794334519228-manual cerrada 2/2 por convergencia JIT con ejecuciones concurrentes. #HuelgaGeneral quedó actualizada en continuidad con servicios mínimos del 11N; #ProfesionDeRiesgoYa quedó actualizada en continuidad con la reiteración de JUCIL/JUPOL del 10/11. Ambas conservan su ficha y explained_at originales, sin nueva publicación ni imagen. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "outbox_comment_id": 5848965032,
