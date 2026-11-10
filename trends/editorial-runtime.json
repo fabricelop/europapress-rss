@@ -8,19 +8,23 @@
   "command_id": "tr-20261110T041000-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "investigating",
   "started_at": "2026-11-10T04:10:00+01:00",
-  "updated_at": "2026-11-10T04:10:00+01:00",
+  "updated_at": "2026-11-10T04:12:00+01:00",
   "finished_at": null,
-  "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": null,
+  "current": 1,
+  "total": 1,
+  "trend_id": "4aeef5ae1e7b",
+  "title": "Pedro Sánchez",
   "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "4aeef5ae1e7b"
+  ],
+  "remaining_active_ids": [
+    "4aeef5ae1e7b"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
@@ -55,9 +59,11 @@
     "run_id": "tr-20261110T041000-manual",
     "status": "RUNNING",
     "started_at": "2026-11-10T04:10:00+01:00",
-    "at": "2026-11-10T04:10:00+01:00",
-    "phase": "preparing",
-    "message": "Pasada tr-20261110T041000-manual RUNNING desde chat. Se fuerza refresco manual real del Top 30 y después se releerá main con barrera JIT antes de cerrar. ImageGen=0; publicaciones=0."
+    "at": "2026-11-10T04:12:00+01:00",
+    "phase": "investigating",
+    "trend_id": "4aeef5ae1e7b",
+    "title": "Pedro Sánchez",
+    "message": "Investigando Pedro Sánchez r0: causa actual contrastada con fuentes recientes tras su entrevista con Javier Ruiz en La Séptima. Se redacta explicación individual; ImageGen=0; publicaciones=0."
   },
   "last_started_at": "2026-11-10T04:10:00+01:00",
   "last_completed_at": "2026-11-10T03:58:00+01:00",
@@ -107,7 +113,7 @@
     "message": "Pasada tr-20261110T035500-manual cerrada 0/0 tras relectura JIT de main. Snapshot Top 30 más reciente observado: 2026-11-10T03:51:01+01:00; editorial-queue actualizada 2026-11-10T03:51:06+01:00 y vacía. Barrera final: sin preparing/update/problematic/rewrite_pending/reexplain/review_red/anticipate activos en requests o mobile-decisions. El trigger manual 4a566373c022b27127635d29d4e7c57df9d2647d quedó registrado, pero antes del cierre no apareció un snapshot posterior ni ACK de refresco; se registra como incidencia de telemetría, no como trabajo editorial pendiente. ImageGen=0; publicaciones=0.",
     "trigger_commit": "4a566373c022b27127635d29d4e7c57df9d2647d"
   },
-  "message": "Pasada tr-20261110T041000-manual RUNNING desde chat. Se fuerza refresco manual real del Top 30 y después se releerá main con barrera JIT antes de cerrar. ImageGen=0; publicaciones=0.",
+  "message": "Investigando Pedro Sánchez r0: causa actual contrastada con fuentes recientes tras su entrevista con Javier Ruiz en La Séptima. Se redacta explicación individual; ImageGen=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794234841273-manual",
