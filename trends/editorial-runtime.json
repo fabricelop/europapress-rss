@@ -3,41 +3,42 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794324093907-manual",
-  "previous_run_id": "tr-1794323730023-manual",
-  "command_id": "tr-1794324093907-manual",
+  "run_id": "tr-1794323989653-manual",
+  "previous_run_id": "tr-1794324093907-manual",
+  "command_id": "tr-1794323989653-manual",
   "source": "chat",
   "status": "success",
   "phase": "closing",
-  "started_at": "2026-11-10T16:22:30+01:00",
-  "updated_at": "2026-11-10T16:28:25+01:00",
-  "current": 1,
-  "total": 1,
+  "started_at": "2026-11-10T16:20:00+01:00",
+  "updated_at": "2026-11-10T16:29:00+01:00",
+  "current": 8,
+  "total": 8,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
   "processed_ids": [
+    "ac07072690a5",
     "74c7648389eb",
     "8d7431b7b1d7",
-    "9357e6b6a21b",
-    "ac07072690a5",
+    "b0514445317b",
     "ad0d4b28bbb7",
-    "b0514445317b"
+    "9357e6b6a21b"
   ],
   "converged_ids": [
+    "9a057d15cf0b",
     "red-review-6af8bb75a0ea3deef6bf"
   ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
-    "observed": 1,
-    "closed": 1,
-    "explained": 0,
+    "attempted": 8,
+    "observed": 8,
+    "closed": 8,
+    "explained": 6,
     "problematic": 0,
     "updates": 1,
-    "review_completed_no_distinct_event": 0,
+    "review_completed_no_distinct_event": 1,
     "maintenance_reviews": 1,
     "unchanged_reviews": 0,
     "continuity_updates": 1,
@@ -47,15 +48,24 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 6,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 1
+    "concurrent_convergence": 2
   },
   "outcomes": [
+    {
+      "id": "9a057d15cf0b",
+      "revision": 0,
+      "name": "#laruletadelasuerte",
+      "outcome": "explained",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "apply_commit": "ce71c1a11447c1d5b1adb893cd4c4bf953c88463"
+    },
     {
       "id": "red-review-6af8bb75a0ea3deef6bf",
       "revision": 0,
@@ -63,8 +73,55 @@
       "outcome": "continuity_update",
       "applied": true,
       "via": "concurrent_convergence",
-      "apply_commit": "5df78ba5a4d7337af04045012760b66ca83e922e",
-      "verification": "editorial-queue retirado y mismo commit modificó requests.json + telegram-manual-explained.json"
+      "apply_commit": "5df78ba5a4d7337af04045012760b66ca83e922e"
+    },
+    {
+      "id": "ac07072690a5",
+      "revision": 0,
+      "name": "PS5 Pro",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "0df19dd066bc066dcbe38fa4fa6b67d6a245af6e"
+    },
+    {
+      "id": "74c7648389eb",
+      "revision": 0,
+      "name": "El Ruso",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "0df19dd066bc066dcbe38fa4fa6b67d6a245af6e"
+    },
+    {
+      "id": "8d7431b7b1d7",
+      "revision": 0,
+      "name": "Manuel Ferrero Álvarez",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "0df19dd066bc066dcbe38fa4fa6b67d6a245af6e"
+    },
+    {
+      "id": "b0514445317b",
+      "revision": 0,
+      "name": "insultar",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "0df19dd066bc066dcbe38fa4fa6b67d6a245af6e"
+    },
+    {
+      "id": "ad0d4b28bbb7",
+      "revision": 0,
+      "name": "Rochos",
+      "outcome": "review_completed_no_distinct_event",
+      "applied": true,
+      "apply_commit": "0df19dd066bc066dcbe38fa4fa6b67d6a245af6e"
+    },
+    {
+      "id": "9357e6b6a21b",
+      "revision": 0,
+      "name": "Magisterio",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "0df19dd066bc066dcbe38fa4fa6b67d6a245af6e"
     }
   ],
   "incident_count": 0,
@@ -72,23 +129,23 @@
   "error": null,
   "activity": "Pasada editorial cerrada",
   "last_started_at": "2026-11-10T16:28:25+01:00",
-  "last_completed_at": "2026-11-10T16:28:25+01:00",
+  "last_completed_at": "2026-11-10T16:29:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794324093907-manual",
+    "run_id": "tr-1794323989653-manual",
     "status": "DONE",
-    "started_at": "2026-11-10T16:22:30+01:00",
-    "finished_at": "2026-11-10T16:25:30+01:00",
-    "at": "2026-11-10T16:25:30+01:00",
+    "started_at": "2026-11-10T16:20:00+01:00",
+    "finished_at": "2026-11-10T16:29:00+01:00",
+    "at": "2026-11-10T16:29:00+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 1,
-      "observed": 1,
-      "closed": 1,
-      "explained": 0,
+      "attempted": 8,
+      "observed": 8,
+      "closed": 8,
+      "explained": 6,
       "problematic": 0,
       "updates": 1,
-      "review_completed_no_distinct_event": 0,
+      "review_completed_no_distinct_event": 1,
       "maintenance_reviews": 1,
       "unchanged_reviews": 0,
       "continuity_updates": 1,
@@ -98,19 +155,36 @@
       "anticipation_reviews": 0,
       "anticipation_prepared": 0,
       "anticipation_unverified": 0,
-      "queue_remaining": 6,
+      "queue_remaining": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
       "image_outbox_created": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 1
+      "concurrent_convergence": 2
     },
-    "processed_ids": [],
+    "processed_ids": [
+      "ac07072690a5",
+      "74c7648389eb",
+      "8d7431b7b1d7",
+      "b0514445317b",
+      "ad0d4b28bbb7",
+      "9357e6b6a21b"
+    ],
     "converged_ids": [
+      "9a057d15cf0b",
       "red-review-6af8bb75a0ea3deef6bf"
     ],
     "outcomes": [
+      {
+        "id": "9a057d15cf0b",
+        "revision": 0,
+        "name": "#laruletadelasuerte",
+        "outcome": "explained",
+        "applied": true,
+        "via": "concurrent_convergence",
+        "apply_commit": "ce71c1a11447c1d5b1adb893cd4c4bf953c88463"
+      },
       {
         "id": "red-review-6af8bb75a0ea3deef6bf",
         "revision": 0,
@@ -118,13 +192,60 @@
         "outcome": "continuity_update",
         "applied": true,
         "via": "concurrent_convergence",
-        "apply_commit": "5df78ba5a4d7337af04045012760b66ca83e922e",
-        "verification": "editorial-queue retirado y mismo commit modificó requests.json + telegram-manual-explained.json"
+        "apply_commit": "5df78ba5a4d7337af04045012760b66ca83e922e"
+      },
+      {
+        "id": "ac07072690a5",
+        "revision": 0,
+        "name": "PS5 Pro",
+        "outcome": "explained",
+        "applied": true,
+        "apply_commit": "0df19dd066bc066dcbe38fa4fa6b67d6a245af6e"
+      },
+      {
+        "id": "74c7648389eb",
+        "revision": 0,
+        "name": "El Ruso",
+        "outcome": "explained",
+        "applied": true,
+        "apply_commit": "0df19dd066bc066dcbe38fa4fa6b67d6a245af6e"
+      },
+      {
+        "id": "8d7431b7b1d7",
+        "revision": 0,
+        "name": "Manuel Ferrero Álvarez",
+        "outcome": "explained",
+        "applied": true,
+        "apply_commit": "0df19dd066bc066dcbe38fa4fa6b67d6a245af6e"
+      },
+      {
+        "id": "b0514445317b",
+        "revision": 0,
+        "name": "insultar",
+        "outcome": "explained",
+        "applied": true,
+        "apply_commit": "0df19dd066bc066dcbe38fa4fa6b67d6a245af6e"
+      },
+      {
+        "id": "ad0d4b28bbb7",
+        "revision": 0,
+        "name": "Rochos",
+        "outcome": "review_completed_no_distinct_event",
+        "applied": true,
+        "apply_commit": "0df19dd066bc066dcbe38fa4fa6b67d6a245af6e"
+      },
+      {
+        "id": "9357e6b6a21b",
+        "revision": 0,
+        "name": "Magisterio",
+        "outcome": "explained",
+        "applied": true,
+        "apply_commit": "0df19dd066bc066dcbe38fa4fa6b67d6a245af6e"
       }
     ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-1794324093907-manual cerrada 1/1 por convergencia JIT. #EnBocaDeTodos r0 quedó actualizado como continuidad del mismo programa diario: el texto vigente pasa a la emisión del martes 10/11, sin nueva ficha ni publicación. Aplicación verificada en 5df78ba5a4d7337af04045012760b66ca83e922e, que actualiza requests.json y telegram-manual-explained.json y retira el job de editorial-queue.json. Barrera final: 0 preparing/update, 0 review_red/anticipate y 0 rewrite_pending/reexplain detectables; permanecen 6 problematic heredados. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "message": "Pasada tr-1794323989653-manual cerrada 8/8. Convergieron JIT #laruletadelasuerte (explained) y la revisión de #EnBocaDeTodos (continuity_update). Tras recuperar fiabilidad del radar (recent.json 2026-11-10T16:21:08+01:00, live_verified=true), se reintentaron los seis problematic: PS5 Pro, El Ruso, Manuel Ferrero Álvarez, insultar y Magisterio quedaron explained; Rochos quedó review_completed/no_distinct_event al no verificarse un episodio material nuevo. Barrera final: editorial-queue=0; requests y mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
   },
   "message": "Pasada tr-1794324093907-manual cerrada 1/1 por convergencia JIT. #EnBocaDeTodos r0 quedó actualizado como continuidad del mismo programa diario: el texto vigente pasa a la emisión del martes 10/11, sin nueva ficha ni publicación. Aplicación verificada en 5df78ba5a4d7337af04045012760b66ca83e922e, que actualiza requests.json y telegram-manual-explained.json y retira el job de editorial-queue.json. Barrera final: 0 preparing/update, 0 review_red/anticipate y 0 rewrite_pending/reexplain detectables; permanecen 6 problematic heredados. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
@@ -6375,7 +6496,7 @@
   ],
   "outbox_comment_id": 5848965032,
   "editorial_apply_commit": "76e7e728a222ee21fee34fda64da43cfd7ecd90a",
-  "finished_at": "2026-11-10T16:25:30+01:00",
+  "finished_at": "2026-11-10T16:29:00+01:00",
   "refresh_workflow_run_id": 42839275825,
   "refresh_conclusion": "success"
 }
