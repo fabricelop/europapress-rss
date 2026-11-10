@@ -3,33 +3,29 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261110T042500-manual",
-  "previous_run_id": "tr-20261110T041000-manual",
-  "command_id": "tr-20261110T042500-manual",
+  "run_id": "tr-20261110T051000-manual",
+  "previous_run_id": "tr-20261110T042500-manual",
+  "command_id": "tr-20261110T051000-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-10T04:25:00+01:00",
-  "updated_at": "2026-11-10T04:32:39+01:00",
-  "finished_at": "2026-11-10T04:32:39+01:00",
-  "current": 1,
-  "total": 1,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-10T05:10:00+01:00",
+  "updated_at": "2026-11-10T05:10:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "radar-prepare-d9c46470661694846685"
-  ],
-  "converged_ids": [
-    "radar-prepare-d9c46470661694846685"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
+  "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
-    "observed": 1,
-    "closed": 1,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
     "explained": 0,
     "problematic": 0,
     "updates": 0,
@@ -40,8 +36,8 @@
     "distinct_updates": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
-    "anticipation_reviews": 1,
-    "anticipation_prepared": 1,
+    "anticipation_reviews": 0,
+    "anticipation_prepared": 0,
     "anticipation_unverified": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
@@ -49,81 +45,20 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 1
+    "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "radar-prepare-d9c46470661694846685",
-      "revision": 0,
-      "name": "Radar · #GTAVI",
-      "outcome": "anticipation_prepared",
-      "applied": true,
-      "via": "concurrent_convergence",
-      "apply_commit": "41c1dd3aed32813204696c842adddef7f02ce5cd",
-      "verification_sources": [
-        "https://www.rockstargames.com/es/newswire/article/k4ak9okk485712/grand-theft-auto-vi-pre-load-begins-on-november-10",
-        "https://vandal.elespanol.com/en/grand-theft-auto-6/how-long-to-download.html"
-      ]
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
   "activity": {
-    "run_id": "tr-20261110T042500-manual",
-    "status": "DONE",
-    "started_at": "2026-11-10T04:25:00+01:00",
-    "finished_at": "2026-11-10T04:32:39+01:00",
-    "at": "2026-11-10T04:32:39+01:00",
-    "phase": "closing",
-    "summary": {
-      "attempted": 1,
-      "observed": 1,
-      "closed": 1,
-      "explained": 0,
-      "problematic": 0,
-      "updates": 0,
-      "review_completed_no_distinct_event": 0,
-      "maintenance_reviews": 0,
-      "unchanged_reviews": 0,
-      "continuity_updates": 0,
-      "distinct_updates": 0,
-      "stale_reviews": 0,
-      "unverified_reviews": 0,
-      "anticipation_reviews": 1,
-      "anticipation_prepared": 1,
-      "anticipation_unverified": 0,
-      "queue_remaining": 0,
-      "rewrite_pending_remaining": 0,
-      "imagegen_calls": 0,
-      "image_outbox_created": 0,
-      "publications": 0,
-      "incidents": 0,
-      "concurrent_convergence": 1
-    },
-    "processed_ids": [
-      "radar-prepare-d9c46470661694846685"
-    ],
-    "outcomes": [
-      {
-        "id": "radar-prepare-d9c46470661694846685",
-        "revision": 0,
-        "name": "Radar · #GTAVI",
-        "outcome": "anticipation_prepared",
-        "applied": true,
-        "via": "concurrent_convergence",
-        "apply_commit": "41c1dd3aed32813204696c842adddef7f02ce5cd",
-        "verification_sources": [
-          "https://www.rockstargames.com/es/newswire/article/k4ak9okk485712/grand-theft-auto-vi-pre-load-begins-on-november-10",
-          "https://vandal.elespanol.com/en/grand-theft-auto-6/how-long-to-download.html"
-        ]
-      }
-    ],
-    "incident_count": 0,
-    "incidents": [],
-    "message": "Pasada tr-20261110T042500-manual cerrada 1/1. El refresco manual produjo snapshot Top 30 de 2026-11-10T04:28:56+01:00 y abrió Radar · #GTAVI r0. Se verificó el inicio de la precarga digital de Grand Theft Auto VI el 10 de noviembre y el borrador anticipado fue aplicado como anticipation_prepared por 41c1dd3aed32813204696c842adddef7f02ce5cd; no se creó ficha Top30. Barrera final: editorial-queue=0 y mobile-decisions sin trabajo editorial activo. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "run_id": "tr-20261110T051000-manual",
+    "status": "RUNNING",
+    "at": "2026-11-10T05:10:00+01:00",
+    "phase": "preparing",
+    "message": "Pasada tr-20261110T051000-manual RUNNING desde chat. Se fuerza refresco manual real del Top 30 y después se releerá main con barrera JIT antes de cerrar. ImageGen=0; publicaciones=0."
   },
-  "last_started_at": "2026-11-10T04:25:00+01:00",
+  "last_started_at": "2026-11-10T05:10:00+01:00",
   "last_completed_at": "2026-11-10T04:32:39+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -186,7 +121,7 @@
     "outbox_commit": "c8e95899bb1f8da7a356d691e862a6b05c658ccc",
     "apply_commit": "41c1dd3aed32813204696c842adddef7f02ce5cd"
   },
-  "message": "Pasada tr-20261110T042500-manual cerrada 1/1. El refresco manual produjo snapshot Top 30 de 2026-11-10T04:28:56+01:00 y abrió Radar · #GTAVI r0. Se verificó el inicio de la precarga digital de Grand Theft Auto VI el 10 de noviembre y el borrador anticipado fue aplicado como anticipation_prepared por 41c1dd3aed32813204696c842adddef7f02ce5cd; no se creó ficha Top30. Barrera final: editorial-queue=0 y mobile-decisions sin trabajo editorial activo. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada tr-20261110T051000-manual RUNNING desde chat. Se fuerza refresco manual real del Top 30 y después se releerá main con barrera JIT antes de cerrar. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794234841273-manual",
@@ -3479,6 +3414,13 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-20261110T042500-manual cerrada 1/1. El refresco manual produjo snapshot Top 30 de 2026-11-10T04:28:56+01:00 y abrió Radar · #GTAVI r0. Se verificó el inicio de la precarga digital de Grand Theft Auto VI el 10 de noviembre y el borrador anticipado fue aplicado como anticipation_prepared por 41c1dd3aed32813204696c842adddef7f02ce5cd; no se creó ficha Top30. Barrera final: editorial-queue=0 y mobile-decisions sin trabajo editorial activo. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-20261110T051000-manual",
+      "status": "RUNNING",
+      "at": "2026-11-10T05:10:00+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-20261110T051000-manual RUNNING desde chat. Se fuerza refresco manual real del Top 30 y después se releerá main con barrera JIT antes de cerrar. ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": null,
