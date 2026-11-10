@@ -3,32 +3,29 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794349301598-manual",
-  "previous_run_id": "tr-1794348805915-manual",
-  "command_id": "tr-1794349301598-manual",
+  "run_id": "tr-1794350400000-manual",
+  "previous_run_id": "tr-1794349301598-manual",
+  "command_id": "tr-1794350400000-manual",
   "source": "chat",
   "status": "DONE",
   "phase": "closing",
-  "started_at": "2026-11-10T23:22:00+01:00",
-  "updated_at": "2026-11-10T23:29:00+01:00",
-  "current": 2,
-  "total": 2,
+  "started_at": "2026-11-10T23:40:00+01:00",
+  "updated_at": "2026-11-10T23:42:00+01:00",
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
-  "processed_ids": [
-    "60c664dd6336",
-    "0faac9574459"
-  ],
+  "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
-    "explained": 2,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
@@ -49,26 +46,7 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "60c664dd6336",
-      "revision": 0,
-      "name": "Hugo Duro",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "8046c636ec22a84f69b40d962a2999770d63a275",
-      "verification": "requests.json + telegram-manual-explained.json modified atomically; site Top30 EXPLICADA; queue removed"
-    },
-    {
-      "id": "0faac9574459",
-      "revision": 0,
-      "name": "Ada Colau",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "012e53349fbddccadebe5cde7f1d20a26aacd7dc",
-      "verification": "requests.json + telegram-manual-explained.json modified atomically; site Top30 EXPLICADA; queue removed"
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -494,6 +472,16 @@
       "at": "2026-11-10T23:29:00+01:00",
       "phase": "closing",
       "message": "Pasada tr-1794349301598-manual cerrada 2/2. ImageGen=0; image-outbox editorial=0; publicaciones=0; imágenes quedan pendientes en el flujo visual separado."
+    },
+    {
+      "at": "2026-11-10T23:40:00+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-1794350400000-manual iniciada. Disparador manual registrado; cola autoritativa y registros editoriales revalidados contra main. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-10T23:42:00+01:00",
+      "phase": "closing",
+      "message": "Barrera final verificada: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. Pasada tr-1794350400000-manual cerrada 0/0. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "last_started_at": "2026-11-10T23:28:17+01:00",
@@ -8882,6 +8870,6 @@
     "61f2f146a926eae3568074e8e0d9947db37bc9f5",
     "5b26ed05be444fecd3e641d64eae7eba5201f9b0"
   ],
-  "finished_at": "2026-11-10T23:29:00+01:00",
+  "finished_at": "2026-11-10T23:42:00+01:00",
   "outbox_commit": "66c7c23be5c4b51ac802b4e5cc8cbd6c67d69ea4"
 }
