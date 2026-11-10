@@ -3,27 +3,31 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794342867542-manual",
-  "previous_run_id": "tr-1794343259000-manual",
-  "command_id": "tr-1794342867542-manual",
+  "run_id": "tr-1794344067313-manual",
+  "previous_run_id": "tr-1794342867542-manual",
+  "command_id": "tr-1794344067313-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-10T21:45:00+01:00",
-  "updated_at": "2026-11-10T21:46:00+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-10T21:54:00+01:00",
+  "updated_at": "2026-11-10T21:54:00+01:00",
   "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "total": 1,
+  "trend_id": "59f406cdb428",
+  "title": "Los Reyes",
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "59f406cdb428"
+  ],
+  "remaining_active_ids": [
+    "59f406cdb428"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
-    "observed": 0,
+    "observed": 1,
     "closed": 0,
     "explained": 0,
     "problematic": 0,
@@ -38,8 +42,8 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 0,
-    "rewrite_pending_remaining": 0,
+    "queue_remaining": 1,
+    "rewrite_pending_remaining": 1,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
@@ -224,9 +228,16 @@
       "at": "2026-11-10T21:46:00+01:00",
       "phase": "closing",
       "message": "Pasada tr-1794342867542-manual cerrada 0/0 contra main. Relectura JIT final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-10T21:54:00+01:00",
+      "phase": "preparing",
+      "trend_id": "59f406cdb428",
+      "title": "Los Reyes",
+      "message": "Pasada tr-1794344067313-manual RUNNING. Cola JIT=1: reelaboración Los Reyes r0 desde cero; verificando contexto actual, evento/marcador/fecha y barrera de estado. ImageGen=0; publicaciones=0."
     }
   ],
-  "last_started_at": "2026-11-10T21:45:00+01:00",
+  "last_started_at": "2026-11-10T21:54:00+01:00",
   "last_completed_at": "2026-11-10T21:46:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -268,7 +279,7 @@
     "incidents": [],
     "message": "Pasada tr-1794342867542-manual cerrada 0/0 contra main. Relectura JIT final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794342867542-manual cerrada 0/0 contra main. Relectura JIT final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Procesando 1/1: Los Reyes r0. Investigación desde cero; ImageGen=0.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
@@ -8329,7 +8340,7 @@
   ],
   "outbox_comment_id": 6721989528,
   "editorial_apply_commit": "2939b4d2b5415ed3b8ebf6ba2332692f9d37c1cd",
-  "finished_at": "2026-11-10T21:46:00+01:00",
+  "finished_at": null,
   "refresh_workflow_run_id": 42839275825,
   "refresh_conclusion": "success",
   "maintenance_apply_commits": [
