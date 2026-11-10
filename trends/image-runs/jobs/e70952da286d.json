@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "command_id": "tr-img-auto-e70952da286d-r0-a1-1791197556459",
+  "requested_at": "2026-10-05T10:52:36.458564Z",
+  "updated_at": "2026-10-05T10:59:43.391Z",
+  "status": "DONE",
+  "phase": "done",
+  "mode": "automatic_explained_repair",
+  "executor": "pc_chat_ttendencias_dedicated",
+  "project": "ttendencias",
+  "launcher_arg": "tendencias",
+  "task": "image",
+  "target_id": "e70952da286d",
+  "trend_id": "e70952da286d",
+  "target_name": "Parlamento",
+  "revision": 0,
+  "attempt": 1,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "chat_command_version": 4,
+  "instruction_profile": "ttendencias_gag_v4_dead_submit_retry_clean_raster",
+  "context_snapshot": {
+    "name": "Parlamento",
+    "revision": 0,
+    "explanation": "TT#9 Parlamento es tendencia por el adelanto al 29-N: Sánchez ha justificado la convocatoria en la necesidad de que las urnas den al Gobierno una mayoría progresista más amplia tras perder los decretos de vivienda.",
+    "closer_text": "",
+    "trend_names": [
+      "Parlamento"
+    ],
+    "group_title": "Parlamento y adelanto electoral del 29-N",
+    "rank_at_explanation": 9,
+    "explained_at": "2026-10-05T12:49:30+02:00",
+    "verification_sources": [
+      {
+        "source": "El País · 5/10/2026",
+        "url": "https://elpais.com/espana/2026-10-05/sanchez-adelanta-las-elecciones-al-29-de-noviembre-necesitamos-una-mayoria-progresista-mucho-mas-amplia.html"
+      },
+      {
+        "source": "RTVE Noticias · 5/10/2026",
+        "url": "https://www.rtve.es/noticias/20261005/sanchez-convoca-elecciones-anticipadas-29-noviembre-llegado-momento-decidir-futuro-quereis/17253132.shtml"
+      }
+    ],
+    "image_style": "Ilustración editorial satírica muy detallada, formato panorámico 16:9, estilo cómic cinematográfico semi-realista, colores intensos, perspectiva gran angular, escena rica pero visualmente limpia, con solo los detalles y personajes necesarios. Humor visual exagerado pero basado en el detonante factual de la tendencia. Un gag principal inmediatamente reconocible; sin infografía, collage, interfaz ni captura de pantalla."
+  },
+  "instructions": {
+    "scope": "Una sola tendencia y una sola imagen.",
+    "exact_input": "Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
+    "visual": "Gag visual editorial 16:9, específico del detonante, no ilustración genérica.",
+    "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
+  },
+  "message": "Imagen IA materializada y visible en el estado editorial.",
+  "pc_upload_secret_hash": "c590dbabf05eeabb4cdbb3719e61646ab47da19aecb3e5531dc30df37065aa56",
+  "pc_worker_id": "ttendencias-image-bridge-v28-dead-submit-retry",
+  "pc_picked_up_at": "2026-10-05T10:57:58.909Z",
+  "pc_launched_at": "2026-10-05T10:58:12.423Z",
+  "upload_received_at": "2026-10-05T10:59:37.922Z",
+  "upload_sha256": "f8dbd66ee6135db482207bd5f6f2ef0cf798c3db6f6b17475648745f0f4c9a79",
+  "upload_bytes": 2622685,
+  "finished_at": "2026-10-05T10:59:43.391Z"
+}

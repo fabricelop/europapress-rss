@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "command_id": "tr-img-1791099290468-16e9e7",
+  "requested_at": "2026-10-04T07:34:50.468Z",
+  "updated_at": "2026-10-04T07:36:04.175Z",
+  "status": "ERROR",
+  "phase": "pc_launch_failed",
+  "mode": "manual_pc_chat_image",
+  "executor": "pc_chat_ttendencias_dedicated",
+  "project": "ttendencias",
+  "launcher_arg": "tendencias",
+  "task": "image",
+  "target_id": "1a5d85302711",
+  "trend_id": "1a5d85302711",
+  "target_name": "Manu González",
+  "revision": 0,
+  "attempt": 1,
+  "chat_command_version": 3,
+  "instruction_profile": "ttendencias_gag_v1",
+  "context_snapshot": {
+    "name": "Manu González",
+    "revision": 0,
+    "explanation": "TT#10 Manu González es tendencia por su cero en la carrera de Moto2 en Motegi, ganada por Izan Guevara, un resultado que le dejó sin sumar puntos.\n🌶️ En Japón el casillero de Manu se quedó en modo avión.",
+    "closer_text": "🌶️ En Japón el casillero de Manu se quedó en modo avión.",
+    "trend_names": [
+      "Manu González"
+    ],
+    "group_title": "",
+    "rank_at_explanation": 10,
+    "explained_at": "2026-10-04T09:20:33.918+02:00",
+    "verification_sources": [
+      {
+        "source": "MotorGP Bariloche · 4/10/2026",
+        "url": "https://motorgpbariloche.com.ar/articulo/moto2-en-motegi---izan-guevara-vence-y-aprovecha-un-0-dramatico-de-manu-gonzalez.php"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Genera UNA sola imagen IA para esta tendencia y no proceses ninguna otra entrada.",
+    "context": "Usa context_snapshot como contexto autoritativo: contiene la explicación factual y el remate exactos seleccionados por el usuario. No los reescribas ni reinvestigues; solo conviértelos en un gag visual.",
+    "visual": "Gag visual claramente cómico, satírico, irónico y exagerado; llevar la situación al límite cuando encaje; evitar una ilustración meramente literal.",
+    "sensitivity": "No conviertas víctimas, muertes, duelo, violencia grave, abuso o sufrimiento humano en objeto del gag. Esos casos deben venir bloqueados antes del lanzamiento.",
+    "political_guard": "Si el contexto es político, mantén el gag en la situación factual descrita; no inventes acusaciones, propaganda, llamadas al voto ni juicios partidistas como hechos.",
+    "lifecycle": "Verifica vigencia antes de generar; actualiza este job a GENERATING, PERSISTING y DONE/ERROR; persiste exactamente el raster generado mediante el puente V3."
+  },
+  "message": "El prompt ImageGen quedó sin enviar; {}",
+  "pc_upload_secret_hash": "0a4039f2b19d45f7875334eda9e1375e39ae974cbfe1fda9041959cf92a07202",
+  "pc_worker_id": "ttendencias-image-bridge-v1",
+  "pc_picked_up_at": "2026-10-04T07:35:11.585Z",
+  "pc_launched_at": "2026-10-04T07:35:25.804Z",
+  "finished_at": "2026-10-04T07:36:04.175Z"
+}

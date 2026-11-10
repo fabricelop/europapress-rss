@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "command_id": "tr-img-auto-b1654d6cc28d-r1-a1-1791146486125",
+  "requested_at": "2026-10-04T20:41:26.124699Z",
+  "updated_at": "2026-10-04T20:46:56.606Z",
+  "status": "DONE",
+  "phase": "done",
+  "mode": "automatic_explained_repair",
+  "executor": "pc_chat_ttendencias_dedicated",
+  "project": "ttendencias",
+  "launcher_arg": "tendencias",
+  "task": "image",
+  "target_id": "b1654d6cc28d",
+  "trend_id": "b1654d6cc28d",
+  "target_name": "Cataluña",
+  "revision": 1,
+  "attempt": 1,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "chat_command_version": 4,
+  "instruction_profile": "ttendencias_gag_v4_dead_submit_retry_clean_raster",
+  "context_snapshot": {
+    "name": "Cataluña",
+    "revision": 1,
+    "explanation": "TT#5 Cataluña es tendencia por el temporal de lluvias torrenciales: al menos dos personas han muerto y una sigue desaparecida en Barcelona, con alertas por desbordamientos y fuertes restricciones de transporte.",
+    "closer_text": "",
+    "trend_names": [
+      "Cataluña"
+    ],
+    "group_title": "Temporal e inundaciones en Cataluña del 4 de octubre",
+    "rank_at_explanation": 5,
+    "explained_at": "2026-10-04T22:14:00+02:00",
+    "verification_sources": [
+      {
+        "source": "RTVE · 4/10/2026",
+        "url": "https://www.rtve.es/noticias/20261004/temporal-lluvias-hoy-4-octubre-ultima-hora-directo-cronica/17252367.shtml"
+      },
+      {
+        "source": "Euronews · 4/10/2026",
+        "url": "https://es.euronews.com/2026/10/04/nueva-alerta-por-lluvias-y-restricciones-de-movilidad-en-cataluna-tras-el-dia-mas-lluvioso"
+      }
+    ],
+    "image_style": "Ilustración editorial satírica muy detallada, formato panorámico 16:9, estilo cómic cinematográfico semi-realista, colores intensos, perspectiva gran angular, escena rica pero visualmente limpia, con solo los detalles y personajes necesarios. Humor visual exagerado pero basado en el detonante factual de la tendencia. Un gag principal inmediatamente reconocible; sin infografía, collage, interfaz ni captura de pantalla."
+  },
+  "instructions": {
+    "scope": "Una sola tendencia y una sola imagen.",
+    "exact_input": "Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
+    "visual": "Gag visual editorial 16:9, específico del detonante, no ilustración genérica.",
+    "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
+  },
+  "message": "Imagen IA materializada y visible en el estado editorial.",
+  "pc_upload_secret_hash": "28d290077509076ce8373195485dbdc151103fb1d850c48c21e18d9ab89a46a0",
+  "pc_worker_id": "ttendencias-image-bridge-v28-dead-submit-retry",
+  "pc_picked_up_at": "2026-10-04T20:44:47.793Z",
+  "pc_launched_at": "2026-10-04T20:45:24.635Z",
+  "upload_received_at": "2026-10-04T20:46:52.006Z",
+  "upload_sha256": "0e125332967d1650af0dfea38e0356776ff0978f7d58852ec7aa8cdcafdc401f",
+  "upload_bytes": 586118,
+  "finished_at": "2026-10-04T20:46:56.606Z"
+}

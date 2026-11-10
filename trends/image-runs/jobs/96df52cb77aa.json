@@ -1,0 +1,58 @@
+{
+  "version": 1,
+  "command_id": "tr-img-auto-96df52cb77aa-r0-a1-1791194088016",
+  "requested_at": "2026-10-05T09:54:48.015907Z",
+  "updated_at": "2026-10-05T09:57:10.509Z",
+  "status": "DONE",
+  "phase": "done",
+  "mode": "automatic_explained_repair",
+  "executor": "pc_chat_ttendencias_dedicated",
+  "project": "ttendencias",
+  "launcher_arg": "tendencias",
+  "task": "image",
+  "target_id": "96df52cb77aa",
+  "trend_id": "96df52cb77aa",
+  "target_name": "sanchismo",
+  "revision": 0,
+  "attempt": 1,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "chat_command_version": 4,
+  "instruction_profile": "ttendencias_gag_v4_dead_submit_retry_clean_raster",
+  "context_snapshot": {
+    "name": "sanchismo",
+    "revision": 0,
+    "explanation": "TT#15 sanchismo es tendencia por las reacciones al adelanto electoral del 29-N: Ayuso habla del «final del sanchismo» y el PP presenta los comicios como cierre de etapa.",
+    "closer_text": "",
+    "trend_names": [
+      "sanchismo"
+    ],
+    "group_title": "",
+    "rank_at_explanation": 15,
+    "explained_at": "2026-10-05T11:54:00+02:00",
+    "verification_sources": [
+      "https://elpais.com/espana/madrid/2026-10-05/ayuso-sanchez-no-es-un-democrata-maduro-tambien-convocaba-elecciones.html",
+      "https://www.reuters.com/world/europe/spanish-pm-sanchez-make-morning-announcement-amid-speculation-about-early-2026-10-05/"
+    ],
+    "image_style": "Ilustración editorial satírica muy detallada, formato panorámico 16:9, estilo cómic cinematográfico semi-realista, colores intensos, perspectiva gran angular, escena rica pero visualmente limpia, con solo los detalles y personajes necesarios. Humor visual exagerado pero basado en el detonante factual de la tendencia. Un gag principal inmediatamente reconocible; sin infografía, collage, interfaz ni captura de pantalla."
+  },
+  "instructions": {
+    "scope": "Una sola tendencia y una sola imagen.",
+    "exact_input": "Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
+    "visual": "Gag visual editorial 16:9, específico del detonante, no ilustración genérica.",
+    "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot.",
+    "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Explicadas; Telegram."
+  },
+  "message": "Imagen IA materializada y visible en el estado editorial.",
+  "pc_upload_secret_hash": "32589515e45bbaf1ebbfbd0847e9528de8256af8bc9c9d7ff287878b1b3cca5c",
+  "pc_worker_id": "ttendencias-image-bridge-v28-dead-submit-retry",
+  "pc_picked_up_at": "2026-10-05T09:54:57.874Z",
+  "bridge_version": null,
+  "target_handoff_id": "5466EEFD4A5947C4FC21A114D620CB21",
+  "target_handoff_at": "2026-10-05T09:55:30.981Z",
+  "pc_launched_at": "2026-10-05T09:55:45.445Z",
+  "upload_received_at": "2026-10-05T09:57:04.636Z",
+  "upload_sha256": "2ca24d3dbf623a22251528daebf27bffab08462c7303c2d669ee942c24335b42",
+  "upload_bytes": 2684560,
+  "finished_at": "2026-10-05T09:57:10.509Z"
+}
