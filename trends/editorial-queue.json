@@ -1,101 +1,41 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-10T12:41:17+01:00",
+  "updated_at": "2026-11-10T11:42:21.709695+00:00",
   "count": 1,
   "items": [
     {
-      "id": "radar-prepare-009b57af83f17920643d",
-      "name": "Radar · Elena",
-      "rank": 0,
-      "status": "preparing",
-      "requested_at": "2026-11-10T12:31:13.167756+01:00",
+      "id": "red-review-8e7ec39b2da22ca86c79",
       "revision": 0,
-      "rewrite_instruction": "Prepara un borrador factual de esta señal emergente, no una ficha de Top30. Verifica el detonante actual con fuentes. Guarda anticipation-outbox, sin publicar ni crear imágenes ni tocar Listas.",
-      "reexplain": false,
-      "rewrite_with_image": false,
-      "with_image": false,
-      "disable_ai_image": true,
-      "image_strategy": null,
-      "selected_tweet_image": null,
-      "task": "anticipate",
-      "anticipation_request": true,
-      "anticipated_name": "Elena",
-      "anticipation_signal": {
-        "name": "Elena",
-        "social_source_count": 3,
-        "social_sources": [
-          "getdaytrends",
-          "trends24",
-          "xtrendsiamrohit"
-        ],
-        "best_observed_rank": 29,
-        "mean_observed_rank": 30.3,
-        "movement": "up",
-        "rank_history": [
+      "name": "Revisar novedades: Almudena",
+      "rank": 17,
+      "status": "preparing",
+      "requested_at": "2026-11-10T11:42:21.709695+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "a04f5f160038",
+        "revision": 0,
+        "name": "Almudena",
+        "rank": 12,
+        "explanation": "TT#12 Almudena sigue siendo tendencia por la fiesta de la patrona de Madrid: la lluvia ha obligado a cancelar la procesión, aunque se han mantenido la misa y otros actos.\n#Madrid #VirgenDeLaAlmudena\n🌶️ La patrona se quedó bajo techo; la fiesta no.",
+        "explanation_sha256": "54aab6c16f14feaad554bc571d32397ada66e53358c1bba78ac56d3603bc11d7",
+        "explained_at": "2026-11-09T09:28:56+01:00",
+        "verification_sources": [
           {
-            "captured_at": "2026-11-10T12:00:46+01:00",
-            "best_rank": 29,
-            "source_count": 1
+            "url": "https://diario.madrid.es/blog/2026/11/05/fiesta-de-la-almudena-2026-programa-actos-actividades/"
           },
           {
-            "captured_at": "2026-11-10T12:01:33+01:00",
-            "best_rank": 29,
-            "source_count": 2
-          },
-          {
-            "captured_at": "2026-11-10T12:03:42+01:00",
-            "best_rank": 29,
-            "source_count": 2
-          },
-          {
-            "captured_at": "2026-11-10T12:31:07+01:00",
-            "best_rank": 29,
-            "source_count": 3
+            "url": "https://www.madrid.es/portales/munimadrid/es/Inicio/El-Ayuntamiento/Todas-las-noticias/Madrid-celebra-el-dia-de-su-patrona-con-musica-tradicion-y-la-gran-corona-de-la-Almudena-en-la-plaza-Mayor/?vgnextchannel=e40362215c483510VgnVCM2000001f4a900aRCRD&vgnextfmt=default&vgnextoid=8db8228653ba1a10VgnVCM100000891ecb1aRCRD"
           }
         ],
-        "observations": 4,
-        "first_detected_at": "2026-11-10T12:00:46+01:00",
-        "news_source_count": 0,
-        "news_event_id": null,
-        "news_title": null,
-        "news_status": null,
-        "news_first_seen": null
+        "fingerprint": "d0dc97b34fd2fe3f7a6ade05e2197aed13baff315c9782036a30d35aecb83499"
       },
-      "anticipation_origin_id": null,
-      "anticipation_draft": null,
-      "red_review_request": null,
-      "review_source": null,
-      "review_error": null,
-      "new_episode_review": false,
-      "distinct_event_required": false,
-      "radar_episode_token": "",
-      "editor_approval_batch_id": "",
-      "previous_episode_id": "",
-      "review_instruction": "",
-      "automatic_grouping": null,
-      "published_context": null,
-      "listas_grouping_request": false,
-      "grouping_candidates": [],
-      "grouping_state": null,
-      "grouping_error": null,
-      "tremending_origin": false,
-      "tremending_id": null,
-      "article_title": null,
-      "source_url": null,
-      "selected_tweet": null,
-      "batch_id": null,
-      "requested_together": [
-        "Radar · Elena"
-      ],
-      "captured_with": [],
+      "with_image": false,
+      "disable_ai_image": true,
       "auto_queued": false,
-      "anticipated": false,
-      "anticipated_at": "2026-11-10T12:00:46+01:00",
-      "anticipated_best_rank": 29,
-      "anticipated_social_source_count": 0,
-      "anticipated_news_source_count": 0,
-      "anticipated_news_title": "",
-      "anticipated_entered_top10_at": null
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
     }
   ]
 }
