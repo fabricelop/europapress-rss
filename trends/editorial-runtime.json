@@ -8,9 +8,9 @@
   "command_id": "tr-1794303125782-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "investigating",
   "started_at": "2026-11-10T10:32:30+01:00",
-  "updated_at": "2026-11-10T10:32:30+01:00",
+  "updated_at": "2026-11-10T10:34:30+01:00",
   "finished_at": null,
   "current": 0,
   "total": 1,
@@ -55,7 +55,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Preparando Silvia r0",
+  "activity": "Investigando Silvia r0",
   "last_started_at": "2026-11-10T10:27:00+01:00",
   "last_completed_at": "2026-11-10T10:31:00+01:00",
   "api_failover_enabled": false,
@@ -120,7 +120,7 @@
     "incidents": [],
     "message": "Pasada tr-1794302794758-manual cerrada 2/2. El Hierro r0 quedó actualizado como continuidad del mismo episodio migratorio (229 llegadas adicionales y reunión interministerial), conservando ID, revisión, explained_at, estado publicado e imagen; Julián Álvarez r0 quedó unchanged porque las novedades de hoy siguen siendo desarrollo del mismo Atlético-Barça. Aplicado en main por 20efa88f30f917a6ad993ba5fd89734c06393ce4 y verificado en requests.json y telegram-manual-explained.json. Barrera final: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain activos en requests o mobile-decisions. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794303125782-manual RUNNING. Cola JIT inicial=1: Silvia r0, reelaboración manual desde cero. Revalidando estado y contexto actual antes de investigar. ImageGen=0; publicaciones=0.",
+  "message": "Silvia r0 revalidada JIT en main. Cola=1; rank actual observado=11. El detonante actual verificado es la intervención de Silvia Intxaurrondo en La Hora de La 1 del 10/11 tras la entrevista Broncano-Abascal. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
@@ -2982,6 +2982,15 @@
       "trend_id": "11a8c36a00bf",
       "title": "Silvia",
       "message": "Pasada tr-1794303125782-manual RUNNING. Cola JIT inicial=1: Silvia r0, reelaboración manual desde cero. Revalidando estado y contexto actual antes de investigar. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794303125782-manual",
+      "status": "RUNNING",
+      "at": "2026-11-10T10:34:30+01:00",
+      "phase": "investigating",
+      "trend_id": "11a8c36a00bf",
+      "title": "Silvia",
+      "message": "Silvia r0 revalidada JIT en main. Cola=1; rank actual observado=11. El detonante actual verificado es la intervención de Silvia Intxaurrondo en La Hora de La 1 del 10/11 tras la entrevista Broncano-Abascal. ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": null,
