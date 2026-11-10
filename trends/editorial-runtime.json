@@ -7,36 +7,36 @@
   "previous_run_id": "tr-20261110T181000-manual",
   "command_id": "tr-autoguard-1794331272",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-10T18:22:00+01:00",
-  "updated_at": "2026-11-10T18:22:00+01:00",
-  "current": 0,
+  "updated_at": "2026-11-10T18:31:00+01:00",
+  "current": 3,
   "total": 3,
-  "trend_id": "9621c0736440",
-  "title": "Bolivia",
-  "queue_complete": false,
-  "processed_ids": [],
-  "converged_ids": [],
-  "remaining_ids": [
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
     "9621c0736440",
     "ea3b5e4dcab3",
     "55c3a83a7e63"
   ],
-  "remaining_active_ids": [
+  "converged_ids": [
     "9621c0736440",
     "ea3b5e4dcab3",
     "55c3a83a7e63"
   ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 3,
     "observed": 3,
-    "closed": 0,
-    "explained": 0,
+    "closed": 3,
+    "explained": 2,
     "problematic": 0,
     "updates": 0,
-    "review_completed_no_distinct_event": 0,
+    "review_completed_no_distinct_event": 1,
     "maintenance_reviews": 0,
     "unchanged_reviews": 0,
     "continuity_updates": 0,
@@ -46,37 +46,65 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 3,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 3
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "9621c0736440",
+      "revision": 0,
+      "name": "Bolivia",
+      "outcome": "explained",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "apply_commit": "d9a641a7cb78f95827d6ee04d0866f1fb3f16cc9"
+    },
+    {
+      "id": "ea3b5e4dcab3",
+      "revision": 0,
+      "name": "GTA VI",
+      "outcome": "explained",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "apply_commit": "d9a641a7cb78f95827d6ee04d0866f1fb3f16cc9"
+    },
+    {
+      "id": "55c3a83a7e63",
+      "revision": 0,
+      "name": "#ProfesionDeRiesgoYa",
+      "outcome": "review_completed_no_distinct_event",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "apply_commit": "d9a641a7cb78f95827d6ee04d0866f1fb3f16cc9"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Investigando Bolivia",
+  "activity": "Pasada editorial completada",
   "last_started_at": "2026-11-10T18:22:00+01:00",
-  "last_completed_at": "2026-11-10T18:11:00+01:00",
+  "last_completed_at": "2026-11-10T18:31:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261110T181000-manual",
+    "run_id": "tr-autoguard-1794331272",
     "status": "DONE",
-    "started_at": "2026-11-10T18:10:00+01:00",
-    "finished_at": "2026-11-10T18:11:00+01:00",
-    "at": "2026-11-10T18:11:00+01:00",
+    "started_at": "2026-11-10T18:22:00+01:00",
+    "finished_at": "2026-11-10T18:31:00+01:00",
+    "at": "2026-11-10T18:31:00+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 0,
-      "observed": 0,
-      "closed": 0,
-      "explained": 0,
+      "attempted": 3,
+      "observed": 3,
+      "closed": 3,
+      "explained": 2,
       "problematic": 0,
       "updates": 0,
-      "review_completed_no_distinct_event": 0,
+      "review_completed_no_distinct_event": 1,
       "maintenance_reviews": 0,
       "unchanged_reviews": 0,
       "continuity_updates": 0,
@@ -92,16 +120,52 @@
       "image_outbox_created": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 0
+      "concurrent_convergence": 3
     },
-    "processed_ids": [],
-    "converged_ids": [],
-    "outcomes": [],
+    "processed_ids": [
+      "9621c0736440",
+      "ea3b5e4dcab3",
+      "55c3a83a7e63"
+    ],
+    "converged_ids": [
+      "9621c0736440",
+      "ea3b5e4dcab3",
+      "55c3a83a7e63"
+    ],
+    "outcomes": [
+      {
+        "id": "9621c0736440",
+        "revision": 0,
+        "name": "Bolivia",
+        "outcome": "explained",
+        "applied": true,
+        "via": "concurrent_convergence",
+        "apply_commit": "d9a641a7cb78f95827d6ee04d0866f1fb3f16cc9"
+      },
+      {
+        "id": "ea3b5e4dcab3",
+        "revision": 0,
+        "name": "GTA VI",
+        "outcome": "explained",
+        "applied": true,
+        "via": "concurrent_convergence",
+        "apply_commit": "d9a641a7cb78f95827d6ee04d0866f1fb3f16cc9"
+      },
+      {
+        "id": "55c3a83a7e63",
+        "revision": 0,
+        "name": "#ProfesionDeRiesgoYa",
+        "outcome": "review_completed_no_distinct_event",
+        "applied": true,
+        "via": "concurrent_convergence",
+        "apply_commit": "d9a641a7cb78f95827d6ee04d0866f1fb3f16cc9"
+      }
+    ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-20261110T181000-manual cerrada 0/0 contra main. Barrera JIT final: editorial-queue=0 (updated_at 2026-11-10T18:01:32+01:00) y sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos en requests.json, mobile-decisions.json ni telegram-manual-explained.json. Últimos mantenimientos revisados: Charles (continuidad actualizada) y Supa (unverified), sin resultados posteriores. No había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "message": "Pasada tr-autoguard-1794331272 cerrada 3/3 por convergencia JIT con el aplicador oficial. Bolivia r0 y GTA VI r0 quedaron explicadas y persistidas en requests.json + telegram-manual-explained.json; la reentrada #ProfesionDeRiesgoYa r0 fue cerrada concurrentemente como review_completed/no_distinct_event y se respeta ese estado terminal sin reabrirla. Barrera final sobre main: editorial-queue=0 (updated_at 2026-11-10T18:25:30+01:00) y sin preparing/update/rewrite_pending/reexplain activos en requests.json ni mobile-decisions.json. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-autoguard-1794331272 RUNNING. Cola inicial autoritativa=3: Bolivia r0, GTA VI r0 y reentrada #ProfesionDeRiesgoYa r0. Se procesa en orden con validación JIT. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-autoguard-1794331272 cerrada 3/3 por convergencia JIT con el aplicador oficial. Bolivia r0 y GTA VI r0 quedaron explicadas y persistidas en requests.json + telegram-manual-explained.json; la reentrada #ProfesionDeRiesgoYa r0 fue cerrada concurrentemente como review_completed/no_distinct_event y se respeta ese estado terminal sin reabrirla. Barrera final sobre main: editorial-queue=0 (updated_at 2026-11-10T18:25:30+01:00) y sin preparing/update/rewrite_pending/reexplain activos en requests.json ni mobile-decisions.json. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
@@ -5524,6 +5588,79 @@
       "trend_id": "9621c0736440",
       "title": "Bolivia",
       "message": "Pasada tr-autoguard-1794331272 RUNNING. Cola inicial autoritativa=3: Bolivia r0, GTA VI r0 y reentrada #ProfesionDeRiesgoYa r0. Se procesa en orden con validación JIT. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-autoguard-1794331272",
+      "status": "DONE",
+      "started_at": "2026-11-10T18:22:00+01:00",
+      "finished_at": "2026-11-10T18:31:00+01:00",
+      "at": "2026-11-10T18:31:00+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 3,
+        "observed": 3,
+        "closed": 3,
+        "explained": 2,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 1,
+        "maintenance_reviews": 0,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 3
+      },
+      "processed_ids": [
+        "9621c0736440",
+        "ea3b5e4dcab3",
+        "55c3a83a7e63"
+      ],
+      "converged_ids": [
+        "9621c0736440",
+        "ea3b5e4dcab3",
+        "55c3a83a7e63"
+      ],
+      "outcomes": [
+        {
+          "id": "9621c0736440",
+          "revision": 0,
+          "name": "Bolivia",
+          "outcome": "explained",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "apply_commit": "d9a641a7cb78f95827d6ee04d0866f1fb3f16cc9"
+        },
+        {
+          "id": "ea3b5e4dcab3",
+          "revision": 0,
+          "name": "GTA VI",
+          "outcome": "explained",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "apply_commit": "d9a641a7cb78f95827d6ee04d0866f1fb3f16cc9"
+        },
+        {
+          "id": "55c3a83a7e63",
+          "revision": 0,
+          "name": "#ProfesionDeRiesgoYa",
+          "outcome": "review_completed_no_distinct_event",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "apply_commit": "d9a641a7cb78f95827d6ee04d0866f1fb3f16cc9"
+        }
+      ],
+      "message": "Pasada tr-autoguard-1794331272 cerrada 3/3 por convergencia JIT con el aplicador oficial. Bolivia r0 y GTA VI r0 quedaron explicadas y persistidas en requests.json + telegram-manual-explained.json; la reentrada #ProfesionDeRiesgoYa r0 fue cerrada concurrentemente como review_completed/no_distinct_event y se respeta ese estado terminal sin reabrirla. Barrera final sobre main: editorial-queue=0 (updated_at 2026-11-10T18:25:30+01:00) y sin preparing/update/rewrite_pending/reexplain activos en requests.json ni mobile-decisions.json. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "current_item": null,
@@ -6744,7 +6881,7 @@
   ],
   "outbox_comment_id": 5848965032,
   "editorial_apply_commit": "76e7e728a222ee21fee34fda64da43cfd7ecd90a",
-  "finished_at": null,
+  "finished_at": "2026-11-10T18:31:00+01:00",
   "refresh_workflow_run_id": 42839275825,
   "refresh_conclusion": "success"
 }
