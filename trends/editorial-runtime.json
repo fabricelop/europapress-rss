@@ -60,27 +60,27 @@
   "error": null,
   "activity": "Persistiendo Cercanías",
   "last_started_at": "2026-11-10T12:05:29+01:00",
-  "last_completed_at": "2026-11-10T11:58:56+01:00",
+  "last_completed_at": "2026-11-10T12:06:30+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794306091211-manual",
+    "run_id": "tr-1794308370806-manual",
     "status": "DONE",
-    "started_at": "2026-11-10T11:22:00+01:00",
-    "finished_at": "2026-11-10T11:28:00+01:00",
-    "at": "2026-11-10T11:28:00+01:00",
+    "started_at": "2026-11-10T12:00:00+01:00",
+    "finished_at": "2026-11-10T12:06:30+01:00",
+    "at": "2026-11-10T12:06:30+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 3,
-      "observed": 3,
-      "closed": 3,
-      "explained": 1,
+      "attempted": 6,
+      "observed": 6,
+      "closed": 6,
+      "explained": 5,
       "problematic": 0,
-      "updates": 1,
-      "review_completed_no_distinct_event": 0,
-      "maintenance_reviews": 2,
+      "updates": 0,
+      "review_completed_no_distinct_event": 1,
+      "maintenance_reviews": 1,
       "unchanged_reviews": 1,
       "continuity_updates": 0,
-      "distinct_updates": 1,
+      "distinct_updates": 0,
       "stale_reviews": 0,
       "unverified_reviews": 0,
       "anticipation_reviews": 0,
@@ -92,41 +92,87 @@
       "image_outbox_created": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 0
+      "concurrent_convergence": 5
     },
     "processed_ids": [
-      "red-review-e90d4fe55caa6ee84529",
-      "red-review-d235e334431eb57c64e1",
-      "5fd14e2dd9b6"
+      "red-review-616f03ec3b4930b9a6b4",
+      "689a0c2a4d65",
+      "b7bcf914927c",
+      "ec3b92ed181d",
+      "a159cc7909f0",
+      "bcc4155d44b1"
     ],
-    "converged_ids": [],
+    "converged_ids": [
+      "689a0c2a4d65",
+      "b7bcf914927c",
+      "ec3b92ed181d",
+      "a159cc7909f0",
+      "bcc4155d44b1"
+    ],
     "outcomes": [
       {
-        "id": "red-review-e90d4fe55caa6ee84529",
+        "id": "red-review-616f03ec3b4930b9a6b4",
         "revision": 0,
-        "name": "Revisar novedades: Almudena",
+        "name": "Revisar novedades: #FelizMartes",
         "outcome": "unchanged",
-        "applied": true
-      },
-      {
-        "id": "red-review-d235e334431eb57c64e1",
-        "revision": 0,
-        "name": "Revisar novedades: Oviedo",
-        "outcome": "distinct_update",
         "applied": true,
-        "created_id": "trend-update-522f1e69192833a122c1"
+        "outbox_commit": "29973bbd8ed09de1630d0af5913c1c00ee55d8fb",
+        "apply_commit": "0f7bc60e1fe5a95fea849d1b0d2046e1940286c4"
       },
       {
-        "id": "5fd14e2dd9b6",
+        "id": "689a0c2a4d65",
         "revision": 0,
-        "name": "anoche",
-        "outcome": "explained_uncertain_cause",
-        "applied": true
+        "name": "#simyoGooglePixelMola",
+        "outcome": "explained_cause_unconfirmed",
+        "applied": true,
+        "via": "concurrent_convergence",
+        "outbox_commit": "4f059557861ab833f8c264b90ad3afa568dc8f10",
+        "apply_commit": "1ee22981abbf26b5dc30bb0837da4757772de0f2"
+      },
+      {
+        "id": "b7bcf914927c",
+        "revision": 0,
+        "name": "Villafría",
+        "outcome": "explained",
+        "applied": true,
+        "via": "concurrent_convergence",
+        "outbox_commit": "4e0cf497ec556568eda93cbf694d13fc8843c10d",
+        "apply_commit": "1ee22981abbf26b5dc30bb0837da4757772de0f2"
+      },
+      {
+        "id": "ec3b92ed181d",
+        "revision": 0,
+        "name": "Ione",
+        "outcome": "explained_cause_unconfirmed",
+        "applied": true,
+        "via": "concurrent_convergence",
+        "outbox_commit": "50cba8054c1dcf550be7daec58b7e4424c200099",
+        "apply_commit": "1ee22981abbf26b5dc30bb0837da4757772de0f2"
+      },
+      {
+        "id": "a159cc7909f0",
+        "revision": 0,
+        "name": "Ozores",
+        "outcome": "explained_cause_unconfirmed",
+        "applied": true,
+        "via": "concurrent_convergence",
+        "outbox_commit": "1e021406650c485289d9c8ba0608ae7432e9aa4c",
+        "apply_commit": "d2797768b84d2d81976bf6d1272785115d41b7c3"
+      },
+      {
+        "id": "bcc4155d44b1",
+        "revision": 0,
+        "name": "Cercanías",
+        "outcome": "explained",
+        "applied": true,
+        "via": "concurrent_convergence",
+        "outbox_commit": "c023058b2cd25fe4e6fd799b33c40ddf4547483a",
+        "apply_commit": "d2797768b84d2d81976bf6d1272785115d41b7c3"
       }
     ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-1794306091211-manual cerrada 3/3: Almudena sin novedad sustancial; Oviedo con episodio materialmente distinto por la explosión de hoy; anoche cerrada con causa no confirmada tras verificar su presencia actual en el Top de España. Barrera JIT final: editorial-queue=0 y mobile-decisions sin trabajo activo. ImageGen=0; publicaciones=0."
+    "message": "Pasada tr-1794308370806-manual cerrada 6/6 por convergencia concurrente verificada. #FelizMartes quedó unchanged tras corregir una salida de mantenimiento rechazada; #simyoGooglePixelMola, Villafría, Ione, Ozores y Cercanías quedaron explicadas y aplicadas por los aplicadores concurrentes. Barrera JIT final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
   "message": "Cercanías r0 validada JIT. La huelga de maquinistas de Renfe está provocando suspensiones y fuertes afectaciones en Cercanías Madrid, con denuncia de incumplimiento de servicios mínimos. ImageGen=0; publicaciones=0.",
   "history": [
@@ -3559,6 +3605,118 @@
       "trend_id": "bcc4155d44b1",
       "title": "Cercanías",
       "message": "Cercanías r0 validada JIT. La huelga de maquinistas de Renfe está provocando suspensiones y fuertes afectaciones en Cercanías Madrid, con denuncia de incumplimiento de servicios mínimos. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794308370806-manual",
+      "status": "DONE",
+      "started_at": "2026-11-10T12:00:00+01:00",
+      "finished_at": "2026-11-10T12:06:30+01:00",
+      "at": "2026-11-10T12:06:30+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 6,
+        "observed": 6,
+        "closed": 6,
+        "explained": 5,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 1,
+        "maintenance_reviews": 1,
+        "unchanged_reviews": 1,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 5
+      },
+      "processed_ids": [
+        "red-review-616f03ec3b4930b9a6b4",
+        "689a0c2a4d65",
+        "b7bcf914927c",
+        "ec3b92ed181d",
+        "a159cc7909f0",
+        "bcc4155d44b1"
+      ],
+      "converged_ids": [
+        "689a0c2a4d65",
+        "b7bcf914927c",
+        "ec3b92ed181d",
+        "a159cc7909f0",
+        "bcc4155d44b1"
+      ],
+      "outcomes": [
+        {
+          "id": "red-review-616f03ec3b4930b9a6b4",
+          "revision": 0,
+          "name": "Revisar novedades: #FelizMartes",
+          "outcome": "unchanged",
+          "applied": true,
+          "outbox_commit": "29973bbd8ed09de1630d0af5913c1c00ee55d8fb",
+          "apply_commit": "0f7bc60e1fe5a95fea849d1b0d2046e1940286c4"
+        },
+        {
+          "id": "689a0c2a4d65",
+          "revision": 0,
+          "name": "#simyoGooglePixelMola",
+          "outcome": "explained_cause_unconfirmed",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "outbox_commit": "4f059557861ab833f8c264b90ad3afa568dc8f10",
+          "apply_commit": "1ee22981abbf26b5dc30bb0837da4757772de0f2"
+        },
+        {
+          "id": "b7bcf914927c",
+          "revision": 0,
+          "name": "Villafría",
+          "outcome": "explained",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "outbox_commit": "4e0cf497ec556568eda93cbf694d13fc8843c10d",
+          "apply_commit": "1ee22981abbf26b5dc30bb0837da4757772de0f2"
+        },
+        {
+          "id": "ec3b92ed181d",
+          "revision": 0,
+          "name": "Ione",
+          "outcome": "explained_cause_unconfirmed",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "outbox_commit": "50cba8054c1dcf550be7daec58b7e4424c200099",
+          "apply_commit": "1ee22981abbf26b5dc30bb0837da4757772de0f2"
+        },
+        {
+          "id": "a159cc7909f0",
+          "revision": 0,
+          "name": "Ozores",
+          "outcome": "explained_cause_unconfirmed",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "outbox_commit": "1e021406650c485289d9c8ba0608ae7432e9aa4c",
+          "apply_commit": "d2797768b84d2d81976bf6d1272785115d41b7c3"
+        },
+        {
+          "id": "bcc4155d44b1",
+          "revision": 0,
+          "name": "Cercanías",
+          "outcome": "explained",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "outbox_commit": "c023058b2cd25fe4e6fd799b33c40ddf4547483a",
+          "apply_commit": "d2797768b84d2d81976bf6d1272785115d41b7c3"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-1794308370806-manual cerrada 6/6 por convergencia concurrente verificada. #FelizMartes quedó unchanged tras corregir una salida de mantenimiento rechazada; #simyoGooglePixelMola, Villafría, Ione, Ozores y Cercanías quedaron explicadas y aplicadas por los aplicadores concurrentes. Barrera JIT final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "current_item": null,
