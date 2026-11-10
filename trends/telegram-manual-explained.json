@@ -14675,15 +14675,15 @@
       "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
       "published_at": "2026-10-29T21:02:02.584861+00:00",
       "decision_source": "ttactualidad_direct",
-      "red_review_checked_at": "2026-11-09T18:17:20.706143+00:00",
-      "red_review_outcome": "unchanged",
-      "red_review_reason": "El 9 de noviembre sí hubo un episodio posterior e independiente (cese de Julián Calero y fichaje de Raúl González hasta junio de 2028), pero ya fue materializado hoy como ficha independiente 2cf7851e047a y el editor la dejó en estado deleted. Esta revisión no debe recrear ese episodio ni alterar la ficha histórica publicada del 29 de octubre.",
+      "red_review_checked_at": "2026-11-10T10:24:58.323273+00:00",
+      "red_review_outcome": "updated",
+      "red_review_reason": "Hay un episodio materialmente distinto del que explicaba la ficha anterior: el 10 de noviembre Oviedo vuelve a estar en la actualidad por una explosión tras un tiroteo, con un policía fallecido y otro agente TEDAX herido de gravedad.",
       "red_review_sources": [
         {
-          "url": "https://www.realoviedo.es/noticias/comunicado-oficial-julian-calero"
+          "url": "https://www.europapress.es/asturias/noticia-policia-fallecido-otro-herido-grave-explosion-artefacto-oviedo-20261110100213.html"
         },
         {
-          "url": "https://www.rtve.es/deportes/20261109/raul-gonzalez-nuevo-entrenador-real-oviedo-sustitucion-julian-calero/17306298.shtml"
+          "url": "https://efe.com/espana/2026-11-10/tiroteo-exploxion-oviedo/"
         }
       ]
     },
@@ -92204,15 +92204,15 @@
       },
       "published_at": "2026-11-09T08:46:21.481747+00:00",
       "decision_source": "ttactualidad_direct",
-      "red_review_checked_at": "2026-11-09T14:35:35.689172+00:00",
-      "red_review_outcome": "continuity",
-      "red_review_reason": "Hay una novedad sustancial dentro del mismo episodio de la festividad de la Almudena: la lluvia impidió la procesión prevista este 9 de noviembre. Es continuidad de la misma celebración, no un episodio independiente.",
+      "red_review_checked_at": "2026-11-10T10:24:58.323273+00:00",
+      "red_review_outcome": "unchanged",
+      "red_review_reason": "No hay novedad sustancial posterior a la explicación vigente: las informaciones localizadas siguen describiendo la festividad del 9 de noviembre y la suspensión de la procesión exterior por la lluvia, ya incorporada en el texto.",
       "red_review_sources": [
         {
-          "url": "https://www.europapress.es/madrid/noticia-lluvia-impide-procesion-almudena-cobo-anima-llevar-virgen-madrid-corazon-20261109122843.html"
+          "url": "https://www.telemadrid.es/noticias/madrid/lluvia-impide-procesion-almudena-transcurra_1_2803128.html"
         },
         {
-          "url": "https://diario.madrid.es/blog/2026/11/05/fiesta-de-la-almudena-2026-programa-actos-actividades/"
+          "url": "https://gacetinmadrid.com/2026/11/09/lluvia-obliga-suspender-procesion-virgen-almudena-madrid/"
         }
       ],
       "red_review_previous_explanation": "TT#12 Almudena es tendencia porque Madrid celebra hoy a su patrona, la Virgen de la Almudena, con misa en la catedral y actos populares en Plaza Mayor.\n#Madrid #VirgenDeLaAlmudena\n🌶️ La capital tiene hoy nombre propio y hasta postre.",
@@ -99565,8 +99565,44 @@
         "rights_status": "unverified",
         "generated": false
       }
+    },
+    {
+      "id": "trend-update-522f1e69192833a122c1",
+      "revision": 0,
+      "name": "Oviedo",
+      "rank": 3,
+      "status": "explained",
+      "requested_at": "2026-11-10T10:24:58.323273+00:00",
+      "explained_at": "2026-11-10T10:24:58.323273+00:00",
+      "updated_at": "2026-11-10T10:24:58.323273+00:00",
+      "explanation": "TT#3 Oviedo es tendencia por la explosión de un artefacto tras un tiroteo: murió un subinspector de Guías Caninos y un agente TEDAX resultó herido de gravedad.\n#PolicíaNacional #TEDAX",
+      "closer_text": "",
+      "verification_sources": [
+        {
+          "url": "https://www.europapress.es/asturias/noticia-policia-fallecido-otro-herido-grave-explosion-artefacto-oviedo-20261110100213.html"
+        },
+        {
+          "url": "https://efe.com/espana/2026-11-10/tiroteo-exploxion-oviedo/"
+        }
+      ],
+      "originated_from_prior_id": "1cb3ab9f8367",
+      "trend_names": [
+        "Oviedo"
+      ],
+      "red_review_job_id": "red-review-d235e334431eb57c64e1",
+      "continuity_update": false,
+      "distinct_episode": true,
+      "new_facts": "El 10 de noviembre, tras un tiroteo en Villafría/Otero, explotó un artefacto localizado en una mochila; murió un subinspector de Guías Caninos y un agente TEDAX resultó herido de gravedad.",
+      "material_event_key": "oviedo-explosion-artefacto-policia-2026-11-10",
+      "material_event_at": "2026-11-10T08:45:00+01:00",
+      "material_change_verified": true,
+      "with_image": true,
+      "disable_ai_image": false,
+      "editorial_grouping_state": "pending",
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "pending"
     }
   ],
-  "updated_at": "2026-11-10T10:24:50.639935Z",
+  "updated_at": "2026-11-10T10:24:58.323273+00:00",
   "count": 1711
 }
