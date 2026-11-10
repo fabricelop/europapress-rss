@@ -8,27 +8,43 @@
   "command_id": "tr-1794353226267-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "verifying",
   "started_at": "2026-11-11T00:28:00+01:00",
-  "updated_at": "2026-11-11T00:28:00+01:00",
-  "current": 0,
+  "updated_at": "2026-11-11T00:30:30+01:00",
+  "current": 2,
   "total": 2,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
   "queue_complete": false,
   "processed_ids": [],
-  "converged_ids": [],
-  "remaining_ids": [
+  "converged_ids": [
     "red-review-949e8e88fce9d415e5c6",
     "red-review-ccb2ba560eecf7c893ea"
   ],
-  "remaining_active_ids": [
-    "red-review-949e8e88fce9d415e5c6",
-    "red-review-ccb2ba560eecf7c893ea"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": null,
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "red-review-949e8e88fce9d415e5c6",
+      "revision": 0,
+      "name": "Revisar novedades: #HuelgaGeneral",
+      "outcome": "continuity_update",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "source_id": "4f1dae5df224"
+    },
+    {
+      "id": "red-review-ccb2ba560eecf7c893ea",
+      "revision": 0,
+      "name": "Revisar novedades: Charles",
+      "outcome": "continuity_update",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "source_id": "c43139196d57"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -469,6 +485,11 @@
       "at": "2026-11-11T00:28:00+01:00",
       "phase": "preparing",
       "message": "Pasada tr-1794353226267-manual RUNNING. Cola autoritativa JIT=2: revisiones rojas de #HuelgaGeneral y Charles r0; validación ID+revisión antes de cada tratamiento. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-11T00:30:30+01:00",
+      "phase": "verifying",
+      "message": "Las dos revisiones rojas convergieron mientras esta pasada revalidaba main: #HuelgaGeneral y Charles quedaron actualizadas en continuidad, con mismo ID/revisión/explained_at y sin nueva ficha. Verificando barrera final. ImageGen=0; publicaciones=0."
     }
   ],
   "last_started_at": "2026-11-11T00:28:00+01:00",
@@ -560,7 +581,7 @@
     "incidents": [],
     "message": "Pasada tr-autoguard-1794352865 cerrada 5/5. Cinco revisiones r0 aplicadas y verificadas en requests.json y telegram-manual-explained.json; #codigo10 se cerró como episodio nuevo verificado y Vagos con causa no confirmada. Barrera final main: editorial-queue=0 y requests/mobile sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794353226267-manual RUNNING. Cola autoritativa JIT=2: revisiones rojas de #HuelgaGeneral y Charles r0; validación ID+revisión antes de cada tratamiento. ImageGen=0; publicaciones=0.",
+  "message": "Las dos revisiones rojas convergieron mientras esta pasada revalidaba main: #HuelgaGeneral y Charles quedaron actualizadas en continuidad, con mismo ID/revisión/explained_at y sin nueva ficha. Verificando barrera final. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
