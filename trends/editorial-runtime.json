@@ -7,27 +7,28 @@
   "previous_run_id": "tr-1794348805915-manual",
   "command_id": "tr-1794349301598-manual",
   "source": "chat",
-  "status": "success",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-10T23:22:00+01:00",
-  "updated_at": "2026-11-10T23:28:18+01:00",
-  "current": 1,
+  "updated_at": "2026-11-10T23:29:27+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "0faac9574459",
-  "title": "Ada Colau",
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
-  "processed_ids": [
+  "processed_ids": [],
+  "converged_ids": [
+    "60c664dd6336",
     "0faac9574459"
   ],
-  "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 2,
     "observed": 2,
-    "closed": 0,
-    "explained": 0,
+    "closed": 2,
+    "explained": 2,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
@@ -40,15 +41,34 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 2,
-    "rewrite_pending_remaining": 2,
+    "queue_remaining": 0,
+    "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 2
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "60c664dd6336",
+      "revision": 0,
+      "name": "Hugo Duro",
+      "outcome": "explained",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "apply_commit": "8046c636ec22a84f69b40d962a2999770d63a275"
+    },
+    {
+      "id": "0faac9574459",
+      "revision": 0,
+      "name": "Ada Colau",
+      "outcome": "explained",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "apply_commit": "012e53349fbddccadebe5cde7f1d20a26aacd7dc"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -467,23 +487,23 @@
     }
   ],
   "last_started_at": "2026-11-10T23:28:17+01:00",
-  "last_completed_at": "2026-11-10T23:28:18+01:00",
+  "last_completed_at": "2026-11-10T23:29:27+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794347693134-manual",
+    "run_id": "tr-1794349301598-manual",
     "status": "DONE",
-    "started_at": "2026-11-10T23:06:00+01:00",
-    "finished_at": "2026-11-10T23:14:00+01:00",
-    "at": "2026-11-10T23:14:00+01:00",
+    "started_at": "2026-11-10T23:22:00+01:00",
+    "finished_at": "2026-11-10T23:29:27+01:00",
+    "at": "2026-11-10T23:29:27+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 10,
-      "observed": 10,
-      "closed": 10,
-      "explained": 8,
+      "attempted": 2,
+      "observed": 2,
+      "closed": 2,
+      "explained": 2,
       "problematic": 0,
       "updates": 0,
-      "review_completed_no_distinct_event": 1,
+      "review_completed_no_distinct_event": 0,
       "maintenance_reviews": 0,
       "unchanged_reviews": 0,
       "continuity_updates": 0,
@@ -499,110 +519,38 @@
       "image_outbox_created": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 1
+      "concurrent_convergence": 2
     },
-    "processed_ids": [
-      "94fdcfb9c767",
-      "b0e3ee21773e",
-      "a5228a344f9b",
-      "9926d395c67f",
-      "2ec7baae881f",
-      "8339a494972f",
-      "4e9fca44499f",
-      "ba6d7fc50f9a",
-      "081e4f9cbc10"
-    ],
+    "processed_ids": [],
     "converged_ids": [
-      "36a6f15af1f8"
+      "60c664dd6336",
+      "0faac9574459"
     ],
     "outcomes": [
       {
-        "id": "94fdcfb9c767",
+        "id": "60c664dd6336",
         "revision": 0,
-        "name": "#ColauEnLaRevuelta",
+        "name": "Hugo Duro",
         "outcome": "explained",
         "applied": true,
-        "apply_commit": "dcc51b0efc41605c711efb66b314a667e26e9c5f"
+        "via": "concurrent_convergence",
+        "apply_commit": "8046c636ec22a84f69b40d962a2999770d63a275"
       },
       {
-        "id": "36a6f15af1f8",
+        "id": "0faac9574459",
         "revision": 0,
         "name": "Ada Colau",
-        "outcome": "converged_jit",
-        "applied": false,
-        "via": "queue_refresh",
-        "note": "La relectura JIT posterior encontró la revisión fuera de la cola activa; no se sobrescribió."
-      },
-      {
-        "id": "b0e3ee21773e",
-        "revision": 0,
-        "name": "#HuelgaGeneral",
-        "outcome": "review_completed_no_distinct_event",
-        "applied": true,
-        "apply_commit": "dcc51b0efc41605c711efb66b314a667e26e9c5f"
-      },
-      {
-        "id": "a5228a344f9b",
-        "revision": 0,
-        "name": "#CanYamanEH",
         "outcome": "explained",
         "applied": true,
-        "apply_commit": "dcc51b0efc41605c711efb66b314a667e26e9c5f"
-      },
-      {
-        "id": "9926d395c67f",
-        "revision": 0,
-        "name": "#FirstDates10N",
-        "outcome": "explained",
-        "applied": true,
-        "apply_commit": "dcc51b0efc41605c711efb66b314a667e26e9c5f"
-      },
-      {
-        "id": "2ec7baae881f",
-        "revision": 0,
-        "name": "Luzon",
-        "outcome": "explained_uncertain_trigger",
-        "applied": true,
-        "apply_commit": "dcc51b0efc41605c711efb66b314a667e26e9c5f"
-      },
-      {
-        "id": "8339a494972f",
-        "revision": 0,
-        "name": "Jorge Ponce",
-        "outcome": "explained",
-        "applied": true,
-        "apply_commit": "dcc51b0efc41605c711efb66b314a667e26e9c5f"
-      },
-      {
-        "id": "4e9fca44499f",
-        "revision": 0,
-        "name": "Houellebecq",
-        "outcome": "explained",
-        "applied": true,
-        "apply_commit": "dcc51b0efc41605c711efb66b314a667e26e9c5f"
-      },
-      {
-        "id": "ba6d7fc50f9a",
-        "revision": 0,
-        "name": "Gerona",
-        "outcome": "explained",
-        "applied": true,
-        "apply_commit": "dcc51b0efc41605c711efb66b314a667e26e9c5f"
-      },
-      {
-        "id": "081e4f9cbc10",
-        "revision": 0,
-        "name": "La España",
-        "outcome": "explained_uncertain_trigger",
-        "applied": true,
-        "apply_commit": "dcc51b0efc41605c711efb66b314a667e26e9c5f"
+        "via": "concurrent_convergence",
+        "apply_commit": "012e53349fbddccadebe5cde7f1d20a26aacd7dc"
       }
     ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-1794347693134-manual cerrada 10/10. Ocho explicaciones nuevas aplicadas; #HuelgaGeneral revisado como continuidad sin episodio material distinto; Ada Colau convergió fuera de la cola antes de persistir. Cola final=0 y sin reexplicaciones/rewrite_pending. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "message": "Pasada tr-1794349301598-manual cerrada 2/2 por convergencia JIT. Hugo Duro r0 y Ada Colau r0 quedaron aplicados como explained en main; cola final=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Investigando Hugo Duro: revalidación JIT y contraste de fuentes actuales.",
+  "message": "Pasada tr-1794349301598-manual cerrada 2/2 por convergencia JIT. Hugo Duro r0 y Ada Colau r0 quedaron aplicados como explained en main; cola final=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
@@ -7076,18 +7024,79 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-1794347693134-manual cerrada 1/1 por convergencia JIT. La revisión de Carzzy fue aplicada por la ejecución concurrente sobre el mismo job: actualización de continuidad del mercado LEC, sin episodio nuevo, sin imagen y sin publicación. Barrera final: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain activos."
+    },
+    {
+      "run_id": "tr-1794349301598-manual",
+      "status": "DONE",
+      "started_at": "2026-11-10T23:22:00+01:00",
+      "finished_at": "2026-11-10T23:29:27+01:00",
+      "at": "2026-11-10T23:29:27+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 2,
+        "observed": 2,
+        "closed": 2,
+        "explained": 2,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 0,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 2
+      },
+      "processed_ids": [],
+      "converged_ids": [
+        "60c664dd6336",
+        "0faac9574459"
+      ],
+      "outcomes": [
+        {
+          "id": "60c664dd6336",
+          "revision": 0,
+          "name": "Hugo Duro",
+          "outcome": "explained",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "apply_commit": "8046c636ec22a84f69b40d962a2999770d63a275"
+        },
+        {
+          "id": "0faac9574459",
+          "revision": 0,
+          "name": "Ada Colau",
+          "outcome": "explained",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "apply_commit": "012e53349fbddccadebe5cde7f1d20a26aacd7dc"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-1794349301598-manual cerrada 2/2 por convergencia JIT. Hugo Duro r0 y Ada Colau r0 quedaron aplicados como explained en main; cola final=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "current_item": null,
   "withdrawn_ids": [
     "ae7f066f3c94"
   ],
-  "last_finished_at": "2026-11-10T22:41:10+01:00",
-  "last_revalidated_at": "2026-11-10T22:41:10+01:00",
+  "last_finished_at": "2026-11-10T23:29:27+01:00",
+  "last_revalidated_at": "2026-11-10T23:29:27+01:00",
   "last_revalidation": {
-    "queue_sha": "20ca61cecf7ece63bb8bd69b952f9a5bcd5d3737",
-    "queue_updated_at": "2026-11-10T22:40:58+01:00",
-    "queue_count": 0
+    "queue_count": 0,
+    "mobile_active_count": 0,
+    "at": "2026-11-10T23:29:27+01:00"
   },
   "prior_runtime_observed": {
     "run_id": "tr-20261110T131000-manual",
@@ -8792,6 +8801,67 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-1794346800000-manual cerrada 0/0 contra main. Relectura JIT final: editorial-queue=0 (updated_at 2026-11-10T22:40:58+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. Captura reciente recalculada a las 22:40:53+01:00; no había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794349301598-manual",
+      "status": "DONE",
+      "started_at": "2026-11-10T23:22:00+01:00",
+      "finished_at": "2026-11-10T23:29:27+01:00",
+      "at": "2026-11-10T23:29:27+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 2,
+        "observed": 2,
+        "closed": 2,
+        "explained": 2,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 0,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 2
+      },
+      "processed_ids": [],
+      "converged_ids": [
+        "60c664dd6336",
+        "0faac9574459"
+      ],
+      "outcomes": [
+        {
+          "id": "60c664dd6336",
+          "revision": 0,
+          "name": "Hugo Duro",
+          "outcome": "explained",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "apply_commit": "8046c636ec22a84f69b40d962a2999770d63a275"
+        },
+        {
+          "id": "0faac9574459",
+          "revision": 0,
+          "name": "Ada Colau",
+          "outcome": "explained",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "apply_commit": "012e53349fbddccadebe5cde7f1d20a26aacd7dc"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-1794349301598-manual cerrada 2/2 por convergencia JIT. Hugo Duro r0 y Ada Colau r0 quedaron aplicados como explained en main; cola final=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "outbox_comment_id": 6721989528,
@@ -8802,6 +8872,6 @@
     "61f2f146a926eae3568074e8e0d9947db37bc9f5",
     "5b26ed05be444fecd3e641d64eae7eba5201f9b0"
   ],
-  "finished_at": "2026-11-10T23:17:30+01:00",
+  "finished_at": "2026-11-10T23:29:27+01:00",
   "outbox_commit": "66c7c23be5c4b51ac802b4e5cc8cbd6c67d69ea4"
 }
