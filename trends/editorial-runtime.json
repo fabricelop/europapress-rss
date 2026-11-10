@@ -3,19 +3,19 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261110T1055-manual",
-  "previous_run_id": "tr-1794303125782-manual",
-  "command_id": "tr-20261110T1055-manual",
+  "run_id": "tr-20261110T1110-manual",
+  "previous_run_id": "tr-20261110T1055-manual",
+  "command_id": "tr-20261110T1110-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-10T10:55:00+01:00",
-  "updated_at": "2026-11-10T10:56:00+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-10T11:10:00+01:00",
+  "updated_at": "2026-11-10T11:10:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -50,8 +50,8 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Cierre 0/0 verificado contra main",
-  "last_started_at": "2026-11-10T10:55:00+01:00",
+  "activity": "Revalidando cola autoritativa y refrescando Top 30",
+  "last_started_at": "2026-11-10T11:10:00+01:00",
   "last_completed_at": "2026-11-10T10:56:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -93,7 +93,7 @@
     "incidents": [],
     "message": "Pasada tr-20261110T1055-manual cerrada 0/0 contra main. Barrera JIT final: editorial-queue=0 (updated_at 2026-11-10T10:52:52+01:00) y mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-20261110T1055-manual cerrada 0/0 contra main. Barrera JIT final: editorial-queue=0 (updated_at 2026-11-10T10:52:52+01:00) y mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada tr-20261110T1110-manual RUNNING desde chat. Relectura JIT inicial: editorial-queue observada vacía a las 11:01; se fuerza refresco del Top 30 antes de cerrar. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
@@ -3094,6 +3094,15 @@
       "converged_ids": [],
       "outcomes": [],
       "message": "Pasada tr-20261110T1055-manual cerrada 0/0 contra main. Barrera JIT final: editorial-queue=0 (updated_at 2026-11-10T10:52:52+01:00) y mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-20261110T1110-manual",
+      "status": "RUNNING",
+      "at": "2026-11-10T11:10:00+01:00",
+      "phase": "preparing",
+      "current": 0,
+      "total": 0,
+      "message": "Pasada tr-20261110T1110-manual RUNNING desde chat. Relectura JIT inicial: editorial-queue observada vacía a las 11:01; se fuerza refresco del Top 30 antes de cerrar. ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": null,
@@ -3992,7 +4001,7 @@
       "message": "Pasada tr-1794298631263-manual cerrada 0/0 contra main. Barrera JIT final: editorial-queue=0 (updated_at 2026-11-10T10:01:53+01:00) y búsqueda dirigida sin preparing/update/rewrite_pending/reexplain activos; mobile-decisions sin trabajo editorial activo. Últimos resultados de mantenimiento revisados: Barça y #FelizMartes permanecen unchanged desde la pasada 08:55. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
-  "outbox_comment_id": 6755274210,
+  "outbox_comment_id": 5848965032,
   "editorial_apply_commit": "20efa88f30f917a6ad993ba5fd89734c06393ce4",
-  "finished_at": "2026-11-10T10:56:00+01:00"
+  "finished_at": null
 }
