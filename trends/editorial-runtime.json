@@ -7,10 +7,10 @@
   "previous_run_id": "tr-1794348805915-manual",
   "command_id": "tr-1794349301598-manual",
   "source": "chat",
-  "status": "waiting",
-  "phase": "persisting",
+  "status": "RUNNING",
+  "phase": "investigating",
   "started_at": "2026-11-10T23:22:00+01:00",
-  "updated_at": "2026-11-10T23:25:46+01:00",
+  "updated_at": "2026-11-10T23:27:10+01:00",
   "current": 0,
   "total": 2,
   "trend_id": "60c664dd6336",
@@ -21,9 +21,11 @@
   ],
   "converged_ids": [],
   "remaining_ids": [
+    "60c664dd6336",
     "0faac9574459"
   ],
   "remaining_active_ids": [
+    "60c664dd6336",
     "0faac9574459"
   ],
   "remaining_problematic_ids": [],
@@ -571,7 +573,7 @@
     "incidents": [],
     "message": "Pasada tr-1794347693134-manual cerrada 10/10. Ocho explicaciones nuevas aplicadas; #HuelgaGeneral revisado como continuidad sin episodio material distinto; Ada Colau convergió fuera de la cola antes de persistir. Cola final=0 y sin reexplicaciones/rewrite_pending. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794347700000-manual cerrada 1/1. Carzzy queda actualizada en continuidad: rumor del 10/11 más concreto hacia Movistar KOI, aún sin fichaje confirmado; mismo ID/revisión/explained_at, sin nueva ficha ni imagen. Barrera final: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0.",
+  "message": "Investigando Hugo Duro: revalidación JIT y contraste de fuentes actuales.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
