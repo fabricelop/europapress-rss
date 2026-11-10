@@ -3,20 +3,20 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261110T032500-manual",
-  "previous_run_id": "tr-20261110T031000-manual",
-  "command_id": "tr-20261110T032500-manual",
+  "run_id": "tr-20261110T034000-manual",
+  "previous_run_id": "tr-20261110T032500-manual",
+  "command_id": "tr-20261110T034000-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-10T03:25:00+01:00",
-  "updated_at": "2026-11-10T03:26:00+01:00",
-  "finished_at": "2026-11-10T03:26:00+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-10T03:40:00+01:00",
+  "updated_at": "2026-11-10T03:40:00+01:00",
+  "finished_at": null,
   "current": 0,
   "total": 0,
   "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "title": "Pasada editorial TTendencias",
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -89,7 +89,7 @@
     "incidents": [],
     "message": "Pasada tr-20261110T025500-manual cerrada 0/0 tras relectura JIT de main. Snapshot Top 30 capturado 2026-11-10T02:50:52+01:00; editorial-queue actualizada 2026-11-10T02:50:57+01:00 y vacía. Barrera final: mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial vigente que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "last_started_at": "2026-11-10T03:25:00+01:00",
+  "last_started_at": "2026-11-10T03:40:00+01:00",
   "last_completed_at": "2026-11-10T03:13:37+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -130,7 +130,7 @@
     "incidents": [],
     "message": "Pasada tr-20261110T032500-manual cerrada 0/0 tras relectura JIT de main. Snapshot Top 30 capturado 2026-11-10T03:20:51+01:00; editorial-queue actualizada 2026-11-10T03:20:56+01:00 y vacía. Barrera final: sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-20261110T032500-manual cerrada 0/0 tras relectura JIT de main. Snapshot Top 30 capturado 2026-11-10T03:20:51+01:00; editorial-queue actualizada 2026-11-10T03:20:56+01:00 y vacía. Barrera final: sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada tr-20261110T034000-manual RUNNING desde chat. Se relee main con barrera JIT; snapshot reciente y cola autoritativa se validan antes de cerrar. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794234841273-manual",
@@ -3173,6 +3173,13 @@
       "incidents": [],
       "superseded_by": "tr-20261110T031000-manual",
       "message": "Autoguard satisfecho por convergencia JIT con la pasada manual ya en curso: Espinosa r0 fue revalidada y quedó aplicada en main por 5311a3d99893c024fe4fec81081c06e65ee321a1. Barrera final: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0. La telemetría canónica se conserva en tr-20261110T031000-manual."
+    },
+    {
+      "run_id": "tr-20261110T034000-manual",
+      "status": "RUNNING",
+      "at": "2026-11-10T03:40:00+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-20261110T034000-manual RUNNING desde chat. Se relee main con barrera JIT; snapshot reciente y cola autoritativa se validan antes de cerrar. ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": null,
