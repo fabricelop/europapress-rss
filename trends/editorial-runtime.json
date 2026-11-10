@@ -3,28 +3,27 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794337800000-manual",
-  "previous_run_id": "tr-1794336900000-manual",
-  "command_id": "tr-1794337800000-manual",
+  "run_id": "tr-1794338110667-manual",
+  "previous_run_id": "tr-1794337800000-manual",
+  "command_id": "tr-1794338110667-manual",
   "source": "chat",
-  "status": "success",
-  "phase": "persisting",
-  "started_at": "2026-11-10T20:10:00+01:00",
-  "updated_at": "2026-11-10T20:14:32+01:00",
+  "status": "RUNNING",
+  "phase": "investigating",
+  "started_at": "2026-11-10T20:17:00+01:00",
+  "updated_at": "2026-11-10T20:17:00+01:00",
   "current": 0,
-  "total": 4,
-  "trend_id": "f4646f4e00c3",
-  "title": "Catedral de Toledo",
-  "queue_complete": true,
-  "processed_ids": [
-    "496f431505e0",
-    "6523d9f6ab30",
-    "e9dda051933d",
-    "f4646f4e00c3"
-  ],
+  "total": 1,
+  "trend_id": "red-review-6e8f56f2fa80797cd60f",
+  "title": "Revisar novedades: Catedral de Toledo",
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-6e8f56f2fa80797cd60f"
+  ],
+  "remaining_active_ids": [
+    "red-review-6e8f56f2fa80797cd60f"
+  ],
   "remaining_problematic_ids": [],
   "summary": null,
   "outcomes": [],
@@ -71,9 +70,16 @@
       "at": "2026-11-10T19:44:44+01:00",
       "phase": "closing",
       "message": "Barrera final verificada: editorial-queue=0; 3/3 cerrados y aplicados. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-10T20:17:00+01:00",
+      "phase": "investigating",
+      "trend_id": "red-review-6e8f56f2fa80797cd60f",
+      "title": "Revisar novedades: Catedral de Toledo",
+      "message": "Revisando novedades de Catedral de Toledo r0: el funeral inicialmente previsto para el 12 fue adelantado al 10 de noviembre y se celebra hoy; verificando continuidad antes de persistir. ImageGen=0; publicaciones=0."
     }
   ],
-  "last_started_at": "2026-11-10T20:14:32+01:00",
+  "last_started_at": "2026-11-10T20:17:00+01:00",
   "last_completed_at": "2026-11-10T20:14:32+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -115,7 +121,7 @@
     "incidents": [],
     "message": "Pasada tr-1794336900000-manual cerrada 0/0 tras barrera JIT. editorial-queue sigue en 0 (updated_at 2026-11-10T19:51:50+01:00); mobile-decisions no contiene preparing/update ni rewrite_pending/reexplain activos y las búsquedas de control no detectan reelaboraciones vigentes. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Investigación cerrada para 4 item(s); persistiendo resultados JIT.",
+  "message": "Revisando novedades de Catedral de Toledo r0: el funeral inicialmente previsto para el 12 fue adelantado al 10 de noviembre y se celebra hoy; verificando continuidad antes de persistir. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
