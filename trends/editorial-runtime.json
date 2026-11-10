@@ -3,19 +3,19 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261110T121000-manual",
-  "previous_run_id": "tr-1794308722039-manual",
-  "command_id": "tr-20261110T121000-manual",
+  "run_id": "tr-20261110T122500-manual",
+  "previous_run_id": "tr-20261110T121000-manual",
+  "command_id": "tr-20261110T122500-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-10T12:10:00+01:00",
-  "updated_at": "2026-11-10T12:10:45+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-10T12:25:00+01:00",
+  "updated_at": "2026-11-10T12:25:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -50,8 +50,8 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Cierre completado",
-  "last_started_at": "2026-11-10T12:10:00+01:00",
+  "activity": "Verificando cola editorial",
+  "last_started_at": "2026-11-10T12:25:00+01:00",
   "last_completed_at": "2026-11-10T12:10:45+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -93,7 +93,7 @@
     "incidents": [],
     "message": "Pasada tr-20261110T121000-manual cerrada 0/0 tras relectura JIT de main. editorial-queue=0 (updated_at 2026-11-10T12:06:16+01:00) y búsqueda recursiva sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos en requests.json, telegram-manual-explained.json ni mobile-decisions.json. No había trabajo editorial vigente que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-20261110T121000-manual cerrada 0/0 tras relectura JIT de main. editorial-queue=0 (updated_at 2026-11-10T12:06:16+01:00) y búsqueda recursiva sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos en requests.json, telegram-manual-explained.json ni mobile-decisions.json. No había trabajo editorial vigente que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada tr-20261110T122500-manual RUNNING. Cola JIT inicial=0; barrera de estado en curso. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
@@ -3837,6 +3837,13 @@
       "processed_ids": [],
       "outcomes": [],
       "message": "Pasada tr-20261110T121000-manual cerrada 0/0 tras relectura JIT de main. editorial-queue=0 (updated_at 2026-11-10T12:06:16+01:00) y búsqueda recursiva sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos en requests.json, telegram-manual-explained.json ni mobile-decisions.json. No había trabajo editorial vigente que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-10T12:25:00+01:00",
+      "phase": "preparing",
+      "trend_id": null,
+      "title": null,
+      "message": "Pasada tr-20261110T122500-manual RUNNING. Relectura JIT inicial: editorial-queue=0; se verifica que no queden preparing/update/rewrite_pending/reexplain/anticipate/review_red activos antes de cerrar. ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": null,
