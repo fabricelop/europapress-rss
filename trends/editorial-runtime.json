@@ -8,14 +8,14 @@
   "command_id": "tr-20261110T021000-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "investigating",
   "started_at": "2026-11-10T02:10:00+01:00",
-  "updated_at": "2026-11-10T02:10:00+01:00",
+  "updated_at": "2026-11-10T02:12:00+01:00",
   "finished_at": null,
   "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": null,
+  "total": 6,
+  "trend_id": "73f7c3a05c38",
+  "title": "neus",
   "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
@@ -67,7 +67,7 @@
     "incidents": [],
     "message": "Pasada tr-20261110T015500-manual cerrada 0/0 tras relectura JIT de main. Snapshot Top 30 capturado 2026-11-10T01:50:51+01:00; editorial-queue actualizada 2026-11-10T01:50:56+01:00 y vacía. Barrera final: requests y mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. Último mantenimiento leído: Supa quedó unverified al no existir confirmación independiente suficiente de un hecho material nuevo. No había trabajo editorial vigente que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-20261110T021000-manual RUNNING desde chat. Revalidando cola autoritativa y barrera JIT en main; ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-20261110T021000-manual: detectadas 6 revisiones nuevas en main; investigación cerrada y comenzando persistencia JIT. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794234841273-manual",
@@ -2797,9 +2797,24 @@
       "at": "2026-11-10T02:10:00+01:00",
       "phase": "preparing",
       "message": "Pasada tr-20261110T021000-manual RUNNING desde chat. Revalidando cola autoritativa y barrera JIT en main; ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-20261110T021000-manual",
+      "status": "RUNNING",
+      "at": "2026-11-10T02:12:00+01:00",
+      "phase": "investigating",
+      "current": 0,
+      "total": 6,
+      "trend_id": "73f7c3a05c38",
+      "title": "neus",
+      "message": "Pasada tr-20261110T021000-manual: detectadas 6 revisiones nuevas en main; investigación cerrada y comenzando persistencia JIT. ImageGen=0; publicaciones=0."
     }
   ],
-  "current_item": null,
+  "current_item": {
+    "id": "73f7c3a05c38",
+    "revision": 0,
+    "name": "neus"
+  },
   "withdrawn_ids": [
     "ae7f066f3c94"
   ],
@@ -3189,6 +3204,17 @@
       "at": "2026-11-10T02:10:00+01:00",
       "phase": "preparing",
       "message": "Pasada tr-20261110T021000-manual RUNNING desde chat. Revalidando cola autoritativa y barrera JIT en main; ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-20261110T021000-manual",
+      "status": "RUNNING",
+      "at": "2026-11-10T02:12:00+01:00",
+      "phase": "investigating",
+      "current": 0,
+      "total": 6,
+      "trend_id": "73f7c3a05c38",
+      "title": "neus",
+      "message": "Pasada tr-20261110T021000-manual: detectadas 6 revisiones nuevas en main; investigación cerrada y comenzando persistencia JIT. ImageGen=0; publicaciones=0."
     }
   ],
   "outbox_comment_id": 6755274210
