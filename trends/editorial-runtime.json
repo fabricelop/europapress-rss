@@ -7,30 +7,25 @@
   "previous_run_id": "tr-20261110T091000-manual",
   "command_id": "tr-1794296877011-manual",
   "source": "chat",
-  "status": "RUNNING",
+  "status": "success",
   "phase": "preparing",
   "started_at": "2026-11-10T09:12:00+01:00",
-  "updated_at": "2026-11-10T09:12:00+01:00",
+  "updated_at": "2026-11-10T09:16:32+01:00",
   "finished_at": null,
   "current": 0,
   "total": 4,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
-  "processed_ids": [],
+  "queue_complete": true,
+  "processed_ids": [
+    "0c05a5576ffe",
+    "3470394c0901",
+    "b24df7160da6",
+    "e55e8b915072"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "b24df7160da6",
-    "e55e8b915072",
-    "0c05a5576ffe",
-    "3470394c0901"
-  ],
-  "remaining_active_ids": [
-    "b24df7160da6",
-    "e55e8b915072",
-    "0c05a5576ffe",
-    "3470394c0901"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 4,
@@ -119,8 +114,8 @@
       "message": "Pasada tr-1794296877011-manual RUNNING. Cola JIT inicial=4: #LaHora10N, San León Magno, Militantes de Núcleo Nacional y reentrada de Renfe. Validación ID/revisión activa; ImageGen=0; publicaciones=0."
     }
   ],
-  "last_started_at": "2026-11-10T09:12:00+01:00",
-  "last_completed_at": "2026-11-10T08:59:00+01:00",
+  "last_started_at": "2026-11-10T09:16:32+01:00",
+  "last_completed_at": "2026-11-10T09:16:32+01:00",
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-20261110T085500-manual",
