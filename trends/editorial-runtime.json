@@ -7,7 +7,7 @@
   "previous_run_id": "tr-20261110T1110-manual",
   "command_id": "tr-1794306091211-manual",
   "source": "chat",
-  "status": "DONE_WITH_INCIDENTS",
+  "status": "DONE",
   "phase": "closing",
   "started_at": "2026-11-10T11:22:00+01:00",
   "updated_at": "2026-11-10T11:28:00+01:00",
@@ -17,12 +17,11 @@
   "title": null,
   "queue_complete": true,
   "processed_ids": [
+    "red-review-e90d4fe55caa6ee84529",
+    "red-review-d235e334431eb57c64e1",
     "5fd14e2dd9b6"
   ],
-  "converged_ids": [
-    "red-review-e90d4fe55caa6ee84529",
-    "red-review-d235e334431eb57c64e1"
-  ],
+  "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
@@ -48,8 +47,8 @@
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 1,
-    "concurrent_convergence": 2
+    "incidents": 0,
+    "concurrent_convergence": 0
   },
   "outcomes": [
     {
@@ -57,10 +56,7 @@
       "revision": 0,
       "name": "Revisar novedades: Almudena",
       "outcome": "unchanged",
-      "applied": true,
-      "via": "concurrent_convergence",
-      "outbox_commit": "9bc5944833348e0d39d50cc72da5555973ac729b",
-      "apply_commit": "6edab0af1e37d6311d19f4b00957c083bf4065b8"
+      "applied": true
     },
     {
       "id": "red-review-d235e334431eb57c64e1",
@@ -68,41 +64,26 @@
       "name": "Revisar novedades: Oviedo",
       "outcome": "distinct_update",
       "applied": true,
-      "via": "concurrent_convergence",
-      "created_id": "trend-update-522f1e69192833a122c1",
-      "material_event_key": "oviedo-explosion-artefacto-policia-2026-11-10",
-      "outbox_commit": "437ae24c23fbca2db852b134a46ffb635d5375c6",
-      "apply_commit": "6edab0af1e37d6311d19f4b00957c083bf4065b8"
+      "created_id": "trend-update-522f1e69192833a122c1"
     },
     {
       "id": "5fd14e2dd9b6",
       "revision": 0,
       "name": "anoche",
-      "outcome": "explained_cause_unconfirmed",
-      "applied": true,
-      "via": "concurrent_convergence",
-      "outbox_commit": "9f3dc9894a6bb9c179acaebc874b70a6761a7f10",
-      "apply_commit": "76e7e728a222ee21fee34fda64da43cfd7ecd90a"
+      "outcome": "explained_uncertain_cause",
+      "applied": true
     }
   ],
-  "incident_count": 1,
-  "incidents": [
-    {
-      "type": "concurrent_refresh_still_in_progress_at_close",
-      "workflow_run_id": 42799051246,
-      "trigger_commit": "291728d0f114c082bd9f6f05705ab1c98064ffa6",
-      "observed_at": "2026-11-10T11:28:00+01:00",
-      "note": "El refresco manual seguía in_progress al cierre y no se usa como prueba de éxito. La barrera JIT posterior a los aplicadores mostró editorial-queue vacía (updated_at 2026-11-10T11:26:56+01:00)."
-    }
-  ],
+  "incident_count": 0,
+  "incidents": [],
   "error": null,
-  "activity": "Pasada editorial cerrada; barrera vacía",
+  "activity": "Pasada editorial completada",
   "last_started_at": "2026-11-10T11:26:56+01:00",
   "last_completed_at": "2026-11-10T11:28:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-1794306091211-manual",
-    "status": "DONE_WITH_INCIDENTS",
+    "status": "DONE",
     "started_at": "2026-11-10T11:22:00+01:00",
     "finished_at": "2026-11-10T11:28:00+01:00",
     "at": "2026-11-10T11:28:00+01:00",
@@ -129,26 +110,22 @@
       "imagegen_calls": 0,
       "image_outbox_created": 0,
       "publications": 0,
-      "incidents": 1,
-      "concurrent_convergence": 2
+      "incidents": 0,
+      "concurrent_convergence": 0
     },
     "processed_ids": [
+      "red-review-e90d4fe55caa6ee84529",
+      "red-review-d235e334431eb57c64e1",
       "5fd14e2dd9b6"
     ],
-    "converged_ids": [
-      "red-review-e90d4fe55caa6ee84529",
-      "red-review-d235e334431eb57c64e1"
-    ],
+    "converged_ids": [],
     "outcomes": [
       {
         "id": "red-review-e90d4fe55caa6ee84529",
         "revision": 0,
         "name": "Revisar novedades: Almudena",
         "outcome": "unchanged",
-        "applied": true,
-        "via": "concurrent_convergence",
-        "outbox_commit": "9bc5944833348e0d39d50cc72da5555973ac729b",
-        "apply_commit": "6edab0af1e37d6311d19f4b00957c083bf4065b8"
+        "applied": true
       },
       {
         "id": "red-review-d235e334431eb57c64e1",
@@ -156,39 +133,21 @@
         "name": "Revisar novedades: Oviedo",
         "outcome": "distinct_update",
         "applied": true,
-        "via": "concurrent_convergence",
-        "created_id": "trend-update-522f1e69192833a122c1",
-        "material_event_key": "oviedo-explosion-artefacto-policia-2026-11-10",
-        "outbox_commit": "437ae24c23fbca2db852b134a46ffb635d5375c6",
-        "apply_commit": "6edab0af1e37d6311d19f4b00957c083bf4065b8"
+        "created_id": "trend-update-522f1e69192833a122c1"
       },
       {
         "id": "5fd14e2dd9b6",
         "revision": 0,
         "name": "anoche",
-        "outcome": "explained_cause_unconfirmed",
-        "applied": true,
-        "via": "concurrent_convergence",
-        "outbox_commit": "9f3dc9894a6bb9c179acaebc874b70a6761a7f10",
-        "apply_commit": "76e7e728a222ee21fee34fda64da43cfd7ecd90a"
+        "outcome": "explained_uncertain_cause",
+        "applied": true
       }
     ],
-    "incident_count": 1,
-    "incidents": [
-      {
-        "type": "concurrent_refresh_still_in_progress_at_close",
-        "workflow_run_id": 42799051246,
-        "trigger_commit": "291728d0f114c082bd9f6f05705ab1c98064ffa6",
-        "observed_at": "2026-11-10T11:28:00+01:00",
-        "note": "El refresco manual seguía in_progress al cierre y no se usa como prueba de éxito. La barrera JIT posterior a los aplicadores mostró editorial-queue vacía (updated_at 2026-11-10T11:26:56+01:00)."
-      }
-    ],
-    "message": "Pasada tr-1794306091211-manual cerrada 3/3 con convergencia concurrente. Almudena r0 quedó unchanged; Oviedo r0 acreditó episodio material distinto por la explosión tras un tiroteo y creó trend-update-522f1e69192833a122c1 sin remate por sensibilidad; anoche r0 se cerró con explicación prudente de causa no confirmada. Barrera JIT final: editorial-queue=0 (updated_at 2026-11-10T11:26:56+01:00), sin preparing/update/reexplicación pendiente. El refresh 42799051246 seguía in_progress y no se cuenta como prueba de éxito. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
-    "refresh_workflow_run_id": 42799051246,
-    "editorial_apply_commit": "76e7e728a222ee21fee34fda64da43cfd7ecd90a",
-    "maintenance_apply_commit": "6edab0af1e37d6311d19f4b00957c083bf4065b8"
+    "incident_count": 0,
+    "incidents": [],
+    "message": "Pasada tr-1794306091211-manual cerrada 3/3: Almudena sin novedad sustancial; Oviedo con episodio materialmente distinto por la explosión de hoy; anoche cerrada con causa no confirmada tras verificar su presencia actual en el Top de España. Barrera JIT final: editorial-queue=0 y mobile-decisions sin trabajo activo. ImageGen=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794306091211-manual cerrada 3/3 con convergencia concurrente. Almudena r0 quedó unchanged; Oviedo r0 acreditó episodio material distinto por la explosión tras un tiroteo y creó trend-update-522f1e69192833a122c1 sin remate por sensibilidad; anoche r0 se cerró con explicación prudente de causa no confirmada. Barrera JIT final: editorial-queue=0 (updated_at 2026-11-10T11:26:56+01:00), sin preparing/update/reexplicación pendiente. El refresh 42799051246 seguía in_progress y no se cuenta como prueba de éxito. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada tr-1794306091211-manual cerrada 3/3: Almudena sin novedad sustancial; Oviedo con episodio materialmente distinto por la explosión de hoy; anoche cerrada con causa no confirmada tras verificar su presencia actual en el Top de España. Barrera JIT final: editorial-queue=0 y mobile-decisions sin trabajo activo. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
@@ -3304,6 +3263,233 @@
       "refresh_workflow_run_id": 42799051246,
       "editorial_apply_commit": "76e7e728a222ee21fee34fda64da43cfd7ecd90a",
       "maintenance_apply_commit": "6edab0af1e37d6311d19f4b00957c083bf4065b8"
+    },
+    {
+      "run_id": "tr-20261110T1110-manual",
+      "status": "DONE_WITH_INCIDENTS",
+      "started_at": "2026-11-10T11:10:00+01:00",
+      "finished_at": "2026-11-10T11:22:00+01:00",
+      "at": "2026-11-10T11:22:00+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 13,
+        "observed": 14,
+        "closed": 12,
+        "explained": 11,
+        "problematic": 1,
+        "updates": 0,
+        "review_completed_no_distinct_event": 1,
+        "maintenance_reviews": 0,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 3,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 1,
+        "concurrent_convergence": 1
+      },
+      "processed_ids": [
+        "147baf65cbf4",
+        "e426bf0d3405",
+        "e88375917d1a",
+        "5fd14e2dd9b6",
+        "9b875499d8e1",
+        "5eb989d0f518",
+        "616bb72ef8ac",
+        "f72f757e0a04",
+        "17790e2eb031",
+        "a7f3faa7558e",
+        "011d1365ac1a",
+        "1e40d3b94071",
+        "08042b223d91"
+      ],
+      "converged_ids": [
+        "a9b2afa3ac90"
+      ],
+      "outcomes": [
+        {
+          "id": "147baf65cbf4",
+          "revision": 0,
+          "name": "TEDAX",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "e426bf0d3405",
+          "revision": 0,
+          "name": "#Huelga11N",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "e88375917d1a",
+          "revision": 0,
+          "name": "#Audiencias",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "5fd14e2dd9b6",
+          "revision": 0,
+          "name": "anoche",
+          "outcome": "problematic",
+          "applied": true
+        },
+        {
+          "id": "9b875499d8e1",
+          "revision": 0,
+          "name": "TelePedro",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "5eb989d0f518",
+          "revision": 0,
+          "name": "Baleares",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "616bb72ef8ac",
+          "revision": 0,
+          "name": "Hormiguero",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "f72f757e0a04",
+          "revision": 0,
+          "name": "Fascismo",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "17790e2eb031",
+          "revision": 0,
+          "name": "Fascista",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "a7f3faa7558e",
+          "revision": 0,
+          "name": "Jordi Wild",
+          "outcome": "no_distinct_event",
+          "applied": true
+        },
+        {
+          "id": "011d1365ac1a",
+          "revision": 0,
+          "name": "Macarena",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "1e40d3b94071",
+          "revision": 0,
+          "name": "UGT y CCOO",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "a9b2afa3ac90",
+          "revision": 0,
+          "name": "LGTBI",
+          "outcome": "converged",
+          "applied": false,
+          "via": "jit_no_longer_active"
+        },
+        {
+          "id": "08042b223d91",
+          "revision": 0,
+          "name": "Tribunal Supremo",
+          "outcome": "explained",
+          "applied": true
+        }
+      ],
+      "incident_count": 1,
+      "incidents": [
+        {
+          "id": "5fd14e2dd9b6",
+          "name": "anoche",
+          "reason": "Causa concreta no confirmada en la primera investigación; quedó para reintento final."
+        }
+      ],
+      "message": "Pasada tr-20261110T1110-manual procesó la cola ordinaria fresca: 11 explicaciones, Jordi Wild sin episodio distinto, LGTBI convergió fuera de cola y anoche quedó temporalmente problemático. Entraron después dos revisiones rojas, absorbidas por la continuación canónica. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794306091211-manual",
+      "status": "DONE",
+      "started_at": "2026-11-10T11:22:00+01:00",
+      "finished_at": "2026-11-10T11:28:00+01:00",
+      "at": "2026-11-10T11:28:00+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 3,
+        "observed": 3,
+        "closed": 3,
+        "explained": 1,
+        "problematic": 0,
+        "updates": 1,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 2,
+        "unchanged_reviews": 1,
+        "continuity_updates": 0,
+        "distinct_updates": 1,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [
+        "red-review-e90d4fe55caa6ee84529",
+        "red-review-d235e334431eb57c64e1",
+        "5fd14e2dd9b6"
+      ],
+      "converged_ids": [],
+      "outcomes": [
+        {
+          "id": "red-review-e90d4fe55caa6ee84529",
+          "revision": 0,
+          "name": "Revisar novedades: Almudena",
+          "outcome": "unchanged",
+          "applied": true
+        },
+        {
+          "id": "red-review-d235e334431eb57c64e1",
+          "revision": 0,
+          "name": "Revisar novedades: Oviedo",
+          "outcome": "distinct_update",
+          "applied": true,
+          "created_id": "trend-update-522f1e69192833a122c1"
+        },
+        {
+          "id": "5fd14e2dd9b6",
+          "revision": 0,
+          "name": "anoche",
+          "outcome": "explained_uncertain_cause",
+          "applied": true
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-1794306091211-manual cerrada 3/3: Almudena sin novedad sustancial; Oviedo con episodio materialmente distinto por la explosión de hoy; anoche cerrada con causa no confirmada tras verificar su presencia actual en el Top de España. Barrera JIT final: editorial-queue=0 y mobile-decisions sin trabajo activo. ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": null,
