@@ -23,6 +23,7 @@ jobs:
       - name: Syntax
         run: |
           node --check vercel-webhook/rain/app.js
+          node --check vercel-webhook/rain/rain-visuals.js
           node --check vercel-webhook/rain/core.js
           node --check vercel-webhook/rain/radar-core.js
           node --check vercel-webhook/rain/sw.js
