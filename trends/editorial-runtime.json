@@ -7,38 +7,39 @@
   "previous_run_id": "tr-20261110T135500-manual",
   "command_id": "tr-20261110T141100-manual",
   "source": "chat",
-  "status": "success",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-10T14:11:30+01:00",
-  "updated_at": "2026-11-10T14:15:11+01:00",
-  "current": 0,
-  "total": 7,
+  "updated_at": "2026-11-10T14:18:00+01:00",
+  "current": 8,
+  "total": 8,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
   "processed_ids": [
-    "05a2d7332eb9",
-    "1c9b2ccb3af0",
+    "ed08f435702a",
     "1e99aac401f8",
+    "05a2d7332eb9",
     "4e6e02323345",
-    "af8501c73124",
     "c79b2fb5aa1d",
-    "ed08f435702a"
+    "af8501c73124",
+    "1c9b2ccb3af0",
+    "red-review-862cc2851889453c4c42"
   ],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 7,
-    "closed": 0,
-    "explained": 0,
+    "attempted": 8,
+    "observed": 8,
+    "closed": 8,
+    "explained": 5,
     "problematic": 0,
     "updates": 0,
-    "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 0,
-    "unchanged_reviews": 0,
+    "review_completed_no_distinct_event": 2,
+    "maintenance_reviews": 1,
+    "unchanged_reviews": 1,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "stale_reviews": 0,
@@ -46,7 +47,7 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 7,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -54,31 +55,88 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "ed08f435702a",
+      "revision": 0,
+      "name": "Amenazar",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "1e99aac401f8",
+      "revision": 0,
+      "name": "#EnBocaDeTodos",
+      "outcome": "review_completed_no_distinct_event",
+      "applied": true
+    },
+    {
+      "id": "05a2d7332eb9",
+      "revision": 0,
+      "name": "Deny",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "4e6e02323345",
+      "revision": 0,
+      "name": "PROFESIÓN DE RIESGO",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "c79b2fb5aa1d",
+      "revision": 0,
+      "name": "#HuelgaGeneral11N",
+      "outcome": "review_completed_no_distinct_event",
+      "applied": true
+    },
+    {
+      "id": "af8501c73124",
+      "revision": 0,
+      "name": "Ávila",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "1c9b2ccb3af0",
+      "revision": 0,
+      "name": "Pedrito",
+      "outcome": "explained_cause_unconfirmed",
+      "applied": true
+    },
+    {
+      "id": "red-review-862cc2851889453c4c42",
+      "revision": 0,
+      "name": "Revisar novedades: #EnBocaDeTodos",
+      "outcome": "unchanged",
+      "applied": true
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Persistiendo resultados editoriales",
+  "activity": "Cierre editorial",
   "last_started_at": "2026-11-10T14:15:11+01:00",
-  "last_completed_at": "2026-11-10T14:15:11+01:00",
+  "last_completed_at": "2026-11-10T14:18:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261110T135500-manual",
+    "run_id": "tr-20261110T141100-manual",
     "status": "DONE",
-    "started_at": "2026-11-10T13:55:00+01:00",
-    "finished_at": "2026-11-10T13:56:30+01:00",
-    "at": "2026-11-10T13:56:30+01:00",
+    "started_at": "2026-11-10T14:11:30+01:00",
+    "finished_at": "2026-11-10T14:18:00+01:00",
+    "at": "2026-11-10T14:18:00+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 0,
-      "observed": 0,
-      "closed": 0,
-      "explained": 0,
+      "attempted": 8,
+      "observed": 8,
+      "closed": 8,
+      "explained": 5,
       "problematic": 0,
       "updates": 0,
-      "review_completed_no_distinct_event": 0,
-      "maintenance_reviews": 0,
-      "unchanged_reviews": 0,
+      "review_completed_no_distinct_event": 2,
+      "maintenance_reviews": 1,
+      "unchanged_reviews": 1,
       "continuity_updates": 0,
       "distinct_updates": 0,
       "stale_reviews": 0,
@@ -94,14 +152,80 @@
       "incidents": 0,
       "concurrent_convergence": 0
     },
-    "processed_ids": [],
+    "processed_ids": [
+      "ed08f435702a",
+      "1e99aac401f8",
+      "05a2d7332eb9",
+      "4e6e02323345",
+      "c79b2fb5aa1d",
+      "af8501c73124",
+      "1c9b2ccb3af0",
+      "red-review-862cc2851889453c4c42"
+    ],
     "converged_ids": [],
-    "outcomes": [],
+    "outcomes": [
+      {
+        "id": "ed08f435702a",
+        "revision": 0,
+        "name": "Amenazar",
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "1e99aac401f8",
+        "revision": 0,
+        "name": "#EnBocaDeTodos",
+        "outcome": "review_completed_no_distinct_event",
+        "applied": true
+      },
+      {
+        "id": "05a2d7332eb9",
+        "revision": 0,
+        "name": "Deny",
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "4e6e02323345",
+        "revision": 0,
+        "name": "PROFESIÓN DE RIESGO",
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "c79b2fb5aa1d",
+        "revision": 0,
+        "name": "#HuelgaGeneral11N",
+        "outcome": "review_completed_no_distinct_event",
+        "applied": true
+      },
+      {
+        "id": "af8501c73124",
+        "revision": 0,
+        "name": "Ávila",
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "1c9b2ccb3af0",
+        "revision": 0,
+        "name": "Pedrito",
+        "outcome": "explained_cause_unconfirmed",
+        "applied": true
+      },
+      {
+        "id": "red-review-862cc2851889453c4c42",
+        "revision": 0,
+        "name": "Revisar novedades: #EnBocaDeTodos",
+        "outcome": "unchanged",
+        "applied": true
+      }
+    ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-20261110T135500-manual cerrada 0/0 tras barrera JIT sobre main: editorial-queue=0 (updated_at 2026-11-10T13:51:00+01:00), sin preparing/update ni rewrite_pending/reexplain/anticipate/review_red detectables en la comprobación dirigida. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "message": "Pasada tr-20261110T141100-manual cerrada 8/8. Se aplicaron 5 explicaciones (Amenazar, Deny, PROFESIÓN DE RIESGO, Ávila y Pedrito); las reentradas de #EnBocaDeTodos y #HuelgaGeneral11N se cerraron review_completed/no_distinct_event; la revisión de mantenimiento de #EnBocaDeTodos quedó unchanged. Barrera JIT final: editorial-queue=0 y los 5 textos coinciden entre requests.json y telegram-manual-explained.json. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Resultados contrastados. Se persisten 5 explicaciones y 2 cierres de reentrada sin episodio distinto; ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-20261110T141100-manual cerrada 8/8. Se aplicaron 5 explicaciones (Amenazar, Deny, PROFESIÓN DE RIESGO, Ávila y Pedrito); las reentradas de #EnBocaDeTodos y #HuelgaGeneral11N se cerraron review_completed/no_distinct_event; la revisión de mantenimiento de #EnBocaDeTodos quedó unchanged. Barrera JIT final: editorial-queue=0 y los 5 textos coinciden entre requests.json y telegram-manual-explained.json. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
@@ -4567,6 +4691,111 @@
       "trend_id": null,
       "title": null,
       "message": "Resultados contrastados. Se persisten 5 explicaciones y 2 cierres de reentrada sin episodio distinto; ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-20261110T141100-manual",
+      "status": "DONE",
+      "started_at": "2026-11-10T14:11:30+01:00",
+      "finished_at": "2026-11-10T14:18:00+01:00",
+      "at": "2026-11-10T14:18:00+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 8,
+        "observed": 8,
+        "closed": 8,
+        "explained": 5,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 2,
+        "maintenance_reviews": 1,
+        "unchanged_reviews": 1,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [
+        "ed08f435702a",
+        "1e99aac401f8",
+        "05a2d7332eb9",
+        "4e6e02323345",
+        "c79b2fb5aa1d",
+        "af8501c73124",
+        "1c9b2ccb3af0",
+        "red-review-862cc2851889453c4c42"
+      ],
+      "converged_ids": [],
+      "outcomes": [
+        {
+          "id": "ed08f435702a",
+          "revision": 0,
+          "name": "Amenazar",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "1e99aac401f8",
+          "revision": 0,
+          "name": "#EnBocaDeTodos",
+          "outcome": "review_completed_no_distinct_event",
+          "applied": true
+        },
+        {
+          "id": "05a2d7332eb9",
+          "revision": 0,
+          "name": "Deny",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "4e6e02323345",
+          "revision": 0,
+          "name": "PROFESIÓN DE RIESGO",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "c79b2fb5aa1d",
+          "revision": 0,
+          "name": "#HuelgaGeneral11N",
+          "outcome": "review_completed_no_distinct_event",
+          "applied": true
+        },
+        {
+          "id": "af8501c73124",
+          "revision": 0,
+          "name": "Ávila",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "1c9b2ccb3af0",
+          "revision": 0,
+          "name": "Pedrito",
+          "outcome": "explained_cause_unconfirmed",
+          "applied": true
+        },
+        {
+          "id": "red-review-862cc2851889453c4c42",
+          "revision": 0,
+          "name": "Revisar novedades: #EnBocaDeTodos",
+          "outcome": "unchanged",
+          "applied": true
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-20261110T141100-manual cerrada 8/8. Se aplicaron 5 explicaciones (Amenazar, Deny, PROFESIÓN DE RIESGO, Ávila y Pedrito); las reentradas de #EnBocaDeTodos y #HuelgaGeneral11N se cerraron review_completed/no_distinct_event; la revisión de mantenimiento de #EnBocaDeTodos quedó unchanged. Barrera JIT final: editorial-queue=0 y los 5 textos coinciden entre requests.json y telegram-manual-explained.json. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "current_item": null,
@@ -5748,5 +5977,5 @@
   ],
   "outbox_comment_id": 5848965032,
   "editorial_apply_commit": "76e7e728a222ee21fee34fda64da43cfd7ecd90a",
-  "finished_at": "2026-11-10T13:56:30+01:00"
+  "finished_at": "2026-11-10T14:18:00+01:00"
 }
