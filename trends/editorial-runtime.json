@@ -8,9 +8,9 @@
   "command_id": "tr-20261110T124000-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "investigating",
   "started_at": "2026-11-10T12:40:00+01:00",
-  "updated_at": "2026-11-10T12:40:00+01:00",
+  "updated_at": "2026-11-10T12:42:00+01:00",
   "current": 0,
   "total": 1,
   "trend_id": "radar-prepare-009b57af83f17920643d",
@@ -54,7 +54,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Investigando señal Radar",
+  "activity": "Verificando señal Radar",
   "last_started_at": "2026-11-10T12:25:00+01:00",
   "last_completed_at": "2026-11-10T12:26:51+01:00",
   "api_failover_enabled": false,
@@ -97,7 +97,7 @@
     "incidents": [],
     "message": "Pasada tr-20261110T122500-manual cerrada 0/0 tras relectura JIT de main. editorial-queue=0 (updated_at 2026-11-10T12:06:16+01:00) y búsqueda final sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial vigente que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-20261110T124000-manual RUNNING. Cola JIT inicial=1: Radar · Elena r0 (anticipate). Se investiga el detonante actual y se revalidará ID/revisión antes de persistir. ImageGen=0; publicaciones=0.",
+  "message": "Radar · Elena r0 sigue vigente y fuera del Top30 actual. Búsquedas independientes no permiten identificar un detonante único verificable; se prepara outcome unverified. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
@@ -3894,6 +3894,13 @@
       "trend_id": "radar-prepare-009b57af83f17920643d",
       "title": "Radar · Elena",
       "message": "Pasada tr-20261110T124000-manual RUNNING. Cola JIT inicial=1: Radar · Elena r0 (anticipate). Se investiga el detonante actual y se revalidará ID/revisión antes de persistir. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-10T12:42:00+01:00",
+      "phase": "investigating",
+      "trend_id": "radar-prepare-009b57af83f17920643d",
+      "title": "Radar · Elena",
+      "message": "Radar · Elena r0 sigue vigente y fuera del Top30 actual. Búsquedas independientes no permiten identificar un detonante único verificable; se prepara outcome unverified. ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": null,
