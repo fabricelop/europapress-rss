@@ -8,9 +8,9 @@
   "command_id": "tr-1794291762595-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "persisting",
   "started_at": "2026-11-10T07:23:00+01:00",
-  "updated_at": "2026-11-10T07:23:00+01:00",
+  "updated_at": "2026-11-10T07:23:30+01:00",
   "finished_at": null,
   "current": 0,
   "total": 2,
@@ -57,61 +57,36 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": {
-    "run_id": "tr-20261110T071000-manual",
-    "status": "DONE",
-    "started_at": "2026-11-10T07:10:00+01:00",
-    "finished_at": "2026-11-10T07:16:45+01:00",
-    "at": "2026-11-10T07:16:45+01:00",
-    "phase": "closing",
-    "summary": {
-      "attempted": 1,
-      "observed": 1,
-      "closed": 1,
-      "explained": 0,
-      "problematic": 0,
-      "updates": 0,
-      "review_completed_no_distinct_event": 1,
-      "maintenance_reviews": 0,
-      "unchanged_reviews": 0,
-      "continuity_updates": 0,
-      "distinct_updates": 0,
-      "stale_reviews": 0,
-      "unverified_reviews": 0,
-      "anticipation_reviews": 0,
-      "anticipation_prepared": 0,
-      "anticipation_unverified": 0,
-      "queue_remaining": 0,
-      "rewrite_pending_remaining": 0,
-      "imagegen_calls": 0,
-      "image_outbox_created": 0,
-      "publications": 0,
-      "incidents": 0,
-      "concurrent_convergence": 0
+  "activity": [
+    {
+      "at": "2026-11-10T07:23:30+01:00",
+      "phase": "investigating",
+      "trend_id": "3fcb30738b29",
+      "title": "#FelizMartes",
+      "message": "#FelizMartes r0: contraste actual desde cero; ranking JIT confirmado en main y patrón recurrente contrastado con históricos públicos."
     },
-    "processed_ids": [
-      "5d11fa05aa4d"
-    ],
-    "converged_ids": [],
-    "outcomes": [
-      {
-        "id": "5d11fa05aa4d",
-        "revision": 0,
-        "name": "#FelizMartes",
-        "outcome": "review_completed_no_distinct_event",
-        "applied": true,
-        "review_reason": "no_distinct_event",
-        "apply_commit": "733bb24e755ce9f37aa77df55a0bdfe6fb30424c"
-      }
-    ],
-    "incident_count": 0,
-    "incidents": [],
-    "message": "Pasada tr-20261110T071000-manual cerrada 1/1. #FelizMartes r0 se revisó como reentrada >24 h y quedó review_completed/no_distinct_event: el patrón sigue siendo el saludo recurrente de los martes y no se acreditó un acontecimiento material nuevo e independiente, por lo que se conserva la ficha anterior sin nueva imagen ni publicación. Trigger beb8ae62b245c9352be047a33c0e4705d4a9ee5c; workflow 42766907852 completado success; aplicador 733bb24e755ce9f37aa77df55a0bdfe6fb30424c; convergencia Top 30 3c4fac0635ce0ade346ab8f97ecfa7a64aac016d. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
-    "trigger_commit": "beb8ae62b245c9352be047a33c0e4705d4a9ee5c",
-    "workflow_run_id": 42766907852,
-    "editorial_apply_commit": "733bb24e755ce9f37aa77df55a0bdfe6fb30424c",
-    "refresh_convergence_commit": "3c4fac0635ce0ade346ab8f97ecfa7a64aac016d"
-  },
+    {
+      "at": "2026-11-10T07:23:30+01:00",
+      "phase": "drafting",
+      "trend_id": "3fcb30738b29",
+      "title": "#FelizMartes",
+      "message": "#FelizMartes r0: texto nuevo redactado sin reutilizar la explicación anterior; sin evento, partido ni marcador concreto verificado."
+    },
+    {
+      "at": "2026-11-10T07:23:30+01:00",
+      "phase": "remate_selection",
+      "trend_id": "3fcb30738b29",
+      "title": "#FelizMartes",
+      "message": "#FelizMartes r0: remate nuevo seleccionado y texto completo validado por debajo de 280 caracteres."
+    },
+    {
+      "at": "2026-11-10T07:23:30+01:00",
+      "phase": "persisting",
+      "trend_id": "3fcb30738b29",
+      "title": "#FelizMartes",
+      "message": "#FelizMartes r0: persistiendo la revisión exacta mediante el transporte editorial vigente."
+    }
+  ],
   "last_started_at": "2026-11-10T07:23:00+01:00",
   "last_completed_at": "2026-11-10T07:16:45+01:00",
   "api_failover_enabled": false,
@@ -170,7 +145,7 @@
     "editorial_apply_commit": "733bb24e755ce9f37aa77df55a0bdfe6fb30424c",
     "refresh_convergence_commit": "3c4fac0635ce0ade346ab8f97ecfa7a64aac016d"
   },
-  "message": "Inicio tr-1794291762595-manual: 2 reelaboraciones preparing/update vigentes en main, en orden JIT #FelizMartes r0 → israel r0. Se investigarán desde cero y se persistirá texto verificado; ImageGen=0, image-outbox editorial=0, publicaciones=0.",
+  "message": "#FelizMartes r0 revalidada JIT y lista para persistir con texto nuevo; ImageGen=0.",
   "history": [
     {
       "at": "2026-11-09T15:55:00+01:00",
@@ -3858,7 +3833,7 @@
     "id": "3fcb30738b29",
     "revision": 0,
     "name": "#FelizMartes",
-    "phase": "preparing"
+    "phase": "persisting"
   },
   "withdrawn_ids": [
     "ae7f066f3c94"
