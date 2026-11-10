@@ -3,19 +3,19 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261110T204000-manual",
-  "previous_run_id": "tr-20261110T202500-manual",
-  "command_id": "tr-20261110T204000-manual",
+  "run_id": "tr-20261110T205500-manual",
+  "previous_run_id": "tr-20261110T204000-manual",
+  "command_id": "tr-20261110T205500-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-10T20:40:00+01:00",
-  "updated_at": "2026-11-10T20:41:15+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-10T20:55:00+01:00",
+  "updated_at": "2026-11-10T20:55:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -122,9 +122,14 @@
       "at": "2026-11-10T20:41:15+01:00",
       "phase": "closing",
       "message": "Barrera final verificada: editorial-queue=0, mobile activo=0 y sin reelaboraciones pendientes; pasada cerrada 0/0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-10T20:55:00+01:00",
+      "phase": "preparing",
+      "message": "Pasada manual RUNNING. Cola autoritativa inicial observada en 0; verificando requests, decisiones móviles, revisiones y barrera JIT final en main. ImageGen=0; publicaciones=0."
     }
   ],
-  "last_started_at": "2026-11-10T20:40:00+01:00",
+  "last_started_at": "2026-11-10T20:55:00+01:00",
   "last_completed_at": "2026-11-10T20:41:15+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -166,7 +171,7 @@
     "incidents": [],
     "message": "Pasada tr-20261110T204000-manual cerrada 0/0 contra main. Relectura JIT final: editorial-queue=0 (updated_at 2026-11-10T20:41:01+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-20261110T202500-manual cerrada 0/0 contra main. Relectura JIT final: editorial-queue=0 (updated_at 2026-11-10T20:22:15+01:00), mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos y sin reelaboraciones detectadas por búsqueda dirigida. Últimos mantenimientos ya aplicados. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada manual RUNNING. Cola autoritativa inicial observada en 0; ejecutando barrera JIT sobre main antes de cerrar. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
