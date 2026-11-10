@@ -3,39 +3,36 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-autoguard-1794302476",
+  "run_id": "tr-1794302794758-manual",
   "previous_run_id": "tr-autoguard-1794302476",
-  "command_id": "tr-autoguard-1794302476",
+  "command_id": "tr-1794302794758-manual",
   "source": "chat",
   "status": "DONE",
   "phase": "closing",
   "started_at": "2026-11-10T10:27:00+01:00",
-  "updated_at": "2026-11-10T10:31:30+01:00",
-  "finished_at": "2026-11-10T10:31:30+01:00",
-  "current": 4,
-  "total": 4,
+  "updated_at": "2026-11-10T10:31:00+01:00",
+  "finished_at": "2026-11-10T10:31:00+01:00",
+  "current": 2,
+  "total": 2,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
   "processed_ids": [
-    "4b1ee5aa39b8",
-    "9423917e5a4e"
-  ],
-  "converged_ids": [
     "red-review-79b380b36f879427129d",
     "red-review-a9dc391287ef03b2049d"
   ],
+  "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 4,
-    "observed": 4,
-    "closed": 4,
+    "attempted": 2,
+    "observed": 2,
+    "closed": 2,
     "explained": 0,
     "problematic": 0,
-    "updates": 1,
-    "review_completed_no_distinct_event": 2,
+    "updates": 0,
+    "review_completed_no_distinct_event": 0,
     "maintenance_reviews": 2,
     "unchanged_reviews": 1,
     "continuity_updates": 1,
@@ -51,34 +48,17 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 2
+    "concurrent_convergence": 0
   },
   "outcomes": [
-    {
-      "id": "4b1ee5aa39b8",
-      "revision": 0,
-      "name": "Silvia",
-      "outcome": "review_completed_no_distinct_event",
-      "applied": true,
-      "apply_commit": "8f76cc196a62301d928f1cc580503314b6357ba2"
-    },
-    {
-      "id": "9423917e5a4e",
-      "revision": 0,
-      "name": "Barça",
-      "outcome": "review_completed_no_distinct_event",
-      "applied": true,
-      "apply_commit": "8f76cc196a62301d928f1cc580503314b6357ba2"
-    },
     {
       "id": "red-review-79b380b36f879427129d",
       "revision": 0,
       "name": "Revisar novedades: El Hierro",
       "outcome": "continuity",
       "applied": true,
-      "converged": true,
-      "applied_by": "tr-1794302794758-manual",
-      "apply_commit": "20efa88f30f917a6ad993ba5fd89734c06393ce4"
+      "apply_commit": "20efa88f30f917a6ad993ba5fd89734c06393ce4",
+      "source_id": "bfd14c9108b9"
     },
     {
       "id": "red-review-a9dc391287ef03b2049d",
@@ -86,33 +66,32 @@
       "name": "Revisar novedades: Julián Álvarez",
       "outcome": "unchanged",
       "applied": true,
-      "converged": true,
-      "applied_by": "tr-1794302794758-manual",
-      "apply_commit": "20efa88f30f917a6ad993ba5fd89734c06393ce4"
+      "apply_commit": "20efa88f30f917a6ad993ba5fd89734c06393ce4",
+      "source_id": "trend-update-08da896cbbe389cf5192"
     }
   ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Cierre 4/4 verificado contra main",
-  "last_started_at": "2026-11-10T10:25:56+01:00",
-  "last_completed_at": "2026-11-10T10:31:30+01:00",
+  "activity": "Cierre 2/2 verificado contra main",
+  "last_started_at": "2026-11-10T10:27:00+01:00",
+  "last_completed_at": "2026-11-10T10:31:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-autoguard-1794302476",
+    "run_id": "tr-1794302794758-manual",
     "status": "DONE",
     "started_at": "2026-11-10T10:27:00+01:00",
-    "finished_at": "2026-11-10T10:31:30+01:00",
-    "at": "2026-11-10T10:31:30+01:00",
+    "finished_at": "2026-11-10T10:31:00+01:00",
+    "at": "2026-11-10T10:31:00+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 4,
-      "observed": 4,
-      "closed": 4,
+      "attempted": 2,
+      "observed": 2,
+      "closed": 2,
       "explained": 0,
       "problematic": 0,
-      "updates": 1,
-      "review_completed_no_distinct_event": 2,
+      "updates": 0,
+      "review_completed_no_distinct_event": 0,
       "maintenance_reviews": 2,
       "unchanged_reviews": 1,
       "continuity_updates": 1,
@@ -128,42 +107,22 @@
       "image_outbox_created": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 2
+      "concurrent_convergence": 0
     },
     "processed_ids": [
-      "4b1ee5aa39b8",
-      "9423917e5a4e"
-    ],
-    "converged_ids": [
       "red-review-79b380b36f879427129d",
       "red-review-a9dc391287ef03b2049d"
     ],
+    "converged_ids": [],
     "outcomes": [
-      {
-        "id": "4b1ee5aa39b8",
-        "revision": 0,
-        "name": "Silvia",
-        "outcome": "review_completed_no_distinct_event",
-        "applied": true,
-        "apply_commit": "8f76cc196a62301d928f1cc580503314b6357ba2"
-      },
-      {
-        "id": "9423917e5a4e",
-        "revision": 0,
-        "name": "Barça",
-        "outcome": "review_completed_no_distinct_event",
-        "applied": true,
-        "apply_commit": "8f76cc196a62301d928f1cc580503314b6357ba2"
-      },
       {
         "id": "red-review-79b380b36f879427129d",
         "revision": 0,
         "name": "Revisar novedades: El Hierro",
         "outcome": "continuity",
         "applied": true,
-        "converged": true,
-        "applied_by": "tr-1794302794758-manual",
-        "apply_commit": "20efa88f30f917a6ad993ba5fd89734c06393ce4"
+        "apply_commit": "20efa88f30f917a6ad993ba5fd89734c06393ce4",
+        "source_id": "bfd14c9108b9"
       },
       {
         "id": "red-review-a9dc391287ef03b2049d",
@@ -171,16 +130,15 @@
         "name": "Revisar novedades: Julián Álvarez",
         "outcome": "unchanged",
         "applied": true,
-        "converged": true,
-        "applied_by": "tr-1794302794758-manual",
-        "apply_commit": "20efa88f30f917a6ad993ba5fd89734c06393ce4"
+        "apply_commit": "20efa88f30f917a6ad993ba5fd89734c06393ce4",
+        "source_id": "trend-update-08da896cbbe389cf5192"
       }
     ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-autoguard-1794302476 cerrada 4/4. Silvia y Barça: review_completed/no_distinct_event. Durante la barrera final entraron dos review_red; El Hierro quedó actualizado por continuidad con hechos del 10/11 y Julián Álvarez unchanged. Ambas revisiones convergieron con la pasada sucesora tr-1794302794758-manual. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox=0; publicaciones=0."
+    "message": "Pasada tr-1794302794758-manual cerrada 2/2. El Hierro r0 quedó actualizado como continuidad del mismo episodio migratorio (229 llegadas adicionales y reunión interministerial), conservando ID, revisión, explained_at, estado publicado e imagen; Julián Álvarez r0 quedó unchanged porque las novedades de hoy siguen siendo desarrollo del mismo Atlético-Barça. Aplicado en main por 20efa88f30f917a6ad993ba5fd89734c06393ce4 y verificado en requests.json y telegram-manual-explained.json. Barrera final: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain activos en requests o mobile-decisions. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-autoguard-1794302476 cerrada 4/4. Silvia y Barça: review_completed/no_distinct_event. Durante la barrera final entraron dos review_red; El Hierro quedó actualizado por continuidad con hechos del 10/11 y Julián Álvarez unchanged. Ambas revisiones convergieron con la pasada sucesora tr-1794302794758-manual. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox=0; publicaciones=0.",
+  "message": "Pasada tr-1794302794758-manual cerrada 2/2. El Hierro r0 quedó actualizado como continuidad del mismo episodio migratorio (229 llegadas adicionales y reunión interministerial), conservando ID, revisión, explained_at, estado publicado e imagen; Julián Álvarez r0 quedó unchanged porque las novedades de hoy siguen siendo desarrollo del mismo Atlético-Barça. Aplicado en main por 20efa88f30f917a6ad993ba5fd89734c06393ce4 y verificado en requests.json y telegram-manual-explained.json. Barrera final: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain activos en requests o mobile-decisions. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
@@ -2972,6 +2930,67 @@
         "phase": "investigating",
         "message": "Investigando reentradas Silvia y Barça; validación JIT por id/revision. ImageGen desactivado en esta pasada."
       }
+    },
+    {
+      "run_id": "tr-1794302794758-manual",
+      "status": "DONE",
+      "started_at": "2026-11-10T10:27:00+01:00",
+      "finished_at": "2026-11-10T10:31:00+01:00",
+      "at": "2026-11-10T10:31:00+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 2,
+        "observed": 2,
+        "closed": 2,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 2,
+        "unchanged_reviews": 1,
+        "continuity_updates": 1,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [
+        "red-review-79b380b36f879427129d",
+        "red-review-a9dc391287ef03b2049d"
+      ],
+      "converged_ids": [],
+      "outcomes": [
+        {
+          "id": "red-review-79b380b36f879427129d",
+          "revision": 0,
+          "name": "Revisar novedades: El Hierro",
+          "outcome": "continuity",
+          "applied": true,
+          "apply_commit": "20efa88f30f917a6ad993ba5fd89734c06393ce4",
+          "source_id": "bfd14c9108b9"
+        },
+        {
+          "id": "red-review-a9dc391287ef03b2049d",
+          "revision": 0,
+          "name": "Revisar novedades: Julián Álvarez",
+          "outcome": "unchanged",
+          "applied": true,
+          "apply_commit": "20efa88f30f917a6ad993ba5fd89734c06393ce4",
+          "source_id": "trend-update-08da896cbbe389cf5192"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-1794302794758-manual cerrada 2/2. El Hierro r0 quedó actualizado como continuidad del mismo episodio migratorio (229 llegadas adicionales y reunión interministerial), conservando ID, revisión, explained_at, estado publicado e imagen; Julián Álvarez r0 quedó unchanged porque las novedades de hoy siguen siendo desarrollo del mismo Atlético-Barça. Aplicado en main por 20efa88f30f917a6ad993ba5fd89734c06393ce4 y verificado en requests.json y telegram-manual-explained.json. Barrera final: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain activos en requests o mobile-decisions. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "current_item": null,
@@ -3871,5 +3890,5 @@
     }
   ],
   "outbox_comment_id": 6755274210,
-  "editorial_apply_commit": "315ec6d01f0c6bec5ef5071c4f9c886922fbd990"
+  "editorial_apply_commit": "20efa88f30f917a6ad993ba5fd89734c06393ce4"
 }
