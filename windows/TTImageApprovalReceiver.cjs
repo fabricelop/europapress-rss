@@ -129,9 +129,9 @@ function activeIdentities(project,document,decisions,now=Date.now()){
  }
  return result;
 }
-// Eligibility: current Listas news; current Top30; or historic Top30 proven by
-// the original image job rank. Only jobs enrolled in the last 48 hours enter
-// the recovery queue. This is NOT automatic approval or publication.
+// Scope for approval INBOX ONLY: all NEW image generation jobs, even if a
+// news item left Listas or a trend left the Top 30. Never backfill older jobs.
+// Editorial publishing and approvals remain unchanged.
 async function allowedTop30(fetcher=fetch){
  const url='https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/site-top30-current.json?t='+Date.now();
  try {
@@ -143,47 +143,37 @@ async function allowedTop30(fetcher=fetch){
    .map(x=>x.editorial_id+':r'+x.revision));
  }catch{return null}
 }
-const MAX_IMAGE_AGE_MS=48*60*60*1000;
+const MAX_IMAGE_AGE_MS=48*60*60*1000; // legacy diagnostic constant, not the eligibility gate
+const IMAGE_INBOX_CUTOVER_UTC='2026-11-10T13:33:00.000Z';
+const IMAGE_INBOX_CUTOVER_MS=Date.parse(IMAGE_INBOX_CUTOVER_UTC);
 const MAX_ORIGINAL_CHECKS_PER_CYCLE=16;
-function inCurrentApprovalScope(task,top30,listNews,now=Date.now()){
- // "Was in Top30 at image creation" is evidenced by the immutable job
- // snapshot, checked after reading that exact job. Do not deny that candidate
- // here just because it is no longer in today's Top30.
+function isNewImageJob(job){
+ const requested=Date.parse(job?.requested_at||'');
+ return Number.isFinite(requested)&&requested>=IMAGE_INBOX_CUTOVER_MS;
+}
+function inCurrentApprovalScope(task,_top30,_listNews,now=Date.now()){
+ // Date of first local enrollment, not latest retry. Older images are deliberately excluded.
  if(!['ttendencias','ttittulares'].includes(task?.project) ||
     !/^[A-Za-z0-9_.-]{3,160}$/.test(String(task?.target_id||'')) ||
     !/^[A-Za-z0-9_.-]{3,160}$/.test(String(task?.command_id||'')) ||
-    !Number.isInteger(task?.revision) || task.revision<0 ||
+    !Number.isInteger(task?.revision)||task.revision<0 ||
     !['waiting','needs_review'].includes(task?.status) ||
     !task?.secret_dpapi)return false;
  const created=Date.parse(task.created_at||'');
- if(!Number.isFinite(created)||created>now+60000)return false;
- if(task.project==='ttittulares'){
-  return listNews instanceof Set && listNews.has(task.target_id);
- }
- return true;
+ return Number.isFinite(created)&&created>=IMAGE_INBOX_CUTOVER_MS&&created<=now+60000;
 }
-function provesTop30AtImageCreation(task,job,top30){
- if(task.project!=='ttendencias')return true;
- if(top30 instanceof Set && top30.has(task.target_id+':r'+task.revision))return true;
- // Historic proof is part of the original TTendencias editorial snapshot,
- // not today's ranking, a title guess or another trend's metadata.
- const snap=job?.context_snapshot||{};
- const rank=Number(snap.rank_at_explanation);
- return Number.isInteger(rank)&&rank>=1&&rank<=30 &&
-  String(job.command_id||'')===task.command_id &&
-  String(job.target_id||job.trend_id||'')===task.target_id &&
-  Number(job.revision||0)===task.revision;
+function provesExactNewImageJob(task,job){
+ // Never swap the PNG across different editorial episodes or old generations.
+ return isNewImageJob(job) &&
+   String(job.command_id||'')===task.command_id &&
+   String(job.target_id||job.trend_id||job.event_id||'')===task.target_id &&
+   Number(job.revision||0)===task.revision;
 }
-function selectCurrentTasks(tasks,progress,top30,limit=MAX_ORIGINAL_CHECKS_PER_CYCLE){
- // No mass recovery: up to 16 eligible image jobs per pass, with the
- // existing strict cap of ONE new Chrome relay tab per pass. As items are
- // checked, their next pass is deferred behind the other recent ones.
+function selectCurrentTasks(tasks,progress,_top30,limit=MAX_ORIGINAL_CHECKS_PER_CYCLE){
+ // No priority from Top 30/Listas. Rotate up to 16 NEW jobs per cycle.
  const checked=t=>Number(progress[t.command_id]?.checkedAt||0);
- const isTop30=t=>top30 instanceof Set &&
-   top30.has(t.target_id+':r'+t.revision);
  return [...tasks].sort((x,y)=>
    checked(x)-checked(y) ||
-   Number(isTop30(y))-Number(isTop30(x)) ||
    (Date.parse(y.created_at||'')||0)-(Date.parse(x.created_at||'')||0) ||
    String(x.command_id).localeCompare(String(y.command_id))
  ).slice(0,limit);
@@ -210,39 +200,26 @@ async function once(base=__dirname){
  try{
   const statusFile=path.join(receipts,'receiver-status.json');let progress={};try{progress=JSON.parse(fs.readFileSync(statusFile,'utf8'))}catch{}
   function report(task,reason){progress[task.command_id]={...progress[task.command_id],checkedAt:Date.now(),reason};const tmp=statusFile+'.tmp';fs.writeFileSync(tmp,JSON.stringify(progress,null,2),{mode:0o600});fs.renameSync(tmp,statusFile);console.log('PRIVATE_INBOX '+task.command_id+' '+reason)}
-  // Never resend a terminal receipt. The pending window is 48h; only
-  // current Listas news or present/former Top30 jobs are admitted. A past
-  // Top30 rank must be independently proven by the exact original job.
-  // No automatic approval, publication or regeneration.
+  // Never resend terminal receipts. New command IDs only, after cutover.
+  // No approval, publication, regeneration or historical backfill.
   const tasks=[];
   for(const project of ['ttendencias','ttittulares']){
    const dir=path.join(base,project+'-web-images');if(!fs.existsSync(dir))continue;
    for(const file of fs.readdirSync(dir).filter(x=>x.endsWith('.json'))){try{const task=JSON.parse(fs.readFileSync(path.join(dir,file),'utf8'));if(task.secret_dpapi&&['waiting','needs_review'].includes(task.status)&&/^[A-Za-z0-9_.-]{3,160}$/.test(task.command_id)&&!fs.existsSync(path.join(receipts,task.command_id+'.json')))tasks.push({...task,project});}catch{}}
   }
-  // An editorial decision to publish/delete a trend does NOT erase an
-  // already-generated image from the editor's private approval inbox.
-  const [top30,listasDoc]=await Promise.all([
-   allowedTop30(),
-   sources.ttittulares.readEditorialState().catch(()=>null)
-  ]);
-  const listNews=Array.isArray(listasDoc?.items)?
-   new Set(listasDoc.items.map(x=>String(x.event_id||x.id||'')).filter(Boolean)):null;
-  const eligible=tasks.filter(task=>inCurrentApprovalScope(task,top30,listNews));
-  const excludedBacklog=tasks.length-eligible.length;
-  const selected=selectCurrentTasks(eligible,progress,top30);
-  const current=selected.filter(x=>x.project==='ttittulares'?
-    listNews?.has(x.target_id):top30?.has(x.target_id+':r'+x.revision));
+  // Ignore Listas and Top 30 completely. Only the post-cutover generation
+  // identity, local enrollment and durable original matter here.
+  const eligible=tasks.filter(task=>inCurrentApprovalScope(task));
+  const selected=selectCurrentTasks(eligible,progress,null);
   fs.writeFileSync(path.join(receipts,'receiver-cycle.json'),JSON.stringify({
    checkedAt:new Date().toISOString(),queuedLocal:tasks.length,
-   eligibleForApproval:eligible.length,excludedBacklog,
-   scope:'listas_and_current_or_at_creation_top30_images_max_48h',
+   eligibleForApproval:eligible.length,excludedBacklog:tasks.length-eligible.length,
+   scope:'new_image_jobs_only_no_listas_or_top30',
+   cutoverUtc:IMAGE_INBOX_CUTOVER_UTC,
    candidatesNotYetVerifiedAsGenerated:true,
    attemptedThisCycle:selected.length,
    queuedForLaterCycles:eligible.length-selected.length,
    skippedByPerCycleLimit:eligible.length-selected.length,
-   selectedCurrent:current.length,selectedHistorical:selected.length-current.length,
-   historicalQueued:eligible.filter(x=>x.project==='ttendencias' &&
-     !(top30 instanceof Set&&top30.has(x.target_id+':r'+x.revision))).length,
    projects:Object.fromEntries(['ttendencias','ttittulares'].map(project=>[project,{
     queued:tasks.filter(x=>x.project===project).length,
     eligible:eligible.filter(x=>x.project===project).length,
@@ -263,8 +240,8 @@ async function once(base=__dirname){
    let cdp,browser,ownedTarget;
    try{
     const job=await editorialJob(source,task);
-    if(!provesTop30AtImageCreation(task,job,top30)){
-      report(task,'TOP30_ORIGIN_NOT_PROVEN');continue;
+    if(!provesExactNewImageJob(task,job)){
+      report(task,'EXACT_NEW_IMAGE_JOB_NOT_PROVEN');continue;
     }
     const meta=metadata(task,job);
     let bytes=cachedOriginal(base,task,meta);
@@ -406,5 +383,5 @@ async function once(base=__dirname){
   console.log('PRIVATE_INBOX_RELAY created='+newlyOpened+' deferred='+relayDeferred);
  }finally{fs.closeSync(lock);fs.unlinkSync(path.join(receipts,'receiver.lock'))}
 }
-module.exports={metadata,episode,send,editorialJob,cachedOriginal,persistOriginal,discardOriginal,once,ENDPOINT,selectTarget,activeIdentities,selectCurrentTasks,inCurrentApprovalScope,provesTop30AtImageCreation,allowedTop30,MAX_ORIGINAL_CHECKS_PER_CYCLE,MAX_IMAGE_AGE_MS};
+module.exports={metadata,episode,send,editorialJob,cachedOriginal,persistOriginal,discardOriginal,once,ENDPOINT,selectTarget,activeIdentities,selectCurrentTasks,inCurrentApprovalScope,provesExactNewImageJob,isNewImageJob,allowedTop30,MAX_ORIGINAL_CHECKS_PER_CYCLE,MAX_IMAGE_AGE_MS,IMAGE_INBOX_CUTOVER_UTC};
 if(require.main===module)once().catch(()=>{console.error('PRIVATE_INBOX_RECEIVER_UNAVAILABLE');process.exitCode=1});
