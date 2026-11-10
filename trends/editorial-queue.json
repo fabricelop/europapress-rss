@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-10T16:14:48+01:00",
-  "count": 6,
+  "updated_at": "2026-11-10T15:15:22.862744+00:00",
+  "count": 8,
   "items": [
     {
       "red_review_request": null,
@@ -290,6 +290,74 @@
       "anticipated_news_source_count": 0,
       "anticipated_news_title": "",
       "anticipated_entered_top10_at": null
+    },
+    {
+      "id": "red-review-2563d5746308c0bad6b3",
+      "revision": 0,
+      "name": "Revisar novedades: #HuelgaGeneral",
+      "rank": 28,
+      "status": "preparing",
+      "requested_at": "2026-11-10T15:15:22.862744+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "4f1dae5df224",
+        "revision": 0,
+        "name": "#HuelgaGeneral",
+        "rank": 9,
+        "explanation": "TT#9 #HuelgaGeneral es tendencia por la huelga general de 24 horas convocada en España para el 11 de noviembre, con vivienda, salarios y coste de vida entre sus principales reivindicaciones.\n#11N #Vivienda\n🌶️ El miércoles llega con servicios mínimos y agenda máxima.",
+        "explanation_sha256": "ccbab0140450f415ba6a8ae2d07668de425880cfb3cecd4f572b762228caccbd",
+        "explained_at": "2026-11-09T15:33:00+01:00",
+        "verification_sources": [
+          {
+            "url": "https://www.rtve.es/noticias/20261109/huelga-general-11-noviembre-hora-recorrido-manifestaciones/17301386.shtml"
+          },
+          {
+            "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-23371&lang=es"
+          }
+        ],
+        "fingerprint": "1b80209f5e9361dfb7505e927f2bc3069948f367efa12859b9bda6f1f9421594"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-6af8bb75a0ea3deef6bf",
+      "revision": 0,
+      "name": "Revisar novedades: #EnBocaDeTodos",
+      "rank": 26,
+      "status": "preparing",
+      "requested_at": "2026-11-10T15:15:22.862744+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "be101248f52d",
+        "revision": 0,
+        "name": "#EnBocaDeTodos",
+        "rank": 11,
+        "explanation": "TT#11 #EnBocaDeTodos es tendencia durante la emisión de este lunes del programa de Cuatro, centrado en la actualidad política y social. No se ha podido confirmar qué tema concreto ha impulsado la etiqueta.\n#Cuatro #Actualidad\n🌶️ El directo convirtió la mesa en termómetro.",
+        "explanation_sha256": "15e1a4a723a6e5cadd3e7ae839dd42798250f90b7635711d2c4db3b80d795aed",
+        "explained_at": "2026-11-09T12:14:20+01:00",
+        "verification_sources": [
+          {
+            "url": "https://www.mediasetinfinity.es/programas-tv/en-boca-de-todos/"
+          },
+          {
+            "url": "https://tv.comunicazion.eu/es/programa/en-boca-de-todos/"
+          }
+        ],
+        "fingerprint": "4371b9b7d2284ed16b72806361fcf6e5b56b3ee421fd13bc253268c8074e699f"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
     }
   ]
 }
