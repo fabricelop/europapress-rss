@@ -3,18 +3,18 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794323989653-manual",
+  "run_id": "tr-1794323730023-manual",
   "previous_run_id": "tr-1794323730023-manual",
-  "command_id": "tr-1794323989653-manual",
+  "command_id": "tr-1794323730023-manual",
   "source": "chat",
-  "status": "waiting",
-  "phase": "preparing",
+  "status": "RUNNING",
+  "phase": "investigating",
   "started_at": "2026-11-10T16:20:00+01:00",
-  "updated_at": "2026-11-10T16:22:19+01:00",
-  "current": 0,
-  "total": 2,
-  "trend_id": null,
-  "title": null,
+  "updated_at": "2026-11-10T16:21:30+01:00",
+  "current": 1,
+  "total": 3,
+  "trend_id": "red-review-6af8bb75a0ea3deef6bf",
+  "title": "Revisar novedades: #EnBocaDeTodos",
   "queue_complete": false,
   "processed_ids": [
     "9a057d15cf0b"
@@ -243,7 +243,7 @@
     ],
     "message": "Pasada tr-20261110T161000-manual cerrada 6/6 con incidencia de verificación del ranking. El refresco real 42841653159 concluyó success y dejó recent.json captured_at 2026-11-10T16:11:26+01:00 con primary_source=getdaytrends, live_verified=false y reliability=unverified. Los seis ítems (PS5 Pro, El Ruso, Manuel Ferrero Álvarez, insultar, Rochos y Magisterio) fueron revalidados JIT y aplicados como problematic en 2c134cc365831b4e3d8c4173a88bd84d2b604819, sin crear explicaciones ni nuevas fichas; Rochos conserva intacto el episodio anterior. Barrera final: editorial-queue tiene 6 problematic pero 0 preparing/update/rewrite_pending/reexplain/anticipate/review_red; mobile-decisions sin estados activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794323989653-manual en ejecución: 2 trabajos preparing/update observados en main; orden JIT por requested_at. ImageGen=0; publicaciones=0.",
+  "message": "1/3 cerrado; revisando continuidad de #EnBocaDeTodos con fuentes del 10 de noviembre.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
