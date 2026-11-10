@@ -3,30 +3,28 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794336117018-manual",
-  "previous_run_id": "tr-1794335896172-manual",
-  "command_id": "tr-1794336117018-manual",
+  "run_id": "tr-1794336900000-manual",
+  "previous_run_id": "tr-1794336117018-manual",
+  "command_id": "tr-1794336900000-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-10T19:41:57.018+01:00",
-  "updated_at": "2026-11-10T19:47:46+01:00",
-  "current": 1,
-  "total": 1,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-10T19:55:00+01:00",
+  "updated_at": "2026-11-10T19:55:00+01:00",
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
-  "converged_ids": [
-    "radar-prepare-5fc717151f768845d4d7"
-  ],
+  "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
-    "observed": 1,
-    "closed": 1,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
     "explained": 0,
     "problematic": 0,
     "updates": 0,
@@ -37,8 +35,8 @@
     "distinct_updates": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
-    "anticipation_reviews": 1,
-    "anticipation_prepared": 1,
+    "anticipation_reviews": 0,
+    "anticipation_prepared": 0,
     "anticipation_unverified": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
@@ -46,20 +44,9 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 1
+    "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "radar-prepare-5fc717151f768845d4d7",
-      "revision": 0,
-      "name": "Radar · Dictadura",
-      "outcome": "anticipation_prepared",
-      "applied": true,
-      "via": "concurrent_convergence",
-      "apply_commit": "42aa529db6456e56fc5d5325712556b212398f20",
-      "metrics_commit": "d544ffe362072e030eef0b2290c138dc5d9cfe6f"
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -160,7 +147,7 @@
     "incidents": [],
     "message": "Pasada tr-1794336117018-manual cerrada 1/1 por convergencia JIT. Radar · Dictadura ya había quedado anticipation_prepared y aplicado por la pasada solapada tr-1794335896172-manual; se verificó el detonante con fuentes actuales, la cola autoritativa quedó en 0 y no quedan preparing/update ni reelaboraciones activas en decisiones móviles. Se reconcilió anticipation-metrics con el estado aplicado. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794336117018-manual cerrada 1/1 por convergencia JIT. Radar · Dictadura ya había quedado anticipation_prepared y aplicado por la pasada solapada tr-1794335896172-manual; se verificó el detonante con fuentes actuales, la cola autoritativa quedó en 0 y no quedan preparing/update ni reelaboraciones activas en decisiones móviles. Se reconcilió anticipation-metrics con el estado aplicado. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada tr-1794336900000-manual iniciada. Releyendo cola autoritativa y reelaboraciones vigentes antes de cerrar.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
@@ -7309,7 +7296,7 @@
   ],
   "outbox_comment_id": 5848965032,
   "editorial_apply_commit": "76e7e728a222ee21fee34fda64da43cfd7ecd90a",
-  "finished_at": "2026-11-10T19:47:46+01:00",
+  "finished_at": null,
   "refresh_workflow_run_id": 42839275825,
   "refresh_conclusion": "success"
 }
