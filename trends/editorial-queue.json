@@ -1,6 +1,38 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-10T22:27:30+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-10T21:28:51.299783+00:00",
+  "count": 1,
+  "items": [
+    {
+      "id": "red-review-8d111bd426152df38cdd",
+      "revision": 0,
+      "name": "Revisar novedades: Charles",
+      "rank": 8,
+      "status": "preparing",
+      "requested_at": "2026-11-10T21:28:51.299783+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "c43139196d57",
+        "revision": 0,
+        "name": "Charles",
+        "rank": 18,
+        "explanation": "TT#18 Charles sigue siendo tendencia por la borrasca: Canarias mantiene alerta máxima por viento en La Palma y cumbres de Tenerife; Portugal declara situación de alerta y pide quedarse en casa.\n#BorrascaCharles #Portugal\n🌶️ El relevo llega con avisos al máximo.",
+        "explanation_sha256": "847c7521060dd6ebee4608d5430eb0a7f37dbe47ce88661c501c511ef9dabfb7",
+        "explained_at": "2026-11-09T16:16:00+01:00",
+        "verification_sources": [
+          {
+            "url": "https://www.rtve.es/noticias/20261109/borrasca-origen-subtropical-charles-provocara-fuerte-temporal-lluvia-viento-hasta-jueves/17305977.shtml"
+          }
+        ],
+        "fingerprint": "b4d92961cbea49c91aea04cc0477656311bab7cad416ca8cd7e133af5a426f56"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
