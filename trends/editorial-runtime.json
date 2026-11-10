@@ -8,9 +8,9 @@
   "command_id": "tr-1794335896172-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "investigating",
   "started_at": "2026-11-10T19:38:20+01:00",
-  "updated_at": "2026-11-10T19:38:20+01:00",
+  "updated_at": "2026-11-10T19:40:00+01:00",
   "current": 0,
   "total": 3,
   "trend_id": "radar-prepare-5fc717151f768845d4d7",
@@ -137,7 +137,7 @@
     "incidents": [],
     "message": "Pasada tr-20261110T192500-manual cerrada 0/0 contra main. Barrera JIT final: editorial-queue=0 (updated_at 2026-11-10T18:19:13.372802+00:00), mobile-decisions sin trabajo editorial activo y búsquedas dirigidas sin rewrite_pending/reexplain_pending. Se revisaron los mantenimientos más recientes (#ProfesionDeRiesgoYa, ya aplicados) y no quedaba trabajo textual pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada editorial en curso: 3 trabajos observados; primero Radar · Dictadura, después revisiones rojas de Supa y Charles.",
+  "message": "Investigando Radar · Dictadura; señal fuera del Top30, sin publicación ni imagen.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
@@ -5874,8 +5874,8 @@
     "id": "radar-prepare-5fc717151f768845d4d7",
     "revision": 0,
     "name": "Radar · Dictadura",
-    "phase": "preparing",
-    "message": "Preparando investigación anticipada; sin imágenes ni publicación."
+    "phase": "investigating",
+    "message": "Verificando el detonante actual de la señal Radar con fuentes de hoy."
   },
   "withdrawn_ids": [
     "ae7f066f3c94"
