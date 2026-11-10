@@ -10,17 +10,17 @@
   "status": "DONE",
   "phase": "closing",
   "started_at": "2026-11-10T23:22:00+01:00",
-  "updated_at": "2026-11-10T23:29:27+01:00",
+  "updated_at": "2026-11-10T23:29:00+01:00",
   "current": 2,
   "total": 2,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
-  "processed_ids": [],
-  "converged_ids": [
+  "processed_ids": [
     "60c664dd6336",
     "0faac9574459"
   ],
+  "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
@@ -47,7 +47,7 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 2
+    "concurrent_convergence": 0
   },
   "outcomes": [
     {
@@ -56,8 +56,8 @@
       "name": "Hugo Duro",
       "outcome": "explained",
       "applied": true,
-      "via": "concurrent_convergence",
-      "apply_commit": "8046c636ec22a84f69b40d962a2999770d63a275"
+      "apply_commit": "8046c636ec22a84f69b40d962a2999770d63a275",
+      "verification": "requests.json + telegram-manual-explained.json modified atomically; site Top30 EXPLICADA; queue removed"
     },
     {
       "id": "0faac9574459",
@@ -65,8 +65,8 @@
       "name": "Ada Colau",
       "outcome": "explained",
       "applied": true,
-      "via": "concurrent_convergence",
-      "apply_commit": "012e53349fbddccadebe5cde7f1d20a26aacd7dc"
+      "apply_commit": "012e53349fbddccadebe5cde7f1d20a26aacd7dc",
+      "verification": "requests.json + telegram-manual-explained.json modified atomically; site Top30 EXPLICADA; queue removed"
     }
   ],
   "incident_count": 0,
@@ -484,17 +484,27 @@
       "trend_id": "0faac9574459",
       "title": "Ada Colau",
       "message": "Validación JIT superada para 0faac9574459 r0; preparando explained_direct mediante editorial-outbox. Imagen fuera de esta pasada."
+    },
+    {
+      "at": "2026-11-10T23:29:00+01:00",
+      "phase": "verifying",
+      "message": "Barrera final repetida sobre main: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. Hugo Duro y Ada Colau constan aplicados en commits 8046c636 y 012e5334."
+    },
+    {
+      "at": "2026-11-10T23:29:00+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-1794349301598-manual cerrada 2/2. ImageGen=0; image-outbox editorial=0; publicaciones=0; imágenes quedan pendientes en el flujo visual separado."
     }
   ],
   "last_started_at": "2026-11-10T23:28:17+01:00",
-  "last_completed_at": "2026-11-10T23:29:27+01:00",
+  "last_completed_at": "2026-11-10T23:29:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-1794349301598-manual",
     "status": "DONE",
     "started_at": "2026-11-10T23:22:00+01:00",
-    "finished_at": "2026-11-10T23:29:27+01:00",
-    "at": "2026-11-10T23:29:27+01:00",
+    "finished_at": "2026-11-10T23:29:00+01:00",
+    "at": "2026-11-10T23:29:00+01:00",
     "phase": "closing",
     "summary": {
       "attempted": 2,
@@ -519,13 +529,13 @@
       "image_outbox_created": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 2
+      "concurrent_convergence": 0
     },
-    "processed_ids": [],
-    "converged_ids": [
+    "processed_ids": [
       "60c664dd6336",
       "0faac9574459"
     ],
+    "converged_ids": [],
     "outcomes": [
       {
         "id": "60c664dd6336",
@@ -533,8 +543,8 @@
         "name": "Hugo Duro",
         "outcome": "explained",
         "applied": true,
-        "via": "concurrent_convergence",
-        "apply_commit": "8046c636ec22a84f69b40d962a2999770d63a275"
+        "apply_commit": "8046c636ec22a84f69b40d962a2999770d63a275",
+        "verification": "requests.json + telegram-manual-explained.json modified atomically; site Top30 EXPLICADA; queue removed"
       },
       {
         "id": "0faac9574459",
@@ -542,13 +552,13 @@
         "name": "Ada Colau",
         "outcome": "explained",
         "applied": true,
-        "via": "concurrent_convergence",
-        "apply_commit": "012e53349fbddccadebe5cde7f1d20a26aacd7dc"
+        "apply_commit": "012e53349fbddccadebe5cde7f1d20a26aacd7dc",
+        "verification": "requests.json + telegram-manual-explained.json modified atomically; site Top30 EXPLICADA; queue removed"
       }
     ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-1794349301598-manual cerrada 2/2 por convergencia JIT. Hugo Duro r0 y Ada Colau r0 quedaron aplicados como explained en main; cola final=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "message": "Pasada tr-1794349301598-manual cerrada 2/2. Hugo Duro y Ada Colau reelaborados desde cero y aplicados por el circuito oficial. Barrera final repetida sobre main: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
   "message": "Pasada tr-1794349301598-manual cerrada 2/2 por convergencia JIT. Hugo Duro r0 y Ada Colau r0 quedaron aplicados como explained en main; cola final=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
@@ -8872,6 +8882,6 @@
     "61f2f146a926eae3568074e8e0d9947db37bc9f5",
     "5b26ed05be444fecd3e641d64eae7eba5201f9b0"
   ],
-  "finished_at": "2026-11-10T23:29:27+01:00",
+  "finished_at": "2026-11-10T23:29:00+01:00",
   "outbox_commit": "66c7c23be5c4b51ac802b4e5cc8cbd6c67d69ea4"
 }
