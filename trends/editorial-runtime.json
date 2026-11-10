@@ -7,15 +7,15 @@
   "previous_run_id": "tr-20261110T151000-manual",
   "command_id": "tr-autoguard-1794319867",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-10T15:21:00+01:00",
-  "updated_at": "2026-11-10T15:21:00+01:00",
+  "updated_at": "2026-11-10T15:22:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -50,22 +50,22 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Comprobando cola editorial y reexplicaciones pendientes",
+  "activity": "Pasada cerrada",
   "last_started_at": "2026-11-10T15:21:00+01:00",
-  "last_completed_at": "2026-11-10T15:16:00+01:00",
+  "last_completed_at": "2026-11-10T15:22:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261110T151000-manual",
+    "run_id": "tr-autoguard-1794319867",
     "status": "DONE",
-    "started_at": "2026-11-10T15:10:00+01:00",
-    "finished_at": "2026-11-10T15:16:00+01:00",
-    "at": "2026-11-10T15:16:00+01:00",
+    "started_at": "2026-11-10T15:21:00+01:00",
+    "finished_at": "2026-11-10T15:22:00+01:00",
+    "at": "2026-11-10T15:22:00+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 5,
-      "observed": 5,
-      "closed": 5,
-      "explained": 5,
+      "attempted": 0,
+      "observed": 0,
+      "closed": 0,
+      "explained": 0,
       "problematic": 0,
       "updates": 0,
       "review_completed_no_distinct_event": 0,
@@ -86,58 +86,14 @@
       "incidents": 0,
       "concurrent_convergence": 0
     },
-    "processed_ids": [
-      "2e413c62b2e2",
-      "8a66265b55a4",
-      "8a590611f49c",
-      "41a47d5cfc69",
-      "94fedb129457"
-    ],
+    "processed_ids": [],
     "converged_ids": [],
-    "outcomes": [
-      {
-        "id": "2e413c62b2e2",
-        "revision": 0,
-        "name": "Degradar",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "8a66265b55a4",
-        "revision": 0,
-        "name": "Descansen",
-        "outcome": "explained_cause_unconfirmed",
-        "applied": true,
-        "closer_omitted": "sensitive_event"
-      },
-      {
-        "id": "8a590611f49c",
-        "revision": 0,
-        "name": "Humor",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "41a47d5cfc69",
-        "revision": 0,
-        "name": "Ayer Broncano",
-        "outcome": "explained_cause_unconfirmed",
-        "applied": true
-      },
-      {
-        "id": "94fedb129457",
-        "revision": 0,
-        "name": "Feliz Martes",
-        "outcome": "explained_cause_unconfirmed",
-        "applied": true
-      }
-    ],
+    "outcomes": [],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-20261110T151000-manual cerrada 5/5. Degradar, Descansen, Humor, Ayer Broncano y Feliz Martes fueron revalidadas JIT y consumidas por el aplicador oficial; editorial-queue=0 y los cinco outboxes fueron retirados. Descansen queda sin remate por sensibilidad; Ayer Broncano y Feliz Martes se cerraron con causalidad no confirmada. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
-    "apply_workflow_run_id": 42832151349
+    "message": "Pasada tr-autoguard-1794319867 cerrada 0/0 contra main. editorial-queue fue leída al inicio y revalidada dos veces, incluida la barrera final: count=0, updated_at 2026-11-10T15:17:23+01:00. Búsqueda dirigida sin status:preparing, rewrite_pending:true ni reexplain_pending:true activos. No había trabajo textual que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-autoguard-1794319867 iniciada sobre main. Primera lectura: editorial-queue=0; verificando barrera JIT antes de cerrar. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-autoguard-1794319867 cerrada 0/0 contra main. editorial-queue fue leída al inicio y revalidada dos veces, incluida la barrera final: count=0, updated_at 2026-11-10T15:17:23+01:00. Búsqueda dirigida sin status:preparing, rewrite_pending:true ni reexplain_pending:true activos. No había trabajo textual que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
@@ -4918,6 +4874,45 @@
       "trend_id": null,
       "title": null,
       "message": "Pasada tr-autoguard-1794319867 iniciada sobre main. Primera lectura: editorial-queue=0; verificando barrera JIT antes de cerrar. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-autoguard-1794319867",
+      "status": "DONE",
+      "started_at": "2026-11-10T15:21:00+01:00",
+      "finished_at": "2026-11-10T15:22:00+01:00",
+      "at": "2026-11-10T15:22:00+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 0,
+        "observed": 0,
+        "closed": 0,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 0,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [],
+      "converged_ids": [],
+      "outcomes": [],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-autoguard-1794319867 cerrada 0/0 contra main. editorial-queue fue leída al inicio y revalidada dos veces, incluida la barrera final: count=0, updated_at 2026-11-10T15:17:23+01:00. Búsqueda dirigida sin status:preparing, rewrite_pending:true ni reexplain_pending:true activos. No había trabajo textual que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "current_item": null,
@@ -6099,5 +6094,5 @@
   ],
   "outbox_comment_id": 5848965032,
   "editorial_apply_commit": "76e7e728a222ee21fee34fda64da43cfd7ecd90a",
-  "finished_at": null
+  "finished_at": "2026-11-10T15:22:00+01:00"
 }
