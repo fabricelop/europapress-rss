@@ -3,31 +3,34 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-autoguard-1794302476",
-  "previous_run_id": "tr-1794298631263-manual",
-  "command_id": "tr-autoguard-1794302476",
+  "run_id": "tr-1794302794758-manual",
+  "previous_run_id": "tr-autoguard-1794302476",
+  "command_id": "tr-1794302794758-manual",
   "source": "chat",
-  "status": "success",
+  "status": "RUNNING",
   "phase": "investigating",
-  "started_at": "2026-11-10T10:22:00+01:00",
-  "updated_at": "2026-11-10T10:25:57+01:00",
+  "started_at": "2026-11-10T10:27:00+01:00",
+  "updated_at": "2026-11-10T10:28:00+01:00",
   "finished_at": null,
   "current": 0,
   "total": 2,
-  "trend_id": "4b1ee5aa39b8",
-  "title": "Silvia",
-  "queue_complete": true,
-  "processed_ids": [
-    "4b1ee5aa39b8",
-    "9423917e5a4e"
-  ],
+  "trend_id": "red-review-79b380b36f879427129d",
+  "title": "Revisar novedades: El Hierro",
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-79b380b36f879427129d",
+    "red-review-a9dc391287ef03b2049d"
+  ],
+  "remaining_active_ids": [
+    "red-review-79b380b36f879427129d",
+    "red-review-a9dc391287ef03b2049d"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 0,
+    "attempted": 2,
+    "observed": 2,
     "closed": 0,
     "explained": 0,
     "problematic": 0,
@@ -42,7 +45,7 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -54,7 +57,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Cierre 0/0 verificado contra main",
+  "activity": "Investigando 1/2: El Hierro",
   "last_started_at": "2026-11-10T10:25:56+01:00",
   "last_completed_at": "2026-11-10T10:25:57+01:00",
   "api_failover_enabled": false,
@@ -97,7 +100,7 @@
     "incidents": [],
     "message": "Pasada tr-1794298631263-manual cerrada 0/0 contra main. Barrera JIT final: editorial-queue=0 (updated_at 2026-11-10T10:01:53+01:00) y búsqueda dirigida sin preparing/update/rewrite_pending/reexplain activos; mobile-decisions sin trabajo editorial activo. Últimos resultados de mantenimiento revisados: Barça y #FelizMartes permanecen unchanged desde la pasada 08:55. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Investigando reentradas Silvia y Barça; validación JIT por id/revision. ImageGen desactivado en esta pasada.",
+  "message": "Pasada manual RUNNING. Cola JIT=2 review_red: El Hierro y Julián Álvarez. El Hierro presenta novedades de continuidad; Julián se contrasta contra el mismo Atlético-Barça. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
@@ -2874,6 +2877,21 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-1794298631263-manual cerrada 0/0 contra main. Barrera JIT final: editorial-queue=0 (updated_at 2026-11-10T10:01:53+01:00) y búsqueda dirigida sin preparing/update/rewrite_pending/reexplain activos; mobile-decisions sin trabajo editorial activo. Últimos resultados de mantenimiento revisados: Barça y #FelizMartes permanecen unchanged desde la pasada 08:55. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-10T10:28:00+01:00",
+      "run_id": "tr-1794302794758-manual",
+      "phase": "investigating",
+      "trend_id": "red-review-79b380b36f879427129d",
+      "title": "Revisar novedades: El Hierro",
+      "message": "Pasada manual RUNNING. Cola JIT=2 review_red: El Hierro y Julián Álvarez. El Hierro presenta novedades de continuidad; Julián se contrasta contra el mismo Atlético-Barça. ImageGen=0; publicaciones=0.",
+      "prior_runtime_observed": {
+        "run_id": "tr-autoguard-1794302476",
+        "status": "success",
+        "updated_at": "2026-11-10T10:25:57+01:00",
+        "phase": "investigating",
+        "message": "Investigando reentradas Silvia y Barça; validación JIT por id/revision. ImageGen desactivado en esta pasada."
+      }
     }
   ],
   "current_item": null,
