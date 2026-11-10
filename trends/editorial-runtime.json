@@ -3143,6 +3143,58 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-20261110T031000-manual cerrada 1/1. Espinosa r0 fue investigada con dos búsquedas independientes y aplicada en main por 5311a3d99893c024fe4fec81081c06e65ee321a1 con contexto actual verificado y detonante concreto no confirmado. Barrera final: editorial-queue=0. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-autoguard-1794276665",
+      "status": "DONE",
+      "started_at": "2026-11-10T03:11:00+01:00",
+      "finished_at": "2026-11-10T03:13:37+01:00",
+      "at": "2026-11-10T03:13:37+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 1,
+        "observed": 1,
+        "closed": 1,
+        "explained": 1,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 0,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 1
+      },
+      "processed_ids": [],
+      "converged_ids": [
+        "23f88d52777e"
+      ],
+      "outcomes": [
+        {
+          "id": "23f88d52777e",
+          "revision": 0,
+          "name": "Espinosa",
+          "outcome": "explained_cause_unconfirmed",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "apply_commit": "5311a3d99893c024fe4fec81081c06e65ee321a1"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "superseded_by": "tr-20261110T031000-manual",
+      "message": "Autoguard satisfecho por convergencia JIT con la pasada manual ya en curso: Espinosa r0 fue revalidada y quedó aplicada en main por 5311a3d99893c024fe4fec81081c06e65ee321a1. Barrera final: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0. La telemetría canónica se conserva en tr-20261110T031000-manual."
     }
   ],
   "current_item": null,
