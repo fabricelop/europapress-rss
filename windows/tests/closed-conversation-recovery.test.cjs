@@ -16,7 +16,7 @@ for(const project of ['ttittulares','ttendencias'])test(project+' recovers exact
  const FakeCDP=class{async open(){}close(){}async call(method,args){if(method==='Target.createTarget'){assert.equal(args.url,task.conversation_url);assert.equal(args.background,true);created++;return {targetId:'owned'}}if(method==='Target.closeTarget'){closed++;return {}}throw Error('Unexpected CDP mutation '+method)}async evaluate(expression){assert.equal(expression,'read-exact-job');return {ready:true,dataUrl:'data:image/png;base64,'+bytes.toString('base64')}}};
  const start=source.indexOf('class CDP{'),end=source.indexOf('function unprotect(');
  const code=source.slice(0,start)+'const CDP=FakeCDP;\n'+source.slice(end);
- const sandbox={module:{exports:{}},require:n=>n==='node:child_process'?{execFileSync:()=> 'private-secret'}:n.endsWith('WebImages.cjs')?reader:require(n),process:{platform:'win32',pid:process.pid,kill:process.kill.bind(process)},__dirname:base,FakeCDP,Buffer,FormData,Blob,AbortSignal,Date,console:{log(){},error(){}},setTimeout,clearTimeout,fetch:async(url,opts)=>{
+ const sandbox={module:{exports:{}},require:n=>n==='node:child_process'?{execFileSync:()=> 'private-secret'}:n.endsWith('WebImages.cjs')?reader:n==='./TTImagesImmediateInbox.cjs'?require('../TTImagesImmediateInbox.cjs'):require(n),process:{platform:'win32',pid:process.pid,kill:process.kill.bind(process)},__dirname:base,FakeCDP,Buffer,FormData,Blob,AbortSignal,Date,console:{log(){},error(){}},setTimeout,clearTimeout,fetch:async(url,opts)=>{
   if(url.includes('site-top30-current.json'))return Response.json({items:[{
    editorial_id:task.target_id,revision:task.revision,explanation:text}]});
   if(url.includes('decisions.json'))return Response.json({items:[]});
@@ -26,7 +26,7 @@ for(const project of ['ttittulares','ttendencias'])test(project+' recovers exact
   throw Error('Unexpected URL '+url);
  }};
  vm.runInNewContext(code,sandbox);await sandbox.module.exports.once(base);
- assert.equal(created,1,'created='+created+' cycle='+fs.readFileSync(path.join(base,'image-approval-receipts/receiver-cycle.json'),'utf8')+' status='+fs.readFileSync(path.join(base,'image-approval-receipts/receiver-status.json'),'utf8'));assert.equal(closed,1);assert.equal(uploads,1);
+ assert.equal(created,1);assert.equal(closed,1);assert.equal(uploads,1);
  const receipt=JSON.parse(fs.readFileSync(path.join(base,'image-approval-receipts/job-abc.json'),'utf8'));assert.equal(receipt.state,'pending');assert.equal(receipt.editorialId,task.target_id);
  }finally{fs.rmSync(base,{recursive:true,force:true})}
 });
