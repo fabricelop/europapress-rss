@@ -1023,9 +1023,12 @@ async function holdForHeadlineOriginalReceipt(handoff,job,maxMs=360000){
 (async()=>{
   let cdp;
   let webHandoff=null;
+  let activeJob=null;
+  let promptAttempted=false;
   try{
     console.log("BRIDGE START "+commandId);
     const job=await fetchJob();
+    activeJob=job;
     const isAutomatic=String(job.mode||"")==="automatic_ready_repair";
     const launchOnly=String(job.delivery_mode||"")==="launch_only";
     // The legacy uploader remains disabled. After ImageGen is launched,
@@ -1040,6 +1043,14 @@ async function holdForHeadlineOriginalReceipt(handoff,job,maxMs=360000){
        typeof receiver.wakePublisher!=="function")
       throw Error("TTITTULARES_NEWS_RECEIVER_NOT_READY_BEFORE_IMAGEGEN");
     cdp=await openFreshDedicatedConversation();
+    // Preserve an authenticated, exact-command recovery record BEFORE any
+    // prompt submission. ChatGPT may generate even when its submit ACK is lost.
+    // If enrollment fails, do not submit an orphan ImageGen request.
+    if(launchOnly){
+      webHandoff={job,commandId,targetId,browserTargetId:await originalImageTargetId(cdp),secret};
+      receiver.enroll(webHandoff);
+      console.log("BRIDGE PRIVATE INBOX PRE_ENROLLED "+commandId);
+    }
     console.log("BRIDGE FIXED CHAT READY mode="+BRIDGE_MODE);
     let image=null;
     for(let generationAttempt=1;generationAttempt<=2;generationAttempt++){
@@ -1047,8 +1058,13 @@ async function holdForHeadlineOriginalReceipt(handoff,job,maxMs=360000){
         try{cdp&&cdp.close()}catch{}
         await progress("image_retry","Primer envío no produjo generación real; reintentando en conversación nueva de la misma pestaña.");
         cdp=await openFreshDedicatedConversation();
+        if(launchOnly){
+          webHandoff={job,commandId,targetId,browserTargetId:await originalImageTargetId(cdp),secret};
+          receiver.enroll(webHandoff);
+        }
         console.log("BRIDGE INTERNAL RETRY conversation="+generationAttempt);
       }
+      promptAttempted=true;
       cdp=await injectPromptIntoChat(cdp,job);
       if(!cdp.promptSubmittedAt)await submitVerifiedDraft(cdp,job);
       cdp=await ensureSubmitted(cdp,job);
@@ -1107,6 +1123,21 @@ async function holdForHeadlineOriginalReceipt(handoff,job,maxMs=360000){
     }
     throw Error("Outbox recibido pero no materializado en 6 minutos");
   }catch(e){
+    // A failed submit/launch ACK does not prove ImageGen failed. Read ONLY the
+    // already generated exact-command PNG, without retrying its prompt.
+    if(promptAttempted&&webHandoff&&activeJob&&cdp){
+      webHandoff.captureCDP=cdp;
+      console.log("BRIDGE PRIVATE INBOX LOST_ACK_RECOVERY "+commandId);
+      try{
+        const state=await holdForHeadlineOriginalReceipt(webHandoff,activeJob,180000);
+        if(state==='private_original_received'){
+          console.log("BRIDGE PRIVATE INBOX RECOVERED_AFTER_ACK_FAILURE "+commandId);
+          return;
+        }
+      }catch(recoveryError){
+        console.log("BRIDGE PRIVATE INBOX LOST_ACK_DEFERRED "+String(recoveryError?.message||'unavailable').slice(0,100));
+      }
+    }
     console.error("BRIDGE ERROR :: "+String(e&&e.message||e));
     await fail(e&&e.message||e);
     process.exitCode=1;
