@@ -8,13 +8,13 @@
   "command_id": "tr-20261110T132900-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "investigating",
+  "phase": "drafting",
   "started_at": "2026-11-10T13:29:00+01:00",
-  "updated_at": "2026-11-10T13:32:30+01:00",
-  "current": 0,
+  "updated_at": "2026-11-10T13:34:00+01:00",
+  "current": 1,
   "total": 2,
-  "trend_id": "radar-prepare-06bcc77818dcc3aacb7d",
-  "title": "Radar · Presidente del Gobierno",
+  "trend_id": "radar-prepare-a10e6db8461d43911b40",
+  "title": "Radar · Mónica",
   "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
@@ -50,7 +50,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Investigando borrador Radar",
+  "activity": "Redactando borrador Radar",
   "last_started_at": "2026-11-10T13:29:00+01:00",
   "last_completed_at": "2026-11-10T13:30:09+01:00",
   "api_failover_enabled": false,
@@ -93,7 +93,7 @@
     "incidents": [],
     "message": "Pasada editorial real cerrada 0/0 tras relectura final de main: editorial-queue=0 y sin preparing/update, rewrite_pending ni reexplain activos en requests/mobile. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Radar «Presidente del Gobierno» r0 revalidado JIT. Se contrasta el término con la actualidad del 10/11 antes de preparar o descartar el borrador; ImageGen=0.",
+  "message": "Radar «Mónica» r0 revalidado JIT. Dos fuentes actuales identifican a Mónica García por su reacción a la entrevista Abascal-Broncano; se prepara borrador anticipado, sin Listas ni imágenes.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
@@ -4391,6 +4391,15 @@
       "trend_id": "radar-prepare-06bcc77818dcc3aacb7d",
       "title": "Radar · Presidente del Gobierno",
       "message": "Radar «Presidente del Gobierno» r0 revalidado JIT. Se contrasta el término con la actualidad del 10/11 antes de preparar o descartar el borrador; ImageGen=0."
+    },
+    {
+      "run_id": "tr-20261110T132900-manual",
+      "status": "RUNNING",
+      "at": "2026-11-10T13:34:00+01:00",
+      "phase": "drafting",
+      "trend_id": "radar-prepare-a10e6db8461d43911b40",
+      "title": "Radar · Mónica",
+      "message": "Radar «Mónica» r0 revalidado JIT. Dos fuentes actuales identifican a Mónica García por su reacción a la entrevista Abascal-Broncano; se prepara borrador anticipado, sin Listas ni imágenes."
     }
   ],
   "current_item": null,
