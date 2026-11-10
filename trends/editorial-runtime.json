@@ -7,11 +7,11 @@
   "previous_run_id": "tr-1794347700000-manual",
   "command_id": "tr-1794347693134-manual",
   "source": "chat",
-  "status": "success",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-10T23:06:00+01:00",
-  "updated_at": "2026-11-10T23:12:48+01:00",
-  "current": 0,
+  "updated_at": "2026-11-10T23:14:00+01:00",
+  "current": 10,
   "total": 10,
   "trend_id": null,
   "title": null,
@@ -27,18 +27,20 @@
     "ba6d7fc50f9a",
     "081e4f9cbc10"
   ],
-  "converged_ids": [],
+  "converged_ids": [
+    "36a6f15af1f8"
+  ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 10,
     "observed": 10,
-    "closed": 0,
-    "explained": 0,
+    "closed": 10,
+    "explained": 8,
     "problematic": 0,
     "updates": 0,
-    "review_completed_no_distinct_event": 0,
+    "review_completed_no_distinct_event": 1,
     "maintenance_reviews": 0,
     "unchanged_reviews": 0,
     "continuity_updates": 0,
@@ -48,15 +50,97 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 10,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 1
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "94fdcfb9c767",
+      "revision": 0,
+      "name": "#ColauEnLaRevuelta",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "dcc51b0efc41605c711efb66b314a667e26e9c5f"
+    },
+    {
+      "id": "36a6f15af1f8",
+      "revision": 0,
+      "name": "Ada Colau",
+      "outcome": "converged_jit",
+      "applied": false,
+      "via": "queue_refresh",
+      "note": "La relectura JIT posterior encontró la revisión fuera de la cola activa; no se sobrescribió."
+    },
+    {
+      "id": "b0e3ee21773e",
+      "revision": 0,
+      "name": "#HuelgaGeneral",
+      "outcome": "review_completed_no_distinct_event",
+      "applied": true,
+      "apply_commit": "dcc51b0efc41605c711efb66b314a667e26e9c5f"
+    },
+    {
+      "id": "a5228a344f9b",
+      "revision": 0,
+      "name": "#CanYamanEH",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "dcc51b0efc41605c711efb66b314a667e26e9c5f"
+    },
+    {
+      "id": "9926d395c67f",
+      "revision": 0,
+      "name": "#FirstDates10N",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "dcc51b0efc41605c711efb66b314a667e26e9c5f"
+    },
+    {
+      "id": "2ec7baae881f",
+      "revision": 0,
+      "name": "Luzon",
+      "outcome": "explained_uncertain_trigger",
+      "applied": true,
+      "apply_commit": "dcc51b0efc41605c711efb66b314a667e26e9c5f"
+    },
+    {
+      "id": "8339a494972f",
+      "revision": 0,
+      "name": "Jorge Ponce",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "dcc51b0efc41605c711efb66b314a667e26e9c5f"
+    },
+    {
+      "id": "4e9fca44499f",
+      "revision": 0,
+      "name": "Houellebecq",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "dcc51b0efc41605c711efb66b314a667e26e9c5f"
+    },
+    {
+      "id": "ba6d7fc50f9a",
+      "revision": 0,
+      "name": "Gerona",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "dcc51b0efc41605c711efb66b314a667e26e9c5f"
+    },
+    {
+      "id": "081e4f9cbc10",
+      "revision": 0,
+      "name": "La España",
+      "outcome": "explained_uncertain_trigger",
+      "applied": true,
+      "apply_commit": "dcc51b0efc41605c711efb66b314a667e26e9c5f"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -384,29 +468,34 @@
       "at": "2026-11-10T23:06:00+01:00",
       "phase": "preparing",
       "message": "Pasada tr-1794347693134-manual RUNNING. Cola autoritativa JIT=10; procesamiento de preparing/update del más antiguo al más reciente con validación id+revision antes de cada entrada. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-10T23:14:00+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-1794347693134-manual cerrada 10/10: 8 explicaciones aplicadas, #HuelgaGeneral cerrado como no_distinct_event y Ada Colau convergió fuera de la cola en la validación JIT. Barrera final: editorial-queue=0 y mobile-decisions sin trabajo editorial activo. ImageGen=0; publicaciones=0."
     }
   ],
   "last_started_at": "2026-11-10T23:12:48+01:00",
-  "last_completed_at": "2026-11-10T23:12:48+01:00",
+  "last_completed_at": "2026-11-10T23:14:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794347700000-manual",
+    "run_id": "tr-1794347693134-manual",
     "status": "DONE",
-    "started_at": "2026-11-10T22:55:00+01:00",
-    "finished_at": "2026-11-10T22:58:30+01:00",
-    "at": "2026-11-10T22:58:30+01:00",
+    "started_at": "2026-11-10T23:06:00+01:00",
+    "finished_at": "2026-11-10T23:14:00+01:00",
+    "at": "2026-11-10T23:14:00+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 1,
-      "observed": 1,
-      "closed": 1,
-      "explained": 0,
+      "attempted": 10,
+      "observed": 10,
+      "closed": 10,
+      "explained": 8,
       "problematic": 0,
-      "updates": 1,
-      "review_completed_no_distinct_event": 0,
-      "maintenance_reviews": 1,
+      "updates": 0,
+      "review_completed_no_distinct_event": 1,
+      "maintenance_reviews": 0,
       "unchanged_reviews": 0,
-      "continuity_updates": 1,
+      "continuity_updates": 0,
       "distinct_updates": 0,
       "stale_reviews": 0,
       "unverified_reviews": 0,
@@ -419,28 +508,108 @@
       "image_outbox_created": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 0
+      "concurrent_convergence": 1
     },
     "processed_ids": [
-      "red-review-efe36e3459279f1819ae"
+      "94fdcfb9c767",
+      "b0e3ee21773e",
+      "a5228a344f9b",
+      "9926d395c67f",
+      "2ec7baae881f",
+      "8339a494972f",
+      "4e9fca44499f",
+      "ba6d7fc50f9a",
+      "081e4f9cbc10"
     ],
-    "converged_ids": [],
+    "converged_ids": [
+      "36a6f15af1f8"
+    ],
     "outcomes": [
       {
-        "id": "red-review-efe36e3459279f1819ae",
+        "id": "94fdcfb9c767",
         "revision": 0,
-        "name": "Revisar novedades: Carzzy",
-        "outcome": "continuity_update",
+        "name": "#ColauEnLaRevuelta",
+        "outcome": "explained",
         "applied": true,
-        "via": "maintenance_outbox",
-        "source_id": "79666c46d60d",
-        "outbox_commit": "abfe5f994c757f59d45e4bd5a69b2de69e8ad60f",
-        "apply_commit": "c0fd462afc1c2efa017fd5178a391ca951212d47"
+        "apply_commit": "dcc51b0efc41605c711efb66b314a667e26e9c5f"
+      },
+      {
+        "id": "36a6f15af1f8",
+        "revision": 0,
+        "name": "Ada Colau",
+        "outcome": "converged_jit",
+        "applied": false,
+        "via": "queue_refresh",
+        "note": "La relectura JIT posterior encontró la revisión fuera de la cola activa; no se sobrescribió."
+      },
+      {
+        "id": "b0e3ee21773e",
+        "revision": 0,
+        "name": "#HuelgaGeneral",
+        "outcome": "review_completed_no_distinct_event",
+        "applied": true,
+        "apply_commit": "dcc51b0efc41605c711efb66b314a667e26e9c5f"
+      },
+      {
+        "id": "a5228a344f9b",
+        "revision": 0,
+        "name": "#CanYamanEH",
+        "outcome": "explained",
+        "applied": true,
+        "apply_commit": "dcc51b0efc41605c711efb66b314a667e26e9c5f"
+      },
+      {
+        "id": "9926d395c67f",
+        "revision": 0,
+        "name": "#FirstDates10N",
+        "outcome": "explained",
+        "applied": true,
+        "apply_commit": "dcc51b0efc41605c711efb66b314a667e26e9c5f"
+      },
+      {
+        "id": "2ec7baae881f",
+        "revision": 0,
+        "name": "Luzon",
+        "outcome": "explained_uncertain_trigger",
+        "applied": true,
+        "apply_commit": "dcc51b0efc41605c711efb66b314a667e26e9c5f"
+      },
+      {
+        "id": "8339a494972f",
+        "revision": 0,
+        "name": "Jorge Ponce",
+        "outcome": "explained",
+        "applied": true,
+        "apply_commit": "dcc51b0efc41605c711efb66b314a667e26e9c5f"
+      },
+      {
+        "id": "4e9fca44499f",
+        "revision": 0,
+        "name": "Houellebecq",
+        "outcome": "explained",
+        "applied": true,
+        "apply_commit": "dcc51b0efc41605c711efb66b314a667e26e9c5f"
+      },
+      {
+        "id": "ba6d7fc50f9a",
+        "revision": 0,
+        "name": "Gerona",
+        "outcome": "explained",
+        "applied": true,
+        "apply_commit": "dcc51b0efc41605c711efb66b314a667e26e9c5f"
+      },
+      {
+        "id": "081e4f9cbc10",
+        "revision": 0,
+        "name": "La España",
+        "outcome": "explained_uncertain_trigger",
+        "applied": true,
+        "apply_commit": "dcc51b0efc41605c711efb66b314a667e26e9c5f"
       }
     ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-1794347700000-manual cerrada 1/1. Carzzy queda actualizada en continuidad: rumor del 10/11 más concreto hacia Movistar KOI, aún sin fichaje confirmado; mismo ID/revisión/explained_at, sin nueva ficha ni imagen. Barrera final: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
+    "message": "Pasada tr-1794347693134-manual cerrada 10/10. Ocho explicaciones nuevas aplicadas; #HuelgaGeneral revisado como continuidad sin episodio material distinto; Ada Colau convergió fuera de la cola antes de persistir. Cola final=0 y sin reexplicaciones/rewrite_pending. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
   "message": "Pasada tr-1794347700000-manual cerrada 1/1. Carzzy queda actualizada en continuidad: rumor del 10/11 más concreto hacia Movistar KOI, aún sin fichaje confirmado; mismo ID/revisión/explained_at, sin nueva ficha ni imagen. Barrera final: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0.",
   "history": [
@@ -6940,7 +7109,7 @@
     "message": "Pasada tr-20261110T131000-manual RUNNING. Cola autoritativa inicial=7; revalidación JIT e investigación textual en curso. ImageGen=0; publicaciones=0."
   },
   "apply_workflow_run_id": 42832151349,
-  "apply_commit": "5ccf4a17477f1c3ad3d044b6c9f40215df99d23a",
+  "apply_commit": "dcc51b0efc41605c711efb66b314a667e26e9c5f",
   "maintenance_workflow_run_id": 42713522083,
   "maintenance_job_id": "red-review-61d494cc18e2321aaa5b",
   "workflow_run_id": 42765220776,
@@ -8636,11 +8805,12 @@
   ],
   "outbox_comment_id": 6721989528,
   "editorial_apply_commit": "1fb452cf618494f88271c61876c8d8269ed82773",
-  "refresh_workflow_run_id": 42839275825,
+  "refresh_workflow_run_id": 42912354825,
   "refresh_conclusion": "success",
   "maintenance_apply_commits": [
     "61f2f146a926eae3568074e8e0d9947db37bc9f5",
     "5b26ed05be444fecd3e641d64eae7eba5201f9b0"
   ],
-  "finished_at": null
+  "finished_at": "2026-11-10T23:14:00+01:00",
+  "outbox_commit": "66c7c23be5c4b51ac802b4e5cc8cbd6c67d69ea4"
 }
