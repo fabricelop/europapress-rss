@@ -7,59 +7,49 @@
   "previous_run_id": "tr-20261110T011000-manual",
   "command_id": "tr-autoguard-1794270082",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-10T01:21:30+01:00",
-  "updated_at": "2026-11-10T01:27:30+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-10T01:29:30+01:00",
+  "finished_at": "2026-11-10T01:29:30+01:00",
+  "current": 9,
   "total": 9,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
-  "processed_ids": [],
+  "queue_complete": true,
+  "processed_ids": [
+    "45fa69d32860",
+    "e58e8b1cf105",
+    "e8ab34285cf2",
+    "b048f4473f70",
+    "4494bb86ac6f",
+    "0d82714192ae",
+    "993d30dcbb88",
+    "0579e393dc6d",
+    "4b176cbba41b"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "45fa69d32860",
-    "e58e8b1cf105",
-    "e8ab34285cf2",
-    "b048f4473f70",
-    "4494bb86ac6f",
-    "0d82714192ae",
-    "993d30dcbb88",
-    "0579e393dc6d",
-    "4b176cbba41b"
-  ],
-  "remaining_active_ids": [
-    "45fa69d32860",
-    "e58e8b1cf105",
-    "e8ab34285cf2",
-    "b048f4473f70",
-    "4494bb86ac6f",
-    "0d82714192ae",
-    "993d30dcbb88",
-    "0579e393dc6d",
-    "4b176cbba41b"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 9,
     "observed": 9,
-    "closed": 0,
-    "explained": 0,
+    "closed": 9,
+    "explained": 9,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
     "maintenance_reviews": 0,
     "unchanged_reviews": 0,
     "continuity_updates": 0,
-    "distinct_updates": 0,
+    "distinct_updates": 4,
     "stale_reviews": 0,
     "unverified_reviews": 0,
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 9,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -67,31 +57,113 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "45fa69d32860",
+      "revision": 0,
+      "name": "#Felices23Juanjo",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox_applied",
+      "apply_commit": "e11a8743dc547c506eaaa37f3d274eaf6fe35a50"
+    },
+    {
+      "id": "e58e8b1cf105",
+      "revision": 0,
+      "name": "Kico",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox_applied",
+      "apply_commit": "e11a8743dc547c506eaaa37f3d274eaf6fe35a50"
+    },
+    {
+      "id": "e8ab34285cf2",
+      "revision": 0,
+      "name": "Josue",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox_applied",
+      "apply_commit": "e11a8743dc547c506eaaa37f3d274eaf6fe35a50"
+    },
+    {
+      "id": "b048f4473f70",
+      "revision": 0,
+      "name": "Silvia Intxaurrondo",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox_applied",
+      "apply_commit": "e11a8743dc547c506eaaa37f3d274eaf6fe35a50"
+    },
+    {
+      "id": "4494bb86ac6f",
+      "revision": 0,
+      "name": "Ruben",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox_applied",
+      "apply_commit": "e11a8743dc547c506eaaa37f3d274eaf6fe35a50"
+    },
+    {
+      "id": "0d82714192ae",
+      "revision": 0,
+      "name": "Tartaja",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox_applied",
+      "apply_commit": "e11a8743dc547c506eaaa37f3d274eaf6fe35a50"
+    },
+    {
+      "id": "993d30dcbb88",
+      "revision": 0,
+      "name": "buenafuente",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox_applied",
+      "apply_commit": "e11a8743dc547c506eaaa37f3d274eaf6fe35a50"
+    },
+    {
+      "id": "0579e393dc6d",
+      "revision": 0,
+      "name": "Antonio Ozores",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox_applied",
+      "apply_commit": "e11a8743dc547c506eaaa37f3d274eaf6fe35a50"
+    },
+    {
+      "id": "4b176cbba41b",
+      "revision": 0,
+      "name": "repaso",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox_applied",
+      "apply_commit": "e11a8743dc547c506eaaa37f3d274eaf6fe35a50"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "persisting",
+  "activity": "closing",
   "last_started_at": "2026-11-10T01:21:30+01:00",
-  "last_completed_at": "2026-11-10T01:11:43+01:00",
+  "last_completed_at": "2026-11-10T01:29:30+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261110T011000-manual",
+    "run_id": "tr-autoguard-1794270082",
     "status": "DONE",
-    "started_at": "2026-11-10T01:10:00+01:00",
-    "finished_at": "2026-11-10T01:11:43+01:00",
+    "started_at": "2026-11-10T01:21:30+01:00",
+    "finished_at": "2026-11-10T01:29:30+01:00",
     "summary": {
-      "attempted": 0,
-      "observed": 0,
-      "closed": 0,
-      "explained": 0,
+      "attempted": 9,
+      "observed": 9,
+      "closed": 9,
+      "explained": 9,
       "problematic": 0,
       "updates": 0,
       "review_completed_no_distinct_event": 0,
       "maintenance_reviews": 0,
       "unchanged_reviews": 0,
       "continuity_updates": 0,
-      "distinct_updates": 0,
+      "distinct_updates": 4,
       "stale_reviews": 0,
       "unverified_reviews": 0,
       "anticipation_reviews": 0,
@@ -105,13 +177,105 @@
       "incidents": 0,
       "concurrent_convergence": 0
     },
-    "processed_ids": [],
-    "outcomes": [],
+    "processed_ids": [
+      "45fa69d32860",
+      "e58e8b1cf105",
+      "e8ab34285cf2",
+      "b048f4473f70",
+      "4494bb86ac6f",
+      "0d82714192ae",
+      "993d30dcbb88",
+      "0579e393dc6d",
+      "4b176cbba41b"
+    ],
+    "outcomes": [
+      {
+        "id": "45fa69d32860",
+        "revision": 0,
+        "name": "#Felices23Juanjo",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox_applied",
+        "apply_commit": "e11a8743dc547c506eaaa37f3d274eaf6fe35a50"
+      },
+      {
+        "id": "e58e8b1cf105",
+        "revision": 0,
+        "name": "Kico",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox_applied",
+        "apply_commit": "e11a8743dc547c506eaaa37f3d274eaf6fe35a50"
+      },
+      {
+        "id": "e8ab34285cf2",
+        "revision": 0,
+        "name": "Josue",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox_applied",
+        "apply_commit": "e11a8743dc547c506eaaa37f3d274eaf6fe35a50"
+      },
+      {
+        "id": "b048f4473f70",
+        "revision": 0,
+        "name": "Silvia Intxaurrondo",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox_applied",
+        "apply_commit": "e11a8743dc547c506eaaa37f3d274eaf6fe35a50"
+      },
+      {
+        "id": "4494bb86ac6f",
+        "revision": 0,
+        "name": "Ruben",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox_applied",
+        "apply_commit": "e11a8743dc547c506eaaa37f3d274eaf6fe35a50"
+      },
+      {
+        "id": "0d82714192ae",
+        "revision": 0,
+        "name": "Tartaja",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox_applied",
+        "apply_commit": "e11a8743dc547c506eaaa37f3d274eaf6fe35a50"
+      },
+      {
+        "id": "993d30dcbb88",
+        "revision": 0,
+        "name": "buenafuente",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox_applied",
+        "apply_commit": "e11a8743dc547c506eaaa37f3d274eaf6fe35a50"
+      },
+      {
+        "id": "0579e393dc6d",
+        "revision": 0,
+        "name": "Antonio Ozores",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox_applied",
+        "apply_commit": "e11a8743dc547c506eaaa37f3d274eaf6fe35a50"
+      },
+      {
+        "id": "4b176cbba41b",
+        "revision": 0,
+        "name": "repaso",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox_applied",
+        "apply_commit": "e11a8743dc547c506eaaa37f3d274eaf6fe35a50"
+      }
+    ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-20261110T011000-manual cerrada 0/0 tras relectura JIT de main. editorial-queue=0 (actualizada 2026-11-10T01:01:25+01:00) y mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial vigente que procesar. Snapshot Top 30 capturado 2026-11-10T01:01:20+01:00. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "message": "Pasada tr-autoguard-1794270082 cerrada 9/9. Nueve revisiones r0 fueron revalidadas JIT, investigadas y aplicadas en main por e11a8743dc547c506eaaa37f3d274eaf6fe35a50; el commit modificó editorial-queue.json, requests.json y telegram-manual-explained.json, con los 9 IDs presentes en ambos registros de persistencia. Cuatro reentradas >24 h (Kico, Josue, Silvia Intxaurrondo y Ruben) acreditaron acontecimiento material nuevo; Tartaja y Antonio Ozores se cerraron con causa concreta no confirmada, sin inventar detonante. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-autoguard-1794270082: 9/9 resultados redactados y enviados al outbox oficial tras validación JIT de cada ID/revisión. Pendiente confirmar aplicación en requests/listas y retirada de la cola. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-autoguard-1794270082 cerrada 9/9. Nueve revisiones r0 fueron revalidadas JIT, investigadas y aplicadas en main por e11a8743dc547c506eaaa37f3d274eaf6fe35a50; el commit modificó editorial-queue.json, requests.json y telegram-manual-explained.json, con los 9 IDs presentes en ambos registros de persistencia. Cuatro reentradas >24 h (Kico, Josue, Silvia Intxaurrondo y Ruben) acreditaron acontecimiento material nuevo; Tartaja y Antonio Ozores se cerraron con causa concreta no confirmada, sin inventar detonante. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794234841273-manual",
@@ -2616,17 +2780,145 @@
       "trend_id": "45fa69d32860",
       "title": "#Felices23Juanjo",
       "message": "Pasada tr-autoguard-1794270082 RUNNING. Cola JIT inicial=9 preparing/update; se procesan por antigüedad con validación ID/revisión antes de investigar y persistir. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-autoguard-1794270082",
+      "status": "DONE",
+      "started_at": "2026-11-10T01:21:30+01:00",
+      "finished_at": "2026-11-10T01:29:30+01:00",
+      "at": "2026-11-10T01:29:30+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 9,
+        "observed": 9,
+        "closed": 9,
+        "explained": 9,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 0,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 4,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [
+        "45fa69d32860",
+        "e58e8b1cf105",
+        "e8ab34285cf2",
+        "b048f4473f70",
+        "4494bb86ac6f",
+        "0d82714192ae",
+        "993d30dcbb88",
+        "0579e393dc6d",
+        "4b176cbba41b"
+      ],
+      "outcomes": [
+        {
+          "id": "45fa69d32860",
+          "revision": 0,
+          "name": "#Felices23Juanjo",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "e11a8743dc547c506eaaa37f3d274eaf6fe35a50"
+        },
+        {
+          "id": "e58e8b1cf105",
+          "revision": 0,
+          "name": "Kico",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "e11a8743dc547c506eaaa37f3d274eaf6fe35a50"
+        },
+        {
+          "id": "e8ab34285cf2",
+          "revision": 0,
+          "name": "Josue",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "e11a8743dc547c506eaaa37f3d274eaf6fe35a50"
+        },
+        {
+          "id": "b048f4473f70",
+          "revision": 0,
+          "name": "Silvia Intxaurrondo",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "e11a8743dc547c506eaaa37f3d274eaf6fe35a50"
+        },
+        {
+          "id": "4494bb86ac6f",
+          "revision": 0,
+          "name": "Ruben",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "e11a8743dc547c506eaaa37f3d274eaf6fe35a50"
+        },
+        {
+          "id": "0d82714192ae",
+          "revision": 0,
+          "name": "Tartaja",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "e11a8743dc547c506eaaa37f3d274eaf6fe35a50"
+        },
+        {
+          "id": "993d30dcbb88",
+          "revision": 0,
+          "name": "buenafuente",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "e11a8743dc547c506eaaa37f3d274eaf6fe35a50"
+        },
+        {
+          "id": "0579e393dc6d",
+          "revision": 0,
+          "name": "Antonio Ozores",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "e11a8743dc547c506eaaa37f3d274eaf6fe35a50"
+        },
+        {
+          "id": "4b176cbba41b",
+          "revision": 0,
+          "name": "repaso",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox_applied",
+          "apply_commit": "e11a8743dc547c506eaaa37f3d274eaf6fe35a50"
+        }
+      ],
+      "message": "Pasada tr-autoguard-1794270082 cerrada 9/9. Nueve revisiones r0 fueron revalidadas JIT, investigadas y aplicadas en main por e11a8743dc547c506eaaa37f3d274eaf6fe35a50; el commit modificó editorial-queue.json, requests.json y telegram-manual-explained.json, con los 9 IDs presentes en ambos registros de persistencia. Cuatro reentradas >24 h (Kico, Josue, Silvia Intxaurrondo y Ruben) acreditaron acontecimiento material nuevo; Tartaja y Antonio Ozores se cerraron con causa concreta no confirmada, sin inventar detonante. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "current_item": null,
   "withdrawn_ids": [
     "ae7f066f3c94"
   ],
-  "last_finished_at": "2026-11-10T00:56:00+01:00",
-  "last_revalidated_at": "2026-11-10T00:56:00+01:00",
+  "last_finished_at": "2026-11-10T01:29:30+01:00",
+  "last_revalidated_at": "2026-11-10T01:29:30+01:00",
   "last_revalidation": {
-    "at": "2026-11-10T00:56:00+01:00",
-    "queue_sha": "72ebddcf5675d1ba1cba6e8199b4bed5778093c2",
+    "at": "2026-11-10T01:29:30+01:00",
+    "queue_sha": "979c0f8e364776adb2628d2eb20d23631eaa3f61",
     "queue_count": 0,
     "preparing_update": 0,
     "rewrite_pending": 0,
@@ -2637,7 +2929,7 @@
     "updated_at": "2026-11-10T00:55:00+01:00"
   },
   "apply_workflow_run_id": 42716594814,
-  "apply_commit": "870bf98bfd0cdf5aba8c283deb5740fe7a8629b1",
+  "apply_commit": "e11a8743dc547c506eaaa37f3d274eaf6fe35a50",
   "maintenance_workflow_run_id": 42713522083,
   "maintenance_job_id": "red-review-61d494cc18e2321aaa5b",
   "workflow_run_id": 42716411372,
@@ -2957,5 +3249,6 @@
       "outcomes": [],
       "message": "Pasada tr-20261110T005500-manual cerrada 0/0 tras relectura JIT de main. editorial-queue=0 (actualizada 2026-11-10T00:51:01+01:00) y mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial vigente que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
-  ]
+  ],
+  "outbox_comment_id": 6755274210
 }
