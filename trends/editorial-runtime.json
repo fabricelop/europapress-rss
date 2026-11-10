@@ -7,26 +7,60 @@
   "previous_run_id": "tr-1794337800000-manual",
   "command_id": "tr-1794338110667-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-10T20:17:00+01:00",
-  "updated_at": "2026-11-10T20:17:00+01:00",
-  "current": 0,
+  "updated_at": "2026-11-10T20:20:30+01:00",
+  "current": 1,
   "total": 1,
-  "trend_id": "red-review-6e8f56f2fa80797cd60f",
-  "title": "Revisar novedades: Catedral de Toledo",
-  "queue_complete": false,
-  "processed_ids": [],
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
+    "red-review-6e8f56f2fa80797cd60f"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "red-review-6e8f56f2fa80797cd60f"
-  ],
-  "remaining_active_ids": [
-    "red-review-6e8f56f2fa80797cd60f"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": null,
-  "outcomes": [],
+  "summary": {
+    "attempted": 1,
+    "observed": 1,
+    "closed": 1,
+    "explained": 0,
+    "problematic": 0,
+    "updates": 1,
+    "review_completed_no_distinct_event": 0,
+    "maintenance_reviews": 1,
+    "unchanged_reviews": 0,
+    "continuity_updates": 1,
+    "distinct_updates": 0,
+    "stale_reviews": 0,
+    "unverified_reviews": 0,
+    "anticipation_reviews": 0,
+    "anticipation_prepared": 0,
+    "anticipation_unverified": 0,
+    "queue_remaining": 0,
+    "rewrite_pending_remaining": 0,
+    "imagegen_calls": 0,
+    "image_outbox_created": 0,
+    "publications": 0,
+    "incidents": 0,
+    "concurrent_convergence": 0
+  },
+  "outcomes": [
+    {
+      "id": "red-review-6e8f56f2fa80797cd60f",
+      "revision": 0,
+      "name": "Revisar novedades: Catedral de Toledo",
+      "outcome": "continuity_update",
+      "applied": true,
+      "via": "maintenance_outbox",
+      "source_id": "3586cf6ab34c",
+      "outbox_commit": "2cde83aa789ebecb87f982435079c67e27dc3f27",
+      "apply_commit": "2b4368e6ef771e755d369c6505d2029906789abf"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -77,29 +111,34 @@
       "trend_id": "red-review-6e8f56f2fa80797cd60f",
       "title": "Revisar novedades: Catedral de Toledo",
       "message": "Revisando novedades de Catedral de Toledo r0: el funeral inicialmente previsto para el 12 fue adelantado al 10 de noviembre y se celebra hoy; verificando continuidad antes de persistir. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-10T20:20:30+01:00",
+      "phase": "closing",
+      "message": "Catedral de Toledo continuity aplicada; barrera final editorial-queue=0. ImageGen=0; publicaciones=0."
     }
   ],
   "last_started_at": "2026-11-10T20:17:00+01:00",
-  "last_completed_at": "2026-11-10T20:14:32+01:00",
+  "last_completed_at": "2026-11-10T20:20:30+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794336900000-manual",
+    "run_id": "tr-1794338110667-manual",
     "status": "DONE",
-    "started_at": "2026-11-10T19:55:00+01:00",
-    "finished_at": "2026-11-10T19:57:27.717568+01:00",
-    "at": "2026-11-10T19:57:27.717568+01:00",
+    "started_at": "2026-11-10T20:17:00+01:00",
+    "finished_at": "2026-11-10T20:20:30+01:00",
+    "at": "2026-11-10T20:20:30+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 0,
-      "observed": 0,
-      "closed": 0,
+      "attempted": 1,
+      "observed": 1,
+      "closed": 1,
       "explained": 0,
       "problematic": 0,
-      "updates": 0,
+      "updates": 1,
       "review_completed_no_distinct_event": 0,
-      "maintenance_reviews": 0,
+      "maintenance_reviews": 1,
       "unchanged_reviews": 0,
-      "continuity_updates": 0,
+      "continuity_updates": 1,
       "distinct_updates": 0,
       "stale_reviews": 0,
       "unverified_reviews": 0,
@@ -114,14 +153,28 @@
       "incidents": 0,
       "concurrent_convergence": 0
     },
-    "processed_ids": [],
+    "processed_ids": [
+      "red-review-6e8f56f2fa80797cd60f"
+    ],
     "converged_ids": [],
-    "outcomes": [],
+    "outcomes": [
+      {
+        "id": "red-review-6e8f56f2fa80797cd60f",
+        "revision": 0,
+        "name": "Revisar novedades: Catedral de Toledo",
+        "outcome": "continuity_update",
+        "applied": true,
+        "via": "maintenance_outbox",
+        "source_id": "3586cf6ab34c",
+        "outbox_commit": "2cde83aa789ebecb87f982435079c67e27dc3f27",
+        "apply_commit": "2b4368e6ef771e755d369c6505d2029906789abf"
+      }
+    ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-1794336900000-manual cerrada 0/0 tras barrera JIT. editorial-queue sigue en 0 (updated_at 2026-11-10T19:51:50+01:00); mobile-decisions no contiene preparing/update ni rewrite_pending/reexplain activos y las búsquedas de control no detectan reelaboraciones vigentes. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "message": "Pasada tr-1794338110667-manual cerrada 1/1. Catedral de Toledo quedó actualizada en continuidad sobre la ficha histórica: el funeral fue adelantado del 12 al 10 de noviembre; se conserva explained_at y no se crea una ficha nueva. Barrera final: editorial-queue=0. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Revisando novedades de Catedral de Toledo r0: el funeral inicialmente previsto para el 12 fue adelantado al 10 de noviembre y se celebra hoy; verificando continuidad antes de persistir. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1794338110667-manual cerrada 1/1. Catedral de Toledo quedó actualizada en continuidad sobre la ficha histórica: el funeral fue adelantado del 12 al 10 de noviembre; se conserva explained_at y no se crea una ficha nueva. Barrera final: editorial-queue=0. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
@@ -5911,24 +5964,165 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-1794336117018-manual cerrada 1/1 por convergencia JIT. Radar · Dictadura ya había quedado anticipation_prepared y aplicado por la pasada solapada tr-1794335896172-manual; se verificó el detonante con fuentes actuales, la cola autoritativa quedó en 0 y no quedan preparing/update ni reelaboraciones activas en decisiones móviles. Se reconcilió anticipation-metrics con el estado aplicado. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794337800000-manual",
+      "status": "DONE",
+      "started_at": "2026-11-10T20:10:00+01:00",
+      "finished_at": "2026-11-10T20:20:30+01:00",
+      "at": "2026-11-10T20:20:30+01:00",
+      "phase": "closing",
+      "canonical": false,
+      "superseded_by": "tr-1794338110667-manual",
+      "summary": {
+        "attempted": 5,
+        "observed": 5,
+        "closed": 5,
+        "explained": 2,
+        "problematic": 0,
+        "updates": 2,
+        "review_completed_no_distinct_event": 1,
+        "maintenance_reviews": 1,
+        "unchanged_reviews": 0,
+        "continuity_updates": 1,
+        "distinct_updates": 1,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 1
+      },
+      "processed_ids": [
+        "f4646f4e00c3",
+        "e9dda051933d",
+        "496f431505e0",
+        "6523d9f6ab30"
+      ],
+      "converged_ids": [
+        "red-review-6e8f56f2fa80797cd60f"
+      ],
+      "outcomes": [
+        {
+          "id": "f4646f4e00c3",
+          "revision": 0,
+          "name": "Catedral de Toledo",
+          "outcome": "review_completed_no_distinct_event",
+          "applied": true,
+          "apply_commit": "6883d47f76764669b0dd2f46889bff000f66c1b0"
+        },
+        {
+          "id": "e9dda051933d",
+          "revision": 0,
+          "name": "Volkov",
+          "outcome": "explained_cause_unconfirmed",
+          "applied": true,
+          "apply_commit": "6883d47f76764669b0dd2f46889bff000f66c1b0"
+        },
+        {
+          "id": "496f431505e0",
+          "revision": 0,
+          "name": "Alsina",
+          "outcome": "distinct_update",
+          "applied": true,
+          "apply_commit": "6883d47f76764669b0dd2f46889bff000f66c1b0",
+          "metadata_commit": "7c8e02a58fbfb823bc8de3d91fc553cb747f2239",
+          "material_event_key": "alsina-broncano-abascal-al-rojo-vivo-2026-11-10"
+        },
+        {
+          "id": "6523d9f6ab30",
+          "revision": 0,
+          "name": "#CopaDelRey",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "6883d47f76764669b0dd2f46889bff000f66c1b0"
+        },
+        {
+          "id": "red-review-6e8f56f2fa80797cd60f",
+          "revision": 0,
+          "name": "Revisar novedades: Catedral de Toledo",
+          "outcome": "continuity_update",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "source_id": "3586cf6ab34c",
+          "outbox_commit": "2cde83aa789ebecb87f982435079c67e27dc3f27",
+          "apply_commit": "2b4368e6ef771e755d369c6505d2029906789abf"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-1794337800000-manual cerrada 5/5 por aplicación y convergencia JIT: Volkov y #CopaDelRey explicados; Alsina cerrado como episodio material distinto con metadatos completos; la reentrada de Catedral de Toledo quedó sin episodio distinto y su revisión posterior actualizó en continuidad la fecha corregida del funeral. Barrera final main: editorial-queue=0. ImageGen=0; image-outbox editorial=0; publicaciones=0. La telemetría canónica queda en la pasada sucesora tr-1794338110667-manual."
+    },
+    {
+      "run_id": "tr-1794338110667-manual",
+      "status": "DONE",
+      "started_at": "2026-11-10T20:17:00+01:00",
+      "finished_at": "2026-11-10T20:20:30+01:00",
+      "at": "2026-11-10T20:20:30+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 1,
+        "observed": 1,
+        "closed": 1,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 1,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 1,
+        "unchanged_reviews": 0,
+        "continuity_updates": 1,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [
+        "red-review-6e8f56f2fa80797cd60f"
+      ],
+      "converged_ids": [],
+      "outcomes": [
+        {
+          "id": "red-review-6e8f56f2fa80797cd60f",
+          "revision": 0,
+          "name": "Revisar novedades: Catedral de Toledo",
+          "outcome": "continuity_update",
+          "applied": true,
+          "via": "maintenance_outbox",
+          "source_id": "3586cf6ab34c",
+          "outbox_commit": "2cde83aa789ebecb87f982435079c67e27dc3f27",
+          "apply_commit": "2b4368e6ef771e755d369c6505d2029906789abf"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-1794338110667-manual cerrada 1/1. Catedral de Toledo quedó actualizada en continuidad sobre la ficha histórica: el funeral fue adelantado del 12 al 10 de noviembre; se conserva explained_at y no se crea una ficha nueva. Barrera final: editorial-queue=0. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
-  "current_item": {
-    "id": "f4646f4e00c3",
-    "revision": 0,
-    "name": "Catedral de Toledo",
-    "phase": "persisting"
-  },
+  "current_item": null,
   "withdrawn_ids": [
     "ae7f066f3c94"
   ],
-  "last_finished_at": "2026-11-10T19:44:44+01:00",
-  "last_revalidated_at": "2026-11-10T20:10:00+01:00",
+  "last_finished_at": "2026-11-10T20:20:30+01:00",
+  "last_revalidated_at": "2026-11-10T20:20:30+01:00",
   "last_revalidation": {
-    "queue_sha": "ae492d50c7f8244d5ae531ca2db34230d9d48380",
-    "queue_updated_at": "2026-11-10T20:11:16+01:00",
-    "queue_count": 4,
-    "mobile_active_count": 0
+    "queue_sha": "b77d00987d94c18f2020c6deac435ec515ff61cb",
+    "queue_updated_at": "2026-11-10T19:18:30.798496+00:00",
+    "queue_count": 0
   },
   "prior_runtime_observed": {
     "run_id": "tr-20261110T131000-manual",
@@ -7271,11 +7465,158 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-1794335896172-manual cerrada 3/3. Radar · Dictadura quedó anticipation_prepared y fue retirado de la cola tras corregir la estructura exigida por el aplicador; Supa quedó unverified, conservando su explicación histórica; Charles recibió una actualización de continuidad con nuevos impactos verificados, conservando identidad y sin crear episodio independiente. Barrera final en main: editorial-queue=0, sin preparing/update ni reexplicación pendiente en la cola autoritativa. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794337800000-manual",
+      "status": "DONE",
+      "started_at": "2026-11-10T20:10:00+01:00",
+      "finished_at": "2026-11-10T20:20:30+01:00",
+      "at": "2026-11-10T20:20:30+01:00",
+      "phase": "closing",
+      "canonical": false,
+      "superseded_by": "tr-1794338110667-manual",
+      "summary": {
+        "attempted": 5,
+        "observed": 5,
+        "closed": 5,
+        "explained": 2,
+        "problematic": 0,
+        "updates": 2,
+        "review_completed_no_distinct_event": 1,
+        "maintenance_reviews": 1,
+        "unchanged_reviews": 0,
+        "continuity_updates": 1,
+        "distinct_updates": 1,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 1
+      },
+      "processed_ids": [
+        "f4646f4e00c3",
+        "e9dda051933d",
+        "496f431505e0",
+        "6523d9f6ab30"
+      ],
+      "converged_ids": [
+        "red-review-6e8f56f2fa80797cd60f"
+      ],
+      "outcomes": [
+        {
+          "id": "f4646f4e00c3",
+          "revision": 0,
+          "name": "Catedral de Toledo",
+          "outcome": "review_completed_no_distinct_event",
+          "applied": true,
+          "apply_commit": "6883d47f76764669b0dd2f46889bff000f66c1b0"
+        },
+        {
+          "id": "e9dda051933d",
+          "revision": 0,
+          "name": "Volkov",
+          "outcome": "explained_cause_unconfirmed",
+          "applied": true,
+          "apply_commit": "6883d47f76764669b0dd2f46889bff000f66c1b0"
+        },
+        {
+          "id": "496f431505e0",
+          "revision": 0,
+          "name": "Alsina",
+          "outcome": "distinct_update",
+          "applied": true,
+          "apply_commit": "6883d47f76764669b0dd2f46889bff000f66c1b0",
+          "metadata_commit": "7c8e02a58fbfb823bc8de3d91fc553cb747f2239",
+          "material_event_key": "alsina-broncano-abascal-al-rojo-vivo-2026-11-10"
+        },
+        {
+          "id": "6523d9f6ab30",
+          "revision": 0,
+          "name": "#CopaDelRey",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "6883d47f76764669b0dd2f46889bff000f66c1b0"
+        },
+        {
+          "id": "red-review-6e8f56f2fa80797cd60f",
+          "revision": 0,
+          "name": "Revisar novedades: Catedral de Toledo",
+          "outcome": "continuity_update",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "source_id": "3586cf6ab34c",
+          "outbox_commit": "2cde83aa789ebecb87f982435079c67e27dc3f27",
+          "apply_commit": "2b4368e6ef771e755d369c6505d2029906789abf"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-1794337800000-manual cerrada 5/5 por aplicación y convergencia JIT: Volkov y #CopaDelRey explicados; Alsina cerrado como episodio material distinto con metadatos completos; la reentrada de Catedral de Toledo quedó sin episodio distinto y su revisión posterior actualizó en continuidad la fecha corregida del funeral. Barrera final main: editorial-queue=0. ImageGen=0; image-outbox editorial=0; publicaciones=0. La telemetría canónica queda en la pasada sucesora tr-1794338110667-manual."
+    },
+    {
+      "run_id": "tr-1794338110667-manual",
+      "status": "DONE",
+      "started_at": "2026-11-10T20:17:00+01:00",
+      "finished_at": "2026-11-10T20:20:30+01:00",
+      "at": "2026-11-10T20:20:30+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 1,
+        "observed": 1,
+        "closed": 1,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 1,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 1,
+        "unchanged_reviews": 0,
+        "continuity_updates": 1,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [
+        "red-review-6e8f56f2fa80797cd60f"
+      ],
+      "converged_ids": [],
+      "outcomes": [
+        {
+          "id": "red-review-6e8f56f2fa80797cd60f",
+          "revision": 0,
+          "name": "Revisar novedades: Catedral de Toledo",
+          "outcome": "continuity_update",
+          "applied": true,
+          "via": "maintenance_outbox",
+          "source_id": "3586cf6ab34c",
+          "outbox_commit": "2cde83aa789ebecb87f982435079c67e27dc3f27",
+          "apply_commit": "2b4368e6ef771e755d369c6505d2029906789abf"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-1794338110667-manual cerrada 1/1. Catedral de Toledo quedó actualizada en continuidad sobre la ficha histórica: el funeral fue adelantado del 12 al 10 de noviembre; se conserva explained_at y no se crea una ficha nueva. Barrera final: editorial-queue=0. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
-  "outbox_comment_id": 5848965032,
-  "editorial_apply_commit": "76e7e728a222ee21fee34fda64da43cfd7ecd90a",
-  "finished_at": null,
+  "outbox_comment_id": 6721989528,
+  "editorial_apply_commit": "2b4368e6ef771e755d369c6505d2029906789abf",
+  "finished_at": "2026-11-10T20:20:30+01:00",
   "refresh_workflow_run_id": 42839275825,
   "refresh_conclusion": "success"
 }
