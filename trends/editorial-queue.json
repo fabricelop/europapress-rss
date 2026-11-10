@@ -1,6 +1,41 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-10T14:15:11+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-10T13:15:41.806656+00:00",
+  "count": 1,
+  "items": [
+    {
+      "id": "red-review-862cc2851889453c4c42",
+      "revision": 0,
+      "name": "Revisar novedades: #EnBocaDeTodos",
+      "rank": 8,
+      "status": "preparing",
+      "requested_at": "2026-11-10T13:15:41.806656+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "be101248f52d",
+        "revision": 0,
+        "name": "#EnBocaDeTodos",
+        "rank": 11,
+        "explanation": "TT#11 #EnBocaDeTodos es tendencia durante la emisión de este lunes del programa de Cuatro, centrado en la actualidad política y social. No se ha podido confirmar qué tema concreto ha impulsado la etiqueta.\n#Cuatro #Actualidad\n🌶️ El directo convirtió la mesa en termómetro.",
+        "explanation_sha256": "15e1a4a723a6e5cadd3e7ae839dd42798250f90b7635711d2c4db3b80d795aed",
+        "explained_at": "2026-11-09T12:14:20+01:00",
+        "verification_sources": [
+          {
+            "url": "https://www.mediasetinfinity.es/programas-tv/en-boca-de-todos/"
+          },
+          {
+            "url": "https://tv.comunicazion.eu/es/programa/en-boca-de-todos/"
+          }
+        ],
+        "fingerprint": "4371b9b7d2284ed16b72806361fcf6e5b56b3ee421fd13bc253268c8074e699f"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
