@@ -7,37 +7,37 @@
   "previous_run_id": "tr-autoguard-1794285659",
   "command_id": "tr-1794285955712-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-10T05:46:40+01:00",
-  "updated_at": "2026-11-10T05:46:40+01:00",
-  "finished_at": null,
-  "current": 0,
+  "updated_at": "2026-11-10T05:49:00+01:00",
+  "finished_at": "2026-11-10T05:49:00+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "red-review-58718f2f5cdb183ba121",
-  "title": "Revisar novedades: #IreneConQueque",
-  "queue_complete": false,
-  "processed_ids": [],
-  "converged_ids": [],
-  "remaining_ids": [
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
     "red-review-58718f2f5cdb183ba121",
     "red-review-ddd1f8e4108bf3667a60"
   ],
-  "remaining_active_ids": [
+  "converged_ids": [
     "red-review-58718f2f5cdb183ba121",
     "red-review-ddd1f8e4108bf3667a60"
   ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 2,
     "observed": 2,
-    "closed": 0,
+    "closed": 2,
     "explained": 0,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 0,
-    "unchanged_reviews": 0,
+    "maintenance_reviews": 2,
+    "unchanged_reviews": 2,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "stale_reviews": 0,
@@ -45,77 +45,54 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 2
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "red-review-58718f2f5cdb183ba121",
+      "revision": 0,
+      "name": "Revisar novedades: #IreneConQueque",
+      "outcome": "unchanged",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "source_id": "d8a308614fc9"
+    },
+    {
+      "id": "red-review-ddd1f8e4108bf3667a60",
+      "revision": 0,
+      "name": "Revisar novedades: #SVSemifinal",
+      "outcome": "unchanged",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "source_id": "9e1649b8ed38"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
   "activity": {
     "run_id": "tr-1794285955712-manual",
-    "status": "RUNNING",
+    "status": "DONE",
     "started_at": "2026-11-10T05:46:40+01:00",
-    "finished_at": null,
-    "at": "2026-11-10T05:46:40+01:00",
-    "phase": "preparing",
+    "finished_at": "2026-11-10T05:49:00+01:00",
+    "at": "2026-11-10T05:49:00+01:00",
+    "phase": "closing",
     "summary": {
-      "attempted": 0,
+      "attempted": 2,
       "observed": 2,
-      "closed": 0,
+      "closed": 2,
       "explained": 0,
       "problematic": 0,
       "updates": 0,
       "review_completed_no_distinct_event": 0,
-      "maintenance_reviews": 0,
-      "unchanged_reviews": 0,
-      "continuity_updates": 0,
-      "distinct_updates": 0,
-      "stale_reviews": 0,
-      "unverified_reviews": 0,
-      "anticipation_reviews": 0,
-      "anticipation_prepared": 0,
-      "anticipation_unverified": 0,
-      "queue_remaining": 2,
-      "rewrite_pending_remaining": 0,
-      "imagegen_calls": 0,
-      "image_outbox_created": 0,
-      "publications": 0,
-      "incidents": 0,
-      "concurrent_convergence": 0
-    },
-    "processed_ids": [],
-    "converged_ids": [],
-    "outcomes": [],
-    "incident_count": 0,
-    "incidents": [],
-    "message": "Preparando 2 revisiones de mantenimiento; primera: #IreneConQueque r0."
-  },
-  "last_started_at": "2026-11-10T05:46:40+01:00",
-  "last_completed_at": "2026-11-10T05:45:20+01:00",
-  "api_failover_enabled": false,
-  "last_run": {
-    "run_id": "tr-autoguard-1794285659",
-    "status": "DONE",
-    "started_at": "2026-11-10T05:41:00+01:00",
-    "finished_at": "2026-11-10T05:45:20+01:00",
-    "at": "2026-11-10T05:45:20+01:00",
-    "phase": "closing",
-    "summary": {
-      "attempted": 1,
-      "observed": 1,
-      "closed": 1,
-      "explained": 0,
-      "problematic": 0,
-      "updates": 0,
-      "review_completed_no_distinct_event": 1,
-      "maintenance_reviews": 0,
-      "unchanged_reviews": 0,
+      "maintenance_reviews": 2,
+      "unchanged_reviews": 2,
       "continuity_updates": 0,
       "distinct_updates": 0,
       "stale_reviews": 0,
@@ -129,27 +106,108 @@
       "image_outbox_created": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 0
+      "concurrent_convergence": 2
     },
     "processed_ids": [
-      "58ffcd5a97aa"
+      "red-review-58718f2f5cdb183ba121",
+      "red-review-ddd1f8e4108bf3667a60"
     ],
-    "converged_ids": [],
+    "converged_ids": [
+      "red-review-58718f2f5cdb183ba121",
+      "red-review-ddd1f8e4108bf3667a60"
+    ],
     "outcomes": [
       {
-        "id": "58ffcd5a97aa",
+        "id": "red-review-58718f2f5cdb183ba121",
         "revision": 0,
-        "name": "#IreneConQueque",
-        "outcome": "review_completed_no_distinct_event",
+        "name": "Revisar novedades: #IreneConQueque",
+        "outcome": "unchanged",
         "applied": true,
-        "review_reason": "no_distinct_event"
+        "via": "concurrent_convergence",
+        "source_id": "d8a308614fc9"
+      },
+      {
+        "id": "red-review-ddd1f8e4108bf3667a60",
+        "revision": 0,
+        "name": "Revisar novedades: #SVSemifinal",
+        "outcome": "unchanged",
+        "applied": true,
+        "via": "concurrent_convergence",
+        "source_id": "9e1649b8ed38"
       }
     ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-autoguard-1794285659 cerrada 1/1. #IreneConQueque r0 se cerró como review_completed/no_distinct_event: la reentrada sigue remitiendo a la entrevista del 8N y a la recirculación de sus clips; no se acreditó un acontecimiento posterior, material e independiente. Barrera final: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "message": "Pasada tr-1794285955712-manual cerrada 2/2 por convergencia JIT. #IreneConQueque y #SVSemifinal quedaron unchanged en mantenimiento: no se verificó novedad sustancial posterior que cambiara sus explicaciones vigentes. Barrera final: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada manual iniciada: 0/2. Revalidando #IreneConQueque r0 antes de investigar.",
+  "last_started_at": "2026-11-10T05:46:40+01:00",
+  "last_completed_at": "2026-11-10T05:49:00+01:00",
+  "api_failover_enabled": false,
+  "last_run": {
+    "run_id": "tr-1794285955712-manual",
+    "status": "DONE",
+    "started_at": "2026-11-10T05:46:40+01:00",
+    "finished_at": "2026-11-10T05:49:00+01:00",
+    "at": "2026-11-10T05:49:00+01:00",
+    "phase": "closing",
+    "summary": {
+      "attempted": 2,
+      "observed": 2,
+      "closed": 2,
+      "explained": 0,
+      "problematic": 0,
+      "updates": 0,
+      "review_completed_no_distinct_event": 0,
+      "maintenance_reviews": 2,
+      "unchanged_reviews": 2,
+      "continuity_updates": 0,
+      "distinct_updates": 0,
+      "stale_reviews": 0,
+      "unverified_reviews": 0,
+      "anticipation_reviews": 0,
+      "anticipation_prepared": 0,
+      "anticipation_unverified": 0,
+      "queue_remaining": 0,
+      "rewrite_pending_remaining": 0,
+      "imagegen_calls": 0,
+      "image_outbox_created": 0,
+      "publications": 0,
+      "incidents": 0,
+      "concurrent_convergence": 2
+    },
+    "processed_ids": [
+      "red-review-58718f2f5cdb183ba121",
+      "red-review-ddd1f8e4108bf3667a60"
+    ],
+    "converged_ids": [
+      "red-review-58718f2f5cdb183ba121",
+      "red-review-ddd1f8e4108bf3667a60"
+    ],
+    "outcomes": [
+      {
+        "id": "red-review-58718f2f5cdb183ba121",
+        "revision": 0,
+        "name": "Revisar novedades: #IreneConQueque",
+        "outcome": "unchanged",
+        "applied": true,
+        "via": "concurrent_convergence",
+        "source_id": "d8a308614fc9"
+      },
+      {
+        "id": "red-review-ddd1f8e4108bf3667a60",
+        "revision": 0,
+        "name": "Revisar novedades: #SVSemifinal",
+        "outcome": "unchanged",
+        "applied": true,
+        "via": "concurrent_convergence",
+        "source_id": "9e1649b8ed38"
+      }
+    ],
+    "incident_count": 0,
+    "incidents": [],
+    "message": "Pasada tr-1794285955712-manual cerrada 2/2 por convergencia JIT. #IreneConQueque y #SVSemifinal quedaron unchanged en mantenimiento: no se verificó novedad sustancial posterior que cambiara sus explicaciones vigentes. Barrera final: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+  },
+  "message": "Pasada tr-1794285955712-manual cerrada 2/2 por convergencia JIT. #IreneConQueque y #SVSemifinal quedaron unchanged en mantenimiento: no se verificó novedad sustancial posterior que cambiara sus explicaciones vigentes. Barrera final: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794234841273-manual",
