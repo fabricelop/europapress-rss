@@ -3,27 +3,35 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261110T181000-manual",
-  "previous_run_id": "tr-20261110T175500-manual",
-  "command_id": "tr-20261110T181000-manual",
+  "run_id": "tr-autoguard-1794331272",
+  "previous_run_id": "tr-20261110T181000-manual",
+  "command_id": "tr-autoguard-1794331272",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-10T18:10:00+01:00",
-  "updated_at": "2026-11-10T18:11:00+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-10T18:22:00+01:00",
+  "updated_at": "2026-11-10T18:22:00+01:00",
   "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "total": 3,
+  "trend_id": "9621c0736440",
+  "title": "Bolivia",
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "9621c0736440",
+    "ea3b5e4dcab3",
+    "55c3a83a7e63"
+  ],
+  "remaining_active_ids": [
+    "9621c0736440",
+    "ea3b5e4dcab3",
+    "55c3a83a7e63"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
-    "observed": 0,
+    "observed": 3,
     "closed": 0,
     "explained": 0,
     "problematic": 0,
@@ -38,7 +46,7 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 3,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -50,8 +58,8 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Pasada editorial completada",
-  "last_started_at": "2026-11-10T18:10:00+01:00",
+  "activity": "Investigando Bolivia",
+  "last_started_at": "2026-11-10T18:22:00+01:00",
   "last_completed_at": "2026-11-10T18:11:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -93,7 +101,7 @@
     "incidents": [],
     "message": "Pasada tr-20261110T181000-manual cerrada 0/0 contra main. Barrera JIT final: editorial-queue=0 (updated_at 2026-11-10T18:01:32+01:00) y sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos en requests.json, mobile-decisions.json ni telegram-manual-explained.json. Últimos mantenimientos revisados: Charles (continuidad actualizada) y Supa (unverified), sin resultados posteriores. No había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-20261110T181000-manual cerrada 0/0 contra main. Barrera JIT final: editorial-queue=0 (updated_at 2026-11-10T18:01:32+01:00) y sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos en requests.json, mobile-decisions.json ni telegram-manual-explained.json. Últimos mantenimientos revisados: Charles (continuidad actualizada) y Supa (unverified), sin resultados posteriores. No había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada tr-autoguard-1794331272 RUNNING. Cola inicial autoritativa=3: Bolivia r0, GTA VI r0 y reentrada #ProfesionDeRiesgoYa r0. Se procesa en orden con validación JIT. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
@@ -5509,6 +5517,13 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-20261110T181000-manual cerrada 0/0 contra main. Barrera JIT final: editorial-queue=0 (updated_at 2026-11-10T18:01:32+01:00) y sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos en requests.json, mobile-decisions.json ni telegram-manual-explained.json. Últimos mantenimientos revisados: Charles (continuidad actualizada) y Supa (unverified), sin resultados posteriores. No había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-10T18:22:00+01:00",
+      "phase": "preparing",
+      "trend_id": "9621c0736440",
+      "title": "Bolivia",
+      "message": "Pasada tr-autoguard-1794331272 RUNNING. Cola inicial autoritativa=3: Bolivia r0, GTA VI r0 y reentrada #ProfesionDeRiesgoYa r0. Se procesa en orden con validación JIT. ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": null,
@@ -6729,7 +6744,7 @@
   ],
   "outbox_comment_id": 5848965032,
   "editorial_apply_commit": "76e7e728a222ee21fee34fda64da43cfd7ecd90a",
-  "finished_at": "2026-11-10T18:11:00+01:00",
+  "finished_at": null,
   "refresh_workflow_run_id": 42839275825,
   "refresh_conclusion": "success"
 }
