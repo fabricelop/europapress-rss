@@ -7,24 +7,24 @@
   "previous_run_id": "tr-1794340878832-manual",
   "command_id": "tr-1794341095501-manual",
   "source": "chat",
-  "status": "success",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-10T21:21:30+01:00",
   "updated_at": "2026-11-10T21:31:23+01:00",
-  "current": 0,
+  "current": 9,
   "total": 9,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
   "processed_ids": [
-    "07369c12f629",
+    "a7dae618fb00",
+    "be21d7172b63",
     "0a7bd0e0cd74",
     "57e456d7164a",
-    "69b09bf37b20",
-    "95edd6182e38",
-    "a7dae618fb00",
     "b97769cc0759",
-    "be21d7172b63",
+    "95edd6182e38",
+    "07369c12f629",
+    "69b09bf37b20",
     "ea6c88f8a5e9"
   ],
   "converged_ids": [],
@@ -32,17 +32,17 @@
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 0,
-    "closed": 0,
-    "explained": 0,
+    "attempted": 9,
+    "observed": 9,
+    "closed": 9,
+    "explained": 7,
     "problematic": 0,
-    "updates": 0,
+    "updates": 2,
     "review_completed_no_distinct_event": 0,
     "maintenance_reviews": 0,
     "unchanged_reviews": 0,
     "continuity_updates": 0,
-    "distinct_updates": 0,
+    "distinct_updates": 2,
     "stale_reviews": 0,
     "unverified_reviews": 0,
     "anticipation_reviews": 0,
@@ -54,9 +54,82 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 1
+    "concurrent_convergence": 0
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "a7dae618fb00",
+      "revision": 0,
+      "name": "Michel Houellebecq",
+      "outcome": "explained",
+      "applied": true,
+      "verification": "site-top30-current exact id/revision + queue barrier"
+    },
+    {
+      "id": "be21d7172b63",
+      "revision": 0,
+      "name": "Laia",
+      "outcome": "explained",
+      "applied": true,
+      "verification": "site-top30-current exact id/revision + queue barrier"
+    },
+    {
+      "id": "0a7bd0e0cd74",
+      "revision": 0,
+      "name": "Sabonis",
+      "outcome": "explained",
+      "applied": true,
+      "verification": "site-top30-current exact id/revision + queue barrier"
+    },
+    {
+      "id": "57e456d7164a",
+      "revision": 0,
+      "name": "Ndongo",
+      "outcome": "explained",
+      "applied": true,
+      "verification": "site-top30-current exact id/revision + queue barrier"
+    },
+    {
+      "id": "b97769cc0759",
+      "revision": 0,
+      "name": "Tavernes",
+      "outcome": "explained",
+      "applied": true,
+      "verification": "site-top30-current exact id/revision + queue barrier"
+    },
+    {
+      "id": "95edd6182e38",
+      "revision": 0,
+      "name": "TikTok",
+      "outcome": "distinct_update",
+      "applied": true,
+      "verification": "site-top30-current exact id/revision + queue barrier"
+    },
+    {
+      "id": "07369c12f629",
+      "revision": 0,
+      "name": "Trabajando",
+      "outcome": "explained",
+      "applied": true,
+      "verification": "site-top30-current exact id/revision + queue barrier"
+    },
+    {
+      "id": "69b09bf37b20",
+      "revision": 0,
+      "name": "Fina",
+      "outcome": "explained",
+      "applied": true,
+      "verification": "site-top30-current exact id/revision + queue barrier"
+    },
+    {
+      "id": "ea6c88f8a5e9",
+      "revision": 0,
+      "name": "Núcleo Nacional",
+      "outcome": "distinct_update",
+      "applied": true,
+      "verification": "site-top30-current exact id/revision + queue barrier"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -220,24 +293,24 @@
   "last_completed_at": "2026-11-10T21:31:23+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794341095501-manual",
+    "run_id": "tr-autoguard-1794342077",
     "status": "DONE",
-    "started_at": "2026-11-10T21:05:00+01:00",
-    "finished_at": "2026-11-10T21:10:00+01:00",
-    "at": "2026-11-10T21:10:00+01:00",
+    "started_at": "2026-11-10T21:21:30+01:00",
+    "finished_at": "2026-11-10T21:31:23+01:00",
+    "at": "2026-11-10T21:31:23+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 0,
-      "observed": 0,
-      "closed": 0,
-      "explained": 0,
+      "attempted": 9,
+      "observed": 9,
+      "closed": 9,
+      "explained": 7,
       "problematic": 0,
-      "updates": 0,
+      "updates": 2,
       "review_completed_no_distinct_event": 0,
       "maintenance_reviews": 0,
       "unchanged_reviews": 0,
       "continuity_updates": 0,
-      "distinct_updates": 0,
+      "distinct_updates": 2,
       "stale_reviews": 0,
       "unverified_reviews": 0,
       "anticipation_reviews": 0,
@@ -249,16 +322,99 @@
       "image_outbox_created": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 1
+      "concurrent_convergence": 0
     },
-    "processed_ids": [],
+    "processed_ids": [
+      "a7dae618fb00",
+      "be21d7172b63",
+      "0a7bd0e0cd74",
+      "57e456d7164a",
+      "b97769cc0759",
+      "95edd6182e38",
+      "07369c12f629",
+      "69b09bf37b20",
+      "ea6c88f8a5e9"
+    ],
     "converged_ids": [],
-    "outcomes": [],
+    "outcomes": [
+      {
+        "id": "a7dae618fb00",
+        "revision": 0,
+        "name": "Michel Houellebecq",
+        "outcome": "explained",
+        "applied": true,
+        "verification": "site-top30-current exact id/revision + queue barrier"
+      },
+      {
+        "id": "be21d7172b63",
+        "revision": 0,
+        "name": "Laia",
+        "outcome": "explained",
+        "applied": true,
+        "verification": "site-top30-current exact id/revision + queue barrier"
+      },
+      {
+        "id": "0a7bd0e0cd74",
+        "revision": 0,
+        "name": "Sabonis",
+        "outcome": "explained",
+        "applied": true,
+        "verification": "site-top30-current exact id/revision + queue barrier"
+      },
+      {
+        "id": "57e456d7164a",
+        "revision": 0,
+        "name": "Ndongo",
+        "outcome": "explained",
+        "applied": true,
+        "verification": "site-top30-current exact id/revision + queue barrier"
+      },
+      {
+        "id": "b97769cc0759",
+        "revision": 0,
+        "name": "Tavernes",
+        "outcome": "explained",
+        "applied": true,
+        "verification": "site-top30-current exact id/revision + queue barrier"
+      },
+      {
+        "id": "95edd6182e38",
+        "revision": 0,
+        "name": "TikTok",
+        "outcome": "distinct_update",
+        "applied": true,
+        "verification": "site-top30-current exact id/revision + queue barrier"
+      },
+      {
+        "id": "07369c12f629",
+        "revision": 0,
+        "name": "Trabajando",
+        "outcome": "explained",
+        "applied": true,
+        "verification": "site-top30-current exact id/revision + queue barrier"
+      },
+      {
+        "id": "69b09bf37b20",
+        "revision": 0,
+        "name": "Fina",
+        "outcome": "explained",
+        "applied": true,
+        "verification": "site-top30-current exact id/revision + queue barrier"
+      },
+      {
+        "id": "ea6c88f8a5e9",
+        "revision": 0,
+        "name": "Núcleo Nacional",
+        "outcome": "distinct_update",
+        "applied": true,
+        "verification": "site-top30-current exact id/revision + queue barrier"
+      }
+    ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-1794341095501-manual cerrada 0/0 tras barrera JIT repetida sobre main: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. La pasada concurrente anterior terminó durante esta ejecución y se preserva en history. ImageGen=0; publicaciones=0."
+    "message": "Pasada tr-autoguard-1794342077 cerrada 9/9. Siete primeras explicaciones quedaron aplicadas y dos reentradas (TikTok y Núcleo Nacional) se cerraron con acontecimiento material distinto verificado. Barrera final observada: editorial-queue=0. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada editorial real iniciada sobre 9 items preparing/update; validación JIT por ID+revisión antes de cada tratamiento. ImageGen desactivado para esta pasada.",
+  "message": "Pasada tr-autoguard-1794342077 cerrada 9/9. Siete primeras explicaciones quedaron aplicadas y dos reentradas (TikTok y Núcleo Nacional) se cerraron con acontecimiento material distinto verificado. Barrera final observada: editorial-queue=0. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
@@ -6384,13 +6540,135 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-1794340878832-manual cerrada 2/2 por convergencia JIT con la ejecución anterior reabierta al entrar estas revisiones. Supa quedó unverified por rumores de mercado sin acuerdo confirmado; Charles quedó actualizado en continuidad con la situación de alerta en Portugal. Barrera observada: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-autoguard-1794342077",
+      "status": "DONE",
+      "started_at": "2026-11-10T21:21:30+01:00",
+      "finished_at": "2026-11-10T21:31:23+01:00",
+      "at": "2026-11-10T21:31:23+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 9,
+        "observed": 9,
+        "closed": 9,
+        "explained": 7,
+        "problematic": 0,
+        "updates": 2,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 0,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 2,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [
+        "a7dae618fb00",
+        "be21d7172b63",
+        "0a7bd0e0cd74",
+        "57e456d7164a",
+        "b97769cc0759",
+        "95edd6182e38",
+        "07369c12f629",
+        "69b09bf37b20",
+        "ea6c88f8a5e9"
+      ],
+      "converged_ids": [],
+      "outcomes": [
+        {
+          "id": "a7dae618fb00",
+          "revision": 0,
+          "name": "Michel Houellebecq",
+          "outcome": "explained",
+          "applied": true,
+          "verification": "site-top30-current exact id/revision + queue barrier"
+        },
+        {
+          "id": "be21d7172b63",
+          "revision": 0,
+          "name": "Laia",
+          "outcome": "explained",
+          "applied": true,
+          "verification": "site-top30-current exact id/revision + queue barrier"
+        },
+        {
+          "id": "0a7bd0e0cd74",
+          "revision": 0,
+          "name": "Sabonis",
+          "outcome": "explained",
+          "applied": true,
+          "verification": "site-top30-current exact id/revision + queue barrier"
+        },
+        {
+          "id": "57e456d7164a",
+          "revision": 0,
+          "name": "Ndongo",
+          "outcome": "explained",
+          "applied": true,
+          "verification": "site-top30-current exact id/revision + queue barrier"
+        },
+        {
+          "id": "b97769cc0759",
+          "revision": 0,
+          "name": "Tavernes",
+          "outcome": "explained",
+          "applied": true,
+          "verification": "site-top30-current exact id/revision + queue barrier"
+        },
+        {
+          "id": "95edd6182e38",
+          "revision": 0,
+          "name": "TikTok",
+          "outcome": "distinct_update",
+          "applied": true,
+          "verification": "site-top30-current exact id/revision + queue barrier"
+        },
+        {
+          "id": "07369c12f629",
+          "revision": 0,
+          "name": "Trabajando",
+          "outcome": "explained",
+          "applied": true,
+          "verification": "site-top30-current exact id/revision + queue barrier"
+        },
+        {
+          "id": "69b09bf37b20",
+          "revision": 0,
+          "name": "Fina",
+          "outcome": "explained",
+          "applied": true,
+          "verification": "site-top30-current exact id/revision + queue barrier"
+        },
+        {
+          "id": "ea6c88f8a5e9",
+          "revision": 0,
+          "name": "Núcleo Nacional",
+          "outcome": "distinct_update",
+          "applied": true,
+          "verification": "site-top30-current exact id/revision + queue barrier"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-autoguard-1794342077 cerrada 9/9. Siete primeras explicaciones quedaron aplicadas y dos reentradas (TikTok y Núcleo Nacional) se cerraron con acontecimiento material distinto verificado. Barrera final observada: editorial-queue=0. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "current_item": null,
   "withdrawn_ids": [
     "ae7f066f3c94"
   ],
-  "last_finished_at": "2026-11-10T20:20:30+01:00",
+  "last_finished_at": "2026-11-10T21:31:23+01:00",
   "last_revalidated_at": "2026-11-10T20:20:30+01:00",
   "last_revalidation": {
     "queue_sha": "b77d00987d94c18f2020c6deac435ec515ff61cb",
@@ -7885,11 +8163,133 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-1794338110667-manual cerrada 1/1. Catedral de Toledo quedó actualizada en continuidad sobre la ficha histórica: el funeral fue adelantado del 12 al 10 de noviembre; se conserva explained_at y no se crea una ficha nueva. Barrera final: editorial-queue=0. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-autoguard-1794342077",
+      "status": "DONE",
+      "started_at": "2026-11-10T21:21:30+01:00",
+      "finished_at": "2026-11-10T21:31:23+01:00",
+      "at": "2026-11-10T21:31:23+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 9,
+        "observed": 9,
+        "closed": 9,
+        "explained": 7,
+        "problematic": 0,
+        "updates": 2,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 0,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 2,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [
+        "a7dae618fb00",
+        "be21d7172b63",
+        "0a7bd0e0cd74",
+        "57e456d7164a",
+        "b97769cc0759",
+        "95edd6182e38",
+        "07369c12f629",
+        "69b09bf37b20",
+        "ea6c88f8a5e9"
+      ],
+      "converged_ids": [],
+      "outcomes": [
+        {
+          "id": "a7dae618fb00",
+          "revision": 0,
+          "name": "Michel Houellebecq",
+          "outcome": "explained",
+          "applied": true,
+          "verification": "site-top30-current exact id/revision + queue barrier"
+        },
+        {
+          "id": "be21d7172b63",
+          "revision": 0,
+          "name": "Laia",
+          "outcome": "explained",
+          "applied": true,
+          "verification": "site-top30-current exact id/revision + queue barrier"
+        },
+        {
+          "id": "0a7bd0e0cd74",
+          "revision": 0,
+          "name": "Sabonis",
+          "outcome": "explained",
+          "applied": true,
+          "verification": "site-top30-current exact id/revision + queue barrier"
+        },
+        {
+          "id": "57e456d7164a",
+          "revision": 0,
+          "name": "Ndongo",
+          "outcome": "explained",
+          "applied": true,
+          "verification": "site-top30-current exact id/revision + queue barrier"
+        },
+        {
+          "id": "b97769cc0759",
+          "revision": 0,
+          "name": "Tavernes",
+          "outcome": "explained",
+          "applied": true,
+          "verification": "site-top30-current exact id/revision + queue barrier"
+        },
+        {
+          "id": "95edd6182e38",
+          "revision": 0,
+          "name": "TikTok",
+          "outcome": "distinct_update",
+          "applied": true,
+          "verification": "site-top30-current exact id/revision + queue barrier"
+        },
+        {
+          "id": "07369c12f629",
+          "revision": 0,
+          "name": "Trabajando",
+          "outcome": "explained",
+          "applied": true,
+          "verification": "site-top30-current exact id/revision + queue barrier"
+        },
+        {
+          "id": "69b09bf37b20",
+          "revision": 0,
+          "name": "Fina",
+          "outcome": "explained",
+          "applied": true,
+          "verification": "site-top30-current exact id/revision + queue barrier"
+        },
+        {
+          "id": "ea6c88f8a5e9",
+          "revision": 0,
+          "name": "Núcleo Nacional",
+          "outcome": "distinct_update",
+          "applied": true,
+          "verification": "site-top30-current exact id/revision + queue barrier"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-autoguard-1794342077 cerrada 9/9. Siete primeras explicaciones quedaron aplicadas y dos reentradas (TikTok y Núcleo Nacional) se cerraron con acontecimiento material distinto verificado. Barrera final observada: editorial-queue=0. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "outbox_comment_id": 6721989528,
   "editorial_apply_commit": "2939b4d2b5415ed3b8ebf6ba2332692f9d37c1cd",
-  "finished_at": null,
+  "finished_at": "2026-11-10T21:31:23+01:00",
   "refresh_workflow_run_id": 42839275825,
   "refresh_conclusion": "success",
   "maintenance_apply_commits": [
