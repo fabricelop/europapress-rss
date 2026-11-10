@@ -26,7 +26,7 @@ for(const project of ['ttittulares','ttendencias'])test(project+' recovers exact
   throw Error('Unexpected URL '+url);
  }};
  vm.runInNewContext(code,sandbox);await sandbox.module.exports.once(base);
- assert.equal(created,1);assert.equal(closed,1);assert.equal(uploads,1);
+ assert.equal(created,1,'created='+created+' cycle='+fs.readFileSync(path.join(base,'image-approval-receipts/receiver-cycle.json'),'utf8')+' status='+fs.readFileSync(path.join(base,'image-approval-receipts/receiver-status.json'),'utf8'));assert.equal(closed,1);assert.equal(uploads,1);
  const receipt=JSON.parse(fs.readFileSync(path.join(base,'image-approval-receipts/job-abc.json'),'utf8'));assert.equal(receipt.state,'pending');assert.equal(receipt.editorialId,task.target_id);
  }finally{fs.rmSync(base,{recursive:true,force:true})}
 });
