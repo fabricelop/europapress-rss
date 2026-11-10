@@ -7,20 +7,20 @@
   "previous_run_id": "tr-20261110T144000-manual",
   "command_id": "tr-20261110T151000-manual",
   "source": "chat",
-  "status": "success",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-10T15:10:00+01:00",
-  "updated_at": "2026-11-10T15:15:20+01:00",
-  "current": 0,
+  "updated_at": "2026-11-10T15:16:00+01:00",
+  "current": 5,
   "total": 5,
-  "trend_id": "2e413c62b2e2",
-  "title": "Degradar",
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
     "2e413c62b2e2",
-    "41a47d5cfc69",
-    "8a590611f49c",
     "8a66265b55a4",
+    "8a590611f49c",
+    "41a47d5cfc69",
     "94fedb129457"
   ],
   "converged_ids": [],
@@ -28,10 +28,10 @@
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 0,
-    "closed": 0,
-    "explained": 0,
+    "attempted": 5,
+    "observed": 5,
+    "closed": 5,
+    "explained": 5,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
@@ -52,26 +52,63 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "2e413c62b2e2",
+      "revision": 0,
+      "name": "Degradar",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "8a66265b55a4",
+      "revision": 0,
+      "name": "Descansen",
+      "outcome": "explained_cause_unconfirmed",
+      "applied": true,
+      "closer_omitted": "sensitive_event"
+    },
+    {
+      "id": "8a590611f49c",
+      "revision": 0,
+      "name": "Humor",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "41a47d5cfc69",
+      "revision": 0,
+      "name": "Ayer Broncano",
+      "outcome": "explained_cause_unconfirmed",
+      "applied": true
+    },
+    {
+      "id": "94fedb129457",
+      "revision": 0,
+      "name": "Feliz Martes",
+      "outcome": "explained_cause_unconfirmed",
+      "applied": true
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Investigando 5 tendencias",
-  "last_started_at": "2026-11-10T15:15:20+01:00",
-  "last_completed_at": "2026-11-10T15:15:20+01:00",
+  "activity": "Pasada cerrada",
+  "last_started_at": "2026-11-10T15:10:00+01:00",
+  "last_completed_at": "2026-11-10T15:16:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261110T144000-manual",
+    "run_id": "tr-20261110T151000-manual",
     "status": "DONE",
-    "started_at": "2026-11-10T14:40:00+01:00",
-    "finished_at": "2026-11-10T14:41:10+01:00",
-    "at": "2026-11-10T14:41:10+01:00",
+    "started_at": "2026-11-10T15:10:00+01:00",
+    "finished_at": "2026-11-10T15:16:00+01:00",
+    "at": "2026-11-10T15:16:00+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 0,
-      "observed": 0,
-      "closed": 0,
-      "explained": 0,
+      "attempted": 5,
+      "observed": 5,
+      "closed": 5,
+      "explained": 5,
       "problematic": 0,
       "updates": 0,
       "review_completed_no_distinct_event": 0,
@@ -92,14 +129,58 @@
       "incidents": 0,
       "concurrent_convergence": 0
     },
-    "processed_ids": [],
+    "processed_ids": [
+      "2e413c62b2e2",
+      "8a66265b55a4",
+      "8a590611f49c",
+      "41a47d5cfc69",
+      "94fedb129457"
+    ],
     "converged_ids": [],
-    "outcomes": [],
+    "outcomes": [
+      {
+        "id": "2e413c62b2e2",
+        "revision": 0,
+        "name": "Degradar",
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "8a66265b55a4",
+        "revision": 0,
+        "name": "Descansen",
+        "outcome": "explained_cause_unconfirmed",
+        "applied": true,
+        "closer_omitted": "sensitive_event"
+      },
+      {
+        "id": "8a590611f49c",
+        "revision": 0,
+        "name": "Humor",
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "41a47d5cfc69",
+        "revision": 0,
+        "name": "Ayer Broncano",
+        "outcome": "explained_cause_unconfirmed",
+        "applied": true
+      },
+      {
+        "id": "94fedb129457",
+        "revision": 0,
+        "name": "Feliz Martes",
+        "outcome": "explained_cause_unconfirmed",
+        "applied": true
+      }
+    ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-20261110T144000-manual cerrada 0/0 contra main. Barrera JIT final: editorial-queue=0 (updated_at 2026-11-10T14:41:06+01:00), mobile-decisions sin estados activos y búsqueda dirigida sin preparing/update/rewrite_pending/reexplain/anticipate/review_red en requests/mobile. No había trabajo editorial textual pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "message": "Pasada tr-20261110T151000-manual cerrada 5/5. Degradar, Descansen, Humor, Ayer Broncano y Feliz Martes fueron revalidadas JIT y consumidas por el aplicador oficial; editorial-queue=0 y los cinco outboxes fueron retirados. Descansen queda sin remate por sensibilidad; Ayer Broncano y Feliz Martes se cerraron con causalidad no confirmada. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+    "apply_workflow_run_id": 42832151349
   },
-  "message": "Pasada tr-20261110T151000-manual RUNNING. Cola JIT=5: Degradar, Descansen, Humor, Ayer Broncano y Feliz Martes. Investigación textual en curso; ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-20261110T151000-manual cerrada 5/5. Degradar, Descansen, Humor, Ayer Broncano y Feliz Martes fueron revalidadas JIT y consumidas por el aplicador oficial; editorial-queue=0 y los cinco outboxes fueron retirados. Descansen queda sin remate por sensibilidad; Ayer Broncano y Feliz Martes se cerraron con causalidad no confirmada. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
@@ -4786,6 +4867,89 @@
       "trend_id": "2e413c62b2e2",
       "title": "Degradar",
       "message": "Pasada tr-20261110T151000-manual RUNNING. Cola JIT=5: Degradar, Descansen, Humor, Ayer Broncano y Feliz Martes. Investigación textual en curso; ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-20261110T151000-manual",
+      "status": "DONE",
+      "started_at": "2026-11-10T15:10:00+01:00",
+      "finished_at": "2026-11-10T15:16:00+01:00",
+      "at": "2026-11-10T15:16:00+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 5,
+        "observed": 5,
+        "closed": 5,
+        "explained": 5,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 0,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [
+        "2e413c62b2e2",
+        "8a66265b55a4",
+        "8a590611f49c",
+        "41a47d5cfc69",
+        "94fedb129457"
+      ],
+      "converged_ids": [],
+      "outcomes": [
+        {
+          "id": "2e413c62b2e2",
+          "revision": 0,
+          "name": "Degradar",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "8a66265b55a4",
+          "revision": 0,
+          "name": "Descansen",
+          "outcome": "explained_cause_unconfirmed",
+          "applied": true,
+          "closer_omitted": "sensitive_event"
+        },
+        {
+          "id": "8a590611f49c",
+          "revision": 0,
+          "name": "Humor",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "41a47d5cfc69",
+          "revision": 0,
+          "name": "Ayer Broncano",
+          "outcome": "explained_cause_unconfirmed",
+          "applied": true
+        },
+        {
+          "id": "94fedb129457",
+          "revision": 0,
+          "name": "Feliz Martes",
+          "outcome": "explained_cause_unconfirmed",
+          "applied": true
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-20261110T151000-manual cerrada 5/5. Degradar, Descansen, Humor, Ayer Broncano y Feliz Martes fueron revalidadas JIT y consumidas por el aplicador oficial; editorial-queue=0 y los cinco outboxes fueron retirados. Descansen queda sin remate por sensibilidad; Ayer Broncano y Feliz Martes se cerraron con causalidad no confirmada. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+      "apply_workflow_run_id": 42832151349
     }
   ],
   "current_item": null,
@@ -4810,7 +4974,7 @@
     "total": 7,
     "message": "Pasada tr-20261110T131000-manual RUNNING. Cola autoritativa inicial=7; revalidación JIT e investigación textual en curso. ImageGen=0; publicaciones=0."
   },
-  "apply_workflow_run_id": 42747986726,
+  "apply_workflow_run_id": 42832151349,
   "apply_commit": "5ccf4a17477f1c3ad3d044b6c9f40215df99d23a",
   "maintenance_workflow_run_id": 42713522083,
   "maintenance_job_id": "red-review-61d494cc18e2321aaa5b",
@@ -5967,5 +6131,5 @@
   ],
   "outbox_comment_id": 5848965032,
   "editorial_apply_commit": "76e7e728a222ee21fee34fda64da43cfd7ecd90a",
-  "finished_at": "2026-11-10T14:41:10+01:00"
+  "finished_at": "2026-11-10T15:16:00+01:00"
 }
