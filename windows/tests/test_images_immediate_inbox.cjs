@@ -12,6 +12,7 @@ const secret='test-only-secret-must-have-32-characters';
 function fixture(project='ttendencias'){
  const tmp=fs.mkdtempSync(path.join(os.tmpdir(),'tt-immediate-'));
  const job={command_id:'job-1234',target_id:'target-1234',revision:2,
+  requested_at:'2026-11-10T13:34:00Z',
   context_snapshot:project==='ttendencias'?
    {explanation:'Una tendencia precisa',explained_at:'2026-11-09T00:20:00Z'}:
    {tweet_text:'Una noticia verificada',factual_summary:'Hechos completos',remate:'Un remate',
@@ -146,4 +147,13 @@ test('both bridges retain old fallback and same-process private transfer wiring'
  assert.match(receiver,/immediate\.loadStaged\(base,task\)/);
  assert(updater.indexOf('windows/TTImagesImmediateInbox.cjs')<
         updater.indexOf('windows/TTiTTularesImageBridge.js'));
+});
+
+test('no-backfill: an image from an older command is never delivered on retry',async()=>{
+ const f=fixture('ttittulares');
+ try{
+  f.job.requested_at='2026-11-10T13:32:59.999Z';
+  assert.deepEqual(await f.run(),{state:'skipped',reason:'before_inbox_cutover'});
+  assert.deepEqual(f.counts(),{sent:0,saved:0,discarded:0});
+ }finally{fs.rmSync(f.tmp,{recursive:true,force:true});}
 });
