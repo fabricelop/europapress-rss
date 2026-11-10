@@ -3,14 +3,14 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794323836701-manual",
+  "run_id": "tr-1794323730023-manual",
   "previous_run_id": "tr-20261110T161000-manual",
-  "command_id": "tr-1794323836701-manual",
+  "command_id": "tr-1794323730023-manual",
   "source": "chat",
   "status": "RUNNING",
   "phase": "preparing",
-  "started_at": "2026-11-10T16:18:00+01:00",
-  "updated_at": "2026-11-10T16:18:00+01:00",
+  "started_at": "2026-11-10T16:15:30.023+01:00",
+  "updated_at": "2026-11-10T16:15:30.023+01:00",
   "current": 0,
   "total": 3,
   "trend_id": null,
@@ -242,7 +242,7 @@
     ],
     "message": "Pasada tr-20261110T161000-manual cerrada 6/6 con incidencia de verificación del ranking. El refresco real 42841653159 concluyó success y dejó recent.json captured_at 2026-11-10T16:11:26+01:00 con primary_source=getdaytrends, live_verified=false y reliability=unverified. Los seis ítems (PS5 Pro, El Ruso, Manuel Ferrero Álvarez, insultar, Rochos y Magisterio) fueron revalidados JIT y aplicados como problematic en 2c134cc365831b4e3d8c4173a88bd84d2b604819, sin crear explicaciones ni nuevas fichas; Rochos conserva intacto el episodio anterior. Barrera final: editorial-queue tiene 6 problematic pero 0 preparing/update/rewrite_pending/reexplain/anticipate/review_red; mobile-decisions sin estados activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-20261110T161000-manual cerrada 6/6 con incidencia de verificación del ranking. El refresco real 42841653159 concluyó success y dejó recent.json captured_at 2026-11-10T16:11:26+01:00 con primary_source=getdaytrends, live_verified=false y reliability=unverified. Los seis ítems (PS5 Pro, El Ruso, Manuel Ferrero Álvarez, insultar, Rochos y Magisterio) fueron revalidados JIT y aplicados como problematic en 2c134cc365831b4e3d8c4173a88bd84d2b604819, sin crear explicaciones ni nuevas fichas; Rochos conserva intacto el episodio anterior. Barrera final: editorial-queue tiene 6 problematic pero 0 preparing/update/rewrite_pending/reexplain/anticipate/review_red; mobile-decisions sin estados activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada manual en ejecución: 3 trabajos preparing/update observados en main; se procesan por requested_at y con validación JIT.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
@@ -6427,7 +6427,7 @@
   ],
   "outbox_comment_id": 5848965032,
   "editorial_apply_commit": "76e7e728a222ee21fee34fda64da43cfd7ecd90a",
-  "finished_at": "2026-11-10T16:15:00+01:00",
+  "finished_at": null,
   "refresh_workflow_run_id": 42839275825,
   "refresh_conclusion": "success"
 }
