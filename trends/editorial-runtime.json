@@ -3,46 +3,50 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794306091211-manual",
-  "previous_run_id": "tr-20261110T1110-manual",
-  "command_id": "tr-1794306091211-manual",
+  "run_id": "tr-1794307429333-manual",
+  "previous_run_id": "tr-1794306091211-manual",
+  "command_id": "tr-1794307429333-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-10T11:22:00+01:00",
-  "updated_at": "2026-11-10T11:28:00+01:00",
-  "current": 3,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-10T11:54:00+01:00",
+  "updated_at": "2026-11-10T11:54:00+01:00",
+  "current": 0,
   "total": 3,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "red-review-e90d4fe55caa6ee84529",
-    "red-review-d235e334431eb57c64e1",
-    "5fd14e2dd9b6"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "818edf4520af",
+    "69a0aeae8c60",
+    "5476c72ec81a"
+  ],
+  "remaining_active_ids": [
+    "818edf4520af",
+    "69a0aeae8c60",
+    "5476c72ec81a"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 3,
     "observed": 3,
-    "closed": 3,
-    "explained": 1,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
-    "updates": 1,
+    "updates": 0,
     "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 2,
-    "unchanged_reviews": 1,
+    "maintenance_reviews": 0,
+    "unchanged_reviews": 0,
     "continuity_updates": 0,
-    "distinct_updates": 1,
+    "distinct_updates": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 3,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -50,34 +54,11 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "red-review-e90d4fe55caa6ee84529",
-      "revision": 0,
-      "name": "Revisar novedades: Almudena",
-      "outcome": "unchanged",
-      "applied": true
-    },
-    {
-      "id": "red-review-d235e334431eb57c64e1",
-      "revision": 0,
-      "name": "Revisar novedades: Oviedo",
-      "outcome": "distinct_update",
-      "applied": true,
-      "created_id": "trend-update-522f1e69192833a122c1"
-    },
-    {
-      "id": "5fd14e2dd9b6",
-      "revision": 0,
-      "name": "anoche",
-      "outcome": "explained_uncertain_cause",
-      "applied": true
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Pasada editorial completada",
+  "activity": "Iniciando pasada editorial",
   "last_started_at": "2026-11-10T11:26:56+01:00",
   "last_completed_at": "2026-11-10T11:28:00+01:00",
   "api_failover_enabled": false,
@@ -147,7 +128,7 @@
     "incidents": [],
     "message": "Pasada tr-1794306091211-manual cerrada 3/3: Almudena sin novedad sustancial; Oviedo con episodio materialmente distinto por la explosión de hoy; anoche cerrada con causa no confirmada tras verificar su presencia actual en el Top de España. Barrera JIT final: editorial-queue=0 y mobile-decisions sin trabajo activo. ImageGen=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794306091211-manual cerrada 3/3: Almudena sin novedad sustancial; Oviedo con episodio materialmente distinto por la explosión de hoy; anoche cerrada con causa no confirmada tras verificar su presencia actual en el Top de España. Barrera JIT final: editorial-queue=0 y mobile-decisions sin trabajo activo. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1794307429333-manual RUNNING. Relectura JIT inicial: 3 preparing/update activos (TEDAX r0, Jordi Wild r0, LGTBI r0). ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
@@ -3490,6 +3471,13 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-1794306091211-manual cerrada 3/3: Almudena sin novedad sustancial; Oviedo con episodio materialmente distinto por la explosión de hoy; anoche cerrada con causa no confirmada tras verificar su presencia actual en el Top de España. Barrera JIT final: editorial-queue=0 y mobile-decisions sin trabajo activo. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-10T11:54:00+01:00",
+      "phase": "preparing",
+      "trend_id": null,
+      "title": null,
+      "message": "Pasada tr-1794307429333-manual RUNNING. Relectura JIT inicial: 3 preparing/update activos (TEDAX r0, Jordi Wild r0, LGTBI r0). ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": null,
@@ -4471,5 +4459,5 @@
   ],
   "outbox_comment_id": 5848965032,
   "editorial_apply_commit": "76e7e728a222ee21fee34fda64da43cfd7ecd90a",
-  "finished_at": "2026-11-10T11:28:00+01:00"
+  "finished_at": null
 }
