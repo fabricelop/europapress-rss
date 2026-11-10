@@ -7,16 +7,16 @@
   "previous_run_id": "tr-20261110T031000-manual",
   "command_id": "tr-20261110T032500-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-10T03:25:00+01:00",
-  "updated_at": "2026-11-10T03:25:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-10T03:26:00+01:00",
+  "finished_at": "2026-11-10T03:26:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -93,17 +93,17 @@
   "last_completed_at": "2026-11-10T03:13:37+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261110T031000-manual",
+    "run_id": "tr-20261110T032500-manual",
     "status": "DONE",
-    "started_at": "2026-11-10T03:10:00+01:00",
-    "finished_at": "2026-11-10T03:13:37+01:00",
-    "at": "2026-11-10T03:13:37+01:00",
+    "started_at": "2026-11-10T03:25:00+01:00",
+    "finished_at": "2026-11-10T03:26:00+01:00",
+    "at": "2026-11-10T03:26:00+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 1,
-      "observed": 1,
-      "closed": 1,
-      "explained": 1,
+      "attempted": 0,
+      "observed": 0,
+      "closed": 0,
+      "explained": 0,
       "problematic": 0,
       "updates": 0,
       "review_completed_no_distinct_event": 0,
@@ -124,24 +124,13 @@
       "incidents": 0,
       "concurrent_convergence": 0
     },
-    "processed_ids": [
-      "23f88d52777e"
-    ],
-    "outcomes": [
-      {
-        "id": "23f88d52777e",
-        "revision": 0,
-        "name": "Espinosa",
-        "outcome": "explained_cause_unconfirmed",
-        "applied": true,
-        "apply_commit": "5311a3d99893c024fe4fec81081c06e65ee321a1"
-      }
-    ],
+    "processed_ids": [],
+    "outcomes": [],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-20261110T031000-manual cerrada 1/1. Espinosa r0 fue investigada con dos búsquedas independientes y aplicada en main por 5311a3d99893c024fe4fec81081c06e65ee321a1 con contexto actual verificado y detonante concreto no confirmado. Barrera final: editorial-queue=0. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "message": "Pasada tr-20261110T032500-manual cerrada 0/0 tras relectura JIT de main. Snapshot Top 30 capturado 2026-11-10T03:20:51+01:00; editorial-queue actualizada 2026-11-10T03:20:56+01:00 y vacía. Barrera final: sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada manual iniciada; cola observada inicialmente en 0. Relectura JIT de main pendiente antes del cierre.",
+  "message": "Pasada tr-20261110T032500-manual cerrada 0/0 tras relectura JIT de main. Snapshot Top 30 capturado 2026-11-10T03:20:51+01:00; editorial-queue actualizada 2026-11-10T03:20:56+01:00 y vacía. Barrera final: sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794234841273-manual",
