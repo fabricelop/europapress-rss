@@ -7,42 +7,40 @@
   "previous_run_id": "tr-1794347693134-manual",
   "command_id": "tr-1794347700000-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-10T22:55:00+01:00",
-  "updated_at": "2026-11-10T22:57:00+01:00",
-  "current": 0,
+  "updated_at": "2026-11-10T22:58:30+01:00",
+  "current": 1,
   "total": 1,
   "trend_id": "red-review-efe36e3459279f1819ae",
   "title": "Revisar novedades: Carzzy",
-  "queue_complete": false,
-  "processed_ids": [],
+  "queue_complete": true,
+  "processed_ids": [
+    "red-review-efe36e3459279f1819ae"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "red-review-efe36e3459279f1819ae"
-  ],
-  "remaining_active_ids": [
-    "red-review-efe36e3459279f1819ae"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 1,
     "observed": 1,
-    "closed": 0,
+    "closed": 1,
     "explained": 0,
     "problematic": 0,
-    "updates": 0,
+    "updates": 1,
     "review_completed_no_distinct_event": 0,
     "maintenance_reviews": 1,
     "unchanged_reviews": 0,
-    "continuity_updates": 0,
+    "continuity_updates": 1,
     "distinct_updates": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 1,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -50,7 +48,19 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "red-review-efe36e3459279f1819ae",
+      "revision": 0,
+      "name": "Revisar novedades: Carzzy",
+      "outcome": "continuity_update",
+      "applied": true,
+      "via": "maintenance_outbox",
+      "source_id": "79666c46d60d",
+      "outbox_commit": "abfe5f994c757f59d45e4bd5a69b2de69e8ad60f",
+      "apply_commit": "c0fd462afc1c2efa017fd5178a391ca951212d47"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -361,29 +371,41 @@
       "trend_id": "red-review-efe36e3459279f1819ae",
       "title": "Revisar novedades: Carzzy",
       "message": "Resultado de continuidad preparado: rumor del 10/11 más concreto (MKOI como destino y GIANTX valoró al jugador), sin fichaje confirmado; distinct_episode=false, material_change=false. Esperando aplicación JIT."
+    },
+    {
+      "at": "2026-11-10T22:58:30+01:00",
+      "phase": "verifying",
+      "trend_id": "red-review-efe36e3459279f1819ae",
+      "title": "Revisar novedades: Carzzy",
+      "message": "Aplicación JIT confirmada en commit c0fd462a: misma ficha 79666c46d60d, revisión 0 y explained_at preservado; editorial-queue=0."
+    },
+    {
+      "at": "2026-11-10T22:58:30+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-1794347700000-manual cerrada 1/1. Carzzy queda actualizada en continuidad: rumor del 10/11 más concreto hacia Movistar KOI, aún sin fichaje confirmado; mismo ID/revisión/explained_at, sin nueva ficha ni imagen. Barrera final: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
     }
   ],
   "last_started_at": "2026-11-10T22:55:00+01:00",
-  "last_completed_at": "2026-11-10T22:41:10+01:00",
+  "last_completed_at": "2026-11-10T22:58:30+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794346800000-manual",
+    "run_id": "tr-1794347700000-manual",
     "status": "DONE",
-    "started_at": "2026-11-10T22:40:00+01:00",
-    "finished_at": "2026-11-10T22:41:10+01:00",
-    "at": "2026-11-10T22:41:10+01:00",
+    "started_at": "2026-11-10T22:55:00+01:00",
+    "finished_at": "2026-11-10T22:58:30+01:00",
+    "at": "2026-11-10T22:58:30+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 0,
-      "observed": 0,
-      "closed": 0,
+      "attempted": 1,
+      "observed": 1,
+      "closed": 1,
       "explained": 0,
       "problematic": 0,
-      "updates": 0,
+      "updates": 1,
       "review_completed_no_distinct_event": 0,
-      "maintenance_reviews": 0,
+      "maintenance_reviews": 1,
       "unchanged_reviews": 0,
-      "continuity_updates": 0,
+      "continuity_updates": 1,
       "distinct_updates": 0,
       "stale_reviews": 0,
       "unverified_reviews": 0,
@@ -398,14 +420,28 @@
       "incidents": 0,
       "concurrent_convergence": 0
     },
-    "processed_ids": [],
+    "processed_ids": [
+      "red-review-efe36e3459279f1819ae"
+    ],
     "converged_ids": [],
-    "outcomes": [],
+    "outcomes": [
+      {
+        "id": "red-review-efe36e3459279f1819ae",
+        "revision": 0,
+        "name": "Revisar novedades: Carzzy",
+        "outcome": "continuity_update",
+        "applied": true,
+        "via": "maintenance_outbox",
+        "source_id": "79666c46d60d",
+        "outbox_commit": "abfe5f994c757f59d45e4bd5a69b2de69e8ad60f",
+        "apply_commit": "c0fd462afc1c2efa017fd5178a391ca951212d47"
+      }
+    ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-1794346800000-manual cerrada 0/0 contra main. Relectura JIT final: editorial-queue=0 (updated_at 2026-11-10T22:40:58+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. Captura reciente recalculada a las 22:40:53+01:00; no había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "message": "Pasada tr-1794347700000-manual cerrada 1/1. Carzzy queda actualizada en continuidad: rumor del 10/11 más concreto hacia Movistar KOI, aún sin fichaje confirmado; mismo ID/revisión/explained_at, sin nueva ficha ni imagen. Barrera final: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794346800000-manual cerrada 0/0 contra main. Relectura JIT final: editorial-queue=0 (updated_at 2026-11-10T22:40:58+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. Captura reciente recalculada a las 22:40:53+01:00; no había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada tr-1794347700000-manual cerrada 1/1. Carzzy queda actualizada en continuidad: rumor del 10/11 más concreto hacia Movistar KOI, aún sin fichaje confirmado; mismo ID/revisión/explained_at, sin nueva ficha ni imagen. Barrera final: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
@@ -6824,6 +6860,61 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-1794346800000-manual cerrada 0/0 contra main. Relectura JIT final: editorial-queue=0 (updated_at 2026-11-10T22:40:58+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. Captura reciente recalculada a las 22:40:53+01:00; no había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794347693134-manual",
+      "status": "DONE",
+      "canonical": false,
+      "superseded_by": "tr-1794347700000-manual",
+      "started_at": "2026-11-10T22:55:00+01:00",
+      "finished_at": "2026-11-10T22:58:30+01:00",
+      "at": "2026-11-10T22:58:30+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 1,
+        "observed": 1,
+        "closed": 1,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 1,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 1,
+        "unchanged_reviews": 0,
+        "continuity_updates": 1,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 1
+      },
+      "processed_ids": [],
+      "converged_ids": [
+        "red-review-efe36e3459279f1819ae"
+      ],
+      "outcomes": [
+        {
+          "id": "red-review-efe36e3459279f1819ae",
+          "revision": 0,
+          "name": "Revisar novedades: Carzzy",
+          "outcome": "continuity_update",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "source_id": "79666c46d60d",
+          "outbox_commit": "abfe5f994c757f59d45e4bd5a69b2de69e8ad60f",
+          "apply_commit": "c0fd462afc1c2efa017fd5178a391ca951212d47"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-1794347693134-manual cerrada 1/1 por convergencia JIT. La revisión de Carzzy fue aplicada por la ejecución concurrente sobre el mismo job: actualización de continuidad del mercado LEC, sin episodio nuevo, sin imagen y sin publicación. Barrera final: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain activos."
     }
   ],
   "current_item": null,
@@ -8550,5 +8641,5 @@
     "61f2f146a926eae3568074e8e0d9947db37bc9f5",
     "5b26ed05be444fecd3e641d64eae7eba5201f9b0"
   ],
-  "finished_at": "2026-11-10T22:41:10+01:00"
+  "finished_at": "2026-11-10T22:58:30+01:00"
 }
