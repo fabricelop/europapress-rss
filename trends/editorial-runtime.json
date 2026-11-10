@@ -3,27 +3,35 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261110T192500-manual",
-  "previous_run_id": "tr-1794334648285-manual",
-  "command_id": "tr-20261110T192500-manual",
+  "run_id": "tr-1794335896172-manual",
+  "previous_run_id": "tr-20261110T192500-manual",
+  "command_id": "tr-1794335896172-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-10T19:25:00+01:00",
-  "updated_at": "2026-11-10T19:26:00+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-10T19:38:20+01:00",
+  "updated_at": "2026-11-10T19:38:20+01:00",
   "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "total": 3,
+  "trend_id": "radar-prepare-5fc717151f768845d4d7",
+  "title": "Radar · Dictadura",
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "radar-prepare-5fc717151f768845d4d7",
+    "red-review-fa9bfc4992f8c28abfef",
+    "red-review-b535f753c2b9aaacf721"
+  ],
+  "remaining_active_ids": [
+    "radar-prepare-5fc717151f768845d4d7",
+    "red-review-fa9bfc4992f8c28abfef",
+    "red-review-b535f753c2b9aaacf721"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
-    "observed": 0,
+    "observed": 3,
     "closed": 0,
     "explained": 0,
     "problematic": 0,
@@ -38,7 +46,7 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 3,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -87,7 +95,7 @@
       "message": "Barrera final verificada: cola=0, mobile activo=0, sin rewrite_pending/reexplain_pending; pasada cerrada 0/0. ImageGen=0; publicaciones=0."
     }
   ],
-  "last_started_at": "2026-11-10T19:25:00+01:00",
+  "last_started_at": "2026-11-10T19:38:20+01:00",
   "last_completed_at": "2026-11-10T19:26:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -129,7 +137,7 @@
     "incidents": [],
     "message": "Pasada tr-20261110T192500-manual cerrada 0/0 contra main. Barrera JIT final: editorial-queue=0 (updated_at 2026-11-10T18:19:13.372802+00:00), mobile-decisions sin trabajo editorial activo y búsquedas dirigidas sin rewrite_pending/reexplain_pending. Se revisaron los mantenimientos más recientes (#ProfesionDeRiesgoYa, ya aplicados) y no quedaba trabajo textual pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-20261110T192500-manual cerrada 0/0 contra main. Barrera JIT final: editorial-queue=0 (updated_at 2026-11-10T18:19:13.372802+00:00), mobile-decisions sin trabajo editorial activo y búsquedas dirigidas sin rewrite_pending/reexplain_pending. Se revisaron los mantenimientos más recientes (#ProfesionDeRiesgoYa, ya aplicados) y no quedaba trabajo textual pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada editorial en curso: 3 trabajos observados; primero Radar · Dictadura, después revisiones rojas de Supa y Charles.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
@@ -5862,7 +5870,13 @@
       "message": "Pasada tr-1794333897195-manual cerrada 9/9 tras barrera ampliada: 6 explicaciones aplicadas, 1 reentrada cerrada review_completed/no_distinct_event y 2 revisiones de mantenimiento actualizadas en continuidad (#HuelgaGeneral y #ProfesionDeRiesgoYa), sin nueva publicación ni imagen. La última revisión convergió con la pasada posterior tr-1794334648285-manual. Barrera final verificada en main: editorial-queue=0. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
-  "current_item": null,
+  "current_item": {
+    "id": "radar-prepare-5fc717151f768845d4d7",
+    "revision": 0,
+    "name": "Radar · Dictadura",
+    "phase": "preparing",
+    "message": "Preparando investigación anticipada; sin imágenes ni publicación."
+  },
   "withdrawn_ids": [
     "ae7f066f3c94"
   ],
@@ -7145,7 +7159,7 @@
   ],
   "outbox_comment_id": 5848965032,
   "editorial_apply_commit": "76e7e728a222ee21fee34fda64da43cfd7ecd90a",
-  "finished_at": "2026-11-10T19:26:00+01:00",
+  "finished_at": null,
   "refresh_workflow_run_id": 42839275825,
   "refresh_conclusion": "success"
 }
