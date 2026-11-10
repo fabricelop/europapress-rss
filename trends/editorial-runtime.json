@@ -3,33 +3,21 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794347693134-manual",
-  "previous_run_id": "tr-1794347700000-manual",
-  "command_id": "tr-1794347693134-manual",
+  "run_id": "tr-1794348805915-manual",
+  "previous_run_id": "tr-1794347693134-manual",
+  "command_id": "tr-1794348805915-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "review_red",
-  "started_at": "2026-11-10T23:06:00+01:00",
-  "updated_at": "2026-11-10T23:15:00+01:00",
-  "current": 10,
-  "total": 12,
+  "phase": "preparing",
+  "started_at": "2026-11-10T23:16:00+01:00",
+  "updated_at": "2026-11-10T23:16:00+01:00",
+  "current": 0,
+  "total": 2,
   "trend_id": null,
   "title": null,
   "queue_complete": false,
-  "processed_ids": [
-    "94fdcfb9c767",
-    "b0e3ee21773e",
-    "a5228a344f9b",
-    "9926d395c67f",
-    "2ec7baae881f",
-    "8339a494972f",
-    "4e9fca44499f",
-    "ba6d7fc50f9a",
-    "081e4f9cbc10"
-  ],
-  "converged_ids": [
-    "36a6f15af1f8"
-  ],
+  "processed_ids": [],
+  "converged_ids": [],
   "remaining_ids": [
     "red-review-933b5834af73e9cd9b44",
     "red-review-c9e644baaa2fa9ce06c2"
@@ -40,13 +28,13 @@
   ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 10,
-    "observed": 12,
-    "closed": 10,
-    "explained": 8,
+    "attempted": 0,
+    "observed": 2,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
-    "review_completed_no_distinct_event": 1,
+    "review_completed_no_distinct_event": 0,
     "maintenance_reviews": 0,
     "unchanged_reviews": 0,
     "continuity_updates": 0,
@@ -62,91 +50,9 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 1
+    "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "94fdcfb9c767",
-      "revision": 0,
-      "name": "#ColauEnLaRevuelta",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "dcc51b0efc41605c711efb66b314a667e26e9c5f"
-    },
-    {
-      "id": "36a6f15af1f8",
-      "revision": 0,
-      "name": "Ada Colau",
-      "outcome": "converged_jit",
-      "applied": false,
-      "via": "queue_refresh",
-      "note": "La relectura JIT posterior encontró la revisión fuera de la cola activa; no se sobrescribió."
-    },
-    {
-      "id": "b0e3ee21773e",
-      "revision": 0,
-      "name": "#HuelgaGeneral",
-      "outcome": "review_completed_no_distinct_event",
-      "applied": true,
-      "apply_commit": "dcc51b0efc41605c711efb66b314a667e26e9c5f"
-    },
-    {
-      "id": "a5228a344f9b",
-      "revision": 0,
-      "name": "#CanYamanEH",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "dcc51b0efc41605c711efb66b314a667e26e9c5f"
-    },
-    {
-      "id": "9926d395c67f",
-      "revision": 0,
-      "name": "#FirstDates10N",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "dcc51b0efc41605c711efb66b314a667e26e9c5f"
-    },
-    {
-      "id": "2ec7baae881f",
-      "revision": 0,
-      "name": "Luzon",
-      "outcome": "explained_uncertain_trigger",
-      "applied": true,
-      "apply_commit": "dcc51b0efc41605c711efb66b314a667e26e9c5f"
-    },
-    {
-      "id": "8339a494972f",
-      "revision": 0,
-      "name": "Jorge Ponce",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "dcc51b0efc41605c711efb66b314a667e26e9c5f"
-    },
-    {
-      "id": "4e9fca44499f",
-      "revision": 0,
-      "name": "Houellebecq",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "dcc51b0efc41605c711efb66b314a667e26e9c5f"
-    },
-    {
-      "id": "ba6d7fc50f9a",
-      "revision": 0,
-      "name": "Gerona",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "dcc51b0efc41605c711efb66b314a667e26e9c5f"
-    },
-    {
-      "id": "081e4f9cbc10",
-      "revision": 0,
-      "name": "La España",
-      "outcome": "explained_uncertain_trigger",
-      "applied": true,
-      "apply_commit": "dcc51b0efc41605c711efb66b314a667e26e9c5f"
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -484,6 +390,11 @@
       "at": "2026-11-10T23:15:00+01:00",
       "phase": "review_red",
       "message": "Barrera final detectó 2 revisiones rojas nuevas: #HuelgaGeneral y Charles. Se reabre la pasada y se procesan en orden JIT. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-10T23:16:00+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-1794348805915-manual RUNNING. Cola JIT=2: revisiones rojas de #HuelgaGeneral y Charles r0; validación ID+revisión antes de cada tratamiento. ImageGen=0; publicaciones=0."
     }
   ],
   "last_started_at": "2026-11-10T23:12:48+01:00",
