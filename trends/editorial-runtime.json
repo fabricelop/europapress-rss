@@ -3717,6 +3717,109 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-1794308722039-manual cerrada 1/1 por convergencia JIT. La revisión roja de #FelizMartes quedó unchanged: hoy vuelve a aparecer como saludo recurrente de los martes, sin un acontecimiento material posterior e independiente. El outbox fue persistido en 29973bbd8ed09de1630d0af5913c1c00ee55d8fb y aplicado en main por 06af0e0517214ab3b0839ab5f48ed08f274befb3. Barrera final: editorial-queue=0 y búsqueda dirigida sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794308555826-manual",
+      "status": "DONE",
+      "started_at": "2026-11-10T12:02:00+01:00",
+      "finished_at": "2026-11-10T11:10:26.431Z",
+      "at": "2026-11-10T11:10:26.431Z",
+      "phase": "closing",
+      "superseded_by": "tr-1794308722039-manual",
+      "summary": {
+        "attempted": 6,
+        "observed": 6,
+        "closed": 6,
+        "explained": 5,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 1,
+        "unchanged_reviews": 1,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 6
+      },
+      "processed_ids": [],
+      "converged_ids": [
+        "red-review-616f03ec3b4930b9a6b4",
+        "689a0c2a4d65",
+        "b7bcf914927c",
+        "ec3b92ed181d",
+        "a159cc7909f0",
+        "bcc4155d44b1"
+      ],
+      "outcomes": [
+        {
+          "id": "red-review-616f03ec3b4930b9a6b4",
+          "revision": 0,
+          "name": "Revisar novedades: #FelizMartes",
+          "outcome": "unchanged",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "outbox_commit": "29973bbd8ed09de1630d0af5913c1c00ee55d8fb",
+          "apply_commit": "0f7bc60e1fe5a95fea849d1b0d2046e1940286c4"
+        },
+        {
+          "id": "689a0c2a4d65",
+          "revision": 0,
+          "name": "#simyoGooglePixelMola",
+          "outcome": "explained_cause_unconfirmed",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "apply_commit": "1ee22981abbf26b5dc30bb0837da4757772de0f2"
+        },
+        {
+          "id": "b7bcf914927c",
+          "revision": 0,
+          "name": "Villafría",
+          "outcome": "explained",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "apply_commit": "1ee22981abbf26b5dc30bb0837da4757772de0f2"
+        },
+        {
+          "id": "ec3b92ed181d",
+          "revision": 0,
+          "name": "Ione",
+          "outcome": "explained_cause_not_isolated",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "apply_commit": "1ee22981abbf26b5dc30bb0837da4757772de0f2"
+        },
+        {
+          "id": "a159cc7909f0",
+          "revision": 0,
+          "name": "Ozores",
+          "outcome": "explained_cause_unconfirmed",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "apply_commit": "d2797768b84d2d81976bf6d1272785115d41b7c3"
+        },
+        {
+          "id": "bcc4155d44b1",
+          "revision": 0,
+          "name": "Cercanías",
+          "outcome": "explained",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "apply_commit": "d2797768b84d2d81976bf6d1272785115d41b7c3"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-1794308555826-manual cerrada 6/6 por convergencia JIT con aplicadores oficiales concurrentes. Cinco explicaciones ordinarias quedaron persistidas con coincidencia exacta entre requests.json y telegram-manual-explained.json; la revisión de #FelizMartes quedó unchanged, conservando texto, fecha e imagen. Barrera final en main: editorial-queue=0 y requests sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0. La telemetría canónica vigente corresponde a la ejecución sucesora tr-1794308722039-manual."
     }
   ],
   "current_item": null,
