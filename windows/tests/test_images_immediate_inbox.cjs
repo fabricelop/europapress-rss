@@ -157,3 +157,26 @@ test('no-backfill: an image from an older command is never delivered on retry',a
   assert.deepEqual(f.counts(),{sent:0,saved:0,discarded:0});
  }finally{fs.rmSync(f.tmp,{recursive:true,force:true});}
 });
+
+
+test('news images register a durable receiver before submitting any prompt',()=>{
+ const bridge=fs.readFileSync(path.join(__dirname,'..','TTiTTularesImageBridge.js'),'utf8');
+ const pre=bridge.indexOf('BRIDGE PRIVATE INBOX PRE_ENROLLED');
+ const inject=bridge.indexOf('cdp=await injectPromptIntoChat(cdp,job);');
+ const confirmation=bridge.indexOf('await confirmPromptLaunched();');
+ assert(pre>0 && inject>pre && confirmation>inject);
+ assert.match(bridge,/receiver\.enroll\(webHandoff\)/);
+ assert.match(bridge,/if\(promptAttempted&&webHandoff&&activeJob&&cdp\)/);
+ assert.match(bridge,/holdForHeadlineOriginalReceipt\(webHandoff,activeJob,180000\)/);
+ assert.match(bridge,/RECOVERED_AFTER_ACK_FAILURE/);
+ // Exception recovery reads the original without submitting a second request.
+ const recovery=bridge.slice(bridge.indexOf('if(promptAttempted&&webHandoff&&activeJob&&cdp)'),
+  bridge.indexOf('console.error("BRIDGE ERROR'));
+ assert.doesNotMatch(recovery,/submitVerifiedDraft|injectPromptIntoChat|openFreshDedicatedConversation|generateImage|uploadImage/);
+});
+test('pre-enrollment may refresh a known tab only for the same exact news command',()=>{
+ const source=fs.readFileSync(path.join(__dirname,'..','TTiTTularesWebImages.cjs'),'utf8');
+ assert.match(source,/existing_web_image_identity_conflict/);
+ assert.match(source,/old\.editorial_sha256!==editorial/);
+ assert.match(source,/next\.browser_target_id=String\(browserTargetId\)/);
+});
