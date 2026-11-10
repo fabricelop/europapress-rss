@@ -3,43 +3,36 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261110T141100-manual",
-  "previous_run_id": "tr-20261110T135500-manual",
-  "command_id": "tr-20261110T141100-manual",
+  "run_id": "tr-1794316548594-manual",
+  "previous_run_id": "tr-20261110T141100-manual",
+  "command_id": "tr-1794316548594-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-10T14:11:30+01:00",
-  "updated_at": "2026-11-10T14:18:00+01:00",
-  "current": 8,
-  "total": 8,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "ed08f435702a",
-    "1e99aac401f8",
-    "05a2d7332eb9",
-    "4e6e02323345",
-    "c79b2fb5aa1d",
-    "af8501c73124",
-    "1c9b2ccb3af0",
+  "status": "RUNNING",
+  "phase": "verifying",
+  "started_at": "2026-11-10T14:18:09.028+01:00",
+  "updated_at": "2026-11-10T14:18:09.028+01:00",
+  "current": 0,
+  "total": 1,
+  "trend_id": "red-review-862cc2851889453c4c42",
+  "title": "Revisar novedades: #EnBocaDeTodos",
+  "queue_complete": false,
+  "processed_ids": [],
+  "converged_ids": [
     "red-review-862cc2851889453c4c42"
   ],
-  "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 8,
-    "observed": 8,
-    "closed": 8,
-    "explained": 5,
+    "attempted": 0,
+    "observed": 1,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
-    "review_completed_no_distinct_event": 2,
+    "review_completed_no_distinct_event": 0,
     "maintenance_reviews": 1,
-    "unchanged_reviews": 1,
+    "unchanged_reviews": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "stale_reviews": 0,
@@ -53,70 +46,13 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 1
   },
-  "outcomes": [
-    {
-      "id": "ed08f435702a",
-      "revision": 0,
-      "name": "Amenazar",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "1e99aac401f8",
-      "revision": 0,
-      "name": "#EnBocaDeTodos",
-      "outcome": "review_completed_no_distinct_event",
-      "applied": true
-    },
-    {
-      "id": "05a2d7332eb9",
-      "revision": 0,
-      "name": "Deny",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "4e6e02323345",
-      "revision": 0,
-      "name": "PROFESIÓN DE RIESGO",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "c79b2fb5aa1d",
-      "revision": 0,
-      "name": "#HuelgaGeneral11N",
-      "outcome": "review_completed_no_distinct_event",
-      "applied": true
-    },
-    {
-      "id": "af8501c73124",
-      "revision": 0,
-      "name": "Ávila",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "1c9b2ccb3af0",
-      "revision": 0,
-      "name": "Pedrito",
-      "outcome": "explained_cause_unconfirmed",
-      "applied": true
-    },
-    {
-      "id": "red-review-862cc2851889453c4c42",
-      "revision": 0,
-      "name": "Revisar novedades: #EnBocaDeTodos",
-      "outcome": "unchanged",
-      "applied": true
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Cierre editorial",
+  "activity": "Verificando convergencia JIT",
   "last_started_at": "2026-11-10T14:15:11+01:00",
   "last_completed_at": "2026-11-10T14:18:00+01:00",
   "api_failover_enabled": false,
@@ -225,7 +161,7 @@
     "incidents": [],
     "message": "Pasada tr-20261110T141100-manual cerrada 8/8. Se aplicaron 5 explicaciones (Amenazar, Deny, PROFESIÓN DE RIESGO, Ávila y Pedrito); las reentradas de #EnBocaDeTodos y #HuelgaGeneral11N se cerraron review_completed/no_distinct_event; la revisión de mantenimiento de #EnBocaDeTodos quedó unchanged. Barrera JIT final: editorial-queue=0 y los 5 textos coinciden entre requests.json y telegram-manual-explained.json. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-20261110T141100-manual cerrada 8/8. Se aplicaron 5 explicaciones (Amenazar, Deny, PROFESIÓN DE RIESGO, Ávila y Pedrito); las reentradas de #EnBocaDeTodos y #HuelgaGeneral11N se cerraron review_completed/no_distinct_event; la revisión de mantenimiento de #EnBocaDeTodos quedó unchanged. Barrera JIT final: editorial-queue=0 y los 5 textos coinciden entre requests.json y telegram-manual-explained.json. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada tr-1794316548594-manual RUNNING. Se observó 1 review_red (#EnBocaDeTodos) y, al revalidar JIT, ya había convergido con otra ejecución: resultado unchanged aplicado en main. Verificando barrera final. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
@@ -4796,6 +4732,15 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-20261110T141100-manual cerrada 8/8. Se aplicaron 5 explicaciones (Amenazar, Deny, PROFESIÓN DE RIESGO, Ávila y Pedrito); las reentradas de #EnBocaDeTodos y #HuelgaGeneral11N se cerraron review_completed/no_distinct_event; la revisión de mantenimiento de #EnBocaDeTodos quedó unchanged. Barrera JIT final: editorial-queue=0 y los 5 textos coinciden entre requests.json y telegram-manual-explained.json. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794316548594-manual",
+      "status": "RUNNING",
+      "at": "2026-11-10T14:18:09.028+01:00",
+      "phase": "verifying",
+      "trend_id": "red-review-862cc2851889453c4c42",
+      "title": "Revisar novedades: #EnBocaDeTodos",
+      "message": "Pasada tr-1794316548594-manual RUNNING. Se observó 1 review_red (#EnBocaDeTodos) y, al revalidar JIT, ya había convergido con otra ejecución: resultado unchanged aplicado en main. Verificando barrera final. ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": null,
@@ -5977,5 +5922,5 @@
   ],
   "outbox_comment_id": 5848965032,
   "editorial_apply_commit": "76e7e728a222ee21fee34fda64da43cfd7ecd90a",
-  "finished_at": "2026-11-10T14:18:00+01:00"
+  "finished_at": null
 }
