@@ -8,45 +8,43 @@
   "command_id": "tr-1794340649326-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "investigating",
+  "phase": "persisting",
   "started_at": "2026-11-10T21:02:00+01:00",
-  "updated_at": "2026-11-10T21:03:00+01:00",
-  "current": 0,
-  "total": 2,
-  "trend_id": "red-review-68d91ea6ffac56fadb4d",
-  "title": "Revisar novedades: Supa",
+  "updated_at": "2026-11-10T21:05:30+01:00",
+  "current": 2,
+  "total": 3,
+  "trend_id": "red-review-7ec3c52ef28add881531",
+  "title": "Revisar novedades: Charles",
   "queue_complete": false,
   "processed_ids": [
     "601c5a8a93e2"
   ],
   "converged_ids": [],
   "remaining_ids": [
-    "red-review-68d91ea6ffac56fadb4d",
     "red-review-7ec3c52ef28add881531"
   ],
   "remaining_active_ids": [
-    "red-review-68d91ea6ffac56fadb4d",
     "red-review-7ec3c52ef28add881531"
   ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
-    "observed": 1,
-    "closed": 1,
+    "attempted": 2,
+    "observed": 2,
+    "closed": 2,
     "explained": 1,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 0,
+    "maintenance_reviews": 1,
     "unchanged_reviews": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "stale_reviews": 0,
-    "unverified_reviews": 0,
+    "unverified_reviews": 1,
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 1,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -61,10 +59,15 @@
       "name": "Catedral de Toledo",
       "outcome": "explained",
       "applied": true,
-      "apply_commit": "2939b4d2b5415ed3b8ebf6ba2332692f9d37c1cd",
-      "verification": "site-top30/manual explained exact match; queue empty",
-      "closer_text": "",
-      "image_status": "pending_separate_visual_flow"
+      "apply_commit": "2939b4d2b5415ed3b8ebf6ba2332692f9d37c1cd"
+    },
+    {
+      "id": "red-review-68d91ea6ffac56fadb4d",
+      "revision": 0,
+      "name": "Revisar novedades: Supa",
+      "outcome": "unverified",
+      "applied": true,
+      "via": "maintenance_outbox"
     }
   ],
   "incident_count": 0,
@@ -197,6 +200,13 @@
       "trend_id": "red-review-68d91ea6ffac56fadb4d",
       "title": "Revisar novedades: Supa",
       "message": "Barrera final detectó dos revisiones rojas nuevas. Se reabre la pasada y se procesa Supa primero, con validación JIT."
+    },
+    {
+      "at": "2026-11-10T21:05:30+01:00",
+      "phase": "persisting",
+      "trend_id": "red-review-7ec3c52ef28add881531",
+      "title": "Revisar novedades: Charles",
+      "message": "Supa aplicado unverified. Persistido resultado Charles como actualización de continuidad del mismo episodio; esperando aplicación JIT."
     }
   ],
   "last_started_at": "2026-11-10T21:00:40+01:00",
