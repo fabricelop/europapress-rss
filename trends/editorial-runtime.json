@@ -3,20 +3,20 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261110T014000-manual",
-  "previous_run_id": "tr-autoguard-1794270082",
-  "command_id": "tr-20261110T014000-manual",
+  "run_id": "tr-20261110T015500-manual",
+  "previous_run_id": "tr-20261110T014000-manual",
+  "command_id": "tr-20261110T015500-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-10T01:40:00+01:00",
-  "updated_at": "2026-11-10T01:41:10+01:00",
-  "finished_at": "2026-11-10T01:41:10+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-10T01:55:00+01:00",
+  "updated_at": "2026-11-10T01:55:00+01:00",
+  "finished_at": null,
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -51,8 +51,8 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "closing",
-  "last_started_at": "2026-11-10T01:40:00+01:00",
+  "activity": "preparing",
+  "last_started_at": "2026-11-10T01:55:00+01:00",
   "last_completed_at": "2026-11-10T01:41:10+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -91,7 +91,7 @@
     "incidents": [],
     "message": "Pasada tr-20261110T014000-manual cerrada 0/0 tras relectura JIT de main. Snapshot Top 30 capturado 2026-11-10T01:40:52+01:00; editorial-queue actualizada 2026-11-10T01:40:57+01:00 y vacía. Barrera final: mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial vigente que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-20261110T014000-manual cerrada 0/0 tras relectura JIT de main. Snapshot Top 30 capturado 2026-11-10T01:40:52+01:00; editorial-queue actualizada 2026-11-10T01:40:57+01:00 y vacía. Barrera final: mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial vigente que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada tr-20261110T015500-manual RUNNING desde chat. Revalidando cola autoritativa y barrera JIT en main; ImageGen=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794234841273-manual",
@@ -2769,6 +2769,13 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-20261110T014000-manual cerrada 0/0 tras relectura JIT de main. Snapshot Top 30 capturado 2026-11-10T01:40:52+01:00; editorial-queue actualizada 2026-11-10T01:40:57+01:00 y vacía. Barrera final: mobile-decisions sin preparing/update/problematic/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial vigente que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-20261110T015500-manual",
+      "status": "RUNNING",
+      "at": "2026-11-10T01:55:00+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-20261110T015500-manual RUNNING desde chat. Revalidando cola autoritativa y barrera JIT en main; ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": null,
