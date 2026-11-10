@@ -5749,6 +5749,137 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-1794334519228-manual cerrada 2/2 por convergencia JIT con ejecuciones concurrentes. #HuelgaGeneral quedó actualizada en continuidad con servicios mínimos del 11N; #ProfesionDeRiesgoYa quedó actualizada en continuidad con la reiteración de JUCIL/JUPOL del 10/11. Ambas conservan su ficha y explained_at originales, sin nueva publicación ni imagen. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794333897195-manual",
+      "status": "DONE",
+      "started_at": "2026-11-10T19:05:00+01:00",
+      "finished_at": "2026-11-10T19:19:14+01:00",
+      "at": "2026-11-10T19:19:14+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 9,
+        "observed": 9,
+        "closed": 9,
+        "explained": 6,
+        "problematic": 0,
+        "updates": 2,
+        "review_completed_no_distinct_event": 1,
+        "maintenance_reviews": 2,
+        "unchanged_reviews": 0,
+        "continuity_updates": 2,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 2
+      },
+      "processed_ids": [
+        "38594e89765a",
+        "325e11e6bb76",
+        "c566b61409aa",
+        "371bd59a1f6a",
+        "d00281da8767",
+        "60eebdd4e3d4",
+        "bba097913444",
+        "red-review-cea1951097694d0efe9a",
+        "red-review-6063a0fec943f6f62efb"
+      ],
+      "converged_ids": [
+        "bba097913444",
+        "red-review-6063a0fec943f6f62efb"
+      ],
+      "outcomes": [
+        {
+          "id": "38594e89765a",
+          "revision": 0,
+          "name": "Bianca",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "4b0374291347a5631e723b66f328f6107d7f2a60"
+        },
+        {
+          "id": "325e11e6bb76",
+          "revision": 0,
+          "name": "Rochos",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "4b0374291347a5631e723b66f328f6107d7f2a60"
+        },
+        {
+          "id": "c566b61409aa",
+          "revision": 0,
+          "name": "#HuelgaGeneral11N",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "4b0374291347a5631e723b66f328f6107d7f2a60"
+        },
+        {
+          "id": "371bd59a1f6a",
+          "revision": 0,
+          "name": "La Audiencia Nacional",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "0e10d644a312d6e3f2ec42646407ff523eec458e"
+        },
+        {
+          "id": "d00281da8767",
+          "revision": 0,
+          "name": "#ElSótano10N",
+          "outcome": "explained_cause_unconfirmed",
+          "applied": true,
+          "apply_commit": "d0d9b7ec53650c05a0e88db573b03a6d98349d6b"
+        },
+        {
+          "id": "60eebdd4e3d4",
+          "revision": 0,
+          "name": "#HuelgaGeneral",
+          "outcome": "review_completed_no_distinct_event",
+          "applied": true,
+          "apply_commit": "f27aba233e18e2393faabcdf085d6d556a5b082b"
+        },
+        {
+          "id": "bba097913444",
+          "revision": 0,
+          "name": "Cintora",
+          "outcome": "explained",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "outbox_commit": "3de88f40398af3ceae881fe84813d3c0ed934662",
+          "apply_commit": "fcf7c5a02aecb58ff3570d0d45be8e973a5eee2a"
+        },
+        {
+          "id": "red-review-cea1951097694d0efe9a",
+          "revision": 0,
+          "name": "Revisar novedades: #HuelgaGeneral",
+          "outcome": "continuity",
+          "applied": true,
+          "via": "maintenance_outbox",
+          "source_id": "4f1dae5df224",
+          "apply_commit": "b15492119278f8f9f3fa472baf92e99a32636d18"
+        },
+        {
+          "id": "red-review-6063a0fec943f6f62efb",
+          "revision": 0,
+          "name": "Revisar novedades: #ProfesionDeRiesgoYa",
+          "outcome": "continuity",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "source_id": "11d228488dea",
+          "apply_commit": "f4e0e6f25d2052eba22d414d7de1bc3465305e77"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-1794333897195-manual cerrada 9/9 tras barrera ampliada: 6 explicaciones aplicadas, 1 reentrada cerrada review_completed/no_distinct_event y 2 revisiones de mantenimiento actualizadas en continuidad (#HuelgaGeneral y #ProfesionDeRiesgoYa), sin nueva publicación ni imagen. La última revisión convergió con la pasada posterior tr-1794334648285-manual. Barrera final verificada en main: editorial-queue=0. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "current_item": null,
