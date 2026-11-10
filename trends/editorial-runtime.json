@@ -7,42 +7,41 @@
   "previous_run_id": "tr-20261110T122500-manual",
   "command_id": "tr-20261110T124000-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-10T12:40:00+01:00",
-  "updated_at": "2026-11-10T12:42:00+01:00",
-  "current": 0,
-  "total": 1,
-  "trend_id": "radar-prepare-009b57af83f17920643d",
-  "title": "Radar · Elena",
-  "queue_complete": false,
-  "processed_ids": [],
+  "updated_at": "2026-11-10T12:44:30+01:00",
+  "current": 2,
+  "total": 2,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
+    "radar-prepare-009b57af83f17920643d",
+    "red-review-8e7ec39b2da22ca86c79"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "radar-prepare-009b57af83f17920643d"
-  ],
-  "remaining_active_ids": [
-    "radar-prepare-009b57af83f17920643d"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 1,
-    "closed": 0,
+    "attempted": 2,
+    "observed": 2,
+    "closed": 2,
     "explained": 0,
     "problematic": 0,
-    "updates": 0,
+    "updates": 1,
     "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 0,
+    "maintenance_reviews": 1,
     "unchanged_reviews": 0,
-    "continuity_updates": 0,
+    "continuity_updates": 1,
     "distinct_updates": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
     "anticipation_reviews": 1,
     "anticipation_prepared": 0,
-    "anticipation_unverified": 0,
-    "queue_remaining": 1,
+    "anticipation_unverified": 1,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -50,38 +49,57 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "radar-prepare-009b57af83f17920643d",
+      "revision": 0,
+      "name": "Radar · Elena",
+      "outcome": "anticipation_unverified",
+      "applied": true,
+      "via": "anticipation_outbox",
+      "outbox_commit": "af77c8e5bd6927ec2b4e9d06f9bb360cd9fede90"
+    },
+    {
+      "id": "red-review-8e7ec39b2da22ca86c79",
+      "revision": 0,
+      "name": "Revisar novedades: Almudena",
+      "outcome": "continuity_update",
+      "applied": true,
+      "via": "maintenance_outbox",
+      "outbox_commit": "64d85f1ff9a4b6a07de3494cb1d1f962da82021c"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Verificando señal Radar",
-  "last_started_at": "2026-11-10T12:25:00+01:00",
-  "last_completed_at": "2026-11-10T12:26:51+01:00",
+  "activity": "Cierre completado",
+  "last_started_at": "2026-11-10T12:40:00+01:00",
+  "last_completed_at": "2026-11-10T12:44:30+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261110T122500-manual",
+    "run_id": "tr-20261110T124000-manual",
     "status": "DONE",
-    "started_at": "2026-11-10T12:25:00+01:00",
-    "finished_at": "2026-11-10T12:26:51+01:00",
-    "at": "2026-11-10T12:26:51+01:00",
+    "started_at": "2026-11-10T12:40:00+01:00",
+    "finished_at": "2026-11-10T12:44:30+01:00",
+    "at": "2026-11-10T12:44:30+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 0,
-      "observed": 0,
-      "closed": 0,
+      "attempted": 2,
+      "observed": 2,
+      "closed": 2,
       "explained": 0,
       "problematic": 0,
-      "updates": 0,
+      "updates": 1,
       "review_completed_no_distinct_event": 0,
-      "maintenance_reviews": 0,
+      "maintenance_reviews": 1,
       "unchanged_reviews": 0,
-      "continuity_updates": 0,
+      "continuity_updates": 1,
       "distinct_updates": 0,
       "stale_reviews": 0,
       "unverified_reviews": 0,
-      "anticipation_reviews": 0,
+      "anticipation_reviews": 1,
       "anticipation_prepared": 0,
-      "anticipation_unverified": 0,
+      "anticipation_unverified": 1,
       "queue_remaining": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
@@ -90,14 +108,36 @@
       "incidents": 0,
       "concurrent_convergence": 0
     },
-    "processed_ids": [],
+    "processed_ids": [
+      "radar-prepare-009b57af83f17920643d",
+      "red-review-8e7ec39b2da22ca86c79"
+    ],
     "converged_ids": [],
-    "outcomes": [],
+    "outcomes": [
+      {
+        "id": "radar-prepare-009b57af83f17920643d",
+        "revision": 0,
+        "name": "Radar · Elena",
+        "outcome": "anticipation_unverified",
+        "applied": true,
+        "via": "anticipation_outbox",
+        "outbox_commit": "af77c8e5bd6927ec2b4e9d06f9bb360cd9fede90"
+      },
+      {
+        "id": "red-review-8e7ec39b2da22ca86c79",
+        "revision": 0,
+        "name": "Revisar novedades: Almudena",
+        "outcome": "continuity_update",
+        "applied": true,
+        "via": "maintenance_outbox",
+        "outbox_commit": "64d85f1ff9a4b6a07de3494cb1d1f962da82021c"
+      }
+    ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-20261110T122500-manual cerrada 0/0 tras relectura JIT de main. editorial-queue=0 (updated_at 2026-11-10T12:06:16+01:00) y búsqueda final sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial vigente que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "message": "Pasada tr-20261110T124000-manual cerrada 2/2. Radar · Elena r0: anticipation_unverified por no poder identificar un detonante único verificable; el job fue retirado de la cola tras aplicar su outbox. Almudena: actualización de continuidad en la misma ficha con los actos del 10N (ofrendas floral y solidaria), sin nuevo episodio, ficha ni imagen. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
   },
-  "message": "Radar · Elena r0 sigue vigente y fuera del Top30 actual. Búsquedas independientes no permiten identificar un detonante único verificable; se prepara outcome unverified. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-20261110T124000-manual cerrada 2/2. Radar · Elena r0: anticipation_unverified por no poder identificar un detonante único verificable; el job fue retirado de la cola tras aplicar su outbox. Almudena: actualización de continuidad en la misma ficha con los actos del 10N (ofrendas floral y solidaria), sin nuevo episodio, ficha ni imagen. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
@@ -3901,6 +3941,41 @@
       "trend_id": "radar-prepare-009b57af83f17920643d",
       "title": "Radar · Elena",
       "message": "Radar · Elena r0 sigue vigente y fuera del Top30 actual. Búsquedas independientes no permiten identificar un detonante único verificable; se prepara outcome unverified. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-10T12:42:30+01:00",
+      "phase": "drafting",
+      "trend_id": "red-review-8e7ec39b2da22ca86c79",
+      "title": "Revisar novedades: Almudena",
+      "message": "Se redacta actualización de continuidad del mismo episodio con la ofrenda floral y solidaria del 10N; no se crea episodio nuevo."
+    },
+    {
+      "at": "2026-11-10T12:42:45+01:00",
+      "phase": "remate_selection",
+      "trend_id": "red-review-8e7ec39b2da22ca86c79",
+      "title": "Revisar novedades: Almudena",
+      "message": "Se conserva un único remate factual y neutral ligado a la procesión cancelada y la continuidad de las ofrendas."
+    },
+    {
+      "at": "2026-11-10T12:43:00+01:00",
+      "phase": "persisting",
+      "trend_id": "red-review-8e7ec39b2da22ca86c79",
+      "title": "Revisar novedades: Almudena",
+      "message": "Resultado de continuidad persistido en maintenance-outbox; ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-10T12:44:00+01:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Verificación JIT: ambos jobs retirados de la cola tras aplicar sus resultados; se relee editorial-queue y mobile-decisions."
+    },
+    {
+      "at": "2026-11-10T12:44:30+01:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "Pasada tr-20261110T124000-manual cerrada 2/2. Radar · Elena r0: anticipation_unverified por no poder identificar un detonante único verificable; el job fue retirado de la cola tras aplicar su outbox. Almudena: actualización de continuidad en la misma ficha con los actos del 10N (ofrendas floral y solidaria), sin nuevo episodio, ficha ni imagen. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": null,
@@ -4882,5 +4957,5 @@
   ],
   "outbox_comment_id": 5848965032,
   "editorial_apply_commit": "76e7e728a222ee21fee34fda64da43cfd7ecd90a",
-  "finished_at": "2026-11-10T12:26:51+01:00"
+  "finished_at": "2026-11-10T12:44:30+01:00"
 }
