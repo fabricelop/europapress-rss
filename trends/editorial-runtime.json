@@ -7,52 +7,116 @@
   "previous_run_id": "tr-20261110T091000-manual",
   "command_id": "tr-1794296877011-manual",
   "source": "chat",
-  "status": "success",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-10T09:12:00+01:00",
-  "updated_at": "2026-11-10T09:16:32+01:00",
-  "finished_at": null,
-  "current": 0,
-  "total": 4,
+  "updated_at": "2026-11-10T09:19:00+01:00",
+  "finished_at": "2026-11-10T09:19:00+01:00",
+  "current": 6,
+  "total": 6,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
   "processed_ids": [
+    "b24df7160da6",
+    "e55e8b915072",
     "0c05a5576ffe",
     "3470394c0901",
-    "b24df7160da6",
-    "e55e8b915072"
+    "red-review-2047804b54c6aa68bda3",
+    "red-review-d9f594a4f9ea375b31a4"
   ],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 4,
-    "observed": 4,
-    "closed": 0,
-    "explained": 0,
+    "attempted": 6,
+    "observed": 6,
+    "closed": 6,
+    "explained": 4,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 0,
-    "unchanged_reviews": 0,
+    "maintenance_reviews": 2,
+    "unchanged_reviews": 2,
     "continuity_updates": 0,
-    "distinct_updates": 0,
+    "distinct_updates": 1,
     "stale_reviews": 0,
     "unverified_reviews": 0,
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 4,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 1
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "b24df7160da6",
+      "revision": 0,
+      "name": "#LaHora10N",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox",
+      "result_commit": "a1c21656d9598d3380ff82b4293ea606623ac7ec",
+      "apply_commit": "315ec6d01f0c6bec5ef5071c4f9c886922fbd990"
+    },
+    {
+      "id": "e55e8b915072",
+      "revision": 0,
+      "name": "San León Magno",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox",
+      "result_commit": "ad637640e257c1aec73334acc319a76f5c4621f7",
+      "apply_commit": "315ec6d01f0c6bec5ef5071c4f9c886922fbd990"
+    },
+    {
+      "id": "0c05a5576ffe",
+      "revision": 0,
+      "name": "Militantes de Núcleo Nacional",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox",
+      "result_commit": "29c7eb4d7b97bba27cb618548195240dcf54864a",
+      "apply_commit": "315ec6d01f0c6bec5ef5071c4f9c886922fbd990"
+    },
+    {
+      "id": "3470394c0901",
+      "revision": 0,
+      "name": "Renfe",
+      "outcome": "explained_distinct_episode",
+      "applied": true,
+      "via": "editorial_outbox",
+      "result_commit": "19150ccf892d7d119acc8d96d823e77ca3e46212",
+      "apply_commit": "315ec6d01f0c6bec5ef5071c4f9c886922fbd990",
+      "material_event_key": "huelga-maquinistas-semaf-renfe-2026-11-10"
+    },
+    {
+      "id": "red-review-2047804b54c6aa68bda3",
+      "revision": 0,
+      "name": "Revisar novedades: Simeone",
+      "outcome": "unchanged",
+      "applied": true,
+      "via": "maintenance_outbox",
+      "result_commit": "2e1958b189566df0c216555bee412b03b7172b13",
+      "apply_commit": "5ccf4a17477f1c3ad3d044b6c9f40215df99d23a"
+    },
+    {
+      "id": "red-review-d9f594a4f9ea375b31a4",
+      "revision": 0,
+      "name": "Revisar novedades: Atleti",
+      "outcome": "unchanged",
+      "applied": true,
+      "via": "maintenance_outbox",
+      "result_commit": "8d02e6ef8042d61397c0a6abe6cbdeb54e988528",
+      "apply_commit": "5ccf4a17477f1c3ad3d044b6c9f40215df99d23a"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -112,30 +176,37 @@
       "trend_id": null,
       "title": null,
       "message": "Pasada tr-1794296877011-manual RUNNING. Cola JIT inicial=4: #LaHora10N, San León Magno, Militantes de Núcleo Nacional y reentrada de Renfe. Validación ID/revisión activa; ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-10T09:19:00+01:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "Pasada cerrada 6/6. Cuatro explicaciones ordinarias aplicadas (#LaHora10N, San León Magno, Militantes de Núcleo Nacional y Renfe); Renfe se validó como episodio material distinto por la huelga de maquinistas del 10N. Dos review_red llegadas en la barrera final (Simeone y Atleti) se cerraron unchanged. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "last_started_at": "2026-11-10T09:16:32+01:00",
-  "last_completed_at": "2026-11-10T09:16:32+01:00",
+  "last_completed_at": "2026-11-10T09:19:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261110T085500-manual",
+    "run_id": "tr-1794296877011-manual",
     "status": "DONE",
-    "started_at": "2026-11-10T08:55:00+01:00",
-    "finished_at": "2026-11-10T08:59:00+01:00",
-    "at": "2026-11-10T08:59:00+01:00",
+    "started_at": "2026-11-10T09:12:00+01:00",
+    "finished_at": "2026-11-10T09:19:00+01:00",
+    "at": "2026-11-10T09:19:00+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 2,
-      "observed": 2,
-      "closed": 2,
-      "explained": 0,
+      "attempted": 6,
+      "observed": 6,
+      "closed": 6,
+      "explained": 4,
       "problematic": 0,
       "updates": 0,
       "review_completed_no_distinct_event": 0,
       "maintenance_reviews": 2,
       "unchanged_reviews": 2,
       "continuity_updates": 0,
-      "distinct_updates": 0,
+      "distinct_updates": 1,
       "stale_reviews": 0,
       "unverified_reviews": 0,
       "anticipation_reviews": 0,
@@ -147,41 +218,87 @@
       "image_outbox_created": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 0
+      "concurrent_convergence": 1
     },
     "processed_ids": [
-      "red-review-48cfbc5303efdb98a72c",
-      "red-review-45207bf1f8f0bd0eb556"
+      "b24df7160da6",
+      "e55e8b915072",
+      "0c05a5576ffe",
+      "3470394c0901",
+      "red-review-2047804b54c6aa68bda3",
+      "red-review-d9f594a4f9ea375b31a4"
     ],
     "converged_ids": [],
     "outcomes": [
       {
-        "id": "red-review-48cfbc5303efdb98a72c",
+        "id": "b24df7160da6",
         "revision": 0,
-        "name": "Revisar novedades: Barça",
-        "outcome": "unchanged",
+        "name": "#LaHora10N",
+        "outcome": "explained",
         "applied": true,
-        "via": "maintenance_outbox",
-        "result_commit": "ced156daee375d0bdc61393d72d4796b2d11c375",
-        "apply_commit": "48f2fe3f47371bde7b518c9bd404982c219e8881"
+        "via": "editorial_outbox",
+        "result_commit": "a1c21656d9598d3380ff82b4293ea606623ac7ec",
+        "apply_commit": "315ec6d01f0c6bec5ef5071c4f9c886922fbd990"
       },
       {
-        "id": "red-review-45207bf1f8f0bd0eb556",
+        "id": "e55e8b915072",
         "revision": 0,
-        "name": "Revisar novedades: #FelizMartes",
+        "name": "San León Magno",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox",
+        "result_commit": "ad637640e257c1aec73334acc319a76f5c4621f7",
+        "apply_commit": "315ec6d01f0c6bec5ef5071c4f9c886922fbd990"
+      },
+      {
+        "id": "0c05a5576ffe",
+        "revision": 0,
+        "name": "Militantes de Núcleo Nacional",
+        "outcome": "explained",
+        "applied": true,
+        "via": "editorial_outbox",
+        "result_commit": "29c7eb4d7b97bba27cb618548195240dcf54864a",
+        "apply_commit": "315ec6d01f0c6bec5ef5071c4f9c886922fbd990"
+      },
+      {
+        "id": "3470394c0901",
+        "revision": 0,
+        "name": "Renfe",
+        "outcome": "explained_distinct_episode",
+        "applied": true,
+        "via": "editorial_outbox",
+        "result_commit": "19150ccf892d7d119acc8d96d823e77ca3e46212",
+        "apply_commit": "315ec6d01f0c6bec5ef5071c4f9c886922fbd990",
+        "material_event_key": "huelga-maquinistas-semaf-renfe-2026-11-10"
+      },
+      {
+        "id": "red-review-2047804b54c6aa68bda3",
+        "revision": 0,
+        "name": "Revisar novedades: Simeone",
         "outcome": "unchanged",
         "applied": true,
         "via": "maintenance_outbox",
-        "result_commit": "5c188801378b0a09440a528d5edc4d30e113261b",
-        "apply_commit": "48f2fe3f47371bde7b518c9bd404982c219e8881"
+        "result_commit": "2e1958b189566df0c216555bee412b03b7172b13",
+        "apply_commit": "5ccf4a17477f1c3ad3d044b6c9f40215df99d23a"
+      },
+      {
+        "id": "red-review-d9f594a4f9ea375b31a4",
+        "revision": 0,
+        "name": "Revisar novedades: Atleti",
+        "outcome": "unchanged",
+        "applied": true,
+        "via": "maintenance_outbox",
+        "result_commit": "8d02e6ef8042d61397c0a6abe6cbdeb54e988528",
+        "apply_commit": "5ccf4a17477f1c3ad3d044b6c9f40215df99d23a"
       }
     ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-20261110T085500-manual cerrada 2/2. Barça y #FelizMartes quedaron unchanged tras comprobación de novedades; el aplicador oficial 48f2fe3f47371bde7b518c9bd404982c219e8881 actualizó requests.json y telegram-manual-explained.json y retiró ambas revisiones de editorial-queue. Barrera final: cola 0; requests/mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
-    "apply_commit": "48f2fe3f47371bde7b518c9bd404982c219e8881"
+    "message": "Pasada cerrada 6/6. Cuatro explicaciones ordinarias aplicadas (#LaHora10N, San León Magno, Militantes de Núcleo Nacional y Renfe); Renfe se validó como episodio material distinto por la huelga de maquinistas del 10N. Dos review_red llegadas en la barrera final (Simeone y Atleti) se cerraron unchanged. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+    "apply_commit": "5ccf4a17477f1c3ad3d044b6c9f40215df99d23a",
+    "editorial_apply_commit": "315ec6d01f0c6bec5ef5071c4f9c886922fbd990"
   },
-  "message": "Pasada tr-1794296877011-manual RUNNING. Cola JIT inicial=4: #LaHora10N, San León Magno, Militantes de Núcleo Nacional y reentrada de Renfe. Validación ID/revisión activa; ImageGen=0; publicaciones=0.",
+  "message": "Pasada cerrada 6/6. Cuatro explicaciones ordinarias aplicadas (#LaHora10N, San León Magno, Militantes de Núcleo Nacional y Renfe); Renfe se validó como episodio material distinto por la huelga de maquinistas del 10N. Dos review_red llegadas en la barrera final (Simeone y Atleti) se cerraron unchanged. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
@@ -2900,7 +3017,7 @@
     "finished_at": "2026-11-10T07:16:45+01:00"
   },
   "apply_workflow_run_id": 42747986726,
-  "apply_commit": "7886e2a",
+  "apply_commit": "5ccf4a17477f1c3ad3d044b6c9f40215df99d23a",
   "maintenance_workflow_run_id": 42713522083,
   "maintenance_job_id": "red-review-61d494cc18e2321aaa5b",
   "workflow_run_id": 42765220776,
@@ -3737,5 +3854,6 @@
       "message": "Pasada tr-1794291762595-manual cerrada 2/2. #FelizMartes r0 e israel r0 fueron investigadas desde cero, revalidadas JIT y persistidas como explained con coincidencia exacta entre requests.json y telegram-manual-explained.json. israel queda sin remate por sensibilidad. Barrera final en main: editorial-queue=0 y requests sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
-  "outbox_comment_id": 6755274210
+  "outbox_comment_id": 6755274210,
+  "editorial_apply_commit": "315ec6d01f0c6bec5ef5071c4f9c886922fbd990"
 }
