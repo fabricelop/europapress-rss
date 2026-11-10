@@ -3,31 +3,37 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794344067313-manual",
-  "previous_run_id": "tr-1794342867542-manual",
-  "command_id": "tr-1794344067313-manual",
+  "run_id": "tr-autoguard-1794345708",
+  "previous_run_id": "tr-1794344067313-manual",
+  "command_id": "tr-autoguard-1794345708",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-10T21:54:00+01:00",
-  "updated_at": "2026-11-10T21:59:15+01:00",
-  "current": 1,
-  "total": 1,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-10T22:22:00+01:00",
+  "updated_at": "2026-11-10T22:22:00+01:00",
+  "current": 0,
+  "total": 3,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "59f406cdb428"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "f9ceb04e1ecc",
+    "9714d06a4574",
+    "5acebb64baf9"
+  ],
+  "remaining_active_ids": [
+    "f9ceb04e1ecc",
+    "9714d06a4574",
+    "5acebb64baf9"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
-    "observed": 1,
-    "closed": 1,
-    "explained": 1,
+    "attempted": 0,
+    "observed": 3,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
@@ -40,7 +46,7 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 3,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -48,18 +54,7 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "59f406cdb428",
-      "revision": 0,
-      "name": "Los Reyes",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "1fb452cf618494f88271c61876c8d8269ed82773",
-      "via": "editorial_outbox_applied",
-      "reason": "Contexto actual verificado: asistencia de Felipe VI y Letizia al funeral de Urda en la Catedral de Toledo; sin remate por sensibilidad."
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -296,9 +291,14 @@
       "at": "2026-11-10T21:59:15+01:00",
       "phase": "closing",
       "message": "Pasada cerrada 1/1. Los Reyes explicado con causa actual verificada; sin remate por sensibilidad. ImageGen=0; imagen pendiente en flujo visual separado; publicaciones=0."
+    },
+    {
+      "at": "2026-11-10T22:22:00+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-autoguard-1794345708 RUNNING. Cola autoritativa inicial=3: Alquiler Seguro, Foulquier y El Sindicato de Inquilinas r0; validación JIT por ID+revisión antes de cada tratamiento. ImageGen=0; publicaciones=0."
     }
   ],
-  "last_started_at": "2026-11-10T21:58:07+01:00",
+  "last_started_at": "2026-11-10T22:22:00+01:00",
   "last_completed_at": "2026-11-10T21:59:30+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -352,7 +352,7 @@
     "incidents": [],
     "message": "Pasada tr-1794344067313-manual cerrada 1/1. Los Reyes r0 quedó explicada desde cero por la asistencia de Felipe VI y Letizia al funeral de Urda en Toledo; closer vacío por sensibilidad. Barrera final: cola=0 y sin reelaboraciones pendientes. ImageGen=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794344067313-manual cerrada 1/1. Los Reyes r0 quedó explicada desde cero por la asistencia de Felipe VI y Letizia al funeral de Urda en Toledo; closer vacío por sensibilidad. Barrera final: cola=0 y sin reelaboraciones pendientes. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-autoguard-1794345708 RUNNING. Cola autoritativa inicial=3: Alquiler Seguro, Foulquier y El Sindicato de Inquilinas r0; validación JIT por ID+revisión antes de cada tratamiento. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
@@ -8413,7 +8413,6 @@
   ],
   "outbox_comment_id": 6721989528,
   "editorial_apply_commit": "1fb452cf618494f88271c61876c8d8269ed82773",
-  "finished_at": "2026-11-10T21:59:15+01:00",
   "refresh_workflow_run_id": 42839275825,
   "refresh_conclusion": "success",
   "maintenance_apply_commits": [
