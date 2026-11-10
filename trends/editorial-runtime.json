@@ -3,32 +3,30 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261110T041000-manual",
-  "previous_run_id": "tr-20261110T035500-manual",
-  "command_id": "tr-20261110T041000-manual",
+  "run_id": "tr-20261110T042500-manual",
+  "previous_run_id": "tr-20261110T041000-manual",
+  "command_id": "tr-20261110T042500-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-10T04:10:00+01:00",
-  "updated_at": "2026-11-10T04:14:57+01:00",
-  "finished_at": "2026-11-10T04:14:57+01:00",
-  "current": 1,
-  "total": 1,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-10T04:25:00+01:00",
+  "updated_at": "2026-11-10T04:25:00+01:00",
+  "finished_at": null,
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "4aeef5ae1e7b"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
-    "observed": 1,
-    "closed": 1,
-    "explained": 1,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
@@ -49,36 +47,21 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "4aeef5ae1e7b",
-      "revision": 0,
-      "name": "Pedro Sánchez",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_outbox_applied",
-      "apply_commit": "7886e2a",
-      "verification_sources": [
-        "https://elpais.com/espana/elecciones-generales/2026-11-09/pedro-sanchez-anuncia-consejos-de-ministros-extraordinarios-antes-de-las-elecciones-con-medidas-sociales-hay-temas-que-se-nos-han-quedado-pendientes.html",
-        "https://www.rtve.es/noticias/20261110/entrevista-pedro-sanchez-septima-cronica-rtve/17306951.shtml"
-      ]
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
   "activity": {
-    "run_id": "tr-20261110T041000-manual",
-    "status": "DONE",
-    "started_at": "2026-11-10T04:10:00+01:00",
-    "finished_at": "2026-11-10T04:14:57+01:00",
-    "at": "2026-11-10T04:14:57+01:00",
-    "phase": "closing",
+    "run_id": "tr-20261110T042500-manual",
+    "status": "RUNNING",
+    "started_at": "2026-11-10T04:25:00+01:00",
+    "at": "2026-11-10T04:25:00+01:00",
+    "phase": "preparing",
     "summary": {
-      "attempted": 1,
-      "observed": 1,
-      "closed": 1,
-      "explained": 1,
+      "attempted": 0,
+      "observed": 0,
+      "closed": 0,
+      "explained": 0,
       "problematic": 0,
       "updates": 0,
       "review_completed_no_distinct_event": 0,
@@ -99,29 +82,13 @@
       "incidents": 0,
       "concurrent_convergence": 0
     },
-    "processed_ids": [
-      "4aeef5ae1e7b"
-    ],
-    "outcomes": [
-      {
-        "id": "4aeef5ae1e7b",
-        "revision": 0,
-        "name": "Pedro Sánchez",
-        "outcome": "explained",
-        "applied": true,
-        "via": "editorial_outbox_applied",
-        "apply_commit": "7886e2a",
-        "verification_sources": [
-          "https://elpais.com/espana/elecciones-generales/2026-11-09/pedro-sanchez-anuncia-consejos-de-ministros-extraordinarios-antes-de-las-elecciones-con-medidas-sociales-hay-temas-que-se-nos-han-quedado-pendientes.html",
-          "https://www.rtve.es/noticias/20261110/entrevista-pedro-sanchez-septima-cronica-rtve/17306951.shtml"
-        ]
-      }
-    ],
+    "processed_ids": [],
+    "outcomes": [],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-20261110T041000-manual cerrada 1/1. Snapshot Top 30 fresco capturado 2026-11-10T04:10:54+01:00; apareció Pedro Sánchez #18 y quedó explicado/aplicado en main por 7886e2a. editorial-queue=0 y mobile-decisions sin trabajo editorial activo. El workflow manual de refresco 42747837918 fue confirmado RUNNING; el snapshot fresco ya disponible al iniciar la pasada permitió cerrar el trabajo editorial sin esperar sus comprobaciones de salud. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "message": "Pasada tr-20261110T042500-manual RUNNING desde chat. Refresco manual real solicitado y barrera JIT en main pendiente; ImageGen=0; publicaciones=0."
   },
-  "last_started_at": "2026-11-10T04:10:00+01:00",
+  "last_started_at": "2026-11-10T04:25:00+01:00",
   "last_completed_at": "2026-11-10T04:14:57+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -182,7 +149,7 @@
     "trigger_commit": "af462aa08c1f84d608002b0a60ea12062bc972b1",
     "apply_commit": "7886e2a"
   },
-  "message": "Pasada tr-20261110T041000-manual cerrada 1/1. Snapshot Top 30 fresco capturado 2026-11-10T04:10:54+01:00; apareció Pedro Sánchez #18 y quedó explicado/aplicado en main por 7886e2a. editorial-queue=0 y mobile-decisions sin trabajo editorial activo. El workflow manual de refresco 42747837918 fue confirmado RUNNING; el snapshot fresco ya disponible al iniciar la pasada permitió cerrar el trabajo editorial sin esperar sus comprobaciones de salud. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada tr-20261110T042500-manual RUNNING desde chat. Refresco manual real solicitado y barrera JIT en main pendiente; ImageGen=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794234841273-manual",
@@ -3387,6 +3354,15 @@
       "apply_workflow_run_id": 42747986726,
       "trigger_commit": "af462aa08c1f84d608002b0a60ea12062bc972b1",
       "apply_commit": "7886e2a"
+    },
+    {
+      "run_id": "tr-20261110T042500-manual",
+      "status": "RUNNING",
+      "at": "2026-11-10T04:25:00+01:00",
+      "phase": "preparing",
+      "current": 0,
+      "total": 0,
+      "message": "Pasada tr-20261110T042500-manual RUNNING desde chat. Refresco manual real solicitado y barrera JIT en main pendiente; ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": null,
