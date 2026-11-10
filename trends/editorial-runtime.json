@@ -7,14 +7,14 @@
   "previous_run_id": "tr-1794344067313-manual",
   "command_id": "tr-autoguard-1794345708",
   "source": "chat",
-  "status": "waiting",
+  "status": "RUNNING",
   "phase": "investigating",
   "started_at": "2026-11-10T22:22:00+01:00",
-  "updated_at": "2026-11-10T22:28:10+01:00",
-  "current": 0,
+  "updated_at": "2026-11-10T22:29:00+01:00",
+  "current": 1,
   "total": 3,
-  "trend_id": "f9ceb04e1ecc",
-  "title": "Alquiler Seguro",
+  "trend_id": "9714d06a4574",
+  "title": "Foulquier",
   "queue_complete": false,
   "processed_ids": [
     "f9ceb04e1ecc"
@@ -30,10 +30,10 @@
   ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 1,
     "observed": 3,
-    "closed": 0,
-    "explained": 0,
+    "closed": 1,
+    "explained": 1,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
@@ -46,7 +46,7 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 3,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -310,6 +310,13 @@
       "trend_id": "f9ceb04e1ecc",
       "title": "Alquiler Seguro",
       "message": "Investigando Alquiler Seguro r0: protesta del Sindicato de Inquilinas en la sede madrileña antes de la huelga general del 11N; contrastando fuentes y preparando persistencia. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-10T22:29:00+01:00",
+      "phase": "investigating",
+      "trend_id": "9714d06a4574",
+      "title": "Foulquier",
+      "message": "Alquiler Seguro r0 aplicado y sincronizado. Investigando Foulquier r0: titular ante el Tavernes en Copa del Rey tras más de nueve meses sin jugar un partido oficial con el Valencia; validación JIT antes de persistir. ImageGen=0; publicaciones=0."
     }
   ],
   "last_started_at": "2026-11-10T22:28:09+01:00",
@@ -366,7 +373,7 @@
     "incidents": [],
     "message": "Pasada tr-1794344067313-manual cerrada 1/1. Los Reyes r0 quedó explicada desde cero por la asistencia de Felipe VI y Letizia al funeral de Urda en Toledo; closer vacío por sensibilidad. Barrera final: cola=0 y sin reelaboraciones pendientes. ImageGen=0; publicaciones=0."
   },
-  "message": "Investigando Alquiler Seguro r0: protesta del Sindicato de Inquilinas en la sede madrileña antes de la huelga general del 11N; contrastando fuentes y preparando persistencia. ImageGen=0; publicaciones=0.",
+  "message": "Alquiler Seguro r0 aplicado y sincronizado. Investigando Foulquier r0: titular ante el Tavernes en Copa del Rey tras más de nueve meses sin jugar un partido oficial con el Valencia; validación JIT antes de persistir. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
