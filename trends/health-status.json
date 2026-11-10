@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-10T05:01:02.224334+00:00",
+  "checked_at": "2026-11-10T05:14:22.357937+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -40,15 +40,15 @@
       "required": false
     },
     "top10": {
-      "ok": true,
+      "ok": false,
       "count": 10,
-      "non_stale_sources": 4,
+      "non_stale_sources": 6,
       "verified_fresh_sources": [
-        "xtrendsiamrohit",
-        "playersells"
+        "whatstrends",
+        "xtrendsiamrohit"
       ],
-      "live_verified": true,
-      "captured_age_minutes": 0.3,
+      "live_verified": false,
+      "captured_age_minutes": 0.2,
       "noise_count": 0
     },
     "listener": {
@@ -60,8 +60,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 5.0,
-      "run_id": 42758926015,
+      "age_minutes": 3.6,
+      "run_id": 42760468621,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -105,9 +105,10 @@
   },
   "repairs_started": [],
   "blocking": [
+    "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos",
     "cola con 671 estado(s) inválido(s)"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "cola con 671 estado(s) inválido(s)"
+  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 671 estado(s) inválido(s)"
 }
