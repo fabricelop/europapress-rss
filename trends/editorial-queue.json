@@ -1,6 +1,75 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-10T10:25:57+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-10T09:26:27.437084+00:00",
+  "count": 2,
+  "items": [
+    {
+      "id": "red-review-79b380b36f879427129d",
+      "revision": 0,
+      "name": "Revisar novedades: El Hierro",
+      "rank": 18,
+      "status": "preparing",
+      "requested_at": "2026-11-10T09:26:27.437084+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "bfd14c9108b9",
+        "revision": 0,
+        "name": "El Hierro",
+        "rank": 30,
+        "explanation": "TT#30 El Hierro es tendencia por la presión migratoria en la isla: más de 600 personas llegaron el domingo en cayucos y RTVE cifra en más de 5.000 las llegadas en noviembre.\n#ElHierro #Canarias",
+        "explanation_sha256": "bfe27a1c684adcb719647ee1bb6395dace9ff4c2b624cc74992920c527b36040",
+        "explained_at": "2026-11-09T09:28:56+01:00",
+        "verification_sources": [
+          {
+            "url": "https://efe.com/espana/2026-11-09/migrantes-canarias-desembarco/"
+          },
+          {
+            "url": "https://www.elespanol.com/reportajes/20261107/oleada-cayucos-hierro-eleva-migrantes-llegados-canarias-dias-rebasado-toda-normalidad/1003744450076_0.html"
+          }
+        ],
+        "fingerprint": "c34753f8d42291352fcf01b57e6dfacb7dc2ddac17ecca824f9a469b4266c6ac"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-a9dc391287ef03b2049d",
+      "revision": 0,
+      "name": "Revisar novedades: Julián Álvarez",
+      "rank": 8,
+      "status": "preparing",
+      "requested_at": "2026-11-10T09:26:27.437084+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "trend-update-08da896cbbe389cf5192",
+        "revision": 0,
+        "name": "Julián Álvarez",
+        "rank": 1,
+        "explanation": "TT#1 Julián es tendencia por el Atlético-Barça: asistió a Giuliano en el 1-0 y tuvo varias ocasiones, pero Joan García evitó sus goles y el Barça remontó 1-2.\n#JuliánÁlvarez #Atleti #Barça\n🌶️ Su asistencia encendió el Metropolitano, pero no sostuvo el marcador.",
+        "explanation_sha256": "82cdc67d81161ea8014b22691e232f278347a2e662cd025e3aa6424af4f2383f",
+        "explained_at": "2026-11-08T22:26:47.342212+00:00",
+        "verification_sources": [
+          {
+            "url": "https://www.infobae.com/espana/agencias/2026/11/08/1-2-fermin-es-el-lider/"
+          },
+          {
+            "url": "https://www.europapress.es/deportes/partidos-en-directo/noticia-atletico-madrid-barcelona-directo-hoy-sigue-partido-laliga-ea-sports-minuto-minuto-20261108200055.html"
+          }
+        ],
+        "fingerprint": "38be93ccfb38c1785bac3278eff381d1517aceb4458e366a1f93f7fca285216f"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
