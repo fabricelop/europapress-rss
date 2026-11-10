@@ -24,6 +24,29 @@ jobs:
           for attempt in 1 2 3 4 5 6; do
             git fetch origin main
             git reset --hard origin/main
+            python3 - <<'PY'
+            import json
+            from pathlib import Path
+            ident = "3470394c0901"
+            fields = {
+                "distinct_episode": True,
+                "material_change": True,
+                "material_change_verified": True,
+                "significance_reason": "La huelga de maquinistas del 10 de noviembre causa una afectación operativa nueva en Cercanías y Rodalies, independiente del corte Madrid-Andalucía de octubre.",
+                "material_event_key": "huelga-maquinistas-semaf-renfe-2026-11-10",
+                "material_event_at": "2026-11-10T00:01:00+01:00",
+                "new_facts": "Semaf mantiene una huelga de maquinistas el 10 de noviembre; Cercanías Madrid registra líneas sin servicio y Rodalies comunica incumplimientos de servicios mínimos.",
+                "previous_episode_id": "trend-update-541b493b13fef8cf3662"
+            }
+            for filename, key in [("trends/requests.json", "requests"), ("trends/telegram-manual-explained.json", "items")]:
+                p = Path(filename)
+                doc = json.loads(p.read_text(encoding="utf-8"))
+                matches = [x for x in doc.get(key, []) if x.get("id") == ident and int(x.get("revision") or 0) == 0]
+                if len(matches) != 1 or matches[0].get("status") != "explained" or "huelga de maquinistas" not in str(matches[0].get("explanation") or "").lower():
+                    raise SystemExit("JIT guard failed for "+filename)
+                matches[0].update(fields)
+                p.write_text(json.dumps(doc, ensure_ascii=False, separators=(",", ":"))+"\n", encoding="utf-8")
+            PY
             python3 shared/ttendencias_queue_reconcile.py
             python3 trends/export_site_top30.py
             git add trends/requests.json trends/telegram-manual-explained.json trends/editorial-queue.json trends/site-top30-current.json
