@@ -3,28 +3,24 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794323730023-manual",
+  "run_id": "tr-1794324093907-manual",
   "previous_run_id": "tr-1794323730023-manual",
-  "command_id": "tr-1794323730023-manual",
+  "command_id": "tr-1794324093907-manual",
   "source": "chat",
-  "status": "DONE_WITH_INCIDENTS",
+  "status": "DONE",
   "phase": "closing",
   "started_at": "2026-11-10T16:22:30+01:00",
-  "updated_at": "2026-11-10T16:24:30+01:00",
-  "current": 3,
-  "total": 3,
+  "updated_at": "2026-11-10T16:25:30+01:00",
+  "current": 1,
+  "total": 1,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
-  "processed_ids": [
-    "red-review-2563d5746308c0bad6b3",
+  "processed_ids": [],
+  "converged_ids": [
     "red-review-6af8bb75a0ea3deef6bf"
   ],
-  "converged_ids": [
-    "9a057d15cf0b"
-  ],
   "remaining_ids": [
-    "red-review-6af8bb75a0ea3deef6bf",
     "ac07072690a5",
     "74c7648389eb",
     "8d7431b7b1d7",
@@ -42,15 +38,15 @@
     "9357e6b6a21b"
   ],
   "summary": {
-    "attempted": 3,
-    "observed": 3,
-    "closed": 3,
-    "explained": 1,
+    "attempted": 1,
+    "observed": 1,
+    "closed": 1,
+    "explained": 0,
     "problematic": 0,
     "updates": 1,
     "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 2,
-    "unchanged_reviews": 1,
+    "maintenance_reviews": 1,
+    "unchanged_reviews": 0,
     "continuity_updates": 1,
     "distinct_updates": 0,
     "stale_reviews": 0,
@@ -63,67 +59,45 @@
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 1,
+    "incidents": 0,
     "concurrent_convergence": 1
   },
   "outcomes": [
-    {
-      "id": "red-review-2563d5746308c0bad6b3",
-      "revision": 0,
-      "name": "Revisar novedades: #HuelgaGeneral",
-      "outcome": "unchanged",
-      "applied": true,
-      "outbox_commit": "0420fcea724c348d919b1992a573a1e74a1bd1d1"
-    },
     {
       "id": "red-review-6af8bb75a0ea3deef6bf",
       "revision": 0,
       "name": "Revisar novedades: #EnBocaDeTodos",
       "outcome": "continuity_update",
       "applied": true,
-      "outbox_commit": "85cb060de81a60fa9156dc2eb6b69a2c30e0e92c"
-    },
-    {
-      "id": "9a057d15cf0b",
-      "revision": 0,
-      "name": "#laruletadelasuerte",
-      "outcome": "explained",
-      "applied": true,
-      "via": "concurrent_convergence"
+      "via": "concurrent_convergence",
+      "apply_commit": "5df78ba5a4d7337af04045012760b66ca83e922e",
+      "verification": "editorial-queue retirado y mismo commit modificó requests.json + telegram-manual-explained.json"
     }
   ],
-  "incident_count": 1,
-  "incidents": [
-    {
-      "type": "maintenance_outbox_validation_recovered",
-      "affected_ids": [
-        "red-review-6af8bb75a0ea3deef6bf"
-      ],
-      "reason": "El primer resultado concurrente de continuidad no cumplía la fórmula exigida por el aplicador; se corrigió el mismo maintenance-outbox y quedó aplicado como continuity."
-    }
-  ],
+  "incident_count": 0,
+  "incidents": [],
   "error": null,
-  "activity": "Preparando pasada editorial real",
+  "activity": "Pasada editorial cerrada",
   "last_started_at": "2026-11-10T16:22:30+01:00",
-  "last_completed_at": "2026-11-10T16:15:00+01:00",
+  "last_completed_at": "2026-11-10T16:25:30+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794323730023-manual",
-    "status": "DONE_WITH_INCIDENTS",
-    "started_at": "2026-11-10T16:15:30.023+01:00",
-    "finished_at": "2026-11-10T16:24:30+01:00",
-    "at": "2026-11-10T16:24:30+01:00",
+    "run_id": "tr-1794324093907-manual",
+    "status": "DONE",
+    "started_at": "2026-11-10T16:22:30+01:00",
+    "finished_at": "2026-11-10T16:25:30+01:00",
+    "at": "2026-11-10T16:25:30+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 3,
-      "observed": 3,
-      "closed": 3,
-      "explained": 1,
+      "attempted": 1,
+      "observed": 1,
+      "closed": 1,
+      "explained": 0,
       "problematic": 0,
       "updates": 1,
       "review_completed_no_distinct_event": 0,
-      "maintenance_reviews": 2,
-      "unchanged_reviews": 1,
+      "maintenance_reviews": 1,
+      "unchanged_reviews": 0,
       "continuity_updates": 1,
       "distinct_updates": 0,
       "stale_reviews": 0,
@@ -136,55 +110,30 @@
       "imagegen_calls": 0,
       "image_outbox_created": 0,
       "publications": 0,
-      "incidents": 1,
+      "incidents": 0,
       "concurrent_convergence": 1
     },
-    "processed_ids": [
-      "red-review-2563d5746308c0bad6b3",
+    "processed_ids": [],
+    "converged_ids": [
       "red-review-6af8bb75a0ea3deef6bf"
     ],
-    "converged_ids": [
-      "9a057d15cf0b"
-    ],
     "outcomes": [
-      {
-        "id": "red-review-2563d5746308c0bad6b3",
-        "revision": 0,
-        "name": "Revisar novedades: #HuelgaGeneral",
-        "outcome": "unchanged",
-        "applied": true,
-        "outbox_commit": "0420fcea724c348d919b1992a573a1e74a1bd1d1"
-      },
       {
         "id": "red-review-6af8bb75a0ea3deef6bf",
         "revision": 0,
         "name": "Revisar novedades: #EnBocaDeTodos",
         "outcome": "continuity_update",
         "applied": true,
-        "outbox_commit": "85cb060de81a60fa9156dc2eb6b69a2c30e0e92c"
-      },
-      {
-        "id": "9a057d15cf0b",
-        "revision": 0,
-        "name": "#laruletadelasuerte",
-        "outcome": "explained",
-        "applied": true,
-        "via": "concurrent_convergence"
+        "via": "concurrent_convergence",
+        "apply_commit": "5df78ba5a4d7337af04045012760b66ca83e922e",
+        "verification": "editorial-queue retirado y mismo commit modificó requests.json + telegram-manual-explained.json"
       }
     ],
-    "incident_count": 1,
-    "incidents": [
-      {
-        "type": "maintenance_outbox_validation_recovered",
-        "affected_ids": [
-          "red-review-6af8bb75a0ea3deef6bf"
-        ],
-        "reason": "El primer resultado concurrente de continuidad no cumplía la fórmula exigida por el aplicador; se corrigió el mismo maintenance-outbox y quedó aplicado como continuity."
-      }
-    ],
-    "message": "Pasada tr-1794323730023-manual cerrada 3/3. #HuelgaGeneral quedó unchanged; #EnBocaDeTodos quedó actualizado como continuidad, sin nueva ficha ni publicación; #laruletadelasuerte r0 convergió ya explained y fue verificada en requests.json y telegram-manual-explained.json. Barrera final sobre main: 0 preparing/update, 0 rewrite_pending/reexplain y 0 estados activos en mobile-decisions. Permanecen 6 problematic heredados, fuera de esta barrera. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "incident_count": 0,
+    "incidents": [],
+    "message": "Pasada tr-1794324093907-manual cerrada 1/1 por convergencia JIT. #EnBocaDeTodos r0 quedó actualizado como continuidad del mismo programa diario: el texto vigente pasa a la emisión del martes 10/11, sin nueva ficha ni publicación. Aplicación verificada en 5df78ba5a4d7337af04045012760b66ca83e922e, que actualiza requests.json y telegram-manual-explained.json y retira el job de editorial-queue.json. Barrera final: 0 preparing/update, 0 review_red/anticipate y 0 rewrite_pending/reexplain detectables; permanecen 6 problematic heredados. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794323730023-manual cerrada 3/3. #HuelgaGeneral quedó unchanged; #EnBocaDeTodos quedó actualizado como continuidad, sin nueva ficha ni publicación; #laruletadelasuerte r0 convergió ya explained y fue verificada en requests.json y telegram-manual-explained.json. Barrera final sobre main: 0 preparing/update, 0 rewrite_pending/reexplain y 0 estados activos en mobile-decisions. Permanecen 6 problematic heredados, fuera de esta barrera. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada tr-1794324093907-manual cerrada 1/1 por convergencia JIT. #EnBocaDeTodos r0 quedó actualizado como continuidad del mismo programa diario: el texto vigente pasa a la emisión del martes 10/11, sin nueva ficha ni publicación. Aplicación verificada en 5df78ba5a4d7337af04045012760b66ca83e922e, que actualiza requests.json y telegram-manual-explained.json y retira el job de editorial-queue.json. Barrera final: 0 preparing/update, 0 review_red/anticipate y 0 rewrite_pending/reexplain detectables; permanecen 6 problematic heredados. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
@@ -5195,6 +5144,63 @@
       "trend_id": "red-review-6af8bb75a0ea3deef6bf",
       "title": "Revisar novedades: #EnBocaDeTodos",
       "message": "Pasada tr-1794324093907-manual RUNNING. Cola JIT inicial: 1 item preparing, revisión de novedades de #EnBocaDeTodos r0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794324093907-manual",
+      "status": "DONE",
+      "started_at": "2026-11-10T16:22:30+01:00",
+      "finished_at": "2026-11-10T16:25:30+01:00",
+      "at": "2026-11-10T16:25:30+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 1,
+        "observed": 1,
+        "closed": 1,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 1,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 1,
+        "unchanged_reviews": 0,
+        "continuity_updates": 1,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 6,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 1
+      },
+      "processed_ids": [],
+      "converged_ids": [
+        "red-review-6af8bb75a0ea3deef6bf"
+      ],
+      "outcomes": [
+        {
+          "id": "red-review-6af8bb75a0ea3deef6bf",
+          "revision": 0,
+          "name": "Revisar novedades: #EnBocaDeTodos",
+          "outcome": "continuity_update",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "apply_commit": "5df78ba5a4d7337af04045012760b66ca83e922e",
+          "verification": "editorial-queue retirado y mismo commit modificó requests.json + telegram-manual-explained.json"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-1794324093907-manual cerrada 1/1 por convergencia JIT. #EnBocaDeTodos r0 quedó actualizado como continuidad del mismo programa diario: el texto vigente pasa a la emisión del martes 10/11, sin nueva ficha ni publicación. Aplicación verificada en 5df78ba5a4d7337af04045012760b66ca83e922e, que actualiza requests.json y telegram-manual-explained.json y retira el job de editorial-queue.json. Barrera final: 0 preparing/update, 0 review_red/anticipate y 0 rewrite_pending/reexplain detectables; permanecen 6 problematic heredados. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+      "prior_last_run": {
+        "run_id": "tr-1794323730023-manual",
+        "status": "DONE_WITH_INCIDENTS",
+        "finished_at": "2026-11-10T16:24:30+01:00"
+      }
     }
   ],
   "current_item": null,
@@ -6376,7 +6382,7 @@
   ],
   "outbox_comment_id": 5848965032,
   "editorial_apply_commit": "76e7e728a222ee21fee34fda64da43cfd7ecd90a",
-  "finished_at": "2026-11-10T16:24:30+01:00",
+  "finished_at": "2026-11-10T16:25:30+01:00",
   "refresh_workflow_run_id": 42839275825,
   "refresh_conclusion": "success"
 }
