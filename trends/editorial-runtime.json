@@ -7,15 +7,15 @@
   "previous_run_id": "tr-20261110T052500-manual",
   "command_id": "tr-autoguard-1794285659",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "verifying",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-10T05:41:00+01:00",
-  "updated_at": "2026-11-10T05:46:00+01:00",
-  "finished_at": null,
+  "updated_at": "2026-11-10T05:45:20+01:00",
+  "finished_at": "2026-11-10T05:45:20+01:00",
   "current": 1,
   "total": 1,
-  "trend_id": "58ffcd5a97aa",
-  "title": "#IreneConQueque",
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
     "58ffcd5a97aa"
@@ -25,13 +25,13 @@
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 1,
     "observed": 1,
-    "closed": 0,
+    "closed": 1,
     "explained": 0,
     "problematic": 0,
     "updates": 0,
-    "review_completed_no_distinct_event": 0,
+    "review_completed_no_distinct_event": 1,
     "maintenance_reviews": 0,
     "unchanged_reviews": 0,
     "continuity_updates": 0,
@@ -41,7 +41,7 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 1,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -49,7 +49,16 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "58ffcd5a97aa",
+      "revision": 0,
+      "name": "#IreneConQueque",
+      "outcome": "review_completed_no_distinct_event",
+      "applied": true,
+      "review_reason": "no_distinct_event"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -96,20 +105,20 @@
   "last_completed_at": "2026-11-10T05:45:20+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261110T052500-manual",
-    "status": "DONE_WITH_INCIDENTS",
-    "started_at": "2026-11-10T05:25:00+01:00",
-    "finished_at": "2026-11-10T05:28:40+01:00",
-    "at": "2026-11-10T05:28:40+01:00",
+    "run_id": "tr-autoguard-1794285659",
+    "status": "DONE",
+    "started_at": "2026-11-10T05:41:00+01:00",
+    "finished_at": "2026-11-10T05:45:20+01:00",
+    "at": "2026-11-10T05:45:20+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 0,
-      "observed": 0,
-      "closed": 0,
+      "attempted": 1,
+      "observed": 1,
+      "closed": 1,
       "explained": 0,
       "problematic": 0,
       "updates": 0,
-      "review_completed_no_distinct_event": 0,
+      "review_completed_no_distinct_event": 1,
       "maintenance_reviews": 0,
       "unchanged_reviews": 0,
       "continuity_updates": 0,
@@ -124,30 +133,28 @@
       "imagegen_calls": 0,
       "image_outbox_created": 0,
       "publications": 0,
-      "incidents": 1,
+      "incidents": 0,
       "concurrent_convergence": 0
     },
-    "processed_ids": [],
+    "processed_ids": [
+      "58ffcd5a97aa"
+    ],
     "converged_ids": [],
-    "outcomes": [],
-    "incident_count": 1,
-    "incidents": [
+    "outcomes": [
       {
-        "type": "manual_refresh_stuck_checkout",
-        "workflow_run_id": 42755893515,
-        "trigger_commit": "1217c27f2c298f410d82f5941c76ef80d5bcc746",
-        "status": "in_progress",
-        "step": "actions/checkout@v4",
-        "observed_at": "2026-11-10T05:28:40+01:00",
-        "last_radar_captured_at": "2026-11-10T05:21:15+01:00",
-        "note": "El refresco manual arrancó pero seguía atascado en checkout al cierre. No se usa como prueba de éxito. Main sí tenía un snapshot live_verified de alta fiabilidad a las 05:21:15 y la cola actualizada a las 05:21:21 estaba vacía."
+        "id": "58ffcd5a97aa",
+        "revision": 0,
+        "name": "#IreneConQueque",
+        "outcome": "review_completed_no_distinct_event",
+        "applied": true,
+        "review_reason": "no_distinct_event"
       }
     ],
-    "message": "Pasada tr-20261110T052500-manual cerrada 0/0 con incidencia. El refresco manual 42755893515 arrancó sobre 1217c27f2c298f410d82f5941c76ef80d5bcc746 pero seguía atascado en actions/checkout@v4, por lo que no se cuenta como refresco completado. Barrera JIT en main: recent.json capturado 2026-11-10T05:21:15+01:00, live_verified=true, fiabilidad high; editorial-queue actualizada 2026-11-10T05:21:21+01:00 y vacía; mobile-decisions sin trabajo editorial activo. No había preparing/update/rewrite_pending/reexplain/anticipate/review_red que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
-    "workflow_run_id": 42755893515,
-    "trigger_commit": "1217c27f2c298f410d82f5941c76ef80d5bcc746"
+    "incident_count": 0,
+    "incidents": [],
+    "message": "Pasada tr-autoguard-1794285659 cerrada 1/1. #IreneConQueque r0 se cerró como review_completed/no_distinct_event: la reentrada sigue remitiendo a la entrevista del 8N y a la recirculación de sus clips; no se acreditó un acontecimiento posterior, material e independiente. Barrera final: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Verificando cierre aplicado de #IreneConQueque r0 y barrera final de cola/pedidos activos en main.",
+  "message": "Pasada tr-autoguard-1794285659 cerrada 1/1. #IreneConQueque r0 se cerró como review_completed/no_distinct_event: la reentrada sigue remitiendo a la entrevista del 8N y a la recirculación de sus clips; no se acreditó un acontecimiento posterior, material e independiente. Barrera final: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794234841273-manual",
@@ -3563,14 +3570,63 @@
       "message": "Pasada tr-20261110T052500-manual cerrada 0/0 con incidencia. El refresco manual 42755893515 arrancó sobre 1217c27f2c298f410d82f5941c76ef80d5bcc746 pero seguía atascado en actions/checkout@v4, por lo que no se cuenta como refresco completado. Barrera JIT en main: recent.json capturado 2026-11-10T05:21:15+01:00, live_verified=true, fiabilidad high; editorial-queue actualizada 2026-11-10T05:21:21+01:00 y vacía; mobile-decisions sin trabajo editorial activo. No había preparing/update/rewrite_pending/reexplain/anticipate/review_red que procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
       "workflow_run_id": 42755893515,
       "trigger_commit": "1217c27f2c298f410d82f5941c76ef80d5bcc746"
+    },
+    {
+      "run_id": "tr-autoguard-1794285659",
+      "status": "DONE",
+      "started_at": "2026-11-10T05:41:00+01:00",
+      "finished_at": "2026-11-10T05:45:20+01:00",
+      "at": "2026-11-10T05:45:20+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 1,
+        "observed": 1,
+        "closed": 1,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 1,
+        "maintenance_reviews": 0,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [
+        "58ffcd5a97aa"
+      ],
+      "outcomes": [
+        {
+          "id": "58ffcd5a97aa",
+          "revision": 0,
+          "name": "#IreneConQueque",
+          "outcome": "review_completed_no_distinct_event",
+          "applied": true,
+          "review_reason": "no_distinct_event"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-autoguard-1794285659 cerrada 1/1. #IreneConQueque r0 se cerró como review_completed/no_distinct_event: la reentrada sigue remitiendo a la entrevista del 8N y a la recirculación de sus clips; no se acreditó un acontecimiento posterior, material e independiente. Barrera final: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "current_item": null,
   "withdrawn_ids": [
     "ae7f066f3c94"
   ],
-  "last_finished_at": "2026-11-10T04:32:39+01:00",
-  "last_revalidated_at": "2026-11-10T04:32:39+01:00",
+  "last_finished_at": "2026-11-10T05:45:20+01:00",
+  "last_revalidated_at": "2026-11-10T05:45:20+01:00",
   "last_revalidation": {
     "at": "2026-11-10T04:32:39+01:00",
     "queue_sha": "79c175af1695fc0fb576c6f201a8c32363000466",
