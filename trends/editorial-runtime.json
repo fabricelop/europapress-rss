@@ -3,36 +3,34 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794308722039-manual",
-  "previous_run_id": "tr-1794308555826-manual",
-  "command_id": "tr-1794308722039-manual",
+  "run_id": "tr-20261110T121000-manual",
+  "previous_run_id": "tr-1794308722039-manual",
+  "command_id": "tr-20261110T121000-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-10T12:05:22+01:00",
-  "updated_at": "2026-11-10T12:07:00+01:00",
-  "current": 1,
-  "total": 1,
+  "status": "RUNNING",
+  "phase": "verifying",
+  "started_at": "2026-11-10T12:10:00+01:00",
+  "updated_at": "2026-11-10T12:10:00+01:00",
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
-  "converged_ids": [
-    "red-review-616f03ec3b4930b9a6b4"
-  ],
+  "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
-    "observed": 1,
-    "closed": 1,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
     "explained": 0,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 1,
-    "unchanged_reviews": 1,
+    "maintenance_reviews": 0,
+    "unchanged_reviews": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "stale_reviews": 0,
@@ -46,26 +44,14 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 1
+    "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "red-review-616f03ec3b4930b9a6b4",
-      "revision": 0,
-      "name": "Revisar novedades: #FelizMartes",
-      "outcome": "unchanged",
-      "applied": true,
-      "via": "concurrent_convergence",
-      "outbox_commit": "29973bbd8ed09de1630d0af5913c1c00ee55d8fb",
-      "apply_commit": "06af0e0517214ab3b0839ab5f48ed08f274befb3",
-      "reason": "#FelizMartes mantiene el mismo patrón recurrente de saludo de los martes; no se verificó un acontecimiento material posterior e independiente."
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Cierre completado",
-  "last_started_at": "2026-11-10T12:05:22+01:00",
+  "activity": "Verificando cola editorial",
+  "last_started_at": "2026-11-10T12:10:00+01:00",
   "last_completed_at": "2026-11-10T12:07:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -121,7 +107,7 @@
     "incidents": [],
     "message": "Pasada tr-1794308722039-manual cerrada 1/1 por convergencia JIT. La revisión roja de #FelizMartes quedó unchanged: hoy vuelve a aparecer como saludo recurrente de los martes, sin un acontecimiento material posterior e independiente. El outbox fue persistido en 29973bbd8ed09de1630d0af5913c1c00ee55d8fb y aplicado en main por 06af0e0517214ab3b0839ab5f48ed08f274befb3. Barrera final: editorial-queue=0 y búsqueda dirigida sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794308722039-manual cerrada 1/1 por convergencia JIT. La revisión roja de #FelizMartes quedó unchanged: hoy vuelve a aparecer como saludo recurrente de los martes, sin un acontecimiento material posterior e independiente. El outbox fue persistido en 29973bbd8ed09de1630d0af5913c1c00ee55d8fb y aplicado en main por 06af0e0517214ab3b0839ab5f48ed08f274befb3. Barrera final: editorial-queue=0 y búsqueda dirigida sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-20261110T121000-manual RUNNING desde chat. Cola autoritativa observada en 0; verificando main y releyendo la barrera JIT antes de cerrar. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
@@ -3820,6 +3806,15 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-1794308555826-manual cerrada 6/6 por convergencia JIT con aplicadores oficiales concurrentes. Cinco explicaciones ordinarias quedaron persistidas con coincidencia exacta entre requests.json y telegram-manual-explained.json; la revisión de #FelizMartes quedó unchanged, conservando texto, fecha e imagen. Barrera final en main: editorial-queue=0 y requests sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0. La telemetría canónica vigente corresponde a la ejecución sucesora tr-1794308722039-manual."
+    },
+    {
+      "run_id": "tr-20261110T121000-manual",
+      "status": "RUNNING",
+      "at": "2026-11-10T12:10:00+01:00",
+      "phase": "verifying",
+      "current": 0,
+      "total": 0,
+      "message": "Pasada tr-20261110T121000-manual RUNNING desde chat. Cola autoritativa observada en 0; verificando main y releyendo la barrera JIT antes de cerrar. ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": null,
@@ -4801,5 +4796,5 @@
   ],
   "outbox_comment_id": 5848965032,
   "editorial_apply_commit": "76e7e728a222ee21fee34fda64da43cfd7ecd90a",
-  "finished_at": "2026-11-10T12:07:00+01:00"
+  "finished_at": null
 }
