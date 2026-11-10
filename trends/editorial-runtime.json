@@ -3,12 +3,12 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794347693134-manual",
-  "previous_run_id": "tr-1794346800000-manual",
-  "command_id": "tr-1794347693134-manual",
+  "run_id": "tr-1794347700000-manual",
+  "previous_run_id": "tr-1794347693134-manual",
+  "command_id": "tr-1794347700000-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "investigating",
+  "phase": "preparing",
   "started_at": "2026-11-10T22:55:00+01:00",
   "updated_at": "2026-11-10T22:55:00+01:00",
   "current": 0,
@@ -347,9 +347,16 @@
       "trend_id": "red-review-efe36e3459279f1819ae",
       "title": "Revisar novedades: Carzzy",
       "message": "Pasada tr-1794347693134-manual RUNNING. Validación JIT superada para Carzzy r0; revisando novedades sustanciales del mercado LEC sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-10T22:55:00+01:00",
+      "phase": "preparing",
+      "trend_id": "red-review-efe36e3459279f1819ae",
+      "title": "Revisar novedades: Carzzy",
+      "message": "Pasada tr-1794347700000-manual RUNNING. Cola autoritativa JIT=1: revisión roja de Carzzy r0; se comprobarán novedades materiales posteriores a la explicación del 09/11. ImageGen=0; publicaciones=0."
     }
   ],
-  "last_started_at": "2026-11-10T22:40:00+01:00",
+  "last_started_at": "2026-11-10T22:55:00+01:00",
   "last_completed_at": "2026-11-10T22:41:10+01:00",
   "api_failover_enabled": false,
   "last_run": {
