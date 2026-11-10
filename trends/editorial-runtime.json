@@ -3,19 +3,19 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794354090000-manual",
-  "previous_run_id": "tr-autoguard-1794352865",
-  "command_id": "tr-1794354090000-manual",
+  "run_id": "tr-1794354900000-manual",
+  "previous_run_id": "tr-1794354090000-manual",
+  "command_id": "tr-1794354900000-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-11T00:40:58+01:00",
-  "updated_at": "2026-11-11T00:41:30+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-11T00:55:00+01:00",
+  "updated_at": "2026-11-11T00:55:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -509,7 +509,7 @@
       "message": "Barrera final verificada contra main: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain activos detectados; pasada cerrada 0/0. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
-  "last_started_at": "2026-11-11T00:28:00+01:00",
+  "last_started_at": "2026-11-11T00:55:00+01:00",
   "last_completed_at": "2026-11-11T00:31:30+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -575,7 +575,7 @@
     "incidents": [],
     "message": "Pasada tr-1794353226267-manual cerrada 2/2 por convergencia JIT. #HuelgaGeneral y Charles quedaron actualizadas en continuidad sobre sus fichas existentes, conservando ID, revisión y explained_at, sin nueva ficha, imagen ni publicación. Barrera final main: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794353226267-manual cerrada 2/2 por convergencia JIT. #HuelgaGeneral y Charles quedaron actualizadas en continuidad sobre sus fichas existentes, conservando ID, revisión y explained_at, sin nueva ficha, imagen ni publicación. Barrera final main: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada manual iniciada; revalidando main antes del cierre.",
   "history": [
     {
       "at": "2026-11-09T21:27:00+01:00",
