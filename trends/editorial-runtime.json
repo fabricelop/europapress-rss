@@ -8,9 +8,9 @@
   "command_id": "tr-1794291762595-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "investigating",
+  "phase": "persisting",
   "started_at": "2026-11-10T07:23:00+01:00",
-  "updated_at": "2026-11-10T07:24:30+01:00",
+  "updated_at": "2026-11-10T07:25:30+01:00",
   "finished_at": null,
   "current": 1,
   "total": 2,
@@ -31,7 +31,7 @@
   ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
+    "attempted": 2,
     "observed": 2,
     "closed": 1,
     "explained": 1,
@@ -119,6 +119,27 @@
       "trend_id": "03e0b7b74f2c",
       "title": "israel",
       "message": "Contrastando el contexto actual de israel/Gaza y el cruce Broncano-Abascal antes de redactar."
+    },
+    {
+      "at": "2026-11-10T07:25:30+01:00",
+      "phase": "drafting",
+      "trend_id": "03e0b7b74f2c",
+      "title": "israel",
+      "message": "Contexto predominante verificado: cruce Broncano-Abascal en La Revuelta sobre los contactos con Israel y la ausencia de Gaza en esas conversaciones."
+    },
+    {
+      "at": "2026-11-10T07:25:30+01:00",
+      "phase": "remate_selection",
+      "trend_id": "03e0b7b74f2c",
+      "title": "israel",
+      "message": "Sin remate por sensibilidad del conflicto y de la situación humanitaria; closer_text vacío conforme al contrato."
+    },
+    {
+      "at": "2026-11-10T07:25:30+01:00",
+      "phase": "persisting",
+      "trend_id": "03e0b7b74f2c",
+      "title": "israel",
+      "message": "Revisión r0 revalidada JIT; persistiendo texto factual mediante el transporte editorial oficial."
     }
   ],
   "last_started_at": "2026-11-10T07:23:00+01:00",
@@ -179,7 +200,7 @@
     "editorial_apply_commit": "733bb24e755ce9f37aa77df55a0bdfe6fb30424c",
     "refresh_convergence_commit": "3c4fac0635ce0ade346ab8f97ecfa7a64aac016d"
   },
-  "message": "1/2 cerrado: #FelizMartes r0 verificada. Investigando israel r0 desde cero; ImageGen=0.",
+  "message": "1/2 cerrado; israel r0 revalidada JIT y en persistencia con texto factual, sin remate por sensibilidad. ImageGen=0.",
   "history": [
     {
       "at": "2026-11-09T15:55:00+01:00",
@@ -3885,7 +3906,7 @@
     "id": "03e0b7b74f2c",
     "revision": 0,
     "name": "israel",
-    "phase": "investigating"
+    "phase": "persisting"
   },
   "withdrawn_ids": [
     "ae7f066f3c94"
