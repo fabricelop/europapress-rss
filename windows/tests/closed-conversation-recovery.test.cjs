@@ -4,11 +4,11 @@ const source=fs.readFileSync(path.join(__dirname,'../TTImageApprovalReceiver.cjs
 for(const project of ['ttittulares','ttendencias'])test(project+' recovers exact closed conversation only in private relay and returns pending receipt',async()=>{
  const base=fs.mkdtempSync(path.join(os.tmpdir(),'tt-intake-test-'));
  try{
- const sha=x=>crypto.createHash('sha256').update(x).digest('hex'),news=project==='ttittulares',text='Texto exacto',at=new Date(Date.now()-3600000).toISOString();
+ const sha=x=>crypto.createHash('sha256').update(x).digest('hex'),news=project==='ttittulares',text='Texto exacto',at=new Date().toISOString();
  const task={project,target_id:'topic-abc',command_id:'job-abc',revision:1,status:'waiting',secret_dpapi:'encrypted',conversation_url:'https://chatgpt.com/c/exact',browser_target_id:'reused',created_at:at,explanation_sha256:sha(text),editorial_sha256:sha([text,'Hechos','Remate'].join('\n'))};
  fs.mkdirSync(path.join(base,project+'-web-images'));fs.writeFileSync(path.join(base,project+'-web-images/job.json'),JSON.stringify(task));
  for(const file of ['TTendenciasWebImages.cjs','TTiTTularesWebImages.cjs'])fs.writeFileSync(path.join(base,file),"return {status:'waiting',reason:'manual_approval_required'}");
- const job={target_id:task.target_id,command_id:task.command_id,revision:1,context_snapshot:news?{tweet_text:text,factual_summary:'Hechos',remate:'Remate',prepared_at:at}:{explanation:text,explained_at:at}};
+ const job={target_id:task.target_id,command_id:task.command_id,revision:1,requested_at:at,context_snapshot:news?{tweet_text:text,factual_summary:'Hechos',remate:'Remate',prepared_at:at}:{explanation:text,explained_at:at}};
  const chatURL=url=>url?.startsWith('https://chatgpt.com/c/')?url:null;
  const reader={chatURL,async readImageJob(){return job},async readEditorialState(){return {items:news?[{event_id:task.target_id,revision:1,prepared_at:at}]:[{id:task.target_id,revision:1,status:'explained',explanation:text,explained_at:at}]}},async discoverConversation(){return null},rasterProbe(){return 'read-exact-job'}};
  let created=0,closed=0,uploads=0;
