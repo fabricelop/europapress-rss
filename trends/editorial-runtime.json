@@ -3,20 +3,20 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261110T034000-manual",
-  "previous_run_id": "tr-20261110T032500-manual",
-  "command_id": "tr-20261110T034000-manual",
+  "run_id": "tr-20261110T035500-manual",
+  "previous_run_id": "tr-20261110T034000-manual",
+  "command_id": "tr-20261110T035500-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-10T03:40:00+01:00",
-  "updated_at": "2026-11-10T03:42:00+01:00",
-  "finished_at": "2026-11-10T03:42:00+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-10T03:55:00+01:00",
+  "updated_at": "2026-11-10T03:55:00+01:00",
+  "finished_at": null,
   "current": 0,
   "total": 0,
   "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "title": "Pasada editorial TTendencias",
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -89,7 +89,7 @@
     "incidents": [],
     "message": "Pasada tr-20261110T034000-manual cerrada 0/0 tras refresco y relectura JIT de main. Snapshot Top 30 capturado 2026-11-10T03:40:52+01:00; editorial-queue actualizada 2026-11-10T03:40:57+01:00 y vacía. Barrera final: requests sin preparing/update/problematic/rewrite_pending/reexplain activos; los review_red/anticipate existentes están terminales, mobile-decisions sin trabajo editorial activo y cola=0. Fuente del ranking sigue live_verified:false/reliability:unverified, pero no se creó ninguna ficha nueva. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "last_started_at": "2026-11-10T03:40:00+01:00",
+  "last_started_at": "2026-11-10T03:55:00+01:00",
   "last_completed_at": "2026-11-10T03:42:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -130,7 +130,7 @@
     "incidents": [],
     "message": "Pasada tr-20261110T034000-manual cerrada 0/0 tras refresco y relectura JIT de main. Snapshot Top 30 capturado 2026-11-10T03:40:52+01:00; editorial-queue actualizada 2026-11-10T03:40:57+01:00 y vacía. Barrera final: requests sin preparing/update/problematic/rewrite_pending/reexplain activos; los review_red/anticipate existentes están terminales, mobile-decisions sin trabajo editorial activo y cola=0. Fuente del ranking sigue live_verified:false/reliability:unverified, pero no se creó ninguna ficha nueva. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-20261110T034000-manual cerrada 0/0 tras refresco y relectura JIT de main. Snapshot Top 30 capturado 2026-11-10T03:40:52+01:00; editorial-queue actualizada 2026-11-10T03:40:57+01:00 y vacía. Barrera final: requests sin preparing/update/problematic/rewrite_pending/reexplain activos; los review_red/anticipate existentes están terminales, mobile-decisions sin trabajo editorial activo y cola=0. Fuente del ranking sigue live_verified:false/reliability:unverified, pero no se creó ninguna ficha nueva. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada tr-20261110T035500-manual RUNNING desde chat. Se fuerza refresco manual real del ranking y después se releerá main con barrera JIT antes de cerrar. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794234841273-manual",
@@ -3218,6 +3218,13 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-20261110T034000-manual cerrada 0/0 tras refresco y relectura JIT de main. Snapshot Top 30 capturado 2026-11-10T03:40:52+01:00; editorial-queue actualizada 2026-11-10T03:40:57+01:00 y vacía. Barrera final: requests sin preparing/update/problematic/rewrite_pending/reexplain activos; los review_red/anticipate existentes están terminales, mobile-decisions sin trabajo editorial activo y cola=0. Fuente del ranking sigue live_verified:false/reliability:unverified, pero no se creó ninguna ficha nueva. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-20261110T035500-manual",
+      "status": "RUNNING",
+      "at": "2026-11-10T03:55:00+01:00",
+      "phase": "preparing",
+      "message": "Pasada tr-20261110T035500-manual RUNNING desde chat. Se fuerza refresco manual real del ranking y después se releerá main con barrera JIT antes de cerrar. ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": null,
