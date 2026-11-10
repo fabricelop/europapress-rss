@@ -8,9 +8,9 @@
   "command_id": "tr-1794347700000-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "persisting",
   "started_at": "2026-11-10T22:55:00+01:00",
-  "updated_at": "2026-11-10T22:55:00+01:00",
+  "updated_at": "2026-11-10T22:57:00+01:00",
   "current": 0,
   "total": 1,
   "trend_id": "red-review-efe36e3459279f1819ae",
@@ -26,14 +26,14 @@
   ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 1,
     "observed": 1,
     "closed": 0,
     "explained": 0,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 0,
+    "maintenance_reviews": 1,
     "unchanged_reviews": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
@@ -354,6 +354,13 @@
       "trend_id": "red-review-efe36e3459279f1819ae",
       "title": "Revisar novedades: Carzzy",
       "message": "Pasada tr-1794347700000-manual RUNNING. Cola autoritativa JIT=1: revisión roja de Carzzy r0; se comprobarán novedades materiales posteriores a la explicación del 09/11. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-10T22:57:00+01:00",
+      "phase": "persisting",
+      "trend_id": "red-review-efe36e3459279f1819ae",
+      "title": "Revisar novedades: Carzzy",
+      "message": "Resultado de continuidad preparado: rumor del 10/11 más concreto (MKOI como destino y GIANTX valoró al jugador), sin fichaje confirmado; distinct_episode=false, material_change=false. Esperando aplicación JIT."
     }
   ],
   "last_started_at": "2026-11-10T22:55:00+01:00",
