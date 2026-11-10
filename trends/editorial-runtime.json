@@ -8,14 +8,14 @@
   "command_id": "tr-20261110T085500-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "persisting",
   "started_at": "2026-11-10T08:55:00+01:00",
-  "updated_at": "2026-11-10T08:55:00+01:00",
+  "updated_at": "2026-11-10T08:57:00+01:00",
   "finished_at": null,
   "current": 0,
   "total": 2,
-  "trend_id": null,
-  "title": null,
+  "trend_id": "red-review-48cfbc5303efdb98a72c",
+  "title": "Revisar novedades: Barça",
   "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
@@ -78,6 +78,13 @@
       "trend_id": null,
       "title": null,
       "message": "Pasada tr-20261110T085500-manual iniciada desde chat. Cola JIT: 2 review_red (Barça y #FelizMartes). ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-10T08:57:00+01:00",
+      "phase": "persisting",
+      "trend_id": "red-review-48cfbc5303efdb98a72c",
+      "title": "Revisar novedades: Barça",
+      "message": "Barça r0 revalidada JIT; sin acontecimiento material distinto. Persistiendo resultado unchanged."
     }
   ],
   "last_started_at": "2026-11-10T08:55:00+01:00",
@@ -138,7 +145,7 @@
     "trigger_commit": "74825af0ed1added55e6135b29e3fb886259a269",
     "refresh_convergence_commit": "3081c83e995712ef9a60c06c2de4b2af44cfecc6"
   },
-  "message": "Pasada tr-20261110T085500-manual RUNNING. Procesando 2 revisiones de mantenimiento revalidadas en main; sin ImageGen ni publicaciones.",
+  "message": "Barça r0 revalidada JIT; sin acontecimiento material distinto. Persistiendo resultado unchanged.",
   "history": [
     {
       "at": "2026-11-09T21:25:00+01:00",
