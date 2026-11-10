@@ -1035,9 +1035,12 @@ async function optionalWebHandoff(handoff,remember=false){
 (async()=>{
   let cdp;
   let webHandoff;
+  let activeJob=null;
+  let promptAttempted=false;
   try{
     console.log("BRIDGE START "+commandId);
     const job=await fetchJob();
+    activeJob=job;
     const launchOnly=String(job.delivery_mode||"")==="launch_only";
     // The legacy uploader remains disabled. After ImageGen is launched,
     // this SAME process may forward only its verified original to the
@@ -1048,14 +1051,26 @@ async function optionalWebHandoff(handoff,remember=false){
     catch(e){throw Error("TTENDENCIAS_PRE_SUBMIT_FAILED "+String(e&&e.message||e));}
     console.log("BRIDGE FIXED CHAT READY mode="+BRIDGE_MODE);
     webHandoff={job,commandId,targetId,browserTargetId:cdp.fixedTargetId,secret};
+    // Register the exact command and encrypted receipt BEFORE sending anything.
+    // ImageGen can succeed even if the browser misses the submit acknowledgement.
+    // Do not submit if its recovery consumer cannot be enrolled.
+    if(launchOnly){
+      require('./TTendenciasWebImages.cjs').enroll(webHandoff);
+      console.log('BRIDGE TREND PRIVATE INBOX PRE_ENROLLED '+commandId);
+    }
     let image=null;
     for(let generationAttempt=1;generationAttempt<=2;generationAttempt++){
       if(generationAttempt>1){
         try{cdp&&cdp.close()}catch{}
         await progress("image_retry","Primer envío no produjo generación real; reintentando en conversación nueva de la misma pestaña.");
         cdp=await openFreshDedicatedConversation();
+        if(launchOnly){
+          webHandoff={job,commandId,targetId,browserTargetId:cdp.fixedTargetId,secret};
+          require('./TTendenciasWebImages.cjs').enroll(webHandoff);
+        }
         console.log("BRIDGE INTERNAL RETRY conversation="+generationAttempt);
       }
+      promptAttempted=true;
       cdp=await injectPromptIntoChat(cdp,job);
       if(!cdp.promptSubmittedAt)await submitVerifiedDraft(cdp,job);
       cdp=await ensureSubmitted(cdp,job);
@@ -1118,6 +1133,21 @@ async function optionalWebHandoff(handoff,remember=false){
     }
     throw Error("Outbox recibido pero no materializado en 6 minutos");
   }catch(e){
+    // A lost send/launch acknowledgement is NOT proof that ImageGen failed.
+    // Salvage ONLY the existing exact-command raster; never resubmit or regenerate.
+    if(promptAttempted&&webHandoff&&activeJob&&cdp){
+      console.log('BRIDGE TREND PRIVATE INBOX LOST_ACK_RECOVERY '+commandId);
+      try{
+        const receipt=await holdForWebImageReceipt(webHandoff,cdp,activeJob,180000);
+        if(receipt==='private_original_received'){
+          console.log('BRIDGE TREND PRIVATE INBOX RECOVERED_AFTER_ACK_FAILURE '+commandId);
+          return;
+        }
+      }catch(recoveryError){
+        console.log('BRIDGE TREND PRIVATE INBOX LOST_ACK_DEFERRED '+
+          String(recoveryError?.message||'unavailable').slice(0,100));
+      }
+    }
     console.error("BRIDGE ERROR :: "+String(e&&e.message||e));
     await fail(e&&e.message||e);
     process.exitCode=1;
