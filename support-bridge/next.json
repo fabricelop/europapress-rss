@@ -1,29 +1,26 @@
 {
   "version": 1,
-  "id": "ttb-editorial-20261112-first",
+  "id": "ttb-trends-trace-20261112",
   "project": "TTActualidad",
   "expires_at": "2026-11-13T20:00:00Z",
-  "description": "Diagnostico no destructivo del bloqueo editorial TTendencias",
+  "description": "Inspección local de la causa del atasco, sin cambios ni reinicios",
   "steps": [
+    {
+      "kind": "powershell",
+      "name": "listener-eventos-editoriales",
+      "script": "$p='C:\\TTiTTulares\\ttendencias-mobile-trigger.log'\n$lines=@(Get-Content $p -Tail 120 -ErrorAction Stop)\n$hits=@($lines|Where-Object {$_ -match 'EDITORIAL|RUNNING|DONE|TRANSMISSION|AMBIGUOUS|preflight|ACK|tr-1794434190627|tr-composerfix'}|Select-Object -Last 18)\n$hits=@($hits|ForEach-Object {($_ -replace '(gh[pousr]_[A-Za-z0-9_]+)','[REDACTED]' -replace '(Bearer\\s+)[^\\s]+','$1[REDACTED]') -replace '.{241}$',''})\nWrite-Output ('TTRESULT:'+(@{events=$hits;total=$lines.Count}|ConvertTo-Json -Compress -Depth 4))\n",
+      "timeout_seconds": 25
+    },
+    {
+      "kind": "powershell",
+      "name": "ledger-envio-editorial",
+      "script": "$base='C:\\TTiTTulares\\TT-Editorial-Rescue\\sent'\n$files=@(Get-ChildItem $base -Filter '*tr-1794434190627*' -ErrorAction SilentlyContinue)\n$rows=@($files|ForEach-Object {$j=Get-Content $_.FullName -Raw|ConvertFrom-Json;@{file=$_.Name;status=$j.status;at=$j.at;target_present=!!$j.target;source=$j.source}})\nWrite-Output ('TTRESULT:'+(@{ledger=$rows;count=$rows.Count}|ConvertTo-Json -Compress -Depth 5))\n",
+      "timeout_seconds": 20
+    },
     {
       "kind": "builtin",
       "name": "editorial-queue",
       "timeout_seconds": 30
-    },
-    {
-      "kind": "builtin",
-      "name": "editorial-runtime",
-      "timeout_seconds": 30
-    },
-    {
-      "kind": "builtin",
-      "name": "editorial-guard",
-      "timeout_seconds": 35
-    },
-    {
-      "kind": "builtin",
-      "name": "listener-summary",
-      "timeout_seconds": 25
     }
   ]
 }
