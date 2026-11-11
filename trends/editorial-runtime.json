@@ -7,46 +7,42 @@
   "previous_run_id": "tr-20261111T143800-manual",
   "command_id": "tr-20261111T145500-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-11T14:55:00+01:00",
-  "updated_at": "2026-11-11T15:00:00+01:00",
-  "current": 1,
+  "updated_at": "2026-11-11T15:02:00+01:00",
+  "current": 3,
   "total": 3,
-  "trend_id": "ffa74ccda79b",
-  "title": "Gran Vía",
-  "queue_complete": false,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
   "processed_ids": [
-    "ffa74ccda79b"
+    "ffa74ccda79b",
+    "red-review-2b91b0818b6c56e8b32e",
+    "red-review-870bc290d8ea827e22e4"
   ],
   "converged_ids": [],
-  "remaining_ids": [
-    "red-review-2b91b0818b6c56e8b32e",
-    "red-review-870bc290d8ea827e22e4"
-  ],
-  "remaining_active_ids": [
-    "red-review-2b91b0818b6c56e8b32e",
-    "red-review-870bc290d8ea827e22e4"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 3,
     "observed": 3,
-    "closed": 1,
+    "closed": 3,
     "explained": 1,
     "problematic": 0,
-    "updates": 0,
+    "updates": 2,
     "review_completed_no_distinct_event": 0,
     "maintenance_reviews": 2,
     "unchanged_reviews": 0,
     "continuity_updates": 0,
-    "distinct_updates": 0,
+    "distinct_updates": 2,
     "stale_reviews": 0,
     "unverified_reviews": 0,
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -54,7 +50,39 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "ffa74ccda79b",
+      "revision": 1,
+      "name": "Gran Vía",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "46c9e6005aa5412960c919152225e9a622d7dc26",
+      "rank": 9
+    },
+    {
+      "id": "red-review-2b91b0818b6c56e8b32e",
+      "revision": 0,
+      "name": "Revisar novedades: Error",
+      "outcome": "distinct_update",
+      "applied": true,
+      "apply_commit": "a3750716edf8e75aa9f7d3894516ef2da4b2aa57",
+      "created_id": "trend-update-c6e8606d076f9d3419c6",
+      "source_id": "4fc099aeb560",
+      "material_event_key": "broncano-disculpas-error-publico-abascal-2026-11-10"
+    },
+    {
+      "id": "red-review-870bc290d8ea827e22e4",
+      "revision": 0,
+      "name": "Revisar novedades: #EnBocaDeTodos",
+      "outcome": "distinct_update",
+      "applied": true,
+      "apply_commit": "a3750716edf8e75aa9f7d3894516ef2da4b2aa57",
+      "created_id": "trend-update-4f3c6a5220918fa87e38",
+      "source_id": "be101248f52d",
+      "material_event_key": "en-boca-de-todos-huelga-general-11n-2026-11-11"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -362,24 +390,38 @@
       "trend_id": null,
       "title": null,
       "message": "Gran Vía r1 aplicada. Barrera final detectó 2 revisiones rojas nuevas: Error y #EnBocaDeTodos; investigando ambas JIT. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-11T15:01:45+01:00",
+      "phase": "verifying",
+      "trend_id": null,
+      "title": null,
+      "message": "Error y #EnBocaDeTodos aplicadas por mantenimiento oficial como distinct_update; cola retirada a 0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-11T15:02:00+01:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "Pasada tr-20261111T145500-manual cerrada 3/3. Gran Vía r1 reelaborada desde cero y aplicada; la barrera final incorporó dos revisiones rojas nuevas, Error y #EnBocaDeTodos, ambas verificadas como episodios materiales distintos y aplicadas como fichas nuevas. Barrera final main: editorial-queue=0. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
-  "last_started_at": "2026-11-11T14:58:42+01:00",
-  "last_completed_at": "2026-11-11T14:58:42+01:00",
+  "last_started_at": "2026-11-11T14:55:00+01:00",
+  "last_completed_at": "2026-11-11T15:02:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261111T143800-manual",
+    "run_id": "tr-20261111T145500-manual",
     "status": "DONE",
-    "started_at": "2026-11-11T14:38:00+01:00",
-    "finished_at": "2026-11-11T14:39:00+01:00",
-    "total": 0,
-    "closed": 0,
-    "explained": 0,
-    "maintenance": 0,
+    "started_at": "2026-11-11T14:55:00+01:00",
+    "finished_at": "2026-11-11T15:02:00+01:00",
+    "total": 3,
+    "closed": 3,
+    "explained": 1,
+    "maintenance": 2,
     "pending": 0,
     "review_completed_no_distinct_event": 0
   },
-  "message": "Gran Vía r1 aplicada. Barrera final detectó 2 revisiones rojas nuevas: Error y #EnBocaDeTodos; investigando ambas JIT. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-20261111T145500-manual cerrada 3/3. Gran Vía r1 reelaborada desde cero y aplicada; la barrera final incorporó dos revisiones rojas nuevas, Error y #EnBocaDeTodos, ambas verificadas como episodios materiales distintos y aplicadas como fichas nuevas. Barrera final main: editorial-queue=0. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794327332740-manual",
@@ -4108,6 +4150,81 @@
       "trend_id": "ffa74ccda79b",
       "title": "Gran Vía",
       "message": "Gran Vía r1 revalidada en main. Reelaboración desde cero: investigando hechos actuales antes de redactar; ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-20261111T145500-manual",
+      "status": "DONE",
+      "started_at": "2026-11-11T14:55:00+01:00",
+      "finished_at": "2026-11-11T15:02:00+01:00",
+      "at": "2026-11-11T15:02:00+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 3,
+        "observed": 3,
+        "closed": 3,
+        "explained": 1,
+        "problematic": 0,
+        "updates": 2,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 2,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 2,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [
+        "ffa74ccda79b",
+        "red-review-2b91b0818b6c56e8b32e",
+        "red-review-870bc290d8ea827e22e4"
+      ],
+      "converged_ids": [],
+      "outcomes": [
+        {
+          "id": "ffa74ccda79b",
+          "revision": 1,
+          "name": "Gran Vía",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "46c9e6005aa5412960c919152225e9a622d7dc26",
+          "rank": 9
+        },
+        {
+          "id": "red-review-2b91b0818b6c56e8b32e",
+          "revision": 0,
+          "name": "Revisar novedades: Error",
+          "outcome": "distinct_update",
+          "applied": true,
+          "apply_commit": "a3750716edf8e75aa9f7d3894516ef2da4b2aa57",
+          "created_id": "trend-update-c6e8606d076f9d3419c6",
+          "source_id": "4fc099aeb560",
+          "material_event_key": "broncano-disculpas-error-publico-abascal-2026-11-10"
+        },
+        {
+          "id": "red-review-870bc290d8ea827e22e4",
+          "revision": 0,
+          "name": "Revisar novedades: #EnBocaDeTodos",
+          "outcome": "distinct_update",
+          "applied": true,
+          "apply_commit": "a3750716edf8e75aa9f7d3894516ef2da4b2aa57",
+          "created_id": "trend-update-4f3c6a5220918fa87e38",
+          "source_id": "be101248f52d",
+          "material_event_key": "en-boca-de-todos-huelga-general-11n-2026-11-11"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-20261111T145500-manual cerrada 3/3. Gran Vía r1 reelaborada desde cero y aplicada; la barrera final incorporó dos revisiones rojas nuevas, Error y #EnBocaDeTodos, ambas verificadas como episodios materiales distintos y aplicadas como fichas nuevas. Barrera final main: editorial-queue=0. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "current_item": null,
@@ -6650,12 +6767,13 @@
     }
   ],
   "outbox_comment_id": 6721989528,
-  "editorial_apply_commit": "e04b82e986ef23f425c825e20a401d0c22fed983",
+  "editorial_apply_commit": "46c9e6005aa5412960c919152225e9a622d7dc26",
   "refresh_workflow_run_id": 42929355766,
   "refresh_conclusion": "success",
   "maintenance_apply_commits": [
     "eedbccdb94df1936c8997f1f2ced3536266ed14e",
-    "8ac401943a74f6b1e15d582eac4c3bffb24294b5"
+    "8ac401943a74f6b1e15d582eac4c3bffb24294b5",
+    "a3750716edf8e75aa9f7d3894516ef2da4b2aa57"
   ],
   "outbox_commit": "d98a814e110f71921adab2ad984fde8a2a11979c",
   "prior_last_run": {
@@ -6788,5 +6906,5 @@
     }
   ],
   "processed": [],
-  "finished_at": null
+  "finished_at": "2026-11-11T15:02:00+01:00"
 }
