@@ -1,6 +1,6 @@
 // TT Fotos independent Worker. No runtime requests to the old Site or iPhone.
-import {createTTFotosApi} from '../../../site-patches/ttactualidad-fotos-review/cloud-v1/api.mjs';
-import {createGithubJobProvider} from '../../../site-patches/ttactualidad-fotos-review/cloud-v1/job-provider.mjs';
+import {createTTFotosApi} from './lib/api.mjs';
+import {createGithubJobProvider} from './lib/job-provider.mjs';
 import {authenticateAccess} from './access.mjs';
 import {searchEditorial,resolveEditorialCommand} from './editorial-search.mjs';
 const security={
