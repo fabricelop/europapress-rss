@@ -126,3 +126,22 @@ test('missing exact receipt never triggers automatic association; editor may con
  assert.equal(decision.association.confidence,'editor_confirmed');
  assert.equal(x.store.matches.size,1);
 });
+
+test('reimporting the same photo and repeating manual confirmation is idempotent',async()=>{
+ const x=setup(),e={kind:'same_turn_image',rasterSource:'original_image',conversationUrl:job.conversation_url,
+   commandId:cmd,promptText:'TTITTULARES_IMAGE_JOB_V4 '+cmd};
+ const first=await (await x.post('/assets',x.upload({evidence:e}))).json();
+ assert.equal(first.association?.operation,'associate');
+ const again=await (await x.post('/assets',x.upload({evidence:e}))).json();
+ assert.equal(again.existing,true);
+ assert.equal(again.association?.operation,'unchanged');
+ assert.equal(again.association?.confidence,'auto_exact');
+ assert.equal(x.store.history.length,1);
+ const manual=await (await x.post('/matches',JSON.stringify({assetSha:first.assetSha,commandId:cmd,
+  project:'ttittulares',editorialId:'753d587ec61b',revision:1,
+  confirmation:'CONFIRMAR_ASOCIACION_EDITOR'}))).json();
+ assert.equal(manual.association.operation,'unchanged');
+ assert.equal(manual.association.confidence,'auto_exact');
+ assert.equal(x.store.matches.size,1);
+ assert.equal(x.store.history.length,1);
+});
