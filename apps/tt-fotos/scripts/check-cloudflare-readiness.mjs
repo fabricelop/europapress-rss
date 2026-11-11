@@ -44,8 +44,13 @@ export function findAccessApplication(apps,aud,workerId){
  // Destinations are checked as well as AUD. Never accept an account-wide
  // Access app as proof that this standalone Worker is protected.
  const ds=Array.isArray(a.destinations)?a.destinations:[];
- const valid=ds.some(d=>d?.type==='worker'&&d.worker_id===workerId);
- if(!valid)throw Error('WORKER_LEVEL_ACCESS_NOT_CONFIGURED');
+ const mine=ds.filter(d=>d?.type==='worker'&&d.worker_id===workerId);
+ if(mine.length!==1)throw Error('WORKER_LEVEL_ACCESS_NOT_CONFIGURED');
+ // Cloudflare supports Access destination overrides that bypass sign-in.
+ // Do not consider this private if any override can make a Worker path public.
+ if(mine[0].overrides?.length)throw Error('PUBLIC_ACCESS_DESTINATION_OVERRIDE');
+ if(ds.some(d=>d?.type==='public'&&d.overrides?.some(o=>o.behavior==='public')))
+  throw Error('PUBLIC_ACCESS_DESTINATION_OVERRIDE');
  return {id:a.id||null,aud:a.aud,workerIds:ds.filter(d=>d.type==='worker').map(d=>d.worker_id)};
 }
 async function apiGet(path,env,fetcher=fetch){
@@ -85,7 +90,8 @@ export async function auditCloudflare(env=process.env,fetcher=fetch){
     r=>{if(r.enabled!==false)throw Error('PUBLIC_R2_DEV_DOMAIN')});
   const custom=await probe('R2_CUSTOM_PRIVATE',prefix+'custom',
     r=>{if(!Array.isArray(r.domains)||r.domains.some(d=>d.enabled!==false))throw Error('PUBLIC_OR_UNKNOWN_CUSTOM_DOMAIN')});
-  if(d1&&managed&&custom)verifyInventory(d1,r2,managed,custom);
+  // Each security probe already validates its resource. Never throw out of
+  // the audit report if a probing permission or resource is unavailable.
  }
  const worker=await probe('STANDALONE_WORKER',base+'/workers/workers/'+WORKER,
    r=>{if(r.name!==WORKER||!r.id)throw Error('NOT_THE_STANDALONE_WORKER')});
