@@ -3,9 +3,9 @@
  * TT Fotos: recovery / reconciliation without regenerating images or approving.
  * --scan       Local inventory only, including caches, staged rasters, receipts, and orphans.
  * --capture    Read ONLY already-open ChatGPT conversation tabs with an exact command marker.
- * --deliver    Retry ONLY exact, verified local originals to the existing private inbox.
- * --rescue     Capture from already-open chats, then retry local deliveries.
- * --serve      Host private read-only recovery dashboard on 127.0.0.1:8765.
+ * --deliver    DISABLED: the monitor NEVER sends to the iPhone inbox.
+ * --rescue     Capture from already-open chats and keep PNGs locally (no delivery).
+ * --serve      Host a local editorial recovery dashboard, auto-fallback to port 8766+.
  * --import-dir PATH  Inventory downloaded PNGs; never auto-bind by appearance.
  * No interactions with the ChatGPT Images library API; none is available here.
  */
@@ -108,7 +108,10 @@ function writeManualLinks(base,links){
   const root=dirs(base).receipts,file=path.join(root,'tt-fotos-manual-links.json');
   fs.mkdirSync(root,{recursive:true,mode:0o700});
   const tmp=file+'.'+process.pid+'.'+crypto.randomBytes(6).toString('hex')+'.tmp';
-  try{fs.writeFileSync(tmp,JSON.stringify({version:1,items:links},null,2),{flag:'wx',mode:0o600});fs.renameSync(tmp,file)}
+  const old=safeRead(file);
+  const history=Array.isArray(old?.history)?old.history:[];
+  const nextEntry=links.__auditEvent||null;
+  try{fs.writeFileSync(tmp,JSON.stringify({version:2,items:links,history:nextEntry?[...history,nextEntry]:history},null,2),{flag:'wx',mode:0o600});fs.renameSync(tmp,file)}
   finally{try{fs.unlinkSync(tmp)}catch{}}
 }
 function associateManual(base,importDir,{file,commandId,sha256,confirmation}){
@@ -124,13 +127,11 @@ function associateManual(base,importDir,{file,commandId,sha256,confirmation}){
   if(fs.statSync(pathCandidate).size>8388608)throw Error('IMPORT_TOO_BIG');
   const bytes=fs.readFileSync(pathCandidate);
   if(!goodPNG(bytes)||hash(bytes)!==sha256.toLowerCase())throw Error('IMPORTED_PNG_HASH_CHANGED');
-  if(storedOriginal(base,task))throw Error('EXACT_ORIGINAL_ALREADY_AVAILABLE');
-  if(fs.existsSync(path.join(dirs(base).receipts,commandId+'.json')))throw Error('EXISTING_RECEIPT_REPLACEMENT_NOT_SUPPORTED');
+  // Local visual association only. A previous inbox receipt or cached PNG does
+  // NOT block the editor from choosing a different image for this monitor card.
+  // This has no effect on the private Site inbox or published image catalog.
   const existing=readManualLinks(base).find(x=>x.commandId===commandId);
-  if(existing){
-    if(existing.sha256!==sha256.toLowerCase())throw Error('DIFFERENT_MANUAL_IMAGE_FOR_COMMAND');
-    return existing;
-  }
+  if(existing&&existing.sha256===sha256.toLowerCase())return existing;
   const originalDir=path.join(dirs(base).receipts,'manual-originals');
   fs.mkdirSync(originalDir,{recursive:true,mode:0o700});
   const dest=path.join(originalDir,sha256.toLowerCase()+'.png');
@@ -143,37 +144,20 @@ function associateManual(base,importDir,{file,commandId,sha256,confirmation}){
   }
   const entry={commandId,project:task.project,editorialId:task.target_id,revision:task.revision,
     sha256:sha256.toLowerCase(),sourceFile:file,confirmedAt:new Date().toISOString(),
-    provenance:'editor_manual_selection_from_download',state:'CONFIRMED_MANUALLY_NOT_DELIVERED'};
-  // Persist for audit. Duplicate requests of the exact image are idempotent.
-  const links=readManualLinks(base);
-  const late=links.find(x=>x.commandId===commandId);
-  if(late){if(late.sha256===entry.sha256)return late;throw Error('MANUAL_ASSOCIATION_RACE')}
-  writeManualLinks(base,[...links,entry]);
+    provenance:'editor_manual_selection_from_download',state:'ASSOCIATED_LOCALLY_IN_MONITOR_ONLY'};
+  // Last confirmed selection replaces the visual image on this monitor card.
+  // Preserve the earlier choice in an audit trail and NEVER change iPhone inbox.
+  const links=readManualLinks(base),previous=links.find(x=>x.commandId===commandId);
+  if(previous?.sha256===entry.sha256)return previous;
+  const next=[...links.filter(x=>x.commandId!==commandId),entry];
+  next.__auditEvent={commandId,project:entry.project,editorialId:entry.editorialId,
+    revision:entry.revision,previousSha256:previous?.sha256||null,
+    newSha256:entry.sha256,confirmedAt:entry.confirmedAt,sourceFile:file,
+    action:'EDITOR_LOCAL_IMAGE_SELECTION'};
+  writeManualLinks(base,next);
   return entry;
 }
-async function deliverManual(base,commandId,{getReceiver=receiver,getSource=source,getInbox=null,readSecret=decryptDPAPI,send=null}={}){
-  const {map,duplicates}=enrollmentFiles(base),task=map.get(commandId);
-  if(!task||duplicates.has(commandId))throw Error('JOB_IDENTITY_NOT_UNIQUE');
-  const links=readManualLinks(base),entry=links.find(x=>x.commandId===commandId);
-  if(!entry||entry.provenance!=='editor_manual_selection_from_download'||entry.project!==task.project||
-     entry.editorialId!==task.target_id||entry.revision!==task.revision)throw Error('MANUAL_ASSOCIATION_NOT_PROVEN');
-  if(fs.existsSync(path.join(dirs(base).receipts,commandId+'.json')))throw Error('EXISTING_RECEIPT_REPLACEMENT_NOT_SUPPORTED');
-  if(!task.secret_dpapi)throw Error('MISSING_PRIVATE_INGEST_SECRET');
-  const bytes=manualOriginal(base,entry);
-  if(!bytes)throw Error('MANUAL_ORIGINAL_MISSING_OR_CHANGED');
-  const app=getReceiver(base),imageSource=getSource(base,task.project),inbox=getInbox?getInbox(base):require(path.join(base,'TTImagesImmediateInbox.cjs'));
-  const job=await app.editorialJob(imageSource,task),meta=app.metadata(task,job);
-  if(meta.project!==entry.project||meta.editorialId!==entry.editorialId||
-     meta.revision!==entry.revision||meta.commandId!==entry.commandId)throw Error('EDITORIAL_EPISODE_CONFLICT');
-  const fresh=await app.editorialJob(imageSource,task);
-  if(app.metadata(task,fresh).episodeFingerprint!==meta.episodeFingerprint)throw Error('EDITORIAL_EPISODE_CHANGED');
-  const receipt=await (send||app.send)(meta,bytes,readSecret(task.secret_dpapi));
-  if(receipt.rasterSHA256!==entry.sha256)throw Error('MANUAL_RECEIPT_SHA_MISMATCH');
-  inbox.saveReceipt(base,task,meta,receipt);
-  const proof=inbox.readReceipt(base,task);
-  if(!proof||proof.rasterSHA256!==entry.sha256)throw Error('RECEIPT_NOT_DURABLE');
-  return {commandId,result:'DELIVERED_'+receipt.state,receiptId:receipt.id};
-}
+async function deliverManual(){throw Error('INBOX_DELIVERY_DISABLED_FOR_MONITOR')}
 
 function inventory(base,{importDir=null,since=null}={}){
   const d=dirs(base),{map,duplicates}=enrollmentFiles(base),progress=safeRead(path.join(d.receipts,'receiver-status.json'))||{};
@@ -187,10 +171,10 @@ function inventory(base,{importDir=null,since=null}={}){
     let phase=receipt?'RECIBIDA_CON_RECIBO':original?'ORIGINAL_LOCAL_SIN_ENTREGAR':conflict?'IDENTIDAD_DUPLICADA':
        /error|fail|conflict|missing|unavailable|stale|not_ready|not_loaded|unconfirmed/i.test(reason)?'ERROR_O_BLOQUEO':'IMAGEN_NO_VERIFICADA';
     if(conflict)phase='IDENTIDAD_DUPLICADA';
-    else if(!receipt&&!original&&manualBytes)phase='ASOCIADA_MANUAL_PENDIENTE_ENTREGA';
+    else if(manualBytes)phase='ASOCIADA_EN_MONITOR';
     jobs.push({project:task.project,commandId,id:task.target_id,revision:task.revision,
       createdAt:task.created_at||'',title:task.target_name||task.name||task.title||task.target_id,
-      phase,reason:safe(reason),originalSource:original?.source||null,originalSha:original?hash(original.bytes):null,
+      phase,reason:safe(reason),originalSource:original?.source||null,originalSha:manualBytes?hash(manualBytes):(original?hash(original.bytes):null),
       hasSecret:!!task.secret_dpapi,manualAssociation:manualBytes?{sha256:manual.sha256,confirmedAt:manual.confirmedAt,sourceFile:manual.sourceFile}:null,receiptState:receipt?safe(rec.state):null,
       conversationUrl:typeof task.conversation_url==='string'&&/^https:\/\/chatgpt\.com\/c\/[a-f0-9-]{10,100}$/i.test(task.conversation_url)?task.conversation_url:null});
   }
@@ -222,7 +206,7 @@ function inventory(base,{importDir=null,since=null}={}){
   const counts={total:jobs.length,received:jobs.filter(x=>x.phase==='RECIBIDA_CON_RECIBO').length,
     originalNotDelivered:jobs.filter(x=>x.phase==='ORIGINAL_LOCAL_SIN_ENTREGAR').length,
     blocked:jobs.filter(x=>x.phase==='ERROR_O_BLOQUEO'||x.phase==='IDENTIDAD_DUPLICADA').length,
-    notVerified:jobs.filter(x=>x.phase==='IMAGEN_NO_VERIFICADA').length,manualPending:jobs.filter(x=>x.phase==='ASOCIADA_MANUAL_PENDIENTE_ENTREGA').length,orphans:unassociated.length};
+    notVerified:jobs.filter(x=>x.phase==='IMAGEN_NO_VERIFICADA').length,manualAssociated:jobs.filter(x=>x.phase==='ASOCIADA_EN_MONITOR').length,orphans:unassociated.length};
   return {generatedAt:new Date().toISOString(),scope:'local_windows_enrollments_and_files_only',since,counts,jobs,orphans:unassociated};
 }
 function receiver(base){const file=path.join(base,'TTImageApprovalReceiver.cjs');if(!fs.existsSync(file))throw Error('MISSING_APPROVAL_RECEIVER');return require(file)}
@@ -232,44 +216,8 @@ function decryptDPAPI(value){
   const code='$s=ConvertTo-SecureString ([Console]::In.ReadToEnd());$p=[Runtime.InteropServices.Marshal]::SecureStringToBSTR($s);try{[Console]::Write([Runtime.InteropServices.Marshal]::PtrToStringBSTR($p))}finally{[Runtime.InteropServices.Marshal]::ZeroFreeBSTR($p)}';
   return execFileSync('powershell.exe',['-NoProfile','-NonInteractive','-Command',code],{input:value,encoding:'utf8',windowsHide:true,timeout:15000,maxBuffer:65536}).trim();
 }
-async function deliver(base,{limit=15,fetcher=undefined,since=null}={}){
-  // Manual operation only. Same private-ingest endpoint and same strict identity as the current receiver.
-  const out=[];
-  {
-    const {map,duplicates}=enrollmentFiles(base),app=receiver(base),inbox=require(path.join(base,'TTImagesImmediateInbox.cjs'));
-    for(const task of [...map.values()].filter(t=>eligibleDate(t,since)).sort((a,b)=>String(b.created_at||'').localeCompare(String(a.created_at||'')))){
-      if(out.length>=limit)break;
-      if(duplicates.has(task.command_id)||!task.secret_dpapi||!storedOriginal(base,task)||fs.existsSync(path.join(dirs(base).receipts,task.command_id+'.json')))continue;
-      let status='ERROR';
-      try{
-        const item=await app.editorialJob(source(base,task.project),task);
-        const meta=app.metadata(task,item);
-        const local=storedOriginal(base,task);if(!local)throw Error('ORIGINAL_NOT_VERIFIED');
-        // A receiver-cache PNG also has an episode SHA that must match the
-        // freshly reconstructed editorial episode. Do not trust its name alone.
-        if(local.source==='original-cache'){
-          const verified=app.cachedOriginal(base,task,meta);
-          if(!verified||hash(verified)!==hash(local.bytes))throw Error('CACHE_EPISODE_CONFLICT');
-        }else{
-          const staged=inbox.loadStaged(base,task);
-          if(!staged||hash(staged)!==hash(local.bytes))throw Error('STAGED_EPISODE_CONFLICT');
-        }
-        // Both editorial job, episode SHA, enrollment and original SHA verified just before upload.
-        const fresh=await app.editorialJob(source(base,task.project),task);
-        if(app.metadata(task,fresh).episodeFingerprint!==meta.episodeFingerprint)throw Error('EDITORIAL_EPISODE_CHANGED');
-        const secret=decryptDPAPI(task.secret_dpapi);
-        const receipt=await app.send(meta,local.bytes,secret,fetcher);
-        if(hash(local.bytes)!==receipt.rasterSHA256)throw Error('RECEIPT_SHA_MISMATCH');
-        inbox.saveReceipt(base,task,meta,receipt);
-        const proof=inbox.readReceipt(base,task);
-        if(!proof||proof.rasterSHA256!==hash(local.bytes))throw Error('RECEIPT_NOT_DURABLE');
-        status='DELIVERED_'+receipt.state;
-      }catch(e){status=/^[A-Z0-9_]+$/.test(String(e.message))?String(e.message):'DELIVERY_FAILED'}
-      out.push({project:task.project,commandId:task.command_id,result:status});
-    }
-  }
-  return out;
-}
+async function deliver(){throw Error('INBOX_DELIVERY_DISABLED_FOR_MONITOR')}
+
 class CDP{
   constructor(url){this.url=url;this.id=0;this.pending=new Map()}
   async open(){this.ws=new WebSocket(this.url);await new Promise((yes,no)=>{let t=setTimeout(()=>no(Error('CDP_TIMEOUT')),5000);this.ws.addEventListener('open',()=>{clearTimeout(t);yes()},{once:true});this.ws.addEventListener('error',()=>{clearTimeout(t);no(Error('CDP_UNAVAILABLE'))},{once:true})});this.ws.addEventListener('message',e=>{let m;try{m=JSON.parse(String(e.data))}catch{return}const p=this.pending.get(m.id);if(!p)return;this.pending.delete(m.id);clearTimeout(p.timer);m.error?p.no(Error('CDP_FAILED')):p.yes(m.result)})}
@@ -340,7 +288,7 @@ function serve(base,{port=8765,importDir=null,since=null}={}){
     const pathname=new URL(req.url,allowed).pathname;
     const heads={'Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff','Referrer-Policy':'no-referrer','X-Frame-Options':'DENY','Cross-Origin-Resource-Policy':'same-origin',
       'Content-Security-Policy':"default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'"};
-    if(req.method==='POST'&&['/api/associate','/api/deliver-manual'].includes(pathname)){
+    if(req.method==='POST'&&pathname==='/api/associate'){
       if(!importDir||req.headers.origin!==allowed&&req.headers.origin!==allowedLocalhost||
          req.headers['sec-fetch-site']==='cross-site'||
          req.headers['x-tt-fotos-action']!=='manual-editor-confirmation-v1'||
@@ -351,10 +299,7 @@ function serve(base,{port=8765,importDir=null,since=null}={}){
       req.on('data',chunk=>{raw+=chunk;if(raw.length>8192)req.destroy()});
       req.on('end',()=>{
         let body;try{body=JSON.parse(raw)}catch{res.writeHead(400,heads);return res.end()}
-        Promise.resolve().then(()=>pathname==='/api/associate'?
-          associateManual(base,importDir,body):
-          (body?.confirmation==='CONFIRMO_ENTREGA_MANUAL'&&COMMAND.test(body.commandId)?
-            deliverManual(base,body.commandId):Promise.reject(Error('EDITOR_CONFIRMATION_REQUIRED'))))
+         Promise.resolve().then(()=>associateManual(base,importDir,body))
          .then(result=>{res.writeHead(200,{...heads,'Content-Type':'application/json; charset=utf-8'});res.end(JSON.stringify({ok:true,result}))})
          .catch(err=>{const reason=String(err?.message||'UNEXPECTED_ERROR');res.writeHead(/CONFLICT|EXISTING|ALREADY|MISMATCH|CHANGED/.test(reason)?409:400,{...heads,'Content-Type':'application/json; charset=utf-8'});res.end(JSON.stringify({ok:false,error:/^[A-Z0-9_]{3,100}$/.test(reason)?reason:'ACTION_FAILED'}))})
       });
@@ -400,7 +345,18 @@ function serve(base,{port=8765,importDir=null,since=null}={}){
     }
     res.writeHead(404,heads);res.end();
   });
-  server.listen(port,'127.0.0.1',()=>console.log('TT_FOTOS_PANEL http://127.0.0.1:'+server.address().port+'/ (solo equipo local)'));
+  // Never kill existing processes: another TT Fotos (or any other program) may
+  // already own 8765. Safely choose the next free local port and print it.
+  let tried=0;
+  server.on('error',err=>{
+    if(err.code==='EADDRINUSE'&&port!==0&&tried<14&&port+tried<65535){
+      tried++;server.listen(port+tried,'127.0.0.1');return;
+    }
+    console.error('TT_FOTOS_PANEL_LISTEN_FAILED '+String(err.code||'ERROR'));
+    process.exitCode=1;
+  });
+  server.on('listening',()=>console.log('TT_FOTOS_PANEL http://127.0.0.1:'+server.address().port+'/ (solo equipo local, sin tocar bandeja iPhone)'));
+  server.listen(port,'127.0.0.1');
   return server;
 }
 async function main(){
@@ -412,12 +368,11 @@ async function main(){
   if(since&&(!DATE.test(since)||!Number.isFinite(Date.parse(since))))throw Error('INVALID_SINCE_DATE');
   if(args.includes('--rescue')){
     const captured=await capture(base,{limit,since,offset});
-    const delivered=await deliver(base,{limit,since});
-    console.log(JSON.stringify({capture:captured,delivery:delivered,counts:inventory(base,{importDir,since}).counts},null,2));
+    console.log(JSON.stringify({capture:captured,mode:'LOCAL_CAPTURE_ONLY_NO_IPHONE_DELIVERY',counts:inventory(base,{importDir,since}).counts},null,2));
   }else if(args.includes('--capture')){
     const result=await capture(base,{limit,since,offset});console.log(JSON.stringify({capture:result},null,2));
   }else if(args.includes('--deliver')){
-    const result=await deliver(base,{limit,since});console.log(JSON.stringify({delivery:result},null,2));
+    throw Error('INBOX_DELIVERY_DISABLED_FOR_MONITOR');
   }else if(args.includes('--serve')){
     serve(base,{importDir,since});
   }else {
