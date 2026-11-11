@@ -1,6 +1,38 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-11T17:15:17+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-11T16:15:46.804922+00:00",
+  "count": 1,
+  "items": [
+    {
+      "id": "red-review-1ff6bfa7374cdfcbeb1c",
+      "revision": 0,
+      "name": "Revisar novedades: Error",
+      "rank": 24,
+      "status": "preparing",
+      "requested_at": "2026-11-11T16:15:46.804922+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "4fc099aeb560",
+        "revision": 0,
+        "name": "Error",
+        "rank": 20,
+        "explanation": "TT#20 Error es tendencia porque las primeras hipótesis sobre el choque de Urda apuntan a un posible error humano tras fallar el sistema LZB de señalización; la causa aún no está confirmada oficialmente.\n#Urda #Adif #AltaVelocidad",
+        "explanation_sha256": "ffc22e44ffea4a37f59ba169c044080397bfef071d137ead11f078f7c4b12ece",
+        "explained_at": "2026-10-28T14:12:00+01:00",
+        "verification_sources": [
+          "https://elpais.com/espana/2026-10-28/por-que-han-chocado-dos-trenes-en-toledo.html",
+          "https://www.europapress.es/sociedad/noticia-ingeniero-apunta-fallo-humano-no-funcionar-sistema-automatico-senalizacion-causa-accidente-20261028104900.html",
+          "https://efe.com/espana/2026-10-28/causas-accidente-ferroviario-toledo/"
+        ],
+        "fingerprint": "cf73a39723e0ae124ebc2f701d33f8a9625b52a57080ce561ecf9e9d5e3770fa"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
