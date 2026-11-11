@@ -1,0 +1,12 @@
+{
+  "name": "tt-fotos-independent",
+  "version": "0.1.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "test": "node --test tests/*.test.mjs ../../site-patches/ttactualidad-fotos-review/cloud-v1/api.test.mjs",
+    "test:worker": "node --test tests/*.test.mjs",
+    "build:companion": "node scripts/build-companion.mjs"
+  },
+  "devDependencies": {"wrangler":"^4.0.0"}
+}
