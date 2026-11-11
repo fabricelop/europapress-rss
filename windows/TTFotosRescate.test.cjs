@@ -99,6 +99,7 @@ test('orphan image preview remains local and never changes associations',async t
  assert.equal((await fetch(url+'/api/orphan/immediate-originals/%2e%2e%2forphan-test.png')).status,404);
  assert.equal((await fetch(url+'/api/orphan/original-cache/orphan-test.png')).status,404);
 });
+
 test('two different valid PNGs under same command are not auto-selected',t=>{
  const base=makeFixture(t),root=path.join(base,'image-approval-receipts','original-cache');
  fs.mkdirSync(root,{recursive:true});
@@ -109,4 +110,97 @@ test('two different valid PNGs under same command are not auto-selected',t=>{
  const doc=moduleUnderTest.inventory(base);
  assert.equal(doc.counts.originalNotDelivered,0);
  assert.equal(doc.jobs[0].phase,'IMAGEN_NO_VERIFICADA');
+});
+test('date filter uses Madrid local calendar day and excludes unknown dates',t=>{
+ const base=makeFixture(t);
+ assert.equal(moduleUnderTest.inventory(base,{since:'2026-11-10'}).counts.total,1);
+ assert.equal(moduleUnderTest.inventory(base,{since:'2026-11-12'}).counts.total,0);
+ assert.equal(moduleUnderTest.madridDate('2026-11-09T23:30:00Z'),'2026-11-10');
+ assert.equal(moduleUnderTest.eligibleDate({created_at:'2026-11-09T23:30:00Z'},'2026-11-10'),true);
+ assert.equal(moduleUnderTest.eligibleDate({created_at:'2026-11-09T22:30:00Z'},'2026-11-10'),false);
+ assert.throws(()=>moduleUnderTest.inventory(base,{since:'yesterday'}),/INVALID_SINCE_DATE/);
+});
+test('manual attribution preserves downloaded PNG with exact SHA and editorial ID',t=>{
+ const base=makeFixture(t),dir=path.join(base,'imports');fs.mkdirSync(dir);
+ const name='Descarga-Captura.png';fs.writeFileSync(path.join(dir,name),png);
+ // A preserved exact original takes priority over manual association.
+ assert.throws(()=>moduleUnderTest.associateManual(base,dir,{file:name,commandId:command,sha256:digest,confirmation:'CONFIRMO_ASOCIACION_MANUAL'}),/EXACT_ORIGINAL_ALREADY_AVAILABLE/);
+ const staged=path.join(base,'image-approval-receipts','immediate-originals');
+ fs.rmSync(path.join(staged,command+'.png'));fs.rmSync(path.join(staged,command+'.json'));
+ const link=moduleUnderTest.associateManual(base,dir,{file:name,commandId:command,sha256:digest,confirmation:'CONFIRMO_ASOCIACION_MANUAL'});
+ assert.equal(link.editorialId,'123456789abc');assert.equal(link.sha256,digest);
+ assert.equal(link.provenance,'editor_manual_selection_from_download');
+ assert.equal(moduleUnderTest.inventory(base,{importDir:dir}).counts.manualPending,1);
+ assert.equal(moduleUnderTest.inventory(base,{importDir:dir}).orphans[0].phase,'ASOCIADA_MANUAL');
+ assert.equal(moduleUnderTest.readManualLinks(base).length,1);
+ assert.equal(moduleUnderTest.associateManual(base,dir,{file:name,commandId:command,sha256:digest,confirmation:'CONFIRMO_ASOCIACION_MANUAL'}).sha256,digest);
+ assert(fs.existsSync(path.join(base,'image-approval-receipts','manual-originals',digest+'.png')));
+});
+test('manual attribution requires explicit confirmation, matching hash and unique job',t=>{
+ const base=makeFixture(t),dir=path.join(base,'imports');fs.mkdirSync(dir);
+ fs.writeFileSync(path.join(dir,'candidate.png'),png);
+ const staged=path.join(base,'image-approval-receipts','immediate-originals');
+ fs.rmSync(path.join(staged,command+'.png'));fs.rmSync(path.join(staged,command+'.json'));
+ const item={file:'candidate.png',commandId:command,sha256:digest};
+ assert.throws(()=>moduleUnderTest.associateManual(base,dir,item),/EDITOR_CONFIRMATION_REQUIRED/);
+ assert.throws(()=>moduleUnderTest.associateManual(base,dir,{...item,confirmation:'CONFIRMO_ASOCIACION_MANUAL',sha256:'0'.repeat(64)}),/IMPORTED_PNG_HASH_CHANGED/);
+ assert.throws(()=>moduleUnderTest.associateManual(base,dir,{...item,confirmation:'CONFIRMO_ASOCIACION_MANUAL',file:'../candidate.png'}),/BAD_IMPORT_NAME/);
+ assert.equal(moduleUnderTest.readManualLinks(base).length,0);
+});
+test('local web monitor lists recent jobs and accepts only confirmed same-origin associations',async t=>{
+ const base=makeFixture(t),dir=path.join(base,'imports');fs.mkdirSync(dir);
+ const source=path.join(dir,'gag.png');fs.writeFileSync(source,png);
+ const staged=path.join(base,'image-approval-receipts','immediate-originals');
+ fs.rmSync(path.join(staged,command+'.png'));fs.rmSync(path.join(staged,command+'.json'));
+ const server=moduleUnderTest.serve(base,{port:0,importDir:dir});
+ t.after(()=>new Promise(resolve=>server.close(resolve)));
+ if(!server.listening)await new Promise(resolve=>server.once('listening',resolve));
+ const url='http://127.0.0.1:'+server.address().port;
+ assert.equal((await fetch(url+'/api/status?since=2026-11-12').then(x=>x.json())).counts.total,0);
+ assert.equal((await fetch(url+'/api/status?since=2026-11-10').then(x=>x.json())).counts.total,1);
+ const body={file:'gag.png',commandId:command,sha256:digest,confirmation:'CONFIRMO_ASOCIACION_MANUAL'};
+ const headers={'content-type':'application/json','x-tt-fotos-action':'manual-editor-confirmation-v1',Origin:url};
+ assert.equal((await fetch(url+'/api/associate',{method:'POST',headers:{...headers,Origin:'https://evil.example'},body:JSON.stringify(body)})).status,403);
+ assert.equal((await fetch(url+'/api/associate',{method:'POST',headers,body:JSON.stringify({...body,confirmation:'NO'})})).status,400);
+ const response=await fetch(url+'/api/associate',{method:'POST',headers,body:JSON.stringify(body)});
+ assert.equal(response.status,200);assert((await response.json()).ok);
+ assert.equal((await fetch(url+'/api/manual-original/'+command)).status,200);
+ assert.equal((await fetch(url+'/api/status?since=2026-11-10').then(x=>x.json())).counts.manualPending,1);
+ // No invisible auto delivery; this endpoint requires an additional explicit click.
+ assert.equal((await fetch(url+'/api/deliver-manual',{method:'POST',headers,body:JSON.stringify({commandId:command})})).status,400);
+ assert.equal((await fetch(url+'/api/deliver-manual',{method:'POST',headers,body:JSON.stringify({commandId:command,confirmation:'CONFIRMO_ENTREGA_MANUAL'})})).status,400); // missing private receiver in fixture
+ assert(!fs.existsSync(path.join(base,'image-approval-receipts',command+'.json')));
+});
+test('manual confirmed association can be delivered only through a second explicit step',async t=>{
+ const base=makeFixture(t),dir=path.join(base,'imports');fs.mkdirSync(dir);
+ fs.writeFileSync(path.join(dir,'foto-original.png'),png);
+ const staged=path.join(base,'image-approval-receipts','immediate-originals');
+ fs.rmSync(path.join(staged,command+'.png'));fs.rmSync(path.join(staged,command+'.json'));
+ moduleUnderTest.associateManual(base,dir,{file:'foto-original.png',commandId:command,sha256:digest,confirmation:'CONFIRMO_ASOCIACION_MANUAL'});
+ let sends=0;
+ const meta={project:'ttittulares',editorialId:'123456789abc',revision:1,commandId:command,episodeFingerprint:'f'.repeat(64)};
+ const sent={id:'b'.repeat(64),rasterSHA256:digest,state:'pending'};
+ const fakeReceiver={editorialJob:async()=>({}),metadata:()=>meta};
+ const receiptFile=path.join(base,'image-approval-receipts',command+'.json');
+ const fakeInbox={
+   saveReceipt:()=>fs.writeFileSync(receiptFile,JSON.stringify({project:'ttittulares',commandId:command,editorialId:'123456789abc',revision:1,...sent})),
+   readReceipt:()=>JSON.parse(fs.readFileSync(receiptFile,'utf8'))};
+ const result=await moduleUnderTest.deliverManual(base,command,{getReceiver:()=>fakeReceiver,getSource:()=>({}),getInbox:()=>fakeInbox,readSecret:()=>('x'.repeat(40)),send:async(given,bytes,secret)=>{
+   sends++;assert.deepEqual(given,meta);assert.equal(crypto.createHash('sha256').update(bytes).digest('hex'),digest);
+   assert.equal(secret.length,40);return sent}});
+ assert.equal(sends,1);assert.equal(result.result,'DELIVERED_pending');
+ assert.equal(moduleUnderTest.inventory(base,{importDir:dir}).counts.received,1);
+ await assert.rejects(()=>moduleUnderTest.deliverManual(base,command),/EXISTING_RECEIPT_REPLACEMENT_NOT_SUPPORTED/);
+ assert.equal(sends,1);
+ assert(fs.existsSync(path.join(base,'image-approval-receipts','manual-originals',digest+'.png')));
+});
+test('import preview accepts safe Unicode filename without escaping outside import directory',async t=>{
+ const base=makeFixture(t),dir=path.join(base,'imports');fs.mkdirSync(dir);
+ const file='Borrasca Bruna — viñeta.png';fs.writeFileSync(path.join(dir,file),png);
+ const server=moduleUnderTest.serve(base,{port:0,importDir:dir});
+ t.after(()=>new Promise(resolve=>server.close(resolve)));
+ if(!server.listening)await new Promise(resolve=>server.once('listening',resolve));
+ const url='http://127.0.0.1:'+server.address().port;
+ assert.equal((await fetch(url+'/api/orphan/CARPETA_DESCARGAS/'+encodeURIComponent(file))).status,200);
+ assert.equal((await fetch(url+'/api/orphan/CARPETA_DESCARGAS/'+encodeURIComponent('../'+file))).status,404);
 });
