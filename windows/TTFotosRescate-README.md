@@ -65,3 +65,35 @@ node C:\TTiTTulares\TTFotosRescate.cjs --serve --base C:\TTiTTulares --import-di
 Si se pierde el inventario de inscripciones o el secreto DPAPI original, no inventar identidad, nueva revisión, SHA o credenciales. Documentar `ORIGINAL_HUERFANO_VERIFICADO` / `ORIGINAL_SIN_METADATOS_VERIFICABLES` y recuperarlo a la vista del editor. No modificar archivos de producción de los listeners ni reiniciar Chrome como parte del rescate.
 
 **Próxima prueba física imprescindible:** ejecutar `--scan` en Windows; comprobar el número real de PNG conservados sin recibo; ejecutar `--rescue` de forma controlada; confirmar recepción mediante bandeja APP y respuesta Site (no solo JSON local); repetir con un titular y una tendencia. Después ampliar a exportación/sync de ChatGPT Images para casos sin inscripción.
+
+
+## Versión V2 — 11 noviembre 2026 (filtro 10/11 y asociación manual)
+
+**Código confirmado en GitHub:** \`windows/TTFotosRescate.cjs\`, \`windows/TTFotosRescatePanel.html\`, \`windows/TTFotosRescate.test.cjs\` y el instalador offline \`windows/Instalar-TTFotos-Local.ps1\`. En el entorno de ensayo Linux con Node 22 se ejecutaron **16/16 pruebas** de los caminos seguros; **sin ejecución real en Windows ni verificación directa de la bandeja iPhone**.
+
+**Importante:** la captura original solo cubre inscripciones locales, PNG cacheados y conversaciones ChatGPT abiertas. La biblioteca completa de ChatGPT Imágenes no tiene API de inventario usada por este módulo. Por tanto 0 huérfanas en el PC no implica 0 imágenes sin entregar en ChatGPT.
+
+### Uso recomendado desde el 10/11/2026
+
+1. Detener el monitor anterior (PowerShell que escucha en el puerto 8765, \`Ctrl+C\`); NO reiniciar Chrome.
+2. Descargar y descomprimir el ZIP V2 de la conversación. Desde la carpeta extraída:
+   \`\`\`powershell
+   powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Instalar-TTFotos-Local.ps1 -Serve
+   \`\`\`
+   Crea \`C:\TTiTTulares\TTFotos-Importar\`, audita desde el día 10, conserva los scripts anteriores en .bak y abre \`http://127.0.0.1:8765/\`.
+3. En **«Desde»** elegir 10/11/2026, o modificar el calendario. Los contadores son **solo los trabajos desde ese día**; \`Todo el histórico\` restaura el inventario completo.
+4. Si aparece un PNG exacto sin entregar, probar en **otra PowerShell**:
+   \`\`\`powershell
+   node C:\TTiTTulares\TTFotosRescate.cjs --deliver --since 2026-11-10 --limit 15 --base C:\TTiTTulares
+   \`\`\`
+5. Para buscar imágenes dentro de conversaciones **ya abiertas** (sin generar):
+   \`\`\`powershell
+   node C:\TTiTTulares\TTFotosRescate.cjs --rescue --since 2026-11-10 --limit 8 --base C:\TTiTTulares
+   \`\`\`
+   El recuperador alterna los lotes mediante \`image-approval-receipts/tt-fotos-capture-cursor.json\` para no repetir eternamente los primeros ocho. \`--offset N\` permite una posición concreta. Un resultado \`NO_EXACT_ORIGINAL_VISIBLE\` no demuestra inexistencia de la imagen.
+6. Para **imágenes descargadas de ChatGPT Imágenes**, guarda el PNG en \`C:\TTiTTulares\TTFotos-Importar\`, pulsa Actualizar. Abajo aparece la miniatura; busca una noticia o tendencia, selecciona el ID/revisión, comprueba personalmente la correspondencia y pulsa **«Confirmar asociación»**. El sistema copia el original por SHA-256 a \`image-approval-receipts/manual-originals\` y registra una atribución editorial en \`tt-fotos-manual-links.json\`; no falsifica un recibo ni afirma haber verificado el origen de ImageGen.
+7. Busca arriba la ficha **«Asociada manualmente»** y pulsa **«Entregar PNG a bandeja»**. Se ejecuta una validación nueva de la identidad del encargo, su revisión y el episodio editorial contra GitHub, con el mismo endpoint de ingestión del inbox privado. Si el backend confirma la recepción y el recibo local se persiste, el estado pasa a recibido. El monitor **no** aprueba ni publica imágenes.
+
+La reasignación desde un PNG descargado es explícitamente **atribución humana**. Si el encargo ya tiene recibo o perdió la credencial DPAPI, no se sobrescribe otra imagen: queda pendiente una operación autenticada separada del Site. Aún no está demostrada una semántica «última imagen distinta reemplaza a la anterior».
+
+La API del monitor local incluye \`GET /api/status?since=YYYY-MM-DD\`, \`POST /api/associate\` y \`POST /api/deliver-manual\` con confirmación y comprobaciones de origen del mismo servidor. **No expone secretos ni imágenes a GitHub** y no acepta asociaciones por apariencia.
