@@ -7,21 +7,27 @@
   "previous_run_id": "tr-1794380172256-manual",
   "command_id": "tr-autoguard-1794381666",
   "source": "chat",
-  "status": "success",
-  "phase": "persisting",
+  "status": "RUNNING",
+  "phase": "investigating",
   "started_at": "2026-11-11T08:22:00+01:00",
-  "updated_at": "2026-11-11T08:29:20+01:00",
-  "current": 1,
-  "total": 3,
-  "trend_id": "142a2383c743",
-  "title": "Iros",
-  "queue_complete": true,
+  "updated_at": "2026-11-11T08:30:00+01:00",
+  "current": 3,
+  "total": 5,
+  "trend_id": "red-review-1187cef2d097108e5d0a",
+  "title": "Revisar novedades: #VotoUtilEsPodemos",
+  "queue_complete": false,
   "processed_ids": [
     "142a2383c743"
   ],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-1187cef2d097108e5d0a",
+    "red-review-0134840f3bb98f7e1a38"
+  ],
+  "remaining_active_ids": [
+    "red-review-1187cef2d097108e5d0a",
+    "red-review-0134840f3bb98f7e1a38"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 3,
@@ -187,7 +193,7 @@
     "maintenance": 2,
     "pending": 0
   },
-  "message": "lena r0 tiene resultado validado pendiente de convergencia. Persistiendo Iros r0 tras validación JIT.",
+  "message": "Revisando novedades: #VotoUtilEsPodemos. La presencia actual está confirmada; verificando si existe un hecho posterior e independiente.",
   "history": [
     {
       "run_id": "tr-1794327332740-manual",
