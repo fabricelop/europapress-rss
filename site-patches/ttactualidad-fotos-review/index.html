@@ -31,109 +31,143 @@ footer{border-top:1px solid var(--line);margin-top:26px;padding-top:17px;color:v
 <script>
 'use strict';
 (()=>{
-  // CONTRATO PROPUESTO: este archivo debe alojarse en el mismo origen privado de TTActualidad.
-  // No hay llamadas a servicios de terceros ni tokens insertados en el HTML.
-  // La API de revisión no está implementada por este archivo: sin ella, se bloquea toda decisión.
-  const API='/api/image-inbox/v1/review';
+  // Frontend de revisión para integrar dentro del MISMO Site privado TTActualidad.
+  // Rutas REALES documentadas en la APP iPhone. Sin secretos en JavaScript.
+  // El Site debe proporcionar una sesión/autorización web que delegue al mismo
+  // OAuth de editor que la APP; cookies anónimas no son suficientes.
+  const API='/api/image-inbox/v1/images';
   const $=id=>document.getElementById(id);
-  const state={items:[],filter:'all',busy:false,csrf:null,after:null,approved:0,rejected:0,choice:null};
-  const text=(t)=>String(t==null?'':t);
-  const validHex=s=>/^[a-f0-9]{64}$/i.test(text(s));
-  const validId=s=>/^[a-zA-Z0-9_.-]{3,160}$/.test(text(s));
-  const showError=s=>{const e=$('notice');e.hidden=false;e.textContent=text(s)};
-  const clearError=()=>{$('notice').hidden=true;$('notice').textContent=''};
-  const time=s=>{const d=new Date(s||0);return Number.isFinite(d.valueOf())?d.toLocaleString('es-ES',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'—'};
-  async function api(path,opts={}){
-    const ctrl=new AbortController();const timeout=setTimeout(()=>ctrl.abort(),15000);
+  const state={items:[],filter:'all',busy:false,selected:null,approved:0,rejected:0,previews:new Map(),verified:new Set()};
+  const hex64=s=>/^[a-f0-9]{64}$/i.test(String(s||''));
+  const text=v=>String(v==null?'':v);
+  const note=m=>{const n=$('notice');n.hidden=false;n.textContent=text(m)};
+  const clear=()=>{$('notice').hidden=true;$('notice').textContent=''};
+  const stamp=t=>{const d=new Date(t||0);return Number.isFinite(d.getTime())?d.toLocaleString('es-ES',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'—'};
+  const valid=x=>x&&hex64(x.id)&&x.identity&&
+    ['ttittulares','ttendencias'].includes(x.identity.project)&&
+    /^[a-zA-Z0-9_.-]{3,160}$/.test(String(x.identity.editorialId||''))&&
+    /^[a-zA-Z0-9_.-]{3,180}$/.test(String(x.identity.commandId||''))&&
+    Number.isInteger(x.identity.revision)&&x.identity.revision>=0&&
+    hex64(x.identity.episodeFingerprint)&&hex64(x.identity.rasterSHA256)&&
+    typeof x.title==='string'&&(!x.state||x.state==='pending');
+  const el=(tag,cls,s)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(s!=null)n.textContent=text(s);return n};
+  async function request(path,{method='GET',body=null,accept='application/json'}={}){
+    const ctrl=new AbortController(),timer=setTimeout(()=>ctrl.abort(),27000);
     try{
-      const r=await fetch(path,{...opts,mode:'same-origin',redirect:'error',credentials:'same-origin',cache:'no-store',signal:ctrl.signal,headers:{Accept:'application/json',...(opts.headers||{})}});
-      let j=null;try{j=await r.json()}catch{}
-      if(!r.ok){const er=new Error('HTTP '+r.status+(j?.error?': '+text(j.error).slice(0,120):''));er.status=r.status;throw er}
-      if(!j||j.ok!==true)throw Error('Respuesta sin confirmación verificable');
-      return j;
-    }finally{clearTimeout(timeout)}
+      const r=await fetch(path,{method,headers:{Accept:accept, ...(body?{'Content-Type':'application/json'}:{})},
+        body:body?JSON.stringify(body):undefined,credentials:'same-origin',cache:'no-store',redirect:'error',signal:ctrl.signal});
+      if(r.status===401)throw Error('AUTH_REQUIRED: la sesión web debe autorizarse con OAuth GitHub del editor');
+      if(r.status===403)throw Error('AUTH_DENIED: la cuenta no tiene permiso de editor');
+      if(r.status===409)throw Error('IDENTITY_CONFLICT: la ficha o la imagen ha cambiado');
+      if(!r.ok)throw Error('HTTP '+r.status);
+      return r;
+    }finally{clearTimeout(timer)}
   }
-  function isItem(x){
-    return x&&validId(x.receipt_id)&&validId(x.command_id)&&validId(x.editorial_id)&&
-      ['ttittulares','ttendencias'].includes(x.project)&&Number.isInteger(x.revision)&&x.revision>=0&&
-      validHex(x.raster_sha256)&&x.status==='pending'&&typeof x.title==='string'&&
-      typeof x.image_url==='string'&&x.image_url.startsWith('/api/image-inbox/v1/review/')&&
-      !x.image_url.includes('//')&&!x.image_url.includes('..');
+  async function original(item){
+    if(!valid(item))throw Error('Identidad no válida');
+    // Misma ruta real que utiliza ImageApprovalInbox.swift.
+    const r=await request(API+'/'+encodeURIComponent(item.id)+'/original',{accept:'image/png'});
+    const bytes=await r.arrayBuffer();
+    if(bytes.byteLength<24||bytes.byteLength>11000000)throw Error('PNG no verificable');
+    const magic=new Uint8Array(bytes,0,8);
+    if(magic.join(',')!=='137,80,78,71,13,10,26,10')throw Error('No es un PNG original');
+    const actual=[...new Uint8Array(await crypto.subtle.digest('SHA-256',bytes))].map(n=>n.toString(16).padStart(2,'0')).join('');
+    if(actual!==item.identity.rasterSHA256.toLowerCase())throw Error('SHA del original no coincide');
+    const url=URL.createObjectURL(new Blob([bytes],{type:'image/png'}));
+    const old=state.previews.get(item.id);if(old)URL.revokeObjectURL(old);
+    state.previews.set(item.id,url);state.verified.add(item.id);return url;
   }
-  function node(tag,cls,label){let n=document.createElement(tag);if(cls)n.className=cls;if(label!=null)n.textContent=text(label);return n}
   function draw(){
-    $('pending').textContent=state.items.length;$('approved').textContent=state.approved;$('rejected').textContent=state.rejected;
-    const dst=$('list');dst.replaceChildren();
-    const shown=state.items.filter(x=>state.filter==='all'||x.project===state.filter);
-    if(!shown.length){dst.append(node('div','empty',state.items.length?'No hay imágenes pendientes en este proyecto.':'No existen imágenes pendientes confirmadas.'));return}
-    const fragment=document.createDocumentFragment();
-    for(const i of shown){
-      const card=node('article','card'),fig=node('figure'),img=node('img');
-      img.loading='lazy';img.alt='Imagen pendiente: '+i.title;img.src=i.image_url;
-      img.addEventListener('error',()=>{fig.replaceChildren(node('span','','Vista previa privada no disponible'))});
+    $('pending').textContent=state.items.length;
+    $('approved').textContent=state.approved;$('rejected').textContent=state.rejected;
+    const dest=$('list');dest.replaceChildren();
+    const shown=state.items.filter(x=>state.filter==='all'||x.identity.project===state.filter);
+    if(!shown.length){dest.append(el('div','empty',state.items.length?'Sin pendientes de este proyecto.':'No se han cargado candidatos pendientes.'));return}
+    const frag=document.createDocumentFragment();
+    for(const item of shown){
+      const card=el('article','card'),fig=el('figure'),img=el('img');
+      img.loading='lazy';img.alt='Original privado: '+item.title;
+      if(state.previews.has(item.id))img.src=state.previews.get(item.id);
+      else img.alt='El original todavía no se ha verificado';
       fig.append(img);
-      const body=node('div','caption'),meta=node('div','meta',(i.project==='ttendencias'?'TENDENCIA':'NOTICIA')+' · r'+i.revision+' · '+time(i.received_at));
-      body.append(meta,node('h3','',i.title),node('p','id',i.editorial_id+' · '+i.command_id));
-      const buttons=node('div','actions'),yes=node('button','primary','Aprobar'),no=node('button','reject','Rechazar');
-      yes.type='button';no.type='button';yes.disabled=no.disabled=state.busy;
-      yes.addEventListener('click',()=>choose(i,'approve'));no.addEventListener('click',()=>choose(i,'reject'));
-      buttons.append(yes,no);card.append(fig,body,buttons);fragment.append(card);
+      const cap=el('div','caption');
+      cap.append(el('div','meta',(item.identity.project==='ttendencias'?'TENDENCIA':'NOTICIA')+
+        ' · revisión '+item.identity.revision+' · '+stamp(item.createdAt)),el('h3','',item.title),
+        el('p','id',item.identity.editorialId+' · '+item.identity.commandId));
+      const actions=el('div','actions'),approve=el('button','primary','Aprobar'),reject=el('button','reject','Rechazar');
+      approve.type=reject.type='button';
+      approve.disabled=reject.disabled=state.busy||!state.verified.has(item.id);
+      approve.title=reject.title=state.verified.has(item.id)?'Decidir con verificación SHA':'Verifica primero el original PNG';
+      approve.addEventListener('click',()=>choose(item,'approve'));
+      reject.addEventListener('click',()=>choose(item,'reject'));
+      actions.append(approve,reject);card.append(fig,cap,actions);frag.append(card);
+      if(!state.verified.has(item.id)){
+        const verify=el('button','neutral','Comprobar PNG original');
+        verify.type='button';verify.disabled=state.busy;
+        verify.addEventListener('click',async()=>{
+          verify.disabled=true;verify.textContent='Verificando original…';
+          try{await original(item);clear()}catch(e){note('No se ha podido verificar '+item.title+': '+e.message)}
+          finally{draw()}
+        });
+        cap.append(verify);
+      }
     }
-    dst.append(fragment);
+    dest.append(frag);
   }
-  async function reload(){
-    if(state.busy)return;state.busy=true;$('reload').disabled=true;clearError();
+  async function load(){
+    if(state.busy)return;state.busy=true;clear();$('reload').disabled=true;
     try{
-      const d=await api(API+'?limit=100'+(state.after?'&after='+encodeURIComponent(state.after):''));
-      if(d.schema!=='tt-image-review-v1'||!Array.isArray(d.items)||typeof d.csrf_token!=='string'||d.csrf_token.length<16)throw Error('La API de revisión no ha devuelto el contrato esperado');
-      if(d.items.some(x=>!isItem(x)))throw Error('Hay expedientes sin identidad o revisión verificable');
-      state.items=d.items;state.csrf=d.csrf_token;
-    }catch(e){state.csrf=null;state.items=[];showError(
-      e.status===401?'Inicia sesión en TTActualidad para acceder a la bandeja privada.':
-      e.status===403?'Tu sesión no tiene permiso de aprobación.':
-      'La API de aprobación privada todavía no está disponible o no es verificable ('+e.message+'). No se ejecutan decisiones.')}
-    finally{state.busy=false;$('reload').disabled=false;draw()}
+      const r=await request(API);
+      const data=await r.json();
+      if(!Array.isArray(data.items)||data.items.some(x=>!valid(x)))throw Error('El contrato privado no coincide con la APP');
+      const oldIds=new Set(state.items.map(x=>x.id)),nextIds=new Set(data.items.map(x=>x.id));
+      for(const [id,url]of state.previews){if(!nextIds.has(id)){URL.revokeObjectURL(url);state.previews.delete(id);state.verified.delete(id)}}
+      state.items=data.items;
+      if(!oldIds.size&&data.items.length===0)clear();
+    }catch(e){state.items=[];state.verified.clear();
+      for(const url of state.previews.values())URL.revokeObjectURL(url);state.previews.clear();
+      note('No hay una sesión autorizada o el backend no responde: '+e.message+'. No se habilita ninguna aprobación.');
+    }finally{state.busy=false;$('reload').disabled=false;draw()}
   }
   function choose(item,action){
-    if(state.busy||!state.csrf||!state.items.includes(item))return;
-    state.choice={item,action};
-    $('confirm-title').textContent=action==='approve'?'Aprobar imagen':'Rechazar imagen';
-    $('confirm-body').textContent=(action==='approve'?'Confirmar la aprobación de ':'Confirmar el rechazo de ')+item.title+' (revisión '+item.revision+'). Esta acción afecta únicamente a la imagen y no publica en redes sociales.';
-    $('reason').value='';$('reason').style.display=$('reason-label').style.display=action==='reject'?'block':'none';
+    if(state.busy||!state.verified.has(item.id)||!state.items.includes(item))return;
+    state.selected={item,action};
+    $('confirm-title').textContent=action==='approve'?'Aprobar imagen original':'Rechazar imagen original';
+    $('confirm-body').textContent=item.title+' · '+item.identity.project+' r'+item.identity.revision+
+      '. La decisión se enviará al backend privado original de TTActualidad; no publicará en redes sociales.';
+    $('reason').value='';$('reason').style.display=$('reason-label').style.display='none';
     $('apply').textContent=action==='approve'?'Confirmar aprobación':'Confirmar rechazo';
-    $('apply').className=action==='approve'?'primary':'reject';
-    $('confirm').showModal();
+    $('apply').className=action==='approve'?'primary':'reject';$('confirm').showModal();
   }
   async function decide(){
-    if(state.busy||!state.choice||!state.csrf)return;
-    const {item,action}=state.choice;state.choice=null;state.busy=true;$('apply').disabled=true;$('confirm').close();draw();
-    clearError();
-    const idempotency='web-'+crypto.randomUUID();
-    const payload={receipt_id:item.receipt_id,project:item.project,editorial_id:item.editorial_id,
-      command_id:item.command_id,revision:item.revision,raster_sha256:item.raster_sha256,
-      expected_status:'pending',action,idempotency_key:idempotency,
-      ...(action==='reject'?{reason:$('reason').value.trim()}: {})};
-    let decisionError='';
+    if(!state.selected||state.busy)return;
+    const {item,action}=state.selected;state.selected=null;$('confirm').close();
+    state.busy=true;$('apply').disabled=true;draw();let message='';
     try{
-      const d=await api(API+'/decision',{method:'POST',headers:{'Content-Type':'application/json','X-TT-CSRF':state.csrf,'Idempotency-Key':idempotency},body:JSON.stringify(payload)});
-      if(d.schema!=='tt-image-review-v1'||d.receipt_id!==item.receipt_id||
-        d.command_id!==item.command_id||d.editorial_id!==item.editorial_id||
-        d.revision!==item.revision||d.raster_sha256!==item.raster_sha256||
-        !['approved_awaiting_publication','published','rejected'].includes(d.status)||
-        (action==='approve'&&d.status==='rejected')||
-        (action==='reject'&&d.status!=='rejected'))throw Error('Respuesta de decisión no coincidente; revisar antes de repetir');
-      if(action==='approve')state.approved++;else state.rejected++;
-      state.items=state.items.filter(x=>x!==item);
-    }catch(e){
-      decisionError='No se ha podido confirmar la decisión de '+item.title+' ('+e.message+'). El expediente se conserva como pendiente hasta volver a consultar; si el envío fue ambiguo, no repitas sin comprobar.';
-    }finally{state.busy=false;$('apply').disabled=false;await reload();if(decisionError)showError(decisionError)}
+      if(!state.verified.has(item.id))throw Error('No hay verificación SHA');
+      // Contrato REAL de ImageApprovalInbox.swift: action + expectedIdentity.
+      const r=await request(API+'/'+encodeURIComponent(item.id)+'/decision',
+        {method:'POST',body:{action,expectedIdentity:item.identity}});
+      const d=await r.json();
+      if(action==='approve'){
+        if(d.state==='approved_awaiting_publication'){
+          message='Aprobación registrada, pero publicación APP/Site pendiente. La imagen conserva su estado hasta la verificación.';
+        }else if(d.state==='published'&&d.appVerified===true&&d.sitesVerified===true){
+          state.approved++;message='Imagen aprobada y verificada en APP y Site.';
+        }else throw Error('No consta doble verificación appVerified/sitesVerified');
+      }else{
+        if(d.state!=='rejected')throw Error('No se recibió confirmación de rechazo');
+        state.rejected++;message='Imagen rechazada; original privado conservado.';
+      }
+    }catch(e){message='DECISIÓN NO CONFIRMADA: '+e.message+'. Consulta de nuevo antes de repetir.'}
+    finally{state.busy=false;$('apply').disabled=false;await load();if(message)note(message)}
   }
-  $('confirmation-form').addEventListener('submit',()=>{state.choice=null});
+  $('confirmation-form').addEventListener('submit',()=>state.selected=null);
   $('apply').addEventListener('click',decide);
-  $('reload').addEventListener('click',reload);
+  $('reload').addEventListener('click',load);
   document.querySelectorAll('[data-project]').forEach(b=>b.addEventListener('click',()=>{
     state.filter=b.dataset.project;document.querySelectorAll('[data-project]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));draw();
   }));
-  reload();
+  load();
 })();
 </script></body></html>
