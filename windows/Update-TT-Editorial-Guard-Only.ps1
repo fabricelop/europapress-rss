@@ -11,7 +11,7 @@ $installerUrl='https://raw.githubusercontent.com/fabricelop/europapress-rss/main
 if(-not(Test-Path -LiteralPath $target)){throw 'TT-Editorial-Guard.js no existe. Nada modificado.'}
 $node=(Get-Command node.exe -ErrorAction Stop).Source
 $srcFile=Join-Path $env:TEMP ('tt-guard-installer-'+[guid]::NewGuid().ToString('N')+'.ps1')
-$stage=$target+'.hotfix-'+[guid]::NewGuid().ToString('N')+'.new'
+$stage=$target+'.hotfix-'+[guid]::NewGuid().ToString('N')+'.new.js'
 try {
  Invoke-WebRequest -UseBasicParsing -Uri $installerUrl -OutFile $srcFile -TimeoutSec 35 -ErrorAction Stop
  $text=[IO.File]::ReadAllText($srcFile,[Text.Encoding]::UTF8)
