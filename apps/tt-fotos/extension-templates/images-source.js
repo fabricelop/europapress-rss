@@ -13,8 +13,10 @@
      const turns=[...document.querySelectorAll('[data-message-author-role]')];
      const i=turns.findIndex(turn=>turn.contains(img));
      if(i>=0 && turns[i].getAttribute('data-message-author-role')==='assistant'){
-       let previous=null;
-       for(let k=i-1;k>=0;k--){if(turns[k].getAttribute('data-message-author-role')==='user'){previous=turns[k];break}}
+       // Only an immediately preceding user message can supply the job
+       // marker. Skipping intervening assistant turns could attach an
+       // unrelated image to an earlier job from the same conversation.
+       const previous=i>0&&turns[i-1].getAttribute('data-message-author-role')==='user'?turns[i-1]:null;
        if(previous){const txt=String(previous.innerText||'');if(PREFIX.test(txt)){
           promptText=txt.slice(0,5000);kind='same_turn_image';
        }}
