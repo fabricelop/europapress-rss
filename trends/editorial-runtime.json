@@ -7,15 +7,15 @@
   "previous_run_id": "tr-1794359400000-manual",
   "command_id": "tr-1794359702232-manual",
   "source": "chat_manual",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-11T02:26:00+01:00",
-  "updated_at": "2026-11-11T02:26:00+01:00",
+  "updated_at": "2026-11-11T02:27:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": "TTendencias · pasada editorial manual",
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -50,29 +50,29 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Comprobando cola y reexplicaciones pendientes",
+  "activity": "Cierre completado",
   "last_started_at": "2026-11-11T02:26:00+01:00",
-  "last_completed_at": "2026-11-11T02:17:20+01:00",
+  "last_completed_at": "2026-11-11T02:27:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794359400000-manual",
+    "run_id": "tr-1794359702232-manual",
     "status": "DONE",
-    "started_at": "2026-11-11T02:10:00+01:00",
-    "finished_at": "2026-11-11T02:17:20+01:00",
-    "at": "2026-11-11T02:17:20+01:00",
+    "started_at": "2026-11-11T02:26:00+01:00",
+    "finished_at": "2026-11-11T02:27:00+01:00",
+    "at": "2026-11-11T02:27:00+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 11,
-      "observed": 11,
-      "closed": 11,
-      "explained": 4,
+      "attempted": 0,
+      "observed": 0,
+      "closed": 0,
+      "explained": 0,
       "problematic": 0,
-      "updates": 4,
-      "review_completed_no_distinct_event": 5,
-      "maintenance_reviews": 2,
-      "unchanged_reviews": 2,
+      "updates": 0,
+      "review_completed_no_distinct_event": 0,
+      "maintenance_reviews": 0,
+      "unchanged_reviews": 0,
       "continuity_updates": 0,
-      "distinct_updates": 4,
+      "distinct_updates": 0,
       "stale_reviews": 0,
       "unverified_reviews": 0,
       "anticipation_reviews": 0,
@@ -84,129 +84,16 @@
       "image_outbox_created": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 2
+      "concurrent_convergence": 0
     },
-    "processed_ids": [
-      "9bb66f6db260",
-      "83b95de4207a",
-      "de2affd54ea8",
-      "c56c6d14b811",
-      "cc4abcb818e1",
-      "0b149937cb24",
-      "52cb0b10c012",
-      "2dad362636c8",
-      "8cb7a58d1766"
-    ],
-    "converged_ids": [
-      "red-review-58055798e36278c69dd1",
-      "red-review-d45b2ff88beb4594b370"
-    ],
-    "outcomes": [
-      {
-        "id": "9bb66f6db260",
-        "revision": 0,
-        "name": "Broncano",
-        "outcome": "distinct_update",
-        "applied": true,
-        "apply_commit": "32adb756edf6777064410fb7c7e9f616520c523f",
-        "material_event_key": "broncano-disculpas-colau-la-revuelta-2026-11-10"
-      },
-      {
-        "id": "83b95de4207a",
-        "revision": 0,
-        "name": "Paola",
-        "outcome": "distinct_update",
-        "applied": true,
-        "apply_commit": "32adb756edf6777064410fb7c7e9f616520c523f",
-        "material_event_key": "lidlt11-hoguera-final-paola-sergio-2026-11-10"
-      },
-      {
-        "id": "de2affd54ea8",
-        "revision": 0,
-        "name": "#VotoUtilEsPodemos",
-        "outcome": "review_completed_no_distinct_event",
-        "applied": true,
-        "apply_commit": "32adb756edf6777064410fb7c7e9f616520c523f"
-      },
-      {
-        "id": "c56c6d14b811",
-        "revision": 0,
-        "name": "RTVE",
-        "outcome": "review_completed_no_distinct_event",
-        "applied": true,
-        "apply_commit": "32adb756edf6777064410fb7c7e9f616520c523f"
-      },
-      {
-        "id": "cc4abcb818e1",
-        "revision": 0,
-        "name": "Silvia Intxaurrondo",
-        "outcome": "distinct_update",
-        "applied": true,
-        "apply_commit": "32adb756edf6777064410fb7c7e9f616520c523f",
-        "material_event_key": "intxaurrondo-defiende-broncano-abascal-rtve-2026-11-10"
-      },
-      {
-        "id": "0b149937cb24",
-        "revision": 0,
-        "name": "Carzzy",
-        "outcome": "review_completed_no_distinct_event",
-        "applied": true,
-        "apply_commit": "32adb756edf6777064410fb7c7e9f616520c523f"
-      },
-      {
-        "id": "52cb0b10c012",
-        "revision": 0,
-        "name": "Superman",
-        "outcome": "review_completed_no_distinct_event",
-        "applied": true,
-        "apply_commit": "32adb756edf6777064410fb7c7e9f616520c523f"
-      },
-      {
-        "id": "2dad362636c8",
-        "revision": 0,
-        "name": "Gunn",
-        "outcome": "review_completed_no_distinct_event",
-        "applied": true,
-        "apply_commit": "32adb756edf6777064410fb7c7e9f616520c523f"
-      },
-      {
-        "id": "8cb7a58d1766",
-        "revision": 0,
-        "name": "Gaza",
-        "outcome": "distinct_update",
-        "applied": true,
-        "apply_commit": "32adb756edf6777064410fb7c7e9f616520c523f",
-        "material_event_key": "gaza-nuevos-ataques-muertes-2026-11-10"
-      },
-      {
-        "id": "red-review-58055798e36278c69dd1",
-        "revision": 0,
-        "name": "Revisar novedades: #VotoUtilEsPodemos",
-        "outcome": "unchanged",
-        "applied": true,
-        "via": "concurrent_convergence",
-        "source_id": "a1c1e16d0c24",
-        "apply_commit": "eedbccdb94df1936c8997f1f2ced3536266ed14e"
-      },
-      {
-        "id": "red-review-d45b2ff88beb4594b370",
-        "revision": 0,
-        "name": "Revisar novedades: RTVE",
-        "outcome": "unchanged",
-        "applied": true,
-        "via": "concurrent_convergence",
-        "source_id": "db1a689b7f75",
-        "apply_commit": "eedbccdb94df1936c8997f1f2ced3536266ed14e"
-      }
-    ],
+    "processed_ids": [],
+    "converged_ids": [],
+    "outcomes": [],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-1794359400000-manual cerrada 11/11. Cuatro reentradas (Broncano, Paola, Silvia Intxaurrondo y Gaza) quedaron como episodios materiales distintos; cinco (#VotoUtilEsPodemos, RTVE, Carzzy, Superman y Gunn) se cerraron sin acontecimiento independiente; dos revisiones de mantenimiento posteriores (#VotoUtilEsPodemos y RTVE) convergieron unchanged. Barrera final main: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain/review_red/anticipate activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
-    "absorbed_run_ids": [
-      "tr-1794359702232-manual"
-    ]
+    "message": "Pasada tr-1794359702232-manual cerrada 0/0 tras barrera JIT sobre main: editorial-queue=0 (updated_at 2026-11-11T02:20:59+01:00), mobile-decisions sin estados activos y búsquedas dirigidas sin preparing/update/rewrite_pending/reexplain/review_red/anticipate pendientes. No había trabajo editorial textual por procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794359702232-manual RUNNING. Lectura inicial: editorial-queue=0; se ejecuta barrera JIT completa antes de cerrar. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1794359702232-manual cerrada 0/0 tras barrera JIT sobre main: editorial-queue=0 (updated_at 2026-11-11T02:20:59+01:00), mobile-decisions sin estados activos y búsquedas dirigidas sin preparing/update/rewrite_pending/reexplain/review_red/anticipate pendientes. No había trabajo editorial textual por procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-10T15:55:00+01:00",
@@ -2414,6 +2301,45 @@
       "trend_id": null,
       "title": null,
       "message": "Pasada tr-1794359702232-manual RUNNING. Lectura inicial: editorial-queue=0; se ejecuta barrera JIT completa antes de cerrar. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794359702232-manual",
+      "status": "DONE",
+      "started_at": "2026-11-11T02:26:00+01:00",
+      "finished_at": "2026-11-11T02:27:00+01:00",
+      "at": "2026-11-11T02:27:00+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 0,
+        "observed": 0,
+        "closed": 0,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 0,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [],
+      "converged_ids": [],
+      "outcomes": [],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-1794359702232-manual cerrada 0/0 tras barrera JIT sobre main: editorial-queue=0 (updated_at 2026-11-11T02:20:59+01:00), mobile-decisions sin estados activos y búsquedas dirigidas sin preparing/update/rewrite_pending/reexplain/review_red/anticipate pendientes. No había trabajo editorial textual por procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "current_item": null,
@@ -4550,5 +4476,5 @@
     "eedbccdb94df1936c8997f1f2ced3536266ed14e"
   ],
   "outbox_commit": "d98a814e110f71921adab2ad984fde8a2a11979c",
-  "finished_at": null
+  "finished_at": "2026-11-11T02:27:00+01:00"
 }
