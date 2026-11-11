@@ -7,17 +7,20 @@
   "previous_run_id": "tr-1794383608191-manual",
   "command_id": "tr-1794383608191-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-11T08:59:00+01:00",
-  "updated_at": "2026-11-11T09:04:00+01:00",
-  "current": 3,
+  "updated_at": "2026-11-11T09:05:00+01:00",
+  "current": 4,
   "total": 4,
   "trend_id": "red-review-699878f590c166949eed",
   "title": "Revisando novedades: RTVE",
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [
-    "2fb6dd8f8fd5"
+    "54558781ed3f",
+    "2fb6dd8f8fd5",
+    "red-review-699878f590c166949eed",
+    "red-review-32f06663a61e8c297cb0"
   ],
   "converged_ids": [
     "radar-prepare-9744b43bb7230e95d56f",
@@ -27,50 +30,61 @@
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
-    "explained": 0,
+    "attempted": 4,
+    "observed": 4,
+    "closed": 4,
+    "explained": 2,
     "problematic": 0,
-    "updates": 0,
+    "updates": 1,
     "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 0,
-    "unchanged_reviews": 0,
-    "continuity_updates": 0,
+    "maintenance_reviews": 2,
+    "unchanged_reviews": 1,
+    "continuity_updates": 1,
     "distinct_updates": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
-    "anticipation_reviews": 2,
-    "anticipation_prepared": 1,
-    "anticipation_unverified": 1,
+    "anticipation_reviews": 0,
+    "anticipation_prepared": 0,
+    "anticipation_unverified": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 2
+    "concurrent_convergence": 0
   },
   "outcomes": [
     {
-      "id": "radar-prepare-9744b43bb7230e95d56f",
+      "id": "54558781ed3f",
       "revision": 0,
-      "name": "Radar · San Martín de Tours",
-      "outcome": "anticipation_prepared",
+      "name": "CCOO",
+      "outcome": "explained",
       "applied": true,
-      "via": "concurrent_convergence",
-      "apply_commit": "0d85519669b50387174332bb14e83c9caa765450",
-      "outbox_commit": "4c77fee274c6bec331e6023269a28beb79420e43"
+      "apply_commit": "54c080f0ccff00d23364164219966f11d800b81f"
     },
     {
-      "id": "radar-prepare-fb6874c679a988fc53b9",
+      "id": "2fb6dd8f8fd5",
       "revision": 0,
-      "name": "Radar · Fascistas",
-      "outcome": "anticipation_unverified",
+      "name": "Comegambas",
+      "outcome": "explained",
       "applied": true,
-      "via": "concurrent_convergence",
-      "apply_commit": "0d85519669b50387174332bb14e83c9caa765450",
-      "outbox_commit": "a4ddf28fa40c6822065929a4819dce6682eab804"
+      "apply_commit": "f5e25e1ccf9b2b60e0c740063d9b5b80da663564"
+    },
+    {
+      "id": "red-review-699878f590c166949eed",
+      "revision": 0,
+      "name": "Revisar novedades: RTVE",
+      "outcome": "continuity",
+      "applied": true
+    },
+    {
+      "id": "red-review-32f06663a61e8c297cb0",
+      "revision": 0,
+      "name": "Revisar novedades: Charles",
+      "outcome": "unchanged",
+      "applied": true,
+      "apply_commit": "bfd80e1e1a7bff328b20f09e77ab689655db0633"
     }
   ],
   "incident_count": 0,
@@ -284,23 +298,28 @@
       "trend_id": "red-review-32f06663a61e8c297cb0",
       "title": "Charles",
       "message": "Revisión JIT r0: la alerta máxima, las rachas >130 km/h y las clases telemáticas ya están recogidas en la explicación vigente. Las fuentes actuales no acreditan un desarrollo material posterior que cambie el motivo. ImageGen=0."
+    },
+    {
+      "at": "2026-11-11T09:05:00+01:00",
+      "phase": "closing",
+      "message": "Barrera final main: editorial-queue=0; 2 explicaciones ordinarias y 2 revisiones de mantenimiento cerradas. Sin preparing/update/rewrite_pending/reexplain activos en mobile-decisions. ImageGen=0; publicaciones=0."
     }
   ],
   "last_started_at": "2026-11-11T08:59:04+01:00",
-  "last_completed_at": "2026-11-11T08:59:05+01:00",
+  "last_completed_at": "2026-11-11T09:05:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794382196865-manual",
+    "run_id": "tr-1794383608191-manual",
     "status": "DONE",
-    "started_at": "2026-11-11T08:41:30+01:00",
-    "finished_at": "2026-11-11T08:44:00+01:00",
-    "total": 2,
-    "closed": 2,
-    "explained": 0,
-    "maintenance": 0,
+    "started_at": "2026-11-11T08:53:00+01:00",
+    "finished_at": "2026-11-11T09:05:00+01:00",
+    "total": 4,
+    "closed": 4,
+    "explained": 2,
+    "maintenance": 2,
     "pending": 0
   },
-  "message": "Validando RTVE r0 y buscando novedades sustanciales posteriores a la explicación vigente.",
+  "message": "Pasada tr-1794383608191-manual cerrada 4/4. CCOO r0 y Comegambas r0 quedaron explicadas. La revisión roja de RTVE actualizó en continuidad la misma polémica Broncano/Abascal por las disculpas posteriores de Broncano; Charles quedó unchanged al no existir un desarrollo material posterior a la alerta máxima, rachas >130 km/h y clases telemáticas ya recogidas. Barrera final main: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794327332740-manual",
@@ -3536,6 +3555,82 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-1794382196865-manual reanudada y cerrada 2/2 tras aparición de dos Radar. San Martín de Tours quedó anticipation_prepared; Fascistas quedó anticipation_unverified por ambigüedad causal actual. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794383608191-manual",
+      "status": "DONE",
+      "started_at": "2026-11-11T08:53:00+01:00",
+      "finished_at": "2026-11-11T09:05:00+01:00",
+      "at": "2026-11-11T09:05:00+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 4,
+        "observed": 4,
+        "closed": 4,
+        "explained": 2,
+        "problematic": 0,
+        "updates": 1,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 2,
+        "unchanged_reviews": 1,
+        "continuity_updates": 1,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [
+        "54558781ed3f",
+        "2fb6dd8f8fd5",
+        "red-review-699878f590c166949eed",
+        "red-review-32f06663a61e8c297cb0"
+      ],
+      "converged_ids": [],
+      "outcomes": [
+        {
+          "id": "54558781ed3f",
+          "revision": 0,
+          "name": "CCOO",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "54c080f0ccff00d23364164219966f11d800b81f"
+        },
+        {
+          "id": "2fb6dd8f8fd5",
+          "revision": 0,
+          "name": "Comegambas",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "f5e25e1ccf9b2b60e0c740063d9b5b80da663564"
+        },
+        {
+          "id": "red-review-699878f590c166949eed",
+          "revision": 0,
+          "name": "Revisar novedades: RTVE",
+          "outcome": "continuity",
+          "applied": true
+        },
+        {
+          "id": "red-review-32f06663a61e8c297cb0",
+          "revision": 0,
+          "name": "Revisar novedades: Charles",
+          "outcome": "unchanged",
+          "applied": true,
+          "apply_commit": "bfd80e1e1a7bff328b20f09e77ab689655db0633"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-1794383608191-manual cerrada 4/4. CCOO r0 y Comegambas r0 quedaron explicadas. La revisión roja de RTVE actualizó en continuidad la misma polémica Broncano/Abascal por las disculpas posteriores de Broncano; Charles quedó unchanged al no existir un desarrollo material posterior a la alerta máxima, rachas >130 km/h y clases telemáticas ya recogidas. Barrera final main: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "current_item": null,
@@ -6216,5 +6311,5 @@
     }
   ],
   "processed": [],
-  "finished_at": null
+  "finished_at": "2026-11-11T09:05:00+01:00"
 }
