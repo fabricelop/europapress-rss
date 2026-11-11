@@ -3,42 +3,38 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261111T071000-manual",
-  "previous_run_id": "tr-20261111T065500-manual",
-  "command_id": "tr-20261111T071000-manual",
+  "run_id": "tr-1794378391072-manual",
+  "previous_run_id": "tr-20261111T071000-manual",
+  "command_id": "tr-1794378391072-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-11T07:10:00+01:00",
-  "updated_at": "2026-11-11T07:16:00+01:00",
-  "current": 4,
-  "total": 4,
-  "trend_id": null,
-  "title": "Pasada editorial TTendencias",
-  "queue_complete": true,
-  "processed_ids": [
-    "2f0771d9deb3",
-    "6ddea9a1fe4c",
-    "5e271d05f834",
-    "312da905bf4e"
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-11T07:26:00+01:00",
+  "updated_at": "2026-11-11T07:26:00+01:00",
+  "current": 0,
+  "total": 2,
+  "trend_id": "6523d9f6ab30",
+  "title": "#CopaDelRey",
+  "queue_complete": false,
+  "processed_ids": [],
+  "converged_ids": [],
+  "remaining_ids": [
+    "6523d9f6ab30",
+    "c566b61409aa"
   ],
-  "converged_ids": [
-    "2f0771d9deb3",
-    "6ddea9a1fe4c",
-    "5e271d05f834",
-    "312da905bf4e"
+  "remaining_active_ids": [
+    "6523d9f6ab30",
+    "c566b61409aa"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 4,
-    "observed": 4,
-    "closed": 4,
-    "explained": 3,
+    "attempted": 0,
+    "observed": 2,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
-    "review_completed_no_distinct_event": 1,
+    "review_completed_no_distinct_event": 0,
     "maintenance_reviews": 0,
     "unchanged_reviews": 0,
     "continuity_updates": 0,
@@ -48,173 +44,28 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 4
+    "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "2f0771d9deb3",
-      "revision": 0,
-      "name": "Impedir",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_chat_direct",
-      "apply_commit": "e04b82e986ef23f425c825e20a401d0c22fed983"
-    },
-    {
-      "id": "6ddea9a1fe4c",
-      "revision": 0,
-      "name": "INFORMATIVO",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_chat_direct",
-      "apply_commit": "e04b82e986ef23f425c825e20a401d0c22fed983"
-    },
-    {
-      "id": "5e271d05f834",
-      "revision": 0,
-      "name": "Piquete",
-      "outcome": "explained",
-      "applied": true,
-      "via": "editorial_chat_direct",
-      "apply_commit": "e04b82e986ef23f425c825e20a401d0c22fed983"
-    },
-    {
-      "id": "312da905bf4e",
-      "revision": 0,
-      "name": "Barcelona",
-      "outcome": "review_completed_no_distinct_event",
-      "applied": true,
-      "via": "editorial_chat_direct",
-      "apply_commit": "e04b82e986ef23f425c825e20a401d0c22fed983"
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
   "activity": [
     {
-      "at": "2026-11-11T07:10:00+01:00",
+      "at": "2026-11-11T07:26:00+01:00",
       "phase": "preparing",
-      "message": "Cola inicial releída en main: 4 items; procesamiento JIT de antiguas a recientes. ImageGen=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-11T07:11:30+01:00",
-      "phase": "investigating",
-      "trend_id": "2f0771d9deb3",
-      "title": "Impedir",
-      "message": "Investigando límites legales de los piquetes del 11N"
-    },
-    {
-      "at": "2026-11-11T07:12:00+01:00",
-      "phase": "drafting",
-      "trend_id": "2f0771d9deb3",
-      "title": "Impedir",
-      "message": "Redacción factual verificada"
-    },
-    {
-      "at": "2026-11-11T07:12:15+01:00",
-      "phase": "remate_selection",
-      "trend_id": "2f0771d9deb3",
-      "title": "Impedir",
-      "message": "Remate seguro seleccionado"
-    },
-    {
-      "at": "2026-11-11T07:12:30+01:00",
-      "phase": "investigating",
-      "trend_id": "6ddea9a1fe4c",
-      "title": "INFORMATIVO",
-      "message": "Investigando piquetes informativos del arranque del 11N"
-    },
-    {
-      "at": "2026-11-11T07:12:50+01:00",
-      "phase": "drafting",
-      "trend_id": "6ddea9a1fe4c",
-      "title": "INFORMATIVO",
-      "message": "Redacción factual verificada"
-    },
-    {
-      "at": "2026-11-11T07:13:00+01:00",
-      "phase": "remate_selection",
-      "trend_id": "6ddea9a1fe4c",
-      "title": "INFORMATIVO",
-      "message": "Remate seguro seleccionado"
-    },
-    {
-      "at": "2026-11-11T07:13:10+01:00",
-      "phase": "investigating",
-      "trend_id": "5e271d05f834",
-      "title": "Piquete",
-      "message": "Investigando cargas policiales y balance de Mercamadrid"
-    },
-    {
-      "at": "2026-11-11T07:13:25+01:00",
-      "phase": "drafting",
-      "trend_id": "5e271d05f834",
-      "title": "Piquete",
-      "message": "Redacción factual verificada; sin remate por heridos"
-    },
-    {
-      "at": "2026-11-11T07:13:35+01:00",
-      "phase": "investigating",
-      "trend_id": "312da905bf4e",
-      "title": "Barcelona",
-      "message": "Verificando posible episodio nuevo frente a la explicación anterior"
-    },
-    {
-      "at": "2026-11-11T07:13:50+01:00",
-      "phase": "verifying",
-      "trend_id": "312da905bf4e",
-      "title": "Barcelona",
-      "message": "No se acredita un detonante material único para una nueva ficha"
-    },
-    {
-      "at": "2026-11-11T07:14:00+01:00",
-      "phase": "persisting",
-      "trend_id": "312da905bf4e",
-      "title": "Barcelona",
-      "message": "Persistiendo resultados mediante TTENDENCIAS_CHAT_OUTBOX_V1"
-    },
-    {
-      "at": "2026-11-11T07:14:00+01:00",
-      "phase": "verifying",
-      "trend_id": "2f0771d9deb3",
-      "title": "Impedir",
-      "message": "Texto aplicado y sincronizado en commit e04b82e986ef23f425c825e20a401d0c22fed983"
-    },
-    {
-      "at": "2026-11-11T07:14:00+01:00",
-      "phase": "verifying",
-      "trend_id": "6ddea9a1fe4c",
-      "title": "INFORMATIVO",
-      "message": "Texto aplicado y sincronizado en commit e04b82e986ef23f425c825e20a401d0c22fed983"
-    },
-    {
-      "at": "2026-11-11T07:14:00+01:00",
-      "phase": "verifying",
-      "trend_id": "5e271d05f834",
-      "title": "Piquete",
-      "message": "Texto aplicado y sincronizado en commit e04b82e986ef23f425c825e20a401d0c22fed983"
-    },
-    {
-      "at": "2026-11-11T07:14:00+01:00",
-      "phase": "verifying",
-      "trend_id": "312da905bf4e",
-      "title": "Barcelona",
-      "message": "Reentrada cerrada como no_distinct_event; sin nueva ficha ni imagen"
-    },
-    {
-      "at": "2026-11-11T07:16:00+01:00",
-      "phase": "closing",
-      "message": "Cola releída en main: 0; 4/4 resultados aplicados. ImageGen=0; publicaciones=0."
+      "trend_id": "6523d9f6ab30",
+      "title": "#CopaDelRey",
+      "message": "Cola inicial releída en main: 2 reelaboraciones revision 1; procesamiento JIT de antiguas a recientes. ImageGen=0; publicaciones=0."
     }
   ],
-  "last_started_at": "2026-11-11T07:10:00+01:00",
+  "last_started_at": "2026-11-11T07:26:00+01:00",
   "last_completed_at": "2026-11-11T07:16:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -227,7 +78,7 @@
     "maintenance": 0,
     "pending": 0
   },
-  "message": "Pasada tr-20261111T071000-manual cerrada 4/4. Impedir, INFORMATIVO y Piquete quedaron explained y sincronizados; Barcelona quedó review_completed/no_distinct_event sin nueva ficha ni imagen. Barrera final: editorial-queue=0 (updated_at 2026-11-11T07:14:00+01:00). Apply commit e04b82e986ef23f425c825e20a401d0c22fed983. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada tr-1794378391072-manual RUNNING. Cola inicial: 2 items (6523d9f6ab30 r1 #CopaDelRey; c566b61409aa r1 #HuelgaGeneral11N). Revalidación JIT antes de cada resultado. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794327332740-manual",
@@ -5363,7 +5214,6 @@
     "eedbccdb94df1936c8997f1f2ced3536266ed14e"
   ],
   "outbox_commit": "d98a814e110f71921adab2ad984fde8a2a11979c",
-  "finished_at": "2026-11-11T07:16:00+01:00",
   "prior_last_run": {
     "run_id": "tr-20261111T061100-manual",
     "status": "DONE",
