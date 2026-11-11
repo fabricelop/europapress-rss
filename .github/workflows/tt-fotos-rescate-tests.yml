@@ -1,0 +1,38 @@
+name: TT Fotos rescue: local recovery and orphan monitor
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'windows/TTFotosRescate.cjs'
+      - 'windows/TTFotosRescatePanel.html'
+      - 'windows/TTFotosRescate.test.cjs'
+      - 'windows/Instalar-TTFotos-Rescate.ps1'
+      - '.github/workflows/tt-fotos-rescate-tests.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Check code syntax
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check windows/TTFotosRescate.cjs
+          node --check windows/TTFotosRescate.test.cjs
+          python3 - <<'PY'
+          import re,pathlib
+          html=pathlib.Path('windows/TTFotosRescatePanel.html').read_text()
+          m=re.search(r'<script>(.*?)</script>',html,re.S)
+          assert m
+          pathlib.Path('/tmp/tt-fotos-rescate-panel.js').write_text(m.group(1))
+          PY
+          node --check /tmp/tt-fotos-rescate-panel.js
+      - name: Recovery tests (no network, no Chrome or private inbox)
+        run: node --test windows/TTFotosRescate.test.cjs
