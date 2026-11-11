@@ -514,6 +514,28 @@ def main():
                     "image_pending": bool(req.get("with_image")),
                     "telegram_package_status": "pending",
                 }
+                if req.get("new_episode_review"):
+                    material_event_key = str(payload.get("material_event_key") or "").strip()
+                    material_event_at = str(payload.get("material_event_at") or "").strip()
+                    material_change = payload.get("material_change") is True
+                    significance_reason = str(payload.get("significance_reason") or "").strip()
+                    if req.get("distinct_event_required") and (
+                        not material_event_key
+                        or not material_event_at
+                        or not material_change
+                        or len(significance_reason) < 24
+                    ):
+                        raise ValueError("reentrada con episodio distinto requiere metadatos materiales completos")
+                    manual_item.update({
+                        "new_episode_review": True,
+                        "previous_episode_id": str(req.get("previous_episode_id") or ""),
+                        "radar_episode_token": str(req.get("radar_episode_token") or ""),
+                        "material_event_key": material_event_key,
+                        "material_event_at": material_event_at,
+                        "material_change": material_change,
+                        "significance_reason": significance_reason,
+                    })
+
                 manual_doc["items"] = [
                     existing for existing in (manual_doc.get("items") or [])
                     if not (
@@ -543,6 +565,13 @@ def main():
                     "image_pending": manual_item["image_pending"],
                     "telegram_package_status": "pending",
                 })
+                if req.get("new_episode_review"):
+                    req.update({
+                        "material_event_key": manual_item.get("material_event_key"),
+                        "material_event_at": manual_item.get("material_event_at"),
+                        "material_change": manual_item.get("material_change"),
+                        "significance_reason": manual_item.get("significance_reason"),
+                    })
                 for field in ("problem_reason", "problematic_at", "problematic_attempts", "ready_at", "delivery_confirmation"):
                     req.pop(field, None)
                 if req_id not in processed:
