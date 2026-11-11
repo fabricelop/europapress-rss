@@ -666,7 +666,8 @@ test('RainETA wave controls keep hourly selection and the observed radar indepen
 test('RainETA short-term visual labels do not imply the entire 180-minute horizon is dry',()=>{
   const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
   assert.match(app,/Periodo estable estimado:/);
-  assert.match(app,/rainVisualWindows\(points,5,now\+SHORT_HORIZON_MINUTES\*60_000\)/);
+  assert.match(app,/rainVisualGuard\(points,\{eventStart:ev\?\.start,eventEnd:ev\?\.end/);
+  assert.match(app,/rainVisualWindows\(visualPoints,5,now\+SHORT_HORIZON_MINUTES\*60_000\)/);
   assert.doesNotMatch(app,/decision\.mode==='stable_now'\?'Sin lluvia prevista a corto plazo'/);
 });
 
