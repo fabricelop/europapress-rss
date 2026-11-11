@@ -7,32 +7,32 @@
   "previous_run_id": "tr-20261111T135500-manual",
   "command_id": "tr-20261111T141000-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-11T14:10:00+01:00",
-  "updated_at": "2026-11-11T14:14:00+01:00",
-  "current": 0,
+  "updated_at": "2026-11-11T14:16:00+01:00",
+  "current": 3,
   "total": 3,
-  "trend_id": "2427e3682054",
-  "title": "Valeria Racu",
-  "queue_complete": false,
-  "processed_ids": [],
-  "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
     "2427e3682054",
     "0b0f0bd0fda8",
     "0aa27b23abc9"
   ],
+  "converged_ids": [],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 3,
     "observed": 3,
-    "closed": 0,
-    "explained": 0,
+    "closed": 3,
+    "explained": 2,
     "problematic": 0,
     "updates": 0,
-    "review_completed_no_distinct_event": 0,
+    "review_completed_no_distinct_event": 1,
     "maintenance_reviews": 0,
     "unchanged_reviews": 0,
     "continuity_updates": 0,
@@ -42,7 +42,7 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 3,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -50,7 +50,30 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "2427e3682054",
+      "revision": 0,
+      "name": "Valeria Racu",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "0b0f0bd0fda8",
+      "revision": 0,
+      "name": "Cobardes",
+      "outcome": "review_completed",
+      "review_reason": "no_distinct_event",
+      "applied": true
+    },
+    {
+      "id": "0aa27b23abc9",
+      "revision": 0,
+      "name": "Jorge Salvaje",
+      "outcome": "explained",
+      "applied": true
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -302,6 +325,34 @@
       "trend_id": "2427e3682054",
       "title": "Valeria Racu",
       "message": "Cola JIT: 3 preparing. Investigación textual en curso; ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-11T14:15:00+01:00",
+      "phase": "verifying",
+      "trend_id": "2427e3682054",
+      "title": "Valeria Racu",
+      "message": "Explicación aplicada y sincronizada en requests.json + telegram-manual-explained.json."
+    },
+    {
+      "at": "2026-11-11T14:15:00+01:00",
+      "phase": "verifying",
+      "trend_id": "0b0f0bd0fda8",
+      "title": "Cobardes",
+      "message": "Reentrada cerrada como review_completed/no_distinct_event; sin nueva ficha ni imagen."
+    },
+    {
+      "at": "2026-11-11T14:15:00+01:00",
+      "phase": "verifying",
+      "trend_id": "0aa27b23abc9",
+      "title": "Jorge Salvaje",
+      "message": "Explicación aplicada y sincronizada en requests.json + telegram-manual-explained.json."
+    },
+    {
+      "at": "2026-11-11T14:16:00+01:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "Barrera final verificada: editorial-queue=0 y mobile-decisions sin preparar/reelaborar pendientes. ImageGen=0; publicaciones=0."
     }
   ],
   "last_started_at": "2026-11-11T13:55:00+01:00",
@@ -319,7 +370,7 @@
     "pending": 0,
     "review_completed_no_distinct_event": 3
   },
-  "message": "Pasada tr-20261111T135500-manual cerrada 33/33. 30 explicaciones quedaron sincronizadas en requests.json y telegram-manual-explained.json; 3 reentradas (#EnBocaDeTodos, Error y Alejandra) se cerraron review_completed/no_distinct_event. Barrera final main: editorial-queue=0. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada tr-20261111T141000-manual cerrada 3/3. Valeria Racu y Jorge Salvaje quedaron explained y sincronizados; Cobardes cerró review_completed/no_distinct_event sin nueva ficha ni imagen. El aplicador oficial del outbox de chat terminó con success (workflow run 43027255052). Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794327332740-manual",
@@ -6669,5 +6720,6 @@
       "message": "Cola releída en main: 0 preparing/update y 0 reexplicaciones pendientes; cierre 0/0."
     }
   ],
-  "processed": []
+  "processed": [],
+  "finished_at": "2026-11-11T14:16:00+01:00"
 }
