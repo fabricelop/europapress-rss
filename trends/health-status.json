@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-11T20:00:51.144493+00:00",
+  "checked_at": "2026-11-11T20:14:21.420173+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -42,12 +42,12 @@
     "top10": {
       "ok": false,
       "count": 10,
-      "non_stale_sources": 4,
+      "non_stale_sources": 5,
       "verified_fresh_sources": [
         "xtrendsiamrohit"
       ],
       "live_verified": false,
-      "captured_age_minutes": 0.3,
+      "captured_age_minutes": 0.2,
       "noise_count": 0
     },
     "listener": {
@@ -59,8 +59,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 4.7,
-      "run_id": 43091768407,
+      "age_minutes": 3.7,
+      "run_id": 43094012544,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -82,46 +82,46 @@
     },
     "editorial_queue": {
       "ok": false,
-      "pending_count": 6,
+      "pending_count": 10,
       "overdue_count": 6,
-      "oldest_age_minutes": 49.7,
+      "oldest_age_minutes": 63.2,
       "warning_after_minutes": 30,
       "overdue_items": [
         {
           "id": "5e7b9023ed54",
           "name": "Cuéntalo",
           "status": "preparing",
-          "age_minutes": 49.7
+          "age_minutes": 63.2
         },
         {
           "id": "5e3fa76ce22b",
           "name": "Merab",
           "status": "preparing",
-          "age_minutes": 49.7
+          "age_minutes": 63.2
         },
         {
           "id": "27bceccd1f06",
           "name": "bertrand",
           "status": "preparing",
-          "age_minutes": 49.7
+          "age_minutes": 63.2
         },
         {
           "id": "dce7c30cee2d",
           "name": "en vox",
           "status": "preparing",
-          "age_minutes": 49.7
+          "age_minutes": 63.2
         },
         {
           "id": "e0010ec683c3",
           "name": "Mondongo",
           "status": "preparing",
-          "age_minutes": 49.7
+          "age_minutes": 63.2
         },
         {
           "id": "ae3f8c17f5b0",
           "name": "SALF",
           "status": "preparing",
-          "age_minutes": 49.7
+          "age_minutes": 63.2
         }
       ],
       "repairable": false
@@ -136,7 +136,11 @@
         "27bceccd1f06",
         "dce7c30cee2d",
         "e0010ec683c3",
-        "ae3f8c17f5b0"
+        "ae3f8c17f5b0",
+        "a49c1ae575a0",
+        "bad7dc820804",
+        "ae7c2a033896",
+        "b162bef6a51d"
       ],
       "contradictory_success": false
     },
@@ -150,9 +154,9 @@
   "blocking": [
     "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos",
     "cola con 752 estado(s) inválido(s)",
-    "cola de explicaciones retrasada: 6 pendiente(s) superan 30 min; más antigua 49.7 min"
+    "cola de explicaciones retrasada: 6 pendiente(s) superan 30 min; más antigua 63.2 min"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 752 estado(s) inválido(s) | cola de explicaciones retrasada: 6 pendiente(s) superan 30 min; más antigua 49.7 min"
+  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 752 estado(s) inválido(s) | cola de explicaciones retrasada: 6 pendiente(s) superan 30 min; más antigua 63.2 min"
 }
