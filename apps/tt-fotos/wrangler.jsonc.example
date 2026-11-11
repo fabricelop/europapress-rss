@@ -1,0 +1,26 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "tt-fotos-independent",
+  "main": "src/worker.mjs",
+  "compatibility_date": "2026-11-11",
+  "workers_dev": true,
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "run_worker_first": true,
+    "not_found_handling": "404-page"
+  },
+  "d1_databases": [{
+    "binding": "FOTOS_DB",
+    "database_name": "tt-fotos-private",
+    "database_id": "PUT_REAL_DATABASE_ID_HERE"
+  }],
+  "r2_buckets": [{
+    "binding": "FOTOS_R2",
+    "bucket_name": "tt-fotos-originals-private"
+  }],
+  "vars": {
+    "CF_ACCESS_ISSUER": "https://YOUR_TEAM.cloudflareaccess.com",
+    "CF_ACCESS_AUD": "PUT_CLOUDFLARE_ACCESS_APPLICATION_AUDIENCE_HERE"
+  }
+}
