@@ -7,30 +7,30 @@
   "previous_run_id": "tr-20261111T171000-manual",
   "command_id": "tr-20261111T172500-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-11T17:25:00+01:00",
-  "updated_at": "2026-11-11T17:25:00+01:00",
-  "current": 0,
+  "updated_at": "2026-11-11T17:28:00+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "radar-prepare-afdec7949042edf0dfdd",
-  "title": "Radar · Decepción",
-  "queue_complete": false,
-  "processed_ids": [],
-  "converged_ids": [],
-  "remaining_ids": [
+  "trend_id": null,
+  "title": "Pasada editorial TTendencias",
+  "queue_complete": true,
+  "processed_ids": [
     "radar-prepare-afdec7949042edf0dfdd",
     "radar-prepare-8ed0dfe0cdedbcd00ead"
   ],
-  "remaining_active_ids": [
+  "converged_ids": [
     "radar-prepare-afdec7949042edf0dfdd",
     "radar-prepare-8ed0dfe0cdedbcd00ead"
   ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 2,
     "observed": 2,
-    "closed": 0,
+    "closed": 2,
     "explained": 0,
     "problematic": 0,
     "updates": 0,
@@ -42,37 +42,58 @@
     "stale_reviews": 0,
     "unverified_reviews": 0,
     "anticipation_reviews": 2,
-    "anticipation_prepared": 0,
-    "anticipation_unverified": 0,
-    "queue_remaining": 2,
+    "anticipation_prepared": 1,
+    "anticipation_unverified": 1,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 2
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "radar-prepare-afdec7949042edf0dfdd",
+      "revision": 0,
+      "name": "Radar · Decepción",
+      "outcome": "anticipation_prepared",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "apply_commit": "453abd62150786d458772f1807b7d5192ede3f74",
+      "outbox_commit": "dc58fc41b5db89ae122fe2c2cdf9d0ea02b96c71"
+    },
+    {
+      "id": "radar-prepare-8ed0dfe0cdedbcd00ead",
+      "revision": 0,
+      "name": "Radar · Si Vox",
+      "outcome": "anticipation_unverified",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "apply_commit": "453abd62150786d458772f1807b7d5192ede3f74",
+      "outbox_commit": "dae154d288f3ac2fc541454592a293d29ac55c42"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Procesando Radar",
-  "last_started_at": "2026-11-11T17:10:00+01:00",
-  "last_completed_at": "2026-11-11T17:18:08.631826+01:00",
+  "activity": "Pasada editorial completada",
+  "last_started_at": "2026-11-11T17:25:00+01:00",
+  "last_completed_at": "2026-11-11T17:28:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261111T171000-manual",
+    "run_id": "tr-20261111T172500-manual",
     "status": "DONE",
-    "started_at": "2026-11-11T17:10:00+01:00",
-    "finished_at": "2026-11-11T17:18:08.631826+01:00",
-    "total": 11,
-    "closed": 11,
-    "explained": 10,
-    "maintenance": 1,
+    "started_at": "2026-11-11T17:25:00+01:00",
+    "finished_at": "2026-11-11T17:28:00+01:00",
+    "total": 2,
+    "closed": 2,
+    "explained": 0,
+    "maintenance": 0,
     "pending": 0,
-    "anticipation_prepared": 0
+    "anticipation_prepared": 1
   },
-  "message": "Pasada tr-20261111T172500-manual RUNNING. Cola inicial=2: Radar · Decepción, Radar · Si Vox. Procesando borradores Radar con validación JIT; ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-20261111T172500-manual cerrada 2/2. Radar · Decepción quedó anticipation_prepared con detonante actual verificado en la reacción de Jordi Wild; Radar · Si Vox quedó anticipation_unverified por no poder atribuir un detonante específico al término exacto. Aplicador oficial: 453abd62150786d458772f1807b7d5192ede3f74. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794327332740-manual",
@@ -4261,6 +4282,72 @@
       "trend_id": "radar-prepare-afdec7949042edf0dfdd",
       "title": "Radar · Decepción",
       "message": "Pasada tr-20261111T172500-manual RUNNING. Cola inicial=2: Radar · Decepción, Radar · Si Vox. Procesando borradores Radar con validación JIT; ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-20261111T172500-manual",
+      "status": "DONE",
+      "started_at": "2026-11-11T17:25:00+01:00",
+      "finished_at": "2026-11-11T17:28:00+01:00",
+      "at": "2026-11-11T17:28:00+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 2,
+        "observed": 2,
+        "closed": 2,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 0,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 2,
+        "anticipation_prepared": 1,
+        "anticipation_unverified": 1,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 2
+      },
+      "processed_ids": [
+        "radar-prepare-afdec7949042edf0dfdd",
+        "radar-prepare-8ed0dfe0cdedbcd00ead"
+      ],
+      "converged_ids": [
+        "radar-prepare-afdec7949042edf0dfdd",
+        "radar-prepare-8ed0dfe0cdedbcd00ead"
+      ],
+      "outcomes": [
+        {
+          "id": "radar-prepare-afdec7949042edf0dfdd",
+          "revision": 0,
+          "name": "Radar · Decepción",
+          "outcome": "anticipation_prepared",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "apply_commit": "453abd62150786d458772f1807b7d5192ede3f74",
+          "outbox_commit": "dc58fc41b5db89ae122fe2c2cdf9d0ea02b96c71"
+        },
+        {
+          "id": "radar-prepare-8ed0dfe0cdedbcd00ead",
+          "revision": 0,
+          "name": "Radar · Si Vox",
+          "outcome": "anticipation_unverified",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "apply_commit": "453abd62150786d458772f1807b7d5192ede3f74",
+          "outbox_commit": "dae154d288f3ac2fc541454592a293d29ac55c42"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-20261111T172500-manual cerrada 2/2. Radar · Decepción quedó anticipation_prepared con detonante actual verificado en la reacción de Jordi Wild; Radar · Si Vox quedó anticipation_unverified por no poder atribuir un detonante específico al término exacto. Aplicador oficial: 453abd62150786d458772f1807b7d5192ede3f74. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": null,
@@ -7167,8 +7254,47 @@
       "revision": 0,
       "name": "Radar · Decepción",
       "message": "Preparando trabajos Radar; verificación actual sin imágenes ni publicación."
+    },
+    {
+      "at": "2026-11-11T17:26:30+01:00",
+      "phase": "investigating",
+      "trend_id": "radar-prepare-afdec7949042edf0dfdd",
+      "revision": 0,
+      "name": "Radar · Decepción",
+      "message": "Detonante verificado en la reacción pública de Jordi Wild a la cancelación de la entrevista."
+    },
+    {
+      "at": "2026-11-11T17:27:00+01:00",
+      "phase": "persisting",
+      "trend_id": "radar-prepare-afdec7949042edf0dfdd",
+      "revision": 0,
+      "name": "Radar · Decepción",
+      "message": "Resultado prepared guardado en anticipation-outbox; sin Listas, imagen ni publicación."
+    },
+    {
+      "at": "2026-11-11T17:27:15+01:00",
+      "phase": "investigating",
+      "trend_id": "radar-prepare-8ed0dfe0cdedbcd00ead",
+      "revision": 0,
+      "name": "Radar · Si Vox",
+      "message": "Contexto actual verificado, pero sin evidencia suficiente para atribuir el detonante del término exacto."
+    },
+    {
+      "at": "2026-11-11T17:27:25+01:00",
+      "phase": "persisting",
+      "trend_id": "radar-prepare-8ed0dfe0cdedbcd00ead",
+      "revision": 0,
+      "name": "Radar · Si Vox",
+      "message": "Resultado unverified guardado en anticipation-outbox; sin Listas, imagen ni publicación."
+    },
+    {
+      "at": "2026-11-11T17:28:00+01:00",
+      "phase": "closing",
+      "trend_id": null,
+      "name": null,
+      "message": "Barrera final main: editorial-queue=0; ambos Radar retirados por el aplicador 453abd62150786d458772f1807b7d5192ede3f74; mobile-decisions sin trabajo editorial activo."
     }
   ],
   "processed": [],
-  "finished_at": null
+  "finished_at": "2026-11-11T17:28:00+01:00"
 }
