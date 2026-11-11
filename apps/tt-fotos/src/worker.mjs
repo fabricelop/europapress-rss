@@ -2,6 +2,7 @@
 import {createTTFotosApi} from '../../../site-patches/ttactualidad-fotos-review/cloud-v1/api.mjs';
 import {createGithubJobProvider} from '../../../site-patches/ttactualidad-fotos-review/cloud-v1/job-provider.mjs';
 import {authenticateAccess} from './access.mjs';
+import {searchEditorial,resolveEditorialCommand} from './editorial-search.mjs';
 const security={
   'Cache-Control':'private, no-store',
   'X-Content-Type-Options':'nosniff',
@@ -19,6 +20,16 @@ export function createWorker({auth=authenticateAccess,apiFactory=createTTFotosAp
     let editor;
     try{editor=await auth(request,env)}catch{return plain(503,'TT Fotos authentication unavailable')}
     if(!editor?.isEditor)return plain(403,'Editor authentication required');
+    if(request.method==='GET'&&path==='/api/tt-fotos/v1/editorial-search'){
+      const q=new URL(request.url).searchParams.get('q')||'';
+      const results=await searchEditorial(q,fetcher);
+      return new Response(JSON.stringify({ok:true,items:results,coverage:'current_prepared_and_top30_only'}),{headers:{...security,'Content-Type':'application/json; charset=utf-8'}});
+    }
+    if(request.method==='GET'&&path==='/api/tt-fotos/v1/editorial-command'){
+      const p=new URL(request.url).searchParams;
+      const candidate=await resolveEditorialCommand({project:p.get('project'),editorialId:p.get('id'),revision:Number(p.get('revision'))},fetcher);
+      return candidate?new Response(JSON.stringify({ok:true,candidate}),{headers:{...security,'Content-Type':'application/json; charset=utf-8'}}):plain(404,'Verified editorial job unavailable');
+    }
     if(path.startsWith('/api/tt-fotos/v1/')){
       const api=apiFactory({db:env.FOTOS_DB,r2:env.FOTOS_R2,authenticate:async()=>editor,jobProvider:createGithubJobProvider(fetcher)});
       const res=await api(request);
