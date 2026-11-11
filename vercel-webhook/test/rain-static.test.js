@@ -7,7 +7,7 @@ import {selectSpatialForecastTimeIndex,selectSpatialForecastTimeBlend,hybridFutu
 import {aggregateEnsembleModel,buildConsensus,detectRainEvents,detectQuarterHourEvents,chooseNextEvent,classifyRainHour,bestDryWindow} from '../rain/core.js';
 import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,combineLocalFlows,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,wetNear,valueNear,flowVectorAt,buildRadarProjectionRgba,projectRadarFieldContinuous,evaluateOverlaySourceState,wmsCapabilitiesHasLayer,radarProjectionRenderMode,radarViewportProjectionZoom} from '../rain/radar-core.js';
 import {decodeHarmoniePrecipRgba,parseTarEntries} from '../rain/harmonie-core.js';
-import {rainVisualSignal,rainVisualWindows,rainWaveSvg} from '../rain/rain-visuals.js';
+import {rainVisualSignal,rainVisualWindows,rainVisualGuard,rainWaveSvg} from '../rain/rain-visuals.js';
 
 function mask(w,h,x0,y0,ww=7,hh=7){const a=new Uint8Array(w*h);for(let y=y0;y<y0+hh;y++)for(let x=x0;x<x0+ww;x++)if(x>=0&&x<w&&y>=0&&y<h)a[y*w+x]=1;return a}
 
@@ -654,7 +654,7 @@ test('RainETA wave controls keep hourly selection and the observed radar indepen
   assert.match(html,/id="timelineRibbon"/);
   assert.match(html,/id="timelineScroll"/);
   assert.match(html,/id="radarArrival"/);
-  assert.match(app,/rainWaveSvg\(points,\{id:'minute-rain-wave'\}\)/);
+  assert.match(app,/rainWaveSvg\(visualPoints,\{id:'minute-rain-wave'\}\)/);
   assert.match(app,/rainWaveSvg\(points,\{id:'hour-rain-wave'\}\)/);
   assert.match(app,/data-hour-index/);
   assert.match(app,/selectTimelineHour\(el\.dataset\.hourIndex\)/);
@@ -668,4 +668,22 @@ test('RainETA short-term visual labels do not imply the entire 180-minute horizo
   assert.match(app,/Periodo estable estimado:/);
   assert.match(app,/rainVisualWindows\(points,5,now\+SHORT_HORIZON_MINUTES\*60_000\)/);
   assert.doesNotMatch(app,/decision\.mode==='stable_now'\?'Sin lluvia prevista a corto plazo'/);
+});
+
+test('RainETA rain wave only confirms wet segments supported by canonical events',()=>{
+  const t=Date.parse('2026-11-11T10:00:00Z');
+  const rows=[0,5,10,15,20].map(minute=>({time:t+minute*60_000,wet:true,rate:.9,probability:.8}));
+  const result=rainVisualGuard(rows,{eventStart:t+10*60_000,eventEnd:t+20*60_000,nowMs:t,rainingNow:false});
+  assert.deepEqual(result.map(row=>rainVisualSignal(row)),['possible','possible','wet','wet','possible']);
+  assert.deepEqual(rows.map(row=>row.wet),[true,true,true,true,true]); // no mutation
+  const noEvent=rainVisualGuard(rows,{nowMs:t,rainingNow:false});
+  assert.ok(noEvent.every(row=>rainVisualSignal(row)==='possible'));
+  const observed=rainVisualGuard(rows,{nowMs:t,rainingNow:true});
+  assert.equal(rainVisualSignal(observed[0]),'wet');
+  assert.equal(rainVisualSignal(observed[1]),'wet');
+  assert.equal(rainVisualSignal(observed[2]),'possible');
+  const uncertainSurface=rainVisualGuard(rows,{eventStart:t,eventEnd:t+20*60_000,nowMs:t,mode:'possible_now'});
+  assert.equal(rainVisualSignal(uncertainSurface[0]),'possible');
+  assert.equal(rainVisualSignal(uncertainSurface[1]),'possible');
+  assert.equal(rainVisualSignal(uncertainSurface[2]),'wet');
 });
