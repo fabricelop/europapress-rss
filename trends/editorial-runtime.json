@@ -3,37 +3,33 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794359400000-manual",
-  "previous_run_id": "tr-1794358500000-manual",
-  "command_id": "tr-1794359400000-manual",
+  "run_id": "tr-1794359702232-manual",
+  "previous_run_id": "tr-1794359400000-manual",
+  "command_id": "tr-1794359702232-manual",
   "source": "chat_manual",
-  "status": "success",
+  "status": "RUNNING",
   "phase": "preparing",
-  "started_at": "2026-11-11T02:10:00+01:00",
-  "updated_at": "2026-11-11T02:14:28+01:00",
+  "started_at": "2026-11-11T02:15:15+01:00",
+  "updated_at": "2026-11-11T02:15:15+01:00",
   "current": 0,
-  "total": 9,
+  "total": 2,
   "trend_id": null,
   "title": "TTendencias · pasada editorial manual",
-  "queue_complete": true,
-  "processed_ids": [
-    "0b149937cb24",
-    "2dad362636c8",
-    "52cb0b10c012",
-    "83b95de4207a",
-    "8cb7a58d1766",
-    "9bb66f6db260",
-    "c56c6d14b811",
-    "cc4abcb818e1",
-    "de2affd54ea8"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-58055798e36278c69dd1",
+    "red-review-d45b2ff88beb4594b370"
+  ],
+  "remaining_active_ids": [
+    "red-review-58055798e36278c69dd1",
+    "red-review-d45b2ff88beb4594b370"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 9,
-    "observed": 9,
+    "attempted": 2,
+    "observed": 2,
     "closed": 0,
     "explained": 0,
     "problematic": 0,
@@ -48,7 +44,7 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 9,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -60,7 +56,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Cierre completado",
+  "activity": "Revisando novedades",
   "last_started_at": "2026-11-11T02:14:27+01:00",
   "last_completed_at": "2026-11-11T02:14:28+01:00",
   "api_failover_enabled": false,
@@ -103,7 +99,7 @@
     "incidents": [],
     "message": "Pasada manual cerrada 0/0. Relectura JIT final de main: editorial-queue=0 (actualizada 2026-11-11T01:50:56+01:00); mobile-decisions sin trabajo editorial activo y requests.json sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada editorial manual en curso: 9 reentradas JIT pendientes de resolución; ImageGen=0.",
+  "message": "Pasada tr-1794359702232-manual RUNNING. Cola JIT inicial: 2 review_red en preparing (#VotoUtilEsPodemos y RTVE); se procesarán de más antiguo a más reciente. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-10T15:55:00+01:00",
@@ -2078,6 +2074,15 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada manual cerrada 0/0. Relectura JIT final de main: editorial-queue=0 (actualizada 2026-11-11T01:50:56+01:00); mobile-decisions sin trabajo editorial activo y requests.json sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794359702232-manual",
+      "status": "RUNNING",
+      "at": "2026-11-11T02:15:15+01:00",
+      "phase": "preparing",
+      "current": 0,
+      "total": 2,
+      "message": "Pasada tr-1794359702232-manual RUNNING. Cola JIT inicial: 2 review_red en preparing (#VotoUtilEsPodemos y RTVE); se procesarán de más antiguo a más reciente. ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": {
@@ -4065,6 +4070,5 @@
     "61f2f146a926eae3568074e8e0d9947db37bc9f5",
     "5b26ed05be444fecd3e641d64eae7eba5201f9b0"
   ],
-  "finished_at": "2026-11-11T01:56:00+01:00",
   "outbox_commit": "d98a814e110f71921adab2ad984fde8a2a11979c"
 }
