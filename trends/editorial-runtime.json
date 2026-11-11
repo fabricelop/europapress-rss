@@ -7,23 +7,29 @@
   "previous_run_id": "tr-autoguard-1794381666",
   "command_id": "tr-1794382196865-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-11T08:32:00+01:00",
-  "updated_at": "2026-11-11T08:33:00+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-11T08:41:30+01:00",
+  "updated_at": "2026-11-11T08:41:30+01:00",
   "current": 0,
-  "total": 0,
+  "total": 2,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "radar-prepare-9744b43bb7230e95d56f",
+    "radar-prepare-fb6874c679a988fc53b9"
+  ],
+  "remaining_active_ids": [
+    "radar-prepare-9744b43bb7230e95d56f",
+    "radar-prepare-fb6874c679a988fc53b9"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
-    "observed": 0,
+    "observed": 2,
     "closed": 0,
     "explained": 0,
     "problematic": 0,
@@ -38,7 +44,7 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -181,9 +187,16 @@
       "trend_id": "red-review-9cae369ce918a8dae93b",
       "title": "Silvia Intxaurrondo",
       "message": "Revisión JIT r0: el episodio Broncano/Abascal del 10/11 ya fue tratado por separado y su ficha posterior quedó eliminada; verificando que no exista otra novedad material posterior. ImageGen=0."
+    },
+    {
+      "at": "2026-11-11T08:41:30+01:00",
+      "phase": "preparing",
+      "trend_id": null,
+      "title": null,
+      "message": "Cola releída en main: 2 Radar anticipate en preparing (San Martín de Tours, Fascistas). Validación JIT por item. ImageGen=0; publicaciones=0."
     }
   ],
-  "last_started_at": "2026-11-11T08:32:00+01:00",
+  "last_started_at": "2026-11-11T08:41:30+01:00",
   "last_completed_at": "2026-11-11T08:33:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -197,7 +210,7 @@
     "maintenance": 0,
     "pending": 0
   },
-  "message": "Pasada tr-1794382196865-manual cerrada 0/0 tras relectura final de main. La pasada autoguard inmediatamente anterior ya había cerrado 5/5 (Informativos, lena, Iros y dos revisiones rojas). Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Reanudada la pasada tr-1794382196865-manual tras aparición de 2 trabajos Radar en main; se procesan JIT sin ImageGen.",
   "history": [
     {
       "run_id": "tr-1794327332740-manual",
