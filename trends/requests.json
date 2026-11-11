@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-11T21:52:35.809914+00:00",
+  "updated_at": "2026-11-11T21:53:38.669372+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -296824,57 +296824,44 @@
       "id": "6e7e20e3e07d",
       "name": "Plaza España",
       "rank": 17,
-      "status": "explained",
-      "requested_at": "2026-11-11T22:01:59+01:00",
-      "revision": 0,
+      "revision": 1,
+      "status": "preparing",
+      "requested_at": "2026-11-11T21:53:38.669372+00:00",
+      "updated_at": "2026-11-11T21:53:38.669372+00:00",
       "reexplain": false,
+      "rewrite_pending": false,
+      "task": "explain",
+      "auto_queued": false,
+      "request_source": "ttactualidad_editor_hints",
       "with_image": true,
-      "alternatives_target": 0,
-      "batch_id": "bbdc0eaf927d",
+      "disable_ai_image": false,
+      "rewrite_with_image": true,
+      "image_strategy": "ai_plus_fallback",
+      "image_choice": "none",
+      "image_pending": true,
+      "fallback_image_status": "pending",
+      "ai_image_status": "pending",
       "requested_together": [
         "Plaza España"
       ],
-      "captured_with": [
-        "Plaza España"
-      ],
-      "grouping_disabled": true,
-      "auto_queued": true,
-      "auto_queue_scope": "top30",
-      "new_episode_review": false,
-      "recurring_top30_name": false,
-      "radar_episode_token": "",
-      "radar_episode_started_at": "2026-11-11T22:01:51+01:00",
-      "editor_approval_batch_id": "",
-      "previous_episode_id": "",
-      "distinct_event_required": false,
-      "review_instruction": "",
-      "explained_at": "2026-11-11T21:05:22.097Z",
-      "last_attempt_at": "2026-11-11T21:05:22.097Z",
-      "explanation": "TT#17 Plaza España aparece entre las tendencias durante una jornada de manifestaciones en Madrid por el 11N; el transporte público informa de desvíos vinculados a una marcha entre el paseo del Prado y plaza de España. No se ha confirmado que sea la única causa del término.",
-      "closer_text": "",
-      "rank_at_explanation": 17,
-      "category": "Sociedad",
-      "source": "editorial_chat_direct",
-      "verification_sources": [
+      "rewrite_instruction": "INVESTIGACIÓN NUEVA DESDE CERO. Pistas de un editor SIN verificar:\\nGas y balas de goma contra manifestantes en la plaza de España de Madrid\\nContrasta cada dato, fecha, publicación y fuente con búsquedas independientes. Si no se verifica el detonante actual, deja el caso SIN EXPLICACIÓN VERIFICADA; nunca presentes las pistas como hechos. Si se verifica, escribe explicación factual completa y remate nuevo. No reutilices texto, remate ni imágenes de otra revisión.",
+      "user_pistas": [
         {
-          "url": "https://www.crtm.es/informacion-actualizada",
-          "published_at": "2026-11-11"
-        },
-        {
-          "url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/recent.json",
-          "published_at": "2026-11-11"
+          "at": "2026-11-11T21:53:38.669372+00:00",
+          "source_revision": 0,
+          "text": "Gas y balas de goma contra manifestantes en la plaza de España de Madrid",
+          "verification": "unverified_editor_context"
         }
       ],
-      "news_disposition": "ignored",
-      "news_note": "No se infiere publicación de noticia ni se afirma causalidad exacta sin respaldo.",
-      "disable_ai_image": false,
-      "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_choice": "none",
-      "image_status": "pending",
-      "image_pending": true,
-      "telegram_package_status": "pending"
+      "investigation_history": [
+        {
+          "revision": 0,
+          "status": "explained",
+          "problem_reason": "",
+          "last_attempt_at": "2026-11-11T21:05:22.097Z"
+        }
+      ],
+      "hints_verification_status": "unverified"
     },
     {
       "id": "1ea1a6c850b1",
