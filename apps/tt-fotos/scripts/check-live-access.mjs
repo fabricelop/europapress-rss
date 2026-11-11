@@ -1,5 +1,7 @@
 // Read-only smoke test for the new TT Fotos Worker. No credentials or photo data.
 // Run only after deployment: node scripts/check-live-access.mjs https://REAL-TT-FOTOS-ORIGIN
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
 const permittedRedirect=(location,origin)=>{
  if(!location)return false;
  try{
@@ -38,7 +40,7 @@ export async function checkLiveAccess(raw,fetcher=fetch){
  return {origin,checks:result,
   note:'An anonymous denial alone does not prove Cloudflare edge Access is configured. Verify protected Worker policy and login in an authorized browser.'};
 }
-if(process.argv[1]&&new URL('file://'+process.argv[1]).pathname===new URL(import.meta.url).pathname){
+if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)){
  checkLiveAccess(process.argv[2]).then(r=>{
   for(const c of r.checks)console.log('TT_FOTOS_ANON_DENIED '+c.path+' status='+c.status+' gate='+c.gate);
   console.log('TT_FOTOS_NOTE: verify Cloudflare Worker-level Access plus authenticated editor login separately.');
