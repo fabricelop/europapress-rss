@@ -10,20 +10,21 @@
   "status": "DONE",
   "phase": "closing",
   "started_at": "2026-11-11T08:22:00+01:00",
-  "updated_at": "2026-11-11T08:31:20+01:00",
+  "updated_at": "2026-11-11T08:31:36+01:00",
   "current": 5,
   "total": 5,
   "trend_id": null,
-  "title": "Pasada editorial TTendencias",
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
     "c3c14a8ca6a5",
     "cc967443070a",
-    "142a2383c743",
+    "142a2383c743"
+  ],
+  "converged_ids": [
     "red-review-1187cef2d097108e5d0a",
     "red-review-0134840f3bb98f7e1a38"
   ],
-  "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
@@ -32,6 +33,7 @@
     "observed": 5,
     "closed": 5,
     "explained": 3,
+    "explained_cause_unconfirmed": 2,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
@@ -50,7 +52,7 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 2
   },
   "outcomes": [
     {
@@ -58,24 +60,21 @@
       "revision": 0,
       "name": "Informativos",
       "outcome": "explained",
-      "applied": true,
-      "apply_commit": "008e32b0b299d12efe95bb046262d8dd78102fba"
+      "applied": true
     },
     {
       "id": "cc967443070a",
       "revision": 0,
       "name": "lena",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "d2c8e99bcacd3e8fef43c025de79ed0a73279842"
+      "outcome": "explained_cause_unconfirmed",
+      "applied": true
     },
     {
       "id": "142a2383c743",
       "revision": 0,
       "name": "Iros",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "5cc3a8140adfe413687d3bb3f65ba78362ecc732"
+      "outcome": "explained_cause_unconfirmed",
+      "applied": true
     },
     {
       "id": "red-review-1187cef2d097108e5d0a",
@@ -83,8 +82,7 @@
       "name": "Revisar novedades: #VotoUtilEsPodemos",
       "outcome": "unchanged",
       "applied": true,
-      "source_id": "a1c1e16d0c24",
-      "apply_commit": "5161bc30d0fd386b31d64583d287a42df76522f4"
+      "via": "concurrent_convergence"
     },
     {
       "id": "red-review-0134840f3bb98f7e1a38",
@@ -92,8 +90,7 @@
       "name": "Revisar novedades: Carzzy",
       "outcome": "unchanged",
       "applied": true,
-      "source_id": "79666c46d60d",
-      "apply_commit": "5161bc30d0fd386b31d64583d287a42df76522f4"
+      "via": "concurrent_convergence"
     }
   ],
   "incident_count": 0,
@@ -233,19 +230,20 @@
     }
   ],
   "last_started_at": "2026-11-11T08:29:19+01:00",
-  "last_completed_at": "2026-11-11T08:31:20+01:00",
+  "last_completed_at": "2026-11-11T08:31:36+01:00",
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-autoguard-1794381666",
     "status": "DONE",
     "started_at": "2026-11-11T08:22:00+01:00",
-    "finished_at": "2026-11-11T08:31:20+01:00",
+    "finished_at": "2026-11-11T08:31:36+01:00",
     "total": 5,
     "closed": 5,
+    "explained": 3,
     "maintenance": 2,
     "pending": 0
   },
-  "message": "Pasada tr-autoguard-1794381666 cerrada 5/5. Informativos r0 quedó explicado por la huelga general del 11N y los servicios mínimos informativos de RTVE. lena r0 e Iros r0 quedaron explicados con causa no confirmada tras verificar su presencia actual sin atribuir un detonante no corroborado; en lena se conserva la discrepancia de normalización «Leña». Las revisiones rojas de #VotoUtilEsPodemos y Carzzy quedaron unchanged, sin nueva ficha, imagen ni publicación. Barrera final main: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada completada 5/5: Informativos explicado; lena e Iros cerrados con causa no confirmada; #VotoUtilEsPodemos y Carzzy revisados sin novedades materiales. Barrera final: cola 0, sin preparing/update, rewrite_pending, reexplain ni problematic. ImageGen 0; image-outbox editorial 0; publicaciones 0.",
   "history": [
     {
       "run_id": "tr-1794327332740-manual",
@@ -3380,7 +3378,7 @@
   ],
   "current_item": null,
   "withdrawn_ids": [],
-  "last_finished_at": "2026-11-11T08:31:20+01:00",
+  "last_finished_at": "2026-11-11T08:31:36+01:00",
   "last_revalidated_at": "2026-11-11T06:56:00+01:00",
   "last_revalidation": {
     "at": "2026-11-11T06:56:00+01:00",
@@ -6076,5 +6074,5 @@
     }
   ],
   "processed": [],
-  "finished_at": "2026-11-11T08:31:20+01:00"
+  "finished_at": "2026-11-11T08:31:36+01:00"
 }
