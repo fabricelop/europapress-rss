@@ -73,3 +73,16 @@ Una respuesta errónea (5xx), un recibo contradictorio o una revisión distinta 
 - En el GitHub Action de despliegue manual, se puede configurar la **variable opcional de repositorio** `TT_FOTOS_PUBLIC_ORIGIN` con el origen **real** del nuevo Worker. Si está presente, el workflow realiza automáticamente esa comprobación después de desplegar y configurar el secreto del editor. La validación completa con una sesión autorizada de ChatGPT Imágenes **sigue siendo manual**.
 - Repetir la importación del mismo PNG para el mismo encargo ahora devuelve `operation: unchanged`: conserva la asociación y la confianza anteriores, sin generar una fila adicional de historial. El SHA y las versiones anteriores permanecen disponibles.
 - **No ejecutar** el workflow de despliegue sin haber creado R2 y D1 **nuevos**, confirmado la cuenta correcta y configurado Access para este Worker. Sin las credenciales reales el despliegue no es posible desde esta conversación.
+
+## Barrera adicional: comprobar que R2 no está expuesto
+
+Antes de aplicar cualquier SQL remoto, el workflow `tt-fotos-standalone-deploy.yml` comprueba ahora en modo de **solo lectura**:
+
+- `scripts/verify-remote-resources.mjs`: UUID de la D1 y nombre del bucket R2 en la cuenta seleccionada.
+- `scripts/verify-private-r2.mjs`: API de Cloudflare para la dirección pública administrada `r2.dev` y para los dominios personalizados del bucket. Exige `enabled:false` en `r2.dev` y en cada dominio registrado; los errores, permisos insuficientes o respuestas incompletas **bloquean** el despliegue.
+- La verificación utiliza las variables ya previstas `CLOUDFLARE_API_TOKEN` y `CLOUDFLARE_ACCOUNT_ID`, sin guardar ni mostrar el token. No cambia reglas de dominio, no cierra buckets existentes y no publica fotografías.
+
+Se verificaron los nombres de las operaciones en la documentación Cloudflare: `GET /accounts/{account_id}/r2/buckets/{bucket_name}/domains/managed` y `GET /accounts/{account_id}/r2/buckets/{bucket_name}/domains/custom`. Al desplegar, es imprescindible que el token de la cuenta correcta tenga permisos de lectura R2.
+
+**Importante:** este control de R2 no crea ni activa la aplicación Cloudflare Access. Esa aplicación, con alcance exclusivo del Worker `tt-fotos-independent` y política de editores, debe quedar configurada antes de aceptar el despliegue como operativo. La galería de `chatgpt.com/images` todavía requiere un piloto autenticado con la extensión de Chrome. CI verde nunca equivale a fotografías importadas.
+
