@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-11T20:14:21.420173+00:00",
+  "checked_at": "2026-11-11T21:14:33.886532+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -42,7 +42,7 @@
     "top10": {
       "ok": false,
       "count": 10,
-      "non_stale_sources": 5,
+      "non_stale_sources": 4,
       "verified_fresh_sources": [
         "xtrendsiamrohit"
       ],
@@ -60,7 +60,7 @@
       "status": "in_progress",
       "conclusion": null,
       "age_minutes": 3.7,
-      "run_id": 43094012544,
+      "run_id": 43100829994,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -72,7 +72,7 @@
     },
     "request_queue": {
       "ok": false,
-      "invalid_count": 752,
+      "invalid_count": 754,
       "noise_count": 0
     },
     "ready_consistency": {
@@ -81,67 +81,19 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": false,
-      "pending_count": 10,
-      "overdue_count": 6,
-      "oldest_age_minutes": 63.2,
+      "ok": true,
+      "pending_count": 0,
+      "overdue_count": 0,
+      "oldest_age_minutes": 0,
       "warning_after_minutes": 30,
-      "overdue_items": [
-        {
-          "id": "5e7b9023ed54",
-          "name": "Cuéntalo",
-          "status": "preparing",
-          "age_minutes": 63.2
-        },
-        {
-          "id": "5e3fa76ce22b",
-          "name": "Merab",
-          "status": "preparing",
-          "age_minutes": 63.2
-        },
-        {
-          "id": "27bceccd1f06",
-          "name": "bertrand",
-          "status": "preparing",
-          "age_minutes": 63.2
-        },
-        {
-          "id": "dce7c30cee2d",
-          "name": "en vox",
-          "status": "preparing",
-          "age_minutes": 63.2
-        },
-        {
-          "id": "e0010ec683c3",
-          "name": "Mondongo",
-          "status": "preparing",
-          "age_minutes": 63.2
-        },
-        {
-          "id": "ae3f8c17f5b0",
-          "name": "SALF",
-          "status": "preparing",
-          "age_minutes": 63.2
-        }
-      ],
+      "overdue_items": [],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": false,
-      "status": "overdue",
-      "queue_complete": false,
-      "remaining_active_ids": [
-        "5e7b9023ed54",
-        "5e3fa76ce22b",
-        "27bceccd1f06",
-        "dce7c30cee2d",
-        "e0010ec683c3",
-        "ae3f8c17f5b0",
-        "a49c1ae575a0",
-        "bad7dc820804",
-        "ae7c2a033896",
-        "b162bef6a51d"
-      ],
+      "ok": true,
+      "status": "not-required",
+      "queue_complete": true,
+      "remaining_active_ids": [],
       "contradictory_success": false
     },
     "telegram_provisional": {
@@ -153,10 +105,9 @@
   "repairs_started": [],
   "blocking": [
     "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos",
-    "cola con 752 estado(s) inválido(s)",
-    "cola de explicaciones retrasada: 6 pendiente(s) superan 30 min; más antigua 63.2 min"
+    "cola con 754 estado(s) inválido(s)"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 752 estado(s) inválido(s) | cola de explicaciones retrasada: 6 pendiente(s) superan 30 min; más antigua 63.2 min"
+  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 754 estado(s) inválido(s)"
 }
