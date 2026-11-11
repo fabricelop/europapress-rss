@@ -1,0 +1,39 @@
+{
+  "manifest_version": 3,
+  "name": "TT Fotos — Enlace privado ChatGPT Imágenes",
+  "version": "0.1.0",
+  "description": "Transfiere PNG originales visibles desde la sesión de ChatGPT a TT Fotos, sin descargar al disco ni cambiar la bandeja del iPhone.",
+  "permissions": [
+    "tabs"
+  ],
+  "host_permissions": [
+    "https://chatgpt.com/*",
+    "__TT_FOTOS_ORIGIN__/*"
+  ],
+  "action": {
+    "default_title": "Importar PNG visibles a TT Fotos"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://chatgpt.com/*"
+      ],
+      "js": [
+        "images-source.js"
+      ],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": [
+        "__TT_FOTOS_ORIGIN__/*"
+      ],
+      "js": [
+        "site-receiver.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
+}
