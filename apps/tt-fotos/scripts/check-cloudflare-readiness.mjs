@@ -36,7 +36,7 @@ export function verifyInventory(d1,r2,managed,custom){
  checkPrivateR2Responses(managed,custom);
  return true;
 }
-export function findAccessApplication(apps,aud){
+export function findAccessApplication(apps,aud,workerId){
  if(!Array.isArray(apps))throw Error('ACCESS_LIST_UNAVAILABLE');
  const exact=apps.filter(a=>a?.aud===aud&&a?.type==='self_hosted');
  if(exact.length!==1)throw Error('DEDICATED_ACCESS_APP_NOT_FOUND_OR_AMBIGUOUS');
@@ -44,7 +44,7 @@ export function findAccessApplication(apps,aud){
  // Destinations are checked as well as AUD. Never accept an account-wide
  // Access app as proof that this standalone Worker is protected.
  const ds=Array.isArray(a.destinations)?a.destinations:[];
- const valid=ds.some(d=>d?.type==='worker'&&typeof d.worker_id==='string'&&d.worker_id.length>0);
+ const valid=ds.some(d=>d?.type==='worker'&&d.worker_id===workerId);
  if(!valid)throw Error('WORKER_LEVEL_ACCESS_NOT_CONFIGURED');
  return {id:a.id||null,aud:a.aud,workerIds:ds.filter(d=>d.type==='worker').map(d=>d.worker_id)};
 }
@@ -85,12 +85,14 @@ export async function auditCloudflare(env=process.env,fetcher=fetch){
     r=>{if(r.enabled!==false)throw Error('PUBLIC_R2_DEV_DOMAIN')});
   const custom=await probe('R2_CUSTOM_PRIVATE',prefix+'custom',
     r=>{if(!Array.isArray(r.domains)||r.domains.some(d=>d.enabled!==false))throw Error('PUBLIC_OR_UNKNOWN_CUSTOM_DOMAIN')});
-  if(managed&&custom)verifyInventory(d1||{name:''},r2,managed,custom);
+  if(d1&&managed&&custom)verifyInventory(d1,r2,managed,custom);
  }
+ const worker=await probe('STANDALONE_WORKER',base+'/workers/workers/'+WORKER,
+   r=>{if(r.name!==WORKER||!r.id)throw Error('NOT_THE_STANDALONE_WORKER')});
  const apps=await probe('ACCESS_AUDIENCE',base+'/access/apps?aud='+encodeURIComponent(env.TT_FOTOS_ACCESS_AUD)+'&per_page=100',
-   r=>findAccessApplication(r,env.TT_FOTOS_ACCESS_AUD));
- // A configured Access app is not proof that its rules are attached to the intended Worker.
- if(apps){checks.push('ACCESS_POLICY_AND_WORKER_BINDING:REQUIRES_LIVE_VERIFICATION')}
+   r=>findAccessApplication(r,env.TT_FOTOS_ACCESS_AUD,worker?.id));
+ // Even a correctly scoped Access app needs policy and live authentication verification.
+ if(apps){checks.push('ACCESS_POLICY_AND_LOGIN:REQUIRES_LIVE_VERIFICATION')}
  return {ready:blockers.length===0,checks,blockers};
 }
 export function safeReport(report){
