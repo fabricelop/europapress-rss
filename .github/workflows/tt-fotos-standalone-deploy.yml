@@ -1,0 +1,40 @@
+name: Deploy isolated TT Fotos to Cloudflare (manual)
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: apps/tt-fotos
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      TT_FOTOS_D1_DATABASE_ID: ${{ vars.TT_FOTOS_D1_DATABASE_ID }}
+      TT_FOTOS_ACCESS_ISSUER: ${{ vars.TT_FOTOS_ACCESS_ISSUER }}
+      TT_FOTOS_ACCESS_AUD: ${{ vars.TT_FOTOS_ACCESS_AUD }}
+      TT_FOTOS_ALLOWED_EMAIL: ${{ secrets.TT_FOTOS_ALLOWED_EMAIL }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Verify deployment prerequisites are configured
+        run: |
+          test -n "$CLOUDFLARE_API_TOKEN"
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+          test -n "$TT_FOTOS_ALLOWED_EMAIL"
+          node scripts/prepare-deploy.mjs
+      - name: Verify API, private access and editor link tests
+        run: node --test tests/*.test.mjs
+      - name: Install Wrangler
+        run: npm install --no-audit --no-fund
+      - name: Apply schema ONLY to dedicated private TT Fotos database
+        run: npx wrangler d1 execute tt-fotos-private --remote --file=migrations/0001_init.sql
+      - name: Deploy ONLY the new tt-fotos-independent Worker
+        run: npx wrangler deploy
+      - name: Store editor allowlist as Cloudflare Worker secret
+        run: printf '%s' "$TT_FOTOS_ALLOWED_EMAIL" | npx wrangler secret put TT_FOTOS_ALLOWED_EMAIL
