@@ -73,3 +73,25 @@ jobs:
         run: node scripts/check-cloudflare-readiness.mjs
       - name: Verify anonymous readers cannot access the new independent gallery
         run: node scripts/check-live-access.mjs "$TT_FOTOS_PUBLIC_ORIGIN"
+      - name: Build browser connector restricted to the verified private TT Fotos origin
+        run: node scripts/build-companion.mjs "$TT_FOTOS_PUBLIC_ORIGIN"
+      - name: Verify the browser connector only targets ChatGPT and the new Worker
+        run: |
+          node --input-type=module - <<'NODE'
+          import fs from 'node:fs';
+          import assert from 'node:assert/strict';
+          const p='dist/chrome-companion/manifest.json';
+          const m=JSON.parse(fs.readFileSync(p,'utf8'));
+          const host=new URL(process.env.TT_FOTOS_PUBLIC_ORIGIN).origin+'/*';
+          assert.deepEqual(m.host_permissions,['https://chatgpt.com/*',host]);
+          assert(!JSON.stringify(m).includes('rainyraven22.chatgpt.site'));
+          assert.equal(m.content_scripts.length,2);
+          console.log('TT_FOTOS_COMPANION_VERIFIED');
+          NODE
+      - name: Publish Chrome extension source bundle, not photo data
+        uses: actions/upload-artifact@v4
+        with:
+          name: tt-fotos-chrome-companion-private
+          path: apps/tt-fotos/dist/chrome-companion/
+          if-no-files-found: error
+          retention-days: 30
