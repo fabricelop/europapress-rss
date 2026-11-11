@@ -15,7 +15,7 @@ try{
 }catch{console.error('Usage: node scripts/build-companion.mjs https://EXACT-TT-FOTOS-ORIGIN');process.exit(2)}
 if(destination.includes('ttactualidad.rainyraven22.chatgpt.site'))throw Error('OLD_SITE_NOT_ALLOWED');
 fs.mkdirSync(output,{recursive:true});
-for(const name of ['manifest.json','background.js','images-source.js','site-receiver.js']){
+for(const name of ['manifest.json','background.js','images-source.js','site-receiver.js','popup.html','popup.js']){
  let content=fs.readFileSync(path.join(sourceDir,name),'utf8');
  if(name==='manifest.json'){
    const manifest=JSON.parse(content);
@@ -31,4 +31,4 @@ for(const name of ['manifest.json','background.js','images-source.js','site-rece
  }
  fs.writeFileSync(path.join(output,name),content,{flag:'w',mode:0o600});
 }
-console.log('TT_FOTOS_COMPANION_BUILT '+destination+' files=4');
+console.log('TT_FOTOS_COMPANION_BUILT '+destination+' files=6');
