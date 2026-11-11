@@ -3,15 +3,15 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794382196865-manual",
+  "run_id": "tr-1794383608191-manual",
   "previous_run_id": "tr-autoguard-1794381666",
   "command_id": "tr-1794382196865-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-11T08:41:30+01:00",
-  "updated_at": "2026-11-11T08:44:00+01:00",
-  "current": 2,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-11T08:53:00+01:00",
+  "updated_at": "2026-11-11T08:53:00+01:00",
+  "current": 0,
   "total": 2,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
@@ -250,6 +250,13 @@
       "trend_id": null,
       "title": null,
       "message": "Barrera final en main: editorial-queue=0; ambos Radar retirados por reconciliación 0d85519669b50387174332bb14e83c9caa765450; mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-11T08:53:00+01:00",
+      "phase": "preparing",
+      "trend_id": "54558781ed3f",
+      "title": "CCOO",
+      "message": "Cola inicial releída en main: 2 preparing (CCOO r0, Comegambas r0), de más antiguo a más reciente. Validación JIT por item. ImageGen=0; publicaciones=0."
     }
   ],
   "last_started_at": "2026-11-11T08:41:30+01:00",
@@ -266,7 +273,7 @@
     "maintenance": 0,
     "pending": 0
   },
-  "message": "Pasada tr-1794382196865-manual reanudada y cerrada 2/2 tras aparición de dos Radar. San Martín de Tours quedó anticipation_prepared; Fascistas quedó anticipation_unverified por ambigüedad causal actual. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0.",
+  "message": "Cola inicial releída en main: 2 preparing (CCOO r0, Comegambas r0), de más antiguo a más reciente. Validación JIT por item. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794327332740-manual",
@@ -6182,5 +6189,5 @@
     }
   ],
   "processed": [],
-  "finished_at": "2026-11-11T08:44:00+01:00"
+  "finished_at": null
 }
