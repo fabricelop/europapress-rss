@@ -675,6 +675,10 @@ struct EditorialRelationsView: View {
                         trendNewsRow(news: news, rank: rank, name: name)
                     }
                 }
+                if model.snapshot == nil && !changes.isEmpty {
+                    Text("Las selecciones son provisionales: si el Site no responde o rechaza el episodio, permanecerán pendientes sin crear relaciones falsas.")
+                        .font(.caption2).foregroundStyle(.orange)
+                }
                 if !changes.isEmpty {
                     Button {
                         Task {
@@ -687,8 +691,12 @@ struct EditorialRelationsView: View {
                               systemImage: "checkmark.circle.fill")
                     }
                     .buttonStyle(.borderedProminent)
-                    // The authoritative GET is required before changing links.
-                    .disabled(model.saving || model.snapshot == nil)
+                    // News are selected by exact id/revision even if the Site's
+                    // snapshot GET temporarily failed. POST stays authenticated
+                    // and the Site validates identities; no link is marked saved
+                    // until a fresh server readback confirms it.
+                    .tint(.orange)
+                    .disabled(model.saving)
                 }
             }
         }
@@ -927,7 +935,7 @@ struct EditorialRelationsView: View {
                     Text("Relación confirmada por el servidor; no requiere guardar de nuevo.")
                         .font(.caption2).foregroundStyle(TTTheme.teal)
                 } else if model.snapshot == nil {
-                    Text("No se ha podido confirmar el estado remoto. Actualiza antes de guardar.")
+                    Text("No se pudo consultar el estado remoto. Puedes marcar y pulsar Guardar; el Site validará los IDs y la APP no confirmará la relación hasta comprobarla.")
                         .font(.caption2).foregroundStyle(.orange)
                 }
             } else {
