@@ -7,43 +7,95 @@
   "previous_run_id": "tr-1794380172256-manual",
   "command_id": "tr-autoguard-1794381666",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-11T08:22:00+01:00",
-  "updated_at": "2026-11-11T08:30:00+01:00",
-  "current": 3,
+  "updated_at": "2026-11-11T08:31:20+01:00",
+  "current": 5,
   "total": 5,
-  "trend_id": "red-review-1187cef2d097108e5d0a",
-  "title": "Revisar novedades: #VotoUtilEsPodemos",
-  "queue_complete": false,
+  "trend_id": null,
+  "title": "Pasada editorial TTendencias",
+  "queue_complete": true,
   "processed_ids": [
-    "142a2383c743"
+    "c3c14a8ca6a5",
+    "cc967443070a",
+    "142a2383c743",
+    "red-review-1187cef2d097108e5d0a",
+    "red-review-0134840f3bb98f7e1a38"
   ],
   "converged_ids": [],
-  "remaining_ids": [
-    "red-review-1187cef2d097108e5d0a",
-    "red-review-0134840f3bb98f7e1a38"
-  ],
-  "remaining_active_ids": [
-    "red-review-1187cef2d097108e5d0a",
-    "red-review-0134840f3bb98f7e1a38"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 3,
-    "observed": 3,
-    "closed": 1,
-    "explained": 1,
+    "attempted": 5,
+    "observed": 5,
+    "closed": 5,
+    "explained": 3,
     "problematic": 0,
     "updates": 0,
-    "queue_remaining": 2,
+    "review_completed_no_distinct_event": 0,
+    "maintenance_reviews": 2,
+    "unchanged_reviews": 2,
+    "continuity_updates": 0,
+    "distinct_updates": 0,
+    "stale_reviews": 0,
+    "unverified_reviews": 0,
+    "anticipation_reviews": 0,
+    "anticipation_prepared": 0,
+    "anticipation_unverified": 0,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 0
+    "incidents": 0,
+    "concurrent_convergence": 0
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "c3c14a8ca6a5",
+      "revision": 0,
+      "name": "Informativos",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "008e32b0b299d12efe95bb046262d8dd78102fba"
+    },
+    {
+      "id": "cc967443070a",
+      "revision": 0,
+      "name": "lena",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "d2c8e99bcacd3e8fef43c025de79ed0a73279842"
+    },
+    {
+      "id": "142a2383c743",
+      "revision": 0,
+      "name": "Iros",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "5cc3a8140adfe413687d3bb3f65ba78362ecc732"
+    },
+    {
+      "id": "red-review-1187cef2d097108e5d0a",
+      "revision": 0,
+      "name": "Revisar novedades: #VotoUtilEsPodemos",
+      "outcome": "unchanged",
+      "applied": true,
+      "source_id": "a1c1e16d0c24",
+      "apply_commit": "5161bc30d0fd386b31d64583d287a42df76522f4"
+    },
+    {
+      "id": "red-review-0134840f3bb98f7e1a38",
+      "revision": 0,
+      "name": "Revisar novedades: Carzzy",
+      "outcome": "unchanged",
+      "applied": true,
+      "source_id": "79666c46d60d",
+      "apply_commit": "5161bc30d0fd386b31d64583d287a42df76522f4"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -181,19 +233,19 @@
     }
   ],
   "last_started_at": "2026-11-11T08:29:19+01:00",
-  "last_completed_at": "2026-11-11T08:29:20+01:00",
+  "last_completed_at": "2026-11-11T08:31:20+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794380172256-manual",
+    "run_id": "tr-autoguard-1794381666",
     "status": "DONE",
-    "started_at": "2026-11-11T07:56:12+01:00",
-    "finished_at": "2026-11-11T08:00:01+01:00",
-    "total": 2,
-    "closed": 2,
+    "started_at": "2026-11-11T08:22:00+01:00",
+    "finished_at": "2026-11-11T08:31:20+01:00",
+    "total": 5,
+    "closed": 5,
     "maintenance": 2,
     "pending": 0
   },
-  "message": "Revisando novedades: #VotoUtilEsPodemos. La presencia actual está confirmada; verificando si existe un hecho posterior e independiente.",
+  "message": "Pasada tr-autoguard-1794381666 cerrada 5/5. Informativos r0 quedó explicado por la huelga general del 11N y los servicios mínimos informativos de RTVE. lena r0 e Iros r0 quedaron explicados con causa no confirmada tras verificar su presencia actual sin atribuir un detonante no corroborado; en lena se conserva la discrepancia de normalización «Leña». Las revisiones rojas de #VotoUtilEsPodemos y Carzzy quedaron unchanged, sin nueva ficha, imagen ni publicación. Barrera final main: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794327332740-manual",
@@ -3236,11 +3288,99 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-1794378888899-manual cerrada 6/6. Cuatro trabajos ordinarios (#FelizMiércoles r0, Barcelona r0, #HuelgaGeneral r1 y Tavernes r1) quedaron explicados y sincronizados. La barrera final detectó dos revisiones rojas nuevas: Silvia Intxaurrondo quedó unchanged y Charles se actualizó en continuidad; ambas convergieron con la pasada concurrente tr-1794380172256-manual y fueron aplicadas por 8ac401943a74f6b1e15d582eac4c3bffb24294b5. Barrera final main: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-autoguard-1794381666",
+      "status": "DONE",
+      "started_at": "2026-11-11T08:22:00+01:00",
+      "finished_at": "2026-11-11T08:31:20+01:00",
+      "at": "2026-11-11T08:31:20+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 5,
+        "observed": 5,
+        "closed": 5,
+        "explained": 3,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 2,
+        "unchanged_reviews": 2,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [
+        "c3c14a8ca6a5",
+        "cc967443070a",
+        "142a2383c743",
+        "red-review-1187cef2d097108e5d0a",
+        "red-review-0134840f3bb98f7e1a38"
+      ],
+      "converged_ids": [],
+      "outcomes": [
+        {
+          "id": "c3c14a8ca6a5",
+          "revision": 0,
+          "name": "Informativos",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "008e32b0b299d12efe95bb046262d8dd78102fba"
+        },
+        {
+          "id": "cc967443070a",
+          "revision": 0,
+          "name": "lena",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "d2c8e99bcacd3e8fef43c025de79ed0a73279842"
+        },
+        {
+          "id": "142a2383c743",
+          "revision": 0,
+          "name": "Iros",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "5cc3a8140adfe413687d3bb3f65ba78362ecc732"
+        },
+        {
+          "id": "red-review-1187cef2d097108e5d0a",
+          "revision": 0,
+          "name": "Revisar novedades: #VotoUtilEsPodemos",
+          "outcome": "unchanged",
+          "applied": true,
+          "source_id": "a1c1e16d0c24",
+          "apply_commit": "5161bc30d0fd386b31d64583d287a42df76522f4"
+        },
+        {
+          "id": "red-review-0134840f3bb98f7e1a38",
+          "revision": 0,
+          "name": "Revisar novedades: Carzzy",
+          "outcome": "unchanged",
+          "applied": true,
+          "source_id": "79666c46d60d",
+          "apply_commit": "5161bc30d0fd386b31d64583d287a42df76522f4"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-autoguard-1794381666 cerrada 5/5. Informativos r0 quedó explicado por la huelga general del 11N y los servicios mínimos informativos de RTVE. lena r0 e Iros r0 quedaron explicados con causa no confirmada tras verificar su presencia actual sin atribuir un detonante no corroborado; en lena se conserva la discrepancia de normalización «Leña». Las revisiones rojas de #VotoUtilEsPodemos y Carzzy quedaron unchanged, sin nueva ficha, imagen ni publicación. Barrera final main: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "current_item": null,
   "withdrawn_ids": [],
-  "last_finished_at": "2026-11-11T08:00:01+01:00",
+  "last_finished_at": "2026-11-11T08:31:20+01:00",
   "last_revalidated_at": "2026-11-11T06:56:00+01:00",
   "last_revalidation": {
     "at": "2026-11-11T06:56:00+01:00",
@@ -5718,6 +5858,94 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-1794378888899-manual cerrada 6/6. Cuatro trabajos ordinarios (#FelizMiércoles r0, Barcelona r0, #HuelgaGeneral r1 y Tavernes r1) quedaron explicados y sincronizados. La barrera final detectó dos revisiones rojas nuevas: Silvia Intxaurrondo quedó unchanged y Charles se actualizó en continuidad; ambas convergieron con la pasada concurrente tr-1794380172256-manual y fueron aplicadas por 8ac401943a74f6b1e15d582eac4c3bffb24294b5. Barrera final main: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-autoguard-1794381666",
+      "status": "DONE",
+      "started_at": "2026-11-11T08:22:00+01:00",
+      "finished_at": "2026-11-11T08:31:20+01:00",
+      "at": "2026-11-11T08:31:20+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 5,
+        "observed": 5,
+        "closed": 5,
+        "explained": 3,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 2,
+        "unchanged_reviews": 2,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [
+        "c3c14a8ca6a5",
+        "cc967443070a",
+        "142a2383c743",
+        "red-review-1187cef2d097108e5d0a",
+        "red-review-0134840f3bb98f7e1a38"
+      ],
+      "converged_ids": [],
+      "outcomes": [
+        {
+          "id": "c3c14a8ca6a5",
+          "revision": 0,
+          "name": "Informativos",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "008e32b0b299d12efe95bb046262d8dd78102fba"
+        },
+        {
+          "id": "cc967443070a",
+          "revision": 0,
+          "name": "lena",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "d2c8e99bcacd3e8fef43c025de79ed0a73279842"
+        },
+        {
+          "id": "142a2383c743",
+          "revision": 0,
+          "name": "Iros",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "5cc3a8140adfe413687d3bb3f65ba78362ecc732"
+        },
+        {
+          "id": "red-review-1187cef2d097108e5d0a",
+          "revision": 0,
+          "name": "Revisar novedades: #VotoUtilEsPodemos",
+          "outcome": "unchanged",
+          "applied": true,
+          "source_id": "a1c1e16d0c24",
+          "apply_commit": "5161bc30d0fd386b31d64583d287a42df76522f4"
+        },
+        {
+          "id": "red-review-0134840f3bb98f7e1a38",
+          "revision": 0,
+          "name": "Revisar novedades: Carzzy",
+          "outcome": "unchanged",
+          "applied": true,
+          "source_id": "79666c46d60d",
+          "apply_commit": "5161bc30d0fd386b31d64583d287a42df76522f4"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-autoguard-1794381666 cerrada 5/5. Informativos r0 quedó explicado por la huelga general del 11N y los servicios mínimos informativos de RTVE. lena r0 e Iros r0 quedaron explicados con causa no confirmada tras verificar su presencia actual sin atribuir un detonante no corroborado; en lena se conserva la discrepancia de normalización «Leña». Las revisiones rojas de #VotoUtilEsPodemos y Carzzy quedaron unchanged, sin nueva ficha, imagen ni publicación. Barrera final main: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "outbox_comment_id": 6721989528,
@@ -5840,8 +6068,13 @@
       "at": "2026-11-11T08:00:01+01:00",
       "phase": "closing",
       "message": "Barrera final main: editorial-queue=0; Silvia unchanged y Charles continuity aplicados por 8ac401943a74f6b1e15d582eac4c3bffb24294b5."
+    },
+    {
+      "at": "2026-11-11T08:31:20+01:00",
+      "phase": "closing",
+      "message": "Barrera final main: editorial-queue=0; 3 explicaciones ordinarias y 2 revisiones de mantenimiento aplicadas; sin reexplicaciones activas. ImageGen=0; publicaciones=0."
     }
   ],
   "processed": [],
-  "finished_at": "2026-11-11T08:00:01+01:00"
+  "finished_at": "2026-11-11T08:31:20+01:00"
 }
