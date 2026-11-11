@@ -52,17 +52,22 @@ function checkedOriginal(file,meta){
 }
 function storedOriginal(base,task){
   const d=dirs(base),id=task.command_id;
+  let staged=null,cached=null;
   const stagedMeta=safeRead(path.join(d.staged,id+'.json'));
-  if(stagedMeta&&stagedMeta.project===task.project&&stagedMeta.commandId===id&&stagedMeta.editorialId===task.target_id&&Number(stagedMeta.revision)===task.revision&&
-    stagedMeta.editorialFingerprint===String(task.editorial_sha256||task.explanation_sha256||'')){
-    const bytes=checkedOriginal(path.join(d.staged,id+'.png'),stagedMeta);
-    if(bytes)return {bytes,source:'immediate-originals'};
+  if(stagedMeta&&stagedMeta.project===task.project&&stagedMeta.commandId===id&&
+      stagedMeta.editorialId===task.target_id&&Number(stagedMeta.revision)===task.revision&&
+      stagedMeta.editorialFingerprint===String(task.editorial_sha256||task.explanation_sha256||'')){
+    staged=checkedOriginal(path.join(d.staged,id+'.png'),stagedMeta);
   }
   const cacheMeta=safeRead(path.join(d.cached,id+'.json'));
-  if(cacheMeta&&cacheMeta.commandId===id&&cacheMeta.editorialId===task.target_id&&Number(cacheMeta.revision)===task.revision){
-    const bytes=checkedOriginal(path.join(d.cached,id+'.png'),cacheMeta);
-    if(bytes)return {bytes,source:'original-cache'};
+  if(cacheMeta&&cacheMeta.commandId===id&&cacheMeta.editorialId===task.target_id&&
+      Number(cacheMeta.revision)===task.revision){
+    cached=checkedOriginal(path.join(d.cached,id+'.png'),cacheMeta);
   }
+  // Two distinct PNGs for one command must not be automatically swapped.
+  if(staged&&cached&&hash(staged)!==hash(cached))return null;
+  if(staged)return {bytes:staged,source:'immediate-originals'};
+  if(cached)return {bytes:cached,source:'original-cache'};
   return null;
 }
 function inventory(base,{importDir=null}={}){
