@@ -1,0 +1,45 @@
+TT FOTOS — MONITOR LOCAL Y RESCATE V3 (11-11-2026)
+
+CAMBIO PRINCIPAL:
+El monitor NO envia ninguna imagen a la bandeja del iPhone.
+Recupera PNG de conversaciones ChatGPT ya abiertas y permite asignar/reasignar
+imagenes descargadas a la ficha concreta de la noticia o tendencia.
+La ultima asociacion confirmada en el monitor sustituye la anterior solo en esta
+pantalla. Los PNG anteriores y el historial quedan conservados localmente.
+
+SOLUCION AL ERROR EADDRINUSE (puerto 8765 ocupado):
+El monitor V3 intenta 127.0.0.1:8765. Si ya hay un monitor abierto, intenta
+8766, 8767... hasta encontrar un puerto libre. No detiene ni reinicia procesos.
+ABRE LA URL QUE IMPRIMA NODE EN LA LINEA TT_FOTOS_PANEL (puede ser 8766).
+Para evitar tener dos monitores a la vez, cierra el anterior con Ctrl+C.
+
+INSTALACION (carpeta del ZIP descomprimida; abrir PowerShell aqui):
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Instalar-TTFotos-Local.ps1 -Serve
+
+La instalacion ejecuta 18 pruebas, guarda copias .bak de los anteriores ficheros,
+instala en C:\TTiTTulares y crea C:\TTiTTulares\TTFotos-Importar.
+No modifica los programas existentes ni la bandeja de aprobacion de iPhone.
+
+PASO A PASO:
+1. En el monitor selecciona "Desde 10/11/2026".
+2. Guarda PNG descargados de ChatGPT Imagenes en:
+      C:\TTiTTulares\TTFotos-Importar
+3. Pulsa "Actualizar" y localiza abajo cada imagen descargada.
+4. Busca una noticia/tendencia por titulo, ID o comando; elige revision.
+5. Pulsa "Confirmar asociacion". La imagen aparece en la ficha del monitor.
+6. Si no corresponde, importa/selecciona otra imagen y repite la asociacion:
+   la ultima reemplaza a la anterior SOLO EN EL MONITOR y queda registro de
+   las dos elecciones. No hay boton de entrega a la APP.
+
+Para rescatar originales todavia visibles en conversaciones ChatGPT ya ABIERTAS,
+abre otra PowerShell y ejecuta:
+   node C:\TTiTTulares\TTFotosRescate.cjs --rescue --since 2026-11-10 --limit 8 --base C:\TTiTTulares
+
+--rescue solo captura PNG con identidad exacta y los deja locales; NO los envia.
+--deliver queda deshabilitado intencionadamente en V3.
+
+IMPORTANTE: este monitor solo ve inscripciones, PNG y recibos locales; no
+puede descargar automaticamente la biblioteca COMPLETA de ChatGPT Imagenes.
+Los recibos historicos no garantizan que la imagen siga pendiente en iPhone.
+El receptor automatico original sigue gestionado separadamente por sus tareas;
+este ZIP no lo cambia. Tampoco modifica el Site ni publica en X/Instagram.
