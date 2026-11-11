@@ -7,106 +7,72 @@
   "previous_run_id": "tr-1794384185213-manual",
   "command_id": "tr-20261111T135500-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-11T13:55:00+01:00",
-  "updated_at": "2026-11-11T13:55:00+01:00",
-  "current": 0,
+  "updated_at": "2026-11-11T14:06:30+01:00",
+  "current": 33,
   "total": 33,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
-  "processed_ids": [],
+  "queue_complete": true,
+  "processed_ids": [
+    "4d0946f0eae7",
+    "a40297032698",
+    "2f04fbd94be9",
+    "bc09be0986c5",
+    "cb975f45e289",
+    "e8e9d03d4f3f",
+    "d100127b9d60",
+    "37402c4dce32",
+    "3df12c624776",
+    "13e90b3bc1a7",
+    "43973ab204d3",
+    "b59539a32a22",
+    "ff432303b439",
+    "be98596f4727",
+    "7c81acf9907e",
+    "4488f0cec648",
+    "80a8b0017c62",
+    "ac5218c64f99",
+    "044ba275eab7",
+    "6cbcf74051a2",
+    "50fe188bf595",
+    "ee7c42567695",
+    "c91a548bde26",
+    "abcee3600c0c",
+    "2d61c29c559a",
+    "ead6b87a7efb",
+    "86fd495273c9",
+    "2dc43ceb1804",
+    "ffa74ccda79b",
+    "7d5d7afb207a",
+    "4de42939c23c",
+    "3b5252a0ea21",
+    "da68b64d495a"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "4d0946f0eae7",
-    "a40297032698",
-    "2f04fbd94be9",
-    "bc09be0986c5",
-    "cb975f45e289",
-    "e8e9d03d4f3f",
-    "d100127b9d60",
-    "37402c4dce32",
-    "3df12c624776",
-    "13e90b3bc1a7",
-    "43973ab204d3",
-    "b59539a32a22",
-    "ff432303b439",
-    "be98596f4727",
-    "7c81acf9907e",
-    "4488f0cec648",
-    "80a8b0017c62",
-    "ac5218c64f99",
-    "044ba275eab7",
-    "6cbcf74051a2",
-    "50fe188bf595",
-    "ee7c42567695",
-    "c91a548bde26",
-    "abcee3600c0c",
-    "2d61c29c559a",
-    "ead6b87a7efb",
-    "86fd495273c9",
-    "2dc43ceb1804",
-    "ffa74ccda79b",
-    "7d5d7afb207a",
-    "4de42939c23c",
-    "3b5252a0ea21",
-    "da68b64d495a"
-  ],
-  "remaining_active_ids": [
-    "4d0946f0eae7",
-    "a40297032698",
-    "2f04fbd94be9",
-    "bc09be0986c5",
-    "cb975f45e289",
-    "e8e9d03d4f3f",
-    "d100127b9d60",
-    "37402c4dce32",
-    "3df12c624776",
-    "13e90b3bc1a7",
-    "43973ab204d3",
-    "b59539a32a22",
-    "ff432303b439",
-    "be98596f4727",
-    "7c81acf9907e",
-    "4488f0cec648",
-    "80a8b0017c62",
-    "ac5218c64f99",
-    "044ba275eab7",
-    "6cbcf74051a2",
-    "50fe188bf595",
-    "ee7c42567695",
-    "c91a548bde26",
-    "abcee3600c0c",
-    "2d61c29c559a",
-    "ead6b87a7efb",
-    "86fd495273c9",
-    "2dc43ceb1804",
-    "ffa74ccda79b",
-    "7d5d7afb207a",
-    "4de42939c23c",
-    "3b5252a0ea21",
-    "da68b64d495a"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 33,
     "observed": 33,
-    "closed": 0,
-    "explained": 0,
+    "closed": 33,
+    "explained": 30,
     "problematic": 0,
     "updates": 0,
-    "review_completed_no_distinct_event": 0,
+    "review_completed_no_distinct_event": 3,
     "maintenance_reviews": 0,
     "unchanged_reviews": 0,
     "continuity_updates": 0,
-    "distinct_updates": 0,
+    "distinct_updates": 2,
     "stale_reviews": 0,
     "unverified_reviews": 0,
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 33,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -116,14 +82,238 @@
   },
   "outcomes": [
     {
-      "id": "red-review-32f06663a61e8c297cb0",
+      "id": "4d0946f0eae7",
       "revision": 0,
-      "name": "Revisar novedades: Charles",
-      "outcome": "unchanged",
+      "name": "San Martín de Tours",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "a40297032698",
+      "revision": 0,
+      "name": "Poneros",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "2f04fbd94be9",
+      "revision": 0,
+      "name": "Cortar",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "bc09be0986c5",
+      "revision": 0,
+      "name": "Nita",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "cb975f45e289",
+      "revision": 0,
+      "name": "#LaHora11N",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "e8e9d03d4f3f",
+      "revision": 0,
+      "name": "Piquetes",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "d100127b9d60",
+      "revision": 0,
+      "name": "Mike Hammer",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "37402c4dce32",
+      "revision": 0,
+      "name": "Sindicatos",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "3df12c624776",
+      "revision": 0,
+      "name": "11-N",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "13e90b3bc1a7",
+      "revision": 0,
+      "name": "Parásitos",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "43973ab204d3",
+      "revision": 0,
+      "name": "Colau",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "b59539a32a22",
+      "revision": 0,
+      "name": "Trabajadores",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "ff432303b439",
+      "revision": 0,
+      "name": "#charles",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "be98596f4727",
+      "revision": 0,
+      "name": "Fascistas",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "7c81acf9907e",
+      "revision": 0,
+      "name": "Fracaso",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "4488f0cec648",
+      "revision": 0,
+      "name": "Canal Sur",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "80a8b0017c62",
+      "revision": 0,
+      "name": "#VagaGeneral11N",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "ac5218c64f99",
+      "revision": 0,
+      "name": "Jordi Wild",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "044ba275eab7",
+      "revision": 0,
+      "name": "Cagada",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "6cbcf74051a2",
+      "revision": 0,
+      "name": "#EnBocaDeTodos",
+      "outcome": "review_completed",
       "applied": true,
-      "via": "concurrent_convergence",
-      "apply_commit": "bfd80e1e1a7bff328b20f09e77ab689655db0633",
-      "source_id": "c43139196d57"
+      "review_reason": "no_distinct_event"
+    },
+    {
+      "id": "50fe188bf595",
+      "revision": 0,
+      "name": "Stacy Keach",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "ee7c42567695",
+      "revision": 0,
+      "name": "coachella",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "c91a548bde26",
+      "revision": 0,
+      "name": "Son 4",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "abcee3600c0c",
+      "revision": 0,
+      "name": "#Mañaneros11N",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "2d61c29c559a",
+      "revision": 0,
+      "name": "Error",
+      "outcome": "review_completed",
+      "applied": true,
+      "review_reason": "no_distinct_event"
+    },
+    {
+      "id": "ead6b87a7efb",
+      "revision": 0,
+      "name": "Cagadon",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "86fd495273c9",
+      "revision": 0,
+      "name": "Alejandra",
+      "outcome": "review_completed",
+      "applied": true,
+      "review_reason": "no_distinct_event"
+    },
+    {
+      "id": "2dc43ceb1804",
+      "revision": 0,
+      "name": "CAGONES",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "ffa74ccda79b",
+      "revision": 0,
+      "name": "Gran Vía",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "7d5d7afb207a",
+      "revision": 0,
+      "name": "Marcelinho Huertas",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "4de42939c23c",
+      "revision": 0,
+      "name": "Acabáis",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "3b5252a0ea21",
+      "revision": 0,
+      "name": "Feliz Miércoles",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "da68b64d495a",
+      "revision": 0,
+      "name": "Santi",
+      "outcome": "explained",
+      "applied": true
     }
   ],
   "incident_count": 0,
@@ -363,23 +553,31 @@
       "trend_id": null,
       "title": null,
       "message": "Convergencia detectada: Charles r0 ya aplicado como unchanged por el aplicador oficial; barrera final con cola=0 y sin reexplicaciones activas. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-11T14:06:30+01:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "Barrera final main: editorial-queue=0; 33/33 cerradas (30 explained + 3 review_completed/no_distinct_event), sincronización verificada. ImageGen=0; publicaciones=0."
     }
   ],
   "last_started_at": "2026-11-11T13:55:00+01:00",
-  "last_completed_at": "2026-11-11T09:06:00+01:00",
+  "last_completed_at": "2026-11-11T14:06:30+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794384185213-manual",
+    "run_id": "tr-20261111T135500-manual",
     "status": "DONE",
-    "started_at": "2026-11-11T09:03:00+01:00",
-    "finished_at": "2026-11-11T09:06:00+01:00",
-    "total": 1,
-    "closed": 1,
-    "explained": 0,
-    "maintenance": 1,
-    "pending": 0
+    "started_at": "2026-11-11T13:55:00+01:00",
+    "finished_at": "2026-11-11T14:06:30+01:00",
+    "total": 33,
+    "closed": 33,
+    "explained": 30,
+    "maintenance": 0,
+    "pending": 0,
+    "review_completed_no_distinct_event": 3
   },
-  "message": "Pasada manual RUNNING sobre 33 revisiones preparing observadas en main; investigación y persistencia directa por outbox oficial. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-20261111T135500-manual cerrada 33/33. 30 explicaciones quedaron sincronizadas en requests.json y telegram-manual-explained.json; 3 reentradas (#EnBocaDeTodos, Error y Alejandra) se cerraron review_completed/no_distinct_event. Barrera final main: editorial-queue=0. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794327332740-manual",
@@ -3743,6 +3941,313 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-1794384185213-manual cerrada 1/1 por convergencia JIT. Charles r0 fue revalidada; el mantenimiento quedó applied/unchanged en main (bfd80e1e1a7bff328b20f09e77ab689655db0633), conservando explicación, fecha e imagen. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-20261111T135500-manual",
+      "status": "DONE",
+      "started_at": "2026-11-11T13:55:00+01:00",
+      "finished_at": "2026-11-11T14:06:30+01:00",
+      "at": "2026-11-11T14:06:30+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 33,
+        "observed": 33,
+        "closed": 33,
+        "explained": 30,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 3,
+        "maintenance_reviews": 0,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 2,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [
+        "4d0946f0eae7",
+        "a40297032698",
+        "2f04fbd94be9",
+        "bc09be0986c5",
+        "cb975f45e289",
+        "e8e9d03d4f3f",
+        "d100127b9d60",
+        "37402c4dce32",
+        "3df12c624776",
+        "13e90b3bc1a7",
+        "43973ab204d3",
+        "b59539a32a22",
+        "ff432303b439",
+        "be98596f4727",
+        "7c81acf9907e",
+        "4488f0cec648",
+        "80a8b0017c62",
+        "ac5218c64f99",
+        "044ba275eab7",
+        "6cbcf74051a2",
+        "50fe188bf595",
+        "ee7c42567695",
+        "c91a548bde26",
+        "abcee3600c0c",
+        "2d61c29c559a",
+        "ead6b87a7efb",
+        "86fd495273c9",
+        "2dc43ceb1804",
+        "ffa74ccda79b",
+        "7d5d7afb207a",
+        "4de42939c23c",
+        "3b5252a0ea21",
+        "da68b64d495a"
+      ],
+      "outcomes": [
+        {
+          "id": "4d0946f0eae7",
+          "revision": 0,
+          "name": "San Martín de Tours",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "a40297032698",
+          "revision": 0,
+          "name": "Poneros",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "2f04fbd94be9",
+          "revision": 0,
+          "name": "Cortar",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "bc09be0986c5",
+          "revision": 0,
+          "name": "Nita",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "cb975f45e289",
+          "revision": 0,
+          "name": "#LaHora11N",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "e8e9d03d4f3f",
+          "revision": 0,
+          "name": "Piquetes",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "d100127b9d60",
+          "revision": 0,
+          "name": "Mike Hammer",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "37402c4dce32",
+          "revision": 0,
+          "name": "Sindicatos",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "3df12c624776",
+          "revision": 0,
+          "name": "11-N",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "13e90b3bc1a7",
+          "revision": 0,
+          "name": "Parásitos",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "43973ab204d3",
+          "revision": 0,
+          "name": "Colau",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "b59539a32a22",
+          "revision": 0,
+          "name": "Trabajadores",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "ff432303b439",
+          "revision": 0,
+          "name": "#charles",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "be98596f4727",
+          "revision": 0,
+          "name": "Fascistas",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "7c81acf9907e",
+          "revision": 0,
+          "name": "Fracaso",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "4488f0cec648",
+          "revision": 0,
+          "name": "Canal Sur",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "80a8b0017c62",
+          "revision": 0,
+          "name": "#VagaGeneral11N",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "ac5218c64f99",
+          "revision": 0,
+          "name": "Jordi Wild",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "044ba275eab7",
+          "revision": 0,
+          "name": "Cagada",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "6cbcf74051a2",
+          "revision": 0,
+          "name": "#EnBocaDeTodos",
+          "outcome": "review_completed",
+          "applied": true,
+          "review_reason": "no_distinct_event"
+        },
+        {
+          "id": "50fe188bf595",
+          "revision": 0,
+          "name": "Stacy Keach",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "ee7c42567695",
+          "revision": 0,
+          "name": "coachella",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "c91a548bde26",
+          "revision": 0,
+          "name": "Son 4",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "abcee3600c0c",
+          "revision": 0,
+          "name": "#Mañaneros11N",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "2d61c29c559a",
+          "revision": 0,
+          "name": "Error",
+          "outcome": "review_completed",
+          "applied": true,
+          "review_reason": "no_distinct_event"
+        },
+        {
+          "id": "ead6b87a7efb",
+          "revision": 0,
+          "name": "Cagadon",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "86fd495273c9",
+          "revision": 0,
+          "name": "Alejandra",
+          "outcome": "review_completed",
+          "applied": true,
+          "review_reason": "no_distinct_event"
+        },
+        {
+          "id": "2dc43ceb1804",
+          "revision": 0,
+          "name": "CAGONES",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "ffa74ccda79b",
+          "revision": 0,
+          "name": "Gran Vía",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "7d5d7afb207a",
+          "revision": 0,
+          "name": "Marcelinho Huertas",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "4de42939c23c",
+          "revision": 0,
+          "name": "Acabáis",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "3b5252a0ea21",
+          "revision": 0,
+          "name": "Feliz Miércoles",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "da68b64d495a",
+          "revision": 0,
+          "name": "Santi",
+          "outcome": "explained",
+          "applied": true
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-20261111T135500-manual cerrada 33/33. 30 explicaciones quedaron sincronizadas en requests.json y telegram-manual-explained.json; 3 reentradas (#EnBocaDeTodos, Error y Alejandra) se cerraron review_completed/no_distinct_event. Barrera final main: editorial-queue=0. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "current_item": null,
@@ -6423,5 +6928,5 @@
     }
   ],
   "processed": [],
-  "finished_at": null
+  "finished_at": "2026-11-11T14:06:30+01:00"
 }
