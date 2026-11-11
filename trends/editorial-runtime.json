@@ -7,15 +7,15 @@
   "previous_run_id": "tr-1794355800000-manual",
   "command_id": "tr-1794356700000-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-11T01:25:00+01:00",
-  "updated_at": "2026-11-11T01:25:00+01:00",
+  "updated_at": "2026-11-11T01:26:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -548,6 +548,11 @@
       "at": "2026-11-11T01:25:00+01:00",
       "phase": "preparing",
       "message": "Pasada manual RUNNING. Cola autoritativa inicial observada en 0; verificando requests, mobile-decisions, mantenimientos recientes y barrera JIT final en main. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-11T01:26:00+01:00",
+      "phase": "closing",
+      "message": "Barrera final JIT verificada: editorial-queue=0 (updated_at 2026-11-11T01:21:37+01:00), mobile-decisions sin trabajo activo y búsquedas de preparing/update/rewrite_pending/reexplain_pending sin coincidencias. Pasada cerrada 0/0. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "last_started_at": "2026-11-11T01:21:36+01:00",
@@ -4536,6 +4541,6 @@
     "61f2f146a926eae3568074e8e0d9947db37bc9f5",
     "5b26ed05be444fecd3e641d64eae7eba5201f9b0"
   ],
-  "finished_at": null,
+  "finished_at": "2026-11-11T01:26:00+01:00",
   "outbox_commit": "d98a814e110f71921adab2ad984fde8a2a11979c"
 }
