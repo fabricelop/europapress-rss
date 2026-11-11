@@ -116,7 +116,7 @@ async function editorialJob(source,task,fetcher=fetch){
   String(x.event_id||x.id)===task.target_id&&Number(x.revision)===task.revision&&
   x.delivery_confirmation==='prepared_web'&&!x.rewrite_pending&&
   Number.isFinite(Date.parse(x.delivered_at)));
- const dates=[...new Set(rows.map(x=>new Date(x.delivered_at).toISOString()))];
+ const dates=[...new Set(rows.map(x=>String(x.delivered_at)))];
  if(dates.length!==1)throw Error('PREPARED_DATE_NOT_RECOVERABLE');
  const requested=Date.parse(job.requested_at||'');
  if(Number.isFinite(requested)&&Date.parse(dates[0])>requested+60000)
