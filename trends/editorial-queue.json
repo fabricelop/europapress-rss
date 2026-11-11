@@ -1,13 +1,13 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-11T03:19:13.517787+00:00",
+  "updated_at": "2026-11-11T04:20:30+01:00",
   "count": 1,
   "items": [
     {
       "id": "aaf7bbf4e66a",
       "name": "Tatum",
       "rank": 26,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-11-11T04:03:54+01:00",
       "revision": 0,
       "rewrite_instruction": "",
@@ -15,7 +15,7 @@
       "rewrite_with_image": true,
       "with_image": true,
       "disable_ai_image": false,
-      "image_strategy": null,
+      "image_strategy": "ai_plus_fallback",
       "selected_tweet_image": null,
       "task": "explain",
       "anticipation_request": false,
@@ -57,7 +57,21 @@
       "anticipated_social_source_count": 0,
       "anticipated_news_source_count": 0,
       "anticipated_news_title": "",
-      "anticipated_entered_top10_at": null
+      "anticipated_entered_top10_at": null,
+      "editorial_verified": true,
+      "explained_at": "2026-11-11T04:20:30+01:00",
+      "explanation": "TT#26 Tatum es tendencia por su primer duelo contra Jaylen Brown tras su traspaso a Philadelphia y el frío saludo previo al Celtics-Sixers.\n#NBA #Celtics\n🌶️ Nueve años juntos y un saludo de un segundo.",
+      "closer_text": "🌶️ Nueve años juntos y un saludo de un segundo.",
+      "category": "Deportes",
+      "verification_sources": [
+        {
+          "url": "https://www.reuters.com/sports/basketball/jayson-tatum-jaylen-brown-square-off-1st-time-celts-sixers-clash--flm-2026-11-10/"
+        },
+        {
+          "url": "https://sports.yahoo.com/articles/jaylen-brown-appears-blow-off-013947127.html"
+        }
+      ],
+      "news_note": "Detonante actual confirmado: primer Celtics-Sixers con Jayson Tatum y Jaylen Brown como rivales tras el traspaso de Brown a Philadelphia, con un saludo previo muy frío que concentró la conversación."
     }
   ]
 }
