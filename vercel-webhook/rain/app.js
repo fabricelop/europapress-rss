@@ -1,7 +1,7 @@
 import {aggregateEnsembleModel,buildConsensus,compactTimeline,detectQuarterHourEvents,detectRainEvents,chooseNextEvent,median,percentile,classifyRainHour,bestDryWindow} from './core.js';
 import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,combineLocalFlows,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,nowcastUncertaintyMinutes,wetNear,flowVectorAt,buildRadarProjectionRgba,projectRadarFieldContinuous,evaluateOverlaySourceState,radarProjectionRenderMode,radarViewportProjectionZoom} from './radar-core.js';
 import {selectSpatialForecastTimeBlend,hybridFutureBlend,futureVisualLabel} from './model-map-core.js';
-import {rainVisualSignal,rainVisualWindows,rainWaveSvg} from './rain-visuals.js';
+import {rainVisualSignal,rainVisualWindows,rainVisualGuard,rainWaveSvg} from './rain-visuals.js';
 
 const DET_MODELS=[
   {id:'aemet_harmonie_arome',label:'AEMET HARMONIE-AROME 2,5 km',family:'AEMET',weight:1.48,provider:'rain-harmonie',metaDomains:[]},
@@ -1356,7 +1356,8 @@ function renderShortNowcast(){
   // An explanatory rain wave, not a second independently computed ETA.
   // Keep the canonical decision as the source of the headline.
   const hasForecast=Boolean(state.data?.timeline?.length||state.nowcast?.series?.length);
-  const windows=rainVisualWindows(points,5,now+SHORT_HORIZON_MINUTES*60_000);
+  const visualPoints=rainVisualGuard(points,{eventStart:ev?.start,eventEnd:ev?.end,nowMs:now,rainingNow:rain.raining,mode:decision.mode});
+  const windows=rainVisualWindows(visualPoints,5,now+SHORT_HORIZON_MINUTES*60_000);
   const firstWet=windows.find(w=>w.signal==='wet');
   const imminent=Boolean(near&&ev?.start&&Date.parse(ev.start)<=now+SHORT_HORIZON_MINUTES*60_000);
   const visualHeadline=!hasForecast?'Previsión temporal no disponible'
@@ -1378,9 +1379,9 @@ function renderShortNowcast(){
     : 'Onda azul: intensidad prevista · marcas violetas: señal incierta';
   $('rainStoryTitle').textContent=visualHeadline;
   $('rainStorySubtitle').textContent=subtitle+(state.data?.degradedForecast?' · previsión guardada':'');
-  const peak=Math.max(0,...points.filter(p=>p.wet).map(p=>p.rate));
+  const peak=Math.max(0,...visualPoints.filter(p=>p.wet).map(p=>p.rate));
   $('rainWavePeak').textContent=hasForecast&&peak>0?'Pico ~'+peak.toFixed(1).replace('.',',')+' mm/h':'Sin pico significativo';
-  $('minuteStrip').innerHTML=hasForecast?rainWaveSvg(points,{id:'minute-rain-wave'}):'<span class="waveEmpty">Sin datos suficientes para el gráfico</span>';
+  $('minuteStrip').innerHTML=hasForecast?rainWaveSvg(visualPoints,{id:'minute-rain-wave'}):'<span class="waveEmpty">Sin datos suficientes para el gráfico</span>';
   $('minuteStrip').setAttribute('aria-label',hasForecast
     ? 'Evolución prevista de la lluvia en intervalos de cinco minutos; '+visualHeadline
     : 'Previsión no disponible');
