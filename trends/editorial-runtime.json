@@ -3,27 +3,37 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261111T065500-manual",
-  "previous_run_id": "tr-20261111T061100-manual",
-  "command_id": "tr-20261111T065500-manual",
+  "run_id": "tr-20261111T071000-manual",
+  "previous_run_id": "tr-20261111T065500-manual",
+  "command_id": "tr-20261111T071000-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-11T06:55:00+01:00",
-  "updated_at": "2026-11-11T06:56:00+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-11T07:10:00+01:00",
+  "updated_at": "2026-11-11T07:10:00+01:00",
   "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": "Pasada editorial TTendencias",
-  "queue_complete": true,
+  "total": 4,
+  "trend_id": "2f0771d9deb3",
+  "title": "Impedir",
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "2f0771d9deb3",
+    "6ddea9a1fe4c",
+    "5e271d05f834",
+    "312da905bf4e"
+  ],
+  "remaining_active_ids": [
+    "2f0771d9deb3",
+    "6ddea9a1fe4c",
+    "5e271d05f834",
+    "312da905bf4e"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
-    "observed": 0,
+    "observed": 4,
     "closed": 0,
     "explained": 0,
     "problematic": 0,
@@ -38,7 +48,7 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 4,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -52,17 +62,12 @@
   "error": null,
   "activity": [
     {
-      "at": "2026-11-11T06:55:00+01:00",
+      "at": "2026-11-11T07:10:00+01:00",
       "phase": "preparing",
-      "message": "Cola inicial releída en main: 0 items; verificando barrera editorial y resultados de mantenimiento antes del cierre"
-    },
-    {
-      "at": "2026-11-11T06:56:00+01:00",
-      "phase": "closing",
-      "message": "Cola releída en main: 0; requests/mobile sin trabajo editorial activo; pasada cerrada 0/0"
+      "message": "Cola inicial releída en main: 4 items; procesamiento JIT de antiguas a recientes. ImageGen=0; publicaciones=0."
     }
   ],
-  "last_started_at": "2026-11-11T06:55:00+01:00",
+  "last_started_at": "2026-11-11T07:10:00+01:00",
   "last_completed_at": "2026-11-11T06:56:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -75,7 +80,7 @@
     "maintenance": 0,
     "pending": 0
   },
-  "message": "Pasada tr-20261111T065500-manual cerrada 0/0 contra main. Barrera JIT final: editorial-queue=0 (updated_at 2026-11-11T06:50:59+01:00); requests.json sin preparing/update/rewrite_pending/reexplain ni tareas activas; mobile-decisions sin trabajo editorial activo. Últimos mantenimientos observados están review_completed. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada tr-20261111T071000-manual RUNNING. Cola inicial=4: Impedir r0, INFORMATIVO r0, Piquete r0, Barcelona r0. Procesamiento textual JIT; ImageGen=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794327332740-manual",
@@ -2794,6 +2799,15 @@
         "maintenance": 0,
         "pending": 0
       }
+    },
+    {
+      "run_id": "tr-20261111T071000-manual",
+      "status": "RUNNING",
+      "at": "2026-11-11T07:10:00+01:00",
+      "phase": "preparing",
+      "trend_id": "2f0771d9deb3",
+      "title": "Impedir",
+      "message": "Pasada tr-20261111T071000-manual RUNNING. Cola inicial=4: Impedir r0, INFORMATIVO r0, Piquete r0, Barcelona r0. Procesamiento textual JIT; ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": null,
@@ -5116,7 +5130,7 @@
     "eedbccdb94df1936c8997f1f2ced3536266ed14e"
   ],
   "outbox_commit": "d98a814e110f71921adab2ad984fde8a2a11979c",
-  "finished_at": "2026-11-11T06:56:00+01:00",
+  "finished_at": null,
   "prior_last_run": {
     "run_id": "tr-20261111T061100-manual",
     "status": "DONE",
