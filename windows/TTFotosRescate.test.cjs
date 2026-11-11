@@ -46,17 +46,17 @@ test('correct local receipt proves delivery of the exact item',t=>{
  assert.equal(moduleUnderTest.inventory(base).jobs[0].phase,'RECIBIDA_CON_RECIBO');
 });
 
-test('existing receiver lock does not stop recovery audit or block other deliveries',async t=>{
+test('existing receiver lock does not stop recovery audit and delivery stays disabled',async t=>{
  const base=makeFixture(t),root=path.join(base,'image-approval-receipts');
  const lock=path.join(root,'receiver.lock');
  fs.writeFileSync(lock,JSON.stringify({pid:process.pid,at:Date.now()}));
- await assert.rejects(()=>moduleUnderTest.deliver(base),/MISSING_APPROVAL_RECEIVER/);
+ await assert.rejects(()=>moduleUnderTest.deliver(base),/INBOX_DELIVERY_DISABLED_FOR_MONITOR/);
  assert(fs.existsSync(lock),'foreign lock must survive');
  assert.equal(moduleUnderTest.inventory(base).counts.received,0);
 });
 test('missing dependency does not create lock or erase originals',async t=>{
  const base=makeFixture(t),lock=path.join(base,'image-approval-receipts','receiver.lock');
- await assert.rejects(()=>moduleUnderTest.deliver(base),/MISSING_APPROVAL_RECEIVER/);
+ await assert.rejects(()=>moduleUnderTest.deliver(base),/INBOX_DELIVERY_DISABLED_FOR_MONITOR/);
  assert(!fs.existsSync(lock));
  assert.equal(moduleUnderTest.inventory(base).counts.originalNotDelivered,1);
 });
@@ -120,21 +120,25 @@ test('date filter uses Madrid local calendar day and excludes unknown dates',t=>
  assert.equal(moduleUnderTest.eligibleDate({created_at:'2026-11-09T22:30:00Z'},'2026-11-10'),false);
  assert.throws(()=>moduleUnderTest.inventory(base,{since:'yesterday'}),/INVALID_SINCE_DATE/);
 });
-test('manual attribution preserves downloaded PNG with exact SHA and editorial ID',t=>{
+test('manual association overrides local preview only and retains original PNG',t=>{
  const base=makeFixture(t),dir=path.join(base,'imports');fs.mkdirSync(dir);
  const name='Descarga-Captura.png';fs.writeFileSync(path.join(dir,name),png);
- // A preserved exact original takes priority over manual association.
- assert.throws(()=>moduleUnderTest.associateManual(base,dir,{file:name,commandId:command,sha256:digest,confirmation:'CONFIRMO_ASOCIACION_MANUAL'}),/EXACT_ORIGINAL_ALREADY_AVAILABLE/);
- const staged=path.join(base,'image-approval-receipts','immediate-originals');
- fs.rmSync(path.join(staged,command+'.png'));fs.rmSync(path.join(staged,command+'.json'));
+ const receipt=path.join(base,'image-approval-receipts',command+'.json');
+ fs.writeFileSync(receipt,JSON.stringify({commandId:command,editorialId:'123456789abc',project:'ttittulares',revision:1,rasterSHA256:digest,id:'b'.repeat(64),state:'pending'}));
+ const before=fs.readFileSync(receipt);
+ const stored=path.join(base,'image-approval-receipts','immediate-originals',command+'.png');
  const link=moduleUnderTest.associateManual(base,dir,{file:name,commandId:command,sha256:digest,confirmation:'CONFIRMO_ASOCIACION_MANUAL'});
  assert.equal(link.editorialId,'123456789abc');assert.equal(link.sha256,digest);
  assert.equal(link.provenance,'editor_manual_selection_from_download');
- assert.equal(moduleUnderTest.inventory(base,{importDir:dir}).counts.manualPending,1);
- assert.equal(moduleUnderTest.inventory(base,{importDir:dir}).orphans[0].phase,'ASOCIADA_MANUAL');
+ const doc=moduleUnderTest.inventory(base,{importDir:dir});
+ assert.equal(doc.counts.manualAssociated,1);
+ assert.equal(doc.jobs[0].phase,'ASOCIADA_EN_MONITOR');
+ assert.equal(doc.orphans[0].phase,'ASOCIADA_MANUAL');
  assert.equal(moduleUnderTest.readManualLinks(base).length,1);
  assert.equal(moduleUnderTest.associateManual(base,dir,{file:name,commandId:command,sha256:digest,confirmation:'CONFIRMO_ASOCIACION_MANUAL'}).sha256,digest);
  assert(fs.existsSync(path.join(base,'image-approval-receipts','manual-originals',digest+'.png')));
+ assert(fs.readFileSync(receipt).equals(before),'no change to inbox receipts');
+ assert(fs.existsSync(stored),'do not remove original cache');
 });
 test('manual attribution requires explicit confirmation, matching hash and unique job',t=>{
  const base=makeFixture(t),dir=path.join(base,'imports');fs.mkdirSync(dir);
@@ -165,34 +169,29 @@ test('local web monitor lists recent jobs and accepts only confirmed same-origin
  const response=await fetch(url+'/api/associate',{method:'POST',headers,body:JSON.stringify(body)});
  assert.equal(response.status,200);assert((await response.json()).ok);
  assert.equal((await fetch(url+'/api/manual-original/'+command)).status,200);
- assert.equal((await fetch(url+'/api/status?since=2026-11-10').then(x=>x.json())).counts.manualPending,1);
- // No invisible auto delivery; this endpoint requires an additional explicit click.
- assert.equal((await fetch(url+'/api/deliver-manual',{method:'POST',headers,body:JSON.stringify({commandId:command})})).status,400);
- assert.equal((await fetch(url+'/api/deliver-manual',{method:'POST',headers,body:JSON.stringify({commandId:command,confirmation:'CONFIRMO_ENTREGA_MANUAL'})})).status,400); // missing private receiver in fixture
+ assert.equal((await fetch(url+'/api/status?since=2026-11-10').then(x=>x.json())).counts.manualAssociated,1);
+ // Monitor has NO delivery route at all, even with confirmed legacy payload.
+ assert.equal((await fetch(url+'/api/deliver-manual',{method:'POST',headers,body:JSON.stringify({commandId:command,confirmation:'CONFIRMO_ENTREGA_MANUAL'})})).status,405);
  assert(!fs.existsSync(path.join(base,'image-approval-receipts',command+'.json')));
 });
-test('manual confirmed association can be delivered only through a second explicit step',async t=>{
+test('last manual selection changes local card while preserving history and both PNGs',async t=>{
  const base=makeFixture(t),dir=path.join(base,'imports');fs.mkdirSync(dir);
- fs.writeFileSync(path.join(dir,'foto-original.png'),png);
- const staged=path.join(base,'image-approval-receipts','immediate-originals');
- fs.rmSync(path.join(staged,command+'.png'));fs.rmSync(path.join(staged,command+'.json'));
- moduleUnderTest.associateManual(base,dir,{file:'foto-original.png',commandId:command,sha256:digest,confirmation:'CONFIRMO_ASOCIACION_MANUAL'});
- let sends=0;
- const meta={project:'ttittulares',editorialId:'123456789abc',revision:1,commandId:command,episodeFingerprint:'f'.repeat(64)};
- const sent={id:'b'.repeat(64),rasterSHA256:digest,state:'pending'};
- const fakeReceiver={editorialJob:async()=>({}),metadata:()=>meta};
- const receiptFile=path.join(base,'image-approval-receipts',command+'.json');
- const fakeInbox={
-   saveReceipt:()=>fs.writeFileSync(receiptFile,JSON.stringify({project:'ttittulares',commandId:command,editorialId:'123456789abc',revision:1,...sent})),
-   readReceipt:()=>JSON.parse(fs.readFileSync(receiptFile,'utf8'))};
- const result=await moduleUnderTest.deliverManual(base,command,{getReceiver:()=>fakeReceiver,getSource:()=>({}),getInbox:()=>fakeInbox,readSecret:()=>('x'.repeat(40)),send:async(given,bytes,secret)=>{
-   sends++;assert.deepEqual(given,meta);assert.equal(crypto.createHash('sha256').update(bytes).digest('hex'),digest);
-   assert.equal(secret.length,40);return sent}});
- assert.equal(sends,1);assert.equal(result.result,'DELIVERED_pending');
- assert.equal(moduleUnderTest.inventory(base,{importDir:dir}).counts.received,1);
- await assert.rejects(()=>moduleUnderTest.deliverManual(base,command),/EXISTING_RECEIPT_REPLACEMENT_NOT_SUPPORTED/);
- assert.equal(sends,1);
+ fs.writeFileSync(path.join(dir,'foto-a.png'),png);
+ const other=Buffer.concat([Buffer.from('89504e470d0a1a0a','hex'),Buffer.alloc(50,9)]);
+ const otherSha=crypto.createHash('sha256').update(other).digest('hex');
+ fs.writeFileSync(path.join(dir,'foto-b.png'),other);
+ const a=moduleUnderTest.associateManual(base,dir,{file:'foto-a.png',commandId:command,sha256:digest,confirmation:'CONFIRMO_ASOCIACION_MANUAL'});
+ const b=moduleUnderTest.associateManual(base,dir,{file:'foto-b.png',commandId:command,sha256:otherSha,confirmation:'CONFIRMO_ASOCIACION_MANUAL'});
+ assert.equal(a.sha256,digest);assert.equal(b.sha256,otherSha);
+ assert.equal(moduleUnderTest.inventory(base,{importDir:dir}).jobs[0].manualAssociation.sha256,otherSha);
  assert(fs.existsSync(path.join(base,'image-approval-receipts','manual-originals',digest+'.png')));
+ assert(fs.existsSync(path.join(base,'image-approval-receipts','manual-originals',otherSha+'.png')));
+ const ledger=JSON.parse(fs.readFileSync(path.join(base,'image-approval-receipts','tt-fotos-manual-links.json')));
+ assert.equal(ledger.items.length,1);assert.equal(ledger.history.length,2);
+ assert.equal(ledger.history[1].previousSha256,digest);
+ await assert.rejects(()=>moduleUnderTest.deliverManual(base,command),/INBOX_DELIVERY_DISABLED_FOR_MONITOR/);
+ await assert.rejects(()=>moduleUnderTest.deliver(base),/INBOX_DELIVERY_DISABLED_FOR_MONITOR/);
+ assert(!fs.existsSync(path.join(base,'image-approval-receipts',command+'.json')));
 });
 test('import preview accepts safe Unicode filename without escaping outside import directory',async t=>{
  const base=makeFixture(t),dir=path.join(base,'imports');fs.mkdirSync(dir);
@@ -203,4 +202,25 @@ test('import preview accepts safe Unicode filename without escaping outside impo
  const url='http://127.0.0.1:'+server.address().port;
  assert.equal((await fetch(url+'/api/orphan/CARPETA_DESCARGAS/'+encodeURIComponent(file))).status,200);
  assert.equal((await fetch(url+'/api/orphan/CARPETA_DESCARGAS/'+encodeURIComponent('../'+file))).status,404);
+});
+
+test('occupied default panel port automatically falls back without terminating existing listener',async t=>{
+ const base=makeFixture(t),first=moduleUnderTest.serve(base,{port:0});
+ t.after(()=>new Promise(resolve=>first.close(resolve)));
+ if(!first.listening)await new Promise(resolve=>first.once('listening',resolve));
+ const occupied=first.address().port;
+ const second=moduleUnderTest.serve(base,{port:occupied});
+ t.after(()=>new Promise(resolve=>second.close(resolve)));
+ if(!second.listening)await new Promise(resolve=>second.once('listening',resolve));
+ assert.equal(second.address().port,occupied+1);
+ assert.equal((await fetch('http://127.0.0.1:'+occupied+'/api/status')).status,200);
+ assert.equal((await fetch('http://127.0.0.1:'+second.address().port+'/api/status')).status,200);
+});
+test('CLI rescue never invokes deliver even if previous CLI used to',t=>{
+ const source=fs.readFileSync(path.join(__dirname,'TTFotosRescate.cjs'),'utf8');
+ const start=source.indexOf("if(args.includes('--rescue')){");
+ const end=source.indexOf("}else if(args.includes('--capture'))",start);
+ assert(start>=0&&end>start);
+ assert(!source.slice(start,end).includes('await deliver('));
+ assert(source.slice(start,end).includes('LOCAL_CAPTURE_ONLY_NO_IPHONE_DELIVERY'));
 });
