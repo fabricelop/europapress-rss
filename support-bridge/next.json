@@ -1,8 +1,29 @@
 {
   "version": 1,
-  "id": null,
+  "id": "ttb-editorial-20261112-first",
   "project": "TTActualidad",
-  "steps": [],
-  "expires_at": null,
-  "description": "Idle. No operation scheduled."
+  "expires_at": "2026-11-13T20:00:00Z",
+  "description": "Diagnostico no destructivo del bloqueo editorial TTendencias",
+  "steps": [
+    {
+      "kind": "builtin",
+      "name": "editorial-queue",
+      "timeout_seconds": 30
+    },
+    {
+      "kind": "builtin",
+      "name": "editorial-runtime",
+      "timeout_seconds": 30
+    },
+    {
+      "kind": "builtin",
+      "name": "editorial-guard",
+      "timeout_seconds": 35
+    },
+    {
+      "kind": "builtin",
+      "name": "listener-summary",
+      "timeout_seconds": 25
+    }
+  ]
 }
