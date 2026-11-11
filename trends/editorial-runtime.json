@@ -7,33 +7,43 @@
   "previous_run_id": "tr-20261111T165500-manual",
   "command_id": "tr-20261111T171000-manual",
   "source": "chat",
-  "status": "success",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-11T17:10:00+01:00",
-  "updated_at": "2026-11-11T17:15:17+01:00",
-  "current": 0,
-  "total": 7,
+  "updated_at": "2026-11-11T17:18:08.631826+01:00",
+  "current": 11,
+  "total": 11,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
   "queue_complete": true,
   "processed_ids": [
-    "e5d0816c6cdb"
+    "ab6db3949e46",
+    "26bb59be27a6",
+    "30e6d8577a00",
+    "dec42f9cdc92",
+    "27a723d62938",
+    "92fe8d7723ca",
+    "9c60740fcd2c",
+    "e13168a55799",
+    "43a9aa71ccc8",
+    "e5d0816c6cdb",
+    "red-review-1ff6bfa7374cdfcbeb1c"
   ],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 0,
-    "closed": 0,
-    "explained": 0,
+    "attempted": 11,
+    "observed": 11,
+    "closed": 11,
+    "explained": 10,
     "problematic": 0,
-    "updates": 0,
+    "updates": 1,
     "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 0,
+    "maintenance_reviews": 1,
     "unchanged_reviews": 0,
-    "continuity_updates": 0,
+    "continuity_updates": 1,
     "distinct_updates": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
@@ -48,27 +58,117 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "ab6db3949e46",
+      "revision": 0,
+      "name": "Jordi",
+      "outcome": "explained_distinct_episode",
+      "applied": true,
+      "via": "editorial_outbox"
+    },
+    {
+      "id": "26bb59be27a6",
+      "revision": 0,
+      "name": "alvise",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox"
+    },
+    {
+      "id": "30e6d8577a00",
+      "revision": 0,
+      "name": "Anotop At",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox"
+    },
+    {
+      "id": "dec42f9cdc92",
+      "revision": 0,
+      "name": "Derechita",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox"
+    },
+    {
+      "id": "27a723d62938",
+      "revision": 0,
+      "name": "Podcast",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox"
+    },
+    {
+      "id": "92fe8d7723ca",
+      "revision": 0,
+      "name": "Huele",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox"
+    },
+    {
+      "id": "9c60740fcd2c",
+      "revision": 0,
+      "name": "Si Abascal",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox"
+    },
+    {
+      "id": "e13168a55799",
+      "revision": 0,
+      "name": "Cobardes",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox"
+    },
+    {
+      "id": "43a9aa71ccc8",
+      "revision": 0,
+      "name": "Marlaska",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox"
+    },
+    {
+      "id": "e5d0816c6cdb",
+      "revision": 0,
+      "name": "Alejandra",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_outbox"
+    },
+    {
+      "id": "red-review-1ff6bfa7374cdfcbeb1c",
+      "revision": 0,
+      "name": "Revisar novedades: Error",
+      "outcome": "continuity_update",
+      "applied": true,
+      "via": "maintenance_outbox",
+      "source_id": "4fc099aeb560"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Investigando 7 tendencias pendientes",
-  "last_started_at": "2026-11-11T17:15:16+01:00",
-  "last_completed_at": "2026-11-11T17:15:17+01:00",
+  "activity": "Pasada editorial completada",
+  "last_started_at": "2026-11-11T17:10:00+01:00",
+  "last_completed_at": "2026-11-11T17:18:08.631826+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261111T165500-manual",
+    "run_id": "tr-20261111T171000-manual",
     "status": "DONE",
-    "started_at": "2026-11-11T16:55:00+01:00",
-    "finished_at": "2026-11-11T16:57:24+01:00",
-    "total": 0,
-    "closed": 0,
-    "explained": 0,
-    "maintenance": 0,
+    "started_at": "2026-11-11T17:10:00+01:00",
+    "finished_at": "2026-11-11T17:18:08.631826+01:00",
+    "total": 11,
+    "closed": 11,
+    "explained": 10,
+    "maintenance": 1,
     "pending": 0,
     "anticipation_prepared": 0
   },
-  "message": "Pasada tr-20261111T171000-manual RUNNING. Cola autoritativa inicial=7; validación JIT activa. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-20261111T171000-manual cerrada 11/11: 10 explicaciones persistidas en requests.json + telegram-manual-explained.json y 1 revisión roja (Error) aplicada como actualización de continuidad. Barrera final: editorial-queue=0. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794327332740-manual",
@@ -4107,6 +4207,147 @@
       "status": "RUNNING",
       "phase": "investigating",
       "message": "Pasada tr-20261111T171000-manual RUNNING. Cola autoritativa inicial=7; validación JIT activa. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-20261111T171000-manual",
+      "status": "DONE",
+      "started_at": "2026-11-11T17:10:00+01:00",
+      "finished_at": "2026-11-11T17:18:08.631826+01:00",
+      "at": "2026-11-11T17:18:08.631826+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 11,
+        "observed": 11,
+        "closed": 11,
+        "explained": 10,
+        "problematic": 0,
+        "updates": 1,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 1,
+        "unchanged_reviews": 0,
+        "continuity_updates": 1,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [
+        "ab6db3949e46",
+        "26bb59be27a6",
+        "30e6d8577a00",
+        "dec42f9cdc92",
+        "27a723d62938",
+        "92fe8d7723ca",
+        "9c60740fcd2c",
+        "e13168a55799",
+        "43a9aa71ccc8",
+        "e5d0816c6cdb",
+        "red-review-1ff6bfa7374cdfcbeb1c"
+      ],
+      "converged_ids": [],
+      "outcomes": [
+        {
+          "id": "ab6db3949e46",
+          "revision": 0,
+          "name": "Jordi",
+          "outcome": "explained_distinct_episode",
+          "applied": true,
+          "via": "editorial_outbox"
+        },
+        {
+          "id": "26bb59be27a6",
+          "revision": 0,
+          "name": "alvise",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox"
+        },
+        {
+          "id": "30e6d8577a00",
+          "revision": 0,
+          "name": "Anotop At",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox"
+        },
+        {
+          "id": "dec42f9cdc92",
+          "revision": 0,
+          "name": "Derechita",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox"
+        },
+        {
+          "id": "27a723d62938",
+          "revision": 0,
+          "name": "Podcast",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox"
+        },
+        {
+          "id": "92fe8d7723ca",
+          "revision": 0,
+          "name": "Huele",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox"
+        },
+        {
+          "id": "9c60740fcd2c",
+          "revision": 0,
+          "name": "Si Abascal",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox"
+        },
+        {
+          "id": "e13168a55799",
+          "revision": 0,
+          "name": "Cobardes",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox"
+        },
+        {
+          "id": "43a9aa71ccc8",
+          "revision": 0,
+          "name": "Marlaska",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox"
+        },
+        {
+          "id": "e5d0816c6cdb",
+          "revision": 0,
+          "name": "Alejandra",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_outbox"
+        },
+        {
+          "id": "red-review-1ff6bfa7374cdfcbeb1c",
+          "revision": 0,
+          "name": "Revisar novedades: Error",
+          "outcome": "continuity_update",
+          "applied": true,
+          "via": "maintenance_outbox",
+          "source_id": "4fc099aeb560"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-20261111T171000-manual cerrada 11/11: 10 explicaciones persistidas en requests.json + telegram-manual-explained.json y 1 revisión roja (Error) aplicada como actualización de continuidad. Barrera final: editorial-queue=0. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "current_item": null,
@@ -7008,5 +7249,5 @@
     }
   ],
   "processed": [],
-  "finished_at": "2026-11-11T16:57:24+01:00"
+  "finished_at": "2026-11-11T17:18:08.631826+01:00"
 }
