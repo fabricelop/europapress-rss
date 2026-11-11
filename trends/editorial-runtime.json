@@ -3,31 +3,29 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261111T061100-manual",
-  "previous_run_id": "tr-20261111T054136-manual",
-  "command_id": "tr-20261111T061100-manual",
+  "run_id": "tr-20261111T065500-manual",
+  "previous_run_id": "tr-20261111T061100-manual",
+  "command_id": "tr-20261111T065500-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-11T06:11:00+01:00",
-  "updated_at": "2026-11-11T06:13:00+01:00",
-  "current": 1,
-  "total": 1,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-11T06:55:00+01:00",
+  "updated_at": "2026-11-11T06:55:00+01:00",
+  "current": 0,
+  "total": 0,
   "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "607973a56124"
-  ],
+  "title": "Pasada editorial TTendencias",
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
-    "observed": 1,
-    "closed": 1,
-    "explained": 1,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
@@ -48,51 +46,18 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "607973a56124",
-      "revision": 0,
-      "name": "Informar",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "9f62471f35f6cc2e49d5a427db140cd3573cbb7f"
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
   "activity": [
     {
-      "at": "2026-11-11T06:11:00+01:00",
+      "at": "2026-11-11T06:55:00+01:00",
       "phase": "preparing",
-      "message": "Cola JIT validada: Informar r0 sigue preparing"
-    },
-    {
-      "at": "2026-11-11T06:11:00+01:00",
-      "phase": "investigating",
-      "message": "Contrastando la causa actual de Informar con fuentes del 11N"
-    },
-    {
-      "at": "2026-11-11T06:12:00+01:00",
-      "phase": "persisting",
-      "trend_id": "607973a56124",
-      "title": "Informar",
-      "message": "Outbox editorial aplicado por workflow oficial"
-    },
-    {
-      "at": "2026-11-11T06:12:47+01:00",
-      "phase": "verifying",
-      "trend_id": "607973a56124",
-      "title": "Informar",
-      "message": "Commit de aplicación actualizó requests.json + telegram-manual-explained.json y retiró la revisión de la cola"
-    },
-    {
-      "at": "2026-11-11T06:13:00+01:00",
-      "phase": "closing",
-      "message": "Cola releída en main: 0 pendientes; pasada cerrada 1/1"
+      "message": "Cola inicial releída en main: 0 items; verificando barrera editorial y resultados de mantenimiento antes del cierre"
     }
   ],
-  "last_started_at": "2026-11-11T06:11:00+01:00",
+  "last_started_at": "2026-11-11T06:55:00+01:00",
   "last_completed_at": "2026-11-11T06:13:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -2767,6 +2732,14 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-20261111T061100-manual cerrada 1/1. Informar r0 (TT#11) quedó explicada y aplicada por el workflow oficial en 9f62471f35f6cc2e49d5a427db140cd3573cbb7f; editorial-queue=0 tras barrera JIT final. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-20261111T065500-manual",
+      "status": "RUNNING",
+      "started_at": "2026-11-11T06:55:00+01:00",
+      "at": "2026-11-11T06:55:00+01:00",
+      "phase": "preparing",
+      "message": "Cola inicial 0; iniciada verificación JIT de barrera editorial. ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": null,
@@ -5083,15 +5056,15 @@
     "eedbccdb94df1936c8997f1f2ced3536266ed14e"
   ],
   "outbox_commit": "d98a814e110f71921adab2ad984fde8a2a11979c",
-  "finished_at": "2026-11-11T06:13:00+01:00",
+  "finished_at": null,
   "prior_last_run": {
-    "run_id": "tr-autoguard-1794370869",
+    "run_id": "tr-20261111T061100-manual",
     "status": "DONE",
-    "started_at": "2026-11-11T05:21:05+01:00",
-    "finished_at": "2026-11-11T05:28:00+01:00",
-    "total": 6,
-    "closed": 4,
-    "maintenance": 2,
+    "started_at": "2026-11-11T06:11:00+01:00",
+    "finished_at": "2026-11-11T06:13:00+01:00",
+    "total": 1,
+    "closed": 1,
+    "maintenance": 0,
     "pending": 0
   },
   "absorbed_run_ids": [],
@@ -5180,44 +5153,12 @@
       "at": "2026-11-11T05:28:00+01:00",
       "phase": "closing",
       "message": "Cola releída en main: 0 preparing/update y 0 reexplicaciones pendientes"
+    },
+    {
+      "at": "2026-11-11T06:55:00+01:00",
+      "phase": "preparing",
+      "message": "Cola inicial 0; verificando barrera editorial y últimos mantenimientos"
     }
   ],
-  "processed": [
-    {
-      "id": "9ed2158bf34b",
-      "revision": 0,
-      "name": "#VisionQuest",
-      "outcome": "explained"
-    },
-    {
-      "id": "950fada6496e",
-      "revision": 0,
-      "name": "Wanda",
-      "outcome": "explained"
-    },
-    {
-      "id": "61e7ab045e90",
-      "revision": 0,
-      "name": "Paul George",
-      "outcome": "explained"
-    },
-    {
-      "id": "25c2287b87a9",
-      "revision": 0,
-      "name": "Jaylen Brown",
-      "outcome": "explained"
-    },
-    {
-      "id": "red-review-9903399000f933239cc6",
-      "revision": 0,
-      "name": "RTVE",
-      "outcome": "continuity"
-    },
-    {
-      "id": "red-review-0169e1cb13ea7c6218c6",
-      "revision": 0,
-      "name": "Carzzy",
-      "outcome": "unchanged"
-    }
-  ]
+  "processed": []
 }
