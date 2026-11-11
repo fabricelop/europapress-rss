@@ -100,7 +100,7 @@ function inspectOriginal(base,item,task,meta,receiver,immediate){
 }
 async function recoverOne(base,item,{source,receiver,immediate,unprotect=unprotectDPAPI,send=null}){
   const task=item._task,loc=paths(base,item.commandId);
-  if(readJSON(loc.receipt))throw Error('RECEIPT_ALREADY_EXISTS_OR_CONFLICT');
+  if(fs.existsSync(loc.receipt))throw Error('RECEIPT_ALREADY_EXISTS_OR_CONFLICT');
   if(!item.cached&&!item.staged)throw Error('ORIGINAL_NOT_PRESERVED');
   if(!task.secret_dpapi)throw Error('ENROLLMENT_SECRET_UNAVAILABLE');
   // Every uploader must verify a fresh immutable job and the complete frozen
@@ -124,7 +124,16 @@ async function recoverOne(base,item,{source,receiver,immediate,unprotect=unprote
   if(!reply||!HASH.test(reply.id)||!HASH.test(reply.rasterSHA256)||
      reply.rasterSHA256!==sha(bytes)||reply.state==='rejected')
     throw Error('PRIVATE_RECEIPT_NOT_PROVEN');
-  if(fs.existsSync(loc.receipt))throw Error('CONCURRENT_RECEIPT_CREATED_VERIFY_MANUALLY');
+  // The scheduled receiver may win the same upload race. This is OK as
+  // long as its receipt matches the exact image already accepted by the server.
+  if(fs.existsSync(loc.receipt)){
+    const already=readJSON(loc.receipt);
+    if(exactReceipt(already,task)&&already.rasterSHA256===sha(bytes)&&
+       already.id===reply.id)
+      return {commandId:item.commandId,project:item.project,
+        state:'ALREADY_DELIVERED_BY_RECEIVER',receiptState:already.state};
+    throw Error('CONCURRENT_RECEIPT_IDENTITY_CONFLICT');
+  }
   fs.mkdirSync(loc.root,{recursive:true});
   const record={project:item.project,commandId:item.commandId,editorialId:item.editorialId,
     revision:item.revision,id:reply.id,state:reply.state,rasterSHA256:reply.rasterSHA256,
@@ -132,62 +141,43 @@ async function recoverOne(base,item,{source,receiver,immediate,unprotect=unprote
   const tmp=loc.receipt+'.recovery-'+process.pid+'.tmp';
   try{
     fs.writeFileSync(tmp,JSON.stringify(record,null,2),{flag:'wx',mode:0o600});
-    if(fs.existsSync(loc.receipt))throw Error('CONCURRENT_RECEIPT_CREATED_VERIFY_MANUALLY');
+    if(fs.existsSync(loc.receipt)){
+      const already=readJSON(loc.receipt);
+      if(exactReceipt(already,task)&&already.rasterSHA256===sha(bytes)&&
+         already.id===reply.id)
+        return {commandId:item.commandId,project:item.project,
+          state:'ALREADY_DELIVERED_BY_RECEIVER',receiptState:already.state};
+      throw Error('CONCURRENT_RECEIPT_IDENTITY_CONFLICT');
+    }
     fs.renameSync(tmp,loc.receipt);
   }finally{try{fs.unlinkSync(tmp)}catch{}}
   if(!exactReceipt(readJSON(loc.receipt),task))throw Error('RECEIPT_NOT_DURABLE');
   // Original cache is intentionally NEVER deleted by this tool.
   return {commandId:item.commandId,project:item.project,state:'DELIVERED_CONFIRMED_LOCAL',receiptState:reply.state};
 }
-// Coordinate with the scheduled image receiver: it creates exactly the same
-// receiver.lock. Do not delete a lock owned by another process, even if stale.
-function acquireReceiverLock(base){
-  const dir=path.join(base,'image-approval-receipts');
-  if(!fs.existsSync(dir))throw Error('RECEIPT_DIRECTORY_MISSING');
-  const file=path.join(dir,'receiver.lock');
-  const nonce=crypto.randomBytes(16).toString('hex');
-  const entry={pid:process.pid,at:Date.now(),owner:'TTFotosRecover.cjs',nonce};
-  let fd;
-  try{
-    fd=fs.openSync(file,'wx',0o600);
-    fs.writeFileSync(fd,JSON.stringify(entry));
-  }catch(e){
-    if(fd!==undefined){try{fs.closeSync(fd)}catch{}}
-    if(e.code==='EEXIST')throw Error('RECEIVER_ALREADY_RUNNING_OR_LOCK_UNCONFIRMED');
-    throw e;
-  }
-  fs.closeSync(fd);
-  return ()=>{
-    const current=readJSON(file);
-    if(current?.nonce!==nonce||current?.owner!==entry.owner||current?.pid!==entry.pid)
-      throw Error('RECEIVER_LOCK_OWNERSHIP_LOST');
-    fs.unlinkSync(file);
-  };
-}
-
+// Availability-first policy: a retry can run concurrently with the scheduled
+// receiver. The upstream private inbox deduplicates the SAME exact candidate,
+// while identity checks prevent a different photo from overwriting an episode.
+// Never block a healthy candidate because an unrelated candidate conflicts.
 async function applyCached(base,{dependencyLoader=null,unprotect,send}={}){
-  const release=acquireReceiverLock(base);
-  try{
-    const scanResult=scan(base),results=[];
-    if(scanResult.summary.conflict)throw Error('GLOBAL_IDENTITY_CONFLICT: audit and resolve before apply');
-    const receiver=(dependencyLoader?dependencyLoader('TTImageApprovalReceiver.cjs'):
-      require(path.join(base,'TTImageApprovalReceiver.cjs')));
-    const immediate=(dependencyLoader?dependencyLoader('TTImagesImmediateInbox.cjs'):
-      require(path.join(base,'TTImagesImmediateInbox.cjs')));
-    const sources={};
-    for(const [project,,file] of FILES){
-      sources[project]=dependencyLoader?dependencyLoader(file):require(path.join(base,file));
-    }
-    for(const item of scanResult.items.filter(x=>x.state==='ORIGINAL_CACHED_NEEDS_DELIVERY')){
-      try{
-        results.push(await recoverOne(base,item,{source:sources[item.project],receiver,immediate,
-          ...(unprotect?{unprotect}:{}),...(send?{send}:{})}));
-      }catch(e){results.push({commandId:item.commandId,project:item.project,
-        state:'NOT_DELIVERED',reason:safeString(e.message).replace(/https?:\/\/\S+/g,'[url]')})}
-    }
-    return {before:scanResult.summary,after:scan(base).summary,results,
-      unresolvedOriginals:scan(base).orphans};
-  }finally{release()}
+  const scanResult=scan(base),results=[];
+  const receiver=(dependencyLoader?dependencyLoader('TTImageApprovalReceiver.cjs'):
+    require(path.join(base,'TTImageApprovalReceiver.cjs')));
+  const immediate=(dependencyLoader?dependencyLoader('TTImagesImmediateInbox.cjs'):
+    require(path.join(base,'TTImagesImmediateInbox.cjs')));
+  const sources={};
+  for(const [project,,file] of FILES){
+    sources[project]=dependencyLoader?dependencyLoader(file):require(path.join(base,file));
+  }
+  for(const item of scanResult.items.filter(x=>x.state==='ORIGINAL_CACHED_NEEDS_DELIVERY')){
+    try{
+      results.push(await recoverOne(base,item,{source:sources[item.project],receiver,immediate,
+        ...(unprotect?{unprotect}:{}),...(send?{send}:{})}));
+    }catch(e){results.push({commandId:item.commandId,project:item.project,
+      state:'NOT_DELIVERED',reason:safeString(e.message).replace(/https?:\/\/\S+/g,'[url]')})}
+  }
+  return {before:scanResult.summary,after:scan(base).summary,results,
+    unresolvedOriginals:scan(base).orphans};
 }
 function publicReport(data){
   return {generatedAt:new Date().toISOString(),mode:'audit_read_only',
