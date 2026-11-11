@@ -3,23 +3,23 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794363000000-manual",
-  "previous_run_id": "tr-1794362130000-manual",
-  "command_id": "tr-1794363000000-manual",
+  "run_id": "tr-autoguard-1794363068",
+  "previous_run_id": "tr-1794363000000-manual",
+  "command_id": "tr-autoguard-1794363068",
   "source": "chat",
   "status": "DONE",
   "phase": "closing",
-  "started_at": "2026-11-11T03:10:00+01:00",
-  "updated_at": "2026-11-11T03:14:00+01:00",
+  "started_at": "2026-11-11T03:11:08+01:00",
+  "updated_at": "2026-11-11T03:14:30+01:00",
   "current": 1,
   "total": 1,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
   "queue_complete": true,
-  "processed_ids": [
+  "processed_ids": [],
+  "converged_ids": [
     "6093055fcc7d"
   ],
-  "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
@@ -46,7 +46,7 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 1
   },
   "outcomes": [
     {
@@ -55,8 +55,9 @@
       "name": "Funcionó",
       "outcome": "explained_cause_unconfirmed",
       "applied": true,
+      "via": "concurrent_convergence",
       "apply_commit": "e72d24ea4f50c5f795e64dc30c4a67107fac8184",
-      "verification": "requests.json y telegram-manual-explained.json sincronizados; misma explicación y explained_at; job retirado de editorial-queue"
+      "verification": "requests.json y telegram-manual-explained.json contienen la misma explicación y explained_at=2026-11-11T03:12:00+01:00; editorial-queue=0"
     }
   ],
   "incident_count": 0,
@@ -152,17 +153,26 @@
       "trend_id": null,
       "title": "Pasada editorial TTendencias",
       "message": "Barrera final verificada: editorial-queue=0; 1/1 cerrado."
+    },
+    {
+      "at": "2026-11-11T03:14:30+01:00",
+      "phase": "closing",
+      "current": 1,
+      "total": 1,
+      "trend_id": null,
+      "title": "Pasada editorial TTendencias",
+      "message": "Convergencia verificada sobre Funcionó r0; barrera final de cola limpia."
     }
   ],
-  "last_started_at": "2026-11-11T03:10:00+01:00",
-  "last_completed_at": "2026-11-11T03:14:00+01:00",
+  "last_started_at": "2026-11-11T03:11:08+01:00",
+  "last_completed_at": "2026-11-11T03:14:30+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794363000000-manual",
+    "run_id": "tr-autoguard-1794363068",
     "status": "DONE",
-    "started_at": "2026-11-11T03:10:00+01:00",
-    "finished_at": "2026-11-11T03:14:00+01:00",
-    "at": "2026-11-11T03:14:00+01:00",
+    "started_at": "2026-11-11T03:11:08+01:00",
+    "finished_at": "2026-11-11T03:14:30+01:00",
+    "at": "2026-11-11T03:14:30+01:00",
     "phase": "closing",
     "summary": {
       "attempted": 1,
@@ -187,12 +197,12 @@
       "image_outbox_created": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 0
+      "concurrent_convergence": 1
     },
-    "processed_ids": [
+    "processed_ids": [],
+    "converged_ids": [
       "6093055fcc7d"
     ],
-    "converged_ids": [],
     "outcomes": [
       {
         "id": "6093055fcc7d",
@@ -200,20 +210,21 @@
         "name": "Funcionó",
         "outcome": "explained_cause_unconfirmed",
         "applied": true,
+        "via": "concurrent_convergence",
         "apply_commit": "e72d24ea4f50c5f795e64dc30c4a67107fac8184",
-        "verification": "requests.json y telegram-manual-explained.json sincronizados; misma explicación y explained_at; job retirado de editorial-queue"
+        "verification": "requests.json y telegram-manual-explained.json contienen la misma explicación y explained_at=2026-11-11T03:12:00+01:00; editorial-queue=0"
       }
     ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-1794363000000-manual cerrada 1/1. Funcionó quedó explicada con causa no confirmada tras contrastar la actualidad: se verificó su presencia en rankings sociales, pero no un detonante concreto fiable. La explicación se aplicó y quedó sincronizada en requests.json y telegram-manual-explained.json; editorial-queue=0. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+    "message": "Autoguard tr-autoguard-1794363068 cerrado 1/1 por convergencia JIT con la pasada manual tr-1794363000000-manual. Funcionó r0 quedó explicada con causa no confirmada y sincronizada en requests.json + telegram-manual-explained.json mediante e72d24ea4f50c5f795e64dc30c4a67107fac8184. Barrera observada: editorial-queue=0 y sin trabajo editorial activo en mobile-decisions. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
     "prior_last_run": {
-      "run_id": "tr-1794362130000-manual",
+      "run_id": "tr-1794363000000-manual",
       "status": "DONE",
-      "finished_at": "2026-11-11T01:58:13.477Z"
+      "finished_at": "2026-11-11T03:14:00+01:00"
     }
   },
-  "message": "Pasada tr-1794363000000-manual cerrada 1/1. Funcionó quedó explicada con causa no confirmada tras contrastar la actualidad: se verificó su presencia en rankings sociales, pero no un detonante concreto fiable. La explicación se aplicó y quedó sincronizada en requests.json y telegram-manual-explained.json; editorial-queue=0. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Autoguard tr-autoguard-1794363068 cerrado 1/1 por convergencia JIT con la pasada manual tr-1794363000000-manual. Funcionó r0 quedó explicada con causa no confirmada y sincronizada en requests.json + telegram-manual-explained.json mediante e72d24ea4f50c5f795e64dc30c4a67107fac8184. Barrera observada: editorial-queue=0 y sin trabajo editorial activo en mobile-decisions. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794327332740-manual",
@@ -2481,6 +2492,63 @@
         "status": "DONE",
         "finished_at": "2026-11-11T01:58:13.477Z"
       }
+    },
+    {
+      "run_id": "tr-autoguard-1794363068",
+      "status": "DONE",
+      "started_at": "2026-11-11T03:11:08+01:00",
+      "finished_at": "2026-11-11T03:14:30+01:00",
+      "at": "2026-11-11T03:14:30+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 1,
+        "observed": 1,
+        "closed": 1,
+        "explained": 1,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 0,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 1
+      },
+      "processed_ids": [],
+      "converged_ids": [
+        "6093055fcc7d"
+      ],
+      "outcomes": [
+        {
+          "id": "6093055fcc7d",
+          "revision": 0,
+          "name": "Funcionó",
+          "outcome": "explained_cause_unconfirmed",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "apply_commit": "e72d24ea4f50c5f795e64dc30c4a67107fac8184",
+          "verification": "requests.json y telegram-manual-explained.json contienen la misma explicación y explained_at=2026-11-11T03:12:00+01:00; editorial-queue=0"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Autoguard tr-autoguard-1794363068 cerrado 1/1 por convergencia JIT con la pasada manual tr-1794363000000-manual. Funcionó r0 quedó explicada con causa no confirmada y sincronizada en requests.json + telegram-manual-explained.json mediante e72d24ea4f50c5f795e64dc30c4a67107fac8184. Barrera observada: editorial-queue=0 y sin trabajo editorial activo en mobile-decisions. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+      "prior_last_run": {
+        "run_id": "tr-1794363000000-manual",
+        "status": "DONE",
+        "finished_at": "2026-11-11T03:14:00+01:00"
+      }
     }
   ],
   "current_item": null,
@@ -4728,7 +4796,7 @@
     "eedbccdb94df1936c8997f1f2ced3536266ed14e"
   ],
   "outbox_commit": "d98a814e110f71921adab2ad984fde8a2a11979c",
-  "finished_at": "2026-11-11T03:14:00+01:00",
+  "finished_at": "2026-11-11T03:14:30+01:00",
   "prior_last_run": {
     "run_id": "tr-1794361941170-manual",
     "status": "DONE",
