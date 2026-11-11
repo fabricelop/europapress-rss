@@ -1,13 +1,13 @@
 {
   "version": 1,
-  "command_id": "tr-img-auto-4f1dae5df224-r0-a1-1794235069745",
-  "requested_at": "2026-11-09T14:37:49.663426Z",
-  "updated_at": "2026-11-09T15:23:31.020Z",
-  "status": "LAUNCHED",
-  "phase": "pc_launched",
+  "command_id": "tr-img-auto-4f1dae5df224-r1-a1-1794380155986",
+  "requested_at": "2026-11-11T06:55:55.896048Z",
+  "updated_at": "2026-11-11T06:55:55.896048Z",
+  "status": "REQUESTED",
+  "phase": "queued",
   "mode": "automatic_explained_repair",
   "delivery_mode": "launch_only",
-  "editorial_image_mode": "humor",
+  "editorial_image_mode": "rigor",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
   "launcher_arg": "tendencias",
@@ -15,7 +15,7 @@
   "target_id": "4f1dae5df224",
   "trend_id": "4f1dae5df224",
   "target_name": "#HuelgaGeneral",
-  "revision": 0,
+  "revision": 1,
   "attempt": 1,
   "auto_repair": true,
   "auto_repair_attempt": 1,
@@ -24,45 +24,37 @@
   "instruction_profile": "ttendencias_gag_v5_varied_style_single_gag",
   "context_snapshot": {
     "name": "#HuelgaGeneral",
-    "revision": 0,
-    "explanation": "TT#9 #HuelgaGeneral es tendencia por la huelga general de 24 horas convocada en España para el 11 de noviembre, con vivienda, salarios y coste de vida entre sus principales reivindicaciones.\n#11N #Vivienda\n🌶️ El miércoles llega con servicios mínimos y agenda máxima.",
-    "closer_text": "🌶️ El miércoles llega con servicios mínimos y agenda máxima.",
+    "revision": 1,
+    "explanation": "TT#5 #HuelgaGeneral es tendencia porque la huelga de 24 horas del 11N ya está en marcha por vivienda, salarios y precios; en Mercamadrid las cargas dejaron al menos 13 heridos y un detenido.\n#11N #Mercamadrid",
+    "closer_text": "",
     "trend_names": [
       "#HuelgaGeneral"
     ],
     "group_title": "",
-    "rank_at_explanation": 9,
-    "explained_at": "2026-11-09T15:33:00+01:00",
+    "rank_at_explanation": 5,
+    "explained_at": "2026-11-11T07:54:00+01:00",
     "verification_sources": [
       {
-        "url": "https://www.rtve.es/noticias/20261109/huelga-general-11-noviembre-hora-recorrido-manifestaciones/17301386.shtml"
+        "url": "https://www.rtve.es/noticias/20261111/huelga-general-espana-11n-directo-hoy-video-cronica/17308588.shtml"
       },
       {
-        "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-23371&lang=es"
+        "url": "https://www.rtve.es/temas/huelgas/8010/"
+      },
+      {
+        "url": "https://www.20minutos.es/nacional/huelga-general-11n-directo-ultima-hora-los-paros-manifestaciones-servicios-minimos-toda-espana_7059492_6.html"
       }
     ],
-    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ESTILO ASIGNADO PARA ESTA IMAGEN: Pop art editorial refinado, serigrafía y tramas controladas, energía gráfica sin llenar la escena de elementos. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
-    "editorial_image_mode": "humor",
-    "image_style_name": "pop_art",
-    "image_style_index": 7
+    "image_style": "Imagen editorial periodística sobria y rigurosa, sin humor ni caricaturas, sin banalizar sufrimiento, sin escenas gráficas o hechos inventados. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "editorial_image_mode": "rigor",
+    "image_style_name": "rigor_y_respeto",
+    "image_style_index": -1
   },
   "instructions": {
     "scope": "Una sola tendencia y una sola imagen.",
     "exact_input": "Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
-    "visual": "Una sola idea visual fuerte con humor editorial.",
+    "visual": "Ilustración sobria sin humor",
     "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
     "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Listas de TTActualidad."
   },
-  "message": "Prompt confirmado en ChatGPT Images; sin recuperación de imagen.",
-  "pc_upload_secret_hash": "f3ee627f4771d1d5ddb986b280f0d6f131bdf75703c01ebb6235dcd04b191663",
-  "pc_worker_id": "ttendencias-image-bridge-v34-sites-return",
-  "pc_picked_up_at": "2026-11-09T15:23:20.340Z",
-  "pc_launched_at": "2026-11-09T15:23:31.020Z",
-  "finished_at": "2026-11-09T15:23:31.020Z",
-  "web_image": {
-    "version": 2,
-    "stage": "waiting",
-    "reason": "manual_approval_required",
-    "checked_at": "2026-11-09T19:24:17.701Z"
-  }
+  "message": "Reparación automática de imagen IA para tendencia Explicada."
 }
