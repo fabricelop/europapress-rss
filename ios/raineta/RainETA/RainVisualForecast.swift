@@ -94,8 +94,64 @@ struct RainPulseOverview:View {
     }
 
     private var wave:[RainWavePoint] {
-        bins.map {
-            RainWavePoint(minute:$0.startMinute,rate:$0.meanRate,snow:$0.snow)
+        bins.map { bin in
+            RainWavePoint(minute:bin.startMinute,rate:bin.meanRate,snow:bin.snow)
+        }
+    }
+
+    private var selectedIndex:Int? {
+        guard let selected=selectedMinute else {return nil}
+        return bins.firstIndex(where:{ bin in
+            selected>=bin.startMinute && selected<bin.startMinute+10
+        })
+    }
+
+    private var waveform:some View {
+        VStack(alignment:.leading,spacing:8) {
+            RainWavePlot(points:wave,height:134,
+                         selectedIndex:selectedIndex,
+                         onSelect:{ index in
+                             let values=bins
+                             if values.indices.contains(index) {
+                                 selectedMinute=values[index].startMinute
+                             }
+                         })
+            HStack {
+                Text("Ahora")
+                Spacer()
+                Text("+30")
+                Spacer()
+                Text("+60")
+                Spacer()
+                Text("+90")
+                Spacer()
+                Text("+120 min")
+            }
+            .font(.system(size:10,design:.rounded))
+            .foregroundStyle(.secondary)
+            RainWaveRibbon(points:wave)
+            RainWaveWindows(points:wave,stepMinutes:10,limit:4)
+            RainWaveLegend()
+        }
+    }
+
+    private var information:some View {
+        VStack(alignment:.leading,spacing:7) {
+            HStack(spacing:10) {
+                Label(bins.contains(where:{$0.meanRate==nil}) ?
+                      "\(RainVisualForecast.rainyMinutes(bins)) min con precipitación · datos parciales" :
+                      "\(RainVisualForecast.rainyMinutes(bins)) min con precipitación estimada",
+                      systemImage:"clock")
+                Spacer(minLength:0)
+                Text(hasValidRadar ? "Con radar local" : "Según modelos")
+            }
+            .font(.caption2)
+            .foregroundStyle(.secondary)
+            Text("La onda azul representa intensidad estimada. Violeta: señal débil. " +
+                 "Gris: falta de datos. Los bloques de 10 min no son mediciones independientes.")
+                .font(.caption2)
+                .foregroundStyle(.secondary)
+                .fixedSize(horizontal:false,vertical:true)
         }
     }
 
@@ -109,9 +165,7 @@ struct RainPulseOverview:View {
                     .font(.system(size:10,weight:.semibold))
                     .foregroundStyle(.cyan)
             }
-            let info=bins
-            let points=wave
-            if info.isEmpty || info.allSatisfy({$0.meanRate == nil}) {
+            if bins.isEmpty || bins.allSatisfy({$0.meanRate == nil}) {
                 Text("Sin datos suficientes para representar las próximas 2 horas")
                     .font(.caption).foregroundStyle(.secondary)
             } else {
@@ -119,54 +173,14 @@ struct RainPulseOverview:View {
                     Text("¿Cuándo llueve y cuándo no?")
                         .font(.subheadline.bold())
                     Spacer()
-                    Text(RainWaveForecast.peak(points)>0 ?
-                         String(format:"Pico ~%.1f mm/h",RainWaveForecast.peak(points)) :
+                    Text(RainWaveForecast.peak(wave)>0 ?
+                         String(format:"Pico ~%.1f mm/h",RainWaveForecast.peak(wave)) :
                          "Sin pico relevante")
                         .font(.caption2.bold())
                         .foregroundStyle(.cyan)
                 }
-                RainWavePlot(
-                    points:points,height:134,
-                    selectedIndex:info.firstIndex(where:{
-                        selectedMinute.map { minute in
-                            minute >= $0.startMinute && minute < $0.startMinute+10
-                        } ?? false
-                    }),
-                    onSelect:{ index in
-                        if info.indices.contains(index) {selectedMinute=info[index].startMinute}
-                    }
-                )
-                HStack {
-                    Text("Ahora")
-                    Spacer()
-                    Text("+30")
-                    Spacer()
-                    Text("+60")
-                    Spacer()
-                    Text("+90")
-                    Spacer()
-                    Text("+120 min")
-                }
-                .font(.system(size:10,design:.rounded))
-                .foregroundStyle(.secondary)
-                RainWaveRibbon(points:points)
-                RainWaveWindows(points:points,stepMinutes:10,limit:4)
-                RainWaveLegend()
-                HStack(spacing:10) {
-                    Label(info.contains(where:{$0.meanRate==nil}) ?
-                          "\(RainVisualForecast.rainyMinutes(info)) min con precipitación · datos parciales" :
-                          "\(RainVisualForecast.rainyMinutes(info)) min con precipitación estimada",
-                          systemImage:"clock")
-                    Spacer(minLength:0)
-                    Text(hasValidRadar ? "Con radar local" : "Según modelos")
-                }
-                .font(.caption2)
-                .foregroundStyle(.secondary)
-                Text("La onda azul representa intensidad estimada. Violeta: señal débil. " +
-                     "Gris: falta de datos. Los bloques de 10 min no son mediciones independientes.")
-                    .font(.caption2)
-                    .foregroundStyle(.secondary)
-                    .fixedSize(horizontal:false,vertical:true)
+                waveform
+                information
             }
         }
         .padding(12)
