@@ -3,19 +3,19 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794354900000-manual",
-  "previous_run_id": "tr-1794354090000-manual",
-  "command_id": "tr-1794354900000-manual",
+  "run_id": "tr-1794355800000-manual",
+  "previous_run_id": "tr-1794354900000-manual",
+  "command_id": "tr-1794355800000-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-11T00:55:00+01:00",
-  "updated_at": "2026-11-11T00:56:00+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-11T01:11:30+01:00",
+  "updated_at": "2026-11-11T01:11:30+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -507,6 +507,11 @@
       "at": "2026-11-11T00:41:30+01:00",
       "phase": "closing",
       "message": "Barrera final verificada contra main: editorial-queue=0 y sin preparing/update/rewrite_pending/reexplain activos detectados; pasada cerrada 0/0. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-11T01:11:30+01:00",
+      "phase": "preparing",
+      "message": "Pasada manual RUNNING. Refresh Top 30 #863 lanzado; cola autoritativa inicial observada en 0. Revalidando main antes de cerrar o procesar nuevas pendientes. ImageGen=0; publicaciones=0."
     }
   ],
   "last_started_at": "2026-11-11T00:55:00+01:00",
@@ -4365,6 +4370,6 @@
     "61f2f146a926eae3568074e8e0d9947db37bc9f5",
     "5b26ed05be444fecd3e641d64eae7eba5201f9b0"
   ],
-  "finished_at": "2026-11-11T00:56:00+01:00",
+  "finished_at": null,
   "outbox_commit": "66c7c23be5c4b51ac802b4e5cc8cbd6c67d69ea4"
 }
