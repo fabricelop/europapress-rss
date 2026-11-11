@@ -1,4 +1,6 @@
-# TT Fotos independiente · Cloudflare Worker + R2 + D1
+# TT Fotos independiente · Cloudflare Worker + R2 + D1 (legado retirado)
+
+> **ARQUITECTURA LEGADA — NO DESPLEGAR.** La decisión vigente del 12/11/2026 es recuperar las imágenes de ChatGPT directamente hacia las fichas editoriales existentes, **sin crear otra D1, R2, galería ni aplicación Zero Trust**. Las instrucciones de Cloudflare de este documento son históricas y están desactivadas. Consulte [DIRECTO-A-FICHAS-SIN-ALMACEN.md](./DIRECTO-A-FICHAS-SIN-ALMACEN.md). El flujo directo aún requiere validar el receptor editorial y un piloto autenticado; no se ha confirmado ninguna importación real.
 
 **Estado:** implementación de código y pruebas; **no desplegado**, sin conexión real aún a la biblioteca privada de ChatGPT Imágenes. Esta aplicación está completamente separada de `ttactualidad.rainyraven22.chatgpt.site` y de la bandeja del iPhone.
 
