@@ -1,5 +1,5 @@
 // Editorial title/name search. Read-only data from the public TT news/trends repo.
-import {commandDetails,exactJob} from '../../../site-patches/ttactualidad-fotos-review/cloud-v1/core.mjs';
+import {commandDetails,exactJob} from './lib/core.mjs';
 const ROOT='https://raw.githubusercontent.com/fabricelop/europapress-rss/';
 const SOURCES=[
  'main/ttittulares/prepared.json',
