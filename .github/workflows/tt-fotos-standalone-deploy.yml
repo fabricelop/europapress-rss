@@ -33,6 +33,8 @@ jobs:
         run: node --test tests/*.test.mjs
       - name: Install Wrangler
         run: npm install --no-audit --no-fund
+      - name: Verify dedicated D1 UUID and R2 bucket in the selected Cloudflare account (read only)
+        run: node scripts/verify-remote-resources.mjs
       - name: Apply schema ONLY to dedicated private TT Fotos database
         run: npx wrangler d1 execute tt-fotos-private --remote --file=migrations/0001_init.sql
       - name: Deploy ONLY the new tt-fotos-independent Worker
