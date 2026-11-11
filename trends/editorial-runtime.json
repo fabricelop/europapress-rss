@@ -8,32 +8,34 @@
   "command_id": "tr-1794378391072-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "remate_selection",
+  "phase": "investigating",
   "started_at": "2026-11-11T07:26:00+01:00",
-  "updated_at": "2026-11-11T07:33:00+01:00",
-  "current": 0,
+  "updated_at": "2026-11-11T07:35:00+01:00",
+  "current": 1,
   "total": 2,
-  "trend_id": "6523d9f6ab30",
-  "title": "#CopaDelRey",
+  "trend_id": "c566b61409aa",
+  "title": "#HuelgaGeneral11N",
   "queue_complete": false,
-  "processed_ids": [],
-  "converged_ids": [],
+  "processed_ids": [
+    "6523d9f6ab30"
+  ],
+  "converged_ids": [
+    "6523d9f6ab30"
+  ],
   "remaining_ids": [
-    "6523d9f6ab30",
     "c566b61409aa"
   ],
   "remaining_active_ids": [
-    "6523d9f6ab30",
     "c566b61409aa"
   ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 1,
     "observed": 2,
-    "closed": 0,
-    "explained": 0,
+    "closed": 1,
+    "explained": 1,
     "problematic": 0,
-    "updates": 0,
+    "updates": 1,
     "review_completed_no_distinct_event": 0,
     "maintenance_reviews": 0,
     "unchanged_reviews": 0,
@@ -44,15 +46,25 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 1,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 1
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "6523d9f6ab30",
+      "revision": 1,
+      "name": "#CopaDelRey",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_chat_direct",
+      "apply_commit": "74071f14de7471a0b8417a0f9f39b9f29dd804a0"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -84,6 +96,20 @@
       "trend_id": "6523d9f6ab30",
       "title": "#CopaDelRey",
       "message": "Remate nuevo seleccionado; texto completo validado por debajo de 280 caracteres ponderados."
+    },
+    {
+      "at": "2026-11-11T07:34:00+01:00",
+      "phase": "verifying",
+      "trend_id": "6523d9f6ab30",
+      "title": "#CopaDelRey",
+      "message": "r1 aplicada y sincronizada en requests.json + telegram-manual-explained.json; retirada de la cola."
+    },
+    {
+      "at": "2026-11-11T07:35:00+01:00",
+      "phase": "investigating",
+      "trend_id": "c566b61409aa",
+      "title": "#HuelgaGeneral11N",
+      "message": "r1 revalidada en main; investigando el desarrollo actual de la huelga del 11N, reivindicaciones y movilizaciones. ImageGen=0."
     }
   ],
   "last_started_at": "2026-11-11T07:26:00+01:00",
@@ -99,7 +125,7 @@
     "maintenance": 0,
     "pending": 0
   },
-  "message": "#CopaDelRey r1 redactada desde cero y lista para persistencia JIT; ImageGen=0.",
+  "message": "#CopaDelRey r1 cerrada 1/2. Investigando #HuelgaGeneral11N r1 con fuentes actuales; ImageGen=0.",
   "history": [
     {
       "run_id": "tr-1794327332740-manual",
