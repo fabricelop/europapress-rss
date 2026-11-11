@@ -80,3 +80,58 @@ test('existing malformed receipt blocks automatic replay',t=>{
  }));
  assert.equal(mod.scan(x.base).summary.conflict,1);
 });
+
+
+test('manual recovery is not blocked by an active scheduled receiver lock',async t=>{
+  const x=fixture();t.after(()=>fs.rmSync(x.base,{recursive:true,force:true}));
+  fs.writeFileSync(path.join(x.root,'receiver.lock'),JSON.stringify({pid:123456,at:Date.now()}));
+  const env=deps();
+  const map={
+    'TTImageApprovalReceiver.cjs':env.receiver,
+    'TTImagesImmediateInbox.cjs':env.immediate,
+    'TTendenciasWebImages.cjs':env.source,
+    'TTiTTularesWebImages.cjs':env.source
+  };
+  const result=await mod.applyCached(x.base,{
+    dependencyLoader:name=>map[name],unprotect:env.unprotect,
+    send:env.receiver.send
+  });
+  assert.equal(result.after.received,1);
+  assert.equal(env.counts().sends,1);
+  assert(fs.existsSync(path.join(x.root,'receiver.lock')),'must not remove scheduled receiver lock');
+});
+test('if the scheduled receiver wins the race, its exact receipt is accepted',async t=>{
+  const x=fixture();t.after(()=>fs.rmSync(x.base,{recursive:true,force:true}));
+  const item=mod.scan(x.base).items[0];
+  const env=deps();
+  const same=async (_meta,bytes)=>{
+    const receipt={project:task.project,commandId:task.command_id,editorialId:task.target_id,
+      revision:1,id,rasterSHA256:digest(bytes),state:'pending'};
+    fs.writeFileSync(path.join(x.root,task.command_id+'.json'),JSON.stringify(receipt));
+    return {id,rasterSHA256:digest(bytes),state:'pending'};
+  };
+  const result=await mod.recoverOne(x.base,item,{...env,send:same});
+  assert.equal(result.state,'ALREADY_DELIVERED_BY_RECEIVER');
+  assert.equal(mod.scan(x.base).summary.received,1);
+});
+test('a conflicting receipt for one command cannot stop recovery of other commands',async t=>{
+  const x=fixture();t.after(()=>fs.rmSync(x.base,{recursive:true,force:true}));
+  fs.writeFileSync(path.join(x.root,task.command_id+'.json'),JSON.stringify({
+    commandId:task.command_id,project:'ttendencias',editorialId:task.target_id,
+    revision:1,id,rasterSHA256:digest(fakePNG)}));
+  const other={...task,command_id:'tt-img-another-123456789abc-r1'};
+  fs.writeFileSync(path.join(x.base,'ttittulares-web-images',other.command_id+'.json'),JSON.stringify(other));
+  fs.writeFileSync(path.join(x.root,'immediate-originals',other.command_id+'.png'),fakePNG);
+  fs.writeFileSync(path.join(x.root,'immediate-originals',other.command_id+'.json'),JSON.stringify({commandId:other.command_id}));
+  const env=deps({editorialJob:async(_source,job)=>({command_id:job.command_id,target_id:job.target_id,revision:1}),
+    metadata:job=>({project:'ttittulares',editorialId:job.target_id,
+      revision:1,commandId:job.command_id,episodeFingerprint:fingerprint})});
+  // metadata uses task object in production; for this stub it receives the task.
+  const map={'TTImageApprovalReceiver.cjs':env.receiver,'TTImagesImmediateInbox.cjs':env.immediate,
+    'TTendenciasWebImages.cjs':env.source,'TTiTTularesWebImages.cjs':env.source};
+  const result=await mod.applyCached(x.base,{dependencyLoader:n=>map[n],
+    unprotect:env.unprotect,send:env.receiver.send});
+  assert.equal(result.before.conflict,1);
+  assert.equal(result.after.received,1);
+  assert.equal(env.counts().sends,1);
+});
