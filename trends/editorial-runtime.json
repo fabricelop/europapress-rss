@@ -10,25 +10,34 @@
   "status": "RUNNING",
   "phase": "persisting",
   "started_at": "2026-11-11T02:48:30+01:00",
-  "updated_at": "2026-11-11T02:52:30+01:00",
-  "current": 0,
+  "updated_at": "2026-11-11T02:54:30+01:00",
+  "current": 1,
   "total": 2,
-  "trend_id": "red-review-dbb2229c42846b2f3813",
-  "title": "Revisar novedades: Carzzy",
+  "trend_id": "red-review-c574fe6c74856fb3b5ed",
+  "title": "Revisar novedades: #HuelgaGeneral",
   "queue_complete": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "red-review-dbb2229c42846b2f3813"
+  ],
   "converged_ids": [],
   "remaining_ids": [
-    "red-review-dbb2229c42846b2f3813",
     "red-review-c574fe6c74856fb3b5ed"
   ],
   "remaining_active_ids": [
-    "red-review-dbb2229c42846b2f3813",
     "red-review-c574fe6c74856fb3b5ed"
   ],
   "remaining_problematic_ids": [],
   "summary": null,
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "red-review-dbb2229c42846b2f3813",
+      "revision": 0,
+      "name": "Revisar novedades: Carzzy",
+      "outcome": "unchanged",
+      "applied": true,
+      "source_id": "79666c46d60d"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -49,6 +58,24 @@
       "total": 2,
       "trend_id": "red-review-dbb2229c42846b2f3813",
       "title": "Revisar novedades: Carzzy",
+      "message": "Resultado unchanged persistido en maintenance-outbox; verificando aplicación."
+    },
+    {
+      "at": "2026-11-11T02:54:30+01:00",
+      "phase": "verifying",
+      "current": 1,
+      "total": 2,
+      "trend_id": "red-review-dbb2229c42846b2f3813",
+      "title": "Revisar novedades: Carzzy",
+      "message": "Aplicación verificada por retirada exacta del job de editorial-queue."
+    },
+    {
+      "at": "2026-11-11T02:54:30+01:00",
+      "phase": "persisting",
+      "current": 1,
+      "total": 2,
+      "trend_id": "red-review-c574fe6c74856fb3b5ed",
+      "title": "Revisar novedades: #HuelgaGeneral",
       "message": "Resultado unchanged persistido en maintenance-outbox; verificando aplicación."
     }
   ],
@@ -94,7 +121,7 @@
     "incidents": [],
     "message": "Pasada tr-20261111T024000-manual cerrada 0/0 tras refresco real completado con éxito. Workflow 42940831306 concluyó success; snapshot recent.json capturado 2026-11-11T02:46:14+01:00 y editorial-queue recalculada 2026-11-11T02:46:19+01:00 con count=0. Barrera JIT final: mobile-decisions sin preparing/update/rewrite_pending/reexplain/review_red/anticipate activos. No había trabajo editorial textual por procesar. Fuente primaria getdaytrends con live_verified=false/reliability=unverified. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Carzzy r0 investigada: resultado unchanged escrito en maintenance-outbox; esperando aplicación oficial JIT antes de pasar a #HuelgaGeneral.",
+  "message": "1/2: Carzzy r0 aplicada como unchanged. #HuelgaGeneral r0 investigada y resultado unchanged escrito en maintenance-outbox; verificando aplicación oficial.",
   "history": [
     {
       "at": "2026-11-10T15:55:00+01:00",
