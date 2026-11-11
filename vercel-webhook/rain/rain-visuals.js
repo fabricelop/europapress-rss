@@ -25,15 +25,17 @@ const pointTime=point=>{
   return Date.parse(point?.time||'');
 };
 
-export function rainVisualWindows(points=[],stepMinutes=5){
+export function rainVisualWindows(points=[],stepMinutes=5,horizonEndMs=null){
   if(!Array.isArray(points)||!points.length)return [];
   const defaultStep=Math.max(1,finite(stepMinutes,5))*60_000;
+  const limit=horizonEndMs==null?Infinity:Number(horizonEndMs);
   const windows=[];
   for(let i=0;i<points.length;i++){
     const p=points[i],start=pointTime(p);
-    if(!Number.isFinite(start))continue;
+    if(!Number.isFinite(start)||start>=limit)continue;
     const next=points[i+1]?pointTime(points[i+1]):NaN;
-    const step=Number.isFinite(next)&&next>start?Math.min(next-start,3*60*60_000):defaultStep;
+    const step=Math.max(0,Math.min(Number.isFinite(next)&&next>start?Math.min(next-start,3*60*60_000):defaultStep,limit-start));
+    if(!step)continue;
     const signal=rainVisualSignal(p);
     const rate=Math.max(0,finite(p.rate??p.precipitation));
     const last=windows[windows.length-1];
