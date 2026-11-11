@@ -17,7 +17,7 @@ function fakeFetcher({mutate,failedPath}={}){
  const request=async(url,options)=>{
   calls.push({url,method:options.method,authorization:options.headers.Authorization});
   const path=new URL(url).pathname;
-  if(path===failedPath)return new Response('{}',{status:403});
+  if(failedPath&&path.endsWith(failedPath))return new Response('{}',{status:403});
   let result;
   if(path.endsWith('/d1/database/'+env.TT_FOTOS_D1_DATABASE_ID))result={name:'tt-fotos-private',uuid:env.TT_FOTOS_D1_DATABASE_ID};
   else if(path.endsWith('/r2/buckets/tt-fotos-originals-private'))result={name:'tt-fotos-originals-private'};
@@ -60,7 +60,10 @@ test('public R2, wrong D1, or missing API permissions cannot pass',async()=>{
  const wrongD1=fakeFetcher({mutate:(path,r)=>path.includes('/d1/database/')?{...r,name:'production-db'}:r});
  assert.equal((await auditCloudflare(env,wrongD1.request)).ready,false);
  const denied=fakeFetcher({failedPath:'/accounts/'+env.CLOUDFLARE_ACCOUNT_ID+'/r2/buckets/tt-fotos-originals-private'});
- assert.equal((await auditCloudflare(env,denied.request)).ready,false);
+ const deniedResult=await auditCloudflare(env,denied.request);
+ assert(denied.calls.some(c=>new URL(c.url).pathname.endsWith('/accounts/'+env.CLOUDFLARE_ACCOUNT_ID+'/r2/buckets/tt-fotos-originals-private')));
+ assert.equal(deniedResult.ready,false);
+ assert(deniedResult.blockers.some(x=>x.includes('R2:CLOUDFLARE_READ_FAILED_HTTP_403')));
  assert.throws(()=>verifyInventory({name:'tt-fotos-private'},{name:'tt-fotos-originals-private'},{enabled:true},{domains:[]}));
 });
 
