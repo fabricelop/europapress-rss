@@ -41,3 +41,9 @@ test('gallery origin sends photos only after an explicit editor click and report
  assert(!background.includes('chrome.action.onClicked'));
  assert(!source.includes('chrome.tabs.create'));
 });
+
+test('automatic association requires an immediately preceding user message, never an earlier job',()=>{
+ const source=fs.readFileSync(path.join(root,'extension-templates/images-source.js'),'utf8');
+ assert.match(source,/turns\[i-1\].getAttribute\('data-message-author-role'\)==='user'/);
+ assert(!source.includes('for(let k=i-1;k>=0;k--)'));
+});
