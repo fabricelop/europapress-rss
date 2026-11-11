@@ -37,7 +37,7 @@ $script:LastAckConflict = $null
 
 $WorkerId = "ttendencias-dedicated-v20"
 $PollSeconds = 15
-$LaunchConfirmSeconds = 30
+$LaunchConfirmSeconds = 120
 $EditorialRetryBackoffMinutes = 10
 $ClaimRetrySeconds = 38
 $MaxTriggerAgeSeconds = 86400
