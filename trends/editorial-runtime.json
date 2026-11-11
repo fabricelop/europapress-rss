@@ -3,43 +3,37 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794383608191-manual",
+  "run_id": "tr-1794384185213-manual",
   "previous_run_id": "tr-1794383608191-manual",
-  "command_id": "tr-1794383608191-manual",
+  "command_id": "tr-1794384185213-manual",
   "source": "chat",
   "status": "DONE",
   "phase": "closing",
-  "started_at": "2026-11-11T08:59:00+01:00",
-  "updated_at": "2026-11-11T09:05:00+01:00",
-  "current": 4,
-  "total": 4,
-  "trend_id": "red-review-699878f590c166949eed",
-  "title": "Revisando novedades: RTVE",
+  "started_at": "2026-11-11T09:03:00+01:00",
+  "updated_at": "2026-11-11T09:06:00+01:00",
+  "current": 1,
+  "total": 1,
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
-  "processed_ids": [
-    "54558781ed3f",
-    "2fb6dd8f8fd5",
-    "red-review-699878f590c166949eed",
-    "red-review-32f06663a61e8c297cb0"
-  ],
+  "processed_ids": [],
   "converged_ids": [
-    "radar-prepare-9744b43bb7230e95d56f",
-    "radar-prepare-fb6874c679a988fc53b9"
+    "red-review-32f06663a61e8c297cb0"
   ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 4,
-    "observed": 4,
-    "closed": 4,
-    "explained": 2,
+    "attempted": 1,
+    "observed": 1,
+    "closed": 1,
+    "explained": 0,
     "problematic": 0,
-    "updates": 1,
+    "updates": 0,
     "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 2,
+    "maintenance_reviews": 1,
     "unchanged_reviews": 1,
-    "continuity_updates": 1,
+    "continuity_updates": 0,
     "distinct_updates": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
@@ -52,39 +46,18 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 1
   },
   "outcomes": [
-    {
-      "id": "54558781ed3f",
-      "revision": 0,
-      "name": "CCOO",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "54c080f0ccff00d23364164219966f11d800b81f"
-    },
-    {
-      "id": "2fb6dd8f8fd5",
-      "revision": 0,
-      "name": "Comegambas",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "f5e25e1ccf9b2b60e0c740063d9b5b80da663564"
-    },
-    {
-      "id": "red-review-699878f590c166949eed",
-      "revision": 0,
-      "name": "Revisar novedades: RTVE",
-      "outcome": "continuity",
-      "applied": true
-    },
     {
       "id": "red-review-32f06663a61e8c297cb0",
       "revision": 0,
       "name": "Revisar novedades: Charles",
       "outcome": "unchanged",
       "applied": true,
-      "apply_commit": "bfd80e1e1a7bff328b20f09e77ab689655db0633"
+      "via": "concurrent_convergence",
+      "apply_commit": "bfd80e1e1a7bff328b20f09e77ab689655db0633",
+      "source_id": "c43139196d57"
     }
   ],
   "incident_count": 0,
@@ -303,23 +276,44 @@
       "at": "2026-11-11T09:05:00+01:00",
       "phase": "closing",
       "message": "Barrera final main: editorial-queue=0; 2 explicaciones ordinarias y 2 revisiones de mantenimiento cerradas. Sin preparing/update/rewrite_pending/reexplain activos en mobile-decisions. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-11T09:03:00+01:00",
+      "phase": "preparing",
+      "trend_id": "red-review-32f06663a61e8c297cb0",
+      "title": "Charles",
+      "message": "Cola inicial observada con Charles r0 en review_red/preparing; validación JIT contra main. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-11T09:04:30+01:00",
+      "phase": "investigating",
+      "trend_id": "red-review-32f06663a61e8c297cb0",
+      "title": "Charles",
+      "message": "Fuentes actuales contrastadas: el episodio meteorológico continúa, pero la explicación vigente ya recoge alerta máxima, rachas >130 km/h y clases telemáticas; no se acredita un desarrollo material posterior que cambie el motivo."
+    },
+    {
+      "at": "2026-11-11T09:06:00+01:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": null,
+      "message": "Convergencia detectada: Charles r0 ya aplicado como unchanged por el aplicador oficial; barrera final con cola=0 y sin reexplicaciones activas. ImageGen=0; publicaciones=0."
     }
   ],
-  "last_started_at": "2026-11-11T08:59:04+01:00",
-  "last_completed_at": "2026-11-11T09:05:00+01:00",
+  "last_started_at": "2026-11-11T09:03:00+01:00",
+  "last_completed_at": "2026-11-11T09:06:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794383608191-manual",
+    "run_id": "tr-1794384185213-manual",
     "status": "DONE",
-    "started_at": "2026-11-11T08:53:00+01:00",
-    "finished_at": "2026-11-11T09:05:00+01:00",
-    "total": 4,
-    "closed": 4,
-    "explained": 2,
-    "maintenance": 2,
+    "started_at": "2026-11-11T09:03:00+01:00",
+    "finished_at": "2026-11-11T09:06:00+01:00",
+    "total": 1,
+    "closed": 1,
+    "explained": 0,
+    "maintenance": 1,
     "pending": 0
   },
-  "message": "Pasada tr-1794383608191-manual cerrada 4/4. CCOO r0 y Comegambas r0 quedaron explicadas. La revisión roja de RTVE actualizó en continuidad la misma polémica Broncano/Abascal por las disculpas posteriores de Broncano; Charles quedó unchanged al no existir un desarrollo material posterior a la alerta máxima, rachas >130 km/h y clases telemáticas ya recogidas. Barrera final main: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada tr-1794384185213-manual cerrada 1/1 por convergencia JIT. Charles r0 fue revalidada; el mantenimiento quedó applied/unchanged en main (bfd80e1e1a7bff328b20f09e77ab689655db0633), conservando explicación, fecha e imagen. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794327332740-manual",
@@ -3631,6 +3625,58 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-1794383608191-manual cerrada 4/4. CCOO r0 y Comegambas r0 quedaron explicadas. La revisión roja de RTVE actualizó en continuidad la misma polémica Broncano/Abascal por las disculpas posteriores de Broncano; Charles quedó unchanged al no existir un desarrollo material posterior a la alerta máxima, rachas >130 km/h y clases telemáticas ya recogidas. Barrera final main: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794384185213-manual",
+      "status": "DONE",
+      "started_at": "2026-11-11T09:03:00+01:00",
+      "finished_at": "2026-11-11T09:06:00+01:00",
+      "at": "2026-11-11T09:06:00+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 1,
+        "observed": 1,
+        "closed": 1,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 1,
+        "unchanged_reviews": 1,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 1
+      },
+      "processed_ids": [],
+      "converged_ids": [
+        "red-review-32f06663a61e8c297cb0"
+      ],
+      "outcomes": [
+        {
+          "id": "red-review-32f06663a61e8c297cb0",
+          "revision": 0,
+          "name": "Revisar novedades: Charles",
+          "outcome": "unchanged",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "apply_commit": "bfd80e1e1a7bff328b20f09e77ab689655db0633",
+          "source_id": "c43139196d57"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-1794384185213-manual cerrada 1/1 por convergencia JIT. Charles r0 fue revalidada; el mantenimiento quedó applied/unchanged en main (bfd80e1e1a7bff328b20f09e77ab689655db0633), conservando explicación, fecha e imagen. Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "current_item": null,
@@ -6311,5 +6357,5 @@
     }
   ],
   "processed": [],
-  "finished_at": "2026-11-11T09:05:00+01:00"
+  "finished_at": "2026-11-11T09:06:00+01:00"
 }
