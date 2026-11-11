@@ -1,0 +1,115 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0b1421"><title>TT Fotos | Estado detallado</title>
+<style>
+:root{color-scheme:dark;--bg:#0b1220;--panel:#162237;--border:#33445b;--txt:#edf6ff;--muted:#a5b9d0;--mint:#78e3ca;--amber:#ffd18c;--pink:#ff9a9b}*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at 84% 0,#16433e,transparent 38%),var(--bg);color:var(--txt);font:14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+a{color:var(--mint)}button,input{font:inherit}button{border:1px solid var(--border);border-radius:10px;background:#273a50;color:var(--txt);padding:10px 12px;cursor:pointer}button[aria-pressed=true]{border-color:var(--mint);background:#1e554d}button:disabled{opacity:.5}.wrap{max-width:1140px;margin:auto;padding:24px 15px}
+h1{font-size:clamp(25px,4vw,38px);margin:3px 0;letter-spacing:-.9px}h2{font-size:18px;margin:20px 0 12px}.kicker{font-size:11px;letter-spacing:1.6px;color:var(--mint);font-weight:850;text-transform:uppercase}.muted{color:var(--muted)}.sub{font-size:12px}.head{display:flex;justify-content:space-between;align-items:center;gap:15px}.head p{margin:0}.head a{font-size:12px;white-space:nowrap}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:20px 0}.stat{border:1px solid var(--border);background:var(--panel);padding:12px;border-radius:13px}.stat small{color:var(--muted);display:block;font-size:11px}.stat strong{display:block;font-size:28px;font-variant-numeric:tabular-nums}.stat:nth-child(4) strong{color:var(--pink)}.stat:nth-child(5) strong{color:var(--mint)}.stat:nth-child(6) strong{color:var(--amber)}
+.note{border:1px solid #446a69;border-radius:13px;background:#112b32;padding:12px 14px;margin-bottom:16px;font-size:12px;color:#d2efeb}.warn{border:1px solid #98744d;background:#332619;border-radius:11px;padding:11px 13px;color:#ffe0a2;font-size:12px;margin:10px 0}
+.controls{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0}.controls input{flex:1;min-width:150px;background:#122037;border:1px solid #4d637c;border-radius:10px;color:#fff;padding:9px 12px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:13px}.card{border:1px solid var(--border);border-radius:15px;background:var(--panel);overflow:hidden}.top{padding:12px 14px}.top .kind{display:inline-block;color:var(--mint);font-size:11px;font-weight:700}.top h3{font-size:15px;line-height:1.3;margin:7px 0 0;min-height:40px}.photo{height:160px;background:#101d2c;display:grid;place-items:center;border-block:1px solid var(--border)}.photo img{width:100%;height:100%;object-fit:contain}.placeholder{font-size:12px;color:var(--muted)}.track{padding:12px 14px}.track div{font-size:12px;display:flex;align-items:flex-start;gap:9px;padding:4px 0}.dot{display:inline-block;width:9px;height:9px;border-radius:100%;border:2px solid #667c92;margin-top:4px;flex:none}.dot.yes{background:var(--mint);border-color:var(--mint)}.dot.err{background:var(--pink);border-color:var(--pink)}.headline{font-weight:850;font-size:12px;color:var(--txt);padding:5px 0 8px}.extra{padding:8px 14px 12px;border-top:1px solid var(--border);color:var(--muted);font-size:11px;overflow-wrap:anywhere}.extra a{display:block;margin-top:6px}
+.empty{padding:30px;text-align:center;border:1px dashed var(--border);border-radius:13px;color:var(--muted);grid-column:1/-1}
+.upload{background:var(--panel);border:1px solid var(--border);padding:15px;border-radius:14px;margin-top:22px;font-size:12px}.upload input{max-width:100%;margin:8px 0}.upload strong{display:block}
+footer{font-size:11px;color:var(--muted);margin-top:26px;padding:18px 0;border-top:1px solid var(--border)}
+@media(max-width:600px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.head{flex-direction:column;align-items:flex-start}.stat strong{font-size:25px}}
+</style></head><body><main class="wrap"><div class="head"><div><div class="kicker">TT Actualidad · seguimiento de imagen IA</div><h1>Estado de las fotos</h1><p class="muted">Noticias y tendencias · encargos, ChatGPT, errores y entregas</p></div><a href="./">Volver al monitor inicial</a></div>
+<section class="stats"><div class="stat"><small>Fichas rastreadas</small><strong id="s-all">–</strong></div><div class="stat"><small>Sin encargo localizado</small><strong id="s-missing">–</strong></div><div class="stat"><small>Enviadas a ChatGPT</small><strong id="s-sent">–</strong></div><div class="stat"><small>Error registrado</small><strong id="s-error">–</strong></div><div class="stat"><small>Imagen pública asociada</small><strong id="s-public">–</strong></div><div class="stat"><small>Recibo privado importado</small><strong id="s-receipt">–</strong></div></section>
+<div class="note">La fase «enviada a ChatGPT» no confirma una imagen terminada. «Foto creada» solo puede acreditarse cuando hay un original identificable y verificable. «Lista para aprobar» requiere comprobar la bandeja privada <strong>en tiempo real, con sesión de editor</strong>; GitHub no muestra ese estado. Los botones de aprobación web se conectarán al servicio existente, pero no están activos aquí.</div>
+<div id="warn" class="warn" hidden></div><div class="controls" id="projects"><button data-p="all" aria-pressed="true">Ambos proyectos</button><button data-p="ttittulares" aria-pressed="false">TTiTTulares</button><button data-p="ttendencias" aria-pressed="false">TTendencias</button><button id="refresh">Actualizar</button></div>
+<div class="controls" id="filters"><button data-s="all" aria-pressed="true">Todas</button><button data-s="missing" aria-pressed="false">Sin encargo</button><button data-s="requested" aria-pressed="false">En cola</button><button data-s="composing" aria-pressed="false">Preparando</button><button data-s="sent" aria-pressed="false">En ChatGPT</button><button data-s="error" aria-pressed="false">Con error</button><button data-s="public" aria-pressed="false">Imagen encontrada</button><button data-s="receipt" aria-pressed="false">Recibida</button><input id="q" placeholder="Buscar noticia, tendencia o ID" type="search"></div>
+<p class="sub muted" id="count">Consultando fuentes…</p><div id="cards" class="cards"><div class="empty">Consultando GitHub…</div></div>
+<section class="upload"><strong>Comprobar entregas privadas desde tu PC</strong><p class="muted">Opcional: en Windows, selecciona archivos JSON de <code>C:\TTiTTulares\image-approval-receipts</code>. Se comparan exclusivamente en el navegador y nunca se envían a la web.</p><input id="receipts" type="file" accept=".json,application/json" multiple><p id="import-status" class="muted">Sin recibos importados. No es posible confirmar la entrega privada de ninguna imagen solo con GitHub.</p></section><p id="updated" class="sub muted"></p>
+<footer>Estado informativo de solo lectura. No representa la bandeja privada ni modifica aprobaciones, imágenes, ChatGPT, la APP ni las redes sociales.</footer></main>
+<script>
+'use strict';
+(()=>{
+const ROOT='https://raw.githubusercontent.com/fabricelop/europapress-rss/';
+const sources=[{p:'ttittulares',dir:'ttittulares',branch:'control/ttittulares-run-trigger-v2'},{p:'ttendencias',dir:'trends',branch:'control/ttendencias-run-trigger'}];
+const $=id=>document.getElementById(id), validId=x=>/^[a-zA-Z0-9_.-]{12,90}$/.test(String(x||'')), key=(p,id,r)=>p+':'+id+':'+r;
+const state={jobs:[],receipts:new Map(),p:'all',s:'all',q:'',busy:false,updated:null};
+const node=(t,c,v)=>{const x=document.createElement(t);if(c)x.className=c;if(v!==undefined)x.textContent=String(v);return x};
+async function get(url){const ctrl=new AbortController(),time=setTimeout(()=>ctrl.abort(),14000);try{const r=await fetch(url+(url.includes('?')?'&':'?')+'_='+Date.now(),{cache:'no-store',signal:ctrl.signal});if(!r.ok){const e=Error('HTTP '+r.status);e.code=r.status;throw e}return await r.json()}finally{clearTimeout(time)}}
+async function pool(arr,limit,fn){let i=0;const out=[];await Promise.all(Array.from({length:Math.min(limit,arr.length)},async()=>{while(i<arr.length){const at=i++;try{out[at]=await fn(arr[at])}catch(e){out[at]={error:e.message,code:e.code}}}}));return out}
+const receipt=j=>{const r=state.receipts.get(j.command);return r&&r.p===j.p&&r.id===j.id&&r.rev===j.rev?r:null};
+const sent=j=>Boolean(j.detail&&(j.detail.pc_launched_at||j.detail.pc_submitted_at||j.detail.phase==='pc_launched'||['LAUNCHED','DONE','COMPLETED'].includes(j.detail.status)));
+const err=j=>Boolean(j.detail&&['ERROR','FAILED'].includes(String(j.detail.status||'').toUpperCase())&&!receipt(j)&&!j.img);
+const status=j=>receipt(j)?'receipt':j.img?'public':err(j)?'error':sent(j)?'sent':j.detail?.status==='RUNNING'?'composing':j.detail||j.command?'requested':'missing';
+const desc={receipt:'Recepción privada acreditada por recibo local',public:'Archivo de imagen asociado en catálogo público',error:'Error explícito de ejecución',sent:'Prompt enviado; PNG todavía sin verificar',composing:'ChatGPT preparándose: envío no demostrado',requested:'Encargo solicitado / en cola',missing:'No se ha localizado un encargo de foto'};
+function isImage(url,j){try{const u=new URL(url);const a=u.pathname;const p=j.p==='ttendencias'?'trends':'ttittulares';return u.protocol==='https:'&&((u.hostname==='raw.githubusercontent.com'&&a.startsWith('/fabricelop/europapress-rss/')&&a.includes('/'+p+'/generated-images/'+j.id+'-r'+j.rev+'-'))||(['ttactualidad.rainyraven22.chatgpt.site','ttactualidad-tendencias.rainyraven22.chatgpt.site'].includes(u.hostname)&&a.startsWith('/images/'+j.p+'/'+j.id+'-r'+j.rev+'-')))}catch{return false}}
+function row(t,ok,extra,bad=false){const x=node('div');x.append(node('span','dot '+(ok?'yes':bad?'err':'')),node('span','',t+(extra?' · '+extra:'')));return x}
+function render(){
+  const items=state.jobs.filter(x=>(state.p==='all'||x.p===state.p)&&(state.s==='all'||status(x)===state.s)&&(!state.q||(x.title+' '+x.id+' '+x.command).toLowerCase().includes(state.q)));
+  $('s-all').textContent=state.jobs.length;
+  for(const [name,test]of [['missing',x=>status(x)==='missing'],['sent',sent],['error',err],['public',x=>Boolean(x.img)],['receipt',receipt]])$('s-'+name).textContent=state.jobs.filter(test).length;
+  $('count').textContent=items.length+' de '+state.jobs.length+' fichas rastreadas'+(state.busy?' · actualizando…':'');
+  const box=$('cards');box.replaceChildren();if(!items.length){box.append(node('div','empty','Ninguna ficha coincide con el filtro.'));return}
+  const frag=document.createDocumentFragment();
+  for(const x of items){
+    const d=x.detail||{},phase=status(x),r=receipt(x),c=node('article','card'),top=node('div','top');
+    top.append(node('span','kind',x.p==='ttendencias'?'TTendencias · tendencia':'TTiTTulares · noticia'),node('h3','',x.title));c.append(top);
+    const fig=node('div','photo');
+    if(x.img){const im=node('img');im.src=x.img;im.alt='Imagen vinculada a '+x.title;im.loading='lazy';im.addEventListener('error',()=>fig.replaceChildren(node('span','placeholder','Vista previa no disponible')));fig.append(im)}
+    else fig.append(node('span','placeholder','Sin imagen pública verificada'));
+    c.append(fig);
+    const track=node('div','track');
+    track.append(node('div','headline',desc[phase]),row('Texto editorial listo',true,'r'+x.rev),
+      row('Encargo de imagen',!!(x.detail||x.command),d.status||'sin registro'),
+      row('Prompt en ChatGPT',sent(x),sent(x)?'enviado':'sin confirmación',err(x)),
+      row('Original público',!!x.img,x.img?'archivo asociado':'sin evidencia pública'),
+      row('Recibo privado',!!r,r?'entregado anteriormente':'consulta privada no disponible'));
+    c.append(track);
+    const extra=node('div','extra',r?'El recibo local acredita entrega anterior, no que aún esté pendiente de decisión.':phase==='error'?'Detalle: '+String(d.error?.message||d.error||d.message||'sin detalles').slice(0,160):'No se puede certificar «lista para aprobar» sin consultar la bandeja privada actual.');
+    const a=node('a','','Ver datos en GitHub');a.href='https://github.com/fabricelop/europapress-rss/blob/'+x.branch+'/'+x.path;a.target='_blank';a.rel='noopener noreferrer';extra.append(a);c.append(extra);frag.append(c);
+  }
+  box.append(frag);
+}
+async function refresh(){
+if(state.busy)return;state.busy=true;$('refresh').disabled=true;render();const problems=[];
+try{
+ const request=await Promise.all([
+   get(ROOT+'main/ttittulares/prepared.json').catch(e=>({items:[],error:e.message})),
+   get(ROOT+'main/trends/site-top30-current.json').catch(e=>({items:[],error:e.message}))
+ ]);
+ const all=new Map();
+ function insert(j){let k=key(j.p,j.id,j.rev);if(!all.has(k)){all.set(k,j)}else{const old=all.get(k);if(j.command){old.command=j.command;old.path=j.path;old.when=j.when||old.when}if(j.title&&old.title===old.id)old.title=j.title}}
+ if(request[0].error)problems.push('Listas de noticias no accesibles');else for(const x of request[0].items||[]){
+   if(!validId(x.event_id)||x.with_image===false||x.rewrite_pending||!x.tweet?.text||['published','dismissed','deleted','removed'].includes(String(x.status||'').toLowerCase()))continue;
+   const rev=Number(x.revision||0),id=String(x.event_id);insert({p:'ttittulares',id,rev,title:String(x.title||id),when:x.prepared_at,branch:sources[0].branch,path:'ttittulares/image-runs/jobs/'+id+'.json',command:'',detail:null,img:null});
+ }
+ if(request[1].error)problems.push('Top 30 actual no accesible');else for(const x of request[1].items||[]){
+   if(!validId(x.editorial_id)||!x.explanation||String(x.status||'').toUpperCase()!=='EXPLICADA')continue;
+   const id=String(x.editorial_id),rev=Number(x.revision||0);insert({p:'ttendencias',id,rev,title:String(x.name||id),when:x.explained_at,branch:sources[1].branch,path:'trends/image-runs/jobs/'+id+'.json',command:'',detail:null,img:null});
+ }
+ for(const c of sources){try{const idx=await get(ROOT+c.branch+'/'+c.dir+'/image-runs/index.json');for(const t of idx.jobs||[]){
+   const id=String(t.target_id||t.event_id||t.trend_id||''),rev=Number(t.revision||0);
+   if(!validId(id)||!/^[a-zA-Z0-9_.\/-]+\.json$/.test(t.status_path||''))continue;
+   insert({p:c.p,id,rev,title:String(t.target_name||id),when:t.requested_at,branch:c.branch,path:t.status_path,command:String(t.command_id||''),detail:null,img:null});
+ }}catch{problems.push('Índice de '+c.p+' no disponible')}}
+ const jobs=[...all.values()];
+ const results=await pool(jobs,7,async j=>get(ROOT+j.branch+'/'+j.path));
+ results.forEach((v,i)=>{
+   if(v?.error){if(v.code!==404)problems.push('Estado no verificable: '+jobs[i].id);return}
+   if(String(v.target_id||v.event_id||v.trend_id||'')!==jobs[i].id||Number(v.revision||0)!==jobs[i].rev||
+       (jobs[i].command&&jobs[i].command!==v.command_id)){problems.push('Conflicto de identidad: '+jobs[i].id);return}
+   jobs[i].detail=v;jobs[i].command=String(v.command_id||jobs[i].command||'');jobs[i].when=v.requested_at||jobs[i].when;
+ });
+ for(const c of sources){try{const cat=await get(ROOT+'main/'+c.dir+'/site-ai-images.json');for(const z of cat.images||[]){
+   const j=all.get(key(c.p,String(z.target_id),Number(z.revision||0)));
+   if(j&&isImage(z.image_url,j))j.img=z.image_url;
+ }}catch{problems.push('Catálogo de '+c.p+' no disponible')}}
+ jobs.sort((a,b)=>Date.parse(b.when||0)-Date.parse(a.when||0));
+ if(jobs.length||!state.jobs.length)state.jobs=jobs;
+ state.updated=new Date();$('updated').textContent='Actualizado: '+state.updated.toLocaleString('es-ES')+' · Se incluyen fichas de Listas, Top 30 explicado y trabajos indexados. Históricos fuera de estas fuentes no están garantizados.';
+}catch(e){problems.push('Actualización fallida: '+e.message)}
+finally{state.busy=false;$('refresh').disabled=false;const w=$('warn');w.hidden=!problems.length;w.textContent=problems.length?'Datos incompletos: '+[...new Set(problems)].slice(0,8).join(' · '):'';render()}
+}
+$('refresh').addEventListener('click',refresh);
+$('q').addEventListener('input',e=>{state.q=e.target.value.toLowerCase().trim();render()});
+for(const [group,attr]of [['projects','p'],['filters','s']])$(group).addEventListener('click',e=>{const b=e.target.closest('button[data-'+attr+']');if(!b)return;state[attr]=b.dataset[attr];$(group).querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));render()});
+$('receipts').addEventListener('change',async e=>{let valid=0,bad=0;for(const file of [...e.target.files].filter(f=>/\.json$/i.test(f.name)).slice(0,3000)){try{if(file.size>100000){bad++;continue}const x=JSON.parse(await file.text());if(!/^[a-f0-9]{64}$/i.test(x.rasterSHA256||'')||!/^[a-f0-9]{64}$/i.test(x.id||'')||!validId(x.editorialId)||!x.commandId||!['ttittulares','ttendencias'].includes(x.project)){bad++;continue}state.receipts.set(x.commandId,{p:x.project,id:x.editorialId,rev:Number(x.revision||0)});valid++}catch{bad++}}
+ $('import-status').textContent=valid+' recibos válidos · '+bad+' descartados. Datos procesados solo en el navegador.';render()});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&state.updated&&Date.now()-state.updated.getTime()>120000)refresh()});
+setInterval(()=>{if(!document.hidden&&(!state.updated||Date.now()-state.updated.getTime()>90000))refresh()},30000);
+refresh();
+})();
+</script></body></html>
