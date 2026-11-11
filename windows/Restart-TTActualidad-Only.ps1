@@ -92,7 +92,6 @@ try {
  foreach($p in @(Nodes)){
   try{Stop-Process -Id $p.ProcessId -Force -ErrorAction Stop;Say ('NODE_STOPPED pid='+$p.ProcessId)}catch{Say ('NODE_STOP_WARNING pid='+$p.ProcessId)}
  }
- }
  Start-Sleep -Seconds 1
  $still=@(Roots 9223)
  if($still.Count -ne 1 -or [int]$still[0].ProcessId -ne [int]$root.ProcessId){throw 'Chrome9223 cambió de proceso; reinicio abortado.'}
