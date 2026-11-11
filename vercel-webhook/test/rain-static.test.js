@@ -7,6 +7,7 @@ import {selectSpatialForecastTimeIndex,selectSpatialForecastTimeBlend,hybridFutu
 import {aggregateEnsembleModel,buildConsensus,detectRainEvents,detectQuarterHourEvents,chooseNextEvent,classifyRainHour,bestDryWindow} from '../rain/core.js';
 import {estimateTranslation,combineMotionEstimates,projectPointSeries,estimateLocalFlow,combineLocalFlows,projectPointSeriesFlow,evolutionReliability,detectNowcastEvent,wetNear,valueNear,flowVectorAt,buildRadarProjectionRgba,projectRadarFieldContinuous,evaluateOverlaySourceState,wmsCapabilitiesHasLayer,radarProjectionRenderMode,radarViewportProjectionZoom} from '../rain/radar-core.js';
 import {decodeHarmoniePrecipRgba,parseTarEntries} from '../rain/harmonie-core.js';
+import {rainVisualSignal,rainVisualWindows,rainVisualGuard,rainWaveSvg} from '../rain/rain-visuals.js';
 
 function mask(w,h,x0,y0,ww=7,hh=7){const a=new Uint8Array(w*h);for(let y=y0;y<y0+hh;y++)for(let x=x0;x<x0+ww;x++)if(x>=0&&x<w&&y>=0&&y<h)a[y*w+x]=1;return a}
 
@@ -594,4 +595,96 @@ test('visual radar handoff has no forced minimum when the continuous field is un
   assert.deepEqual(hybridFutureBlend(1,0),{radarOpacity:0,modelOpacity:.78,mode:'model',handoffMinutes:0});
   assert.deepEqual(hybridFutureBlend(20,30),{radarOpacity:.76,modelOpacity:0,mode:'radar',handoffMinutes:30});
   assert.deepEqual(hybridFutureBlend(31,30),{radarOpacity:0,modelOpacity:.78,mode:'model',handoffMinutes:30});
+});
+
+
+test('RainETA visual language never paints an uncertain non-wet minute as confirmed rain',()=>{
+  assert.equal(rainVisualSignal({wet:false,rate:3,probability:.9}),'possible');
+  assert.equal(rainVisualSignal({wet:false,rate:0,probability:.9}),'dry');
+  assert.equal(rainVisualSignal({wet:true,rate:.1,probability:.5}),'wet');
+  assert.equal(rainVisualSignal({canonicalSignal:'dry',rate:8,probability:1}),'dry');
+  assert.equal(rainVisualSignal({canonicalSignal:'wet',precipitation:.2,probability:70}),'wet');
+  assert.equal(rainVisualSignal({rate:.2,probability:25}),'possible');
+});
+
+test('RainETA wave windows preserve wet/dry boundaries and exact five-minute times',()=>{
+  const base=Date.parse('2026-11-10T10:00:00Z');
+  const points=[
+    {time:base,wet:false,rate:0,probability:.1},
+    {time:base+300000,wet:false,rate:0,probability:.1},
+    {time:base+600000,wet:true,rate:.3,probability:.8},
+    {time:base+900000,wet:true,rate:2.7,probability:.85},
+    {time:base+1200000,wet:false,rate:0,probability:.1},
+    {time:base+1500000,wet:false,rate:0,probability:.1}
+  ];
+  const windows=rainVisualWindows(points,5);
+  assert.deepEqual(windows.map(w=>[w.signal,w.start-base,w.end-base,w.count]),[
+    ['dry',0,600000,2],['wet',600000,1200000,2],['dry',1200000,1800000,2]
+  ]);
+  assert.equal(windows[1].peakRate,2.7);
+  assert.deepEqual(rainVisualWindows([]),[]);
+  const exact=rainVisualWindows(points,5,base+25*60_000);
+  assert.equal(exact.at(-1).end,base+25*60_000);
+  assert.equal(exact.at(-1).count,1);
+  const shorter=rainVisualWindows(points,5,base+17*60_000);
+  assert.equal(shorter.at(-1).end,base+17*60_000);
+  assert.equal(shorter.at(-1).signal,'wet');
+});
+
+test('RainETA rain wave renders all-dry as a baseline, real peak on wet only and uncertain markers',()=>{
+  const t='2026-11-10T10:00:00Z';
+  const dry=rainWaveSvg([{time:t,wet:false,rate:0,probability:.05},{time:t,wet:false,rate:0,probability:.05}],{id:'test-dry'});
+  assert.match(dry,/<svg/);
+  assert.match(dry,/test-dry-fill/);
+  assert.doesNotMatch(dry,/<circle/);
+  const uncertain=rainWaveSvg([{time:t,wet:false,rate:2,probability:.5},{time:t,wet:false,rate:0,probability:.05}]);
+  assert.match(uncertain,/fill="#cfb3ff"/);
+  assert.doesNotMatch(uncertain,/<circle/);
+  const wet=rainWaveSvg([{time:t,wet:false,rate:0,probability:0},{time:t,wet:true,rate:4,probability:.95}]);
+  assert.match(wet,/<circle/);
+  assert.match(wet,/rain-wave-fill/);
+});
+
+test('RainETA wave controls keep hourly selection and the observed radar independent',()=>{
+  const html=readFileSync(new URL('../rain/index.html',import.meta.url),'utf8');
+  const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
+  const sw=readFileSync(new URL('../rain/sw.js',import.meta.url),'utf8');
+  assert.match(html,/id="rainStoryTitle"/);
+  assert.match(html,/id="rainWindows"/);
+  assert.match(html,/id="timelineRibbon"/);
+  assert.match(html,/id="timelineScroll"/);
+  assert.match(html,/id="radarArrival"/);
+  assert.match(app,/rainWaveSvg\(visualPoints,\{id:'minute-rain-wave'\}\)/);
+  assert.match(app,/rainWaveSvg\(points,\{id:'hour-rain-wave'\}\)/);
+  assert.match(app,/data-hour-index/);
+  assert.match(app,/selectTimelineHour\(el\.dataset\.hourIndex\)/);
+  assert.match(app,/function showObservedRadar/);
+  assert.match(sw,/raineta-v77/);
+  assert.match(sw,/rain-visuals\.js/);
+});
+
+test('RainETA short-term visual labels do not imply the entire 180-minute horizon is dry',()=>{
+  const app=readFileSync(new URL('../rain/app.js',import.meta.url),'utf8');
+  assert.match(app,/Periodo estable estimado:/);
+  assert.match(app,/rainVisualGuard\(points,\{eventStart:ev\?\.start,eventEnd:ev\?\.end/);
+  assert.match(app,/rainVisualWindows\(visualPoints,5,now\+SHORT_HORIZON_MINUTES\*60_000\)/);
+  assert.doesNotMatch(app,/decision\.mode==='stable_now'\?'Sin lluvia prevista a corto plazo'/);
+});
+
+test('RainETA rain wave only confirms wet segments supported by canonical events',()=>{
+  const t=Date.parse('2026-11-11T10:00:00Z');
+  const rows=[0,5,10,15,20].map(minute=>({time:t+minute*60_000,wet:true,rate:.9,probability:.8}));
+  const result=rainVisualGuard(rows,{eventStart:t+10*60_000,eventEnd:t+20*60_000,nowMs:t,rainingNow:false});
+  assert.deepEqual(result.map(row=>rainVisualSignal(row)),['possible','possible','wet','wet','possible']);
+  assert.deepEqual(rows.map(row=>row.wet),[true,true,true,true,true]); // no mutation
+  const noEvent=rainVisualGuard(rows,{nowMs:t,rainingNow:false});
+  assert.ok(noEvent.every(row=>rainVisualSignal(row)==='possible'));
+  const observed=rainVisualGuard(rows,{nowMs:t,rainingNow:true});
+  assert.equal(rainVisualSignal(observed[0]),'wet');
+  assert.equal(rainVisualSignal(observed[1]),'wet');
+  assert.equal(rainVisualSignal(observed[2]),'possible');
+  const uncertainSurface=rainVisualGuard(rows,{eventStart:t,eventEnd:t+20*60_000,nowMs:t,mode:'possible_now'});
+  assert.equal(rainVisualSignal(uncertainSurface[0]),'possible');
+  assert.equal(rainVisualSignal(uncertainSurface[1]),'possible');
+  assert.equal(rainVisualSignal(uncertainSurface[2]),'wet');
 });
