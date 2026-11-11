@@ -1,6 +1,50 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-11T08:59:05+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-11T07:59:33.916171+00:00",
+  "count": 1,
+  "items": [
+    {
+      "id": "red-review-699878f590c166949eed",
+      "revision": 0,
+      "name": "Revisar novedades: RTVE",
+      "rank": 11,
+      "status": "preparing",
+      "requested_at": "2026-11-11T07:59:33.916171+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "db1a689b7f75",
+        "revision": 0,
+        "name": "RTVE",
+        "rank": 4,
+        "explanation": "TT#9 RTVE sigue siendo tendencia por la polémica tras la entrevista de Abascal en La Revuelta: Broncano admite que quedó decepcionado y RTVE explica por qué aceptó el público de Vox.\n#LaRevuelta #SantiagoAbascal\n🌶️ La entrevista acabó y empezó el turno de explicaciones.",
+        "explanation_sha256": "d5cfcf1ded54a0df4fec37b85cee7a656dd50b4604102ef0caa12e9e6ddf7d46",
+        "explained_at": "2026-11-10T00:22:00+01:00",
+        "verification_sources": [
+          {
+            "title": "RTVE: entrevista de Santiago Abascal en La Revuelta",
+            "url": "https://www.rtve.es/noticias/20261109/la-revuelta-entrevista-santiago-abascal-vox-david-broncano-titulares/17307024.shtml",
+            "published_at": "2026-11-09"
+          },
+          {
+            "title": "elDiario/Vertele: cambio de público en La Revuelta",
+            "url": "https://www.eldiario.es/vertele/noticias/broncano-confirma-veto-vox-publico-revuelta-temor-abucheos-abascal-solicitaron-encargarse-rtve_1_13650728.html",
+            "published_at": "2026-11-09"
+          },
+          {
+            "title": "El Periódico/Yotele: RTVE niega obligación de la JEC",
+            "url": "https://www.elperiodico.cat/yotele/20261109/no-broncano-obligat-entrevistar-abascal-revuelta-dos-precedents-demostren-136251450",
+            "published_at": "2026-11-09"
+          }
+        ],
+        "fingerprint": "e5b2f0468964e772379baea12c3caf5da8ec34f4399bd0f24dc38ba99db7cb67"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
