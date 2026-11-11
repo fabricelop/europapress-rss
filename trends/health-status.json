@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-11T10:45:18.366052+00:00",
+  "checked_at": "2026-11-11T18:06:21.257146+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -44,7 +44,6 @@
       "count": 10,
       "non_stale_sources": 5,
       "verified_fresh_sources": [
-        "whatstrends",
         "xtrendsiamrohit"
       ],
       "live_verified": false,
@@ -60,8 +59,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 4.6,
-      "run_id": 43005614763,
+      "age_minutes": 2.8,
+      "run_id": 43074087998,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -73,7 +72,7 @@
     },
     "request_queue": {
       "ok": false,
-      "invalid_count": 742,
+      "invalid_count": 752,
       "noise_count": 0
     },
     "ready_consistency": {
@@ -82,97 +81,25 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": false,
-      "pending_count": 17,
-      "overdue_count": 17,
-      "oldest_age_minutes": 154.3,
+      "ok": true,
+      "pending_count": 6,
+      "overdue_count": 0,
+      "oldest_age_minutes": 0.1,
       "warning_after_minutes": 30,
-      "overdue_items": [
-        {
-          "id": "4d0946f0eae7",
-          "name": "San Martín de Tours",
-          "status": "preparing",
-          "age_minutes": 154.3
-        },
-        {
-          "id": "a40297032698",
-          "name": "Poneros",
-          "status": "preparing",
-          "age_minutes": 154.3
-        },
-        {
-          "id": "2f04fbd94be9",
-          "name": "Cortar",
-          "status": "preparing",
-          "age_minutes": 154.3
-        },
-        {
-          "id": "bc09be0986c5",
-          "name": "Nita",
-          "status": "preparing",
-          "age_minutes": 154.3
-        },
-        {
-          "id": "cb975f45e289",
-          "name": "#LaHora11N",
-          "status": "preparing",
-          "age_minutes": 103.7
-        },
-        {
-          "id": "e8e9d03d4f3f",
-          "name": "Piquetes",
-          "status": "preparing",
-          "age_minutes": 103.7
-        },
-        {
-          "id": "d100127b9d60",
-          "name": "Mike Hammer",
-          "status": "preparing",
-          "age_minutes": 103.7
-        },
-        {
-          "id": "37402c4dce32",
-          "name": "Sindicatos",
-          "status": "preparing",
-          "age_minutes": 103.7
-        },
-        {
-          "id": "3df12c624776",
-          "name": "11-N",
-          "status": "preparing",
-          "age_minutes": 103.7
-        },
-        {
-          "id": "13e90b3bc1a7",
-          "name": "Parásitos",
-          "status": "preparing",
-          "age_minutes": 103.7
-        }
-      ],
+      "overdue_items": [],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": false,
-      "status": "overdue",
+      "ok": true,
+      "status": "not-required",
       "queue_complete": false,
       "remaining_active_ids": [
-        "4d0946f0eae7",
-        "a40297032698",
-        "2f04fbd94be9",
-        "bc09be0986c5",
-        "cb975f45e289",
-        "e8e9d03d4f3f",
-        "d100127b9d60",
-        "37402c4dce32",
-        "3df12c624776",
-        "13e90b3bc1a7",
-        "43973ab204d3",
-        "b59539a32a22",
-        "ff432303b439",
-        "be98596f4727",
-        "7c81acf9907e",
-        "4488f0cec648",
-        "80a8b0017c62"
+        "868a518462be",
+        "6519e0bfa504",
+        "52a0d9fe7897",
+        "e617da285349",
+        "e2040af225a8",
+        "b1f6d1241c57"
       ],
       "contradictory_success": false
     },
@@ -185,10 +112,9 @@
   "repairs_started": [],
   "blocking": [
     "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos",
-    "cola con 742 estado(s) inválido(s)",
-    "cola de explicaciones retrasada: 17 pendiente(s) superan 30 min; más antigua 154.3 min"
+    "cola con 752 estado(s) inválido(s)"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 742 estado(s) inválido(s) | cola de explicaciones retrasada: 17 pendiente(s) superan 30 min; más antigua 154.3 min"
+  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 752 estado(s) inválido(s)"
 }
