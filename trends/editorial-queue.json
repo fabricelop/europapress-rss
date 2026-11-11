@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-11T22:51:07+01:00",
-  "count": 1,
+  "updated_at": "2026-11-11T21:51:17.959122+00:00",
+  "count": 2,
   "items": [
     {
       "id": "74253d4d6c99",
@@ -56,6 +56,32 @@
       "anticipated_news_source_count": 0,
       "anticipated_news_title": "",
       "anticipated_entered_top10_at": null
+    },
+    {
+      "id": "27bceccd1f06",
+      "name": "bertrand",
+      "rank": 9,
+      "revision": 1,
+      "status": "preparing",
+      "requested_at": "2026-11-11T21:51:17.959122+00:00",
+      "task": "explain",
+      "auto_queued": false,
+      "request_source": "ttactualidad_editor_hints",
+      "with_image": true,
+      "disable_ai_image": false,
+      "rewrite_with_image": true,
+      "image_strategy": "ai_plus_fallback",
+      "fallback_image_status": "pending",
+      "rewrite_instruction": "INVESTIGACIÓN NUEVA DESDE CERO. Pistas de un editor SIN verificar:\\nDice que Jordi wild tenía preparada una bomba contra Abascal en su entrevista\\nContrasta cada dato, fecha, publicación y fuente con búsquedas independientes. Si no se verifica el detonante actual, deja el caso SIN EXPLICACIÓN VERIFICADA; nunca presentes las pistas como hechos. Si se verifica, escribe explicación factual completa y remate nuevo. No reutilices texto, remate ni imágenes de otra revisión.",
+      "user_pistas": [
+        {
+          "at": "2026-11-11T21:51:17.959122+00:00",
+          "source_revision": 0,
+          "text": "Dice que Jordi wild tenía preparada una bomba contra Abascal en su entrevista",
+          "verification": "unverified_editor_context"
+        }
+      ],
+      "hints_verification_status": "unverified"
     }
   ]
 }
