@@ -10,7 +10,7 @@ param(
   [string]$ImportDir = ''
 )
 $ErrorActionPreference = 'Stop'
-$pin = '7b69a792addb45dcc3cd716caeb77b62e5c0ba27'
+$pin = '9f24ebe32319a2ef3bff68c1587a2ad9b2bcf563'
 $raw = 'https://raw.githubusercontent.com/fabricelop/europapress-rss/' + $pin + '/windows/'
 if (!(Test-Path -LiteralPath $Base -PathType Container)) { throw 'TT_FOTOS_BASE_NOT_FOUND' }
 $node = (Get-Command node -ErrorAction Stop).Source
