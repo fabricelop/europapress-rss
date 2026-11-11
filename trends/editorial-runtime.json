@@ -3,37 +3,36 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794361683242-manual",
-  "previous_run_id": "tr-20261111T024000-manual",
-  "command_id": "tr-1794361683242-manual",
+  "run_id": "tr-1794361941170-manual",
+  "previous_run_id": "tr-1794361683242-manual",
+  "command_id": "tr-1794361941170-manual",
   "source": "chat",
   "status": "DONE",
   "phase": "closing",
-  "started_at": "2026-11-11T02:48:30+01:00",
-  "updated_at": "2026-11-11T02:55:30+01:00",
-  "current": 2,
-  "total": 2,
+  "started_at": "2026-11-11T02:52:00+01:00",
+  "updated_at": "2026-11-11T02:54:58+01:00",
+  "current": 1,
+  "total": 1,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
-  "processed_ids": [
-    "red-review-dbb2229c42846b2f3813",
+  "processed_ids": [],
+  "converged_ids": [
     "red-review-c574fe6c74856fb3b5ed"
   ],
-  "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
+    "attempted": 1,
+    "observed": 1,
+    "closed": 1,
     "explained": 0,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 2,
-    "unchanged_reviews": 2,
+    "maintenance_reviews": 1,
+    "unchanged_reviews": 1,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "stale_reviews": 0,
@@ -47,18 +46,9 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 1
   },
   "outcomes": [
-    {
-      "id": "red-review-dbb2229c42846b2f3813",
-      "revision": 0,
-      "name": "Revisar novedades: Carzzy",
-      "outcome": "unchanged",
-      "applied": true,
-      "source_id": "79666c46d60d",
-      "verification": "requests/manual sincronizados; red_review_outcome=unchanged; job=review_completed"
-    },
     {
       "id": "red-review-c574fe6c74856fb3b5ed",
       "revision": 0,
@@ -66,7 +56,9 @@
       "outcome": "unchanged",
       "applied": true,
       "source_id": "4f1dae5df224",
-      "verification": "requests/manual sincronizados; red_review_outcome=unchanged; job=review_completed"
+      "via": "concurrent_convergence",
+      "apply_commit": "20fd8c9130aa91fc111b8a2775a900478c9b7e07",
+      "verification": "resultado unchanged ya aplicado; source rows sincronizadas y job review_completed en la pasada solapada"
     }
   ],
   "incident_count": 0,
@@ -117,28 +109,37 @@
       "trend_id": null,
       "title": "Pasada editorial TTendencias",
       "message": "Barrera final verificada: cola 0, sin reexplicaciones activas; 2/2 unchanged aplicados."
+    },
+    {
+      "at": "2026-11-11T02:54:58+01:00",
+      "phase": "closing",
+      "current": 1,
+      "total": 1,
+      "trend_id": null,
+      "title": "Pasada editorial TTendencias",
+      "message": "Convergencia verificada y barrera final limpia; 1/1 cerrado sin duplicar la revisión."
     }
   ],
-  "last_started_at": "2026-11-11T02:48:30+01:00",
-  "last_completed_at": "2026-11-11T02:55:30+01:00",
+  "last_started_at": "2026-11-11T02:52:00+01:00",
+  "last_completed_at": "2026-11-11T02:54:58+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794361683242-manual",
+    "run_id": "tr-1794361941170-manual",
     "status": "DONE",
-    "started_at": "2026-11-11T02:48:30+01:00",
-    "finished_at": "2026-11-11T02:55:30+01:00",
-    "at": "2026-11-11T02:55:30+01:00",
+    "started_at": "2026-11-11T02:52:00+01:00",
+    "finished_at": "2026-11-11T02:54:58+01:00",
+    "at": "2026-11-11T02:54:58+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 2,
-      "observed": 2,
-      "closed": 2,
+      "attempted": 1,
+      "observed": 1,
+      "closed": 1,
       "explained": 0,
       "problematic": 0,
       "updates": 0,
       "review_completed_no_distinct_event": 0,
-      "maintenance_reviews": 2,
-      "unchanged_reviews": 2,
+      "maintenance_reviews": 1,
+      "unchanged_reviews": 1,
       "continuity_updates": 0,
       "distinct_updates": 0,
       "stale_reviews": 0,
@@ -152,23 +153,13 @@
       "image_outbox_created": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 0
+      "concurrent_convergence": 1
     },
-    "processed_ids": [
-      "red-review-dbb2229c42846b2f3813",
+    "processed_ids": [],
+    "converged_ids": [
       "red-review-c574fe6c74856fb3b5ed"
     ],
-    "converged_ids": [],
     "outcomes": [
-      {
-        "id": "red-review-dbb2229c42846b2f3813",
-        "revision": 0,
-        "name": "Revisar novedades: Carzzy",
-        "outcome": "unchanged",
-        "applied": true,
-        "source_id": "79666c46d60d",
-        "verification": "requests/manual sincronizados; red_review_outcome=unchanged; job=review_completed"
-      },
       {
         "id": "red-review-c574fe6c74856fb3b5ed",
         "revision": 0,
@@ -176,14 +167,24 @@
         "outcome": "unchanged",
         "applied": true,
         "source_id": "4f1dae5df224",
-        "verification": "requests/manual sincronizados; red_review_outcome=unchanged; job=review_completed"
+        "via": "concurrent_convergence",
+        "apply_commit": "20fd8c9130aa91fc111b8a2775a900478c9b7e07",
+        "verification": "resultado unchanged ya aplicado; source rows sincronizadas y job review_completed en la pasada solapada"
       }
     ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-1794361683242-manual cerrada 2/2. Carzzy y #HuelgaGeneral quedaron revisadas como unchanged: no se verificó un desarrollo material posterior que cambiara sus explicaciones vigentes. Barrera final main: editorial-queue=0; requests y mobile-decisions sin preparing/update/rewrite_pending/reexplain/review_red/anticipate activos; ambas fichas sincronizadas en requests.json y telegram-manual-explained.json con red_review_outcome=unchanged. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "message": "Pasada tr-1794361941170-manual cerrada 1/1 por convergencia JIT. #HuelgaGeneral r0 ya había quedado aplicada como unchanged durante la pasada solapada tr-1794361683242-manual; se verificó el resultado, el cierre 20fd8c9130aa91fc111b8a2775a900478c9b7e07 y la barrera final main con editorial-queue=0 y mobile-decisions sin trabajo editorial activo. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+    "prior_last_run": {
+      "run_id": "tr-1794361683242-manual",
+      "status": "DONE",
+      "finished_at": "2026-11-11T02:55:30+01:00"
+    },
+    "absorbed_run_ids": [
+      "tr-1794361683242-manual"
+    ]
   },
-  "message": "Pasada tr-1794361683242-manual cerrada 2/2. Carzzy y #HuelgaGeneral quedaron revisadas como unchanged: no se verificó un desarrollo material posterior que cambiara sus explicaciones vigentes. Barrera final main: editorial-queue=0; requests y mobile-decisions sin preparing/update/rewrite_pending/reexplain/review_red/anticipate activos; ambas fichas sincronizadas en requests.json y telegram-manual-explained.json con red_review_outcome=unchanged. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada tr-1794361941170-manual cerrada 1/1 por convergencia JIT. #HuelgaGeneral r0 ya había quedado aplicada como unchanged durante la pasada solapada tr-1794361683242-manual; se verificó el resultado, el cierre 20fd8c9130aa91fc111b8a2775a900478c9b7e07 y la barrera final main con editorial-queue=0 y mobile-decisions sin trabajo editorial activo. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-10T15:55:00+01:00",
@@ -2539,13 +2540,74 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-1794361683242-manual cerrada 2/2. Carzzy y #HuelgaGeneral quedaron revisadas como unchanged: no se verificó un desarrollo material posterior que cambiara sus explicaciones vigentes. Barrera final main: editorial-queue=0; requests y mobile-decisions sin preparing/update/rewrite_pending/reexplain/review_red/anticipate activos; ambas fichas sincronizadas en requests.json y telegram-manual-explained.json con red_review_outcome=unchanged. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794361941170-manual",
+      "status": "DONE",
+      "started_at": "2026-11-11T02:52:00+01:00",
+      "finished_at": "2026-11-11T02:54:58+01:00",
+      "at": "2026-11-11T02:54:58+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 1,
+        "observed": 1,
+        "closed": 1,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 1,
+        "unchanged_reviews": 1,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 1
+      },
+      "processed_ids": [],
+      "converged_ids": [
+        "red-review-c574fe6c74856fb3b5ed"
+      ],
+      "outcomes": [
+        {
+          "id": "red-review-c574fe6c74856fb3b5ed",
+          "revision": 0,
+          "name": "Revisar novedades: #HuelgaGeneral",
+          "outcome": "unchanged",
+          "applied": true,
+          "source_id": "4f1dae5df224",
+          "via": "concurrent_convergence",
+          "apply_commit": "20fd8c9130aa91fc111b8a2775a900478c9b7e07",
+          "verification": "resultado unchanged ya aplicado; source rows sincronizadas y job review_completed en la pasada solapada"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-1794361941170-manual cerrada 1/1 por convergencia JIT. #HuelgaGeneral r0 ya había quedado aplicada como unchanged durante la pasada solapada tr-1794361683242-manual; se verificó el resultado, el cierre 20fd8c9130aa91fc111b8a2775a900478c9b7e07 y la barrera final main con editorial-queue=0 y mobile-decisions sin trabajo editorial activo. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+      "prior_last_run": {
+        "run_id": "tr-1794361683242-manual",
+        "status": "DONE",
+        "finished_at": "2026-11-11T02:55:30+01:00"
+      },
+      "absorbed_run_ids": [
+        "tr-1794361683242-manual"
+      ]
     }
   ],
   "current_item": null,
   "withdrawn_ids": [],
-  "last_finished_at": "2026-11-11T02:55:30+01:00",
-  "last_revalidated_at": "2026-11-11T02:55:30+01:00",
-  "last_revalidation": "main verificado: editorial-queue=0; active requests=0; active mobile=0; jobs Carzzy/HuelgaGeneral review_completed; source rows sincronizadas y unchanged.",
+  "last_finished_at": "2026-11-11T02:54:58+01:00",
+  "last_revalidated_at": "2026-11-11T02:54:58+01:00",
+  "last_revalidation": "main releído: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/review_red/anticipate activos.",
   "prior_runtime_observed": {
     "run_id": "tr-1794356700000-manual",
     "status": "DONE",
@@ -4731,5 +4793,69 @@
     "eedbccdb94df1936c8997f1f2ced3536266ed14e"
   ],
   "outbox_commit": "d98a814e110f71921adab2ad984fde8a2a11979c",
-  "finished_at": "2026-11-11T02:55:30+01:00"
+  "finished_at": "2026-11-11T02:54:58+01:00",
+  "prior_last_run": {
+    "run_id": "tr-1794361683242-manual",
+    "status": "DONE",
+    "started_at": "2026-11-11T02:48:30+01:00",
+    "finished_at": "2026-11-11T02:55:30+01:00",
+    "at": "2026-11-11T02:55:30+01:00",
+    "phase": "closing",
+    "summary": {
+      "attempted": 2,
+      "observed": 2,
+      "closed": 2,
+      "explained": 0,
+      "problematic": 0,
+      "updates": 0,
+      "review_completed_no_distinct_event": 0,
+      "maintenance_reviews": 2,
+      "unchanged_reviews": 2,
+      "continuity_updates": 0,
+      "distinct_updates": 0,
+      "stale_reviews": 0,
+      "unverified_reviews": 0,
+      "anticipation_reviews": 0,
+      "anticipation_prepared": 0,
+      "anticipation_unverified": 0,
+      "queue_remaining": 0,
+      "rewrite_pending_remaining": 0,
+      "imagegen_calls": 0,
+      "image_outbox_created": 0,
+      "publications": 0,
+      "incidents": 0,
+      "concurrent_convergence": 0
+    },
+    "processed_ids": [
+      "red-review-dbb2229c42846b2f3813",
+      "red-review-c574fe6c74856fb3b5ed"
+    ],
+    "converged_ids": [],
+    "outcomes": [
+      {
+        "id": "red-review-dbb2229c42846b2f3813",
+        "revision": 0,
+        "name": "Revisar novedades: Carzzy",
+        "outcome": "unchanged",
+        "applied": true,
+        "source_id": "79666c46d60d",
+        "verification": "requests/manual sincronizados; red_review_outcome=unchanged; job=review_completed"
+      },
+      {
+        "id": "red-review-c574fe6c74856fb3b5ed",
+        "revision": 0,
+        "name": "Revisar novedades: #HuelgaGeneral",
+        "outcome": "unchanged",
+        "applied": true,
+        "source_id": "4f1dae5df224",
+        "verification": "requests/manual sincronizados; red_review_outcome=unchanged; job=review_completed"
+      }
+    ],
+    "incident_count": 0,
+    "incidents": [],
+    "message": "Pasada tr-1794361683242-manual cerrada 2/2. Carzzy y #HuelgaGeneral quedaron revisadas como unchanged: no se verificó un desarrollo material posterior que cambiara sus explicaciones vigentes. Barrera final main: editorial-queue=0; requests y mobile-decisions sin preparing/update/rewrite_pending/reexplain/review_red/anticipate activos; ambas fichas sincronizadas en requests.json y telegram-manual-explained.json con red_review_outcome=unchanged. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+  },
+  "absorbed_run_ids": [
+    "tr-1794361683242-manual"
+  ]
 }
