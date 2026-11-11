@@ -11,7 +11,8 @@ function jobInfo(j){const c=commandDetails(j.command_id);if(!c||!exactJob(j,c))r
   commandId:c.commandId,project:c.project,editorialId:c.editorialId,revision:c.revision,
   title:safeLabel(j.target_name||j.context_snapshot?.title||j.context_snapshot?.name||''),
   requestedAt:typeof j.requested_at==='string'?j.requested_at:null,
-  conversationUrl:validChatUrl(j.conversation_url||j.chat_url||'')
+  conversationUrl:validChatUrl(j.conversation_url||j.chat_url||''),
+  verification:j.verification==='editorial_identity_only'?'editorial_identity_only':'exact_job'
 }}
 async function registerJob(db,job){const j=jobInfo(job);if(!j)return null;
  await db.prepare(`INSERT INTO tt_fotos_jobs(command_id,project,editorial_id,revision,title,requested_at,conversation_url,registered_at)
@@ -71,7 +72,7 @@ export function createTTFotosApi({db,r2,authenticate,jobProvider=createGithubJob
      const limit=Math.min(500,Math.max(1,Number(url.searchParams.get('limit'))||200));
      const query=`SELECT j.command_id,j.project,j.editorial_id,j.revision,j.title,j.requested_at,j.conversation_url,m.asset_sha,m.confidence,m.updated_at
        FROM tt_fotos_jobs j LEFT JOIN tt_fotos_matches m ON m.command_id=j.command_id
-       ${since?'WHERE j.requested_at >= ?':''} ORDER BY j.requested_at DESC LIMIT ?`;
+       ${since?'WHERE COALESCE(j.requested_at,j.registered_at) >= ?':''} ORDER BY COALESCE(j.requested_at,j.registered_at) DESC LIMIT ?`;
      const q=db.prepare(query);const result=await (since?q.bind(since,limit):q.bind(limit)).all();
      return response({ok:true,items:result.results||[],coverage:'registered_jobs_only_not_all_historical_images'});
    }
@@ -97,6 +98,9 @@ export function createTTFotosApi({db,r2,authenticate,jobProvider=createGithubJob
      const sha=await rasterSha(bytes);if(form.get('expectedSHA256')&&String(form.get('expectedSHA256')).toLowerCase()!==sha)return reject('RASTER_SHA_MISMATCH');
      const maybe=commandDetails(evidence.commandId),job=maybe?await jobProvider.find(maybe.commandId):null;
      const sourceProof=maybe&&job?sourceEvidence(evidence,maybe,job):{automatic:false,reason:maybe?'EXACT_JOB_UNAVAILABLE':'COMMAND_UNAVAILABLE'};
+     const exactReceipt=Boolean(job&&job.verification!=='editorial_identity_only');
+     // Current editorial records verify only ID+revision, not that a specific
+     // generated-image command existed. Never silently downgrade auto_exact.
      const existing=await db.prepare('SELECT sha FROM tt_fotos_assets WHERE sha=?').bind(sha).first();
      if(!existing){
        await r2.put(imgKey(sha),bytes,{httpMetadata:{contentType:'image/png'},customMetadata:{kind:'tt-fotos-private',sha}});
@@ -104,9 +108,9 @@ export function createTTFotosApi({db,r2,authenticate,jobProvider=createGithubJob
  VALUES(?,?,?,?,?,?,?,?) ON CONFLICT(sha) DO NOTHING`).bind(sha,bytes.length,now(),safeLabel(evidence.kind||'unknown',50),validChatUrl(evidence.conversationUrl),maybe?.commandId||null,sourceProof.reason,safeLabel(evidence.title)).run();
      }
      let association=null;
-     if(sourceProof.automatic){await registerJob(db,job);association=await matchAsset(db,maybe,sha,'auto_exact')}
+     if(sourceProof.automatic&&exactReceipt){await registerJob(db,job);association=await matchAsset(db,maybe,sha,'auto_exact')}
      return response({ok:true,assetSha:sha,stored:true,association,needsReview:!association,
-       reason:association?'AUTO_EXACT_TURN':sourceProof.reason,existing:Boolean(existing)});
+       reason:association?'AUTO_EXACT_TURN':sourceProof.automatic&&!exactReceipt?'EDITORIAL_ID_CORROBORATED_EXACT_JOB_MISSING':sourceProof.reason,existing:Boolean(existing)});
    }
    if(request.method==='POST'&&p===ROOT+'/matches'){
      const body=await request.json().catch(()=>null);if(!body||body.confirmation!=='CONFIRMAR_ASOCIACION_EDITOR')return reject('EDITOR_CONFIRMATION_REQUIRED');
@@ -115,7 +119,7 @@ export function createTTFotosApi({db,r2,authenticate,jobProvider=createGithubJob
      if(!asset)return reject('ASSET_NOT_FOUND',404);
      const job=await jobProvider.find(body.commandId);try{assertMatch(body,job)}catch{return reject('EXACT_JOB_NOT_VERIFIED',409)}
      await registerJob(db,job);
-     return response({ok:true,association:await matchAsset(db,commandDetails(body.commandId),body.assetSha,'editor_confirmed')});
+     return response({ok:true,verification:job.verification==='editorial_identity_only'?'editorial_identity_only':'exact_job',association:await matchAsset(db,commandDetails(body.commandId),body.assetSha,'editor_confirmed')});
    }
    return reject('NOT_FOUND',404);
   }catch(e){
