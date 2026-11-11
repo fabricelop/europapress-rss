@@ -7,36 +7,33 @@
   "previous_run_id": "tr-1794359400000-manual",
   "command_id": "tr-1794359702232-manual",
   "source": "chat_manual",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-11T02:15:15+01:00",
-  "updated_at": "2026-11-11T02:15:15+01:00",
-  "current": 0,
+  "updated_at": "2026-11-11T02:17:10+01:00",
+  "current": 2,
   "total": 2,
   "trend_id": null,
   "title": "TTendencias · pasada editorial manual",
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
-  "converged_ids": [],
-  "remaining_ids": [
+  "converged_ids": [
     "red-review-58055798e36278c69dd1",
     "red-review-d45b2ff88beb4594b370"
   ],
-  "remaining_active_ids": [
-    "red-review-58055798e36278c69dd1",
-    "red-review-d45b2ff88beb4594b370"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 2,
     "observed": 2,
-    "closed": 0,
+    "closed": 2,
     "explained": 0,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 0,
-    "unchanged_reviews": 0,
+    "maintenance_reviews": 2,
+    "unchanged_reviews": 2,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "stale_reviews": 0,
@@ -44,39 +41,60 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 2
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "red-review-58055798e36278c69dd1",
+      "revision": 0,
+      "name": "Revisar novedades: #VotoUtilEsPodemos",
+      "outcome": "unchanged",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "source_id": "a1c1e16d0c24",
+      "apply_commit": "eedbccdb94df1936c8997f1f2ced3536266ed14e"
+    },
+    {
+      "id": "red-review-d45b2ff88beb4594b370",
+      "revision": 0,
+      "name": "Revisar novedades: RTVE",
+      "outcome": "unchanged",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "source_id": "db1a689b7f75",
+      "apply_commit": "eedbccdb94df1936c8997f1f2ced3536266ed14e"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Revisando novedades",
+  "activity": "Cierre completado",
   "last_started_at": "2026-11-11T02:14:27+01:00",
   "last_completed_at": "2026-11-11T02:14:28+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794358500000-manual",
+    "run_id": "tr-1794359702232-manual",
     "status": "DONE",
-    "started_at": "2026-11-11T01:55:00+01:00",
-    "finished_at": "2026-11-11T01:56:00+01:00",
-    "at": "2026-11-11T01:56:00+01:00",
+    "started_at": "2026-11-11T02:15:15+01:00",
+    "finished_at": "2026-11-11T02:17:10+01:00",
+    "at": "2026-11-11T02:17:10+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 0,
-      "observed": 0,
-      "closed": 0,
+      "attempted": 2,
+      "observed": 2,
+      "closed": 2,
       "explained": 0,
       "problematic": 0,
       "updates": 0,
       "review_completed_no_distinct_event": 0,
-      "maintenance_reviews": 0,
-      "unchanged_reviews": 0,
+      "maintenance_reviews": 2,
+      "unchanged_reviews": 2,
       "continuity_updates": 0,
       "distinct_updates": 0,
       "stale_reviews": 0,
@@ -90,16 +108,40 @@
       "image_outbox_created": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 0
+      "concurrent_convergence": 2
     },
     "processed_ids": [],
-    "converged_ids": [],
-    "outcomes": [],
+    "converged_ids": [
+      "red-review-58055798e36278c69dd1",
+      "red-review-d45b2ff88beb4594b370"
+    ],
+    "outcomes": [
+      {
+        "id": "red-review-58055798e36278c69dd1",
+        "revision": 0,
+        "name": "Revisar novedades: #VotoUtilEsPodemos",
+        "outcome": "unchanged",
+        "applied": true,
+        "via": "concurrent_convergence",
+        "source_id": "a1c1e16d0c24",
+        "apply_commit": "eedbccdb94df1936c8997f1f2ced3536266ed14e"
+      },
+      {
+        "id": "red-review-d45b2ff88beb4594b370",
+        "revision": 0,
+        "name": "Revisar novedades: RTVE",
+        "outcome": "unchanged",
+        "applied": true,
+        "via": "concurrent_convergence",
+        "source_id": "db1a689b7f75",
+        "apply_commit": "eedbccdb94df1936c8997f1f2ced3536266ed14e"
+      }
+    ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada manual cerrada 0/0. Relectura JIT final de main: editorial-queue=0 (actualizada 2026-11-11T01:50:56+01:00); mobile-decisions sin trabajo editorial activo y requests.json sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "message": "Pasada tr-1794359702232-manual cerrada 2/2 por convergencia JIT. #VotoUtilEsPodemos y RTVE quedaron unchanged tras revisión de novedades; se conservan texto, ID, revisión y explained_at, sin nueva ficha, imagen ni publicación. Barrera final main: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/review_red/anticipate activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794359702232-manual RUNNING. Cola JIT inicial: 2 review_red en preparing (#VotoUtilEsPodemos y RTVE); se procesarán de más antiguo a más reciente. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1794359702232-manual cerrada 2/2 por convergencia JIT. #VotoUtilEsPodemos y RTVE quedaron unchanged tras revisión de novedades; se conservan texto, ID, revisión y explained_at, sin nueva ficha, imagen ni publicación. Barrera final main: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/review_red/anticipate activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-10T15:55:00+01:00",
@@ -2083,6 +2125,69 @@
       "current": 0,
       "total": 2,
       "message": "Pasada tr-1794359702232-manual RUNNING. Cola JIT inicial: 2 review_red en preparing (#VotoUtilEsPodemos y RTVE); se procesarán de más antiguo a más reciente. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794359702232-manual",
+      "status": "DONE",
+      "started_at": "2026-11-11T02:15:15+01:00",
+      "finished_at": "2026-11-11T02:17:10+01:00",
+      "at": "2026-11-11T02:17:10+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 2,
+        "observed": 2,
+        "closed": 2,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 2,
+        "unchanged_reviews": 2,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 2
+      },
+      "processed_ids": [],
+      "converged_ids": [
+        "red-review-58055798e36278c69dd1",
+        "red-review-d45b2ff88beb4594b370"
+      ],
+      "outcomes": [
+        {
+          "id": "red-review-58055798e36278c69dd1",
+          "revision": 0,
+          "name": "Revisar novedades: #VotoUtilEsPodemos",
+          "outcome": "unchanged",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "source_id": "a1c1e16d0c24",
+          "apply_commit": "eedbccdb94df1936c8997f1f2ced3536266ed14e"
+        },
+        {
+          "id": "red-review-d45b2ff88beb4594b370",
+          "revision": 0,
+          "name": "Revisar novedades: RTVE",
+          "outcome": "unchanged",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "source_id": "db1a689b7f75",
+          "apply_commit": "eedbccdb94df1936c8997f1f2ced3536266ed14e"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-1794359702232-manual cerrada 2/2 por convergencia JIT. #VotoUtilEsPodemos y RTVE quedaron unchanged tras revisión de novedades; se conservan texto, ID, revisión y explained_at, sin nueva ficha, imagen ni publicación. Barrera final main: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/review_red/anticipate activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "current_item": {
@@ -4070,5 +4175,6 @@
     "61f2f146a926eae3568074e8e0d9947db37bc9f5",
     "5b26ed05be444fecd3e641d64eae7eba5201f9b0"
   ],
-  "outbox_commit": "d98a814e110f71921adab2ad984fde8a2a11979c"
+  "outbox_commit": "d98a814e110f71921adab2ad984fde8a2a11979c",
+  "finished_at": "2026-11-11T02:17:10+01:00"
 }
