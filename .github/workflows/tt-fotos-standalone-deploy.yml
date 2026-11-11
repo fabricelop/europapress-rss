@@ -1,6 +1,17 @@
 name: Deploy isolated TT Fotos to Cloudflare (manual)
 on:
   workflow_dispatch:
+    inputs:
+      create_missing_storage:
+        description: "Create ONLY missing dedicated TT Fotos D1 and R2 resources"
+        type: boolean
+        required: true
+        default: false
+      create_missing_access:
+        description: "Create ONLY missing editor-restricted Access app for the dedicated Worker"
+        type: boolean
+        required: true
+        default: false
   push:
     branches: [main]
     paths:
@@ -13,7 +24,7 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     defaults:
       run:
         working-directory: apps/tt-fotos
@@ -25,6 +36,8 @@ jobs:
       TT_FOTOS_ACCESS_AUD: ${{ vars.TT_FOTOS_ACCESS_AUD }}
       TT_FOTOS_ALLOWED_EMAIL: ${{ secrets.TT_FOTOS_ALLOWED_EMAIL }}
       TT_FOTOS_PUBLIC_ORIGIN: ${{ vars.TT_FOTOS_PUBLIC_ORIGIN || 'https://tt-fotos-independent.fabricelop.workers.dev' }}
+      TT_FOTOS_CREATE_MISSING_STORAGE: ${{ inputs.create_missing_storage || false }}
+      TT_FOTOS_CREATE_MISSING_ACCESS: ${{ inputs.create_missing_access || false }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -35,9 +48,35 @@ jobs:
           test -n "$CLOUDFLARE_API_TOKEN"
           test -n "$CLOUDFLARE_ACCOUNT_ID"
           test -n "$TT_FOTOS_ALLOWED_EMAIL"
-          node scripts/prepare-deploy.mjs
+          test -n "$TT_FOTOS_ACCESS_ISSUER"
+          if [ -z "${TT_FOTOS_ACCESS_AUD:-}" ] && [ "$TT_FOTOS_CREATE_MISSING_ACCESS" != "true" ]; then
+            echo "TT_FOTOS_ACCESS_AUD not configured and explicit Access creation disabled"
+            exit 1
+          fi
       - name: Verify API, private access and editor link tests
         run: node --test tests/*.test.mjs
+      - name: Inspect or create ONLY missing TT Fotos D1 and R2 resources
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$TT_FOTOS_CREATE_MISSING_STORAGE" = "true" ]; then
+            node scripts/prepare-private-resources.mjs --create-missing
+          else
+            node scripts/prepare-private-resources.mjs
+          fi
+      - name: Configure a restrictive initial Access audience for first-time Worker creation
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -z "${TT_FOTOS_ACCESS_AUD:-}" ]; then
+            test "$TT_FOTOS_CREATE_MISSING_ACCESS" = "true"
+            # This value is deliberately NOT a real Access application AUD.
+            # Authentication fails closed until the exact app is created.
+            printf 'TT_FOTOS_ACCESS_AUD=%064d\n' 0 >> "$GITHUB_ENV"
+            echo 'TT_FOTOS_AUD_WAS_PLACEHOLDER=true' >> "$GITHUB_ENV"
+          fi
+      - name: Build dedicated Wrangler configuration after verifying the exact D1 UUID
+        run: node scripts/prepare-deploy.mjs
       - name: Install Wrangler
         run: npm install --no-audit --no-fund
       - name: Verify dedicated D1 UUID and R2 bucket in the selected Cloudflare account (read only)
@@ -50,7 +89,48 @@ jobs:
         run: npx wrangler deploy
       - name: Store editor allowlist as Cloudflare Worker secret
         run: printf '%s' "$TT_FOTOS_ALLOWED_EMAIL" | npx wrangler secret put TT_FOTOS_ALLOWED_EMAIL
+      - name: Inspect or create ONLY editor-restricted Access for this Worker
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$TT_FOTOS_CREATE_MISSING_ACCESS" = "true" ]; then
+            if [ "${TT_FOTOS_AUD_WAS_PLACEHOLDER:-false}" = "true" ]; then
+              TT_FOTOS_ACCESS_AUD="" node scripts/prepare-worker-access.mjs --create-missing
+            else
+              node scripts/prepare-worker-access.mjs --create-missing
+            fi
+          else
+            node scripts/prepare-worker-access.mjs
+          fi
+      - name: Activate real Access AUD in the Worker after Access app is verified
+        if: ${{ env.TT_FOTOS_AUD_WAS_PLACEHOLDER == 'true' }}
+        run: |
+          node scripts/prepare-deploy.mjs
+          npx wrangler deploy
+          printf '%s' "$TT_FOTOS_ALLOWED_EMAIL" | npx wrangler secret put TT_FOTOS_ALLOWED_EMAIL
       - name: Verify new Worker is attached to dedicated Cloudflare Access application (read only)
         run: node scripts/check-cloudflare-readiness.mjs
       - name: Verify anonymous readers cannot access the new independent gallery
         run: node scripts/check-live-access.mjs "$TT_FOTOS_PUBLIC_ORIGIN"
+      - name: Build browser connector restricted to the verified private TT Fotos origin
+        run: node scripts/build-companion.mjs "$TT_FOTOS_PUBLIC_ORIGIN"
+      - name: Verify the browser connector only targets ChatGPT and the new Worker
+        run: |
+          node --input-type=module - <<'NODE'
+          import fs from 'node:fs';
+          import assert from 'node:assert/strict';
+          const p='dist/chrome-companion/manifest.json';
+          const m=JSON.parse(fs.readFileSync(p,'utf8'));
+          const host=new URL(process.env.TT_FOTOS_PUBLIC_ORIGIN).origin+'/*';
+          assert.deepEqual(m.host_permissions,['https://chatgpt.com/*',host]);
+          assert(!JSON.stringify(m).includes('rainyraven22.chatgpt.site'));
+          assert.equal(m.content_scripts.length,2);
+          console.log('TT_FOTOS_COMPANION_VERIFIED');
+          NODE
+      - name: Publish Chrome extension source bundle, not photo data
+        uses: actions/upload-artifact@v4
+        with:
+          name: tt-fotos-chrome-companion-private
+          path: apps/tt-fotos/dist/chrome-companion/
+          if-no-files-found: error
+          retention-days: 30

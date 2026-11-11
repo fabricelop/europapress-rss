@@ -17,13 +17,13 @@ function fakeFetcher({mutate,failedPath}={}){
  const request=async(url,options)=>{
   calls.push({url,method:options.method,authorization:options.headers.Authorization});
   const path=new URL(url).pathname;
-  if(path===failedPath)return new Response('{}',{status:403});
+  if(failedPath&&path.endsWith(failedPath))return new Response('{}',{status:403});
   let result;
   if(path.endsWith('/d1/database/'+env.TT_FOTOS_D1_DATABASE_ID))result={name:'tt-fotos-private',uuid:env.TT_FOTOS_D1_DATABASE_ID};
   else if(path.endsWith('/r2/buckets/tt-fotos-originals-private'))result={name:'tt-fotos-originals-private'};
   else if(path.endsWith('/domains/managed'))result={enabled:false};
   else if(path.endsWith('/domains/custom'))result={domains:[]};
-  else if(path.endsWith('/workers/workers/tt-fotos-independent'))result=worker;
+  else if(path.endsWith('/workers/workers'))result=[{id:'another-worker',name:'ttendencias-no-vercel-test'},worker];
   else if(path.endsWith('/access/apps'))result=access;
   if(typeof mutate==='function')result=mutate(path,result);
   return new Response(JSON.stringify({success:true,result}),{status:200});
@@ -60,7 +60,10 @@ test('public R2, wrong D1, or missing API permissions cannot pass',async()=>{
  const wrongD1=fakeFetcher({mutate:(path,r)=>path.includes('/d1/database/')?{...r,name:'production-db'}:r});
  assert.equal((await auditCloudflare(env,wrongD1.request)).ready,false);
  const denied=fakeFetcher({failedPath:'/accounts/'+env.CLOUDFLARE_ACCOUNT_ID+'/r2/buckets/tt-fotos-originals-private'});
- assert.equal((await auditCloudflare(env,denied.request)).ready,false);
+ const deniedResult=await auditCloudflare(env,denied.request);
+ assert(denied.calls.some(c=>new URL(c.url).pathname.endsWith('/accounts/'+env.CLOUDFLARE_ACCOUNT_ID+'/r2/buckets/tt-fotos-originals-private')));
+ assert.equal(deniedResult.ready,false);
+ assert(deniedResult.blockers.some(x=>x.includes('R2:CLOUDFLARE_READ_FAILED_HTTP_403')));
  assert.throws(()=>verifyInventory({name:'tt-fotos-private'},{name:'tt-fotos-originals-private'},{enabled:true},{domains:[]}));
 });
 
@@ -73,4 +76,17 @@ test('worker Access public-path overrides are rejected even when AUD and worker 
  assert.throws(()=>findAccessApplication(
   [{...access[0],destinations:[{type:'worker',worker_id:worker.id,overrides:[{behavior:'public',path_pattern:'/fotos'}]}]}],
   env.TT_FOTOS_ACCESS_AUD,worker.id));
+});
+
+test('readiness fails when Worker name cannot be uniquely resolved',async()=>{
+ const absent=fakeFetcher({mutate:(path,value)=>path.endsWith('/workers/workers')?
+   [{id:'not-tf',name:'unrelated-worker'}]:value});
+ const missing=await auditCloudflare(env,absent.request);
+ assert.equal(missing.ready,false);
+ assert(missing.blockers.some(x=>x.includes('STANDALONE_WORKER')));
+ const duplicates=fakeFetcher({mutate:(path,value)=>path.endsWith('/workers/workers')?
+   [worker,{...worker,id:'other-worker-identifier'}]:value});
+ const duplicate=await auditCloudflare(env,duplicates.request);
+ assert.equal(duplicate.ready,false);
+ assert(duplicate.blockers.some(x=>x.includes('STANDALONE_WORKER')));
 });

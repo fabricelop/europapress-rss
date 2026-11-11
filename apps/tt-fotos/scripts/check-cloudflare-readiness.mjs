@@ -93,8 +93,14 @@ export async function auditCloudflare(env=process.env,fetcher=fetch){
   // Each security probe already validates its resource. Never throw out of
   // the audit report if a probing permission or resource is unavailable.
  }
- const worker=await probe('STANDALONE_WORKER',base+'/workers/workers/'+WORKER,
-   r=>{if(r.name!==WORKER||!r.id)throw Error('NOT_THE_STANDALONE_WORKER')});
+ // Cloudflare's /workers/workers/{worker_id} route takes the immutable Worker ID,
+ // not the human-readable Worker name. List and resolve by exact name instead.
+ const workers=await probe('STANDALONE_WORKER',base+'/workers/workers?per_page=100',
+   r=>{
+    if(!Array.isArray(r)||r.filter(x=>x?.name===WORKER&&typeof x.id==='string'&&x.id.length>0).length!==1)
+      throw Error('NOT_THE_STANDALONE_WORKER');
+   });
+ const worker=workers?.find(x=>x?.name===WORKER);
  const apps=await probe('ACCESS_AUDIENCE',base+'/access/apps?aud='+encodeURIComponent(env.TT_FOTOS_ACCESS_AUD)+'&per_page=100',
    r=>findAccessApplication(r,env.TT_FOTOS_ACCESS_AUD,worker?.id));
  // Even a correctly scoped Access app needs policy and live authentication verification.
