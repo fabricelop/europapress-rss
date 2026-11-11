@@ -1,87 +1,38 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-11T09:01:25+01:00",
+  "updated_at": "2026-11-11T08:02:57.913433+00:00",
   "count": 1,
   "items": [
     {
-      "id": "red-review-699878f590c166949eed",
-      "name": "Revisar novedades: RTVE",
-      "rank": 11,
-      "status": "preparing",
-      "requested_at": "2026-11-11T07:59:33.916171+00:00",
+      "id": "red-review-32f06663a61e8c297cb0",
       "revision": 0,
-      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques.",
-      "reexplain": false,
-      "rewrite_with_image": false,
-      "with_image": false,
-      "disable_ai_image": true,
-      "image_strategy": null,
-      "selected_tweet_image": null,
+      "name": "Revisar novedades: Charles",
+      "rank": 20,
+      "status": "preparing",
+      "requested_at": "2026-11-11T08:02:57.913433+00:00",
       "task": "review_red",
-      "anticipation_request": false,
-      "anticipated_name": null,
-      "anticipation_signal": null,
-      "anticipation_origin_id": null,
-      "anticipation_draft": null,
       "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
       "review_source": {
-        "id": "db1a689b7f75",
+        "id": "c43139196d57",
         "revision": 0,
-        "name": "RTVE",
-        "rank": 4,
-        "explanation": "TT#9 RTVE sigue siendo tendencia por la polémica tras la entrevista de Abascal en La Revuelta: Broncano admite que quedó decepcionado y RTVE explica por qué aceptó el público de Vox.\n#LaRevuelta #SantiagoAbascal\n🌶️ La entrevista acabó y empezó el turno de explicaciones.",
-        "explanation_sha256": "d5cfcf1ded54a0df4fec37b85cee7a656dd50b4604102ef0caa12e9e6ddf7d46",
-        "explained_at": "2026-11-10T00:22:00+01:00",
+        "name": "Charles",
+        "rank": 18,
+        "explanation": "TT#15 Charles sigue siendo tendencia por la borrasca: Canarias mantiene alerta máxima por viento en La Palma y cumbres de Tenerife, con rachas previstas de más de 130 km/h, y clases telemáticas en Tenerife, La Palma y La Graciosa.\n#BorrascaCharles #Canarias",
+        "explanation_sha256": "6eb7e1e9b2bebbc366a26657a1a5a28a77725f47dcc24fc944d9a5cc19857284",
+        "explained_at": "2026-11-09T16:16:00+01:00",
         "verification_sources": [
           {
-            "title": "RTVE: entrevista de Santiago Abascal en La Revuelta",
-            "url": "https://www.rtve.es/noticias/20261109/la-revuelta-entrevista-santiago-abascal-vox-david-broncano-titulares/17307024.shtml",
-            "published_at": "2026-11-09"
-          },
-          {
-            "title": "elDiario/Vertele: cambio de público en La Revuelta",
-            "url": "https://www.eldiario.es/vertele/noticias/broncano-confirma-veto-vox-publico-revuelta-temor-abucheos-abascal-solicitaron-encargarse-rtve_1_13650728.html",
-            "published_at": "2026-11-09"
-          },
-          {
-            "title": "El Periódico/Yotele: RTVE niega obligación de la JEC",
-            "url": "https://www.elperiodico.cat/yotele/20261109/no-broncano-obligat-entrevistar-abascal-revuelta-dos-precedents-demostren-136251450",
-            "published_at": "2026-11-09"
+            "url": "https://www.rtve.es/noticias/20261109/borrasca-origen-subtropical-charles-provocara-fuerte-temporal-lluvia-viento-hasta-jueves/17305977.shtml"
           }
         ],
-        "fingerprint": "e5b2f0468964e772379baea12c3caf5da8ec34f4399bd0f24dc38ba99db7cb67"
+        "fingerprint": "f893a39747296c42259c40f7ee0560b550b772a7bc0a3497ee9f5c8140b66e54"
       },
-      "review_error": null,
-      "new_episode_review": false,
-      "distinct_event_required": false,
-      "radar_episode_token": "",
-      "editor_approval_batch_id": "",
-      "previous_episode_id": "",
-      "review_instruction": "",
-      "automatic_grouping": null,
-      "published_context": null,
-      "listas_grouping_request": false,
-      "grouping_candidates": [],
-      "grouping_state": null,
-      "grouping_error": null,
-      "tremending_origin": false,
-      "tremending_id": null,
-      "article_title": null,
-      "source_url": null,
-      "selected_tweet": null,
-      "batch_id": null,
-      "requested_together": [
-        "Revisar novedades: RTVE"
-      ],
-      "captured_with": [],
+      "with_image": false,
+      "disable_ai_image": true,
       "auto_queued": false,
-      "anticipated": false,
-      "anticipated_at": null,
-      "anticipated_best_rank": null,
-      "anticipated_social_source_count": 0,
-      "anticipated_news_source_count": 0,
-      "anticipated_news_title": "",
-      "anticipated_entered_top10_at": null
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
     }
   ]
 }
