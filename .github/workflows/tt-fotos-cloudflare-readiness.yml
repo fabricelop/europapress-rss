@@ -1,0 +1,35 @@
+name: TT Fotos Cloudflare readiness (read-only)
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/tt-fotos-cloudflare-readiness.yml"
+permissions:
+  contents: read
+concurrency:
+  group: tt-fotos-cloudflare-readiness
+  cancel-in-progress: true
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    defaults:
+      run:
+        working-directory: apps/tt-fotos
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      TT_FOTOS_D1_DATABASE_ID: ${{ vars.TT_FOTOS_D1_DATABASE_ID }}
+      TT_FOTOS_ACCESS_ISSUER: ${{ vars.TT_FOTOS_ACCESS_ISSUER }}
+      TT_FOTOS_ACCESS_AUD: ${{ vars.TT_FOTOS_ACCESS_AUD }}
+      TT_FOTOS_ALLOWED_EMAIL: ${{ secrets.TT_FOTOS_ALLOWED_EMAIL }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Regression test of the read-only auditor
+        run: node --test tests/check-cloudflare-readiness.test.mjs tests/verify-private-r2.test.mjs tests/verify-remote-resources.test.mjs
+      - name: Audit dedicated TT Fotos Cloudflare readiness without changes
+        run: node scripts/check-cloudflare-readiness.mjs
