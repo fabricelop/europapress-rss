@@ -1,0 +1,29 @@
+name: TT Fotos standalone Worker regression
+on:
+  push:
+    branches: [main]
+    paths:
+      - "apps/tt-fotos/**"
+      - "site-patches/ttactualidad-fotos-review/cloud-v1/**"
+      - ".github/workflows/tt-fotos-standalone-tests.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Check syntax of standalone integration
+        run: |
+          node --check apps/tt-fotos/src/access.mjs
+          node --check apps/tt-fotos/src/worker.mjs
+          node --check apps/tt-fotos/scripts/build-companion.mjs
+          node --check apps/tt-fotos/tests/worker.test.mjs
+      - name: Run standalone API, authentication and integration tests
+        run: |
+          node --test apps/tt-fotos/tests/*.test.mjs site-patches/ttactualidad-fotos-review/cloud-v1/api.test.mjs
