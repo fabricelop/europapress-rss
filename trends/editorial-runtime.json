@@ -10,11 +10,11 @@
   "status": "DONE",
   "phase": "closing",
   "started_at": "2026-11-11T07:26:00+01:00",
-  "updated_at": "2026-11-11T07:38:00+01:00",
+  "updated_at": "2026-11-11T07:40:00+01:00",
   "current": 2,
   "total": 2,
   "trend_id": null,
-  "title": null,
+  "title": "Pasada editorial TTendencias",
   "queue_complete": true,
   "processed_ids": [
     "6523d9f6ab30",
@@ -50,7 +50,7 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 2
+    "concurrent_convergence": 1
   },
   "outcomes": [
     {
@@ -68,8 +68,8 @@
       "name": "#HuelgaGeneral11N",
       "outcome": "explained",
       "applied": true,
-      "via": "editorial_chat_direct",
-      "outbox_comment_id": 6788874448
+      "via": "concurrent_convergence",
+      "apply_commit": "a81fe4bdab98c419a698df17a0739dace9c5061c"
     }
   ],
   "incident_count": 0,
@@ -145,22 +145,34 @@
       "trend_id": null,
       "title": null,
       "message": "Barrera final verificada: editorial-queue=0; ambas revisiones r1 sincronizadas. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-11T07:35:00+01:00",
+      "phase": "verifying",
+      "trend_id": "c566b61409aa",
+      "title": "#HuelgaGeneral11N",
+      "message": "r1 aplicada concurrentemente y sincronizada en requests.json + telegram-manual-explained.json; se respeta el texto terminal vigente y no se sobrescribe."
+    },
+    {
+      "at": "2026-11-11T07:40:00+01:00",
+      "phase": "closing",
+      "message": "Barrera final en main: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. 2/2 cerrados. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "last_started_at": "2026-11-11T07:26:00+01:00",
-  "last_completed_at": "2026-11-11T07:38:00+01:00",
+  "last_completed_at": "2026-11-11T07:40:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-1794378391072-manual",
     "status": "DONE",
     "started_at": "2026-11-11T07:26:00+01:00",
-    "finished_at": "2026-11-11T07:38:00+01:00",
+    "finished_at": "2026-11-11T07:40:00+01:00",
     "total": 2,
     "closed": 2,
     "maintenance": 0,
     "pending": 0
   },
-  "message": "Pasada tr-1794378391072-manual cerrada 2/2. #CopaDelRey r1 y #HuelgaGeneral11N r1 quedaron explicadas y sincronizadas; cola final=0. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada tr-1794378391072-manual cerrada 2/2. #CopaDelRey r1 y #HuelgaGeneral11N r1 quedaron explained y sincronizadas; #HuelgaGeneral11N conserva closer vacío por sensibilidad del balance de heridos/detenido. Barrera final: editorial-queue=0 y sin reexplicaciones activas. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794327332740-manual",
@@ -5469,5 +5481,5 @@
     }
   ],
   "processed": [],
-  "finished_at": "2026-11-11T07:38:00+01:00"
+  "finished_at": "2026-11-11T07:40:00+01:00"
 }
