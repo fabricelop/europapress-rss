@@ -7,9 +7,9 @@
 - `src/worker.mjs`: sirve galería e interfaz y enruta su API privada. **Cloudflare Access obligatorio y verificado criptográficamente** (JWT RS256: firma, `kid`, issuer, audience, caducidad, correo permitido).
 - `src/access.mjs`: no acepta solo la cabecera de email, ni cabeceras falsas o una sesión sin firma.
 - `public/index.html`: monitor remoto con fichas asociadas, «Sin asociar» y confirmación de coincidencias dudosas.
-- `FOTOS_DB` (D1): trabajos, assets, asociaciones, historial; esquema en `../../site-patches/ttactualidad-fotos-review/cloud-v1/schema.sql`.
+- `FOTOS_DB` (D1): trabajos, assets, asociaciones, historial; esquema en `migrations/0001_init.sql`.
 - `FOTOS_R2` (R2 privado): PNG duraderos bajo hash SHA256. **No habilitar dominio público R2.**
-- API aislada `/api/tt-fotos/v1/*`, existente en `../../site-patches/ttactualidad-fotos-review/cloud-v1/api.mjs`; este Worker la reutiliza como **biblioteca de código** sin dirigir llamadas al Site antiguo.
+- API propia `/api/tt-fotos/v1/*` en `src/lib/api.mjs`, independiente del Site anterior.
 - `scripts/build-companion.mjs`: genera extensión Chrome limitada al dominio HTTPS real del nuevo TT Fotos, más ChatGPT. El origen conserva el PNG en memoria y el destino lo escribe directamente en R2 privado. El equipo no se utiliza como almacén de fotografías.
 
 ## Preparación de infraestructura
@@ -20,7 +20,7 @@ No ejecutar todavía sin revisar que las credenciales y los bindings corresponde
 2. Crear D1 `tt-fotos-private`. Aplicar `schema.sql` de cloud-v1 **solo a la nueva D1**.
 3. Copiar `wrangler.jsonc.example` a `wrangler.jsonc`, rellenar `database_id`, `CF_ACCESS_ISSUER` y `CF_ACCESS_AUD`. El fichero de configuración real NO se sube al repositorio.
 4. En Cloudflare Zero Trust → Access → Applications crear una aplicación independiente para el URL del Worker. Autorizar exclusivamente a los editores pertinentes. Su AUD se copia en `CF_ACCESS_AUD`. Configurar la variable **secreta** `TT_FOTOS_ALLOWED_EMAIL` como lista separada por comas de direcciones autorizadas. Esa variable se comprueba además de la política Access.
-5. Con la sesión de la cuenta Cloudflare adecuada en `wrangler`: `npx wrangler d1 execute tt-fotos-private --remote --file=../../site-patches/ttactualidad-fotos-review/cloud-v1/schema.sql` desde `apps/tt-fotos`, revisar el resultado, y luego `npx wrangler deploy`.
+5. Con la sesión de la cuenta Cloudflare adecuada en `wrangler`: `npx wrangler d1 execute tt-fotos-private --remote --file=migrations/0001_init.sql` desde `apps/tt-fotos`, revisar el resultado, y luego `npx wrangler deploy`.
 6. Verificar que **sin iniciar sesión** el Worker devuelve 403 tanto en `/fotos` como en `/api/tt-fotos/v1/status`, y que el origen está efectivamente protegido por Access.
 7. Una vez desplegado, desde la raíz `apps/tt-fotos`: `node scripts/build-companion.mjs https://TU-URL-REAL-DE-TT-FOTOS`; instalar la carpeta `dist/chrome-companion` como extensión sin empaquetar en Chrome, revisando permisos. No instalar el conector antiguo cuyo destino era el Site.
 8. Iniciar sesión en la página **independiente** TT Fotos y en `https://chatgpt.com/images`. Pulsar el icono de la extensión solo cuando se vean imágenes de calidad suficiente (o en sus conversaciones originales). El conector aún no garantiza enumeración exhaustiva del catálogo; lee recursos visibles y no usa APIs privadas de ChatGPT.
@@ -35,7 +35,7 @@ No ejecutar todavía sin revisar que las credenciales y los bindings corresponde
 
 ## Comprobaciones antes de declarar éxito
 
-`node --test tests/*.test.mjs` desde `apps/tt-fotos`. En CI, ejecutar también el test de la API compartida bajo `site-patches/ttactualidad-fotos-review/cloud-v1/api.test.mjs`.
+`node --test tests/*.test.mjs` desde `apps/tt-fotos`. En CI, ejecutar también `node --test tests/api.test.mjs` para verificar su API propia.
 
 **Piloto:** abrir el propio Worker protegido, autenticar editor, recuperar 1 PNG de noticia y 1 PNG de tendencia; comparar SHA de R2 y pantalla; asociar una imagen sin prueba exacta manualmente; repetir sin duplicar; confirmar que el Site/app iPhone no han sido tocados. Después ampliar a nuevas imágenes desde el 10 de noviembre de 2026 y evaluar cobertura real del catálogo.
 
