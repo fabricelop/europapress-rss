@@ -2,139 +2,210 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-11-11T03:01:40.942069+00:00",
-      "issue_count": 1,
+      "checked_at": "2026-11-11T10:42:53.054292+00:00",
+      "issue_count": 8,
       "issues": [
+        {
+          "kind": "missing_delivery",
+          "id": "bd549c12b70d",
+          "title": "CCOO y UGT celebran el amplio seguimiento de la huelga general en sus primeras horas: paros del 90% ",
+          "seconds": 8953,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "02e498f270be",
+          "title": "Canal Sur Televisión se va a negro por la huelga general",
+          "seconds": 7102,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "9a8e8fc75dfc",
+          "title": "¿Contra quién es la huelga general del 11N? La respuesta de CCOO y UGT sobre vivienda, salarios y el",
+          "seconds": 5904,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "a74af6d6c9cb",
+          "title": "Euromillones deja un acertante en España que gana un bote de casi 142 millones",
+          "seconds": 5377,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "9a35b8d23fe5",
+          "title": "Incidentes en Mercamadrid en la huelga 11-N: cargas policiales, 15 heridos y un detenido en el pique",
+          "seconds": 5377,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "ce6deb715e03",
+          "title": "Pepe Álvarez (UGT): \"Es bastante miserable utilizar a las víctimas de una tragedia contra una huelga",
+          "seconds": 3479,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "a9780acd47cb",
+          "title": "La huelga general en la Comunitat Valenciana: seguimiento del 70%, según UGT, y la patronal dice que",
+          "seconds": 1155,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 2221648,
+          "seconds": 2249320,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
       "actions_started": [
+        "send-ttittulares-ready-telegram.yml",
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "b713f1c3f4a90157b05c0bc411e3f7a3420ba8147f7f0a578d9c128c7e94e639",
+      "open_signature": "21ba49b1149980b8981b99a04ef245f58558cbd7ebc462e15d753195cdfb9e2f",
       "repair_via_workflow_run": false,
-      "escalation_required": 0
+      "escalation_required": 6
     },
     "ttendencias": {
-      "checked_at": "2026-11-11T03:01:40.942069+00:00",
-      "issue_count": 16,
+      "checked_at": "2026-11-11T10:42:53.054292+00:00",
+      "issue_count": 19,
       "issues": [
+        {
+          "kind": "editorial_overdue",
+          "id": "4d0946f0eae7",
+          "title": "San Martín de Tours",
+          "seconds": 9115,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "a40297032698",
+          "title": "Poneros",
+          "seconds": 9115,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "2f04fbd94be9",
+          "title": "Cortar",
+          "seconds": 9115,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "bc09be0986c5",
+          "title": "Nita",
+          "seconds": 9115,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "cb975f45e289",
+          "title": "#LaHora11N",
+          "seconds": 6079,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "e8e9d03d4f3f",
+          "title": "Piquetes",
+          "seconds": 6079,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "d100127b9d60",
+          "title": "Mike Hammer",
+          "seconds": 6079,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "37402c4dce32",
+          "title": "Sindicatos",
+          "seconds": 6079,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "3df12c624776",
+          "title": "11-N",
+          "seconds": 6079,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "13e90b3bc1a7",
+          "title": "Parásitos",
+          "seconds": 6079,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "43973ab204d3",
+          "title": "Colau",
+          "seconds": 6079,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "b59539a32a22",
+          "title": "Trabajadores",
+          "seconds": 6079,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "ff432303b439",
+          "title": "#charles",
+          "seconds": 6079,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "be98596f4727",
+          "title": "Fascistas",
+          "seconds": 6079,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "7c81acf9907e",
+          "title": "Fracaso",
+          "seconds": 1915,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "4488f0cec648",
+          "title": "Canal Sur",
+          "seconds": 1915,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "80a8b0017c62",
+          "title": "#VagaGeneral11N",
+          "seconds": 1915,
+          "workflow": null
+        },
         {
           "kind": "missing_delivery",
           "id": "38594e89765a",
           "title": "Bianca",
-          "seconds": 32209,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "325e11e6bb76",
-          "title": "Rochos",
-          "seconds": 32191,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "c566b61409aa",
-          "title": "#HuelgaGeneral11N",
-          "seconds": 32180,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "a5228a344f9b",
-          "title": "#CanYamanEH",
-          "seconds": 17993,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "9926d395c67f",
-          "title": "#FirstDates10N",
-          "seconds": 17993,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "2ec7baae881f",
-          "title": "Luzon",
-          "seconds": 17993,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "8339a494972f",
-          "title": "Jorge Ponce",
-          "seconds": 17993,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "60c664dd6336",
-          "title": "Hugo Duro",
-          "seconds": 16804,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "3f517374396d",
-          "title": "#LaIslaDeLasTentaciones19",
-          "seconds": 13806,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "975275d50005",
-          "title": "#CenaIdiotasTVE",
-          "seconds": 13806,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "d097f2bee65c",
-          "title": "#codigo10",
-          "seconds": 13806,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "bb318e93884a",
-          "title": "GEMA",
-          "seconds": 10179,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "6ef6a33e22d7",
-          "title": "sandra",
-          "seconds": 10179,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "9bb66f6db260",
-          "title": "Broncano",
-          "seconds": 7005,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "83b95de4207a",
-          "title": "Paola",
-          "seconds": 7005,
+          "seconds": 59881,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 2221648,
+          "seconds": 2249320,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -143,16 +214,16 @@
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "b007c933d91ac7a912c132be52fd05080ce544f70d61257f8d2b2bf7aff8fa3c",
+      "open_signature": "4c80314f1725bd4da1868195b7aa7b42a6c76214fe150ca37bd6e86526c18cab",
       "repair_via_workflow_run": false,
-      "escalation_required": 15
+      "escalation_required": 18
     }
   },
   "attempts": {
-    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-11-10T10:57:48.877107+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-11-11T03:01:40.942069+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-11-11T03:01:40.942069+00:00",
-    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-11-11T03:01:40.942069+00:00"
+    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-11-11T10:42:53.054292+00:00",
+    "ttittulares:telegram-pinned-index.yml": "2026-11-11T10:42:53.054292+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-11-11T10:42:53.054292+00:00",
+    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-11-11T10:42:53.054292+00:00"
   },
-  "checked_at": "2026-11-11T03:01:40.942069+00:00"
+  "checked_at": "2026-11-11T10:42:53.054292+00:00"
 }
