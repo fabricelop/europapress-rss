@@ -32,7 +32,10 @@ export function chooseAccessApp(apps,workerId,expectedAud=''){
    throw Error('TT_FOTOS_ACCESS_IDENTITY_MISMATCH');
   // All traffic for this worker must be behind sign-in. An override allows
   // access bypass, even when the application has otherwise valid policies.
-  if(a.destinations.some(d=>d?.type==='worker'&&d.worker_id===workerId&&d.overrides?.length))
+  if(a.destinations.length!==1||
+    a.destinations[0]?.type!=='worker'||a.destinations[0]?.worker_id!==workerId)
+   throw Error('TT_FOTOS_ACCESS_MUST_TARGET_ONLY_THIS_WORKER');
+  if(a.destinations[0]?.overrides?.length)
    throw Error('TT_FOTOS_ACCESS_PUBLIC_OVERRIDE');
  }
  return a;
