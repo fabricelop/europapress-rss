@@ -27,3 +27,7 @@ jobs:
       - name: Run standalone API, authentication and integration tests
         run: |
           node --test apps/tt-fotos/tests/*.test.mjs site-patches/ttactualidad-fotos-review/cloud-v1/api.test.mjs
+      - name: Build origin-locked browser connector
+        run: |
+          node apps/tt-fotos/scripts/build-companion.mjs https://tt-fotos-test.example.workers.dev
+          node -e "const fs=require('fs');const m=JSON.parse(fs.readFileSync('apps/tt-fotos/dist/chrome-companion/manifest.json','utf8'));if(!m.host_permissions.includes('https://tt-fotos-test.example.workers.dev/*')||m.host_permissions.some(x=>x.includes('rainyraven22')))process.exit(1)"
