@@ -3,19 +3,19 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261111T032500-manual",
-  "previous_run_id": "tr-autoguard-1794363068",
-  "command_id": "tr-20261111T032500-manual",
+  "run_id": "tr-20261111T034000-manual",
+  "previous_run_id": "tr-20261111T032500-manual",
+  "command_id": "tr-20261111T034000-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-11T03:25:00+01:00",
-  "updated_at": "2026-11-11T03:27:54.519+01:00",
+  "status": "RUNNING",
+  "phase": "verifying",
+  "started_at": "2026-11-11T03:40:00+01:00",
+  "updated_at": "2026-11-11T03:40:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -149,6 +149,15 @@
       "trend_id": null,
       "title": "Pasada editorial TTendencias",
       "message": "Convergencia verificada sobre Funcionó r0; barrera final de cola limpia."
+    },
+    {
+      "at": "2026-11-11T03:40:00+01:00",
+      "phase": "verifying",
+      "current": 0,
+      "total": 0,
+      "trend_id": null,
+      "title": "Pasada editorial TTendencias",
+      "message": "Pasada manual RUNNING. Cola inicial=0; ejecutando barrera JIT sobre main antes del cierre."
     }
   ],
   "last_started_at": "2026-11-11T03:11:08+01:00",
@@ -211,7 +220,7 @@
       "finished_at": "2026-11-11T03:14:00+01:00"
     }
   },
-  "message": "Pasada manual cerrada 0/0 tras releer main: editorial-queue=0; requests sin preparing/update ni rewrite_pending/reexplain; mobile-decisions sin trabajo editorial activo. Últimos mantenimientos observados sin episodio nuevo. ImageGen=0; publicaciones=0.",
+  "message": "Pasada manual RUNNING. Cola autoritativa inicial observada en 0; revalidando main, estados editoriales y barrera JIT antes de cerrar. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794327332740-manual",
@@ -2536,6 +2545,13 @@
         "status": "DONE",
         "finished_at": "2026-11-11T03:14:00+01:00"
       }
+    },
+    {
+      "run_id": "tr-20261111T034000-manual",
+      "status": "RUNNING",
+      "at": "2026-11-11T03:40:00+01:00",
+      "phase": "verifying",
+      "message": "Cola inicial=0; revalidando main y estados editoriales. ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": null,
