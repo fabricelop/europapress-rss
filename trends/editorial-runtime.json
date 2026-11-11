@@ -8,9 +8,9 @@
   "command_id": "tr-1794363000000-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "investigating",
+  "phase": "persisting",
   "started_at": "2026-11-11T03:10:00+01:00",
-  "updated_at": "2026-11-11T03:10:00+01:00",
+  "updated_at": "2026-11-11T03:13:00+01:00",
   "current": 0,
   "total": 1,
   "trend_id": "6093055fcc7d",
@@ -117,6 +117,15 @@
       "trend_id": "6093055fcc7d",
       "title": "Funcionó",
       "message": "Revisión JIT confirmada; investigando el detonante actual con fuentes independientes."
+    },
+    {
+      "at": "2026-11-11T03:13:00+01:00",
+      "phase": "persisting",
+      "current": 0,
+      "total": 1,
+      "trend_id": "6093055fcc7d",
+      "title": "Funcionó",
+      "message": "Texto prudente enviado al aplicador; verificando persistencia sincronizada en main."
     }
   ],
   "last_started_at": "2026-11-11T03:10:00+01:00",
@@ -222,7 +231,7 @@
       ]
     }
   },
-  "message": "Pasada manual RUNNING 0/1. Funcionó r0 está en preparing y se investiga ahora. ImageGen=0; publicaciones=0.",
+  "message": "Pasada manual RUNNING 0/1. Funcionó r0 redactada con causa no confirmada; verificando aplicación.",
   "history": [
     {
       "run_id": "tr-1794327332740-manual",
