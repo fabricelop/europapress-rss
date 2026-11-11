@@ -106444,13 +106444,28 @@
       "grouping_disabled": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "none",
-      "image_status": "none",
-      "image_choice": "none",
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
       "image_pending": false,
       "telegram_package_status": "pending",
       "fallback_image_strategy": "existing_web_image",
-      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+      "fallback_image": {
+        "url": "https://opengraph.githubassets.com/b730b94aaf54c07a5a2b8fc8bc50348949e62628b71c368eebea4c1d502b63b3/fabricelop/europapress-rss",
+        "source": "github.com",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/recent.json",
+        "alt": "Imagen de archivo relacionada con #TEM11N",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://opengraph.githubassets.com/b730b94aaf54c07a5a2b8fc8bc50348949e62628b71c368eebea4c1d502b63b3/fabricelop/europapress-rss",
+        "source": "github.com",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/recent.json",
+        "alt": "Imagen de archivo relacionada con #TEM11N",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "52fbeb23ee5c",
@@ -106822,6 +106837,6 @@
       }
     }
   ],
-  "updated_at": "2026-11-11T15:16:18.432377Z",
+  "updated_at": "2026-11-11T15:19:15.410823Z",
   "count": 1856
 }
