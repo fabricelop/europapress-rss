@@ -1,0 +1,44 @@
+name: TT Fotos prepare isolated Cloudflare storage (manual)
+on:
+  workflow_dispatch:
+    inputs:
+      create_missing:
+        description: "Create ONLY missing tt-fotos-private D1 and tt-fotos-originals-private R2"
+        type: boolean
+        required: true
+        default: false
+permissions:
+  contents: read
+concurrency:
+  group: tt-fotos-standalone-deployment
+  cancel-in-progress: false
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    defaults:
+      run:
+        working-directory: apps/tt-fotos
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      TT_FOTOS_D1_DATABASE_ID: ${{ vars.TT_FOTOS_D1_DATABASE_ID }}
+      CREATE_MISSING: ${{ inputs.create_missing }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Verify safe D1/R2 preparation behavior
+        run: node --test tests/prepare-private-resources.test.mjs tests/verify-private-r2.test.mjs
+      - name: Inspect or create only isolated TT Fotos resources
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$CREATE_MISSING" = "true" ]; then
+            node scripts/prepare-private-resources.mjs --create-missing
+          else
+            node scripts/prepare-private-resources.mjs
+          fi
