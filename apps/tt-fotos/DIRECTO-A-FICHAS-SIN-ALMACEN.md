@@ -34,3 +34,15 @@ Los originales de ChatGPT Imágenes pueden requerir sesión y sus URLs visibles 
 - Mantener inhabilitado el despliegue legado de `apps/tt-fotos` con D1/R2/Access. La ejecución antigua de GitHub `43098204122` quedó atascada con respuestas contradictorias a cancelación y no puede considerarse cancelada solo por cambios posteriores en `main`.
 
 **Estado:** arquitectura corregida. No se ha realizado un piloto completo ni se han transferido fotografías nuevas en esta modificación.
+
+
+## Continuación validada (12/11/2026) — v183
+
+- El despliegue independiente de `tt-fotos-standalone-deploy.yml` ya estaba desactivado. Se ha desactivado además **el segundo punto de entrada** `tt-fotos-prepare-storage.yml`, que todavía permitía crear D1/R2 con un `workflow_dispatch`; ambos jobs tienen `if: ${{ false }}`.
+- La prueba `apps/tt-fotos/tests/direct-flow-guard.test.mjs` verifica los dos bloqueos y que el antiguo README está marcado como legado. **CI standalone verificada:** [run 43122224804](https://github.com/fabricelop/europapress-rss/actions/runs/43122224804), éxito en commit `266c8a6`.
+- Se corrigió el YAML del workflow `tt-fotos-rescate-tests.yml` (un `:` sin comillas en su nombre impedía arrancar jobs). **CI de rescate verificada:** [run 43122530435](https://github.com/fabricelop/europapress-rss/actions/runs/43122530435), éxito tras commit `6842482`.
+- **Bloqueo funcional comprobado:** `extension-templates/background.js` todavía envía al monitor/Worker independiente retirado; `site-receiver.js` solamente emite un mensaje a un Site que no debemos modificar. Por su parte, el monitor Windows V3 confirma asociaciones **locales**, no demuestra que se haya aplicado la fotografía a la ficha editorial efectiva.
+- El repositorio tiene rutas editoriales existentes de imágenes (por ejemplo `windows/TTiTTularesGithubOutbox.cjs` y los consumidores `*/apply_ai_image_outbox.py`). **No** debe inferirse de ello que un endpoint de escritura directo esté autorizado o sea válido para los dos proyectos: falta identificar el contrato seguro para noticias y tendencias, comprobar la revisión vigente y garantizar que no se escriba en la bandeja iPhone.
+- Todavía no se ha probado una transferencia real desde la sesión privada de `chatgpt.com/images`, no hay recibo de foto asociada ni se ha creado una nueva galería. El piloto de **una noticia + una tendencia** deberá comprobar SHA, ficha correcta, ausencia de duplicados y que no cambió la bandeja previa. No dar por completada la recuperación antes de ese piloto.
+
+**Siguiente desarrollo:** un puente de transporte autenticado que lleve los bytes en memoria desde Chrome al **receptor editorial ya existente**, con una operación de solo lectura de prevalidación y confirmación manual cuando falte un encargo original. Sin duplicar infraestructura fotográfica.
