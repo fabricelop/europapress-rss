@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-11T22:15:24.859276+00:00",
+  "checked_at": "2026-11-11T22:30:00.883392+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -59,8 +59,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 4.7,
-      "run_id": 43109521093,
+      "age_minutes": 4.1,
+      "run_id": 43111692054,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -81,17 +81,54 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": true,
+      "ok": false,
       "pending_count": 14,
-      "overdue_count": 0,
-      "oldest_age_minutes": 25.9,
+      "overdue_count": 6,
+      "oldest_age_minutes": 40.5,
       "warning_after_minutes": 30,
-      "overdue_items": [],
+      "overdue_items": [
+        {
+          "id": "27bceccd1f06",
+          "name": "bertrand",
+          "status": "preparing",
+          "age_minutes": 38.7
+        },
+        {
+          "id": "e0010ec683c3",
+          "name": "Mondongo",
+          "status": "preparing",
+          "age_minutes": 33.6
+        },
+        {
+          "id": "74253d4d6c99",
+          "name": "Guadarrama",
+          "status": "preparing",
+          "age_minutes": 40.5
+        },
+        {
+          "id": "6e7e20e3e07d",
+          "name": "Plaza España",
+          "status": "preparing",
+          "age_minutes": 36.4
+        },
+        {
+          "id": "1ea1a6c850b1",
+          "name": "españas",
+          "status": "preparing",
+          "age_minutes": 32.4
+        },
+        {
+          "id": "47ef1a2cc908",
+          "name": "Espejo Público",
+          "status": "preparing",
+          "age_minutes": 37.4
+        }
+      ],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": true,
-      "status": "not-required",
+      "ok": false,
+      "status": "overdue",
       "queue_complete": false,
       "remaining_active_ids": [
         "27bceccd1f06",
@@ -120,9 +157,10 @@
   "repairs_started": [],
   "blocking": [
     "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos",
-    "cola con 754 estado(s) inválido(s)"
+    "cola con 754 estado(s) inválido(s)",
+    "cola de explicaciones retrasada: 6 pendiente(s) superan 30 min; más antigua 40.5 min"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 754 estado(s) inválido(s)"
+  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 754 estado(s) inválido(s) | cola de explicaciones retrasada: 6 pendiente(s) superan 30 min; más antigua 40.5 min"
 }
