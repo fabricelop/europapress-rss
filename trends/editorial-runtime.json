@@ -3,27 +3,41 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261111T182500-manual",
-  "previous_run_id": "tr-20261111T181200-manual",
-  "command_id": "tr-20261111T182500-manual",
+  "run_id": "tr-20261111T191000-manual",
+  "previous_run_id": "tr-20261111T182500-manual",
+  "command_id": "tr-20261111T191000-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-11T18:25:00+01:00",
-  "updated_at": "2026-11-11T18:26:00+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-11T19:10:00+01:00",
+  "updated_at": "2026-11-11T19:10:00+01:00",
   "current": 0,
-  "total": 0,
+  "total": 6,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "868a518462be",
+    "6519e0bfa504",
+    "52a0d9fe7897",
+    "e617da285349",
+    "e2040af225a8",
+    "b1f6d1241c57"
+  ],
+  "remaining_active_ids": [
+    "868a518462be",
+    "6519e0bfa504",
+    "52a0d9fe7897",
+    "e617da285349",
+    "e2040af225a8",
+    "b1f6d1241c57"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
-    "observed": 0,
+    "observed": 6,
     "closed": 0,
     "explained": 0,
     "problematic": 0,
@@ -38,7 +52,7 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 6,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -50,8 +64,8 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "persisting",
-  "last_started_at": "2026-11-11T18:25:00+01:00",
+  "activity": "preparing",
+  "last_started_at": "2026-11-11T19:10:00+01:00",
   "last_completed_at": "2026-11-11T18:26:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -66,7 +80,7 @@
     "pending": 0,
     "anticipation_prepared": 0
   },
-  "message": "Pasada tr-20261111T182500-manual cerrada 0/0 contra main. Barrera JIT final: editorial-queue=0 (updated_at 2026-11-11T18:21:06+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Inicio manual: 6 investigaciones ordinarias preparing en main; se procesarán JIT de más antigua a reciente. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794327332740-manual",
@@ -7453,5 +7467,5 @@
     }
   ],
   "processed": [],
-  "finished_at": "2026-11-11T18:26:00+01:00"
+  "finished_at": null
 }
