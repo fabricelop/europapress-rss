@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-11T14:03:00+01:00",
+  "updated_at": "2026-11-11T14:06:00+01:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -293172,7 +293172,7 @@
       "id": "c91a548bde26",
       "name": "Son 4",
       "rank": 25,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-11-11T12:10:58+01:00",
       "revision": 0,
       "reexplain": false,
@@ -293185,7 +293185,6 @@
       "captured_with": [
         "Son 4"
       ],
-      "automatic_grouping": false,
       "grouping_disabled": true,
       "auto_queued": true,
       "auto_queue_scope": "top30",
@@ -293196,13 +293195,42 @@
       "editor_approval_batch_id": "",
       "previous_episode_id": "",
       "distinct_event_required": false,
-      "review_instruction": ""
+      "review_instruction": "",
+      "explained_at": "2026-11-11T14:06:00+01:00",
+      "last_attempt_at": "2026-11-11T14:06:00+01:00",
+      "explanation": "TT#25 Son 4 aparece entre las tendencias en España, pero no se ha podido confirmar qué conversación concreta ha impulsado el término.",
+      "closer_text": "",
+      "rank_at_explanation": 25,
+      "category": "Otros",
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        {
+          "title": "TTendencias: ranking autoritativo vigente",
+          "url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/recent.json",
+          "published_at": "2026-11-11"
+        },
+        {
+          "title": "Tendencias de España",
+          "url": "https://twtdata.com/twitter-trends/spain/",
+          "published_at": "2026-11-11"
+        }
+      ],
+      "news_disposition": "ignored",
+      "news_note": "Primera aparición con causa no confirmada.",
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "pending",
+      "fallback_image_status": "pending",
+      "image_choice": "none",
+      "image_status": "pending",
+      "image_pending": true,
+      "telegram_package_status": "pending"
     },
     {
       "id": "abcee3600c0c",
       "name": "#Mañaneros11N",
       "rank": 7,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-11-11T13:11:01+01:00",
       "revision": 0,
       "reexplain": false,
@@ -293215,7 +293243,6 @@
       "captured_with": [
         "#Mañaneros11N"
       ],
-      "automatic_grouping": false,
       "grouping_disabled": true,
       "auto_queued": true,
       "auto_queue_scope": "top30",
@@ -293226,17 +293253,46 @@
       "editor_approval_batch_id": "",
       "previous_episode_id": "",
       "distinct_event_required": false,
-      "review_instruction": ""
+      "review_instruction": "",
+      "explained_at": "2026-11-11T14:06:00+01:00",
+      "last_attempt_at": "2026-11-11T14:06:00+01:00",
+      "explanation": "TT#7 #Mañaneros11N es tendencia por la emisión de Mañaneros 360 durante la huelga general del 11N, con seguimiento de la jornada y entrevistas a representantes sindicales.\n#HuelgaGeneral #RTVE\n🌶️ El magazine abrió con huelga en la escaleta.",
+      "closer_text": "🌶️ El magazine abrió con huelga en la escaleta.",
+      "rank_at_explanation": 7,
+      "category": "Televisión",
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        {
+          "title": "El Español: la televisión durante la huelga general",
+          "url": "https://www.elespanol.com/invertia/medios/20261111/sindicatos-dejan-emitir-normalidad-intxaurrondo-cintora-tve-canal-sur-va-negro/1003744453764_0.amp.html",
+          "published_at": "2026-11-11"
+        },
+        {
+          "title": "RTVE: Mañaneros 360",
+          "url": "https://www.rtve.es/play/videos/mananeros-360/mananeros-360-programa-798/17306571/",
+          "published_at": "2026-11-09"
+        }
+      ],
+      "news_disposition": "ignored",
+      "news_note": "",
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "pending",
+      "fallback_image_status": "pending",
+      "image_choice": "none",
+      "image_status": "pending",
+      "image_pending": true,
+      "telegram_package_status": "pending"
     },
     {
       "id": "2d61c29c559a",
       "name": "Error",
       "rank": 8,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-11-11T13:11:01+01:00",
       "revision": 0,
       "reexplain": false,
-      "with_image": true,
+      "with_image": false,
       "alternatives_target": 0,
       "batch_id": "1c93e1f8ee29",
       "requested_together": [
@@ -293245,7 +293301,6 @@
       "captured_with": [
         "Error"
       ],
-      "automatic_grouping": false,
       "grouping_disabled": true,
       "auto_queued": true,
       "auto_queue_scope": "top30",
@@ -293256,13 +293311,22 @@
       "editor_approval_batch_id": "",
       "previous_episode_id": "",
       "distinct_event_required": true,
-      "review_instruction": "Investiga POR QUÉ ha vuelto al Top 30 tras más de 24 h de la última explicación (o por solicitud expresa). Contrasta hechos actuales con la ficha anterior. Solo un acontecimiento material, nuevo e independiente permite otra ficha en Listas. Si sigue el mismo motivo, conservar la explicación previa y cerrar como review_completed/no_distinct_event, sin publicación ni imagen. Un cambio de puesto o seguir en el ranking NO es un retorno."
+      "review_instruction": "Investiga POR QUÉ ha vuelto al Top 30 tras más de 24 h de la última explicación (o por solicitud expresa). Contrasta hechos actuales con la ficha anterior. Solo un acontecimiento material, nuevo e independiente permite otra ficha en Listas. Si sigue el mismo motivo, conservar la explicación previa y cerrar como review_completed/no_distinct_event, sin publicación ni imagen. Un cambio de puesto o seguir en el ranking NO es un retorno.",
+      "review_completed_at": "2026-11-11T14:06:00+01:00",
+      "review_reason": "no_distinct_event",
+      "last_attempt_at": "2026-11-11T14:06:00+01:00",
+      "disable_ai_image": true,
+      "image_pending": false,
+      "image_status": "none",
+      "ai_image_status": "none",
+      "fallback_image_status": "none",
+      "telegram_package_status": "none"
     },
     {
       "id": "ead6b87a7efb",
       "name": "Cagadon",
       "rank": 10,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-11-11T13:11:01+01:00",
       "revision": 0,
       "reexplain": false,
@@ -293275,7 +293339,6 @@
       "captured_with": [
         "Cagadon"
       ],
-      "automatic_grouping": false,
       "grouping_disabled": true,
       "auto_queued": true,
       "auto_queue_scope": "top30",
@@ -293286,17 +293349,46 @@
       "editor_approval_batch_id": "",
       "previous_episode_id": "",
       "distinct_event_required": false,
-      "review_instruction": ""
+      "review_instruction": "",
+      "explained_at": "2026-11-11T14:06:00+01:00",
+      "last_attempt_at": "2026-11-11T14:06:00+01:00",
+      "explanation": "TT#10 Cagadon aparece entre las tendencias en España, pero no se ha podido confirmar qué conversación concreta ha impulsado el término.",
+      "closer_text": "",
+      "rank_at_explanation": 10,
+      "category": "Otros",
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        {
+          "title": "TTendencias: ranking autoritativo vigente",
+          "url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/recent.json",
+          "published_at": "2026-11-11"
+        },
+        {
+          "title": "Tendencias de España",
+          "url": "https://twtdata.com/twitter-trends/spain/",
+          "published_at": "2026-11-11"
+        }
+      ],
+      "news_disposition": "ignored",
+      "news_note": "No se equipara automáticamente con «Cagada» ni con otra tendencia de grafía parecida.",
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "pending",
+      "fallback_image_status": "pending",
+      "image_choice": "none",
+      "image_status": "pending",
+      "image_pending": true,
+      "telegram_package_status": "pending"
     },
     {
       "id": "86fd495273c9",
       "name": "Alejandra",
       "rank": 11,
-      "status": "preparing",
+      "status": "review_completed",
       "requested_at": "2026-11-11T13:11:01+01:00",
       "revision": 0,
       "reexplain": false,
-      "with_image": true,
+      "with_image": false,
       "alternatives_target": 0,
       "batch_id": "1c93e1f8ee29",
       "requested_together": [
@@ -293305,7 +293397,6 @@
       "captured_with": [
         "Alejandra"
       ],
-      "automatic_grouping": false,
       "grouping_disabled": true,
       "auto_queued": true,
       "auto_queue_scope": "top30",
@@ -293316,13 +293407,22 @@
       "editor_approval_batch_id": "",
       "previous_episode_id": "b6bdde0356db",
       "distinct_event_required": true,
-      "review_instruction": "Investiga POR QUÉ ha vuelto al Top 30 tras más de 24 h de la última explicación (o por solicitud expresa). Contrasta hechos actuales con la ficha anterior. Solo un acontecimiento material, nuevo e independiente permite otra ficha en Listas. Si sigue el mismo motivo, conservar la explicación previa y cerrar como review_completed/no_distinct_event, sin publicación ni imagen. Un cambio de puesto o seguir en el ranking NO es un retorno."
+      "review_instruction": "Investiga POR QUÉ ha vuelto al Top 30 tras más de 24 h de la última explicación (o por solicitud expresa). Contrasta hechos actuales con la ficha anterior. Solo un acontecimiento material, nuevo e independiente permite otra ficha en Listas. Si sigue el mismo motivo, conservar la explicación previa y cerrar como review_completed/no_distinct_event, sin publicación ni imagen. Un cambio de puesto o seguir en el ranking NO es un retorno.",
+      "review_completed_at": "2026-11-11T14:06:00+01:00",
+      "review_reason": "no_distinct_event",
+      "last_attempt_at": "2026-11-11T14:06:00+01:00",
+      "disable_ai_image": true,
+      "image_pending": false,
+      "image_status": "none",
+      "ai_image_status": "none",
+      "fallback_image_status": "none",
+      "telegram_package_status": "none"
     },
     {
       "id": "2dc43ceb1804",
       "name": "CAGONES",
       "rank": 14,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-11-11T13:11:01+01:00",
       "revision": 0,
       "reexplain": false,
@@ -293335,7 +293435,6 @@
       "captured_with": [
         "CAGONES"
       ],
-      "automatic_grouping": false,
       "grouping_disabled": true,
       "auto_queued": true,
       "auto_queue_scope": "top30",
@@ -293346,13 +293445,42 @@
       "editor_approval_batch_id": "",
       "previous_episode_id": "",
       "distinct_event_required": false,
-      "review_instruction": ""
+      "review_instruction": "",
+      "explained_at": "2026-11-11T14:06:00+01:00",
+      "last_attempt_at": "2026-11-11T14:06:00+01:00",
+      "explanation": "TT#14 CAGONES aparece entre las tendencias en España, pero no se ha podido confirmar qué conversación concreta ha impulsado el término.",
+      "closer_text": "",
+      "rank_at_explanation": 14,
+      "category": "Otros",
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        {
+          "title": "TTendencias: ranking autoritativo vigente",
+          "url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/recent.json",
+          "published_at": "2026-11-11"
+        },
+        {
+          "title": "Tendencias de España",
+          "url": "https://twtdata.com/twitter-trends/spain/",
+          "published_at": "2026-11-11"
+        }
+      ],
+      "news_disposition": "ignored",
+      "news_note": "Término descalificatorio: se evita atribución no verificada.",
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "pending",
+      "fallback_image_status": "pending",
+      "image_choice": "none",
+      "image_status": "pending",
+      "image_pending": true,
+      "telegram_package_status": "pending"
     },
     {
       "id": "ffa74ccda79b",
       "name": "Gran Vía",
       "rank": 17,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-11-11T13:11:01+01:00",
       "revision": 0,
       "reexplain": false,
@@ -293365,7 +293493,6 @@
       "captured_with": [
         "Gran Vía"
       ],
-      "automatic_grouping": false,
       "grouping_disabled": true,
       "auto_queued": true,
       "auto_queue_scope": "top30",
@@ -293376,13 +293503,42 @@
       "editor_approval_batch_id": "",
       "previous_episode_id": "",
       "distinct_event_required": false,
-      "review_instruction": ""
+      "review_instruction": "",
+      "explained_at": "2026-11-11T14:06:00+01:00",
+      "last_attempt_at": "2026-11-11T14:06:00+01:00",
+      "explanation": "TT#17 Gran Vía es tendencia por la huelga general: la principal manifestación de Madrid recorrerá esta tarde Atocha, Cibeles, Alcalá, Gran Vía y Plaza de España, con cortes previstos.\n#HuelgaGeneral #Madrid",
+      "closer_text": "",
+      "rank_at_explanation": 17,
+      "category": "Sociedad",
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        {
+          "title": "Vozpópuli: cortes de tráfico por la huelga del 11N",
+          "url": "https://www.vozpopuli.com/actualidad/cortes-de-trafico-hoy-11-de-noviembre-en-madrid-por-la-huelga-general-horarios-calles-cortadas-y-carreteras-bloqueadas-por-las-manifestaciones.html",
+          "published_at": "2026-11-11"
+        },
+        {
+          "title": "CRTM: información actualizada del servicio",
+          "url": "https://crtm.es/comunicacion/actualidad-del-servicio/avisos/informacion-actualizada",
+          "published_at": "2026-11-11"
+        }
+      ],
+      "news_disposition": "ignored",
+      "news_note": "",
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "pending",
+      "fallback_image_status": "pending",
+      "image_choice": "none",
+      "image_status": "pending",
+      "image_pending": true,
+      "telegram_package_status": "pending"
     },
     {
       "id": "7d5d7afb207a",
       "name": "Marcelinho Huertas",
       "rank": 18,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-11-11T13:11:01+01:00",
       "revision": 0,
       "reexplain": false,
@@ -293395,7 +293551,6 @@
       "captured_with": [
         "Marcelinho Huertas"
       ],
-      "automatic_grouping": false,
       "grouping_disabled": true,
       "auto_queued": true,
       "auto_queue_scope": "top30",
@@ -293406,13 +293561,37 @@
       "editor_approval_batch_id": "",
       "previous_episode_id": "",
       "distinct_event_required": false,
-      "review_instruction": ""
+      "review_instruction": "",
+      "explained_at": "2026-11-11T14:06:00+01:00",
+      "last_attempt_at": "2026-11-11T14:06:00+01:00",
+      "explanation": "TT#18 Marcelinho Huertas es tendencia porque ha anunciado que deja La Laguna Tenerife tras más de siete temporadas para marcharse a Dubai y volver a la Euroliga.\n#MarcelinhoHuertas #CBCanarias\n🌶️ A los 43, el siguiente capítulo también lleva pasaporte.",
+      "closer_text": "🌶️ A los 43, el siguiente capítulo también lleva pasaporte.",
+      "rank_at_explanation": 18,
+      "category": "Deportes",
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        {
+          "title": "RTVC/EFE: Marcelinho Huertas se despide de La Laguna Tenerife",
+          "url": "https://rtvc.es/comparecencia-marcelinho-huertas-la-laguna-tenerife-11-noviembre-2026/",
+          "published_at": "2026-11-11"
+        }
+      ],
+      "news_disposition": "ignored",
+      "news_note": "",
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "pending",
+      "fallback_image_status": "pending",
+      "image_choice": "none",
+      "image_status": "pending",
+      "image_pending": true,
+      "telegram_package_status": "pending"
     },
     {
       "id": "4de42939c23c",
       "name": "Acabáis",
       "rank": 20,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-11-11T13:11:01+01:00",
       "revision": 0,
       "reexplain": false,
@@ -293425,7 +293604,6 @@
       "captured_with": [
         "Acabáis"
       ],
-      "automatic_grouping": false,
       "grouping_disabled": true,
       "auto_queued": true,
       "auto_queue_scope": "top30",
@@ -293436,13 +293614,42 @@
       "editor_approval_batch_id": "",
       "previous_episode_id": "",
       "distinct_event_required": false,
-      "review_instruction": ""
+      "review_instruction": "",
+      "explained_at": "2026-11-11T14:06:00+01:00",
+      "last_attempt_at": "2026-11-11T14:06:00+01:00",
+      "explanation": "TT#20 Acabáis aparece entre las tendencias en España, pero no se ha podido confirmar qué conversación concreta ha impulsado el término.",
+      "closer_text": "",
+      "rank_at_explanation": 20,
+      "category": "Otros",
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        {
+          "title": "TTendencias: ranking autoritativo vigente",
+          "url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/recent.json",
+          "published_at": "2026-11-11"
+        },
+        {
+          "title": "Tendencias de España",
+          "url": "https://twtdata.com/twitter-trends/spain/",
+          "published_at": "2026-11-11"
+        }
+      ],
+      "news_disposition": "ignored",
+      "news_note": "",
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "pending",
+      "fallback_image_status": "pending",
+      "image_choice": "none",
+      "image_status": "pending",
+      "image_pending": true,
+      "telegram_package_status": "pending"
     },
     {
       "id": "3b5252a0ea21",
       "name": "Feliz Miércoles",
       "rank": 27,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-11-11T13:11:01+01:00",
       "revision": 0,
       "reexplain": false,
@@ -293455,7 +293662,6 @@
       "captured_with": [
         "Feliz Miércoles"
       ],
-      "automatic_grouping": false,
       "grouping_disabled": true,
       "auto_queued": true,
       "auto_queue_scope": "top30",
@@ -293466,13 +293672,42 @@
       "editor_approval_batch_id": "",
       "previous_episode_id": "",
       "distinct_event_required": false,
-      "review_instruction": ""
+      "review_instruction": "",
+      "explained_at": "2026-11-11T14:06:00+01:00",
+      "last_attempt_at": "2026-11-11T14:06:00+01:00",
+      "explanation": "TT#27 Feliz Miércoles es tendencia por los saludos y mensajes habituales de los miércoles en X, sin un acontecimiento informativo concreto detrás del término.\n#FelizMiércoles\n🌶️ El calendario vuelve a pasar lista a mitad de semana.",
+      "closer_text": "🌶️ El calendario vuelve a pasar lista a mitad de semana.",
+      "rank_at_explanation": 27,
+      "category": "Otros",
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        {
+          "title": "TTendencias: ranking autoritativo vigente",
+          "url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/recent.json",
+          "published_at": "2026-11-11"
+        },
+        {
+          "title": "Tendencias de España",
+          "url": "https://twtdata.com/twitter-trends/spain/",
+          "published_at": "2026-11-11"
+        }
+      ],
+      "news_disposition": "ignored",
+      "news_note": "",
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "pending",
+      "fallback_image_status": "pending",
+      "image_choice": "none",
+      "image_status": "pending",
+      "image_pending": true,
+      "telegram_package_status": "pending"
     },
     {
       "id": "da68b64d495a",
       "name": "Santi",
       "rank": 30,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-11-11T13:11:01+01:00",
       "revision": 0,
       "reexplain": false,
@@ -293485,7 +293720,6 @@
       "captured_with": [
         "Santi"
       ],
-      "automatic_grouping": false,
       "grouping_disabled": true,
       "auto_queued": true,
       "auto_queue_scope": "top30",
@@ -293496,7 +293730,36 @@
       "editor_approval_batch_id": "",
       "previous_episode_id": "",
       "distinct_event_required": false,
-      "review_instruction": ""
+      "review_instruction": "",
+      "explained_at": "2026-11-11T14:06:00+01:00",
+      "last_attempt_at": "2026-11-11T14:06:00+01:00",
+      "explanation": "TT#30 Santi aparece entre las tendencias en España, pero no se ha podido confirmar qué persona o conversación concreta ha impulsado el término.",
+      "closer_text": "",
+      "rank_at_explanation": 30,
+      "category": "Otros",
+      "source": "editorial_chat_direct",
+      "verification_sources": [
+        {
+          "title": "TTendencias: ranking autoritativo vigente",
+          "url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/recent.json",
+          "published_at": "2026-11-11"
+        },
+        {
+          "title": "Tendencias de España",
+          "url": "https://twtdata.com/twitter-trends/spain/",
+          "published_at": "2026-11-11"
+        }
+      ],
+      "news_disposition": "ignored",
+      "news_note": "Nombre ambiguo: no se identifica a una persona sin evidencia.",
+      "disable_ai_image": false,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "pending",
+      "fallback_image_status": "pending",
+      "image_choice": "none",
+      "image_status": "pending",
+      "image_pending": true,
+      "telegram_package_status": "pending"
     }
   ],
   "count": 2450
