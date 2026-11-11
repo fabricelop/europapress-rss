@@ -16,10 +16,13 @@ async function get(route){const r=await fetch(API+route,{credentials:'same-origi
 async function post(route,body){const r=await fetch(API+route,{method:'POST',credentials:'same-origin',headers,body:JSON.stringify(body)});const j=await r.json().catch(()=>({}));if(!r.ok||!j.ok)throw Error(j.error||'HTTP '+r.status);return j}
 function notice(s,error=false){$('status').textContent=s;$('status').classList.toggle('warn',error)}
 function photo(sha){const i=el('img');i.loading='lazy';i.alt='PNG privado TT Fotos';i.src=API+'/assets/'+encodeURIComponent(sha)+'/original';return i}
-async function associate(sha,cmd){if(!cmd||!confirm('¿Confirmas que esta imagen corresponde exactamente al encargo '+cmd+'? Solo se cambia la ficha TT Fotos.'))return;
+async function associate(sha,cmd){if(!cmd)return;
  const lookup=await get('/jobs/'+encodeURIComponent(cmd));const j=lookup.job;
+ const weaker=j.verification==='editorial_identity_only';
+ const message='¿Confirmas que esta imagen corresponde al encargo '+cmd+'?'+(weaker?' La ficha y revisión están corroboradas, pero NO se ha recuperado el recibo exacto de generación. Revisa la imagen y el comando antes de confirmar.':' El encargo exacto está verificado.')+' Solo se cambia TT Fotos.';
+ if(!confirm(message))return;
  const m=await post('/matches',{assetSha:sha,commandId:cmd,project:j.project,editorialId:j.editorialId,revision:j.revision,confirmation:'CONFIRMAR_ASOCIACION_EDITOR'});
- notice('Foto vinculada a '+m.association.editorialId+'. La bandeja iPhone no se ha modificado.');await refresh();}
+ notice('Foto vinculada a '+m.association.editorialId+(weaker?' por confirmación editorial (sin recibo exacto).': ' con encargo exacto.')+' La bandeja iPhone no se ha modificado.');await refresh();}
 function drawAssets(){const grid=$('assets-gallery');grid.replaceChildren();const list=view==='unmatched'?assets.filter(x=>!x.matches):assets;
  if(!list.length)grid.append(el('p','sub','No hay imágenes en esta categoría.'));
  for(const a of list){const card=el('article','card'),body=el('div','body');card.append(photo(a.sha));body.append(el('h3','',a.title||'Imagen '+a.sha.slice(0,12)),el('p','',a.source_kind+' · '+a.evidence_reason+' · '+new Date(a.created_at).toLocaleString('es-ES')));
@@ -39,9 +42,16 @@ function drawAssets(){const grid=$('assets-gallery');grid.replaceChildren();cons
  const choose=el('button','','Usar ficha encontrada');
  choose.onclick=async()=>{const j=suggestionsData[Number(suggestions.value)];
   if(!j||suggestions.value===''){notice('Selecciona una ficha del menú.',true);return}
-  choose.disabled=true;try{const r=await get('/editorial-command?project='+encodeURIComponent(j.project)+'&id='+encodeURIComponent(j.editorialId)+'&revision='+j.revision);
-    input.value=r.candidate.commandId;notice('Ficha verificada: '+j.title+'. Pulsa «Asociar a ficha» para confirmar.');
-  }catch(e){notice('Este encargo todavía no tiene identificación exacta recuperable: '+e.message,true)}finally{choose.disabled=false}};
+  choose.disabled=true;try{
+   // A visible original ChatGPT turn may have supplied the exact command.
+   // Never derive its random suffix from a title or from an editorial ID.
+   const known=/^(tt|tr)-img-auto-([a-f0-9]{12})-r(\\d+)-a\\d+-\\d{10,}$/i.exec(a.evidence_command||'');
+   if(known&&known[2]===j.editorialId&&Number(known[3])===j.revision&&((known[1]==='tt'&&j.project==='ttittulares')||(known[1]==='tr'&&j.project==='ttendencias'))){
+    input.value=a.evidence_command;notice('Ficha corroborada: '+j.title+'. Confirma su asociación después de revisar la fotografía.');return;
+   }
+   const r=await get('/editorial-command?project='+encodeURIComponent(j.project)+'&id='+encodeURIComponent(j.editorialId)+'&revision='+j.revision);
+   input.value=r.candidate.commandId;notice('Encargo exacto recuperado: '+j.title+'. Pulsa «Asociar a ficha» para confirmar.');
+  }catch(e){notice('La ficha editorial existe, pero falta el commandId original. Ábrelo en la conversación de ChatGPT y copia el identificador exacto en el campo superior.',true)}finally{choose.disabled=false}};
  controls.append(searchTitle,searchButton,suggestions,choose);
  if(a.conversation_url){const link=el('a','', 'Abrir conversación de origen');link.href=a.conversation_url;link.target='_blank';link.rel='noopener noreferrer';body.append(link)}body.append(controls);card.append(body);grid.append(card)} }
 function drawJobs(){const grid=$('jobs-gallery');grid.replaceChildren();if(!jobs.length)grid.append(el('p','sub','No hay encargos en el registro todavía. Puedes consultar uno por ID al asociar una imagen.'));
