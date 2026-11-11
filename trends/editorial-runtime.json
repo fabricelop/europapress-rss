@@ -8,24 +8,35 @@
   "command_id": "tr-1794367313177-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "persisting",
+  "phase": "research",
   "started_at": "2026-11-11T04:22:30+01:00",
-  "updated_at": "2026-11-11T04:28:30+01:00",
-  "current": 0,
+  "updated_at": "2026-11-11T04:29:10+01:00",
+  "current": 1,
   "total": 2,
-  "trend_id": "red-review-cb5d82e21a5d37a3db97",
-  "title": "Revisando novedades: Charles",
+  "trend_id": "red-review-46def1e82b12166337f2",
+  "title": "Revisando novedades: #VotoUtilEsPodemos",
   "queue_complete": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "red-review-cb5d82e21a5d37a3db97"
+  ],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [
-    "red-review-cb5d82e21a5d37a3db97",
     "red-review-46def1e82b12166337f2"
   ],
   "remaining_problematic_ids": [],
   "summary": null,
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "red-review-cb5d82e21a5d37a3db97",
+      "revision": 0,
+      "name": "Revisar novedades: Charles",
+      "outcome": "continuity_update",
+      "applied": true,
+      "source_id": "c43139196d57",
+      "apply_commit": "fe7defd2a595c55e2ce0e58ed8d7940ceab27fdd"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -215,7 +226,7 @@
       "finished_at": "2026-11-11T03:42:00+01:00"
     }
   },
-  "message": "Charles r0 validado JIT. Desarrollo posterior del mismo episodio verificado: Canarias amplió a Tenerife la suspensión presencial; persistiendo resultado de continuidad.",
+  "message": "Charles cerrado 1/2 como actualización de continuidad. #VotoUtilEsPodemos r0 validado JIT; investigando novedades.",
   "history": [
     {
       "run_id": "tr-1794327332740-manual",
@@ -2653,9 +2664,9 @@
     }
   ],
   "current_item": {
-    "id": "red-review-cb5d82e21a5d37a3db97",
+    "id": "red-review-46def1e82b12166337f2",
     "revision": 0,
-    "name": "Revisar novedades: Charles",
+    "name": "Revisar novedades: #VotoUtilEsPodemos",
     "task": "review_red"
   },
   "withdrawn_ids": [],
