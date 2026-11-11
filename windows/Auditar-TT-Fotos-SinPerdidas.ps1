@@ -1,7 +1,6 @@
 # TT FOTOS - AUDITORIA DE SOLO LECTURA
 # No toca Chrome, no envia imagenes, no aprueba, no genera y no modifica archivos.
 param([string]$Base = 'C:\TTiTTulares')
-Set-StrictMode -Version 2
 $ErrorActionPreference = 'Stop'
 $cutover = [DateTimeOffset]::Parse('2026-11-10T13:33:00.000Z')
 $rc = Join-Path $Base 'image-approval-receipts'
