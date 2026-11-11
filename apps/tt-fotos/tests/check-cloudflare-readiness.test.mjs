@@ -23,7 +23,7 @@ function fakeFetcher({mutate,failedPath}={}){
   else if(path.endsWith('/r2/buckets/tt-fotos-originals-private'))result={name:'tt-fotos-originals-private'};
   else if(path.endsWith('/domains/managed'))result={enabled:false};
   else if(path.endsWith('/domains/custom'))result={domains:[]};
-  else if(path.endsWith('/workers/workers/tt-fotos-independent'))result=worker;
+  else if(path.endsWith('/workers/workers'))result=[{id:'another-worker',name:'ttendencias-no-vercel-test'},worker];
   else if(path.endsWith('/access/apps'))result=access;
   if(typeof mutate==='function')result=mutate(path,result);
   return new Response(JSON.stringify({success:true,result}),{status:200});
@@ -73,4 +73,17 @@ test('worker Access public-path overrides are rejected even when AUD and worker 
  assert.throws(()=>findAccessApplication(
   [{...access[0],destinations:[{type:'worker',worker_id:worker.id,overrides:[{behavior:'public',path_pattern:'/fotos'}]}]}],
   env.TT_FOTOS_ACCESS_AUD,worker.id));
+});
+
+test('readiness fails when Worker name cannot be uniquely resolved',async()=>{
+ const absent=fakeFetcher({mutate:(path,value)=>path.endsWith('/workers/workers')?
+   [{id:'not-tf',name:'unrelated-worker'}]:value});
+ const missing=await auditCloudflare(env,absent.request);
+ assert.equal(missing.ready,false);
+ assert(missing.blockers.some(x=>x.includes('STANDALONE_WORKER')));
+ const duplicates=fakeFetcher({mutate:(path,value)=>path.endsWith('/workers/workers')?
+   [worker,{...worker,id:'other-worker-identifier'}]:value});
+ const duplicate=await auditCloudflare(env,duplicates.request);
+ assert.equal(duplicate.ready,false);
+ assert(duplicate.blockers.some(x=>x.includes('STANDALONE_WORKER')));
 });
