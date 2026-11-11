@@ -99,3 +99,14 @@ test('orphan image preview remains local and never changes associations',async t
  assert.equal((await fetch(url+'/api/orphan/immediate-originals/%2e%2e%2forphan-test.png')).status,404);
  assert.equal((await fetch(url+'/api/orphan/original-cache/orphan-test.png')).status,404);
 });
+test('two different valid PNGs under same command are not auto-selected',t=>{
+ const base=makeFixture(t),root=path.join(base,'image-approval-receipts','original-cache');
+ fs.mkdirSync(root,{recursive:true});
+ const other=Buffer.concat([Buffer.from('89504e470d0a1a0a','hex'),Buffer.alloc(50,1)]);
+ const otherSha=crypto.createHash('sha256').update(other).digest('hex');
+ fs.writeFileSync(path.join(root,command+'.png'),other);
+ fs.writeFileSync(path.join(root,command+'.json'),JSON.stringify({commandId:command,editorialId:'123456789abc',revision:1,rasterSHA256:otherSha}));
+ const doc=moduleUnderTest.inventory(base);
+ assert.equal(doc.counts.originalNotDelivered,0);
+ assert.equal(doc.jobs[0].phase,'IMAGEN_NO_VERIFICADA');
+});
