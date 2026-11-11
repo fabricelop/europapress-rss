@@ -1356,7 +1356,7 @@ function renderShortNowcast(){
   // An explanatory rain wave, not a second independently computed ETA.
   // Keep the canonical decision as the source of the headline.
   const hasForecast=Boolean(state.data?.timeline?.length||state.nowcast?.series?.length);
-  const windows=rainVisualWindows(points,5);
+  const windows=rainVisualWindows(points,5,now+SHORT_HORIZON_MINUTES*60_000);
   const firstWet=windows.find(w=>w.signal==='wet');
   const imminent=Boolean(near&&ev?.start&&Date.parse(ev.start)<=now+SHORT_HORIZON_MINUTES*60_000);
   const visualHeadline=!hasForecast?'Previsión temporal no disponible'
@@ -1365,9 +1365,9 @@ function renderShortNowcast(){
     : decision.mode==='possible_now'?'Señal de lluvia sin confirmar'
     : rain.raining?'Está lloviendo ahora'
     : imminent?'Lluvia prevista hacia las '+fmtTime(ev.start)
-    : decision.mode==='stable_now'?'Sin lluvia prevista a corto plazo'
-    : firstWet?'Posible tramo de lluvia en las próximas horas'
-    : 'Sin lluvia relevante prevista en esta franja';
+    : decision.mode==='stable_now'&&decision.stable?'Periodo estable estimado: '+decision.stable.label
+    : firstWet?'Señal de lluvia en el gráfico · llegada por confirmar'
+    : 'Sin episodio relevante previsto en esta franja';
   const subtitle=!hasForecast?'No mostramos tiempo seco cuando faltan datos'
     : decision.mode==='episode_pause'?'Una pausa observada no garantiza que el episodio haya terminado'
     : decision.mode==='episode_ended_early'?'Radar y observación local han corregido el tramo anterior'
