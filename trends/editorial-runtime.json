@@ -3,38 +3,37 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794367313177-manual",
-  "previous_run_id": "tr-20261111T032500-manual",
-  "command_id": "tr-1794367313177-manual",
+  "run_id": "tr-1794367731188-manual",
+  "previous_run_id": "tr-1794367313177-manual",
+  "command_id": "tr-1794367731188-manual",
   "source": "chat",
   "status": "DONE",
   "phase": "closing",
-  "started_at": "2026-11-11T04:22:30+01:00",
-  "updated_at": "2026-11-11T04:30:30+01:00",
-  "current": 2,
-  "total": 2,
+  "started_at": "2026-11-11T04:29:00+01:00",
+  "updated_at": "2026-11-11T04:32:31+01:00",
+  "current": 1,
+  "total": 1,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
   "queue_complete": true,
-  "processed_ids": [
-    "red-review-cb5d82e21a5d37a3db97",
+  "processed_ids": [],
+  "converged_ids": [
     "red-review-46def1e82b12166337f2"
   ],
-  "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
+    "attempted": 1,
+    "observed": 1,
+    "closed": 1,
     "explained": 0,
     "problematic": 0,
-    "updates": 1,
-    "review_completed_no_distinct_event": 1,
-    "maintenance_reviews": 2,
+    "updates": 0,
+    "review_completed_no_distinct_event": 0,
+    "maintenance_reviews": 1,
     "unchanged_reviews": 1,
-    "continuity_updates": 1,
+    "continuity_updates": 0,
     "distinct_updates": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
@@ -47,30 +46,21 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 1
   },
   "outcomes": [
-    {
-      "id": "red-review-cb5d82e21a5d37a3db97",
-      "revision": 0,
-      "name": "Revisar novedades: Charles",
-      "outcome": "continuity",
-      "applied": true,
-      "source_id": "c43139196d57",
-      "outbox_commit": "705dded82c4cfff7b6e25f6d50c58988562cc724",
-      "apply_commit": "fe7defd2a595c55e2ce0e58ed8d7940ceab27fdd",
-      "verification": "mismo ID/revisión/explained_at; requests y manual sincronizados; cola retirada"
-    },
     {
       "id": "red-review-46def1e82b12166337f2",
       "revision": 0,
       "name": "Revisar novedades: #VotoUtilEsPodemos",
       "outcome": "unchanged",
       "applied": true,
+      "via": "concurrent_convergence",
       "source_id": "a1c1e16d0c24",
+      "source_run_id": "tr-1794367313177-manual",
       "outbox_commit": "4c185156acd8446080bd80554af887a952c945a8",
       "apply_commit": "80a65f12408362a49fe9ede74ebfeee29c7b9770",
-      "verification": "texto y explained_at conservados; requests y manual sincronizados; cola retirada"
+      "verification": "texto, closer_text y explained_at idénticos en requests.json y telegram-manual-explained.json; red_review_outcome=unchanged; job retirado de editorial-queue"
     }
   ],
   "incident_count": 0,
@@ -193,29 +183,47 @@
       "trend_id": null,
       "title": "Pasada editorial TTendencias",
       "message": "Barrera final verificada: editorial-queue=0 (2026-11-11T03:40:56+01:00); 0/0 cerrado sin trabajo pendiente."
+    },
+    {
+      "at": "2026-11-11T04:29:00+01:00",
+      "phase": "verifying",
+      "current": 0,
+      "total": 1,
+      "trend_id": "red-review-46def1e82b12166337f2",
+      "title": "Revisar novedades: #VotoUtilEsPodemos",
+      "message": "Job observado en preparing; validación JIT y comprobación de convergencia en main."
+    },
+    {
+      "at": "2026-11-11T04:32:31+01:00",
+      "phase": "closing",
+      "current": 1,
+      "total": 1,
+      "trend_id": null,
+      "title": "Pasada editorial TTendencias",
+      "message": "Convergencia confirmada y barrera final verificada: cola 0; sin trabajo editorial activo."
     }
   ],
-  "last_started_at": "2026-11-11T03:40:00+01:00",
-  "last_completed_at": "2026-11-11T04:22:00+01:00",
+  "last_started_at": "2026-11-11T04:29:00+01:00",
+  "last_completed_at": "2026-11-11T04:32:31+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794367313177-manual",
+    "run_id": "tr-1794367731188-manual",
     "status": "DONE",
-    "started_at": "2026-11-11T04:22:30+01:00",
-    "finished_at": "2026-11-11T04:30:30+01:00",
-    "at": "2026-11-11T04:30:30+01:00",
+    "started_at": "2026-11-11T04:29:00+01:00",
+    "finished_at": "2026-11-11T04:32:31+01:00",
+    "at": "2026-11-11T04:32:31+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 2,
-      "observed": 2,
-      "closed": 2,
+      "attempted": 1,
+      "observed": 1,
+      "closed": 1,
       "explained": 0,
       "problematic": 0,
-      "updates": 1,
-      "review_completed_no_distinct_event": 1,
-      "maintenance_reviews": 2,
+      "updates": 0,
+      "review_completed_no_distinct_event": 0,
+      "maintenance_reviews": 1,
       "unchanged_reviews": 1,
-      "continuity_updates": 1,
+      "continuity_updates": 0,
       "distinct_updates": 0,
       "stale_reviews": 0,
       "unverified_reviews": 0,
@@ -228,47 +236,37 @@
       "image_outbox_created": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 0
+      "concurrent_convergence": 1
     },
-    "processed_ids": [
-      "red-review-cb5d82e21a5d37a3db97",
+    "processed_ids": [],
+    "converged_ids": [
       "red-review-46def1e82b12166337f2"
     ],
-    "converged_ids": [],
     "outcomes": [
-      {
-        "id": "red-review-cb5d82e21a5d37a3db97",
-        "revision": 0,
-        "name": "Revisar novedades: Charles",
-        "outcome": "continuity",
-        "applied": true,
-        "source_id": "c43139196d57",
-        "outbox_commit": "705dded82c4cfff7b6e25f6d50c58988562cc724",
-        "apply_commit": "fe7defd2a595c55e2ce0e58ed8d7940ceab27fdd",
-        "verification": "mismo ID/revisión/explained_at; requests y manual sincronizados; cola retirada"
-      },
       {
         "id": "red-review-46def1e82b12166337f2",
         "revision": 0,
         "name": "Revisar novedades: #VotoUtilEsPodemos",
         "outcome": "unchanged",
         "applied": true,
+        "via": "concurrent_convergence",
         "source_id": "a1c1e16d0c24",
+        "source_run_id": "tr-1794367313177-manual",
         "outbox_commit": "4c185156acd8446080bd80554af887a952c945a8",
         "apply_commit": "80a65f12408362a49fe9ede74ebfeee29c7b9770",
-        "verification": "texto y explained_at conservados; requests y manual sincronizados; cola retirada"
+        "verification": "texto, closer_text y explained_at idénticos en requests.json y telegram-manual-explained.json; red_review_outcome=unchanged; job retirado de editorial-queue"
       }
     ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-1794367313177-manual cerrada 2/2. Charles quedó actualizado como continuidad del mismo episodio, conservando ID, revisión y explained_at; #VotoUtilEsPodemos quedó unchanged. Barrera final main: editorial-queue=0, requests sin preparing/update y sin rewrite_pending/reexplain activos, y manual sin pendientes equivalentes. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+    "message": "Pasada tr-1794367731188-manual cerrada 1/1 por convergencia JIT. La revisión roja de #VotoUtilEsPodemos observada al inicio fue aplicada por la pasada concurrente tr-1794367313177-manual como unchanged; se conservaron texto, ID, revisión y explained_at. Barrera final main: editorial-queue=0 y requests/manual/mobile sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
     "prior_last_run": {
-      "run_id": "tr-autoguard-1794366675",
+      "run_id": "tr-1794367313177-manual",
       "status": "DONE",
-      "finished_at": "2026-11-11T04:22:00+01:00"
+      "finished_at": "2026-11-11T04:30:30+01:00"
     }
   },
-  "message": "Pasada tr-1794367313177-manual cerrada 2/2. Charles quedó actualizado como continuidad del mismo episodio, conservando ID, revisión y explained_at; #VotoUtilEsPodemos quedó unchanged. Barrera final main: editorial-queue=0, requests sin preparing/update y sin rewrite_pending/reexplain activos, y manual sin pendientes equivalentes. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada tr-1794367731188-manual cerrada 1/1 por convergencia JIT. La revisión roja de #VotoUtilEsPodemos observada al inicio fue aplicada por la pasada concurrente tr-1794367313177-manual como unchanged; se conservaron texto, ID, revisión y explained_at. Barrera final main: editorial-queue=0 y requests/manual/mobile sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794327332740-manual",
@@ -2703,31 +2701,91 @@
         "status": "DONE",
         "finished_at": "2026-11-11T03:42:00+01:00"
       }
+    },
+    {
+      "run_id": "tr-1794367731188-manual",
+      "status": "DONE",
+      "started_at": "2026-11-11T04:29:00+01:00",
+      "finished_at": "2026-11-11T04:32:31+01:00",
+      "at": "2026-11-11T04:32:31+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 1,
+        "observed": 1,
+        "closed": 1,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 1,
+        "unchanged_reviews": 1,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 1
+      },
+      "processed_ids": [],
+      "converged_ids": [
+        "red-review-46def1e82b12166337f2"
+      ],
+      "outcomes": [
+        {
+          "id": "red-review-46def1e82b12166337f2",
+          "revision": 0,
+          "name": "Revisar novedades: #VotoUtilEsPodemos",
+          "outcome": "unchanged",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "source_id": "a1c1e16d0c24",
+          "source_run_id": "tr-1794367313177-manual",
+          "outbox_commit": "4c185156acd8446080bd80554af887a952c945a8",
+          "apply_commit": "80a65f12408362a49fe9ede74ebfeee29c7b9770",
+          "verification": "texto, closer_text y explained_at idénticos en requests.json y telegram-manual-explained.json; red_review_outcome=unchanged; job retirado de editorial-queue"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-1794367731188-manual cerrada 1/1 por convergencia JIT. La revisión roja de #VotoUtilEsPodemos observada al inicio fue aplicada por la pasada concurrente tr-1794367313177-manual como unchanged; se conservaron texto, ID, revisión y explained_at. Barrera final main: editorial-queue=0 y requests/manual/mobile sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+      "prior_last_run": {
+        "run_id": "tr-1794367313177-manual",
+        "status": "DONE",
+        "finished_at": "2026-11-11T04:30:30+01:00"
+      }
     }
   ],
   "current_item": null,
   "withdrawn_ids": [],
-  "last_finished_at": "2026-11-11T01:58:13.477Z",
-  "last_revalidated_at": "2026-11-11T02:54:58+01:00",
-  "last_revalidation": "main releído: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain/review_red/anticipate activos.",
+  "last_finished_at": "2026-11-11T04:32:31+01:00",
+  "last_revalidated_at": "2026-11-11T04:32:31+01:00",
+  "last_revalidation": "main releído: editorial-queue=0 (updated_at 2026-11-11T04:31:17+01:00) y requests/manual/mobile sin preparing/update/rewrite_pending/reexplain activos.",
   "prior_runtime_observed": {
-    "run_id": "tr-1794361941170-manual",
+    "run_id": "tr-1794367313177-manual",
     "status": "DONE",
-    "started_at": "2026-11-11T02:52:00+01:00",
-    "finished_at": "2026-11-11T02:54:58+01:00",
-    "at": "2026-11-11T02:54:58+01:00",
+    "started_at": "2026-11-11T04:22:30+01:00",
+    "finished_at": "2026-11-11T04:30:30+01:00",
+    "at": "2026-11-11T04:30:30+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 1,
-      "observed": 1,
-      "closed": 1,
+      "attempted": 2,
+      "observed": 2,
+      "closed": 2,
       "explained": 0,
       "problematic": 0,
-      "updates": 0,
-      "review_completed_no_distinct_event": 0,
-      "maintenance_reviews": 1,
+      "updates": 1,
+      "review_completed_no_distinct_event": 1,
+      "maintenance_reviews": 2,
       "unchanged_reviews": 1,
-      "continuity_updates": 0,
+      "continuity_updates": 1,
       "distinct_updates": 0,
       "stale_reviews": 0,
       "unverified_reviews": 0,
@@ -2740,36 +2798,45 @@
       "image_outbox_created": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 1
+      "concurrent_convergence": 0
     },
-    "processed_ids": [],
-    "converged_ids": [
-      "red-review-c574fe6c74856fb3b5ed"
+    "processed_ids": [
+      "red-review-cb5d82e21a5d37a3db97",
+      "red-review-46def1e82b12166337f2"
     ],
+    "converged_ids": [],
     "outcomes": [
       {
-        "id": "red-review-c574fe6c74856fb3b5ed",
+        "id": "red-review-cb5d82e21a5d37a3db97",
         "revision": 0,
-        "name": "Revisar novedades: #HuelgaGeneral",
+        "name": "Revisar novedades: Charles",
+        "outcome": "continuity",
+        "applied": true,
+        "source_id": "c43139196d57",
+        "outbox_commit": "705dded82c4cfff7b6e25f6d50c58988562cc724",
+        "apply_commit": "fe7defd2a595c55e2ce0e58ed8d7940ceab27fdd",
+        "verification": "mismo ID/revisión/explained_at; requests y manual sincronizados; cola retirada"
+      },
+      {
+        "id": "red-review-46def1e82b12166337f2",
+        "revision": 0,
+        "name": "Revisar novedades: #VotoUtilEsPodemos",
         "outcome": "unchanged",
         "applied": true,
-        "source_id": "4f1dae5df224",
-        "via": "concurrent_convergence",
-        "apply_commit": "20fd8c9130aa91fc111b8a2775a900478c9b7e07",
-        "verification": "resultado unchanged ya aplicado; source rows sincronizadas y job review_completed en la pasada solapada"
+        "source_id": "a1c1e16d0c24",
+        "outbox_commit": "4c185156acd8446080bd80554af887a952c945a8",
+        "apply_commit": "80a65f12408362a49fe9ede74ebfeee29c7b9770",
+        "verification": "texto y explained_at conservados; requests y manual sincronizados; cola retirada"
       }
     ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada tr-1794361941170-manual cerrada 1/1 por convergencia JIT. #HuelgaGeneral r0 ya había quedado aplicada como unchanged durante la pasada solapada tr-1794361683242-manual; se verificó el resultado, el cierre 20fd8c9130aa91fc111b8a2775a900478c9b7e07 y la barrera final main con editorial-queue=0 y mobile-decisions sin trabajo editorial activo. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+    "message": "Pasada tr-1794367313177-manual cerrada 2/2. Charles quedó actualizado como continuidad del mismo episodio, conservando ID, revisión y explained_at; #VotoUtilEsPodemos quedó unchanged. Barrera final main: editorial-queue=0, requests sin preparing/update y sin rewrite_pending/reexplain activos, y manual sin pendientes equivalentes. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
     "prior_last_run": {
-      "run_id": "tr-1794361683242-manual",
+      "run_id": "tr-autoguard-1794366675",
       "status": "DONE",
-      "finished_at": "2026-11-11T02:55:30+01:00"
-    },
-    "absorbed_run_ids": [
-      "tr-1794361683242-manual"
-    ]
+      "finished_at": "2026-11-11T04:22:00+01:00"
+    }
   },
   "apply_workflow_run_id": 42930648566,
   "apply_commit": "32adb756edf6777064410fb7c7e9f616520c523f",
@@ -4940,6 +5007,66 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-1794361683242-manual cerrada 2/2. Carzzy y #HuelgaGeneral quedaron revisadas como unchanged: no se verificó un desarrollo material posterior que cambiara sus explicaciones vigentes. Barrera final main: editorial-queue=0; requests y mobile-decisions sin preparing/update/rewrite_pending/reexplain/review_red/anticipate activos; ambas fichas sincronizadas en requests.json y telegram-manual-explained.json con red_review_outcome=unchanged. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794367731188-manual",
+      "status": "DONE",
+      "started_at": "2026-11-11T04:29:00+01:00",
+      "finished_at": "2026-11-11T04:32:31+01:00",
+      "at": "2026-11-11T04:32:31+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 1,
+        "observed": 1,
+        "closed": 1,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 1,
+        "unchanged_reviews": 1,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 1
+      },
+      "processed_ids": [],
+      "converged_ids": [
+        "red-review-46def1e82b12166337f2"
+      ],
+      "outcomes": [
+        {
+          "id": "red-review-46def1e82b12166337f2",
+          "revision": 0,
+          "name": "Revisar novedades: #VotoUtilEsPodemos",
+          "outcome": "unchanged",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "source_id": "a1c1e16d0c24",
+          "source_run_id": "tr-1794367313177-manual",
+          "outbox_commit": "4c185156acd8446080bd80554af887a952c945a8",
+          "apply_commit": "80a65f12408362a49fe9ede74ebfeee29c7b9770",
+          "verification": "texto, closer_text y explained_at idénticos en requests.json y telegram-manual-explained.json; red_review_outcome=unchanged; job retirado de editorial-queue"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-1794367731188-manual cerrada 1/1 por convergencia JIT. La revisión roja de #VotoUtilEsPodemos observada al inicio fue aplicada por la pasada concurrente tr-1794367313177-manual como unchanged; se conservaron texto, ID, revisión y explained_at. Barrera final main: editorial-queue=0 y requests/manual/mobile sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+      "prior_last_run": {
+        "run_id": "tr-1794367313177-manual",
+        "status": "DONE",
+        "finished_at": "2026-11-11T04:30:30+01:00"
+      }
     }
   ],
   "outbox_comment_id": 6721989528,
@@ -4950,13 +5077,11 @@
     "eedbccdb94df1936c8997f1f2ced3536266ed14e"
   ],
   "outbox_commit": "d98a814e110f71921adab2ad984fde8a2a11979c",
-  "finished_at": "2026-11-11T04:30:30+01:00",
+  "finished_at": "2026-11-11T04:32:31+01:00",
   "prior_last_run": {
-    "run_id": "tr-20261111T034000-manual",
+    "run_id": "tr-1794367313177-manual",
     "status": "DONE",
-    "finished_at": "2026-11-11T03:42:00+01:00"
+    "finished_at": "2026-11-11T04:30:30+01:00"
   },
-  "absorbed_run_ids": [
-    "tr-1794361683242-manual"
-  ]
+  "absorbed_run_ids": []
 }
