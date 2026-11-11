@@ -48,7 +48,7 @@ enum RainWaveForecast {
     static func signal(_ point:RainWavePoint)->RainWaveSignal {
         guard let value=point.rate, value.isFinite, value >= 0 else { return .unknown }
         let prob=point.probability.map { max(0,min(100,$0)) }
-        if value>=0.15 && (prob == nil || prob!>=40) {return .wet}
+        if value>=0.15 && (prob.map {$0>=40} ?? true) {return .wet}
         if value>=0.03 || (prob ?? 0)>=30 {return .possible}
         return .dry
     }
@@ -56,11 +56,12 @@ enum RainWaveForecast {
     static func spans(_ points:[RainWavePoint])->[RainWaveSpan] {
         guard !points.isEmpty else {return []}
         var result:[RainWaveSpan]=[]
+        let nominalStep=points.count>1 ? max(1,points[1].minute-points[0].minute) : 1
         for index in points.indices {
             let status=signal(points[index])
             let rate=max(0,points[index].rate ?? 0)
             if let previous=result.last,previous.signal==status,
-               (index==0 || points[index].minute>points[index-1].minute) {
+               (index==0 || points[index].minute-points[index-1].minute==nominalStep) {
                 result.removeLast()
                 result.append(RainWaveSpan(id:previous.id,signal:status,first:previous.first,
                                            end:index+1,peak:max(previous.peak,rate)))
@@ -220,7 +221,7 @@ struct RainWaveWindows:View {
                     VStack(alignment:.leading,spacing:5) {
                         Text(span.signal.title)
                             .font(.system(size:11,weight:.semibold))
-                            .foregroundStyle(span.signal==(.unknown) ? .secondary:.primary)
+                            .foregroundStyle(span.signal == .unknown ? Color.secondary : Color.primary)
                         Text(timeText(span))
                             .font(.system(size:10,weight:.medium,design:.rounded))
                             .monospacedDigit()
