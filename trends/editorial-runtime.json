@@ -7,15 +7,15 @@
   "previous_run_id": "tr-20261111T164000-manual",
   "command_id": "tr-20261111T165500-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-11T16:55:00+01:00",
-  "updated_at": "2026-11-11T16:55:00+01:00",
+  "updated_at": "2026-11-11T16:57:24+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -52,13 +52,13 @@
   "error": null,
   "activity": "Sin novedades",
   "last_started_at": "2026-11-11T16:55:00+01:00",
-  "last_completed_at": "2026-11-11T16:41:00+01:00",
+  "last_completed_at": "2026-11-11T16:57:24+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261111T164000-manual",
+    "run_id": "tr-20261111T165500-manual",
     "status": "DONE",
-    "started_at": "2026-11-11T16:40:00+01:00",
-    "finished_at": "2026-11-11T16:41:00+01:00",
+    "started_at": "2026-11-11T16:55:00+01:00",
+    "finished_at": "2026-11-11T16:57:24+01:00",
     "total": 0,
     "closed": 0,
     "explained": 0,
@@ -66,7 +66,7 @@
     "pending": 0,
     "anticipation_prepared": 0
   },
-  "message": "Inicio de pasada manual: cola autoritativa observada vacía; verificando barrera final JIT antes de cerrar.",
+  "message": "Pasada tr-20261111T165500-manual cerrada 0/0 contra main. Barrera final: editorial-queue=0 (updated_at 2026-11-11T16:51:08+01:00) y mobile-decisions sin preparing/update/rewrite_pending activos. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794327332740-manual",
@@ -4087,20 +4087,29 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-20261111T164000-manual cerrada 0/0 contra main. Barrera final: editorial-queue=0 (updated_at 2026-11-11T16:41:00+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. El Top 30 fue refrescado durante la pasada y no generó trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-20261111T165500-manual",
+      "status": "DONE",
+      "started_at": "2026-11-11T16:55:00+01:00",
+      "finished_at": "2026-11-11T16:57:24+01:00",
+      "total": 0,
+      "closed": 0,
+      "explained": 0,
+      "maintenance": 0,
+      "pending": 0
     }
   ],
   "current_item": null,
   "withdrawn_ids": [],
-  "last_finished_at": "2026-11-11T16:41:00+01:00",
-  "last_revalidated_at": "2026-11-11T16:25:00+01:00",
+  "last_finished_at": "2026-11-11T16:57:24+01:00",
+  "last_revalidated_at": "2026-11-11T16:57:24+01:00",
   "last_revalidation": {
-    "at": "2026-11-11T16:25:00+01:00",
-    "queue_sha": "c6e2daa4ecfc777e27428e59113aed437c29af89",
+    "queue_sha": "ba62053041ec3e2f27dffb7764fb0f21fdef4d90",
+    "queue_updated_at": "2026-11-11T16:51:08+01:00",
     "queue_count": 0,
-    "rewrite_pending": 0,
-    "reexplain_pending": 0,
-    "anticipate_pending": 0,
-    "review_red_pending": 0
+    "mobile_decisions_sha": "960deec202dc6df0afcf230f214827da23f5e98e",
+    "active_count": 0
   },
   "prior_runtime_observed": {
     "run_id": "tr-autoguard-1794381666",
@@ -6990,5 +6999,5 @@
     }
   ],
   "processed": [],
-  "finished_at": null
+  "finished_at": "2026-11-11T16:57:24+01:00"
 }
