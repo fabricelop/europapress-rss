@@ -139,26 +139,55 @@ async function recoverOne(base,item,{source,receiver,immediate,unprotect=unprote
   // Original cache is intentionally NEVER deleted by this tool.
   return {commandId:item.commandId,project:item.project,state:'DELIVERED_CONFIRMED_LOCAL',receiptState:reply.state};
 }
+// Coordinate with the scheduled image receiver: it creates exactly the same
+// receiver.lock. Do not delete a lock owned by another process, even if stale.
+function acquireReceiverLock(base){
+  const dir=path.join(base,'image-approval-receipts');
+  if(!fs.existsSync(dir))throw Error('RECEIPT_DIRECTORY_MISSING');
+  const file=path.join(dir,'receiver.lock');
+  const nonce=crypto.randomBytes(16).toString('hex');
+  const entry={pid:process.pid,at:Date.now(),owner:'TTFotosRecover.cjs',nonce};
+  let fd;
+  try{
+    fd=fs.openSync(file,'wx',0o600);
+    fs.writeFileSync(fd,JSON.stringify(entry));
+  }catch(e){
+    if(fd!==undefined){try{fs.closeSync(fd)}catch{}}
+    if(e.code==='EEXIST')throw Error('RECEIVER_ALREADY_RUNNING_OR_LOCK_UNCONFIRMED');
+    throw e;
+  }
+  fs.closeSync(fd);
+  return ()=>{
+    const current=readJSON(file);
+    if(current?.nonce!==nonce||current?.owner!==entry.owner||current?.pid!==entry.pid)
+      throw Error('RECEIVER_LOCK_OWNERSHIP_LOST');
+    fs.unlinkSync(file);
+  };
+}
+
 async function applyCached(base,{dependencyLoader=null,unprotect,send}={}){
-  const scanResult=scan(base),results=[];
-  if(scanResult.summary.conflict)throw Error('GLOBAL_IDENTITY_CONFLICT: audit and resolve before apply');
-  const receiver=(dependencyLoader?dependencyLoader('TTImageApprovalReceiver.cjs'):
-    require(path.join(base,'TTImageApprovalReceiver.cjs')));
-  const immediate=(dependencyLoader?dependencyLoader('TTImagesImmediateInbox.cjs'):
-    require(path.join(base,'TTImagesImmediateInbox.cjs')));
-  const sources={};
-  for(const [project,,file] of FILES){
-    sources[project]=dependencyLoader?dependencyLoader(file):require(path.join(base,file));
-  }
-  for(const item of scanResult.items.filter(x=>x.state==='ORIGINAL_CACHED_NEEDS_DELIVERY')){
-    try{
-      results.push(await recoverOne(base,item,{source:sources[item.project],receiver,immediate,
-        ...(unprotect?{unprotect}:{}),...(send?{send}:{})}));
-    }catch(e){results.push({commandId:item.commandId,project:item.project,
-      state:'NOT_DELIVERED',reason:safeString(e.message).replace(/https?:\/\/\S+/g,'[url]')})}
-  }
-  return {before:scanResult.summary,after:scan(base).summary,results,
-    unresolvedOriginals:scan(base).orphans};
+  const release=acquireReceiverLock(base);
+  try{
+    const scanResult=scan(base),results=[];
+    if(scanResult.summary.conflict)throw Error('GLOBAL_IDENTITY_CONFLICT: audit and resolve before apply');
+    const receiver=(dependencyLoader?dependencyLoader('TTImageApprovalReceiver.cjs'):
+      require(path.join(base,'TTImageApprovalReceiver.cjs')));
+    const immediate=(dependencyLoader?dependencyLoader('TTImagesImmediateInbox.cjs'):
+      require(path.join(base,'TTImagesImmediateInbox.cjs')));
+    const sources={};
+    for(const [project,,file] of FILES){
+      sources[project]=dependencyLoader?dependencyLoader(file):require(path.join(base,file));
+    }
+    for(const item of scanResult.items.filter(x=>x.state==='ORIGINAL_CACHED_NEEDS_DELIVERY')){
+      try{
+        results.push(await recoverOne(base,item,{source:sources[item.project],receiver,immediate,
+          ...(unprotect?{unprotect}:{}),...(send?{send}:{})}));
+      }catch(e){results.push({commandId:item.commandId,project:item.project,
+        state:'NOT_DELIVERED',reason:safeString(e.message).replace(/https?:\/\/\S+/g,'[url]')})}
+    }
+    return {before:scanResult.summary,after:scan(base).summary,results,
+      unresolvedOriginals:scan(base).orphans};
+  }finally{release()}
 }
 function publicReport(data){
   return {generatedAt:new Date().toISOString(),mode:'audit_read_only',
