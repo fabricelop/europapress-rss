@@ -63,3 +63,14 @@ test('public R2, wrong D1, or missing API permissions cannot pass',async()=>{
  assert.equal((await auditCloudflare(env,denied.request)).ready,false);
  assert.throws(()=>verifyInventory({name:'tt-fotos-private'},{name:'tt-fotos-originals-private'},{enabled:true},{domains:[]}));
 });
+
+test('worker Access public-path overrides are rejected even when AUD and worker ID match',async()=>{
+ const f=fakeFetcher({mutate:(path,value)=>path.endsWith('/access/apps')?
+  [{...access[0],destinations:[{type:'worker',worker_id:worker.id,overrides:[{behavior:'public',path_pattern:'/*'}]}]}]:value});
+ const result=await auditCloudflare(env,f.request);
+ assert.equal(result.ready,false);
+ assert(result.blockers.some(x=>x.includes('PUBLIC_ACCESS_DESTINATION_OVERRIDE')));
+ assert.throws(()=>findAccessApplication(
+  [{...access[0],destinations:[{type:'worker',worker_id:worker.id,overrides:[{behavior:'public',path_pattern:'/fotos'}]}]}],
+  env.TT_FOTOS_ACCESS_AUD,worker.id));
+});
