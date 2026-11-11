@@ -7,19 +7,16 @@
   "previous_run_id": "tr-20261111T155500-manual",
   "command_id": "tr-20261111T161000-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-11T16:10:00+01:00",
-  "updated_at": "2026-11-11T16:14:00+01:00",
-  "current": 0,
+  "updated_at": "2026-11-11T16:16:00+01:00",
+  "current": 8,
   "total": 8,
-  "trend_id": "74182b96a9e2",
-  "title": "#TEM11N",
-  "queue_complete": false,
-  "processed_ids": [],
-  "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [
+  "trend_id": null,
+  "title": "Pasada editorial TTendencias",
+  "queue_complete": true,
+  "processed_ids": [
     "74182b96a9e2",
     "52fbeb23ee5c",
     "27df759740a4",
@@ -29,12 +26,15 @@
     "6e3a64e7c4e5",
     "268c85abe56c"
   ],
+  "converged_ids": [],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 0,
-    "closed": 0,
-    "explained": 0,
+    "attempted": 8,
+    "observed": 8,
+    "closed": 8,
+    "explained": 8,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
@@ -55,27 +55,92 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "74182b96a9e2",
+      "revision": 0,
+      "name": "#TEM11N",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "fc172e29a53e7da7111016413c6152830563409c"
+    },
+    {
+      "id": "52fbeb23ee5c",
+      "revision": 0,
+      "name": "Cagon",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "fc172e29a53e7da7111016413c6152830563409c"
+    },
+    {
+      "id": "27df759740a4",
+      "revision": 0,
+      "name": "Cagão",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "fc172e29a53e7da7111016413c6152830563409c"
+    },
+    {
+      "id": "35336369800c",
+      "revision": 0,
+      "name": "#elpulso11nov",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "fc172e29a53e7da7111016413c6152830563409c"
+    },
+    {
+      "id": "0644c1c8ffdc",
+      "revision": 0,
+      "name": "Zancajo",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "fc172e29a53e7da7111016413c6152830563409c"
+    },
+    {
+      "id": "a6051e0eceed",
+      "revision": 0,
+      "name": "Histórica",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "fc172e29a53e7da7111016413c6152830563409c"
+    },
+    {
+      "id": "6e3a64e7c4e5",
+      "revision": 0,
+      "name": "Vox y Abascal",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "fc172e29a53e7da7111016413c6152830563409c"
+    },
+    {
+      "id": "268c85abe56c",
+      "revision": 0,
+      "name": "Corte Inglés",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "fc172e29a53e7da7111016413c6152830563409c"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
   "activity": "Sin novedades",
   "last_started_at": "2026-11-11T16:10:00+01:00",
-  "last_completed_at": "2026-11-11T15:56:00+01:00",
+  "last_completed_at": "2026-11-11T16:16:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261111T155500-manual",
+    "run_id": "tr-20261111T161000-manual",
     "status": "DONE",
-    "started_at": "2026-11-11T15:55:00+01:00",
-    "finished_at": "2026-11-11T15:56:00+01:00",
-    "total": 0,
-    "closed": 0,
-    "explained": 0,
+    "started_at": "2026-11-11T16:10:00+01:00",
+    "finished_at": "2026-11-11T16:16:00+01:00",
+    "total": 8,
+    "closed": 8,
+    "explained": 8,
     "maintenance": 0,
     "pending": 0,
     "anticipation_prepared": 0
   },
-  "message": "8 tendencias nuevas revalidadas JIT; investigación y redacción completadas. Persistiendo lote textual sin ImageGen.",
+  "message": "Pasada tr-20261111T161000-manual cerrada 8/8 contra main. Las 8 revisiones fueron aplicadas y retiradas de editorial-queue. Barrera final: cola=0 y sin rewrite_pending/reexplain/anticipate/review_red detectados. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794327332740-manual",
@@ -3998,21 +4063,31 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-20261111T155500-manual cerrada 0/0 contra main. Barrera final: editorial-queue=0 (updated_at 2026-11-11T15:51:34+01:00) y sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos en los registros comprobados. No había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-20261111T161000-manual",
+      "status": "DONE",
+      "started_at": "2026-11-11T16:10:00+01:00",
+      "finished_at": "2026-11-11T16:16:00+01:00",
+      "total": 8,
+      "closed": 8,
+      "explained": 8,
+      "queue_remaining": 0,
+      "apply_commit": "fc172e29a53e7da7111016413c6152830563409c"
     }
   ],
-  "current_item": {
-    "id": "74182b96a9e2",
-    "revision": 0,
-    "name": "#TEM11N"
-  },
+  "current_item": null,
   "withdrawn_ids": [],
-  "last_finished_at": "2026-11-11T15:16:29+01:00",
-  "last_revalidated_at": "2026-11-11T08:33:00+01:00",
+  "last_finished_at": "2026-11-11T16:16:00+01:00",
+  "last_revalidated_at": "2026-11-11T16:16:00+01:00",
   "last_revalidation": {
+    "at": "2026-11-11T16:16:00+01:00",
+    "queue_sha": "cd9594969c33beb390c53e64e1ce2477675831c1",
     "queue_count": 0,
     "rewrite_pending": 0,
     "reexplain_pending": 0,
-    "at": "2026-11-11T08:33:00+01:00"
+    "anticipate_pending": 0,
+    "review_red_pending": 0
   },
   "prior_runtime_observed": {
     "run_id": "tr-autoguard-1794381666",
@@ -4021,10 +4096,10 @@
     "updated_at": "2026-11-11T08:31:36+01:00"
   },
   "apply_workflow_run_id": 42930648566,
-  "apply_commit": "ffa635fc4113159f39882d676f3eda76217ab753",
+  "apply_commit": "fc172e29a53e7da7111016413c6152830563409c",
   "maintenance_workflow_run_id": 42713522083,
   "maintenance_job_id": "red-review-61d494cc18e2321aaa5b",
-  "workflow_run_id": 42765220776,
+  "workflow_run_id": 43046392853,
   "trigger_commit": "325cb630a22b04dca635c378d470e6ec1243b31c",
   "refresh_convergence_commit": "34eadb58c44175ada2ac3c9547745d40d79d38f5",
   "runs": [
@@ -6614,7 +6689,7 @@
       "message": "Pasada tr-1794406200000-manual cerrada 3/3. Ortega Smith r0, Éxito r0 y Youtuber r0 quedaron explicadas y sincronizadas en main mediante ffa635fc4113159f39882d676f3eda76217ab753. Barrera final: editorial-queue=0 y sin reexplicaciones activas. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
-  "outbox_comment_id": 6721989528,
+  "outbox_comment_id": 6799589190,
   "editorial_apply_commit": "ffa635fc4113159f39882d676f3eda76217ab753",
   "refresh_workflow_run_id": 42929355766,
   "refresh_conclusion": "success",
@@ -6804,5 +6879,5 @@
     }
   ],
   "processed": [],
-  "finished_at": null
+  "finished_at": "2026-11-11T16:16:00+01:00"
 }
