@@ -3157,6 +3157,110 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-1794380172256-manual cerrada 2/2. Silvia Intxaurrondo: revisión unchanged, porque el desarrollo Broncano/Abascal ya está cubierto por otra ficha. Charles: actualización de continuidad por alerta máxima y rachas >130 km/h, conservando ID/revisión/explained_at y sin nueva ficha ni imagen. Barrera final main: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794378888899-manual",
+      "status": "DONE",
+      "canonical": false,
+      "superseded_by": "tr-1794380172256-manual",
+      "started_at": "2026-11-11T07:46:00+01:00",
+      "finished_at": "2026-11-11T08:01:32+01:00",
+      "at": "2026-11-11T08:01:32+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 6,
+        "observed": 6,
+        "closed": 6,
+        "explained": 4,
+        "problematic": 0,
+        "updates": 1,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 2,
+        "unchanged_reviews": 1,
+        "continuity_updates": 1,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 2
+      },
+      "processed_ids": [
+        "f04453996596",
+        "c3cd3ee44d92",
+        "4f1dae5df224",
+        "b97769cc0759",
+        "red-review-9cae369ce918a8dae93b",
+        "red-review-99e2a4666b6b51563f34"
+      ],
+      "converged_ids": [
+        "red-review-9cae369ce918a8dae93b",
+        "red-review-99e2a4666b6b51563f34"
+      ],
+      "outcomes": [
+        {
+          "id": "f04453996596",
+          "revision": 0,
+          "name": "#FelizMiércoles",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "b17f43d98eca1c1df74024fe42f533b887467dbb"
+        },
+        {
+          "id": "c3cd3ee44d92",
+          "revision": 0,
+          "name": "Barcelona",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "4a85fab07b4f2e64bbede918b5909945359d038c"
+        },
+        {
+          "id": "4f1dae5df224",
+          "revision": 1,
+          "name": "#HuelgaGeneral",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "0922c1e2b47f1fb875d48f5ecd6de230af58157e"
+        },
+        {
+          "id": "b97769cc0759",
+          "revision": 1,
+          "name": "Tavernes",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "fa4a82141082da053d0bee7339e01ec60e19729c"
+        },
+        {
+          "id": "red-review-9cae369ce918a8dae93b",
+          "revision": 0,
+          "name": "Revisar novedades: Silvia Intxaurrondo",
+          "outcome": "unchanged",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "source_id": "b048f4473f70",
+          "apply_commit": "8ac401943a74f6b1e15d582eac4c3bffb24294b5"
+        },
+        {
+          "id": "red-review-99e2a4666b6b51563f34",
+          "revision": 0,
+          "name": "Revisar novedades: Charles",
+          "outcome": "continuity_update",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "source_id": "c43139196d57",
+          "apply_commit": "8ac401943a74f6b1e15d582eac4c3bffb24294b5"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-1794378888899-manual cerrada 6/6. Cuatro trabajos ordinarios (#FelizMiércoles r0, Barcelona r0, #HuelgaGeneral r1 y Tavernes r1) quedaron explicados y sincronizados. La barrera final detectó dos revisiones rojas nuevas: Silvia Intxaurrondo quedó unchanged y Charles se actualizó en continuidad; ambas convergieron con la pasada concurrente tr-1794380172256-manual y fueron aplicadas por 8ac401943a74f6b1e15d582eac4c3bffb24294b5. Barrera final main: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "current_item": null,
@@ -3238,6 +3342,11 @@
       "run_id": "tr-autoguard-1794366675",
       "status": "DONE",
       "finished_at": "2026-11-11T04:22:00+01:00"
+    },
+    "tr-1794378888899-manual": {
+      "status": "DONE",
+      "finished_at": "2026-11-11T08:01:32+01:00",
+      "superseded_by": "tr-1794380172256-manual"
     }
   },
   "apply_workflow_run_id": 42930648566,
@@ -5530,6 +5639,110 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-1794380172256-manual cerrada 2/2. Silvia Intxaurrondo: revisión unchanged, porque el desarrollo Broncano/Abascal ya está cubierto por otra ficha. Charles: actualización de continuidad por alerta máxima y rachas >130 km/h, conservando ID/revisión/explained_at y sin nueva ficha ni imagen. Barrera final main: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794378888899-manual",
+      "status": "DONE",
+      "canonical": false,
+      "superseded_by": "tr-1794380172256-manual",
+      "started_at": "2026-11-11T07:46:00+01:00",
+      "finished_at": "2026-11-11T08:01:32+01:00",
+      "at": "2026-11-11T08:01:32+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 6,
+        "observed": 6,
+        "closed": 6,
+        "explained": 4,
+        "problematic": 0,
+        "updates": 1,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 2,
+        "unchanged_reviews": 1,
+        "continuity_updates": 1,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 2
+      },
+      "processed_ids": [
+        "f04453996596",
+        "c3cd3ee44d92",
+        "4f1dae5df224",
+        "b97769cc0759",
+        "red-review-9cae369ce918a8dae93b",
+        "red-review-99e2a4666b6b51563f34"
+      ],
+      "converged_ids": [
+        "red-review-9cae369ce918a8dae93b",
+        "red-review-99e2a4666b6b51563f34"
+      ],
+      "outcomes": [
+        {
+          "id": "f04453996596",
+          "revision": 0,
+          "name": "#FelizMiércoles",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "b17f43d98eca1c1df74024fe42f533b887467dbb"
+        },
+        {
+          "id": "c3cd3ee44d92",
+          "revision": 0,
+          "name": "Barcelona",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "4a85fab07b4f2e64bbede918b5909945359d038c"
+        },
+        {
+          "id": "4f1dae5df224",
+          "revision": 1,
+          "name": "#HuelgaGeneral",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "0922c1e2b47f1fb875d48f5ecd6de230af58157e"
+        },
+        {
+          "id": "b97769cc0759",
+          "revision": 1,
+          "name": "Tavernes",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "fa4a82141082da053d0bee7339e01ec60e19729c"
+        },
+        {
+          "id": "red-review-9cae369ce918a8dae93b",
+          "revision": 0,
+          "name": "Revisar novedades: Silvia Intxaurrondo",
+          "outcome": "unchanged",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "source_id": "b048f4473f70",
+          "apply_commit": "8ac401943a74f6b1e15d582eac4c3bffb24294b5"
+        },
+        {
+          "id": "red-review-99e2a4666b6b51563f34",
+          "revision": 0,
+          "name": "Revisar novedades: Charles",
+          "outcome": "continuity_update",
+          "applied": true,
+          "via": "concurrent_convergence",
+          "source_id": "c43139196d57",
+          "apply_commit": "8ac401943a74f6b1e15d582eac4c3bffb24294b5"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-1794378888899-manual cerrada 6/6. Cuatro trabajos ordinarios (#FelizMiércoles r0, Barcelona r0, #HuelgaGeneral r1 y Tavernes r1) quedaron explicados y sincronizados. La barrera final detectó dos revisiones rojas nuevas: Silvia Intxaurrondo quedó unchanged y Charles se actualizó en continuidad; ambas convergieron con la pasada concurrente tr-1794380172256-manual y fueron aplicadas por 8ac401943a74f6b1e15d582eac4c3bffb24294b5. Barrera final main: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "outbox_comment_id": 6721989528,
