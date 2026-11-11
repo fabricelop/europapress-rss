@@ -7,38 +7,38 @@
   "previous_run_id": "tr-20261111T065500-manual",
   "command_id": "tr-20261111T071000-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-11T07:10:00+01:00",
-  "updated_at": "2026-11-11T07:14:00+01:00",
+  "updated_at": "2026-11-11T07:16:00+01:00",
   "current": 4,
   "total": 4,
-  "trend_id": "312da905bf4e",
-  "title": "Barcelona",
-  "queue_complete": false,
-  "processed_ids": [],
-  "converged_ids": [],
-  "remaining_ids": [
+  "trend_id": null,
+  "title": "Pasada editorial TTendencias",
+  "queue_complete": true,
+  "processed_ids": [
     "2f0771d9deb3",
     "6ddea9a1fe4c",
     "5e271d05f834",
     "312da905bf4e"
   ],
-  "remaining_active_ids": [
+  "converged_ids": [
     "2f0771d9deb3",
     "6ddea9a1fe4c",
     "5e271d05f834",
     "312da905bf4e"
   ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 4,
     "observed": 4,
-    "closed": 0,
-    "explained": 0,
+    "closed": 4,
+    "explained": 3,
     "problematic": 0,
     "updates": 0,
-    "review_completed_no_distinct_event": 0,
+    "review_completed_no_distinct_event": 1,
     "maintenance_reviews": 0,
     "unchanged_reviews": 0,
     "continuity_updates": 0,
@@ -48,15 +48,52 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 4,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 4
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "2f0771d9deb3",
+      "revision": 0,
+      "name": "Impedir",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_chat_direct",
+      "apply_commit": "e04b82e986ef23f425c825e20a401d0c22fed983"
+    },
+    {
+      "id": "6ddea9a1fe4c",
+      "revision": 0,
+      "name": "INFORMATIVO",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_chat_direct",
+      "apply_commit": "e04b82e986ef23f425c825e20a401d0c22fed983"
+    },
+    {
+      "id": "5e271d05f834",
+      "revision": 0,
+      "name": "Piquete",
+      "outcome": "explained",
+      "applied": true,
+      "via": "editorial_chat_direct",
+      "apply_commit": "e04b82e986ef23f425c825e20a401d0c22fed983"
+    },
+    {
+      "id": "312da905bf4e",
+      "revision": 0,
+      "name": "Barcelona",
+      "outcome": "review_completed_no_distinct_event",
+      "applied": true,
+      "via": "editorial_chat_direct",
+      "apply_commit": "e04b82e986ef23f425c825e20a401d0c22fed983"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -142,22 +179,55 @@
       "trend_id": "312da905bf4e",
       "title": "Barcelona",
       "message": "Persistiendo resultados mediante TTENDENCIAS_CHAT_OUTBOX_V1"
+    },
+    {
+      "at": "2026-11-11T07:14:00+01:00",
+      "phase": "verifying",
+      "trend_id": "2f0771d9deb3",
+      "title": "Impedir",
+      "message": "Texto aplicado y sincronizado en commit e04b82e986ef23f425c825e20a401d0c22fed983"
+    },
+    {
+      "at": "2026-11-11T07:14:00+01:00",
+      "phase": "verifying",
+      "trend_id": "6ddea9a1fe4c",
+      "title": "INFORMATIVO",
+      "message": "Texto aplicado y sincronizado en commit e04b82e986ef23f425c825e20a401d0c22fed983"
+    },
+    {
+      "at": "2026-11-11T07:14:00+01:00",
+      "phase": "verifying",
+      "trend_id": "5e271d05f834",
+      "title": "Piquete",
+      "message": "Texto aplicado y sincronizado en commit e04b82e986ef23f425c825e20a401d0c22fed983"
+    },
+    {
+      "at": "2026-11-11T07:14:00+01:00",
+      "phase": "verifying",
+      "trend_id": "312da905bf4e",
+      "title": "Barcelona",
+      "message": "Reentrada cerrada como no_distinct_event; sin nueva ficha ni imagen"
+    },
+    {
+      "at": "2026-11-11T07:16:00+01:00",
+      "phase": "closing",
+      "message": "Cola releída en main: 0; 4/4 resultados aplicados. ImageGen=0; publicaciones=0."
     }
   ],
   "last_started_at": "2026-11-11T07:10:00+01:00",
-  "last_completed_at": "2026-11-11T06:56:00+01:00",
+  "last_completed_at": "2026-11-11T07:16:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261111T065500-manual",
+    "run_id": "tr-20261111T071000-manual",
     "status": "DONE",
-    "started_at": "2026-11-11T06:55:00+01:00",
-    "finished_at": "2026-11-11T06:56:00+01:00",
-    "total": 0,
-    "closed": 0,
+    "started_at": "2026-11-11T07:10:00+01:00",
+    "finished_at": "2026-11-11T07:16:00+01:00",
+    "total": 4,
+    "closed": 4,
     "maintenance": 0,
     "pending": 0
   },
-  "message": "Pasada tr-20261111T071000-manual: investigación y redacción completadas para 4/4; persistiendo 3 explicaciones y 1 cierre no_distinct_event.",
+  "message": "Pasada tr-20261111T071000-manual cerrada 4/4. Impedir, INFORMATIVO y Piquete quedaron explained y sincronizados; Barcelona quedó review_completed/no_distinct_event sin nueva ficha ni imagen. Barrera final: editorial-queue=0 (updated_at 2026-11-11T07:14:00+01:00). Apply commit e04b82e986ef23f425c825e20a401d0c22fed983. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794327332740-manual",
@@ -2885,6 +2955,92 @@
       "trend_id": "2f0771d9deb3",
       "title": "Impedir",
       "message": "Pasada tr-20261111T071000-manual RUNNING. Cola inicial=4: Impedir r0, INFORMATIVO r0, Piquete r0, Barcelona r0. Procesamiento textual JIT; ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-20261111T071000-manual",
+      "status": "DONE",
+      "started_at": "2026-11-11T07:10:00+01:00",
+      "finished_at": "2026-11-11T07:16:00+01:00",
+      "at": "2026-11-11T07:16:00+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 4,
+        "observed": 4,
+        "closed": 4,
+        "explained": 3,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 1,
+        "maintenance_reviews": 0,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 4
+      },
+      "processed_ids": [
+        "2f0771d9deb3",
+        "6ddea9a1fe4c",
+        "5e271d05f834",
+        "312da905bf4e"
+      ],
+      "converged_ids": [
+        "2f0771d9deb3",
+        "6ddea9a1fe4c",
+        "5e271d05f834",
+        "312da905bf4e"
+      ],
+      "outcomes": [
+        {
+          "id": "2f0771d9deb3",
+          "revision": 0,
+          "name": "Impedir",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_chat_direct",
+          "apply_commit": "e04b82e986ef23f425c825e20a401d0c22fed983"
+        },
+        {
+          "id": "6ddea9a1fe4c",
+          "revision": 0,
+          "name": "INFORMATIVO",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_chat_direct",
+          "apply_commit": "e04b82e986ef23f425c825e20a401d0c22fed983"
+        },
+        {
+          "id": "5e271d05f834",
+          "revision": 0,
+          "name": "Piquete",
+          "outcome": "explained",
+          "applied": true,
+          "via": "editorial_chat_direct",
+          "apply_commit": "e04b82e986ef23f425c825e20a401d0c22fed983"
+        },
+        {
+          "id": "312da905bf4e",
+          "revision": 0,
+          "name": "Barcelona",
+          "outcome": "review_completed_no_distinct_event",
+          "applied": true,
+          "via": "editorial_chat_direct",
+          "apply_commit": "e04b82e986ef23f425c825e20a401d0c22fed983"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-20261111T071000-manual cerrada 4/4. Impedir, INFORMATIVO y Piquete quedaron explained y sincronizados; Barcelona quedó review_completed/no_distinct_event sin nueva ficha ni imagen. Barrera final: editorial-queue=0 (updated_at 2026-11-11T07:14:00+01:00). Apply commit e04b82e986ef23f425c825e20a401d0c22fed983. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "current_item": null,
@@ -5200,14 +5356,14 @@
     }
   ],
   "outbox_comment_id": 6721989528,
-  "editorial_apply_commit": "32adb756edf6777064410fb7c7e9f616520c523f",
+  "editorial_apply_commit": "e04b82e986ef23f425c825e20a401d0c22fed983",
   "refresh_workflow_run_id": 42929355766,
   "refresh_conclusion": "success",
   "maintenance_apply_commits": [
     "eedbccdb94df1936c8997f1f2ced3536266ed14e"
   ],
   "outbox_commit": "d98a814e110f71921adab2ad984fde8a2a11979c",
-  "finished_at": null,
+  "finished_at": "2026-11-11T07:16:00+01:00",
   "prior_last_run": {
     "run_id": "tr-20261111T061100-manual",
     "status": "DONE",
