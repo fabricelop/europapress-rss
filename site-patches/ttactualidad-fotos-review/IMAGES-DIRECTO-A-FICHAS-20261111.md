@@ -82,3 +82,21 @@ Dado que no hay API pública documentada, **la primera implementación es una au
 A fecha 11/11/2026, **no implementado ni desplegado** el acceso automático ChatGPT Imágenes -> TT Fotos Site. Lo que existe es un monitor Windows V3 y prototipos en GitHub. Esta especificación reemplaza las sugerencias de continuar con la importación de `C:\\TTiTTulares\\TTFotos-Importar`.
 
 **Siguiente ejecución en ChatGPT Work o entorno con navegador autenticado y permisos de Site:** abrir ambas webs; verificar acceso autorizado a Imágenes, encontrar un PNG de una noticia y uno de una tendencia con ID exacto; inspeccionar backend del Site para crear API **independiente**, construir galería privada y completar un piloto E2E antes de iniciar rescate histórico masivo. Trabajar sin intervenciones sobre la bandeja del iPhone.
+
+## Actualización autorizada · servicio TT Fotos INDEPENDIENTE
+
+El editor confirmó posteriormente que **no hace falta conectarlo al Site anterior** y pidió continuar con la implementación separada. Esta instrucción sustituye todas las propuestas previas de añadir rutas y D1/R2 al Site `ttactualidad.rainyraven22.chatgpt.site`.
+
+Código implementado en `apps/tt-fotos/` (main):
+- `src/worker.mjs`: Worker exclusivo `tt-fotos-independent`, sin llamadas al Site ni a inbox.
+- `src/access.mjs`: validación criptográfica Cloudflare Access, audiencia y lista de editores.
+- `src/lib/api.mjs`, `core.mjs`, `job-provider.mjs`: API privada + asociación exacta y manual + historial.
+- `migrations/0001_init.sql`: base D1 propia y bucket R2 propio.
+- `public/index.html`: galería privada con «Sin asociar» y búsqueda por titular o tendencia.
+- `extension-templates/`, `scripts/build-companion.mjs`: extensión Chrome con destino generado para el hostname **exacto** del nuevo Worker y origen ChatGPT.
+- `wrangler.jsonc.example`, `scripts/prepare-deploy.mjs`, `.github/workflows/tt-fotos-standalone-deploy.yml`: despliegue manual y seguro con credenciales de Cloudflare; workflow NO automático.
+- `tests/`, `.github/workflows/tt-fotos-standalone-tests.yml`: pruebas del acceso, backend y origen aislado.
+
+**Pruebas locales verificadas:** 8 pruebas de JWT/configuración ejecutadas correctamente en Node 22. El CI adicional de integración está configurado pero no confirmado. **No desplegado, no conectado a la cuenta Cloudflare ni a la sesión privada ChatGPT Imágenes. No se ha recuperado ninguna imagen real.** Se requiere conexión autorizada a Cloudflare (o ChatGPT Work con navegador autenticado) y piloto con un titular y una tendencia.
+
+El conector puede importar solo recursos de imágenes visibles y accesibles en la interfaz actual de ChatGPT, **no garantiza enumerar la galería completa**; no inventar promesas de importación automática masiva si no existe una API pública de listado. Para imágenes ambiguas hay revisión manual.
