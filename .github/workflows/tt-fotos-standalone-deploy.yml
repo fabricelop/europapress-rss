@@ -17,6 +17,7 @@ jobs:
       TT_FOTOS_ACCESS_ISSUER: ${{ vars.TT_FOTOS_ACCESS_ISSUER }}
       TT_FOTOS_ACCESS_AUD: ${{ vars.TT_FOTOS_ACCESS_AUD }}
       TT_FOTOS_ALLOWED_EMAIL: ${{ secrets.TT_FOTOS_ALLOWED_EMAIL }}
+      TT_FOTOS_PUBLIC_ORIGIN: ${{ vars.TT_FOTOS_PUBLIC_ORIGIN }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -38,3 +39,6 @@ jobs:
         run: npx wrangler deploy
       - name: Store editor allowlist as Cloudflare Worker secret
         run: printf '%s' "$TT_FOTOS_ALLOWED_EMAIL" | npx wrangler secret put TT_FOTOS_ALLOWED_EMAIL
+      - name: Verify anonymous readers cannot access the new independent gallery
+        if: ${{ env.TT_FOTOS_PUBLIC_ORIGIN != '' }}
+        run: node scripts/check-live-access.mjs "$TT_FOTOS_PUBLIC_ORIGIN"
