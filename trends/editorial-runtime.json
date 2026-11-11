@@ -7,12 +7,12 @@
   "previous_run_id": "tr-20261111T044100-manual",
   "command_id": "tr-autoguard-1794370869",
   "source": "chat",
-  "status": "success",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-11T05:21:05+01:00",
-  "updated_at": "2026-11-11T05:25:25+01:00",
-  "current": 0,
-  "total": 4,
+  "updated_at": "2026-11-11T05:28:00+01:00",
+  "current": 6,
+  "total": 6,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
   "queue_complete": true,
@@ -27,11 +27,20 @@
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "closed": [],
-    "updated": [],
-    "unchanged": [],
+    "closed": [
+      "9ed2158bf34b:r0",
+      "950fada6496e:r0",
+      "61e7ab045e90:r0",
+      "25c2287b87a9:r0"
+    ],
+    "maintenance": [
+      "red-review-9903399000f933239cc6:r0 continuity",
+      "red-review-0169e1cb13ea7c6218c6:r0 unchanged"
+    ],
     "pending": [],
-    "incidents": []
+    "incidents": [],
+    "queue_count": 0,
+    "images_generated": 0
   },
   "outcomes": [],
   "incident_count": 0,
@@ -196,47 +205,14 @@
   "last_completed_at": "2026-11-11T05:25:25+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261111T044100-manual",
+    "run_id": "tr-autoguard-1794370869",
     "status": "DONE",
-    "started_at": "2026-11-11T04:41:00+01:00",
-    "finished_at": "2026-11-11T04:42:00+01:00",
-    "at": "2026-11-11T04:42:00+01:00",
-    "phase": "closing",
-    "current": 0,
-    "total": 0,
-    "trend_id": null,
-    "title": "Pasada editorial TTendencias",
-    "summary": {
-      "attempted": 0,
-      "observed": 0,
-      "closed": 0,
-      "explained": 0,
-      "problematic": 0,
-      "updates": 0,
-      "review_completed_no_distinct_event": 0,
-      "maintenance_reviews": 0,
-      "unchanged_reviews": 0,
-      "continuity_updates": 0,
-      "distinct_updates": 0,
-      "stale_reviews": 0,
-      "unverified_reviews": 0,
-      "anticipation_reviews": 0,
-      "anticipation_prepared": 0,
-      "anticipation_unverified": 0,
-      "queue_remaining": 0,
-      "rewrite_pending_remaining": 0,
-      "imagegen_calls": 0,
-      "image_outbox_created": 0,
-      "publications": 0,
-      "incidents": 0,
-      "concurrent_convergence": 0
-    },
-    "processed_ids": [],
-    "converged_ids": [],
-    "outcomes": [],
-    "incident_count": 0,
-    "incidents": [],
-    "message": "Pasada tr-20261111T044100-manual cerrada 0/0 contra main. Barrera JIT final: editorial-queue=0 (actualizada 2026-11-11T04:40:56+01:00); búsquedas dirigidas sin preparing/update/rewrite_pending/reexplain/review_red/anticipate activos y mobile-decisions sin trabajo editorial activo. Último mantenimiento comprobado: #VotoUtilEsPodemos unchanged ya aplicado. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "started_at": "2026-11-11T05:21:05+01:00",
+    "finished_at": "2026-11-11T05:28:00+01:00",
+    "total": 6,
+    "closed": 4,
+    "maintenance": 2,
+    "pending": 0
   },
   "message": "Pasada tr-20261111T044100-manual cerrada 0/0 contra main. Barrera JIT final: editorial-queue=0 (actualizada 2026-11-11T04:40:56+01:00); búsquedas dirigidas sin preparing/update/rewrite_pending/reexplain/review_red/anticipate activos y mobile-decisions sin trabajo editorial activo. Último mantenimiento comprobado: #VotoUtilEsPodemos unchanged ya aplicado. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
@@ -2787,14 +2763,9 @@
       "message": "Pasada tr-20261111T044100-manual cerrada 0/0 contra main. Barrera JIT final: editorial-queue=0 (actualizada 2026-11-11T04:40:56+01:00); búsquedas dirigidas sin preparing/update/rewrite_pending/reexplain/review_red/anticipate activos y mobile-decisions sin trabajo editorial activo. Último mantenimiento comprobado: #VotoUtilEsPodemos unchanged ya aplicado. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
-  "current_item": {
-    "id": "9ed2158bf34b",
-    "revision": 0,
-    "name": "#VisionQuest",
-    "message": "Persistiendo explicación verificada"
-  },
+  "current_item": null,
   "withdrawn_ids": [],
-  "last_finished_at": "2026-11-11T04:32:31+01:00",
+  "last_finished_at": "2026-11-11T05:28:00+01:00",
   "last_revalidated_at": "2026-11-11T04:32:31+01:00",
   "last_revalidation": "main releído: editorial-queue=0 (updated_at 2026-11-11T04:31:17+01:00) y requests/manual/mobile sin preparing/update/rewrite_pending/reexplain activos.",
   "prior_runtime_observed": {
@@ -5106,7 +5077,7 @@
     "eedbccdb94df1936c8997f1f2ced3536266ed14e"
   ],
   "outbox_commit": "d98a814e110f71921adab2ad984fde8a2a11979c",
-  "finished_at": null,
+  "finished_at": "2026-11-11T05:28:00+01:00",
   "prior_last_run": {
     "run_id": "tr-1794367731188-manual",
     "status": "DONE",
@@ -5145,6 +5116,97 @@
       "trend_id": "9ed2158bf34b",
       "revision": 0,
       "message": "persisting: #VisionQuest"
+    },
+    {
+      "at": "2026-11-11T05:25:54+01:00",
+      "phase": "verifying",
+      "trend_id": "9ed2158bf34b",
+      "revision": 0,
+      "name": "#VisionQuest",
+      "message": "Texto aplicado y sincronizado"
+    },
+    {
+      "at": "2026-11-11T05:25:54+01:00",
+      "phase": "verifying",
+      "trend_id": "950fada6496e",
+      "revision": 0,
+      "name": "Wanda",
+      "message": "Texto aplicado y sincronizado"
+    },
+    {
+      "at": "2026-11-11T05:25:54+01:00",
+      "phase": "verifying",
+      "trend_id": "61e7ab045e90",
+      "revision": 0,
+      "name": "Paul George",
+      "message": "Texto aplicado y sincronizado"
+    },
+    {
+      "at": "2026-11-11T05:25:54+01:00",
+      "phase": "verifying",
+      "trend_id": "25c2287b87a9",
+      "revision": 0,
+      "name": "Jaylen Brown",
+      "message": "Texto aplicado y sincronizado"
+    },
+    {
+      "at": "2026-11-11T05:27:22+01:00",
+      "phase": "verifying",
+      "trend_id": "red-review-9903399000f933239cc6",
+      "revision": 0,
+      "name": "RTVE",
+      "message": "Revisando novedades: continuidad aplicada"
+    },
+    {
+      "at": "2026-11-11T05:27:22+01:00",
+      "phase": "verifying",
+      "trend_id": "red-review-0169e1cb13ea7c6218c6",
+      "revision": 0,
+      "name": "Carzzy",
+      "message": "Sin novedades: explicación conservada"
+    },
+    {
+      "at": "2026-11-11T05:28:00+01:00",
+      "phase": "closing",
+      "message": "Cola releída en main: 0 preparing/update y 0 reexplicaciones pendientes"
+    }
+  ],
+  "processed": [
+    {
+      "id": "9ed2158bf34b",
+      "revision": 0,
+      "name": "#VisionQuest",
+      "outcome": "explained"
+    },
+    {
+      "id": "950fada6496e",
+      "revision": 0,
+      "name": "Wanda",
+      "outcome": "explained"
+    },
+    {
+      "id": "61e7ab045e90",
+      "revision": 0,
+      "name": "Paul George",
+      "outcome": "explained"
+    },
+    {
+      "id": "25c2287b87a9",
+      "revision": 0,
+      "name": "Jaylen Brown",
+      "outcome": "explained"
+    },
+    {
+      "id": "red-review-9903399000f933239cc6",
+      "revision": 0,
+      "name": "RTVE",
+      "outcome": "continuity"
+    },
+    {
+      "id": "red-review-0169e1cb13ea7c6218c6",
+      "revision": 0,
+      "name": "Carzzy",
+      "outcome": "unchanged"
     }
   ]
 }
