@@ -3,42 +3,34 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-autoguard-1794381666",
-  "previous_run_id": "tr-1794380172256-manual",
-  "command_id": "tr-autoguard-1794381666",
+  "run_id": "tr-1794382196865-manual",
+  "previous_run_id": "tr-autoguard-1794381666",
+  "command_id": "tr-1794382196865-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-11T08:22:00+01:00",
-  "updated_at": "2026-11-11T08:31:36+01:00",
-  "current": 5,
-  "total": 5,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-11T08:32:00+01:00",
+  "updated_at": "2026-11-11T08:32:00+01:00",
+  "current": 0,
+  "total": 0,
   "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "c3c14a8ca6a5",
-    "cc967443070a",
-    "142a2383c743"
-  ],
-  "converged_ids": [
-    "red-review-1187cef2d097108e5d0a",
-    "red-review-0134840f3bb98f7e1a38"
-  ],
+  "title": "Pasada editorial TTendencias",
+  "queue_complete": false,
+  "processed_ids": [],
+  "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 5,
-    "observed": 5,
-    "closed": 5,
-    "explained": 3,
-    "explained_cause_unconfirmed": 2,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 2,
-    "unchanged_reviews": 2,
+    "maintenance_reviews": 0,
+    "unchanged_reviews": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "stale_reviews": 0,
@@ -52,47 +44,9 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 2
+    "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "c3c14a8ca6a5",
-      "revision": 0,
-      "name": "Informativos",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "cc967443070a",
-      "revision": 0,
-      "name": "lena",
-      "outcome": "explained_cause_unconfirmed",
-      "applied": true
-    },
-    {
-      "id": "142a2383c743",
-      "revision": 0,
-      "name": "Iros",
-      "outcome": "explained_cause_unconfirmed",
-      "applied": true
-    },
-    {
-      "id": "red-review-1187cef2d097108e5d0a",
-      "revision": 0,
-      "name": "Revisar novedades: #VotoUtilEsPodemos",
-      "outcome": "unchanged",
-      "applied": true,
-      "via": "concurrent_convergence"
-    },
-    {
-      "id": "red-review-0134840f3bb98f7e1a38",
-      "revision": 0,
-      "name": "Revisar novedades: Carzzy",
-      "outcome": "unchanged",
-      "applied": true,
-      "via": "concurrent_convergence"
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -229,7 +183,7 @@
       "message": "Revisión JIT r0: el episodio Broncano/Abascal del 10/11 ya fue tratado por separado y su ficha posterior quedó eliminada; verificando que no exista otra novedad material posterior. ImageGen=0."
     }
   ],
-  "last_started_at": "2026-11-11T08:29:19+01:00",
+  "last_started_at": "2026-11-11T08:32:00+01:00",
   "last_completed_at": "2026-11-11T08:31:36+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -243,7 +197,7 @@
     "maintenance": 2,
     "pending": 0
   },
-  "message": "Pasada completada 5/5: Informativos explicado; lena e Iros cerrados con causa no confirmada; #VotoUtilEsPodemos y Carzzy revisados sin novedades materiales. Barrera final: cola 0, sin preparing/update, rewrite_pending, reexplain ni problematic. ImageGen 0; image-outbox editorial 0; publicaciones 0.",
+  "message": "Cola inicial 0; verificando barrera editorial y convergencia con la pasada autoguard recién finalizada.",
   "history": [
     {
       "run_id": "tr-1794327332740-manual",
@@ -3388,79 +3342,10 @@
     "queue_updated_at": "2026-11-11T06:50:59+01:00"
   },
   "prior_runtime_observed": {
-    "run_id": "tr-1794367313177-manual",
+    "run_id": "tr-autoguard-1794381666",
     "status": "DONE",
-    "started_at": "2026-11-11T04:22:30+01:00",
-    "finished_at": "2026-11-11T04:30:30+01:00",
-    "at": "2026-11-11T04:30:30+01:00",
-    "phase": "closing",
-    "summary": {
-      "attempted": 2,
-      "observed": 2,
-      "closed": 2,
-      "explained": 0,
-      "problematic": 0,
-      "updates": 1,
-      "review_completed_no_distinct_event": 1,
-      "maintenance_reviews": 2,
-      "unchanged_reviews": 1,
-      "continuity_updates": 1,
-      "distinct_updates": 0,
-      "stale_reviews": 0,
-      "unverified_reviews": 0,
-      "anticipation_reviews": 0,
-      "anticipation_prepared": 0,
-      "anticipation_unverified": 0,
-      "queue_remaining": 0,
-      "rewrite_pending_remaining": 0,
-      "imagegen_calls": 0,
-      "image_outbox_created": 0,
-      "publications": 0,
-      "incidents": 0,
-      "concurrent_convergence": 0
-    },
-    "processed_ids": [
-      "red-review-cb5d82e21a5d37a3db97",
-      "red-review-46def1e82b12166337f2"
-    ],
-    "converged_ids": [],
-    "outcomes": [
-      {
-        "id": "red-review-cb5d82e21a5d37a3db97",
-        "revision": 0,
-        "name": "Revisar novedades: Charles",
-        "outcome": "continuity",
-        "applied": true,
-        "source_id": "c43139196d57",
-        "outbox_commit": "705dded82c4cfff7b6e25f6d50c58988562cc724",
-        "apply_commit": "fe7defd2a595c55e2ce0e58ed8d7940ceab27fdd",
-        "verification": "mismo ID/revisión/explained_at; requests y manual sincronizados; cola retirada"
-      },
-      {
-        "id": "red-review-46def1e82b12166337f2",
-        "revision": 0,
-        "name": "Revisar novedades: #VotoUtilEsPodemos",
-        "outcome": "unchanged",
-        "applied": true,
-        "source_id": "a1c1e16d0c24",
-        "outbox_commit": "4c185156acd8446080bd80554af887a952c945a8",
-        "apply_commit": "80a65f12408362a49fe9ede74ebfeee29c7b9770",
-        "verification": "texto y explained_at conservados; requests y manual sincronizados; cola retirada"
-      }
-    ],
-    "incident_count": 0,
-    "incidents": [],
-    "message": "Pasada tr-1794367313177-manual cerrada 2/2. Charles quedó actualizado como continuidad del mismo episodio, conservando ID, revisión y explained_at; #VotoUtilEsPodemos quedó unchanged. Barrera final main: editorial-queue=0, requests sin preparing/update y sin rewrite_pending/reexplain activos, y manual sin pendientes equivalentes. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
-    "prior_last_run": {
-      "run_id": "tr-autoguard-1794366675",
-      "status": "DONE",
-      "finished_at": "2026-11-11T04:22:00+01:00"
-    },
-    "tr-1794378888899-manual": {
-      "status": "DONE",
-      "finished_at": "2026-11-11T08:01:32+01:00",
-      "superseded_by": "tr-1794380172256-manual"
-    }
+    "finished_at": "2026-11-11T08:31:36+01:00",
+    "updated_at": "2026-11-11T08:31:36+01:00"
   },
   "apply_workflow_run_id": 42930648566,
   "apply_commit": "8ac401943a74f6b1e15d582eac4c3bffb24294b5",
@@ -6071,8 +5956,13 @@
       "at": "2026-11-11T08:31:20+01:00",
       "phase": "closing",
       "message": "Barrera final main: editorial-queue=0; 3 explicaciones ordinarias y 2 revisiones de mantenimiento aplicadas; sin reexplicaciones activas. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-11T08:32:00+01:00",
+      "phase": "preparing",
+      "message": "Cola inicial 0; verificando barrera editorial y convergencia con la pasada autoguard recién finalizada."
     }
   ],
   "processed": [],
-  "finished_at": "2026-11-11T08:31:36+01:00"
+  "finished_at": null
 }
