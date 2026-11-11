@@ -3,29 +3,33 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794378888899-manual",
-  "previous_run_id": "tr-1794378391072-manual",
-  "command_id": "tr-1794378888899-manual",
+  "run_id": "tr-1794380172256-manual",
+  "previous_run_id": "tr-1794378888899-manual",
+  "command_id": "tr-1794380172256-manual",
   "source": "chat",
-  "status": "success",
-  "phase": "investigating",
-  "started_at": "2026-11-11T07:46:00+01:00",
-  "updated_at": "2026-11-11T07:55:37+01:00",
-  "current": 3,
-  "total": 4,
-  "trend_id": "b97769cc0759",
-  "title": "Tavernes",
-  "queue_complete": true,
-  "processed_ids": [
-    "b97769cc0759"
-  ],
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-11T07:56:12+01:00",
+  "updated_at": "2026-11-11T07:56:12+01:00",
+  "current": 0,
+  "total": 2,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-9cae369ce918a8dae93b",
+    "red-review-99e2a4666b6b51563f34"
+  ],
+  "remaining_active_ids": [
+    "red-review-9cae369ce918a8dae93b",
+    "red-review-99e2a4666b6b51563f34"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 4,
-    "observed": 4,
+    "attempted": 2,
+    "observed": 2,
     "closed": 0,
     "explained": 0,
     "problematic": 0,
@@ -40,7 +44,7 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 4,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -169,6 +173,13 @@
       "trend_id": "b97769cc0759",
       "title": "Tavernes",
       "message": "r1 revalidada en main tras carrera concurrente; 0-6 oficial del Valencia a la UE Tavernes contrastado. ImageGen=0."
+    },
+    {
+      "at": "2026-11-11T07:56:12+01:00",
+      "phase": "preparing",
+      "trend_id": null,
+      "title": null,
+      "message": "Cola inicial releída en main: 2 review_red en preparing; se procesan en orden con validación JIT. ImageGen=0; publicaciones=0."
     }
   ],
   "last_started_at": "2026-11-11T07:55:37+01:00",
@@ -184,7 +195,7 @@
     "maintenance": 0,
     "pending": 0
   },
-  "message": "Pasada tr-1794378888899-manual RUNNING. Cola inicial autoritativa=4: #FelizMiércoles r0, Barcelona r0, #HuelgaGeneral r1 y Tavernes r1; procesamiento JIT de antiguas a recientes. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-1794380172256-manual RUNNING. Cola autoritativa=2 revisiones rojas: Silvia Intxaurrondo y Charles; validación JIT antes de cada resultado. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794327332740-manual",
