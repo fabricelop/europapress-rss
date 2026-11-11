@@ -42,3 +42,16 @@ No ejecutar todavía sin revisar que las credenciales y los bindings corresponde
 ## Restricciones de despliegue
 
 No hay acceso de este chat a Cloudflare R2, D1, Zero Trust ni a la sesión privada del usuario en ChatGPT Imágenes. **Un commit/PR o pruebas unitarias no equivale a despliegue ni a fotos importadas**. Para ejecutar la conexión real hay que usar un navegador autenticado en ChatGPT Work o una sesión Cloudflare autorizada, con estas instrucciones. No sustituir estas pruebas por una promesa de importación automática.
+## Búsqueda manual por nombre
+
+La galería «Sin asociar» ofrece búsqueda por **titular o nombre de tendencia**, además de la opción de escribir un `commandId` completo. La búsqueda toma únicamente noticias actualmente listas (`main/ttittulares/prepared.json`) y las tendencias del Top 30 actual (`main/trends/site-top30-current.json`). Al elegir la ficha se consulta su job exacto de GitHub y se recupera el `commandId) verificable. Si esa revisión no está conservada, la imagen permanece sin asociar; no se inventa ninguna identidad. El histórico fuera de esas fuentes necesita un índice de jobs adicional.
+
+## Despliegue manual autorizado desde GitHub Actions
+
+El workflow `.github/workflows/tt-fotos-standalone-deploy.yml` se ejecuta **únicamente mediante `workflow_dispatch`**, nunca por un push. Deben estar configurados en el repositorio los secrets `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`, `TT_FOTOS_ALLOWED_EMAIL` y las variables `TT_FOTOS_D1_DATABASE_ID`, `TT_FOTOS_ACCESS_ISSUER`, `TT_FOTOS_ACCESS_AUD`.
+
+Se espera que D1, R2 y la política Access del Worker estén **creadas previamente**. El workflow aplica migraciones solamente a la D1 de TT Fotos y despliega solamente `tt-fotos-independent`. Si faltan variables o secretos, falla sin desplegar. No configura automáticamente una sesión de ChatGPT Imágenes, no importa imágenes sin una acción autenticada del editor y no toca la app iPhone.
+
+## Verificación de entrega
+
+Hasta verificar una instalación real en la cuenta Cloudflare autorizada y una imagen recuperada de una conversación real, todo queda **preparado en código, no operativo en producción**. Los tests unitarios locales del aislamiento y validación de Access (8 pasando) no sustituyen el piloto real del navegador o la verificación de R2/D1. El CI completo definido en GitHub Actions incluye pruebas de la API y la extensión, pero no se ha confirmado aquí su resultado.
