@@ -1035,3 +1035,24 @@ assert 'staleDate: Date()' in widget_source
 assert 'checkedAt: now' in widget_source
 print("NATIVE_BUILD95_LIVE_REFRESH_AND_BUFFER_COLLAPSE_OK")
 print("NATIVE_BUILD95_INSTANT_INBOX_PENDING_OR_ROLLBACK_OK")
+
+# Build96: a missing private Site snapshot must not grey out the exact-ID
+# manual Save button when verified GitHub news have been selected. Only an
+# in-flight request disables submission. POST is still authenticated by Site,
+# and a relation is not confirmed until a fresh server GET shows it.
+relation_screen = (root / "TTActualidad" / "EditorialRelationsView.swift").read_text(encoding="utf-8")
+scope_start = relation_screen.index("private var scopedTrendNewsSection:")
+scope_end = relation_screen.index("private var relationList:", scope_start)
+scoped_save = relation_screen[scope_start:scope_end]
+assert 'if !changes.isEmpty {' in scoped_save
+assert '.disabled(model.saving)' in scoped_save
+assert '.disabled(model.saving || model.snapshot == nil)' not in scoped_save
+assert 'result.confirmedKeys' in scoped_save
+assert '.tint(.orange)' in scoped_save
+assert 'Las selecciones son provisionales' in scoped_save
+assert 'guard status == 200' in relation_screen
+assert 'EditorialRelationsPolicy.persisted(' in relation_screen
+assert 'commands[key] ?? UUID()' in relation_screen
+assert 'siteRoot' not in scoped_save
+assert 'No se pudo consultar el estado remoto. Puedes marcar y pulsar Guardar' in relation_screen
+print("NATIVE_BUILD96_RELATIONS_SAVE_WITHOUT_SNAPSHOT_GET_REGRESSION_OK")
