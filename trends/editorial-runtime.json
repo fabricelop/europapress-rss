@@ -7,29 +7,27 @@
   "previous_run_id": "tr-20261111T145500-manual",
   "command_id": "tr-20261111T152500-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-11T15:25:00+01:00",
-  "updated_at": "2026-11-11T15:31:00+01:00",
-  "current": 0,
+  "updated_at": "2026-11-11T15:30:30+01:00",
+  "current": 1,
   "total": 1,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
   "processed_ids": [
-    "a477a8fcaa18",
-    "253723d50407",
-    "ee66c728b7bb"
+    "radar-prepare-8a5090194fe3f1e5102f"
   ],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 3,
-    "observed": 3,
-    "closed": 3,
-    "explained": 3,
+    "attempted": 1,
+    "observed": 1,
+    "closed": 1,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
@@ -39,8 +37,8 @@
     "distinct_updates": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
-    "anticipation_reviews": 0,
-    "anticipation_prepared": 0,
+    "anticipation_reviews": 1,
+    "anticipation_prepared": 1,
     "anticipation_unverified": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
@@ -52,31 +50,12 @@
   },
   "outcomes": [
     {
-      "id": "a477a8fcaa18",
+      "id": "radar-prepare-8a5090194fe3f1e5102f",
       "revision": 0,
-      "name": "Ortega Smith",
-      "outcome": "explained",
+      "name": "Radar · El Corte Inglés",
+      "outcome": "anticipation_prepared",
       "applied": true,
-      "apply_commit": "ffa635fc4113159f39882d676f3eda76217ab753",
-      "rank": 20
-    },
-    {
-      "id": "253723d50407",
-      "revision": 0,
-      "name": "Éxito",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "ffa635fc4113159f39882d676f3eda76217ab753",
-      "rank": 27
-    },
-    {
-      "id": "ee66c728b7bb",
-      "revision": 0,
-      "name": "Youtuber",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "ffa635fc4113159f39882d676f3eda76217ab753",
-      "rank": 30
+      "apply_commit": "6ab7942"
     }
   ],
   "incident_count": 0,
@@ -406,18 +385,18 @@
   "last_completed_at": "2026-11-11T15:16:29+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-1794406200000-manual",
+    "run_id": "tr-20261111T152500-manual",
     "status": "DONE",
-    "started_at": "2026-11-11T15:12:36+01:00",
-    "finished_at": "2026-11-11T15:16:29+01:00",
-    "total": 3,
-    "closed": 3,
-    "explained": 3,
+    "started_at": "2026-11-11T15:25:00+01:00",
+    "finished_at": "2026-11-11T15:30:30+01:00",
+    "total": 1,
+    "closed": 1,
+    "explained": 0,
     "maintenance": 0,
     "pending": 0,
-    "review_completed_no_distinct_event": 0
+    "anticipation_prepared": 1
   },
-  "message": "Persistiendo borrador Radar corregido y verificando aplicación.",
+  "message": "Pasada cerrada 1/1. El Radar de El Corte Inglés quedó preparado y aplicado tras verificar protestas y piquetes del 11N ante centros de la cadena en varias ciudades. Barrera final main: editorial-queue=0. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794327332740-manual",
@@ -4294,12 +4273,7 @@
       "message": "Pasada tr-1794406200000-manual cerrada 3/3. Ortega Smith r0, Éxito r0 y Youtuber r0 quedaron explicadas y sincronizadas en main mediante ffa635fc4113159f39882d676f3eda76217ab753. Barrera final: editorial-queue=0 y sin reexplicaciones activas. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
-  "current_item": {
-    "id": "radar-prepare-8a5090194fe3f1e5102f",
-    "revision": 0,
-    "name": "Radar · El Corte Inglés",
-    "task": "anticipate"
-  },
+  "current_item": null,
   "withdrawn_ids": [],
   "last_finished_at": "2026-11-11T15:16:29+01:00",
   "last_revalidated_at": "2026-11-11T08:33:00+01:00",
@@ -7083,8 +7057,21 @@
       "revision": 0,
       "name": "Radar · El Corte Inglés",
       "message": "Borrador validado con closer incluido en explanation_body; reintentando aplicador."
+    },
+    {
+      "at": "2026-11-11T15:30:30+01:00",
+      "phase": "verifying",
+      "trend_id": "radar-prepare-8a5090194fe3f1e5102f",
+      "revision": 0,
+      "name": "Radar · El Corte Inglés",
+      "message": "Aplicado por 6ab7942; requests y editorial-queue actualizados."
+    },
+    {
+      "at": "2026-11-11T15:30:30+01:00",
+      "phase": "closing",
+      "message": "Barrera final main: editorial-queue=0; 1 borrador Radar preparado; ImageGen=0; publicaciones=0."
     }
   ],
   "processed": [],
-  "finished_at": null
+  "finished_at": "2026-11-11T15:30:30+01:00"
 }
