@@ -107,13 +107,21 @@ async function editorialJob(source,task,fetcher=fetch){
  // The READY processing ledger retains delivered_at (the same timestamp as
  // prepared_at) even when prepared.json has already been cleared by delivery.
  const history=await read('telegram/editorial-processing.json');
- const row=(history||[]).find(x=>
+ // History titles are display labels and can change without an editorial
+ // revision (source suffix, accents, canonical vs rewritten headline). They
+ // MUST NOT gate receipt delivery. The immutable ImageGen job binds the exact
+ // command, target, revision and tweet/factual/remate SHA. The authoritative
+ // processing ledger proves the original preparation timestamp by ID/revision.
+ const rows=(history||[]).filter(x=>
   String(x.event_id||x.id)===task.target_id&&Number(x.revision)===task.revision&&
   x.delivery_confirmation==='prepared_web'&&!x.rewrite_pending&&
-  Number.isFinite(Date.parse(x.delivered_at))&&
-  String(x.title||x.canonical_title||'').trim()===String(snapshot.title||job.target_name||'').trim());
- if(!row)throw Error('PREPARED_DATE_NOT_RECOVERABLE');
- return {...job,context_snapshot:{...snapshot,prepared_at:row.delivered_at}};
+  Number.isFinite(Date.parse(x.delivered_at)));
+ const dates=[...new Set(rows.map(x=>String(x.delivered_at)))];
+ if(dates.length!==1)throw Error('PREPARED_DATE_NOT_RECOVERABLE');
+ const requested=Date.parse(job.requested_at||'');
+ if(Number.isFinite(requested)&&Date.parse(dates[0])>requested+60000)
+  throw Error('PREPARED_DATE_AFTER_IMAGE_REQUEST');
+ return {...job,context_snapshot:{...snapshot,prepared_at:dates[0]}};
 }
 
 function activeIdentities(project,document,decisions,now=Date.now()){
