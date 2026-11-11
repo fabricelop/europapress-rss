@@ -97,3 +97,26 @@ Si se pierde el inventario de inscripciones o el secreto DPAPI original, no inve
 La reasignación desde un PNG descargado es explícitamente **atribución humana**. Si el encargo ya tiene recibo o perdió la credencial DPAPI, no se sobrescribe otra imagen: queda pendiente una operación autenticada separada del Site. Aún no está demostrada una semántica «última imagen distinta reemplaza a la anterior».
 
 La API del monitor local incluye \`GET /api/status?since=YYYY-MM-DD\`, \`POST /api/associate\` y \`POST /api/deliver-manual\` con confirmación y comprobaciones de origen del mismo servidor. **No expone secretos ni imágenes a GitHub** y no acepta asociaciones por apariencia.
+
+
+## V3 · 11/11/2026 · solo monitor, bandeja iPhone intacta
+
+**La instrucción editorial más reciente sustituye la anterior:** cuando una foto se rescata y se vincula a la noticia o tendencia dentro del monitor, **NO se envía al inbox del iPhone**. El monitor solo guarda una copia PNG por SHA-256 en \`image-approval-receipts/manual-originals\` y la atribución local en \`image-approval-receipts/tt-fotos-manual-links.json\`.
+
+- UI: desaparece el botón «Entregar PNG a bandeja». La ruta \`POST /api/deliver-manual\` devuelve 405. \`--deliver\` y cualquier llamada exportada de entrega manual fallan con \`INBOX_DELIVERY_DISABLED_FOR_MONITOR\`.
+- \`--rescue\` **solo** intenta capturar PNG originales identificados en conversaciones de ChatGPT ya abiertas, sin enviarlos al Site/app.
+- Una foto puede asociarse visualmente incluso a una ficha que tenga recibo antiguo u original previo. **La última asociación confirmada sustituye a la anterior en esa ficha local** y se conserva un historial en el mismo JSON (\`history[]\`). Esto NO modifica ni revoca la entrega histórica del iPhone, ni modifica las colas editoriales, ni publica.
+- Se ve una nueva fase \`ASOCIADA_EN_MONITOR\` con miniatura de la imagen escogida y un contador \`manualAssociated\`.
+- Solución de \`listen EADDRINUSE 127.0.0.1:8765\`: si el puerto predeterminado está ocupado, el servidor intenta 8766, 8767, etc. sin terminar procesos. Abrir la URL que aparece tras \`TT_FOTOS_PANEL\`, no dar por hecho que se usa 8765.
+- El filtro de fecha desde 10/11/2026 se conserva. \`image-approval-receipts/tt-fotos-capture-cursor.json\` rota encargos entre las pasadas.
+- Instalador offline: \`windows/Instalar-TTFotos-Local.ps1 -Serve\`; ZIP de esta conversación \`TTFotos_Monitor_Local_V3_sin_tocar_iPhone.zip\`. No usar los ZIP anteriores V1/V2 para esta política.
+- **Pruebas reales en entorno de ensayo con Node 22 (no Windows del usuario): 18/18 superadas**, incluyendo recuperación de datos, reemplazo visual, conservación de imágenes, ausencia de rutas de entrega y apertura de puerto alternativo. No afirmar ninguna recuperación en el Windows del usuario ni una prueba física con su iPhone.
+- La colección completa ChatGPT Imágenes aún debe exportarse/descargarse para asociar PNG no inscrito localmente. No existe enumeración masiva automática confirmada en este módulo.
+
+**Instalación orientativa:**
+\`\`\`powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Instalar-TTFotos-Local.ps1 -Serve
+\`\`\`
+Si ya hay un monitor abierto en 8765, abrir el puerto alternativo comunicado por Node o cerrar la ventana anterior mediante Ctrl+C. No cerrar ni reiniciar Chrome, ni detener los listeners de noticias/tendencias.
+
+Los pasos anteriores sobre «Entregar PNG a bandeja», \`--deliver\` o \`--rescue\` con reenvío **son históricos de V2 y no se aplican a V3**.
