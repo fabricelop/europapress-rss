@@ -113,6 +113,7 @@ footer{border-top:1px solid var(--line);margin-top:26px;padding-top:17px;color:v
       command_id:item.command_id,revision:item.revision,raster_sha256:item.raster_sha256,
       expected_status:'pending',action,idempotency_key:idempotency,
       ...(action==='reject'?{reason:$('reason').value.trim()}: {})};
+    let decisionError='';
     try{
       const d=await api(API+'/decision',{method:'POST',headers:{'Content-Type':'application/json','X-TT-CSRF':state.csrf,'Idempotency-Key':idempotency},body:JSON.stringify(payload)});
       if(d.schema!=='tt-image-review-v1'||d.receipt_id!==item.receipt_id||
@@ -124,8 +125,8 @@ footer{border-top:1px solid var(--line);margin-top:26px;padding-top:17px;color:v
       if(action==='approve')state.approved++;else state.rejected++;
       state.items=state.items.filter(x=>x!==item);
     }catch(e){
-      showError('No se ha podido confirmar la decisión de '+item.title+' ('+e.message+'). El expediente se conserva como pendiente hasta volver a consultar; si el envío fue ambiguo, no repitas sin comprobar.');
-    }finally{state.busy=false;$('apply').disabled=false;await reload()}
+      decisionError='No se ha podido confirmar la decisión de '+item.title+' ('+e.message+'). El expediente se conserva como pendiente hasta volver a consultar; si el envío fue ambiguo, no repitas sin comprobar.';
+    }finally{state.busy=false;$('apply').disabled=false;await reload();if(decisionError)showError(decisionError)}
   }
   $('confirmation-form').addEventListener('submit',()=>{state.choice=null});
   $('apply').addEventListener('click',decide);
