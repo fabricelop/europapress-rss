@@ -34,7 +34,7 @@ function mockStore(){
  const r2={async put(key,bytes){s.objects.set(key,new Uint8Array(bytes))},async get(key){return s.objects.has(key)?{body:s.objects.get(key)}:null}};
  return {...s,db,r2};
 }
-function setup({editor=true}={}){const store=mockStore(),jobProvider={async find(commandId){return commandId===cmd?job:commandId===other?trend:null}};
+function setup({editor=true,jobVerification}={}){const store=mockStore(),jobProvider={async find(commandId){return commandId===cmd?{...job,...(jobVerification?{verification:jobVerification}:{})}:commandId===other?trend:null}};
  const handler=createTTFotosApi({db:store.db,r2:store.r2,authenticate:async()=>({isEditor:editor}),jobProvider});
  const base='https://ttactualidad.rainyraven22.chatgpt.site';
  const post=async(route,form,{origin=base}={})=>handler(new Request(base+'/api/tt-fotos/v1'+route,{method:'POST',headers:{origin,'x-tt-fotos-action':'editor-v1'},body:form}));
@@ -106,4 +106,23 @@ test('GET registered job includes authoritative exact identity only',async()=>{
  const x=setup(),good=await x.get('/jobs/'+encodeURIComponent(cmd));assert.equal(good.status,200);
  const miss=await x.get('/jobs/tt-img-auto-000000000000-r1-a1-1794420306285');assert.equal(miss.status,404);
  assert.equal(x.store.jobs.size,0);
+});
+test('missing exact receipt never triggers automatic association; editor may confirm corroborated identity',async()=>{
+ const x=setup({jobVerification:'editorial_identity_only'});
+ const evidence={kind:'same_turn_image',rasterSource:'original_image',conversationUrl:job.conversation_url,
+  commandId:cmd,promptText:'TTITTULARES_IMAGE_JOB_V4 '+cmd};
+ const upload=await (await x.post('/assets',x.upload({evidence}))).json();
+ assert.equal(upload.needsReview,true);
+ assert.equal(upload.reason,'EDITORIAL_ID_CORROBORATED_EXACT_JOB_MISSING');
+ assert.equal(upload.association,null);
+ assert.equal(x.store.matches.size,0);
+ const lookup=await (await x.get('/jobs/'+encodeURIComponent(cmd))).json();
+ assert.equal(lookup.job.verification,'editorial_identity_only');
+ const decision=await (await x.post('/matches',JSON.stringify({
+  assetSha:upload.assetSha,commandId:cmd,project:'ttittulares',
+  editorialId:'753d587ec61b',revision:1,confirmation:'CONFIRMAR_ASOCIACION_EDITOR'
+ }))).json();
+ assert.equal(decision.verification,'editorial_identity_only');
+ assert.equal(decision.association.confidence,'editor_confirmed');
+ assert.equal(x.store.matches.size,1);
 });
