@@ -4,6 +4,7 @@ import {searchEditorial,resolveEditorialCommand} from '../src/editorial-search.m
 const fixture={
  'main/ttittulares/prepared.json':{items:[{event_id:'123456789abc',revision:1,title:'La situación económica en España'}]},
  'main/trends/site-top30-current.json':{items:[{editorial_id:'abcdef123456',revision:0,name:'Samantha Hudson'}]},
+ 'main/ttittulares/status.json':{events:{'683beffb5aed':{revision:1,title:'Luis de la Fuente y Lamine Yamal'}}},
  'control/ttendencias-run-trigger/trends/image-runs/jobs/abcdef123456.json':{
    command_id:'tr-img-auto-abcdef123456-r0-a1-1794402335209',target_id:'abcdef123456',revision:0,project:'ttendencias',target_name:'Samantha Hudson'
  }
@@ -22,4 +23,11 @@ test('only exact matching job revision can be used for manual association',async
  assert.equal(good.commandId,'tr-img-auto-abcdef123456-r0-a1-1794402335209');
  assert.equal(await resolveEditorialCommand({project:'ttendencias',editorialId:'abcdef123456',revision:1},fetcher),null);
  assert.equal(await resolveEditorialCommand({project:'ttendencias',editorialId:'../../bad',revision:0},fetcher),null);
+});
+test('radar-only news are searchable but not mistaken for exact image-job receipts',async()=>{
+ const found=await searchEditorial('Lamine',fetcher);
+ assert.equal(found.length,1);
+ assert.deepEqual({project:found[0].project,id:found[0].editorialId,revision:found[0].revision},
+  {project:'ttittulares',id:'683beffb5aed',revision:1});
+ assert.equal(await resolveEditorialCommand({project:'ttittulares',editorialId:'683beffb5aed',revision:1},fetcher),null);
 });
