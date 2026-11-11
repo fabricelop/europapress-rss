@@ -1,0 +1,7 @@
+TT FOTOS INDEPENDIENTE — solicitud única de despliegue desde GitHub Actions
+Fecha: 2026-11-11
+Objetivo: implementar exclusivamente apps/tt-fotos como Worker tt-fotos-independent.
+Exclusiones: NO modificar Site TTActualidad anterior, bandeja iPhone, workers de TTendencias, TTiTTulares ni otras aplicaciones.
+Condiciones: credenciales Cloudflare válidas, nueva D1 tt-fotos-private por UUID exacto, R2 privado tt-fotos-originals-private con r2.dev y dominios públicos inhabilitados. Sin estos requisitos el proceso debe fallar antes de modificar Cloudflare.
+La galería exige verificación de Access y email; validar denegación anónima al finalizar.
+Este archivo actúa como disparador único; los cambios en otros archivos NO vuelven a disparar el despliegue.
