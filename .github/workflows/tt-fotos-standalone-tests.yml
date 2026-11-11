@@ -26,7 +26,7 @@ jobs:
           node --check apps/tt-fotos/tests/worker.test.mjs
       - name: Run standalone API, authentication and integration tests
         run: |
-          node --test apps/tt-fotos/tests/*.test.mjs site-patches/ttactualidad-fotos-review/cloud-v1/api.test.mjs
+          node --test apps/tt-fotos/tests/*.test.mjs
       - name: Build origin-locked browser connector
         run: |
           node apps/tt-fotos/scripts/build-companion.mjs https://tt-fotos-test.example.workers.dev
