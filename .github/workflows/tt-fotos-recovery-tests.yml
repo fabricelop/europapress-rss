@@ -1,0 +1,26 @@
+name: TT Fotos recovery safety tests
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'windows/TTFotosRecover.cjs'
+      - 'windows/TTFotosRecover.test.cjs'
+      - '.github/workflows/tt-fotos-recovery-tests.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Validate JS
+        run: |
+          node --check windows/TTFotosRecover.cjs
+          node --check windows/TTFotosRecover.test.cjs
+      - name: Test identity, local receipts and concurrent delivery
+        run: node --test windows/TTFotosRecover.test.cjs
