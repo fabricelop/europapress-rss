@@ -14,7 +14,7 @@ if(process.env.CLOUDFLARE_ACCOUNT_ID&&!/^[a-f0-9]{32}$/i.test(process.env.CLOUDF
  throw Error('CLOUDFLARE_ACCOUNT_ID_INVALID');
 if(process.env.TT_FOTOS_ALLOWED_EMAIL!==undefined){
  const emails=process.env.TT_FOTOS_ALLOWED_EMAIL.split(',').map(x=>x.trim());
- if(!emails.length||emails.some(x=>!/^[^\\s@,]+@[^\\s@,.]+(?:\\.[^\\s@,.]+)+$/.test(x)))
+ if(!emails.length||emails.some(x=>!/^[^\s@,]+@[^\s@,.]+(?:\.[^\s@,.]+)+$/.test(x)))
   throw Error('EDITOR_ALLOWLIST_INVALID');
 }
 const template=JSON.parse(fs.readFileSync(path.join(root,'wrangler.jsonc.example'),'utf8'));
