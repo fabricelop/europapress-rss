@@ -50,6 +50,31 @@ export function rainVisualWindows(points=[],stepMinutes=5,horizonEndMs=null){
   return windows;
 }
 
+
+/**
+ * Keep a plotted 'wet' interval inside the event RainETA currently accepts.
+ * Outside that window retain the underlying rate/probability as a possible
+ * signal, instead of silently deleting useful but unconfirmed evidence.
+ * This only changes presentation; it never changes ETA or sources.
+ */
+export function rainVisualGuard(points=[],{
+  eventStart=null,eventEnd=null,nowMs=Date.now(),rainingNow=false,mode=''
+}={}){
+  const start=eventStart==null?NaN:pointTime({time:eventStart});
+  const end=eventEnd==null?NaN:pointTime({time:eventEnd});
+  const now=finite(nowMs,Date.now());
+  return points.map(point=>{
+    if(!point?.wet)return point;
+    const time=pointTime(point);
+    const insideEvent=Number.isFinite(start)&&Number.isFinite(time)&&time>=start&&(!Number.isFinite(end)||time<end);
+    const observedNow=Boolean(rainingNow)&&Number.isFinite(time)&&time>=now-5*60_000&&time<=now+5*60_000;
+    const wetAllowed=insideEvent||observedNow;
+    // A possible surface signal does not count as corroborated rain right now.
+    const stopNow=(mode==='possible_now'||mode==='episode_pause')&&time<=now+5*60_000;
+    return wetAllowed&&!stopNow?point:{...point,wet:false};
+  });
+}
+
 export function rainWaveSvg(points=[],{id='rain-wave'}={}){
   if(!Array.isArray(points)||!points.length)return '';
   const width=960,base=124,top=12,n=points.length;
