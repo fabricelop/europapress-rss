@@ -3,22 +3,22 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261111T145500-manual",
-  "previous_run_id": "tr-20261111T143800-manual",
-  "command_id": "tr-20261111T145500-manual",
+  "run_id": "tr-1794406200000-manual",
+  "previous_run_id": "tr-20261111T145500-manual",
+  "command_id": "tr-1794406200000-manual",
   "source": "chat",
-  "status": "success",
+  "status": "DONE",
   "phase": "closing",
-  "started_at": "2026-11-11T14:55:00+01:00",
-  "updated_at": "2026-11-11T15:15:48+01:00",
+  "started_at": "2026-11-11T15:12:36+01:00",
+  "updated_at": "2026-11-11T15:16:29+01:00",
   "current": 3,
   "total": 3,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
   "processed_ids": [
-    "253723d50407",
     "a477a8fcaa18",
+    "253723d50407",
     "ee66c728b7bb"
   ],
   "converged_ids": [],
@@ -29,14 +29,14 @@
     "attempted": 3,
     "observed": 3,
     "closed": 3,
-    "explained": 1,
+    "explained": 3,
     "problematic": 0,
-    "updates": 2,
+    "updates": 0,
     "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 2,
+    "maintenance_reviews": 0,
     "unchanged_reviews": 0,
     "continuity_updates": 0,
-    "distinct_updates": 2,
+    "distinct_updates": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
     "anticipation_reviews": 0,
@@ -52,35 +52,31 @@
   },
   "outcomes": [
     {
-      "id": "ffa74ccda79b",
-      "revision": 1,
-      "name": "Gran Vía",
+      "id": "a477a8fcaa18",
+      "revision": 0,
+      "name": "Ortega Smith",
       "outcome": "explained",
       "applied": true,
-      "apply_commit": "46c9e6005aa5412960c919152225e9a622d7dc26",
-      "rank": 9
+      "apply_commit": "ffa635fc4113159f39882d676f3eda76217ab753",
+      "rank": 20
     },
     {
-      "id": "red-review-2b91b0818b6c56e8b32e",
+      "id": "253723d50407",
       "revision": 0,
-      "name": "Revisar novedades: Error",
-      "outcome": "distinct_update",
+      "name": "Éxito",
+      "outcome": "explained",
       "applied": true,
-      "apply_commit": "a3750716edf8e75aa9f7d3894516ef2da4b2aa57",
-      "created_id": "trend-update-c6e8606d076f9d3419c6",
-      "source_id": "4fc099aeb560",
-      "material_event_key": "broncano-disculpas-error-publico-abascal-2026-11-10"
+      "apply_commit": "ffa635fc4113159f39882d676f3eda76217ab753",
+      "rank": 27
     },
     {
-      "id": "red-review-870bc290d8ea827e22e4",
+      "id": "ee66c728b7bb",
       "revision": 0,
-      "name": "Revisar novedades: #EnBocaDeTodos",
-      "outcome": "distinct_update",
+      "name": "Youtuber",
+      "outcome": "explained",
       "applied": true,
-      "apply_commit": "a3750716edf8e75aa9f7d3894516ef2da4b2aa57",
-      "created_id": "trend-update-4f3c6a5220918fa87e38",
-      "source_id": "be101248f52d",
-      "material_event_key": "en-boca-de-todos-huelga-general-11n-2026-11-11"
+      "apply_commit": "ffa635fc4113159f39882d676f3eda76217ab753",
+      "rank": 30
     }
   ],
   "incident_count": 0,
@@ -406,22 +402,22 @@
       "message": "Pasada tr-20261111T145500-manual cerrada 3/3. Gran Vía r1 reelaborada desde cero y aplicada; la barrera final incorporó dos revisiones rojas nuevas, Error y #EnBocaDeTodos, ambas verificadas como episodios materiales distintos y aplicadas como fichas nuevas. Barrera final main: editorial-queue=0. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
-  "last_started_at": "2026-11-11T15:15:48+01:00",
-  "last_completed_at": "2026-11-11T15:15:48+01:00",
+  "last_started_at": "2026-11-11T15:12:36+01:00",
+  "last_completed_at": "2026-11-11T15:16:29+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261111T145500-manual",
+    "run_id": "tr-1794406200000-manual",
     "status": "DONE",
-    "started_at": "2026-11-11T14:55:00+01:00",
-    "finished_at": "2026-11-11T15:02:00+01:00",
+    "started_at": "2026-11-11T15:12:36+01:00",
+    "finished_at": "2026-11-11T15:16:29+01:00",
     "total": 3,
     "closed": 3,
-    "explained": 1,
-    "maintenance": 2,
+    "explained": 3,
+    "maintenance": 0,
     "pending": 0,
     "review_completed_no_distinct_event": 0
   },
-  "message": "Pasada tr-20261111T145500-manual cerrada 3/3. Gran Vía r1 reelaborada desde cero y aplicada; la barrera final incorporó dos revisiones rojas nuevas, Error y #EnBocaDeTodos, ambas verificadas como episodios materiales distintos y aplicadas como fichas nuevas. Barrera final main: editorial-queue=0. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada tr-1794406200000-manual cerrada 3/3. Ortega Smith r0, Éxito r0 y Youtuber r0 quedaron explicadas y sincronizadas en main mediante ffa635fc4113159f39882d676f3eda76217ab753. Barrera final: editorial-queue=0 y sin reexplicaciones activas. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794327332740-manual",
@@ -4225,11 +4221,82 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-20261111T145500-manual cerrada 3/3. Gran Vía r1 reelaborada desde cero y aplicada; la barrera final incorporó dos revisiones rojas nuevas, Error y #EnBocaDeTodos, ambas verificadas como episodios materiales distintos y aplicadas como fichas nuevas. Barrera final main: editorial-queue=0. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794406200000-manual",
+      "status": "DONE",
+      "started_at": "2026-11-11T15:12:36+01:00",
+      "finished_at": "2026-11-11T15:16:29+01:00",
+      "at": "2026-11-11T15:16:29+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 3,
+        "observed": 3,
+        "closed": 3,
+        "explained": 3,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 0,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [
+        "a477a8fcaa18",
+        "253723d50407",
+        "ee66c728b7bb"
+      ],
+      "converged_ids": [],
+      "outcomes": [
+        {
+          "id": "a477a8fcaa18",
+          "revision": 0,
+          "name": "Ortega Smith",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "ffa635fc4113159f39882d676f3eda76217ab753",
+          "rank": 20
+        },
+        {
+          "id": "253723d50407",
+          "revision": 0,
+          "name": "Éxito",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "ffa635fc4113159f39882d676f3eda76217ab753",
+          "rank": 27
+        },
+        {
+          "id": "ee66c728b7bb",
+          "revision": 0,
+          "name": "Youtuber",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "ffa635fc4113159f39882d676f3eda76217ab753",
+          "rank": 30
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-1794406200000-manual cerrada 3/3. Ortega Smith r0, Éxito r0 y Youtuber r0 quedaron explicadas y sincronizadas en main mediante ffa635fc4113159f39882d676f3eda76217ab753. Barrera final: editorial-queue=0 y sin reexplicaciones activas. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "current_item": null,
   "withdrawn_ids": [],
-  "last_finished_at": "2026-11-11T08:33:00+01:00",
+  "last_finished_at": "2026-11-11T15:16:29+01:00",
   "last_revalidated_at": "2026-11-11T08:33:00+01:00",
   "last_revalidation": {
     "queue_count": 0,
@@ -4244,11 +4311,11 @@
     "updated_at": "2026-11-11T08:31:36+01:00"
   },
   "apply_workflow_run_id": 42930648566,
-  "apply_commit": "8ac401943a74f6b1e15d582eac4c3bffb24294b5",
+  "apply_commit": "ffa635fc4113159f39882d676f3eda76217ab753",
   "maintenance_workflow_run_id": 42713522083,
   "maintenance_job_id": "red-review-61d494cc18e2321aaa5b",
   "workflow_run_id": 42765220776,
-  "trigger_commit": "2161026cbe3a6ef5375d0309240f91609c2748f0",
+  "trigger_commit": "325cb630a22b04dca635c378d470e6ec1243b31c",
   "refresh_convergence_commit": "34eadb58c44175ada2ac3c9547745d40d79d38f5",
   "runs": [
     {
@@ -6764,10 +6831,81 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-1794382196865-manual cerrada 0/0 tras relectura final de main. La pasada autoguard inmediatamente anterior ya había cerrado 5/5 (Informativos, lena, Iros y dos revisiones rojas). Barrera final: editorial-queue=0 y mobile-decisions sin preparing/update/rewrite_pending/reexplain activos. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-1794406200000-manual",
+      "status": "DONE",
+      "started_at": "2026-11-11T15:12:36+01:00",
+      "finished_at": "2026-11-11T15:16:29+01:00",
+      "at": "2026-11-11T15:16:29+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 3,
+        "observed": 3,
+        "closed": 3,
+        "explained": 3,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 0,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [
+        "a477a8fcaa18",
+        "253723d50407",
+        "ee66c728b7bb"
+      ],
+      "converged_ids": [],
+      "outcomes": [
+        {
+          "id": "a477a8fcaa18",
+          "revision": 0,
+          "name": "Ortega Smith",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "ffa635fc4113159f39882d676f3eda76217ab753",
+          "rank": 20
+        },
+        {
+          "id": "253723d50407",
+          "revision": 0,
+          "name": "Éxito",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "ffa635fc4113159f39882d676f3eda76217ab753",
+          "rank": 27
+        },
+        {
+          "id": "ee66c728b7bb",
+          "revision": 0,
+          "name": "Youtuber",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "ffa635fc4113159f39882d676f3eda76217ab753",
+          "rank": 30
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-1794406200000-manual cerrada 3/3. Ortega Smith r0, Éxito r0 y Youtuber r0 quedaron explicadas y sincronizadas en main mediante ffa635fc4113159f39882d676f3eda76217ab753. Barrera final: editorial-queue=0 y sin reexplicaciones activas. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "outbox_comment_id": 6721989528,
-  "editorial_apply_commit": "46c9e6005aa5412960c919152225e9a622d7dc26",
+  "editorial_apply_commit": "ffa635fc4113159f39882d676f3eda76217ab753",
   "refresh_workflow_run_id": 42929355766,
   "refresh_conclusion": "success",
   "maintenance_apply_commits": [
@@ -6903,8 +7041,13 @@
       "at": "2026-11-11T08:33:00+01:00",
       "phase": "closing",
       "message": "Cola releída en main: 0 preparing/update y 0 reexplicaciones pendientes; cierre 0/0."
+    },
+    {
+      "at": "2026-11-11T15:16:29+01:00",
+      "phase": "closing",
+      "message": "tr-1794406200000-manual: barrera final main editorial-queue=0; 3/3 explicadas y aplicadas; ImageGen=0; publicaciones=0."
     }
   ],
   "processed": [],
-  "finished_at": "2026-11-11T15:02:00+01:00"
+  "finished_at": "2026-11-11T15:16:29+01:00"
 }
