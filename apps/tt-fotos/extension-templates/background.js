@@ -21,10 +21,3 @@ chrome.runtime.onMessage.addListener((message,sender,reply)=>{
  if(typeof message.base64!=='string'||message.base64.length>12e6){reply({ok:false,error:'IMAGE_PAYLOAD_INVALID'});return}
  sendToSite(message).then(reply,e=>reply({ok:false,error:'SITE_TRANSFER_FAILED'}));return true;
 });
-chrome.action.onClicked.addListener(async tab=>{
- let report;try{report=await chrome.tabs.sendMessage(tab.id,{type:'TT_FOTOS_SCAN'})}catch{report={ok:false,error:'OPEN_CHATGPT_IMAGES_OR_CONVERSATION'}}
- await chrome.action.setBadgeText({tabId:tab.id,text:report?.ok?String(report.stored||0):'!'});
- await chrome.action.setBadgeBackgroundColor({tabId:tab.id,color:report?.ok?'#177a65':'#9c4c4c'});
- // The browser action result is visible via the badge; detailed reasons
- // are not printed to console, protecting sensitive browsing metadata.
-});
