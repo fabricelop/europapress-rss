@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b1020">
+<meta name="description" content="Seguimiento independiente, de solo lectura, de las imágenes TT Actualidad.">
+<title>TT Fotos · Seguimiento de imágenes</title>
+<style>
+:root{color-scheme:dark;--bg:#090e19;--surface:#141d2d;--surface2:#1b283b;--stroke:#2b3b51;--ink:#eef6ff;--muted:#9fb0c5;--mint:#65dec0;--blue:#85b5ff;--gold:#eac28d;--rose:#fc9a9f}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse 700px 440px at 85% -5%,#17384a 0%,transparent 70%),var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+button,input{font:inherit}button{cursor:pointer}a{color:var(--blue)}a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--mint);outline-offset:3px}
+.wrap{width:min(1180px,calc(100% - 32px));margin:auto}header{border-bottom:1px solid #263247;padding:23px 0 20px}
+.top{display:flex;gap:16px;align-items:center;justify-content:space-between}.brand{display:flex;align-items:center;gap:13px}.mark{display:grid;place-items:center;height:45px;width:45px;border:1px solid #427468;border-radius:14px;background:#193c37;color:#a8f7df;font-size:23px;font-weight:900;letter-spacing:-4px;padding-right:4px}.eyebrow{color:var(--mint);text-transform:uppercase;letter-spacing:1.9px;font-size:10px;font-weight:850}
+h1{font-size:clamp(25px,3.9vw,38px);letter-spacing:-1.1px;line-height:1.14;margin:2px 0 4px}header p{color:var(--muted);margin:0;font-size:13px}.readonly{border:1px solid #416960;border-radius:999px;padding:8px 12px;background:#15332f;color:#c2f9e9;font-size:12px;font-weight:750;white-space:nowrap}
+main{padding:28px 0 80px}.intro{display:flex;justify-content:space-between;align-items:flex-end;gap:22px;margin-bottom:20px}.intro h2{font-size:21px;letter-spacing:-.5px;margin:0 0 5px}.intro p{max-width:740px;color:var(--muted);margin:0;font-size:13px}
+.refresh{border:1px solid #527c85;background:#244e5d;color:#edffff;border-radius:11px;padding:10px 15px;font-weight:750;white-space:nowrap}.refresh:disabled{opacity:.5;cursor:progress}
+.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:0 0 22px}.metric{background:linear-gradient(145deg,#1b2b3b,#131d2c);border:1px solid var(--stroke);border-radius:17px;padding:17px 17px 14px;min-width:0}.metric span{display:block;color:var(--muted);font-size:12px}.metric b{display:block;font-size:34px;line-height:1.17;letter-spacing:-1px;margin:10px 0 3px;font-variant-numeric:tabular-nums}.metric small{display:block;font-size:11px;color:#96aac0}.metric:nth-child(2) b{color:var(--blue)}.metric:nth-child(3) b{color:var(--mint)}.metric:nth-child(4) b{color:var(--gold)}
+.explain{background:#102331;border:1px solid #2e5060;border-radius:15px;padding:15px 18px;display:grid;gap:8px;margin-bottom:23px}.explain strong{font-size:13px}.explain p{font-size:12px;color:#bbd0d9;margin:0}.legend{display:flex;flex-wrap:wrap;gap:8px}.legend span{background:#1d3543;border:1px solid #3a5467;border-radius:999px;padding:5px 10px;font-size:11px;color:#e2eaf4}
+.toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:11px;margin:13px 0 14px}.switches{display:flex;gap:6px;flex-wrap:wrap}.switches button{border:1px solid var(--stroke);border-radius:10px;background:#172237;padding:9px 12px;color:var(--muted);font-size:12px;font-weight:700}.switches button[aria-pressed="true"]{border-color:#64b8a7;background:#20463d;color:#d8ffef}
+.search{min-width:170px;flex:1;max-width:300px;border:1px solid #41546d;border-radius:10px;background:#141e30;padding:9px 12px;color:var(--ink);outline:none}.count{font-size:12px;color:var(--muted);margin:4px 0 13px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,350px),1fr));gap:13px}
+.card{background:var(--surface);border:1px solid var(--stroke);border-radius:17px;overflow:hidden;min-width:0;display:flex;flex-direction:column}.cardhead{display:flex;gap:9px;align-items:center;padding:13px 15px 8px}.pill{border:1px solid #465875;border-radius:7px;padding:3px 8px;font-size:10px;letter-spacing:.5px;text-transform:uppercase;color:#c5d8f5;font-weight:800}.pill.news{color:#9dd0ff;border-color:#426a95}.pill.trends{color:#b9f5d4;border-color:#44846e}.time{margin-left:auto;font-size:11px;color:var(--muted)}
+.cardtitle{margin:0;padding:1px 15px 13px;font-size:15px;line-height:1.36;letter-spacing:-.14px;min-height:54px;overflow-wrap:anywhere}
+.photo{height:155px;display:grid;place-items:center;background:linear-gradient(135deg,#203344,#182335);border-top:1px solid #2c394b;border-bottom:1px solid #2c394b;color:#7894a5;text-align:center}.photo img{height:100%;width:100%;object-fit:contain;background:#0b1220}.photo .placeholder{display:flex;flex-direction:column;align-items:center;gap:5px}.placeholder .symbol{font-size:32px;opacity:.65}.placeholder span{font-size:11px;color:var(--muted)}.steps{display:grid;gap:9px;padding:15px 15px 8px}.step{display:flex;align-items:center;gap:11px}.dot{width:10px;height:10px;border:2px solid #6b7a90;border-radius:50%;flex:none}.dot.ok{border-color:var(--mint);background:var(--mint)}.dot.wait{border-color:var(--gold)}.dot.bad{border-color:var(--rose);background:var(--rose)}.step label{font-size:12px;color:var(--muted)}.step label strong{font-weight:700;color:var(--ink)}.step label em{font-size:11px;font-style:normal;color:var(--muted)}
+.extra{border-top:1px solid var(--stroke);margin:9px 15px 0;padding:12px 0;color:#a8bad0;font-size:11px;overflow-wrap:anywhere}.foot{margin-top:auto;padding:10px 15px 15px;display:flex;align-items:center;justify-content:space-between;gap:8px}.foot a{font-size:12px;text-decoration:none;font-weight:750}.foot code{font-size:10px;color:#859bae}
+.receipts{margin-top:30px;border:1px solid var(--stroke);border-radius:17px;background:#121b2b;padding:18px;display:grid;gap:10px}.receipts h2{font-size:17px;margin:0}.receipts p{font-size:13px;margin:0;color:var(--muted)}.uploads{display:flex;gap:10px;flex-wrap:wrap}.upload{display:inline-flex;align-items:center;justify-content:center;background:#213d49;border:1px solid #47717a;border-radius:10px;color:#dffaf9;font-size:12px;font-weight:750;padding:10px 14px;cursor:pointer;position:relative}.upload input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}.receiptnote{font-size:12px;color:var(--mint)}.remainder{color:var(--muted);font-size:12px;margin:18px 0 0}.warning{border:1px solid #7d5e3d;border-radius:11px;padding:10px 14px;background:#352719;color:#ffdaae;margin-bottom:15px;font-size:12px}.empty{border:1px dashed #34475c;border-radius:15px;text-align:center;padding:38px 20px;color:var(--muted);grid-column:1/-1}.statusline{font-size:12px;color:#92a9c1;margin-top:12px}
+footer{border-top:1px solid #273547;color:var(--muted);font-size:11px;padding:18px 0 30px}
+@media(max-width:850px){.metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.intro{align-items:flex-start;flex-direction:column}.top{align-items:flex-start}.readonly{font-size:10px}}
+@media(max-width:520px){.wrap{width:calc(100% - 22px)}.metric{padding:12px}.metric b{font-size:28px}header{padding:16px 0}.readonly{display:none}.intro{margin-bottom:14px}main{padding-top:17px}.toolbar{gap:8px}.search{max-width:none;width:100%}.cards{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header><div class="wrap top"><div class="brand"><div class="mark" aria-hidden="true">TT</div><div><div class="eyebrow">TT Actualidad · supervisión</div><h1>Fotos en tránsito</h1><p>TTiTTulares + TTendencias · monitor independiente</p></div></div><div class="readonly">Solo lectura · sin publicar</div></div></header>
+<main class="wrap">
+<section class="intro"><div><h2>Del encargo a la bandeja</h2><p>Comprueba lo que consta en GitHub, lo que se ha enviado a ChatGPT y lo que está confirmado en el catálogo web. Para acreditar la entrega en la bandeja privada, puedes consultar los recibos del PC sin subirlos a ningún servidor.</p></div><button type="button" id="refresh" class="refresh">Actualizar ahora</button></section>
+<section class="metrics" aria-label="Resumen">
+<div class="metric"><span>Encargos indexados</span><b id="n-all">–</b><small>Últimos registros públicos</small></div>
+<div class="metric"><span>Prompt enviado</span><b id="n-sent">–</b><small>No implica imagen acabada</small></div>
+<div class="metric"><span>Imagen en catálogo web</span><b id="n-web">–</b><small>Archivo público asociado</small></div>
+<div class="metric"><span>Entrada en bandeja acreditada</span><b id="n-inbox">–</b><small>Recibo local exacto</small></div>
+</section>
+<section class="explain"><strong>Qué significa cada fase</strong><div class="legend"><span>01 · Solicitud creada</span><span>02 · Prompt enviado a ChatGPT</span><span>03 · Recibo de la bandeja</span></div><p>Una solicitud RUNNING, LAUNCHED o un raster en GitHub no acreditan por sí solos la recepción privada. El monitor no lanza imágenes, no consulta contenido privado de ChatGPT, no altera la app ni realiza publicaciones.</p></section>
+<div id="warning" class="warning" hidden role="status"></div>
+<section aria-labelledby="list-title"><h2 id="list-title" style="font-size:19px;letter-spacing:-.3px;margin:0">Trabajos de imagen</h2><div class="toolbar">
+<div class="switches" id="projects" aria-label="Proyecto"><button type="button" data-project="all" aria-pressed="true">Todos</button><button type="button" data-project="ttittulares" aria-pressed="false">TTiTTulares</button><button type="button" data-project="ttendencias" aria-pressed="false">TTendencias</button></div>
+<div class="switches" id="stages" aria-label="Etapa"><button type="button" data-stage="all" aria-pressed="true">Todos</button><button type="button" data-stage="requested" aria-pressed="false">Sin enviar</button><button type="button" data-stage="sent" aria-pressed="false">En ChatGPT</button><button type="button" data-stage="web" aria-pressed="false">Con imagen</button><button type="button" data-stage="inbox" aria-pressed="false">En bandeja</button></div>
+<input class="search" id="search" type="search" placeholder="Buscar noticia o tendencia" aria-label="Buscar noticia o tendencia">
+</div><div class="count" id="count" aria-live="polite">Cargando datos…</div><div class="cards" id="cards"><div class="empty">Leyendo los registros públicos…</div></div></section>
+<section class="receipts" aria-labelledby="receipts-title"><h2 id="receipts-title">Comprobar la bandeja privada (opcional)</h2><p>En el PC Windows, selecciona la carpeta <code>C:\TTiTTulares\image-approval-receipts</code>. La web leerá solo los archivos JSON y cruzará <strong>commandId + editorialId + revision</strong>. No lee imágenes originales, no transmite archivos ni usa tokens.</p><div class="uploads"><label class="upload">Seleccionar carpeta de recibos<input id="folder" type="file" multiple webkitdirectory directory aria-label="Seleccionar carpeta con recibos"></label><label class="upload">Seleccionar archivos JSON<input id="receipts-files" type="file" accept=".json,application/json" multiple aria-label="Seleccionar recibos JSON"></label></div><div id="receipt-note" class="receiptnote">No se han importado recibos. La recepción privada aparece como «Sin confirmar».</div></section>
+<div class="remainder">La actualización automática funciona mientras esta pestaña está abierta. Los registros de GitHub pueden retrasarse respecto de lo que está ocurriendo dentro de ChatGPT o de la bandeja.</div><div class="statusline" id="updated" aria-live="polite"></div>
+</main>
+<footer><div class="wrap">TT Fotos · Observador independiente de solo lectura. No sustituye la bandeja de aprobación de TTActualidad. Datos públicos de fabricelop/europapress-rss; los recibos privados solo se analizan en este navegador.</div></footer>
+<script>
+'use strict';
+(function(){
+  const ROOT='https://raw.githubusercontent.com/fabricelop/europapress-rss/';
+  const BASE='https://github.com/fabricelop/europapress-rss/blob/';
+  const config=[
+    {project:'ttittulares',branch:'control/ttittulares-run-trigger-v2',prefix:'ttittulares',label:'Noticia'},
+    {project:'ttendencias',branch:'control/ttendencias-run-trigger',prefix:'trends',label:'Tendencia'}
+  ];
+  const $=id=>document.getElementById(id);
+  const state={jobs:[],receipts:new Map(),project:'all',stage:'all',search:'',failures:[],refreshing:false,updated:null};
+  const clock=date=>{if(!date)return 'Sin fecha';const d=new Date(date);return Number.isFinite(d.valueOf())?new Intl.DateTimeFormat('es-ES',{timeZone:'Europe/Madrid',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}).format(d):'Sin fecha'};
+  const cleanText=s=>String(s==null?'':s);
+  const key=(project,id,revision)=>project+':'+id+':'+Number(revision||0);
+  const validJobFile=(path,prefix)=>new RegExp('^'+prefix+'/image-runs/jobs/[a-zA-Z0-9_.-]+\\.json$').test(String(path||''));
+  const safeImage=(url,project,id,rev)=>{
+    try{
+      const u=new URL(url);
+      return u.protocol==='https:'&&u.hostname==='raw.githubusercontent.com'&&u.pathname.startsWith('/fabricelop/europapress-rss/')&&
+        u.pathname.includes('/'+(project==='ttendencias'?'trends':'ttittulares')+'/generated-images/'+id+'-r'+Number(rev||0)+'-');
+    }catch{return false}
+  };
+  function el(tag,cls,text){
+    const e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=cleanText(text);return e;
+  }
+  async function fetchJSON(url){
+    const ctrl=new AbortController(),tid=setTimeout(()=>ctrl.abort(),16000);
+    try{
+      const response=await fetch(url+(url.includes('?')?'&':'?')+'v='+Date.now(),{signal:ctrl.signal,cache:'no-store'});
+      if(!response.ok)throw Error('HTTP '+response.status);
+      return await response.json();
+    }finally{clearTimeout(tid)}
+  }
+  async function pool(items,limit,fn){
+    let cursor=0;const out=Array(items.length);
+    await Promise.all(Array.from({length:Math.min(limit,items.length)},async()=>{
+      while(cursor<items.length){const i=cursor++;try{out[i]=await fn(items[i],i)}catch(e){out[i]={error:String(e.message||e)}}}
+    }));
+    return out;
+  }
+  function receiptFor(job){const r=state.receipts.get(job.command_id);return r&&r.editorialId===job.id&&r.revision===job.revision&&r.project===job.project?r:null}
+  function publicImage(job){return job.image||null}
+  function sent(job){const d=job.detail||{};return !!(d.pc_launched_at||['LAUNCHED','DONE'].includes(d.status)&&d.phase==='pc_launched'||d.phase==='pc_launched')}
+  function visualStage(job){
+    if(receiptFor(job))return 'inbox';
+    if(publicImage(job))return 'web';
+    if(sent(job)||String(job.detail?.status||'')==='RUNNING')return 'sent';
+    return 'requested';
+  }
+  function render(){
+    const rows=state.jobs.filter(j=>(state.project==='all'||j.project===state.project)
+      &&(state.stage==='all'||visualStage(j)===state.stage)
+      &&(!state.search||((j.title+' '+j.id+' '+j.command_id).toLowerCase().includes(state.search))));
+    $('n-all').textContent=state.jobs.length;
+    $('n-sent').textContent=state.jobs.filter(sent).length;
+    $('n-web').textContent=state.jobs.filter(publicImage).length;
+    $('n-inbox').textContent=state.jobs.filter(receiptFor).length;
+    $('count').textContent=rows.length+' de '+state.jobs.length+' encargos indexados · '+(state.refreshing?'Actualizando…':'consulta de solo lectura');
+    const box=$('cards');box.replaceChildren();
+    if(!rows.length){box.appendChild(el('div','empty',state.jobs.length?'Ningún trabajo coincide con estos filtros.':'No hay trabajos disponibles en los índices consultados.'));return}
+    const frag=document.createDocumentFragment();
+    for(const job of rows){
+      const d=job.detail||{},receipt=receiptFor(job),imageUrl=publicImage(job);
+      const card=el('article','card'),head=el('div','cardhead');
+      const pill=el('span','pill '+(job.project==='ttendencias'?'trends':'news'),job.project==='ttendencias'?'TTendencias':'TTiTTulares');
+      head.append(pill,el('span','time',clock(d.updated_at||job.requested_at)));
+      card.append(head,el('h3','cardtitle',job.title));
+      const photo=el('div','photo');
+      if(imageUrl){
+        const pic=el('img');pic.src=imageUrl;pic.alt='Imagen pública asociada a '+job.title;pic.loading='lazy';pic.referrerPolicy='no-referrer';
+        pic.addEventListener('error',()=>{photo.replaceChildren();const e=el('div','placeholder');e.append(el('span','symbol','▧'),el('span','','Vista previa no disponible'));photo.append(e)});
+        photo.append(pic);
+      }else{
+        const placeholder=el('div','placeholder');placeholder.append(el('span','symbol','▧'),el('span','','Sin imagen pública confirmada'));photo.append(placeholder);
+      }
+      card.append(photo);
+      const steps=el('div','steps');
+      function step(ok,label,detail,tone){
+        const row=el('div','step');row.append(el('span','dot '+(tone||(ok?'ok':'wait'))));
+        const text=el('label');text.append(el('strong','',label));if(detail)text.append(el('em','', ' · '+detail));
+        row.append(text);steps.append(row);
+      }
+      step(true,'Solicitud creada','revisión '+job.revision);
+      if(sent(job))step(true,'Prompt enviado a ChatGPT','recepción confirmada');
+      else if(String(d.status||'')==='RUNNING')step(false,'ChatGPT en preparación','todavía no consta envío','wait');
+      else if(String(d.status||'')==='ERROR')step(false,'Error del lanzamiento','ver registro','bad');
+      else step(false,'ChatGPT sin envío confirmado',d.status||'pendiente','wait');
+      if(receipt)step(true,'Bandeja recibida','recibo '+(receipt.state||'válido'));
+      else step(false,'Bandeja sin recibo verificable','no implica ausencia de imagen','wait');
+      card.append(steps);
+      const extra=el('div','extra',
+        imageUrl?'Imagen vinculada al catálogo público de TTActualidad.':
+        d.web_image?.stage?'Recepción web: '+cleanText(d.web_image.stage).slice(0,100)+'. No equivale a recibo de bandeja.':
+        'La creación de la imagen no se puede verificar solo con el registro del prompt.');
+      card.append(extra);
+      const foot=el('div','foot'),a=el('a','','Ver registro de ejecución'),c=el('code','',job.id+' · r'+job.revision);
+      a.href=BASE+job.branch+'/'+job.path;a.target='_blank';a.rel='noopener noreferrer';
+      foot.append(a,c);card.append(foot);frag.append(card);
+    }
+    box.append(frag);
+  }
+  async function refresh(){
+    if(state.refreshing)return;state.refreshing=true;$('refresh').disabled=true;$('refresh').textContent='Consultando…';
+    state.failures=[];render();
+    try{
+      const indices=await Promise.all(config.map(async c=>{
+        try{
+          const doc=await fetchJSON(ROOT+c.branch+'/'+c.prefix+'/image-runs/index.json');
+          return {c,jobs:Array.isArray(doc.jobs)?doc.jobs:[],error:null};
+        }catch(e){return{c,jobs:[],error:'Índice '+c.label+': '+e.message}}
+      }));
+      const all=[];
+      for(const group of indices){
+        if(group.error)state.failures.push(group.error);
+        for(const j of group.jobs.slice(-120)){
+          const id=String(j.target_id||j.event_id||j.trend_id||'');
+          if(!/^[a-f0-9]{12,80}$/i.test(id)||!validJobFile(j.status_path,group.c.prefix)||!j.command_id||Number(j.revision||0)<0)continue;
+          all.push({project:group.c.project,id,revision:Number(j.revision||0),title:String(j.target_name||id),
+            command_id:String(j.command_id),requested_at:String(j.requested_at||''),branch:group.c.branch,path:j.status_path,detail:null,image:null});
+        }
+      }
+      const results=await pool(all,5,async j=>{
+        const detail=await fetchJSON(ROOT+j.branch+'/'+j.path);
+        if(detail.command_id!==j.command_id||String(detail.target_id||detail.event_id||detail.trend_id||'')!==j.id||Number(detail.revision||0)!==j.revision)throw Error('Estado de otra revisión');
+        return detail;
+      });
+      results.forEach((r,i)=>{if(r&&r.error)state.failures.push('Detalle no disponible para '+all[i].id);else all[i].detail=r});
+      const catalogs=await Promise.all(config.map(async c=>{
+        try{return {project:c.project,doc:await fetchJSON(ROOT+'main/'+c.prefix+'/site-ai-images.json')}}
+        catch(e){state.failures.push('Catálogo web de '+c.project+' no disponible');return {project:c.project,doc:{images:[]}}}
+      }));
+      const catalog=new Map();
+      for(const x of catalogs){
+        for(const im of (Array.isArray(x.doc.images)?x.doc.images:[])){
+          const id=String(im.target_id||im.event_id||''),rev=Number(im.revision||0);
+          if(!/^[a-f0-9]{12,80}$/i.test(id)||!safeImage(im.image_url,x.project,id,rev))continue;
+          catalog.set(key(x.project,id,rev),im.image_url);
+        }
+      }
+      for(const j of all)j.image=catalog.get(key(j.project,j.id,j.revision))||null;
+      all.sort((a,b)=>Date.parse(b.requested_at||0)-Date.parse(a.requested_at||0));
+      if(all.length||!state.jobs.length)state.jobs=all;
+      state.updated=new Date();
+      const unique=[...new Set(state.failures)];
+      const warn=$('warning');warn.hidden=!unique.length;warn.textContent=unique.length?
+        'Consulta parcial: '+unique.length+' registro(s) no disponibles. Los estados no comprobados no se muestran como completados.':'';
+      $('updated').textContent='Última consulta: '+clock(state.updated)+' · Los índices recogen solo el historial que conserva cada proyecto.';
+    }catch(e){$('warning').hidden=false;$('warning').textContent='No se pudo actualizar: '+String(e.message||e); }
+    finally{state.refreshing=false;$('refresh').disabled=false;$('refresh').textContent='Actualizar ahora';render()}
+  }
+  async function importReceipts(files){
+    const items=Array.from(files||[]).filter(f=>/\.json$/i.test(f.name)).slice(0,3000);
+    let good=0,invalid=0;
+    for(const f of items){
+      try{
+        if(f.size>150000)continue;
+        const x=JSON.parse(await f.text());
+        const command=String(x.commandId||x.command_id||''),id=String(x.editorialId||x.editorial_id||'');
+        const rev=Number(x.revision),project=String(x.project||'').toLowerCase();
+        if(!/^(tt-img-|tr-img-)[a-zA-Z0-9._-]+$/.test(command)||!/^[a-f0-9]{12,80}$/i.test(id)||
+          !Number.isInteger(rev)||rev<0||!['ttittulares','ttendencias'].includes(project)||
+          !/^[a-f0-9]{64}$/i.test(String(x.rasterSHA256||''))||!/^[a-f0-9]{64}$/i.test(String(x.id||''))){invalid++;continue}
+        state.receipts.set(command,{project,editorialId:id,revision:rev,state:String(x.state||'received').slice(0,45)});
+        good++;
+      }catch{invalid++}
+    }
+    $('receipt-note').textContent=good+' recibo(s) válidos importados · '+invalid+' descartados · coincidencias exactas en pantalla: '+state.jobs.filter(receiptFor).length+'. Datos conservados solo en esta pestaña.';
+    render();
+  }
+  $('refresh').addEventListener('click',refresh);
+  $('search').addEventListener('input',e=>{state.search=e.target.value.toLowerCase().trim();render()});
+  for(const [group,attr,keyName]of [['projects','project','project'],['stages','stage','stage']]){
+    $(group).addEventListener('click',e=>{
+      const btn=e.target.closest('button[data-'+attr+']');if(!btn)return;
+      state[keyName]=btn.dataset[attr];$(group).querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b===btn)));render();
+    });
+  }
+  $('folder').addEventListener('change',e=>importReceipts(e.target.files));
+  $('receipts-files').addEventListener('change',e=>importReceipts(e.target.files));
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden&&state.updated&&Date.now()-state.updated.valueOf()>120000)refresh()});
+  setInterval(()=>{if(!document.hidden&&(!state.updated||Date.now()-state.updated.valueOf()>105000))refresh()},30000);
+  refresh();
+})();
+</script>
+</body></html>
