@@ -3,7 +3,8 @@ import {commandDetails,exactJob} from './lib/core.mjs';
 const ROOT='https://raw.githubusercontent.com/fabricelop/europapress-rss/';
 const SOURCES=[
  'main/ttittulares/prepared.json',
- 'main/trends/site-top30-current.json'
+ 'main/trends/site-top30-current.json',
+ 'main/ttittulares/status.json'
 ];
 const norm=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('es-ES');
 const identifier=s=>/^[a-f0-9]{12}$/i.test(String(s||''));
@@ -12,15 +13,22 @@ async function json(url,fetcher){
 }
 export async function searchEditorial(query,fetcher=fetch){
  const q=norm(query).trim().slice(0,80);if(q.length<2)return [];
- const [news,trends]=await Promise.all(SOURCES.map(src=>json(ROOT+src,fetcher)));
- const all=[];
+ const [news,trends,status]=await Promise.all(SOURCES.map(src=>json(ROOT+src,fetcher)));
+ const all=[],seen=new Set();
+ const add=x=>{const key=x.project+':'+x.editorialId+':'+x.revision;if(!seen.has(key)){seen.add(key);all.push(x)}};
  for(const item of (Array.isArray(news?.items)?news.items:[])){
    if(!identifier(item.event_id)||!Number.isInteger(Number(item.revision)))continue;
-   all.push({project:'ttittulares',editorialId:item.event_id,revision:Number(item.revision),title:String(item.title||'').slice(0,210)});
+   add({project:'ttittulares',editorialId:item.event_id,revision:Number(item.revision),title:String(item.title||'').slice(0,210)});
  }
  for(const item of (Array.isArray(trends?.items)?trends.items:[])){
    if(!identifier(item.editorial_id)||!Number.isInteger(Number(item.revision)))continue;
-   all.push({project:'ttendencias',editorialId:item.editorial_id,revision:Number(item.revision),title:String(item.name||'').slice(0,210)});
+   add({project:'ttendencias',editorialId:item.editorial_id,revision:Number(item.revision),title:String(item.name||'').slice(0,210)});
+ }
+ // The current news radar includes eligible stories not present in prepared.json.
+ // Search is informational only; name matches never authorize associations.
+ for(const [id,event] of Object.entries(status?.events||{})){
+   if(!identifier(id)||!event||!Number.isSafeInteger(Number(event.revision))||event.revision===null||event.revision===undefined)continue;
+   add({project:'ttittulares',editorialId:id,revision:Number(event.revision),title:String(event.title||'').slice(0,210)});
  }
  return all.filter(x=>norm(x.title+' '+x.editorialId).includes(q)).slice(0,40);
 }
