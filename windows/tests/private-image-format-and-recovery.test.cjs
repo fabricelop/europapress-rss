@@ -67,6 +67,58 @@ test('missing news preparation time recovered from exact READY processing receip
     delivery_confirmation:'prepared_web',delivered_at:'2026-11-05T23:18:12Z'}]})),/PREPARED_DATE_NOT_RECOVERABLE/);
 });
 
+test('news original reaches private inbox even if the editorial headline changed after READY',async()=>{
+ const examples=[
+  ['c1de7a51dcf3', "Vivienda, impuestos e inmigración: los grandes temas de la entrevista de Ada Colau en 'La Revuelta'", "Vivienda, impuestos e inmigracin: los grandes temas de la entrevista de Ada Colau en 'La Revuelta'"],
+  ['06f08699dc5c', "La Palma y la cumbre de Tenerife, en alerta máxima por vientos de hasta 130 km/h por la borrasca 'Charles'", "La Palma y la cumbre de Tenerife, en alerta máxima por vientos de hasta 130 km/h por la borrasca 'Charles' - Telecinco"],
+  ['03d2b8ce0079', "El 20% de las gasolineras deberán abrir como servicio mínimo en la huelga general", "El 20% de las gasolineras deberán abrir como servicio mínimo en la huelga general de este miércoles"]
+ ];
+ for(const [id,jobTitle,historyTitle] of examples){
+  const delivered='2026-11-11T07:20:17.344857Z';
+  const job={command_id:'tt-img-auto-'+id+'-r1-a1-new',target_id:id,revision:1,
+   requested_at:'2026-11-11T07:23:24Z',target_name:jobTitle,
+   context_snapshot:{title:jobTitle,tweet_text:'Texto factual cerrado',
+    factual_summary:'Hechos validados',remate:'Remate editorial'}};
+  const task={project:'ttittulares',target_id:id,command_id:job.command_id,revision:1,
+    editorial_sha256:hash(['Texto factual cerrado','Hechos validados','Remate editorial'].join('\n'))};
+  const ready={event_id:id,revision:1,title:historyTitle,delivery_confirmation:'prepared_web',
+    delivered_at:delivered,status:'READY'};
+  const fetcher=async url=>Response.json(url.includes('prepared.json')?
+   {items:[]}:{items:[ready]});
+  const recovered=await editorialJob({readImageJob:async()=>job},task,fetcher);
+  assert.equal(recovered.context_snapshot.prepared_at,delivered);
+  const meta=metadata(task,recovered);
+  assert.equal(meta.commandId,job.command_id);
+  assert.equal(meta.editorialText,'Texto factual cerrado');
+  assert.equal(meta.revision,1);
+  assert.equal(meta.editorialAt,delivered);
+  // An authenticated original image with the same exact job still binds to
+  // its immutable content SHA; an unrelated revision or fake READY cannot.
+  await assert.rejects(editorialJob({readImageJob:async()=>job},task,
+    async url=>Response.json(url.includes('prepared.json')?{items:[]}:
+     {items:[{...ready,revision:2}]})),/PREPARED_DATE_NOT_RECOVERABLE/);
+  await assert.rejects(editorialJob({readImageJob:async()=>job},task,
+    async url=>Response.json(url.includes('prepared.json')?{items:[]}:
+     {items:[{...ready,delivery_confirmation:'unverified'}]})),/PREPARED_DATE_NOT_RECOVERABLE/);
+  await assert.rejects(editorialJob({readImageJob:async()=>job},task,
+    async url=>Response.json(url.includes('prepared.json')?{items:[]}:
+     {items:[{...ready,delivered_at:'2026-11-11T07:30:00Z'}]})),/PREPARED_DATE_AFTER_IMAGE_REQUEST/);
+ }
+});
+
+test('ambiguous processing dates never substitute a guessed date',async()=>{
+ const job={command_id:'tt-img-new',target_id:'news-unique',revision:1,
+  requested_at:'2026-11-11T09:00:00Z',context_snapshot:{
+  tweet_text:'Texto cerrado',factual_summary:'Hechos',remate:'Remate'}};
+ const task={project:'ttittulares',command_id:job.command_id,target_id:job.target_id,
+  revision:1,editorial_sha256:hash(['Texto cerrado','Hechos','Remate'].join('\n'))};
+ await assert.rejects(editorialJob({readImageJob:async()=>job},task,
+  async url=>Response.json(url.includes('prepared.json')?{items:[]}:{items:[
+   {event_id:job.target_id,revision:1,delivery_confirmation:'prepared_web',delivered_at:'2026-11-11T07:00:00Z'},
+   {event_id:job.target_id,revision:1,delivery_confirmation:'prepared_web',delivered_at:'2026-11-11T08:00:00Z'}
+  ]})),/PREPARED_DATE_NOT_RECOVERABLE/);
+});
+
 test('original raster is cached by exact episode and kept after network failure',async t=>{
  const base=fs.mkdtempSync(path.join(os.tmpdir(),'private-inbox-'));
  t.after(()=>fs.rmSync(base,{recursive:true,force:true}));
