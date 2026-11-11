@@ -3,39 +3,36 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794355800000-manual",
-  "previous_run_id": "tr-1794354900000-manual",
-  "command_id": "tr-1794355800000-manual",
+  "run_id": "tr-1794356700000-manual",
+  "previous_run_id": "tr-1794355800000-manual",
+  "command_id": "tr-1794356700000-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-11T01:11:30+01:00",
-  "updated_at": "2026-11-11T01:21:50+01:00",
-  "current": 2,
-  "total": 2,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-11T01:25:00+01:00",
+  "updated_at": "2026-11-11T01:25:00+01:00",
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": true,
-  "processed_ids": [
-    "bb318e93884a",
-    "6ef6a33e22d7"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
-    "explained": 2,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
-    "updates": 2,
+    "updates": 0,
     "review_completed_no_distinct_event": 0,
     "maintenance_reviews": 0,
     "unchanged_reviews": 0,
     "continuity_updates": 0,
-    "distinct_updates": 2,
+    "distinct_updates": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
     "anticipation_reviews": 0,
@@ -49,26 +46,7 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "bb318e93884a",
-      "revision": 0,
-      "name": "GEMA",
-      "outcome": "distinct_update",
-      "applied": true,
-      "apply_commit": "673ec4a5dcb254376cfc284ea0d1a3d7ff7fa846",
-      "material_event_key": "lidlt11-hoguera-final-gema-ruben-2026-11-10"
-    },
-    {
-      "id": "6ef6a33e22d7",
-      "revision": 0,
-      "name": "sandra",
-      "outcome": "distinct_update",
-      "applied": true,
-      "apply_commit": "f9127f73e51171934fe0dd9b39aa4c711f89a403",
-      "material_event_key": "lidlt11-hogueras-finales-sandra-barneda-2026-11-10"
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -565,6 +543,11 @@
       "at": "2026-11-11T01:21:50+01:00",
       "phase": "closing",
       "message": "Pasada tr-1794355800000-manual cerrada 2/2. GEMA y sandra se verificaron como reentradas por episodios materiales distintos vinculados a las hogueras finales del 10/11 y quedaron aplicadas como nuevas fichas independientes con metadatos de acontecimiento completos. Barrera final main: editorial-queue=0, requests sin preparing/update y sin rewrite_pending/reexplain activos. Captura reciente 01:21:17+01:00. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-11T01:25:00+01:00",
+      "phase": "preparing",
+      "message": "Pasada manual RUNNING. Cola autoritativa inicial observada en 0; verificando requests, mobile-decisions, mantenimientos recientes y barrera JIT final en main. ImageGen=0; publicaciones=0."
     }
   ],
   "last_started_at": "2026-11-11T01:21:36+01:00",
@@ -4553,6 +4536,6 @@
     "61f2f146a926eae3568074e8e0d9947db37bc9f5",
     "5b26ed05be444fecd3e641d64eae7eba5201f9b0"
   ],
-  "finished_at": "2026-11-11T01:21:50+01:00",
+  "finished_at": null,
   "outbox_commit": "d98a814e110f71921adab2ad984fde8a2a11979c"
 }
