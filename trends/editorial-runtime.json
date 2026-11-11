@@ -3,19 +3,19 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-1794359702232-manual",
-  "previous_run_id": "tr-1794359400000-manual",
-  "command_id": "tr-1794359702232-manual",
+  "run_id": "tr-20261111T024000-manual",
+  "previous_run_id": "tr-1794359702232-manual",
+  "command_id": "tr-20261111T024000-manual",
   "source": "chat_manual",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-11T02:26:00+01:00",
-  "updated_at": "2026-11-11T02:27:00+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-11T02:40:00+01:00",
+  "updated_at": "2026-11-11T02:40:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": "TTendencias · pasada editorial manual",
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -50,8 +50,8 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "Cierre completado",
-  "last_started_at": "2026-11-11T02:26:00+01:00",
+  "activity": "Refrescando Top 30 y cola editorial",
+  "last_started_at": "2026-11-11T02:40:00+01:00",
   "last_completed_at": "2026-11-11T02:27:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -93,7 +93,7 @@
     "incidents": [],
     "message": "Pasada tr-1794359702232-manual cerrada 0/0 tras barrera JIT sobre main: editorial-queue=0 (updated_at 2026-11-11T02:20:59+01:00), mobile-decisions sin estados activos y búsquedas dirigidas sin preparing/update/rewrite_pending/reexplain/review_red/anticipate pendientes. No había trabajo editorial textual por procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada tr-1794359702232-manual cerrada 0/0 tras barrera JIT sobre main: editorial-queue=0 (updated_at 2026-11-11T02:20:59+01:00), mobile-decisions sin estados activos y búsquedas dirigidas sin preparing/update/rewrite_pending/reexplain/review_red/anticipate pendientes. No había trabajo editorial textual por procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada tr-20261111T024000-manual RUNNING. Se fuerza refresco real del Top 30 y después se procesará toda la cola editorial vigente con barrera JIT. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "at": "2026-11-10T15:55:00+01:00",
@@ -2340,6 +2340,15 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-1794359702232-manual cerrada 0/0 tras barrera JIT sobre main: editorial-queue=0 (updated_at 2026-11-11T02:20:59+01:00), mobile-decisions sin estados activos y búsquedas dirigidas sin preparing/update/rewrite_pending/reexplain/review_red/anticipate pendientes. No había trabajo editorial textual por procesar. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-20261111T024000-manual",
+      "status": "RUNNING",
+      "at": "2026-11-11T02:40:00+01:00",
+      "phase": "preparing",
+      "current": 0,
+      "total": 0,
+      "message": "Pasada tr-20261111T024000-manual RUNNING. Se fuerza refresco real del Top 30 y después se procesará toda la cola editorial vigente con barrera JIT. ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": null,
