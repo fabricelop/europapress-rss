@@ -58,6 +58,7 @@
    if(message?.type!=='TT_FOTOS_SCAN')return;
    (async()=>{
      if(location.hostname!=='chatgpt.com'||(!location.pathname.startsWith('/images')&&!location.pathname.startsWith('/c/')))throw Error('OPEN_CHATGPT_IMAGES_OR_CONVERSATION');
+     const thumbnailsVisible=[...document.images].filter(img=>img.complete&&isVisible(img)&&img.naturalWidth>=160).length;
      const images=[...document.images].filter(img=>img.naturalWidth>=1024&&img.naturalHeight>=576&&isVisible(img)).slice(0,12);
      let stored=0,unmatched=0,skipped=0;const reasons={};
      for(const img of images){
@@ -67,8 +68,9 @@
          if(!result?.ok)throw Error(result?.error||'UPLOAD_FAILED');
          stored++;if(result.needsReview)unmatched++;
        }catch(e){skipped++;const reason=String(e.message||'ERROR').slice(0,60);reasons[reason]=(reasons[reason]||0)+1}
+       chrome.runtime.sendMessage({type:'TT_FOTOS_PROGRESS',scanned:stored+skipped,visibleCandidates:images.length,stored,unmatched,skipped}).catch(()=>{});
      }
-     return {ok:true,visibleCandidates:images.length,stored,unmatched,skipped,reasons,
+     return {ok:true,visibleCandidates:images.length,thumbnailsVisible,stored,unmatched,skipped,reasons,
        note:'Visible full-resolution resources only. WebP/JPEG may become marked rendered PNG copies; inaccessible sources are skipped.'};
    })().then(reply,e=>reply({ok:false,error:String(e.message||e).slice(0,100)}));
    return true;
