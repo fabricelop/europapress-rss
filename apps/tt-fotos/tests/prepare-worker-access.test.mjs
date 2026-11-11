@@ -41,6 +41,9 @@ test('existing app must serve the exact isolated worker with no public overrides
  assert.throws(()=>chooseAccessApp([app],worker.id,'d'.repeat(64)));
  assert.throws(()=>chooseAccessApp([{...app,destinations:[{type:'worker',worker_id:worker.id,overrides:[{behavior:'public',path_pattern:'/*'}]}]}],worker.id));
  assert.throws(()=>chooseAccessApp([app,app],worker.id));
+ assert.throws(()=>chooseAccessApp([{...app,destinations:[
+  {type:'worker',worker_id:worker.id},{type:'worker',worker_id:'some-other-worker'}
+ ]}],worker.id),/TT_FOTOS_ACCESS_MUST_TARGET_ONLY_THIS_WORKER/);
 });
 test('editor policies must not include everyone, domains or bypass decisions',()=>{
  assert(validateEditorPolicies([policy],['one@example.org','two@example.org']));
