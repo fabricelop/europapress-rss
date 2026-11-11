@@ -1,20 +1,20 @@
 {
   "version": 1,
-  "id": "ttb-trends-trace-20261112",
+  "id": "ttb-trends-executor-20261112",
   "project": "TTActualidad",
   "expires_at": "2026-11-13T20:00:00Z",
-  "description": "Inspección local de la causa del atasco, sin cambios ni reinicios",
+  "description": "Localizar el ejecutor real de TTendencias y sus procesos sin modificar el equipo",
   "steps": [
     {
       "kind": "powershell",
-      "name": "listener-eventos-editoriales",
-      "script": "$p='C:\\TTiTTulares\\ttendencias-mobile-trigger.log'\n$lines=@(Get-Content $p -Tail 120 -ErrorAction Stop)\n$hits=@($lines|Where-Object {$_ -match 'EDITORIAL|RUNNING|DONE|TRANSMISSION|AMBIGUOUS|preflight|ACK|tr-1794434190627|tr-composerfix'}|Select-Object -Last 18)\n$hits=@($hits|ForEach-Object {($_ -replace '(gh[pousr]_[A-Za-z0-9_]+)','[REDACTED]' -replace '(Bearer\\s+)[^\\s]+','$1[REDACTED]') -replace '.{241}$',''})\nWrite-Output ('TTRESULT:'+(@{events=$hits;total=$lines.Count}|ConvertTo-Json -Compress -Depth 4))\n",
+      "name": "localizar-listener-y-procesos",
+      "script": "$root='C:\\TTiTTulares'\n$files=@(Get-ChildItem $root -File -Filter '*ttendencias*' -ErrorAction SilentlyContinue | Select-Object -First 30 Name,Length,LastWriteTime)\n$procs=@(Get-CimInstance Win32_Process -Filter \"name='node.exe'\" | Where-Object {$_.CommandLine -match 'TT|ttendencias|editorial'} | ForEach-Object {@{pid=$_.ProcessId;command=([regex]::Replace($_.CommandLine,'(?i)(token|password|secret|key)\\s*[=:]\\s*\\S+','$1=[REDACTED]'))}})\nWrite-Output ('TTRESULT:'+(@{files=$files;processes=$procs}|ConvertTo-Json -Compress -Depth 5))\n",
       "timeout_seconds": 25
     },
     {
       "kind": "powershell",
-      "name": "ledger-envio-editorial",
-      "script": "$base='C:\\TTiTTulares\\TT-Editorial-Rescue\\sent'\n$files=@(Get-ChildItem $base -Filter '*tr-1794434190627*' -ErrorAction SilentlyContinue)\n$rows=@($files|ForEach-Object {$j=Get-Content $_.FullName -Raw|ConvertFrom-Json;@{file=$_.Name;status=$j.status;at=$j.at;target_present=!!$j.target;source=$j.source}})\nWrite-Output ('TTRESULT:'+(@{ledger=$rows;count=$rows.Count}|ConvertTo-Json -Compress -Depth 5))\n",
+      "name": "localizar-archivos-editoriales",
+      "script": "$root='C:\\TTiTTulares'\n$files=@(Get-ChildItem $root -File -Filter '*Editorial*' -ErrorAction SilentlyContinue | Select-Object -First 35 Name,Length,LastWriteTime)\nWrite-Output ('TTRESULT:'+(@{files=$files}|ConvertTo-Json -Compress -Depth 4))\n",
       "timeout_seconds": 20
     },
     {
