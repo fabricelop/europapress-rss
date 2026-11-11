@@ -1,6 +1,6 @@
 # Instala TT Fotos Rescate desde esta carpeta, sin descargar scripts.
-# Por defecto SOLO instala y audita. -Recover captura y reintenta originales.
-# -Serve inicia la pantalla privada http://127.0.0.1:8765/
+# Por defecto SOLO instala y audita. -Recover captura originales y los asocia localmente, SIN entregar a iPhone.
+# -Serve abre panel local desde 8765; si esta ocupado, usa 8766+ sin cerrar otros procesos.
 param(
   [string]$Base = 'C:\TTiTTulares',
   [switch]$Recover,
@@ -32,7 +32,7 @@ foreach ($name in $names) {
   Copy-Item -LiteralPath (Join-Path $origin $name) -Destination $tmp -Force
   Move-Item -LiteralPath $tmp -Destination $destination -Force
 }
-Write-Host 'TT_FOTOS_RESCATE_V2_INSTALLED - no browser restart, no ImageGen'
+Write-Host 'TT_FOTOS_RESCATE_V3_INSTALLED - monitor local; iPhone inbox intacta'
 $app = Join-Path $Base 'TTFotosRescate.cjs'
 $arguments = @('--base', $Base, '--since', $Since)
 if ([string]::IsNullOrWhiteSpace($ImportDir)) {
@@ -44,7 +44,7 @@ if (![string]::IsNullOrWhiteSpace($ImportDir)) {
   $arguments += @('--import-dir', $ImportDir)
 }
 if ($Recover) {
-  Write-Host 'TT_FOTOS_RECOVERY_EXACT_ONLY - capture existing tabs + retry cached originals'
+  Write-Host 'TT_FOTOS_CAPTURE_ONLY - sin envios ni cambios en iPhone'
   & $node $app --rescue --limit 8 @arguments
   if ($LASTEXITCODE -ne 0) { throw 'RECOVERY_REPORTED_ERROR' }
 } else {
@@ -55,8 +55,8 @@ if ($Recover) {
 if ($Serve) {
   Write-Host ('TT_FOTOS_IMPORT_FOLDER ' + $ImportDir)
   Write-Host ('TT_FOTOS_FROM_DATE ' + $Since)
-  Write-Host 'OPEN http://127.0.0.1:8765/'
+  Write-Host 'PANEL: usa la URL TT_FOTOS_PANEL que indique Node (8765 o 8766 si esta ocupado)'
   & $node $app --serve @arguments
 } else {
-  Write-Host 'PANEL: node C:\TTiTTulares\TTFotosRescate.cjs --serve'
+  Write-Host 'PANEL: node C:\TTiTTulares\TTFotosRescate.cjs --serve --import-dir C:\TTiTTulares\TTFotos-Importar'
 }
