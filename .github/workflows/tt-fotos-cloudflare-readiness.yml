@@ -5,6 +5,9 @@ on:
     branches: [main]
     paths:
       - ".github/workflows/tt-fotos-cloudflare-readiness.yml"
+      - "apps/tt-fotos/scripts/check-cloudflare-readiness.mjs"
+      - "apps/tt-fotos/scripts/prepare-private-resources.mjs"
+      - "apps/tt-fotos/scripts/prepare-worker-access.mjs"
 permissions:
   contents: read
 concurrency:
