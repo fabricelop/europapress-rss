@@ -12,10 +12,6 @@ on:
         type: boolean
         required: true
         default: false
-  push:
-    branches: [main]
-    paths:
-      - ".github/tt-fotos-deploy-request.txt"
 permissions:
   contents: read
 concurrency:
@@ -23,6 +19,10 @@ concurrency:
   cancel-in-progress: false
 jobs:
   deploy:
+    # DEPRECATED: user requested no standalone D1/R2/photo-storage or Zero Trust.
+    # This prevents any NEW dispatch from provisioning a duplicate photo library.
+    # Pre-existing queued runs are immutable and require separate cancellation.
+    if: ${{ false }}
     runs-on: ubuntu-latest
     timeout-minutes: 20
     defaults:
