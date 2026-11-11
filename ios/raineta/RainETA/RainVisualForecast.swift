@@ -92,53 +92,50 @@ struct RainPulseOverview:View {
     private var bins:[RainOverviewBin] {
         RainVisualForecast.overview(series,weather:weather)
     }
-    private var maxRate:Double {
-        max(0.7,(bins.compactMap(\.peakRate).max() ?? 0)*1.12)
+
+    private var wave:[RainWavePoint] {
+        bins.map {
+            RainWavePoint(minute:$0.startMinute,rate:$0.meanRate,snow:$0.snow)
+        }
     }
+
     var body:some View {
         VStack(alignment:.leading,spacing:10) {
             HStack {
-                Label("Panorama · 2 horas",systemImage:"chart.bar.xaxis")
+                Label("Panorama · 2 horas",systemImage:"waveform.path")
                     .font(.subheadline.bold())
                 Spacer()
-                Text("12 tramos de 10 min")
-                    .font(.caption2).foregroundStyle(.secondary)
+                Text("RADAR → MODELOS")
+                    .font(.system(size:10,weight:.semibold))
+                    .foregroundStyle(.cyan)
             }
             let info=bins
+            let points=wave
             if info.isEmpty || info.allSatisfy({$0.meanRate == nil}) {
                 Text("Sin datos suficientes para representar las próximas 2 horas")
                     .font(.caption).foregroundStyle(.secondary)
             } else {
-                HStack(spacing:3) {
-                    ForEach(info) { bin in
-                        Button {
-                            selectedMinute=bin.startMinute
-                        } label:{
-                            VStack(spacing:3) {
-                                Spacer(minLength:0)
-                                RoundedRectangle(cornerRadius:3)
-                                    .fill(fillColor(bin))
-                                    .frame(height:height(bin))
-                                    .overlay {
-                                        if selectedMinute.map({$0>=bin.startMinute &&
-                                                             $0<bin.startMinute+10})==true {
-                                            RoundedRectangle(cornerRadius:3)
-                                                .stroke(.white,lineWidth:1.5)
-                                        }
-                                    }
-                                Capsule()
-                                    .fill(bin.radarMinutes>=5 ? Color.cyan :
-                                          Color.white.opacity(0.20))
-                                    .frame(height:3)
-                            }
-                            .frame(maxWidth:.infinity)
-                            .contentShape(Rectangle())
-                        }
-                        .buttonStyle(.plain)
-                        .accessibilityLabel(accessibility(bin))
-                    }
+                HStack(alignment:.firstTextBaseline) {
+                    Text("¿Cuándo llueve y cuándo no?")
+                        .font(.subheadline.bold())
+                    Spacer()
+                    Text(RainWaveForecast.peak(points)>0 ?
+                         String(format:"Pico ~%.1f mm/h",RainWaveForecast.peak(points)) :
+                         "Sin pico relevante")
+                        .font(.caption2.bold())
+                        .foregroundStyle(.cyan)
                 }
-                .frame(height:91)
+                RainWavePlot(
+                    points:points,height:134,
+                    selectedIndex:info.firstIndex(where:{
+                        selectedMinute.map { minute in
+                            minute >= $0.startMinute && minute < $0.startMinute+10
+                        } ?? false
+                    }),
+                    onSelect:{ index in
+                        if info.indices.contains(index) {selectedMinute=info[index].startMinute}
+                    }
+                )
                 HStack {
                     Text("Ahora")
                     Spacer()
@@ -152,18 +149,23 @@ struct RainPulseOverview:View {
                 }
                 .font(.system(size:10,design:.rounded))
                 .foregroundStyle(.secondary)
+                RainWaveRibbon(points:points)
+                RainWaveWindows(points:points,stepMinutes:10,limit:4)
+                RainWaveLegend()
                 HStack(spacing:10) {
                     Label(info.contains(where:{$0.meanRate==nil}) ?
-                          "\(RainVisualForecast.rainyMinutes(info)) min de precipitación · parcial" :
-                          "\(RainVisualForecast.rainyMinutes(info)) min con precipitación",
+                          "\(RainVisualForecast.rainyMinutes(info)) min con precipitación · datos parciales" :
+                          "\(RainVisualForecast.rainyMinutes(info)) min con precipitación estimada",
                           systemImage:"clock")
                     Spacer(minLength:0)
-                    Text(hasValidRadar ? "Cian: tramo con radar" : "Previsión de modelos")
+                    Text(hasValidRadar ? "Con radar local" : "Según modelos")
                 }
-                .font(.caption2).foregroundStyle(.secondary)
-                Text("Vista conjunta: intensidad equivalente estimada; tramos grises secos, " +
-                     "blancos nieve prevista. La fuente cambia con el plazo.")
-                    .font(.caption2).foregroundStyle(.secondary)
+                .font(.caption2)
+                .foregroundStyle(.secondary)
+                Text("La onda azul representa intensidad estimada. Violeta: señal débil. " +
+                     "Gris: falta de datos. Los bloques de 10 min no son mediciones independientes.")
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
                     .fixedSize(horizontal:false,vertical:true)
             }
         }
@@ -176,28 +178,6 @@ struct RainPulseOverview:View {
         .overlay(RoundedRectangle(cornerRadius:16)
                  .stroke(Color.cyan.opacity(0.17),lineWidth:1))
     }
-
-    private func fillColor(_ bin:RainOverviewBin)->Color {
-        guard let amount=bin.meanRate else{return Color.gray.opacity(0.12)}
-        if bin.rainyMinutes==0 {return Color.gray.opacity(0.26)}
-        if bin.snow {return Color.white.opacity(0.93)}
-        return RainVisual.color(amount)
-    }
-
-    private func height(_ bin:RainOverviewBin)->CGFloat {
-        guard let value=bin.peakRate else{return 5}
-        if bin.rainyMinutes==0{return 5}
-        return max(11,CGFloat(min(1,value/maxRate))*79)
-    }
-
-    private func accessibility(_ bin:RainOverviewBin)->String {
-        guard let rate=bin.meanRate else {
-            return "Desde +\(bin.startMinute) minutos: datos incompletos"
-        }
-        return "Desde +\(bin.startMinute) minutos: \(bin.rainyMinutes) minutos de precipitación, " +
-               String(format:"%.1f milímetros por hora de media",rate) +
-               (bin.snow ? ", posible nieve" : "")
-    }
 }
 
 struct RainTwentyFourHourView: View {
@@ -207,7 +187,7 @@ struct RainTwentyFourHourView: View {
     var body:some View {
         VStack(alignment:.leading,spacing:12) {
             HStack {
-                Label("Precipitación · 24 horas",systemImage:"cloud.rain")
+                Label("Precipitación · 24 horas",systemImage:"waveform.path")
                     .font(.headline)
                 Spacer()
                 Text("LLUVIA / NIEVE")
@@ -222,11 +202,17 @@ struct RainTwentyFourHourView: View {
                 } else {
                     let chosen=hours[min(max(0,selectedHour),hours.count-1)]
                     let total=hours.reduce(0.0){$0+$1.millimeters}
+                    let points=hours.map {
+                        RainWavePoint(minute:$0.index*60,rate:$0.millimeters,
+                                      probability:Double($0.probability),
+                                      snow:$0.snowCM>=0.1,
+                                      date:$0.end.addingTimeInterval(-3600))
+                    }
                     HStack(alignment:.firstTextBaseline) {
                         VStack(alignment:.leading,spacing:3) {
                             Text(String(format:"%.1f mm en 24 h",total))
                                 .font(.title3.bold())
-                            Text("Acumulación del modelo, no medida de radar")
+                            Text("Acumulación del modelo · no es radar observado")
                                 .font(.caption2).foregroundStyle(.secondary)
                         }
                         Spacer()
@@ -235,8 +221,23 @@ struct RainTwentyFourHourView: View {
                                 .font(.caption2).foregroundStyle(.white)
                         }
                     }
+                    if let first=RainWaveForecast.firstRain(points),
+                       hours.indices.contains(first.first) {
+                        Text("Lluvia prevista desde ~" +
+                             hours[first.first].end.addingTimeInterval(-3600)
+                                .formatted(date:.omitted,time:.shortened))
+                            .font(.subheadline.bold())
+                            .foregroundStyle(.cyan)
+                    } else {
+                        Text(points.contains(where:{RainWaveForecast.signal($0)==(.possible)}) ?
+                             "Señales posibles, sin episodio probable definido" :
+                             "Sin episodio relevante previsto en esta franja")
+                            .font(.subheadline.bold()).foregroundStyle(.mint)
+                    }
                     HStack {
-                        Text(chosen.end.formatted(date:.omitted,time:.shortened))
+                        Text(chosen.end.addingTimeInterval(-3600)
+                            .formatted(date:.omitted,time:.shortened) +
+                             "–" + chosen.end.formatted(date:.omitted,time:.shortened))
                             .font(.caption.bold())
                         Spacer()
                         Text(String(format:"%.1f mm",chosen.millimeters))
@@ -250,16 +251,26 @@ struct RainTwentyFourHourView: View {
                                 .font(.caption2).foregroundStyle(.white)
                         }
                     }
-                    twentyFourBars(hours)
-                    probabilityStrip(hours)
+                    RainWavePlot(points:points,height:140,
+                                 selectedIndex:min(max(0,selectedHour),hours.count-1),
+                                 onSelect:{ index in
+                                     if hours.indices.contains(index) {selectedHour=index}
+                                 })
                     HStack {
-                        Text("Cantidad: mm/hora")
+                        Text(hours.first?.end.addingTimeInterval(-3600)
+                            .formatted(date:.omitted,time:.shortened) ?? "Ahora")
                         Spacer()
-                        Text("Franja inferior: probabilidad")
+                        Text("+12 h")
+                        Spacer()
+                        Text("+24 h")
                     }
-                    .font(.caption2).foregroundStyle(.secondary)
-                    Text("Cada barra corresponde a una hora de acumulación prevista. " +
-                         "La nieve es una estimación del modelo; la probabilidad es distinta de la cantidad.")
+                    .font(.system(size:10,design:.rounded))
+                    .foregroundStyle(.secondary)
+                    RainWaveRibbon(points:points)
+                    RainWaveWindows(points:points,stepMinutes:60,limit:5)
+                    RainWaveLegend()
+                    Text("La onda indica acumulación horaria en mm (equivalente a mm/h por tramo). " +
+                         "La probabilidad se evalúa aparte; las franjas violetas representan riesgo incierto.")
                         .font(.caption2).foregroundStyle(.secondary)
                         .fixedSize(horizontal:false,vertical:true)
                 }
@@ -271,66 +282,7 @@ struct RainTwentyFourHourView: View {
         .background(Color.white.opacity(0.065),
                     in:RoundedRectangle(cornerRadius:20))
     }
-
-    @ViewBuilder
-    private func twentyFourBars(_ hours:[Rain24Hour])->some View {
-        let peak=max(0.5,(hours.map(\.millimeters).max() ?? 0)*1.12)
-        HStack(alignment:.bottom,spacing:3) {
-            ForEach(hours) { hour in
-                Button {selectedHour=hour.index} label:{
-                    VStack(spacing:5) {
-                        Spacer(minLength:0)
-                        RoundedRectangle(cornerRadius:3)
-                            .fill(barColor(hour))
-                            .frame(height:hour.isWet ?
-                                   max(9,CGFloat(hour.millimeters/peak)*120):4)
-                            .overlay {
-                                if selectedHour==hour.index {
-                                    RoundedRectangle(cornerRadius:3)
-                                        .stroke(Color.white,lineWidth:1.3)
-                                }
-                            }
-                        Text(hour.index%3==0 ?
-                             hour.end.formatted(.dateTime.hour()) : " ")
-                            .font(.system(size:9))
-                            .foregroundStyle(.secondary)
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.7)
-                            .frame(height:13)
-                    }
-                    .frame(maxWidth:.infinity)
-                    .contentShape(Rectangle())
-                }
-                .buttonStyle(.plain)
-                .accessibilityLabel(
-                    "\(hour.end.formatted(date:.omitted,time:.shortened)) " +
-                    String(format:"%.1f mm, %d%%",hour.millimeters,hour.probability))
-            }
-        }
-        .frame(height:153)
-    }
-
-    @ViewBuilder
-    private func probabilityStrip(_ hours:[Rain24Hour])->some View {
-        HStack(alignment:.bottom,spacing:3) {
-            ForEach(hours) { hour in
-                RoundedRectangle(cornerRadius:2)
-                    .fill(Color.cyan.opacity(0.18+0.8*Double(hour.probability)/100))
-                    .frame(maxWidth:.infinity)
-                    .frame(height:max(3,CGFloat(hour.probability)/100*18))
-                    .accessibilityLabel("\(hour.probability)% de probabilidad")
-            }
-        }
-        .frame(height:20,alignment:.bottom)
-    }
-
-    private func barColor(_ hour:Rain24Hour)->Color {
-        if !hour.isWet{return Color.gray.opacity(0.24)}
-        if hour.snowCM>=0.1 {return Color.white.opacity(0.92)}
-        return RainVisual.color(hour.millimeters)
-    }
 }
-
 
 /// Twelve bins covering the same interval and vertical intensity scale for
 /// every model. Their hourly input cannot imply a new 10-minute prediction.
