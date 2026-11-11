@@ -15,7 +15,7 @@ $stage=$target+'.hotfix-'+[guid]::NewGuid().ToString('N')+'.new'
 try {
  Invoke-WebRequest -UseBasicParsing -Uri $installerUrl -OutFile $srcFile -TimeoutSec 35 -ErrorAction Stop
  $text=[IO.File]::ReadAllText($srcFile,[Text.Encoding]::UTF8)
- $m=[regex]::Match($text,"(?ms)^\`$engine=@'\r?\n(?<code>.*?)^\s*'@\r?$")
+ $m=[regex]::Match($text,'(?ms)^\$engine=@''\r?\n(?<code>.*?)^''@\r?$')
  if(-not $m.Success){throw 'No se pudo extraer el motor de forma segura; sin cambios'}
  $code=[string]$m.Groups['code'].Value
  foreach($required in @('TT_EDITORIAL_GUARD_V1',
