@@ -7,19 +7,25 @@
   "previous_run_id": "tr-1794354900000-manual",
   "command_id": "tr-1794355800000-manual",
   "source": "chat",
-  "status": "RUNNING",
+  "status": "waiting",
   "phase": "investigating",
   "started_at": "2026-11-11T01:11:30+01:00",
-  "updated_at": "2026-11-11T01:15:00+01:00",
+  "updated_at": "2026-11-11T01:20:15+01:00",
   "current": 0,
   "total": 2,
   "trend_id": "bb318e93884a",
   "title": "GEMA",
   "queue_complete": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "bb318e93884a"
+  ],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "6ef6a33e22d7"
+  ],
+  "remaining_active_ids": [
+    "6ef6a33e22d7"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
@@ -521,7 +527,7 @@
       "message": "Reentrada r0 validada JIT. Comparando la hoguera mixta del 4/11 con la hoguera final emitida el 10/11 para comprobar episodio material distinto. ImageGen=0; publicaciones=0."
     }
   ],
-  "last_started_at": "2026-11-11T00:55:00+01:00",
+  "last_started_at": "2026-11-11T01:20:14+01:00",
   "last_completed_at": "2026-11-11T00:56:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
