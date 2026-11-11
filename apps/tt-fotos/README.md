@@ -35,7 +35,7 @@ No ejecutar todavía sin revisar que las credenciales y los bindings corresponde
 
 ## Comprobaciones antes de declarar éxito
 
-`node --test tests/*.test.mjs` desde `apps/tt-fotos`. Incluye las pruebas de la API propia y del conector Chrome. **29/29 pruebas superadas localmente** el 11/11/2026; ejecución de CI de GitHub Actions sin confirmar.
+`node --test tests/*.test.mjs` desde `apps/tt-fotos`. Incluye las pruebas de la API propia y del conector Chrome. **29/29 pruebas superadas localmente** inicialmente; tras las nuevas comprobaciones de asociación, **36/36 pruebas superadas en CI GitHub Actions el 11/11/2026**.
 
 **Piloto:** abrir el propio Worker protegido, autenticar editor, recuperar 1 PNG de noticia y 1 PNG de tendencia; comparar SHA de R2 y pantalla; asociar una imagen sin prueba exacta manualmente; repetir sin duplicar; confirmar que el Site/app iPhone no han sido tocados. Después ampliar a nuevas imágenes desde el 10 de noviembre de 2026 y evaluar cobertura real del catálogo.
 
@@ -52,3 +52,15 @@ La asociación automática solo puede usar el marcador del **turno de usuario in
 El directorio `extension-templates/` incluye `popup.html`, `popup.js` y los 4 archivos anteriores. `node scripts/build-companion.mjs https://ORIGEN-REAL-DE-TT-FOTOS` genera `dist/chrome-companion` con el hostname correcto y los seis archivos del paquete de Chrome. **No usar la URL de ensayo** utilizada por las pruebas como URL de producción.
 
 El código y pruebas están disponibles, pero **sigue faltando el despliegue real**: este chat no tiene una conexión autenticada a la cuenta Cloudflare ni a ChatGPT Imágenes. No hay un Worker independiente accesible ni PNG de producción importado hasta realizar el piloto en una sesión autorizada. No lanzar un deployment genérico en la cuenta equivocada ni cambiar los Workers existentes.
+## Actualización de asociación de fichas (11/11/2026)
+
+Se comprobó que las antiguas rutas `control/.../image-runs/jobs/<id>.json` **devuelven 404** para varios encargos reales. Esto no significa que la noticia o tendencia no exista. Por ejemplo, TTiTTulares `683beffb5aed` sigue en el radar `ttittulares/status.json`; TTendencias `e617da285349` sigue en `trends/site-top30-current.json`.
+
+La búsqueda privada ahora incluye las noticias del radar. El proveedor de encargos distingue dos niveles:
+
+1. **`exact_job`:** archivo de encargo original accesible en GitHub, con comando, proyecto, id y revisión coincidentes. Solo este nivel puede asociar **automáticamente** una fotografía, siempre con la evidencia exacta del turno ChatGPT.
+2. **`editorial_identity_only`:** el archivo de encargo original falta (404), pero GitHub corrobora el identificador editorial y revisión en noticias preparadas/radar o Top 30. El comando se obtiene exclusivamente del prompt ChatGPT o de la entrada exacta del editor; **jamás se inventa**. La fotografía queda **sin asociar** hasta una confirmación explícita del editor. El monitor muestra una advertencia sobre el recibo faltante antes de confirmar.
+
+Una respuesta errónea (5xx), un recibo contradictorio o una revisión distinta **no** activan este modo alternativo. Las fotografías y asociaciones se almacenan exclusivamente en D1/R2 privados de TT Fotos. El Site anterior y la bandeja iPhone no se escriben. Esta alternativa permite recuperar fichas sin hacer pasar una coincidencia editorial por una verificación del encargo original.
+
+**CI comprobado:** `36/36` pruebas del Worker/monitor/extensión aprobadas en GitHub Actions el 11/11/2026 (ejecución [43092592207](https://github.com/fabricelop/europapress-rss/actions/runs/43092592207), commit `a862471d064883c22901fc6893c377a7dd96cc8d`). Esto **no** implica despliegue ni recuperación real de fotografías.
