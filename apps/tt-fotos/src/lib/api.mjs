@@ -24,9 +24,16 @@ async function registerJob(db,job){const j=jobInfo(job);if(!j)return null;
 }
 async function matchAsset(db,identity,sha,confidence){
  const date=now();
- const former=await db.prepare('SELECT asset_sha FROM tt_fotos_matches WHERE project=? AND editorial_id=? AND revision=? AND command_id=?')
+ const former=await db.prepare('SELECT asset_sha,confidence FROM tt_fotos_matches WHERE project=? AND editorial_id=? AND revision=? AND command_id=?')
  .bind(identity.project,identity.editorialId,identity.revision,identity.commandId).first();
- const operation=former && former.asset_sha!==sha?'replace':'associate';
+ // A repeated import of the same image must not rewrite its association or
+ // create a spurious historical action. Preserve the existing confidence.
+ if(former?.asset_sha===sha){
+   return {operation:'unchanged',project:identity.project,editorialId:identity.editorialId,
+     revision:identity.revision,commandId:identity.commandId,assetSha:sha,
+     confidence:former.confidence,alreadyAssociated:true};
+ }
+ const operation=former?'replace':'associate';
  // Batch is atomic in D1. A history row must not exist without corresponding match.
  await db.batch([
   db.prepare(`INSERT INTO tt_fotos_matches(project,editorial_id,revision,command_id,asset_sha,confidence,updated_at)
