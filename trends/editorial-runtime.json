@@ -7,25 +7,28 @@
   "previous_run_id": "tr-autoguard-1794381666",
   "command_id": "tr-1794382196865-manual",
   "source": "chat",
-  "status": "RUNNING",
+  "status": "waiting",
   "phase": "investigating",
   "started_at": "2026-11-11T08:53:00+01:00",
-  "updated_at": "2026-11-11T08:55:00+01:00",
+  "updated_at": "2026-11-11T08:57:24+01:00",
   "current": 0,
   "total": 2,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [
-    "radar-prepare-9744b43bb7230e95d56f",
-    "radar-prepare-fb6874c679a988fc53b9"
+    "54558781ed3f"
   ],
   "converged_ids": [
     "radar-prepare-9744b43bb7230e95d56f",
     "radar-prepare-fb6874c679a988fc53b9"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "2fb6dd8f8fd5"
+  ],
+  "remaining_active_ids": [
+    "2fb6dd8f8fd5"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 2,
@@ -266,7 +269,7 @@
       "message": "r0 revalidada en main. Causa actual contrastada: huelga general de 24 horas del 11N por vivienda y salarios, convocada por CCOO, UGT y otras organizaciones. ImageGen=0."
     }
   ],
-  "last_started_at": "2026-11-11T08:41:30+01:00",
+  "last_started_at": "2026-11-11T08:57:23+01:00",
   "last_completed_at": "2026-11-11T08:44:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
