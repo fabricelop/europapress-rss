@@ -45,7 +45,7 @@ function drawAssets(){const grid=$('assets-gallery');grid.replaceChildren();cons
   choose.disabled=true;try{
    // A visible original ChatGPT turn may have supplied the exact command.
    // Never derive its random suffix from a title or from an editorial ID.
-   const known=/^(tt|tr)-img-auto-([a-f0-9]{12})-r(\\d+)-a\\d+-\\d{10,}$/i.exec(a.evidence_command||'');
+   const known=/^(tt|tr)-img-auto-([a-f0-9]{12})-r(\d+)-a\d+-\d{10,}$/i.exec(a.evidence_command||'');
    if(known&&known[2]===j.editorialId&&Number(known[3])===j.revision&&((known[1]==='tt'&&j.project==='ttittulares')||(known[1]==='tr'&&j.project==='ttendencias'))){
     input.value=a.evidence_command;notice('Ficha corroborada: '+j.title+'. Confirma su asociación después de revisar la fotografía.');return;
    }
