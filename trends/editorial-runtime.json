@@ -3,73 +3,30 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261112T161000-manual",
-  "previous_run_id": "tr-20261112T154000-manual",
-  "command_id": "tr-20261112T161000-manual",
+  "run_id": "tr-20261112T162500-manual",
+  "previous_run_id": "tr-20261112T161000-manual",
+  "command_id": "tr-20261112T162500-manual",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-12T16:10:00+01:00",
-  "updated_at": "2026-11-12T16:16:00+01:00",
-  "current": 6,
-  "total": 6,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "554d3b5f9168",
-    "f9c321a34c0c",
-    "e9bc47ad891b",
-    "129a97f8df9f",
-    "f4fde19c25ea",
-    "be0552e64e1b"
-  ],
+  "status": "RUNNING",
+  "phase": "investigating",
+  "started_at": "2026-11-12T16:25:00+01:00",
+  "updated_at": "2026-11-12T16:31:03+01:00",
+  "current": 0,
+  "total": 1,
+  "trend_id": "f4fde19c25ea",
+  "title": "Aurá",
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
-  "remaining_problematic_ids": [],
-  "summary": {
-    "attempted": 6,
-    "observed": 6,
-    "closed": 6,
-    "explained": 5,
-    "maintenance": 1,
-    "problematic": 0,
-    "updates": 0,
-    "review_completed_no_distinct_event": 1,
-    "queue_remaining": 0,
-    "imagegen_calls": 0,
-    "image_outbox_created": 0,
-    "publications": 0,
-    "incidents": 0
-  },
-  "outcomes": [
-    {
-      "id": "radar-prepare-4e67f5ba6e21bbb1d5f3",
-      "revision": 0,
-      "name": "Radar · Viernes 13",
-      "outcome": "anticipation_prepared"
-    },
-    {
-      "id": "radar-prepare-7d45db377614806a8f3f",
-      "revision": 0,
-      "name": "Radar · Vivienda",
-      "outcome": "anticipation_prepared"
-    },
-    {
-      "id": "red-review-e0584d7859ae861c99c0",
-      "revision": 0,
-      "name": "Revisar novedades: #EnBocaDeTodos",
-      "outcome": "continuity"
-    },
-    {
-      "id": "554d3b5f9168",
-      "revision": 1,
-      "name": "Tamayo",
-      "outcome": "problematic",
-      "problematic_attempts": 2
-    }
+  "remaining_ids": [
+    "f4fde19c25ea"
   ],
+  "remaining_active_ids": [
+    "f4fde19c25ea"
+  ],
+  "remaining_problematic_ids": [],
+  "summary": null,
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -83,9 +40,17 @@
       "at": "2026-11-12T16:16:00+01:00",
       "phase": "closing",
       "message": "Persistencia verificada en main. Cola editorial=0; 5 explicaciones aplicadas y #felizjueves cerrado como no_distinct_event."
+    },
+    {
+      "at": "2026-11-12T16:31:03+01:00",
+      "phase": "investigating",
+      "trend_id": "f4fde19c25ea",
+      "revision": 1,
+      "name": "Aurá",
+      "message": "Pista editorial contrastada con fuentes independientes: el fenómeno «farmear aura» está documentado, pero no se acredita el detonante concreto del pico actual de Aurá."
     }
   ],
-  "last_started_at": "2026-11-12T16:10:00+01:00",
+  "last_started_at": "2026-11-12T16:25:00+01:00",
   "last_completed_at": "2026-11-12T16:16:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -100,7 +65,7 @@
     "pending": 0,
     "problematic": 0
   },
-  "message": "Pasada manual completada: 2 borradores Radar preparados, 1 revisión roja actualizada en continuidad y Tamayo r1 permanece problematic tras segundo intento sin corroboración fiable.",
+  "message": "Aurá r1 en investigación desde cero; la pista editorial sobre «aura/farmear aura» sigue sin verificación causal independiente. Sin ImageGen ni publicación.",
   "history": [
     {
       "run_id": "tr-1794327332740-manual",
@@ -5046,6 +5011,15 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-20261112T135500-manual cerrada 13/13. Doce fichas ordinarias quedaron explicadas (Layton con causa no confirmada tras dos búsquedas) y La Policía quedó como episodio material nuevo por la orden de Interior de investigar actuaciones del 11N. Aplicador oficial persistió en commit 7bce899375322a25be297d10b4fc32a32885fcd7 tras reintento automático por avance concurrente de main. Barrera final: editorial-queue=0. ImageGen=0; image-outbox=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-20261112T162500-manual",
+      "status": "RUNNING",
+      "at": "2026-11-12T16:31:03+01:00",
+      "phase": "investigating",
+      "trend_id": "f4fde19c25ea",
+      "title": "Aurá",
+      "message": "Investigación JIT de Aurá r1; sin ImageGen ni publicación."
     }
   ],
   "current_item": null,
