@@ -32,6 +32,13 @@ on:
       - 'tests/test_site_top30_export.py'
       - '.github/workflows/ttendencias-site-top30-sync.yml'
   workflow_dispatch:
+  # Editorial jobs often commit with GITHUB_TOKEN; that does not emit the
+  # push event consumed above. React to their completion directly.
+  workflow_run:
+    workflows:
+      - "Aplicar outbox editorial TTendencias desde chat"
+      - "TTendencias consolidar editorial directo"
+    types: [completed]
   # Github Actions GITHUB_TOKEN commits do not trigger other push workflows.
   # Reconcile the Site feed even when an external/editorial bot updates radar.
   schedule:
@@ -46,6 +53,7 @@ concurrency:
 
 jobs:
   validate:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 4
     steps:
