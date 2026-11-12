@@ -7,15 +7,15 @@
   "previous_run_id": "tr-20261113T002500-chat-direct",
   "command_id": "tr-20261113T004000-chat-direct",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-13T00:40:00+01:00",
-  "updated_at": "2026-11-13T00:40:00+01:00",
+  "updated_at": "2026-11-13T00:41:30+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -122,21 +122,28 @@
       "status": "RUNNING",
       "phase": "preparing",
       "message": "Ejecución manual iniciada desde ChatGPT; cola autoritativa observada inicialmente en 0."
+    },
+    {
+      "at": "2026-11-13T00:41:30+01:00",
+      "run_id": "tr-20261113T004000-chat-direct",
+      "status": "DONE",
+      "phase": "closing",
+      "message": "Cola editorial revalidada en main: 0 items. mobile-decisions sin preparing/update/processing/problematic/rewrite_pending activos. Sin ImageGen ni publicaciones."
     }
   ],
   "last_started_at": "2026-11-13T00:40:00+01:00",
-  "last_completed_at": "2026-11-13T00:18:00+01:00",
+  "last_completed_at": "2026-11-13T00:41:30+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261113T0010-chat-direct",
+    "run_id": "tr-20261113T004000-chat-direct",
     "status": "DONE",
-    "started_at": "2026-11-13T00:10:00+01:00",
-    "finished_at": "2026-11-13T00:18:00+01:00",
+    "started_at": "2026-11-13T00:40:00+01:00",
+    "finished_at": "2026-11-13T00:41:30+01:00",
     "summary": {
-      "attempted": 6,
-      "observed": 9,
-      "closed": 9,
-      "explained": 6,
+      "attempted": 0,
+      "observed": 0,
+      "closed": 0,
+      "explained": 0,
       "problematic": 0,
       "updates": 0,
       "review_completed_no_distinct_event": 0,
@@ -148,10 +155,10 @@
       "image_outbox_created": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 3,
-      "cause_unconfirmed": 1
+      "concurrent_convergence": 0,
+      "cause_unconfirmed": 0
     },
-    "message": "Pasada TTendencias completada 9/9 observados: 6 elaboraciones aplicadas sin errores por el aplicador oficial y 3 revisiones convergieron JIT antes de escritura (Begoña, Cristina Porta e Itália), sin duplicarlas. Petit quedó con causa no confirmada; #ElPerroAndaluzTVE se cerró como episodio material distinto. Cola final 0. Sin ImageGen ni publicaciones."
+    "message": "Pasada TTendencias completada 0/0. Snapshot de tendencias 00:31, cola autoritativa revalidada en 0 y sin estados editoriales activos en mobile-decisions. Sin ImageGen ni publicaciones."
   },
   "message": "Pasada completada con cola autoritativa vacía y barreras limpias: 0 preparing/update y 0 rewrite_pending/reexplain. Sin ImageGen ni publicaciones.",
   "history": [
@@ -8708,6 +8715,6 @@
     }
   ],
   "processed": [],
-  "finished_at": null,
+  "finished_at": "2026-11-13T00:41:30+01:00",
   "maintenance_outbox_commit": "970b545c88b09429a23d15ec893b9d66fb611297"
 }
