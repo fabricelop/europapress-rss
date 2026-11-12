@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-12T04:15:45.489168+00:00",
+  "checked_at": "2026-11-12T05:15:06.086319+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -42,9 +42,10 @@
     "top10": {
       "ok": false,
       "count": 10,
-      "non_stale_sources": 4,
+      "non_stale_sources": 5,
       "verified_fresh_sources": [
-        "xtrendsiamrohit"
+        "xtrendsiamrohit",
+        "playersells"
       ],
       "live_verified": false,
       "captured_age_minutes": 0.2,
@@ -59,8 +60,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 4.6,
-      "run_id": 43153104913,
+      "age_minutes": 3.8,
+      "run_id": 43159674694,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -72,7 +73,7 @@
     },
     "request_queue": {
       "ok": false,
-      "invalid_count": 756,
+      "invalid_count": 760,
       "noise_count": 0
     },
     "ready_consistency": {
@@ -82,70 +83,22 @@
     },
     "editorial_queue": {
       "ok": false,
-      "pending_count": 16,
-      "overdue_count": 14,
-      "oldest_age_minutes": 193.9,
+      "pending_count": 2,
+      "overdue_count": 2,
+      "oldest_age_minutes": 42.6,
       "warning_after_minutes": 30,
       "overdue_items": [
         {
-          "id": "95b49291de75",
-          "name": "paula",
+          "id": "red-review-1621ac0eddb6a5671797",
+          "name": "Revisar novedades: Oviedo",
           "status": "preparing",
-          "age_minutes": 193.9
+          "age_minutes": 42.6
         },
         {
-          "id": "40ae1da9ecb1",
-          "name": "Kico",
+          "id": "red-review-59f8be942e144600c52a",
+          "name": "Revisar novedades: #VotoUtilEsPodemos",
           "status": "preparing",
-          "age_minutes": 193.9
-        },
-        {
-          "id": "88e514ece616",
-          "name": "Kiko",
-          "status": "preparing",
-          "age_minutes": 193.9
-        },
-        {
-          "id": "5e5af80baed0",
-          "name": "Josue",
-          "status": "preparing",
-          "age_minutes": 193.9
-        },
-        {
-          "id": "ea81ac388672",
-          "name": "GEMA",
-          "status": "preparing",
-          "age_minutes": 193.9
-        },
-        {
-          "id": "cf2df84a5714",
-          "name": "NVIDIA",
-          "status": "preparing",
-          "age_minutes": 193.9
-        },
-        {
-          "id": "f3c37f45aebd",
-          "name": "Jensen Huang",
-          "status": "preparing",
-          "age_minutes": 124.8
-        },
-        {
-          "id": "ba9b353684f9",
-          "name": "Elise",
-          "status": "preparing",
-          "age_minutes": 124.8
-        },
-        {
-          "id": "3b5034f473ba",
-          "name": "Broncano",
-          "status": "preparing",
-          "age_minutes": 70.7
-        },
-        {
-          "id": "12732b746404",
-          "name": "Sanchez",
-          "status": "preparing",
-          "age_minutes": 70.7
+          "age_minutes": 42.6
         }
       ],
       "repairable": false
@@ -155,22 +108,8 @@
       "status": "overdue",
       "queue_complete": false,
       "remaining_active_ids": [
-        "95b49291de75",
-        "40ae1da9ecb1",
-        "88e514ece616",
-        "5e5af80baed0",
-        "ea81ac388672",
-        "cf2df84a5714",
-        "f3c37f45aebd",
-        "ba9b353684f9",
-        "3b5034f473ba",
-        "12732b746404",
-        "ff8eebb4da78",
-        "ebb8c383f839",
-        "ba7633699cd1",
-        "34393251ec16",
-        "69beea7215d2",
-        "e386f83a422f"
+        "red-review-1621ac0eddb6a5671797",
+        "red-review-59f8be942e144600c52a"
       ],
       "contradictory_success": false
     },
@@ -183,10 +122,10 @@
   "repairs_started": [],
   "blocking": [
     "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos",
-    "cola con 756 estado(s) inválido(s)",
-    "cola de explicaciones retrasada: 14 pendiente(s) superan 30 min; más antigua 193.9 min"
+    "cola con 760 estado(s) inválido(s)",
+    "cola de explicaciones retrasada: 2 pendiente(s) superan 30 min; más antigua 42.6 min"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 756 estado(s) inválido(s) | cola de explicaciones retrasada: 14 pendiente(s) superan 30 min; más antigua 193.9 min"
+  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 760 estado(s) inválido(s) | cola de explicaciones retrasada: 2 pendiente(s) superan 30 min; más antigua 42.6 min"
 }
