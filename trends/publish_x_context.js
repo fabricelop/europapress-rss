@@ -4,8 +4,8 @@
 const fs = require('node:fs'), os = require('node:os');
 const path = require('node:path'), cp = require('node:child_process');
 const { assembleEvidence, validPost } = require('./x_context.js');
-const withPublishLock = require('../selorecordamos/git_publish_lock.js');
-const repo = path.resolve(__dirname, '..');
+// Isolated TT-specific Git store, no writes to the SeLoRecordamos repository.
+const repo = process.env.TT_X_GIT_REPO || path.resolve(__dirname, '..');
 const EVIDENCE = 'trends/x-context-evidence.json';
 const QUEUE = 'trends/editorial-queue.json';
 function git(args, env = {}) {
@@ -60,7 +60,12 @@ function publish(localPath) {
     GIT_AUTHOR_NAME: 'TT X Context', GIT_AUTHOR_EMAIL: 'tt-x-context@users.noreply.github.com',
     GIT_COMMITTER_NAME: 'TT X Context', GIT_COMMITTER_EMAIL: 'tt-x-context@users.noreply.github.com' };
   try {
-    return withPublishLock(() => {
+    const remoteUrl = git(['remote', 'get-url', 'origin']);
+    if (!/^https:\/\/github\.com\/fabricelop\/europapress-rss(?:\.git)?\/?$/i.test(remoteUrl))
+      throw Error('Unexpected TT-XContext git-store origin');
+    // Independent local lock is held by the Windows runner; remote races
+    // are handled by fast-forward push with fetch and retry.
+    return (() => {
       for (let attempt = 1; attempt <= 4; attempt++) {
         git(['fetch', '--quiet', '--no-tags', 'origin', 'main']);
         const base = git(['rev-parse', 'refs/remotes/origin/main']);
@@ -84,7 +89,7 @@ function publish(localPath) {
           if (attempt === 4) throw Error('Push failed; local evidence kept for retry: ' + String(error.message).slice(0, 180));
         }
       }
-    });
+    })();
   } finally { fs.rmSync(tmpDir, { recursive: true, force: true }); }
 }
 if (require.main === module) {

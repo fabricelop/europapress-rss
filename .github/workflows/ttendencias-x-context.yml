@@ -61,3 +61,12 @@ jobs:
             if ($errors.Count -ne 0) { throw "$path : $($errors[0].Message)" }
           }
           Write-Host 'TT_X_WINDOWS_PS51_SYNTAX_OK'
+      - name: Smoke test installer in an ordinary non-Git runtime folder
+        shell: powershell
+        run: |
+          $runtime = Join-Path $env:RUNNER_TEMP 'TTiTTulares-runtime-not-a-repo'
+          New-Item -ItemType Directory -Force -Path $runtime | Out-Null
+          if (Test-Path (Join-Path $runtime '.git')) { throw 'Smoke test must start without .git' }
+          & powershell.exe -NoProfile -ExecutionPolicy Bypass -File windows/Install-TTendencias-XContext.ps1 -RepoRoot $runtime -CheckOnly
+          if ($LASTEXITCODE -ne 0) { throw 'CheckOnly failed without a Git checkout' }
+          Write-Host 'TT_X_NON_GIT_RUNTIME_CHECK_OK'

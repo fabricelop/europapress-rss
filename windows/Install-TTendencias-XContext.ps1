@@ -14,7 +14,8 @@ if ($Uninstall) {
   else { Write-Host 'TT_X_UNINSTALLED task absent' }
   exit 0
 }
-if (-not(Test-Path (Join-Path $root '.git'))) { throw "Git repository not found at $root; nothing changed" }
+# C:\TTiTTulares hosts the runtime, not necessarily a Git working tree.
+$gitRoot = Join-Path $workDir 'git-store'
 $node = (Get-Command node.exe -ErrorAction Stop).Source
 if ($CheckOnly) {
   Write-Host 'TT_X_CHECK_ONLY: no installation, no X request'
@@ -46,10 +47,22 @@ foreach ($f in @('x_context.js','publish_x_context.js')) {
   & $node --check (Join-Path $workDir $f)
   if ($LASTEXITCODE -ne 0) { throw "Invalid JS syntax: $f" }
 }
-if (-not (Test-Path (Join-Path $root 'selorecordamos\git_publish_lock.js'))) {
-  throw 'Existing SeLoRecordamos git_publish_lock.js missing; task not installed'
+if (-not (Test-Path (Join-Path $gitRoot '.git'))) {
+  if ((Test-Path $gitRoot) -and @(Get-ChildItem -LiteralPath $gitRoot -Force -ErrorAction SilentlyContinue).Count -gt 0) {
+    throw 'Unexpected nonempty TT-XContext git-store; refusing to overwrite it'
+  }
+  & git.exe init --quiet $gitRoot
+  if ($LASTEXITCODE -ne 0) { throw 'Could not initialize isolated Git store' }
+  & git.exe -C $gitRoot remote add origin 'https://github.com/fabricelop/europapress-rss.git'
+  if ($LASTEXITCODE -ne 0) { throw 'Could not configure isolated Git origin' }
 }
-$env:NODE_PATH = (@((Join-Path $root 'selorecordamos\node_modules'),(Join-Path $root 'node_modules'),(Join-Path $workDir 'node_modules')) -join ';')
+$remoteOrigin = (& git.exe -C $gitRoot remote get-url origin) -join ''
+if ($LASTEXITCODE -ne 0 -or $remoteOrigin -notmatch '^https://github[.]com/fabricelop/europapress-rss([.]git)?/?$') {
+  throw 'Unexpected isolated Git origin; no other repository will be used'
+}
+& git.exe -C $gitRoot fetch --quiet --depth=1 origin main
+if ($LASTEXITCODE -ne 0) { throw 'Could not fetch main into isolated Git store' }
+$env:NODE_PATH = (Join-Path $workDir 'node_modules')
 & $node -e 'require("playwright");'
 if ($LASTEXITCODE -ne 0) {
   Write-Host 'Installing Playwright package ONLY in TT-XContext...'
