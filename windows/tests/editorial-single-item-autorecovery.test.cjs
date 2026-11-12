@@ -58,5 +58,7 @@ test('an ambiguous submission is NEVER resent and diagnostics never log prompt t
  assert.match(rescue,/TRANSMISSION_STATE/);
  assert.match(rescue,/draftContainsMarker:/);
  assert.match(rescue,/if\(!s\)\{[\s\S]*?checkMarkerExisting\(unique\)/);
- assert.doesNotMatch(rescue,/note\('TRANSMISSION_STATE '\+JSON\.stringify\(.*editorText/s,'No prompt body in diagnostics');
+ const diagnostic=rescue.split("note('TRANSMISSION_STATE '+JSON.stringify({")[1]?.split('}));')[0];
+ assert.ok(diagnostic,'A structured diagnostics payload should be emitted');
+ assert.doesNotMatch(diagnostic,/\beditorText\s*:/,'Raw prompt body must not appear in diagnostics');
 });
