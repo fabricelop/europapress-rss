@@ -5,7 +5,7 @@ on:
     - cron: '*/5 * * * *'
   push:
     branches: [main]
-    paths: ['shared/tt_editorial_run_guard.py', 'shared/test_editorial_text_first.py', '.github/workflows/tt-editorial-text-recovery.yml', 'trends/editorial-queue.json', 'ttittulares/editorial-queue.json', 'trends/telegram-manual-explained.json', 'ttittulares/prepared.json', 'trends/mobile-decisions.json', 'ttittulares/decisions.json']
+    paths: ['shared/tt_editorial_run_guard.py', 'shared/test_editorial_text_first.py', '.github/workflows/tt-editorial-text-recovery.yml', 'trends/editorial-queue.json', 'ttittulares/editorial-queue.json', 'trends/telegram-manual-explained.json', 'ttittulares/prepared.json', 'trends/mobile-decisions.json', 'ttittulares/decisions.json', 'windows/TTendenciasDedicatedListener.ps1', 'windows/TTiTTularesDedicatedListener.ps1', 'windows/Reparar-TT-Editorial-20261111.ps1', 'windows/tests/editorial-single-item-autorecovery.test.cjs']
   pull_request:
     paths: ['shared/tt_editorial_run_guard.py', 'shared/test_editorial_text_first.py', '.github/workflows/tt-editorial-text-recovery.yml']
 permissions:
@@ -27,6 +27,10 @@ jobs:
           sparse-checkout: |
             /shared/tt_editorial_run_guard.py
             /shared/test_editorial_text_first.py
+            /windows/TTendenciasDedicatedListener.ps1
+            /windows/TTiTTularesDedicatedListener.ps1
+            /windows/Reparar-TT-Editorial-20261111.ps1
+            /windows/tests/editorial-single-item-autorecovery.test.cjs
             /ttittulares/editorial-queue.json
             /ttittulares/prepared.json
             /ttittulares/decisions.json
@@ -39,6 +43,7 @@ jobs:
         run: |
           python3 shared/tt_editorial_run_guard.py selftest
           python3 -m unittest discover -s shared -p 'test_editorial_text_first.py' -v
+          node --test windows/tests/editorial-single-item-autorecovery.test.cjs
       - name: Recover only authoritative editorial work
         if: github.event_name != 'pull_request'
         env:
