@@ -1,15 +1,24 @@
 {
   "version": 1,
-  "id": "ttb-news-log-tail-20261112-1225",
+  "id": "ttb-news-builtins-health-20261112-1140",
   "project": "TTActualidad",
   "expires_at": "2026-11-13T12:00:00Z",
-  "description": "Read compact recent news listener tail",
+  "description": "Built-in read-only listener and guard diagnostics; no interactive PowerShell approval",
   "steps": [
     {
-      "kind": "powershell",
-      "name": "news-log-tail",
-      "script": "$f='C:\\TTiTTulares\\ttittulares-mobile-trigger.log'\n$l=[string]((Get-Content $f -Tail 20) -join ' | ')\nWrite-Output ('TTRESULT:'+(@{state='ok';tail=$l.Substring(0,[Math]::Min(1800,$l.Length))}|ConvertTo-Json -Compress))",
-      "timeout_seconds": 20
+      "kind": "builtin",
+      "name": "listener-summary",
+      "timeout_seconds": 25
+    },
+    {
+      "kind": "builtin",
+      "name": "editorial-guard",
+      "timeout_seconds": 25
+    },
+    {
+      "kind": "builtin",
+      "name": "editorial-queue",
+      "timeout_seconds": 25
     }
   ]
 }
