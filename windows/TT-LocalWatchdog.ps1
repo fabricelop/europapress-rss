@@ -1,6 +1,6 @@
 # TT-LocalWatchdog.ps1
 # Mantiene vivos listeners TT, auto-updater y Chrome CDP tras reinicios o caídas.
-# watchdog-v14-editorial-tab-lifecycle
+# watchdog-v15-editorial-tab-cap-selfheal
 param([int]$IntervalSeconds=60)
 $ErrorActionPreference="Continue"
 $BaseDir="C:\TTiTTulares"
@@ -495,6 +495,93 @@ function MeasureChrome9223Pressure {
   }
 }
 
+
+# Editorial self-healing v15: an idle Chrome with more than 18 old ChatGPT
+# conversations is NOT proof of an active job. This guards against legacy
+# reinstallers restoring an obsolete global tab veto and silently blocking
+# BOTH existing scheduled editorial queues. Never close user conversations.
+$script:EditorialGuardCheckedAt=[DateTimeOffset]::MinValue
+$script:EditorialWakeCheckedAt=[DateTimeOffset]::MinValue
+$script:EditorialWakeSent=@{}
+function Test-EditorialRunnerBusy{
+  try{
+    return (@(Get-CimInstance Win32_Process -Filter "Name='node.exe'" -ErrorAction Stop|
+      Where-Object { [string]$_.CommandLine -match 'TT-Editorial-Guard[.]js|Ejecutar[.]js' }).Count -gt 0)
+  }catch{return $true}
+}
+function EnsureEditorialGuardCapacity{
+  $now=[DateTimeOffset]::UtcNow
+  if(($now-$script:EditorialGuardCheckedAt).TotalMinutes -lt 5){return}
+  $script:EditorialGuardCheckedAt=$now
+  $p=Join-Path $BaseDir 'TT-Editorial-Guard.js'
+  if(-not(Test-Path $p)){Log 'EDITORIAL GUARD MISSING; no automatic installer';return}
+  try{
+    $src=[IO.File]::ReadAllText($p,[Text.Encoding]::UTF8)
+    $old="if(pages.length>18)fail('TOO_MANY_TABS '+pages.length+'; inspect last-audit.json, protected tabs NOT closed');"
+    if(-not $src.Contains($old)){return}
+    if(Test-EditorialRunnerBusy){Log 'EDITORIAL GUARD UPGRADE DEFERRED active runner';return}
+    $node=Get-Command node.exe -ErrorAction Stop
+    $new="if(pages.length>48)fail('TOO_MANY_TABS_HARD_CAP '+pages.length+'; preserve protected tabs'); if(pages.length>18)note('EDITORIAL_TAB_SOFT_PRESSURE '+pages.length+'; preserved');"
+    $fixed=$src.Replace($old,$new).Replace(
+      "if(pp.length>18)fail('NO_PROBE too many tabs')",
+      "if(pp.length>48)fail('NO_PROBE hard tab cap')")
+    $tmp=$p+'.selfheal-new.js'
+    $backup=$p+'.pre-tabcap-20261112.bak'
+    if(-not(Test-Path $backup)){Copy-Item -LiteralPath $p -Destination $backup -ErrorAction Stop}
+    [IO.File]::WriteAllText($tmp,$fixed,([Text.UTF8Encoding]::new($false)))
+    & $node.Source --check $tmp 1>$null 2>$null
+    if($LASTEXITCODE -ne 0){throw 'new editorial guard fails node --check'}
+    Move-Item -LiteralPath $tmp -Destination $p -Force -ErrorAction Stop
+    Log 'EDITORIAL GUARD SELFHEAL 18-tab veto removed; 48 hard limit; backup kept'
+  }catch{Log ('EDITORIAL GUARD SELFHEAL DEFERRED :: '+$_.Exception.Message)}
+}
+function EnsureEditorialScheduledWake{
+  $now=[DateTimeOffset]::UtcNow
+  if(($now-$script:EditorialWakeCheckedAt).TotalMinutes -lt 5){return}
+  $script:EditorialWakeCheckedAt=$now
+  if(Test-ChatOperationBusy){return}
+  if(Test-EditorialRunnerBusy){return}
+  $guard=Join-Path $BaseDir 'TT-Editorial-Guard.js'
+  try{
+    $guardSource=[IO.File]::ReadAllText($guard,[Text.Encoding]::UTF8)
+    if(-not $guardSource.Contains('TOO_MANY_TABS_HARD_CAP')){return}
+  }catch{return}
+  # Only original, already installed Windows tasks may be woken.
+  # Never generate, publish, delete, or change any editorial JSON here.
+  foreach($spec in @(
+    @{project='ttittulares';task='TTiTTulares Local';queue='ttittulares/editorial-queue.json';states=@('PROCESSING','UPDATE_PROCESSING');time='selected_at';id='event_id'},
+    @{project='ttendencias';task='TTendencias Local';queue='trends/editorial-queue.json';states=@('preparing','update');time='requested_at';id='id'}
+  )){
+    try{
+      $url='https://raw.githubusercontent.com/fabricelop/europapress-rss/main/'+$spec.queue+
+        '?t='+$now.ToUnixTimeMilliseconds()
+      $q=Invoke-RestMethod -Uri $url -TimeoutSec 10 -Headers @{'Cache-Control'='no-cache, no-store'}
+      $overdue=@($q.items|Where-Object{
+        $eid=[string]$_.PSObject.Properties[$spec.id].Value
+        $stamp=[string]$_.PSObject.Properties[$spec.time].Value
+        if(([string]$_.status) -notin $spec.states -or
+           [string]::IsNullOrWhiteSpace($eid) -or
+           [string]::IsNullOrWhiteSpace($stamp)){return $false}
+        try{return ($now-[DateTimeOffset]::Parse($stamp)).TotalMinutes -ge 18}
+        catch{return $false}
+      })
+      if($overdue.Count -eq 0){continue}
+      $task=Get-ScheduledTask -TaskName $spec.task -ErrorAction SilentlyContinue
+      if(-not $task -or [string]$task.State -ne 'Ready'){continue}
+      $info=Get-ScheduledTaskInfo -TaskName $spec.task -ErrorAction Stop
+      if($info.LastRunTime -gt [datetime]::MinValue -and
+         ((Get-Date)-$info.LastRunTime).TotalMinutes -lt 10){continue}
+      $last=$script:EditorialWakeSent[$spec.project]
+      if($last -and ($now-$last).TotalMinutes -lt 20){continue}
+      Start-ScheduledTask -TaskName $task.TaskName -ErrorAction Stop
+      $script:EditorialWakeSent[$spec.project]=$now
+      Log ('EDITORIAL WATCHDOG WAKE project='+$spec.project+
+           ' overdue='+$overdue.Count+' task='+$task.TaskName)
+      break # Never start both editors concurrently on Chrome 9223.
+    }catch{Log ('EDITORIAL WAKE DEFERRED project='+$spec.project)}
+  }
+}
+
 function EnsureScheduledTasks{
   foreach($name in @(
     "TT Chrome Auto","TTiTTulares Local","TTendencias Local",
@@ -539,6 +626,8 @@ try{
     EnsureChrome
     MeasureChrome9223Pressure
     EnsureChromeTabHousekeeping
+    EnsureEditorialGuardCapacity
+    EnsureEditorialScheduledWake
     EnsureInternetRecovery
     EnsureRemoteTelegramHeal
     EnsureTTitRequestedImageRecovery

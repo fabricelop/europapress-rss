@@ -1,0 +1,37 @@
+name: "TT editorial watchdog Windows validation"
+on:
+  pull_request:
+    paths:
+      - "windows/TT-LocalWatchdog.ps1"
+      - "windows/tests/editorial-watchdog-selfheal.test.cjs"
+      - ".github/workflows/tt-editorial-watchdog-win-validate.yml"
+  push:
+    branches: [main]
+    paths:
+      - "windows/TT-LocalWatchdog.ps1"
+      - "windows/tests/editorial-watchdog-selfheal.test.cjs"
+      - ".github/workflows/tt-editorial-watchdog-win-validate.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: windows-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate Windows PowerShell 5.1 syntax (no script execution)
+        shell: powershell
+        run: |
+          $t=$null
+          $errors=$null
+          [System.Management.Automation.Language.Parser]::ParseFile(
+            'windows/TT-LocalWatchdog.ps1',[ref]$t,[ref]$errors) | Out-Null
+          if($errors.Count -gt 0){
+            $errors | ForEach-Object { Write-Error $_.Message }
+            exit 1
+          }
+          Write-Output 'TT_EDITORIAL_WATCHDOG_PS51_SYNTAX_OK'
+      - name: Test queue fairness, nonduplicate guard and no Chrome closing
+        shell: bash
+        run: node --test windows/tests/editorial-watchdog-selfheal.test.cjs
