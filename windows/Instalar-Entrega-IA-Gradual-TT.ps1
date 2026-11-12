@@ -32,7 +32,8 @@ RequireMarkers $receiver @(
   'MAX_ORIGINAL_CHECKS_PER_CYCLE=16',
   'Target.closeTarget',
   'function metadata(task,job)',
-  'function provesTop30AtImageCreation',
+  # Current receiver validates exact command+revision and the 2026-11-10 cutover.
+  'function provesExactNewImageJob(task,job)',
   'PRIVATE_RECEIPT_REJECTED'
 ) 'RECEIVER'
 foreach($name in @('TTendenciasWebImages.cjs','TTiTTularesWebImages.cjs')){

@@ -39,3 +39,16 @@ test('only known paused consumers are accepted and upload is private',()=>{
  assert.match(receiver,/\/api\/image-inbox\/v1\/images\/ingest/);
  assert.doesNotMatch(script,/api\.telegram\.org|buffer\.com|api\/image_upload|gh\s+api/);
 });
+
+test('installer preflight matches the deployed exact-image receiver, not retired Top30 logic',()=>{
+ const start=script.indexOf('RequireMarkers $receiver @(');
+ const end=script.indexOf(") 'RECEIVER'",start);
+ assert(start>=0&&end>start);
+ const block=script.slice(start,end);
+ const required=[...block.matchAll(/^\s*'([^']+)'\s*,?\s*$/gm)].map(x=>x[1]);
+ assert(required.includes('function provesExactNewImageJob(task,job)'));
+ assert(!required.includes('function provesTop30AtImageCreation'));
+ for(const mark of required)assert(receiver.includes(mark),'receiver missing marker '+mark);
+ assert.match(script,/OLD_RECEIVER_MUST_REMAIN_DISABLED/);
+ assert.match(script,/NO_APPROVAL_NO_PUBLICATION/);
+});
