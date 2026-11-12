@@ -1,15 +1,17 @@
 {
   "version": 1,
-  "id": "ttb-news-inspect-install-state-20261112-1316",
+  "id": "ttb-news-postinstall-summary-20261112-1326",
   "project": "TTActualidad",
   "expires_at": "2026-11-13T12:00:00Z",
-  "description": "Read-only installed guard version check",
+  "description": "Read-only listener and guard summary after locally installed fix",
   "steps": [
     {
-      "kind": "powershell",
-      "name": "installed-guard-version",
-      "script": "$o=@{state='pending'}\ntry{$g=Get-Content 'C:\\TTiTTulares\\TT-Editorial-Guard.js' -Raw\n$o.state=if($g.Contains('SAFE_COMPOSITOR_STATE')){'inspect_installed'}else{'inspect_missing'}\n$o.bytes=$g.Length\n}catch{$o.state='error'}\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress))",
-      "timeout_seconds": 15
+      "kind": "builtin",
+      "name": "listener-summary"
+    },
+    {
+      "kind": "builtin",
+      "name": "editorial-guard"
     }
   ]
 }
