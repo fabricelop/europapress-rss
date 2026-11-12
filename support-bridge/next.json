@@ -1,14 +1,13 @@
 {
   "version": 1,
-  "id": "ttb-trends-version-20261112",
+  "id": "ttb-verify-ttendencias-run-20261112-0142",
   "project": "TTActualidad",
-  "expires_at": "2026-11-13T20:00:00Z",
-  "description": "Verificar la version real del listener TTendencias tras el merge sin cambiar archivos",
+  "expires_at": "2026-11-12T02:10:00Z",
+  "description": "Verificar sin cambios que el listener TTendencias ha recogido la orden manual lanzada desde ChatGPT",
   "steps": [
     {
-      "kind": "powershell",
-      "name": "verificar-version-editorial-local",
-      "script": "$ErrorActionPreference='Stop'\ntry {\n  $p='C:\\TTiTTulares\\TTendenciasDedicatedListener.ps1'\n  $s=Get-Content -LiteralPath $p -Raw -Encoding UTF8\n  $u='C:\\TTiTTulares\\tt-auto-updater.log'\n  $rows=@()\n  if(Test-Path -LiteralPath $u){\n    $rows=@(Get-Content -LiteralPath $u -Tail 80 | Where-Object {$_ -match 'TTendenciasDedicatedListener.ps1|CHECK OK|CHECK ERROR'} | Select-Object -Last 6)\n  }\n  $output=@{listener_exists=$true;single_item=$s.Contains('TT_ACTUALIDAD_MANUAL_EDITORIAL_V1');scoped_method=$s.Contains('function Build-EditorialMessage([string]$CommandId,$Control)');updater_tail=$rows}\n  Write-Output ('TTRESULT:'+($output|ConvertTo-Json -Compress -Depth 4))\n} catch { Write-Output ('TTRESULT:'+(@{error=$_.Exception.Message}|ConvertTo-Json -Compress)) }\n",
+      "kind": "builtin",
+      "name": "listener-summary",
       "timeout_seconds": 30
     },
     {
