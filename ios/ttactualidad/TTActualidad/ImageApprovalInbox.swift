@@ -77,7 +77,58 @@ private final class ApprovalInboxModel: ObservableObject {
     // A successful receipt must not reappear during an eventually-consistent
     // refresh, but a failed decision always restores its original card.
     private var completedIDs = Set<String>()
+    // A server-acknowledged decision cannot be forgotten on next app launch.
+    // Only exact original ID + SHA + episode may be suppressed, never a name.
+    private struct AcceptedReceipt: Codable {
+        var imageID: String
+        var rasterSHA256: String
+        var episode: String
+        var state: String
+        var acceptedAt: Date
+    }
+    private let acceptedKey = "TTActualidad.privateImageInbox.accepted.v1"
+    private var acceptedReceipts: [String: AcceptedReceipt] = [:]
     private var decisionTail: Task<Void, Never>?
+
+    init() {
+        if let data = UserDefaults.standard.data(forKey: acceptedKey),
+           let saved = try? JSONDecoder().decode([String: AcceptedReceipt].self, from: data) {
+            acceptedReceipts = saved.filter { entry in
+                // Store only exact original SHA/identity; no image bytes or OAuth data.
+                entry.value.imageID == entry.key && entry.key.count == 64 &&
+                entry.value.rasterSHA256.count == 64 &&
+                entry.value.acceptedAt <= Date().addingTimeInterval(60)
+            }
+        }
+    }
+
+    private func accepted(_ item: PendingImage) -> Bool {
+        guard let receipt = acceptedReceipts[item.id] else { return false }
+        return receipt.rasterSHA256 == item.identity.rasterSHA256 &&
+            receipt.episode == item.identity.project + ":" + item.identity.editorialId +
+                ":r" + String(item.identity.revision)
+    }
+
+    private func markAccepted(_ item: PendingImage, state: String) {
+        // Accepted does NOT imply published: approved_awaiting_publication stays
+        // distinguishable while it is removed from the actionable approval queue.
+        let episode = item.identity.project + ":" + item.identity.editorialId +
+            ":r" + String(item.identity.revision)
+        acceptedReceipts[item.id] = AcceptedReceipt(
+            imageID: item.id, rasterSHA256: item.identity.rasterSHA256,
+            episode: episode, state: state, acceptedAt: Date())
+        // Bounded retention without discarding decisions during normal refresh.
+        if acceptedReceipts.count > 4000 {
+            let keep = acceptedReceipts.values.sorted { $0.acceptedAt > $1.acceptedAt }
+                .prefix(3500)
+            acceptedReceipts = Dictionary(uniqueKeysWithValues: keep.map { ($0.imageID, $0) })
+        }
+        if let data = try? JSONEncoder().encode(acceptedReceipts) {
+            UserDefaults.standard.set(data, forKey: acceptedKey)
+        }
+        completedIDs.insert(item.id)
+        images.removeAll { $0.id == item.id }
+    }
 
     @Published private(set) var pageDiagnostics = ""
 
@@ -96,7 +147,7 @@ private final class ApprovalInboxModel: ObservableObject {
             // of retained records, waiting for every cursor made a healthy
             // inbox look blank for the whole pagination round trip.
             images = ApprovalInboxScope.visible(received).filter {
-                !processingIDs.contains($0.id) && !completedIDs.contains($0.id)
+                !processingIDs.contains($0.id) && !completedIDs.contains($0.id) && !accepted($0)
             }
             pageDiagnostics = "Consultando más imágenes privadas… " + String(received.count) + " leídas."
             let supportsPagination = page.hasMore != nil
@@ -122,7 +173,7 @@ private final class ApprovalInboxModel: ObservableObject {
                     received.append(contentsOf: page.items)
                     // Keep the list responsive while the remaining pages arrive.
                     images = ApprovalInboxScope.visible(received).filter {
-                        !processingIDs.contains($0.id) && !completedIDs.contains($0.id)
+                        !processingIDs.contains($0.id) && !completedIDs.contains($0.id) && !accepted($0)
                     }
                     pageDiagnostics = "Consultando más imágenes privadas… " + String(received.count) + " leídas."
                 } catch {
@@ -140,12 +191,15 @@ private final class ApprovalInboxModel: ObservableObject {
                 (incomplete || !supportsPagination ?
                     " Consulta parcial: vuelve a actualizar para completar páginas." : "")
             images = items.filter {
-                !processingIDs.contains($0.id) && !completedIDs.contains($0.id)
+                !processingIDs.contains($0.id) && !completedIDs.contains($0.id) && !accepted($0)
             }
             let keys = Set(items.map(\.id))
             previews = previews.filter { keys.contains($0.key) }
-            notice = items.isEmpty ?
-                "No hay originales pendientes entre las páginas consultadas." : ""
+            let stillAwaiting = received.filter { accepted($0) }.count
+            notice = items.isEmpty && stillAwaiting == 0 ?
+                "No hay originales pendientes entre las páginas consultadas." :
+                (stillAwaiting > 0 ? String(stillAwaiting) +
+                 " original(es) con decisión previa aceptada, ocultos de la cola de aprobación." : "")
             for image in items.prefix(4) where previews[image.id] == nil {
                 await loadOriginal(image, using: github)
             }
@@ -276,9 +330,23 @@ private final class ApprovalInboxModel: ObservableObject {
             }
             let response = try JSONDecoder().decode(DecisionResponse.self, from: data)
             if action == "approve" && response.state == "approved_awaiting_publication" {
-                notice = "Aprobación guardada, publicación pendiente. " +
-                         "La imagen ha vuelto para poder reintentar sin regenerarla."
-                restore(item)
+                // The authoritative service accepted the editor's approval.
+                // Do not send the SAME approval again while its publisher runs.
+                // Not claimed as 'published': that needs both verification flags.
+                markAccepted(item, state: response.state)
+                previews.removeValue(forKey: item.id)
+                notice = "Aprobación aceptada por el servidor. APP/Site aún pendiente de " +
+                         "publicación; no volverá a pedirte aprobar el mismo PNG."
+                return
+            }
+            if action == "approve" && response.state == "published" &&
+               !(response.appVerified == true && response.sitesVerified == true) {
+                // A 200/published without full proof is NOT success. Preserve an
+                // audit state but never duplicate the irreversible approval tap.
+                markAccepted(item, state: "published_unverified")
+                previews.removeValue(forKey: item.id)
+                notice = "El servidor recibió la decisión, pero falta verificar APP/Site. " +
+                         "No se repetirá la aprobación; revisa la publicación."
                 return
             }
             guard response.state == (action == "approve" ? "published" : "rejected"),
@@ -286,7 +354,7 @@ private final class ApprovalInboxModel: ObservableObject {
                                           response.sitesVerified == true) else {
                 throw InboxError.unexpectedResponse
             }
-            completedIDs.insert(item.id)
+            markAccepted(item, state: response.state)
             previews.removeValue(forKey: item.id)
             if action == "approve" {
                 await SiteAIImageCatalog.invalidateCache()
