@@ -7,40 +7,37 @@
   "previous_run_id": "tr-20261112T135500-manual",
   "command_id": "tr-20261112T151000-manual",
   "source": "chat",
-  "status": "PROCESSING",
-  "phase": "investigating",
+  "status": "DONE_WITH_INCIDENTS",
+  "phase": "closing",
   "started_at": "2026-11-12T15:10:00+01:00",
-  "updated_at": "2026-11-12T15:10:00+01:00",
-  "current": 0,
+  "updated_at": "2026-11-12T15:17:00+01:00",
+  "current": 6,
   "total": 6,
-  "trend_id": "b8593c0a3afe",
+  "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": false,
-  "processed_ids": [],
+  "queue_complete": true,
+  "processed_ids": [
+    "b8593c0a3afe",
+    "a6fae06424ed",
+    "de4af83ef6a9",
+    "1ee2d3a86e4e",
+    "5d4a08813a42",
+    "554d3b5f9168"
+  ],
   "converged_ids": [],
   "remaining_ids": [
-    "b8593c0a3afe",
-    "a6fae06424ed",
-    "de4af83ef6a9",
-    "1ee2d3a86e4e",
-    "5d4a08813a42",
     "554d3b5f9168"
   ],
-  "remaining_active_ids": [
-    "b8593c0a3afe",
-    "a6fae06424ed",
-    "de4af83ef6a9",
-    "1ee2d3a86e4e",
-    "5d4a08813a42",
+  "remaining_active_ids": [],
+  "remaining_problematic_ids": [
     "554d3b5f9168"
   ],
-  "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 13,
-    "observed": 13,
-    "closed": 13,
-    "explained": 13,
-    "problematic": 0,
+    "attempted": 6,
+    "observed": 6,
+    "closed": 6,
+    "explained": 5,
+    "problematic": 1,
     "updates": 1,
     "review_completed_no_distinct_event": 0,
     "maintenance_reviews": 0,
@@ -48,144 +45,96 @@
     "continuity_updates": 0,
     "distinct_updates": 1,
     "stale_reviews": 0,
-    "unverified_reviews": 0,
+    "unverified_reviews": 1,
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 1,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 0,
+    "incidents": 1,
     "concurrent_convergence": 0
   },
   "outcomes": [
     {
-      "id": "0a5305c044b0",
+      "id": "b8593c0a3afe",
       "revision": 0,
-      "name": "Tribunal de Cuentas",
+      "name": "#PSOEyFrenteAmplioVetan",
       "outcome": "explained",
       "applied": true,
-      "apply_commit": "7bce899375322a25be297d10b4fc32a32885fcd7"
+      "apply_commit": "d6841b6c6d3b5392ca442ef25e1685e493147d2b"
     },
     {
-      "id": "80ac2e502a71",
+      "id": "a6fae06424ed",
       "revision": 0,
-      "name": "#Mañaneros12N",
+      "name": "Diez",
       "outcome": "explained",
       "applied": true,
-      "apply_commit": "7bce899375322a25be297d10b4fc32a32885fcd7"
+      "apply_commit": "d6841b6c6d3b5392ca442ef25e1685e493147d2b"
     },
     {
-      "id": "8bd2ca189812",
+      "id": "de4af83ef6a9",
       "revision": 0,
-      "name": "Jordi Güil",
+      "name": "Feliz Jueves",
       "outcome": "explained",
       "applied": true,
-      "apply_commit": "7bce899375322a25be297d10b4fc32a32885fcd7"
+      "apply_commit": "d6841b6c6d3b5392ca442ef25e1685e493147d2b"
     },
     {
-      "id": "ea788f9c4f4d",
+      "id": "1ee2d3a86e4e",
       "revision": 0,
-      "name": "Ana Redondo",
+      "name": "Zidane",
       "outcome": "explained",
       "applied": true,
-      "apply_commit": "7bce899375322a25be297d10b4fc32a32885fcd7"
+      "apply_commit": "d6841b6c6d3b5392ca442ef25e1685e493147d2b"
     },
     {
-      "id": "cdf643d64692",
+      "id": "5d4a08813a42",
       "revision": 0,
-      "name": "Michael Carrick",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "7bce899375322a25be297d10b4fc32a32885fcd7"
-    },
-    {
-      "id": "fcc3c7e0664d",
-      "revision": 0,
-      "name": "Layton",
-      "outcome": "explained_cause_unconfirmed",
-      "applied": true,
-      "apply_commit": "7bce899375322a25be297d10b4fc32a32885fcd7"
-    },
-    {
-      "id": "25b5c8ed560b",
-      "revision": 0,
-      "name": "Interior",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "7bce899375322a25be297d10b4fc32a32885fcd7"
-    },
-    {
-      "id": "99cc9067dee3",
-      "revision": 0,
-      "name": "García Ortiz",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "7bce899375322a25be297d10b4fc32a32885fcd7"
-    },
-    {
-      "id": "147c57f91998",
-      "revision": 0,
-      "name": "Jordi Will",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "7bce899375322a25be297d10b4fc32a32885fcd7"
-    },
-    {
-      "id": "3e338faca793",
-      "revision": 0,
-      "name": "Bustinduy",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "7bce899375322a25be297d10b4fc32a32885fcd7"
-    },
-    {
-      "id": "d29040d36d2a",
-      "revision": 0,
-      "name": "República Checa",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "7bce899375322a25be297d10b4fc32a32885fcd7"
-    },
-    {
-      "id": "8a8e2094da2d",
-      "revision": 0,
-      "name": "La Policía",
+      "name": "La Policía Nacional",
       "outcome": "distinct_update",
       "applied": true,
-      "apply_commit": "7bce899375322a25be297d10b4fc32a32885fcd7"
+      "apply_commit": "d6841b6c6d3b5392ca442ef25e1685e493147d2b"
     },
     {
-      "id": "343b3e059b78",
-      "revision": 0,
-      "name": "Susana Griso",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "7bce899375322a25be297d10b4fc32a32885fcd7"
+      "id": "554d3b5f9168",
+      "revision": 1,
+      "name": "Tamayo",
+      "outcome": "problematic_unverified",
+      "applied": false,
+      "reason": "No se ha verificado de forma independiente que Tamayo y Gata de Schrödinger fueran los verificadores de Jordi Wild; la pista editorial no se presenta como hecho."
     }
   ],
-  "incident_count": 0,
-  "incidents": [],
+  "incident_count": 1,
+  "incidents": [
+    {
+      "id": "554d3b5f9168",
+      "revision": 1,
+      "name": "Tamayo",
+      "kind": "unverified_cause",
+      "detail": "La pista editorial sobre los verificadores de Jordi Wild no queda corroborada por fuentes fiables independientes; se conserva problematic sin explicación verificada."
+    }
+  ],
   "error": null,
-  "activity": "investigating",
+  "activity": "closing",
   "last_started_at": "2026-11-12T14:58:09+01:00",
-  "last_completed_at": "2026-11-12T14:58:10+01:00",
+  "last_completed_at": "2026-11-12T15:17:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261112T135500-manual",
-    "status": "DONE",
-    "started_at": "2026-11-12T13:55:00+01:00",
-    "finished_at": "2026-11-12T14:01:00+01:00",
-    "total": 13,
-    "closed": 13,
-    "explained": 13,
+    "run_id": "tr-20261112T151000-manual",
+    "status": "DONE_WITH_INCIDENTS",
+    "started_at": "2026-11-12T15:10:00+01:00",
+    "finished_at": "2026-11-12T15:17:00+01:00",
+    "total": 6,
+    "closed": 6,
+    "explained": 5,
     "maintenance": 0,
     "pending": 0,
-    "problematic": 0
+    "problematic": 1
   },
-  "message": "Pasada manual iniciada sobre 6 revisiones exactas de main; investigación JIT en curso. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-20261112T151000-manual cerrada 6/6 observados: 5 explicaciones aplicadas en main por d6841b6c6d3b5392ca442ef25e1685e493147d2b; Tamayo r1 permanece problematic porque la pista sobre los verificadores de Jordi Wild no pudo verificarse de forma independiente. Barrera final: editorial-queue=1, únicamente Tamayo problematic; no quedan preparing/update activos. ImageGen=0; image-outbox=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794327332740-manual",
@@ -7905,7 +7854,7 @@
     }
   ],
   "outbox_comment_id": 6799589190,
-  "editorial_apply_commit": "ffa635fc4113159f39882d676f3eda76217ab753",
+  "editorial_apply_commit": "d6841b6c6d3b5392ca442ef25e1685e493147d2b",
   "refresh_workflow_run_id": 42929355766,
   "refresh_conclusion": "success",
   "maintenance_apply_commits": [
@@ -8201,8 +8150,18 @@
       "revision": 0,
       "name": "#PSOEyFrenteAmplioVetan",
       "message": "Investigando detonantes actuales y fuentes independientes para 6 revisiones."
+    },
+    {
+      "at": "2026-11-12T15:17:00+01:00",
+      "phase": "verifying",
+      "message": "Aplicador confirmado en main por d6841b6c6d3b5392ca442ef25e1685e493147d2b; cinco revisiones retiradas de la cola y sincronizadas."
+    },
+    {
+      "at": "2026-11-12T15:17:00+01:00",
+      "phase": "closing",
+      "message": "Barrera final: cola=1, solo Tamayo r1 problematic; 0 preparing/update. ImageGen=0; publicaciones=0."
     }
   ],
   "processed": [],
-  "finished_at": "2026-11-12T14:01:00+01:00"
+  "finished_at": "2026-11-12T15:17:00+01:00"
 }
