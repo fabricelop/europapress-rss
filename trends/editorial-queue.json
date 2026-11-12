@@ -1,6 +1,75 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-12T05:32:01+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-12T04:32:29.112411+00:00",
+  "count": 2,
+  "items": [
+    {
+      "id": "red-review-1621ac0eddb6a5671797",
+      "revision": 0,
+      "name": "Revisar novedades: Oviedo",
+      "rank": 15,
+      "status": "preparing",
+      "requested_at": "2026-11-12T04:32:29.112411+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "trend-update-522f1e69192833a122c1",
+        "revision": 0,
+        "name": "Oviedo",
+        "rank": 3,
+        "explanation": "TT#3 Oviedo es tendencia por la explosión de un artefacto tras un tiroteo: murió un subinspector de Guías Caninos y un agente TEDAX resultó herido de gravedad.\n#PolicíaNacional #TEDAX",
+        "explanation_sha256": "45efb2a84785a28cf095a899355dc46cd45b5ba95bad0871371bd0a2924b7c2a",
+        "explained_at": "2026-11-10T10:24:58.323273+00:00",
+        "verification_sources": [
+          {
+            "url": "https://www.europapress.es/asturias/noticia-policia-fallecido-otro-herido-grave-explosion-artefacto-oviedo-20261110100213.html"
+          },
+          {
+            "url": "https://efe.com/espana/2026-11-10/tiroteo-exploxion-oviedo/"
+          }
+        ],
+        "fingerprint": "54db472ca8a46f0e2221105ed0eaa55c388790b493ee61e4a9246532f247b1d7"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-59f8be942e144600c52a",
+      "revision": 0,
+      "name": "Revisar novedades: #VotoUtilEsPodemos",
+      "rank": 16,
+      "status": "preparing",
+      "requested_at": "2026-11-12T04:32:29.112411+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "a1c1e16d0c24",
+        "revision": 0,
+        "name": "#VotoUtilEsPodemos",
+        "rank": 1,
+        "explanation": "TT#1 #VotoUtilEsPodemos es tendencia en la precampaña del 29N por mensajes que presentan a Podemos como el “voto útil” frente a otras opciones de la izquierda.\n#Podemos #29N\n🌶️ La batalla por lo útil ya también se libra en el hashtag.",
+        "explanation_sha256": "5c7c03a6880ed349496fd973c8776c1ec2024cc017b6f2e1cb14076d92c03596",
+        "explained_at": "2026-11-09T17:15:00+01:00",
+        "verification_sources": [
+          {
+            "url": "https://www.rednoticias.net/ytv/el-voto-util-es-podemos"
+          },
+          {
+            "url": "https://www.rtve.es/noticias/20261107/montero-rufian-animan-a-votar-con-memoria-conciencia-obviando-voto-util-psoe-si-puede-come/17304659.shtml"
+          }
+        ],
+        "fingerprint": "f85e79c836b72564d60c039b032e97cc425e9bff57827863df7f08df60fe3501"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
