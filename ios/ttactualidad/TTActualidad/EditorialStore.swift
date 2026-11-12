@@ -2469,19 +2469,39 @@ final class EditorialStore: ObservableObject {
         liveStatus = "Live Activity · última lectura conservada; faltan datos de GitHub"
     }
 
+    // Buffer refresh is independent of the large GitHub editorial refresh.
+    // Update the lock-screen numbers without incorrectly refreshing the
+    // editorial source timestamp or issuing another network request.
+    func refreshLiveCountsAfterBufferChange() async {
+        guard let checkedAt = snapshot.updatedAt else { return }
+        await publishLiveCounts(checkedAt: checkedAt,
+                                partial: snapshot.partial || pendingOperationsCount > 0)
+    }
+
     private func publishLiveCounts(checkedAt: Date, partial: Bool) async {
         guard ActivityAuthorizationInfo().areActivitiesEnabled else {
             liveStatus = "Activa las Live Activities en Ajustes del iPhone"
             return
         }
+        // Exact same Listas visibility as TTDashboard's two counters:
+        // editor tombstones + Buffer local reservations and verified ledger.
+        let buffer = BufferPublishTracker.shared
+        let newsVisible = snapshot.news.filter {
+            !buffer.hidesFromListas(project: "ttittulares", id: $0.id,
+                                    revision: $0.revision)
+        }
+        let trendsVisible = snapshot.trendListas.filter {
+            !buffer.hidesFromListas(project: "ttendencias",
+                                    id: $0.editorialID, revision: $0.revision)
+        }
         let state = LiveCountsAttributes.ContentState(
-            newsReady: snapshot.news.count,
-            trendsReady: snapshot.trendListas.count,
+            newsReady: newsVisible.count,
+            trendsReady: trendsVisible.count,
             newsWorking: snapshot.newsElaboracion.count,
             trendsWorking: snapshot.trendsElaboracion.count,
             pendingActions: pendingOperationsCount,
             checkedAt: checkedAt, partialData: partial,
-            recentHeadline: snapshot.news.max(by: {
+            recentHeadline: newsVisible.max(by: {
                 ($0.publishedAt ?? .distantPast) <
                 ($1.publishedAt ?? .distantPast)
             })?.title ?? "",

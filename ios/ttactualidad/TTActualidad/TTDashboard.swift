@@ -88,7 +88,7 @@ private struct PublicationSheetRoute: Identifiable {
 struct TTDashboard: View {
     @EnvironmentObject private var store: EditorialStore
     @StateObject private var github = GitHubEditor()
-    @StateObject private var buffer = BufferPublishTracker()
+    @StateObject private var buffer = BufferPublishTracker.shared
     @ObservedObject private var quickActions = HomeQuickActionRouter.shared
     @State private var quickOverview: TTQuickAction?
     @State private var quickNavigationID = UUID()
@@ -173,6 +173,10 @@ struct TTDashboard: View {
         }
         .preferredColorScheme(.dark)
         .environmentObject(buffer)
+        // Both Listas and ActivityKit read the SAME live Buffer reservations.
+        .onChange(of: buffer.change) { _, _ in
+            Task { await store.refreshLiveCountsAfterBufferChange() }
+        }
         .task { await buffer.refresh() }
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { _ in
             Task { await buffer.refresh() }

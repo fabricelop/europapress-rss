@@ -50,6 +50,7 @@ private enum LiveCountsSource {
     private static let required = [
         "ttittulares/prepared.json", "ttittulares/decisions.json",
         "ttittulares/editorial-queue.json",
+        "pilot/ttactualidad-buffer-posts.json",
         "trends/telegram-manual-explained.json", "trends/requests.json",
         "trends/telegram-image-deliveries.json", "trends/mobile-decisions.json",
         "trends/editorial-queue.json",
@@ -95,12 +96,26 @@ private enum LiveCountsSource {
 
         let prepared = rows(docs["ttittulares/prepared.json"], "items")
         let decisions = rows(docs["ttittulares/decisions.json"], "items")
-        let closedNews = Set(decisions.filter {
-            terminal.contains(str($0, "status").lowercased())
-        }.map { str($0, "event_id") })
+        // Match EditorialStore.buildNews: the last editorial decision for
+        // each ID wins. An old deletion must not suppress a later re-admission.
+        var latestNewsStatus: [String: String] = [:]
+        for row in decisions {
+            let id = str(row, "event_id")
+            if !id.isEmpty { latestNewsStatus[id] = str(row, "status").lowercased() }
+        }
+        // Live Activity must exclude the SAME Buffer-reserved/sent episodes
+        // as the app's actual Listas. A missing ledger is a partial read,
+        // never interpreted as an empty list of exclusions.
+        let bufferHidden = LiveListasCountsPolicy.hiddenKeys(
+            bufferRows: rows(docs["pilot/ttactualidad-buffer-posts.json"], "items"))
         let openNews = prepared.filter {
             let id = str($0, "event_id")
-            return !id.isEmpty && !closedNews.contains(id)
+            let revision = integer($0, "revision")
+            return !id.isEmpty && !terminal.contains(latestNewsStatus[id] ?? "") &&
+                ($0["rewrite_pending"] as? Bool != true) &&
+                LiveListasCountsPolicy.visible(
+                    project: "ttittulares", id: id, revision: revision,
+                    hidden: bufferHidden)
         }
         let news = openNews.count
         // The headline comes only from authoritative, non-terminal Listas.
@@ -139,6 +154,9 @@ private enum LiveCountsSource {
             let leader = str(item, "group_leader_id")
             if !leader.isEmpty && leader != id { return false }
             let rev = integer(item, "revision")
+            guard LiveListasCountsPolicy.visible(
+                project: "ttendencias", id: id, revision: rev,
+                hidden: bufferHidden) else { return false }
             let req = latestRequests[id] ?? [:]
             let delivery = latestDeliveries[id] ?? [:]
             let reqStatus = str(req, "status").lowercased()

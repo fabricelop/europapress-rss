@@ -253,8 +253,8 @@ assert 'case "SIN EXPLICACIÓN": return "PISTAS"' in dashboard
 assert 'decision == "hints"' in store
 assert '"hints": text' in auth
 assert 'await store.refreshIfStale(minInterval: needsFastProgress ? 45 : 180)' in dashboard
-assert 'MARKETING_VERSION: "0.4.89"' in project
-assert 'CURRENT_PROJECT_VERSION: "101"' in project
+assert 'MARKETING_VERSION: "0.4.90"' in project
+assert 'CURRENT_PROJECT_VERSION: "103"' in project
 print("TT_ACTUALIDAD_IOS_HINTS_PREFLIGHT_OK")
 
 # 0.4.45: remove image deletion UI/API and trend→news UI. Keep news functionality.
@@ -287,7 +287,7 @@ assert '"control/ttendencias-run-trigger"' in auth
 assert 'headName.hasPrefix("control/ttittulares-run-trigger")' in auth
 assert 'requestEditorialRun(project: project)' in dashboard
 assert 'Solicitar procesamiento de' in dashboard
-assert 'CURRENT_PROJECT_VERSION: "101"' in project
+assert 'CURRENT_PROJECT_VERSION: "103"' in project
 print("TT_ACTUALIDAD_IOS_0414_EDITORIAL_RUN_PREFLIGHT_OK")
 
 # 0.4.17: cancel PROCESSING without adding to Listas, and separate
@@ -299,7 +299,7 @@ assert '["Enviando", "Esperando GitHub", "Pendiente de GitHub",\n         "Sin c
 assert 'operationHistory.filter(\\.isOutstanding).count' in store
 assert 'Text("Órdenes por confirmar")' in pending_panel
 assert 'terminalMarks["ttittulares:" + draft.id] != nil' in store
-assert 'CURRENT_PROJECT_VERSION: "101"' in project
+assert 'CURRENT_PROJECT_VERSION: "103"' in project
 print("TT_ACTUALIDAD_IOS_0415_SUPPRESS_PREFLIGHT_OK")
 
 # 0.4.17: no Home Screen widgets; the same .appex serves a real Live Activity.
@@ -315,8 +315,8 @@ assert 'publishedCountsAvailable' in shared
 assert 'pilot/ttactualidad-publication-events.json' in widget_source
 assert "retireAbandonedNewsOperations(" in store
 assert 'requestID: requestID' in actions and 'requestID: requestID' in hints_sheet
-assert 'MARKETING_VERSION: "0.4.89"' in project
-assert 'CURRENT_PROJECT_VERSION: "101"' in project
+assert 'MARKETING_VERSION: "0.4.90"' in project
+assert 'CURRENT_PROJECT_VERSION: "103"' in project
 print("TT_ACTUALIDAD_IOS_0417_LIVE_NO_WIDGETS_PREFLIGHT_OK")
 
 
@@ -467,8 +467,8 @@ assert '"TEXTO EDITORIAL EXACTO (SOLO CONTEXTO, JAMÁS ROTULAR):' in actions
 assert 'news?.verifiedFacts' in actions
 assert 'news?.siteImageURL ?? trend?.siteImageURL' in actions
 assert 'EditorialActionPolicy.imageURL(ai: ai' in actions
-assert 'MARKETING_VERSION: "0.4.89"' in project
-assert 'CURRENT_PROJECT_VERSION: "101"' in project
+assert 'MARKETING_VERSION: "0.4.90"' in project
+assert 'CURRENT_PROJECT_VERSION: "103"' in project
 print("TT_ACTUALIDAD_IOS_046_NEWS_AI_PARITY_OK")
 
 # 0.4.47: no regressions to Copiar GAG's v0.4.44 generate+attach+verify+sync contract.
@@ -488,8 +488,8 @@ assert 'IMAGEN GENERADA; SITE Y APP PENDIENTES' in actions
 assert 'IMAGEN GENERADA; WEB Y APP PENDIENTES' in actions
 assert 'No generes una segunda imagen' in actions
 assert 'GitHub' in actions
-assert 'MARKETING_VERSION: "0.4.89"' in project
-assert 'CURRENT_PROJECT_VERSION: "101"' in project
+assert 'MARKETING_VERSION: "0.4.90"' in project
+assert 'CURRENT_PROJECT_VERSION: "103"' in project
 print("TT_ACTUALIDAD_IOS_047_GAG_ATTACH_SYNC_REGRESSION_OK")
 
 # 0.4.47 build 53: one identical image-action panel for news and trends.
@@ -508,7 +508,7 @@ assert 'if let archive = item.imageURL' in live
 assert 'if let current = catalog[key(id, revision)]' in news_ai
 assert '$0.revision < revision' in news_ai
 assert 'bestRevision = old' in catalog
-assert 'CURRENT_PROJECT_VERSION: "101"' in project
+assert 'CURRENT_PROJECT_VERSION: "103"' in project
 print("TT_ACTUALIDAD_IOS_046_BUILD54_DUAL_IMAGES_STABLE_ID_OK")
 
 
@@ -537,8 +537,8 @@ print("TT_ACTUALIDAD_STACKED_DUAL_IMAGES_OK")
 
 # 0.4.47 build57: native-only changes from the installed build55.
 # No reliance on web/Cloudflare deploy or the obsolete iOS code in main.
-assert project.count('CURRENT_PROJECT_VERSION: "101"') == 2
-assert project.count('CFBundleVersion: "101"') == 2
+assert project.count('CURRENT_PROJECT_VERSION: "103"') == 2
+assert project.count('CFBundleVersion: "103"') == 2
 assert 'TTActualidadXPost.payload(' in actions
 x_post = (root / 'TTActualidad' / 'TTActualidadXPost.swift').read_text()
 assert 'private static let contentBudget = 280' in x_post
@@ -710,8 +710,8 @@ focused = store[store.index('func reconcilePendingOperations() async'):store.ind
 assert 'dispatch(' not in focused and 'submit(' not in focused
 assert 'await store.reconcilePendingOperations()' in panel
 assert 'Conciliar órdenes con GitHub' in panel
-assert project.count('CURRENT_PROJECT_VERSION: "101"') == 2
-assert project.count('CFBundleVersion: "101"') == 2
+assert project.count('CURRENT_PROJECT_VERSION: "103"') == 2
+assert project.count('CFBundleVersion: "103"') == 2
 print("NATIVE_BUILD66_PENDING_GITHUB_RECEIPT_RECONCILIATION_OK")
 
 # Build67: no stale "waiting GitHub" indicators after the remote rolling
@@ -738,8 +738,8 @@ assert 'private var showEveryPending = false' in pending_panel
 assert 'visiblePending' in pending_panel
 assert 'store.reconciliationSummary' in pending_panel
 assert 'EditorialPendingPolicy.swift' in project
-assert 'CURRENT_PROJECT_VERSION: "101"' in project
-assert 'CFBundleVersion: "101"' in project
+assert 'CURRENT_PROJECT_VERSION: "103"' in project
+assert 'CFBundleVersion: "103"' in project
 assert 'pendingOperationsDiagnostic' in store
 assert 'request_id=' in store
 assert 'sin-identificador' in store
@@ -792,7 +792,7 @@ assert '_ = try await associateVerifiedOriginalInGitHub(item, using: github)' in
 assert 'Aprobada en APP/Site y asociada en GitHub para X.' in inbox
 assert 'Aprobada en APP/Site, pero falta el espejo IA para X:' in inbox
 assert 'completedIDs.insert(item.id)' in inbox
-assert 'restoreRejected(item)' in inbox
+assert 'restore(item)' in inbox
 assert 'revision >= 0,  // READY news can legitimately be revision 0.' in auth
 assert 'images.removeAll { $0.id == item.id }' in inbox
 assert 'original.starts(with: [137, 80, 78, 71, 13, 10, 26, 10])' in inbox
@@ -822,7 +822,7 @@ assert 'editorialAt: String?' in inbox
 assert 'if $0.createdAt != $1.createdAt { return $0.createdAt > $1.createdAt }' in inbox
 assert 'return $0.id > $1.id' in inbox
 assert 'func currentImageApprovalTrendEpisodes() async throws' in auth
-assert 'if action == "approve" && [404, 503].contains(status)' not in inbox
+assert 'if action == "approve" && [404, 503].contains(status)' in inbox
 assert 'holdUnconfirmed(item, action: action' in inbox
 assert 'if [401, 403, 409, 422].contains(status)' in inbox
 assert 'imagen ya no está en Listas' not in inbox.lower()
@@ -1037,7 +1037,7 @@ assert 'model.decide(item, action: "approve", using: github)' in inbox
 assert 'model.decide(item, action: "reject", using: github)' in inbox
 assert 'model.actionID' not in inbox
 assert 'response.appVerified == true' in inbox and 'response.sitesVerified == true' in inbox
-assert 'restoreRejected(item)' in inbox
+assert 'restore(item)' in inbox
 assert 'private func associateVerifiedOriginalInGitHub' in inbox
 assert 'let (original, result) = try await github.privateImageInboxRequest(' in inbox
 assert 'SHA256.hash(data: original)' in inbox
@@ -1096,7 +1096,7 @@ assert 'Aprobación aceptada por el servidor' in inbox
 assert 'response.appVerified == true' in inbox and 'response.sitesVerified == true' in inbox
 assert 'No se repetirá la aprobación' in inbox
 assert 'associateVerifiedOriginalInGitHub(item, using: github)' in inbox
-assert 'restoreRejected(item)' in inbox
+assert 'restore(item)' in inbox
 print("TT_IMAGE_APPROVAL_PERSISTENT_IDEMPOTENCY_BUILD98_OK")
 
 # Build99: the page cursor must yield a single coherent view; a partial GET
@@ -1120,8 +1120,8 @@ assert '["approved_awaiting_publication", "published"]' in inbox
 assert 'response.appVerified == true' in inbox
 assert 'response.sitesVerified == true' in inbox
 project = (root / 'project.yml').read_text(encoding='utf-8')
-assert project.count('0.4.89') == 4
-assert project.count('"101"') == 4
+assert project.count('0.4.90') == 4
+assert project.count('"103"') == 4
 print("TT_IMAGE_INBOX_BUILD99_STABLE_SNAPSHOT_AND_UNCONFIRMED_DECISIONS_OK")
 
 
@@ -1140,35 +1140,55 @@ assert 'previewOrder.append(item.id)' in inbox
 assert 'previews.keys.first' not in inbox
 print("TT_IMAGE_INBOX_THUMBNAIL_CACHE_STABLE_BUILD99_OK")
 
-# Build100: a rejected approval must not animate remove -> reinsert.
-assert '@Published private(set) var decisionFailures: [String: String]' in inbox
+# Build102: accepting/rejecting advances instantly. A hard 4xx is NOT
+# restored into the active queue (the reported bounce). Keep the exact PNG in
+# a persisted, manually reopenable error section; ambiguous results remain
+# separately labeled. Neither path automatically retries or fakes approval.
+assert 'private func restore(_ item: PendingImage)' in inbox
 decide_source = inbox[inbox.index('func decide(_ item: PendingImage'):
                       inbox.index('private func persistDecision(_ item: PendingImage')]
 assert 'images.removeAll { $0.id == item.id }' in decide_source
-assert 'decisionFailures.removeValue(forKey: item.id)' in decide_source
 assert 'processingIDs.insert(item.id)' in decide_source
-assert 'decisionFailures[item.id] = "DECISIÓN NO APLICADA: "' in inbox
-assert 'restoreRejected(item)' in inbox
-assert '" HTTP " + String(status)' in inbox
-assert 'restoreRejected(item)' in inbox
-assert 'images = ready' in inbox
-assert 'if let failure = model.decisionFailures[item.id]' in inbox
-assert 'optimisticPositions[item.id] = images.firstIndex' in inbox
-assert 'if action == "approve" && [404, 503].contains(status)' not in inbox
+assert 'processingIDs.insert(item.id)' in decide_source
+assert 'holdUnconfirmed(item, action: action' in inbox
+assert 'restore(item)' in inbox
+assert 'restore(item)' in inbox
+assert 'private func restore(_ item: PendingImage)' in inbox
+assert 'struct UnconfirmedDecision: Codable, Identifiable' in inbox
+assert 'holdUnconfirmed(item, action: action' in inbox
+assert 'saveUnconfirmed()' in inbox
+assert 'model.reopenUnconfirmed(record.id)' in inbox
+assert 'Section("Decisiones sin confirmación (" +' in inbox
+assert 'Button("Volver a revisar en la bandeja")' in inbox
+assert 'let keys = Set(ready.map(\\.id))' in inbox
+assert '!completedIDs.contains($0.id)' in inbox
+assert 'if action == "approve" && [404, 503].contains(status)' in inbox
 assert 'holdUnconfirmed(item, action: action' in inbox
 assert 'markAccepted(item, state: response.state)' in inbox
-print("TT_IMAGE_INBOX_BUILD100_NO_OPTIMISTIC_BOUNCE_AND_HTTP_ERROR_VISIBLE_OK")
+print("TT_IMAGE_INBOX_BUILD103_BASE_BUILD99_RESTORED_OK")
 
-# Build101 restores the author's required optimistic UX, WITHOUT reintroducing
-# a card due to concurrent refresh. A real 409 still rolls back with details.
-decide_source = inbox[inbox.index('func decide(_ item: PendingImage'):
-    inbox.index('private func persistDecision(_ item: PendingImage')]
-assert 'optimisticPositions[item.id] = images.firstIndex' in decide_source
-assert 'images.removeAll { $0.id == item.id }' in decide_source
-assert 'let keys = Set(images.map(\\.id)).union(processingIDs)' in inbox
-assert '!processingIDs.contains($0.id) &&' in inbox
-assert 'restoreRejected(item)' in inbox
-assert 'decisionFailures[item.id] = "DECISIÓN NO APLICADA: "' in inbox
-assert 'if action == "approve" && [404, 503].contains(status)' not in inbox
-assert 'unconfirmedDecisions' in inbox
-print("TT_IMAGE_INBOX_BUILD101_INSTANT_APPROVAL_AND_REAL_ERROR_ROLLBACK_OK")
+# Build103: ActivityKit Listas count parity with the VISIBLE app cards:
+# verified editorial closure + Buffer reservation/sent state. Never show
+# raw prepared/explained count while a Buffer dispatch hides the card.
+live_intent = (root / 'Shared/RefreshLiveCountsIntent.swift').read_text()
+live_counts = (root / 'Shared/LiveListasCountsPolicy.swift').read_text()
+buffer_tracker = (root / 'TTActualidad/BufferPublishTracker.swift').read_text()
+assert 'pilot/ttactualidad-buffer-posts.json' in live_intent
+assert 'LiveListasCountsPolicy.hiddenKeys' in live_intent
+assert 'LiveListasCountsPolicy.visible(' in live_intent
+assert 'rewrite_pending' in live_intent
+assert 'latestNewsStatus[id]' in live_intent
+assert '"reserved", "unknown", "pending", "sent"' in live_counts
+assert 'project + ":" + id + ":r" + String(revision)' in live_counts
+assert 'static let shared = BufferPublishTracker()' in buffer_tracker
+assert '@StateObject private var buffer = BufferPublishTracker.shared' in dashboard
+assert '.onChange(of: buffer.change)' in dashboard
+assert 'refreshLiveCountsAfterBufferChange()' in dashboard
+assert 'refreshLiveCountsAfterBufferChange() async' in store
+assert 'newsReady: newsVisible.count' in store
+assert 'trendsReady: trendsVisible.count' in store
+assert 'buffer.hidesFromListas(project: "ttittulares"' in store
+assert 'buffer.hidesFromListas(project: "ttendencias"' in store
+print("TT_LIVE_ACTIVITY_BUILD103_LISTAS_PARITY_OK")
+
+

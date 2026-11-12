@@ -39,6 +39,7 @@ private struct TTBufferLedger: Decodable {
 
 @MainActor
 final class BufferPublishTracker: ObservableObject {
+    static let shared = BufferPublishTracker()
     @Published private(set) var posts: [TTBufferPublication] = []
     @Published private(set) var loaded = false
     // A GitHub 204 dispatch only acknowledges transport. Unless the default
@@ -98,6 +99,7 @@ final class BufferPublishTracker: ObservableObject {
     func stagePublish(project: String, id: String, revision: Int) {
         immediateHide.insert(Self.key(project, id, revision))
         persistPendingHide()
+        change += 1  // Live Activity must match the immediate Listas hide.
     }
 
     func hidesFromListas(project: String, id: String, revision: Int) -> Bool {
@@ -220,6 +222,7 @@ final class BufferPublishTracker: ObservableObject {
             quotaHistory = ledger.api_quota_history ?? []
             loaded = true
             backendAvailable = true
+            change += 1  // A verified Buffer ledger may change visible Listas counts.
         } catch {
             // An outdated or unreachable readback is not proof of publication.
             // Preserve the previous verified values and mark unavailable initially.
