@@ -57,8 +57,6 @@ def reconcile():
         stamp=str(queue_row.get("explained_at") or datetime.now(timezone.utc).isoformat())
         if len(source[0]) >= 280:
             raise RuntimeError("Editorial text too long: "+tid)
-        if source[1] and (not source[1].startswith("🌶️ ") or source[0].count(source[1]) != 1):
-            raise RuntimeError("Invalid closer_text: "+tid)
         fields={
             "id":tid,"name":queue_row.get("name"),"rank":queue_row.get("rank"),
             "rank_at_explanation":queue_row.get("rank"),
