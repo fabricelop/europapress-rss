@@ -122,7 +122,7 @@ class WS {
   async eval(exp){const x=await this.call('Runtime.evaluate',{expression:exp,returnByValue:true,awaitPromise:false},8500);if(x?.exceptionDetails||!x?.result||x.result.value===undefined)throw Error('CDP eval returned no value');return x.result.value}
   close(){try{this.ws?.close()}catch{}}
 }
-const expr=(()=>{return `(()=>{let visible=e=>e&&e.getClientRects().length&&getComputedStyle(e).visibility!=='hidden'&&getComputedStyle(e).display!=='none';let ed=[document.querySelector('#prompt-textarea'),document.querySelector('[data-testid="prompt-textarea"]'),...document.querySelectorAll('main [contenteditable="true"][role="textbox"],main textarea')].find(visible);let raw=String(ed?.value??ed?.textContent??'');let hints=[ed?.getAttribute('data-placeholder'),ed?.getAttribute('placeholder'),ed?.querySelector('[data-placeholder]')?.getAttribute('data-placeholder')].filter(Boolean).map(x=>String(x).trim());let placeholderOnly=!!raw.trim()&&hints.includes(raw.trim());let v=placeholderOnly?'':raw;let us=[...document.querySelectorAll('[data-message-author-role="user"]')],aa=document.querySelectorAll('[data-message-author-role="assistant"]');let stop=!!document.querySelector('button[data-testid="stop-button"]')||[...document.querySelectorAll('button')].some(b=>/^(stop generating|stop response|detener generaci[oó]n|detener respuesta|parar generaci[oó]n|cancel generation|cancelar generaci[oó]n)(\\b|\\s)/i.test(String(b.getAttribute('aria-label')||b.getAttribute('title')||'')));let busy=stop||!!document.querySelector('main [aria-busy="true"], [data-testid="loading-spinner"]');let shield=!!document.querySelector('[role="dialog"][aria-modal="true"],iframe[src*="challenge"],iframe[src*="captcha"]');let rect=ed?.getBoundingClientRect();return {url:location.href,ready:document.readyState,editor:!!ed,editorTag:ed?.tagName||null,editorId:ed?.id||null,placeholderMatch:placeholderOnly,editorLength:v.trim().length,editorText:v.slice(0,9000),users:us.length,assistants:aa.length,busy,shield,focused:document.hasFocus(),navMin:Math.max(0,(Date.now()-performance.timeOrigin)/60000),lastUser:String(us.at(-1)?.textContent||'').slice(0,4000),editorRect:rect?{x:rect.x,y:rect.y,w:rect.width,h:rect.height}:null}})()`})();
+const expr=(()=>{return `(()=>{let visible=e=>e&&e.getClientRects().length&&getComputedStyle(e).visibility!=='hidden'&&getComputedStyle(e).display!=='none';let ed=[document.querySelector('#prompt-textarea'),document.querySelector('[data-testid="prompt-textarea"]'),...document.querySelectorAll('main [contenteditable="true"][role="textbox"],main textarea')].find(visible);let raw=String(ed?.value??ed?.textContent??'');let hints=[ed?.getAttribute('data-placeholder'),ed?.getAttribute('placeholder'),ed?.querySelector('[data-placeholder]')?.getAttribute('data-placeholder')].filter(Boolean).map(x=>String(x).trim());let placeholderOnly=!!raw.trim()&&hints.includes(raw.trim());let v=placeholderOnly?'':raw;let us=[...document.querySelectorAll('[data-message-author-role="user"], [data-testid="user-message"]')],aa=document.querySelectorAll('[data-message-author-role="assistant"]');let stop=!!document.querySelector('button[data-testid="stop-button"]')||[...document.querySelectorAll('button')].some(b=>/^(stop generating|stop response|detener generaci[oó]n|detener respuesta|parar generaci[oó]n|cancel generation|cancelar generaci[oó]n)(\\b|\\s)/i.test(String(b.getAttribute('aria-label')||b.getAttribute('title')||'')));let busy=stop||!!document.querySelector('main [aria-busy="true"], [data-testid="loading-spinner"]');let shield=!!document.querySelector('[role="dialog"][aria-modal="true"],iframe[src*="challenge"],iframe[src*="captcha"]');let rect=ed?.getBoundingClientRect();return {url:location.href,ready:document.readyState,editor:!!ed,editorTag:ed?.tagName||null,editorId:ed?.id||null,placeholderMatch:placeholderOnly,editorLength:v.trim().length,editorText:v.slice(0,9000),users:us.length,assistants:aa.length,busy,shield,focused:document.hasFocus(),navMin:Math.max(0,(Date.now()-performance.timeOrigin)/60000),lastUser:String(us.at(-1)?.textContent||'').slice(0,4000),userMessages:us.slice(-8).map(e=>String(e.textContent||'').slice(0,12000)),editorRect:rect?{x:rect.x,y:rect.y,w:rect.width,h:rect.height}:null}})()`})();
 async function inspect(t){if(!t?.webSocketDebuggerUrl)return {unknown:'CDP target socket absent'};let c=new WS(t.webSocketDebuggerUrl);try{await c.open();return await c.eval(expr)}catch(e){return {unknown:String(e.message||e).slice(0,140)}}finally{c.close()}}
 async function scan(list,parallel=5){let idx=0;let a=new Array(list.length);await Promise.all(Array.from({length:Math.min(parallel,list.length)},async()=>{while(idx<list.length){let i=idx++;a[i]=await inspect(list[i])}}));return a}
 function protection(t,s,pins){
@@ -212,7 +212,7 @@ async function preflight(){
  return pages;
 }
 async function checkMarkerExisting(marker){
- const pp=await targets();for(const t of pp){if(!chat(t.url)||!t.webSocketDebuggerUrl)continue;const s=await inspect(t);if(String(s.lastUser||'').includes(marker))return t}
+ const pp=await targets();for(const t of pp){if(!chat(t.url)||!t.webSocketDebuggerUrl)continue;const s=await inspect(t);if(confirmedUserState(s,marker))return t}
  return null;
 }
 async function createTarget(url){
@@ -222,7 +222,22 @@ async function createTarget(url){
  const t=await r.json();if(!idSafe(t.id)||!t.webSocketDebuggerUrl)fail('Invalid new CDP target');return t;
 }
 async function waitEditor(c,ms=50000){const end=Date.now()+ms;while(Date.now()<end){let s;try{s=await c.eval(expr)}catch{await sleep(900);continue}if(s.editor&&chat(s.url)&&s.ready==='complete'&&!s.shield&&!s.busy)return s;await sleep(1000)}return null}
-async function confirmUser(c,marker,ms=35000){const end=Date.now()+ms;while(Date.now()<end){let s;try{s=await c.eval(expr)}catch{await sleep(700);continue}if(s.lastUser.includes(marker)&&s.editorLength===0){return s}await sleep(700)}return null}
+function confirmedUserState(s,marker){
+ // A rendered user-authored bubble with this exact job marker is evidence.
+ // ChatGPT can leave a composer draft visible after the message was sent;
+ // requiring editorLength===0 used to reject those REAL sends.
+ if(!s||!chat(s.url)||!Array.isArray(s.userMessages)||!marker)return false;
+ return s.userMessages.some(body=>String(body||'').includes(marker));
+}
+async function confirmUser(c,marker,ms=35000){
+ const end=Date.now()+ms;
+ while(Date.now()<end){
+  let s;try{s=await c.eval(expr)}catch{await sleep(700);continue}
+  if(confirmedUserState(s,marker))return s;
+  await sleep(700);
+ }
+ return null;
+}
 async function send(){
  if(!['titulares','tendencias'].includes(PROJECT))fail('unknown project');
  const buf=String(process.env.TT_CHAT_MESSAGE_B64||'');if(!buf)fail('missing TT_CHAT_MESSAGE_B64');
@@ -308,7 +323,26 @@ async function send(){
   if(btn&&btn.x>0&&btn.y>0){await c.call('Input.dispatchMouseEvent',{type:'mousePressed',x:btn.x,y:btn.y,button:'left',clickCount:1});await c.call('Input.dispatchMouseEvent',{type:'mouseReleased',x:btn.x,y:btn.y,button:'left',clickCount:1});}
   else {await c.call('Input.dispatchKeyEvent',{type:'keyDown',key:'Enter',code:'Enter',windowsVirtualKeyCode:13,nativeVirtualKeyCode:13});await c.call('Input.dispatchKeyEvent',{type:'keyUp',key:'Enter',code:'Enter',windowsVirtualKeyCode:13,nativeVirtualKeyCode:13})}
   s=await confirmUser(c,unique,40000);
-  if(!s)fail('TRANSMISSION_UNVERIFIED: no rendered user bubble with exact marker (never claim sent)');
+  if(!s){
+   // A submitted SPA can migrate the chat into another CDP tab. This
+   // second read is noninteractive; it NEVER resends after submit_intent.
+   const observed=await checkMarkerExisting(unique).catch(()=>null);
+   if(observed){
+    atomic(f,{status:'confirmed',at:new Date().toISOString(),target:observed.id,marker:unique,source:'observed_other_chat_tab'});
+    note('MENSAJE ENVIADO; exact user bubble verified in other browser target');
+    note('EJECUCION LANZADA.');
+    return;
+   }
+   const diag=await c.eval(expr).catch(()=>null);
+   note('TRANSMISSION_STATE '+JSON.stringify({
+    route:diag?.url?.includes('/c/')?'conversation':diag?.url?.includes('/g/')?'project':'home_or_other',
+    users:diag?.users??null,assistants:diag?.assistants??null,
+    editor:diag?.editor??null,editorLength:diag?.editorLength??null,
+    draftContainsMarker:!!diag?.editorText?.includes(unique),
+    busy:diag?.busy??null,shield:diag?.shield??null
+   }));
+   fail('TRANSMISSION_UNVERIFIED: no rendered user bubble with exact marker (never claim sent)');
+  }
   atomic(f,{status:'confirmed',at:new Date().toISOString(),target:created.id,marker:unique,urlKind:s.url.includes('/c/')?'conversation':'other'});
   note('MENSAJE ENVIADO; exact user message confirmed in browser target='+created.id.slice(0,14));
   note('EJECUCION LANZADA.');
