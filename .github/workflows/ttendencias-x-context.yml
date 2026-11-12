@@ -1,0 +1,91 @@
+name: TTendencias X context (nonblocking)
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '13,33,53 * * * *'
+  push:
+    branches: [main]
+    paths:
+      - 'trends/x_context.js'
+      - 'trends/test_x_context.cjs'
+      - '.github/workflows/ttendencias-x-context.yml'
+  pull_request:
+    paths:
+      - 'trends/x_context.js'
+      - 'trends/test_x_context.cjs'
+      - '.github/workflows/ttendencias-x-context.yml'
+permissions:
+  contents: write
+concurrency:
+  group: ttendencias-x-context
+  cancel-in-progress: false
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /trends/x_context.js
+            /trends/test_x_context.cjs
+      - name: Unit tests without X or credentials
+        run: node --test trends/test_x_context.cjs
+  collect:
+    needs: validate
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /trends/editorial-queue.json
+            /trends/x_context.js
+            /trends/x-context-evidence.json
+      - name: Check if X lookup is needed (no browser)
+        id: plan
+        env:
+          X_AUTH_TOKEN: ${{ secrets.X_AUTH_TOKEN }}
+          X_CT0: ${{ secrets.X_CT0 }}
+        run: |
+          node trends/x_context.js --plan
+          has_targets="$(node trends/x_context.js --plan | node -e 'let s="";process.stdin.on("data",x=>s+=x).on("end",()=>{process.stdout.write(JSON.parse(s).targets.length?"yes":"no")})')"
+          if [ "$has_targets" = yes ] && [ -n "$X_AUTH_TOKEN" ] && [ -n "$X_CT0" ]; then
+            echo 'run=yes' >> "$GITHUB_OUTPUT"
+          else
+            echo 'run=no' >> "$GITHUB_OUTPUT"
+            echo 'No pending X research or no existing X session; text editorial remains unchanged.'
+          fi
+      - name: Install isolated Playwright only when needed
+        if: steps.plan.outputs.run == 'yes'
+        run: |
+          mkdir -p "$RUNNER_TEMP/xnode"
+          npm install --prefix "$RUNNER_TEMP/xnode" --no-save --no-package-lock playwright
+          "$RUNNER_TEMP/xnode/node_modules/.bin/playwright" install --with-deps chromium
+      - name: Collect limited X context without touching editorial
+        if: steps.plan.outputs.run == 'yes'
+        env:
+          NODE_PATH: ${{ runner.temp }}/xnode/node_modules
+          X_AUTH_TOKEN: ${{ secrets.X_AUTH_TOKEN }}
+          X_CT0: ${{ secrets.X_CT0 }}
+        run: node trends/x_context.js
+      - name: Commit ONLY optional X evidence
+        if: steps.plan.outputs.run == 'yes'
+        run: |
+          set -euo pipefail
+          git add --sparse trends/x-context-evidence.json
+          if git diff --cached --quiet; then exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Update optional TTendencias X evidence'
+          for attempt in 1 2 3 4; do
+            git fetch origin main
+            git rebase origin/main
+            if git push origin HEAD:main; then exit 0; fi
+            sleep "$attempt"
+          done
+          echo 'Optional X context not persisted. Editorial unaffected.' >&2
+          exit 1
