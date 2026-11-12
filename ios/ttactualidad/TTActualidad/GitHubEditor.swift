@@ -43,6 +43,7 @@ final class GitHubEditor: ObservableObject {
     private let pendingKey = "TTActualidad.pendingEditorialReceipts.v1"
     private var receiptPolling = Set<String>()
     private var receiptReadInProgress = false
+    private var lastTerminalProbe = Date.distantPast
 
     init() {
         restoreSession()
@@ -360,6 +361,56 @@ final class GitHubEditor: ObservableObject {
                 } else {
                     failed.insert(pending.requestID)
                     message = "GitHub no aplicó «\(pending.title)»: \(state)."
+                }
+            }
+            // Some accepted GitHub dispatches lost their individual receipt
+            // after the 2,000-row ledger rotated. An exact, later, terminal
+            // GitHub decision proves the desired Listas state even if it does
+            // NOT prove that this particular dispatch was the one to apply it.
+            // This cannot confirm prepare, rework, hints or an older revision.
+            let missingTerminal = pendingReceipts.filter {
+                !settled.contains($0.requestID) && ["deleted", "published"].contains($0.decision)
+            }
+            if !missingTerminal.isEmpty && Date().timeIntervalSince(lastTerminalProbe) >= 15 {
+                lastTerminalProbe = Date()
+                let fractional = ISO8601DateFormatter()
+                fractional.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+                let standard = ISO8601DateFormatter()
+                standard.formatOptions = [.withInternetDateTime]
+                for project in Set(missingTerminal.map { $0.project }) {
+                    let path = project == "ttendencias" ? "trends/mobile-decisions.json" :
+                               project == "ttittulares" ? "ttittulares/decisions.json" : ""
+                    guard !path.isEmpty,
+                          var parts = URLComponents(string:
+                            "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/" + path) else { continue }
+                    parts.queryItems = [URLQueryItem(name: "terminal", value: UUID().uuidString)]
+                    guard let url = parts.url else { continue }
+                    do {
+                        let request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData,
+                                                 timeoutInterval: 12)
+                        let (data, response) = try await URLSession.shared.data(for: request)
+                        guard (response as? HTTPURLResponse)?.statusCode == 200,
+                              let document = (try? JSONSerialization.jsonObject(with: data)) as? [String: Any],
+                              let rows = document["items"] as? [[String: Any]] else { continue }
+                        for pending in missingTerminal where pending.project == project {
+                            let idKey = project == "ttendencias" ? "id" : "event_id"
+                            let confirmed = rows.contains { row in
+                                guard (row[idKey] as? String) == pending.eventID,
+                                      (row["revision"] as? Int) == pending.revision,
+                                      (row["status"] as? String) == pending.decision,
+                                      let raw = row["updated_at"] as? String,
+                                      let changed = fractional.date(from: raw) ?? standard.date(from: raw)
+                                else { return false }
+                                // A decision made before this pending request
+                                // must never be used as its new confirmation.
+                                return changed >= pending.sentAt.addingTimeInterval(-30)
+                            }
+                            if confirmed {
+                                settled.insert(pending.requestID)
+                                message = "Estado final confirmado en GitHub para «\(pending.title)»; no consta el recibo de la orden original."
+                            }
+                        }
+                    } catch { /* No terminal-state proof: leave it unverified. */ }
                 }
             }
             if !settled.isEmpty {
