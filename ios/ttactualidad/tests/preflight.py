@@ -253,7 +253,7 @@ assert 'case "SIN EXPLICACIÓN": return "PISTAS"' in dashboard
 assert 'decision == "hints"' in store
 assert '"hints": text' in auth
 assert 'await store.refreshIfStale(minInterval: needsFastProgress ? 45 : 180)' in dashboard
-assert 'MARKETING_VERSION: "0.4.89"' in project
+assert 'MARKETING_VERSION: "0.4.90"' in project
 assert 'CURRENT_PROJECT_VERSION: "101"' in project
 print("TT_ACTUALIDAD_IOS_HINTS_PREFLIGHT_OK")
 
@@ -315,7 +315,7 @@ assert 'publishedCountsAvailable' in shared
 assert 'pilot/ttactualidad-publication-events.json' in widget_source
 assert "retireAbandonedNewsOperations(" in store
 assert 'requestID: requestID' in actions and 'requestID: requestID' in hints_sheet
-assert 'MARKETING_VERSION: "0.4.89"' in project
+assert 'MARKETING_VERSION: "0.4.90"' in project
 assert 'CURRENT_PROJECT_VERSION: "101"' in project
 print("TT_ACTUALIDAD_IOS_0417_LIVE_NO_WIDGETS_PREFLIGHT_OK")
 
@@ -467,7 +467,7 @@ assert '"TEXTO EDITORIAL EXACTO (SOLO CONTEXTO, JAMÁS ROTULAR):' in actions
 assert 'news?.verifiedFacts' in actions
 assert 'news?.siteImageURL ?? trend?.siteImageURL' in actions
 assert 'EditorialActionPolicy.imageURL(ai: ai' in actions
-assert 'MARKETING_VERSION: "0.4.89"' in project
+assert 'MARKETING_VERSION: "0.4.90"' in project
 assert 'CURRENT_PROJECT_VERSION: "101"' in project
 print("TT_ACTUALIDAD_IOS_046_NEWS_AI_PARITY_OK")
 
@@ -488,7 +488,7 @@ assert 'IMAGEN GENERADA; SITE Y APP PENDIENTES' in actions
 assert 'IMAGEN GENERADA; WEB Y APP PENDIENTES' in actions
 assert 'No generes una segunda imagen' in actions
 assert 'GitHub' in actions
-assert 'MARKETING_VERSION: "0.4.89"' in project
+assert 'MARKETING_VERSION: "0.4.90"' in project
 assert 'CURRENT_PROJECT_VERSION: "101"' in project
 print("TT_ACTUALIDAD_IOS_047_GAG_ATTACH_SYNC_REGRESSION_OK")
 
@@ -1120,8 +1120,8 @@ assert '["approved_awaiting_publication", "published"]' in inbox
 assert 'response.appVerified == true' in inbox
 assert 'response.sitesVerified == true' in inbox
 project = (root / 'project.yml').read_text(encoding='utf-8')
-assert project.count('0.4.89') == 4
-assert project.count('"101"') == 4
+assert project.count('0.4.90') == 4
+assert project.count('"102"') == 4
 print("TT_IMAGE_INBOX_BUILD99_STABLE_SNAPSHOT_AND_UNCONFIRMED_DECISIONS_OK")
 
 
