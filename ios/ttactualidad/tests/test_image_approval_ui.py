@@ -42,3 +42,9 @@ assert 'No se repetirá la aprobación' in view
 assert 'associateVerifiedOriginalInGitHub(item, using: github)' in view
 assert 'restore(item)' in view
 print("TT_IMAGE_APPROVAL_PERSISTENT_IDEMPOTENCY_BUILD98_OK")
+
+# A regenerated receipt ID for the same PNG/episode must not reopen approval.
+assert 'acceptedReceipts.values.contains' in view
+assert 'unconfirmedDecisions.values.contains' in view
+assert 'return $0.id > $1.id' in view
+print("TT_IMAGE_INBOX_RECEIPT_ID_CHANGE_DEDUP_OK")
