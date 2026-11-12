@@ -105,3 +105,13 @@ Para futuros cambios iOS, siempre empezar desde la rama de release iOS con versi
 ### Límites preservados
 - No hubo reenvío manual desde este entorno, reinicio de Chrome, cambios en imagen/TTImages, aprobación/publicación ni mutación directa de las colas. Así se evita duplicar mensajes o interrumpir trabajos activos.
 - El arreglo queda **sin completar**, por falta de acceso autorizado al Windows local. Reanudar desde verificación de la ejecución pendiente y conexión aprobada al equipo, sin repetir prompts ya confirmados.
+
+
+## Seguimiento urgente — 12/11/2026, 11:10 España
+
+- El editor autorizó explícitamente usar el puente PowerShell. Se comprobó el inventario de superficies de esta sesión: no hay puente ni app de escritorio Windows conectado; Chrome CDP aparece sin pestañas. El conector GitHub expone lectura/edición de archivos y lectura de Actions, pero no el puente local ni el disparo de workflows. La autorización queda registrada; no hay canal técnico por el que ejecutar el instalador en el PC en esta sesión.
+- Estado actualizado de cola: tendencias `trends/editorial-queue.json` commit `d9f2ad90646a872b1cac15a084f4cde5b3c74e96`, **12/12 preparing**, actualizado 10:52:45 Madrid. Noticias permanece en **14 PROCESSING** (lectura anterior 10:51:59Z; confirmar otra vez al reanudar).
+- La pasada TTendencias `tr-20261112T052500-manual` terminó con `success/closing` para los 16 ítems de esa captura; no cubre las 12 solicitudes agregadas después.
+- El run TTiTTulares `43194373879`, creado a las 10:46 Madrid, sigue `in_progress` a las 10:52:53Z. No se inicia una solicitud concurrente. Al reanudar: esperar resultado; comparar las colas/runtime/outbox después del run. Si no hay procesamiento, lanzar **una sola** recuperación mediante el listener autorizado de Windows con el instalador protegido, primero `-NoDispatch`/diagnóstico si corresponde; no repetir mensajes a ciegas.
+- No se han modificado colas, triggers, outboxes, prompts, conversaciones, imágenes o procesos. No afirmar reparación: bloqueo persiste y queda pendiente acceso Windows/puente dentro de este hilo o una sesión habilitada.
+
