@@ -20,7 +20,7 @@ assert 'Section("Decisiones sin confirmación (" +' in view
 assert 'images.removeAll { $0.id == item.id }' in view  # only accepted/held records
 assert 'decisionTail = Task {' in view
 assert 'await previous?.value' in view
-assert 'restore(item)' not in view
+assert 'restoreRejected(item)' in view
 assert 'model.decide(item, action: "approve", using: github)' in view
 assert 'model.decide(item, action: "reject", using: github)' in view
 assert 'model.actionID' not in view
@@ -40,7 +40,7 @@ assert 'Aprobación aceptada por el servidor' in view
 assert 'response.appVerified == true' in view and 'response.sitesVerified == true' in view
 assert 'No se repetirá la aprobación' in view
 assert 'associateVerifiedOriginalInGitHub(item, using: github)' in view
-assert 'restore(item)' not in view
+assert 'restoreRejected(item)' in view
 print("TT_IMAGE_APPROVAL_PERSISTENT_IDEMPOTENCY_BUILD98_OK")
 
 # A regenerated receipt ID for the same PNG/episode must not reopen approval.
@@ -60,11 +60,20 @@ print("TT_IMAGE_INBOX_THUMBNAIL_CACHE_STABLE_BUILD99_OK")
 # optimistic disappearance, even if a reload starts during POST.
 decide = view[view.index('func decide(_ item: PendingImage'):
               view.index('private func persistDecision(_ item: PendingImage')]
-assert 'images.removeAll { $0.id == item.id }' not in decide
+assert 'images.removeAll { $0.id == item.id }' in decide
 assert 'decisionFailures.removeValue(forKey: item.id)' in decide
 assert 'decisionFailures[item.id] = "DECISIÓN NO APLICADA: "' in view
 assert 'if let failure = model.decisionFailures[item.id]' in view
-assert 'let stillProcessing = images.filter { existing in' in view
-assert 'images = ready + stillProcessing' in view
-assert 'restore(item)' not in view
+assert 'let ready = items.filter {' in view
+assert 'images = ready' in view
+assert 'restoreRejected(item)' in view
 print("TT_IMAGE_INBOX_BUILD100_NO_BOUNCE_OK")
+
+# Exact rollback: the tap is immediate, POST is asynchronous, a confirmed
+# 4xx rejection restores only the same PNG and leaves an inline diagnosis.
+assert 'images.removeAll { $0.id == item.id }' in decide
+assert 'optimisticPositions[item.id] = images.firstIndex' in decide
+assert 'restoreRejected(item)' in view
+assert 'decisionFailures[item.id] = "DECISIÓN NO APLICADA: "' in view
+assert 'let keys = Set(images.map(\\.id)).union(processingIDs)' in view
+print("TT_IMAGE_INBOX_BUILD101_OPTIMISTIC_WITH_ERROR_DETAILS_OK")

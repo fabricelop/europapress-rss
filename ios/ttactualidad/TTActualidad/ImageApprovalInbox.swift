@@ -81,6 +81,9 @@ private final class ApprovalInboxModel: ObservableObject {
     @Published private(set) var processingIDs = Set<String>()
     // Keep HTTP rejections attached to the original, still-visible card.
     @Published private(set) var decisionFailures: [String: String] = [:]
+    // Restore a rejected original in its previous position rather than at
+    // the start of a 100-image inbox.
+    private var optimisticPositions: [String: Int] = [:]
     @Published var notice = ""
     // A successful receipt must not reappear during an eventually-consistent
     // refresh, but a failed decision always restores its original card.
@@ -262,18 +265,16 @@ private final class ApprovalInboxModel: ObservableObject {
                 return
             }
             let items = ApprovalInboxScope.visible(received)
+            // A refresh may finish while the approval is still in flight:
+            // do not resurrect the optimistically retired card before ACK.
             let ready = items.filter {
-                !completedIDs.contains($0.id) && !accepted($0) && !unconfirmed($0)
+                !processingIDs.contains($0.id) &&
+                    !completedIDs.contains($0.id) && !accepted($0) && !unconfirmed($0)
             }
-            // Preserve processing cards if a cursor snapshot changes during POST.
-            let stillProcessing = images.filter { existing in
-                processingIDs.contains(existing.id) && !completedIDs.contains(existing.id) &&
-                    !accepted(existing) && !unconfirmed(existing) &&
-                    !ready.contains(where: { $0.id == existing.id })
-            }
-            // Exactly one visible snapshot update per completed refresh.
-            images = ready + stillProcessing
-            let keys = Set(images.map(\.id))
+            images = ready
+            // Preserve thumbnails for in-flight decisions so a rejected PNG
+            // returns fully loaded instead of flashing an empty placeholder.
+            let keys = Set(images.map(\.id)).union(processingIDs)
             previews = previews.filter { keys.contains($0.key) }
             previewOrder.removeAll { !keys.contains($0) && !processingIDs.contains($0) }
             feedVerified = true
@@ -356,9 +357,8 @@ private final class ApprovalInboxModel: ObservableObject {
             editorialText: item.editorialText, png: original)
     }
 
-    // No await before hiding a card. This method is called directly by the
-    // button on the main actor; each tap immediately exposes the next image.
-    // The private API and the GitHub mirror run in a serial background queue.
+    // No await before hiding a card. The main actor advances immediately,
+    // and the private decisions are serialized after the user tap.
     func decide(_ item: PendingImage, action: String, using github: GitHubEditor) {
         guard ["approve", "reject"].contains(action),
               !processingIDs.contains(item.id),
@@ -370,12 +370,15 @@ private final class ApprovalInboxModel: ObservableObject {
             notice = "Necesitamos comprobar primero el PNG original antes de tomar una decisión."
             return
         }
-        // Only a confirmed response removes the card. Previously a 409
-        // caused remove -> restore after one second (the reported bounce).
+        // Required editorial interaction: immediately show the next image.
+        // The network is async and never blocks the tap; only a definitive
+        // rejection can restore this exact original in its previous position.
+        optimisticPositions[item.id] = images.firstIndex(where: { $0.id == item.id })
         processingIDs.insert(item.id)
         decisionFailures.removeValue(forKey: item.id)
-        notice = "Comprobando decisión con el servidor · " +
-                 String(processingIDs.count) + " en curso."
+        images.removeAll { $0.id == item.id }
+        notice = "Decisión enviada · " + String(processingIDs.count) +
+                 " en curso. Puedes seguir con la siguiente imagen."
 
         // Safe one-at-a-time backend write, but zero UI waiting. Keep a strong
         // reference until completion even if the sheet is dismissed.
@@ -391,9 +394,19 @@ private final class ApprovalInboxModel: ObservableObject {
         }
     }
 
+    private func restoreRejected(_ item: PendingImage) {
+        guard !completedIDs.contains(item.id), !accepted(item), !unconfirmed(item),
+              !images.contains(where: { $0.id == item.id }) else { return }
+        let position = optimisticPositions[item.id] ?? 0
+        images.insert(item, at: min(position, images.count))
+    }
+
     private func persistDecision(_ item: PendingImage, action: String,
                                  using github: GitHubEditor) async {
-        defer { processingIDs.remove(item.id) }
+        defer {
+            processingIDs.remove(item.id)
+            optimisticPositions.removeValue(forKey: item.id)
+        }
         do {
             let body = try JSONEncoder().encode(ApprovalDecision(
                 action: action, expectedIdentity: item.identity))
@@ -408,8 +421,9 @@ private final class ApprovalInboxModel: ObservableObject {
                     decisionFailures[item.id] = "DECISIÓN NO APLICADA: " + detail +
                         " HTTP " + String(status) +
                         (code.map { " (" + $0 + ")" } ?? "") + "."
-                    notice = "El servidor rechazó la decisión de «" + item.title +
-                        "». La tarjeta permanece visible; no se ha confirmado aprobación."
+                    restoreRejected(item)
+                    notice = "El servidor rechazó «" + item.title +
+                        "» (" + String(status) + "). Se ha restaurado la imagen exacta."
                     return
                 }
                 // An ambiguous 404/503 must never trigger a second
@@ -593,10 +607,7 @@ struct ImageApprovalInbox: View {
                                 }
                                 Text("Ficha \(item.identity.editorialId) · revisión \(item.identity.revision)")
                                     .font(.caption2).foregroundStyle(.secondary)
-                                if model.processingIDs.contains(item.id) {
-                                    ProgressView("Comprobando respuesta del servidor…")
-                                        .font(.caption)
-                                }
+
                                 if let failure = model.decisionFailures[item.id] {
                                     Text(failure)
                                         .font(.caption)
