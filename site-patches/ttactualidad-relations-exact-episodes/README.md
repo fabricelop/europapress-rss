@@ -154,3 +154,28 @@ privado del Site: el HTTP 400 solo se dará por resuelto tras integrar
 el adaptador en el servicio real y confirmar los dos recibos.
 La PR #365 contiene arreglos de la APP iOS, que por sí solos no eliminan
 un rechazo HTTP 400 del servidor.
+
+
+## 12/11/2026 — automatizar relaciones al entrar en Listas (código Site, integración pendiente)
+
+**Solicitud:** cada noticia que llega a Listas/READY desencadena búsqueda de relaciones con tendencias del mismo acontecimiento. Hasta cinco visibles por tendencia, más recientes primero. En «Relaciones» el editor desmarca y guarda exclusiones que la automatización no reactivará en ese episodio. No se publican noticias ni se generan imágenes por vincular.
+
+**Módulo añadido:**
+- `auto-relate-listas.cjs`: `planIncomingReady`, `recentFiveForTrend` y `onReadyInListas`.
+- `auto-relate-listas.test.cjs`: cobertura de READY real, ID/revisión exactos, fingerprint, alta confianza, veto manual, deduplicación, cinco más recientes, carrera con unlink, recibo y lectura de vuelta.
+
+**Punto de montaje en el Site PRIVADO:** al confirmar una entrada READY/Listas (y en una conciliación periódica acotada de nuevas entradas), el mismo servidor llama a `onReadyInListas(...)` con callbacks confiables:
+
+1. `readReadyEpisode`: leer fuente editorial oficial y confirmar ID/revisión, `ready:true`, texto real y fecha `listedAt`. Nunca confiar en un identificador o fecha suministrados solo por cliente.
+2. `findTrustedMatches`: utilizar matcher Site existente y devolver únicamente parejas del **mismo hecho**: `{news,trend,sameEvent:true,confidence:0.9+,evidence:{independentSources:[2+],distinctiveFacts:[2+],eventDescription}}`. No asociar por palabras o nombres parecidos, rumores ni solo cercanía de fecha.
+3. `readSnapshot`: leer el almacenamiento de relaciones **actual**, incluidas confirmaciones y exclusiones, con identidades de servidor.
+4. `writeDecision`: ejecutar transacción interna de `/api/editorial-relations/v1/decisions` con origen `automatic_verified` y `onlyIfUnblocked:true`. Debe validar **atómicamente** IDs/revisiones, veto manual e idempotencia. Un recibo `{state:'linked',relationId}` sin readback del Site NO prueba guardado.
+5. `commandIdFor(pairKey)`: UUID estable derivado del par exacto (p. ej. hash con namespace de servidor); reintentar el mismo par NO crea un segundo comando.
+
+**Regla del máximo cinco:** seleccionar las cinco últimas por fecha verificable con `recentFiveForTrend`. Cuando llega una sexta más reciente, la anterior sale de las cinco **visibles**, pero NO se borra el historial ni se envía `unlink` automático: `unlink` significa bloqueo editorial permanente para ese episodio. El botón manual sí usa `unlink` y registra `blocked`; ningún barrido posterior podrá vincular ese par otra vez. Las relaciones antiguas siguen disponibles en el histórico.
+
+**Rendimiento:** iniciar tras READY **ya persistido**, no antes ni como parte de la generación de textos/IA. Procesar una vez por episodio y revisión, revalidar antes de escribir y recuperar eventos perdidos de forma limitada. El índice debe calcularse server-side, no hacer múltiples peticiones en cada render o clic del iPhone.
+
+**iOS:** rama completa de referencia `fix/ttactualidad-relaciones-sin-filtros-buffer-reserva-b89-20261108`, **no** el árbol simplificado de `main`. La APP ya tiene checkboxes, POST idempotente y confirmación GET; debe mostrar también vínculos reales aunque no coincidan palabras del título. No instalar versiones antiguas ni modificar la bandeja de imágenes.
+
+**Estado real:** el módulo de GitHub es código **por integrar en el Site privado**. No se ha desplegado en `ttactualidad.rainyraven22.chatgpt.site` desde este repositorio y no existe aquí acceso a su almacenamiento. CI verde únicamente prueba lógica local. Validación E2E pendiente: noticia nueva READY → GET Site confirma vínculos `linked` con origen automático → botón Relaciones desmarcar+Guardar → GET confirma `blocked` → nueva pasada verifica que no se reintroduce. No alterar Listas, X, Buffer, imágenes, aprobación, TT Fotos ni procesos Windows.
