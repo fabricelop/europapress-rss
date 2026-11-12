@@ -19,6 +19,7 @@ on:
       - "trends/apply_editorial_outbox.py"
       - "vercel-webhook/lib/ttendencias-run-handler.js"
       - "vercel-webhook/lib/ttendencias-control-handler.js"
+      - "vercel-webhook/lib/ttittulares-run-handler.js"
       - ".github/workflows/ttittulares-auto-listas-images.yml"
   workflow_dispatch:
 
@@ -41,6 +42,7 @@ jobs:
           python3 -m unittest discover -s tests -p 'test_all_topics_image_eligibility.py' -v
           node --check vercel-webhook/lib/ttendencias-run-handler.js
           node --check vercel-webhook/lib/ttendencias-control-handler.js
+          node --check vercel-webhook/lib/ttittulares-run-handler.js
       - name: Simular contra las fichas y decisiones reales de main (sin escritura)
         run: python3 ttittulares/auto_listas_images.py
       - name: Encolar máximo 1 job real en el control branch existente

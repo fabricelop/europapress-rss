@@ -21,6 +21,10 @@ class TopicNeutralImageEligibility(unittest.TestCase):
         self.assertIn("nunca publicar, aprobar", job["instructions"]["lifecycle"])
         row["ai_image_tool_called_at"] = "2026-11-12T14:45:00Z"
         self.assertFalse(images.main_story(row, set(), set(), policy)[0])
+        manual_handler = (ROOT / "vercel-webhook/lib/ttittulares-run-handler.js").read_text()
+        self.assertNotIn('mode==="tweet_capture_only")return {eligible:false', manual_handler)
+        self.assertNotIn('row.tremending_origin||mode', manual_handler)
+        self.assertIn('const hasAi=validChatAi(row.ai_image)', manual_handler)
 
     def test_trends_all_topics_and_tremending(self):
         config = json.loads((ROOT / "trends/editorial-config.json").read_text())
