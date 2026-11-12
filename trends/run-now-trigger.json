@@ -1,12 +1,25 @@
 {
-  "auto_image_followup" : false,
-  "command_id" : "tr-ios-1794441042478-9f7e7781",
-  "executor" : "pc_chat_ttendencias_dedicated",
-  "launcher_arg" : "tendencias",
-  "mode" : "manual_pc_chat",
-  "project" : "ttendencias",
-  "requested_at" : "2026-11-11T23:50:42Z",
-  "source" : "ttactualidad_ios",
-  "task" : "editorial",
-  "version" : 2
+  "version": 2,
+  "command_id": "tr-autoguard-1794445865",
+  "requested_at": "2026-11-12T01:11:05.442427Z",
+  "mode": "manual_pc_chat",
+  "executor": "pc_chat_ttendencias_dedicated",
+  "project": "ttendencias",
+  "launcher_arg": "tendencias",
+  "task": "editorial",
+  "auto_image_followup": false,
+  "source": "tt_autoheal_editorial_watchdog",
+  "reason": "editorial_not_started_in_time",
+  "pending_ids": [
+    "95b49291de75",
+    "40ae1da9ecb1",
+    "88e514ece616",
+    "5e5af80baed0",
+    "ea81ac388672",
+    "cf2df84a5714"
+  ],
+  "target_id": "40ae1da9ecb1",
+  "target_revision": 0,
+  "target_name": "Kico",
+  "scope": "single_item"
 }
