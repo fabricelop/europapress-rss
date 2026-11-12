@@ -32,6 +32,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Comprobar decisiones, deduplicación y seguridad sin generar imágenes
         run: python3 -m unittest discover -s tests -p 'test_auto_listas_images.py' -v
+      - name: Simular contra las fichas y decisiones reales de main (sin escritura)
+        run: python3 ttittulares/auto_listas_images.py
       - name: Encolar máximo 1 job real en el control branch existente
         if: github.event_name != 'pull_request'
         env:
