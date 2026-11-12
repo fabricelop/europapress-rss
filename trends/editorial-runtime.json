@@ -7,66 +7,52 @@
   "previous_run_id": "tr-20261112T052500-manual",
   "command_id": "tr-20261112T135500-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-12T13:55:00+01:00",
-  "updated_at": "2026-11-12T13:58:00+01:00",
-  "current": 0,
+  "updated_at": "2026-11-12T14:01:00+01:00",
+  "current": 13,
   "total": 13,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": false,
-  "processed_ids": [],
+  "queue_complete": true,
+  "processed_ids": [
+    "0a5305c044b0",
+    "80ac2e502a71",
+    "8bd2ca189812",
+    "ea788f9c4f4d",
+    "cdf643d64692",
+    "fcc3c7e0664d",
+    "25b5c8ed560b",
+    "99cc9067dee3",
+    "147c57f91998",
+    "3e338faca793",
+    "d29040d36d2a",
+    "8a8e2094da2d",
+    "343b3e059b78"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "0a5305c044b0",
-    "80ac2e502a71",
-    "8bd2ca189812",
-    "ea788f9c4f4d",
-    "cdf643d64692",
-    "fcc3c7e0664d",
-    "25b5c8ed560b",
-    "99cc9067dee3",
-    "147c57f91998",
-    "3e338faca793",
-    "d29040d36d2a",
-    "8a8e2094da2d",
-    "343b3e059b78"
-  ],
-  "remaining_active_ids": [
-    "0a5305c044b0",
-    "80ac2e502a71",
-    "8bd2ca189812",
-    "ea788f9c4f4d",
-    "cdf643d64692",
-    "fcc3c7e0664d",
-    "25b5c8ed560b",
-    "99cc9067dee3",
-    "147c57f91998",
-    "3e338faca793",
-    "d29040d36d2a",
-    "8a8e2094da2d",
-    "343b3e059b78"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 13,
     "observed": 13,
-    "closed": 0,
-    "explained": 0,
+    "closed": 13,
+    "explained": 13,
     "problematic": 0,
-    "updates": 0,
+    "updates": 1,
     "review_completed_no_distinct_event": 0,
     "maintenance_reviews": 0,
     "unchanged_reviews": 0,
     "continuity_updates": 0,
-    "distinct_updates": 0,
+    "distinct_updates": 1,
     "stale_reviews": 0,
     "unverified_reviews": 0,
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 13,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -74,27 +60,132 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "0a5305c044b0",
+      "revision": 0,
+      "name": "Tribunal de Cuentas",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "7bce899375322a25be297d10b4fc32a32885fcd7"
+    },
+    {
+      "id": "80ac2e502a71",
+      "revision": 0,
+      "name": "#Mañaneros12N",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "7bce899375322a25be297d10b4fc32a32885fcd7"
+    },
+    {
+      "id": "8bd2ca189812",
+      "revision": 0,
+      "name": "Jordi Güil",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "7bce899375322a25be297d10b4fc32a32885fcd7"
+    },
+    {
+      "id": "ea788f9c4f4d",
+      "revision": 0,
+      "name": "Ana Redondo",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "7bce899375322a25be297d10b4fc32a32885fcd7"
+    },
+    {
+      "id": "cdf643d64692",
+      "revision": 0,
+      "name": "Michael Carrick",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "7bce899375322a25be297d10b4fc32a32885fcd7"
+    },
+    {
+      "id": "fcc3c7e0664d",
+      "revision": 0,
+      "name": "Layton",
+      "outcome": "explained_cause_unconfirmed",
+      "applied": true,
+      "apply_commit": "7bce899375322a25be297d10b4fc32a32885fcd7"
+    },
+    {
+      "id": "25b5c8ed560b",
+      "revision": 0,
+      "name": "Interior",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "7bce899375322a25be297d10b4fc32a32885fcd7"
+    },
+    {
+      "id": "99cc9067dee3",
+      "revision": 0,
+      "name": "García Ortiz",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "7bce899375322a25be297d10b4fc32a32885fcd7"
+    },
+    {
+      "id": "147c57f91998",
+      "revision": 0,
+      "name": "Jordi Will",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "7bce899375322a25be297d10b4fc32a32885fcd7"
+    },
+    {
+      "id": "3e338faca793",
+      "revision": 0,
+      "name": "Bustinduy",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "7bce899375322a25be297d10b4fc32a32885fcd7"
+    },
+    {
+      "id": "d29040d36d2a",
+      "revision": 0,
+      "name": "República Checa",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "7bce899375322a25be297d10b4fc32a32885fcd7"
+    },
+    {
+      "id": "8a8e2094da2d",
+      "revision": 0,
+      "name": "La Policía",
+      "outcome": "distinct_update",
+      "applied": true,
+      "apply_commit": "7bce899375322a25be297d10b4fc32a32885fcd7"
+    },
+    {
+      "id": "343b3e059b78",
+      "revision": 0,
+      "name": "Susana Griso",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "7bce899375322a25be297d10b4fc32a32885fcd7"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "persisting",
+  "activity": "closing",
   "last_started_at": "2026-11-12T13:24:16+01:00",
   "last_completed_at": "2026-11-12T12:53:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261112T124000-manual",
-    "status": "DONE_WITH_INCIDENTS",
-    "started_at": "2026-11-12T12:40:00+01:00",
-    "finished_at": "2026-11-12T12:53:00+01:00",
-    "total": 7,
-    "closed": 7,
-    "explained": 5,
-    "maintenance": 2,
+    "run_id": "tr-20261112T135500-manual",
+    "status": "DONE",
+    "started_at": "2026-11-12T13:55:00+01:00",
+    "finished_at": "2026-11-12T14:01:00+01:00",
+    "total": 13,
+    "closed": 13,
+    "explained": 13,
+    "maintenance": 0,
     "pending": 0,
     "problematic": 0
   },
-  "message": "Pasada manual iniciada contra main con 13 trabajos preparing. Investigación terminada; persistiendo resultados mediante el aplicador editorial oficial. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-20261112T135500-manual cerrada 13/13. Doce fichas ordinarias quedaron explicadas (Layton con causa no confirmada tras dos búsquedas) y La Policía quedó como episodio material nuevo por la orden de Interior de investigar actuaciones del 11N. Aplicador oficial persistió en commit 7bce899375322a25be297d10b4fc32a32885fcd7 tras reintento automático por avance concurrente de main. Barrera final: editorial-queue=0. ImageGen=0; image-outbox=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794327332740-manual",
@@ -4882,6 +4973,164 @@
       "status": "RUNNING",
       "phase": "persisting",
       "message": "Pasada manual iniciada contra main con 13 trabajos preparing. Investigación terminada; persistiendo resultados mediante el aplicador editorial oficial. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-20261112T135500-manual",
+      "status": "DONE",
+      "started_at": "2026-11-12T13:55:00+01:00",
+      "finished_at": "2026-11-12T14:01:00+01:00",
+      "at": "2026-11-12T14:01:00+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 13,
+        "observed": 13,
+        "closed": 13,
+        "explained": 13,
+        "problematic": 0,
+        "updates": 1,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 0,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 1,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [
+        "0a5305c044b0",
+        "80ac2e502a71",
+        "8bd2ca189812",
+        "ea788f9c4f4d",
+        "cdf643d64692",
+        "fcc3c7e0664d",
+        "25b5c8ed560b",
+        "99cc9067dee3",
+        "147c57f91998",
+        "3e338faca793",
+        "d29040d36d2a",
+        "8a8e2094da2d",
+        "343b3e059b78"
+      ],
+      "converged_ids": [],
+      "outcomes": [
+        {
+          "id": "0a5305c044b0",
+          "revision": 0,
+          "name": "Tribunal de Cuentas",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "7bce899375322a25be297d10b4fc32a32885fcd7"
+        },
+        {
+          "id": "80ac2e502a71",
+          "revision": 0,
+          "name": "#Mañaneros12N",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "7bce899375322a25be297d10b4fc32a32885fcd7"
+        },
+        {
+          "id": "8bd2ca189812",
+          "revision": 0,
+          "name": "Jordi Güil",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "7bce899375322a25be297d10b4fc32a32885fcd7"
+        },
+        {
+          "id": "ea788f9c4f4d",
+          "revision": 0,
+          "name": "Ana Redondo",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "7bce899375322a25be297d10b4fc32a32885fcd7"
+        },
+        {
+          "id": "cdf643d64692",
+          "revision": 0,
+          "name": "Michael Carrick",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "7bce899375322a25be297d10b4fc32a32885fcd7"
+        },
+        {
+          "id": "fcc3c7e0664d",
+          "revision": 0,
+          "name": "Layton",
+          "outcome": "explained_cause_unconfirmed",
+          "applied": true,
+          "apply_commit": "7bce899375322a25be297d10b4fc32a32885fcd7"
+        },
+        {
+          "id": "25b5c8ed560b",
+          "revision": 0,
+          "name": "Interior",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "7bce899375322a25be297d10b4fc32a32885fcd7"
+        },
+        {
+          "id": "99cc9067dee3",
+          "revision": 0,
+          "name": "García Ortiz",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "7bce899375322a25be297d10b4fc32a32885fcd7"
+        },
+        {
+          "id": "147c57f91998",
+          "revision": 0,
+          "name": "Jordi Will",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "7bce899375322a25be297d10b4fc32a32885fcd7"
+        },
+        {
+          "id": "3e338faca793",
+          "revision": 0,
+          "name": "Bustinduy",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "7bce899375322a25be297d10b4fc32a32885fcd7"
+        },
+        {
+          "id": "d29040d36d2a",
+          "revision": 0,
+          "name": "República Checa",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "7bce899375322a25be297d10b4fc32a32885fcd7"
+        },
+        {
+          "id": "8a8e2094da2d",
+          "revision": 0,
+          "name": "La Policía",
+          "outcome": "distinct_update",
+          "applied": true,
+          "apply_commit": "7bce899375322a25be297d10b4fc32a32885fcd7"
+        },
+        {
+          "id": "343b3e059b78",
+          "revision": 0,
+          "name": "Susana Griso",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "7bce899375322a25be297d10b4fc32a32885fcd7"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada tr-20261112T135500-manual cerrada 13/13. Doce fichas ordinarias quedaron explicadas (Layton con causa no confirmada tras dos búsquedas) y La Policía quedó como episodio material nuevo por la orden de Interior de investigar actuaciones del 11N. Aplicador oficial persistió en commit 7bce899375322a25be297d10b4fc32a32885fcd7 tras reintento automático por avance concurrente de main. Barrera final: editorial-queue=0. ImageGen=0; image-outbox=0; publicaciones=0."
     }
   ],
   "current_item": {
@@ -7942,5 +8191,5 @@
     }
   ],
   "processed": [],
-  "finished_at": "2026-11-12T12:53:00+01:00"
+  "finished_at": "2026-11-12T14:01:00+01:00"
 }
