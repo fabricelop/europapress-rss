@@ -1,14 +1,14 @@
 {
   "version": 1,
-  "id": "ttb-news-editorial-last-event-20261112-1156",
+  "id": "ttb-news-editorial-error-20261112-1158",
   "project": "TTActualidad",
   "expires_at": "2026-11-13T12:00:00Z",
-  "description": "Read last news editorial event",
+  "description": "Read last news launch error or log path",
   "steps": [
     {
       "kind": "powershell",
-      "name": "news-editorial-last-event",
-      "script": "$f='C:\\TTiTTulares\\ttittulares-mobile-trigger.log'\n$l=[string](Get-Content $f -Tail 250 | Where-Object { $_ -match 'EDITORIAL PROCESS|LAUNCH CONFIRMED|LAUNCH FAILED|CHAT MESSAGE|LAUNCH ERROR' } | Select-Object -Last 1)\nWrite-Output ('TTRESULT:'+(@{state='ok';last=$l.Substring(0,[Math]::Min(500,$l.Length))}|ConvertTo-Json -Compress))",
+      "name": "news-editorial-error",
+      "script": "$f='C:\\TTiTTulares\\ttittulares-mobile-trigger.log'\n$l=[string](Get-Content $f -Tail 300 | Where-Object { $_ -match 'EDITORIAL PROCESS ERROR|EDITORIAL PROCESS STARTED|CHAT MESSAGE TIMEOUT|CHAT LAUNCH LOG ERROR' } | Select-Object -Last 1)\nWrite-Output ('TTRESULT:'+(@{state='ok';last=$l.Substring(0,[Math]::Min(700,$l.Length))}|ConvertTo-Json -Compress))",
       "timeout_seconds": 20
     }
   ]
