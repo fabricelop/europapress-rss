@@ -1,14 +1,14 @@
 {
   "version": 1,
-  "id": "ttb-news-flags-20261112-1256",
+  "id": "ttb-news-draft-shape-20261112-1259",
   "project": "TTActualidad",
   "expires_at": "2026-11-13T12:00:00Z",
-  "description": "Read-only boolean outcomes of targeted news editorial launch",
+  "description": "Read only compositor state category and length after new chat",
   "steps": [
     {
       "kind": "powershell",
-      "name": "news-launch-flags",
-      "script": "$lines=@(Get-Content 'C:\\TTiTTulares\\ttittulares-mobile-trigger.log' -Tail 500)\n$markers=@($lines|Where-Object{$_ -match 'tt-guardfix-1794481657530'})\n$state='none'\nif($markers.Count){$state='observed'}\nif(@($lines|Where-Object{$_ -match 'LAUNCH CONFIRMED.*tt-guardfix-1794481657530'}).Count){$state='confirmed'}\nif(@($lines|Where-Object{$_ -match 'LAUNCH FAILED.*tt-guardfix-1794481657530'}).Count){$state='failed'}\n$guard=@($lines|Where-Object{$_ -match 'NEW_CHAT_NOT_BLANK'})\n$o=@{state=$state;marker_count=$markers.Count;guard_count=$guard.Count;guard_has_history=[bool](@($guard|Where-Object{$_ -match 'users\\\":([1-9])|assistants\\\":([1-9])'}).Count);guard_has_draft=[bool](@($guard|Where-Object{$_ -match 'editorLength\\\":([1-9])'}).Count)}\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress))",
+      "name": "draft-shape",
+      "script": "$l=@(Get-Content 'C:\\TTiTTulares\\ttittulares-mobile-trigger.log' -Tail 500)\n$g=[string]($l|Where-Object{$_ -match 'NEW_CHAT_NOT_BLANK'}|Select-Object -Last 1)\n$o=@{state='ok';url_kind='unknown';draft_length=0;users=0;assistants=0;clicked=[bool](@($l|Where-Object{$_ -match 'HOME_RESTORED_HISTORY; CLICK_NEW_CHAT_BOT_OWNED_TAB'}).Count)}\nif($g -match 'editorLength[^0-9]*([0-9]+)'){$o.draft_length=[int]$Matches[1]}\nif($g -match 'users[^0-9]*([0-9]+)'){$o.users=[int]$Matches[1]}\nif($g -match 'assistants[^0-9]*([0-9]+)'){$o.assistants=[int]$Matches[1]}\nif($g -match 'chatgpt.com/c/'){$o.url_kind='conversation'}\nelseif($g -match 'chatgpt.com/g/'){$o.url_kind='project'}\nelseif($g -match 'chatgpt.com/'){$o.url_kind='home'}\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress))",
       "timeout_seconds": 20
     }
   ]
