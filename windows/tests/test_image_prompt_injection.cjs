@@ -4,6 +4,28 @@ const paths=['windows/TTiTTularesImageBridge.js','windows/TTendenciasImageBridge
 
 async function runOne(path){
  const source=fs.readFileSync(path,'utf8');
+ // Same safe ImageGen contract in both projects: generate and retain the
+ // original, but leave association/publication to a later manual decision.
+ if(path.includes('TTiTTularesImageBridge')){
+   const begin=source.indexOf('function buildMessage(job){');
+   const finish=source.indexOf('const BRIDGE_MODE=',begin);
+   assert.ok(begin>=0&&finish>begin,'headline message builder missing');
+   const make=new Function('commandId','targetId',source.slice(begin,finish)+';return buildMessage;')(
+     'tt-img-test-1234567890','1234567890');
+   const common={target_name:'Noticia de prueba',context_snapshot:{
+     tweet_text:'Resumen factual verificado',remate:'Remate editorial',
+     factual_summary:'Dato contrastado',image_style:'Gag visual limpio',image_style_name:'comic'}};
+   const gag=make(common);
+   assert.match(gag,/Usa ImageGen AHORA y genera UNA SOLA imagen GAG IA/);
+   assert.match(gag,/Genera exactamente UNA imagen y conserva su original en ChatGPT Images/);
+   assert.match(gag,/la revisión editorial es independiente/);
+   assert.doesNotMatch(gag,/No proceses otra noticia ni descargues, captures, subas ni persistas/);
+   const rigor=make({...common,editorial_image_mode:'rigor'});
+   assert.match(rigor,/Genera y conserva el original en ChatGPT Images/);
+   assert.match(rigor,/sin asociación, aprobación ni publicación automática/);
+ }else{
+   assert.match(source,/APROBACIÓN MANUAL OBLIGATORIA: genera y conserva solo el original/);
+ }
  const start=source.indexOf('async function injectPromptIntoChat(cdp,job){');
  const stop=source.indexOf('async function submitVerifiedDraft(cdp,job){',start);
  assert(start>0&&stop>start,path+': missing injector');
