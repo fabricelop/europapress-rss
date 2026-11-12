@@ -3,52 +3,50 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261112T154000-manual",
-  "previous_run_id": "tr-20261112T151000-manual",
-  "command_id": "tr-20261112T154000-manual",
+  "run_id": "tr-20261112T161000-manual",
+  "previous_run_id": "tr-20261112T154000-manual",
+  "command_id": "tr-20261112T161000-manual",
   "source": "chat",
-  "status": "DONE_WITH_INCIDENTS",
-  "phase": "finished",
-  "started_at": "2026-11-12T15:40:00+01:00",
-  "updated_at": "2026-11-12T15:53:00+01:00",
-  "current": 4,
-  "total": 4,
-  "trend_id": null,
-  "title": "Pasada editorial TTendencias",
-  "queue_complete": true,
-  "processed_ids": [
-    "radar-prepare-4e67f5ba6e21bbb1d5f3",
-    "radar-prepare-7d45db377614806a8f3f",
-    "red-review-e0584d7859ae861c99c0",
-    "554d3b5f9168"
-  ],
-  "converged_ids": [
-    "radar-prepare-4e67f5ba6e21bbb1d5f3",
-    "radar-prepare-7d45db377614806a8f3f",
-    "red-review-e0584d7859ae861c99c0"
-  ],
+  "status": "RUNNING",
+  "phase": "persisting",
+  "started_at": "2026-11-12T16:10:00+01:00",
+  "updated_at": "2026-11-12T16:14:00+01:00",
+  "current": 6,
+  "total": 6,
+  "trend_id": "554d3b5f9168",
+  "title": "TTendencias · pasada manual",
+  "queue_complete": false,
+  "processed_ids": [],
+  "converged_ids": [],
   "remaining_ids": [
-    "554d3b5f9168"
+    "554d3b5f9168",
+    "f9c321a34c0c",
+    "e9bc47ad891b",
+    "129a97f8df9f",
+    "f4fde19c25ea",
+    "be0552e64e1b"
   ],
-  "remaining_active_ids": [],
-  "remaining_problematic_ids": [
-    "554d3b5f9168"
+  "remaining_active_ids": [
+    "554d3b5f9168",
+    "f9c321a34c0c",
+    "e9bc47ad891b",
+    "129a97f8df9f",
+    "f4fde19c25ea",
+    "be0552e64e1b"
   ],
+  "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 4,
-    "observed": 4,
-    "closed": 3,
+    "attempted": 6,
+    "observed": 6,
+    "closed": 0,
     "explained": 0,
     "maintenance": 1,
-    "problematic": 1,
-    "anticipation_reviews": 2,
-    "anticipation_prepared": 2,
-    "anticipation_unverified": 0,
-    "queue_remaining": 1,
+    "problematic": 0,
+    "queue_remaining": 6,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 1
+    "incidents": 0
   },
   "outcomes": [
     {
@@ -77,18 +75,16 @@
       "problematic_attempts": 2
     }
   ],
-  "incident_count": 1,
-  "incidents": [
+  "incident_count": 0,
+  "incidents": [],
+  "error": null,
+  "activity": [
     {
-      "id": "554d3b5f9168",
-      "revision": 1,
-      "name": "Tamayo",
-      "kind": "unverified_editor_hint",
-      "message": "Segundo intento sin confirmación independiente fiable de que Tamayo y La Gata de Schrödinger fueran los verificadores anunciados por Jordi Wild. Se mantiene problematic y sin explicación verificada."
+      "at": "2026-11-12T16:14:00+01:00",
+      "phase": "persisting",
+      "message": "Investigación completada para 6 elementos; preparando persistencia editorial sin ImageGen ni publicación."
     }
   ],
-  "error": null,
-  "activity": "closing",
   "last_started_at": "2026-11-12T15:50:58+01:00",
   "last_completed_at": "2026-11-12T15:53:00+01:00",
   "api_failover_enabled": false,
