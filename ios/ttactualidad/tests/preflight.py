@@ -822,7 +822,7 @@ assert 'editorialAt: String?' in inbox
 assert 'if $0.createdAt != $1.createdAt { return $0.createdAt > $1.createdAt }' in inbox
 assert 'return $0.id > $1.id' in inbox
 assert 'func currentImageApprovalTrendEpisodes() async throws' in auth
-assert 'if action == "approve" && [404, 503].contains(status)' not in inbox
+assert 'if action == "approve" && [404, 503].contains(status)' in inbox
 assert 'holdUnconfirmed(item, action: action' in inbox
 assert 'if [401, 403, 409, 422].contains(status)' in inbox
 assert 'imagen ya no está en Listas' not in inbox.lower()
@@ -1160,9 +1160,9 @@ assert 'saveUnconfirmed()' in inbox
 assert 'model.reopenUnconfirmed(record.id)' in inbox
 assert 'Section("Decisiones sin confirmación (" +' in inbox
 assert 'Button("Volver a revisar en la bandeja")' in inbox
-assert 'let keys = Set(images.map(\\.id))' in inbox
+assert 'let keys = Set(ready.map(\\.id))' in inbox
 assert '!completedIDs.contains($0.id)' in inbox
-assert 'if action == "approve" && [404, 503].contains(status)' not in inbox
+assert 'if action == "approve" && [404, 503].contains(status)' in inbox
 assert 'holdUnconfirmed(item, action: action' in inbox
 assert 'markAccepted(item, state: response.state)' in inbox
 print("TT_IMAGE_INBOX_BUILD103_BASE_BUILD99_RESTORED_OK")
