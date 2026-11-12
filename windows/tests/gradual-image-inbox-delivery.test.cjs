@@ -61,3 +61,13 @@ test('absent legacy receiver is safe; enabled legacy receiver blocks a parallel 
  assert.match(script,/Disable-ScheduledTask -TaskName \$newTaskName/);
  assert.doesNotMatch(script,/Enable-ScheduledTask -TaskName \$oldTaskName/);
 });
+
+
+test('installer and generated runner never assign PowerShell reserved HOME variable',()=>{
+ assert.doesNotMatch(script,/\$home\b/i);
+ assert.match(script,/\$InboxHome=Join-Path \$env:LOCALAPPDATA 'TTImageInbox'/);
+ assert.match(script,/\$launcher=Join-Path \$InboxHome/);
+ assert.match(script,/\$runner=Join-Path \$InboxHome/);
+ assert.match(script,/\$log=Join-Path \$InboxHome 'delivery\.log'/);
+ assert.match(script,/WorkingDirectory \$InboxHome/);
+});
