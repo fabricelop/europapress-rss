@@ -7,6 +7,7 @@ from ttittulares import auto_listas_images as a
 
 POLICY = {"enabled": True, "automatic_start_at": "2026-11-12T14:35:00Z",
           "max_new_jobs_per_run": 1, "max_active_jobs": 1,
+          "minimum_minutes_between_automatic_jobs": 15,
           "one_time_backfill_ids": ["aaa100", "bbb200", "ccc300"]}
 
 
@@ -60,6 +61,9 @@ class EnqueueTests(unittest.TestCase):
         a.execute(gh, POLICY)
         path = f"{a.JOB_DIR}/aaa100.json"
         gh.data[(a.BRANCH, path)]["status"] = "LAUNCHED"
+        old = (dt.datetime.now(dt.timezone.utc) - dt.timedelta(minutes=16)).isoformat()
+        gh.data[(a.BRANCH, path)]["requested_at"] = old
+        gh.data[(a.BRANCH, a.INDEX)]["jobs"][0]["requested_at"] = old
         result = a.execute(gh, POLICY)
         self.assertEqual(result["actions"][-1]["id"], "bbb200")
         self.assertEqual(len(gh.data[(a.BRANCH,a.INDEX)]["jobs"]), 2)
@@ -108,6 +112,8 @@ class EnqueueTests(unittest.TestCase):
         old_job, old_index = a.make_job(story("aaa100", revision=1))
         old_job["status"] = "LAUNCHED"
         old_job["pc_launched_at"] = old_job["requested_at"]
+        old_index["requested_at"] = (dt.datetime.now(dt.timezone.utc) -
+                                      dt.timedelta(minutes=16)).isoformat()
         gh.data[(a.BRANCH, f"{a.JOB_DIR}/aaa100.json")] = old_job
         gh.data[(a.BRANCH, a.INDEX)]["jobs"] = [old_index]
         out = a.execute(gh, POLICY)
@@ -128,6 +134,27 @@ class EnqueueTests(unittest.TestCase):
         outcome = a.execute(gh, POLICY)
         self.assertNotIn("new_job_enqueued", [x["result"] for x in outcome["actions"]])
         self.assertEqual(gh.data[(a.BRANCH, f"{a.JOB_DIR}/aaa100.json")]["revision"], 1)
+
+    def test_recent_automatic_job_from_old_repair_observes_15m_cooldown(self):
+        gh = fake([story()])
+        other, index = a.make_job(story("other123"))
+        index["auto_repair"] = True
+        other["status"] = "LAUNCHED"
+        gh.data[(a.BRANCH, f"{a.JOB_DIR}/other123.json")] = other
+        gh.data[(a.BRANCH, a.INDEX)]["jobs"] = [index]
+        out = a.execute(gh, POLICY)
+        self.assertEqual(out["actions"][-1]["result"], "automatic_job_15m_cooldown")
+        self.assertNotIn((a.BRANCH, f"{a.JOB_DIR}/aaa100.json"), gh.data)
+
+    def test_manual_requests_are_not_throttled(self):
+        gh = fake([story()])
+        manual, index = a.make_job(story("other123"))
+        index["auto_repair"] = False
+        manual["status"] = "LAUNCHED"
+        gh.data[(a.BRANCH, f"{a.JOB_DIR}/other123.json")] = manual
+        gh.data[(a.BRANCH, a.INDEX)]["jobs"] = [index]
+        out = a.execute(gh, POLICY)
+        self.assertEqual(out["actions"][-1]["result"], "new_job_enqueued")
 
     def test_revision_and_exact_text_required(self):
         row = story(); row["revision"] = "1"; self.assertFalse(a.main_story(row,set(),set(),POLICY)[0])
