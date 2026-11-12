@@ -109853,10 +109853,10 @@
       "with_image": true,
       "grouping_disabled": true,
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending",
+      "ai_image_status": "ready",
       "fallback_image_status": "ready",
       "image_status": "ready",
-      "image_choice": "fallback",
+      "image_choice": "ai",
       "image_pending": false,
       "telegram_package_status": "pending",
       "fallback_image_strategy": "existing_web_image",
@@ -109869,13 +109869,62 @@
         "generated": false
       },
       "image": {
-        "url": "https://img.rtve.es/imagenes/la-hora-de-la-1/01786346240995.jpg",
-        "source": "www.rtve.es",
-        "source_url": "https://www.rtve.es/play/videos/la-hora-de-la-1/",
-        "alt": "Imagen de archivo relacionada con #LaHora12N",
-        "rights_status": "unverified",
-        "generated": false
-      }
+        "chunk_files": [
+          "tr-img-auto-ab73d010a7c0-r0-a1-1794478013651.b64"
+        ],
+        "chunk_mime": "image/webp",
+        "chunk_sha256": "d53431f1546fc463356781077f19b8cb91340ce0861388b224c41251731b0f91",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "provenance": "editor_confirmed_gallery",
+        "context_guard": {
+          "version": 3,
+          "trend_id": "ab73d010a7c0",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-ab73d010a7c0-r0-a1-1794478013651",
+          "explanation_sha256": "84f88645eb28ddcca3bd4f5346481794e27123ad3a6f2365ee909585a54e1a63",
+          "source_chunk_sha256": "d53431f1546fc463356781077f19b8cb91340ce0861388b224c41251731b0f91"
+        },
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/ab73d010a7c0-r0-ai1.jpg",
+        "generation_attempt": 1,
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/ab73d010a7c0-r0-ai1.jpg",
+        "handoff": "inline-outbox-materialized-by-actions",
+        "sha256": "aea3e7535b0380d607fa15a7cac2538d57b05985095b65dab9481f13ee5571d9"
+      },
+      "ai_image": {
+        "chunk_files": [
+          "tr-img-auto-ab73d010a7c0-r0-a1-1794478013651.b64"
+        ],
+        "chunk_mime": "image/webp",
+        "chunk_sha256": "d53431f1546fc463356781077f19b8cb91340ce0861388b224c41251731b0f91",
+        "source": "TTendencias / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "provenance": "editor_confirmed_gallery",
+        "context_guard": {
+          "version": 3,
+          "trend_id": "ab73d010a7c0",
+          "revision": 0,
+          "scope": "current_item_only",
+          "command_id": "tr-img-auto-ab73d010a7c0-r0-a1-1794478013651",
+          "explanation_sha256": "84f88645eb28ddcca3bd4f5346481794e27123ad3a6f2365ee909585a54e1a63",
+          "source_chunk_sha256": "d53431f1546fc463356781077f19b8cb91340ce0861388b224c41251731b0f91"
+        },
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/generated-images/ab73d010a7c0-r0-ai1.jpg",
+        "generation_attempt": 1,
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/generated-images/ab73d010a7c0-r0-ai1.jpg",
+        "handoff": "inline-outbox-materialized-by-actions",
+        "sha256": "aea3e7535b0380d607fa15a7cac2538d57b05985095b65dab9481f13ee5571d9"
+      },
+      "ai_image_attempt": 1,
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-11-12T10:51:18.054310Z"
     },
     {
       "id": "f115d1787bcc",
@@ -109978,6 +110027,6 @@
       "decision_source": "ttactualidad_direct"
     }
   ],
-  "updated_at": "2026-11-12T10:21:09.151814+00:00",
+  "updated_at": "2026-11-12T10:51:18.054472Z",
   "count": 1922
 }
