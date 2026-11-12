@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-11T23:45:00.585976+00:00",
+  "checked_at": "2026-11-12T00:34:42.568366+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -59,8 +59,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 4.0,
-      "run_id": 43121682390,
+      "age_minutes": 3.6,
+      "run_id": 43127851566,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -72,7 +72,7 @@
     },
     "request_queue": {
       "ok": false,
-      "invalid_count": 754,
+      "invalid_count": 756,
       "noise_count": 0
     },
     "ready_consistency": {
@@ -81,102 +81,19 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": false,
-      "pending_count": 21,
-      "overdue_count": 21,
-      "oldest_age_minutes": 115.5,
+      "ok": true,
+      "pending_count": 0,
+      "overdue_count": 0,
+      "oldest_age_minutes": 0,
       "warning_after_minutes": 30,
-      "overdue_items": [
-        {
-          "id": "27bceccd1f06",
-          "name": "bertrand",
-          "status": "preparing",
-          "age_minutes": 113.7
-        },
-        {
-          "id": "e0010ec683c3",
-          "name": "Mondongo",
-          "status": "preparing",
-          "age_minutes": 108.6
-        },
-        {
-          "id": "74253d4d6c99",
-          "name": "Guadarrama",
-          "status": "preparing",
-          "age_minutes": 115.5
-        },
-        {
-          "id": "6e7e20e3e07d",
-          "name": "Plaza España",
-          "status": "preparing",
-          "age_minutes": 111.4
-        },
-        {
-          "id": "1ea1a6c850b1",
-          "name": "españas",
-          "status": "preparing",
-          "age_minutes": 107.4
-        },
-        {
-          "id": "47ef1a2cc908",
-          "name": "Espejo Público",
-          "status": "preparing",
-          "age_minutes": 112.4
-        },
-        {
-          "id": "e1456607bb13",
-          "name": "#FeijóoEH",
-          "status": "preparing",
-          "age_minutes": 100.7
-        },
-        {
-          "id": "2259355bb15e",
-          "name": "#HuelgaGeneral11",
-          "status": "preparing",
-          "age_minutes": 100.7
-        },
-        {
-          "id": "73d461188112",
-          "name": "#FirstDates11N",
-          "status": "preparing",
-          "age_minutes": 100.7
-        },
-        {
-          "id": "5fee19ff7717",
-          "name": "Pablo Motos",
-          "status": "preparing",
-          "age_minutes": 100.7
-        }
-      ],
+      "overdue_items": [],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": false,
-      "status": "overdue",
-      "queue_complete": false,
-      "remaining_active_ids": [
-        "27bceccd1f06",
-        "e0010ec683c3",
-        "74253d4d6c99",
-        "6e7e20e3e07d",
-        "1ea1a6c850b1",
-        "47ef1a2cc908",
-        "e1456607bb13",
-        "2259355bb15e",
-        "73d461188112",
-        "5fee19ff7717",
-        "b689de23e49c",
-        "1f742569a355",
-        "722e138d58a8",
-        "248780b782ef",
-        "3fd9e38604c6",
-        "3063f810e066",
-        "9a6bcac4653f",
-        "eae215911b68",
-        "3a2404531737",
-        "877340318781",
-        "906b9c17e4e8"
-      ],
+      "ok": true,
+      "status": "not-required",
+      "queue_complete": true,
+      "remaining_active_ids": [],
       "contradictory_success": false
     },
     "telegram_provisional": {
@@ -188,10 +105,9 @@
   "repairs_started": [],
   "blocking": [
     "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos",
-    "cola con 754 estado(s) inválido(s)",
-    "cola de explicaciones retrasada: 21 pendiente(s) superan 30 min; más antigua 115.5 min"
+    "cola con 756 estado(s) inválido(s)"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 754 estado(s) inválido(s) | cola de explicaciones retrasada: 21 pendiente(s) superan 30 min; más antigua 115.5 min"
+  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 756 estado(s) inválido(s)"
 }
