@@ -40,6 +40,7 @@ Download 'windows/Run-TTendencias-X-Local.ps1' $runner
 Download 'trends/x_context.js' (Join-Path $workDir 'x_context.js')
 Download 'trends/publish_x_context.js' (Join-Path $workDir 'publish_x_context.js')
 Download 'trends/test_x_context.cjs' (Join-Path $workDir 'test_x_context.cjs')
+Download 'trends/check_x_playwright.cjs' (Join-Path $workDir 'check_x_playwright.cjs')
 $tokens = $null; $errors = $null
 [Management.Automation.Language.Parser]::ParseFile($runner,[ref]$tokens,[ref]$errors) | Out-Null
 if ($errors.Count -gt 0) { throw 'Invalid runner PowerShell syntax: ' + $errors[0].Message }
@@ -63,14 +64,15 @@ if ($LASTEXITCODE -ne 0 -or $remoteOrigin -notmatch '^https://github[.]com/fabri
 & git.exe -C $gitRoot fetch --quiet --depth=1 origin main
 if ($LASTEXITCODE -ne 0) { throw 'Could not fetch main into isolated Git store' }
 $env:NODE_PATH = (Join-Path $workDir 'node_modules')
-& $node -e 'require("playwright");'
+$playwrightCheck = Join-Path $workDir 'check_x_playwright.cjs'
+& $node $playwrightCheck
 if ($LASTEXITCODE -ne 0) {
   Write-Host 'Installing Playwright package ONLY in TT-XContext...'
   $npm = (Get-Command npm.cmd -ErrorAction Stop).Source
   & $npm install --prefix $workDir --no-save --no-package-lock playwright
   if ($LASTEXITCODE -ne 0) { throw 'Isolated Playwright installation failed; task not installed' }
 }
-& $node -e 'require("playwright");'
+& $node $playwrightCheck
 if ($LASTEXITCODE -ne 0) { throw 'Playwright unavailable; task not installed' }
 & $node --test (Join-Path $workDir 'test_x_context.cjs')
 if ($LASTEXITCODE -ne 0) { throw 'Unit tests failed; task not installed' }
