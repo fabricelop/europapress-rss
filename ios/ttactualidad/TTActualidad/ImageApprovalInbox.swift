@@ -132,27 +132,24 @@ private final class ApprovalInboxModel: ObservableObject {
 
     @Published private(set) var pageDiagnostics = ""
 
+    @Published private(set) var feedVerified = false
+
     func load(using github: GitHubEditor) async {
         guard !loading else { return }
         loading = true
+        feedVerified = false
         defer { loading = false }
         do {
-            // Read every page with the server's opaque chronological cursor.
-            // A server without pagination must not be misreported as complete.
-            let (data, status) = try await github.privateImageInboxRequest(path: "/v1/images?limit=20")
+            let (data, status) = try await github.privateImageInboxRequest(
+                path: "/v1/images?limit=20")
             guard status == 200 else { throw InboxError.http(status) }
             var page = try JSONDecoder().decode(PendingImageResponse.self, from: data)
             var received = page.items
-            // Render the first authenticated page immediately. With hundreds
-            // of retained records, waiting for every cursor made a healthy
-            // inbox look blank for the whole pagination round trip.
-            images = ApprovalInboxScope.visible(received).filter {
-                !processingIDs.contains($0.id) && !completedIDs.contains($0.id) && !accepted($0)
-            }
-            pageDiagnostics = "Consultando más imágenes privadas… " + String(received.count) + " leídas."
             let supportsPagination = page.hasMore != nil
             var seenCursors = Set<String>()
             var incomplete = false
+            pageDiagnostics = "Consultando imágenes privadas… " +
+                String(received.count) + " registros obtenidos."
             while page.hasMore == true {
                 guard let cursor = page.nextCursor, !cursor.isEmpty,
                       seenCursors.insert(cursor).inserted else {
@@ -171,44 +168,46 @@ private final class ApprovalInboxModel: ObservableObject {
                     guard nextStatus == 200 else { throw InboxError.http(nextStatus) }
                     page = try JSONDecoder().decode(PendingImageResponse.self, from: nextData)
                     received.append(contentsOf: page.items)
-                    // Keep the list responsive while the remaining pages arrive.
-                    images = ApprovalInboxScope.visible(received).filter {
-                        !processingIDs.contains($0.id) && !completedIDs.contains($0.id) && !accepted($0)
-                    }
-                    pageDiagnostics = "Consultando más imágenes privadas… " + String(received.count) + " leídas."
+                    pageDiagnostics = "Consultando imágenes privadas… " +
+                        String(received.count) + " registros obtenidos."
                 } catch {
-                    // A late page failure must not erase originals already
-                    // returned by the authenticated private service.
                     incomplete = true
                     break
                 }
             }
-            // Historical pending images do NOT require a live Top 30 lookup.
-            let items = ApprovalInboxScope.visible(received)
-            pageDiagnostics = "Servidor: " + String(received.count) +
-                " imágenes consultadas · " + String(items.count) +
-                " pendientes recibidas." +
-                (incomplete || !supportsPagination ?
-                    " Consulta parcial: vuelve a actualizar para completar páginas." : "")
-            images = items.filter {
-                !processingIDs.contains($0.id) && !completedIDs.contains($0.id) && !accepted($0)
+            // Do not replace a coherent list with a partial cursor scan.
+            guard !incomplete else {
+                pageDiagnostics = "Consulta parcial: " + String(received.count) +
+                    " registros. Listado anterior conservado."
+                notice = "Faltan páginas del servidor. Se conserva la vista anterior " +
+                    "sin permitir decisiones hasta una actualización completa."
+                return
             }
-            let keys = Set(items.map(\.id))
+            let items = ApprovalInboxScope.visible(received)
+            let ready = items.filter {
+                !processingIDs.contains($0.id) && !completedIDs.contains($0.id) &&
+                    !accepted($0)
+            }
+            // Exactly one visible snapshot update per completed refresh.
+            images = ready
+            let keys = Set(ready.map(\.id))
             previews = previews.filter { keys.contains($0.key) }
-            let stillAwaiting = received.filter { accepted($0) }.count
-            notice = items.isEmpty && stillAwaiting == 0 ?
-                "No hay originales pendientes entre las páginas consultadas." :
-                (stillAwaiting > 0 ? String(stillAwaiting) +
-                 " original(es) con decisión previa aceptada, ocultos de la cola de aprobación." : "")
-            for image in items.prefix(4) where previews[image.id] == nil {
-                await loadOriginal(image, using: github)
+            feedVerified = true
+            pageDiagnostics = "Servidor: " + String(received.count) +
+                " registros · " + String(items.count) + " originales pendientes." +
+                (!supportsPagination ? " Sin cursor de paginación." : "")
+            let alreadyAccepted = received.filter { accepted($0) }.count
+            notice = alreadyAccepted > 0 ?
+                String(alreadyAccepted) + " decisión(es) aceptadas, ocultas de la cola." : ""
+            for image in ready.prefix(4) where previews[image.id] == nil {
+                Task { await loadOriginal(image, using: github) }
             }
         } catch {
-            // Fail closed on source/pagination errors; do not show stale approvals.
-            images = []
-            previews = [:]
-            pageDiagnostics = ""
-            notice = "No se pudo comprobar completamente la bandeja privada: \(error.localizedDescription)"
+            // A 503 or failed GET is not proof that the inbox is empty.
+            pageDiagnostics = "Sin comprobación completa del servidor."
+            notice = "No se pudo comprobar la bandeja privada: " +
+                error.localizedDescription +
+                ". Se conserva la última vista, con decisiones bloqueadas."
         }
     }
 
@@ -271,6 +270,7 @@ private final class ApprovalInboxModel: ObservableObject {
         guard ["approve", "reject"].contains(action),
               !processingIDs.contains(item.id),
               !completedIDs.contains(item.id),
+              feedVerified,
               images.contains(where: { $0.id == item.id }) else { return }
         guard previews[item.id] != nil else {
             notice = "Necesitamos comprobar primero el PNG original antes de tomar una decisión."
@@ -486,7 +486,8 @@ struct ImageApprovalInbox: View {
                                     .buttonStyle(.bordered)
                                     .tint(.red)
                                 }
-                                .disabled(model.processingIDs.contains(item.id) ||
+                                .disabled(!model.feedVerified ||
+                                          model.processingIDs.contains(item.id) ||
                                           model.previews[item.id] == nil)
                             }
                             .padding(.vertical, 7)
