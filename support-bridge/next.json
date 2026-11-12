@@ -1,14 +1,14 @@
 {
   "version": 1,
-  "id": "ttb-editorial-local-executor-audit-20261112-0850",
+  "id": "ttb-editorial-tab-cap-proof-20261112",
   "project": "TTActualidad",
   "expires_at": "2026-11-13T08:00:00Z",
-  "description": "Read-only Windows audit of two editorial tasks/listeners and Chrome state to prevent recurring stalls; no restarts or content changes",
+  "description": "Read-only check for hard-coded 18-tab editorial preflight blocking both queues; no process changes",
   "steps": [
     {
       "kind": "powershell",
-      "name": "editorial-listener-and-task-audit",
-      "script": "$o=@{tasks=@();processes=@();cdp='unknown';logs=@()}\nforeach($n in @('TTiTTulares Local','TTendencias Local','TTendencias Local Ready','TT Automation Watchdog')){\n try{$t=Get-ScheduledTask -TaskName $n -ErrorAction Stop;$i=Get-ScheduledTaskInfo -TaskName $n;$o.tasks+=@{name=$n;state=[string]$t.State;last=[string]$i.LastRunTime;result=$i.LastTaskResult}}catch{$o.tasks+=@{name=$n;state='absent'}}\n}\ntry{$p=Get-CimInstance Win32_Process -ErrorAction Stop|Where-Object{$_.Name -in @('powershell.exe','pwsh.exe','node.exe') -and [string]$_.CommandLine -match 'TTiTTularesDedicatedListener|TTendenciasDedicatedListener|TT-LocalWatchdog|TT-AutoUpdater|Ejecutar[.]js|TT-Editorial-Guard'}\nforeach($x in $p){$c=[string]$x.CommandLine;$o.processes+=@{kind=$(if($c -match 'TTiTTularesDedicatedListener'){'news_listener'}elseif($c -match 'TTendenciasDedicatedListener'){'trends_listener'}elseif($c -match 'TT-LocalWatchdog'){'watchdog'}elseif($c -match 'TT-AutoUpdater'){'updater'}elseif($c -match 'TT-Editorial-Guard'){'editorial_guard'}else{'editorial_runner'});pid=$x.ProcessId;created=[string]$x.CreationDate}}}catch{}\ntry{$v=Invoke-RestMethod 'http://127.0.0.1:9223/json/list' -TimeoutSec 5;$o.cdp=@{pages=@($v|Where-Object{$_.type -eq 'page'}).Count;chat=@($v|Where-Object{$_.url -like 'https://chatgpt.com/*'}).Count}}catch{$o.cdp='unreachable'}\nforeach($n in @('tt-local-watchdog.log','tt-auto-updater.log','ttittulares-listener.watchdog.err.log','ttendencias-listener.watchdog.err.log')){\n $p=Join-Path 'C:\\TTiTTulares' $n\n if(Test-Path $p){$x=Get-Item $p;$o.logs+=@{file=$n;changed=$x.LastWriteTimeUtc.ToString('o');bytes=$x.Length}}\n}\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress -Depth 5))\n",
+      "name": "editorial-tab-cap-and-launcher-errors",
+      "script": "$o=@{files=@();guard=@{}}\nforeach($n in @('titulares.log','tendencias.log','ttittulares-mobile-trigger.log','ttendencias-mobile-trigger.log')){\n $p=Join-Path 'C:\\TTiTTulares' $n\n if(-not (Test-Path $p)){continue}\n $tail=@(Get-Content $p -Tail 230 -ErrorAction SilentlyContinue)\n $counts=@{}\n foreach($tag in @('TOO_MANY_TABS','OTHER_CHAT_ACTIVITY','DRAFT_NOT_VERIFIED','COMPOSER_NOT','NO_EDITOR','GUARD','ERROR','DEFERRED','RUN','SENT','confirmed','sending','PREFLIGHT','NO PROGRESS')){\n $counts[$tag]=@($tail|Where-Object {$_ -like ('*'+$tag+'*')}).Count\n }\n $o.files+=@{name=$n;updated=(Get-Item $p).LastWriteTimeUtc.ToString('o');counts=$counts;recentStates=@($tail|Where-Object{$_ -match 'TOO_MANY_TABS|OTHER_CHAT_ACTIVITY|PREFLIGHT|RETRY DEFERRED|GUARD ABORT|EDITORIAL RETRY' }|Select-Object -Last 6|ForEach-Object{($_ -replace '\\d{12,}','[id]') -replace 'https?://\\S+','[URL]'})}\n}\n$p='C:\\TTiTTulares\\TT-Editorial-Guard.js'\nif(Test-Path $p){$s=Get-Content -LiteralPath $p -Raw -ErrorAction SilentlyContinue;$o.guard=@{size=$s.Length;has18=$s.Contains(\"if(pages.length>18)fail('TOO_MANY_TABS\");has40=$s.Contains(\"pages.length>40\");last=(Get-Item $p).LastWriteTimeUtc.ToString('o')}}\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress -Depth 5))\n",
       "timeout_seconds": 40
     }
   ]
