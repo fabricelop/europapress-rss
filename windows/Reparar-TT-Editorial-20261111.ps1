@@ -248,7 +248,7 @@ async function send(){
   if(s&&s.users===0&&s.assistants===0&&s.editorLength>0&&!s.busy&&!s.shield){
     // A restored draft on this newly created bot-owned tab blocks every run.
     // Preserve its exact bytes locally before clearing only this tab's composer.
-    if(s.editorLength>4000||s.editorText.length!==s.editorLength)fail('RESTORED_DRAFT_TOO_LARGE: preserve without editing');
+    if(s.editorLength>4000||s.editorText.length>4000||s.editorText.trim().length!==s.editorLength)fail('RESTORED_DRAFT_TOO_LARGE: preserve without editing');
     const backup=path.join(process.env.LOCALAPPDATA||STATE,'TT_Recuperacion','editorial-drafts',unique.replace(/[^a-zA-Z0-9._-]/g,'_')+'.json');
     if(fs.existsSync(backup))fail('RESTORED_DRAFT_BACKUP_EXISTS: preserve without editing');
     atomic(backup,{at:new Date().toISOString(),marker:unique,target:created.id,url:s.url,text:s.editorText});
