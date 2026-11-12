@@ -7,21 +7,36 @@
   "previous_run_id": "tr-20261111T195500-manual",
   "command_id": "tr-20261112T005500-manual",
   "source": "chat",
-  "status": "success",
-  "phase": "preparing",
+  "status": "DONE_WITH_INCIDENTS",
+  "phase": "closing",
   "started_at": "2026-11-12T00:55:00+01:00",
-  "updated_at": "2026-11-12T01:05:08+01:00",
-  "current": 0,
+  "updated_at": "2026-11-12T01:06:00+01:00",
+  "current": 20,
   "total": 20,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
   "queue_complete": true,
   "processed_ids": [
+    "74253d4d6c99",
+    "27bceccd1f06",
+    "47ef1a2cc908",
+    "6e7e20e3e07d",
+    "e0010ec683c3",
     "1ea1a6c850b1",
+    "e1456607bb13",
+    "2259355bb15e",
+    "73d461188112",
     "b689de23e49c",
+    "1f742569a355",
     "722e138d58a8",
+    "248780b782ef",
+    "3fd9e38604c6",
+    "3063f810e066",
     "9a6bcac4653f",
-    "3a2404531737"
+    "eae215911b68",
+    "3a2404531737",
+    "877340318781",
+    "906b9c17e4e8"
   ],
   "converged_ids": [],
   "remaining_ids": [],
@@ -30,49 +45,179 @@
   "summary": {
     "attempted": 20,
     "observed": 20,
-    "closed": 0,
-    "explained": 0,
-    "problematic": 0,
-    "updates": 0,
-    "review_completed_no_distinct_event": 0,
+    "closed": 20,
+    "explained": 17,
+    "problematic": 1,
+    "updates": 4,
+    "review_completed_no_distinct_event": 2,
     "maintenance_reviews": 0,
     "unchanged_reviews": 0,
     "continuity_updates": 0,
-    "distinct_updates": 0,
+    "distinct_updates": 4,
     "stale_reviews": 0,
-    "unverified_reviews": 0,
+    "unverified_reviews": 1,
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 20,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 0,
+    "incidents": 1,
     "concurrent_convergence": 0
   },
-  "outcomes": [],
-  "incident_count": 0,
-  "incidents": [],
+  "outcomes": [
+    {
+      "id": "74253d4d6c99",
+      "revision": 1,
+      "name": "Guadarrama",
+      "outcome": "explained"
+    },
+    {
+      "id": "27bceccd1f06",
+      "revision": 1,
+      "name": "bertrand",
+      "outcome": "explained"
+    },
+    {
+      "id": "47ef1a2cc908",
+      "revision": 0,
+      "name": "Espejo Público",
+      "outcome": "explained"
+    },
+    {
+      "id": "6e7e20e3e07d",
+      "revision": 1,
+      "name": "Plaza España",
+      "outcome": "explained"
+    },
+    {
+      "id": "e0010ec683c3",
+      "revision": 1,
+      "name": "Mondongo",
+      "outcome": "explained"
+    },
+    {
+      "id": "1ea1a6c850b1",
+      "revision": 1,
+      "name": "españas",
+      "outcome": "problematic",
+      "reason": "Pista no corroborada de forma independiente; no se atribuye detonante."
+    },
+    {
+      "id": "e1456607bb13",
+      "revision": 0,
+      "name": "#FeijóoEH",
+      "outcome": "explained"
+    },
+    {
+      "id": "2259355bb15e",
+      "revision": 0,
+      "name": "#HuelgaGeneral11",
+      "outcome": "explained"
+    },
+    {
+      "id": "73d461188112",
+      "revision": 0,
+      "name": "#FirstDates11N",
+      "outcome": "explained"
+    },
+    {
+      "id": "b689de23e49c",
+      "revision": 0,
+      "name": "Hormiguero",
+      "outcome": "distinct_update"
+    },
+    {
+      "id": "1f742569a355",
+      "revision": 0,
+      "name": "Barakaldo",
+      "outcome": "explained"
+    },
+    {
+      "id": "722e138d58a8",
+      "revision": 0,
+      "name": "Ndongo",
+      "outcome": "distinct_update"
+    },
+    {
+      "id": "248780b782ef",
+      "revision": 0,
+      "name": "El Manual",
+      "outcome": "review_completed_no_distinct_event"
+    },
+    {
+      "id": "3fd9e38604c6",
+      "revision": 0,
+      "name": "#LaIslaDeLasTentaciones20",
+      "outcome": "explained"
+    },
+    {
+      "id": "3063f810e066",
+      "revision": 0,
+      "name": "IRINI",
+      "outcome": "review_completed_no_distinct_event"
+    },
+    {
+      "id": "9a6bcac4653f",
+      "revision": 0,
+      "name": "#LaMesa",
+      "outcome": "distinct_update"
+    },
+    {
+      "id": "eae215911b68",
+      "revision": 0,
+      "name": "#LaUltimaHora11nov",
+      "outcome": "explained"
+    },
+    {
+      "id": "3a2404531737",
+      "revision": 0,
+      "name": "Náyades",
+      "outcome": "distinct_update"
+    },
+    {
+      "id": "877340318781",
+      "revision": 0,
+      "name": "Ana Escobar",
+      "outcome": "explained_cause_unconfirmed"
+    },
+    {
+      "id": "906b9c17e4e8",
+      "revision": 0,
+      "name": "Joe Rogan",
+      "outcome": "explained_cause_unconfirmed"
+    }
+  ],
+  "incident_count": 1,
+  "incidents": [
+    {
+      "at": "2026-11-12T01:06:00+01:00",
+      "phase": "investigating",
+      "trend_id": "1ea1a6c850b1",
+      "title": "españas",
+      "reason": "La pista editorial no pudo corroborarse independientemente; la revisión queda problematic y sin explicación verificada."
+    }
+  ],
   "error": null,
   "activity": "closing",
   "last_started_at": "2026-11-12T01:05:08+01:00",
   "last_completed_at": "2026-11-12T01:05:08+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261111T195500-manual",
-    "status": "DONE",
-    "started_at": "2026-11-11T19:55:00+01:00",
-    "finished_at": "2026-11-11T19:56:00+01:00",
-    "total": 0,
-    "closed": 0,
-    "explained": 0,
+    "run_id": "tr-20261112T005500-manual",
+    "status": "DONE_WITH_INCIDENTS",
+    "started_at": "2026-11-12T00:55:00+01:00",
+    "finished_at": "2026-11-12T01:06:00+01:00",
+    "total": 20,
+    "closed": 20,
+    "explained": 17,
     "maintenance": 0,
     "pending": 0,
-    "anticipation_prepared": 0
+    "problematic": 1
   },
-  "message": "Cola inicial 20; iniciando pasada editorial real contra main, sin ImageGen.",
+  "message": "Pasada tr-20261112T005500-manual cerrada 20/20: 17 explicaciones aplicadas, 4 de ellas episodios materiales nuevos; El Manual e IRINI cerrados sin episodio distinto; españas quedó problematic por falta de corroboración. Barrera final main: editorial-queue=0. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794327332740-manual",
@@ -7648,8 +7793,13 @@
       "at": "2026-11-12T00:55:00+01:00",
       "phase": "preparing",
       "message": "Cola inicial 20; iniciando pasada editorial real contra main, sin ImageGen."
+    },
+    {
+      "at": "2026-11-12T01:06:00+01:00",
+      "phase": "closing",
+      "message": "Pasada tr-20261112T005500-manual cerrada 20/20: 17 explicaciones aplicadas, 4 de ellas episodios materiales nuevos; El Manual e IRINI cerrados sin episodio distinto; españas quedó problematic por falta de corroboración. Barrera final main: editorial-queue=0. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "processed": [],
-  "finished_at": null
+  "finished_at": "2026-11-12T01:06:00+01:00"
 }
