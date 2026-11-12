@@ -17,6 +17,7 @@ if ($Uninstall) {
 }
 # C:\TTiTTulares hosts the runtime, not necessarily a Git working tree.
 $gitRoot = Join-Path $workDir 'git-store'
+$gitSafe = 'safe.directory=' + $gitRoot.Replace('\','/')
 $node = (Get-Command node.exe -ErrorAction Stop).Source
 if ($CheckOnly) {
   Write-Host 'TT_X_CHECK_ONLY: no installation, no X request'
@@ -59,14 +60,14 @@ if (-not (Test-Path (Join-Path $gitRoot '.git'))) {
   }
   & git.exe init --quiet $gitRoot
   if ($LASTEXITCODE -ne 0) { throw 'Could not initialize isolated Git store' }
-  & git.exe -C $gitRoot remote add origin 'https://github.com/fabricelop/europapress-rss.git'
+  & git.exe -c $gitSafe -C $gitRoot remote add origin 'https://github.com/fabricelop/europapress-rss.git'
   if ($LASTEXITCODE -ne 0) { throw 'Could not configure isolated Git origin' }
 }
-$remoteOrigin = (& git.exe -C $gitRoot remote get-url origin) -join ''
+$remoteOrigin = (& git.exe -c $gitSafe -C $gitRoot remote get-url origin) -join ''
 if ($LASTEXITCODE -ne 0 -or $remoteOrigin -notmatch '^https://github[.]com/fabricelop/europapress-rss([.]git)?/?$') {
   throw 'Unexpected isolated Git origin; no other repository will be used'
 }
-& git.exe -C $gitRoot fetch --quiet --depth=1 origin main
+& git.exe -c $gitSafe -C $gitRoot fetch --quiet --depth=1 origin main
 if ($LASTEXITCODE -ne 0) { throw 'Could not fetch main into isolated Git store' }
 $env:NODE_PATH = (Join-Path $workDir 'node_modules')
 $playwrightCheck = Join-Path $workDir 'check_x_playwright.cjs'
