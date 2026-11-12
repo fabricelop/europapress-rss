@@ -20,9 +20,11 @@ struct TTDashboard: View {
             VStack(spacing: 0) {
                 topBar
                 topSections
-                ScrollView {
-                    LazyVStack(alignment: .leading, spacing: 14) {
-                        heading
+                ScrollViewReader { scrollProxy in
+                    ScrollView {
+                        LazyVStack(alignment: .leading, spacing: 14) {
+                            Color.clear.frame(height: 1).id("ttactualidad-listas-top")
+                            heading
                         counters
                         connectedLabel
                         subTabs
@@ -31,10 +33,18 @@ struct TTDashboard: View {
                         else { newsContent }
                         Color.clear.frame(height: 18)
                     }
-                    .padding(.horizontal, 15)
-                    .padding(.top, 18)
+                        .padding(.horizontal, 15)
+                        .padding(.top, 18)
+                    }
+                    .refreshable { await store.refresh() }
+                    .onChange(of: github.removalScrollToken) { _, _ in
+                        // A removed card can drastically shorten LazyVStack.
+                        // Return to the menu instead of retaining an off-screen offset.
+                        withAnimation(.easeOut(duration: 0.22)) {
+                            scrollProxy.scrollTo("ttactualidad-listas-top", anchor: .top)
+                        }
+                    }
                 }
-                .refreshable { await store.refresh() }
             }
         }
         .preferredColorScheme(.dark)
@@ -422,9 +432,18 @@ private struct TrendTile: View {
                         .monospacedDigit().foregroundStyle(TTTheme.blue)
                         .frame(width: 33, alignment: .leading)
                 }
-                Text(item.name)
-                    .font(.system(size: 15, weight: .bold, design: .rounded))
-                    .lineLimit(2).frame(maxWidth: .infinity, alignment: .leading)
+                VStack(alignment: .leading, spacing: 3) {
+                    Text(item.name)
+                        .font(.system(size: 15, weight: .bold, design: .rounded))
+                        .lineLimit(2)
+                    if item.inListas, let previous = item.previousListasAt {
+                        Text("Anterior en Listas: " + previous.formatted(.dateTime.day().month().year().hour().minute()))
+                            .font(.system(size: 10))
+                            .foregroundStyle(TTTheme.muted)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
                 VStack(alignment: .trailing, spacing: 3) {
                     Text(item.status)
                         .font(.system(size: 9, weight: .bold))
