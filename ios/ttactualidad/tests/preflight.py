@@ -804,7 +804,7 @@ assert 'readyNews.contains(episode)' not in inbox
 assert 'assignedAI' not in inbox
 assert 'guard seen.insert(key).inserted else { return false }' in inbox
 assert 'return pending && inScope' not in inbox
-assert 'Un enlace de imagen roto no oculta un PNG pendiente' in inbox
+assert 'Todas las imágenes originales pendientes recibidas' in inbox
 assert 'let key = identity.project + ":" + episode' in inbox
 assert 'page.hasMore == true' in inbox and 'nextCursor' in inbox
 # Build86: full URL includes the fixed /api/image-inbox prefix.
