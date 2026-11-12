@@ -11,7 +11,7 @@ Never modifies queues, images, Cloudflare, other apps, the 9234 browser or GitHu
 IMPORTANT: Browser/composer/queue health cannot be guaranteed by this installer.
 #>
 [CmdletBinding()]
-param([switch]$AuditOnly,[switch]$NoDispatch,[switch]$Rollback,[switch]$SafeRestart)
+param([switch]$AuditOnly,[switch]$NoDispatch,[switch]$Rollback,[switch]$SafeRestart,[switch]$GuardOnly)
 $ErrorActionPreference='Stop'
 $ProgressPreference='SilentlyContinue'
 $Base='C:\TTiTTulares'
@@ -466,6 +466,13 @@ try {
 } catch {
   try{Copy-Item -LiteralPath $backup -Destination $Target -Force -ErrorAction Stop;Note 'ROLLBACK AUTOMATIC: original restored after install failure'}catch{Note 'CRITICAL: automatic rollback failed; restore from '+$backup}
   throw
+}
+if($GuardOnly){
+  # Install after backup + Node syntax checks, without opening, closing or
+  # navigating any Chrome tabs or dispatching ANY editorial prompts.
+  Note 'GUARD_ONLY_INSTALLED: no browser interactions or editorial dispatch'
+  Note ('LOG '+$Log)
+  exit 0
 }
 # Audit/cleanup is safe to run independently. It does not affect image pins or live conversations.
 & $node $Guard --cleanup
