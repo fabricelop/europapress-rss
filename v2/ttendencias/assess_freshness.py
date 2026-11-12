@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Paso 2: diagnóstico de frescura sin confundir HTTP, captura y datos X."""
+"""Paso 2B: aceptar GetDayTrends como fuente única sin afirmar verificación directa de X."""
 import argparse
 import hashlib
 import json
@@ -37,7 +37,8 @@ def evaluate(snapshot, *, now=None, previous=None, max_capture_age_minutes=20):
         raise ValueError("La captura tiene una fecha futura anómala")
     current_key = "\n".join(term_key(t) for t in terms)
     digest = hashlib.sha256(current_key.encode("utf-8")).hexdigest()
-    status = "capture_recent_source_unverified" if age <= max_capture_age_minutes else "capture_expired"
+    eligible = age <= max_capture_age_minutes
+    status = "accepted_getdaytrends_single_source" if eligible else "capture_expired"
     previous_check = None
     if previous is not None:
         old_terms = previous.get("top30") or []
@@ -64,8 +65,9 @@ def evaluate(snapshot, *, now=None, previous=None, max_capture_age_minutes=20):
         "source_age_minutes": None,
         "source_freshness_verified": False,
         "verified_against_x": False,
-        "eligible_for_editorial": False,
-        "reason": "No existe marca de observación de X verificable de forma independiente",
+        "source_policy": "getdaytrends_single_source",
+        "eligible_for_editorial": eligible,
+        "reason": ("Top30 completo de GetDayTrends España y captura reciente; sin corroboración independiente de X"\n                   if eligible else "La captura local ha caducado; repetir consulta antes de usarla"),
         "comparison": previous_check,
     }
 
