@@ -3,6 +3,9 @@
 from __future__ import annotations
 import json
 import sys
+import base64
+import hashlib
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -13,6 +16,55 @@ from apply_editorial_outbox import (
 
 OUTBOX = TRENDS / "image-outbox"
 EXPLAINED = TRENDS / "telegram-manual-explained.json"
+
+
+def _hydrate_direct_receipt(payload, item, directory=OUTBOX):
+    """Turn the exact, SHA-checked .b64 outbox original into a valid data URL."""
+    command = str(payload.get("command_id") or "")
+    match = re.fullmatch(r"tr-img-auto-[a-z0-9]{12}-r(\d+)-a(\d+)-\d{10,}", command)
+    if not match:
+        raise ValueError("TT_FOTOS_DIRECT_COMMAND_INVALID")
+    tid = str(payload.get("id") or "")
+    revision = int(payload.get("revision") or 0)
+    attempt = int(payload.get("attempt") or 1)
+    if revision != int(match.group(1)) or attempt != int(match.group(2)):
+        raise ValueError("TT_FOTOS_DIRECT_REVISION_OR_ATTEMPT_CHANGED")
+    if str(item.get("id") or "") != tid or int(item.get("revision") or 0) != revision:
+        raise ValueError("TT_FOTOS_DIRECT_EDITORIAL_IDENTITY_CHANGED")
+    explanation = str(item.get("explanation") or "").strip()
+    if not explanation:
+        raise ValueError("TT_FOTOS_DIRECT_EXPLANATION_MISSING")
+    fingerprint = hashlib.sha256(explanation.encode("utf-8")).hexdigest()
+    ai = payload.get("ai_image") or {}
+    if not isinstance(ai, dict):
+        raise ValueError("TT_FOTOS_DIRECT_IMAGE_INVALID")
+    guard = ai.get("context_guard") or {}
+    if (not isinstance(guard, dict) or guard.get("command_id") != command
+            or guard.get("trend_id") != tid
+            or int(guard.get("revision") if guard.get("revision") is not None else -1) != revision
+            or guard.get("explanation_sha256") != fingerprint):
+        raise ValueError("TT_FOTOS_DIRECT_EPISODE_CHANGED")
+    if ai.get("chunk_files") != [command + ".b64"]:
+        raise ValueError("TT_FOTOS_DIRECT_CHUNK_REFERENCE_INVALID")
+    mime = str(ai.get("chunk_mime") or "").casefold()
+    if mime not in {"image/png", "image/jpeg", "image/webp"}:
+        raise ValueError("TT_FOTOS_DIRECT_MIME_INVALID")
+    expected = str(ai.get("chunk_sha256") or "").lower()
+    if not re.fullmatch("[a-f0-9]{64}", expected):
+        raise ValueError("TT_FOTOS_DIRECT_HASH_INVALID")
+    chunk_path = directory / (command + ".b64")
+    if not chunk_path.is_file() or chunk_path.stat().st_size > 12 * 1024 * 1024:
+        raise ValueError("TT_FOTOS_DIRECT_ORIGINAL_MISSING_OR_OVERSIZED")
+    encoded = chunk_path.read_text(encoding="ascii").strip()
+    try:
+        raw = base64.b64decode(encoded, validate=True)
+    except Exception as exc:
+        raise ValueError("TT_FOTOS_DIRECT_BASE64_INVALID") from exc
+    if (len(raw) < 12000 or len(raw) > 8388608
+            or hashlib.sha256(raw).hexdigest() != expected):
+        raise ValueError("TT_FOTOS_DIRECT_ORIGINAL_HASH_MISMATCH")
+    ai["url"] = "data:" + mime + ";base64," + encoded
+    return [chunk_path]
 
 
 def now():
@@ -109,17 +161,32 @@ def main():
         current_attempt = int(item.get("ai_image_attempt") or 0)
         expected_attempt = current_attempt or 1
         if attempt != expected_attempt:
+            if payload.get("command_id"):
+                waiting.append(path.name + ":attempt_changed")
+                continue
             path.unlink(missing_ok=True)
             processed.append(tid + ":attempt-mismatch")
             changed = True
             continue
 
+        if payload.get("command_id") and any(
+            str(x.get("id") or "") == tid and int(x.get("revision") or 0) > revision
+            for x in doc.get("items", [])
+        ):
+            waiting.append(path.name + ":newer_revision_exists")
+            continue
+
         previous_ai = dict(item.get("ai_image") or {})
         status = str(payload.get("status") or "").lower()
+        chunks = []
         if status == "ready" and isinstance(payload.get("ai_image"), dict):
             holder = {"image": dict(payload["ai_image"])}
             holder["image"]["generation_attempt"] = attempt
             try:
+                if payload.get("command_id"):
+                    chunks = _hydrate_direct_receipt(payload, item)
+                    holder = {"image": dict(payload["ai_image"])}
+                    holder["image"]["generation_attempt"] = attempt
                 validate_generated_image(holder, tid, revision)
                 materialize_inline_generated_image(holder, tid, revision)
                 validate_generated_image(holder, tid, revision)
@@ -146,6 +213,9 @@ def main():
                 item["image_status"] = "ready"
                 item["image_pending"] = False
             except Exception as exc:
+                if payload.get("command_id"):
+                    waiting.append(path.name + ":direct_needs_review:" + str(exc)[:140])
+                    continue
                 status = "failed"
                 payload["reason"] = str(exc)[:500]
 
@@ -177,6 +247,8 @@ def main():
         item.pop("ai_image_regenerate_requested_at", None)
         item.pop("ai_image_regenerate_request_version", None)
         path.unlink(missing_ok=True)
+        for chunk in chunks:
+            chunk.unlink(missing_ok=True)
         processed.append(tid)
         changed = True
 
