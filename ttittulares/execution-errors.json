@@ -1,13 +1,6 @@
 {
   "items": [
     {
-      "at": "2026-09-30T14:34:07.940300Z",
-      "event_id": "7b0177f17330-r1",
-      "phase": "outbox",
-      "reason": "7b0177f17330-r1.json: ValueError: la noticia original no consta publicada ni descartada por el usuario",
-      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 7b0177f17330-r1: 7b0177f17330-r1.json: ValueError: la noticia original no consta publicada ni descartada por el usuario. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
-    },
-    {
       "at": "2026-09-30T14:34:48.970586Z",
       "event_id": "7b0177f17330-r1",
       "phase": "outbox",
@@ -1399,6 +1392,13 @@
       "phase": "outbox",
       "reason": "83f57eae40c6-r1.json: ValueError: tweet sin remate requiere no_remate_reason",
       "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 83f57eae40c6-r1: 83f57eae40c6-r1.json: ValueError: tweet sin remate requiere no_remate_reason. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-11-12T21:22:25.278819Z",
+      "event_id": "83f57eae40c6-r1",
+      "phase": "outbox",
+      "reason": "83f57eae40c6-r1.json: ValueError: tweet vacío o >256",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 83f57eae40c6-r1: 83f57eae40c6-r1.json: ValueError: tweet vacío o >256. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
     }
   ]
 }
