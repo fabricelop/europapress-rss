@@ -1,15 +1,15 @@
 {
   "version": 1,
-  "id": "ttb-news-specific-compositor-install-20261112-1304",
+  "id": "ttb-news-compositor-result-20261112-1307",
   "project": "TTActualidad",
   "expires_at": "2026-11-13T12:00:00Z",
-  "description": "Install precise editorial compositor selector only when no active send runner",
+  "description": "Read safe state of one target editorial retry",
   "steps": [
     {
       "kind": "powershell",
-      "name": "install-specific-compositor",
-      "script": "$o=@{state='pending'}\ntry{\n $p=@(Get-CimInstance Win32_Process -Filter \"Name='node.exe'\"|Where-Object{[string]$_.CommandLine -match 'C:\\\\TTiTTulares\\\\Ejecutar[.]js' -and [string]$_.CommandLine -match ' --enviar'})\n if($p.Count){$o.state='runner_active';$o.count=$p.Count}\n else{\n  $f=Join-Path $env:TEMP 'Reparar-TT-Editorial-20261111-targeted.ps1'\n  Invoke-WebRequest -UseBasicParsing -Uri 'https://raw.githubusercontent.com/fabricelop/europapress-rss/c4216e498eaed67df9cc36d6338bf88742e99f00/windows/Reparar-TT-Editorial-20261111.ps1' -OutFile $f -TimeoutSec 30 -ErrorAction Stop\n  & powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File $f -NoDispatch | Out-Null\n  if($LASTEXITCODE -ne 0){throw 'INSTALL_EXIT_'+$LASTEXITCODE}\n  $g=Get-Content 'C:\\TTiTTulares\\TT-Editorial-Guard.js' -Raw -ErrorAction Stop\n  if(-not $g.Contains(\"editorTag:ed?.tagName\")){throw 'GUARD_MARKER_MISSING'}\n  $o.state='installed_verified'\n }\n}catch{$o.state='error';$o.reason=[string]$_.Exception.Message}\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress))",
-      "timeout_seconds": 150
+      "name": "news-compositor-result",
+      "script": "$l=@(Get-Content 'C:\\TTiTTulares\\ttittulares-mobile-trigger.log' -Tail 400)\n$id='tt-compositorfix-1794482043007'\n$o=@{state='pending';marker_count=@($l|Where-Object{$_ -match $id}).Count;guard_tag='unknown';draft_length=0}\nif(@($l|Where-Object{$_ -match ('LAUNCH CONFIRMED.*'+$id)}).Count){$o.state='confirmed'}\nif(@($l|Where-Object{$_ -match ('LAUNCH FAILED.*'+$id)}).Count){$o.state='failed'}\n$g=[string]($l|Where-Object{$_ -match 'NEW_CHAT_NOT_BLANK'}|Select-Object -Last 1)\nif($g -match 'editorLength[^0-9]*([0-9]+)'){$o.draft_length=[int]$Matches[1]}\nif($g -match 'editorTag[^a-zA-Z]*(TEXTAREA|DIV)'){$o.guard_tag=$Matches[1]}\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress))",
+      "timeout_seconds": 20
     }
   ]
 }
