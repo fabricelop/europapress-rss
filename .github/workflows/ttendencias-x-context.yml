@@ -12,6 +12,7 @@ on:
       - '.github/workflows/ttendencias-x-context.yml'
       - 'windows/Run-TTendencias-X-Local.ps1'
       - 'windows/Install-TTendencias-XContext.ps1'
+      - 'windows/TTendencias-XContext-hidden.vbs'
   pull_request:
     paths:
       - 'trends/x_context.js'
@@ -22,6 +23,7 @@ on:
       - '.github/workflows/ttendencias-x-context.yml'
       - 'windows/Run-TTendencias-X-Local.ps1'
       - 'windows/Install-TTendencias-XContext.ps1'
+      - 'windows/TTendencias-XContext-hidden.vbs'
 permissions:
   contents: read
 jobs:
@@ -55,6 +57,7 @@ jobs:
           sparse-checkout: |
             /windows/Run-TTendencias-X-Local.ps1
             /windows/Install-TTendencias-XContext.ps1
+            /windows/TTendencias-XContext-hidden.vbs
             /trends/check_x_playwright.cjs
       - name: Verify PowerShell 5.1 syntax (no script execution)
         shell: powershell
@@ -66,6 +69,16 @@ jobs:
             if ($errors.Count -ne 0) { throw "$path : $($errors[0].Message)" }
           }
           Write-Host 'TT_X_WINDOWS_PS51_SYNTAX_OK'
+      - name: Validate invisible Windows Script Host launcher without running X
+        shell: powershell
+        run: |
+          & cscript.exe //NoLogo windows/TTendencias-XContext-hidden.vbs --self-test
+          if ($LASTEXITCODE -ne 0) { throw 'Invisible VBS launcher preflight failed' }
+          $installer = Get-Content -LiteralPath windows/Install-TTendencias-XContext.ps1 -Raw
+          if ($installer -notmatch "System32\\wscript[.]exe|System32\\wscript" -and $installer -notmatch "'System32\\wscript.exe'") {
+            throw 'Installer no longer uses the invisible GUI launcher'
+          }
+          Write-Host 'TT_X_INVISIBLE_TASK_LAUNCHER_VALIDATED'
       - name: Smoke test installer in an ordinary non-Git runtime folder
         shell: powershell
         run: |
