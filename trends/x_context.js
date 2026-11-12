@@ -4,6 +4,7 @@
 const fs = require('node:fs'), path = require('node:path');
 const QUEUE = process.env.TT_X_QUEUE_FILE || path.join(__dirname, 'editorial-queue.json');
 const OUT = process.env.TT_X_OUTPUT_FILE || path.join(__dirname, 'x-context-evidence.json');
+const TOP30 = process.env.TT_X_TOP30_FILE || path.join(__dirname, 'site-top30-current.json');
 const LOCAL = process.env.TT_X_EXECUTION_MODE === 'windows';
 const SOURCE = LOCAL ? 'x_recent_posts_windows' : 'x_recent_posts';
 const HOUR = 3600000, LIMIT = 6, POST_LIMIT = 8;
@@ -16,7 +17,14 @@ function makeSearchUrl(name) {
   if (!q) throw Error('empty term');
   return 'https://x.com/search?q=' + encodeURIComponent('"' + q + '"') + '&src=typed_query&f=live';
 }
-function chooseTargets(queue, cache, now = Date.now(), limit = LIMIT, source = 'x_recent_posts') {
+function unverifiedTargets(top30) {
+  // Only visible, still-unverified cards. Never reopen published or dismissed work.
+  return (Array.isArray(top30?.items) ? top30.items : [])
+    .filter(x => x && String(x.category || '').toLowerCase() === 'sin verificar'
+      && ['EXPLICADA', 'EXPLAINED'].includes(String(x.status || '').toUpperCase()))
+    .map(x => ({ id: x.editorial_id, revision: x.revision ?? 0, name: x.name }));
+}
+function chooseTargets(queue, cache, now = Date.now(), limit = LIMIT, source = 'x_recent_posts', top30 = { items: [] }) {
   // Circuit breaker global: un 403/429 de X en el runner no justifica seguir
   // consultando otros nombres desde la misma IP. Reintentar más adelante.
   const previousItems = Array.isArray(cache.items) ? cache.items : [];
@@ -25,8 +33,17 @@ function chooseTargets(queue, cache, now = Date.now(), limit = LIMIT, source = '
       recentDate(x.searched_at, now, x.http_status === 403 ? 12 * HOUR : 4 * HOUR))) return [];
   const old = new Map(previousItems.filter(x => x && (!x.source || x.source === source)).map(x => [key(x), x]));
   const chosen = [], seen = new Set();
-  for (const x of (Array.isArray(queue.items) ? queue.items : [])) {
-    if (!x || !['preparing', 'update', 'problematic'].includes(x.status)) continue;
+  const pending = (Array.isArray(queue.items) ? queue.items : [])
+    .filter(x => x && ['preparing', 'update', 'problematic'].includes(x.status));
+  const unverified = unverifiedTargets(top30);
+  // Reserve one place for unverified cards so a continuously full editorial
+  // queue cannot starve their second X search.
+  const quota = Math.min(LIMIT, Math.max(1, limit));
+  const candidates = unverified.length && quota > 1
+    ? [...pending.slice(0, quota - 1), ...unverified, ...pending.slice(quota - 1)]
+    : [...pending, ...unverified];
+  for (const x of candidates) {
+    if (!x) continue;
     const id = String(x.id || ''), name = cleanName(x.name), rev = Number(x.revision);
     if (!/^[A-Za-z0-9_-]{6,80}$/.test(id) || !name || !Number.isSafeInteger(rev) || rev < 0) continue;
     const k = id + ':' + rev;
@@ -36,7 +53,7 @@ function chooseTargets(queue, cache, now = Date.now(), limit = LIMIT, source = '
     if (p && cleanName(p.name) === name && recentDate(p.searched_at, now,
       p.status === 'ok' ? HOUR : p.status === 'empty' ? 1500000 : 900000)) continue;
     chosen.push({ id, revision: rev, name });
-    if (chosen.length >= Math.min(LIMIT, Math.max(1, limit))) break;
+    if (chosen.length >= quota) break;
   }
   return chosen;
 }
@@ -123,7 +140,8 @@ async function search(context, target) {
 }
 async function run() {
   const queue = readJSON(QUEUE, { items: [] }), current = readJSON(OUT, { items: [] });
-  const targets = chooseTargets(queue, current, Date.now(), LIMIT, SOURCE);
+  const top30 = readJSON(TOP30, { items: [] });
+  const targets = chooseTargets(queue, current, Date.now(), LIMIT, SOURCE, top30);
   if (process.argv.includes('--plan')) { console.log(JSON.stringify({ targets })); return; }
   if (!targets.length) { console.log('TT_X_CONTEXT no_pending_targets'); return; }
   const token = process.env.X_AUTH_TOKEN || '', ct0 = process.env.X_CT0 || '';
@@ -154,4 +172,4 @@ async function run() {
   fs.renameSync(temp, OUT);
 }
 if (require.main === module) run().catch(e => { console.error('TT_X_CONTEXT failed: ' + String(e.message || e)); process.exitCode = 1; });
-module.exports = { cleanName, makeSearchUrl, chooseTargets, validPost, usableEvidence, assembleEvidence };
+module.exports = { cleanName, makeSearchUrl, unverifiedTargets, chooseTargets, validPost, usableEvidence, assembleEvidence };
