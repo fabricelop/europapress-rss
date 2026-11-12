@@ -1,15 +1,15 @@
 {
   "version": 1,
-  "id": "ttb-news-postinstall-flags-20261112-1330",
+  "id": "ttb-news-draft-preservation-install-20261112-1336",
   "project": "TTActualidad",
   "expires_at": "2026-11-13T12:00:00Z",
-  "description": "Read-only safe flags for single news test after user-installed guard",
+  "description": "Install guard that backs up a restored draft locally before clearing only its new bot tab",
   "steps": [
     {
       "kind": "powershell",
-      "name": "news-postinstall-flags",
-      "script": "$l=@(Get-Content 'C:\\TTiTTulares\\ttittulares-mobile-trigger.log' -Tail 350)\n$id='tt-placeholderfix-1794482726176'\n$o=@{state='pending';seen=@($l|Where-Object{$_ -match $id}).Count;last_error='none';draft_length=0;placeholder_match=$false}\nif(@($l|Where-Object{$_ -match ('LAUNCH CONFIRMED.*'+$id)}).Count){$o.state='confirmed'}\nif(@($l|Where-Object{$_ -match ('LAUNCH FAILED.*'+$id)}).Count){$o.state='failed'}\n$g=[string]($l|Where-Object{$_ -match 'NEW_CHAT_NOT_BLANK'}|Select-Object -Last 1)\nif($g -match 'editorLength[^0-9]*([0-9]+)'){$o.draft_length=[int]$Matches[1]}\nif($g -match 'placeholderMatch[^a-z]*(true|false)'){$o.placeholder_match=($Matches[1] -eq 'true')}\nif(@($l|Where-Object{$_ -match 'NEW_CHAT_CONTROL_UNAVAILABLE'}).Count){$o.last_error='control'}\nelseif(@($l|Where-Object{$_ -match 'Fresh tab has draft'}).Count){$o.last_error='draft'}\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress))",
-      "timeout_seconds": 20
+      "name": "install-draft-preservation-guard",
+      "script": "$o=@{state='pending'}\ntry{\n $p=@(Get-CimInstance Win32_Process -Filter \"Name='node.exe'\"|Where-Object{[string]$_.CommandLine -match 'C:\\\\TTiTTulares\\\\Ejecutar[.]js' -and [string]$_.CommandLine -match ' --enviar'})\n if($p.Count){$o.state='runner_active';$o.count=$p.Count}\n else{\n  $f=Join-Path $env:TEMP 'Reparar-TT-Editorial-draft-backup.ps1'\n  Invoke-WebRequest -UseBasicParsing -Uri 'https://raw.githubusercontent.com/fabricelop/europapress-rss/16dcd5270df6955c5a16461fb4b6dd391e1133e6/windows/Reparar-TT-Editorial-20261111.ps1' -OutFile $f -TimeoutSec 30 -ErrorAction Stop\n  & powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File $f -NoDispatch | Out-Null\n  if($LASTEXITCODE -ne 0){throw 'INSTALL_FAILED'}\n  $g=Get-Content 'C:\\TTiTTulares\\TT-Editorial-Guard.js' -Raw -ErrorAction Stop\n  if(-not $g.Contains('RESTORED_DRAFT_BACKED_UP_LOCAL')){throw 'GUARD_MARKER_MISSING'}\n  $o.state='installed_verified'\n }\n}catch{$o.state='error';$o.reason=[string]$_.Exception.Message}\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress))",
+      "timeout_seconds": 150
     }
   ]
 }
