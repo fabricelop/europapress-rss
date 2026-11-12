@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-11-12T18:51:23.907Z",
+  "updated_at": "2026-11-12T19:07:02.468Z",
   "items": [
     {
       "event_id": "c2c5fea57972",
@@ -993,7 +993,7 @@
       "image_pending": false,
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "none",
+      "ai_image_status": "failed",
       "fallback_image_status": "ready",
       "image_choice": "fallback",
       "image_app_available": false,
@@ -1016,7 +1016,10 @@
         "generated": false,
         "alt": "Jordi Wild, \"decepcionado\" con Vox, cree que Abascal cancela por miedo a una entrevista \"delicada\""
       },
-      "archive_image_status": "ready"
+      "archive_image_status": "ready",
+      "ai_image_last_attempt_status": "failed",
+      "ai_image_last_attempt_at": "2026-11-12T19:07:02.468Z",
+      "ai_image_failure_reason": "La pestaña dedicada no mostró compositor en 60000 ms; {\"error\":\"CDP timeout Runtime.evaluate\"}"
     }
   ],
   "count": 17,
