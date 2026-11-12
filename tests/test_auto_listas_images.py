@@ -82,6 +82,10 @@ class EnqueueTests(unittest.TestCase):
             self.assertFalse(a.main_story(row, set(), set(), POLICY)[0], (name, value))
         row = story(); row["fallback_image_status"] = "ready"
         self.assertTrue(a.main_story(row, set(), set(), POLICY)[0])
+        row["sensitive_editorial"] = True
+        self.assertTrue(a.main_story(row, set(), set(), POLICY)[0])
+        job, _ = a.make_job(row)
+        self.assertIn("víctimas", job["instructions"]["sensitivity"])
     def test_pending_job_blocks_other(self):
         gh = fake([story(), story("bbb200")]); a.execute(gh, POLICY)
         outcome = a.execute(gh, POLICY)
