@@ -1,25 +1,15 @@
 {
   "version": 1,
-  "id": "ttb-trends-autorecovery-readonly-20261112-1320",
+  "id": "ttb-trends-target-ack-readonly-20261112-1331",
   "project": "TTActualidad",
   "expires_at": "2026-11-13T12:00:00Z",
-  "description": "Diagnostico de lectura sin cambios: colas, ultimo runtime, guard y estado reciente listeners; no enviar prompts ni modificar Chrome",
+  "description": "Comprobar sin cambios si el listener consumió y confirmó la orden exacta de Tribunal de Cuentas. No reiniciar procesos ni alterar pestañas",
   "steps": [
     {
-      "kind": "builtin",
-      "name": "editorial-queue"
-    },
-    {
-      "kind": "builtin",
-      "name": "editorial-runtime"
-    },
-    {
-      "kind": "builtin",
-      "name": "editorial-guard"
-    },
-    {
-      "kind": "builtin",
-      "name": "listener-summary"
+      "kind": "powershell",
+      "name": "trends-target-ack-readonly",
+      "script": "$cid='tr-autoguard-1794486419'\n$o=@{command_id=$cid; log_exists=$false; matched_lines=0; started=0; confirmed=0; failed=0; timeout=0; last_result='unobserved'; task_state='unknown'; task_last_result=$null; chrome_pages=$null}\ntry {\n $p='C:\\TTiTTulares\\ttendencias-mobile-trigger.log'\n if(Test-Path -LiteralPath $p){\n  $o.log_exists=$true\n  $rows=@(Get-Content -LiteralPath $p -Tail 850 -ErrorAction Stop|Where-Object { $_.Contains($cid) })\n  $o.matched_lines=$rows.Count\n  foreach($s in $rows){\n   if($s -match 'PROCESS STARTED|LAUNCH STARTED|EDITORIAL TARGET'){$o.started++}\n   if($s -match 'CHAT MESSAGE CONFIRMED|LAUNCH CONFIRMED|EJECUCION LANZADA'){$o.confirmed++}\n   if($s -match 'LAUNCH FAILED|LAUNCH NOT CONFIRMED|CHAT LAUNCH LOG ERROR'){$o.failed++}\n   if($s -match 'TIMEOUT'){$o.timeout++}\n  }\n  if($o.confirmed -gt 0){$o.last_result='confirmed_send'}\n  elseif($o.failed -gt 0){$o.last_result='failed_launch'}\n  elseif($o.started -gt 0){$o.last_result='launched_unconfirmed'}\n  elseif($o.matched_lines -gt 0){$o.last_result='seen_no_send_evidence'}\n }\n $task=Get-ScheduledTask -TaskName 'TTendencias Local' -ErrorAction SilentlyContinue\n if($task){$o.task_state=[string]$task.State;$t=Get-ScheduledTaskInfo -TaskName 'TTendencias Local' -ErrorAction SilentlyContinue;if($t){$o.task_last_result=$t.LastTaskResult}}\n try{$pages=@(Invoke-RestMethod -Uri 'http://127.0.0.1:9223/json/list' -TimeoutSec 4);$o.chrome_pages=$pages.Count}catch{}\n}catch{$o.error_category='LOCAL_DIAGNOSTIC_EXCEPTION'}\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress))",
+      "timeout_seconds": 55
     }
   ]
 }
