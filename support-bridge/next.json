@@ -1,15 +1,15 @@
 {
   "version": 1,
-  "id": "ttb-news-active-runner-20261112-1212",
+  "id": "ttb-news-same-command-retry-20261112-1214",
   "project": "TTActualidad",
   "expires_at": "2026-11-13T12:00:00Z",
-  "description": "Read active runner command labels only",
+  "description": "Retry exact failed news command after active runners exit",
   "steps": [
     {
       "kind": "powershell",
-      "name": "active-runner-labels",
-      "script": "$a=@(Get-CimInstance Win32_Process -Filter \"Name='node.exe'\" | Where-Object { [string]$_.CommandLine -match 'Ejecutar[.]js|TT-Editorial-Guard[.]js' } | ForEach-Object { \"$($_.ProcessId):$([string]$_.CommandLine -replace '.*TTiTTulares[\\\\/]','')\" })\nWrite-Output ('TTRESULT:'+(@{state='ok';runners=($a -join ';')}|ConvertTo-Json -Compress))",
-      "timeout_seconds": 20
+      "name": "same-command-retry",
+      "script": "$ErrorActionPreference='Stop'\n$o=@{state='pending'}\ntry{\n $p='C:\\TTiTTulares\\ttittulares-mobile-trigger-state.json'\n $s=Get-Content $p -Raw | ConvertFrom-Json\n $id=[string]$s.editorial_retry_command_id\n $live=@(Get-CimInstance Win32_Process -Filter \"Name='node.exe'\" | Where-Object { [string]$_.CommandLine -match 'Ejecutar[.]js|TT-Editorial-Guard[.]js' })\n if($live.Count){$o.state='deferred_active';$o.count=$live.Count}\n elseif($id -ne 'tt-autoguard-1794478562'){$o.state='different_retry_command';$o.command=$id}\n else{\n  Copy-Item $p ($p+'.before-newchat-retry-20261112.bak') -Force\n  $s.editorial_retry_after=[DateTimeOffset]::UtcNow.AddSeconds(-10).ToString('o')\n  $tmp=$p+'.retry-tmp'\n  [IO.File]::WriteAllText($tmp,($s|ConvertTo-Json -Depth 15),[Text.UTF8Encoding]::new($false))\n  Move-Item $tmp $p -Force\n  Start-ScheduledTask -TaskName 'TTiTTulares Local'\n  $o.state='same_command_retry_started';$o.command=$id\n }\n}catch{$o.state='error';$o.reason=[string]$_.Exception.Message}\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress))",
+      "timeout_seconds": 30
     }
   ]
 }
