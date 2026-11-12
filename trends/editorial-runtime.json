@@ -7,19 +7,33 @@
   "previous_run_id": "tr-20261112T052500-manual",
   "command_id": "tr-20261112T135500-manual",
   "source": "chat",
-  "status": "success",
+  "status": "waiting",
   "phase": "closing",
   "started_at": "2026-11-12T13:55:00+01:00",
-  "updated_at": "2026-11-12T14:05:23+01:00",
+  "updated_at": "2026-11-12T14:41:22+01:00",
   "current": 13,
   "total": 13,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": true,
-  "processed_ids": [],
+  "queue_complete": false,
+  "processed_ids": [
+    "fcc3c7e0664d"
+  ],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "554d3b5f9168",
+    "b8fecb6ddea3",
+    "30cff8c284df",
+    "a5cf436660ed",
+    "3eea95f6bf8e"
+  ],
+  "remaining_active_ids": [
+    "554d3b5f9168",
+    "b8fecb6ddea3",
+    "30cff8c284df",
+    "a5cf436660ed",
+    "3eea95f6bf8e"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 13,
@@ -156,7 +170,7 @@
   "incidents": [],
   "error": null,
   "activity": "closing",
-  "last_started_at": "2026-11-12T14:05:23+01:00",
+  "last_started_at": "2026-11-12T14:41:22+01:00",
   "last_completed_at": "2026-11-12T14:05:23+01:00",
   "api_failover_enabled": false,
   "last_run": {
