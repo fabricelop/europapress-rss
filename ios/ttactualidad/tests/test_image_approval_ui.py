@@ -26,3 +26,18 @@ assert 'model.actionID' not in view
 assert 'response.appVerified == true' in view and 'response.sitesVerified == true' in view
 assert 'ContentUnavailableView' in view
 print('TT_IMAGE_INBOX_IOS_STATIC_OK')
+# Exact image decisions survive app termination and do not repeat after
+# a successful authenticated server acceptance with a delayed X mirror.
+assert 'AcceptedReceipt: Codable' in view
+assert 'UserDefaults.standard.data(forKey: acceptedKey)' in view
+assert 'UserDefaults.standard.set(data, forKey: acceptedKey)' in view
+assert 'private func accepted(_ item: PendingImage)' in view
+assert 'accepted($0)' in view
+assert 'markAccepted(item, state: response.state)' in view
+assert 'markAccepted(item, state: "published_unverified")' in view
+assert 'Aprobación aceptada por el servidor' in view
+assert 'response.appVerified == true' in view and 'response.sitesVerified == true' in view
+assert 'No se repetirá la aprobación' in view
+assert 'associateVerifiedOriginalInGitHub(item, using: github)' in view
+assert 'restore(item)' in view
+print("TT_IMAGE_APPROVAL_PERSISTENT_IDEMPOTENCY_BUILD98_OK")
