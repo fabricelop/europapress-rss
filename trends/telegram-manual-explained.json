@@ -109344,7 +109344,7 @@
       ],
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending",
+      "ai_image_status": "failed",
       "fallback_image_status": "ready",
       "image_status": "ready",
       "image_choice": "fallback",
@@ -109366,7 +109366,11 @@
         "alt": "Imagen de archivo relacionada con Elise",
         "rights_status": "unverified",
         "generated": false
-      }
+      },
+      "ai_image_attempt": 1,
+      "ai_image_last_attempt_status": "failed",
+      "ai_image_last_attempt_at": "2026-11-12T07:18:06.476983Z",
+      "ai_image_failure_reason": "imagen generada sin URL raw válida"
     },
     {
       "id": "cf2df84a5714",
@@ -109636,6 +109640,6 @@
       "significance_reason": "La hoguera final con Sergio y las confesiones sobre Irini y Josué constituyen un episodio posterior y materialmente distinto de la explicación anterior."
     }
   ],
-  "updated_at": "2026-11-12T07:15:59.416735Z",
+  "updated_at": "2026-11-12T07:18:06.477063Z",
   "count": 1918
 }
