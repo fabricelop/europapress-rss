@@ -1,17 +1,15 @@
 {
   "version": 1,
-  "id": "ttb-news-postinstall-summary-20261112-1326",
+  "id": "ttb-news-postinstall-flags-20261112-1330",
   "project": "TTActualidad",
   "expires_at": "2026-11-13T12:00:00Z",
-  "description": "Read-only listener and guard summary after locally installed fix",
+  "description": "Read-only safe flags for single news test after user-installed guard",
   "steps": [
     {
-      "kind": "builtin",
-      "name": "listener-summary"
-    },
-    {
-      "kind": "builtin",
-      "name": "editorial-guard"
+      "kind": "powershell",
+      "name": "news-postinstall-flags",
+      "script": "$l=@(Get-Content 'C:\\TTiTTulares\\ttittulares-mobile-trigger.log' -Tail 350)\n$id='tt-placeholderfix-1794482726176'\n$o=@{state='pending';seen=@($l|Where-Object{$_ -match $id}).Count;last_error='none';draft_length=0;placeholder_match=$false}\nif(@($l|Where-Object{$_ -match ('LAUNCH CONFIRMED.*'+$id)}).Count){$o.state='confirmed'}\nif(@($l|Where-Object{$_ -match ('LAUNCH FAILED.*'+$id)}).Count){$o.state='failed'}\n$g=[string]($l|Where-Object{$_ -match 'NEW_CHAT_NOT_BLANK'}|Select-Object -Last 1)\nif($g -match 'editorLength[^0-9]*([0-9]+)'){$o.draft_length=[int]$Matches[1]}\nif($g -match 'placeholderMatch[^a-z]*(true|false)'){$o.placeholder_match=($Matches[1] -eq 'true')}\nif(@($l|Where-Object{$_ -match 'NEW_CHAT_CONTROL_UNAVAILABLE'}).Count){$o.last_error='control'}\nelseif(@($l|Where-Object{$_ -match 'Fresh tab has draft'}).Count){$o.last_error='draft'}\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress))",
+      "timeout_seconds": 20
     }
   ]
 }
