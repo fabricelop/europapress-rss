@@ -11,7 +11,7 @@
 ## Etapas
 1. **Captura Top30 España:** `v2/ttendencias/capture_top30.py`; obtiene HTML de GetDayTrends y exige treinta posiciones únicas antes de entregar un JSON. Distingue `observed_at` (hora de nuestra lectura) de una observación original en X, que **no está verificada**.
 2. **Diagnóstico de frescura:** `v2/ttendencias/assess_freshness.py` diferencia la edad de nuestra captura de la frescura original de X. No declara verificada una tendencia por HTTP 200, por cambio de lista ni por fecha local reciente. **Decisión del usuario (12/11/2026):** GetDayTrends será la única fuente por ahora. Si la consulta en vivo devuelve 30 posiciones válidas de España y la captura tiene hasta 20 minutos, `eligible_for_editorial=true` para el FUTURO paso 3 (todavía no conectado). No se afirma verificación directa por X. La comparación con otra fuente queda opcional, no bloqueante.
-3. **Movimientos e historial V2:** `v2/ttendencias/detect_changes.py` detecta altas, salidas, cambios de puesto y regresos; mantiene un episodio por estancia, con reentrada solamente cuando existe salida observada y ausencia >=30 minutos. Primera lectura = línea base sin 30 falsas noticias. Historial retenido 7 días. No se incorpora a la cola editorial de producción.
+3. **Movimientos e historial V2:** `v2/ttendencias/detect_changes.py` detecta altas, salidas, cambios de puesto y regresos; asigna un `trend_id` permanente y determinista por término normalizado, sin usar fechas ni posiciones. Un regreso tras más de 24 horas fuera crea un episodio de revisión bajo el mismo ID; si la ausencia es de 24 horas o menos, conserva el episodio. El historial de identidades no se poda por antigüedad. Primera lectura = línea base sin 30 falsas noticias. No se incorpora a la cola editorial de producción.
 4. Cola editorial, investigación, redacción y persistencia — **pendiente**.
 5. Imágenes, decisiones, publicación y migración — **pendiente**.
 
@@ -26,7 +26,7 @@ El segundo comando realiza una **consulta de lectura** en vivo y muestra un snap
 - Recibe solamente la captura GetDayTrends V2 aceptada en el paso 2.
 - Exige tiempos monótonos, no mezcla capturas de una misma hora con contenidos distintos y es idempotente.
 - `baseline` es inicialización; `entry`, `exit`, `up`, `down`, `short_return`, `reentry` son transiciones, no solicitudes editoriales.
-- `reentry` requiere salida observada y al menos 30 minutos fuera, no simplemente antigüedad de 24 horas. La decisión de investigar una reentrada tras 24 horas desde la **última explicación** pertenece al siguiente paso, que todavía no existe.
+- **Regla de identidad (usuario):** cada término mantiene SIEMPRE el mismo `trend_id` aunque desaparezca meses; `episode_token` es solo una marca técnica de revisión, nunca un ID de ficha. Una reentrada tras **más de 24 horas fuera** genera `reexplain_candidate:true` sobre ese mismo ID, sin explicar automáticamente. Una causa nueva o una explicación materialmente cambiada también podrá activar revisión en la futura etapa editorial, aunque la tendencia no haya salido. No hay reexplicaciones por cambiar de puesto ni por tener 24 horas de antigüedad sin salida observada.
 - Datos locales solo en `v2/ttendencias/state/` o artefactos temporales de CI. Una sola captura prueba el arranque; para validar cambios reales hacen falta snapshots sucesivos.
 
 ## Paso 2: condiciones de aceptación
