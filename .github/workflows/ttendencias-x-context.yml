@@ -69,6 +69,29 @@ jobs:
             if ($errors.Count -ne 0) { throw "$path : $($errors[0].Message)" }
           }
           Write-Host 'TT_X_WINDOWS_PS51_SYNTAX_OK'
+      - name: Reproduce dubious Git ownership and verify per-command scoped trust
+        shell: powershell
+        run: |
+          $repo = Join-Path $env:RUNNER_TEMP 'TT-XContext-ownership-probe'
+          & git.exe init --quiet $repo
+          if ($LASTEXITCODE -ne 0) { throw 'Could not initialize isolated Git probe' }
+          $env:GIT_TEST_ASSUME_DIFFERENT_OWNER = '1'
+          try {
+            $null = & git.exe -C $repo rev-parse --is-inside-work-tree 2>&1
+            if ($LASTEXITCODE -eq 0) {
+              Write-Host 'Git ownership simulation not enforced in this runner'
+            } else {
+              Write-Host 'TT_X_GIT_DUBIOUS_OWNERSHIP_REPRODUCED'
+            }
+            $trusted = 'safe.directory=' + $repo.Replace('\','/')
+            $inside = (& git.exe -c $trusted -C $repo rev-parse --is-inside-work-tree) -join ''
+            if ($LASTEXITCODE -ne 0 -or $inside -ne 'true') { throw 'Local safe.directory exception did not work' }
+            $global = (& git.exe config --global --get-all safe.directory 2>$null) -join ''
+            if ($global -eq '*') { throw 'Global Git security wildcard must not be used' }
+            Write-Host 'TT_X_GIT_SCOPED_SAFE_DIRECTORY_OK'
+          } finally {
+            Remove-Item Env:GIT_TEST_ASSUME_DIFFERENT_OWNER -ErrorAction SilentlyContinue
+          }
       - name: Validate invisible Windows Script Host launcher without running X
         shell: powershell
         run: |
