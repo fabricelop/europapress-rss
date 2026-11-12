@@ -822,7 +822,8 @@ assert 'editorialAt: String?' in inbox
 assert 'if $0.createdAt != $1.createdAt { return $0.createdAt > $1.createdAt }' in inbox
 assert 'return $0.id > $1.id' in inbox
 assert 'func currentImageApprovalTrendEpisodes() async throws' in auth
-assert 'if action == "approve" && [404, 503].contains(status)' in inbox
+assert 'if action == "approve" && [404, 503].contains(status)' not in inbox
+assert 'holdUnconfirmed(item, action: action' in inbox
 assert 'if [401, 403, 409, 422].contains(status)' in inbox
 assert 'imagen ya no está en Listas' not in inbox.lower()
 # 0.4.86 preserves the complete 0.4.84 codebase and fixes the blank
