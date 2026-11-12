@@ -62,3 +62,15 @@ test('an ambiguous submission is NEVER resent and diagnostics never log prompt t
  assert.ok(diagnostic,'A structured diagnostics payload should be emitted');
  assert.doesNotMatch(diagnostic,/\beditorText\s*:/,'Raw prompt body must not appear in diagnostics');
 });
+
+test('Windows installation GuardOnly mode never touches Chrome or queues',()=>{
+ assert.match(rescue,/\[switch\]\$GuardOnly/);
+ const branch=rescue.indexOf('if($GuardOnly){');
+ const cleanup=rescue.indexOf('& $node $Guard --cleanup');
+ const probe=rescue.indexOf('& $node $Guard --probe');
+ const send=rescue.indexOf("if($probeOk -and -not $NoDispatch)");
+ assert.ok(branch>0&&cleanup>branch&&probe>branch&&send>branch,
+  'GuardOnly branch must execute before cleanup, probe and any dispatch');
+ assert.match(rescue.slice(branch,cleanup),/exit 0/);
+ assert.match(rescue.slice(branch,cleanup),/GUARD_ONLY_INSTALLED/);
+});
