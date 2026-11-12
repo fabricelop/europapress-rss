@@ -1,19 +1,14 @@
 {
   "version": 1,
-  "id": "ttb-editorial-guarded-dispatch-20261112-1132",
+  "id": "ttb-editorial-rescue-log-20261112-1138",
   "project": "TTActualidad",
   "expires_at": "2026-11-13T12:00:00Z",
-  "description": "User-authorized guarded editorial pass after active launchers exited",
+  "description": "Read only last guarded editorial rescue log after bridge exception",
   "steps": [
     {
       "kind": "powershell",
-      "name": "guarded-editorial-dispatch",
-      "script": "$ErrorActionPreference='Stop'\n$o=@{state='pending'}\n$t=Join-Path $env:TEMP ('TTEditorialDispatch-'+[guid]::NewGuid().ToString('N')+'.ps1')\ntry{\n $url='https://raw.githubusercontent.com/fabricelop/europapress-rss/5cb71812c7e562ffa4ce0a52ba33a07e712104e7/windows/Reparar-TT-Editorial-20261111.ps1'\n Invoke-WebRequest -UseBasicParsing -Uri $url -OutFile $t -TimeoutSec 35\n $src=[IO.File]::ReadAllText($t,[Text.Encoding]::UTF8)\n if(-not $src.Contains('TT_EDITORIAL_SAFE_WRAPPER_V1') -or -not $src.Contains('TRANSMISSION_UNVERIFIED') -or -not $src.Contains('EnsureNotRunning')){throw 'PINNED_GUARD_MARKER_MISSING'}\n & $t *> $null\n if(-not $?){throw 'EDITORIAL_RESCUE_FAILED'}\n $o.state='dispatch_completed'\n}catch{$o.state='error';$o.reason=[string]$_.Exception.Message}\nfinally{Remove-Item $t -Force -ErrorAction SilentlyContinue}\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress))",
-      "timeout_seconds": 300
-    },
-    {
-      "kind": "builtin",
-      "name": "editorial-queue",
+      "name": "editorial-rescue-log",
+      "script": "try {\n $files=@(Get-ChildItem (Join-Path $env:LOCALAPPDATA 'TT_Recuperacion') -Filter 'editorial-rescue-*.log' -ErrorAction Stop | Sort-Object LastWriteTime -Descending | Select-Object -First 1)\n $lines=@()\n if($files.Count){$lines=@(Get-Content $files[0].FullName -Tail 22)}\n $o=@{state='ok';file=($files|Select-Object -First 1 -ExpandProperty Name);lines=$lines}\n Write-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress -Depth 4))\n}catch{Write-Output ('TTRESULT:'+(@{state='error';reason=[string]$_.Exception.Message}|ConvertTo-Json -Compress))}",
       "timeout_seconds": 25
     }
   ]
