@@ -1,14 +1,14 @@
 {
   "version": 1,
-  "id": "ttb-ps-output-ping-20261112-1150",
+  "id": "ttb-news-log-one-line-20261112-1152",
   "project": "TTActualidad",
   "expires_at": "2026-11-13T12:00:00Z",
-  "description": "Check PowerShell bridge result forwarding",
+  "description": "Read last news listener line only",
   "steps": [
     {
       "kind": "powershell",
-      "name": "bridge-output-ping",
-      "script": "Write-Output 'TTRESULT:{\"state\":\"ping_ok\"}'",
+      "name": "news-last-line",
+      "script": "$f='C:\\TTiTTulares\\ttittulares-mobile-trigger.log'\n$l=if(Test-Path $f){[string](Get-Content $f -Tail 1)}else{'missing'}\nWrite-Output ('TTRESULT:'+(@{state='ok';last=$l.Substring(0,[Math]::Min(300,$l.Length))}|ConvertTo-Json -Compress))",
       "timeout_seconds": 20
     }
   ]
