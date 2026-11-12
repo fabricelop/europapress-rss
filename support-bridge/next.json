@@ -1,19 +1,28 @@
 {
   "version": 1,
-  "id": "ttb-editorial-guard-v2-repair-20261112-1115",
+  "id": "ttb-editorial-health-after-guard-20261112-1120",
   "project": "TTActualidad",
   "expires_at": "2026-11-13T12:00:00Z",
-  "description": "User-authorized retry: install guarded editorial-only Chrome fix from pinned main; backup, no dispatch, no image publication",
+  "description": "Read editorial listener, guard, and queue state after protected runner installation",
   "steps": [
     {
-      "kind": "powershell",
-      "name": "install-guarded-editorial-composer",
-      "script": "$ErrorActionPreference='Stop'\n$o=@{state='pending';version='5cb7181';editorialOnly=$true}\n$t=Join-Path $env:TEMP ('TTEditorialGuard-'+[guid]::NewGuid().ToString('N')+'.ps1')\ntry{\n $live=@(Get-CimInstance Win32_Process -Filter \"name='node.exe'\"|Where-Object{[string]$_.CommandLine -match '(?:[\\\\/])(?:Ejecutar|TT-Editorial-Guard)[.]js'})\n if($live.Count){$o.state='deferred_active_editorial';$o.count=$live.Count}\n else{\n  $url='https://raw.githubusercontent.com/fabricelop/europapress-rss/5cb71812c7e562ffa4ce0a52ba33a07e712104e7/windows/Reparar-TT-Editorial-20261111.ps1'\n  Invoke-WebRequest -UseBasicParsing -Uri $url -OutFile $t -TimeoutSec 35\n  $src=[IO.File]::ReadAllText($t,[Text.Encoding]::UTF8)\n  if(-not $src.Contains('PROJECT_LANDING_HISTORY; NAVIGATE_BOT_OWNED_TAB_HOME') -or -not $src.Contains('const focused=await c.eval(') -or -not $src.Contains('TT_EDITORIAL_SAFE_WRAPPER_V1')){throw 'PINNED_GUARD_MARKER_MISSING'}\n  $errors=$null;$tokens=$null\n  [Management.Automation.Language.Parser]::ParseFile($t,[ref]$tokens,[ref]$errors)|Out-Null\n  if($errors.Count){throw 'GUARD_INSTALLER_SYNTAX_INVALID'}\n  & $t -NoDispatch *> $null\n  if(-not $?){throw 'GUARD_INSTALLER_FAILED'}\n  $guard=Get-Content 'C:\\TTiTTulares\\TT-Editorial-Guard.js' -Raw\n  if(-not $guard.Contains('PROJECT_LANDING_HISTORY; NAVIGATE_BOT_OWNED_TAB_HOME')){throw 'GUARD_NOT_UPDATED'}\n  $o.state='installed_verified'\n }\n}catch{$o.state='error';$o.reason=([string]$_.Exception.Message).Substring(0,[Math]::Min(160,([string]$_.Exception.Message).Length))}\nfinally{Remove-Item $t -Force -ErrorAction SilentlyContinue}\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress))\n",
-      "timeout_seconds": 150
+      "kind": "builtin",
+      "name": "listener-summary",
+      "timeout_seconds": 25
+    },
+    {
+      "kind": "builtin",
+      "name": "editorial-guard",
+      "timeout_seconds": 25
     },
     {
       "kind": "builtin",
       "name": "editorial-queue",
+      "timeout_seconds": 25
+    },
+    {
+      "kind": "builtin",
+      "name": "editorial-runtime",
       "timeout_seconds": 25
     }
   ]
