@@ -45,4 +45,41 @@ class TextFirstRecovery(unittest.TestCase):
   g.save('trends/telegram-manual-explained.json',{'items':[{'id':'trend','revision':0,'explanation':'Texto validado','editorial_grouping_state':'pending'}]})
   self.assertEqual(g.pending('ttendencias'),[])
 
+
+ def test_targeted_dispatch_waits_for_one_revision_then_advances(self):
+  start=(self.now-timedelta(hours=2)).isoformat()
+  rows=[{'id':'a','revision':1,'status':'preparing','requested_at':start},
+        {'id':'b','revision':0,'status':'preparing','requested_at':start}]
+  g.save('trends/editorial-queue.json',{'items':rows})
+  pending=g.pending('ttendencias')
+  first=g.evaluate('ttendencias',self.now,{},rows=pending)
+  target=pending[0]
+  self.assertEqual(target['id'],'a')
+  command={'command_id':'tr-target-a','requested_at':(self.now-timedelta(minutes=3)).isoformat(),
+           'target_id':'a','target_revision':1}
+  pending_run=g.evaluate('ttendencias',self.now,{},command=command,rows=pending)
+  self.assertFalse(pending_run['should_dispatch'])
+  self.assertFalse(pending_run['previous_target_completed_or_superseded'])
+  g.save('trends/editorial-queue.json',{'items':[rows[1]]})
+  remaining=g.pending('ttendencias')
+  done=g.evaluate('ttendencias',self.now,{},command=command,rows=remaining)
+  self.assertTrue(done['previous_target_completed_or_superseded'])
+  self.assertTrue(done['should_dispatch'])
+  self.assertEqual(done['pending_ids'],['b'])
+  # A fresh in-flight editor still blocks dispatch, irrespective of target.
+  live=g.evaluate('ttendencias',self.now,{},command=command,rows=remaining,
+                  run={'status':'RUNNING','updated_at':self.now.isoformat()})
+  self.assertFalse(live['should_dispatch'])
+
+ def test_target_rotation_after_bounded_retry(self):
+  start=(self.now-timedelta(hours=1)).isoformat()
+  g.save('trends/editorial-queue.json',{'items':[
+   {'id':'a','revision':0,'status':'preparing','requested_at':start},
+   {'id':'b','revision':1,'status':'update','requested_at':start}]})
+  rows=g.pending('ttendencias')
+  self.assertEqual([r['id'] for r in rows],['a','b'])
+  # Target choice is deterministic and skips the stuck oldest when retried.
+  self.assertEqual(rows[0]['id'],'a')
+  self.assertEqual(rows[1 % len(rows)]['id'],'b')
+
 if __name__=='__main__':unittest.main()
