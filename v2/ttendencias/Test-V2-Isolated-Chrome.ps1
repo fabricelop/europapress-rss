@@ -21,9 +21,8 @@ try {
   $p=Start-Process -FilePath $chrome -ArgumentList $args -PassThru
   Write-Host "TT_V2_BROWSER_PID=$($p.Id)"
   Write-Host 'Comprueba que la ventana se abre. NO envies trabajos reales.'
-  Write-Host 'Pulsa ENTER en esta consola cuando hayas terminado de comprobar la ventana.'
-  $inputTask=[System.Threading.Tasks.Task]::Run([Action]{ [Console]::ReadLine() | Out-Null })
-  while(-not $inputTask.IsCompleted -and $stopwatch.Elapsed.TotalSeconds -lt $TimeoutSeconds){
+  Write-Host 'Cierra la ventana temporal cuando hayas terminado; o espera al timeout.'
+  while($stopwatch.Elapsed.TotalSeconds -lt $TimeoutSeconds){
     Start-Sleep -Milliseconds 500
     $p.Refresh()
     if($p.HasExited){break}
