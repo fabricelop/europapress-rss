@@ -1,18 +1,19 @@
 {
   "version": 1,
-  "id": "ttb-bridge-heartbeat-20261112-0730",
+  "id": "ttb-inbox-guarded-repair-20261112-0740",
   "project": "TTActualidad",
   "expires_at": "2026-11-13T08:00:00Z",
-  "description": "Comprobar que el puente Windows sigue operativo sin pedir permisos de PowerShell",
+  "description": "Windows-confirmed gradual private image receiver repair; do not publish or approve",
   "steps": [
     {
-      "kind": "builtin",
-      "name": "listener-summary",
-      "timeout_seconds": 25
+      "kind": "powershell",
+      "name": "repair-gradual-private-image-inbox",
+      "script": "$ErrorActionPreference='Stop'\n$a='TT Actualidad - Imagenes pendientes APP';$b='TT Actualidad - Entrega IA gradual'\n$x=Get-ScheduledTask $a -ErrorAction SilentlyContinue\n$y=Get-ScheduledTask $b -ErrorAction SilentlyContinue\n$o=@{old=$(if($x){$x.State}else{'absent'});new=$(if($y){$y.State}else{'absent'});operation='none'}\n$t=Join-Path $env:TEMP ('TTInbox-'+[guid]::NewGuid().ToString('N')+'.ps1')\n$changed=$false;$phase='preflight'\ntry{\n if($y -and $y.State -eq 'Running'){$o.operation='already_running'}\n elseif($x -and $x.State -eq 'Running'){$o.operation='legacy_running_no_overlap'}\n else{\n $phase='download'\n $url='https://raw.githubusercontent.com/fabricelop/europapress-rss/7c13f234640d5d75df1dee0dc0173544479ae969/windows/Instalar-Entrega-IA-Gradual-TT.ps1'\n Invoke-WebRequest -UseBasicParsing -Uri $url -OutFile $t -TimeoutSec 30\n $src=[IO.File]::ReadAllText($t,[Text.Encoding]::UTF8)\n if(-not $src.Contains('function provesExactNewImageJob(task,job)') -or -not $src.Contains('NO_APPROVAL_NO_PUBLICATION')){throw 'MARKER_MISMATCH'}\n $tokens=$null;$errors=$null\n [Management.Automation.Language.Parser]::ParseFile($t,[ref]$tokens,[ref]$errors)|Out-Null\n if($errors.Count){throw 'SYNTAX_INVALID'}\n $phase='switch'\n if($x -and $x.State -ne 'Disabled'){Disable-ScheduledTask $a|Out-Null;$changed=$true}\n $phase='install'\n & $t -Apply *> $null\n if(-not $?){throw 'INSTALLER_FAILED'}\n $y=Get-ScheduledTask $b -ErrorAction Stop\n if($y.State -eq 'Disabled'){throw 'NEW_TASK_DISABLED'}\n $o.operation='installed_and_started'\n }\n $y=Get-ScheduledTask $b -ErrorAction SilentlyContinue\n $o.newAfter=$(if($y){$y.State}else{'absent'})\n $info=Get-ScheduledTaskInfo $b -ErrorAction SilentlyContinue\n if($info){$o.lastResult=$info.LastTaskResult}\n}catch{\n $o.operation='error';$o.phase=$phase\n $o.error=([string]$_.Exception.Message -replace 'https?://\\S+','[URL]')\n $y=Get-ScheduledTask $b -ErrorAction SilentlyContinue\n if($changed -and (-not $y -or $y.State -eq 'Disabled')){Enable-ScheduledTask $a -ErrorAction SilentlyContinue|Out-Null;$o.legacyRestored=$true}\n}finally{Remove-Item $t -Force -ErrorAction SilentlyContinue}\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress -Depth 4))\n",
+      "timeout_seconds": 120
     },
     {
       "kind": "builtin",
-      "name": "editorial-queue",
+      "name": "listener-summary",
       "timeout_seconds": 25
     }
   ]
