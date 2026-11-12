@@ -1140,7 +1140,10 @@ assert 'previewOrder.append(item.id)' in inbox
 assert 'previews.keys.first' not in inbox
 print("TT_IMAGE_INBOX_THUMBNAIL_CACHE_STABLE_BUILD99_OK")
 
-# Build100: a rejected approval must not animate remove -> reinsert.
+# Build102: accepting/rejecting advances instantly. A hard 4xx is NOT
+# restored into the active queue (the reported bounce). Keep the exact PNG in
+# a persisted, manually reopenable error section; ambiguous results remain
+# separately labeled. Neither path automatically retries or fakes approval.
 assert '@Published private(set) var decisionFailures: [String: String]' in inbox
 decide_source = inbox[inbox.index('func decide(_ item: PendingImage'):
                       inbox.index('private func persistDecision(_ item: PendingImage')]
@@ -1148,27 +1151,19 @@ assert 'images.removeAll { $0.id == item.id }' in decide_source
 assert 'decisionFailures.removeValue(forKey: item.id)' in decide_source
 assert 'processingIDs.insert(item.id)' in decide_source
 assert 'decisionFailures[item.id] = "DECISIÓN NO APLICADA: "' in inbox
-assert 'restoreRejected(item)' in inbox
-assert '" HTTP " + String(status)' in inbox
-assert 'restoreRejected(item)' in inbox
-assert 'images = ready' in inbox
-assert 'if let failure = model.decisionFailures[item.id]' in inbox
-assert 'optimisticPositions[item.id] = images.firstIndex' in inbox
+assert 'holdRejected(item, action: action, status: status)' in inbox
+assert 'restoreRejected(item)' not in inbox
+assert 'optimisticPositions' not in inbox
+assert 'let rejectedHTTP: Int?' in inbox
+assert 'notedAt: Date(), rejectedHTTP: status)' in inbox
+assert 'notedAt: Date(), rejectedHTTP: nil)' in inbox
+assert 'if let rejectedHTTP = record.rejectedHTTP' in inbox
+assert 'Section("Decisiones a revisar (" +' in inbox
+assert 'Button("Volver a revisar en la bandeja")' in inbox
+assert 'let keys = Set(images.map(\\.id)).union(processingIDs)' in inbox
+assert '!processingIDs.contains($0.id) &&' in inbox
 assert 'if action == "approve" && [404, 503].contains(status)' not in inbox
 assert 'holdUnconfirmed(item, action: action' in inbox
 assert 'markAccepted(item, state: response.state)' in inbox
-print("TT_IMAGE_INBOX_BUILD100_NO_OPTIMISTIC_BOUNCE_AND_HTTP_ERROR_VISIBLE_OK")
+print("TT_IMAGE_INBOX_BUILD102_INSTANT_WITHOUT_RESTORE_BOUNCE_OK")
 
-# Build101 restores the author's required optimistic UX, WITHOUT reintroducing
-# a card due to concurrent refresh. A real 409 still rolls back with details.
-decide_source = inbox[inbox.index('func decide(_ item: PendingImage'):
-    inbox.index('private func persistDecision(_ item: PendingImage')]
-assert 'optimisticPositions[item.id] = images.firstIndex' in decide_source
-assert 'images.removeAll { $0.id == item.id }' in decide_source
-assert 'let keys = Set(images.map(\\.id)).union(processingIDs)' in inbox
-assert '!processingIDs.contains($0.id) &&' in inbox
-assert 'restoreRejected(item)' in inbox
-assert 'decisionFailures[item.id] = "DECISIÓN NO APLICADA: "' in inbox
-assert 'if action == "approve" && [404, 503].contains(status)' not in inbox
-assert 'unconfirmedDecisions' in inbox
-print("TT_IMAGE_INBOX_BUILD101_INSTANT_APPROVAL_AND_REAL_ERROR_ROLLBACK_OK")
