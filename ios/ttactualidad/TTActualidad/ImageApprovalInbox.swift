@@ -50,7 +50,10 @@ private struct DecisionResponse: Decodable {
 private enum ApprovalInboxScope {
     static func visible(_ items: [PendingImage]) -> [PendingImage] {
         var seen = Set<String>()
-        return items.sorted { $0.createdAt > $1.createdAt }.filter { item in
+        return items.sorted {
+            if $0.createdAt != $1.createdAt { return $0.createdAt > $1.createdAt }
+            return $0.id > $1.id
+        }.filter { item in
             let identity = item.identity
             guard ["ttendencias", "ttittulares"].contains(identity.project) else { return false }
             let episode = identity.editorialId + ":r" + String(identity.revision)
@@ -132,9 +135,12 @@ private final class ApprovalInboxModel: ObservableObject {
     }
 
     private func unconfirmed(_ item: PendingImage) -> Bool {
-        guard let record = unconfirmedDecisions[item.id] else { return false }
-        return record.rasterSHA256 == item.identity.rasterSHA256 &&
-            record.episode == episodeKey(item)
+        // A retry may be returned under a new receipt ID while representing
+        // the SAME exact raster/episode. Never offer that approval twice.
+        return unconfirmedDecisions.values.contains { record in
+            record.rasterSHA256 == item.identity.rasterSHA256 &&
+                record.episode == episodeKey(item)
+        }
     }
 
     private func saveUnconfirmed() {
@@ -165,10 +171,13 @@ private final class ApprovalInboxModel: ObservableObject {
     }
 
     private func accepted(_ item: PendingImage) -> Bool {
-        guard let receipt = acceptedReceipts[item.id] else { return false }
-        return receipt.rasterSHA256 == item.identity.rasterSHA256 &&
-            receipt.episode == item.identity.project + ":" + item.identity.editorialId +
-                ":r" + String(item.identity.revision)
+        // Same raster SHA and exact editorial episode are stronger than an
+        // inbox receipt ID, which might change during backend reconciliation.
+        // A genuinely different photo or revision remains reviewable.
+        return acceptedReceipts.values.contains { receipt in
+            receipt.rasterSHA256 == item.identity.rasterSHA256 &&
+                receipt.episode == episodeKey(item)
+        }
     }
 
     private func markAccepted(_ item: PendingImage, state: String) {
