@@ -87,3 +87,21 @@ Para futuros cambios iOS, siempre empezar desde la rama de release iOS con versi
 - **Bloqueo actual sin resolver en Windows:** orden de puente `ttb-editorial-guard-v2-repair-20261112-1030` para instalar desde SHA pin `5cb7181` con `-NoDispatch` devolvió `state=declined` (09:32:52 UTC); no se instaló por puente. Requiere consentimiento Windows o acción directa del propietario. NO eludir WScript ni afirmar que el ejecutor local está actualizado. El último diagnóstico remoto muestra errores `Fresh tab has draft or chat content; refusing to overwrite` (TTiTTulares) y `El mensaje escrito no coincide` (TTendencias). Watchdog v15 sí está instalado, pero no equivale al motor protegido actualizado. No reintentar comandos arbitrarios sin autorización.
 - Las colas siguen retrasadas: `trends/editorial-queue.json` con **12** a las 10:35 Madrid; `ttittulares/editorial-queue.json` con **12** a las 09:34 UTC. El guard en `telegram/editorial-run-guard.json` se actualizó a las 09:30 UTC con ambos `dispatch_pending_ack`, no prueba de finalización.
 - **Generación de imágenes:** los trabajos antiguos de tendencias `LAUNCHED` con `web_image.reason=manual_approval_required` no requieren regeneración; el de titulares `71bb196c625c` conserva `delivery_mode=launch_only` y `pc_launched_at` válido, por lo que tampoco se debe relanzar por un `RUNNING` heredado. La ausencia de nuevos jobs deriva parcialmente de que textos nuevos no llegan a READY. No duplicar imágenes ni volver a autorizar las ya aprobadas. Tras instalación del guard, verificar cierre real de al menos una ficha por proyecto y salida de nuevos jobs de imagen.
+
+
+## Actualización de incidencia urgente — 12/11/2026, 11:00 España
+
+### IPA 0.4.86/build98
+- Revalidado el artefacto oficial de Actions: run `43191355343`, artifact `13931178447`, `TTActualidad-0.4.86-build98-PlumeImpactor-IPA`, 2,599,324 bytes, SHA-256 reportado `a6ecfe90abde02c57f5cdba6ddb25cc29d0d9eaa28dd39308a56088580e18c1e`, no expirado (expira 12/12/2026).
+- La descarga del ZIP del artefacto desde la integración GitHub ha funcionado en la sesión nueva. Esto vuelve a entregar el paquete; no equivale a instalarlo en iPhone. Abrir el ZIP y usar el IPA 0.4.86 build98 incluido.
+
+### Atasco editorial — estado vivo
+- Comprobación actual de `main`: `ttittulares/editorial-queue.json` actualizado 12/11 10:51:59 UTC contiene **14/14 PROCESSING**. `trends/editorial-queue.json` actualizado 12/11 10:48:45 España contiene **12/12 preparando**. Por tanto, el atasco persiste en ambos proyectos.
+- `trends/editorial-runtime.json` refleja la pasada `tr-20261112T052500-manual` como `success/closing`, 16 intentados y cola completa en esa pasada. Las 12 órdenes actuales entraron después; no confundir la pasada previa con la cola viva.
+- La ejecución TTiTTulares manual solicitada a las 10:45 España aparece como Actions run `43194373879`, inicialmente `pending`; comprobar su estado de nuevo antes de tomar otra acción. No emitir duplicados.
+- El entorno de este relevo no ofrece una sesión Windows abierta ni una conexión operativa al puente local. Se detectó Chrome CDP disponible como proveedor en la conversación, pero sin pestañas, y se cerró la comprobación. No fue posible instalar ni ejecutar `windows/Reparar-TT-Editorial-20261111.ps1` ni verificar el Chrome 9223 del usuario. No tocar procesos, pestañas, outboxes ni colas remotamente sin la sesión autorizada.
+- El instalador protegido y el arreglo de PR #400 ya existen en `main`; la causa raíz sigue pendiente de instalación local del ejecutor protegido (la memoria previa anota el puente rechazado como `declined`). Tras acceso autorizado al PC, ejecutar el instalador en PowerShell y revisar el log y la transición real de cola de ambos proyectos. Confirmar envío con burbuja exacta y resultado editorial en GitHub, no con el mero trigger.
+
+### Límites preservados
+- No hubo reenvío manual desde este entorno, reinicio de Chrome, cambios en imagen/TTImages, aprobación/publicación ni mutación directa de las colas. Así se evita duplicar mensajes o interrumpir trabajos activos.
+- El arreglo queda **sin completar**, por falta de acceso autorizado al Windows local. Reanudar desde verificación de la ejecución pendiente y conexión aprobada al equipo, sin repetir prompts ya confirmados.
