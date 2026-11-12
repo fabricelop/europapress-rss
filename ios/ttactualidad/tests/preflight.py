@@ -75,6 +75,26 @@ different_text = "TT#9 Otra tendencia"
 assert (same_text == same_text) and not (different_text == same_text)
 print("TT_ACTUALIDAD_IOS_OPTIMISTIC_PUBLICATION_OK")
 print("TT_ACTUALIDAD_IOS_RECEIPT_AND_RECURRENCE_OK")
+# Recurrence dates are proved by distinct dated past Listas episodes, not
+# by the latest radar rank or a fresh editorial explanation alone.
+assert "var previousListasAt: Date? = nil" in store
+assert "var listasHistory:" in store and 'rows(manual, "items")' in store
+assert '["explained", "deleted", "published"]' in store
+assert 'when(previous, ["explained_at"])' in store
+assert "episode.at.timeIntervalSince(explained) < -60" in store
+assert "explained.timeIntervalSince(episode.at) >= 48 * 3600" in store
+assert 'previousListasAt: previousListasAt' in store
+assert 'previousListasAt: priorListas' in store
+assert 'Anterior en Listas:' in dashboard
+assert "if item.inListas, let previous = item.previousListasAt" in dashboard
+# A removed card triggers a specific UI scroll event: no reset on unrelated actions.
+assert '@Published private(set) var removalScrollToken = 0' in auth
+assert 'if decision == "deleted" { removalScrollToken += 1 }' in auth
+assert 'ScrollViewReader { scrollProxy in' in dashboard
+assert '.id("ttactualidad-listas-top")' in dashboard
+assert '.onChange(of: github.removalScrollToken)' in dashboard
+assert 'scrollProxy.scrollTo("ttactualidad-listas-top", anchor: .top)' in dashboard
+print("TT_ACTUALIDAD_IOS_PRIOR_LISTAS_AND_SCROLL_OK")
 print("TT_ACTUALIDAD_IOS_PREFLIGHT_OK")
 
 # Gallery is explicitly archive-only: no AI retrieval or generated-image fallback.
