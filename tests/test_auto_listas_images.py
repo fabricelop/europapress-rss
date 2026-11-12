@@ -102,6 +102,33 @@ class EnqueueTests(unittest.TestCase):
         self.assertEqual(result["actions"][0]["result"], "prior_job_reused_or_index_repaired")
         self.assertEqual(len(gh.data[(a.BRANCH,a.INDEX)]["jobs"]), 1)
         self.assertEqual(gh.counts.get(f"{a.JOB_DIR}/aaa100.json", 0), 0)
+    def test_new_revision_only_after_prior_terminal(self):
+        newer = story("aaa100", revision=2)
+        gh = fake([newer])
+        old_job, old_index = a.make_job(story("aaa100", revision=1))
+        old_job["status"] = "LAUNCHED"
+        old_job["pc_launched_at"] = old_job["requested_at"]
+        gh.data[(a.BRANCH, f"{a.JOB_DIR}/aaa100.json")] = old_job
+        gh.data[(a.BRANCH, a.INDEX)]["jobs"] = [old_index]
+        out = a.execute(gh, POLICY)
+        self.assertEqual(out["actions"][-1]["result"], "new_job_enqueued")
+        current = gh.data[(a.BRANCH, f"{a.JOB_DIR}/aaa100.json")]
+        self.assertEqual(current["revision"], 2)
+        self.assertEqual(len(gh.data[(a.BRANCH, a.INDEX)]["jobs"]), 1)
+        self.assertEqual(gh.data[(a.BRANCH, a.INDEX)]["jobs"][0]["revision"], 2)
+        again = a.execute(gh, POLICY)
+        self.assertNotIn("new_job_enqueued", [x["result"] for x in again["actions"]])
+
+    def test_new_revision_never_overwrites_running_old_job(self):
+        gh = fake([story("aaa100", revision=2)])
+        old_job, old_index = a.make_job(story("aaa100", revision=1))
+        old_job["status"] = "RUNNING"
+        gh.data[(a.BRANCH, f"{a.JOB_DIR}/aaa100.json")] = old_job
+        gh.data[(a.BRANCH, a.INDEX)]["jobs"] = [old_index]
+        outcome = a.execute(gh, POLICY)
+        self.assertNotIn("new_job_enqueued", [x["result"] for x in outcome["actions"]])
+        self.assertEqual(gh.data[(a.BRANCH, f"{a.JOB_DIR}/aaa100.json")]["revision"], 1)
+
     def test_revision_and_exact_text_required(self):
         row = story(); row["revision"] = "1"; self.assertFalse(a.main_story(row,set(),set(),POLICY)[0])
         row = story(); row["tweet"]["remate"] = ""; self.assertFalse(a.main_story(row,set(),set(),POLICY)[0])
