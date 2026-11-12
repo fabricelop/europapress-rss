@@ -82,4 +82,39 @@ class TextFirstRecovery(unittest.TestCase):
   self.assertEqual(rows[0]['id'],'a')
   self.assertEqual(rows[1 % len(rows)]['id'],'b')
 
+
+ def test_news_targeted_dispatch_advances_when_first_revision_closes(self):
+  at=(self.now-timedelta(hours=2)).isoformat()
+  g.save('ttittulares/editorial-queue.json',{'items':[
+    {'event_id':'a','revision':1,'status':'PROCESSING','selected_at':at},
+    {'event_id':'b','revision':0,'status':'PROCESSING','selected_at':at}]})
+  rows=g.pending('ttittulares')
+  self.assertEqual([r['id'] for r in rows],['a','b'])
+  command={'command_id':'tt-one-a','requested_at':(self.now-timedelta(minutes=2)).isoformat(),
+           'target_id':'a','target_revision':1}
+  wait=g.evaluate('ttittulares',self.now,{},command=command,rows=rows)
+  self.assertFalse(wait['previous_target_completed_or_superseded'])
+  self.assertFalse(wait['should_dispatch'])
+  g.save('ttittulares/prepared.json',{'items':[
+    {'event_id':'a','revision':1,'tweet':{'text':'Hechos contrastados'}}]})
+  remaining=g.pending('ttittulares')
+  self.assertEqual([r['id'] for r in remaining],['b'])
+  outcome=g.evaluate('ttittulares',self.now,{},command=command,rows=remaining)
+  self.assertTrue(outcome['previous_target_completed_or_superseded'])
+  self.assertTrue(outcome['should_dispatch'])
+
+ def test_news_target_rotation_and_strict_revision(self):
+  at=(self.now-timedelta(hours=1)).isoformat()
+  g.save('ttittulares/editorial-queue.json',{'items':[
+    {'event_id':'a','revision':2,'status':'PROCESSING','selected_at':at},
+    {'event_id':'b','revision':0,'status':'PROCESSING','selected_at':at}]})
+  rows=g.pending('ttittulares')
+  previous={'backlog_signature':g.evaluate('ttittulares',self.now,{},rows=rows)['backlog_signature'],
+            'attempts':1}
+  self.assertEqual(rows[previous['attempts']%len(rows)]['id'],'b')
+  stale={'command_id':'tt-rev1','requested_at':(self.now-timedelta(minutes=2)).isoformat(),
+         'target_id':'a','target_revision':1}
+  outcome=g.evaluate('ttittulares',self.now,previous,command=stale,rows=rows)
+  self.assertTrue(outcome['previous_target_completed_or_superseded'])
+
 if __name__=='__main__':unittest.main()
