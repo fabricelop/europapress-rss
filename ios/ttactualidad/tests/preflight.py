@@ -1074,3 +1074,19 @@ assert 'commands[key] ?? UUID()' in relation_screen
 assert 'siteRoot' not in scoped_save
 assert 'No se pudo consultar el estado remoto. Puedes marcar y pulsar Guardar' in relation_screen
 print("NATIVE_BUILD96_RELATIONS_SAVE_WITHOUT_SNAPSHOT_GET_REGRESSION_OK")
+
+# Exact image decisions survive app termination and do not repeat after
+# a successful authenticated server acceptance with a delayed X mirror.
+assert 'AcceptedReceipt: Codable' in inbox
+assert 'UserDefaults.standard.data(forKey: acceptedKey)' in inbox
+assert 'UserDefaults.standard.set(data, forKey: acceptedKey)' in inbox
+assert 'private func accepted(_ item: PendingImage)' in inbox
+assert 'accepted($0)' in inbox
+assert 'markAccepted(item, state: response.state)' in inbox
+assert 'markAccepted(item, state: "published_unverified")' in inbox
+assert 'Aprobación aceptada por el servidor' in inbox
+assert 'response.appVerified == true' in inbox and 'response.sitesVerified == true' in inbox
+assert 'No se repetirá la aprobación' in inbox
+assert 'associateVerifiedOriginalInGitHub(item, using: github)' in inbox
+assert 'restore(item)' in inbox
+print("TT_IMAGE_APPROVAL_PERSISTENT_IDEMPOTENCY_BUILD98_OK")
