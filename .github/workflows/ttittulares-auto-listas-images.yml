@@ -1,0 +1,32 @@
+name: TTiTTulares - un Gag IA al entrar en Listas
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "ttittulares/prepared.json"
+      - "ttittulares/auto_listas_images.py"
+      - "ttittulares/auto_listas_images_policy.json"
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ttittulares-auto-listas-image-enqueue
+  cancel-in-progress: false
+
+jobs:
+  enqueue:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Comprobar decisiones, deduplicación y seguridad sin generar imágenes
+        run: python3 -m unittest discover -s tests -p 'test_auto_listas_images.py' -v
+      - name: Encolar máximo 1 job real en el control branch existente
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 ttittulares/auto_listas_images.py --apply
