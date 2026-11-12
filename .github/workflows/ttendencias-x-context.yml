@@ -3,6 +3,12 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '13,33,53 * * * *'
+  push:
+    branches: [main]
+    paths:
+      - 'trends/x_context.js'
+      - 'trends/test_x_context.cjs'
+      - '.github/workflows/ttendencias-x-context.yml'
   pull_request:
     paths:
       - 'trends/x_context.js'
