@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-12T21:14:57.799135+00:00",
+  "checked_at": "2026-11-12T21:28:48.922220+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -59,8 +59,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 3.9,
-      "run_id": 43307682134,
+      "age_minutes": 3.0,
+      "run_id": 43310157813,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -83,21 +83,27 @@
     "editorial_queue": {
       "ok": false,
       "pending_count": 11,
-      "overdue_count": 2,
-      "oldest_age_minutes": 43.4,
+      "overdue_count": 3,
+      "oldest_age_minutes": 57.2,
       "warning_after_minutes": 30,
       "overdue_items": [
+        {
+          "id": "c4bd616d18d0",
+          "name": "Navalcarnero",
+          "status": "preparing",
+          "age_minutes": 43.0
+        },
         {
           "id": "radar-prepare-72ae37479690bc676ece",
           "name": "Radar · Vito",
           "status": "preparing",
-          "age_minutes": 43.4
+          "age_minutes": 57.2
         },
         {
           "id": "radar-prepare-8952674421b588b2b959",
           "name": "Radar · #LaFuerzaDeLaGente176Escaños",
           "status": "preparing",
-          "age_minutes": 43.4
+          "age_minutes": 57.2
         }
       ],
       "repairable": false
@@ -131,9 +137,9 @@
   "blocking": [
     "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos",
     "cola con 787 estado(s) inválido(s)",
-    "cola de explicaciones retrasada: 2 pendiente(s) superan 30 min; más antigua 43.4 min"
+    "cola de explicaciones retrasada: 3 pendiente(s) superan 30 min; más antigua 57.2 min"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 787 estado(s) inválido(s) | cola de explicaciones retrasada: 2 pendiente(s) superan 30 min; más antigua 43.4 min"
+  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 787 estado(s) inválido(s) | cola de explicaciones retrasada: 3 pendiente(s) superan 30 min; más antigua 57.2 min"
 }
