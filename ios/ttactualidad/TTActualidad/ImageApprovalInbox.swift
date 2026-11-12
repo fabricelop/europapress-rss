@@ -42,37 +42,24 @@ private struct DecisionResponse: Decodable {
     let sitesVerified: Bool?
 }
 
-// The inbox follows the *current* editorial Listas and Top 30, not a
-// hard-coded date or a fixed number of pictures. The server remains the
-// authority for approvals, rejections and exact image ownership.
+// All original PNGs accepted by the private inbox remain visible for the
+// editor's decision, even when their trend falls outside today's Top 30 or
+// their news leaves Listas. The private backend validates the exact episode
+// again before ANY approval or publication. Neither a radar outage nor a
+// stale GitHub snapshot may turn a real pending image into an empty inbox.
 private enum ApprovalInboxScope {
-    static func visible(_ items: [PendingImage],
-                        currentTop30: Set<String>,
-                        readyNews: Set<String>) -> [PendingImage] {
+    static func visible(_ items: [PendingImage]) -> [PendingImage] {
         var seen = Set<String>()
         return items.sorted { $0.createdAt > $1.createdAt }.filter { item in
             let identity = item.identity
+            guard ["ttendencias", "ttittulares"].contains(identity.project) else { return false }
             let episode = identity.editorialId + ":r" + String(identity.revision)
             let key = identity.project + ":" + episode
-            // Reserve the identity before looking at state. If the latest
-            // server record is approved/rejected, an older pending original
-            // must NOT reappear after refresh.
+            // Reserve newest exact episode even if it was already decided:
+            // a superseded pending original must not reappear.
             guard seen.insert(key).inserted else { return false }
-            let pending = ["pending", "pending_approval"].contains(
+            return ["pending", "pending_approval"].contains(
                 (item.state ?? "pending").lowercased())
-            let inScope: Bool
-            switch identity.project {
-            case "ttendencias":
-                inScope = currentTop30.contains(episode)
-            case "ttittulares":
-                inScope = readyNews.contains(episode)
-            default:
-                inScope = false
-            }
-            // A Site image URL can be stale or point at a missing asset;
-            // its mere presence is NOT a valid reason to hide a new pending
-            // original. The private approval state remains authoritative.
-            return pending && inScope
         }
     }
 }
@@ -94,7 +81,7 @@ private final class ApprovalInboxModel: ObservableObject {
 
     @Published private(set) var pageDiagnostics = ""
 
-    func load(using github: GitHubEditor, readyNews: Set<String>) async {
+    func load(using github: GitHubEditor) async {
         guard !loading else { return }
         loading = true
         defer { loading = false }
@@ -107,36 +94,46 @@ private final class ApprovalInboxModel: ObservableObject {
             var received = page.items
             let supportsPagination = page.hasMore != nil
             var seenCursors = Set<String>()
+            var incomplete = false
             while page.hasMore == true {
                 guard let cursor = page.nextCursor, !cursor.isEmpty,
                       seenCursors.insert(cursor).inserted else {
-                    throw InboxError.unexpectedResponse
+                    incomplete = true
+                    break
                 }
-                var query = URLComponents()
-                query.queryItems = [URLQueryItem(name: "before", value: cursor)]
-                guard let encoded = query.percentEncodedQuery else {
-                    throw InboxError.unexpectedResponse
+                do {
+                    var query = URLComponents()
+                    query.queryItems = [URLQueryItem(name: "before", value: cursor)]
+                    guard let encoded = query.percentEncodedQuery else {
+                        incomplete = true
+                        break
+                    }
+                    let (nextData, nextStatus) = try await github.privateImageInboxRequest(
+                        path: "/v1/images?limit=20&" + encoded)
+                    guard nextStatus == 200 else { throw InboxError.http(nextStatus) }
+                    page = try JSONDecoder().decode(PendingImageResponse.self, from: nextData)
+                    received.append(contentsOf: page.items)
+                } catch {
+                    // A late page failure must not erase originals already
+                    // returned by the authenticated private service.
+                    incomplete = true
+                    break
                 }
-                let (nextData, nextStatus) = try await github.privateImageInboxRequest(
-                    path: "/v1/images?limit=20&" + encoded)
-                guard nextStatus == 200 else { throw InboxError.http(nextStatus) }
-                page = try JSONDecoder().decode(PendingImageResponse.self, from: nextData)
-                received.append(contentsOf: page.items)
             }
-            let top30 = try await github.currentImageApprovalTrendEpisodes()
-            let items = ApprovalInboxScope.visible(received, currentTop30: top30,
-                                                    readyNews: readyNews)
+            // Historical pending images do NOT require a live Top 30 lookup.
+            let items = ApprovalInboxScope.visible(received)
             pageDiagnostics = "Servidor: " + String(received.count) +
-                " candidatas consultadas · " + String(items.count) +
-                " pendientes elegibles." +
-                (supportsPagination ? "" : " El servidor no confirma paginación; podrían faltar imágenes.")
+                " imágenes consultadas · " + String(items.count) +
+                " pendientes recibidas." +
+                (incomplete || !supportsPagination ?
+                    " Consulta parcial: vuelve a actualizar para completar páginas." : "")
             images = items.filter {
                 !processingIDs.contains($0.id) && !completedIDs.contains($0.id)
             }
             let keys = Set(items.map(\.id))
             previews = previews.filter { keys.contains($0.key) }
             notice = items.isEmpty ?
-                "No hay imágenes pendientes elegibles en las páginas consultadas." : ""
+                "No hay originales pendientes entre las páginas consultadas." : ""
             for image in items.prefix(4) where previews[image.id] == nil {
                 await loadOriginal(image, using: github)
             }
@@ -341,12 +338,8 @@ struct ImageApprovalInbox: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var model = ApprovalInboxModel.shared
 
-    private var readyNewsEpisodes: Set<String> {
-        Set(store.snapshot.news.map { $0.id + ":r" + String($0.revision) })
-    }
-
     private func reload() async {
-        await model.load(using: github, readyNews: readyNewsEpisodes)
+        await model.load(using: github)
     }
 
     var body: some View {
@@ -364,7 +357,7 @@ struct ImageApprovalInbox: View {
                         description: Text("Las imágenes pendientes solo pueden verse con tu cuenta autorizada."))
                 } else {
                     List {
-                        Text("Todas las pendientes de las tendencias actuales del Top 30 y noticias en Listas. Un enlace de imagen roto no oculta un PNG pendiente.")
+                        Text("Todas las imágenes originales pendientes recibidas, aunque la ficha ya no esté en el Top 30 o Listas. Aprobar siempre exige revalidar el episodio exacto en el servidor.")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                         if !model.pageDiagnostics.isEmpty {
