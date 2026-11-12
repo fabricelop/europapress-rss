@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "checked_at": "2026-11-12T11:28:37.964446+00:00",
+  "checked_at": "2026-11-12T11:34:04.158139+00:00",
   "projects": {
     "ttittulares": {
       "project": "ttittulares",
-      "checked_at": "2026-11-12T11:28:37.964446+00:00",
+      "checked_at": "2026-11-12T11:34:04.158139+00:00",
       "pending_count": 19,
       "pending_ids": [
         "25232eae5e2f",
@@ -29,8 +29,8 @@
       ],
       "oldest_at": "2026-11-12T05:05:19.402999Z",
       "latest_run": {},
-      "control_command": "tt-placeholderfix-1794482726176",
-      "last_command_at": "2026-11-12T11:25:26.176Z",
+      "control_command": "tt-draftbackup-1794482993257",
+      "last_command_at": "2026-11-12T11:29:53.257Z",
       "status": "dispatch_pending_ack",
       "should_dispatch": false,
       "item_execution": [
@@ -176,7 +176,7 @@
     },
     "ttendencias": {
       "project": "ttendencias",
-      "checked_at": "2026-11-12T11:28:37.964446+00:00",
+      "checked_at": "2026-11-12T11:34:04.158139+00:00",
       "pending_count": 5,
       "pending_ids": [
         "ba9b353684f9",
@@ -196,8 +196,8 @@
       },
       "control_command": "tr-autoguard-1794482158",
       "last_command_at": "2026-11-12T11:15:58.273690Z",
-      "status": "dispatch_pending_ack",
-      "should_dispatch": false,
+      "status": "dispatch_requested_awaiting_run",
+      "should_dispatch": true,
       "item_execution": [
         {
           "id": "ba9b353684f9",
@@ -237,9 +237,15 @@
       ],
       "backlog_signature": "8abab337900d1d8b",
       "expected_start_by": "2026-11-12T10:13:56.107984+00:00",
-      "attempts": 0,
+      "attempts": 1,
       "previous_target_completed_or_superseded": false,
-      "last_request_at": "2026-11-12T10:59:33.150389+00:00"
+      "dispatch": {
+        "requested": true,
+        "command_id": "tr-autoguard-1794483244",
+        "requested_at": "2026-11-12T11:34:04.158139Z"
+      },
+      "last_request_at": "2026-11-12T11:34:04.158139+00:00",
+      "last_requested_command_id": "tr-autoguard-1794483244"
     }
   },
   "policy": {
