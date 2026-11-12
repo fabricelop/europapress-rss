@@ -3,40 +3,29 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261112T231000-chat-direct",
-  "previous_run_id": "tr-20261112T225500-manual",
-  "command_id": "tr-20261112T231000-chat-direct",
+  "run_id": "tr-20261112T235500-chat-direct",
+  "previous_run_id": "tr-20261112T231000-chat-direct",
+  "command_id": "tr-20261112T235500-chat-direct",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-12T23:10:00+01:00",
-  "updated_at": "2026-11-12T23:18:23+01:00",
-  "current": 9,
-  "total": 9,
+  "status": "RUNNING",
+  "phase": "verifying",
+  "started_at": "2026-11-12T23:55:00+01:00",
+  "updated_at": "2026-11-12T23:55:00+01:00",
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": true,
-  "processed_ids": [
-    "294e5a32fe81",
-    "c8115e650043",
-    "4918c539c4ae",
-    "a93f105aa10f",
-    "33befd117c65",
-    "19071fd1ceab",
-    "351e59138267"
-  ],
-  "converged_ids": [
-    "ac13ef353f47",
-    "e24a929a9107"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
+  "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 7,
-    "observed": 9,
-    "closed": 9,
-    "explained": 7,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
@@ -48,83 +37,9 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 2,
-    "cause_unconfirmed": 1
+    "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "294e5a32fe81",
-      "revision": 0,
-      "name": "#Horizonte",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "1be7c84efd286c2d999429196b7fa83a7332faf7"
-    },
-    {
-      "id": "c8115e650043",
-      "revision": 0,
-      "name": "#PedroSanchezEnElPerro",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "1be7c84efd286c2d999429196b7fa83a7332faf7"
-    },
-    {
-      "id": "4918c539c4ae",
-      "revision": 0,
-      "name": "Isco",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "1be7c84efd286c2d999429196b7fa83a7332faf7"
-    },
-    {
-      "id": "a93f105aa10f",
-      "revision": 0,
-      "name": "Roberto",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "1be7c84efd286c2d999429196b7fa83a7332faf7"
-    },
-    {
-      "id": "33befd117c65",
-      "revision": 0,
-      "name": "Estrella Roja",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "1be7c84efd286c2d999429196b7fa83a7332faf7"
-    },
-    {
-      "id": "19071fd1ceab",
-      "revision": 0,
-      "name": "Bardem",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "1be7c84efd286c2d999429196b7fa83a7332faf7"
-    },
-    {
-      "id": "351e59138267",
-      "revision": 0,
-      "name": "Lo Celso",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "1be7c84efd286c2d999429196b7fa83a7332faf7"
-    },
-    {
-      "id": "ac13ef353f47",
-      "revision": 0,
-      "name": "Pubill",
-      "outcome": "concurrent_convergence",
-      "applied": true,
-      "via": "concurrent_convergence"
-    },
-    {
-      "id": "e24a929a9107",
-      "revision": 0,
-      "name": "Merino",
-      "outcome": "concurrent_convergence",
-      "applied": true,
-      "via": "concurrent_convergence"
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -191,7 +106,7 @@
       "message": "Barrera final main: editorial-queue=0. Total observado 9: 7 cerradas en esta pasada y Pubill/Merino convergieron concurrentemente. ImageGen=0; publicaciones=0."
     }
   ],
-  "last_started_at": "2026-11-12T22:53:28+01:00",
+  "last_started_at": "2026-11-12T23:55:00+01:00",
   "last_completed_at": "2026-11-12T23:18:23+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -207,7 +122,7 @@
     "pending": 0,
     "problematic": 0
   },
-  "message": "Pasada TTendencias completada y verificada: 9 revisiones observadas; 7 elaboradas/aplicadas por 1be7c84 y 2 convergieron concurrentemente. Cola editorial final 0. Sin ImageGen ni publicaciones.",
+  "message": "Pasada manual iniciada. Cola autoritativa observada en 0; verificando main y estados editoriales antes del cierre. Sin ImageGen ni publicaciones.",
   "history": [
     {
       "run_id": "tr-1794327332740-manual",
@@ -5520,6 +5435,13 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada TTendencias completada y verificada: 9 revisiones observadas; 7 elaboradas/aplicadas por 1be7c84 y 2 convergieron concurrentemente. Cola editorial final 0. Sin ImageGen ni publicaciones."
+    },
+    {
+      "run_id": "tr-20261112T235500-chat-direct",
+      "status": "RUNNING",
+      "at": "2026-11-12T23:55:00+01:00",
+      "phase": "verifying",
+      "message": "Pasada manual iniciada. Cola autoritativa observada en 0; verificando main y estados editoriales antes del cierre. Sin ImageGen ni publicaciones."
     }
   ],
   "current_item": null,
@@ -8599,6 +8521,6 @@
     }
   ],
   "processed": [],
-  "finished_at": "2026-11-12T23:18:23+01:00",
+  "finished_at": null,
   "maintenance_outbox_commit": "970b545c88b09429a23d15ec893b9d66fb611297"
 }
