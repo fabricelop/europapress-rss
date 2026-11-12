@@ -1,15 +1,17 @@
 {
   "version": 1,
-  "checked_at": "2026-11-12T17:29:36.344396+00:00",
+  "checked_at": "2026-11-12T17:46:48.643076+00:00",
   "projects": {
     "ttittulares": {
       "project": "ttittulares",
-      "checked_at": "2026-11-12T17:29:36.344396+00:00",
-      "pending_count": 3,
+      "checked_at": "2026-11-12T17:46:48.643076+00:00",
+      "pending_count": 5,
       "pending_ids": [
         "143a7122e5ed",
         "64df6048162d",
-        "2b14a10b1d23"
+        "2b14a10b1d23",
+        "38a82aa7a913",
+        "0e0f4121640d"
       ],
       "oldest_at": "2026-11-12T17:24:18.160614Z",
       "latest_run": {
@@ -20,8 +22,8 @@
         "finished_at": "2026-11-12T17:16:00Z",
         "source": "github_pr_trace"
       },
-      "control_command": "tt-urgent-1794503170058",
-      "last_command_at": "2026-11-12T17:06:10.058Z",
+      "control_command": "tt-autoguard-1794504576",
+      "last_command_at": "2026-11-12T17:29:36.344396Z",
       "status": "dispatch_requested_awaiting_run",
       "should_dispatch": true,
       "item_execution": [
@@ -45,23 +47,37 @@
           "should_start_by": "2026-11-12T17:33:42.577130+00:00",
           "global_run_after_entry": false,
           "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "38a82aa7a913",
+          "entered_at": "2026-11-12T17:38:01.697774Z",
+          "should_start_by": "2026-11-12T17:43:01.697774+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "0e0f4121640d",
+          "entered_at": "2026-11-12T17:43:49.605984Z",
+          "should_start_by": "2026-11-12T17:48:49.605984+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
         }
       ],
-      "backlog_signature": "a75bbffbbe598a77",
+      "backlog_signature": "f9bb4d0ab5582c61",
       "expected_start_by": "2026-11-12T17:29:18.160614+00:00",
       "attempts": 1,
       "previous_target_completed_or_superseded": false,
       "dispatch": {
         "requested": true,
-        "command_id": "tt-autoguard-1794504576",
-        "requested_at": "2026-11-12T17:29:36.344396Z"
+        "command_id": "tt-autoguard-1794505608",
+        "requested_at": "2026-11-12T17:46:48.643076Z"
       },
-      "last_request_at": "2026-11-12T17:29:36.344396+00:00",
-      "last_requested_command_id": "tt-autoguard-1794504576"
+      "last_request_at": "2026-11-12T17:46:48.643076+00:00",
+      "last_requested_command_id": "tt-autoguard-1794505608"
     },
     "ttendencias": {
       "project": "ttendencias",
-      "checked_at": "2026-11-12T17:29:36.344396+00:00",
+      "checked_at": "2026-11-12T17:46:48.643076+00:00",
       "pending_count": 3,
       "pending_ids": [
         "red-review-c9d5b55f971f87049f06",
@@ -77,8 +93,8 @@
         "finished_at": "2026-11-12T17:21:00+01:00",
         "source": "github_pr_trace"
       },
-      "control_command": "tr-1794503529023-manual",
-      "last_command_at": "2026-11-12T17:12:09.023Z",
+      "control_command": "tr-autoguard-1794504576",
+      "last_command_at": "2026-11-12T17:29:36.344396Z",
       "status": "dispatch_requested_awaiting_run",
       "should_dispatch": true,
       "item_execution": [
@@ -106,15 +122,15 @@
       ],
       "backlog_signature": "71fb944763067b69",
       "expected_start_by": "2026-11-12T16:59:02.578635+00:00",
-      "attempts": 1,
+      "attempts": 2,
       "previous_target_completed_or_superseded": false,
       "dispatch": {
         "requested": true,
-        "command_id": "tr-autoguard-1794504576",
-        "requested_at": "2026-11-12T17:29:36.344396Z"
+        "command_id": "tr-autoguard-1794505608",
+        "requested_at": "2026-11-12T17:46:48.643076Z"
       },
-      "last_request_at": "2026-11-12T17:29:36.344396+00:00",
-      "last_requested_command_id": "tr-autoguard-1794504576"
+      "last_request_at": "2026-11-12T17:46:48.643076+00:00",
+      "last_requested_command_id": "tr-autoguard-1794505608"
     }
   },
   "policy": {
