@@ -79,6 +79,8 @@ private final class ApprovalInboxModel: ObservableObject {
     private let previewLimit = 64
     @Published private(set) var loading = false
     @Published private(set) var processingIDs = Set<String>()
+    // Keep HTTP rejections attached to the original, still-visible card.
+    @Published private(set) var decisionFailures: [String: String] = [:]
     @Published var notice = ""
     // A successful receipt must not reappear during an eventually-consistent
     // refresh, but a failed decision always restores its original card.
@@ -261,14 +263,19 @@ private final class ApprovalInboxModel: ObservableObject {
             }
             let items = ApprovalInboxScope.visible(received)
             let ready = items.filter {
-                !processingIDs.contains($0.id) && !completedIDs.contains($0.id) &&
-                    !accepted($0) && !unconfirmed($0)
+                !completedIDs.contains($0.id) && !accepted($0) && !unconfirmed($0)
+            }
+            // Preserve processing cards if a cursor snapshot changes during POST.
+            let stillProcessing = images.filter { existing in
+                processingIDs.contains(existing.id) && !completedIDs.contains(existing.id) &&
+                    !accepted(existing) && !unconfirmed(existing) &&
+                    !ready.contains(where: { $0.id == existing.id })
             }
             // Exactly one visible snapshot update per completed refresh.
-            images = ready
-            let keys = Set(ready.map(\.id))
+            images = ready + stillProcessing
+            let keys = Set(images.map(\.id))
             previews = previews.filter { keys.contains($0.key) }
-            previewOrder.removeAll { !keys.contains($0) }
+            previewOrder.removeAll { !keys.contains($0) && !processingIDs.contains($0) }
             feedVerified = true
             pageDiagnostics = "Servidor: " + String(received.count) +
                 " registros · " + String(items.count) + " originales pendientes." +
@@ -363,10 +370,12 @@ private final class ApprovalInboxModel: ObservableObject {
             notice = "Necesitamos comprobar primero el PNG original antes de tomar una decisión."
             return
         }
+        // Only a confirmed response removes the card. Previously a 409
+        // caused remove -> restore after one second (the reported bounce).
         processingIDs.insert(item.id)
-        images.removeAll { $0.id == item.id }
-        notice = "Decisión en curso · " + String(processingIDs.count) +
-                 " pendiente(s). Puedes pasar a la siguiente imagen."
+        decisionFailures.removeValue(forKey: item.id)
+        notice = "Comprobando decisión con el servidor · " +
+                 String(processingIDs.count) + " en curso."
 
         // Safe one-at-a-time backend write, but zero UI waiting. Keep a strong
         // reference until completion even if the sheet is dismissed.
@@ -376,17 +385,9 @@ private final class ApprovalInboxModel: ObservableObject {
             await persistDecision(item, action: action, using: github)
         }
         // Prefetch the next original right away, without waiting for POST.
-        for next in images.prefix(4) where previews[next.id] == nil {
+        for next in images.filter({ $0.id != item.id }).prefix(4)
+            where previews[next.id] == nil {
             Task { await loadOriginal(next, using: github) }
-        }
-    }
-
-    private func restore(_ item: PendingImage) {
-        // Server/association failure: never pretend the image was approved.
-        // Keep the exact original/identity available for explicit retry.
-        if !images.contains(where: { $0.id == item.id }) &&
-           !completedIDs.contains(item.id) {
-            images.insert(item, at: 0)
         }
     }
 
@@ -403,21 +404,16 @@ private final class ApprovalInboxModel: ObservableObject {
                 let code = payload?["error"] as? String ?? payload?["code"] as? String
                 if [401, 403, 409, 422].contains(status) {
                     // Definitive rejection, never interpreted as a receipt.
-                    notice = InboxError.decisionHTTP(status, code).localizedDescription
-                    restore(item)
+                    let detail = InboxError.decisionHTTP(status, code).localizedDescription
+                    decisionFailures[item.id] = "DECISIÓN NO APLICADA: " + detail +
+                        " HTTP " + String(status) +
+                        (code.map { " (" + $0 + ")" } ?? "") + "."
+                    notice = "El servidor rechazó la decisión de «" + item.title +
+                        "». La tarjeta permanece visible; no se ha confirmado aprobación."
                     return
                 }
-                if action == "approve" && [404, 503].contains(status) {
-                    // Keep legacy GitHub mirror independent. It is NOT proof of
-                    // a private APP/Site approval, and must not trigger re-taps.
-                    do {
-                        _ = try await associateVerifiedOriginalInGitHub(item, using: github)
-                        await SiteAIImageCatalog.invalidateCache()
-                        await NewsAIImageCatalog.invalidateCache()
-                    } catch {
-                        // Failure to mirror does not change private decision.
-                    }
-                }
+                // An ambiguous 404/503 must never trigger a second
+                // GitHub association. Private approval is authoritative.
                 holdUnconfirmed(item, action: action,
                     reason: "Servidor HTTP " + String(status) +
                     (code.map { " (" + $0 + ")" } ?? ""))
@@ -488,7 +484,7 @@ private final class ApprovalInboxModel: ObservableObject {
             case .http(401), .decisionHTTP(401, _):
                 return "Vincula tu cuenta GitHub de editor."
             case .decisionHTTP(409, "EDITORIAL_CHANGED_OR_NOT_READY"):
-                return "La ficha ya no coincide con el episodio READY o salió de Listas (409). Original conservado."
+                return "El servidor rechaza el episodio editorial (409). No se ha aplicado la aprobación; original conservado."
             case .http(409), .decisionHTTP(409, _):
                 return "La ficha, revisión o imagen ha cambiado (409). Actualiza la bandeja; original conservado."
             case .decisionHTTP(503, "EDITORIAL_SOURCE_UNAVAILABLE"):
@@ -597,6 +593,16 @@ struct ImageApprovalInbox: View {
                                 }
                                 Text("Ficha \(item.identity.editorialId) · revisión \(item.identity.revision)")
                                     .font(.caption2).foregroundStyle(.secondary)
+                                if model.processingIDs.contains(item.id) {
+                                    ProgressView("Comprobando respuesta del servidor…")
+                                        .font(.caption)
+                                }
+                                if let failure = model.decisionFailures[item.id] {
+                                    Text(failure)
+                                        .font(.caption)
+                                        .foregroundStyle(.red)
+                                        .textSelection(.enabled)
+                                }
                                 HStack(spacing: 12) {
                                     Button("Aprobar") {
                                         model.decide(item, action: "approve", using: github)
