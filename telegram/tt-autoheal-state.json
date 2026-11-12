@@ -2,111 +2,126 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-11-12T00:11:16.731641+00:00",
-      "issue_count": 1,
+      "checked_at": "2026-11-12T00:33:38.430350+00:00",
+      "issue_count": 2,
       "issues": [
+        {
+          "kind": "missing_delivery",
+          "id": "171c5e1c6f6a",
+          "title": "Feijóo acusa a Sánchez de gastar \"un billón de euros\" sin PGE y estudiará la responsabilidad penal s",
+          "seconds": 597,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 2297824,
+          "seconds": 2299166,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
       "actions_started": [
+        "send-ttittulares-ready-telegram.yml",
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "b713f1c3f4a90157b05c0bc411e3f7a3420ba8147f7f0a578d9c128c7e94e639",
+      "open_signature": "e4c2d5b83bc663bc88e290ec1801497c81549678704d03cf8d2204aa98776f30",
       "repair_via_workflow_run": false,
       "escalation_required": 0
     },
     "ttendencias": {
-      "checked_at": "2026-11-12T00:11:16.731641+00:00",
-      "issue_count": 12,
+      "checked_at": "2026-11-12T00:33:38.430350+00:00",
+      "issue_count": 13,
       "issues": [
         {
           "kind": "missing_delivery",
           "id": "ac5218c64f99",
           "title": "Jordi Wild",
-          "seconds": 46818,
+          "seconds": 48160,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
           "id": "6519e0bfa504",
           "title": "Cobarde",
-          "seconds": 21902,
+          "seconds": 23244,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
           "id": "27bceccd1f06",
           "title": "bertrand",
-          "seconds": 8398,
+          "seconds": 9740,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
           "id": "e0010ec683c3",
           "title": "Mondongo",
-          "seconds": 8091,
+          "seconds": 9433,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
           "id": "74253d4d6c99",
           "title": "Guadarrama",
-          "seconds": 8505,
+          "seconds": 9847,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
           "id": "6e7e20e3e07d",
           "title": "Plaza España",
-          "seconds": 8258,
+          "seconds": 9599,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
           "id": "47ef1a2cc908",
           "title": "Espejo Público",
-          "seconds": 8320,
+          "seconds": 9662,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
           "id": "e1456607bb13",
           "title": "#FeijóoEH",
-          "seconds": 7617,
+          "seconds": 8959,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
           "id": "2259355bb15e",
           "title": "#HuelgaGeneral11",
-          "seconds": 7617,
+          "seconds": 8959,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
           "id": "73d461188112",
           "title": "#FirstDates11N",
-          "seconds": 7617,
+          "seconds": 8959,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
           "id": "3fd9e38604c6",
           "title": "#LaIslaDeLasTentaciones20",
-          "seconds": 4174,
+          "seconds": 5516,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "ea09363be64e",
+          "title": "Nacho",
+          "seconds": 1348,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 2297823,
+          "seconds": 2299165,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -115,16 +130,16 @@
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "f6689b1dbfcea0ff929e22726d3f14549e10cf17de7661bd8cced94765df260e",
+      "open_signature": "493063931b639544ab3ffbcbc43281d597fefb77095a624c5b5ec0306e377bad",
       "repair_via_workflow_run": false,
-      "escalation_required": 11
+      "escalation_required": 12
     }
   },
   "attempts": {
-    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-11-11T18:04:39.399771+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-11-12T00:11:16.731641+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-11-12T00:11:16.731641+00:00",
-    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-11-12T00:11:16.731641+00:00"
+    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-11-12T00:33:38.430350+00:00",
+    "ttittulares:telegram-pinned-index.yml": "2026-11-12T00:33:38.430350+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-11-12T00:33:38.430350+00:00",
+    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-11-12T00:33:38.430350+00:00"
   },
-  "checked_at": "2026-11-12T00:11:16.731641+00:00"
+  "checked_at": "2026-11-12T00:33:38.430350+00:00"
 }
