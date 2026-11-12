@@ -86,6 +86,22 @@ private final class ApprovalInboxModel: ObservableObject {
         var state: String
         var acceptedAt: Date
     }
+    // A failed or missing network acknowledgement must not be retried as a
+    // second irreversible approval. Separate these from accepted receipts.
+    private struct UnconfirmedDecision: Codable, Identifiable {
+        let imageID: String
+        let rasterSHA256: String
+        let episode: String
+        let title: String
+        let action: String
+        let notedAt: Date
+        var id: String { imageID }
+    }
+    private let unconfirmedKey = "TTActualidad.privateImageInbox.unconfirmed.v1"
+    @Published private(set) var unconfirmedDecisions: [String: UnconfirmedDecision] = [:]
+    var unconfirmedRows: [UnconfirmedDecision] {
+        unconfirmedDecisions.values.sorted { $0.notedAt > $1.notedAt }
+    }
     private let acceptedKey = "TTActualidad.privateImageInbox.accepted.v1"
     private var acceptedReceipts: [String: AcceptedReceipt] = [:]
     private var decisionTail: Task<Void, Never>?
@@ -100,6 +116,52 @@ private final class ApprovalInboxModel: ObservableObject {
                 entry.value.acceptedAt <= Date().addingTimeInterval(60)
             }
         }
+        if let data = UserDefaults.standard.data(forKey: unconfirmedKey),
+           let saved = try? JSONDecoder().decode([String: UnconfirmedDecision].self, from: data) {
+            unconfirmedDecisions = saved.filter { pair in
+                pair.key == pair.value.imageID && pair.key.count == 64 &&
+                    pair.value.rasterSHA256.count == 64 &&
+                    pair.value.notedAt <= Date().addingTimeInterval(60)
+            }
+        }
+    }
+
+    private func episodeKey(_ item: PendingImage) -> String {
+        item.identity.project + ":" + item.identity.editorialId +
+            ":r" + String(item.identity.revision)
+    }
+
+    private func unconfirmed(_ item: PendingImage) -> Bool {
+        guard let record = unconfirmedDecisions[item.id] else { return false }
+        return record.rasterSHA256 == item.identity.rasterSHA256 &&
+            record.episode == episodeKey(item)
+    }
+
+    private func saveUnconfirmed() {
+        if let data = try? JSONEncoder().encode(unconfirmedDecisions) {
+            UserDefaults.standard.set(data, forKey: unconfirmedKey)
+        }
+    }
+
+    private func holdUnconfirmed(_ item: PendingImage, action: String, reason: String) {
+        unconfirmedDecisions[item.id] = UnconfirmedDecision(
+            imageID: item.id, rasterSHA256: item.identity.rasterSHA256,
+            episode: episodeKey(item), title: item.title,
+            action: action, notedAt: Date())
+        if unconfirmedDecisions.count > 4000 {
+            let keep = unconfirmedDecisions.values.sorted { $0.notedAt > $1.notedAt }.prefix(3500)
+            unconfirmedDecisions = Dictionary(uniqueKeysWithValues: keep.map { ($0.imageID, $0) })
+        }
+        saveUnconfirmed()
+        images.removeAll { $0.id == item.id }
+        notice = "Decisión SIN CONFIRMAR para «" + item.title + "»: " + reason +
+            ". No se reenviará automáticamente. Revisa el apartado de decisiones sin confirmación."
+    }
+
+    func reopenUnconfirmed(_ id: String) {
+        // Re-enables manual review only; never sends an approval itself.
+        unconfirmedDecisions.removeValue(forKey: id)
+        saveUnconfirmed()
     }
 
     private func accepted(_ item: PendingImage) -> Bool {
@@ -114,6 +176,8 @@ private final class ApprovalInboxModel: ObservableObject {
         // distinguishable while it is removed from the actionable approval queue.
         let episode = item.identity.project + ":" + item.identity.editorialId +
             ":r" + String(item.identity.revision)
+        unconfirmedDecisions.removeValue(forKey: item.id)
+        saveUnconfirmed()
         acceptedReceipts[item.id] = AcceptedReceipt(
             imageID: item.id, rasterSHA256: item.identity.rasterSHA256,
             episode: episode, state: state, acceptedAt: Date())
@@ -186,7 +250,7 @@ private final class ApprovalInboxModel: ObservableObject {
             let items = ApprovalInboxScope.visible(received)
             let ready = items.filter {
                 !processingIDs.contains($0.id) && !completedIDs.contains($0.id) &&
-                    !accepted($0)
+                    !accepted($0) && !unconfirmed($0)
             }
             // Exactly one visible snapshot update per completed refresh.
             images = ready
@@ -197,8 +261,10 @@ private final class ApprovalInboxModel: ObservableObject {
                 " registros · " + String(items.count) + " originales pendientes." +
                 (!supportsPagination ? " Sin cursor de paginación." : "")
             let alreadyAccepted = received.filter { accepted($0) }.count
-            notice = alreadyAccepted > 0 ?
-                String(alreadyAccepted) + " decisión(es) aceptadas, ocultas de la cola." : ""
+            let held = received.filter { unconfirmed($0) }.count
+            notice = alreadyAccepted > 0 || held > 0 ?
+                String(alreadyAccepted) + " decisión(es) aceptadas ocultas · " +
+                String(held) + " sin confirmación, separadas de la cola." : ""
             for image in ready.prefix(4) where previews[image.id] == nil {
                 Task { await loadOriginal(image, using: github) }
             }
@@ -271,6 +337,7 @@ private final class ApprovalInboxModel: ObservableObject {
               !processingIDs.contains(item.id),
               !completedIDs.contains(item.id),
               feedVerified,
+              !unconfirmed(item),
               images.contains(where: { $0.id == item.id }) else { return }
         guard previews[item.id] != nil else {
             notice = "Necesitamos comprobar primero el PNG original antes de tomar una decisión."
@@ -312,23 +379,38 @@ private final class ApprovalInboxModel: ObservableObject {
             let (data, status) = try await github.privateImageInboxRequest(
                 path: "/v1/images/\(item.id)/decision", method: "POST", jsonBody: body)
             if status != 200 {
-                // Preserve the existing immutable-PNG GitHub fallback. It is
-                // NOT equivalent to an APP+Site receipt: restore for retry.
-                if action == "approve", [404, 409, 503].contains(status) {
-                    _ = try await associateVerifiedOriginalInGitHub(item, using: github)
-                    await SiteAIImageCatalog.invalidateCache()
-                    await NewsAIImageCatalog.invalidateCache()
-                    notice = "Original vinculado en GitHub, pero APP/Site aún no " +
-                             "confirma esta aprobación (HTTP " + String(status) +
-                             "). La imagen vuelve para reintentar."
+                let payload = (try? JSONSerialization.jsonObject(with: data)) as? [String: Any]
+                let code = payload?["error"] as? String ?? payload?["code"] as? String
+                if [401, 403, 409, 422].contains(status) {
+                    // Definitive rejection, never interpreted as a receipt.
+                    notice = InboxError.decisionHTTP(status, code).localizedDescription
                     restore(item)
                     return
                 }
-                let payload = (try? JSONSerialization.jsonObject(with: data)) as? [String: Any]
-                let code = payload?["error"] as? String ?? payload?["code"] as? String
-                throw InboxError.decisionHTTP(status, code)
+                if action == "approve" && [404, 503].contains(status) {
+                    // Keep legacy GitHub mirror independent. It is NOT proof of
+                    // a private APP/Site approval, and must not trigger re-taps.
+                    do {
+                        _ = try await associateVerifiedOriginalInGitHub(item, using: github)
+                        await SiteAIImageCatalog.invalidateCache()
+                        await NewsAIImageCatalog.invalidateCache()
+                    } catch {
+                        // Failure to mirror does not change private decision.
+                    }
+                }
+                holdUnconfirmed(item, action: action,
+                    reason: "Servidor HTTP " + String(status) +
+                    (code.map { " (" + $0 + ")" } ?? ""))
+                return
             }
             let response = try JSONDecoder().decode(DecisionResponse.self, from: data)
+            let allowedState = action == "approve" ?
+                ["approved_awaiting_publication", "published"] : ["rejected"]
+            guard allowedState.contains(response.state) else {
+                holdUnconfirmed(item, action: action,
+                    reason: "Respuesta del servidor sin estado final conocido")
+                return
+            }
             if action == "approve" && response.state == "approved_awaiting_publication" {
                 // The authoritative service accepted the editor's approval.
                 // Do not send the SAME approval again while its publisher runs.
@@ -372,9 +454,10 @@ private final class ApprovalInboxModel: ObservableObject {
                 notice = "Rechazada. Original conservado; bandeja actualizada."
             }
         } catch {
-            notice = "Decisión no confirmada: " + error.localizedDescription +
-                     ". Se ha restaurado la imagen para reintentar."
-            restore(item)
+            // HTTP timeout may happen after the service applied the decision.
+            // Keep it in the unconfirmed section instead of automatic requeue.
+            holdUnconfirmed(item, action: action,
+                reason: error.localizedDescription)
         }
     }
 
@@ -449,6 +532,26 @@ struct ImageApprovalInbox: View {
                                 Text(model.notice)
                                     .font(.footnote)
                                     .foregroundStyle(.secondary)
+                            }
+                        }
+                        if !model.unconfirmedRows.isEmpty {
+                            Section("Decisiones sin confirmación (" +
+                                    String(model.unconfirmedRows.count) + ")") {
+                                ForEach(model.unconfirmedRows) { record in
+                                    VStack(alignment: .leading, spacing: 6) {
+                                        Text(record.title).font(.subheadline.weight(.semibold))
+                                        Text(record.action == "approve" ?
+                                             "Aprobación enviada, sin confirmación final." :
+                                             "Rechazo enviado, sin confirmación final.")
+                                            .font(.caption).foregroundStyle(.orange)
+                                        Text("No se considera publicada ni se reenvía sola.")
+                                            .font(.caption2).foregroundStyle(.secondary)
+                                        Button("Volver a revisar en la bandeja") {
+                                            model.reopenUnconfirmed(record.id)
+                                            Task { await reload() }
+                                        }.buttonStyle(.bordered)
+                                    }
+                                }
                             }
                         }
                         ForEach(model.images) { item in
