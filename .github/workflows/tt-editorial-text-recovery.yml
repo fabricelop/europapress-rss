@@ -33,6 +33,8 @@ jobs:
           sparse-checkout: |
             /shared/tt_editorial_run_guard.py
             /shared/test_editorial_text_first.py
+            /trends/ensure_pc_editorial.py
+            /trends/test_ensure_pc_editorial.py
             /windows/TTendenciasDedicatedListener.ps1
             /windows/TTiTTularesDedicatedListener.ps1
             /windows/Reparar-TT-Editorial-20261111.ps1
@@ -49,6 +51,7 @@ jobs:
         run: |
           python3 shared/tt_editorial_run_guard.py selftest
           python3 -m unittest discover -s shared -p 'test_editorial_text_first.py' -v
+          python3 -m unittest trends.test_ensure_pc_editorial -v
           node --test windows/tests/editorial-single-item-autorecovery.test.cjs
       - name: Recover only authoritative editorial work
         if: github.event_name != 'pull_request'
