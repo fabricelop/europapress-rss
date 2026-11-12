@@ -8,6 +8,7 @@ on:
       - 'trends/publish_x_context.js'
       - 'trends/test_x_context.cjs'
       - 'trends/test_publish_x_context.cjs'
+      - 'trends/check_x_playwright.cjs'
       - '.github/workflows/ttendencias-x-context.yml'
       - 'windows/Run-TTendencias-X-Local.ps1'
       - 'windows/Install-TTendencias-XContext.ps1'
@@ -17,6 +18,7 @@ on:
       - 'trends/publish_x_context.js'
       - 'trends/test_x_context.cjs'
       - 'trends/test_publish_x_context.cjs'
+      - 'trends/check_x_playwright.cjs'
       - '.github/workflows/ttendencias-x-context.yml'
       - 'windows/Run-TTendencias-X-Local.ps1'
       - 'windows/Install-TTendencias-XContext.ps1'
@@ -35,11 +37,13 @@ jobs:
             /trends/publish_x_context.js
             /trends/test_x_context.cjs
             /trends/test_publish_x_context.cjs
+            /trends/check_x_playwright.cjs
             /selorecordamos/git_publish_lock.js
       - name: Validate read-only local X collection and safe publishing
         run: |
           node --check trends/x_context.js
           node --check trends/publish_x_context.js
+          node --check trends/check_x_playwright.cjs
           node --test trends/test_x_context.cjs trends/test_publish_x_context.cjs
   windows-parser:
     runs-on: windows-latest
@@ -51,6 +55,7 @@ jobs:
           sparse-checkout: |
             /windows/Run-TTendencias-X-Local.ps1
             /windows/Install-TTendencias-XContext.ps1
+            /trends/check_x_playwright.cjs
       - name: Verify PowerShell 5.1 syntax (no script execution)
         shell: powershell
         run: |
@@ -70,3 +75,14 @@ jobs:
           & powershell.exe -NoProfile -ExecutionPolicy Bypass -File windows/Install-TTendencias-XContext.ps1 -RepoRoot $runtime -CheckOnly
           if ($LASTEXITCODE -ne 0) { throw 'CheckOnly failed without a Git checkout' }
           Write-Host 'TT_X_NON_GIT_RUNTIME_CHECK_OK'
+      - name: Verify real Playwright module using the PowerShell-safe file invocation
+        shell: powershell
+        run: |
+          $local = Join-Path $env:RUNNER_TEMP 'TT-XContext'
+          New-Item -Path $local -ItemType Directory -Force | Out-Null
+          Copy-Item 'trends/check_x_playwright.cjs' (Join-Path $local 'check_x_playwright.cjs')
+          & npm.cmd install --prefix $local --no-save --no-package-lock playwright
+          if ($LASTEXITCODE -ne 0) { throw 'Playwright package installation failed on Windows CI' }
+          & node.exe (Join-Path $local 'check_x_playwright.cjs')
+          if ($LASTEXITCODE -ne 0) { throw 'PowerShell-safe Playwright module check failed' }
+          Write-Host 'TT_X_WINDOWS_PLAYWRIGHT_MODULE_OK'
