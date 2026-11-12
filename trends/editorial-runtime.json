@@ -3,118 +3,63 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261112T225500-manual",
-  "previous_run_id": "tr-20261112T193900-manual",
-  "command_id": "tr-20261112T225500-manual",
+  "run_id": "tr-20261112T231000-chat-direct",
+  "previous_run_id": "tr-20261112T225500-manual",
+  "command_id": "tr-20261112T231000-chat-direct",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-12T22:55:00+01:00",
-  "updated_at": "2026-11-12T23:00:00+01:00",
-  "current": 8,
-  "total": 8,
+  "status": "RUNNING",
+  "phase": "investigating",
+  "started_at": "2026-11-12T23:10:00+01:00",
+  "updated_at": "2026-11-12T23:17:00+01:00",
+  "current": 2,
+  "total": 9,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": true,
-  "processed_ids": [
-    "5b4019aec79a",
-    "42a8a396f51e",
-    "dfda32e4066b",
-    "e84ec14bccf9",
-    "6f003b5f1cb3",
-    "ecc6252a91d7",
-    "cf919568868a",
-    "b0858b01041f"
+  "queue_complete": false,
+  "processed_ids": [],
+  "converged_ids": [
+    "ac13ef353f47",
+    "e24a929a9107"
   ],
-  "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "294e5a32fe81",
+    "c8115e650043",
+    "4918c539c4ae",
+    "a93f105aa10f",
+    "33befd117c65",
+    "19071fd1ceab",
+    "351e59138267"
+  ],
+  "remaining_active_ids": [
+    "294e5a32fe81",
+    "c8115e650043",
+    "4918c539c4ae",
+    "a93f105aa10f",
+    "33befd117c65",
+    "19071fd1ceab",
+    "351e59138267"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 8,
-    "observed": 8,
-    "closed": 8,
-    "explained": 8,
+    "attempted": 0,
+    "observed": 9,
+    "closed": 2,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
     "maintenance_reviews": 0,
     "unchanged_reviews": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 7,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0,
-    "cause_unconfirmed": 2
+    "concurrent_convergence": 2,
+    "cause_unconfirmed": 0
   },
-  "outcomes": [
-    {
-      "id": "5b4019aec79a",
-      "revision": 1,
-      "name": "Chequia",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "ff3098228ec77b34f54465a0fcf4028f4f4e32bd"
-    },
-    {
-      "id": "42a8a396f51e",
-      "revision": 0,
-      "name": "#LaFuerzaDeLasMujeres",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "ff3098228ec77b34f54465a0fcf4028f4f4e32bd"
-    },
-    {
-      "id": "dfda32e4066b",
-      "revision": 0,
-      "name": "Rodrigo Marina",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "ff3098228ec77b34f54465a0fcf4028f4f4e32bd"
-    },
-    {
-      "id": "e84ec14bccf9",
-      "revision": 0,
-      "name": "#SVFinal",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "ff3098228ec77b34f54465a0fcf4028f4f4e32bd"
-    },
-    {
-      "id": "6f003b5f1cb3",
-      "revision": 0,
-      "name": "#LaDiana12Nov",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "ff3098228ec77b34f54465a0fcf4028f4f4e32bd"
-    },
-    {
-      "id": "ecc6252a91d7",
-      "revision": 0,
-      "name": "Junior",
-      "outcome": "explained_cause_unconfirmed",
-      "applied": true,
-      "apply_commit": "ff3098228ec77b34f54465a0fcf4028f4f4e32bd"
-    },
-    {
-      "id": "cf919568868a",
-      "revision": 0,
-      "name": "Tarancón",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "ff3098228ec77b34f54465a0fcf4028f4f4e32bd"
-    },
-    {
-      "id": "b0858b01041f",
-      "revision": 0,
-      "name": "celso",
-      "outcome": "explained_cause_unconfirmed",
-      "applied": true,
-      "apply_commit": "ff3098228ec77b34f54465a0fcf4028f4f4e32bd"
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -164,6 +109,11 @@
       "at": "2026-11-12T19:46:00+01:00",
       "phase": "closing",
       "message": "Persistencia verificada en main por commit cf5bedf8: editorial-queue=0; requests.json y telegram-manual-explained.json modificados; 5 explicaciones nuevas y 7 no_distinct_event. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-12T23:17:00+01:00",
+      "phase": "investigating",
+      "message": "Ejecución manual: cola inicial observada 9; Pubill y Merino convergieron antes de persistir. Quedan 7 revisiones activas en investigación JIT. Sin ImageGen ni publicación."
     }
   ],
   "last_started_at": "2026-11-12T22:53:28+01:00",
@@ -182,7 +132,7 @@
     "pending": 0,
     "problematic": 0
   },
-  "message": "Pasada completada 8/8. Se persistieron 8 explicaciones; Junior y celso quedaron con causa expresamente no confirmada. Cola final 0. Sin ImageGen ni publicaciones.",
+  "message": "Pasada manual iniciada; 2 revisiones convergieron concurrentemente y se investigan las restantes contra main. Sin ImageGen ni publicación.",
   "history": [
     {
       "run_id": "tr-1794327332740-manual",
@@ -8457,6 +8407,6 @@
     }
   ],
   "processed": [],
-  "finished_at": "2026-11-12T23:00:00+01:00",
+  "finished_at": null,
   "maintenance_outbox_commit": "970b545c88b09429a23d15ec893b9d66fb611297"
 }
