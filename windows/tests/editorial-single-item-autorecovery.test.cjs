@@ -6,6 +6,7 @@ const read=p=>fs.readFileSync(path.join(root,p),'utf8');
 const trends=read('windows/TTendenciasDedicatedListener.ps1');
 const news=read('windows/TTiTTularesDedicatedListener.ps1');
 const rescue=read('windows/Reparar-TT-Editorial-20261111.ps1');
+const guardUpdater=read('windows/Update-TT-Editorial-Guard-Only.ps1');
 const guard=read('shared/tt_editorial_run_guard.py');
 test('trends prompt exposes guarded command marker and one exact review only',()=>{
  assert.match(trends,/TTENDENCIAS_EDITORIAL_JOB_V2 \$CommandId \| TT_ACTUALIDAD_MANUAL_EDITORIAL_V1/);
@@ -73,4 +74,17 @@ test('Windows installation GuardOnly mode never touches Chrome or queues',()=>{
   'GuardOnly branch must execute before cleanup, probe and any dispatch');
  assert.match(rescue.slice(branch,cleanup),/exit 0/);
  assert.match(rescue.slice(branch,cleanup),/GUARD_ONLY_INSTALLED/);
+});
+
+test('guard updater is idempotent, syntax checked and never touches Chrome',()=>{
+ assert.match(guardUpdater,/Reparar-TT-Editorial-20261111[.]ps1/);
+ assert.match(guardUpdater,/51b6f70504cad0594a85f290e84d791edb38f09b/);
+ assert.match(guardUpdater,/function confirmedUserState\(s,marker\)/);
+ assert.match(guardUpdater,/userMessages:us\.slice\(-8\)/);
+ assert.match(guardUpdater,/\$node --check \$stage/);
+ assert.match(guardUpdater,/\$node \$stage --selftest/);
+ assert.match(guardUpdater,/if\(\$CheckOnly\)/);
+ assert.match(guardUpdater,/if\(\$oldHash -eq \$newHash\)/);
+ assert.match(guardUpdater,/Copy-Item -LiteralPath \$target -Destination \$backup/);
+ assert.doesNotMatch(guardUpdater,/Restart-Process|Stop-Process|Start-ScheduledTask|Input\.dispatch/);
 });
