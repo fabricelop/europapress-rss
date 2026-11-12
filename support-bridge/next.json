@@ -1,21 +1,15 @@
 {
   "version": 1,
-  "id": "ttb-news-builtin-summary-20261112-1253",
+  "id": "ttb-news-flags-20261112-1256",
   "project": "TTActualidad",
   "expires_at": "2026-11-13T12:00:00Z",
-  "description": "Read-only summary of news and trends listeners and guards",
+  "description": "Read-only boolean outcomes of targeted news editorial launch",
   "steps": [
     {
-      "kind": "builtin",
-      "name": "listener-summary"
-    },
-    {
-      "kind": "builtin",
-      "name": "editorial-guard"
-    },
-    {
-      "kind": "builtin",
-      "name": "editorial-runtime"
+      "kind": "powershell",
+      "name": "news-launch-flags",
+      "script": "$lines=@(Get-Content 'C:\\TTiTTulares\\ttittulares-mobile-trigger.log' -Tail 500)\n$markers=@($lines|Where-Object{$_ -match 'tt-guardfix-1794481657530'})\n$state='none'\nif($markers.Count){$state='observed'}\nif(@($lines|Where-Object{$_ -match 'LAUNCH CONFIRMED.*tt-guardfix-1794481657530'}).Count){$state='confirmed'}\nif(@($lines|Where-Object{$_ -match 'LAUNCH FAILED.*tt-guardfix-1794481657530'}).Count){$state='failed'}\n$guard=@($lines|Where-Object{$_ -match 'NEW_CHAT_NOT_BLANK'})\n$o=@{state=$state;marker_count=$markers.Count;guard_count=$guard.Count;guard_has_history=[bool](@($guard|Where-Object{$_ -match 'users\\\":([1-9])|assistants\\\":([1-9])'}).Count);guard_has_draft=[bool](@($guard|Where-Object{$_ -match 'editorLength\\\":([1-9])'}).Count)}\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress))",
+      "timeout_seconds": 20
     }
   ]
 }
