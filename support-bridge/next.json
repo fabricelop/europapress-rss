@@ -1,15 +1,15 @@
 {
   "version": 1,
-  "id": "ttb-news-timeout-ledger-20261112-1225",
+  "id": "ttb-news-timeout-diagnostic-install-20261112-1227",
   "project": "TTActualidad",
   "expires_at": "2026-11-13T12:00:00Z",
-  "description": "Read exact timed-out editorial send ledger and last stdout",
+  "description": "Install guarded state diagnostic and 120 second listener confirmation with backups",
   "steps": [
     {
       "kind": "powershell",
-      "name": "timeout-ledger",
-      "script": "$id='tt-urgent-1794480233639'\n$dir='C:\\TTiTTulares\\TT-Editorial-Rescue\\sent'\n$f=Get-ChildItem $dir -Filter \"*$id*.json\" -ErrorAction SilentlyContinue | Select-Object -First 1\n$status=if($f){[string]((Get-Content $f.FullName -Raw | ConvertFrom-Json).status)}else{'no_ledger'}\n$log='C:\\TTiTTulares\\ttittulares-launch-'+$id+'.log'\n$last=if(Test-Path $log){[string](Get-Content $log -Tail 1)}else{'no_stdout'}\nWrite-Output ('TTRESULT:'+(@{state='ok';ledger=$status;last=$last.Substring(0,[Math]::Min(500,$last.Length))}|ConvertTo-Json -Compress))",
-      "timeout_seconds": 25
+      "name": "install-guard-and-listener",
+      "script": "$ErrorActionPreference='Stop'\n$o=@{state='pending'}\n$t=Join-Path $env:TEMP ('TTEditorialGuard-'+[guid]::NewGuid().ToString('N')+'.ps1')\n$listener='C:\\TTiTTulares\\TTiTTularesDedicatedListener.ps1'\n$tmp=$listener+'.new'\ntry{\n $u='https://raw.githubusercontent.com/fabricelop/europapress-rss/4d5ebe90d94c09d49c4b0fd1be4979cd73c004ae/windows/Reparar-TT-Editorial-20261111.ps1'\n Invoke-WebRequest -UseBasicParsing -Uri $u -OutFile $t -TimeoutSec 35\n if(-not ([IO.File]::ReadAllText($t)).Contains('NEW_CHAT_NOT_BLANK state=')){throw 'GUARD_MARKER_MISSING'}\n & $t -NoDispatch *> $null\n if(-not $?){throw 'GUARD_INSTALL_FAILED'}\n if(-not (Get-Content 'C:\\TTiTTulares\\TT-Editorial-Guard.js' -Raw).Contains('NEW_CHAT_NOT_BLANK state=')){throw 'GUARD_NOT_UPDATED'}\n $u2='https://raw.githubusercontent.com/fabricelop/europapress-rss/5ffe65a9cb9a85ec7009f597c9f7f74dac120187/windows/TTiTTularesDedicatedListener.ps1'\n Invoke-WebRequest -UseBasicParsing -Uri $u2 -OutFile $tmp -TimeoutSec 35\n $src=Get-Content $tmp -Raw\n if(-not $src.Contains('$LaunchConfirmSeconds = 120')){throw 'LISTENER_MARKER_MISSING'}\n $tok=$null;$err=$null\n [Management.Automation.Language.Parser]::ParseFile($tmp,[ref]$tok,[ref]$err)|Out-Null\n if($err.Count){throw 'LISTENER_SYNTAX_INVALID'}\n Copy-Item $listener ($listener+'.before-120s-20261112.bak') -Force\n Move-Item $tmp $listener -Force\n $o.state='guard_and_listener_installed'\n}catch{$o.state='error';$o.reason=[string]$_.Exception.Message}\nfinally{Remove-Item $t,$tmp -Force -ErrorAction SilentlyContinue}\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress))",
+      "timeout_seconds": 180
     }
   ]
 }
