@@ -3,6 +3,11 @@
 param([string]$RepoRoot = 'C:\TTiTTulares',[switch]$CheckOnly)
 # Independent TTendencias X collector: never edits other projects or the Git worktree.
 $ErrorActionPreference = 'Stop'
+# Windows PowerShell 5.1 otherwise decodes git stdout using OEM codepage,
+# corrupting accents in trend names and evidence provenance.
+$utf8Console = New-Object System.Text.UTF8Encoding($false)
+[Console]::OutputEncoding = $utf8Console
+$OutputEncoding = $utf8Console
 $root = [IO.Path]::GetFullPath($RepoRoot)
 $workDir = Join-Path $root 'TT-XContext'
 $sampler = Join-Path $workDir 'x_context.js'
