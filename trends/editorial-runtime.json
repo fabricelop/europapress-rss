@@ -10,9 +10,9 @@
   "status": "DONE_WITH_INCIDENTS",
   "phase": "closing",
   "started_at": "2026-11-12T12:40:00+01:00",
-  "updated_at": "2026-11-12T12:49:00+01:00",
-  "current": 5,
-  "total": 5,
+  "updated_at": "2026-11-12T12:53:00+01:00",
+  "current": 7,
+  "total": 7,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
   "queue_complete": true,
@@ -21,23 +21,25 @@
     "174b8aec3dcc",
     "71881164a65b",
     "ea2d2a2b9cc8",
-    "554d3b5f9168"
+    "554d3b5f9168",
+    "red-review-cbea69a4caa17fe78e99",
+    "red-review-9be9fbf4d7f1a62a6483"
   ],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 5,
-    "observed": 5,
-    "closed": 5,
+    "attempted": 7,
+    "observed": 7,
+    "closed": 7,
     "explained": 5,
     "problematic": 0,
-    "updates": 4,
+    "updates": 6,
     "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 0,
+    "maintenance_reviews": 2,
     "unchanged_reviews": 0,
-    "continuity_updates": 0,
+    "continuity_updates": 2,
     "distinct_updates": 4,
     "stale_reviews": 0,
     "unverified_reviews": 0,
@@ -87,6 +89,22 @@
       "name": "Tamayo",
       "outcome": "explained_cause_unconfirmed",
       "applied": true
+    },
+    {
+      "id": "red-review-cbea69a4caa17fe78e99",
+      "revision": 0,
+      "name": "Revisar novedades: #HuelgaGeneral",
+      "outcome": "continuity_update",
+      "applied": true,
+      "apply_commit": "31a42ce8e9bc64f70c8a1284902900d3a5c6ce53"
+    },
+    {
+      "id": "red-review-9be9fbf4d7f1a62a6483",
+      "revision": 0,
+      "name": "Revisar novedades: CCOO",
+      "outcome": "continuity_update",
+      "applied": true,
+      "apply_commit": "31a42ce8e9bc64f70c8a1284902900d3a5c6ce53"
     }
   ],
   "incident_count": 1,
@@ -96,27 +114,27 @@
       "items": [
         "554d3b5f9168"
       ],
-      "detail": "El aplicador por comentario solo acepta preparing/update y omitió Tamayo en estado problematic; se cerró por el aplicador editorial heredado, que sí admite problematic, tras revalidación JIT."
+      "detail": "El aplicador por comentario solo aceptó preparing/update y omitió Tamayo en problematic; el aplicador editorial compatible lo cerró tras revalidación JIT."
     }
   ],
   "error": null,
   "activity": "closing",
   "last_started_at": "2026-11-12T12:40:00+01:00",
-  "last_completed_at": "2026-11-12T12:49:00+01:00",
+  "last_completed_at": "2026-11-12T12:53:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-20261112T124000-manual",
     "status": "DONE_WITH_INCIDENTS",
     "started_at": "2026-11-12T12:40:00+01:00",
-    "finished_at": "2026-11-12T12:49:00+01:00",
-    "total": 5,
-    "closed": 5,
+    "finished_at": "2026-11-12T12:53:00+01:00",
+    "total": 7,
+    "closed": 7,
     "explained": 5,
-    "maintenance": 0,
+    "maintenance": 2,
     "pending": 0,
     "problematic": 0
   },
-  "message": "Pasada tr-20261112T124000-manual cerrada 5/5. Cuatro reentradas se cerraron como episodios materiales distintos (Ministerio de Igualdad, Fiscalía Europea, Leire y La UCO); Tamayo se cerró prudentemente con causa no confirmada tras reintento. Cola final 0. Incidencia menor: el aplicador por comentario omitió problematic y se usó el aplicador editorial compatible. ImageGen=0; image-outbox=0; publicaciones=0.",
+  "message": "Pasada tr-20261112T124000-manual cerrada 7/7. Cuatro reentradas quedaron como episodios materiales distintos (Ministerio de Igualdad, Fiscalía Europea, Leire y La UCO); Tamayo se cerró con causa no confirmada; #HuelgaGeneral y CCOO se actualizaron como continuidad sin nueva ficha. Cola final 0. Incidencia menor resuelta: el aplicador por comentario omitió problematic y se usó el aplicador editorial compatible. ImageGen=0; image-outbox=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794327332740-manual",
@@ -4796,20 +4814,20 @@
       "run_id": "tr-20261112T124000-manual",
       "status": "DONE_WITH_INCIDENTS",
       "started_at": "2026-11-12T12:40:00+01:00",
-      "finished_at": "2026-11-12T12:49:00+01:00",
-      "at": "2026-11-12T12:49:00+01:00",
+      "finished_at": "2026-11-12T12:53:00+01:00",
+      "at": "2026-11-12T12:53:00+01:00",
       "phase": "closing",
       "summary": {
-        "attempted": 5,
-        "observed": 5,
-        "closed": 5,
+        "attempted": 7,
+        "observed": 7,
+        "closed": 7,
         "explained": 5,
         "problematic": 0,
-        "updates": 4,
+        "updates": 6,
         "review_completed_no_distinct_event": 0,
-        "maintenance_reviews": 0,
+        "maintenance_reviews": 2,
         "unchanged_reviews": 0,
-        "continuity_updates": 0,
+        "continuity_updates": 2,
         "distinct_updates": 4,
         "stale_reviews": 0,
         "unverified_reviews": 0,
@@ -4829,7 +4847,9 @@
         "174b8aec3dcc",
         "71881164a65b",
         "ea2d2a2b9cc8",
-        "554d3b5f9168"
+        "554d3b5f9168",
+        "red-review-cbea69a4caa17fe78e99",
+        "red-review-9be9fbf4d7f1a62a6483"
       ],
       "outcomes": [
         {
@@ -4866,6 +4886,22 @@
           "name": "Tamayo",
           "outcome": "explained_cause_unconfirmed",
           "applied": true
+        },
+        {
+          "id": "red-review-cbea69a4caa17fe78e99",
+          "revision": 0,
+          "name": "Revisar novedades: #HuelgaGeneral",
+          "outcome": "continuity_update",
+          "applied": true,
+          "apply_commit": "31a42ce8e9bc64f70c8a1284902900d3a5c6ce53"
+        },
+        {
+          "id": "red-review-9be9fbf4d7f1a62a6483",
+          "revision": 0,
+          "name": "Revisar novedades: CCOO",
+          "outcome": "continuity_update",
+          "applied": true,
+          "apply_commit": "31a42ce8e9bc64f70c8a1284902900d3a5c6ce53"
         }
       ],
       "incident_count": 1,
@@ -4875,10 +4911,10 @@
           "items": [
             "554d3b5f9168"
           ],
-          "detail": "El aplicador por comentario solo acepta preparing/update y omitió Tamayo en estado problematic; se cerró por el aplicador editorial heredado, que sí admite problematic, tras revalidación JIT."
+          "detail": "El aplicador por comentario solo aceptó preparing/update y omitió Tamayo en problematic; el aplicador editorial compatible lo cerró tras revalidación JIT."
         }
       ],
-      "message": "Pasada tr-20261112T124000-manual cerrada 5/5. Cuatro reentradas se cerraron como episodios materiales distintos (Ministerio de Igualdad, Fiscalía Europea, Leire y La UCO); Tamayo se cerró prudentemente con causa no confirmada tras reintento. Cola final 0. Incidencia menor: el aplicador por comentario omitió problematic y se usó el aplicador editorial compatible. ImageGen=0; image-outbox=0; publicaciones=0."
+      "message": "Pasada tr-20261112T124000-manual cerrada 7/7. Cuatro reentradas quedaron como episodios materiales distintos (Ministerio de Igualdad, Fiscalía Europea, Leire y La UCO); Tamayo se cerró con causa no confirmada; #HuelgaGeneral y CCOO se actualizaron como continuidad sin nueva ficha. Cola final 0. Incidencia menor resuelta: el aplicador por comentario omitió problematic y se usó el aplicador editorial compatible. ImageGen=0; image-outbox=0; publicaciones=0."
     }
   ],
   "current_item": {
@@ -7939,5 +7975,5 @@
     }
   ],
   "processed": [],
-  "finished_at": "2026-11-12T12:49:00+01:00"
+  "finished_at": "2026-11-12T12:53:00+01:00"
 }
