@@ -528,7 +528,7 @@ function EnsureEditorialGuardCapacity{
     $tmp=$p+'.selfheal-new.js'
     $backup=$p+'.pre-tabcap-20261112.bak'
     if(-not(Test-Path $backup)){Copy-Item -LiteralPath $p -Destination $backup -ErrorAction Stop}
-    [IO.File]::WriteAllText($tmp,$fixed,(New-Object Text.UTF8Encoding($false)))
+    [IO.File]::WriteAllText($tmp,$fixed,([Text.UTF8Encoding]::new($false)))
     & $node.Source --check $tmp 1>$null 2>$null
     if($LASTEXITCODE -ne 0){throw 'new editorial guard fails node --check'}
     Move-Item -LiteralPath $tmp -Destination $p -Force -ErrorAction Stop
@@ -557,10 +557,13 @@ function EnsureEditorialScheduledWake{
         '?t='+$now.ToUnixTimeMilliseconds()
       $q=Invoke-RestMethod -Uri $url -TimeoutSec 10 -Headers @{'Cache-Control'='no-cache, no-store'}
       $overdue=@($q.items|Where-Object{
-        ([string]$_.status) -in $spec.states -and
-        -not [string]::IsNullOrWhiteSpace([string]$_.($spec.id)) -and
-        -not [string]::IsNullOrWhiteSpace([string]$_.$($spec.time)) -and
-        ($now-[DateTimeOffset]::Parse([string]$_.$($spec.time))).TotalMinutes -ge 18
+        $eid=[string]$_.PSObject.Properties[$spec.id].Value
+        $stamp=[string]$_.PSObject.Properties[$spec.time].Value
+        if(([string]$_.status) -notin $spec.states -or
+           [string]::IsNullOrWhiteSpace($eid) -or
+           [string]::IsNullOrWhiteSpace($stamp)){return $false}
+        try{return ($now-[DateTimeOffset]::Parse($stamp)).TotalMinutes -ge 18}
+        catch{return $false}
       })
       if($overdue.Count -eq 0){continue}
       $task=Get-ScheduledTask -TaskName $spec.task -ErrorAction SilentlyContinue
