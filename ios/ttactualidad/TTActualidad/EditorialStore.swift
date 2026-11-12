@@ -420,7 +420,7 @@ final class EditorialStore: ObservableObject {
                     (episode.id != id || episode.revision != rev ||
                      explained.timeIntervalSince(episode.at) >= 48 * 3600)
                 }
-                .map(\.at).max()
+                .map { $0.at }.max()
             let archive = row["archive_image"] as? [String: Any] ??
                           row["fallback_image"] as? [String: Any] ?? [:]
             return TrendItem(id: id, rank: int(row, "rank"), name: str(row, "name"),
