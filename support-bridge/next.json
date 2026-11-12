@@ -1,15 +1,15 @@
 {
   "version": 1,
-  "id": "ttb-news-draft-shape-20261112-1259",
+  "id": "ttb-news-specific-compositor-install-20261112-1304",
   "project": "TTActualidad",
   "expires_at": "2026-11-13T12:00:00Z",
-  "description": "Read only compositor state category and length after new chat",
+  "description": "Install precise editorial compositor selector only when no active send runner",
   "steps": [
     {
       "kind": "powershell",
-      "name": "draft-shape",
-      "script": "$l=@(Get-Content 'C:\\TTiTTulares\\ttittulares-mobile-trigger.log' -Tail 500)\n$g=[string]($l|Where-Object{$_ -match 'NEW_CHAT_NOT_BLANK'}|Select-Object -Last 1)\n$o=@{state='ok';url_kind='unknown';draft_length=0;users=0;assistants=0;clicked=[bool](@($l|Where-Object{$_ -match 'HOME_RESTORED_HISTORY; CLICK_NEW_CHAT_BOT_OWNED_TAB'}).Count)}\nif($g -match 'editorLength[^0-9]*([0-9]+)'){$o.draft_length=[int]$Matches[1]}\nif($g -match 'users[^0-9]*([0-9]+)'){$o.users=[int]$Matches[1]}\nif($g -match 'assistants[^0-9]*([0-9]+)'){$o.assistants=[int]$Matches[1]}\nif($g -match 'chatgpt.com/c/'){$o.url_kind='conversation'}\nelseif($g -match 'chatgpt.com/g/'){$o.url_kind='project'}\nelseif($g -match 'chatgpt.com/'){$o.url_kind='home'}\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress))",
-      "timeout_seconds": 20
+      "name": "install-specific-compositor",
+      "script": "$o=@{state='pending'}\ntry{\n $p=@(Get-CimInstance Win32_Process -Filter \"Name='node.exe'\"|Where-Object{[string]$_.CommandLine -match 'C:\\\\TTiTTulares\\\\Ejecutar[.]js' -and [string]$_.CommandLine -match ' --enviar'})\n if($p.Count){$o.state='runner_active';$o.count=$p.Count}\n else{\n  $f=Join-Path $env:TEMP 'Reparar-TT-Editorial-20261111-targeted.ps1'\n  Invoke-WebRequest -UseBasicParsing -Uri 'https://raw.githubusercontent.com/fabricelop/europapress-rss/c4216e498eaed67df9cc36d6338bf88742e99f00/windows/Reparar-TT-Editorial-20261111.ps1' -OutFile $f -TimeoutSec 30 -ErrorAction Stop\n  & powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File $f -NoDispatch | Out-Null\n  if($LASTEXITCODE -ne 0){throw 'INSTALL_EXIT_'+$LASTEXITCODE}\n  $g=Get-Content 'C:\\TTiTTulares\\TT-Editorial-Guard.js' -Raw -ErrorAction Stop\n  if(-not $g.Contains(\"editorTag:ed?.tagName\")){throw 'GUARD_MARKER_MISSING'}\n  $o.state='installed_verified'\n }\n}catch{$o.state='error';$o.reason=[string]$_.Exception.Message}\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress))",
+      "timeout_seconds": 150
     }
   ]
 }
