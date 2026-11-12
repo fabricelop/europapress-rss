@@ -1,4 +1,4 @@
-name: TTActualidad V2 - Pasos 1-3 aislados
+name: TTActualidad V2 - Pasos 1-4 aislados
 on:
   push:
     branches: [feature/ttactualidad-v2-clean]
@@ -95,6 +95,11 @@ jobs:
             else
               python3 -m v2.ttendencias.detect_changes v2/ttendencias/state/live-capture.json --output v2/ttendencias/state/history.json > /tmp/tt-v2-movements.json
             fi
+            if [ -f v2/ttendencias/state/editorial-queue.json ]; then
+              python3 -m v2.ttendencias.editorial_queue v2/ttendencias/state/history.json --previous v2/ttendencias/state/editorial-queue.json --output v2/ttendencias/state/editorial-queue.json > /tmp/tt-v2-queue.json
+            else
+              python3 -m v2.ttendencias.editorial_queue v2/ttendencias/state/history.json --output v2/ttendencias/state/editorial-queue.json > /tmp/tt-v2-queue.json
+            fi
             python3 - <<'PY'
           import json
           from pathlib import Path
@@ -102,10 +107,15 @@ jobs:
           changes=json.loads(Path("/tmp/tt-v2-movements.json").read_text())
           assert len(state["top30"])==30
           assert all(t.get("trend_id","").startswith("trv2-") for t in state["topics"].values())
+          queue=json.loads(Path("v2/ttendencias/state/editorial-queue.json").read_text())
+          assert queue["effects_enabled"] is False
+          assert set(queue["items"]).issubset({t["trend_id"] for t in state["topics"].values()})
+          assert queue["source_observed_at"]==state["observed_at"]
           print("TT_V2_HISTORY_PERSISTENCE_READY",state["observed_at"],
-                "historical_topics",len(state["topics"]),"changes",len(changes["changes"]))
+                "historical_topics",len(state["topics"]),"changes",len(changes["changes"]),
+                "editorial_pending",queue["pending_count"],"no_external_effects",True)
           PY
-            git add -f v2/ttendencias/state/history.json
+            git add -f v2/ttendencias/state/history.json v2/ttendencias/state/editorial-queue.json
             if git diff --cached --quiet; then exit 0; fi
             git commit -m "V2: guardar historial Top30 aislado"
             if git push origin "HEAD:$BRANCH"; then
