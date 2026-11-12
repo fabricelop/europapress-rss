@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-12T17:29:19.170976+00:00",
+  "checked_at": "2026-11-12T17:46:31.059481+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -42,13 +42,13 @@
     "top10": {
       "ok": false,
       "count": 10,
-      "non_stale_sources": 5,
+      "non_stale_sources": 4,
       "verified_fresh_sources": [
         "xtrendsiamrohit",
         "playersells"
       ],
       "live_verified": false,
-      "captured_age_minutes": 0.2,
+      "captured_age_minutes": 0.3,
       "noise_count": 0
     },
     "listener": {
@@ -60,8 +60,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 3.0,
-      "run_id": 43269411729,
+      "age_minutes": 5.3,
+      "run_id": 43272042540,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -84,15 +84,27 @@
     "editorial_queue": {
       "ok": false,
       "pending_count": 3,
-      "overdue_count": 1,
-      "oldest_age_minutes": 35.3,
+      "overdue_count": 3,
+      "oldest_age_minutes": 52.5,
       "warning_after_minutes": 30,
       "overdue_items": [
         {
           "id": "red-review-c9d5b55f971f87049f06",
           "name": "Revisar novedades: Anotop At",
           "status": "preparing",
-          "age_minutes": 35.3
+          "age_minutes": 52.5
+        },
+        {
+          "id": "49ecfd69e208",
+          "name": "Tezanos",
+          "status": "preparing",
+          "age_minutes": 41.4
+        },
+        {
+          "id": "521206112530",
+          "name": "YouTubers",
+          "status": "preparing",
+          "age_minutes": 41.4
         }
       ],
       "repairable": false
@@ -118,9 +130,9 @@
   "blocking": [
     "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos",
     "cola con 777 estado(s) inválido(s)",
-    "cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 35.3 min"
+    "cola de explicaciones retrasada: 3 pendiente(s) superan 30 min; más antigua 52.5 min"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 777 estado(s) inválido(s) | cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 35.3 min"
+  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 777 estado(s) inválido(s) | cola de explicaciones retrasada: 3 pendiente(s) superan 30 min; más antigua 52.5 min"
 }
