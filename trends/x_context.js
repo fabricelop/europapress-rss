@@ -2,8 +2,10 @@
 // Investigación opcional: no toca cola, textos, decisiones, imágenes ni publicación.
 // Basado en el acceso Playwright de SeLoRecordamos, sin importar su proceso con efectos.
 const fs = require('node:fs'), path = require('node:path');
-const QUEUE = path.join(__dirname, 'editorial-queue.json');
-const OUT = path.join(__dirname, 'x-context-evidence.json');
+const QUEUE = process.env.TT_X_QUEUE_FILE || path.join(__dirname, 'editorial-queue.json');
+const OUT = process.env.TT_X_OUTPUT_FILE || path.join(__dirname, 'x-context-evidence.json');
+const LOCAL = process.env.TT_X_EXECUTION_MODE === 'windows';
+const SOURCE = LOCAL ? 'x_recent_posts_windows' : 'x_recent_posts';
 const HOUR = 3600000, LIMIT = 6, POST_LIMIT = 8;
 function readJSON(file, fallback) { try { return JSON.parse(fs.readFileSync(file, 'utf8')); } catch (_) { return fallback; } }
 function cleanName(v) { return String(v || '').replace(/[\u0000-\u001f\u007f]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 90); }
@@ -14,13 +16,14 @@ function makeSearchUrl(name) {
   if (!q) throw Error('empty term');
   return 'https://x.com/search?q=' + encodeURIComponent('"' + q + '"') + '&src=typed_query&f=live';
 }
-function chooseTargets(queue, cache, now = Date.now(), limit = LIMIT) {
+function chooseTargets(queue, cache, now = Date.now(), limit = LIMIT, source = 'x_recent_posts') {
   // Circuit breaker global: un 403/429 de X en el runner no justifica seguir
   // consultando otros nombres desde la misma IP. Reintentar más adelante.
   const previousItems = Array.isArray(cache.items) ? cache.items : [];
-  if (previousItems.some(x => x && (x.http_status === 403 || x.http_status === 429) &&
+  if (previousItems.some(x => x && (!x.source || x.source === source) &&
+      (x.http_status === 403 || x.http_status === 429) &&
       recentDate(x.searched_at, now, x.http_status === 403 ? 12 * HOUR : 4 * HOUR))) return [];
-  const old = new Map(previousItems.map(x => [key(x), x]));
+  const old = new Map(previousItems.filter(x => x && (!x.source || x.source === source)).map(x => [key(x), x]));
   const chosen = [], seen = new Set();
   for (const x of (Array.isArray(queue.items) ? queue.items : [])) {
     if (!x || !['preparing', 'update', 'problematic'].includes(x.status)) continue;
@@ -87,7 +90,7 @@ async function extractPosts(page, now) {
 async function search(context, target) {
   const now = Date.now(), page = await context.newPage();
   const base = { id: target.id, revision: target.revision, name: target.name,
-    searched_at: new Date(now).toISOString(), source: 'x_recent_posts',
+    searched_at: new Date(now).toISOString(), source: SOURCE,
     search_url: makeSearchUrl(target.name), status: 'error', posts: [] };
   let lastError = '', responseStatus = null;
   try {
@@ -120,12 +123,17 @@ async function search(context, target) {
 }
 async function run() {
   const queue = readJSON(QUEUE, { items: [] }), current = readJSON(OUT, { items: [] });
-  const targets = chooseTargets(queue, current);
+  const targets = chooseTargets(queue, current, Date.now(), LIMIT, SOURCE);
   if (process.argv.includes('--plan')) { console.log(JSON.stringify({ targets })); return; }
   if (!targets.length) { console.log('TT_X_CONTEXT no_pending_targets'); return; }
   const token = process.env.X_AUTH_TOKEN || '', ct0 = process.env.X_CT0 || '';
   if (!token || !ct0) { console.log('TT_X_CONTEXT session_secrets_unavailable; normal editorial unaffected'); return; }
-  const { chromium } = require('playwright'), browser = await chromium.launch({ headless: true });
+  const { chromium } = require('playwright');
+  const launchOptions = { headless: true };
+  const chromePath = process.env.TT_X_CHROME_PATH || (process.platform === 'win32'
+    ? 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe' : '');
+  if (chromePath && fs.existsSync(chromePath)) launchOptions.executablePath = chromePath;
+  const browser = await chromium.launch(launchOptions);
   const updates = [];
   try {
     const context = await browser.newContext({ locale: 'es-ES', timezoneId: 'Europe/Madrid',
