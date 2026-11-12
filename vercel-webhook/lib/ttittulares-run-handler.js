@@ -256,10 +256,9 @@ async function imageEligibility(targetId){
   rows.sort((a,b)=>Number(b.revision||0)-Number(a.revision||0)||String(b.prepared_at||"").localeCompare(String(a.prepared_at||"")));
   const row=rows[0]||null;
   if(!row)return {eligible:false,reason:"not_ready",row:null};
-  const mode=String(row.image_mode||row.image_strategy||"").toLowerCase();
-  // La sensibilidad editorial y los flags legacy disable/fallback_only/archive_only
-  // no bloquean ImageGen. Tremending/tweet_capture conserva su flujo específico.
-  if(row.tremending_origin||mode==="tweet_capture_only")return {eligible:false,reason:"tremending",row};
+  // Tema, sensibilidad y flags heredados (fallback_only, tweet_capture_only,
+  // disable_ai_image) no bloquean ImageGen: el editor revisará el resultado.
+  // Solo se excluyen episodios cerrados, inexistentes o revisiones obsoletas.
   const hasAi=validChatAi(row.ai_image)||validChatAi(row.image);
   // Una IA existente nunca bloquea un nuevo gag. La anterior se conserva hasta
   // que la nueva se materialice correctamente.
