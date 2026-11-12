@@ -108541,14 +108541,18 @@
       "with_image": true,
       "grouping_disabled": true,
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending",
+      "ai_image_status": "failed",
       "fallback_image_status": "none",
       "image_status": "none",
       "image_choice": "none",
       "image_pending": false,
       "telegram_package_status": "pending",
       "fallback_image_strategy": "existing_web_image",
-      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación.",
+      "ai_image_attempt": 1,
+      "ai_image_last_attempt_status": "failed",
+      "ai_image_last_attempt_at": "2026-11-12T07:15:59.416632Z",
+      "ai_image_failure_reason": "imagen generada sin URL raw válida"
     },
     {
       "id": "2259355bb15e",
@@ -109632,6 +109636,6 @@
       "significance_reason": "La hoguera final con Sergio y las confesiones sobre Irini y Josué constituyen un episodio posterior y materialmente distinto de la explicación anterior."
     }
   ],
-  "updated_at": "2026-11-12T07:14:31.999686Z",
+  "updated_at": "2026-11-12T07:15:59.416735Z",
   "count": 1918
 }
