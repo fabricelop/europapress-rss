@@ -1,15 +1,15 @@
 {
   "version": 1,
-  "id": "ttb-news-stop-stale-wrapper-20261112-1238",
+  "id": "ttb-news-timeout-diagnostic-install-20261112-1240",
   "project": "TTActualidad",
   "expires_at": "2026-11-13T12:00:00Z",
-  "description": "Stop only stale news wrapper after checking command and no submit intent",
+  "description": "Install synchronized guard and 120 second news launch confirmation after stale wrapper stopped",
   "steps": [
     {
       "kind": "powershell",
-      "name": "stop-stale-news-wrapper",
-      "script": "$o=@{state='pending'}\ntry{\n $p=Get-CimInstance Win32_Process -Filter 'ProcessId=51120' -ErrorAction Stop\n if(-not $p){$o.state='already_gone'}\n elseif([string]$p.CommandLine -notmatch 'C:[\\\\]TTiTTulares[\\\\]Ejecutar[.]js.*titulares --enviar'){$o.state='mismatch'}\n else{\n  $d='C:\\TTiTTulares\\TT-Editorial-Rescue\\sent'\n  $amb=@(Get-ChildItem $d -Filter 'TTITTULARES_EDITORIAL_JOB_V2_*.json' -ErrorAction SilentlyContinue | Where-Object { $_.LastWriteTime -gt (Get-Date).AddMinutes(-10) } | ForEach-Object { Get-Content $_.FullName -Raw | ConvertFrom-Json } | Where-Object { $_.status -in @('submit_intent','confirmed') })\n  if($amb.Count){$o.state='protected_send';$o.count=$amb.Count}\n  else{Stop-Process -Id 51120 -Force -ErrorAction Stop;$o.state='stale_wrapper_stopped'}\n }\n}catch{$o.state='error';$o.reason=[string]$_.Exception.Message}\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress))",
-      "timeout_seconds": 25
+      "name": "install-guard-and-listener",
+      "script": "$ErrorActionPreference='Stop'\n$o=@{state='pending'}\n$t=Join-Path $env:TEMP ('TTEditorialGuard-'+[guid]::NewGuid().ToString('N')+'.ps1')\n$listener='C:\\TTiTTulares\\TTiTTularesDedicatedListener.ps1'\n$tmp=$listener+'.new'\ntry{\n $u='https://raw.githubusercontent.com/fabricelop/europapress-rss/4d5ebe90d94c09d49c4b0fd1be4979cd73c004ae/windows/Reparar-TT-Editorial-20261111.ps1'\n Invoke-WebRequest -UseBasicParsing -Uri $u -OutFile $t -TimeoutSec 35\n if(-not ([IO.File]::ReadAllText($t)).Contains('NEW_CHAT_NOT_BLANK state=')){throw 'GUARD_MARKER_MISSING'}\n & $t -NoDispatch *> $null\n if(-not $?){throw 'GUARD_INSTALL_FAILED'}\n if(-not (Get-Content 'C:\\TTiTTulares\\TT-Editorial-Guard.js' -Raw).Contains('NEW_CHAT_NOT_BLANK state=')){throw 'GUARD_NOT_UPDATED'}\n $u2='https://raw.githubusercontent.com/fabricelop/europapress-rss/5ffe65a9cb9a85ec7009f597c9f7f74dac120187/windows/TTiTTularesDedicatedListener.ps1'\n Invoke-WebRequest -UseBasicParsing -Uri $u2 -OutFile $tmp -TimeoutSec 35\n $src=Get-Content $tmp -Raw\n if(-not $src.Contains('$LaunchConfirmSeconds = 120')){throw 'LISTENER_MARKER_MISSING'}\n $tok=$null;$err=$null\n [Management.Automation.Language.Parser]::ParseFile($tmp,[ref]$tok,[ref]$err)|Out-Null\n if($err.Count){throw 'LISTENER_SYNTAX_INVALID'}\n Copy-Item $listener ($listener+'.before-120s-20261112.bak') -Force\n Move-Item $tmp $listener -Force\n $o.state='guard_and_listener_installed'\n}catch{$o.state='error';$o.reason=[string]$_.Exception.Message}\nfinally{Remove-Item $t,$tmp -Force -ErrorAction SilentlyContinue}\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress))",
+      "timeout_seconds": 180
     }
   ]
 }
