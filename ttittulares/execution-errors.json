@@ -2,13 +2,6 @@
   "items": [
     {
       "at": "2026-09-28T05:19:49.099229Z",
-      "event_id": "d5dd0d45c380-r1",
-      "phase": "outbox",
-      "reason": "d5dd0d45c380-r1.json: ValueError: text alternativo no coincide",
-      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento d5dd0d45c380-r1: d5dd0d45c380-r1.json: ValueError: text alternativo no coincide. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
-    },
-    {
-      "at": "2026-09-28T05:19:49.099229Z",
       "event_id": "dab5ca1ae833-r1",
       "phase": "outbox",
       "reason": "dab5ca1ae833-r1.json: ValueError: text alternativo no coincide",
@@ -1399,6 +1392,13 @@
       "phase": "outbox",
       "reason": "72c258e81ff7-r1.json: ValueError: tweet vacío o >256",
       "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento 72c258e81ff7-r1: 72c258e81ff7-r1.json: ValueError: tweet vacío o >256. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
+    },
+    {
+      "at": "2026-11-12T20:34:07.925285Z",
+      "event_id": "e69f98dd3c09-r1",
+      "phase": "outbox",
+      "reason": "e69f98dd3c09-r1.json: ValueError: tweet sin remate requiere no_remate_reason",
+      "remediation_prompt": "Revisa TTiTTulares, fase outbox, evento e69f98dd3c09-r1: e69f98dd3c09-r1.json: ValueError: tweet sin remate requiere no_remate_reason. Corrige la causa y verifica el siguiente intento sin alterar las demás noticias."
     }
   ]
 }
