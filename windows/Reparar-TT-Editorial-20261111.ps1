@@ -241,7 +241,9 @@ async function send(){
     note('HOME_RESTORED_HISTORY; CLICK_NEW_CHAT_BOT_OWNED_TAB');
     const clicked=await c.eval(`(()=>{const links=[...document.querySelectorAll('a,button')];const e=links.find(x=>x.getClientRects().length && (x.getAttribute('data-testid')==='create-new-chat-button'||/^(new chat|nuevo chat)$/i.test(String(x.getAttribute('aria-label')||x.textContent||'').trim())));if(!e)return false;e.click();return true})()`);
     if(!clicked)fail('NEW_CHAT_CONTROL_UNAVAILABLE: preserve restored conversation');
-    s=await waitEditor(c,30000);
+    const blankUntil=Date.now()+30000;
+    do { await sleep(650); s=await c.eval(expr).catch(()=>null); }
+    while(Date.now()<blankUntil && (!s||s.ready!=='complete'||!s.editor||s.busy||s.shield||s.editorLength!==0||s.users!==0||s.assistants!==0));
   }
   if(!s||s.editorLength!==0||s.users!==0||s.assistants!==0)
     fail('Fresh tab has draft or chat content; refusing to overwrite');
