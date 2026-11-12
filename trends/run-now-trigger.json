@@ -1,11 +1,22 @@
 {
   "version": 2,
-  "command_id": "tr-1794498162707-manual",
-  "requested_at": "2026-11-12T15:42:42.707Z",
+  "command_id": "tr-autoguard-1794499865",
+  "requested_at": "2026-11-12T16:11:05.914700Z",
   "mode": "manual_pc_chat",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
   "launcher_arg": "tendencias",
   "task": "editorial",
-  "auto_image_followup": false
+  "auto_image_followup": false,
+  "source": "tt_autoheal_editorial_watchdog",
+  "reason": "editorial_not_started_in_time",
+  "pending_ids": [
+    "711e6569e258",
+    "68bbaa9a249e",
+    "f5158a24ef9c"
+  ],
+  "target_id": "68bbaa9a249e",
+  "target_revision": 0,
+  "target_name": "Loterías",
+  "scope": "single_item"
 }
