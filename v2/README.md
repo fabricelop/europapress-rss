@@ -13,7 +13,8 @@
 2. **Diagnóstico de frescura:** `v2/ttendencias/assess_freshness.py` diferencia la edad de nuestra captura de la frescura original de X. No declara verificada una tendencia por HTTP 200, por cambio de lista ni por fecha local reciente. **Decisión del usuario (12/11/2026):** GetDayTrends será la única fuente por ahora. Si la consulta en vivo devuelve 30 posiciones válidas de España y la captura tiene hasta 20 minutos, `eligible_for_editorial=true` para el FUTURO paso 3 (todavía no conectado). No se afirma verificación directa por X. La comparación con otra fuente queda opcional, no bloqueante.
 3. **Movimientos e historial V2:** `v2/ttendencias/detect_changes.py` detecta altas, salidas, cambios de puesto y regresos; asigna un `trend_id` permanente y determinista por término normalizado, sin usar fechas ni posiciones. Un regreso tras más de 24 horas fuera crea un episodio de revisión bajo el mismo ID; si la ausencia es de 24 horas o menos, conserva el episodio. El historial de identidades no se poda por antigüedad. Primera lectura = línea base sin 30 falsas noticias. No se incorpora a la cola editorial de producción.
 4. **Cola editorial aislada:** `v2/ttendencias/editorial_queue.py` organiza un registro permanente por `trend_id` con `revision`, `status`, `episode_token`, motivo y copia de la explicación previa. Las tendencias nuevas sin explicación entran una sola vez en `pending`; una reentrada tras más de 24 h puede pasar de una revisión terminada a `review_pending` sin cambiar ID ni perder el texto anterior. Cambios de explicación solo por una señal editorial explícita, nunca por variación de puesto. El módulo no investiga, redacta, llama a ChatGPT ni publica.
-5. Imágenes, decisiones, publicación y migración — **pendiente**.
+5. **Reserva editorial (5A):** `v2/ttendencias/editorial_consumer.py` permite simular la reclamación de una tendencia pendiente por un consumidor concreto; crea token, revisión, caducidad de 15 minutos, reintentos (máximo 3) y cierre `ready` solo con token vigente y texto no vacío. **No hay conector ChatGPT ni consumidor en ejecución**. La reserva no se guarda ni se activa desde CI; únicamente se prueba en memoria.
+6. Investigación real, imágenes, decisiones, publicación y migración — **pendiente**.
 
 ## Probar (sin efectos laterales)
 ```sh
@@ -54,3 +55,9 @@ Pruebas unitarias aprobadas, lectura en vivo con 30 posiciones y metadatos verif
 - Salir del Top30 no elimina ni duplica tareas. Regresar antes de 24 horas no genera revisión; una reentrada >24 horas marca `review_pending` solo si el estado anterior estaba terminado.
 - Una explicación cambia solo si una futura fase editorial emite una señal `changed_explanations` validada: **no se presupone** que el texto haya cambiado por entrar o salir del ranking.
 - Las fases 5+ implementarán la investigación, cierre transaccional y decisión del usuario. Hasta entonces `effects_enabled=false`; **no se escribe en las colas reales**.
+
+## Paso 5A — contrato de reserva editorial (todavía sin procesamiento real)
+- `pending` es espera, `in_progress` exige una reserva por `worker_id` y token; el controlador no debe marcar trabajo como ejecutado solo por encolarlo.
+- `claim` respeta una capacidad máxima global (por ahora 1 en el ejemplo), `recover` recupera reservas vencidas tras 15 minutos, hasta 3 intentos. Una reserva agotada queda `cancelled` con motivo explícito, para intervención/revisión posterior.
+- `complete` comprueba `trend_id`, `revision`, token vigente y texto no vacío antes de pasar a `ready`; el resultado tardío no puede cerrar una revisión equivocada.
+- **Solo pruebas/simulación:** no se persisten `in_progress` ni `ready` en la rama, no se invoca ChatGPT y las 30 tendencias siguen `pending` en la cola real V2. Conectar un trabajador real y persistencia atómica será el paso 5B, no se declara completado.
