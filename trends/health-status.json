@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-12T11:30:36.558092+00:00",
+  "checked_at": "2026-11-12T11:43:55.915349+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -60,8 +60,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 4.8,
-      "run_id": 43209081093,
+      "age_minutes": 5.4,
+      "run_id": 43210891941,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -83,16 +83,34 @@
     },
     "editorial_queue": {
       "ok": false,
-      "pending_count": 5,
-      "overdue_count": 1,
-      "oldest_age_minutes": 81.7,
+      "pending_count": 4,
+      "overdue_count": 4,
+      "oldest_age_minutes": 42.4,
       "warning_after_minutes": 30,
       "overdue_items": [
         {
-          "id": "ba9b353684f9",
-          "name": "Elise",
+          "id": "1098712895fb",
+          "name": "Ministerio de Igualdad",
           "status": "preparing",
-          "age_minutes": 81.7
+          "age_minutes": 42.4
+        },
+        {
+          "id": "174b8aec3dcc",
+          "name": "Fiscalía Europea",
+          "status": "preparing",
+          "age_minutes": 42.4
+        },
+        {
+          "id": "71881164a65b",
+          "name": "Leire",
+          "status": "preparing",
+          "age_minutes": 42.4
+        },
+        {
+          "id": "ea2d2a2b9cc8",
+          "name": "La UCO",
+          "status": "preparing",
+          "age_minutes": 42.4
         }
       ],
       "repairable": false
@@ -102,7 +120,6 @@
       "status": "overdue",
       "queue_complete": false,
       "remaining_active_ids": [
-        "ba9b353684f9",
         "1098712895fb",
         "174b8aec3dcc",
         "71881164a65b",
@@ -120,9 +137,9 @@
   "blocking": [
     "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos",
     "cola con 767 estado(s) inválido(s)",
-    "cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 81.7 min"
+    "cola de explicaciones retrasada: 4 pendiente(s) superan 30 min; más antigua 42.4 min"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 767 estado(s) inválido(s) | cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 81.7 min"
+  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 767 estado(s) inválido(s) | cola de explicaciones retrasada: 4 pendiente(s) superan 30 min; más antigua 42.4 min"
 }
