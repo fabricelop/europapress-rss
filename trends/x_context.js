@@ -84,20 +84,39 @@ async function search(context, target) {
   const base = { id: target.id, revision: target.revision, name: target.name,
     searched_at: new Date(now).toISOString(), source: 'x_recent_posts',
     search_url: makeSearchUrl(target.name), status: 'error', posts: [] };
+  let lastError = '', responseStatus = null;
   try {
-    await page.goto(base.search_url, { waitUntil: 'commit', timeout: 22000 });
-    await page.locator('main, [data-testid="primaryColumn"], article[data-testid="tweet"]')
-      .first().waitFor({ state: 'attached', timeout: 16000 });
+    let ready = false;
+    // Igual que SeLoRecordamos: X puede mostrar tuits aunque su navegación no termine.
+    for (let attempt = 0; attempt < 2; attempt++) {
+      try {
+        const response = await page.goto(base.search_url, { waitUntil: 'commit', timeout: 22000 });
+        responseStatus = response ? response.status() : null;
+        await page.locator('main, [data-testid="primaryColumn"], article[data-testid="tweet"]')
+          .first().waitFor({ state: 'attached', timeout: 12000 });
+        ready = true;
+        break;
+      } catch (error) {
+        lastError = String(error && error.message || error).slice(0, 180);
+        const visible = await page.locator('article[data-testid="tweet"]').count().catch(() => 0);
+        if (visible > 0 && page.url().startsWith('https://x.com/')) { ready = true; break; }
+        if (!attempt) await page.waitForTimeout(1200);
+      }
+    }
+    if (!ready) return { ...base, reason: 'navigation_failed', http_status: responseStatus,
+      diagnostic: /timeout/i.test(lastError) ? 'timeout_waiting_for_x_content' : 'x_content_not_available' };
     await page.waitForTimeout(1600);
-    if (/\/i\/flow\/login|\/login/.test(page.url())) return { ...base, reason: 'auth_required' };
+    if (/\/i\/flow\/login|\/login/.test(page.url())) return { ...base, reason: 'auth_required', http_status: responseStatus };
+    if (responseStatus === 403 || responseStatus === 429) return { ...base, reason: 'x_http_restriction', http_status: responseStatus };
     const posts = await extractPosts(page, now);
-    return { ...base, status: posts.length ? 'ok' : 'empty', posts };
-  } catch (_) { return { ...base, reason: 'navigation_or_extraction_failed' }; }
+    return { ...base, status: posts.length ? 'ok' : 'empty', posts, http_status: responseStatus };
+  } catch (_) { return { ...base, reason: 'unexpected_x_error', http_status: responseStatus }; }
   finally { await page.close().catch(() => {}); }
 }
 async function run() {
   const queue = readJSON(QUEUE, { items: [] }), current = readJSON(OUT, { items: [] });
-  const targets = chooseTargets(queue, current);
+  // En el primer push del despliegue se reintenta incluso tras un error reciente.
+  const targets = chooseTargets(queue, process.env.GITHUB_EVENT_NAME === 'push' ? { items: [] } : current);
   if (process.argv.includes('--plan')) { console.log(JSON.stringify({ targets })); return; }
   if (!targets.length) { console.log('TT_X_CONTEXT no_pending_targets'); return; }
   const token = process.env.X_AUTH_TOKEN || '', ct0 = process.env.X_CT0 || '';
@@ -105,7 +124,8 @@ async function run() {
   const { chromium } = require('playwright'), browser = await chromium.launch({ headless: true });
   const updates = [];
   try {
-    const context = await browser.newContext({ locale: 'es-ES', timezoneId: 'Europe/Madrid' });
+    const context = await browser.newContext({ locale: 'es-ES', timezoneId: 'Europe/Madrid',
+      userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36' });
     await context.addCookies([
       { name: 'auth_token', value: token, domain: '.x.com', path: '/', secure: true, httpOnly: true, sameSite: 'None' },
       { name: 'ct0', value: ct0, domain: '.x.com', path: '/', secure: true, httpOnly: false, sameSite: 'Lax' }
