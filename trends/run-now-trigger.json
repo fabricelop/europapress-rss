@@ -1,11 +1,20 @@
 {
   "version": 2,
-  "command_id": "tr-1794478141471-manual",
-  "requested_at": "2026-11-12T10:09:01.471Z",
+  "command_id": "tr-autoguard-1794479899",
+  "requested_at": "2026-11-12T10:38:19.985638Z",
   "mode": "manual_pc_chat",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
   "launcher_arg": "tendencias",
   "task": "editorial",
-  "auto_image_followup": false
+  "auto_image_followup": false,
+  "source": "tt_autoheal_editorial_watchdog",
+  "reason": "editorial_not_started_in_time",
+  "pending_ids": [
+    "ba9b353684f9"
+  ],
+  "target_id": "ba9b353684f9",
+  "target_revision": 1,
+  "target_name": "Elise",
+  "scope": "single_item"
 }
