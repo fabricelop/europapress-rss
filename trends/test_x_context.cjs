@@ -38,3 +38,11 @@ test('HTTP 403/429 bloquea nuevas consultas sin afectar la cola', () => {
   assert.equal(chooseTargets(queue, { items:[{ ...old403, searched_at:'2026-11-11T01:00:00Z' }] }, now).length, 2);
   assert.equal(queue.items[0].status, 'preparing');
 });
+
+test('Windows mode ignores unrelated GitHub runner HTTP 403 and keeps its own backoff',()=>{
+  const cloud={items:[{...one,source:'x_recent_posts',http_status:403,status:'error',searched_at:'2026-11-12T15:50:00Z'}]};
+  assert.equal(chooseTargets(queue,cloud,now).length,0);
+  assert.equal(chooseTargets(queue,cloud,now,6,'x_recent_posts_windows').length,2);
+  const local={items:[{...one,source:'x_recent_posts_windows',http_status:403,status:'error',searched_at:'2026-11-12T15:50:00Z'}]};
+  assert.equal(chooseTargets(queue,local,now,6,'x_recent_posts_windows').length,0);
+});
