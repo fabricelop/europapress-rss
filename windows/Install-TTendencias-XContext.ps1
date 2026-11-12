@@ -7,6 +7,7 @@ $ProgressPreference = 'SilentlyContinue'
 $root = [IO.Path]::GetFullPath($RepoRoot)
 $workDir = Join-Path $root 'TT-XContext'
 $runner = Join-Path $workDir 'Run-TTendencias-X-Local.ps1'
+$hiddenLauncher = Join-Path $workDir 'TTendencias-XContext-hidden.vbs'
 $taskName = 'TTendencias-XContext'
 if ($Uninstall) {
   $existing = Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue
@@ -20,7 +21,10 @@ $node = (Get-Command node.exe -ErrorAction Stop).Source
 if ($CheckOnly) {
   Write-Host 'TT_X_CHECK_ONLY: no installation, no X request'
   $task = Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue
-  if ($task) { Get-ScheduledTaskInfo -TaskName $taskName | Select-Object LastRunTime,LastTaskResult,NextRunTime }
+  if ($task) {
+    Get-ScheduledTaskInfo -TaskName $taskName | Select-Object LastRunTime,LastTaskResult,NextRunTime
+    Write-Host ('TT_X_TASK_ACTION=' + [string]$task.Actions[0].Execute)
+  }
   else { Write-Host 'TASK_NOT_INSTALLED' }
   if(Test-Path $runner) { & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $runner -RepoRoot $root -CheckOnly; exit $LASTEXITCODE }
   Write-Host 'RUNNER_NOT_INSTALLED'
@@ -37,6 +41,7 @@ function Download([string]$relative,[string]$destination) {
   Move-Item -LiteralPath $temp -Destination $destination -Force
 }
 Download 'windows/Run-TTendencias-X-Local.ps1' $runner
+Download 'windows/TTendencias-XContext-hidden.vbs' $hiddenLauncher
 Download 'trends/x_context.js' (Join-Path $workDir 'x_context.js')
 Download 'trends/publish_x_context.js' (Join-Path $workDir 'publish_x_context.js')
 Download 'trends/test_x_context.cjs' (Join-Path $workDir 'test_x_context.cjs')
@@ -78,13 +83,24 @@ if ($LASTEXITCODE -ne 0) { throw 'Playwright unavailable; task not installed' }
 if ($LASTEXITCODE -ne 0) { throw 'Unit tests failed; task not installed' }
 & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $runner -RepoRoot $root -CheckOnly
 if ($LASTEXITCODE -ne 0) { throw 'Runner preflight failed; task not installed' }
-# This is the ONLY task that is created or replaced.
-$command = 'powershell.exe -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File "' + $runner + '" -RepoRoot "' + $root + '"'
+# This is the ONLY task that is created or replaced. wscript.exe is a GUI
+# launcher with window style 0; PowerShell -WindowStyle Hidden alone can flash
+# a console for a moment before the flag takes effect.
+$wasRunning = $false
+$currentTask = Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue
+if ($currentTask) { $wasRunning = $currentTask.State -eq 'Running' }
+$wscript = Join-Path $env:SystemRoot 'System32\wscript.exe'
+if (-not (Test-Path -LiteralPath $wscript)) { throw 'Windows Script Host is unavailable; task not changed' }
+if (-not (Test-Path -LiteralPath $hiddenLauncher)) { throw 'Invisible task launcher missing; task not changed' }
+$command = '"' + $wscript + '" "' + $hiddenLauncher + '"'
 & schtasks.exe /Create /TN $taskName /TR $command /SC MINUTE /MO 30 /ST '00:12' /RL LIMITED /F | Out-Host
 if ($LASTEXITCODE -ne 0) { throw 'Could not register TTendencias-XContext task' }
 $settings = New-ScheduledTaskSettingsSet -StartWhenAvailable -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -MultipleInstances IgnoreNew -ExecutionTimeLimit (New-TimeSpan -Minutes 12)
 Set-ScheduledTask -TaskName $taskName -Settings $settings | Out-Null
-Write-Host 'TT_X_WINDOWS_INSTALLED: independent 30-min scheduled task' -ForegroundColor Green
+Write-Host 'TT_X_WINDOWS_INSTALLED: independent INVISIBLE 30-min scheduled task (wscript.exe)' -ForegroundColor Green
 Write-Host ('Log: ' + (Join-Path $workDir 'run.log'))
 Write-Host 'No changes to SeLoRecordamos, editorial, images, publishing or Chrome CDP'
-if (-not $NoStart) { Start-ScheduledTask -TaskName $taskName; Write-Host 'TT_X_WINDOWS_FIRST_RUN_REQUESTED: check the log for real X evidence and publication' }
+if (-not $NoStart) {
+  if ($wasRunning) { Write-Host 'TT_X_WINDOWS_RUN_ALREADY_ACTIVE: not launching a duplicate; updated action applies to subsequent runs' }
+  else { Start-ScheduledTask -TaskName $taskName; Write-Host 'TT_X_WINDOWS_FIRST_HIDDEN_RUN_REQUESTED: check the log for real X evidence and publication' }
+}
