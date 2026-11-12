@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-11-12T12:09:58.017792Z",
+  "updated_at": "2026-11-12T12:20:24.972267Z",
   "items": [
     {
       "event_id": "c2c5fea57972",
@@ -381,16 +381,16 @@
       "with_image": true,
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "none",
+      "ai_image_status": "ready",
       "archive_image_status": "ready",
       "fallback_image_status": "none",
-      "image_choice": "none",
+      "image_choice": "ai",
       "sensitive_editorial": false,
       "prepared_at": "2026-11-12T11:46:33.352859Z",
-      "image_status": "none",
+      "image_status": "ready",
       "image_pending": false,
-      "image_app_available": false,
-      "image_delivery": "none",
+      "image_app_available": true,
+      "image_delivery": "app",
       "archive_image_search_attempted_at": "2026-11-12T11:47:39.273408Z",
       "fallback_image_search_attempted_at": "2026-11-12T11:47:39.273408Z",
       "archive_image": {
@@ -400,6 +400,55 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "El demócrata Scott Colom hace historia en Misisipi al convertirse en el primer senador negro del estado en 145 años"
+      },
+      "ai_image": {
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "provenance": "editor_confirmed_gallery",
+        "context_guard": {
+          "version": 3,
+          "event_id": "ccf4b9a18b54",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-ccf4b9a18b54-r1-a1-1794484057833",
+          "editorial_sha256": "f10572229bd5260e8e3b153a2d3b01405098d1cb8acb9aaa1a9a3e664b85552b",
+          "source_chunk_sha256": "22d468ce3beabd0736102a5bea4584f5e6f3965043c9bab8e4b4f984d9e3cc98"
+        },
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/ccf4b9a18b54-r1-ai1.jpg",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/ccf4b9a18b54-r1-ai1.jpg",
+        "sha256": "427f322c897eb4f1cf97387876417977d95c9a157c04bbc297e3ae767347ecec",
+        "handoff": "inline-outbox-materialized-by-actions",
+        "alt": "El demócrata Scott Colom hace historia en Misisipi al convertirse en el primer senador negro del estado en 145 años",
+        "generation_attempt": 1
+      },
+      "ai_image_attempt": 1,
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-11-12T12:20:24.972186Z",
+      "image": {
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "provenance": "editor_confirmed_gallery",
+        "context_guard": {
+          "version": 3,
+          "event_id": "ccf4b9a18b54",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-ccf4b9a18b54-r1-a1-1794484057833",
+          "editorial_sha256": "f10572229bd5260e8e3b153a2d3b01405098d1cb8acb9aaa1a9a3e664b85552b",
+          "source_chunk_sha256": "22d468ce3beabd0736102a5bea4584f5e6f3965043c9bab8e4b4f984d9e3cc98"
+        },
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/ccf4b9a18b54-r1-ai1.jpg",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/ccf4b9a18b54-r1-ai1.jpg",
+        "sha256": "427f322c897eb4f1cf97387876417977d95c9a157c04bbc297e3ae767347ecec",
+        "handoff": "inline-outbox-materialized-by-actions",
+        "alt": "El demócrata Scott Colom hace historia en Misisipi al convertirse en el primer senador negro del estado en 145 años",
+        "generation_attempt": 1
       }
     },
     {
