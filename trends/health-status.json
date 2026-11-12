@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-12T07:16:13.007932+00:00",
+  "checked_at": "2026-11-12T07:31:02.827250+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -42,7 +42,7 @@
     "top10": {
       "ok": false,
       "count": 10,
-      "non_stale_sources": 4,
+      "non_stale_sources": 3,
       "verified_fresh_sources": [
         "xtrendsiamrohit"
       ],
@@ -59,8 +59,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 5.1,
-      "run_id": 43173371867,
+      "age_minutes": 5.0,
+      "run_id": 43175226246,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -83,27 +83,33 @@
     "editorial_queue": {
       "ok": false,
       "pending_count": 8,
-      "overdue_count": 3,
-      "oldest_age_minutes": 163.7,
+      "overdue_count": 4,
+      "oldest_age_minutes": 178.6,
       "warning_after_minutes": 30,
       "overdue_items": [
+        {
+          "id": "906b9c17e4e8",
+          "name": "Joe Rogan",
+          "status": "preparing",
+          "age_minutes": 36.0
+        },
         {
           "id": "red-review-1621ac0eddb6a5671797",
           "name": "Revisar novedades: Oviedo",
           "status": "preparing",
-          "age_minutes": 163.7
+          "age_minutes": 178.6
         },
         {
           "id": "red-review-59f8be942e144600c52a",
           "name": "Revisar novedades: #VotoUtilEsPodemos",
           "status": "preparing",
-          "age_minutes": 163.7
+          "age_minutes": 178.6
         },
         {
           "id": "a50a2805be1b",
           "name": "#felizjueves",
           "status": "preparing",
-          "age_minutes": 74.3
+          "age_minutes": 89.1
         }
       ],
       "repairable": false
@@ -134,9 +140,9 @@
   "blocking": [
     "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos",
     "cola con 760 estado(s) inválido(s)",
-    "cola de explicaciones retrasada: 3 pendiente(s) superan 30 min; más antigua 163.7 min"
+    "cola de explicaciones retrasada: 4 pendiente(s) superan 30 min; más antigua 178.6 min"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 760 estado(s) inválido(s) | cola de explicaciones retrasada: 3 pendiente(s) superan 30 min; más antigua 163.7 min"
+  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 760 estado(s) inválido(s) | cola de explicaciones retrasada: 4 pendiente(s) superan 30 min; más antigua 178.6 min"
 }
