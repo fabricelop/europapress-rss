@@ -1,15 +1,15 @@
 {
   "version": 1,
-  "id": "ttb-news-listener-restart-20261112-1242",
+  "id": "ttb-news-diagnose-guardfix-20261112-1250",
   "project": "TTActualidad",
   "expires_at": "2026-11-13T12:00:00Z",
-  "description": "Restart only news editorial listener to load installed 120 second confirmation, preserve image bridges",
+  "description": "Read only targeted news editorial launch and ledger after guarded attempt",
   "steps": [
     {
       "kind": "powershell",
-      "name": "restart-news-listener",
-      "script": "$o=@{state='pending'}\ntry{\n $p=@(Get-CimInstance Win32_Process -Filter \"Name='powershell.exe'\" | Where-Object { [string]$_.CommandLine -match 'TTiTTularesDedicatedListener[.]ps1' })\n if($p.Count -gt 2){throw 'TOO_MANY_LISTENERS'}\n foreach($q in $p){Stop-Process -Id $q.ProcessId -Force -ErrorAction Stop}\n Start-ScheduledTask -TaskName 'TTiTTulares Local' -ErrorAction Stop\n $o.state='listener_restarted';$o.stopped=$p.Count\n}catch{$o.state='error';$o.reason=[string]$_.Exception.Message}\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress))",
-      "timeout_seconds": 30
+      "name": "diagnose-news-guardfix",
+      "script": "$f='C:\\TTiTTulares\\ttittulares-mobile-trigger.log'\n$l=@(Get-Content $f -Tail 350 | Where-Object { $_ -match 'tt-guardfix-1794481657530|NEW_CHAT_NOT_BLANK|CHAT LAUNCH LOG ERROR|LAUNCH CONFIRMED|LAUNCH FAILED|CHAT MESSAGE TIMEOUT' } | Select-Object -Last 24)\n$d=Get-ChildItem 'C:\\TTiTTulares\\TT-Editorial-Rescue\\sent' -Filter '*tt-guardfix-1794481657530*.json' -ErrorAction SilentlyContinue | Select-Object -First 1\n$o=@{state='ok';lines=@($l|ForEach-Object{[string]$_|Select-Object -Last 1});ledger=if($d){(Get-Content $d.FullName -Raw).Substring(0,[Math]::Min(1800,(Get-Content $d.FullName -Raw).Length))}else{''}}\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress -Depth 5))",
+      "timeout_seconds": 25
     }
   ]
 }
