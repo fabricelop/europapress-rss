@@ -1,15 +1,15 @@
 {
   "version": 1,
-  "id": "ttb-news-draft-preservation-install-20261112-1336",
+  "id": "ttb-news-draftbackup-result-20261112-1340",
   "project": "TTActualidad",
   "expires_at": "2026-11-13T12:00:00Z",
-  "description": "Install guard that backs up a restored draft locally before clearing only its new bot tab",
+  "description": "Read-only result flags for one news draft preservation attempt",
   "steps": [
     {
       "kind": "powershell",
-      "name": "install-draft-preservation-guard",
-      "script": "$o=@{state='pending'}\ntry{\n $p=@(Get-CimInstance Win32_Process -Filter \"Name='node.exe'\"|Where-Object{[string]$_.CommandLine -match 'C:\\\\TTiTTulares\\\\Ejecutar[.]js' -and [string]$_.CommandLine -match ' --enviar'})\n if($p.Count){$o.state='runner_active';$o.count=$p.Count}\n else{\n  $f=Join-Path $env:TEMP 'Reparar-TT-Editorial-draft-backup.ps1'\n  Invoke-WebRequest -UseBasicParsing -Uri 'https://raw.githubusercontent.com/fabricelop/europapress-rss/16dcd5270df6955c5a16461fb4b6dd391e1133e6/windows/Reparar-TT-Editorial-20261111.ps1' -OutFile $f -TimeoutSec 30 -ErrorAction Stop\n  & powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File $f -NoDispatch | Out-Null\n  if($LASTEXITCODE -ne 0){throw 'INSTALL_FAILED'}\n  $g=Get-Content 'C:\\TTiTTulares\\TT-Editorial-Guard.js' -Raw -ErrorAction Stop\n  if(-not $g.Contains('RESTORED_DRAFT_BACKED_UP_LOCAL')){throw 'GUARD_MARKER_MISSING'}\n  $o.state='installed_verified'\n }\n}catch{$o.state='error';$o.reason=[string]$_.Exception.Message}\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress))",
-      "timeout_seconds": 150
+      "name": "draftbackup-result",
+      "script": "$l=@(Get-Content 'C:\\TTiTTulares\\ttittulares-mobile-trigger.log' -Tail 500)\n$id='tt-draftbackup-1794482993257'\n$o=@{state='pending';seen=@($l|Where-Object{$_ -match $id}).Count;backup=[bool](@($l|Where-Object{$_ -match 'RESTORED_DRAFT_BACKED_UP_LOCAL'}).Count);cleared=[bool](@($l|Where-Object{$_ -match 'RESTORED_DRAFT_CLEARED_BOT_TAB'}).Count)}\nif(@($l|Where-Object{$_ -match ('LAUNCH CONFIRMED.*'+$id)}).Count){$o.state='confirmed'}\nif(@($l|Where-Object{$_ -match ('LAUNCH FAILED.*'+$id)}).Count){$o.state='failed'}\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress))",
+      "timeout_seconds": 20
     }
   ]
 }
