@@ -291,6 +291,17 @@ async function main(){
  }
  if(MODE==='--audit'){await cleanup();return}
  if(MODE==='--cleanup'){for(let cycle=0;cycle<4;cycle++){const b=(await targets()).length;note('CLEANUP_PASS '+(cycle+1)+' pages='+b);if(b<=18)break;const r=await cleanup();if(!r.closed)break;}return}
+ if(MODE==='--inspect-failed'){
+  const dir=path.join(STATE,'sent');
+  const files=fs.readdirSync(dir).filter(x=>x.endsWith('.json')).map(x=>({name:x,full:path.join(dir,x),time:fs.statSync(path.join(dir,x)).mtimeMs})).sort((a,b)=>b.time-a.time);
+  const recent=files.map(x=>readJSON(x.full)).find(x=>x?.status==='preflight_failed'&&x.target);
+  if(!recent)fail('NO_RECENT_PREFLIGHT_TARGET');
+  const t=(await targets()).find(x=>x.id===recent.target);
+  if(!t)fail('TARGET_NOT_AVAILABLE');
+  const v=await inspect(t);
+  note('SAFE_COMPOSITOR_STATE '+JSON.stringify({urlKind:v.url?.includes('/c/')?'conversation':v.url?.includes('/g/')?'project':'home',editor:v.editor,editorTag:v.editorTag,editorId:v.editorId,placeholderMatch:v.placeholderMatch,editorLength:v.editorLength,users:v.users,assistants:v.assistants,busy:v.busy,shield:v.shield}));
+  return;
+ }
  if(MODE==='--probe'){
   await cleanup();let pp=await targets();if(pp.length>48)fail('NO_PROBE hard tab cap');
   let t=await createTarget('https://chatgpt.com/'),c=new WS(t.webSocketDebuggerUrl);try{await c.open();let s=await waitEditor(c,40000);if(!s)fail('COMPOSER_NOT_READY: user login, page load or quota may be blocking');note('COMPOSER_OK no message sent');}
