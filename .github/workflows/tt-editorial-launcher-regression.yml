@@ -1,0 +1,24 @@
+name: "TT editorial Chrome launcher safety"
+on:
+  pull_request:
+    paths:
+      - "windows/Reparar-TT-Editorial-20261111.ps1"
+      - "windows/tests/editorial-idle-tab-cap.test.cjs"
+      - ".github/workflows/tt-editorial-launcher-regression.yml"
+  push:
+    branches: [main]
+    paths:
+      - "windows/Reparar-TT-Editorial-20261111.ps1"
+      - "windows/tests/editorial-idle-tab-cap.test.cjs"
+      - ".github/workflows/tt-editorial-launcher-regression.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prevent stalled editorial submission above 18 idle tabs
+        run: node --test windows/tests/editorial-idle-tab-cap.test.cjs

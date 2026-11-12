@@ -175,7 +175,11 @@ function lock(){fs.mkdirSync(STATE,{recursive:true});const f=path.join(STATE,'di
 async function preflight(){
  const pages=await targets(),pins=pinIds();const states=await scan(pages,4);
  note('PREFLIGHT pages='+pages.length+' image_pins='+pages.filter(p=>pins.has(p.id)).length+' unknown='+states.filter(s=>!!s.unknown).length+' busy='+states.filter(s=>!!s.busy).length);
- if(pages.length>18)fail('TOO_MANY_TABS '+pages.length+'; inspect last-audit.json, protected tabs NOT closed');
+ // Historical conversation tabs are not active editorial jobs. Do not
+ // stall BOTH queues merely because they are still open. Fail closed for
+ // active/untracked sends below; keep a generous hard resource ceiling.
+ if(pages.length>48)fail('TOO_MANY_TABS_HARD_CAP '+pages.length+'; preserve protected tabs');
+ if(pages.length>18)note('EDITORIAL_TAB_SOFT_PRESSURE '+pages.length+'; originals preserved');
  const busy=pages.filter((t,i)=>states[i].busy&&!pins.has(t.id));
  // A single independently confirmed editorial response may continue while
  // another project is dispatched. Other work, including unknown image tabs,
@@ -259,7 +263,7 @@ async function main(){
  if(MODE==='--audit'){await cleanup();return}
  if(MODE==='--cleanup'){for(let cycle=0;cycle<4;cycle++){const b=(await targets()).length;note('CLEANUP_PASS '+(cycle+1)+' pages='+b);if(b<=18)break;const r=await cleanup();if(!r.closed)break;}return}
  if(MODE==='--probe'){
-  await cleanup();let pp=await targets();if(pp.length>18)fail('NO_PROBE too many tabs');
+  await cleanup();let pp=await targets();if(pp.length>48)fail('NO_PROBE hard tab cap');
   let t=await createTarget('https://chatgpt.com/'),c=new WS(t.webSocketDebuggerUrl);try{await c.open();let s=await waitEditor(c,40000);if(!s)fail('COMPOSER_NOT_READY: user login, page load or quota may be blocking');note('COMPOSER_OK no message sent');}
   finally{c.close();let n=(await targets()).find(x=>x.id===t.id);if(n){let st=await inspect(n);if(!st.unknown&&!st.busy&&st.users===0&&st.assistants===0&&st.editorLength===0)await fetch(CDP+'/json/close/'+encodeURIComponent(t.id)).catch(()=>{})}}
   return;
