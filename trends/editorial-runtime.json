@@ -7,51 +7,90 @@
   "previous_run_id": "tr-20261112T151000-manual",
   "command_id": "tr-20261112T154000-manual",
   "source": "chat",
-  "status": "waiting",
-  "phase": "preparing",
+  "status": "DONE_WITH_INCIDENTS",
+  "phase": "finished",
   "started_at": "2026-11-12T15:40:00+01:00",
-  "updated_at": "2026-11-12T15:50:58+01:00",
-  "current": 0,
-  "total": 3,
+  "updated_at": "2026-11-12T15:53:00+01:00",
+  "current": 4,
+  "total": 4,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [
-    "554d3b5f9168"
-  ],
-  "converged_ids": [],
-  "remaining_ids": [
+    "radar-prepare-4e67f5ba6e21bbb1d5f3",
+    "radar-prepare-7d45db377614806a8f3f",
     "red-review-e0584d7859ae861c99c0",
     "554d3b5f9168"
   ],
-  "remaining_active_ids": [
+  "converged_ids": [
+    "radar-prepare-4e67f5ba6e21bbb1d5f3",
+    "radar-prepare-7d45db377614806a8f3f",
     "red-review-e0584d7859ae861c99c0"
   ],
+  "remaining_ids": [
+    "554d3b5f9168"
+  ],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [
     "554d3b5f9168"
   ],
   "summary": {
-    "attempted": 0,
-    "observed": 0,
-    "closed": 0,
+    "attempted": 4,
+    "observed": 4,
+    "closed": 3,
     "explained": 0,
-    "problematic": 0,
-    "anticipation_reviews": 0,
-    "anticipation_prepared": 0,
+    "maintenance": 1,
+    "problematic": 1,
+    "anticipation_reviews": 2,
+    "anticipation_prepared": 2,
     "anticipation_unverified": 0,
-    "queue_remaining": 3,
+    "queue_remaining": 1,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 0
+    "incidents": 1
   },
-  "outcomes": [],
-  "incident_count": 0,
-  "incidents": [],
+  "outcomes": [
+    {
+      "id": "radar-prepare-4e67f5ba6e21bbb1d5f3",
+      "revision": 0,
+      "name": "Radar · Viernes 13",
+      "outcome": "anticipation_prepared"
+    },
+    {
+      "id": "radar-prepare-7d45db377614806a8f3f",
+      "revision": 0,
+      "name": "Radar · Vivienda",
+      "outcome": "anticipation_prepared"
+    },
+    {
+      "id": "red-review-e0584d7859ae861c99c0",
+      "revision": 0,
+      "name": "Revisar novedades: #EnBocaDeTodos",
+      "outcome": "continuity"
+    },
+    {
+      "id": "554d3b5f9168",
+      "revision": 1,
+      "name": "Tamayo",
+      "outcome": "problematic",
+      "problematic_attempts": 2
+    }
+  ],
+  "incident_count": 1,
+  "incidents": [
+    {
+      "id": "554d3b5f9168",
+      "revision": 1,
+      "name": "Tamayo",
+      "kind": "unverified_editor_hint",
+      "message": "Segundo intento sin confirmación independiente fiable de que Tamayo y La Gata de Schrödinger fueran los verificadores anunciados por Jordi Wild. Se mantiene problematic y sin explicación verificada."
+    }
+  ],
   "error": null,
   "activity": "closing",
   "last_started_at": "2026-11-12T15:50:58+01:00",
-  "last_completed_at": "2026-11-12T15:17:00+01:00",
+  "last_completed_at": "2026-11-12T15:53:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-20261112T151000-manual",
@@ -65,7 +104,7 @@
     "pending": 0,
     "problematic": 1
   },
-  "message": "Pasada manual iniciada: 1 problematic (Tamayo r1) y 2 borradores Radar pendientes.",
+  "message": "Pasada manual completada: 2 borradores Radar preparados, 1 revisión roja actualizada en continuidad y Tamayo r1 permanece problematic tras segundo intento sin corroboración fiable.",
   "history": [
     {
       "run_id": "tr-1794327332740-manual",
@@ -5015,7 +5054,7 @@
   ],
   "current_item": null,
   "withdrawn_ids": [],
-  "last_finished_at": "2026-11-11T19:56:00+01:00",
+  "last_finished_at": "2026-11-12T15:53:00+01:00",
   "last_revalidated_at": "2026-11-11T19:56:00+01:00",
   "last_revalidation": {
     "at": "2026-11-11T18:26:00+01:00",
@@ -8089,5 +8128,5 @@
     }
   ],
   "processed": [],
-  "finished_at": null
+  "finished_at": "2026-11-12T15:53:00+01:00"
 }
