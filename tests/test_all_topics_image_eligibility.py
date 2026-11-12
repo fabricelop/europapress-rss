@@ -37,6 +37,11 @@ class TopicNeutralImageEligibility(unittest.TestCase):
         self.assertNotIn("if (row.tremending_origin) continue;", control)
         self.assertIn("req.disable_ai_image = false;", control)
         self.assertIn('req.image_strategy = "ai_plus_fallback";', control)
+        editorial = (ROOT / "trends/apply_editorial_outbox.py").read_text()
+        self.assertIn('"with_image": True,', editorial)
+        self.assertIn('"ai_image_status": "pending",', editorial)
+        self.assertIn('"image_pending": True,', editorial)
+        self.assertNotIn('"with_image": bool(req.get("with_image"))', editorial)
 
 if __name__ == "__main__":
     unittest.main()
