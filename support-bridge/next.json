@@ -1,26 +1,24 @@
 {
   "version": 1,
-  "id": "ttb-trends-executor-20261112",
+  "id": "ttb-trends-after-fix-20261112",
   "project": "TTActualidad",
   "expires_at": "2026-11-13T20:00:00Z",
-  "description": "Localizar el ejecutor real de TTendencias y sus procesos sin modificar el equipo",
+  "description": "Verificar cola y listener tras instalar desde main la reparación editorial individual",
   "steps": [
-    {
-      "kind": "powershell",
-      "name": "localizar-listener-y-procesos",
-      "script": "$root='C:\\TTiTTulares'\n$files=@(Get-ChildItem $root -File -Filter '*ttendencias*' -ErrorAction SilentlyContinue | Select-Object -First 30 Name,Length,LastWriteTime)\n$procs=@(Get-CimInstance Win32_Process -Filter \"name='node.exe'\" | Where-Object {$_.CommandLine -match 'TT|ttendencias|editorial'} | ForEach-Object {@{pid=$_.ProcessId;command=([regex]::Replace($_.CommandLine,'(?i)(token|password|secret|key)\\s*[=:]\\s*\\S+','$1=[REDACTED]'))}})\nWrite-Output ('TTRESULT:'+(@{files=$files;processes=$procs}|ConvertTo-Json -Compress -Depth 5))\n",
-      "timeout_seconds": 25
-    },
-    {
-      "kind": "powershell",
-      "name": "localizar-archivos-editoriales",
-      "script": "$root='C:\\TTiTTulares'\n$files=@(Get-ChildItem $root -File -Filter '*Editorial*' -ErrorAction SilentlyContinue | Select-Object -First 35 Name,Length,LastWriteTime)\nWrite-Output ('TTRESULT:'+(@{files=$files}|ConvertTo-Json -Compress -Depth 4))\n",
-      "timeout_seconds": 20
-    },
     {
       "kind": "builtin",
       "name": "editorial-queue",
       "timeout_seconds": 30
+    },
+    {
+      "kind": "builtin",
+      "name": "editorial-runtime",
+      "timeout_seconds": 30
+    },
+    {
+      "kind": "builtin",
+      "name": "listener-summary",
+      "timeout_seconds": 25
     }
   ]
 }
