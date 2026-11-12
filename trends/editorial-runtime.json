@@ -7,15 +7,15 @@
   "previous_run_id": "tr-20261113T0010-chat-direct",
   "command_id": "tr-20261113T002500-chat-direct",
   "source": "chat_direct",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-13T00:25:00+01:00",
-  "updated_at": "2026-11-13T00:25:00+01:00",
+  "updated_at": "2026-11-13T00:26:30+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -145,7 +145,7 @@
     },
     "message": "Pasada TTendencias completada 9/9 observados: 6 elaboraciones aplicadas sin errores por el aplicador oficial y 3 revisiones convergieron JIT antes de escritura (Begoña, Cristina Porta e Itália), sin duplicarlas. Petit quedó con causa no confirmada; #ElPerroAndaluzTVE se cerró como episodio material distinto. Cola final 0. Sin ImageGen ni publicaciones."
   },
-  "message": "Inicio de pasada editorial directa; verificando cola autoritativa y barreras de estado.",
+  "message": "Pasada completada con cola autoritativa vacía y barreras limpias: 0 preparing/update y 0 rewrite_pending/reexplain. Sin ImageGen ni publicaciones.",
   "history": [
     {
       "run_id": "tr-1794327332740-manual",
@@ -8700,6 +8700,6 @@
     }
   ],
   "processed": [],
-  "finished_at": null,
+  "finished_at": "2026-11-13T00:26:30+01:00",
   "maintenance_outbox_commit": "970b545c88b09429a23d15ec893b9d66fb611297"
 }
