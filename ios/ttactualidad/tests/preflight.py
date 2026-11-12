@@ -1101,7 +1101,7 @@ assert 'guard !incomplete else {' in inbox
 assert inbox.count('images = ready') == 1
 assert 'images = ApprovalInboxScope.visible(received)' not in inbox
 assert 'Se conserva la última vista' in inbox
-assert 'private struct UnconfirmedDecision: Codable, Identifiable' in inbox
+assert 'struct UnconfirmedDecision: Codable, Identifiable' in inbox
 assert 'TTActualidad.privateImageInbox.unconfirmed.v1' in inbox
 assert 'func reopenUnconfirmed(_ id: String)' in inbox
 assert 'holdUnconfirmed(item, action: action' in inbox
