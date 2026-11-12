@@ -282,6 +282,49 @@ enum EditorialRelationsPolicy {
         }.prefix(max(0, min(5, limit))))
     }
 
+    // Site automatic links can be semantically exact without repeating the
+    // trend's literal label in the news title. Always show confirmed pairs
+    // before applying the same five-most-recent display cap to text matches.
+    // This is display-only: it never creates/unlinks a Site relation.
+    static func newsForTrendIncludingLinked(
+        _ candidates: [EditorialRelationEndpoint],
+        relations: [EditorialRelation],
+        trendID: String, revision: Int, name: String,
+        fallbackDates: [String: Date] = [:], limit: Int = 5
+    ) -> [EditorialRelationEndpoint] {
+        let states = effectivePairStates(relations)
+        let linked = relations.filter {
+            $0.trend.id == trendID && $0.trend.revision == revision &&
+                states[pairKey($0.news, $0.trend)] == "linked"
+        }.map(\.news)
+        let linkedIDs = Set(linked.map { newsKey(id: $0.id, revision: $0.revision) })
+        var byEpisode: [String: EditorialRelationEndpoint] = [:]
+        for row in candidates + linked {
+            let key = newsKey(id: row.id, revision: row.revision)
+            if let old = byEpisode[key] {
+                if old.episodeFingerprint.isEmpty && !row.episodeFingerprint.isEmpty {
+                    byEpisode[key] = row
+                } else if old.title.isEmpty && !row.title.isEmpty {
+                    byEpisode[key] = row
+                }
+            } else {
+                byEpisode[key] = row
+            }
+        }
+        func date(_ news: EditorialRelationEndpoint) -> Date {
+            let key = newsKey(id: news.id, revision: news.revision)
+            return parsedDate(news.listedAt) ?? fallbackDates[key] ?? .distantPast
+        }
+        return Array(byEpisode.values.filter {
+            linkedIDs.contains(newsKey(id: $0.id, revision: $0.revision)) ||
+                newsMentionsTrend($0, name: name)
+        }.sorted { a, b in
+            if date(a) != date(b) { return date(a) > date(b) }
+            if a.revision != b.revision { return a.revision > b.revision }
+            return a.id < b.id
+        }.prefix(max(0, min(5, limit))))
+    }
+
     // Only explicit switches write decisions. Suggested (unaccepted) pairs are
     // not automatically dismissed when an editor saves another Top30 link.
     // A Sites-issued episode fingerprint already guards the exact editorial

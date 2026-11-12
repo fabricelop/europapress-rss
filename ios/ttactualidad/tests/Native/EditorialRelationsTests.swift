@@ -427,4 +427,71 @@ final class EditorialRelationsTests: XCTestCase {
                                                from: encoded)
         XCTAssertEqual(reparsed.id, "9ed95352b91b")
     }
+
+    func testConfirmedAutomaticNewsAppearsWithoutLiteralTrendNameAndCanUnlink() throws {
+        let payload = Data(#"""
+        {"items":[
+          {"id":"auto","news":{"id":"n-auto","revision":1,"episodeFingerprint":"N",
+           "title":"Comisión aprueba la medida","text":"El acuerdo se votó hoy",
+           "listedAt":"2026-11-12T16:01:00Z"},
+           "trend":{"id":"tr-actual","revision":2,"episodeFingerprint":"T",
+           "title":"Congreso","text":"Explicación"}, "state":"linked",
+           "origin":"automatic_verified","reason":"Mismo acontecimiento"},
+          {"id":"blocked","news":{"id":"n-block","revision":1,"episodeFingerprint":"B",
+           "title":"Congreso debatió antes","text":"",
+           "listedAt":"2026-11-12T16:02:00Z"},
+           "trend":{"id":"tr-actual","revision":2,"episodeFingerprint":"T",
+           "title":"Congreso","text":"Explicación"}, "state":"blocked",
+           "origin":"manual","reason":"Excluida"}
+        ],"news":[],"trends":[]}
+        """#.utf8)
+        let snapshot = try JSONDecoder().decode(EditorialRelationsSnapshot.self, from: payload)
+        let auto = try XCTUnwrap(snapshot.items.first)
+        XCTAssertFalse(EditorialRelationsPolicy.newsMentionsTrend(auto.news, name: "Congreso"))
+        let shown = EditorialRelationsPolicy.newsForTrendIncludingLinked(
+            [], relations: snapshot.items, trendID: "tr-actual", revision: 2,
+            name: "Congreso", limit: 5)
+        XCTAssertEqual(shown.map(\.id), ["n-auto"])
+        let state = EditorialRelationsPolicy.effectivePairStates(snapshot.items)[
+            EditorialRelationsPolicy.pairKey(auto.news, auto.trend)]
+        XCTAssertEqual(state, "linked")
+        XCTAssertEqual(EditorialRelationsPolicy.actionForSwitch(
+            current: state, selected: false), "unlink")
+    }
+
+    func testFiveMostRecentRelationsVisibleWithoutDeletingHistory() throws {
+        let news: [EditorialRelationEndpoint] = (0..<6).map { index in
+            EditorialRelationEndpoint(
+                id: "n" + String(index), revision: 1, episodeFingerprint: "",
+                title: "Noticia " + String(index), text: "Texto sin etiqueta",
+                path: nil,
+                listedAt: "2026-11-12T" + String(format: "%02d", 10 + index) +
+                    ":00:00Z")
+        }
+        let trend = EditorialRelationEndpoint(id: "trend", revision: 0,
+            episodeFingerprint: "", title: "Etiqueta", text: "", path: nil)
+        // Decode to exercise the same server snapshot path as the app.
+        var rows: [[String: Any]] = []
+        for (index, row) in news.enumerated() {
+            rows.append([
+                "id": "link" + String(index),
+                "news": ["id": row.id, "revision": row.revision,
+                         "title": row.title, "text": row.text,
+                         "listedAt": row.listedAt ?? ""],
+                "trend": ["id": trend.id, "revision": trend.revision,
+                          "title": trend.title],
+                "state": "linked", "origin": "automatic_verified"
+            ])
+        }
+        let bytes = try JSONSerialization.data(withJSONObject: [
+            "items": rows, "news": [], "trends": []
+        ])
+        let snap = try JSONDecoder().decode(EditorialRelationsSnapshot.self, from: bytes)
+        let shown = EditorialRelationsPolicy.newsForTrendIncludingLinked(
+            [], relations: snap.items, trendID: "trend", revision: 0,
+            name: "Etiqueta")
+        XCTAssertEqual(shown.map(\.id), ["n5", "n4", "n3", "n2", "n1"])
+        XCTAssertEqual(snap.items.count, 6)  // Historical links preserved.
+    }
+
 }

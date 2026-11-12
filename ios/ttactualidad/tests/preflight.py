@@ -953,7 +953,9 @@ assert '"Relaciones por revisar"' not in dashboard
 assert 'private var scopedTop30Index' not in relations_view
 assert 'let key = trendKey(rank: 0, name: scope.title)' in relations_view
 assert 'matches[key] = EditorialRelationsPolicy.newsForTrend(' in relations_view
-assert 'name: scope.title, now: now' in relations_view
+assert 'name: scope.title, fallbackDates: dates, limit: 5' in relations_view
+assert 'newsForTrendIncludingLinked(' in relations_view
+assert 'relations: model.snapshot?.items ?? []' in relations_view
 assert 'let rank = 0' in relations_view
 assert 'let name = scope.title' in relations_view
 assert 'listado no' not in relations_view.lower()
