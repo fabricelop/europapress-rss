@@ -1,14 +1,14 @@
 {
   "version": 1,
-  "id": "ttb-news-retry-outcome-20261112-1217",
+  "id": "ttb-news-task-state-20261112-1220",
   "project": "TTActualidad",
   "expires_at": "2026-11-13T12:00:00Z",
-  "description": "Read news retry outcome after installed new-chat guard",
+  "description": "Read latest news task and listener status",
   "steps": [
     {
       "kind": "powershell",
-      "name": "news-retry-outcome",
-      "script": "$f='C:\\TTiTTulares\\ttittulares-mobile-trigger.log'\n$l=[string](Get-Content $f -Tail 150 | Where-Object { $_ -match 'LAUNCH CONFIRMED|LAUNCH FAILED|CHAT LAUNCH LOG ERROR|EDITORIAL RETRY' } | Select-Object -Last 1)\nWrite-Output ('TTRESULT:'+(@{state='ok';last=$l.Substring(0,[Math]::Min(900,$l.Length))}|ConvertTo-Json -Compress))",
+      "name": "news-task-state",
+      "script": "$f='C:\\TTiTTulares\\ttittulares-mobile-trigger.log'\n$l=[string](Get-Content $f -Tail 1)\n$t=Get-ScheduledTask -TaskName 'TTiTTulares Local'\nWrite-Output ('TTRESULT:'+(@{state='ok';last=$l.Substring(0,[Math]::Min(500,$l.Length));task=[string]$t.State}|ConvertTo-Json -Compress))",
       "timeout_seconds": 20
     }
   ]
