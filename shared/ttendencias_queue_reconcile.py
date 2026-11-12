@@ -55,12 +55,15 @@ def reconcile():
             remain.append(queue_row)
             continue
         stamp=str(queue_row.get("explained_at") or datetime.now(timezone.utc).isoformat())
-        if (len(source[0]+"\n"+source[1])>256):
+        if len(source[0]) >= 280:
             raise RuntimeError("Editorial text too long: "+tid)
+        if source[1] and (not source[1].startswith("🌶️ ") or source[0].count(source[1]) != 1):
+            raise RuntimeError("Invalid closer_text: "+tid)
         fields={
             "id":tid,"name":queue_row.get("name"),"rank":queue_row.get("rank"),
+            "rank_at_explanation":queue_row.get("rank"),
             "revision":rev,"status":"explained","explanation":source[0],
-            "closer_text":source[1],"explained_at":stamp,
+            "closer_text":source[1],"explained_at":stamp,"updated_at":stamp,"last_attempt_at":stamp,
             "editorial_verified":True,
             "source_url":queue_row.get("source_url"),
             "verification_sources":queue_row.get("verification_sources") or []
@@ -71,7 +74,12 @@ def reconcile():
         for key in (
             "category","group_id","explanation_group_id","group_leader_id",
             "group_title","trend_names","trend_context","grouped_member_revisions",
-            "with_image","disable_ai_image","image_strategy","news_note"
+            "with_image","disable_ai_image","image_strategy","news_note",
+            "new_episode_review","previous_episode_id","radar_episode_token",
+            "material_event_key","material_event_at","material_change","significance_reason",
+            "source","editorial_engine","ai_image_status","fallback_image_status",
+            "image_status","image_choice","image_pending","telegram_package_status",
+            "investigation_history"
         ):
             if key in queue_row:
                 fields[key]=queue_row.get(key)
@@ -102,7 +110,9 @@ def reconcile():
         now=datetime.now(timezone.utc).isoformat()
         q["updated_at"]=now
         reqs["updated_at"]=now
+        reqs["count"]=len(reqs["requests"])
         manual["updated_at"]=now
+        manual["count"]=len(manual["items"])
         write("trends/requests.json",reqs)
         write("trends/telegram-manual-explained.json",manual)
         write("trends/editorial-queue.json",q)
