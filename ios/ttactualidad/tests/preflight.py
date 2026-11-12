@@ -94,6 +94,17 @@ assert 'ScrollViewReader { scrollProxy in' in dashboard
 assert '.id("ttactualidad-listas-top")' in dashboard
 assert '.onChange(of: github.removalScrollToken)' in dashboard
 assert 'scrollProxy.scrollTo("ttactualidad-listas-top", anchor: .top)' in dashboard
+# Reconcile a lost per-dispatch ACK only when the canonical terminal
+# decision matches project, exact editorial ID, revision, action and a newer date.
+assert "lastTerminalProbe" in auth
+assert '"trends/mobile-decisions.json"' in auth
+assert '"ttittulares/decisions.json"' in auth
+assert '"deleted", "published"' in auth
+assert 'pending.revision' in auth and 'pending.eventID' in auth
+assert 'changed >= pending.sentAt.addingTimeInterval(-30)' in auth
+assert 'no consta el recibo de la orden original' in auth
+assert 'settled.insert(pending.requestID)' in auth
+print("TT_ACTUALIDAD_IOS_TERMINAL_STATE_RECEIPTS_OK")
 print("TT_ACTUALIDAD_IOS_PRIOR_LISTAS_AND_SCROLL_OK")
 print("TT_ACTUALIDAD_IOS_PREFLIGHT_OK")
 
