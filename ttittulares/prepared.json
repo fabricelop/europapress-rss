@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-11-12T16:15:01.216509Z",
+  "updated_at": "2026-11-12T16:47:07.224074Z",
   "items": [
     {
       "event_id": "c2c5fea57972",
@@ -742,16 +742,16 @@
       "with_image": true,
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "none",
+      "ai_image_status": "ready",
       "archive_image_status": "ready",
       "fallback_image_status": "none",
-      "image_choice": "none",
+      "image_choice": "ai",
       "prepared_at": "2026-11-12T15:00:00Z",
       "editorial_verified_at": "2026-11-12T15:00:00Z",
-      "image_status": "none",
+      "image_status": "ready",
       "image_pending": false,
-      "image_app_available": false,
-      "image_delivery": "none",
+      "image_app_available": true,
+      "image_delivery": "app",
       "archive_image_search_attempted_at": "2026-11-12T15:02:31.545360Z",
       "fallback_image_search_attempted_at": "2026-11-12T15:02:31.545360Z",
       "archive_image": {
@@ -761,6 +761,55 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "Sánchez se echa la campaña a cuestas como gran “movilizador” del PSOE sin Zapatero ni Puente"
+      },
+      "ai_image": {
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "provenance": "editor_confirmed_gallery",
+        "context_guard": {
+          "version": 3,
+          "event_id": "c6d918c2f68a",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-c6d918c2f68a-r1-a1-1794495749819",
+          "editorial_sha256": "98feedc78e63ec7622f3e12fbdcbe3294c98ef69b4f5e9e88fd80e531b9fc0bc",
+          "source_chunk_sha256": "418ce5bc79095854b82212fa80b8746a11dec33e3cd29191da8d55842bac6f8c"
+        },
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/c6d918c2f68a-r1-ai1.jpg",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/c6d918c2f68a-r1-ai1.jpg",
+        "sha256": "fd9d2038fec97c7f8b4b1e9bcc5b1f780d3b9dba390a08b5ca9df317ef20f775",
+        "handoff": "inline-outbox-materialized-by-actions",
+        "alt": "Sánchez se echa la campaña a cuestas como gran “movilizador” del PSOE sin Zapatero ni Puente",
+        "generation_attempt": 1
+      },
+      "ai_image_attempt": 1,
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-11-12T16:47:07.223973Z",
+      "image": {
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "provenance": "editor_confirmed_gallery",
+        "context_guard": {
+          "version": 3,
+          "event_id": "c6d918c2f68a",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-c6d918c2f68a-r1-a1-1794495749819",
+          "editorial_sha256": "98feedc78e63ec7622f3e12fbdcbe3294c98ef69b4f5e9e88fd80e531b9fc0bc",
+          "source_chunk_sha256": "418ce5bc79095854b82212fa80b8746a11dec33e3cd29191da8d55842bac6f8c"
+        },
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/c6d918c2f68a-r1-ai1.jpg",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/c6d918c2f68a-r1-ai1.jpg",
+        "sha256": "fd9d2038fec97c7f8b4b1e9bcc5b1f780d3b9dba390a08b5ca9df317ef20f775",
+        "handoff": "inline-outbox-materialized-by-actions",
+        "alt": "Sánchez se echa la campaña a cuestas como gran “movilizador” del PSOE sin Zapatero ni Puente",
+        "generation_attempt": 1
       }
     }
   ],
