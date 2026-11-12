@@ -1,15 +1,20 @@
 {
   "version": 1,
-  "id": "ttb-editorial-last-lines-20261112-1122",
+  "id": "ttb-editorial-guarded-dispatch-20261112-1125",
   "project": "TTActualidad",
   "expires_at": "2026-11-13T12:00:00Z",
-  "description": "Read only latest editorial launch outcomes and active runner PIDs",
+  "description": "User-authorized single guarded editorial recovery pass from pinned source, no image publication",
   "steps": [
     {
       "kind": "powershell",
-      "name": "editorial-log-summary",
-      "script": "$ErrorActionPreference='Stop'\n$o=@{at=(Get-Date).ToUniversalTime().ToString('o')}\nforeach($p in @('ttittulares','ttendencias')){\n $f=\"C:\\TTiTTulares\\$p-mobile-trigger.log\"\n if(Test-Path $f){$o[$p]=@(Get-Content $f -Tail 60 | Where-Object{$_ -match 'CHAT MESSAGE|LAUNCH|EDITORIAL|ERROR|TIMEOUT'} | Select-Object -Last 12)}\n}\n$o.runners=@(Get-CimInstance Win32_Process -Filter \"Name='node.exe'\" | Where-Object{[string]$_.CommandLine -match 'Ejecutar[.]js|TT-Editorial-Guard[.]js'} | ForEach-Object{$_.ProcessId})\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress -Depth 4))",
-      "timeout_seconds": 30
+      "name": "guarded-editorial-dispatch",
+      "script": "$ErrorActionPreference='Stop'\n$o=@{state='pending'}\n$t=Join-Path $env:TEMP ('TTEditorialDispatch-'+[guid]::NewGuid().ToString('N')+'.ps1')\ntry{\n $url='https://raw.githubusercontent.com/fabricelop/europapress-rss/5cb71812c7e562ffa4ce0a52ba33a07e712104e7/windows/Reparar-TT-Editorial-20261111.ps1'\n Invoke-WebRequest -UseBasicParsing -Uri $url -OutFile $t -TimeoutSec 35\n $src=[IO.File]::ReadAllText($t,[Text.Encoding]::UTF8)\n if(-not $src.Contains('TT_EDITORIAL_SAFE_WRAPPER_V1') -or -not $src.Contains('TRANSMISSION_UNVERIFIED') -or -not $src.Contains('EnsureNotRunning')){throw 'PINNED_GUARD_MARKER_MISSING'}\n $errors=$null;$tokens=$null\n [Management.Automation.Language.Parser]::ParseFile($t,[ref]$tokens,[ref]$errors)|Out-Null\n if($errors.Count){throw 'INSTALLER_SYNTAX_INVALID'}\n & $t *> $null\n if(-not $?){throw 'EDITORIAL_RESCUE_FAILED'}\n $o.state='dispatch_completed';$o.log='local_TT_Recuperacion'\n}catch{$o.state='error';$o.reason=[string]$_.Exception.Message}\nfinally{Remove-Item $t -Force -ErrorAction SilentlyContinue}\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress))",
+      "timeout_seconds": 300
+    },
+    {
+      "kind": "builtin",
+      "name": "editorial-queue",
+      "timeout_seconds": 25
     }
   ]
 }
