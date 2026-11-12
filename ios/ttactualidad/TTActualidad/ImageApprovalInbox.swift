@@ -88,7 +88,7 @@ private final class ApprovalInboxModel: ObservableObject {
     }
     // A failed or missing network acknowledgement must not be retried as a
     // second irreversible approval. Separate these from accepted receipts.
-    private struct UnconfirmedDecision: Codable, Identifiable {
+    struct UnconfirmedDecision: Codable, Identifiable {
         let imageID: String
         let rasterSHA256: String
         let episode: String
