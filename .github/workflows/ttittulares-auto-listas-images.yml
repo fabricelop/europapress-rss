@@ -14,6 +14,10 @@ on:
       - "ttittulares/auto_listas_images.py"
       - "ttittulares/auto_listas_images_policy.json"
       - "tests/test_auto_listas_images.py"
+      - "tests/test_all_topics_image_eligibility.py"
+      - "trends/editorial-config.json"
+      - "vercel-webhook/lib/ttendencias-run-handler.js"
+      - "vercel-webhook/lib/ttendencias-control-handler.js"
       - ".github/workflows/ttittulares-auto-listas-images.yml"
   workflow_dispatch:
 
@@ -31,7 +35,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Comprobar decisiones, deduplicación y seguridad sin generar imágenes
-        run: python3 -m unittest discover -s tests -p 'test_auto_listas_images.py' -v
+        run: |
+          python3 -m unittest discover -s tests -p 'test_auto_listas_images.py' -v
+          python3 -m unittest discover -s tests -p 'test_all_topics_image_eligibility.py' -v
+          node --check vercel-webhook/lib/ttendencias-run-handler.js
+          node --check vercel-webhook/lib/ttendencias-control-handler.js
       - name: Simular contra las fichas y decisiones reales de main (sin escritura)
         run: python3 ttittulares/auto_listas_images.py
       - name: Encolar máximo 1 job real en el control branch existente
