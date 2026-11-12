@@ -1,19 +1,19 @@
 {
   "version": 1,
-  "id": "ttb-editorial-active-pids-20261112-1130",
+  "id": "ttb-editorial-guarded-dispatch-20261112-1132",
   "project": "TTActualidad",
   "expires_at": "2026-11-13T12:00:00Z",
-  "description": "Read only active editorial runner identity and start time",
+  "description": "User-authorized guarded editorial pass after active launchers exited",
   "steps": [
     {
       "kind": "powershell",
-      "name": "active-runner-identities",
-      "script": "$o=@{state='ok';runners=@()}\nforeach($p in @(3892,17708)){\n $q=Get-CimInstance Win32_Process -Filter \"ProcessId=$p\" -ErrorAction SilentlyContinue\n if($q){$o.runners+=@{pid=$p;created=[string]$q.CreationDate;command=([string]$q.CommandLine).Substring(0,[Math]::Min(220,([string]$q.CommandLine).Length))}}\n}\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress -Depth 4))",
-      "timeout_seconds": 25
+      "name": "guarded-editorial-dispatch",
+      "script": "$ErrorActionPreference='Stop'\n$o=@{state='pending'}\n$t=Join-Path $env:TEMP ('TTEditorialDispatch-'+[guid]::NewGuid().ToString('N')+'.ps1')\ntry{\n $url='https://raw.githubusercontent.com/fabricelop/europapress-rss/5cb71812c7e562ffa4ce0a52ba33a07e712104e7/windows/Reparar-TT-Editorial-20261111.ps1'\n Invoke-WebRequest -UseBasicParsing -Uri $url -OutFile $t -TimeoutSec 35\n $src=[IO.File]::ReadAllText($t,[Text.Encoding]::UTF8)\n if(-not $src.Contains('TT_EDITORIAL_SAFE_WRAPPER_V1') -or -not $src.Contains('TRANSMISSION_UNVERIFIED') -or -not $src.Contains('EnsureNotRunning')){throw 'PINNED_GUARD_MARKER_MISSING'}\n & $t *> $null\n if(-not $?){throw 'EDITORIAL_RESCUE_FAILED'}\n $o.state='dispatch_completed'\n}catch{$o.state='error';$o.reason=[string]$_.Exception.Message}\nfinally{Remove-Item $t -Force -ErrorAction SilentlyContinue}\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress))",
+      "timeout_seconds": 300
     },
     {
       "kind": "builtin",
-      "name": "listener-summary",
+      "name": "editorial-queue",
       "timeout_seconds": 25
     }
   ]
