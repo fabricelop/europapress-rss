@@ -45,3 +45,17 @@
 
 ## Prioridades, instrucciones del editor
 El usuario prefiere ejecución autónoma y resultados verificables, respuestas directas sin repetición de planes. Sus «Listas» son bandejas editoriales; retirar no es borrar del radar X ni desestimar publicación ya realizada. No aprobar imágenes, publicar X/Instagram, crear nuevos almacenes o tocar app original para salvar la incidencia. Mantener este documento actualizado con commits/PR, resultados y bloqueos reales.
+
+## Avances posteriores verificados — 12/11/2026 (continuación de este chat)
+
+**Tres retiradas completadas:** workflow temporal `.github/workflows/ttactualidad-remove-three-listas-20261112.yml` ejecutado con éxito (GitHub Actions run `43178874939`). En `pilot/ttactualidad-action-receipts.json` están los tres `status=applied`, `decision=deleted`, revisión 0:
+- Cobarde `6519e0bfa504` — `tt-20261112-cobarde-r0`.
+- Cantante `52a0d9fe7897` — `tt-20261112-cantante-r0` (el editor dijo «cantantes», esta es la identidad exacta del historial).
+- Samantha Hudson `e617da285349` — `tt-20261112-samantha-hudson-r0`.
+`trends/mobile-decisions.json` muestra los tres `deleted` y fuente `ttactualidad_direct`. Los tres fueron retirados de Listas sin eliminar el radar ni el historial. La APP anterior puede conservar órdenes pendientes locales por ausencia del recibo original.
+
+**APP iOS:** PR #395 fusionada en `main`, commit `b7c1ecf3facf2a6b5b6b5e397566f4eb03c2fdc9`. Workflow iOS run `43179682059` pasó preflight, compilación Xcode y empaquetado IPA. El dashboard `TTDashboard.swift` usa `ScrollViewReader` y señal `removalScrollToken` para volver a cabecera/menú cuando el usuario confirma «Quitar de Listas» y el envío a GitHub se acepta. `EditorialStore.swift` calcula `previousListasAt` desde un episodio editorial anterior documentado de la misma tendencia, excluyendo simples cambios de ranking y actualizaciones del mismo episodio, y muestra «Anterior en Listas: fecha/hora» únicamente si existe. Requiere instalar la nueva compilación en iPhone, no se ha desplegado automáticamente en el dispositivo.
+
+**Mejora extra de confirmaciones:** PR #396 `https://github.com/fabricelop/europapress-rss/pull/396` (estado por verificar): `GitHubEditor.swift` reconoce una decisión final por ID exacto, revisión y fecha posterior al envío consultando `trends/mobile-decisions.json` cuando se ha perdido el recibo de la orden original de la APP. No trata el 204 de GitHub como final y no falsifica recibos. Comprobar CI, fusionar solo si pasa y confirmar build IPA antes de declararla aplicada.
+
+**Imágenes:** continúa SIN RESOLVER la visualización en la bandeja original. `mcp__TTActualidad__verify_trend_image` devolvió `pending_approval` para Broncano, Paola, RTVE e Irini, con `published=false`; 13/13 recibos locales `pending` con SHA válido probados previamente. El Site privado `ttactualidad.rainyraven22.chatgpt.site` y su GET autenticado `/api/image-inbox/v1/images` no son accesibles con los actuales conectores ni con el navegador público. No existe en el repositorio el backend real de ese Site. El intento de diagnosticar vía puente Windows se marcó `declined`, no forzar ni eludir consentimiento. Hay que comparar GET autenticado con los 13 recibos y corregir el frontend o backend real según responda; issue #394 con plan. No regenerar ni duplicar imágenes.
