@@ -61,3 +61,9 @@ Pruebas unitarias aprobadas, lectura en vivo con 30 posiciones y metadatos verif
 - `claim` respeta una capacidad máxima global (por ahora 1 en el ejemplo), `recover` recupera reservas vencidas tras 15 minutos, hasta 3 intentos. Una reserva agotada queda `cancelled` con motivo explícito, para intervención/revisión posterior.
 - `complete` comprueba `trend_id`, `revision`, token vigente y texto no vacío antes de pasar a `ready`; el resultado tardío no puede cerrar una revisión equivocada.
 - **Solo pruebas/simulación:** no se persisten `in_progress` ni `ready` en la rama, no se invoca ChatGPT y las 30 tendencias siguen `pending` en la cola real V2. Conectar un trabajador real y persistencia atómica será el paso 5B, no se declara completado.
+
+## Paso 5B — prueba controlada del navegador efímero
+- `browser-lifecycle.cjs` define un ciclo de trabajo único con `browserFactory`, `execute`, `persistAndVerify` y `close` en `finally`, incluso en fallo, timeout o resultado no verificado.
+- `browser-lifecycle.test.cjs` prueba con navegador simulado los cierres y la barrera `ready` tras persistencia verificada. CI ejecuta `node --test v2/ttendencias/browser-lifecycle.test.cjs`.
+- **Todavía NO es una prueba con ChatGPT real**: no hay navegador Windows accesible desde GitHub, ni adaptador autenticado implementado. No se abre Chrome real, no se envían mensajes, no se consumen entradas `pending`, no se toca `main`.
+- Para una prueba real se necesita un ejecutor local aislado, autenticación separada y comprobación del resultado; cerrar únicamente el proceso/perfil que el trabajo haya creado, nunca Chrome 9223 compartido. Se requiere una prueba local supervisada antes de habilitar un consumidor automático.
