@@ -10,6 +10,7 @@ $utf8Console = New-Object System.Text.UTF8Encoding($false)
 $OutputEncoding = $utf8Console
 $root = [IO.Path]::GetFullPath($RepoRoot)
 $workDir = Join-Path $root 'TT-XContext'
+$gitRoot = Join-Path $workDir 'git-store'
 $sampler = Join-Path $workDir 'x_context.js'
 $publisher = Join-Path $workDir 'publish_x_context.js'
 $evidence = Join-Path $workDir 'local-evidence.json'
@@ -23,15 +24,15 @@ function Note([string]$s) {
   Write-Host $message
 }
 function GitOutput([string[]]$gitArgs) {
-  $r = & git.exe -C $root @gitArgs 2>&1
+  $r = & git.exe -C $gitRoot @gitArgs 2>&1
   if ($LASTEXITCODE -ne 0) { throw ('git failed: ' + ($gitArgs -join ' ')) }
   return ($r -join "`n")
 }
-if (-not (Test-Path (Join-Path $root '.git'))) { throw ('Git repo not found: ' + $root) }
+if (-not (Test-Path (Join-Path $gitRoot '.git'))) { throw 'TT-XContext isolated Git store missing: install with the corrected installer' }
 $node = (Get-Command node.exe -ErrorAction Stop).Source
 if (-not (Test-Path $sampler) -or -not (Test-Path $publisher)) { throw 'TT-XContext code missing; install first' }
-if (-not (Test-Path (Join-Path $root 'selorecordamos\git_publish_lock.js'))) { throw 'SeLoRecordamos Git lock missing; cannot safely publish' }
-$env:NODE_PATH = (@((Join-Path $root 'selorecordamos\node_modules'),(Join-Path $root 'node_modules'),(Join-Path $workDir 'node_modules')) -join ';')
+$env:NODE_PATH = (Join-Path $workDir 'node_modules')
+$env:TT_X_GIT_REPO = $gitRoot
 if ($CheckOnly) {
   Note 'CHECK_ONLY no X, no remote Git, no task change'
   & $node --check $sampler; if ($LASTEXITCODE -ne 0) { throw 'X sampler syntax invalid' }
@@ -83,6 +84,6 @@ try {
   exit 1
 } finally {
   if ($handle) { $handle.Dispose() }
-  Remove-Item Env:TT_X_QUEUE_FILE,Env:TT_X_OUTPUT_FILE,Env:TT_X_EXECUTION_MODE -ErrorAction SilentlyContinue
+  Remove-Item Env:TT_X_QUEUE_FILE,Env:TT_X_OUTPUT_FILE,Env:TT_X_EXECUTION_MODE,Env:TT_X_GIT_REPO -ErrorAction SilentlyContinue
   Remove-Item Env:X_AUTH_TOKEN,Env:X_CT0 -ErrorAction SilentlyContinue
 }
