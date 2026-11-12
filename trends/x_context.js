@@ -15,7 +15,12 @@ function makeSearchUrl(name) {
   return 'https://x.com/search?q=' + encodeURIComponent('"' + q + '"') + '&src=typed_query&f=live';
 }
 function chooseTargets(queue, cache, now = Date.now(), limit = LIMIT) {
-  const old = new Map((Array.isArray(cache.items) ? cache.items : []).map(x => [key(x), x]));
+  // Circuit breaker global: un 403/429 de X en el runner no justifica seguir
+  // consultando otros nombres desde la misma IP. Reintentar más adelante.
+  const previousItems = Array.isArray(cache.items) ? cache.items : [];
+  if (previousItems.some(x => x && (x.http_status === 403 || x.http_status === 429) &&
+      recentDate(x.searched_at, now, x.http_status === 403 ? 12 * HOUR : 4 * HOUR))) return [];
+  const old = new Map(previousItems.map(x => [key(x), x]));
   const chosen = [], seen = new Set();
   for (const x of (Array.isArray(queue.items) ? queue.items : [])) {
     if (!x || !['preparing', 'update', 'problematic'].includes(x.status)) continue;
@@ -115,8 +120,7 @@ async function search(context, target) {
 }
 async function run() {
   const queue = readJSON(QUEUE, { items: [] }), current = readJSON(OUT, { items: [] });
-  // En el primer push del despliegue se reintenta incluso tras un error reciente.
-  const targets = chooseTargets(queue, process.env.GITHUB_EVENT_NAME === 'push' ? { items: [] } : current);
+  const targets = chooseTargets(queue, current);
   if (process.argv.includes('--plan')) { console.log(JSON.stringify({ targets })); return; }
   if (!targets.length) { console.log('TT_X_CONTEXT no_pending_targets'); return; }
   const token = process.env.X_AUTH_TOKEN || '', ct0 = process.env.X_CT0 || '';
