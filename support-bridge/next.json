@@ -1,29 +1,15 @@
 {
   "version": 1,
-  "id": "ttb-editorial-health-after-guard-20261112-1120",
+  "id": "ttb-editorial-last-lines-20261112-1122",
   "project": "TTActualidad",
   "expires_at": "2026-11-13T12:00:00Z",
-  "description": "Read editorial listener, guard, and queue state after protected runner installation",
+  "description": "Read only latest editorial launch outcomes and active runner PIDs",
   "steps": [
     {
-      "kind": "builtin",
-      "name": "listener-summary",
-      "timeout_seconds": 25
-    },
-    {
-      "kind": "builtin",
-      "name": "editorial-guard",
-      "timeout_seconds": 25
-    },
-    {
-      "kind": "builtin",
-      "name": "editorial-queue",
-      "timeout_seconds": 25
-    },
-    {
-      "kind": "builtin",
-      "name": "editorial-runtime",
-      "timeout_seconds": 25
+      "kind": "powershell",
+      "name": "editorial-log-summary",
+      "script": "$ErrorActionPreference='Stop'\n$o=@{at=(Get-Date).ToUniversalTime().ToString('o')}\nforeach($p in @('ttittulares','ttendencias')){\n $f=\"C:\\TTiTTulares\\$p-mobile-trigger.log\"\n if(Test-Path $f){$o[$p]=@(Get-Content $f -Tail 60 | Where-Object{$_ -match 'CHAT MESSAGE|LAUNCH|EDITORIAL|ERROR|TIMEOUT'} | Select-Object -Last 12)}\n}\n$o.runners=@(Get-CimInstance Win32_Process -Filter \"Name='node.exe'\" | Where-Object{[string]$_.CommandLine -match 'Ejecutar[.]js|TT-Editorial-Guard[.]js'} | ForEach-Object{$_.ProcessId})\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress -Depth 4))",
+      "timeout_seconds": 30
     }
   ]
 }
