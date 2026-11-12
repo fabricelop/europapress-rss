@@ -5,7 +5,7 @@ on:
     - cron: '*/5 * * * *'
   push:
     branches: [main]
-    paths: ['shared/tt_editorial_run_guard.py', 'shared/test_editorial_text_first.py', '.github/workflows/tt-editorial-text-recovery.yml']
+    paths: ['shared/tt_editorial_run_guard.py', 'shared/test_editorial_text_first.py', '.github/workflows/tt-editorial-text-recovery.yml', 'trends/editorial-queue.json', 'ttittulares/editorial-queue.json', 'trends/telegram-manual-explained.json', 'ttittulares/prepared.json', 'trends/mobile-decisions.json', 'ttittulares/decisions.json']
   pull_request:
     paths: ['shared/tt_editorial_run_guard.py', 'shared/test_editorial_text_first.py', '.github/workflows/tt-editorial-text-recovery.yml']
 permissions:
