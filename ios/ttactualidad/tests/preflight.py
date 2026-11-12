@@ -1126,3 +1126,10 @@ assert 'unconfirmedDecisions.values.contains { record in' in inbox
 assert 'receipt.rasterSHA256 == item.identity.rasterSHA256' in inbox
 assert 'receipt.episode == episodeKey(item)' in inbox
 print("TT_IMAGE_INBOX_BUILD99_IDENTICAL_RASTER_EPISODE_NO_REINSERT_OK")
+
+# Build99: many images must not arbitrarily evict an on-screen preview.
+assert 'private let previewLimit = 64' in inbox
+assert 'kCGImageSourceThumbnailMaxPixelSize: 640' in inbox
+assert 'previewOrder.append(item.id)' in inbox
+assert 'previews.keys.first' not in inbox
+print("TT_IMAGE_INBOX_THUMBNAIL_CACHE_STABLE_BUILD99_OK")
