@@ -15,15 +15,16 @@ def row(age=2, *, terms=None, country="ES", mode="live"):
 
 
 class FreshnessTests(unittest.TestCase):
-    def test_recent_capture_still_unverified(self):
+    def test_recent_single_source_accepted_without_x_verification(self):
         x = evaluate(row(), now=NOW)
-        self.assertEqual(x["status"], "capture_recent_source_unverified")
-        self.assertFalse(x["eligible_for_editorial"])
+        self.assertEqual(x["status"], "accepted_getdaytrends_single_source")
+        self.assertTrue(x["eligible_for_editorial"] )
         self.assertIsNone(x["source_observed_at"])
 
     def test_expired_capture(self):
         x = evaluate(row(31), now=NOW)
         self.assertEqual(x["status"], "capture_expired")
+        self.assertFalse(x["eligible_for_editorial"])
 
     def test_unchanged_does_not_mean_stale(self):
         x = evaluate(row(2), now=NOW, previous=row(12))
@@ -35,7 +36,8 @@ class FreshnessTests(unittest.TestCase):
         names[0] = "Nueva tendencia"
         x = evaluate(row(2, terms=names), now=NOW, previous=row(12))
         self.assertTrue(x["comparison"]["ranking_changed"])
-        self.assertFalse(x["eligible_for_editorial"])
+        self.assertTrue(x["eligible_for_editorial"])
+        self.assertFalse(x["verified_against_x"])
 
     def test_reject_test_fixture(self):
         with self.assertRaises(ValueError):
