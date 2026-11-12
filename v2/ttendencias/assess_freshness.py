@@ -67,7 +67,8 @@ def evaluate(snapshot, *, now=None, previous=None, max_capture_age_minutes=20):
         "verified_against_x": False,
         "source_policy": "getdaytrends_single_source",
         "eligible_for_editorial": eligible,
-        "reason": ("Top30 completo de GetDayTrends España y captura reciente; sin corroboración independiente de X"\n                   if eligible else "La captura local ha caducado; repetir consulta antes de usarla"),
+        "reason": ("Top30 completo de GetDayTrends España y captura reciente; sin corroboración independiente de X"
+                   if eligible else "La captura local ha caducado; repetir consulta antes de usarla"),
         "comparison": previous_check,
     }
 
