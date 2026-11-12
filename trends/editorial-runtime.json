@@ -3,22 +3,20 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261112T124000-manual",
+  "run_id": "tr-20261112T135500-manual",
   "previous_run_id": "tr-20261112T052500-manual",
-  "command_id": "tr-20261112T124000-manual",
+  "command_id": "tr-20261112T135500-manual",
   "source": "chat",
-  "status": "waiting",
-  "phase": "closing",
-  "started_at": "2026-11-12T12:40:00+01:00",
-  "updated_at": "2026-11-12T13:24:16+01:00",
-  "current": 7,
-  "total": 7,
+  "status": "RUNNING",
+  "phase": "persisting",
+  "started_at": "2026-11-12T13:55:00+01:00",
+  "updated_at": "2026-11-12T13:58:00+01:00",
+  "current": 0,
+  "total": 13,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
   "queue_complete": false,
-  "processed_ids": [
-    "0709005877aa"
-  ],
+  "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [
     "0a5305c044b0",
@@ -52,95 +50,35 @@
   ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 7,
-    "observed": 7,
-    "closed": 7,
-    "explained": 5,
+    "attempted": 13,
+    "observed": 13,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
-    "updates": 6,
+    "updates": 0,
     "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 2,
+    "maintenance_reviews": 0,
     "unchanged_reviews": 0,
-    "continuity_updates": 2,
-    "distinct_updates": 4,
+    "continuity_updates": 0,
+    "distinct_updates": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 13,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 1,
+    "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "1098712895fb",
-      "revision": 0,
-      "name": "Ministerio de Igualdad",
-      "outcome": "distinct_update",
-      "applied": true
-    },
-    {
-      "id": "174b8aec3dcc",
-      "revision": 0,
-      "name": "Fiscalía Europea",
-      "outcome": "distinct_update",
-      "applied": true
-    },
-    {
-      "id": "71881164a65b",
-      "revision": 0,
-      "name": "Leire",
-      "outcome": "distinct_update",
-      "applied": true
-    },
-    {
-      "id": "ea2d2a2b9cc8",
-      "revision": 0,
-      "name": "La UCO",
-      "outcome": "distinct_update",
-      "applied": true
-    },
-    {
-      "id": "554d3b5f9168",
-      "revision": 0,
-      "name": "Tamayo",
-      "outcome": "explained_cause_unconfirmed",
-      "applied": true
-    },
-    {
-      "id": "red-review-cbea69a4caa17fe78e99",
-      "revision": 0,
-      "name": "Revisar novedades: #HuelgaGeneral",
-      "outcome": "continuity_update",
-      "applied": true,
-      "apply_commit": "31a42ce8e9bc64f70c8a1284902900d3a5c6ce53"
-    },
-    {
-      "id": "red-review-9be9fbf4d7f1a62a6483",
-      "revision": 0,
-      "name": "Revisar novedades: CCOO",
-      "outcome": "continuity_update",
-      "applied": true,
-      "apply_commit": "31a42ce8e9bc64f70c8a1284902900d3a5c6ce53"
-    }
-  ],
-  "incident_count": 1,
-  "incidents": [
-    {
-      "kind": "chat_applicator_problematic_skip",
-      "items": [
-        "554d3b5f9168"
-      ],
-      "detail": "El aplicador por comentario solo aceptó preparing/update y omitió Tamayo en problematic; el aplicador editorial compatible lo cerró tras revalidación JIT."
-    }
-  ],
+  "outcomes": [],
+  "incident_count": 0,
+  "incidents": [],
   "error": null,
-  "activity": "closing",
+  "activity": "persisting",
   "last_started_at": "2026-11-12T13:24:16+01:00",
   "last_completed_at": "2026-11-12T12:53:00+01:00",
   "api_failover_enabled": false,
@@ -156,7 +94,7 @@
     "pending": 0,
     "problematic": 0
   },
-  "message": "Pasada tr-20261112T124000-manual cerrada 7/7. Cuatro reentradas quedaron como episodios materiales distintos (Ministerio de Igualdad, Fiscalía Europea, Leire y La UCO); Tamayo se cerró con causa no confirmada; #HuelgaGeneral y CCOO se actualizaron como continuidad sin nueva ficha. Cola final 0. Incidencia menor resuelta: el aplicador por comentario omitió problematic y se usó el aplicador editorial compatible. ImageGen=0; image-outbox=0; publicaciones=0.",
+  "message": "Pasada manual iniciada contra main con 13 trabajos preparing. Investigación terminada; persistiendo resultados mediante el aplicador editorial oficial. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794327332740-manual",
@@ -4937,6 +4875,13 @@
         }
       ],
       "message": "Pasada tr-20261112T124000-manual cerrada 7/7. Cuatro reentradas quedaron como episodios materiales distintos (Ministerio de Igualdad, Fiscalía Europea, Leire y La UCO); Tamayo se cerró con causa no confirmada; #HuelgaGeneral y CCOO se actualizaron como continuidad sin nueva ficha. Cola final 0. Incidencia menor resuelta: el aplicador por comentario omitió problematic y se usó el aplicador editorial compatible. ImageGen=0; image-outbox=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-20261112T135500-manual",
+      "at": "2026-11-12T13:58:00+01:00",
+      "status": "RUNNING",
+      "phase": "persisting",
+      "message": "Pasada manual iniciada contra main con 13 trabajos preparing. Investigación terminada; persistiendo resultados mediante el aplicador editorial oficial. ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": {
