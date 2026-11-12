@@ -1,0 +1,25 @@
+name: TTActualidad V2 - Paso 1 captura aislada
+on:
+  push:
+    branches: [feature/ttactualidad-v2-clean]
+    paths:
+      - 'v2/**'
+      - '.github/workflows/ttactualidad-v2-step01.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test-step-01:
+    if: github.ref == 'refs/heads/feature/ttactualidad-v2-clean'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python3 -m pip install --quiet requests beautifulsoup4
+      - name: Validar Top30 V2 sin red y sin modificar producción
+        run: python3 -m unittest discover -s v2/ttendencias -p 'test_*.py' -v
