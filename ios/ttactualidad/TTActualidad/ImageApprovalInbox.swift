@@ -92,6 +92,13 @@ private final class ApprovalInboxModel: ObservableObject {
             guard status == 200 else { throw InboxError.http(status) }
             var page = try JSONDecoder().decode(PendingImageResponse.self, from: data)
             var received = page.items
+            // Render the first authenticated page immediately. With hundreds
+            // of retained records, waiting for every cursor made a healthy
+            // inbox look blank for the whole pagination round trip.
+            images = ApprovalInboxScope.visible(received).filter {
+                !processingIDs.contains($0.id) && !completedIDs.contains($0.id)
+            }
+            pageDiagnostics = "Consultando más imágenes privadas… " + String(received.count) + " leídas."
             let supportsPagination = page.hasMore != nil
             var seenCursors = Set<String>()
             var incomplete = false
@@ -113,6 +120,11 @@ private final class ApprovalInboxModel: ObservableObject {
                     guard nextStatus == 200 else { throw InboxError.http(nextStatus) }
                     page = try JSONDecoder().decode(PendingImageResponse.self, from: nextData)
                     received.append(contentsOf: page.items)
+                    // Keep the list responsive while the remaining pages arrive.
+                    images = ApprovalInboxScope.visible(received).filter {
+                        !processingIDs.contains($0.id) && !completedIDs.contains($0.id)
+                    }
+                    pageDiagnostics = "Consultando más imágenes privadas… " + String(received.count) + " leídas."
                 } catch {
                     // A late page failure must not erase originals already
                     // returned by the authenticated private service.
