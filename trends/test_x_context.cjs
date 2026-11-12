@@ -31,3 +31,10 @@ test('resultados independientes y cola no mutada', () => {
   assert.equal(doc.schema_version,1); assert.equal(doc.items.length,1);
   assert.equal(queue.items[0].status,'preparing');
 });
+
+test('HTTP 403/429 bloquea nuevas consultas sin afectar la cola', () => {
+  const old403 = { ...one, status:'error', searched_at:'2026-11-12T15:50:00Z', http_status:403 };
+  assert.equal(chooseTargets(queue, { items:[old403] }, now).length, 0);
+  assert.equal(chooseTargets(queue, { items:[{ ...old403, searched_at:'2026-11-11T01:00:00Z' }] }, now).length, 2);
+  assert.equal(queue.items[0].status, 'preparing');
+});
