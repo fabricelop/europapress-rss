@@ -1,29 +1,15 @@
 {
   "version": 1,
-  "id": "ttb-both-editorial-health-20261112-0845",
+  "id": "ttb-editorial-local-executor-audit-20261112-0850",
   "project": "TTActualidad",
   "expires_at": "2026-11-13T08:00:00Z",
-  "description": "Read-only native Windows diagnostics to locate current TTendencias and TTiTTulares editorial executor stall",
+  "description": "Read-only Windows audit of two editorial tasks/listeners and Chrome state to prevent recurring stalls; no restarts or content changes",
   "steps": [
     {
-      "kind": "builtin",
-      "name": "listener-summary",
-      "timeout_seconds": 30
-    },
-    {
-      "kind": "builtin",
-      "name": "editorial-queue",
-      "timeout_seconds": 30
-    },
-    {
-      "kind": "builtin",
-      "name": "editorial-runtime",
-      "timeout_seconds": 30
-    },
-    {
-      "kind": "builtin",
-      "name": "editorial-guard",
-      "timeout_seconds": 30
+      "kind": "powershell",
+      "name": "editorial-listener-and-task-audit",
+      "script": "$o=@{tasks=@();processes=@();cdp='unknown';logs=@()}\nforeach($n in @('TTiTTulares Local','TTendencias Local','TTendencias Local Ready','TT Automation Watchdog')){\n try{$t=Get-ScheduledTask -TaskName $n -ErrorAction Stop;$i=Get-ScheduledTaskInfo -TaskName $n;$o.tasks+=@{name=$n;state=[string]$t.State;last=[string]$i.LastRunTime;result=$i.LastTaskResult}}catch{$o.tasks+=@{name=$n;state='absent'}}\n}\ntry{$p=Get-CimInstance Win32_Process -ErrorAction Stop|Where-Object{$_.Name -in @('powershell.exe','pwsh.exe','node.exe') -and [string]$_.CommandLine -match 'TTiTTularesDedicatedListener|TTendenciasDedicatedListener|TT-LocalWatchdog|TT-AutoUpdater|Ejecutar[.]js|TT-Editorial-Guard'}\nforeach($x in $p){$c=[string]$x.CommandLine;$o.processes+=@{kind=$(if($c -match 'TTiTTularesDedicatedListener'){'news_listener'}elseif($c -match 'TTendenciasDedicatedListener'){'trends_listener'}elseif($c -match 'TT-LocalWatchdog'){'watchdog'}elseif($c -match 'TT-AutoUpdater'){'updater'}elseif($c -match 'TT-Editorial-Guard'){'editorial_guard'}else{'editorial_runner'});pid=$x.ProcessId;created=[string]$x.CreationDate}}}catch{}\ntry{$v=Invoke-RestMethod 'http://127.0.0.1:9223/json/list' -TimeoutSec 5;$o.cdp=@{pages=@($v|Where-Object{$_.type -eq 'page'}).Count;chat=@($v|Where-Object{$_.url -like 'https://chatgpt.com/*'}).Count}}catch{$o.cdp='unreachable'}\nforeach($n in @('tt-local-watchdog.log','tt-auto-updater.log','ttittulares-listener.watchdog.err.log','ttendencias-listener.watchdog.err.log')){\n $p=Join-Path 'C:\\TTiTTulares' $n\n if(Test-Path $p){$x=Get-Item $p;$o.logs+=@{file=$n;changed=$x.LastWriteTimeUtc.ToString('o');bytes=$x.Length}}\n}\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress -Depth 5))\n",
+      "timeout_seconds": 40
     }
   ]
 }
