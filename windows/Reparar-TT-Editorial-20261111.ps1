@@ -237,7 +237,7 @@ async function send(){
   }
   if(!s||s.editorLength!==0||s.users!==0||s.assistants!==0)
     fail('Fresh tab has draft or chat content; refusing to overwrite');
-  const focused=c.eval(`(()=>{const x=[...document.querySelectorAll('#prompt-textarea,[data-testid="prompt-textarea"],textarea,[contenteditable="true"][role="textbox"]')].find(e=>e.getClientRects().length);if(!x)return false;x.focus();return document.activeElement===x||x.contains(document.activeElement)})()`);
+  const focused=await c.eval(`(()=>{const x=[...document.querySelectorAll('#prompt-textarea,[data-testid="prompt-textarea"],textarea,[contenteditable="true"][role="textbox"]')].find(e=>e.getClientRects().length);if(!x)return false;x.focus();return document.activeElement===x||x.contains(document.activeElement)})()`);
   if(!focused)fail('COMPOSER_NOT_FOCUSED: do not type into unknown control');
   await c.call('Input.insertText',{text:msg},15000);
   // React may commit the edit asynchronously: verify before attempting send.
