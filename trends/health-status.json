@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-12T10:29:42.689939+00:00",
+  "checked_at": "2026-11-12T10:41:10.019392+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -44,6 +44,7 @@
       "count": 10,
       "non_stale_sources": 4,
       "verified_fresh_sources": [
+        "whatstrends",
         "xtrendsiamrohit"
       ],
       "live_verified": false,
@@ -59,8 +60,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 2.9,
-      "run_id": 43200427049,
+      "age_minutes": 3.8,
+      "run_id": 43201979482,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -81,17 +82,24 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": true,
+      "ok": false,
       "pending_count": 1,
-      "overdue_count": 0,
-      "oldest_age_minutes": 20.8,
+      "overdue_count": 1,
+      "oldest_age_minutes": 32.2,
       "warning_after_minutes": 30,
-      "overdue_items": [],
+      "overdue_items": [
+        {
+          "id": "ba9b353684f9",
+          "name": "Elise",
+          "status": "preparing",
+          "age_minutes": 32.2
+        }
+      ],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": true,
-      "status": "not-required",
+      "ok": false,
+      "status": "overdue",
       "queue_complete": false,
       "remaining_active_ids": [
         "ba9b353684f9"
@@ -107,9 +115,10 @@
   "repairs_started": [],
   "blocking": [
     "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos",
-    "cola con 767 estado(s) inválido(s)"
+    "cola con 767 estado(s) inválido(s)",
+    "cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 32.2 min"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 767 estado(s) inválido(s)"
+  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 767 estado(s) inválido(s) | cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 32.2 min"
 }
