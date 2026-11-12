@@ -1,61 +1,36 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-12T16:41:08+01:00",
+  "updated_at": "2026-11-12T15:42:36.031545+00:00",
   "count": 1,
   "items": [
     {
       "id": "f4fde19c25ea",
       "name": "Aurá",
       "rank": 21,
-      "status": "problematic",
-      "requested_at": "2026-11-12T15:27:56.272436+00:00",
-      "revision": 1,
-      "rewrite_instruction": "INVESTIGACIÓN NUEVA DESDE CERO. Pistas de un editor SIN verificar:\\nMuchos tuits que hablan de qué tiene o no aura o de farmerar aura sin nada en concreto\\nContrasta cada dato, fecha, publicación y fuente con búsquedas independientes. Si no se verifica el detonante actual, deja el caso SIN EXPLICACIÓN VERIFICADA; nunca presentes las pistas como hechos. Si se verifica, escribe explicación factual completa y remate nuevo. No reutilices texto, remate ni imágenes de otra revisión.",
-      "reexplain": false,
-      "rewrite_with_image": true,
-      "with_image": true,
-      "disable_ai_image": false,
-      "image_strategy": "ai_plus_fallback",
-      "selected_tweet_image": null,
-      "task": "explain",
-      "anticipation_request": false,
-      "anticipated_name": null,
-      "anticipation_signal": null,
-      "anticipation_origin_id": null,
-      "anticipation_draft": null,
-      "red_review_request": null,
-      "review_source": null,
-      "review_error": null,
-      "new_episode_review": false,
-      "distinct_event_required": false,
-      "radar_episode_token": "",
-      "editor_approval_batch_id": "",
-      "previous_episode_id": "",
-      "review_instruction": "",
-      "automatic_grouping": null,
-      "published_context": null,
-      "listas_grouping_request": false,
-      "grouping_candidates": [],
-      "grouping_state": null,
-      "grouping_error": null,
-      "tremending_origin": false,
-      "tremending_id": null,
-      "article_title": null,
-      "source_url": null,
-      "selected_tweet": null,
-      "batch_id": null,
-      "requested_together": [
-        "Aurá"
-      ],
-      "captured_with": [],
+      "revision": 2,
+      "status": "preparing",
+      "requested_at": "2026-11-12T15:42:36.031545+00:00",
       "auto_queued": false,
-      "anticipated": false,
-      "anticipated_at": null,
-      "anticipated_best_rank": null,
-      "anticipated_social_source_count": 0,
-      "anticipated_news_source_count": 0,
-      "anticipated_news_title": "",
-      "anticipated_entered_top10_at": null
+      "request_source": "ttactualidad_editor_hints",
+      "task": "explain",
+      "with_image": true,
+      "rewrite_with_image": true,
+      "rewrite_instruction": "INVESTIGACIÓN NUEVA DESDE CERO. Pistas de un editor SIN verificar:\\nSin explicación verificada: Revisión editorial desde cero: las fuentes independientes confirman que «farmear aura» es un fenómeno viral y que «aura» se usa como marcador informal de carisma/estatus en redes, pero no se ha podido verificar un detonante concreto y actual que explique el pico de «Aurá» del 12/11/2026. La pista del editor sobre conversación genérica no se presenta como hecho. No necesita ser un hecho. Di que seguramente viene por ahí el tema.\\nContrasta cada dato, fecha, publicación y fuente con búsquedas independientes. Si no se verifica el detonante actual, deja el caso SIN EXPLICACIÓN VERIFICADA; nunca presentes las pistas como hechos. Si se verifica, escribe explicación factual completa y remate nuevo. No reutilices texto, remate ni imágenes de otra revisión.",
+      "user_pistas": [
+        {
+          "at": "2026-11-12T15:27:56.272436+00:00",
+          "source_revision": 0,
+          "text": "Muchos tuits que hablan de qué tiene o no aura o de farmerar aura sin nada en concreto",
+          "verification": "unverified_editor_context"
+        },
+        {
+          "at": "2026-11-12T15:42:36.031545+00:00",
+          "source_revision": 1,
+          "text": "Sin explicación verificada: Revisión editorial desde cero: las fuentes independientes confirman que «farmear aura» es un fenómeno viral y que «aura» se usa como marcador informal de carisma/estatus en redes, pero no se ha podido verificar un detonante concreto y actual que explique el pico de «Aurá» del 12/11/2026. La pista del editor sobre conversación genérica no se presenta como hecho. No necesita ser un hecho. Di que seguramente viene por ahí el tema.",
+          "verification": "unverified_editor_context"
+        }
+      ],
+      "hints_verification_status": "unverified"
     }
   ]
 }
