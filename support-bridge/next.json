@@ -1,15 +1,15 @@
 {
   "version": 1,
-  "id": "ttb-news-exact-failure-20261112-1345",
+  "id": "ttb-news-owned-prune-install-20261112-1348",
   "project": "TTActualidad",
   "expires_at": "2026-11-13T12:00:00Z",
-  "description": "Classify exact failure block of current news command",
+  "description": "Install safe cleanup of only preflight-failed bot owned tabs; preserve draft locally",
   "steps": [
     {
       "kind": "powershell",
-      "name": "exact-news-failure",
-      "script": "$l=@(Get-Content 'C:\\TTiTTulares\\ttittulares-mobile-trigger.log' -Tail 500)\n$id='tt-draftbackup-1794482993257';$idx=-1\nfor($i=0;$i -lt $l.Count;$i++){if($l[$i] -match ('LAUNCH FAILED.*'+$id)){$idx=$i}}\n$o=@{state='not_found';reason='unknown';backup=$false}\nif($idx -ge 0){$o.state='failed';$lo=[Math]::Max(0,$idx-20);$seg=@($l[$lo..$idx]);$joined=$seg -join ' '\nforeach($k in @('RESTORED_DRAFT_TOO_LARGE','RESTORED_DRAFT_BACKUP_EXISTS','RESTORED_DRAFT_FOCUS_FAILED','RESTORED_DRAFT_CLEAR_UNVERIFIED','Fresh tab has draft or chat content','OTHER_CHAT_ACTIVITY','NEW_CHAT_CONTROL_UNAVAILABLE','CHAT MESSAGE TIMEOUT','No aparece el cuadro de escritura','COMPOSER_NOT_FOCUSED')){if($joined.Contains($k)){$o.reason=$k}}\n$o.backup=$joined.Contains('RESTORED_DRAFT_BACKED_UP_LOCAL')\n}\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress))",
-      "timeout_seconds": 20
+      "name": "install-owned-tab-prune",
+      "script": "$o=@{state='pending'}\ntry{\n $p=@(Get-CimInstance Win32_Process -Filter \"Name='node.exe'\"|Where-Object{[string]$_.CommandLine -match 'C:\\\\TTiTTulares\\\\Ejecutar[.]js' -and [string]$_.CommandLine -match ' --enviar'})\n if($p.Count){$o.state='runner_active';$o.count=$p.Count}\n else{\n  $f=Join-Path $env:TEMP 'Reparar-TT-Editorial-owned-prune.ps1'\n  Invoke-WebRequest -UseBasicParsing -Uri 'https://raw.githubusercontent.com/fabricelop/europapress-rss/a2b1cb7c92988acb94241af2145822caa93b8b2d/windows/Reparar-TT-Editorial-20261111.ps1' -OutFile $f -TimeoutSec 30 -ErrorAction Stop\n  & powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File $f -NoDispatch | Out-Null\n  if($LASTEXITCODE -ne 0){throw 'INSTALL_FAILED'}\n  $g=Get-Content 'C:\\TTiTTulares\\TT-Editorial-Guard.js' -Raw -ErrorAction Stop\n  if(-not $g.Contains('FAILED_OWNED_PRUNE')){throw 'GUARD_MARKER_MISSING'}\n  $o.state='installed_verified'\n }\n}catch{$o.state='error';$o.reason=[string]$_.Exception.Message}\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress))",
+      "timeout_seconds": 150
     }
   ]
 }
