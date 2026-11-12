@@ -10,7 +10,7 @@ on:
     types: [completed]
   push:
     branches: [main]
-    paths: ['shared/tt_editorial_run_guard.py', 'shared/test_editorial_text_first.py', 'trends/ensure_pc_editorial.py', 'trends/test_ensure_pc_editorial.py', '.github/workflows/tt-editorial-text-recovery.yml', 'trends/editorial-queue.json', 'ttittulares/editorial-queue.json', 'trends/telegram-manual-explained.json', 'ttittulares/prepared.json', 'trends/mobile-decisions.json', 'ttittulares/decisions.json', 'windows/TTendenciasDedicatedListener.ps1', 'windows/TTiTTularesDedicatedListener.ps1', 'windows/Reparar-TT-Editorial-20261111.ps1', 'windows/tests/editorial-single-item-autorecovery.test.cjs']
+    paths: ['shared/tt_editorial_run_guard.py', 'shared/test_editorial_text_first.py', 'trends/ensure_pc_editorial.py', 'trends/test_ensure_pc_editorial.py', '.github/workflows/tt-editorial-text-recovery.yml', 'trends/editorial-queue.json', 'ttittulares/editorial-queue.json', 'trends/telegram-manual-explained.json', 'ttittulares/prepared.json', 'trends/mobile-decisions.json', 'ttittulares/decisions.json', 'windows/TTendenciasDedicatedListener.ps1', 'windows/TTiTTularesDedicatedListener.ps1', 'windows/Reparar-TT-Editorial-20261111.ps1', 'windows/Update-TT-Editorial-Guard-Only.ps1', 'windows/tests/editorial-single-item-autorecovery.test.cjs']
   pull_request:
     paths: ['shared/tt_editorial_run_guard.py', 'shared/test_editorial_text_first.py', 'trends/ensure_pc_editorial.py', 'trends/test_ensure_pc_editorial.py', '.github/workflows/tt-editorial-text-recovery.yml']
 permissions:
@@ -38,6 +38,7 @@ jobs:
             /windows/TTendenciasDedicatedListener.ps1
             /windows/TTiTTularesDedicatedListener.ps1
             /windows/Reparar-TT-Editorial-20261111.ps1
+            /windows/Update-TT-Editorial-Guard-Only.ps1
             /windows/tests/editorial-single-item-autorecovery.test.cjs
             /ttittulares/editorial-queue.json
             /ttittulares/prepared.json
