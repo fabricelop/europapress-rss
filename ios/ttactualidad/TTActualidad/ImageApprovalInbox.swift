@@ -272,7 +272,9 @@ private final class ApprovalInboxModel: ObservableObject {
                     !completedIDs.contains($0.id) && !accepted($0) && !unconfirmed($0)
             }
             images = ready
-            let keys = Set(images.map(\.id))
+            // Preserve thumbnails for in-flight decisions so a rejected PNG
+            // returns fully loaded instead of flashing an empty placeholder.
+            let keys = Set(images.map(\.id)).union(processingIDs)
             previews = previews.filter { keys.contains($0.key) }
             previewOrder.removeAll { !keys.contains($0) && !processingIDs.contains($0) }
             feedVerified = true
