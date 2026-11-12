@@ -1,15 +1,25 @@
 {
   "version": 1,
-  "id": "ttb-news-owned-prune-install-20261112-1348",
+  "id": "ttb-trends-autorecovery-readonly-20261112-1320",
   "project": "TTActualidad",
   "expires_at": "2026-11-13T12:00:00Z",
-  "description": "Install safe cleanup of only preflight-failed bot owned tabs; preserve draft locally",
+  "description": "Diagnostico de lectura sin cambios: colas, ultimo runtime, guard y estado reciente listeners; no enviar prompts ni modificar Chrome",
   "steps": [
     {
-      "kind": "powershell",
-      "name": "install-owned-tab-prune",
-      "script": "$o=@{state='pending'}\ntry{\n $p=@(Get-CimInstance Win32_Process -Filter \"Name='node.exe'\"|Where-Object{[string]$_.CommandLine -match 'C:\\\\TTiTTulares\\\\Ejecutar[.]js' -and [string]$_.CommandLine -match ' --enviar'})\n if($p.Count){$o.state='runner_active';$o.count=$p.Count}\n else{\n  $f=Join-Path $env:TEMP 'Reparar-TT-Editorial-owned-prune.ps1'\n  Invoke-WebRequest -UseBasicParsing -Uri 'https://raw.githubusercontent.com/fabricelop/europapress-rss/a2b1cb7c92988acb94241af2145822caa93b8b2d/windows/Reparar-TT-Editorial-20261111.ps1' -OutFile $f -TimeoutSec 30 -ErrorAction Stop\n  & powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File $f -NoDispatch | Out-Null\n  if($LASTEXITCODE -ne 0){throw 'INSTALL_FAILED'}\n  $g=Get-Content 'C:\\TTiTTulares\\TT-Editorial-Guard.js' -Raw -ErrorAction Stop\n  if(-not $g.Contains('FAILED_OWNED_PRUNE')){throw 'GUARD_MARKER_MISSING'}\n  $o.state='installed_verified'\n }\n}catch{$o.state='error';$o.reason=[string]$_.Exception.Message}\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress))",
-      "timeout_seconds": 150
+      "kind": "builtin",
+      "name": "editorial-queue"
+    },
+    {
+      "kind": "builtin",
+      "name": "editorial-runtime"
+    },
+    {
+      "kind": "builtin",
+      "name": "editorial-guard"
+    },
+    {
+      "kind": "builtin",
+      "name": "listener-summary"
     }
   ]
 }
