@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-11-12T19:07:02.468Z",
+  "updated_at": "2026-11-12T19:07:08.184687Z",
   "items": [
     {
       "event_id": "c2c5fea57972",
@@ -797,16 +797,16 @@
       "with_image": true,
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "none",
+      "ai_image_status": "ready",
       "archive_image_status": "ready",
       "fallback_image_status": "none",
-      "image_choice": "none",
-      "image_status": "none",
+      "image_choice": "ai",
+      "image_status": "ready",
       "image_pending": false,
       "sensitive_editorial": false,
       "prepared_at": "2026-11-12T17:54:00Z",
-      "image_app_available": false,
-      "image_delivery": "none",
+      "image_app_available": true,
+      "image_delivery": "app",
       "archive_image_search_attempted_at": "2026-11-12T17:55:15.783667Z",
       "fallback_image_search_attempted_at": "2026-11-12T17:55:15.783667Z",
       "archive_image": {
@@ -816,6 +816,55 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "La UCO asegura que Corvillo dijo a Aldama que se reunió con Sánchez para hablar de Ábalos y de asuntos personales"
+      },
+      "ai_image": {
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "provenance": "editor_confirmed_gallery",
+        "context_guard": {
+          "version": 3,
+          "event_id": "2b14a10b1d23",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-2b14a10b1d23-r1-a1-1794506113887",
+          "editorial_sha256": "4eafeb2faa7c6f48d95de5e7b7ab789f1063b0dca9b22771b137890fe8162de8",
+          "source_chunk_sha256": "597357a7aacfbc507ac63c92f4cd6a37e874457bc52d703091d5f034adfe0f12"
+        },
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/2b14a10b1d23-r1-ai1.jpg",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/2b14a10b1d23-r1-ai1.jpg",
+        "sha256": "f5438886306b4dd6f471e980b5d455f9d896bd135b71a11afd3bf1a7b8a34af1",
+        "handoff": "inline-outbox-materialized-by-actions",
+        "alt": "La UCO asegura que Corvillo dijo a Aldama que se reunió con Sánchez para hablar de Ábalos y de asuntos personales",
+        "generation_attempt": 1
+      },
+      "ai_image_attempt": 1,
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-11-12T19:07:08.184558Z",
+      "image": {
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "provenance": "editor_confirmed_gallery",
+        "context_guard": {
+          "version": 3,
+          "event_id": "2b14a10b1d23",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-2b14a10b1d23-r1-a1-1794506113887",
+          "editorial_sha256": "4eafeb2faa7c6f48d95de5e7b7ab789f1063b0dca9b22771b137890fe8162de8",
+          "source_chunk_sha256": "597357a7aacfbc507ac63c92f4cd6a37e874457bc52d703091d5f034adfe0f12"
+        },
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/2b14a10b1d23-r1-ai1.jpg",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/2b14a10b1d23-r1-ai1.jpg",
+        "sha256": "f5438886306b4dd6f471e980b5d455f9d896bd135b71a11afd3bf1a7b8a34af1",
+        "handoff": "inline-outbox-materialized-by-actions",
+        "alt": "La UCO asegura que Corvillo dijo a Aldama que se reunió con Sánchez para hablar de Ábalos y de asuntos personales",
+        "generation_attempt": 1
       }
     },
     {
