@@ -13,9 +13,10 @@ assert 'approved_awaiting_publication' in view and 'expectedIdentity' in view
 assert 'SHA256.hash(data: data)' in view
 assert not __import__('re').search(r'\bAsyncImage\s*\(', view)  # ignore comment; reject an actual call
 assert 'URLSession' not in view  # auth always remains in GitHubEditor
-# The optimistic UI hides a card before the POST, and restores only when
-# the authoritative private service cannot confirm a decision.
-assert 'Decisión no confirmada:' in view
+# The optimistic UI hides the card before POST. An ambiguous response is held
+# separately (not requeued), while a definite rejection restores the card.
+assert 'holdUnconfirmed(item, action: action' in view
+assert 'Section("Decisiones sin confirmación (" +' in view
 assert 'images.removeAll { $0.id == item.id }' in view
 assert 'decisionTail = Task {' in view
 assert 'await previous?.value' in view
@@ -41,3 +42,16 @@ assert 'No se repetirá la aprobación' in view
 assert 'associateVerifiedOriginalInGitHub(item, using: github)' in view
 assert 'restore(item)' in view
 print("TT_IMAGE_APPROVAL_PERSISTENT_IDEMPOTENCY_BUILD98_OK")
+
+# A regenerated receipt ID for the same PNG/episode must not reopen approval.
+assert 'acceptedReceipts.values.contains' in view
+assert 'unconfirmedDecisions.values.contains' in view
+assert 'return $0.id > $1.id' in view
+print("TT_IMAGE_INBOX_RECEIPT_ID_CHANGE_DEDUP_OK")
+
+# Build99: many images must not arbitrarily evict an on-screen preview.
+assert 'private let previewLimit = 64' in view
+assert 'kCGImageSourceThumbnailMaxPixelSize: 640' in view
+assert 'previewOrder.append(item.id)' in view
+assert 'previews.keys.first' not in view
+print("TT_IMAGE_INBOX_THUMBNAIL_CACHE_STABLE_BUILD99_OK")
