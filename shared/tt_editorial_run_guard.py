@@ -228,7 +228,7 @@ def evaluate(project,now,previous,command=None,run=None,rows=None):
     # a fresh target may be dispatched without waiting the old global cooldown.
     target_id=str((command or {}).get("target_id") or "")
     target_rev=int((command or {}).get("target_revision") or 0)
-    target_finished=(project=="ttendencias" and bool(target_id) and
+    target_finished=(bool(target_id) and
                      not any(x["id"]==target_id and int(x.get("revision") or 0)==target_rev
                              for x in rows))
     out["previous_target_completed_or_superseded"]=target_finished
@@ -262,7 +262,7 @@ def request(project,now,report):
       "launcher_arg":cfg["arg"],"task":"editorial","auto_image_followup":False,
       "source":"tt_autoheal_editorial_watchdog",
       "reason":"editorial_not_started_in_time","pending_ids":report["pending_ids"][:30]}
-    pending_rows=pending(project) if project=="ttendencias" else []
+    pending_rows=pending(project)
     if pending_rows:
         # A failed item must not hold the other nineteen hostage. On bounded
         # retries rotate candidates; a changed backlog starts with the oldest.
@@ -279,7 +279,7 @@ def request(project,now,report):
         existing=moment(old.get("requested_at"))
         old_target=str(old.get("target_id") or "")
         old_rev=int(old.get("target_revision") or 0)
-        old_target_finished=(project=="ttendencias" and bool(old_target) and
+        old_target_finished=(bool(old_target) and
             not any(r["id"]==old_target and int(r.get("revision") or 0)==old_rev
                     for r in pending_rows))
         if existing and now-existing<RETRY_AFTER and not (old_target_finished and now-existing>=timedelta(minutes=1)):

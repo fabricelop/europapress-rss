@@ -228,11 +228,28 @@ async function send(){
     s=await waitEditor(c,30000);
   }
   if(!s)fail('No aparece el cuadro de escritura (despues de project + home preflight)');
-  if(s.editorLength!==0||s.users!==0||s.assistants!==0)fail('Fresh tab has draft or chat content; refusing to overwrite');
-  await c.eval(`(()=>{const x=[...document.querySelectorAll('#prompt-textarea,[data-testid="prompt-textarea"],textarea,[contenteditable="true"][role="textbox"]')].find(e=>e.getClientRects().length);if(!x)return false;x.focus();return document.activeElement===x||x.contains(document.activeElement)})()`);
+  // Project landing sometimes recovers existing chat history in the new bot-owned tab.
+  // Only navigate when the composer is empty, not busy and without a modal.
+  if(s.editorLength===0 && (s.users>0||s.assistants>0) && !s.busy && !s.shield){
+    note('PROJECT_LANDING_HISTORY; NAVIGATE_BOT_OWNED_TAB_HOME');
+    await c.call('Page.navigate',{url:'https://chatgpt.com/'},10000);
+    s=await waitEditor(c,30000);
+  }
+  if(!s||s.editorLength!==0||s.users!==0||s.assistants!==0)
+    fail('Fresh tab has draft or chat content; refusing to overwrite');
+  const focused=await c.eval(`(()=>{const x=[...document.querySelectorAll('#prompt-textarea,[data-testid="prompt-textarea"],textarea,[contenteditable="true"][role="textbox"]')].find(e=>e.getClientRects().length);if(!x)return false;x.focus();return document.activeElement===x||x.contains(document.activeElement)})()`);
+  if(!focused)fail('COMPOSER_NOT_FOCUSED: do not type into unknown control');
   await c.call('Input.insertText',{text:msg},15000);
-  s=await c.eval(expr);
-  if(!s.editor||!s.editorText.includes(unique)||s.editorLength<msg.length*0.8)fail('DRAFT_NOT_VERIFIED: text was not inserted correctly; preserve tab');
+  // React may commit the edit asynchronously: verify before attempting send.
+  let validated=false;
+  for(let attempt=0;attempt<10;attempt++){
+    await sleep(500);
+    s=await c.eval(expr);
+    if(s.editor && s.editorText.includes(unique) && s.editorLength>=msg.length*0.8){validated=true;break}
+    if(s.editorLength>0&&!s.editorText.includes(unique))
+      fail('DRAFT_NOT_OURS: preserve unexpected draft; never overwrite');
+  }
+  if(!validated)fail('DRAFT_NOT_VERIFIED: preserve unconfirmed draft; do not send');
   // Intent logged BEFORE the click. If uncertain, do not automatically send a duplicate.
   atomic(f,{status:'submit_intent',at:new Date().toISOString(),target:created.id,marker:unique});submitted=true;
   const btn=await c.eval(`(()=>{const selectors=['button[data-testid="send-button"]','button[aria-label="Send prompt"]','button[aria-label="Enviar mensaje"]','button[aria-label="Send message"]'];let b=selectors.map(s=>document.querySelector(s)).find(x=>x&&!x.disabled&&x.getClientRects().length);if(!b)return null;const r=b.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2}})()`);
