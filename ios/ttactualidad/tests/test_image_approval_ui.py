@@ -48,3 +48,10 @@ assert 'acceptedReceipts.values.contains' in view
 assert 'unconfirmedDecisions.values.contains' in view
 assert 'return $0.id > $1.id' in view
 print("TT_IMAGE_INBOX_RECEIPT_ID_CHANGE_DEDUP_OK")
+
+# Build99: many images must not arbitrarily evict an on-screen preview.
+assert 'private let previewLimit = 64' in view
+assert 'kCGImageSourceThumbnailMaxPixelSize: 640' in view
+assert 'previewOrder.append(item.id)' in view
+assert 'previews.keys.first' not in view
+print("TT_IMAGE_INBOX_THUMBNAIL_CACHE_STABLE_BUILD99_OK")
