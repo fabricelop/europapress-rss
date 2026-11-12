@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-11-12T13:22:00Z",
+  "updated_at": "2026-11-12T13:45:30.872622Z",
   "items": [
     {
       "event_id": "c2c5fea57972",
@@ -858,17 +858,17 @@
       "with_image": true,
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "none",
+      "ai_image_status": "ready",
       "archive_image_status": "ready",
       "fallback_image_status": "none",
-      "image_choice": "none",
+      "image_choice": "ai",
       "sensitive_editorial": false,
       "prepared_at": "2026-11-12T13:20:00Z",
       "editorial_verified_at": "2026-11-12T13:20:00Z",
-      "image_status": "none",
+      "image_status": "ready",
       "image_pending": false,
-      "image_app_available": false,
-      "image_delivery": "none",
+      "image_app_available": true,
+      "image_delivery": "app",
       "archive_image_search_attempted_at": "2026-11-12T13:21:23.005910Z",
       "fallback_image_search_attempted_at": "2026-11-12T13:21:23.005910Z",
       "archive_image": {
@@ -878,6 +878,55 @@
         "rights_status": "unverified",
         "generated": false,
         "alt": "La Diputación Permanente convalida por un voto el decreto de vivienda"
+      },
+      "ai_image": {
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "provenance": "editor_confirmed_gallery",
+        "context_guard": {
+          "version": 3,
+          "event_id": "24a79538c864",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-24a79538c864-r1-a1-1794489681204",
+          "editorial_sha256": "67af5af21c46fc00b3ef9d55d73b4cc870ac5cef7850bd3f1c735197dade7ba8",
+          "source_chunk_sha256": "f68f9aa85fb4f7032a4e81426f694ea9748e57c2c480917f74332d4e88a38372"
+        },
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/24a79538c864-r1-ai1.jpg",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/24a79538c864-r1-ai1.jpg",
+        "sha256": "4c189db7be58844aeb2cadb0e26d82ce5a4f2357b59c65872e2257f9da0811c3",
+        "handoff": "inline-outbox-materialized-by-actions",
+        "alt": "La Diputación Permanente convalida por un voto el decreto de vivienda",
+        "generation_attempt": 1
+      },
+      "ai_image_attempt": 1,
+      "ai_image_last_attempt_status": "ready",
+      "ai_image_last_attempt_at": "2026-11-12T13:45:30.872521Z",
+      "image": {
+        "source": "TTiTTulares / ChatGPT ImageGen",
+        "rights_status": "generated",
+        "generated": true,
+        "provider": "chat-imagegen",
+        "origin": "executing_chat",
+        "provenance": "editor_confirmed_gallery",
+        "context_guard": {
+          "version": 3,
+          "event_id": "24a79538c864",
+          "revision": 1,
+          "scope": "current_item_only",
+          "command_id": "tt-img-auto-24a79538c864-r1-a1-1794489681204",
+          "editorial_sha256": "67af5af21c46fc00b3ef9d55d73b4cc870ac5cef7850bd3f1c735197dade7ba8",
+          "source_chunk_sha256": "f68f9aa85fb4f7032a4e81426f694ea9748e57c2c480917f74332d4e88a38372"
+        },
+        "url": "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/generated-images/24a79538c864-r1-ai1.jpg",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/ttittulares/generated-images/24a79538c864-r1-ai1.jpg",
+        "sha256": "4c189db7be58844aeb2cadb0e26d82ce5a4f2357b59c65872e2257f9da0811c3",
+        "handoff": "inline-outbox-materialized-by-actions",
+        "alt": "La Diputación Permanente convalida por un voto el decreto de vivienda",
+        "generation_attempt": 1
       }
     },
     {
