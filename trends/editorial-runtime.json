@@ -7,39 +7,26 @@
   "previous_run_id": "tr-20261112T235500-chat-direct",
   "command_id": "tr-20261113T0010-chat-direct",
   "source": "chat_direct",
-  "status": "RUNNING",
+  "status": "success",
   "phase": "preparing",
   "started_at": "2026-11-13T00:10:00+01:00",
-  "updated_at": "2026-11-13T00:10:00+01:00",
+  "updated_at": "2026-11-13T00:16:53+01:00",
   "current": 0,
   "total": 9,
   "trend_id": null,
   "title": "Preparando 9 trabajos TTendencias",
-  "queue_complete": false,
-  "processed_ids": [],
+  "queue_complete": true,
+  "processed_ids": [
+    "14476ed6fdb7",
+    "222611d9170d",
+    "33dd0de33093",
+    "4c413a617eac",
+    "b46e87f61b74",
+    "c03a43a858c1"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "d71d9cbc6a33",
-    "f9ce2a658e8b",
-    "14476ed6fdb7",
-    "222611d9170d",
-    "4c413a617eac",
-    "b46e87f61b74",
-    "33dd0de33093",
-    "c03a43a858c1",
-    "e883cdb753d6"
-  ],
-  "remaining_active_ids": [
-    "d71d9cbc6a33",
-    "f9ce2a658e8b",
-    "14476ed6fdb7",
-    "222611d9170d",
-    "4c413a617eac",
-    "b46e87f61b74",
-    "33dd0de33093",
-    "c03a43a858c1",
-    "e883cdb753d6"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
@@ -61,7 +48,7 @@
   "outcomes": [],
   "incident_count": 0,
   "incidents": [],
-  "error": "",
+  "error": null,
   "activity": [
     {
       "at": "2026-11-12T16:14:00+01:00",
@@ -130,8 +117,8 @@
       "message": "Cola inicial 9; revalidación JIT contra main, sin ImageGen ni publicación."
     }
   ],
-  "last_started_at": "2026-11-12T23:55:00+01:00",
-  "last_completed_at": "2026-11-12T23:56:00+01:00",
+  "last_started_at": "2026-11-13T00:16:53+01:00",
+  "last_completed_at": "2026-11-13T00:16:53+01:00",
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-20261112T235500-chat-direct",
