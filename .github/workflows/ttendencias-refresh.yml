@@ -9,6 +9,8 @@ on:
     paths:
       - "trends/refresh-trigger.txt"
       - "trends/auto_queue_new.py"
+      - "trends/ensure_pc_editorial.py"
+      - "trends/test_ensure_pc_editorial.py"
       - "trends/anticipation.py"
       - "trends/test_anticipation.py"
       - "trends/update_trends.py"
@@ -67,6 +69,9 @@ jobs:
 
       - name: Verificar movimientos persistentes del Top 30
         run: python3 -m unittest discover -s tests -p 'test_site_top30_movement.py' -v
+
+      - name: Comprobar inicio editorial inmediato e idempotente
+        run: python3 -m unittest trends.test_ensure_pc_editorial -v
 
       - name: Actualizar Top 30 y cola web
         run: |
