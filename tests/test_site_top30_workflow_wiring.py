@@ -104,6 +104,15 @@ elif a[0]=='reset':
         self.assertIn("expected==published", sync)
         self.assertIn("git add trends/site-top30-current.json", sync)
 
+    def test_editorial_chat_apply_triggers_immediate_site_refresh(self):
+        sync = (WORKFLOWS / "ttendencias-site-top30-sync.yml").read_text(encoding="utf-8")
+        self.assertIn("workflow_run:", sync)
+        self.assertIn("Aplicar outbox editorial TTendencias desde chat", sync)
+        self.assertIn("TTendencias consolidar editorial directo", sync)
+        self.assertIn("types: [completed]", sync)
+        self.assertIn("github.event.workflow_run.conclusion == 'success'", sync)
+        self.assertIn("git reset --hard origin/main", sync)
+
     def test_export_is_not_only_a_separate_push_trigger(self):
         s = (WORKFLOWS / "ttendencias-refresh.yml").read_text(encoding="utf-8")
         self.assertIn("python3 trends/export_site_top30.py", s)
