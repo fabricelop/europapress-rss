@@ -913,22 +913,16 @@ async function requestImageRegeneration(names) {
     for (let i = doc.items.length - 1; i >= 0; i--) {
       const row = doc.items[i];
       if (!target.has(norm(row.name)) || found >= unique.length) continue;
-      if (row.tremending_origin) continue;
-      // Una petición manual de imagen pertenece al flujo nuevo y debe limpiar
-      // bloqueos heredados del antiguo generador inline. Solo un bloqueo
-      // explícito actual debe impedirla.
-      const blockReason = String(row.ai_image_block_reason || row.image_block_reason || "").trim();
-      const legacyPoliticalBlock = ["political_actor", "political_context"].includes(blockReason.toLowerCase());
-      if (!blockReason || legacyPoliticalBlock) {
-        if (legacyPoliticalBlock) {
-          delete row.ai_image_block_reason;
-          delete row.image_block_reason;
-        }
-        row.disable_ai_image = false;
-        row.with_image = true;
-        row.image_strategy = "ai_plus_fallback";
-        if (!row.ai_image?.url) row.ai_image_status = "pending";
-      }
+      // El editor puede solicitar ImageGen para TODAS las tendencias
+      // explicadas (Tremending, sensibles y políticas incluidas). Las
+      // desestimaciones y cierres editoriales siguen siendo autoritativos.
+      // Estos flags heredados nunca son una prohibición de generación.
+      delete row.ai_image_block_reason;
+      delete row.image_block_reason;
+      row.disable_ai_image = false;
+      row.with_image = true;
+      row.image_strategy = "ai_plus_fallback";
+      if (!row.ai_image?.url) row.ai_image_status = "pending";
       row.ai_image_regenerate_requested = true;
       row.ai_image_regenerate_requested_at = now;
       row.ai_image_regenerate_request_version = Number(row.ai_image_regenerate_request_version || 0) + 1;
@@ -1111,8 +1105,8 @@ async function reworkNames(names, instruction, options = {}) {
       req.rewrite_instruction = text;
       req.rewrite_with_image = true;
       req.with_image = true;
-      req.disable_ai_image = Boolean(latest?.tremending_origin);
-      req.image_strategy = req.disable_ai_image ? "tweet_capture_only" : "ai_plus_fallback";
+      req.disable_ai_image = false;
+      req.image_strategy = "ai_plus_fallback";
       if (latest?.fallback_image) req.selected_tweet_image = latest.fallback_image;
       delete req.problem_reason;
       delete req.problematic_at;
