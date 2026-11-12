@@ -3,34 +3,38 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261112T135500-manual",
-  "previous_run_id": "tr-20261112T052500-manual",
-  "command_id": "tr-20261112T135500-manual",
+  "run_id": "tr-20261112T151000-manual",
+  "previous_run_id": "tr-20261112T135500-manual",
+  "command_id": "tr-20261112T151000-manual",
   "source": "chat",
-  "status": "success",
-  "phase": "closing",
-  "started_at": "2026-11-12T13:55:00+01:00",
-  "updated_at": "2026-11-12T14:58:10+01:00",
-  "current": 13,
-  "total": 13,
-  "trend_id": null,
+  "status": "PROCESSING",
+  "phase": "investigating",
+  "started_at": "2026-11-12T15:10:00+01:00",
+  "updated_at": "2026-11-12T15:10:00+01:00",
+  "current": 0,
+  "total": 6,
+  "trend_id": "b8593c0a3afe",
   "title": "Pasada editorial TTendencias",
-  "queue_complete": true,
-  "processed_ids": [
-    "30cff8c284df",
-    "3eea95f6bf8e",
-    "554d3b5f9168",
-    "a5cf436660ed",
-    "b8fecb6ddea3"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [
+    "b8593c0a3afe",
+    "a6fae06424ed",
+    "de4af83ef6a9",
+    "1ee2d3a86e4e",
+    "5d4a08813a42",
     "554d3b5f9168"
   ],
-  "remaining_active_ids": [],
-  "remaining_problematic_ids": [
+  "remaining_active_ids": [
+    "b8593c0a3afe",
+    "a6fae06424ed",
+    "de4af83ef6a9",
+    "1ee2d3a86e4e",
+    "5d4a08813a42",
     "554d3b5f9168"
   ],
+  "remaining_problematic_ids": [],
   "summary": {
     "attempted": 13,
     "observed": 13,
@@ -165,7 +169,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "closing",
+  "activity": "investigating",
   "last_started_at": "2026-11-12T14:58:09+01:00",
   "last_completed_at": "2026-11-12T14:58:10+01:00",
   "api_failover_enabled": false,
@@ -181,7 +185,7 @@
     "pending": 0,
     "problematic": 0
   },
-  "message": "Pasada tr-20261112T135500-manual cerrada 13/13. Doce fichas ordinarias quedaron explicadas (Layton con causa no confirmada tras dos búsquedas) y La Policía quedó como episodio material nuevo por la orden de Interior de investigar actuaciones del 11N. Aplicador oficial persistió en commit 7bce899375322a25be297d10b4fc32a32885fcd7 tras reintento automático por avance concurrente de main. Barrera final: editorial-queue=0. ImageGen=0; image-outbox=0; publicaciones=0.",
+  "message": "Pasada manual iniciada sobre 6 revisiones exactas de main; investigación JIT en curso. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794327332740-manual",
@@ -8184,6 +8188,19 @@
       "at": "2026-11-12T01:06:00+01:00",
       "phase": "closing",
       "message": "Pasada tr-20261112T005500-manual cerrada 20/20: 17 explicaciones aplicadas, 4 de ellas episodios materiales nuevos; El Manual e IRINI cerrados sin episodio distinto; españas quedó problematic por falta de corroboración. Barrera final main: editorial-queue=0. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-12T15:10:00+01:00",
+      "phase": "preparing",
+      "message": "Cola inicial 6; revalidación JIT contra main, sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-12T15:10:00+01:00",
+      "phase": "investigating",
+      "trend_id": "b8593c0a3afe",
+      "revision": 0,
+      "name": "#PSOEyFrenteAmplioVetan",
+      "message": "Investigando detonantes actuales y fuentes independientes para 6 revisiones."
     }
   ],
   "processed": [],
