@@ -52,13 +52,17 @@ jobs:
         run: |
           set -euo pipefail
           repo="$(mktemp -d)"
-          trap 'rm -rf "$repo"' EXIT
+          trap 'sudo rm -rf "$repo"' EXIT
           git init -q "$repo"
-          if GIT_TEST_ASSUME_DIFFERENT_OWNER=1 git -C "$repo" rev-parse --is-inside-work-tree 2>/dev/null; then
-            echo 'This Git build did not simulate a foreign owner'
+          # Git 2.56 may ignore GIT_TEST_ASSUME_DIFFERENT_OWNER. Use actual
+          # foreign ownership with readable permissions, as on the user's PC.
+          chmod -R a+rX "$repo"
+          sudo chown -R root:root "$repo"
+          if git -C "$repo" rev-parse --is-inside-work-tree 2>/dev/null; then
+            echo 'Expected dubious ownership check did not trigger'
             exit 1
           fi
-          output="$(GIT_TEST_ASSUME_DIFFERENT_OWNER=1 git -c "safe.directory=$repo" -C "$repo" rev-parse --is-inside-work-tree)"
+          output="$(git -c "safe.directory=$repo" -C "$repo" rev-parse --is-inside-work-tree)"
           test "$output" = true
           echo 'TT_X_GIT_DUBIOUS_OWNERSHIP_SIMULATION_OK'
   windows-parser:
