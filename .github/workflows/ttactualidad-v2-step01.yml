@@ -35,9 +35,21 @@ jobs:
           assert data["country"]=="ES" and not data["verified_against_x"]
           print("TT_V2_STEP01_REAL_CAPTURE_OK",data["observed_at"],"top30_count",len(data["top30"]))
           PY
+      - name: Diagnosticar frescura sin dar por verificado el origen X
+        run: |
+          python3 -m v2.ttendencias.assess_freshness v2/ttendencias/state/live-capture.json > v2/ttendencias/state/freshness-report.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path("v2/ttendencias/state/freshness-report.json").read_text())
+          assert r["step"]=="02_freshness"
+          assert r["eligible_for_editorial"] is False
+          assert r["source_freshness_verified"] is False
+          print("TT_V2_STEP02_CAPTURE_STATUS",r["status"],"capture_age_minutes",r["capture_age_minutes"])
+          PY
       - uses: actions/upload-artifact@v4
         if: success()
         with:
           name: ttactualidad-v2-step01-live-top30
-          path: v2/ttendencias/state/live-capture.json
+          path: v2/ttendencias/state/*.json
           retention-days: 7
