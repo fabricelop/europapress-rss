@@ -109520,7 +109520,7 @@
       ],
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
-      "ai_image_status": "pending",
+      "ai_image_status": "failed",
       "fallback_image_status": "ready",
       "image_status": "ready",
       "image_choice": "fallback",
@@ -109549,7 +109549,11 @@
         "alt": "Imagen de archivo relacionada con Jensen Huang",
         "rights_status": "unverified",
         "generated": false
-      }
+      },
+      "ai_image_attempt": 1,
+      "ai_image_last_attempt_status": "failed",
+      "ai_image_last_attempt_at": "2026-11-12T07:14:31.999616Z",
+      "ai_image_failure_reason": "imagen generada sin URL raw válida"
     },
     {
       "id": "40ae1da9ecb1",
@@ -109628,6 +109632,6 @@
       "significance_reason": "La hoguera final con Sergio y las confesiones sobre Irini y Josué constituyen un episodio posterior y materialmente distinto de la explicación anterior."
     }
   ],
-  "updated_at": "2026-11-12T07:01:05.159495+00:00",
+  "updated_at": "2026-11-12T07:14:31.999686Z",
   "count": 1918
 }
