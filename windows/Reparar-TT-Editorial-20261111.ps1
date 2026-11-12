@@ -235,8 +235,8 @@ async function send(){
     await c.call('Page.navigate',{url:'https://chatgpt.com/'},10000);
     s=await waitEditor(c,30000);
   }
-  if(s && s.editorLength===0 && (s.users>0||s.assistants>0) && !s.busy && !s.shield){
-    // The home route can restore the previous conversation. Click New chat only
+  if(s && (s.editorLength>0||s.users>0||s.assistants>0) && !s.busy && !s.shield){
+    // The home route can restore a previous conversation or draft. Click New chat only
     // in this bot-owned tab and verify the resulting page before typing.
     note('HOME_RESTORED_HISTORY; CLICK_NEW_CHAT_BOT_OWNED_TAB');
     const clicked=await c.eval(`(()=>{const links=[...document.querySelectorAll('a,button')];const e=links.find(x=>x.getClientRects().length && (x.getAttribute('data-testid')==='create-new-chat-button'||/^(new chat|nuevo chat)$/i.test(String(x.getAttribute('aria-label')||x.textContent||'').trim())));if(!e)return false;e.click();return true})()`);
