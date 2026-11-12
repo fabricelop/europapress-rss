@@ -1169,11 +1169,50 @@ function Read-NewLauncherText([long]$Offset) {
   } catch { return "" }
 }
 
-function Build-EditorialMessage([string]$CommandId) {
-  return "TTITTULARES_EDITORIAL_JOB_V2 $CommandId | Ejecuta AHORA la pasada editorial OFICIAL de TTiTTulares. Lee primero ttittulares/editorial-run-prompt.md y el estado autoritativo de ttittulares/editorial-queue.json, ttittulares/status.json y telegram/editorial-processing.json. Procesa TODOS los PROCESSING activos y las reelaboraciones rewrite_pending vigentes. Para cada noticia publicable, cierra texto factual + UN remate y materialízala en Listas/READY; texto+remate bastan para READY y el tuit completo debe quedar <=256 caracteres. Intenta dejar imagen de archivo si la obtienes, pero no bloquees READY por ninguna imagen. NO llames directamente a ImageGen en esta conversación: tras READY, el reparador automático de Listas generará/regenerará la IA, completará el archivo si falta y Telegram entregará el paquete solo cuando la IA sea válida. Relee estado antes de declarar cola vacía. Solo puedes cerrar 0/0 si no queda ningún PROCESSING activo ni rewrite_pending."
+function Build-EditorialMessage([string]$CommandId,$Control) {
+  # One exact revision per ChatGPT call: a large backlog must never be sent as
+  # one unbounded prompt and then misreported as completed.
+  $queue=$null
+  try {
+    $uri="https://raw.githubusercontent.com/fabricelop/europapress-rss/main/ttittulares/editorial-queue.json?t="+[DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
+    $queue=Invoke-RestMethod -Uri $uri -TimeoutSec 15 -Headers @{"Cache-Control"="no-cache, no-store"}
+  } catch {
+    Write-Log "EDITORIAL QUEUE READ FAILED command=$CommandId; no generic batch send"
+    return ""
+  }
+  if($null -eq $queue -or $null -eq $queue.items){return ""}
+  $targetId=[string]$Control.target_id
+  $targetRevision=0
+  try { $targetRevision=[int]$Control.target_revision } catch {}
+  $eligible=@($queue.items|Where-Object {
+    $_.event_id -and ([string]$_.status -in @("PROCESSING","UPDATE_PROCESSING"))
+  }|Sort-Object @{Expression={ [string]$_.selected_at }},@{Expression={ [string]$_.event_id }})
+  if($targetId){
+    $eligible=@($eligible|Where-Object {
+      [string]$_.event_id -eq $targetId -and [int]$_.revision -eq $targetRevision
+    })
+  }
+  if($eligible.Count -eq 0){
+    Write-Log "EDITORIAL TARGET ALREADY CLOSED command=$CommandId target=$targetId revision=$targetRevision"
+    return ""
+  }
+  $item=$eligible[0]
+  $itemId=[string]$item.event_id
+  $revision=[int]$item.revision
+  $title=[string]$item.title
+  Write-Log "EDITORIAL TARGET command=$CommandId id=$itemId revision=$revision"
+  return @"
+TTITTULARES_EDITORIAL_JOB_V2 $CommandId | Ejecuta AHORA y TERMINA una única elaboración editorial REAL en ChatGPT.
+
+Repo: fabricelop/europapress-rss, rama main. Revisión exacta: $itemId r$revision, titular: $title. No proceses otras noticias en este encargo. Primero lee ttittulares/editorial-run-prompt.md, ttittulares/editorial-queue.json y ttittulares/prepared.json. Revalida el ID/revisión y que sigue PROCESSING antes de investigar: si ha cambiado o ya está READY, no lo dupliques.
+
+Investiga y contrasta la actualidad con fuentes fiables; no aceptes un titular sin verificar. Prepara el texto editorial completo y un único remate cuando proceda. Persiste en GitHub mediante el aplicador editorial vigente y comprueba que la misma revisión ha entrado en ttittulares/prepared.json y ha salido de la cola. Si no está verificado, comunica la incidencia y deja pendiente, nunca finjas éxito.
+
+No invoques ImageGen; las imágenes se procesan por un canal separado y no bloquean READY. No publiques en X/Instagram ni cambies otras fichas.
+"@
 }
 
-function Launch-TTiTTulares([string]$CommandId) {
+function Launch-TTiTTulares([string]$CommandId,$Control) {
   if (-not (Test-Path -LiteralPath $Runner)) {
     $detail = "No existe $Runner"
     Write-Log "EDITORIAL PROCESS ERROR command=$CommandId :: $detail"
@@ -1188,7 +1227,11 @@ function Launch-TTiTTulares([string]$CommandId) {
   # Editorial: mensaje explícito y auditable, igual que los jobs de imagen.
   $old = $env:TT_CHAT_MESSAGE_B64
   $proc = $null
-  $editorialMessage = Build-EditorialMessage $CommandId
+  $editorialMessage = Build-EditorialMessage $CommandId $Control
+  if(-not $editorialMessage){
+    Write-Log "EDITORIAL NO CURRENT ITEM command=$CommandId; not opening ChatGPT"
+    return $false
+  }
   $editorialMarker = "TTITTULARES_EDITORIAL_JOB_V2 $CommandId"
   try {
     $bytes = [System.Text.Encoding]::UTF8.GetBytes($editorialMessage)
@@ -1371,7 +1414,7 @@ while ($true) {
 
         if ($ack -eq "OK" -or $localFallback) {
           try {
-            $messageSent = Launch-TTiTTulares $commandId
+            $messageSent = Launch-TTiTTulares $commandId $doc
             if ($messageSent) {
               Write-Log "LAUNCH CONFIRMED command=$commandId via=direct-node"
               # Una orden solo se consume localmente cuando el envío físico al chat
