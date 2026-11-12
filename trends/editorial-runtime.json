@@ -3,77 +3,45 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261112T162500-manual",
-  "previous_run_id": "tr-20261112T161000-manual",
-  "command_id": "tr-20261112T162500-manual",
+  "run_id": "tr-20261112T165500-manual",
+  "previous_run_id": "tr-20261112T162500-manual",
+  "command_id": "tr-20261112T165500-manual",
   "source": "chat",
-  "status": "DONE_WITH_INCIDENTS",
-  "phase": "closing",
-  "started_at": "2026-11-12T16:25:00+01:00",
-  "updated_at": "2026-11-12T16:40:09+01:00",
-  "current": 2,
-  "total": 2,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "f4fde19c25ea",
-    "red-review-a59f622b276c0d4d0cfe"
-  ],
+  "status": "RUNNING",
+  "phase": "investigating",
+  "started_at": "2026-11-12T16:55:00+01:00",
+  "updated_at": "2026-11-12T16:55:00+01:00",
+  "current": 0,
+  "total": 1,
+  "trend_id": "f4fde19c25ea",
+  "title": "Aurá",
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [
     "f4fde19c25ea"
   ],
-  "remaining_active_ids": [],
-  "remaining_problematic_ids": [
+  "remaining_active_ids": [
     "f4fde19c25ea"
   ],
+  "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
+    "attempted": 1,
+    "observed": 1,
+    "closed": 0,
     "explained": 0,
-    "maintenance": 1,
-    "problematic": 1,
+    "problematic": 0,
     "updates": 0,
-    "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 1,
-    "unchanged_reviews": 1,
     "queue_remaining": 1,
-    "active_remaining": 0,
+    "rewrite_pending_remaining": 1,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 1
+    "incidents": 0
   },
-  "outcomes": [
-    {
-      "id": "f4fde19c25ea",
-      "revision": 1,
-      "name": "Aurá",
-      "outcome": "problematic",
-      "problematic_attempts": 1,
-      "reason": "Fenómeno general «farmear aura» verificado, pero sin detonante actual independiente suficiente."
-    },
-    {
-      "id": "red-review-a59f622b276c0d4d0cfe",
-      "revision": 0,
-      "name": "Revisar novedades: #FelizJueves",
-      "outcome": "unchanged",
-      "source_id": "ff7da32ed7b2",
-      "source_revision": 3,
-      "reason": "La recurrencia actual está confirmada y no se halló un acontecimiento sustancial nuevo; se conserva texto y fecha."
-    }
-  ],
-  "incident_count": 1,
-  "incidents": [
-    {
-      "id": "f4fde19c25ea",
-      "name": "Aurá",
-      "kind": "unverified_cause",
-      "detail": "No se verificó un detonante concreto del pico actual; se mantiene fail-closed."
-    }
-  ],
+  "outcomes": [],
+  "incident_count": 0,
+  "incidents": [],
   "error": null,
   "activity": [
     {
@@ -113,7 +81,7 @@
       "message": "Barrera final main: 0 preparing/update. Aurá r1 permanece problematic; #FelizJueves revisión roja cerrada unchanged conservando explicación y fecha. Sin ImageGen ni publicación."
     }
   ],
-  "last_started_at": "2026-11-12T16:33:08+01:00",
+  "last_started_at": "2026-11-12T16:55:00+01:00",
   "last_completed_at": "2026-11-12T16:40:09+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -128,7 +96,7 @@
     "pending": 0,
     "problematic": 1
   },
-  "message": "Pasada cerrada 2/2: Aurá r1 queda problematic por causa actual no verificada; la revisión roja de #FelizJueves queda unchanged y conserva texto/fecha. No hay preparing/update pendientes. Sin ImageGen ni publicación.",
+  "message": "Ejecuta TTendencias: 1 revisión vigente. Investigando Aurá r2 desde cero; X-context no utilizable (403) y contraste abierto en curso.",
   "history": [
     {
       "run_id": "tr-1794327332740-manual",
@@ -5184,7 +5152,13 @@
       "message": "Pasada cerrada 2/2: Aurá r1 queda problematic por causa actual no verificada; la revisión roja de #FelizJueves queda unchanged y conserva texto/fecha. No hay preparing/update pendientes. Sin ImageGen ni publicación."
     }
   ],
-  "current_item": null,
+  "current_item": {
+    "id": "f4fde19c25ea",
+    "revision": 2,
+    "name": "Aurá",
+    "phase": "investigating",
+    "message": "Contrastando el uso viral de «aura/farmear aura» y el detonante actual de «Aurá» sin convertir la pista editorial en hecho."
+  },
   "withdrawn_ids": [],
   "last_finished_at": "2026-11-12T15:53:00+01:00",
   "last_revalidated_at": "2026-11-11T19:56:00+01:00",
@@ -8261,6 +8235,6 @@
     }
   ],
   "processed": [],
-  "finished_at": "2026-11-12T16:40:09+01:00",
+  "finished_at": null,
   "maintenance_outbox_commit": "970b545c88b09429a23d15ec893b9d66fb611297"
 }
