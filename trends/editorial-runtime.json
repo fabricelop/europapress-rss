@@ -3,22 +3,20 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261112T193900-manual",
-  "previous_run_id": "tr-20261112T171100-manual",
-  "command_id": "tr-20261112T193900-manual",
+  "run_id": "tr-20261112T225500-manual",
+  "previous_run_id": "tr-20261112T193900-manual",
+  "command_id": "tr-20261112T225500-manual",
   "source": "chat",
-  "status": "waiting",
-  "phase": "closing",
-  "started_at": "2026-11-12T19:39:00+01:00",
-  "updated_at": "2026-11-12T22:53:28+01:00",
-  "current": 12,
-  "total": 12,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-12T22:55:00+01:00",
+  "updated_at": "2026-11-12T22:55:00+01:00",
+  "current": 0,
+  "total": 8,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
   "queue_complete": false,
-  "processed_ids": [
-    "c4bd616d18d0"
-  ],
+  "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [
     "5b4019aec79a",
@@ -224,7 +222,7 @@
     "pending": 0,
     "problematic": 0
   },
-  "message": "Pasada completada 12/12: 5 episodios materiales nuevos persistidos y 7 reentradas cerradas sin episodio distinto. Cola final 0. Sin ImageGen ni publicaciones.",
+  "message": "Ejecución manual desde chat iniciada; 8 revisiones vigentes en cola.",
   "history": [
     {
       "run_id": "tr-1794327332740-manual",
