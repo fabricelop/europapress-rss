@@ -1,0 +1,132 @@
+name: TTendencias - cierre manual Loterias 2026-11-12
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/tt-loterias-editorial-closure-once.yml"
+permissions:
+  contents: write
+concurrency:
+  group: tt-loterias-editorial-closure-once
+  cancel-in-progress: false
+jobs:
+  mark-published:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          persist-credentials: true
+      - name: Marcar exclusivamente Loterías r0 como publicada (sin publicar realmente)
+        shell: bash
+        run: |
+          set -euo pipefail
+          for attempt in 1 2 3 4 5; do
+            git fetch origin main
+            git reset --hard origin/main
+            python3 - <<'PY'
+          import json
+          import re
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          ident, name = "68bbaa9a249e", "Loterías"
+          now = datetime.now(timezone.utc).isoformat(timespec="seconds")
+          files = (("trends/requests.json", "requests"),
+                   ("trends/telegram-manual-explained.json", "items"))
+
+          def locate_record(text):
+              matches = list(re.finditer(r'"id"\s*:\s*"68bbaa9a249e"', text))
+              if len(matches) != 1:
+                  raise RuntimeError("La identidad exacta debe existir una sola vez")
+              start = text.rfind("{", 0, matches[0].start())
+              if start < 0:
+                  raise RuntimeError("No se encontró el objeto de Loterías")
+              nested, quoted, escaped = 0, False, False
+              for pos in range(start, len(text)):
+                  char = text[pos]
+                  if escaped:
+                      escaped = False
+                  elif char == "\\" and quoted:
+                      escaped = True
+                  elif char == '"':
+                      quoted = not quoted
+                  elif not quoted:
+                      if char == "{":
+                          nested += 1
+                      elif char == "}":
+                          nested -= 1
+                          if nested == 0:
+                              return start, pos + 1
+              raise RuntimeError("Objeto JSON sin cerrar")
+
+          for filename, key in files:
+              path = Path(filename)
+              text = path.read_text(encoding="utf-8")
+              document = json.loads(text)
+              items = document[key]
+              exact = [r for r in items if r.get("id") == ident and int(r.get("revision", -1)) == 0]
+              if len(exact) != 1 or exact[0].get("name") != name:
+                  raise RuntimeError("Identidad editorial no verificada en " + filename)
+              current = exact[0]
+              if current.get("status") == "published" and current.get("telegram_package_status") == "published":
+                  print("ALREADY_MARKED", filename)
+                  continue
+              if current.get("status") != "explained" or current.get("telegram_package_status") != "pending":
+                  raise RuntimeError("Estado cambiado, se evita sobrescribir una decisión nueva")
+              start, end = locate_record(text)
+              block = text[start:end]
+              if json.loads(block).get("id") != ident:
+                  raise RuntimeError("Bloque incorrecto")
+              block, a = re.subn(r'("status"\s*:\s*")explained(")', r'\1published\2', block, count=1)
+              block, b = re.subn(r'("telegram_package_status"\s*:\s*")pending(")', r'\1published\2', block, count=1)
+              if (a, b) != (1, 1):
+                  raise RuntimeError("No se pudieron cerrar los estados")
+              if "updated_at" in current:
+                  block, count = re.subn(r'("updated_at"\s*:\s*")[^"]+(")', lambda m:m.group(1)+now+m.group(2),block,count=1)
+                  if count != 1:
+                      raise RuntimeError("Falta la fecha de actualización")
+              changes = {
+                  "published_at": now,
+                  "telegram_published_at": now,
+                  "telegram_package_updated_at": now,
+                  "decision_source": "editor_manual_status_override",
+                  "telegram_decision_source": "editor_manual_status_override",
+                  "manual_publication_note": "Considerada publicada por decisión del editor; sin nueva publicación externa ni comprobación de X/Telegram"
+              }
+              if any(k in current for k in changes):
+                  raise RuntimeError("Existen metadatos previos de publicación; no sobrescribir")
+              block = block[:-1] + ",\n" + ",\n".join("      "+json.dumps(k,ensure_ascii=False)+": "+json.dumps(v,ensure_ascii=False) for k,v in changes.items()) + "\n    }"
+              changed = text[:start] + block + text[end:]
+              prefix = changed[:250]
+              topdate = re.search(r'("updated_at"\s*:\s*")[^"]+(")', prefix)
+              if topdate:
+                  changed = changed[:topdate.start()] + topdate.group(1) + now + topdate.group(2) + changed[topdate.end():]
+              check = json.loads(changed)
+              if len(check[key]) != len(items):
+                  raise RuntimeError("Número de registros alterado")
+              target = [r for r in check[key] if r.get("id") == ident and int(r.get("revision",-1)) == 0]
+              if len(target)!=1 or target[0].get("status")!="published" or target[0].get("telegram_package_status")!="published":
+                  raise RuntimeError("Validación de cierre fallida")
+              for old,new in zip(items,check[key]):
+                  if old.get("id") != ident and old != new:
+                      raise RuntimeError("Se alteraría otra tendencia: " + str(old.get("id")))
+              path.write_text(changed,encoding="utf-8")
+              print("MANUALLY_MARKED_PUBLISHED",filename,ident,"revision=0")
+          PY
+            git add trends/requests.json trends/telegram-manual-explained.json
+            if git diff --cached --quiet; then
+              echo "Ya constaba publicada, sin cambios"
+              exit 0
+            fi
+            git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'chore(ttendencias): mark Loterías r0 published by editor decision'
+            if git push origin HEAD:main; then
+              echo "LOTTERIES_PUBLICATION_STATUS_VERIFIED"
+              exit 0
+            fi
+            echo "Concurrent main update, retrying $attempt"
+            sleep 2
+          done
+          echo "Could not push after retries" >&2
+          exit 1
