@@ -821,7 +821,8 @@ assert 'seenCursors.insert(cursor).inserted' in inbox
 assert 'editorialAt: String?' in inbox
 assert 'items.sorted { $0.createdAt > $1.createdAt }' in inbox
 assert 'func currentImageApprovalTrendEpisodes() async throws' in auth
-assert '[404, 409, 503].contains(status)' in inbox
+assert 'if action == "approve" && [404, 503].contains(status)' in inbox
+assert 'if [401, 403, 409, 422].contains(status)' in inbox
 assert 'imagen ya no está en Listas' not in inbox.lower()
 # 0.4.86 preserves the complete 0.4.84 codebase and fixes the blank
 # private inbox caused by a live Top 30 fetch or stale Listas constraints.
@@ -830,9 +831,9 @@ assert 'currentTop30.contains(episode)' not in inbox
 assert 'try await github.currentImageApprovalTrendEpisodes()' not in inbox
 assert 'let supportsPagination = page.hasMore != nil' in inbox
 assert 'incomplete = true' in inbox
-assert 'Consulta parcial: vuelve a actualizar' in inbox
-assert 'images = ApprovalInboxScope.visible(received).filter {' in inbox
-assert 'Consultando más imágenes privadas…' in inbox
+assert 'Consulta parcial:' in inbox
+assert inbox.count('images = ready') == 1
+assert 'Consultando imágenes privadas…' in inbox
 assert 'Todas las imágenes originales pendientes recibidas' in inbox
 assert 'previousListasAt: Date? = nil' in store
 assert 'listasHistory' in store
