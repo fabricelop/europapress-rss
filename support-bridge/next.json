@@ -1,19 +1,26 @@
 {
   "version": 1,
-  "id": "ttb-verify-ttendencias-run-20261112-0143",
+  "id": "ttb-images-inbox-20261112-0722",
   "project": "TTActualidad",
-  "expires_at": "2026-11-12T02:12:00Z",
-  "description": "Confirmar arranque de la orden TTendencias lanzada por el usuario",
+  "expires_at": "2026-11-13T08:00:00Z",
+  "description": "Diagnostico de bandeja privada de imagenes: recibos, causas y lectores locales; no modifica ni publica",
   "steps": [
     {
-      "kind": "builtin",
-      "name": "listener-summary",
-      "timeout_seconds": 30
+      "kind": "powershell",
+      "name": "image-inbox-receipts-and-cycle",
+      "script": "$b='C:\\TTiTTulares\\image-approval-receipts'\n$o=@{exists=(Test-Path $b);receipts=0;cycle=$null;recent=@()}\nif(Test-Path $b){\n $o.receipts=@(Get-ChildItem $b -Filter '*.json' -File|Where-Object {$_.Name -match '^(tt-img-|tr-img-)' }).Count\n $p=Join-Path $b 'receiver-cycle.json'\n if(Test-Path $p){$j=Get-Content $p -Raw|ConvertFrom-Json;$o.cycle=@{checkedAt=$j.checkedAt;queuedLocal=$j.queuedLocal;eligible=$j.eligibleForApproval;attempted=$j.attemptedThisCycle}}\n $p=Join-Path $b 'receiver-status.json'\n if(Test-Path $p){$j=Get-Content $p -Raw|ConvertFrom-Json;$o.recent=@($j.PSObject.Properties|Sort-Object { $_.Value.checkedAt } -Descending|Select-Object -First 12|ForEach-Object {@{project=$(if($_.Name -like 'tr-*'){'trends'}else{'news'});reason=$_.Value.reason;checkedAt=$_.Value.checkedAt}})}\n}\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress -Depth 5))\n",
+      "timeout_seconds": 25
+    },
+    {
+      "kind": "powershell",
+      "name": "image-inbox-receiver-process-and-cdp",
+      "script": "$b='C:\\TTiTTulares'\n$o=@{checks=@{};processes=@();recoveryReceipts=@{}}\nforeach($p in @('TTImageApprovalReceiver.cjs','TTImagesImmediateInbox.cjs','TTendenciasImageBridge.js','TTiTTularesImageBridge.js','TTendenciasWebImages.cjs','TTiTTularesWebImages.cjs')){$o.checks[$p]=Test-Path (Join-Path $b $p)}\n$o.processes=@(Get-CimInstance Win32_Process -Filter \"name='node.exe'\" -ErrorAction SilentlyContinue|Where-Object { $_.CommandLine -match 'TTImageApprovalReceiver|TT(endencias|iTTulares)(ImageBridge|WebImages)' }|ForEach-Object { @{type=$(if($_.CommandLine -match 'TTImageApprovalReceiver'){'inbox'}elseif($_.CommandLine -match 'WebImages'){'publisher'}else{'generator'});pid=$_.ProcessId} })\nforeach($n in @(9223,9234)){try{$r=Invoke-RestMethod \"http://127.0.0.1:$n/json/version\" -TimeoutSec 3;$o.recoveryReceipts[[string]$n]=!!$r.webSocketDebuggerUrl}catch{$o.recoveryReceipts[[string]$n]=$false}}\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress -Depth 4))\n",
+      "timeout_seconds": 25
     },
     {
       "kind": "builtin",
-      "name": "editorial-queue",
-      "timeout_seconds": 30
+      "name": "listener-summary",
+      "timeout_seconds": 25
     }
   ]
 }
