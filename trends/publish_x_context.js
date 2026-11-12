@@ -8,6 +8,8 @@ const { assembleEvidence, validPost } = require('./x_context.js');
 const repo = process.env.TT_X_GIT_REPO || path.resolve(__dirname, '..');
 const EVIDENCE = 'trends/x-context-evidence.json';
 const QUEUE = 'trends/editorial-queue.json';
+const TOP30 = 'trends/site-top30-current.json';
+const { unverifiedTargets } = require('./x_context.js');
 function git(args, env = {}) {
   // Git safe.directory is protected configuration. Trust only the explicit
   // TT-XContext git-store for this invocation, including commit-tree and push.
@@ -38,10 +40,11 @@ function validEntry(x, current, now) {
     posts, ...(x.status === 'error' ? { reason: String(x.reason || 'local_x_failed').slice(0, 80),
       http_status: Number(x.http_status) || null } : {}) };
 }
-function mergeForPublish(remote, local, queue, now = Date.now()) {
+function mergeForPublish(remote, local, queue, now = Date.now(), top30 = { items: [] }) {
   const active = new Map((Array.isArray(queue.items) ? queue.items : [])
     .filter(x => x && ['preparing', 'update', 'problematic'].includes(x.status))
     .map(x => [String(x.id) + ':' + String(x.revision ?? 0), x]));
+  for (const x of unverifiedTargets(top30)) active.set(String(x.id) + ':' + String(x.revision), x);
   const updates = [];
   for (const x of (Array.isArray(local.items) ? local.items : [])) {
     const clean = validEntry(x, active, now);
@@ -74,7 +77,8 @@ function publish(localPath) {
         const base = git(['rev-parse', 'refs/remotes/origin/main']);
         const remote = gitJSON(base, EVIDENCE, { items: [] });
         const queue = gitJSON(base, QUEUE, { items: [] });
-        const { updates, merged } = mergeForPublish(remote, local, queue);
+        const top30 = gitJSON(base, TOP30, { items: [] });
+        const { updates, merged } = mergeForPublish(remote, local, queue, Date.now(), top30);
         if (!updates.length) { console.log('TT_X_WINDOWS no_fresh_matching_evidence'); return false; }
         fs.writeFileSync(dest, JSON.stringify(merged, null, 2) + '\n', 'utf8');
         try { fs.unlinkSync(index); } catch (_) {}
