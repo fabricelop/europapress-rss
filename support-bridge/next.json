@@ -1,15 +1,15 @@
 {
   "version": 1,
-  "id": "ttb-news-editorial-error-20261112-1158",
+  "id": "ttb-news-newchat-fix-20261112-1202",
   "project": "TTActualidad",
   "expires_at": "2026-11-13T12:00:00Z",
-  "description": "Read last news launch error or log path",
+  "description": "Install guarded new-chat recovery from pinned commit without dispatch",
   "steps": [
     {
       "kind": "powershell",
-      "name": "news-editorial-error",
-      "script": "$f='C:\\TTiTTulares\\ttittulares-mobile-trigger.log'\n$l=[string](Get-Content $f -Tail 300 | Where-Object { $_ -match 'EDITORIAL PROCESS ERROR|EDITORIAL PROCESS STARTED|CHAT MESSAGE TIMEOUT|CHAT LAUNCH LOG ERROR' } | Select-Object -Last 1)\nWrite-Output ('TTRESULT:'+(@{state='ok';last=$l.Substring(0,[Math]::Min(700,$l.Length))}|ConvertTo-Json -Compress))",
-      "timeout_seconds": 20
+      "name": "install-news-newchat-fix",
+      "script": "$ErrorActionPreference='Stop'\n$o=@{state='pending'}\n$t=Join-Path $env:TEMP ('TTEditorialFix-'+[guid]::NewGuid().ToString('N')+'.ps1')\ntry{\n $url='https://raw.githubusercontent.com/fabricelop/europapress-rss/2e0dd619922b0ebd62fcc21794dce93e9e6bf580/windows/Reparar-TT-Editorial-20261111.ps1'\n Invoke-WebRequest -UseBasicParsing -Uri $url -OutFile $t -TimeoutSec 35\n $src=[IO.File]::ReadAllText($t,[Text.Encoding]::UTF8)\n if(-not $src.Contains('HOME_RESTORED_HISTORY; CLICK_NEW_CHAT_BOT_OWNED_TAB') -or -not $src.Contains('TT_EDITORIAL_SAFE_WRAPPER_V1')){throw 'PINNED_FIX_MARKER_MISSING'}\n & $t -NoDispatch *> $null\n if(-not $?){throw 'INSTALLER_FAILED'}\n $guard=Get-Content 'C:\\TTiTTulares\\TT-Editorial-Guard.js' -Raw\n if(-not $guard.Contains('HOME_RESTORED_HISTORY; CLICK_NEW_CHAT_BOT_OWNED_TAB')){throw 'GUARD_NOT_UPDATED'}\n $o.state='installed_verified'\n}catch{$o.state='error';$o.reason=[string]$_.Exception.Message}\nfinally{Remove-Item $t -Force -ErrorAction SilentlyContinue}\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress))",
+      "timeout_seconds": 160
     }
   ]
 }
