@@ -23,3 +23,21 @@ jobs:
       - run: python3 -m pip install --quiet requests beautifulsoup4
       - name: Validar Top30 V2 sin red y sin modificar producción
         run: python3 -m unittest discover -s v2/ttendencias -p 'test_*.py' -v
+      - name: Captura REAL GetDayTrends España (solo lectura)
+        run: |
+          python3 -m v2.ttendencias.capture_top30 --output v2/ttendencias/state/live-capture.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path("v2/ttendencias/state/live-capture.json")
+          data=json.loads(p.read_text(encoding="utf-8"))
+          assert data["mode"]=="live" and data["count"]==len(data["top30"])==30
+          assert data["country"]=="ES" and not data["verified_against_x"]
+          print("TT_V2_STEP01_REAL_CAPTURE_OK",data["observed_at"],"top30_count",len(data["top30"]))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: success()
+        with:
+          name: ttactualidad-v2-step01-live-top30
+          path: v2/ttendencias/state/live-capture.json
+          retention-days: 7
