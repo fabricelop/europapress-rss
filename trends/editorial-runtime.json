@@ -3,20 +3,24 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261112T052500-manual",
-  "previous_run_id": "tr-20261112T012500-manual",
-  "command_id": "tr-20261112T052500-manual",
+  "run_id": "tr-20261112T124000-manual",
+  "previous_run_id": "tr-20261112T052500-manual",
+  "command_id": "tr-20261112T124000-manual",
   "source": "chat",
-  "status": "success",
+  "status": "DONE_WITH_INCIDENTS",
   "phase": "closing",
-  "started_at": "2026-11-12T05:25:00+01:00",
-  "updated_at": "2026-11-12T12:48:07+01:00",
-  "current": 0,
-  "total": 16,
+  "started_at": "2026-11-12T12:40:00+01:00",
+  "updated_at": "2026-11-12T12:49:00+01:00",
+  "current": 5,
+  "total": 5,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
   "queue_complete": true,
   "processed_ids": [
+    "1098712895fb",
+    "174b8aec3dcc",
+    "71881164a65b",
+    "ea2d2a2b9cc8",
     "554d3b5f9168"
   ],
   "converged_ids": [],
@@ -24,17 +28,17 @@
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 16,
-    "observed": 16,
-    "closed": 16,
-    "explained": 12,
+    "attempted": 5,
+    "observed": 5,
+    "closed": 5,
+    "explained": 5,
     "problematic": 0,
-    "updates": 0,
-    "review_completed_no_distinct_event": 4,
-    "maintenance_reviews": 15,
-    "unchanged_reviews": 4,
+    "updates": 4,
+    "review_completed_no_distinct_event": 0,
+    "maintenance_reviews": 0,
+    "unchanged_reviews": 0,
     "continuity_updates": 0,
-    "distinct_updates": 11,
+    "distinct_updates": 4,
     "stale_reviews": 0,
     "unverified_reviews": 0,
     "anticipation_reviews": 0,
@@ -50,127 +54,69 @@
   },
   "outcomes": [
     {
-      "id": "95b49291de75",
-      "name": "paula",
-      "outcome": "explained",
-      "reason": "hoguera final Paula-Kico"
+      "id": "1098712895fb",
+      "revision": 0,
+      "name": "Ministerio de Igualdad",
+      "outcome": "distinct_update",
+      "applied": true
     },
     {
-      "id": "40ae1da9ecb1",
-      "name": "Kico",
-      "outcome": "explained",
-      "reason": "hoguera final Paula-Kico"
+      "id": "174b8aec3dcc",
+      "revision": 0,
+      "name": "Fiscalía Europea",
+      "outcome": "distinct_update",
+      "applied": true
     },
     {
-      "id": "88e514ece616",
-      "name": "Kiko",
-      "outcome": "explained",
-      "reason": "hoguera final Paula-Kico"
+      "id": "71881164a65b",
+      "revision": 0,
+      "name": "Leire",
+      "outcome": "distinct_update",
+      "applied": true
     },
     {
-      "id": "5e5af80baed0",
-      "name": "Josue",
-      "outcome": "explained",
-      "reason": "hoguera final Paola-Sergio"
+      "id": "ea2d2a2b9cc8",
+      "revision": 0,
+      "name": "La UCO",
+      "outcome": "distinct_update",
+      "applied": true
     },
     {
-      "id": "ea81ac388672",
-      "name": "GEMA",
-      "outcome": "explained",
-      "reason": "hoguera final Gema-Rubén"
-    },
-    {
-      "id": "cf2df84a5714",
-      "name": "NVIDIA",
-      "outcome": "explained",
-      "reason": "consejo decide futuro de Jensen Huang"
-    },
-    {
-      "id": "f3c37f45aebd",
-      "name": "Jensen Huang",
-      "outcome": "explained",
-      "reason": "consejo decide futuro del CEO"
-    },
-    {
-      "id": "ba9b353684f9",
-      "name": "Elise",
+      "id": "554d3b5f9168",
+      "revision": 0,
+      "name": "Tamayo",
       "outcome": "explained_cause_unconfirmed",
-      "reason": "presencia verificada; detonante no aislado"
-    },
-    {
-      "id": "3b5034f473ba",
-      "name": "Broncano",
-      "outcome": "explained",
-      "reason": "disculpas posteriores a entrevista a Abascal"
-    },
-    {
-      "id": "12732b746404",
-      "name": "Sanchez",
-      "outcome": "review_completed_no_distinct_event"
-    },
-    {
-      "id": "ff8eebb4da78",
-      "name": "Oviedo",
-      "outcome": "review_completed_no_distinct_event"
-    },
-    {
-      "id": "ebb8c383f839",
-      "name": "#VotoUtilEsPodemos",
-      "outcome": "review_completed_no_distinct_event"
-    },
-    {
-      "id": "ba7633699cd1",
-      "name": "RTVE",
-      "outcome": "explained",
-      "reason": "huelga 11N e interrupción de emisión"
-    },
-    {
-      "id": "34393251ec16",
-      "name": "Charles",
-      "outcome": "review_completed_no_distinct_event"
-    },
-    {
-      "id": "69beea7215d2",
-      "name": "Paola",
-      "outcome": "explained",
-      "reason": "hoguera final Paola-Sergio"
-    },
-    {
-      "id": "e386f83a422f",
-      "name": "IRINI",
-      "outcome": "explained",
-      "reason": "episodio televisivo LIDLT11 verificado"
+      "applied": true
     }
   ],
   "incident_count": 1,
   "incidents": [
     {
-      "kind": "validation_retry",
+      "kind": "chat_applicator_problematic_skip",
       "items": [
-        "40ae1da9ecb1",
-        "69beea7215d2"
+        "554d3b5f9168"
       ],
-      "detail": "Dos explicaciones excedían 280 caracteres; se acortaron y el reintento oficial terminó correctamente."
+      "detail": "El aplicador por comentario solo acepta preparing/update y omitió Tamayo en estado problematic; se cerró por el aplicador editorial heredado, que sí admite problematic, tras revalidación JIT."
     }
   ],
   "error": null,
   "activity": "closing",
-  "last_started_at": "2026-11-12T12:48:07+01:00",
-  "last_completed_at": "2026-11-12T12:48:07+01:00",
+  "last_started_at": "2026-11-12T12:40:00+01:00",
+  "last_completed_at": "2026-11-12T12:49:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261112T012500-manual",
-    "status": "DONE",
-    "started_at": "2026-11-12T01:25:00+01:00",
-    "finished_at": "2026-11-12T01:26:00+01:00",
-    "total": 0,
-    "closed": 0,
-    "explained": 0,
+    "run_id": "tr-20261112T124000-manual",
+    "status": "DONE_WITH_INCIDENTS",
+    "started_at": "2026-11-12T12:40:00+01:00",
+    "finished_at": "2026-11-12T12:49:00+01:00",
+    "total": 5,
+    "closed": 5,
+    "explained": 5,
     "maintenance": 0,
     "pending": 0,
     "problematic": 0
   },
-  "message": "Pasada manual cerrada 16/16. 12 explicadas y 4 reentradas cerradas como no_distinct_event. Cola final 0; sin problemáticos. Dos textos excedían 280 caracteres, se corrigieron y reaplicaron. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-20261112T124000-manual cerrada 5/5. Cuatro reentradas se cerraron como episodios materiales distintos (Ministerio de Igualdad, Fiscalía Europea, Leire y La UCO); Tamayo se cerró prudentemente con causa no confirmada tras reintento. Cola final 0. Incidencia menor: el aplicador por comentario omitió problematic y se usó el aplicador editorial compatible. ImageGen=0; image-outbox=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794327332740-manual",
@@ -4845,6 +4791,94 @@
       "at": "2026-11-12T05:32:40+01:00",
       "phase": "closing",
       "message": "Pasada manual cerrada 16/16. 12 explicadas y 4 reentradas cerradas como no_distinct_event. Cola final 0; sin problemáticos. Dos textos excedían 280 caracteres, se corrigieron y reaplicaron. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-20261112T124000-manual",
+      "status": "DONE_WITH_INCIDENTS",
+      "started_at": "2026-11-12T12:40:00+01:00",
+      "finished_at": "2026-11-12T12:49:00+01:00",
+      "at": "2026-11-12T12:49:00+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 5,
+        "observed": 5,
+        "closed": 5,
+        "explained": 5,
+        "problematic": 0,
+        "updates": 4,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 0,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 4,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 1,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [
+        "1098712895fb",
+        "174b8aec3dcc",
+        "71881164a65b",
+        "ea2d2a2b9cc8",
+        "554d3b5f9168"
+      ],
+      "outcomes": [
+        {
+          "id": "1098712895fb",
+          "revision": 0,
+          "name": "Ministerio de Igualdad",
+          "outcome": "distinct_update",
+          "applied": true
+        },
+        {
+          "id": "174b8aec3dcc",
+          "revision": 0,
+          "name": "Fiscalía Europea",
+          "outcome": "distinct_update",
+          "applied": true
+        },
+        {
+          "id": "71881164a65b",
+          "revision": 0,
+          "name": "Leire",
+          "outcome": "distinct_update",
+          "applied": true
+        },
+        {
+          "id": "ea2d2a2b9cc8",
+          "revision": 0,
+          "name": "La UCO",
+          "outcome": "distinct_update",
+          "applied": true
+        },
+        {
+          "id": "554d3b5f9168",
+          "revision": 0,
+          "name": "Tamayo",
+          "outcome": "explained_cause_unconfirmed",
+          "applied": true
+        }
+      ],
+      "incident_count": 1,
+      "incidents": [
+        {
+          "kind": "chat_applicator_problematic_skip",
+          "items": [
+            "554d3b5f9168"
+          ],
+          "detail": "El aplicador por comentario solo acepta preparing/update y omitió Tamayo en estado problematic; se cerró por el aplicador editorial heredado, que sí admite problematic, tras revalidación JIT."
+        }
+      ],
+      "message": "Pasada tr-20261112T124000-manual cerrada 5/5. Cuatro reentradas se cerraron como episodios materiales distintos (Ministerio de Igualdad, Fiscalía Europea, Leire y La UCO); Tamayo se cerró prudentemente con causa no confirmada tras reintento. Cola final 0. Incidencia menor: el aplicador por comentario omitió problematic y se usó el aplicador editorial compatible. ImageGen=0; image-outbox=0; publicaciones=0."
     }
   ],
   "current_item": {
@@ -7905,5 +7939,5 @@
     }
   ],
   "processed": [],
-  "finished_at": "2026-11-12T05:32:40+01:00"
+  "finished_at": "2026-11-12T12:49:00+01:00"
 }
