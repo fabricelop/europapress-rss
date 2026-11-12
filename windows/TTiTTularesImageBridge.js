@@ -427,7 +427,7 @@ function buildMessage(job){
       "HECHOS CERRADOS:", factual||tweet,
       "DIRECCIÓN VISUAL:",style,
       NO_PEPPER,
-      "Evita por completo humor, sátira, caricaturas, trivialización de víctimas o afirmaciones no verificadas. No interpretes el remate satírico como instrucciones visuales. Imagen sobria 16:9, sin violencia gráfica ni personas identificables inventadas. No reescribas la noticia."
+      "Evita por completo humor, sátira, caricaturas, trivialización de víctimas o afirmaciones no verificadas. No interpretes el remate satírico como instrucciones visuales. Imagen sobria 16:9, sin violencia gráfica ni personas identificables inventadas. No reescribas la noticia. Genera y conserva el original en ChatGPT Images para revisión editorial posterior, sin asociación, aprobación ni publicación automática."
     ].join("\\n");
   }
   return [
@@ -447,7 +447,7 @@ function buildMessage(job){
     NO_PEPPER,
     "",
     "CONSTRUCCIÓN OBLIGATORIA: primero decide internamente cuál es el gag central. La imagen debe expresar UNA sola idea fuerte, entenderse en 1-2 segundos y tener pocos elementos protagonistas. Bien dibujada y pulida, pero sin barroquismo ni decoración innecesaria. El remate visual debe expresar el SIGNIFICADO del chiste, no el emoji de texto; evita añadir símbolos, carteles u objetos que no refuercen directamente ese único chiste.",
-    "No inventes hechos externos. No hagas una infografía, interfaz, diagrama, collage ni captura de pantalla. No escribas el tuit dentro de la imagen. Genera exactamente UNA imagen. No proceses otra noticia ni descargues, captures, subas ni persistas la imagen. Solo ChatGPT Images."
+    "No inventes hechos externos. No hagas una infografía, interfaz, diagrama, collage ni captura de pantalla. No escribas el tuit dentro de la imagen. Genera exactamente UNA imagen y conserva su original en ChatGPT Images. No proceses otra noticia. No asocies, subas, apruebes ni publiques automáticamente esta imagen en ninguna app o web: la revisión editorial es independiente."
   ].join("\n")
 }
 
