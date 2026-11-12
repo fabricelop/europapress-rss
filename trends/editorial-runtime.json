@@ -3,123 +3,51 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261112T151000-manual",
-  "previous_run_id": "tr-20261112T135500-manual",
-  "command_id": "tr-20261112T151000-manual",
+  "run_id": "tr-20261112T154000-manual",
+  "previous_run_id": "tr-20261112T151000-manual",
+  "command_id": "tr-20261112T154000-manual",
   "source": "chat",
-  "status": "DONE_WITH_INCIDENTS",
-  "phase": "closing",
-  "started_at": "2026-11-12T15:10:00+01:00",
-  "updated_at": "2026-11-12T15:17:00+01:00",
-  "current": 6,
-  "total": 6,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-12T15:40:00+01:00",
+  "updated_at": "2026-11-12T15:40:00+01:00",
+  "current": 0,
+  "total": 3,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": true,
-  "processed_ids": [
-    "b8593c0a3afe",
-    "a6fae06424ed",
-    "de4af83ef6a9",
-    "1ee2d3a86e4e",
-    "5d4a08813a42",
-    "554d3b5f9168"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [
-    "554d3b5f9168"
+    "554d3b5f9168",
+    "radar-prepare-4e67f5ba6e21bbb1d5f3",
+    "radar-prepare-7d45db377614806a8f3f"
   ],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [
     "554d3b5f9168"
   ],
   "summary": {
-    "attempted": 6,
-    "observed": 6,
-    "closed": 6,
-    "explained": 5,
-    "problematic": 1,
-    "updates": 1,
-    "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 0,
-    "unchanged_reviews": 0,
-    "continuity_updates": 0,
-    "distinct_updates": 1,
-    "stale_reviews": 0,
-    "unverified_reviews": 1,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
+    "explained": 0,
+    "problematic": 0,
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 1,
-    "rewrite_pending_remaining": 0,
+    "queue_remaining": 3,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 1,
-    "concurrent_convergence": 0
+    "incidents": 0
   },
-  "outcomes": [
-    {
-      "id": "b8593c0a3afe",
-      "revision": 0,
-      "name": "#PSOEyFrenteAmplioVetan",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "d6841b6c6d3b5392ca442ef25e1685e493147d2b"
-    },
-    {
-      "id": "a6fae06424ed",
-      "revision": 0,
-      "name": "Diez",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "d6841b6c6d3b5392ca442ef25e1685e493147d2b"
-    },
-    {
-      "id": "de4af83ef6a9",
-      "revision": 0,
-      "name": "Feliz Jueves",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "d6841b6c6d3b5392ca442ef25e1685e493147d2b"
-    },
-    {
-      "id": "1ee2d3a86e4e",
-      "revision": 0,
-      "name": "Zidane",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "d6841b6c6d3b5392ca442ef25e1685e493147d2b"
-    },
-    {
-      "id": "5d4a08813a42",
-      "revision": 0,
-      "name": "La Policía Nacional",
-      "outcome": "distinct_update",
-      "applied": true,
-      "apply_commit": "d6841b6c6d3b5392ca442ef25e1685e493147d2b"
-    },
-    {
-      "id": "554d3b5f9168",
-      "revision": 1,
-      "name": "Tamayo",
-      "outcome": "problematic_unverified",
-      "applied": false,
-      "reason": "No se ha verificado de forma independiente que Tamayo y Gata de Schrödinger fueran los verificadores de Jordi Wild; la pista editorial no se presenta como hecho."
-    }
-  ],
-  "incident_count": 1,
-  "incidents": [
-    {
-      "id": "554d3b5f9168",
-      "revision": 1,
-      "name": "Tamayo",
-      "kind": "unverified_cause",
-      "detail": "La pista editorial sobre los verificadores de Jordi Wild no queda corroborada por fuentes fiables independientes; se conserva problematic sin explicación verificada."
-    }
-  ],
+  "outcomes": [],
+  "incident_count": 0,
+  "incidents": [],
   "error": null,
   "activity": "closing",
-  "last_started_at": "2026-11-12T14:58:09+01:00",
+  "last_started_at": "2026-11-12T15:40:00+01:00",
   "last_completed_at": "2026-11-12T15:17:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -134,7 +62,7 @@
     "pending": 0,
     "problematic": 1
   },
-  "message": "Pasada tr-20261112T151000-manual cerrada 6/6 observados: 5 explicaciones aplicadas en main por d6841b6c6d3b5392ca442ef25e1685e493147d2b; Tamayo r1 permanece problematic porque la pista sobre los verificadores de Jordi Wild no pudo verificarse de forma independiente. Barrera final: editorial-queue=1, únicamente Tamayo problematic; no quedan preparing/update activos. ImageGen=0; image-outbox=0; publicaciones=0.",
+  "message": "Pasada manual iniciada: 1 problematic (Tamayo r1) y 2 borradores Radar pendientes.",
   "history": [
     {
       "run_id": "tr-1794327332740-manual",
@@ -5082,12 +5010,7 @@
       "message": "Pasada tr-20261112T135500-manual cerrada 13/13. Doce fichas ordinarias quedaron explicadas (Layton con causa no confirmada tras dos búsquedas) y La Policía quedó como episodio material nuevo por la orden de Interior de investigar actuaciones del 11N. Aplicador oficial persistió en commit 7bce899375322a25be297d10b4fc32a32885fcd7 tras reintento automático por avance concurrente de main. Barrera final: editorial-queue=0. ImageGen=0; image-outbox=0; publicaciones=0."
     }
   ],
-  "current_item": {
-    "id": "74253d4d6c99",
-    "revision": 1,
-    "name": "Guadarrama",
-    "phase": "preparing"
-  },
+  "current_item": null,
   "withdrawn_ids": [],
   "last_finished_at": "2026-11-11T19:56:00+01:00",
   "last_revalidated_at": "2026-11-11T19:56:00+01:00",
@@ -8163,5 +8086,5 @@
     }
   ],
   "processed": [],
-  "finished_at": "2026-11-12T15:17:00+01:00"
+  "finished_at": null
 }
