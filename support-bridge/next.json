@@ -1,15 +1,15 @@
 {
   "version": 1,
-  "id": "ttb-news-listener-wake-20261112-1205",
+  "id": "ttb-news-after-wake-20261112-1207",
   "project": "TTActualidad",
   "expires_at": "2026-11-13T12:00:00Z",
-  "description": "Start existing news listener task once after guarded runner update",
+  "description": "Read latest news editorial outcome after task wake",
   "steps": [
     {
       "kind": "powershell",
-      "name": "wake-news-listener",
-      "script": "$ErrorActionPreference='Stop'\n$o=@{state='pending'}\ntry{\n $task=Get-ScheduledTask -TaskName 'TTiTTulares Local' -ErrorAction Stop\n if($task.State -eq 'Running'){$o.state='already_running'}\n else{Start-ScheduledTask -TaskName 'TTiTTulares Local' -ErrorAction Stop;$o.state='started'}\n}catch{$o.state='error';$o.reason=[string]$_.Exception.Message}\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress))",
-      "timeout_seconds": 25
+      "name": "news-after-wake",
+      "script": "$f='C:\\TTiTTulares\\ttittulares-mobile-trigger.log'\n$l=[string](Get-Content $f -Tail 150 | Where-Object { $_ -match 'EDITORIAL RETRY|LAUNCH FAILED|LAUNCH CONFIRMED|CHAT MESSAGE CONFIRMED|CHAT LAUNCH LOG ERROR' } | Select-Object -Last 1)\nWrite-Output ('TTRESULT:'+(@{state='ok';last=$l.Substring(0,[Math]::Min(700,$l.Length))}|ConvertTo-Json -Compress))",
+      "timeout_seconds": 20
     }
   ]
 }
