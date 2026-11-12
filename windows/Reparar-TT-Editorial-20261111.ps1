@@ -245,6 +245,24 @@ async function send(){
     do { await sleep(650); s=await c.eval(expr).catch(()=>null); }
     while(Date.now()<blankUntil && (!s||s.ready!=='complete'||!s.editor||s.busy||s.shield||s.editorLength!==0||s.users!==0||s.assistants!==0));
   }
+  if(s&&s.users===0&&s.assistants===0&&s.editorLength>0&&!s.busy&&!s.shield){
+    // A restored draft on this newly created bot-owned tab blocks every run.
+    // Preserve its exact bytes locally before clearing only this tab's composer.
+    if(s.editorLength>4000||s.editorText.length!==s.editorLength)fail('RESTORED_DRAFT_TOO_LARGE: preserve without editing');
+    const backup=path.join(process.env.LOCALAPPDATA||STATE,'TT_Recuperacion','editorial-drafts',unique.replace(/[^a-zA-Z0-9._-]/g,'_')+'.json');
+    if(fs.existsSync(backup))fail('RESTORED_DRAFT_BACKUP_EXISTS: preserve without editing');
+    atomic(backup,{at:new Date().toISOString(),marker:unique,target:created.id,url:s.url,text:s.editorText});
+    note('RESTORED_DRAFT_BACKED_UP_LOCAL length='+s.editorLength);
+    const focusDraft=await c.eval(`(()=>{const x=document.querySelector('#prompt-textarea')||document.querySelector('[data-testid="prompt-textarea"]')||document.querySelector('main [contenteditable="true"][role="textbox"]');if(!x||!x.getClientRects().length)return false;x.focus();return document.activeElement===x||x.contains(document.activeElement)})()`);
+    if(!focusDraft)fail('RESTORED_DRAFT_FOCUS_FAILED: backup retained');
+    await c.call('Input.dispatchKeyEvent',{type:'keyDown',key:'a',code:'KeyA',windowsVirtualKeyCode:65,modifiers:2});
+    await c.call('Input.dispatchKeyEvent',{type:'keyUp',key:'a',code:'KeyA',windowsVirtualKeyCode:65,modifiers:2});
+    await c.call('Input.dispatchKeyEvent',{type:'keyDown',key:'Backspace',code:'Backspace',windowsVirtualKeyCode:8});
+    await c.call('Input.dispatchKeyEvent',{type:'keyUp',key:'Backspace',code:'Backspace',windowsVirtualKeyCode:8});
+    await sleep(700);s=await c.eval(expr);
+    if(!s||s.editorLength!==0||s.users!==0||s.assistants!==0)fail('RESTORED_DRAFT_CLEAR_UNVERIFIED: backup retained');
+    note('RESTORED_DRAFT_CLEARED_BOT_TAB backup='+path.basename(backup));
+  }
   if(!s||s.editorLength!==0||s.users!==0||s.assistants!==0){
     note('NEW_CHAT_NOT_BLANK state='+JSON.stringify({url:s?.url?.slice(0,180),ready:s?.ready,editor:s?.editor,editorLength:s?.editorLength,editorTag:s?.editorTag,editorId:s?.editorId,placeholderMatch:s?.placeholderMatch,users:s?.users,assistants:s?.assistants,busy:s?.busy,shield:s?.shield}));
     fail('Fresh tab has draft or chat content; refusing to overwrite');
