@@ -1,15 +1,15 @@
 {
   "version": 1,
-  "id": "ttb-news-draft-newchat-fix-20261112-1143",
+  "id": "ttb-news-draft-fix-retry-20261112-1145",
   "project": "TTActualidad",
   "expires_at": "2026-11-13T12:00:00Z",
-  "description": "Install guarded new-chat recovery for restored draft without dispatch",
+  "description": "Retry same failed news command once after draft-safe guard update",
   "steps": [
     {
       "kind": "powershell",
-      "name": "install-draft-newchat-fix",
-      "script": "$ErrorActionPreference='Stop'\n$o=@{state='pending'}\n$t=Join-Path $env:TEMP ('TTEditorialFix-'+[guid]::NewGuid().ToString('N')+'.ps1')\ntry{\n $url='https://raw.githubusercontent.com/fabricelop/europapress-rss/6fc303c0da16ccbaabe8edc23f30d7fe7e30bd27/windows/Reparar-TT-Editorial-20261111.ps1'\n Invoke-WebRequest -UseBasicParsing -Uri $url -OutFile $t -TimeoutSec 35\n $src=[IO.File]::ReadAllText($t,[Text.Encoding]::UTF8)\n if(-not $src.Contains('home route can restore a previous conversation or draft') -or -not $src.Contains('TT_EDITORIAL_SAFE_WRAPPER_V1')){throw 'PINNED_FIX_MARKER_MISSING'}\n & $t -NoDispatch *> $null\n if(-not $?){throw 'INSTALLER_FAILED'}\n $guard=Get-Content 'C:\\TTiTTulares\\TT-Editorial-Guard.js' -Raw\n if(-not $guard.Contains('home route can restore a previous conversation or draft')){throw 'GUARD_NOT_UPDATED'}\n $o.state='installed_verified'\n}catch{$o.state='error';$o.reason=[string]$_.Exception.Message}\nfinally{Remove-Item $t -Force -ErrorAction SilentlyContinue}\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress))",
-      "timeout_seconds": 160
+      "name": "same-command-retry",
+      "script": "$ErrorActionPreference='Stop'\n$o=@{state='pending'}\ntry{\n $p='C:\\TTiTTulares\\ttittulares-mobile-trigger-state.json'\n $s=Get-Content $p -Raw | ConvertFrom-Json\n $id=[string]$s.editorial_retry_command_id\n $live=@(Get-CimInstance Win32_Process -Filter \"Name='node.exe'\" | Where-Object { [string]$_.CommandLine -match 'Ejecutar[.]js|TT-Editorial-Guard[.]js' })\n if($live.Count){$o.state='deferred_active';$o.count=$live.Count}\n elseif($id -ne 'tt-urgent-1794479700579'){$o.state='different_retry_command';$o.command=$id}\n else{\n  Copy-Item $p ($p+'.before-draft-fix-retry-20261112.bak') -Force\n  $s.editorial_retry_after=[DateTimeOffset]::UtcNow.AddSeconds(-10).ToString('o')\n  $tmp=$p+'.retry-tmp'\n  [IO.File]::WriteAllText($tmp,($s|ConvertTo-Json -Depth 15),[Text.UTF8Encoding]::new($false))\n  Move-Item $tmp $p -Force\n  Start-ScheduledTask -TaskName 'TTiTTulares Local'\n  $o.state='same_command_retry_started';$o.command=$id\n }\n}catch{$o.state='error';$o.reason=[string]$_.Exception.Message}\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress))",
+      "timeout_seconds": 30
     }
   ]
 }
