@@ -108958,7 +108958,6 @@
       ],
       "category": "Televisión",
       "with_image": true,
-      "disable_ai_image": false,
       "image_strategy": "ai_plus_fallback",
       "new_episode_review": true,
       "previous_episode_id": "179ac7f4ce3a",
@@ -109007,7 +109006,6 @@
       ],
       "category": "Televisión",
       "with_image": true,
-      "disable_ai_image": false,
       "image_strategy": "ai_plus_fallback",
       "new_episode_review": true,
       "previous_episode_id": "253387e8620e",
@@ -109019,10 +109017,10 @@
       "source": "editorial_chat_direct",
       "editorial_engine": "chatgpt-automation-outbox",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
-      "image_choice": "none",
-      "image_pending": true,
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false,
       "telegram_package_status": "pending",
       "investigation_history": [
         {
@@ -109030,7 +109028,24 @@
           "result": "Mediaset confirma que la conexión de Náyades con Andrea fue una de las claves de la hoguera final emitida el 11N."
         }
       ],
-      "grouped_into_existing_card": false
+      "grouped_into_existing_card": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://img-prod-api2.mediasetplay.mediaset.it/api/images/mp/v5/esp/M600067200002000/image_keyframe_poster/1200/630?r=OEBByz39elTnDKVVJki2/ohaLe4=",
+        "source": "www.mediasetinfinity.es",
+        "source_url": "https://www.mediasetinfinity.es/programas-tv/la-isla-de-las-tentaciones/temporada-11/episodios/programa-20-40_020625583/player/",
+        "alt": "Imagen de archivo relacionada con Andrea",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://img-prod-api2.mediasetplay.mediaset.it/api/images/mp/v5/esp/M600067200002000/image_keyframe_poster/1200/630?r=OEBByz39elTnDKVVJki2/ohaLe4=",
+        "source": "www.mediasetinfinity.es",
+        "source_url": "https://www.mediasetinfinity.es/programas-tv/la-isla-de-las-tentaciones/temporada-11/episodios/programa-20-40_020625583/player/",
+        "alt": "Imagen de archivo relacionada con Andrea",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "f273c1b56f63",
@@ -109056,7 +109071,6 @@
       ],
       "category": "Tecnología",
       "with_image": true,
-      "disable_ai_image": false,
       "image_strategy": "ai_plus_fallback",
       "new_episode_review": false,
       "previous_episode_id": "",
@@ -109064,10 +109078,10 @@
       "source": "editorial_chat_direct",
       "editorial_engine": "chatgpt-automation-outbox",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
+      "fallback_image_status": "none",
+      "image_status": "none",
       "image_choice": "none",
-      "image_pending": true,
+      "image_pending": false,
       "telegram_package_status": "pending",
       "investigation_history": [
         {
@@ -109079,9 +109093,11 @@
           "result": "La crisis siguió escalando con presión sobre la continuidad de Huang; se evita atribuir como hecho confirmado cualquier información que Reuters no haya verificado independientemente."
         }
       ],
-      "grouped_into_existing_card": false
+      "grouped_into_existing_card": false,
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
     }
   ],
-  "updated_at": "2026-11-12T00:19:58.054013+00:00",
+  "updated_at": "2026-11-12T00:25:38.511235Z",
   "count": 1906
 }
