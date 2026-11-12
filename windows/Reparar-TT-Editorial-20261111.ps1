@@ -172,7 +172,29 @@ function projectUrl(project){
 }
 function ledger(marker){return path.join(STATE,'sent',marker.replace(/[^a-zA-Z0-9_.-]/g,'_').slice(0,130)+'.json')}
 function lock(){fs.mkdirSync(STATE,{recursive:true});const f=path.join(STATE,'dispatch.lock');for(let i=0;i<2;i++){try{fs.writeFileSync(f,JSON.stringify({pid:process.pid,at:Date.now()}),{flag:'wx'});return()=>{try{let j=readJSON(f);if(j?.pid===process.pid)fs.unlinkSync(f)}catch{}}}catch(e){if(e.code!=='EEXIST')throw e;let old=readJSON(f);if(!old?.pid||Date.now()-Number(old.at||0)<10000)fail('another editorial send is locking Chrome');try{process.kill(Number(old.pid),0);fail('another editorial sender pid='+old.pid)}catch(err){if(err?.code!=='ESRCH')throw err;fs.unlinkSync(f)}}}fail('could not obtain dispatch lock')}
+async function pruneFailedOwned(){
+ const dir=path.join(STATE,'sent');let entries=[];
+ try{entries=fs.readdirSync(dir).filter(f=>f.endsWith('.json')).map(f=>readJSON(path.join(dir,f))).filter(x=>x?.status==='preflight_failed'&&idSafe(String(x.target||'')))}catch{}
+ const owned=new Set(entries.map(x=>x.target)),pins=pinIds();let closed=0;
+ for(const t of await targets()){
+  if(closed>=30)break;
+  if(!owned.has(t.id)||pins.has(t.id)||!chat(t.url))continue;
+  const v=await inspect(t);
+  if(v.unknown||v.ready!=='complete'||v.focused||v.busy||v.shield||v.users!==0||v.assistants!==0||!v.editor||v.editorText.length>4000)continue;
+  const backup=path.join(process.env.LOCALAPPDATA||STATE,'TT_Recuperacion','editorial-drafts','abandoned-'+t.id+'.json');
+  if(!fs.existsSync(backup))atomic(backup,{at:new Date().toISOString(),target:t.id,url:v.url,text:v.editorText});
+  const now=(await targets()).find(x=>x.id===t.id);
+  if(!now||now.url!==t.url||pinIds().has(t.id))continue;
+  const check=await inspect(now);
+  if(check.unknown||check.focused||check.busy||check.shield||check.users!==0||check.assistants!==0||check.editorText!==v.editorText)continue;
+  const response=await fetch(CDP+'/json/close/'+encodeURIComponent(t.id),{signal:AbortSignal.timeout(6000)}).catch(()=>null);
+  if(response?.ok){closed++;note('CLOSED_FAILED_OWNED_TAB id='+t.id.slice(0,12))}
+ }
+ note('FAILED_OWNED_PRUNE closed='+closed);
+ return closed;
+}
 async function preflight(){
+ await pruneFailedOwned();
  const pages=await targets(),pins=pinIds();const states=await scan(pages,4);
  note('PREFLIGHT pages='+pages.length+' image_pins='+pages.filter(p=>pins.has(p.id)).length+' unknown='+states.filter(s=>!!s.unknown).length+' busy='+states.filter(s=>!!s.busy).length);
  // Historical conversation tabs are not active editorial jobs. Do not
