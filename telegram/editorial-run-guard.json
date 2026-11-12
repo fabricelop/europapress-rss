@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "checked_at": "2026-11-12T10:59:33.150389+00:00",
+  "checked_at": "2026-11-12T10:59:50.828440+00:00",
   "projects": {
     "ttittulares": {
       "project": "ttittulares",
-      "checked_at": "2026-11-12T10:59:33.150389+00:00",
+      "checked_at": "2026-11-12T10:59:50.828440+00:00",
       "pending_count": 17,
       "pending_ids": [
         "25232eae5e2f",
@@ -27,10 +27,10 @@
       ],
       "oldest_at": "2026-11-12T05:05:19.402999Z",
       "latest_run": {},
-      "control_command": "tt-urgent-1794480233639",
-      "last_command_at": "2026-11-12T10:43:53.639Z",
-      "status": "dispatch_requested_awaiting_run",
-      "should_dispatch": true,
+      "control_command": "tt-autoguard-1794481173",
+      "last_command_at": "2026-11-12T10:59:33.150389Z",
+      "status": "dispatch_pending_ack",
+      "should_dispatch": false,
       "item_execution": [
         {
           "id": "25232eae5e2f",
@@ -156,17 +156,11 @@
       "expected_start_by": "2026-11-12T05:10:19.402999+00:00",
       "attempts": 1,
       "previous_target_completed_or_superseded": false,
-      "dispatch": {
-        "requested": true,
-        "command_id": "tt-autoguard-1794481173",
-        "requested_at": "2026-11-12T10:59:33.150389Z"
-      },
-      "last_request_at": "2026-11-12T10:59:33.150389+00:00",
-      "last_requested_command_id": "tt-autoguard-1794481173"
+      "last_request_at": "2026-11-12T10:59:33.150389+00:00"
     },
     "ttendencias": {
       "project": "ttendencias",
-      "checked_at": "2026-11-12T10:59:33.150389+00:00",
+      "checked_at": "2026-11-12T10:59:50.828440+00:00",
       "pending_count": 1,
       "pending_ids": [
         "ba9b353684f9"
@@ -180,10 +174,10 @@
         "finished_at": "2026-11-12T11:07:00+01:00",
         "source": "github_pr_trace"
       },
-      "control_command": "tr-autoguard-1794479899",
-      "last_command_at": "2026-11-12T10:38:19.985638Z",
-      "status": "dispatch_requested_awaiting_run",
-      "should_dispatch": true,
+      "control_command": "tr-autoguard-1794481173",
+      "last_command_at": "2026-11-12T10:59:33.150389Z",
+      "status": "dispatch_pending_ack",
+      "should_dispatch": false,
       "item_execution": [
         {
           "id": "ba9b353684f9",
@@ -197,13 +191,7 @@
       "expected_start_by": "2026-11-12T10:13:56.107984+00:00",
       "attempts": 2,
       "previous_target_completed_or_superseded": false,
-      "dispatch": {
-        "requested": true,
-        "command_id": "tr-autoguard-1794481173",
-        "requested_at": "2026-11-12T10:59:33.150389Z"
-      },
-      "last_request_at": "2026-11-12T10:59:33.150389+00:00",
-      "last_requested_command_id": "tr-autoguard-1794481173"
+      "last_request_at": "2026-11-12T10:59:33.150389+00:00"
     }
   },
   "policy": {
