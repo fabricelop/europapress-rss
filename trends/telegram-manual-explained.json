@@ -111531,11 +111531,13 @@
       "grouping_disabled": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
+      "fallback_image_status": "none",
+      "image_status": "none",
       "image_choice": "none",
-      "image_pending": true,
-      "telegram_package_status": "pending"
+      "image_pending": false,
+      "telegram_package_status": "pending",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
     },
     {
       "id": "554d3b5f9168",
@@ -111566,11 +111568,13 @@
       "grouping_disabled": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
+      "fallback_image_status": "none",
+      "image_status": "none",
       "image_choice": "none",
-      "image_pending": true,
-      "telegram_package_status": "pending"
+      "image_pending": false,
+      "telegram_package_status": "pending",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
     },
     {
       "id": "e9bc47ad891b",
@@ -111601,11 +111605,28 @@
       "grouping_disabled": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
-      "image_choice": "none",
-      "image_pending": true,
-      "telegram_package_status": "pending"
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false,
+      "telegram_package_status": "pending",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://nvidianews.nvidia.com/media/sites/219/images/social-image.jpg",
+        "source": "nvidianews.nvidia.com",
+        "source_url": "https://nvidianews.nvidia.com/news/nvidia-announces-ceo-transition",
+        "alt": "Imagen de archivo relacionada con Colette Kress",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://nvidianews.nvidia.com/media/sites/219/images/social-image.jpg",
+        "source": "nvidianews.nvidia.com",
+        "source_url": "https://nvidianews.nvidia.com/news/nvidia-announces-ceo-transition",
+        "alt": "Imagen de archivo relacionada con Colette Kress",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "129a97f8df9f",
@@ -111636,11 +111657,13 @@
       "grouping_disabled": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
+      "fallback_image_status": "none",
+      "image_status": "none",
       "image_choice": "none",
-      "image_pending": true,
-      "telegram_package_status": "pending"
+      "image_pending": false,
+      "telegram_package_status": "pending",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
     },
     {
       "id": "f4fde19c25ea",
@@ -111666,13 +111689,30 @@
       "grouping_disabled": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
-      "image_choice": "none",
-      "image_pending": true,
-      "telegram_package_status": "pending"
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false,
+      "telegram_package_status": "pending",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://opengraph.githubassets.com/f7133ed97f8dc0329eea910bac0220ab3be44b291eb6c4bbf4a5c04592776842/fabricelop/europapress-rss",
+        "source": "github.com",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/recent.json",
+        "alt": "Imagen de archivo relacionada con Aurá",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://opengraph.githubassets.com/f7133ed97f8dc0329eea910bac0220ab3be44b291eb6c4bbf4a5c04592776842/fabricelop/europapress-rss",
+        "source": "github.com",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/recent.json",
+        "alt": "Imagen de archivo relacionada con Aurá",
+        "rights_status": "unverified",
+        "generated": false
+      }
     }
   ],
-  "updated_at": "2026-11-12T16:15:00+01:00",
+  "updated_at": "2026-11-12T15:16:45.497923Z",
   "count": 1954
 }
