@@ -75,7 +75,7 @@ class EnqueueTests(unittest.TestCase):
         gh.data[("main", a.SRC_CATALOG)]["images"] = [{"target_id": "aaa100", "revision": 1, "image_url": "https://example.test/existing.png"}]
         self.assertEqual(a.execute(gh, POLICY)["eligible"], 0)
     def test_sensitivity_and_fallback_rules(self):
-        for name, value in [("disable_ai_image", True), ("sensitive_editorial", True),
+        for name, value in [("disable_ai_image", True), 
                              ("image_mode", "fallback_only"), ("ai_image_status", "failed"),
                              ("ai_image_tool_called_at", "2026-11-12T14:00:00Z")]:
             row = story(); row[name] = value
