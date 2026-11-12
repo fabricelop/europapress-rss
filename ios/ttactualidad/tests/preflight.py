@@ -831,6 +831,8 @@ assert 'try await github.currentImageApprovalTrendEpisodes()' not in inbox
 assert 'let supportsPagination = page.hasMore != nil' in inbox
 assert 'incomplete = true' in inbox
 assert 'Consulta parcial: vuelve a actualizar' in inbox
+assert 'images = ApprovalInboxScope.visible(received).filter {' in inbox
+assert 'Consultando más imágenes privadas…' in inbox
 assert 'Todas las imágenes originales pendientes recibidas' in inbox
 assert 'previousListasAt: Date? = nil' in store
 assert 'listasHistory' in store
