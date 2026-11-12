@@ -223,7 +223,16 @@ def evaluate(project,now,previous,command=None,run=None,rows=None):
         if run_finished and now-run_finished<RECENT_DONE_GRACE:
             out["status"]="editorial_run_finished_delivery_unverified";return out
     active_control=moment((command or {}).get("requested_at"))
-    if active_control and active_control>=oldest and now-active_control<RETRY_AFTER:
+    # A targeted command is a request for ONE revision, not a successful
+    # whole-queue run. Once its exact revision leaves the authoritative queue,
+    # a fresh target may be dispatched without waiting the old global cooldown.
+    target_id=str((command or {}).get("target_id") or "")
+    target_rev=int((command or {}).get("target_revision") or 0)
+    target_finished=(project=="ttendencias" and bool(target_id) and
+                     not any(x["id"]==target_id and int(x.get("revision") or 0)==target_rev
+                             for x in rows))
+    out["previous_target_completed_or_superseded"]=target_finished
+    if active_control and active_control>=oldest and now-active_control<RETRY_AFTER and not target_finished:
         out["status"]="dispatch_pending_ack" if not run_upd or run_upd<active_control else "awaiting_editorial_completion"
         return out
     previous_key=previous.get("backlog_signature")
@@ -253,6 +262,13 @@ def request(project,now,report):
       "launcher_arg":cfg["arg"],"task":"editorial","auto_image_followup":False,
       "source":"tt_autoheal_editorial_watchdog",
       "reason":"editorial_not_started_in_time","pending_ids":report["pending_ids"][:30]}
+    pending_rows=pending(project) if project=="ttendencias" else []
+    if pending_rows:
+        # A failed item must not hold the other nineteen hostage. On bounded
+        # retries rotate candidates; a changed backlog starts with the oldest.
+        target=pending_rows[int(report.get("attempts") or 0) % len(pending_rows)]
+        payload.update(target_id=target["id"],target_revision=int(target["revision"]),
+                       target_name=target["title"],scope="single_item")
     data=base64.b64encode((json.dumps(payload,ensure_ascii=False,indent=2)+"\n").encode()).decode()
     # Image jobs and editorial ACKs share this branch. A branch-head race
     # can return 409 even if this file's blob did not change. Re-read before
@@ -261,7 +277,12 @@ def request(project,now,report):
         current=api(path,branch=cfg["branch"])
         old=json.loads(base64.b64decode(current["content"]).decode("utf8"))
         existing=moment(old.get("requested_at"))
-        if existing and now-existing<RETRY_AFTER:
+        old_target=str(old.get("target_id") or "")
+        old_rev=int(old.get("target_revision") or 0)
+        old_target_finished=(project=="ttendencias" and bool(old_target) and
+            not any(r["id"]==old_target and int(r.get("revision") or 0)==old_rev
+                    for r in pending_rows))
+        if existing and now-existing<RETRY_AFTER and not (old_target_finished and now-existing>=timedelta(minutes=1)):
             return {"requested":False,"reason":"remote_recent_command",
                     "command_id":old.get("command_id"),"requested_at":old.get("requested_at")}
         try:
