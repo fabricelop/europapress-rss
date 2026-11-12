@@ -45,8 +45,8 @@ foreach($name in @('TTendenciasWebImages.cjs','TTiTTularesWebImages.cjs')){
 $node=(Get-Command node.exe -ErrorAction Stop).Source
 $ws=(& $node -p 'typeof WebSocket' 2>$null | Select-Object -First 1)
 if(([string]$ws).Trim() -ne 'function'){throw 'NODE_NATIVE_WEBSOCKET_REQUIRED'}
-$old=Get-ScheduledTask -TaskName $oldTaskName -ErrorAction Stop
-if($old.State -ne 'Disabled'){
+$old=Get-ScheduledTask -TaskName $oldTaskName -ErrorAction SilentlyContinue
+if($old -and $old.State -ne 'Disabled'){ 
   throw ('OLD_RECEIVER_MUST_REMAIN_DISABLED: '+$old.State+'. No segunda programacion simultanea.')
 }
 $existing=Get-ScheduledTask -TaskName $newTaskName -ErrorAction SilentlyContinue
@@ -58,7 +58,7 @@ if($existing){
     throw 'TASK_NAME_CONFLICT: existing task not owned by installer'
   }
 }
-Note 'PREFLIGHT_OK' 'receiver and both paused consumers; old schedule Disabled'
+Note 'PREFLIGHT_OK' 'receiver and both paused consumers; no active legacy schedule'
 if(-not $Apply){
   Note 'DRY_RUN' 'Sin cambios; usar -Apply para instalar entrega gradual'
   return
@@ -72,8 +72,8 @@ $base='C:\TTiTTulares'
 $home=Join-Path $env:LOCALAPPDATA 'TTImageInbox'
 $log=Join-Path $home 'delivery.log'
 try {
-  $old=Get-ScheduledTask -TaskName 'TT Actualidad - Imagenes pendientes APP' -ErrorAction Stop
-  if($old.State -ne 'Disabled'){Add-Content -LiteralPath $log -Value 'SKIP_OLD_SCHEDULE_ACTIVE';exit 0}
+  $old=Get-ScheduledTask -TaskName 'TT Actualidad - Imagenes pendientes APP' -ErrorAction SilentlyContinue
+  if($old -and $old.State -ne 'Disabled'){ Add-Content -LiteralPath $log -Value 'SKIP_OLD_SCHEDULE_ACTIVE';exit 0}
   $receiver=Join-Path $base 'TTImageApprovalReceiver.cjs'
   if(-not(Test-Path -LiteralPath $receiver)){throw 'RECEIVER_MISSING'}
   $node=(Get-Command node.exe -ErrorAction Stop).Source
@@ -118,7 +118,8 @@ $settings=New-ScheduledTaskSettingsSet -MultipleInstances IgnoreNew -ExecutionTi
 Register-ScheduledTask -TaskName $newTaskName -Action $action -Trigger $trigger -Principal $principal -Settings $settings -Description 'Entrega IA gradual a la bandeja; solo aprobacion manual' -Force|Out-Null
 $installed=Get-ScheduledTask -TaskName $newTaskName -ErrorAction Stop
 if($installed.State -eq 'Disabled'){throw 'SCHEDULE_CREATED_BUT_DISABLED'}
-if((Get-ScheduledTask -TaskName $oldTaskName).State -ne 'Disabled'){
+$oldAfter=Get-ScheduledTask -TaskName $oldTaskName -ErrorAction SilentlyContinue
+if($oldAfter -and $oldAfter.State -ne 'Disabled'){
   Disable-ScheduledTask -TaskName $newTaskName|Out-Null
   throw 'OLD_SCHEDULE_CHANGED: gradual delivery disabled'
 }
