@@ -8,7 +8,11 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
+
+concurrency:
+  group: ttactualidad-v2-top30-history
+  cancel-in-progress: false
 
 jobs:
   test-step-01:
@@ -62,6 +66,56 @@ jobs:
           assert len(state["top30"])==30 and len(state["topics"])==30
           print("TT_V2_STEP03_BOOTSTRAP_OK",len(state["topics"]),"sin falsas entradas ni escrituras en producción")
           PY
+      - name: Persistir historial SOLO en la rama V2
+        shell: bash
+        run: |
+          set -euo pipefail
+          BRANCH="feature/ttactualidad-v2-clean"
+          cp v2/ttendencias/state/live-capture.json /tmp/tt-v2-live-capture.json
+          git config user.name "ttactualidad-v2-bot"
+          git config user.email "actions@users.noreply.github.com"
+          for attempt in 1 2 3 4 5; do
+            git fetch origin "$BRANCH"
+            git reset --hard "origin/$BRANCH"
+            mkdir -p v2/ttendencias/state
+            cp /tmp/tt-v2-live-capture.json v2/ttendencias/state/live-capture.json
+            if [ -f v2/ttendencias/state/history.json ]; then
+              python3 - <<'PY'
+          import json
+          from pathlib import Path
+          from v2.ttendencias.assess_freshness import moment
+          new=json.loads(Path("v2/ttendencias/state/live-capture.json").read_text())
+          old=json.loads(Path("v2/ttendencias/state/history.json").read_text())
+          if moment(new["observed_at"])<=moment(old["observed_at"]):
+              print("TT_V2_HISTORY_OLDER_CAPTURE_SKIP")
+              Path("/tmp/tt-v2-skip").touch()
+          PY
+              if [ -f /tmp/tt-v2-skip ]; then exit 0; fi
+              python3 -m v2.ttendencias.detect_changes v2/ttendencias/state/live-capture.json --previous v2/ttendencias/state/history.json --output v2/ttendencias/state/history.json > /tmp/tt-v2-movements.json
+            else
+              python3 -m v2.ttendencias.detect_changes v2/ttendencias/state/live-capture.json --output v2/ttendencias/state/history.json > /tmp/tt-v2-movements.json
+            fi
+            python3 - <<'PY'
+          import json
+          from pathlib import Path
+          state=json.loads(Path("v2/ttendencias/state/history.json").read_text())
+          changes=json.loads(Path("/tmp/tt-v2-movements.json").read_text())
+          assert len(state["top30"])==30
+          assert all(t.get("trend_id","").startswith("trv2-") for t in state["topics"].values())
+          print("TT_V2_HISTORY_PERSISTENCE_READY",state["observed_at"],
+                "historical_topics",len(state["topics"]),"changes",len(changes["changes"]))
+          PY
+            git add -f v2/ttendencias/state/history.json
+            if git diff --cached --quiet; then exit 0; fi
+            git commit -m "V2: guardar historial Top30 aislado"
+            if git push origin "HEAD:$BRANCH"; then
+              echo "TT_V2_HISTORY_PERSISTED branch=$BRANCH"
+              exit 0
+            fi
+            sleep "$attempt"
+          done
+          echo "TT_V2_HISTORY_PERSIST_FAILED" >&2
+          exit 1
       - uses: actions/upload-artifact@v4
         if: success()
         with:
