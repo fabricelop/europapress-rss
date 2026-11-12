@@ -7,46 +7,37 @@
   "previous_run_id": "tr-20261112T193900-manual",
   "command_id": "tr-20261112T225500-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-12T22:55:00+01:00",
-  "updated_at": "2026-11-12T22:59:00+01:00",
+  "updated_at": "2026-11-12T23:00:00+01:00",
   "current": 8,
   "total": 8,
   "trend_id": null,
-  "title": "Persistiendo 8 elaboraciones TTendencias",
-  "queue_complete": false,
-  "processed_ids": [],
+  "title": "Pasada editorial TTendencias",
+  "queue_complete": true,
+  "processed_ids": [
+    "5b4019aec79a",
+    "42a8a396f51e",
+    "dfda32e4066b",
+    "e84ec14bccf9",
+    "6f003b5f1cb3",
+    "ecc6252a91d7",
+    "cf919568868a",
+    "b0858b01041f"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "5b4019aec79a",
-    "42a8a396f51e",
-    "dfda32e4066b",
-    "e84ec14bccf9",
-    "6f003b5f1cb3",
-    "ecc6252a91d7",
-    "cf919568868a",
-    "b0858b01041f"
-  ],
-  "remaining_active_ids": [
-    "5b4019aec79a",
-    "42a8a396f51e",
-    "dfda32e4066b",
-    "e84ec14bccf9",
-    "6f003b5f1cb3",
-    "ecc6252a91d7",
-    "cf919568868a",
-    "b0858b01041f"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 12,
-    "observed": 12,
-    "closed": 12,
-    "explained": 5,
+    "attempted": 8,
+    "observed": 8,
+    "closed": 8,
+    "explained": 8,
     "problematic": 0,
     "updates": 0,
-    "review_completed_no_distinct_event": 7,
+    "review_completed_no_distinct_event": 0,
     "maintenance_reviews": 0,
     "unchanged_reviews": 0,
     "queue_remaining": 0,
@@ -55,104 +46,73 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 0,
+    "cause_unconfirmed": 2
   },
   "outcomes": [
     {
-      "id": "0293400ea789",
-      "revision": 0,
-      "name": "Jordi Wild",
-      "outcome": "review_completed_no_distinct_event",
-      "applied": true,
-      "apply_commit": "cf5bedf8c70d629d8fbd8832136a2edf0cb0d4bc"
-    },
-    {
-      "id": "fbe53fb478fe",
-      "revision": 0,
-      "name": "#HuelgaGeneral",
-      "outcome": "review_completed_no_distinct_event",
-      "applied": true,
-      "apply_commit": "cf5bedf8c70d629d8fbd8832136a2edf0cb0d4bc"
-    },
-    {
-      "id": "04aab77349ea",
-      "revision": 0,
-      "name": "Sanchez",
+      "id": "5b4019aec79a",
+      "revision": 1,
+      "name": "Chequia",
       "outcome": "explained",
       "applied": true,
-      "apply_commit": "cf5bedf8c70d629d8fbd8832136a2edf0cb0d4bc"
+      "apply_commit": "ff3098228ec77b34f54465a0fcf4028f4f4e32bd"
     },
     {
-      "id": "009af898bf01",
+      "id": "42a8a396f51e",
       "revision": 0,
-      "name": "Feijoo",
+      "name": "#LaFuerzaDeLasMujeres",
       "outcome": "explained",
       "applied": true,
-      "apply_commit": "cf5bedf8c70d629d8fbd8832136a2edf0cb0d4bc"
+      "apply_commit": "ff3098228ec77b34f54465a0fcf4028f4f4e32bd"
     },
     {
-      "id": "327da4639abd",
+      "id": "dfda32e4066b",
       "revision": 0,
-      "name": "CCOO",
-      "outcome": "review_completed_no_distinct_event",
-      "applied": true,
-      "apply_commit": "cf5bedf8c70d629d8fbd8832136a2edf0cb0d4bc"
-    },
-    {
-      "id": "3887df46b9b3",
-      "revision": 0,
-      "name": "#felizjueves",
-      "outcome": "review_completed_no_distinct_event",
-      "applied": true,
-      "apply_commit": "cf5bedf8c70d629d8fbd8832136a2edf0cb0d4bc"
-    },
-    {
-      "id": "fb4305f17d11",
-      "revision": 0,
-      "name": "Youtuber",
-      "outcome": "review_completed_no_distinct_event",
-      "applied": true,
-      "apply_commit": "cf5bedf8c70d629d8fbd8832136a2edf0cb0d4bc"
-    },
-    {
-      "id": "630897499802",
-      "revision": 0,
-      "name": "Lula",
+      "name": "Rodrigo Marina",
       "outcome": "explained",
       "applied": true,
-      "apply_commit": "cf5bedf8c70d629d8fbd8832136a2edf0cb0d4bc"
+      "apply_commit": "ff3098228ec77b34f54465a0fcf4028f4f4e32bd"
     },
     {
-      "id": "93d43d8946ec",
+      "id": "e84ec14bccf9",
       "revision": 0,
-      "name": "Jorge Salvaje",
-      "outcome": "review_completed_no_distinct_event",
-      "applied": true,
-      "apply_commit": "cf5bedf8c70d629d8fbd8832136a2edf0cb0d4bc"
-    },
-    {
-      "id": "4e23fee3dfdb",
-      "revision": 0,
-      "name": "Corvillo",
+      "name": "#SVFinal",
       "outcome": "explained",
       "applied": true,
-      "apply_commit": "cf5bedf8c70d629d8fbd8832136a2edf0cb0d4bc"
+      "apply_commit": "ff3098228ec77b34f54465a0fcf4028f4f4e32bd"
     },
     {
-      "id": "f1963deff005",
+      "id": "6f003b5f1cb3",
       "revision": 0,
-      "name": "Cagon",
-      "outcome": "review_completed_no_distinct_event",
-      "applied": true,
-      "apply_commit": "cf5bedf8c70d629d8fbd8832136a2edf0cb0d4bc"
-    },
-    {
-      "id": "baf981a5ac70",
-      "revision": 0,
-      "name": "Fracaso",
+      "name": "#LaDiana12Nov",
       "outcome": "explained",
       "applied": true,
-      "apply_commit": "cf5bedf8c70d629d8fbd8832136a2edf0cb0d4bc"
+      "apply_commit": "ff3098228ec77b34f54465a0fcf4028f4f4e32bd"
+    },
+    {
+      "id": "ecc6252a91d7",
+      "revision": 0,
+      "name": "Junior",
+      "outcome": "explained_cause_unconfirmed",
+      "applied": true,
+      "apply_commit": "ff3098228ec77b34f54465a0fcf4028f4f4e32bd"
+    },
+    {
+      "id": "cf919568868a",
+      "revision": 0,
+      "name": "Tarancón",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "ff3098228ec77b34f54465a0fcf4028f4f4e32bd"
+    },
+    {
+      "id": "b0858b01041f",
+      "revision": 0,
+      "name": "celso",
+      "outcome": "explained_cause_unconfirmed",
+      "applied": true,
+      "apply_commit": "ff3098228ec77b34f54465a0fcf4028f4f4e32bd"
     }
   ],
   "incident_count": 0,
@@ -222,7 +182,7 @@
     "pending": 0,
     "problematic": 0
   },
-  "message": "Investigación terminada; revalidación JIT 8/8 correcta. Persistiendo lote editorial.",
+  "message": "Pasada completada 8/8. Se persistieron 8 explicaciones; Junior y celso quedaron con causa expresamente no confirmada. Cola final 0. Sin ImageGen ni publicaciones.",
   "history": [
     {
       "run_id": "tr-1794327332740-manual",
@@ -8497,6 +8457,6 @@
     }
   ],
   "processed": [],
-  "finished_at": "2026-11-12T19:46:00+01:00",
+  "finished_at": "2026-11-12T23:00:00+01:00",
   "maintenance_outbox_commit": "970b545c88b09429a23d15ec893b9d66fb611297"
 }
