@@ -68,11 +68,12 @@ def main_story(row, closed_ids, assigned, policy):
         return False, "invalid_identity"
     if (target, revision) in closed_ids or (target, None) in closed_ids or row.get("rewrite_pending") is True:
         return False, "closed_or_rewriting"
-    if row.get("with_image") is not True or row.get("disable_ai_image") is True :
-        return False, "image_disabled_or_sensitive"
-    if str(row.get("image_mode") or "").lower() in ("fallback_only", "archive_only", "tweet_capture_only", "none"):
-        return False, "image_mode_excluded"
-    if str(row.get("ai_image_status") or "").lower() in ("ready", "disabled", "failed", "running", "requested", "queued"):
+    # Content is never a reason to exclude a READY item from ImageGen:
+    # with_image=False, disable_ai_image, fallback_only and sensitive_editorial
+    # may be inherited from older topic policies. The editor approves each
+    # raster separately. Preserve only technical/deduplication protections.
+    if str(row.get("ai_image_status") or "").lower() in (
+            "ready", "failed", "running", "requested", "queued"):
         return False, "already_processed"
     if (target, revision) in assigned:
         return False, "catalog_has_image"
