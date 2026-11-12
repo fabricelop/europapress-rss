@@ -1,14 +1,14 @@
 {
   "version": 1,
-  "id": "ttb-news-draftbackup-error-20261112-1342",
+  "id": "ttb-news-exact-failure-20261112-1345",
   "project": "TTActualidad",
   "expires_at": "2026-11-13T12:00:00Z",
-  "description": "Classify last guarded news failure without exposing draft",
+  "description": "Classify exact failure block of current news command",
   "steps": [
     {
       "kind": "powershell",
-      "name": "draftbackup-error",
-      "script": "$l=@(Get-Content 'C:\\TTiTTulares\\ttittulares-mobile-trigger.log' -Tail 300)\n$o=@{state='unknown'}\nforeach($k in @('RESTORED_DRAFT_TOO_LARGE','RESTORED_DRAFT_BACKUP_EXISTS','RESTORED_DRAFT_FOCUS_FAILED','RESTORED_DRAFT_CLEAR_UNVERIFIED','Fresh tab has draft or chat content','OTHER_CHAT_ACTIVITY','NO_PROBE','COMPOSER_NOT_READY','NEW_CHAT_CONTROL_UNAVAILABLE','CHAT MESSAGE TIMEOUT')){if(@($l|Where-Object{$_ -match [regex]::Escape($k)}).Count){$o.state=$k}}\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress))",
+      "name": "exact-news-failure",
+      "script": "$l=@(Get-Content 'C:\\TTiTTulares\\ttittulares-mobile-trigger.log' -Tail 500)\n$id='tt-draftbackup-1794482993257';$idx=-1\nfor($i=0;$i -lt $l.Count;$i++){if($l[$i] -match ('LAUNCH FAILED.*'+$id)){$idx=$i}}\n$o=@{state='not_found';reason='unknown';backup=$false}\nif($idx -ge 0){$o.state='failed';$lo=[Math]::Max(0,$idx-20);$seg=@($l[$lo..$idx]);$joined=$seg -join ' '\nforeach($k in @('RESTORED_DRAFT_TOO_LARGE','RESTORED_DRAFT_BACKUP_EXISTS','RESTORED_DRAFT_FOCUS_FAILED','RESTORED_DRAFT_CLEAR_UNVERIFIED','Fresh tab has draft or chat content','OTHER_CHAT_ACTIVITY','NEW_CHAT_CONTROL_UNAVAILABLE','CHAT MESSAGE TIMEOUT','No aparece el cuadro de escritura','COMPOSER_NOT_FOCUSED')){if($joined.Contains($k)){$o.reason=$k}}\n$o.backup=$joined.Contains('RESTORED_DRAFT_BACKED_UP_LOCAL')\n}\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress))",
       "timeout_seconds": 20
     }
   ]
