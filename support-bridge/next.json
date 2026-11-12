@@ -1,15 +1,15 @@
 {
   "version": 1,
-  "id": "ttb-editorial-rescue-log-20261112-1138",
+  "id": "ttb-news-editorial-diagnostic-20261112-1145",
   "project": "TTActualidad",
   "expires_at": "2026-11-13T12:00:00Z",
-  "description": "Read only last guarded editorial rescue log after bridge exception",
+  "description": "Read news listener launch outcomes and active Node runners",
   "steps": [
     {
       "kind": "powershell",
-      "name": "editorial-rescue-log",
-      "script": "try {\n $files=@(Get-ChildItem (Join-Path $env:LOCALAPPDATA 'TT_Recuperacion') -Filter 'editorial-rescue-*.log' -ErrorAction Stop | Sort-Object LastWriteTime -Descending | Select-Object -First 1)\n $lines=@()\n if($files.Count){$lines=@(Get-Content $files[0].FullName -Tail 22)}\n $o=@{state='ok';file=($files|Select-Object -First 1 -ExpandProperty Name);lines=$lines}\n Write-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress -Depth 4))\n}catch{Write-Output ('TTRESULT:'+(@{state='error';reason=[string]$_.Exception.Message}|ConvertTo-Json -Compress))}",
-      "timeout_seconds": 25
+      "name": "news-editorial-diagnostic",
+      "script": "$ErrorActionPreference='Stop'\n$base='C:\\TTiTTulares'\n$log=Join-Path $base 'ttittulares-mobile-trigger.log'\n$lines=@(Get-Content -LiteralPath $log -Tail 80 -ErrorAction Stop | Where-Object { $_ -match 'CHAT|EDITORIAL|ERROR|TIMEOUT|LAUNCH' } | Select-Object -Last 15)\n$procs=@(Get-CimInstance Win32_Process -Filter \"Name='node.exe'\" | Where-Object { [string]$_.CommandLine -match 'Ejecutar[.]js|TT-Editorial-Guard[.]js' } | ForEach-Object { [pscustomobject]@{pid=$_.ProcessId;start=[string]$_.CreationDate} })\n$payload=@{state='ok';lines=$lines;procs=$procs}\nWrite-Output ('TTRESULT:'+($payload|ConvertTo-Json -Compress -Depth 4))",
+      "timeout_seconds": 30
     }
   ]
 }
