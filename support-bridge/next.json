@@ -1,14 +1,14 @@
 {
   "version": 1,
-  "id": "ttb-news-runner-51120-20261112-1232",
+  "id": "ttb-news-active-send-ledger-20261112-1235",
   "project": "TTActualidad",
   "expires_at": "2026-11-13T12:00:00Z",
-  "description": "Identify one active editorial runner without stopping it",
+  "description": "Read newest editorial send ledger while runner active",
   "steps": [
     {
       "kind": "powershell",
-      "name": "runner-identity",
-      "script": "$p=Get-CimInstance Win32_Process -Filter 'ProcessId=51120'\n$v=if($p){@{state='ok';cmd=([string]$p.CommandLine).Substring(0,[Math]::Min(220,([string]$p.CommandLine).Length));created=[string]$p.CreationDate}}else{@{state='gone'}}\nWrite-Output ('TTRESULT:'+($v|ConvertTo-Json -Compress))",
+      "name": "active-send-ledger",
+      "script": "$d='C:\\TTiTTulares\\TT-Editorial-Rescue\\sent'\n$f=Get-ChildItem $d -Filter 'TTITTULARES_EDITORIAL_JOB_V2_*.json' -ErrorAction SilentlyContinue | Sort-Object LastWriteTime -Descending | Select-Object -First 1\n$s=if($f){Get-Content $f.FullName -Raw | ConvertFrom-Json}else{$null}\nWrite-Output ('TTRESULT:'+(@{state='ok';file=if($f){$f.Name}else{''};status=if($s){[string]$s.status}else{'none'};marker=if($s){[string]$s.marker}else{''}}|ConvertTo-Json -Compress))",
       "timeout_seconds": 20
     }
   ]
