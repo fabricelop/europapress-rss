@@ -30,7 +30,10 @@ function Note([string]$s) {
   Write-Host $message
 }
 function GitOutput([string[]]$gitArgs) {
-  $r = & git.exe -C $gitRoot @gitArgs 2>&1
+  # Trust ONLY this dedicated Git store for each command; never modify
+  # machine/user Git config and never use safe.directory=*.
+  $trusted = 'safe.directory=' + $gitRoot.Replace('\','/')
+  $r = & git.exe -c $trusted -C $gitRoot @gitArgs 2>&1
   if ($LASTEXITCODE -ne 0) { throw ('git failed: ' + ($gitArgs -join ' ')) }
   return ($r -join "`n")
 }
@@ -41,6 +44,9 @@ $env:NODE_PATH = (Join-Path $workDir 'node_modules')
 $env:TT_X_GIT_REPO = $gitRoot
 if ($CheckOnly) {
   Note 'CHECK_ONLY no X, no remote Git, no task change'
+  $inside = GitOutput @('rev-parse','--is-inside-work-tree')
+  if ($inside -ne 'true') { throw 'TT-XContext Git store is not readable under the current security context' }
+  Note 'GIT_STORE_TRUST_OK (scoped to this directory)'
   & $node --check $sampler; if ($LASTEXITCODE -ne 0) { throw 'X sampler syntax invalid' }
   & $node --check $publisher; if ($LASTEXITCODE -ne 0) { throw 'X publisher syntax invalid' }
   $playwrightCheck = Join-Path $workDir 'check_x_playwright.cjs'
