@@ -9,6 +9,12 @@ on:
       - "ttittulares/auto_listas_images_policy.json"
   schedule:
     - cron: "*/15 * * * *"
+  pull_request:
+    paths:
+      - "ttittulares/auto_listas_images.py"
+      - "ttittulares/auto_listas_images_policy.json"
+      - "tests/test_auto_listas_images.py"
+      - ".github/workflows/ttittulares-auto-listas-images.yml"
   workflow_dispatch:
 
 permissions:
@@ -27,6 +33,7 @@ jobs:
       - name: Comprobar decisiones, deduplicación y seguridad sin generar imágenes
         run: python3 -m unittest discover -s tests -p 'test_auto_listas_images.py' -v
       - name: Encolar máximo 1 job real en el control branch existente
+        if: github.event_name != 'pull_request'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python3 ttittulares/auto_listas_images.py --apply
