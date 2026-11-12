@@ -407,7 +407,7 @@ final class GitHubEditor: ObservableObject {
                             }
                             if confirmed {
                                 settled.insert(pending.requestID)
-                                message = "Estado final confirmado en GitHub para «\\(pending.title)»; no consta el recibo de la orden original."
+                                message = "Estado final confirmado en GitHub para «\(pending.title)»; no consta el recibo de la orden original."
                             }
                         }
                     } catch { /* No terminal-state proof: leave it unverified. */ }
