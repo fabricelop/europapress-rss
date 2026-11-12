@@ -7,32 +7,39 @@
   "previous_run_id": "tr-20261112T171100-manual",
   "command_id": "tr-20261112T193900-manual",
   "source": "chat",
-  "status": "DONE",
+  "status": "waiting",
   "phase": "closing",
   "started_at": "2026-11-12T19:39:00+01:00",
-  "updated_at": "2026-11-12T19:46:00+01:00",
+  "updated_at": "2026-11-12T22:53:28+01:00",
   "current": 12,
   "total": 12,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [
-    "0293400ea789",
-    "fbe53fb478fe",
-    "04aab77349ea",
-    "009af898bf01",
-    "327da4639abd",
-    "3887df46b9b3",
-    "fb4305f17d11",
-    "630897499802",
-    "93d43d8946ec",
-    "4e23fee3dfdb",
-    "f1963deff005",
-    "baf981a5ac70"
+    "c4bd616d18d0"
   ],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "5b4019aec79a",
+    "42a8a396f51e",
+    "dfda32e4066b",
+    "e84ec14bccf9",
+    "6f003b5f1cb3",
+    "ecc6252a91d7",
+    "cf919568868a",
+    "b0858b01041f"
+  ],
+  "remaining_active_ids": [
+    "5b4019aec79a",
+    "42a8a396f51e",
+    "dfda32e4066b",
+    "e84ec14bccf9",
+    "6f003b5f1cb3",
+    "ecc6252a91d7",
+    "cf919568868a",
+    "b0858b01041f"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 12,
@@ -201,7 +208,7 @@
       "message": "Persistencia verificada en main por commit cf5bedf8: editorial-queue=0; requests.json y telegram-manual-explained.json modificados; 5 explicaciones nuevas y 7 no_distinct_event. ImageGen=0; publicaciones=0."
     }
   ],
-  "last_started_at": "2026-11-12T19:39:00+01:00",
+  "last_started_at": "2026-11-12T22:53:28+01:00",
   "last_completed_at": "2026-11-12T19:46:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
