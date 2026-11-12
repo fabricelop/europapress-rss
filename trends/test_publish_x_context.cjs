@@ -36,3 +36,14 @@ test('preserve newer remote evidence and unrelated revisions',()=>{
   assert.equal(fresh.merged.items.length,2);
   assert.equal(fresh.merged.items.find(x=>x.revision===2).searched_at,'2026-11-12T16:55:00Z');
 });
+
+test('publishes Windows X evidence for current unverified Top 30 card only',()=>{
+ const card={id:'e160381847c4',revision:0,name:'Preparando',searched_at:'2026-11-12T16:45:00Z',
+   source:'x_recent_posts_windows',search_url:'https://x.com/search?q=Preparando',
+   status:'empty',posts:[]};
+ const top30={items:[{editorial_id:card.id,revision:0,name:card.name,
+   category:'Sin verificar',status:'EXPLICADA'}]};
+ assert.equal(mergeForPublish({items:[]},{items:[card]},{items:[]},at,top30).updates.length,1);
+ assert.equal(mergeForPublish({items:[]},{items:[card]},{items:[]},at,
+   {items:[{...top30.items[0],category:'Actualidad'}]}).updates.length,0);
+});
