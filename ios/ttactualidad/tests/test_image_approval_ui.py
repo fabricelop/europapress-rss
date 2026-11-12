@@ -16,11 +16,11 @@ assert 'URLSession' not in view  # auth always remains in GitHubEditor
 # Keep each card visible while POST is in progress; a definitive 409/401
 # must be shown inline without an optimistic remove/reinsert animation.
 assert 'holdUnconfirmed(item, action: action' in view
-assert 'Section("Decisiones sin confirmación (" +' in view
+assert 'Section("Decisiones a revisar (" +' in view
 assert 'images.removeAll { $0.id == item.id }' in view  # only accepted/held records
 assert 'decisionTail = Task {' in view
 assert 'await previous?.value' in view
-assert 'restoreRejected(item)' in view
+assert 'holdRejected(item, action: action, status: status)' in view
 assert 'model.decide(item, action: "approve", using: github)' in view
 assert 'model.decide(item, action: "reject", using: github)' in view
 assert 'model.actionID' not in view
@@ -40,7 +40,7 @@ assert 'Aprobación aceptada por el servidor' in view
 assert 'response.appVerified == true' in view and 'response.sitesVerified == true' in view
 assert 'No se repetirá la aprobación' in view
 assert 'associateVerifiedOriginalInGitHub(item, using: github)' in view
-assert 'restoreRejected(item)' in view
+assert 'holdRejected(item, action: action, status: status)' in view
 print("TT_IMAGE_APPROVAL_PERSISTENT_IDEMPOTENCY_BUILD98_OK")
 
 # A regenerated receipt ID for the same PNG/episode must not reopen approval.
@@ -56,24 +56,23 @@ assert 'previewOrder.append(item.id)' in view
 assert 'previews.keys.first' not in view
 print("TT_IMAGE_INBOX_THUMBNAIL_CACHE_STABLE_BUILD99_OK")
 
-# Build100: server rejection remains visible on the same row without
-# optimistic disappearance, even if a reload starts during POST.
+# Build102: any definite HTTP 4xx is a rejected decision, not a saved
+# approval and not an ambiguous timeout. Keep original in manually reopenable
+# review area: never auto-reinsert into the currently viewed image stack.
 decide = view[view.index('func decide(_ item: PendingImage'):
               view.index('private func persistDecision(_ item: PendingImage')]
 assert 'images.removeAll { $0.id == item.id }' in decide
 assert 'decisionFailures.removeValue(forKey: item.id)' in decide
 assert 'decisionFailures[item.id] = "DECISIÓN NO APLICADA: "' in view
-assert 'if let failure = model.decisionFailures[item.id]' in view
-assert 'let ready = items.filter {' in view
-assert 'images = ready' in view
-assert 'restoreRejected(item)' in view
-print("TT_IMAGE_INBOX_BUILD100_NO_BOUNCE_OK")
-
-# Exact rollback: the tap is immediate, POST is asynchronous, a confirmed
-# 4xx rejection restores only the same PNG and leaves an inline diagnosis.
-assert 'images.removeAll { $0.id == item.id }' in decide
-assert 'optimisticPositions[item.id] = images.firstIndex' in decide
-assert 'restoreRejected(item)' in view
-assert 'decisionFailures[item.id] = "DECISIÓN NO APLICADA: "' in view
+assert 'let rejectedHTTP: Int?' in view
+assert 'holdRejected(item, action: action, status: status)' in view
+assert 'restoreRejected(item)' not in view
+assert 'optimisticPositions' not in view
+assert 'if let rejectedHTTP = record.rejectedHTTP' in view
+assert 'notedAt: Date(), rejectedHTTP: status)' in view
+assert 'notedAt: Date(), rejectedHTTP: nil)' in view
 assert 'let keys = Set(images.map(\\.id)).union(processingIDs)' in view
-print("TT_IMAGE_INBOX_BUILD101_OPTIMISTIC_WITH_ERROR_DETAILS_OK")
+assert 'unconfirmedDecisions.removeValue(forKey: id)' in view
+assert 'Button("Volver a revisar en la bandeja")' in view
+assert 'reopenUnconfirmed(record.id)' in view
+print("TT_IMAGE_INBOX_BUILD102_NO_BOUNCE_WITH_MANUAL_REVIEW_OK")
