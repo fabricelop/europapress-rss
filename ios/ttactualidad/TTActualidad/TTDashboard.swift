@@ -239,6 +239,11 @@ struct TTDashboard: View {
             search = ""
             UISelectionFeedbackGenerator().selectionChanged()
         }
+        .onChange(of: store.listasRemovalScrollRevision) { _, _ in
+            // The optimistic Listas removal shortened LazyVStack. A fresh
+            // scroll identity returns to the menu without affecting GitHub.
+            quickNavigationID = UUID()
+        }
     }
 
     private func openQuickAction(_ action: TTQuickAction) {
@@ -1343,6 +1348,12 @@ private struct TrendTile: View {
                         .font(.system(size: 13, weight: .semibold, design: .rounded))
                         .foregroundStyle(.white)
                         .lineLimit(1).minimumScaleFactor(0.76)
+                    if item.inListas, let prior = item.previousListasAt {
+                        Text("Anterior en Listas: " + prior.formatted(.dateTime.day().month().year().hour().minute()))
+                            .font(.system(size: 9))
+                            .foregroundStyle(TTTheme.muted)
+                            .lineLimit(2)
+                    }
                     if important {
                         Text("Importante")
                             .font(.system(size: 10, weight: .bold)).foregroundStyle(.white)
