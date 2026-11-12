@@ -46,3 +46,26 @@ test('Windows mode ignores unrelated GitHub runner HTTP 403 and keeps its own ba
   const local={items:[{...one,source:'x_recent_posts_windows',http_status:403,status:'error',searched_at:'2026-11-12T15:50:00Z'}]};
   assert.equal(chooseTargets(queue,local,now,6,'x_recent_posts_windows').length,0);
 });
+
+test('unverified Top 30 cards receive independent X lookup, including Preparando', () => {
+  const top30 = { items: [
+    { name:'Preparando', editorial_id:'e160381847c4', revision:0, status:'EXPLICADA', category:'Sin verificar' },
+    { name:'Verificada', editorial_id:'aaaaabbbbbcc', revision:0, status:'EXPLICADA', category:'Política' },
+    { name:'Publicada', editorial_id:'ddddeeeeffff', revision:0, status:'PUBLICADA', category:'Sin verificar' }
+  ] };
+  assert.deepEqual(chooseTargets({items:[]},{items:[]},now,6,'x_recent_posts_windows',top30)
+    .map(x=>x.name), ['Preparando']);
+  const cache={items:[{id:'e160381847c4',revision:0,name:'Preparando',status:'empty',
+    source:'x_recent_posts_windows', searched_at:'2026-11-12T15:55:00Z',posts:[]}]};
+  assert.equal(chooseTargets({items:[]},cache,now,6,'x_recent_posts_windows',top30).length,0);
+  assert.equal(chooseTargets({items:[]},cache,now+30*60000,6,'x_recent_posts_windows',top30).length,1);
+});
+test('reserve one search for unverified when editorial queue is busy',()=>{
+  const busy={items:Array.from({length:8},(_,i)=>({id:'queued'+String(i).padStart(6,'0'), revision:0,
+    name:'Tema '+i,status:'preparing'}))};
+  const top30={items:[{name:'Preparando',editorial_id:'e160381847c4',revision:0,
+    status:'EXPLICADA',category:'Sin verificar'}]};
+  const targets=chooseTargets(busy,{items:[]},now,6,'x_recent_posts_windows',top30);
+  assert.equal(targets.length,6);
+  assert.ok(targets.some(x=>x.name==='Preparando'));
+});
