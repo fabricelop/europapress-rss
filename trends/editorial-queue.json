@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-12T20:43:53.013126+00:00",
-  "count": 3,
+  "updated_at": "2026-11-12T20:45:46.297109+00:00",
+  "count": 4,
   "items": [
     {
       "id": "radar-prepare-72ae37479690bc676ece",
@@ -234,6 +234,23 @@
       "disable_ai_image": true,
       "auto_queued": false,
       "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "c4bd616d18d0",
+      "name": "Navalcarnero",
+      "rank": 18,
+      "revision": 1,
+      "status": "preparing",
+      "requested_at": "2026-11-12T20:45:46.297109+00:00",
+      "task": "explain",
+      "auto_queued": false,
+      "request_source": "ttactualidad_direct_rework",
+      "with_image": true,
+      "disable_ai_image": false,
+      "rewrite_with_image": true,
+      "image_strategy": "ai_plus_fallback",
+      "fallback_image_status": "pending",
+      "rewrite_instruction": "Elaboración desde cero por información desfasada. Investiga hechos y marcador o resultado ACTUALES antes de escribir. Redacta un texto factual nuevo y un remate nuevo. Busca y valida una foto de archivo nueva para esta revisión. No reutilices texto, remate ni imágenes de revisiones anteriores."
     }
   ]
 }
