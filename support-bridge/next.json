@@ -1,14 +1,14 @@
 {
   "version": 1,
-  "id": "ttb-news-postfix-launch-20261112-1155",
+  "id": "ttb-news-postfix-error-20261112-1157",
   "project": "TTActualidad",
   "expires_at": "2026-11-13T12:00:00Z",
-  "description": "Read latest launch outcome after backoff",
+  "description": "Read exact post-fix launch error",
   "steps": [
     {
       "kind": "powershell",
-      "name": "postfix-launch",
-      "script": "$f='C:\\TTiTTulares\\ttittulares-mobile-trigger.log'\n$l=[string](Get-Content $f -Tail 150 | Where-Object { $_ -match 'LAUNCH CONFIRMED|LAUNCH FAILED|CHAT LAUNCH LOG ERROR' } | Select-Object -Last 1)\nWrite-Output ('TTRESULT:'+(@{state='ok';last=$l.Substring(0,[Math]::Min(1000,$l.Length))}|ConvertTo-Json -Compress))",
+      "name": "postfix-error",
+      "script": "$f='C:\\TTiTTulares\\ttittulares-mobile-trigger.log'\n$l=[string](Get-Content $f -Tail 150 | Where-Object { $_ -match 'CHAT LAUNCH LOG ERROR' } | Select-Object -Last 1)\nWrite-Output ('TTRESULT:'+(@{state='ok';last=$l.Substring(0,[Math]::Min(1200,$l.Length))}|ConvertTo-Json -Compress))",
       "timeout_seconds": 20
     }
   ]
