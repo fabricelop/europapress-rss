@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-12T20:00:55.922909+00:00",
+  "checked_at": "2026-11-12T20:30:54.373116+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -47,7 +47,7 @@
         "xtrendsiamrohit"
       ],
       "live_verified": false,
-      "captured_age_minutes": 0.3,
+      "captured_age_minutes": 0.2,
       "noise_count": 0
     },
     "listener": {
@@ -59,8 +59,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 5.0,
-      "run_id": 43295155624,
+      "age_minutes": 4.9,
+      "run_id": 43300248585,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -81,70 +81,19 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": false,
-      "pending_count": 7,
-      "overdue_count": 7,
-      "oldest_age_minutes": 59.4,
+      "ok": true,
+      "pending_count": 0,
+      "overdue_count": 0,
+      "oldest_age_minutes": 0,
       "warning_after_minutes": 30,
-      "overdue_items": [
-        {
-          "id": "c04ca7365d3b",
-          "name": "#PazCasaTrabajo29N",
-          "status": "preparing",
-          "age_minutes": 59.4
-        },
-        {
-          "id": "baef807fc3f4",
-          "name": "arda güler",
-          "status": "preparing",
-          "age_minutes": 59.4
-        },
-        {
-          "id": "ef0e77a8a8cd",
-          "name": "Núcleo Nacional",
-          "status": "preparing",
-          "age_minutes": 59.4
-        },
-        {
-          "id": "1ecc5d05708a",
-          "name": "Misa",
-          "status": "preparing",
-          "age_minutes": 59.4
-        },
-        {
-          "id": "c4bd616d18d0",
-          "name": "Navalcarnero",
-          "status": "preparing",
-          "age_minutes": 59.4
-        },
-        {
-          "id": "b54099fc2014",
-          "name": "Fnatic",
-          "status": "preparing",
-          "age_minutes": 59.4
-        },
-        {
-          "id": "bfa814178ca6",
-          "name": "Nations League",
-          "status": "preparing",
-          "age_minutes": 59.4
-        }
-      ],
+      "overdue_items": [],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": false,
-      "status": "overdue",
-      "queue_complete": false,
-      "remaining_active_ids": [
-        "c04ca7365d3b",
-        "baef807fc3f4",
-        "ef0e77a8a8cd",
-        "1ecc5d05708a",
-        "c4bd616d18d0",
-        "b54099fc2014",
-        "bfa814178ca6"
-      ],
+      "ok": true,
+      "status": "not-required",
+      "queue_complete": true,
+      "remaining_active_ids": [],
       "contradictory_success": false
     },
     "telegram_provisional": {
@@ -156,10 +105,9 @@
   "repairs_started": [],
   "blocking": [
     "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos",
-    "cola con 786 estado(s) inválido(s)",
-    "cola de explicaciones retrasada: 7 pendiente(s) superan 30 min; más antigua 59.4 min"
+    "cola con 786 estado(s) inválido(s)"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 786 estado(s) inválido(s) | cola de explicaciones retrasada: 7 pendiente(s) superan 30 min; más antigua 59.4 min"
+  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 786 estado(s) inválido(s)"
 }
