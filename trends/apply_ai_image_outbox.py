@@ -105,6 +105,37 @@ def selftest():
     assert checkpoint_ai_image(inline,"selftest-ai",0) is None
     assert "ai_image" not in inline["prepared_item"]
     assert inline["prepared_item"]["ai_image_inline_rejected"] is True
+    # Regression: real gallery outboxes contain a .b64 chunk, not a URL.
+    import tempfile
+    with tempfile.TemporaryDirectory(prefix="tt-fotos-direct-") as folder:
+        command="tr-img-auto-abcdef123456-r0-a1-1794458225790"
+        original=raw.getvalue()
+        b64=base64.b64encode(original).decode("ascii")
+        chunk=Path(folder)/(command+".b64")
+        chunk.write_text(b64,encoding="ascii")
+        explanation="Editorial selftest sin contexto ambiguo"
+        digest=hashlib.sha256(explanation.encode("utf-8")).hexdigest()
+        guard={"version":3,"trend_id":"abcdef123456","revision":0,
+               "scope":"current_item_only","command_id":command,"explanation_sha256":digest}
+        direct={"id":"abcdef123456","revision":0,"attempt":1,"command_id":command,
+                "ai_image":{"chunk_files":[command+".b64"],"chunk_mime":"image/jpeg",
+                            "chunk_sha256":hashlib.sha256(original).hexdigest(),
+                            "source":"TTendencias / ChatGPT ImageGen",
+                            "rights_status":"generated","generated":True,
+                            "provider":"chat-imagegen","origin":"executing_chat",
+                            "context_guard":guard}}
+        item={"id":"abcdef123456","revision":0,"explanation":explanation}
+        assert _hydrate_direct_receipt(direct,item,Path(folder))==[chunk]
+        assert direct["ai_image"]["url"]=="data:image/jpeg;base64,"+b64
+        validate_generated_image({"image":direct["ai_image"]},"abcdef123456",0)
+        direct["ai_image"]["chunk_sha256"]="0"*64
+        try:
+            _hydrate_direct_receipt(direct,item,Path(folder))
+        except ValueError as exc:
+            assert "HASH_MISMATCH" in str(exc)
+        else:
+            raise AssertionError("chunk with wrong SHA must never be accepted")
+        assert chunk.is_file(), "failed validation must keep original for repair"
     print("TTENDENCIAS_AI_IMAGE_SELFTEST_OK")
     return 0
 
