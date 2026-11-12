@@ -1,15 +1,15 @@
 {
   "version": 1,
-  "id": "ttb-news-active-send-ledger-20261112-1235",
+  "id": "ttb-news-stop-stale-wrapper-20261112-1238",
   "project": "TTActualidad",
   "expires_at": "2026-11-13T12:00:00Z",
-  "description": "Read newest editorial send ledger while runner active",
+  "description": "Stop only stale news wrapper after checking command and no submit intent",
   "steps": [
     {
       "kind": "powershell",
-      "name": "active-send-ledger",
-      "script": "$d='C:\\TTiTTulares\\TT-Editorial-Rescue\\sent'\n$f=Get-ChildItem $d -Filter 'TTITTULARES_EDITORIAL_JOB_V2_*.json' -ErrorAction SilentlyContinue | Sort-Object LastWriteTime -Descending | Select-Object -First 1\n$s=if($f){Get-Content $f.FullName -Raw | ConvertFrom-Json}else{$null}\nWrite-Output ('TTRESULT:'+(@{state='ok';file=if($f){$f.Name}else{''};status=if($s){[string]$s.status}else{'none'};marker=if($s){[string]$s.marker}else{''}}|ConvertTo-Json -Compress))",
-      "timeout_seconds": 20
+      "name": "stop-stale-news-wrapper",
+      "script": "$o=@{state='pending'}\ntry{\n $p=Get-CimInstance Win32_Process -Filter 'ProcessId=51120' -ErrorAction Stop\n if(-not $p){$o.state='already_gone'}\n elseif([string]$p.CommandLine -notmatch 'C:[\\\\]TTiTTulares[\\\\]Ejecutar[.]js.*titulares --enviar'){$o.state='mismatch'}\n else{\n  $d='C:\\TTiTTulares\\TT-Editorial-Rescue\\sent'\n  $amb=@(Get-ChildItem $d -Filter 'TTITTULARES_EDITORIAL_JOB_V2_*.json' -ErrorAction SilentlyContinue | Where-Object { $_.LastWriteTime -gt (Get-Date).AddMinutes(-10) } | ForEach-Object { Get-Content $_.FullName -Raw | ConvertFrom-Json } | Where-Object { $_.status -in @('submit_intent','confirmed') })\n  if($amb.Count){$o.state='protected_send';$o.count=$amb.Count}\n  else{Stop-Process -Id 51120 -Force -ErrorAction Stop;$o.state='stale_wrapper_stopped'}\n }\n}catch{$o.state='error';$o.reason=[string]$_.Exception.Message}\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress))",
+      "timeout_seconds": 25
     }
   ]
 }
