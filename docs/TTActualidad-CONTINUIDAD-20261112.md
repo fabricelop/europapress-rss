@@ -66,3 +66,16 @@ El usuario prefiere ejecución autónoma y resultados verificables, respuestas d
 - Ambas mejoras de APP están en código de `main`, **no instaladas remotamente en el iPhone**. Hay que actualizar la app con la IPA compilada/sin firmar y la instalación habitual vía PlumeImpactor.
 - Los tres estados finales Cobarde/Cantante/Samantha Hudson están confirmados como `deleted` con recibos `applied`, ver la sección previa.
 - La bandeja de imágenes continúa **sin reparación del GET autenticado/frontend del Site privado** por falta de acceso al código y a la sesión autorizada; no inferir éxito de los 13 recibos locales.
+
+## ALERTA DE REGRESIÓN DE VERSIONES — 12/11/2026
+
+**NO empaquetar ni entregar `TTActualidad-0.4.78-build90` desde `main`.** El editor confirmó que la última IPA realmente válida era `TTActualidad-0.4.84-build96-PlumeImpactor-unsigned.ipa` (GitHub Actions run **42984014229**, artifact id **13839626626**).
+
+- Código fuente INMUTABLE correcto: commit `2a96fa657ab30d462a1294ab3c1778e1cb4eb40a`; rama base `fix/ttactualidad-relaciones-sin-filtros-buffer-reserva-b89-20261108`.
+- La rama `main` contiene un árbol iOS antiguo/simplificado (faltan más de 40 entradas de código respecto a 0.4.84), incluidos `ImageApprovalInbox.swift`, Relaciones, Buffer, pantalla de pendientes. Las PR #395/#396 de la conversación anterior quedaron fusionadas en ese árbol antiguo: su IPA **no es una actualización válida** y no hay que ofrecerla.
+- **Nueva base correcta**: `release/ttactualidad-0485-build97-listas-inbox`, creada directamente desde 0.4.84 commit 2a96fa. PR #397 contra la rama base correcta `https://github.com/fabricelop/europapress-rss/pull/397`. Candidata `TTActualidad-0.4.85-build97-PlumeImpactor-unsigned.ipa`, CI y resultado final deben verificarse antes de indicarla como lista.
+- PR #397 (solo seis archivos respecto a 0.4.84): `EditorialStore.swift` fecha/hora anterior demostrable en Listas y evento visual de retirada; `TTDashboard.swift` muestra fecha previa y vuelve a cabecera al quitar; `ImageApprovalInbox.swift` deja de depender del Top30/Ready actuales para enseñar originales pendientes y no vacía todo por fallo de una página; `project.yml` 0.4.85/b97; workflow IPA; preflight tests.
+- La **bandeja auténtica de iOS sí está implementada en la versión 0.4.84** (`ios/ttactualidad/TTActualidad/ImageApprovalInbox.swift`). El diagnóstico previo de «no tengo frontend» era una consecuencia de haber inspeccionado el código antiguo de main; no se debe repetir. Falta la prueba en el iPhone del GET autenticado tras instalar build97.
+- El Site remoto sigue siendo autoridad para aprobación/publicación; no duplicar imágenes ni crear almacenes. Imágenes con recibo `pending` = entrada al backend, no prueba de que la APP anterior las muestre. El cambio hace visibles esos pendientes históricos y preserva verificación exacta/SHA.
+
+Para futuros cambios iOS, siempre empezar desde la rama de release iOS con versión y build más altos; comparar árbol completo, bundle versions y pruebas. No volver a rebajar funcionalidad, versión ni número de build.
