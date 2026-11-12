@@ -1090,3 +1090,29 @@ assert 'No se repetirá la aprobación' in inbox
 assert 'associateVerifiedOriginalInGitHub(item, using: github)' in inbox
 assert 'restore(item)' in inbox
 print("TT_IMAGE_APPROVAL_PERSISTENT_IDEMPOTENCY_BUILD98_OK")
+
+# Build99: the page cursor must yield a single coherent view; a partial GET
+# is NOT an empty inbox. Ambiguous approval results are held for manual review
+# and never re-submitted automatically. The old build98 idempotency remains.
+assert 'feedVerified = false' in inbox
+assert 'feedVerified = true' in inbox
+assert 'guard !incomplete else {' in inbox
+assert inbox.count('images = ready') == 1
+assert 'images = ApprovalInboxScope.visible(received)' not in inbox
+assert 'Se conserva la última vista' in inbox
+assert 'private struct UnconfirmedDecision: Codable, Identifiable' in inbox
+assert 'TTActualidad.privateImageInbox.unconfirmed.v1' in inbox
+assert 'func reopenUnconfirmed(_ id: String)' in inbox
+assert 'holdUnconfirmed(item, action: action' in inbox
+assert 'No se considera publicada ni se reenvía sola.' in inbox
+assert 'Section("Decisiones sin confirmación (" +' in inbox
+assert 'model.reopenUnconfirmed(record.id)' in inbox
+assert '.disabled(!model.feedVerified ||' in inbox
+assert '["approved_awaiting_publication", "published"]' in inbox
+assert 'response.appVerified == true' in inbox
+assert 'response.sitesVerified == true' in inbox
+project = (root / 'project.yml').read_text(encoding='utf-8')
+assert project.count('0.4.87') == 4
+assert project.count('"99"') == 4
+print("TT_IMAGE_INBOX_BUILD99_STABLE_SNAPSHOT_AND_UNCONFIRMED_DECISIONS_OK")
+
