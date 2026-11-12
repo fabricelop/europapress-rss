@@ -1167,3 +1167,28 @@ assert 'holdUnconfirmed(item, action: action' in inbox
 assert 'markAccepted(item, state: response.state)' in inbox
 print("TT_IMAGE_INBOX_BUILD103_BASE_BUILD99_RESTORED_OK")
 
+# Build103: ActivityKit Listas count parity with the VISIBLE app cards:
+# verified editorial closure + Buffer reservation/sent state. Never show
+# raw prepared/explained count while a Buffer dispatch hides the card.
+live_intent = (root / 'Shared/RefreshLiveCountsIntent.swift').read_text()
+live_counts = (root / 'Shared/LiveListasCountsPolicy.swift').read_text()
+buffer_tracker = (root / 'TTActualidad/BufferPublishTracker.swift').read_text()
+assert 'pilot/ttactualidad-buffer-posts.json' in live_intent
+assert 'LiveListasCountsPolicy.hiddenKeys' in live_intent
+assert 'LiveListasCountsPolicy.visible(' in live_intent
+assert 'rewrite_pending' in live_intent
+assert 'latestNewsStatus[id]' in live_intent
+assert '"reserved", "unknown", "pending", "sent"' in live_counts
+assert 'project + ":" + id + ":r" + String(revision)' in live_counts
+assert 'static let shared = BufferPublishTracker()' in buffer_tracker
+assert '@StateObject private var buffer = BufferPublishTracker.shared' in dashboard
+assert '.onChange(of: buffer.change)' in dashboard
+assert 'refreshLiveCountsAfterBufferChange()' in dashboard
+assert 'refreshLiveCountsAfterBufferChange() async' in store
+assert 'newsReady: newsVisible.count' in store
+assert 'trendsReady: trendsVisible.count' in store
+assert 'buffer.hidesFromListas(project: "ttittulares"' in store
+assert 'buffer.hidesFromListas(project: "ttendencias"' in store
+print("TT_LIVE_ACTIVITY_BUILD103_LISTAS_PARITY_OK")
+
+
