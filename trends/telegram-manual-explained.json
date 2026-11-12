@@ -110687,13 +110687,28 @@
       "grouping_disabled": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "none",
-      "image_status": "none",
-      "image_choice": "none",
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
       "image_pending": false,
       "telegram_package_status": "pending",
       "fallback_image_strategy": "existing_web_image",
-      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+      "fallback_image": {
+        "url": "https://opengraph.githubassets.com/08f4f4f29d02258fe3640f0975ad2f05140be5aae6461caaddfe5dcb84c19fb6/fabricelop/europapress-rss",
+        "source": "github.com",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/recent.json",
+        "alt": "Imagen de archivo relacionada con Layton",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://opengraph.githubassets.com/08f4f4f29d02258fe3640f0975ad2f05140be5aae6461caaddfe5dcb84c19fb6/fabricelop/europapress-rss",
+        "source": "github.com",
+        "source_url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/recent.json",
+        "alt": "Imagen de archivo relacionada con Layton",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "25b5c8ed560b",
@@ -111026,6 +111041,6 @@
       }
     }
   ],
-  "updated_at": "2026-11-12T13:12:18.262810+00:00",
+  "updated_at": "2026-11-12T13:13:42.770104Z",
   "count": 1941
 }
