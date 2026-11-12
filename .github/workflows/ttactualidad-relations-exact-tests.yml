@@ -14,4 +14,4 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Exact-episode Cracovia 2/2 with historic and persisted Site identities
-        run: node --test site-patches/ttactualidad-relations-exact-episodes/resolve-exact-episodes.test.cjs
+        run: node --test site-patches/ttactualidad-relations-exact-episodes/resolve-exact-episodes.test.cjs site-patches/ttactualidad-relations-exact-episodes/auto-relate-listas.test.cjs
