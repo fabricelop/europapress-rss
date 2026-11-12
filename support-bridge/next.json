@@ -1,15 +1,20 @@
 {
   "version": 1,
-  "id": "ttb-editorial-last-error-and-watchdog-v15-20261112",
+  "id": "ttb-editorial-guard-v2-repair-20261112-1030",
   "project": "TTActualidad",
   "expires_at": "2026-11-13T08:00:00Z",
-  "description": "Read-only prove new watchdog propagated and smallest anonymized launch error tail for both bots",
+  "description": "Install verified guarded editorial-only Chrome fix from pinned main; backup, no dispatch, no image publication; Windows authorization",
   "steps": [
     {
       "kind": "powershell",
-      "name": "watchdog-marker-and-last-launch-error",
-      "script": "$o=@{watchdogV15=$false;errors=@()}\ntry{$g=Get-Content 'C:\\TTiTTulares\\TT-LocalWatchdog.ps1' -Raw -ErrorAction Stop;$o.watchdogV15=$g.Contains('watchdog-v15-editorial-tab-cap-selfheal')}catch{}\nforeach($n in @('ttittulares-mobile-trigger.log','ttendencias-mobile-trigger.log')){\n try{\n  $a=@(Get-Content (Join-Path 'C:\\TTiTTulares' $n) -Tail 120|Where-Object{$_ -like '*CHAT LAUNCH LOG ERROR*'})\n  if($a.Count -eq 0){$o.errors+=@{file=$n;status='none'};continue}\n  $s=[string]$a[-1];$s=$s -replace 'https?://\\S+','[URL]' -replace '[a-zA-Z0-9+/]{40,}={0,2}','[DATA]'\n  $o.errors+=@{file=$n;tail=$s.Substring([Math]::Max(0,$s.Length-160))}\n }catch{$o.errors+=@{file=$n;status='read_error'}}\n}\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress -Depth 4))\n",
-      "timeout_seconds": 30
+      "name": "install-guarded-editorial-composer",
+      "script": "$ErrorActionPreference='Stop'\n$o=@{state='pending';version='5cb7181';editorialOnly=$true}\n$t=Join-Path $env:TEMP ('TTEditorialGuard-'+[guid]::NewGuid().ToString('N')+'.ps1')\ntry{\n $live=@(Get-CimInstance Win32_Process -Filter \"name='node.exe'\"|Where-Object{[string]$_.CommandLine -match '(?:[\\\\/])(?:Ejecutar|TT-Editorial-Guard)[.]js'})\n if($live.Count){$o.state='deferred_active_editorial';$o.count=$live.Count}\n else{\n  $url='https://raw.githubusercontent.com/fabricelop/europapress-rss/5cb71812c7e562ffa4ce0a52ba33a07e712104e7/windows/Reparar-TT-Editorial-20261111.ps1'\n  Invoke-WebRequest -UseBasicParsing -Uri $url -OutFile $t -TimeoutSec 35\n  $src=[IO.File]::ReadAllText($t,[Text.Encoding]::UTF8)\n  if(-not $src.Contains('PROJECT_LANDING_HISTORY; NAVIGATE_BOT_OWNED_TAB_HOME') -or -not $src.Contains('const focused=await c.eval(') -or -not $src.Contains('TT_EDITORIAL_SAFE_WRAPPER_V1')){throw 'PINNED_GUARD_MARKER_MISSING'}\n  $errors=$null;$tokens=$null\n  [Management.Automation.Language.Parser]::ParseFile($t,[ref]$tokens,[ref]$errors)|Out-Null\n  if($errors.Count){throw 'GUARD_INSTALLER_SYNTAX_INVALID'}\n  & $t -NoDispatch *> $null\n  if(-not $?){throw 'GUARD_INSTALLER_FAILED'}\n  $guard=Get-Content 'C:\\TTiTTulares\\TT-Editorial-Guard.js' -Raw\n  if(-not $guard.Contains('PROJECT_LANDING_HISTORY; NAVIGATE_BOT_OWNED_TAB_HOME')){throw 'GUARD_NOT_UPDATED'}\n  $o.state='installed_verified'\n }\n}catch{$o.state='error';$o.reason=([string]$_.Exception.Message).Substring(0,[Math]::Min(160,([string]$_.Exception.Message).Length))}\nfinally{Remove-Item $t -Force -ErrorAction SilentlyContinue}\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress))\n",
+      "timeout_seconds": 150
+    },
+    {
+      "kind": "builtin",
+      "name": "editorial-queue",
+      "timeout_seconds": 25
     }
   ]
 }
