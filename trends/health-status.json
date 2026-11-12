@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-12T20:30:54.373116+00:00",
+  "checked_at": "2026-11-12T21:14:57.799135+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -42,7 +42,7 @@
     "top10": {
       "ok": false,
       "count": 10,
-      "non_stale_sources": 3,
+      "non_stale_sources": 4,
       "verified_fresh_sources": [
         "xtrendsiamrohit"
       ],
@@ -59,8 +59,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 4.9,
-      "run_id": 43300248585,
+      "age_minutes": 3.9,
+      "run_id": 43307682134,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -72,7 +72,7 @@
     },
     "request_queue": {
       "ok": false,
-      "invalid_count": 786,
+      "invalid_count": 787,
       "noise_count": 0
     },
     "ready_consistency": {
@@ -81,19 +81,44 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": true,
-      "pending_count": 0,
-      "overdue_count": 0,
-      "oldest_age_minutes": 0,
+      "ok": false,
+      "pending_count": 11,
+      "overdue_count": 2,
+      "oldest_age_minutes": 43.4,
       "warning_after_minutes": 30,
-      "overdue_items": [],
+      "overdue_items": [
+        {
+          "id": "radar-prepare-72ae37479690bc676ece",
+          "name": "Radar · Vito",
+          "status": "preparing",
+          "age_minutes": 43.4
+        },
+        {
+          "id": "radar-prepare-8952674421b588b2b959",
+          "name": "Radar · #LaFuerzaDeLaGente176Escaños",
+          "status": "preparing",
+          "age_minutes": 43.4
+        }
+      ],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": true,
-      "status": "not-required",
-      "queue_complete": true,
-      "remaining_active_ids": [],
+      "ok": false,
+      "status": "overdue",
+      "queue_complete": false,
+      "remaining_active_ids": [
+        "c4bd616d18d0",
+        "5b4019aec79a",
+        "radar-prepare-72ae37479690bc676ece",
+        "radar-prepare-8952674421b588b2b959",
+        "42a8a396f51e",
+        "dfda32e4066b",
+        "e84ec14bccf9",
+        "6f003b5f1cb3",
+        "ecc6252a91d7",
+        "cf919568868a",
+        "b0858b01041f"
+      ],
       "contradictory_success": false
     },
     "telegram_provisional": {
@@ -105,9 +130,10 @@
   "repairs_started": [],
   "blocking": [
     "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos",
-    "cola con 786 estado(s) inválido(s)"
+    "cola con 787 estado(s) inválido(s)",
+    "cola de explicaciones retrasada: 2 pendiente(s) superan 30 min; más antigua 43.4 min"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 786 estado(s) inválido(s)"
+  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 787 estado(s) inválido(s) | cola de explicaciones retrasada: 2 pendiente(s) superan 30 min; más antigua 43.4 min"
 }
