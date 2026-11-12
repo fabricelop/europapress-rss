@@ -1,6 +1,6 @@
 # TTActualidad V2 — construcción aislada
 
-**Rama:** `feature/ttactualidad-v2-clean`. **Estado:** paso 1 validado en vivo (Actions #43320096517); paso 2 implementado, pendiente de validar en Actions.
+**Rama:** `feature/ttactualidad-v2-clean`. **Estado:** paso 1 validado en vivo (Actions #43320096517); paso 2B configurado con GetDayTrends como fuente única, pendiente de validar en Actions.
 
 ## Reglas de aislamiento
 - Producción `main`, workflows, Windows, Cloudflare, app, Site y publicaciones: **sin cambios**.
@@ -10,7 +10,7 @@
 
 ## Etapas
 1. **Captura Top30 España:** `v2/ttendencias/capture_top30.py`; obtiene HTML de GetDayTrends y exige treinta posiciones únicas antes de entregar un JSON. Distingue `observed_at` (hora de nuestra lectura) de una observación original en X, que **no está verificada**.
-2. **Diagnóstico de frescura:** `v2/ttendencias/assess_freshness.py` diferencia la edad de nuestra captura de la frescura original de X. No declara verificada una tendencia por HTTP 200, por cambio de lista ni por fecha local reciente. Sin evidencia externa fiable, `eligible_for_editorial=false`. Contrastar fuentes alternativas sigue **pendiente**.
+2. **Diagnóstico de frescura:** `v2/ttendencias/assess_freshness.py` diferencia la edad de nuestra captura de la frescura original de X. No declara verificada una tendencia por HTTP 200, por cambio de lista ni por fecha local reciente. **Decisión del usuario (12/11/2026):** GetDayTrends será la única fuente por ahora. Si la consulta en vivo devuelve 30 posiciones válidas de España y la captura tiene hasta 20 minutos, `eligible_for_editorial=true` para el FUTURO paso 3 (todavía no conectado). No se afirma verificación directa por X. La comparación con otra fuente queda opcional, no bloqueante.
 3. Nuevas entradas e historial de episodios — **pendiente**.
 4. Cola editorial, investigación, redacción y persistencia — **pendiente**.
 5. Imágenes, decisiones, publicación y migración — **pendiente**.
@@ -26,6 +26,7 @@ El segundo comando realiza una **consulta de lectura** en vivo y muestra un snap
 - Informar `capture_age_minutes` y marcar una captura con más de 20 minutos como `capture_expired`.
 - **Nunca** confundir `observed_at` con la fecha de observación de X: `source_observed_at=null` hasta evidencia independiente.
 - Guardar `freshness-report.json` solo como artefacto temporal de Actions, sin commits ni modificaciones de main.
+- Aceptar GetDayTrends como única fuente según decisión del usuario, sin mostrar validación de X que no existe.
 - No abrir cola editorial ni provocar efectos de producción.
 
 ## Puerta de salida del paso 1
