@@ -1,14 +1,14 @@
 {
   "version": 1,
-  "id": "ttb-news-postwait-error-20261112-1220",
+  "id": "ttb-news-timeout-20261112-1222",
   "project": "TTActualidad",
   "expires_at": "2026-11-13T12:00:00Z",
-  "description": "Read exact failure after wait-for-blank fix",
+  "description": "Inspect timeout after blank-chat wait",
   "steps": [
     {
       "kind": "powershell",
-      "name": "postwait-error",
-      "script": "$f='C:\\TTiTTulares\\ttittulares-mobile-trigger.log'\n$l=[string](Get-Content $f -Tail 220 | Where-Object { $_ -match 'CHAT LAUNCH LOG ERROR' } | Select-Object -Last 1)\nWrite-Output ('TTRESULT:'+(@{state='ok';last=$l.Substring(0,[Math]::Min(1500,$l.Length))}|ConvertTo-Json -Compress))",
+      "name": "news-timeout",
+      "script": "$f='C:\\TTiTTulares\\ttittulares-mobile-trigger.log'\n$l=[string](Get-Content $f -Tail 100 | Where-Object { $_ -match 'CHAT MESSAGE TIMEOUT|CHAT LAUNCH LOG ERROR|LAUNCH FAILED' } | Select-Object -Last 3 -First 1)\nWrite-Output ('TTRESULT:'+(@{state='ok';last=$l.Substring(0,[Math]::Min(1000,$l.Length))}|ConvertTo-Json -Compress))",
       "timeout_seconds": 20
     }
   ]
