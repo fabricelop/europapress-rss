@@ -15,7 +15,7 @@ $StatePath = Join-Path $BaseDir "ttittulares-mobile-trigger-state.json"
 $LogPath = Join-Path $BaseDir "ttittulares-mobile-trigger.log"
 $WatchdogPath = Join-Path $BaseDir "TT-LocalWatchdog.ps1"
 $LauncherLogPath = Join-Path $BaseDir "titulares.log"
-$LaunchConfirmSeconds = 30
+$LaunchConfirmSeconds = 120
 $EditorialRetryBackoffMinutes = 10
 # Crash-loop guard: a failed ChatGPT CDP target must not be relaunched every 15s.
 $StatusBase = [Environment]::GetEnvironmentVariable("TTITTULARES_SERVICE_BASE", "User")
