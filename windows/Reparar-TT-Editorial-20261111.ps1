@@ -330,7 +330,7 @@ async function main(){
   note('SELFTEST_OK regex route marker, Node='+process.versions.node);return
  }
  if(MODE==='--audit'){await cleanup();return}
- if(MODE==='--cleanup'){for(let cycle=0;cycle<4;cycle++){const b=(await targets()).length;note('CLEANUP_PASS '+(cycle+1)+' pages='+b);if(b<=18)break;const r=await cleanup();if(!r.closed)break;}return}
+ if(MODE==='--cleanup'){await pruneFailedOwned();for(let cycle=0;cycle<4;cycle++){const b=(await targets()).length;note('CLEANUP_PASS '+(cycle+1)+' pages='+b);if(b<=18)break;const r=await cleanup();if(!r.closed)break;}return}
  if(MODE==='--inspect-failed'){
   const dir=path.join(STATE,'sent');
   const files=fs.readdirSync(dir).filter(x=>x.endsWith('.json')).map(x=>({name:x,full:path.join(dir,x),time:fs.statSync(path.join(dir,x)).mtimeMs})).sort((a,b)=>b.time-a.time);
@@ -343,7 +343,7 @@ async function main(){
   return;
  }
  if(MODE==='--probe'){
-  await cleanup();let pp=await targets();if(pp.length>48)fail('NO_PROBE hard tab cap');
+  await cleanup();await pruneFailedOwned();let pp=await targets();if(pp.length>48)fail('NO_PROBE hard tab cap');
   let t=await createTarget('https://chatgpt.com/'),c=new WS(t.webSocketDebuggerUrl);try{await c.open();let s=await waitEditor(c,40000);if(!s)fail('COMPOSER_NOT_READY: user login, page load or quota may be blocking');note('COMPOSER_OK no message sent');}
   finally{c.close();let n=(await targets()).find(x=>x.id===t.id);if(n){let st=await inspect(n);if(!st.unknown&&!st.busy&&st.users===0&&st.assistants===0&&st.editorLength===0)await fetch(CDP+'/json/close/'+encodeURIComponent(t.id)).catch(()=>{})}}
   return;
