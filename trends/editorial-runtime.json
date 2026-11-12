@@ -7,29 +7,45 @@
   "previous_run_id": "tr-20261112T161000-manual",
   "command_id": "tr-20261112T162500-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE_WITH_INCIDENTS",
+  "phase": "closing",
   "started_at": "2026-11-12T16:25:00+01:00",
-  "updated_at": "2026-11-12T16:37:48+01:00",
-  "current": 1,
+  "updated_at": "2026-11-12T16:40:09+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "red-review-a59f622b276c0d4d0cfe",
-  "title": "Revisar novedades: #FelizJueves",
-  "queue_complete": false,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
   "processed_ids": [
-    "f4fde19c25ea"
+    "f4fde19c25ea",
+    "red-review-a59f622b276c0d4d0cfe"
   ],
   "converged_ids": [],
   "remaining_ids": [
     "f4fde19c25ea"
   ],
-  "remaining_active_ids": [
-    "red-review-a59f622b276c0d4d0cfe"
-  ],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [
     "f4fde19c25ea"
   ],
-  "summary": null,
+  "summary": {
+    "attempted": 2,
+    "observed": 2,
+    "closed": 2,
+    "explained": 0,
+    "maintenance": 1,
+    "problematic": 1,
+    "updates": 0,
+    "review_completed_no_distinct_event": 0,
+    "maintenance_reviews": 1,
+    "unchanged_reviews": 1,
+    "queue_remaining": 1,
+    "active_remaining": 0,
+    "imagegen_calls": 0,
+    "image_outbox_created": 0,
+    "publications": 0,
+    "incidents": 1
+  },
   "outcomes": [
     {
       "id": "f4fde19c25ea",
@@ -37,7 +53,16 @@
       "name": "Aurá",
       "outcome": "problematic",
       "problematic_attempts": 1,
-      "reason": "El fenómeno general «farmear aura» está documentado, pero no se verificó un detonante concreto del pico actual; la pista editorial no se elevó a hecho."
+      "reason": "Fenómeno general «farmear aura» verificado, pero sin detonante actual independiente suficiente."
+    },
+    {
+      "id": "red-review-a59f622b276c0d4d0cfe",
+      "revision": 0,
+      "name": "Revisar novedades: #FelizJueves",
+      "outcome": "unchanged",
+      "source_id": "ff7da32ed7b2",
+      "source_revision": 3,
+      "reason": "La recurrencia actual está confirmada y no se halló un acontecimiento sustancial nuevo; se conserva texto y fecha."
     }
   ],
   "incident_count": 1,
@@ -46,7 +71,7 @@
       "id": "f4fde19c25ea",
       "name": "Aurá",
       "kind": "unverified_cause",
-      "detail": "No se encontró evidencia independiente suficiente para atribuir el pico actual a un detonante concreto."
+      "detail": "No se verificó un detonante concreto del pico actual; se mantiene fail-closed."
     }
   ],
   "error": null,
@@ -81,24 +106,29 @@
       "revision": 0,
       "name": "Revisar novedades: #FelizJueves",
       "message": "Revisión roja nueva detectada en barrera final; comprobando si hay novedades sustanciales."
+    },
+    {
+      "at": "2026-11-12T16:40:09+01:00",
+      "phase": "closing",
+      "message": "Barrera final main: 0 preparing/update. Aurá r1 permanece problematic; #FelizJueves revisión roja cerrada unchanged conservando explicación y fecha. Sin ImageGen ni publicación."
     }
   ],
   "last_started_at": "2026-11-12T16:33:08+01:00",
-  "last_completed_at": "2026-11-12T16:33:55+01:00",
+  "last_completed_at": "2026-11-12T16:40:09+01:00",
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-20261112T162500-manual",
-    "status": "DONE",
+    "status": "DONE_WITH_INCIDENTS",
     "started_at": "2026-11-12T16:25:00+01:00",
-    "finished_at": "2026-11-12T16:33:55+01:00",
-    "total": 1,
-    "closed": 1,
+    "finished_at": "2026-11-12T16:40:09+01:00",
+    "total": 2,
+    "closed": 2,
     "explained": 0,
-    "maintenance": 0,
+    "maintenance": 1,
     "pending": 0,
     "problematic": 1
   },
-  "message": "Barrera final detectó una revisión roja nueva de #FelizJueves; reabierta la misma pasada para resolverla. Aurá r1 permanece problematic. Sin ImageGen ni publicación.",
+  "message": "Pasada cerrada 2/2: Aurá r1 queda problematic por causa actual no verificada; la revisión roja de #FelizJueves queda unchanged y conserva texto/fecha. No hay preparing/update pendientes. Sin ImageGen ni publicación.",
   "history": [
     {
       "run_id": "tr-1794327332740-manual",
@@ -5097,6 +5127,61 @@
         }
       ],
       "message": "Pasada manual cerrada 1/1: Aurá r1 queda problematic de forma fail-closed; no hay preparing/update pendientes. Sin ImageGen ni publicación."
+    },
+    {
+      "run_id": "tr-20261112T162500-manual",
+      "status": "DONE_WITH_INCIDENTS",
+      "started_at": "2026-11-12T16:25:00+01:00",
+      "finished_at": "2026-11-12T16:40:09+01:00",
+      "at": "2026-11-12T16:40:09+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 2,
+        "observed": 2,
+        "closed": 2,
+        "explained": 0,
+        "maintenance": 1,
+        "problematic": 1,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 1,
+        "unchanged_reviews": 1,
+        "queue_remaining": 1,
+        "active_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 1
+      },
+      "outcomes": [
+        {
+          "id": "f4fde19c25ea",
+          "revision": 1,
+          "name": "Aurá",
+          "outcome": "problematic",
+          "problematic_attempts": 1,
+          "reason": "Fenómeno general «farmear aura» verificado, pero sin detonante actual independiente suficiente."
+        },
+        {
+          "id": "red-review-a59f622b276c0d4d0cfe",
+          "revision": 0,
+          "name": "Revisar novedades: #FelizJueves",
+          "outcome": "unchanged",
+          "source_id": "ff7da32ed7b2",
+          "source_revision": 3,
+          "reason": "La recurrencia actual está confirmada y no se halló un acontecimiento sustancial nuevo; se conserva texto y fecha."
+        }
+      ],
+      "incident_count": 1,
+      "incidents": [
+        {
+          "id": "f4fde19c25ea",
+          "name": "Aurá",
+          "kind": "unverified_cause",
+          "detail": "No se verificó un detonante concreto del pico actual; se mantiene fail-closed."
+        }
+      ],
+      "message": "Pasada cerrada 2/2: Aurá r1 queda problematic por causa actual no verificada; la revisión roja de #FelizJueves queda unchanged y conserva texto/fecha. No hay preparing/update pendientes. Sin ImageGen ni publicación."
     }
   ],
   "current_item": null,
@@ -7872,7 +7957,8 @@
   "maintenance_apply_commits": [
     "eedbccdb94df1936c8997f1f2ced3536266ed14e",
     "8ac401943a74f6b1e15d582eac4c3bffb24294b5",
-    "a3750716edf8e75aa9f7d3894516ef2da4b2aa57"
+    "a3750716edf8e75aa9f7d3894516ef2da4b2aa57",
+    "bb059164e18f56cd1f87c876ddebc2be501a4f79"
   ],
   "outbox_commit": "d4a002c34e63c0e825a820bc432b784b1353cbaa",
   "prior_last_run": {
@@ -8175,5 +8261,6 @@
     }
   ],
   "processed": [],
-  "finished_at": null
+  "finished_at": "2026-11-12T16:40:09+01:00",
+  "maintenance_outbox_commit": "970b545c88b09429a23d15ec893b9d66fb611297"
 }
