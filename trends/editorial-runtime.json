@@ -7,42 +7,37 @@
   "previous_run_id": "tr-20261112T154000-manual",
   "command_id": "tr-20261112T161000-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-12T16:10:00+01:00",
-  "updated_at": "2026-11-12T16:14:00+01:00",
+  "updated_at": "2026-11-12T16:16:00+01:00",
   "current": 6,
   "total": 6,
-  "trend_id": "554d3b5f9168",
-  "title": "TTendencias · pasada manual",
-  "queue_complete": false,
-  "processed_ids": [],
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
+    "554d3b5f9168",
+    "f9c321a34c0c",
+    "e9bc47ad891b",
+    "129a97f8df9f",
+    "f4fde19c25ea",
+    "be0552e64e1b"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "554d3b5f9168",
-    "f9c321a34c0c",
-    "e9bc47ad891b",
-    "129a97f8df9f",
-    "f4fde19c25ea",
-    "be0552e64e1b"
-  ],
-  "remaining_active_ids": [
-    "554d3b5f9168",
-    "f9c321a34c0c",
-    "e9bc47ad891b",
-    "129a97f8df9f",
-    "f4fde19c25ea",
-    "be0552e64e1b"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 6,
     "observed": 6,
-    "closed": 0,
-    "explained": 0,
+    "closed": 6,
+    "explained": 5,
     "maintenance": 1,
     "problematic": 0,
-    "queue_remaining": 6,
+    "updates": 0,
+    "review_completed_no_distinct_event": 1,
+    "queue_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
@@ -83,22 +78,27 @@
       "at": "2026-11-12T16:14:00+01:00",
       "phase": "persisting",
       "message": "Investigación completada para 6 elementos; preparando persistencia editorial sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-12T16:16:00+01:00",
+      "phase": "closing",
+      "message": "Persistencia verificada en main. Cola editorial=0; 5 explicaciones aplicadas y #felizjueves cerrado como no_distinct_event."
     }
   ],
-  "last_started_at": "2026-11-12T15:50:58+01:00",
-  "last_completed_at": "2026-11-12T15:53:00+01:00",
+  "last_started_at": "2026-11-12T16:10:00+01:00",
+  "last_completed_at": "2026-11-12T16:16:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261112T151000-manual",
-    "status": "DONE_WITH_INCIDENTS",
-    "started_at": "2026-11-12T15:10:00+01:00",
-    "finished_at": "2026-11-12T15:17:00+01:00",
+    "run_id": "tr-20261112T161000-manual",
+    "status": "DONE",
+    "started_at": "2026-11-12T16:10:00+01:00",
+    "finished_at": "2026-11-12T16:16:00+01:00",
     "total": 6,
     "closed": 6,
     "explained": 5,
-    "maintenance": 0,
+    "maintenance": 1,
     "pending": 0,
-    "problematic": 1
+    "problematic": 0
   },
   "message": "Pasada manual completada: 2 borradores Radar preparados, 1 revisión roja actualizada en continuidad y Tamayo r1 permanece problematic tras segundo intento sin corroboración fiable.",
   "history": [
@@ -8124,5 +8124,5 @@
     }
   ],
   "processed": [],
-  "finished_at": "2026-11-12T15:53:00+01:00"
+  "finished_at": "2026-11-12T16:16:00+01:00"
 }
