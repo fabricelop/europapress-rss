@@ -52,3 +52,12 @@ test('installer preflight matches the deployed exact-image receiver, not retired
  assert.match(script,/OLD_RECEIVER_MUST_REMAIN_DISABLED/);
  assert.match(script,/NO_APPROVAL_NO_PUBLICATION/);
 });
+
+test('absent legacy receiver is safe; enabled legacy receiver blocks a parallel schedule',()=>{
+ assert.match(script,/\$old=Get-ScheduledTask -TaskName \$oldTaskName -ErrorAction SilentlyContinue/);
+ assert.match(script,/if\(\$old -and \$old\.State -ne 'Disabled'\)/);
+ assert.match(script,/\$oldAfter=Get-ScheduledTask -TaskName \$oldTaskName -ErrorAction SilentlyContinue/);
+ assert.match(script,/if\(\$oldAfter -and \$oldAfter\.State -ne 'Disabled'\)/);
+ assert.match(script,/Disable-ScheduledTask -TaskName \$newTaskName/);
+ assert.doesNotMatch(script,/Enable-ScheduledTask -TaskName \$oldTaskName/);
+});
