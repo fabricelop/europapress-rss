@@ -15,8 +15,12 @@ from v2.ttendencias.assess_freshness import evaluate, moment
 
 ROOT = Path(__file__).resolve().parents[2]
 STATE_DIR = (ROOT / "v2/ttendencias/state").resolve()
-MIN_REENTRY_ABSENCE = timedelta(minutes=30)
-RETENTION = timedelta(days=7)
+MIN_REEXPLAIN_ABSENCE = timedelta(hours=24)  # estrictamente más de 24 h fuera
+
+
+def stable_trend_id(key):
+    """La identidad nunca incorpora fecha, posición ni número de episodio."""
+    return "trv2-" + hashlib.sha256(("ES|" + key).encode()).hexdigest()[:24]
 
 
 def episode_id(key, entered_at):
@@ -47,7 +51,6 @@ def build(snapshot, previous=None, *, now=None):
     fresh = {}
     changes = []
     initial = previous is None
-    current_keys = [term_key(n) for n in snapshot["top30"]]
     for rank, name in enumerate(snapshot["top30"], 1):
         key = term_key(name)
         old = dict(rows.get(key) or {})
@@ -57,28 +60,30 @@ def build(snapshot, previous=None, *, now=None):
             # Primera captura crea la línea base, no 30 novedades artificiales.
             status = "baseline" if initial else "entry"
             entered = stamp
-            old = {"first_seen_at": stamp, "episode_number": 1,
+            old = {"trend_id": stable_trend_id(key), "first_seen_at": stamp, "episode_number": 1,
                    "episode_token": episode_id(key, entered),
                    "entered_top30_at": entered}
         elif not old.get("active"):
             exited = moment(old["exited_at"])
             absence = at - exited
-            if absence >= MIN_REENTRY_ABSENCE:
+            if absence > MIN_REEXPLAIN_ABSENCE:
                 status = "reentry"
                 old["episode_number"] = int(old.get("episode_number") or 1) + 1
                 old["entered_top30_at"] = stamp
                 old["episode_token"] = episode_id(key, stamp)
             else:
-                status = "short_return"  # no es un episodio nuevo
+                status = "short_return"  # Hasta 24 h fuera: no proponer nueva explicación
         elif prior_rank != rank:
             status = "up" if rank < prior_rank else "down"
-        old.update(name=name, key=key, active=True, rank=rank, last_seen_at=stamp,
+        old.update(name=name, key=key, trend_id=stable_trend_id(key), active=True, rank=rank, last_seen_at=stamp,
                    exited_at=None, last_change=status)
         fresh[key] = old
         if status in {"entry", "reentry", "up", "down", "short_return"}:
             changes.append({"kind": status, "key": key, "name": name,
                             "rank": rank, "previous_rank": prior_rank,
+                            "trend_id": old["trend_id"],
                             "episode_token": old["episode_token"],
+                            "reexplain_candidate": status == "reentry",
                             "at": stamp})
     for key, old in rows.items():
         if key in fresh:
@@ -88,9 +93,11 @@ def build(snapshot, previous=None, *, now=None):
             old.update(active=False, rank=None, exited_at=stamp, last_change="exit")
             changes.append({"kind": "exit", "key": key, "name": old["name"],
                             "rank": None, "previous_rank": rows[key].get("rank"),
+                            "trend_id": old.get("trend_id") or stable_trend_id(key),
                             "episode_token": old["episode_token"], "at": stamp})
-        if at - moment(old["last_seen_at"]) <= RETENTION:
-            fresh[key] = old
+        # No se podan identidades: regresar meses después conserva el mismo trend_id.
+        # El historial es exclusivamente V2 y se almacenará separado del flujo actual.
+        fresh[key] = old
     state = {"schema_version": 1, "step": "03_movement", "country": "ES",
              "source": snapshot["source"], "observed_at": stamp,
              "top30": list(snapshot["top30"]), "topics": fresh,
