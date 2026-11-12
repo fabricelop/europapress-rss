@@ -1,20 +1,15 @@
 {
   "version": 1,
-  "id": "ttb-editorial-tabcap-repair-launch-20261112",
+  "id": "ttb-trends-wake-after-tab-fix-20261112",
   "project": "TTActualidad",
   "expires_at": "2026-11-13T08:00:00Z",
-  "description": "With Windows approval patch only the validated local editorial guard, back it up, syntax check, then wake one existing READY editorial task without closing tabs",
+  "description": "After repaired 18-tab guard, request existing TTendencias task only when Node editorial runner idle; no tabs or image changes",
   "steps": [
     {
       "kind": "powershell",
-      "name": "repair-local-tab-cap-and-wake-news",
-      "script": "$ErrorActionPreference='Stop';$o=@{patch='none';launch='none'}\n$p='C:\\TTiTTulares\\TT-Editorial-Guard.js'\ntry{\n $s=[IO.File]::ReadAllText($p,[Text.Encoding]::UTF8)\n $a=\"if(pages.length>18)fail('TOO_MANY_TABS '+pages.length+'; inspect last-audit.json, protected tabs NOT closed');\"\n $b=\"if(pages.length>48)fail('TOO_MANY_TABS_HARD_CAP '+pages.length+'; preserve protected tabs'); if(pages.length>18)note('EDITORIAL_TAB_SOFT_PRESSURE '+pages.length+'; preserved');\"\n if($s.Contains($a)){\n  $running=@(Get-CimInstance Win32_Process -Filter \"Name='node.exe'\"|Where-Object{[string]$_.CommandLine -match 'TT-Editorial-Guard[.]js|Ejecutar[.]js'})\n  if($running.Count){$o.patch='deferred_active_runner'}\n  else{\n   $next=$s.Replace($a,$b).Replace(\"if(pp.length>18)fail('NO_PROBE too many tabs')\",\"if(pp.length>48)fail('NO_PROBE hard tab cap')\")\n   $tmp=$p+'.editorial-new.js';$backup=$p+'.pre-tabcap-20261112.bak'\n   if(-not(Test-Path $backup)){Copy-Item $p $backup -ErrorAction Stop}\n   [IO.File]::WriteAllText($tmp,$next,[Text.UTF8Encoding]::new($false))\n   & node.exe --check $tmp 2>$null\n   if($LASTEXITCODE -ne 0){throw 'NEW_GUARD_JS_INVALID'}\n   Move-Item $tmp $p -Force -ErrorAction Stop\n   $o.patch='updated';$o.backup='preserved'\n  }\n }elseif($s.Contains('TOO_MANY_TABS_HARD_CAP')){$o.patch='already_updated'}\n else{throw 'UNRECOGNIZED_GUARD_NO_CHANGE'}\n if($o.patch -in @('updated','already_updated')){\n  $v=Invoke-RestMethod 'http://127.0.0.1:9223/json/list' -TimeoutSec 5\n  $o.tabs=@($v|Where-Object{$_.type -eq 'page'}).Count\n  if($o.tabs -gt 48){$o.launch='safety_cap'}\n  else{\n   $busy=@(Get-CimInstance Win32_Process -Filter \"Name='node.exe'\"|Where-Object{[string]$_.CommandLine -match 'TT-Editorial-Guard[.]js|Ejecutar[.]js'})\n   if($busy.Count){$o.launch='active_runner'}\n   else{\n    $name='TTiTTulares Local'\n    $t=Get-ScheduledTask -TaskName $name -ErrorAction Stop\n    if([string]$t.State -eq 'Ready'){Start-ScheduledTask -TaskName $name -ErrorAction Stop;$o.launch='news_task_requested'}else{$o.launch='task_not_ready'}\n   }\n  }\n }\n}catch{$o.error=($_.Exception.Message -replace 'https?://\\S+','[URL]')}\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress))\n",
-      "timeout_seconds": 70
-    },
-    {
-      "kind": "builtin",
-      "name": "listener-summary",
-      "timeout_seconds": 25
+      "name": "wake-trends-ready-safely",
+      "script": "$o=@{project='ttendencias';action='none'}\ntry{\n $active=@(Get-CimInstance Win32_Process -Filter \"Name='node.exe'\" -ErrorAction Stop|Where-Object{[string]$_.CommandLine -match 'TT-Editorial-Guard[.]js|Ejecutar[.]js'})\n $t=Get-ScheduledTask -TaskName 'TTendencias Local' -ErrorAction Stop\n $i=Get-ScheduledTaskInfo -TaskName $t.TaskName -ErrorAction Stop\n $o.last=[string]$i.LastRunTime;$o.result=$i.LastTaskResult;$o.state=[string]$t.State\n if($active.Count -gt 0){$o.action='deferred_active_runner'}\n elseif([string]$t.State -ne 'Ready'){$o.action='deferred_task_not_ready'}\n else{Start-ScheduledTask -TaskName $t.TaskName -ErrorAction Stop;$o.action='requested'}\n}catch{$o.action='error';$o.error=$_.Exception.Message}\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress))\n",
+      "timeout_seconds": 35
     }
   ]
 }
