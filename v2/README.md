@@ -38,3 +38,10 @@ El segundo comando realiza una **consulta de lectura** en vivo y muestra un snap
 
 ## Puerta de salida del paso 1
 Pruebas unitarias aprobadas, lectura en vivo con 30 posiciones y metadatos verificables. Hasta entonces no se considera E2E validado. No sustituir la fuente ni afirmar correspondencia directa con X.
+
+## Persistencia del historial entre capturas (paso 3)
+- El workflow de prueba V2 guarda exclusivamente `v2/ttendencias/state/history.json` **en la rama `feature/ttactualidad-v2-clean`** tras una captura válida.
+- Un `git fetch` obtiene el último historial antes de cada cálculo. El proceso acepta solo capturas posteriores, conserva los `trend_id` estables y vuelve a calcular si hay conflicto de escritura.
+- El workflow solo responde a cambios V2 en la rama de pruebas; no hay cron productivo, órdenes editoriales, publicaciones ni cambios en `main`.
+- Cada ejecución crea un artefacto temporal y verifica los cambios. Los commits automáticos hechos con el token de GitHub no disparan otra ejecución de este workflow.
+- La primera ejecución persistida establece 30 identidades; la siguiente debe reutilizarlas en otra captura y almacenar entradas y salidas reales si las hay.
