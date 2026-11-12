@@ -1082,8 +1082,8 @@ REGLAS:
 - No hagas una infografía, interfaz, diagrama, collage ni captura de pantalla.
 - No escribas el tuit dentro de la imagen.
 - No proceses otra noticia.
-- Genera exactamente UNA imagen.
-- No descargues, captures ni persistas ninguna imagen: se quedará en ChatGPT Images.
+- Genera exactamente UNA imagen y conserva el original en ChatGPT Images.
+- No asocies, subas, apruebes ni publiques automáticamente la imagen: el circuito editorial de revisión es independiente.
 "@
 }
 
