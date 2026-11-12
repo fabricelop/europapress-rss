@@ -54,10 +54,12 @@ jobs:
           repo="$(mktemp -d)"
           trap 'sudo rm -rf "$repo"' EXIT
           git init -q "$repo"
-          # Git 2.56 may ignore GIT_TEST_ASSUME_DIFFERENT_OWNER. Use actual
-          # foreign ownership with readable permissions, as on the user's PC.
+          # Use real foreign ownership rather than test env flags; GitHub
+          # may preconfigure safe.directory=*, so isolate global/system config.
           chmod -R a+rX "$repo"
-          sudo chown -R root:root "$repo"
+          sudo chown -R 65534:65534 "$repo"
+          export GIT_CONFIG_GLOBAL=/dev/null
+          export GIT_CONFIG_SYSTEM=/dev/null
           if git -C "$repo" rev-parse --is-inside-work-tree 2>/dev/null; then
             echo 'Expected dubious ownership check did not trigger'
             exit 1
