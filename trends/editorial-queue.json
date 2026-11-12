@@ -1,6 +1,78 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-12T12:48:07+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-12T11:49:16.625219+00:00",
+  "count": 2,
+  "items": [
+    {
+      "id": "red-review-cbea69a4caa17fe78e99",
+      "revision": 0,
+      "name": "Revisar novedades: #HuelgaGeneral",
+      "rank": 2,
+      "status": "preparing",
+      "requested_at": "2026-11-12T11:49:16.625219+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "4f1dae5df224",
+        "revision": 1,
+        "name": "#HuelgaGeneral",
+        "rank": 5,
+        "explanation": "TT#5 #HuelgaGeneral es tendencia porque la huelga de 24 horas del 11N ya está en marcha por vivienda, salarios y precios; en Mercamadrid las cargas dejaron al menos 13 heridos y un detenido.\n#11N #Mercamadrid",
+        "explanation_sha256": "30e421f3b9ec4e6462a796ad6d7897e08d0c7344639e4f039308f55f51b1d09a",
+        "explained_at": "2026-11-11T07:54:00+01:00",
+        "verification_sources": [
+          {
+            "url": "https://www.rtve.es/noticias/20261111/huelga-general-espana-11n-directo-hoy-video-cronica/17308588.shtml"
+          },
+          {
+            "url": "https://www.rtve.es/temas/huelgas/8010/"
+          },
+          {
+            "url": "https://www.20minutos.es/nacional/huelga-general-11n-directo-ultima-hora-los-paros-manifestaciones-servicios-minimos-toda-espana_7059492_6.html"
+          }
+        ],
+        "fingerprint": "eb88a43479a6f77e1f80d73b734f73754252c7a646ce1ebe5083336cb1ab57d0"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-9be9fbf4d7f1a62a6483",
+      "revision": 0,
+      "name": "Revisar novedades: CCOO",
+      "rank": 7,
+      "status": "preparing",
+      "requested_at": "2026-11-12T11:49:16.625219+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "54558781ed3f",
+        "revision": 0,
+        "name": "CCOO",
+        "rank": 16,
+        "explanation": "TT#16 CCOO es tendencia por la huelga general del 11N: el sindicato, junto a UGT y otras organizaciones, ha convocado 24 horas de paro por vivienda y salarios.\n#HuelgaGeneral11N #11N\n🌶️ El calendario sindical ha reservado el día entero.",
+        "explanation_sha256": "9ec20d333d0cf84573266c08788fe85ed41ea1f7163ef1a181f7521a6697f150",
+        "explained_at": "2026-11-11T08:55:00+01:00",
+        "verification_sources": [
+          {
+            "url": "https://www.europapress.es/economia/laboral-00346/noticia-arranca-huelga-general-vivienda-salarios-primera-presidencia-pedro-sanchez-20261111000049.html"
+          },
+          {
+            "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-23329"
+          }
+        ],
+        "fingerprint": "5b39ba8f494eecd9d4fec294c8ae9ab81226d110f8e875e764c74d6478f3d267"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
