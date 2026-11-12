@@ -306,7 +306,9 @@ def reconcile_orphan(client, candidate):
 
 
 def execute(client, policy):
-    if policy.get("enabled") is not True or policy.get("max_new_jobs_per_run") != 1 or policy.get("max_active_jobs") != 1:
+    if (policy.get("enabled") is not True or policy.get("max_new_jobs_per_run") != 1
+            or policy.get("max_active_jobs") != 1
+            or policy.get("minimum_minutes_between_automatic_jobs") != 15):
         raise RuntimeError("policy must explicitly enable 1 job/run and 1 active job")
     prepared, _ = client.get(SRC_PREPARED, "main")
     decisions, _ = client.get(SRC_DECISIONS, "main")
@@ -327,6 +329,13 @@ def execute(client, policy):
         job, _ = client.get(str(item.get("status_path") or f"{JOB_DIR}/{item.get('target_id')}.json"))
         if is_active(job, now):
             active += 1
+    # A separate automatic-repair path already writes to this same queue.
+    # Prevent push-trigger storms even when those jobs become LAUNCHED fast.
+    recent_automatic = any(
+        x.get("auto_repair") is True and (issued := when(x.get("requested_at")))
+        and 0 <= (now - issued).total_seconds() < 15 * 60
+        for x in idx["jobs"]
+    )
     actions = []
     # Repair a previously written job that failed only its index transaction.
     for row in pending:
@@ -341,6 +350,9 @@ def execute(client, policy):
             continue
         if active >= 1:
             actions.append({"id": row["event_id"], "result": "waiting_existing_active_job"})
+            break
+        if recent_automatic:
+            actions.append({"id": row["event_id"], "result": "automatic_job_15m_cooldown"})
             break
         # Re-read just before write: no stale revision, reused title or changed text.
         fresh, _ = client.get(SRC_PREPARED, "main")
