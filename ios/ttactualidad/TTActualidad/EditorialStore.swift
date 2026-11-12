@@ -77,6 +77,8 @@ struct TrendItem: Identifiable {
     // AI image is independent from archive photographs.
     var siteImageURL: URL? = nil
     var siteImageSHA256: String = ""
+    // Last confirmed, distinct earlier editorial admission to Listas.
+    var previousListasAt: Date? = nil
     var isCovered: Bool { !coveredByID.isEmpty }
 
     func ageBand(now: Date = Date()) -> Int {
@@ -192,6 +194,8 @@ final class EditorialStore: ObservableObject {
     @Published var trendFilter: TrendFilter = .top
     @Published var newsFilter: NewsFilter = .listas
     @Published private(set) var snapshot = EditorialSnapshot()
+    // UI-only signal, not a receipt of a completed GitHub action.
+    @Published private(set) var listasRemovalScrollRevision = 0
     @Published private(set) var publicationLedgerAvailable = false
     @Published private var publicationEvents: [PublicationEvent] = []
 
@@ -1614,6 +1618,10 @@ final class EditorialStore: ObservableObject {
                         "Trasladado a elaboración · guardando en GitHub…"
         actionIsError = false
         applyOptimisticOverlay()
+        if ["deleted", "published"].contains(decision) {
+            // The card disappears optimistically: restore a useful scroll position.
+            listasRemovalScrollRevision += 1
+        }
         refreshOptimisticActivity()
         return true
     }
@@ -1769,7 +1777,8 @@ final class EditorialStore: ObservableObject {
                   siteImageRevision: trend.siteImageRevision,
                   siteImageExplainedAt: trend.siteImageExplainedAt,
                   siteImageURL: trend.siteImageURL,
-                  siteImageSHA256: trend.siteImageSHA256)
+                  siteImageSHA256: trend.siteImageSHA256,
+                  previousListasAt: trend.previousListasAt)
     }
 
     private func overlayNews(_ item: NewsItem, status: String) -> NewsItem {
@@ -2090,6 +2099,17 @@ final class EditorialStore: ObservableObject {
             let id = str(row, "event_id")
             if !id.isEmpty && isNewer(row, than: latestDeliveries[id]) { latestDeliveries[id] = row }
         }
+        // Dated earlier Listas entries, never mere Top 30 radar sightings.
+        var listasHistory: [String: [(id: String, revision: Int, at: Date)]] = [:]
+        for previous in rows(manual, "items") {
+            let key = norm(str(previous, "name"))
+            let state = str(previous, "status").lowercased()
+            guard !key.isEmpty, ["explained", "deleted", "published"].contains(state),
+                  !str(previous, "explanation").trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
+                  let at = when(previous, ["explained_at"]) else { continue }
+            listasHistory[key, default: []].append(
+                (id: str(previous, "id"), revision: int(previous, "revision"), at: at))
+        }
         let closures = rows(decisions, "items").filter { closed.contains(str($0, "status").lowercased()) }
         let activeQueue = rows(queue, "items")
         return latestManual.compactMap { id, row -> TrendItem? in
@@ -2129,6 +2149,12 @@ final class EditorialStore: ObservableObject {
                 [Self.str($0, "id"), Self.str($0, "event_id")].contains(id) && closureApplies($0)
             }) || closureApplies(delivery) { return nil }
 
+            let previousListasAt = listasHistory[norm(str(row, "name"))]?
+                .filter { episode in
+                    episode.at.timeIntervalSince(explained) < -60 &&
+                    (episode.id != id || episode.revision != rev ||
+                     explained.timeIntervalSince(episode.at) >= 48 * 3600)
+                }.map { $0.at }.max()
             let archive = row["archive_image"] as? [String: Any] ??
                           row["fallback_image"] as? [String: Any] ?? [:]
             return TrendItem(id: id, rank: int(row, "rank"), name: str(row, "name"),
@@ -2159,7 +2185,8 @@ final class EditorialStore: ObservableObject {
                                  id: id, revision: rev,
                                  explanation: str(row, "explanation"),
                                  explainedAt: str(row, "explained_at"),
-                                 catalog: siteImages) ?? "")
+                                 catalog: siteImages) ?? "",
+                              previousListasAt: previousListasAt)
         }
         .sorted {
             let leftRank = $0.rank > 0 ? $0.rank : Int.max
