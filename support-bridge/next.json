@@ -1,14 +1,14 @@
 {
   "version": 1,
-  "id": "ttb-news-log-one-line-20261112-1152",
+  "id": "ttb-news-editorial-lines-20261112-1154",
   "project": "TTActualidad",
   "expires_at": "2026-11-13T12:00:00Z",
-  "description": "Read last news listener line only",
+  "description": "Read recent news editorial and image-slot lines",
   "steps": [
     {
       "kind": "powershell",
-      "name": "news-last-line",
-      "script": "$f='C:\\TTiTTulares\\ttittulares-mobile-trigger.log'\n$l=if(Test-Path $f){[string](Get-Content $f -Tail 1)}else{'missing'}\nWrite-Output ('TTRESULT:'+(@{state='ok';last=$l.Substring(0,[Math]::Min(300,$l.Length))}|ConvertTo-Json -Compress))",
+      "name": "news-editorial-lines",
+      "script": "$f='C:\\TTiTTulares\\ttittulares-mobile-trigger.log'\n$a=@(Get-Content $f -Tail 180 | Where-Object { $_ -match 'EDITORIAL|CHAT MESSAGE|LAUNCH|IMAGE GLOBAL SLOT WAIT' } | Select-Object -Last 12)\nWrite-Output ('TTRESULT:'+(@{state='ok';lines=@($a)}|ConvertTo-Json -Compress -Depth 3))",
       "timeout_seconds": 20
     }
   ]
