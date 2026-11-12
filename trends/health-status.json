@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-12T21:46:58.031107+00:00",
+  "checked_at": "2026-11-12T22:19:44.773250+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -42,7 +42,7 @@
     "top10": {
       "ok": false,
       "count": 10,
-      "non_stale_sources": 3,
+      "non_stale_sources": 4,
       "verified_fresh_sources": [
         "xtrendsiamrohit"
       ],
@@ -59,8 +59,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 3.9,
-      "run_id": 43312617712,
+      "age_minutes": 3.6,
+      "run_id": 43318309833,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -81,84 +81,19 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": false,
-      "pending_count": 9,
-      "overdue_count": 9,
-      "oldest_age_minutes": 61.2,
+      "ok": true,
+      "pending_count": 0,
+      "overdue_count": 0,
+      "oldest_age_minutes": 0,
       "warning_after_minutes": 30,
-      "overdue_items": [
-        {
-          "id": "c4bd616d18d0",
-          "name": "Navalcarnero",
-          "status": "preparing",
-          "age_minutes": 61.2
-        },
-        {
-          "id": "5b4019aec79a",
-          "name": "Chequia",
-          "status": "preparing",
-          "age_minutes": 40.7
-        },
-        {
-          "id": "42a8a396f51e",
-          "name": "#LaFuerzaDeLasMujeres",
-          "status": "preparing",
-          "age_minutes": 35.8
-        },
-        {
-          "id": "dfda32e4066b",
-          "name": "Rodrigo Marina",
-          "status": "preparing",
-          "age_minutes": 35.8
-        },
-        {
-          "id": "e84ec14bccf9",
-          "name": "#SVFinal",
-          "status": "preparing",
-          "age_minutes": 35.8
-        },
-        {
-          "id": "6f003b5f1cb3",
-          "name": "#LaDiana12Nov",
-          "status": "preparing",
-          "age_minutes": 35.8
-        },
-        {
-          "id": "ecc6252a91d7",
-          "name": "Junior",
-          "status": "preparing",
-          "age_minutes": 35.8
-        },
-        {
-          "id": "cf919568868a",
-          "name": "Tarancón",
-          "status": "preparing",
-          "age_minutes": 35.8
-        },
-        {
-          "id": "b0858b01041f",
-          "name": "celso",
-          "status": "preparing",
-          "age_minutes": 35.8
-        }
-      ],
+      "overdue_items": [],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": false,
-      "status": "overdue",
-      "queue_complete": false,
-      "remaining_active_ids": [
-        "c4bd616d18d0",
-        "5b4019aec79a",
-        "42a8a396f51e",
-        "dfda32e4066b",
-        "e84ec14bccf9",
-        "6f003b5f1cb3",
-        "ecc6252a91d7",
-        "cf919568868a",
-        "b0858b01041f"
-      ],
+      "ok": true,
+      "status": "not-required",
+      "queue_complete": true,
+      "remaining_active_ids": [],
       "contradictory_success": false
     },
     "telegram_provisional": {
@@ -170,10 +105,9 @@
   "repairs_started": [],
   "blocking": [
     "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos",
-    "cola con 789 estado(s) inválido(s)",
-    "cola de explicaciones retrasada: 9 pendiente(s) superan 30 min; más antigua 61.2 min"
+    "cola con 789 estado(s) inválido(s)"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 789 estado(s) inválido(s) | cola de explicaciones retrasada: 9 pendiente(s) superan 30 min; más antigua 61.2 min"
+  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 789 estado(s) inválido(s)"
 }
