@@ -1,15 +1,29 @@
 {
   "version": 1,
-  "id": "ttb-site-inbox-feed-readonly-20261112",
+  "id": "ttb-both-editorial-health-20261112-0845",
   "project": "TTActualidad",
   "expires_at": "2026-11-13T08:00:00Z",
-  "description": "Verify private Site inbox GET status and presence of a pre-authenticated Site browser tab without reading credentials or modifying app",
+  "description": "Read-only native Windows diagnostics to locate current TTendencias and TTiTTulares editorial executor stall",
   "steps": [
     {
-      "kind": "powershell",
-      "name": "site-inbox-feed-auth-and-presence",
-      "script": "$o=@{http='unknown';siteTabFound=$false;siteTabs=0;appApi='unknown'}\n$u='https://ttactualidad.rainyraven22.chatgpt.site/api/image-inbox/v1/images'\ntry{$r=Invoke-WebRequest -UseBasicParsing -Uri $u -TimeoutSec 12 -MaximumRedirection 0; $o.http=[string][int]$r.StatusCode;try{$j=$r.Content|ConvertFrom-Json;$o.apiItems=@($j.items).Count}catch{}}\ncatch {if($_.Exception.Response){$o.http=[string][int]$_.Exception.Response.StatusCode}else{$o.http='NETWORK_ERROR'}}\nforeach($p in @(9223,9234)){try{$tabs=Invoke-RestMethod -Uri \"http://127.0.0.1:$p/json/list\" -TimeoutSec 3;$o.siteTabs+=@($tabs|Where-Object{$_.url -like 'https://ttactualidad.rainyraven22.chatgpt.site/*'}).Count}catch{}}\n$o.siteTabFound=$o.siteTabs -gt 0\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress))\n",
-      "timeout_seconds": 35
+      "kind": "builtin",
+      "name": "listener-summary",
+      "timeout_seconds": 30
+    },
+    {
+      "kind": "builtin",
+      "name": "editorial-queue",
+      "timeout_seconds": 30
+    },
+    {
+      "kind": "builtin",
+      "name": "editorial-runtime",
+      "timeout_seconds": 30
+    },
+    {
+      "kind": "builtin",
+      "name": "editorial-guard",
+      "timeout_seconds": 30
     }
   ]
 }
