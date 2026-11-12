@@ -1,14 +1,14 @@
 {
   "version": 1,
-  "id": "ttb-news-last-after-fix-20261112-1150",
+  "id": "ttb-news-postfix-launch-20261112-1155",
   "project": "TTActualidad",
   "expires_at": "2026-11-13T12:00:00Z",
-  "description": "Read latest news listener event after guarded fix",
+  "description": "Read latest launch outcome after backoff",
   "steps": [
     {
       "kind": "powershell",
-      "name": "news-last-after-fix",
-      "script": "$f='C:\\TTiTTulares\\ttittulares-mobile-trigger.log'\n$l=[string](Get-Content $f -Tail 1)\nWrite-Output ('TTRESULT:'+(@{state='ok';last=$l.Substring(0,[Math]::Min(400,$l.Length))}|ConvertTo-Json -Compress))",
+      "name": "postfix-launch",
+      "script": "$f='C:\\TTiTTulares\\ttittulares-mobile-trigger.log'\n$l=[string](Get-Content $f -Tail 150 | Where-Object { $_ -match 'LAUNCH CONFIRMED|LAUNCH FAILED|CHAT LAUNCH LOG ERROR' } | Select-Object -Last 1)\nWrite-Output ('TTRESULT:'+(@{state='ok';last=$l.Substring(0,[Math]::Min(1000,$l.Length))}|ConvertTo-Json -Compress))",
       "timeout_seconds": 20
     }
   ]
