@@ -7,48 +7,128 @@
   "previous_run_id": "tr-20261112T235500-chat-direct",
   "command_id": "tr-20261113T0010-chat-direct",
   "source": "chat_direct",
-  "status": "success",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-13T00:10:00+01:00",
-  "updated_at": "2026-11-13T00:16:53+01:00",
-  "current": 0,
+  "updated_at": "2026-11-13T00:18:00+01:00",
+  "current": 9,
   "total": 9,
   "trend_id": null,
-  "title": "Preparando 9 trabajos TTendencias",
+  "title": "Pasada editorial TTendencias",
   "queue_complete": true,
   "processed_ids": [
     "14476ed6fdb7",
     "222611d9170d",
-    "33dd0de33093",
     "4c413a617eac",
     "b46e87f61b74",
+    "33dd0de33093",
     "c03a43a858c1"
   ],
-  "converged_ids": [],
+  "converged_ids": [
+    "d71d9cbc6a33",
+    "f9ce2a658e8b",
+    "e883cdb753d6"
+  ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 6,
     "observed": 9,
-    "closed": 0,
-    "explained": 0,
+    "closed": 9,
+    "explained": 6,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
     "maintenance_reviews": 0,
     "unchanged_reviews": 0,
-    "queue_remaining": 9,
+    "queue_remaining": 0,
+    "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 3,
+    "cause_unconfirmed": 1
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "d71d9cbc6a33",
+      "revision": 0,
+      "name": "Begoña",
+      "outcome": "concurrent_convergence",
+      "via": "jit_queue_convergence",
+      "note": "Salió de la cola antes de persistir; se respetó la decisión terminal vigente y no se duplicó."
+    },
+    {
+      "id": "f9ce2a658e8b",
+      "revision": 0,
+      "name": "Cristina Porta",
+      "outcome": "concurrent_convergence",
+      "via": "jit_queue_convergence",
+      "note": "Salió de la cola antes de persistir; no se duplicó."
+    },
+    {
+      "id": "e883cdb753d6",
+      "revision": 0,
+      "name": "Itália",
+      "outcome": "concurrent_convergence",
+      "via": "jit_queue_convergence",
+      "note": "Salió de la cola antes de persistir; no se duplicó."
+    },
+    {
+      "id": "14476ed6fdb7",
+      "revision": 0,
+      "name": "Manu Sánchez",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "4003b0d7394f6920e521abf1d8948da21cf93cda"
+    },
+    {
+      "id": "222611d9170d",
+      "revision": 0,
+      "name": "#ElPerroAndaluzTVE",
+      "outcome": "explained",
+      "applied": true,
+      "distinct_episode": true,
+      "apply_commit": "4003b0d7394f6920e521abf1d8948da21cf93cda"
+    },
+    {
+      "id": "4c413a617eac",
+      "revision": 0,
+      "name": "Gianmarco",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "4003b0d7394f6920e521abf1d8948da21cf93cda"
+    },
+    {
+      "id": "b46e87f61b74",
+      "revision": 0,
+      "name": "Procida",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "4003b0d7394f6920e521abf1d8948da21cf93cda"
+    },
+    {
+      "id": "33dd0de33093",
+      "revision": 0,
+      "name": "GHVIP",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "4003b0d7394f6920e521abf1d8948da21cf93cda"
+    },
+    {
+      "id": "c03a43a858c1",
+      "revision": 0,
+      "name": "Petit",
+      "outcome": "explained_cause_unconfirmed",
+      "applied": true,
+      "apply_commit": "4003b0d7394f6920e521abf1d8948da21cf93cda"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
-  "error": null,
+  "error": "",
   "activity": [
     {
       "at": "2026-11-12T16:14:00+01:00",
@@ -115,23 +195,26 @@
       "at": "2026-11-13T00:10:00+01:00",
       "phase": "preparing",
       "message": "Cola inicial 9; revalidación JIT contra main, sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-13T00:18:00+01:00",
+      "phase": "closing",
+      "message": "Barrera final main: editorial-queue=0; 6 resultados procesados sin errores por el aplicador oficial y 3 convergencias JIT. ImageGen=0; publicaciones=0."
     }
   ],
   "last_started_at": "2026-11-13T00:16:53+01:00",
-  "last_completed_at": "2026-11-13T00:16:53+01:00",
+  "last_completed_at": "2026-11-13T00:18:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261112T235500-chat-direct",
+    "run_id": "tr-20261113T0010-chat-direct",
     "status": "DONE",
-    "started_at": "2026-11-12T23:55:00+01:00",
-    "finished_at": "2026-11-12T23:56:00+01:00",
-    "at": "2026-11-12T23:56:00+01:00",
-    "phase": "closing",
+    "started_at": "2026-11-13T00:10:00+01:00",
+    "finished_at": "2026-11-13T00:18:00+01:00",
     "summary": {
-      "attempted": 0,
-      "observed": 0,
-      "closed": 0,
-      "explained": 0,
+      "attempted": 6,
+      "observed": 9,
+      "closed": 9,
+      "explained": 6,
       "problematic": 0,
       "updates": 0,
       "review_completed_no_distinct_event": 0,
@@ -143,16 +226,12 @@
       "image_outbox_created": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 0
+      "concurrent_convergence": 3,
+      "cause_unconfirmed": 1
     },
-    "processed_ids": [],
-    "converged_ids": [],
-    "outcomes": [],
-    "incident_count": 0,
-    "incidents": [],
-    "message": "Pasada TTendencias completada 0/0 contra main. Barrera JIT final: editorial-queue=0 (updated_at 2026-11-12T23:51:08+01:00) y mobile-decisions sin trabajo editorial activo. No había revisiones preparando/update pendientes. Sin ImageGen ni publicaciones."
+    "message": "Pasada TTendencias completada 9/9 observados: 6 elaboraciones aplicadas sin errores por el aplicador oficial y 3 revisiones convergieron JIT antes de escritura (Begoña, Cristina Porta e Itália), sin duplicarlas. Petit quedó con causa no confirmada; #ElPerroAndaluzTVE se cerró como episodio material distinto. Cola final 0. Sin ImageGen ni publicaciones."
   },
-  "message": "Pasada manual iniciada: 9 revisiones observadas en la cola autoritativa; revalidación JIT e investigación en curso. Sin ImageGen ni publicaciones.",
+  "message": "Pasada TTendencias completada 9/9 observados: 6 elaboraciones aplicadas sin errores por el aplicador oficial y 3 revisiones convergieron JIT antes de escritura (Begoña, Cristina Porta e Itália), sin duplicarlas. Petit quedó con causa no confirmada; #ElPerroAndaluzTVE se cerró como episodio material distinto. Cola final 0. Sin ImageGen ni publicaciones.",
   "history": [
     {
       "run_id": "tr-1794327332740-manual",
@@ -5511,15 +5590,134 @@
       "at": "2026-11-13T00:10:00+01:00",
       "phase": "preparing",
       "message": "Cola inicial 9; iniciando pasada editorial real contra main, sin ImageGen ni publicación."
+    },
+    {
+      "run_id": "tr-20261113T0010-chat-direct",
+      "status": "DONE",
+      "started_at": "2026-11-13T00:10:00+01:00",
+      "finished_at": "2026-11-13T00:18:00+01:00",
+      "at": "2026-11-13T00:18:00+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 6,
+        "observed": 9,
+        "closed": 9,
+        "explained": 6,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 0,
+        "unchanged_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 3,
+        "cause_unconfirmed": 1
+      },
+      "processed_ids": [
+        "14476ed6fdb7",
+        "222611d9170d",
+        "4c413a617eac",
+        "b46e87f61b74",
+        "33dd0de33093",
+        "c03a43a858c1"
+      ],
+      "converged_ids": [
+        "d71d9cbc6a33",
+        "f9ce2a658e8b",
+        "e883cdb753d6"
+      ],
+      "outcomes": [
+        {
+          "id": "d71d9cbc6a33",
+          "revision": 0,
+          "name": "Begoña",
+          "outcome": "concurrent_convergence",
+          "via": "jit_queue_convergence",
+          "note": "Salió de la cola antes de persistir; se respetó la decisión terminal vigente y no se duplicó."
+        },
+        {
+          "id": "f9ce2a658e8b",
+          "revision": 0,
+          "name": "Cristina Porta",
+          "outcome": "concurrent_convergence",
+          "via": "jit_queue_convergence",
+          "note": "Salió de la cola antes de persistir; no se duplicó."
+        },
+        {
+          "id": "e883cdb753d6",
+          "revision": 0,
+          "name": "Itália",
+          "outcome": "concurrent_convergence",
+          "via": "jit_queue_convergence",
+          "note": "Salió de la cola antes de persistir; no se duplicó."
+        },
+        {
+          "id": "14476ed6fdb7",
+          "revision": 0,
+          "name": "Manu Sánchez",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "4003b0d7394f6920e521abf1d8948da21cf93cda"
+        },
+        {
+          "id": "222611d9170d",
+          "revision": 0,
+          "name": "#ElPerroAndaluzTVE",
+          "outcome": "explained",
+          "applied": true,
+          "distinct_episode": true,
+          "apply_commit": "4003b0d7394f6920e521abf1d8948da21cf93cda"
+        },
+        {
+          "id": "4c413a617eac",
+          "revision": 0,
+          "name": "Gianmarco",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "4003b0d7394f6920e521abf1d8948da21cf93cda"
+        },
+        {
+          "id": "b46e87f61b74",
+          "revision": 0,
+          "name": "Procida",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "4003b0d7394f6920e521abf1d8948da21cf93cda"
+        },
+        {
+          "id": "33dd0de33093",
+          "revision": 0,
+          "name": "GHVIP",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "4003b0d7394f6920e521abf1d8948da21cf93cda"
+        },
+        {
+          "id": "c03a43a858c1",
+          "revision": 0,
+          "name": "Petit",
+          "outcome": "explained_cause_unconfirmed",
+          "applied": true,
+          "apply_commit": "4003b0d7394f6920e521abf1d8948da21cf93cda"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada TTendencias completada 9/9 observados: 6 elaboraciones aplicadas sin errores por el aplicador oficial y 3 revisiones convergieron JIT antes de escritura (Begoña, Cristina Porta e Itália), sin duplicarlas. Petit quedó con causa no confirmada; #ElPerroAndaluzTVE se cerró como episodio material distinto. Cola final 0. Sin ImageGen ni publicaciones."
     }
   ],
   "current_item": null,
   "withdrawn_ids": [],
-  "last_finished_at": "2026-11-12T23:56:00+01:00",
-  "last_revalidated_at": "2026-11-13T00:10:00+01:00",
+  "last_finished_at": "2026-11-13T00:18:00+01:00",
+  "last_revalidated_at": "2026-11-13T00:16:53+01:00",
   "last_revalidation": {
-    "queue_count": 9,
-    "queue_updated_at": "2026-11-13T00:01:32+01:00"
+    "queue_count": 0,
+    "queue_updated_at": "2026-11-13T00:16:53+01:00",
+    "queue_sha": "171dd2264cff06510074b6e912b078af574d4389"
   },
   "prior_runtime_observed": {
     "run_id": "tr-autoguard-1794381666",
@@ -8588,6 +8786,6 @@
     }
   ],
   "processed": [],
-  "finished_at": null,
+  "finished_at": "2026-11-13T00:18:00+01:00",
   "maintenance_outbox_commit": "970b545c88b09429a23d15ec893b9d66fb611297"
 }
