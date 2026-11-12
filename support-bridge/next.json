@@ -1,14 +1,14 @@
 {
   "version": 1,
-  "id": "ttb-editorial-second-error-cause-20261112",
+  "id": "ttb-editorial-last-error-and-watchdog-v15-20261112",
   "project": "TTActualidad",
   "expires_at": "2026-11-13T08:00:00Z",
-  "description": "Extract only short sanitized failure codes from most recent two editorial listeners after 18-tab fix; read only",
+  "description": "Read-only prove new watchdog propagated and smallest anonymized launch error tail for both bots",
   "steps": [
     {
       "kind": "powershell",
-      "name": "editorial-recent-failure-codes",
-      "script": "$o=@()\nforeach($n in @('ttittulares-mobile-trigger.log','ttendencias-mobile-trigger.log')){\n $p=Join-Path 'C:\\TTiTTulares' $n\n $lines=@(Get-Content $p -Tail 200 -ErrorAction SilentlyContinue|Where-Object{$_ -match 'CHAT LAUNCH LOG ERROR|CHAT PROCESS EXITED|CHAT MESSAGE CONFIRMED' }|Select-Object -Last 4)\n foreach($line in $lines){\n  $kind=if($line -match 'CHAT MESSAGE CONFIRMED'){'confirmed'}elseif($line -match 'CHAT PROCESS EXITED'){'exited'}else{'launch_error'}\n  $tags=@('TOO_MANY_TABS','HARD_CAP','EDITORIAL_TAB_SOFT_PRESSURE','OTHER_CHAT_ACTIVITY','DRAFT_NOT_VERIFIED','AMBIGUOUS_PREVIOUS_SEND','No aparece el cuadro','NO_EDITOR','CDP','UNVERIFIED','Target','PREFLIGHT','COMPOSER','preflight_failed','another editorial','ERROR')\n  $found=@($tags|Where-Object{$line.IndexOf($_,[StringComparison]::OrdinalIgnoreCase) -ge 0})\n  $o+=@{file=$n;type=$kind;codes=$found;tail=$(if($kind -eq 'confirmed'){''}else{$x=$line -replace 'https?://\\S+','[URL]' -replace '[A-Za-z0-9+/]{40,}={0,2}','[DATA]';$x.Substring([Math]::Max(0,$x.Length-180))})}\n }\n}\nWrite-Output ('TTRESULT:'+(@{rows=$o}|ConvertTo-Json -Compress -Depth 5))\n",
+      "name": "watchdog-marker-and-last-launch-error",
+      "script": "$o=@{watchdogV15=$false;errors=@()}\ntry{$g=Get-Content 'C:\\TTiTTulares\\TT-LocalWatchdog.ps1' -Raw -ErrorAction Stop;$o.watchdogV15=$g.Contains('watchdog-v15-editorial-tab-cap-selfheal')}catch{}\nforeach($n in @('ttittulares-mobile-trigger.log','ttendencias-mobile-trigger.log')){\n try{\n  $a=@(Get-Content (Join-Path 'C:\\TTiTTulares' $n) -Tail 120|Where-Object{$_ -like '*CHAT LAUNCH LOG ERROR*'})\n  if($a.Count -eq 0){$o.errors+=@{file=$n;status='none'};continue}\n  $s=[string]$a[-1];$s=$s -replace 'https?://\\S+','[URL]' -replace '[a-zA-Z0-9+/]{40,}={0,2}','[DATA]'\n  $o.errors+=@{file=$n;tail=$s.Substring([Math]::Max(0,$s.Length-160))}\n }catch{$o.errors+=@{file=$n;status='read_error'}}\n}\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress -Depth 4))\n",
       "timeout_seconds": 30
     }
   ]
