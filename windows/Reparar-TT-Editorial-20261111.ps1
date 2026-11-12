@@ -245,8 +245,10 @@ async function send(){
     do { await sleep(650); s=await c.eval(expr).catch(()=>null); }
     while(Date.now()<blankUntil && (!s||s.ready!=='complete'||!s.editor||s.busy||s.shield||s.editorLength!==0||s.users!==0||s.assistants!==0));
   }
-  if(!s||s.editorLength!==0||s.users!==0||s.assistants!==0)
+  if(!s||s.editorLength!==0||s.users!==0||s.assistants!==0){
+    note('NEW_CHAT_NOT_BLANK state='+JSON.stringify({url:s?.url?.slice(0,180),ready:s?.ready,editor:s?.editor,editorLength:s?.editorLength,users:s?.users,assistants:s?.assistants,busy:s?.busy,shield:s?.shield}));
     fail('Fresh tab has draft or chat content; refusing to overwrite');
+  }
   const focused=await c.eval(`(()=>{const x=[...document.querySelectorAll('#prompt-textarea,[data-testid="prompt-textarea"],textarea,[contenteditable="true"][role="textbox"]')].find(e=>e.getClientRects().length);if(!x)return false;x.focus();return document.activeElement===x||x.contains(document.activeElement)})()`);
   if(!focused)fail('COMPOSER_NOT_FOCUSED: do not type into unknown control');
   await c.call('Input.insertText',{text:msg},15000);
