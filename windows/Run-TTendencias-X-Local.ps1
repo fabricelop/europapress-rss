@@ -18,6 +18,12 @@ $queueFile = Join-Path $workDir 'queue-snapshot.json'
 $log = Join-Path $workDir 'run.log'
 $lockFile = Join-Path $workDir 'run.lock'
 $utf8 = New-Object System.Text.UTF8Encoding($false)
+# Create the log at process entry, before Git/Node preflight and before the run lock.
+# This differentiates a task that never launched from one still doing preflight.
+if (-not $CheckOnly) {
+  New-Item -ItemType Directory -Force -Path $workDir | Out-Null
+  [IO.File]::AppendAllText($log, '[' + (Get-Date -Format o) + '] TT_X_WINDOWS BOOT' + [Environment]::NewLine, $utf8)
+}
 function Note([string]$s) {
   $message = '[' + (Get-Date -Format o) + '] TT_X_WINDOWS ' + $s
   if (-not $CheckOnly) { [IO.File]::AppendAllText($log, $message + [Environment]::NewLine, $utf8) }
