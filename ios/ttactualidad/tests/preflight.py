@@ -538,7 +538,7 @@ print("TT_ACTUALIDAD_STACKED_DUAL_IMAGES_OK")
 # 0.4.47 build57: native-only changes from the installed build55.
 # No reliance on web/Cloudflare deploy or the obsolete iOS code in main.
 assert project.count('CURRENT_PROJECT_VERSION: "97"') == 2
-assert project.count('CFBundleVersion: "96"') == 2
+assert project.count('CFBundleVersion: "97"') == 2
 assert 'TTActualidadXPost.payload(' in actions
 x_post = (root / 'TTActualidad' / 'TTActualidadXPost.swift').read_text()
 assert 'private static let contentBudget = 280' in x_post
@@ -711,7 +711,7 @@ assert 'dispatch(' not in focused and 'submit(' not in focused
 assert 'await store.reconcilePendingOperations()' in panel
 assert 'Conciliar órdenes con GitHub' in panel
 assert project.count('CURRENT_PROJECT_VERSION: "97"') == 2
-assert project.count('CFBundleVersion: "96"') == 2
+assert project.count('CFBundleVersion: "97"') == 2
 print("NATIVE_BUILD66_PENDING_GITHUB_RECEIPT_RECONCILIATION_OK")
 
 # Build67: no stale "waiting GitHub" indicators after the remote rolling
@@ -739,7 +739,7 @@ assert 'visiblePending' in pending_panel
 assert 'store.reconciliationSummary' in pending_panel
 assert 'EditorialPendingPolicy.swift' in project
 assert 'CURRENT_PROJECT_VERSION: "97"' in project
-assert 'CFBundleVersion: "96"' in project
+assert 'CFBundleVersion: "97"' in project
 assert 'pendingOperationsDiagnostic' in store
 assert 'request_id=' in store
 assert 'sin-identificador' in store
