@@ -1,15 +1,15 @@
 {
   "version": 1,
-  "id": "ttb-inbox-actual-receipts-20261112",
+  "id": "ttb-inbox-receipt-count-20261112",
   "project": "TTActualidad",
   "expires_at": "2026-11-13T08:00:00Z",
-  "description": "Read-only verify actual recent private inbox image receipts and status of new auto-generated pictures",
+  "description": "Small read-only count of actually received ImageGen originals in private inbox last hour",
   "steps": [
     {
       "kind": "powershell",
-      "name": "verify-latest-inbox-receipts",
-      "script": "$ErrorActionPreference='Continue'\n$b='C:\\TTiTTulares';$p=Join-Path $b 'image-approval-receipts'\n$o=@{last2h_receipts=0;latest_receipts=@();current_generation=@();recent_statuses=@()}\n$receipts=@(Get-ChildItem -LiteralPath $p -Filter '*.json' -File -ErrorAction SilentlyContinue | Where-Object {$_.Name -match '^(tr|tt)-img-'})\n$o.last2h_receipts=@($receipts|Where-Object{$_.LastWriteTimeUtc -ge [datetime]::UtcNow.AddHours(-2)}).Count\n$o.latest_receipts=@($receipts|Sort-Object LastWriteTimeUtc -Descending|Select-Object -First 8|ForEach-Object{@{id=$_.BaseName;utc=$_.LastWriteTimeUtc.ToString('o')}})\nforeach($dir in @('ttendencias-web-images','ttittulares-web-images')){\n $path=Join-Path $b $dir\n $rows=@(Get-ChildItem $path -Filter '*.json' -File -ErrorAction SilentlyContinue|Where-Object {$_.LastWriteTimeUtc -ge [datetime]::UtcNow.AddHours(-10)}|Select-Object -First 120)\n foreach($r in $rows){try{$j=Get-Content $r.FullName -Raw|ConvertFrom-Json;if([string]$j.command_id -like '*img-auto*' -and (Get-Date $j.created_at).ToUniversalTime() -gt [datetime]::UtcNow.AddHours(-4)){$o.current_generation+=@{id=$j.command_id;state=$j.status;created=$j.created_at;reason=$j.reason}}}catch{}}\n}\n$st=Join-Path $p 'receiver-status.json'\nif(Test-Path $st){try{$j=Get-Content $st -Raw|ConvertFrom-Json;$o.recent_statuses=@($j.PSObject.Properties|Sort-Object {$_.Value.checkedAt} -Descending|Select-Object -First 8|ForEach-Object{@{id=$_.Name;reason=$_.Value.reason}})}catch{}}\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress -Depth 5))\n",
-      "timeout_seconds": 60
+      "name": "count-recent-inbox-receipts",
+      "script": "try {\n$d='C:\\TTiTTulares\\image-approval-receipts'\n$a=@(Get-ChildItem -LiteralPath $d -File -Filter '*.json' -ErrorAction Stop | Where-Object { $_.Name -match '^(tt|tr)-img-' })\n$recent=@($a | Where-Object { $_.LastWriteTimeUtc -ge [datetime]::UtcNow.AddHours(-1) })\n$last=@($a | Sort-Object LastWriteTimeUtc -Descending | Select-Object -First 4 | ForEach-Object { $_.Name })\n$o=@{all=$a.Count;lastHour=$recent.Count;lastFour=$last}\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress -Depth 3))\n} catch {\nWrite-Output ('TTRESULT:'+(@{error=($_.Exception.Message -replace 'https?://\\S+','[URL]')}|ConvertTo-Json -Compress))\n}\n",
+      "timeout_seconds": 25
     }
   ]
 }
