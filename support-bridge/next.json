@@ -1,14 +1,14 @@
 {
   "version": 1,
-  "id": "ttb-trends-wake-after-tab-fix-20261112",
+  "id": "ttb-editorial-post-repair-delivery-proof-20261112",
   "project": "TTActualidad",
   "expires_at": "2026-11-13T08:00:00Z",
-  "description": "After repaired 18-tab guard, request existing TTendencias task only when Node editorial runner idle; no tabs or image changes",
+  "description": "Read-only verify whether revised guarded tasks actually dispatched ChatGPT editorial prompts for both projects",
   "steps": [
     {
       "kind": "powershell",
-      "name": "wake-trends-ready-safely",
-      "script": "$o=@{project='ttendencias';action='none'}\ntry{\n $active=@(Get-CimInstance Win32_Process -Filter \"Name='node.exe'\" -ErrorAction Stop|Where-Object{[string]$_.CommandLine -match 'TT-Editorial-Guard[.]js|Ejecutar[.]js'})\n $t=Get-ScheduledTask -TaskName 'TTendencias Local' -ErrorAction Stop\n $i=Get-ScheduledTaskInfo -TaskName $t.TaskName -ErrorAction Stop\n $o.last=[string]$i.LastRunTime;$o.result=$i.LastTaskResult;$o.state=[string]$t.State\n if($active.Count -gt 0){$o.action='deferred_active_runner'}\n elseif([string]$t.State -ne 'Ready'){$o.action='deferred_task_not_ready'}\n else{Start-ScheduledTask -TaskName $t.TaskName -ErrorAction Stop;$o.action='requested'}\n}catch{$o.action='error';$o.error=$_.Exception.Message}\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress))\n",
+      "name": "editorial-launcher-log-status-only",
+      "script": "$o=@()\nforeach($n in @('titulares.log','tendencias.log','ttittulares-mobile-trigger.log','ttendencias-mobile-trigger.log')){\n $p=Join-Path 'C:\\TTiTTulares' $n\n if(-not(Test-Path $p)){$o+=@{name=$n;present=$false};continue}\n $l=@(Get-Content $p -Tail 180 -ErrorAction SilentlyContinue)\n $tags=@('TOO_MANY_TABS','EDITORIAL_TAB_SOFT_PRESSURE','MENSAJE ENVIADO','PREFLIGHT pages','OTHER_CHAT_ACTIVITY','TRANSMISSION_UNVERIFIED','EDITORIAL RETRY DEFERRED','ACK RUNNING','ACK FAILED','RUNNING','ERROR')\n $c=@{}\n foreach($tag in $tags){$c[$tag]=@($l|Where-Object{$_ -like ('*'+$tag+'*')}).Count}\n $o+=@{name=$n;updated=(Get-Item $p).LastWriteTimeUtc.ToString('o');counts=$c}\n}\nWrite-Output ('TTRESULT:'+(@{logs=$o}|ConvertTo-Json -Compress -Depth 4))\n",
       "timeout_seconds": 35
     }
   ]
