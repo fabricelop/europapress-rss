@@ -251,10 +251,15 @@ def ensure_index(client, item):
         rows = list(idx.get("jobs") or [])
         if any(str(x.get("command_id")) == str(item["command_id"]) for x in rows):
             return "already_indexed"
-        # Never clobber a later manual image command for this event ID.
-        if any(str(x.get("target_id")) == str(item["target_id"]) and
-               str(x.get("command_id")) != str(item["command_id"]) for x in rows):
+        # Revisions may supersede an older terminal job for the same target.
+        # Never replace a different command for this SAME revision, or a
+        # newer revision: those can be a manual user-approved request.
+        other = [x for x in rows if str(x.get("target_id")) == str(item["target_id"])
+                 and str(x.get("command_id")) != str(item["command_id"])]
+        if any(type(x.get("revision")) is not int or
+               x["revision"] >= item["revision"] for x in other):
             return "other_command_present"
+        rows = [x for x in rows if str(x.get("target_id")) != str(item["target_id"])]
         rows.append(item)
         nxt = {"version": 1, "updated_at": iso_now(), "jobs": rows[-60:]}
         try:
@@ -272,7 +277,16 @@ def reconcile_orphan(client, candidate):
     job, _ = client.get(path)
     if not job:
         return False
-    # Old, manually rejected or completed jobs are never re-issued by this task.
+    # A different, newer revision may get ONE new job only once the previous
+    # version is terminal. Older stale/incomplete commands are not overwritten.
+    previous_revision = job.get("revision")
+    if type(previous_revision) is not int:
+        return True
+    if previous_revision != candidate["revision"]:
+        terminal = str(job.get("status") or "").upper() in FINAL or (
+            str(job.get("delivery_mode")) == "launch_only" and job.get("pc_launched_at"))
+        return not (previous_revision < candidate["revision"] and terminal)
+    # Same revision: an existing job is authoritative, even when ERROR.
     command = job.get("command_id")
     if command and str(job.get("target_id")) == candidate["event_id"] and \
        int(job.get("revision", -1)) == candidate["revision"] and \
@@ -305,7 +319,7 @@ def execute(client, policy):
         raise RuntimeError("control image index unavailable; refusing new jobs")
     now = dt.datetime.now(dt.timezone.utc)
     active = 0
-    indexed_targets = {str(x.get("target_id")) for x in idx["jobs"]}
+    indexed_targets = {str(x.get("target_id")): x for x in idx["jobs"]}
     for item in idx["jobs"][-30:]:
         requested = when(item.get("requested_at"))
         if not requested or not 0 <= (now-requested).total_seconds() < 45*60:
@@ -316,7 +330,10 @@ def execute(client, policy):
     actions = []
     # Repair a previously written job that failed only its index transaction.
     for row in pending:
-        if row["event_id"] in indexed_targets:
+        previous_index = indexed_targets.get(row["event_id"])
+        if previous_index and (
+                type(previous_index.get("revision")) is not int or
+                previous_index["revision"] >= row["revision"]):
             actions.append({"id": row["event_id"], "result": "already_in_index"})
             continue
         if reconcile_orphan(client, row):
@@ -333,8 +350,18 @@ def execute(client, policy):
             continue
         job, idx_entry = make_job(row)
         path = f"{JOB_DIR}/{row['event_id']}.json"
+        previous_job, previous_sha = client.get(path)
+        if previous_job:
+            prev_rev = previous_job.get("revision")
+            previous_terminal = (
+                str(previous_job.get("status") or "").upper() in FINAL or
+                (str(previous_job.get("delivery_mode")) == "launch_only" and
+                 previous_job.get("pc_launched_at")))
+            if type(prev_rev) is not int or prev_rev >= row["revision"] or not previous_terminal:
+                actions.append({"id": row["event_id"], "result": "previous_job_not_terminal"})
+                continue
         try:
-            client.put(path, job, None)
+            client.put(path, job, previous_sha)
         except GitHubFailure as e:
             if e.code == 422:  # writer race with existing manual/auto command
                 actions.append({"id": row["event_id"], "result": "concurrent_job_exists"})
