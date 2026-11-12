@@ -7,40 +7,36 @@
   "previous_run_id": "tr-20261112T005500-manual",
   "command_id": "tr-20261112T011000-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE_WITH_INCIDENTS",
+  "phase": "closing",
   "started_at": "2026-11-12T01:10:00+01:00",
-  "updated_at": "2026-11-12T01:11:30+01:00",
-  "current": 0,
+  "updated_at": "2026-11-12T01:22:00+01:00",
+  "current": 3,
   "total": 3,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": false,
-  "processed_ids": [],
+  "queue_complete": true,
+  "processed_ids": [
+    "ea09363be64e",
+    "55d9d07c7607",
+    "f273c1b56f63"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "ea09363be64e",
-    "55d9d07c7607",
-    "f273c1b56f63"
-  ],
-  "remaining_active_ids": [
-    "ea09363be64e",
-    "55d9d07c7607",
-    "f273c1b56f63"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 0,
-    "closed": 0,
-    "explained": 0,
+    "attempted": 3,
+    "observed": 3,
+    "closed": 3,
+    "explained": 3,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
     "maintenance_reviews": 0,
     "unchanged_reviews": 0,
     "continuity_updates": 0,
-    "distinct_updates": 0,
+    "distinct_updates": 2,
     "stale_reviews": 0,
     "unverified_reviews": 0,
     "anticipation_reviews": 0,
@@ -51,30 +47,64 @@
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 0,
+    "incidents": 2,
     "concurrent_convergence": 0
   },
-  "outcomes": [],
-  "incident_count": 0,
-  "incidents": [],
+  "outcomes": [
+    {
+      "id": "ea09363be64e",
+      "revision": 0,
+      "name": "Nacho",
+      "outcome": "distinct_update"
+    },
+    {
+      "id": "55d9d07c7607",
+      "revision": 0,
+      "name": "Andrea",
+      "outcome": "distinct_update"
+    },
+    {
+      "id": "f273c1b56f63",
+      "revision": 0,
+      "name": "Jensen",
+      "outcome": "explained"
+    }
+  ],
+  "incident_count": 2,
+  "incidents": [
+    {
+      "at": "2026-11-12T01:16:00+01:00",
+      "phase": "persisting",
+      "trend_id": null,
+      "title": "Persistencia directa",
+      "reason": "El conector devolvió h2 protocol error al intentar reemplazar los registros editoriales grandes; la relectura confirmó que no hubo escritura parcial."
+    },
+    {
+      "at": "2026-11-12T01:18:50+01:00",
+      "phase": "persisting",
+      "trend_id": null,
+      "title": "Reconciliación textual",
+      "reason": "El primer run del reconciliador falló en un selftest heredado de closer_text antes de consolidar; se corrigió compatibilidad y el relanzamiento aplicó 3/3."
+    }
+  ],
   "error": null,
-  "activity": "preparing",
+  "activity": "closing",
   "last_started_at": "2026-11-12T01:10:00+01:00",
-  "last_completed_at": "2026-11-12T01:05:08+01:00",
+  "last_completed_at": "2026-11-12T01:22:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261112T005500-manual",
+    "run_id": "tr-20261112T011000-manual",
     "status": "DONE_WITH_INCIDENTS",
-    "started_at": "2026-11-12T00:55:00+01:00",
-    "finished_at": "2026-11-12T01:06:00+01:00",
-    "total": 20,
-    "closed": 20,
-    "explained": 17,
+    "started_at": "2026-11-12T01:10:00+01:00",
+    "finished_at": "2026-11-12T01:22:00+01:00",
+    "total": 3,
+    "closed": 3,
+    "explained": 3,
     "maintenance": 0,
     "pending": 0,
-    "problematic": 1
+    "problematic": 0
   },
-  "message": "Pasada tr-20261112T011000-manual RUNNING. Han entrado 3 trabajos durante la barrera: Nacho, Andrea, Jensen. Procesando JIT en orden; ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-20261112T011000-manual cerrada 3/3: Nacho y Andrea como episodios materiales nuevos; Jensen explicado. Barrera final main: editorial-queue=0. Dos incidencias técnicas de persistencia/reconciliación fueron recuperadas sin escritura parcial. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794327332740-manual",
@@ -4612,6 +4642,83 @@
       "status": "RUNNING",
       "phase": "preparing",
       "message": "Pasada tr-20261112T011000-manual RUNNING. Han entrado 3 trabajos durante la barrera: Nacho, Andrea, Jensen. Procesando JIT en orden; ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-20261112T011000-manual",
+      "status": "DONE_WITH_INCIDENTS",
+      "started_at": "2026-11-12T01:10:00+01:00",
+      "finished_at": "2026-11-12T01:22:00+01:00",
+      "at": "2026-11-12T01:22:00+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 3,
+        "observed": 3,
+        "closed": 3,
+        "explained": 3,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 0,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 2,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 2,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [
+        "ea09363be64e",
+        "55d9d07c7607",
+        "f273c1b56f63"
+      ],
+      "converged_ids": [],
+      "outcomes": [
+        {
+          "id": "ea09363be64e",
+          "revision": 0,
+          "name": "Nacho",
+          "outcome": "distinct_update"
+        },
+        {
+          "id": "55d9d07c7607",
+          "revision": 0,
+          "name": "Andrea",
+          "outcome": "distinct_update"
+        },
+        {
+          "id": "f273c1b56f63",
+          "revision": 0,
+          "name": "Jensen",
+          "outcome": "explained"
+        }
+      ],
+      "incident_count": 2,
+      "incidents": [
+        {
+          "at": "2026-11-12T01:16:00+01:00",
+          "phase": "persisting",
+          "trend_id": null,
+          "title": "Persistencia directa",
+          "reason": "El conector devolvió h2 protocol error al intentar reemplazar los registros editoriales grandes; la relectura confirmó que no hubo escritura parcial."
+        },
+        {
+          "at": "2026-11-12T01:18:50+01:00",
+          "phase": "persisting",
+          "trend_id": null,
+          "title": "Reconciliación textual",
+          "reason": "El primer run del reconciliador falló en un selftest heredado de closer_text antes de consolidar; se corrigió compatibilidad y el relanzamiento aplicó 3/3."
+        }
+      ],
+      "message": "Pasada tr-20261112T011000-manual cerrada 3/3: Nacho y Andrea como episodios materiales nuevos; Jensen explicado. Barrera final main: editorial-queue=0. Dos incidencias técnicas de persistencia/reconciliación fueron recuperadas sin escritura parcial. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
   "current_item": {
@@ -7672,5 +7779,5 @@
     }
   ],
   "processed": [],
-  "finished_at": null
+  "finished_at": "2026-11-12T01:22:00+01:00"
 }
