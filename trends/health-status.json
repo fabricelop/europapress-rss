@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-12T11:01:04.036213+00:00",
+  "checked_at": "2026-11-12T11:14:59.468131+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -42,10 +42,10 @@
     "top10": {
       "ok": false,
       "count": 10,
-      "non_stale_sources": 5,
+      "non_stale_sources": 4,
       "verified_fresh_sources": [
-        "whatstrends",
-        "xtrendsiamrohit"
+        "xtrendsiamrohit",
+        "playersells"
       ],
       "live_verified": false,
       "captured_age_minutes": 0.2,
@@ -58,10 +58,10 @@
     },
     "refresh": {
       "ok": true,
-      "status": "in_progress",
+      "status": "pending",
       "conclusion": null,
-      "age_minutes": 5.0,
-      "run_id": 43204688325,
+      "age_minutes": 4.3,
+      "run_id": 43206876846,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -83,16 +83,16 @@
     },
     "editorial_queue": {
       "ok": false,
-      "pending_count": 1,
+      "pending_count": 5,
       "overdue_count": 1,
-      "oldest_age_minutes": 52.1,
+      "oldest_age_minutes": 66.1,
       "warning_after_minutes": 30,
       "overdue_items": [
         {
           "id": "ba9b353684f9",
           "name": "Elise",
           "status": "preparing",
-          "age_minutes": 52.1
+          "age_minutes": 66.1
         }
       ],
       "repairable": false
@@ -102,7 +102,11 @@
       "status": "overdue",
       "queue_complete": false,
       "remaining_active_ids": [
-        "ba9b353684f9"
+        "ba9b353684f9",
+        "1098712895fb",
+        "174b8aec3dcc",
+        "71881164a65b",
+        "ea2d2a2b9cc8"
       ],
       "contradictory_success": false
     },
@@ -116,9 +120,9 @@
   "blocking": [
     "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos",
     "cola con 767 estado(s) inválido(s)",
-    "cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 52.1 min"
+    "cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 66.1 min"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 767 estado(s) inválido(s) | cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 52.1 min"
+  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 767 estado(s) inválido(s) | cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 66.1 min"
 }
