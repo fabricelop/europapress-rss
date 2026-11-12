@@ -1,14 +1,14 @@
 {
   "version": 1,
-  "id": "ttb-news-editorial-lines-20261112-1154",
+  "id": "ttb-news-editorial-last-event-20261112-1156",
   "project": "TTActualidad",
   "expires_at": "2026-11-13T12:00:00Z",
-  "description": "Read recent news editorial and image-slot lines",
+  "description": "Read last news editorial event",
   "steps": [
     {
       "kind": "powershell",
-      "name": "news-editorial-lines",
-      "script": "$f='C:\\TTiTTulares\\ttittulares-mobile-trigger.log'\n$a=@(Get-Content $f -Tail 180 | Where-Object { $_ -match 'EDITORIAL|CHAT MESSAGE|LAUNCH|IMAGE GLOBAL SLOT WAIT' } | Select-Object -Last 12)\nWrite-Output ('TTRESULT:'+(@{state='ok';lines=@($a)}|ConvertTo-Json -Compress -Depth 3))",
+      "name": "news-editorial-last-event",
+      "script": "$f='C:\\TTiTTulares\\ttittulares-mobile-trigger.log'\n$l=[string](Get-Content $f -Tail 250 | Where-Object { $_ -match 'EDITORIAL PROCESS|LAUNCH CONFIRMED|LAUNCH FAILED|CHAT MESSAGE|LAUNCH ERROR' } | Select-Object -Last 1)\nWrite-Output ('TTRESULT:'+(@{state='ok';last=$l.Substring(0,[Math]::Min(500,$l.Length))}|ConvertTo-Json -Compress))",
       "timeout_seconds": 20
     }
   ]
