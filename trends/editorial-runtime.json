@@ -8,18 +8,26 @@
   "command_id": "tr-20261112T011000-manual",
   "source": "chat",
   "status": "RUNNING",
-  "phase": "verifying",
+  "phase": "preparing",
   "started_at": "2026-11-12T01:10:00+01:00",
-  "updated_at": "2026-11-12T01:10:00+01:00",
+  "updated_at": "2026-11-12T01:11:30+01:00",
   "current": 0,
-  "total": 0,
+  "total": 3,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
   "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "ea09363be64e",
+    "55d9d07c7607",
+    "f273c1b56f63"
+  ],
+  "remaining_active_ids": [
+    "ea09363be64e",
+    "55d9d07c7607",
+    "f273c1b56f63"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
@@ -50,7 +58,7 @@
   "incident_count": 0,
   "incidents": [],
   "error": null,
-  "activity": "verifying",
+  "activity": "preparing",
   "last_started_at": "2026-11-12T01:10:00+01:00",
   "last_completed_at": "2026-11-12T01:05:08+01:00",
   "api_failover_enabled": false,
@@ -66,7 +74,7 @@
     "pending": 0,
     "problematic": 1
   },
-  "message": "Pasada tr-20261112T011000-manual RUNNING. Cola autoritativa inicial=0; verificando main, estados editoriales y mantenimientos antes del cierre. ImageGen=0; publicaciones=0.",
+  "message": "Pasada tr-20261112T011000-manual RUNNING. Han entrado 3 trabajos durante la barrera: Nacho, Andrea, Jensen. Procesando JIT en orden; ImageGen=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794327332740-manual",
@@ -4597,6 +4605,13 @@
       "status": "RUNNING",
       "phase": "verifying",
       "message": "Pasada tr-20261112T011000-manual RUNNING. Cola autoritativa inicial=0; verificando main, estados editoriales y mantenimientos antes del cierre. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-12T01:11:30+01:00",
+      "run_id": "tr-20261112T011000-manual",
+      "status": "RUNNING",
+      "phase": "preparing",
+      "message": "Pasada tr-20261112T011000-manual RUNNING. Han entrado 3 trabajos durante la barrera: Nacho, Andrea, Jensen. Procesando JIT en orden; ImageGen=0; publicaciones=0."
     }
   ],
   "current_item": {
