@@ -53,7 +53,9 @@ final class EditorialRelationCountsStore: ObservableObject {
     // Nothing is considered linked merely because its text mentions a name.
     func counts(trendID: String, revision: Int, name: String) -> (Int, Int)? {
         guard let snapshot, !trendID.isEmpty else { return nil }
-        let found = EditorialRelationsPolicy.newsForTrend(news, name: name)
+        let found = EditorialRelationsPolicy.newsForTrendIncludingLinked(
+            news, relations: snapshot.items, trendID: trendID,
+            revision: revision, name: name)
         let associated = EditorialRelationsPolicy.confirmedCount(
             snapshot.items, trendID: trendID, revision: revision)
         return (associated, found.count)
@@ -472,9 +474,18 @@ struct EditorialRelationsView: View {
         for (index, name) in top30Names.prefix(30).enumerated() {
             let rank = index + 1
             let key = trendKey(rank: rank, name: name)
-            matches[key] = EditorialRelationsPolicy.newsForTrend(
-                news, name: name, now: now,
-                fallbackDates: dates, limit: 5)
+            if top30Trends.indices.contains(index),
+               top30Trends[index].name == name,
+               !top30Trends[index].editorialID.isEmpty {
+                let row = top30Trends[index]
+                matches[key] = EditorialRelationsPolicy.newsForTrendIncludingLinked(
+                    news, relations: model.snapshot?.items ?? [],
+                    trendID: row.editorialID, revision: row.revision,
+                    name: name, fallbackDates: dates, limit: 5)
+            } else {
+                matches[key] = EditorialRelationsPolicy.newsForTrend(
+                    news, name: name, now: now, fallbackDates: dates, limit: 5)
+            }
             if top30Trends.indices.contains(index) {
                 let row = top30Trends[index]
                 if row.name == name && !row.editorialID.isEmpty {
@@ -495,9 +506,10 @@ struct EditorialRelationsView: View {
         // It is never gated by Top 30 membership or a historical time window.
         if let scope, scope.project == "ttendencias" {
             let key = trendKey(rank: 0, name: scope.title)
-            matches[key] = EditorialRelationsPolicy.newsForTrend(
-                news, name: scope.title, now: now,
-                fallbackDates: dates, limit: 5)
+            matches[key] = EditorialRelationsPolicy.newsForTrendIncludingLinked(
+                news, relations: model.snapshot?.items ?? [],
+                trendID: scope.id, revision: scope.revision,
+                name: scope.title, fallbackDates: dates, limit: 5)
             let renderedText = top30Trends.first {
                 $0.editorialID == scope.id && $0.revision == scope.revision
             }?.explanation ?? ""
@@ -569,7 +581,7 @@ struct EditorialRelationsView: View {
 
     private var top30RelationSection: some View {
         Section("Tendencias del Top 30 · \(min(30, top30Names.count))") {
-            Text("Abre una tendencia para ver hasta 5 noticias que la mencionan en titular o texto, sin filtros de fecha, Listas ni estado. Solo tu decisión confirmada crea una relación.")
+            Text("Cada tendencia muestra hasta 5 noticias recientes: relaciones ya confirmadas y coincidencias por texto. Desmarca una relación y pulsa Guardar para bloquearla en ese episodio.")
                 .font(.footnote).foregroundStyle(.secondary)
             Text("Noticias del historial recuperadas: \(model.historicalNews.count)")
                 .font(.caption).foregroundStyle(.secondary)
@@ -658,10 +670,11 @@ struct EditorialRelationsView: View {
             Section("Noticias relacionadas · " +
                     (confirmed.map { String($0) } ?? "—") + "/" +
                     String(found.count)) {
-                Text("X = todos los vínculos confirmados en el Site para " +
-                     "esta tendencia; N = noticias candidatas mostradas " +
-                     "(máximo 5). Las relacionadas aparecen marcadas. " +
-                     "Solo los cambios requieren Guardar.")
+                Text("Las relaciones guardadas por el Site, incluidas las automáticas, " +
+                     "aparecen marcadas aunque no mencionen literalmente el nombre. " +
+                     "Se muestran las cinco noticias más recientes. Desmarca y " +
+                     "pulsa Guardar para bloquear una asociación incorrecta. " +
+                     "Las relaciones históricas se conservan.")
                     .font(.footnote).foregroundStyle(.secondary)
                 if found.isEmpty {
                     Text(model.loading ? "Buscando noticias…" :
