@@ -74,6 +74,9 @@ private final class ApprovalInboxModel: ObservableObject {
     static let shared = ApprovalInboxModel()
     @Published private(set) var images: [PendingImage] = []
     @Published private(set) var previews: [String: UIImage] = [:]
+    // 100+ originals: avoid throwing away photos still visible after only 8.
+    private var previewOrder: [String] = []
+    private let previewLimit = 64
     @Published private(set) var loading = false
     @Published private(set) var processingIDs = Set<String>()
     @Published var notice = ""
@@ -265,6 +268,7 @@ private final class ApprovalInboxModel: ObservableObject {
             images = ready
             let keys = Set(ready.map(\.id))
             previews = previews.filter { keys.contains($0.key) }
+            previewOrder.removeAll { !keys.contains($0) }
             feedVerified = true
             pageDiagnostics = "Servidor: " + String(received.count) +
                 " registros · " + String(items.count) + " originales pendientes." +
@@ -298,13 +302,20 @@ private final class ApprovalInboxModel: ObservableObject {
                   let source = CGImageSourceCreateWithData(data as CFData, nil),
                   let thumbnail = CGImageSourceCreateThumbnailAtIndex(source, 0, [
                     kCGImageSourceCreateThumbnailFromImageAlways: true,
-                    kCGImageSourceThumbnailMaxPixelSize: 1200,
+                    kCGImageSourceThumbnailMaxPixelSize: 640,
                     kCGImageSourceCreateThumbnailWithTransform: true
                   ] as CFDictionary) else {
                 notice = "El original no coincide con la huella registrada. No se aprobará automáticamente."
                 return
             }
-            if previews.count >= 8, let oldest = previews.keys.first { previews.removeValue(forKey: oldest) }
+            // Bounded insertion-order cache. Evict only after 64 different
+            // photos; a returning SwiftUI row can fetch its exact original.
+            previewOrder.removeAll { $0 == item.id }
+            previewOrder.append(item.id)
+            while previewOrder.count > previewLimit {
+                let oldest = previewOrder.removeFirst()
+                previews.removeValue(forKey: oldest)
+            }
             previews[item.id] = UIImage(cgImage: thumbnail)
         } catch {
             // A temporarily missing PNG must not erase or approve its card.
