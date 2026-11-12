@@ -1,15 +1,15 @@
 {
   "version": 1,
-  "id": "ttb-editorial-post-repair-delivery-proof-20261112",
+  "id": "ttb-editorial-postfix-specific-errors-20261112",
   "project": "TTActualidad",
   "expires_at": "2026-11-13T08:00:00Z",
-  "description": "Read-only verify whether revised guarded tasks actually dispatched ChatGPT editorial prompts for both projects",
+  "description": "Read-only last four bounded guard result messages per editorial launcher after fixing Chrome tab veto",
   "steps": [
     {
       "kind": "powershell",
-      "name": "editorial-launcher-log-status-only",
-      "script": "$o=@()\nforeach($n in @('titulares.log','tendencias.log','ttittulares-mobile-trigger.log','ttendencias-mobile-trigger.log')){\n $p=Join-Path 'C:\\TTiTTulares' $n\n if(-not(Test-Path $p)){$o+=@{name=$n;present=$false};continue}\n $l=@(Get-Content $p -Tail 180 -ErrorAction SilentlyContinue)\n $tags=@('TOO_MANY_TABS','EDITORIAL_TAB_SOFT_PRESSURE','MENSAJE ENVIADO','PREFLIGHT pages','OTHER_CHAT_ACTIVITY','TRANSMISSION_UNVERIFIED','EDITORIAL RETRY DEFERRED','ACK RUNNING','ACK FAILED','RUNNING','ERROR')\n $c=@{}\n foreach($tag in $tags){$c[$tag]=@($l|Where-Object{$_ -like ('*'+$tag+'*')}).Count}\n $o+=@{name=$n;updated=(Get-Item $p).LastWriteTimeUtc.ToString('o');counts=$c}\n}\nWrite-Output ('TTRESULT:'+(@{logs=$o}|ConvertTo-Json -Compress -Depth 4))\n",
-      "timeout_seconds": 35
+      "name": "read-last-editorial-status-markers-only",
+      "script": "$o=@()\nforeach($n in @('titulares.log','tendencias.log','ttittulares-mobile-trigger.log','ttendencias-mobile-trigger.log')){\n $p=Join-Path 'C:\\TTiTTulares' $n\n if(-not(Test-Path $p)){continue}\n $tail=@(Get-Content $p -Tail 90 -ErrorAction SilentlyContinue)\n $hits=@($tail|Where-Object{$_ -match 'TT_GUARD|TOO_MANY_TABS|EDITORIAL RETRY DEFERRED|EDITORIAL_TAB_SOFT_PRESSURE|PREFLIGHT pages|MENSAJE ENVIADO|TRANSMISSION_UNVERIFIED' }|Select-Object -Last 4|ForEach-Object{\n   $v=([string]$_ -replace 'https?://\\S+','[URL]' -replace '[a-zA-Z0-9+/]{40,}={0,2}','[DATA]')\n   $v.Substring(0,[Math]::Min(145,$v.Length))\n })\n $o+=@{file=$n;last=$hits}\n}\nWrite-Output ('TTRESULT:'+(@{logs=$o}|ConvertTo-Json -Compress -Depth 4))\n",
+      "timeout_seconds": 30
     }
   ]
 }
