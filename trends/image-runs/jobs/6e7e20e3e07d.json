@@ -1,13 +1,13 @@
 {
   "version": 1,
-  "command_id": "tr-img-auto-6e7e20e3e07d-r0-a1-1794431346159",
-  "requested_at": "2026-11-11T21:09:06.109970Z",
-  "updated_at": "2026-11-11T21:22:11.201Z",
-  "status": "LAUNCHED",
-  "phase": "pc_launched",
+  "command_id": "tr-img-auto-6e7e20e3e07d-r1-a1-1794442117142",
+  "requested_at": "2026-11-12T00:08:37.047376Z",
+  "updated_at": "2026-11-12T00:08:37.047376Z",
+  "status": "REQUESTED",
+  "phase": "queued",
   "mode": "automatic_explained_repair",
   "delivery_mode": "launch_only",
-  "editorial_image_mode": "humor",
+  "editorial_image_mode": "rigor",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
   "launcher_arg": "tendencias",
@@ -15,7 +15,7 @@
   "target_id": "6e7e20e3e07d",
   "trend_id": "6e7e20e3e07d",
   "target_name": "Plaza España",
-  "revision": 0,
+  "revision": 1,
   "attempt": 1,
   "auto_repair": true,
   "auto_repair_attempt": 1,
@@ -24,47 +24,30 @@
   "instruction_profile": "ttendencias_gag_v5_varied_style_single_gag",
   "context_snapshot": {
     "name": "Plaza España",
-    "revision": 0,
-    "explanation": "TT#17 Plaza España aparece entre las tendencias durante una jornada de manifestaciones en Madrid por el 11N; el transporte público informa de desvíos vinculados a una marcha entre el paseo del Prado y plaza de España. No se ha confirmado que sea la única causa del término.",
+    "revision": 1,
+    "explanation": "TT#30 Plaza España es tendencia por las cargas policiales al final de la manifestación del 11N por vivienda y salarios en Madrid; hubo gas pimienta y heridos.\n#HuelgaGeneral11N #Madrid",
     "closer_text": "",
     "trend_names": [
       "Plaza España"
     ],
     "group_title": "",
-    "rank_at_explanation": 17,
-    "explained_at": "2026-11-11T21:05:22.097Z",
+    "rank_at_explanation": 30,
+    "explained_at": "2026-11-12T01:08:00+01:00",
     "verification_sources": [
-      {
-        "url": "https://www.crtm.es/informacion-actualizada",
-        "published_at": "2026-11-11"
-      },
-      {
-        "url": "https://github.com/fabricelop/europapress-rss/blob/main/trends/recent.json",
-        "published_at": "2026-11-11"
-      }
+      "https://www.telemadrid.es/noticias/madrid/cargas-policiales-gran-via-plaza_1_2808910.html",
+      "https://www.europapress.es/madrid/noticia-vuelve-tension-manifestacion-vivienda-alguna-carga-gran-via-plaza-espana-20261111210701.html"
     ],
-    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ESTILO ASIGNADO PARA ESTA IMAGEN: Escena absurda semi-realista, materiales y texturas cuidados, iluminación natural y situación imposible tratada con precisión visual. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
-    "editorial_image_mode": "humor",
-    "image_style_name": "absurdo_semirrealista",
-    "image_style_index": 3
+    "image_style": "Imagen editorial periodística sobria y rigurosa, sin humor ni caricaturas, sin banalizar sufrimiento, sin escenas gráficas o hechos inventados. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "editorial_image_mode": "rigor",
+    "image_style_name": "rigor_y_respeto",
+    "image_style_index": -1
   },
   "instructions": {
     "scope": "Una sola tendencia y una sola imagen.",
     "exact_input": "Usa literalmente explanation y closer_text como contexto editorial autoritativo.",
-    "visual": "Una sola idea visual fuerte con humor editorial.",
+    "visual": "Ilustración sobria sin humor",
     "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
     "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Listas de TTActualidad."
   },
-  "message": "Prompt confirmado en ChatGPT Images; sin recuperación de imagen.",
-  "pc_upload_secret_hash": "dd85dfe984a3751edf16f7a3ce1a3d390f7b84d3be4d0321ee86cee4d5255e71",
-  "pc_worker_id": "ttendencias-image-bridge-v34-sites-return",
-  "pc_picked_up_at": "2026-11-11T21:21:56.517Z",
-  "pc_launched_at": "2026-11-11T21:22:11.201Z",
-  "finished_at": "2026-11-11T21:22:11.201Z",
-  "web_image": {
-    "version": 2,
-    "stage": "waiting",
-    "reason": "manual_approval_required",
-    "checked_at": "2026-11-12T00:03:52.612Z"
-  }
+  "message": "Reparación automática de imagen IA para tendencia Explicada."
 }
