@@ -68,7 +68,7 @@ def main_story(row, closed_ids, assigned, policy):
         return False, "invalid_identity"
     if (target, revision) in closed_ids or (target, None) in closed_ids or row.get("rewrite_pending") is True:
         return False, "closed_or_rewriting"
-    if row.get("with_image") is not True or row.get("disable_ai_image") is True or row.get("sensitive_editorial") is True:
+    if row.get("with_image") is not True or row.get("disable_ai_image") is True :
         return False, "image_disabled_or_sensitive"
     if str(row.get("image_mode") or "").lower() in ("fallback_only", "archive_only", "tweet_capture_only", "none"):
         return False, "image_mode_excluded"
@@ -150,6 +150,7 @@ def make_job(row, now=None):
         "scope": "Una sola noticia y UNA sola imagen IA, sin duplicados.",
         "exact_input": "Conserva literalmente el texto editorial y el remate; no los reescribas.",
         "visual": style,
+        "sensitivity": "Respeta a personas afectadas: nunca conviertas víctimas, menores, sufrimiento o violencia grave en blanco del chiste. En noticias políticas satiriza situaciones documentadas, no afirmaciones inventadas.",
         "prohibitions": NO_PEPPER + " No hagas infografía, collage, interfaz, diagrama ni captura de pantalla.",
         "lifecycle": "Solo lanzar ImageGen en la pestaña fija y confirmar LAUNCHED; nunca publicar, aprobar o regenerar automáticamente."
     }
