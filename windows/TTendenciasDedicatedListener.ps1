@@ -1136,7 +1136,7 @@ function Build-EditorialMessage([string]$CommandId,$Control) {
   $itemName=[string]$item.name
   Write-Log "EDITORIAL TARGET command=$CommandId id=$itemId revision=$itemRevision name=$itemName"
   return @"
-TT_ACTUALIDAD_MANUAL_EDITORIAL_V1 | Ejecuta AHORA la elaboración editorial REAL y PERSISTE el resultado de UNA SOLA tendencia desde esta conversación de ChatGPT, SIN depender del ordenador Windows. No devuelvas un plan ni delegues el trabajo a otro chat.
+TTENDENCIAS_EDITORIAL_JOB_V2 $CommandId | TT_ACTUALIDAD_MANUAL_EDITORIAL_V1 | Ejecuta AHORA la elaboración editorial REAL y PERSISTE el resultado de UNA SOLA tendencia desde esta conversación de ChatGPT, SIN depender del ordenador Windows. No devuelvas un plan ni delegues el trabajo a otro chat.
 
 Repositorio autoritativo: fabricelop/europapress-rss, rama main. Usa el conector GitHub para leer y escribir y la búsqueda web para investigar; si no puedes escribir, declara un fallo, nunca éxito.
 
@@ -1273,7 +1273,7 @@ while ($true) {
               # solo damos ACK launched cuando Ejecutar.js confirma que el mensaje
               # fue enviado o que ChatGPT ya empezó a responder.
               $editorialMessage = Build-EditorialMessage $commandId $doc
-              $editorialMarker = "TT_ACTUALIDAD_MANUAL_EDITORIAL_V1"
+              $editorialMarker = "TTENDENCIAS_EDITORIAL_JOB_V2 $commandId"
               $messageSent = $false
               if ($editorialMessage) {
                 $messageSent = Launch-ProjectChat "editorial command=$commandId" $editorialMessage $editorialMarker
