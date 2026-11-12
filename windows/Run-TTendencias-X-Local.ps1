@@ -37,7 +37,9 @@ if ($CheckOnly) {
   Note 'CHECK_ONLY no X, no remote Git, no task change'
   & $node --check $sampler; if ($LASTEXITCODE -ne 0) { throw 'X sampler syntax invalid' }
   & $node --check $publisher; if ($LASTEXITCODE -ne 0) { throw 'X publisher syntax invalid' }
-  & $node -e 'require("playwright");console.log("PLAYWRIGHT_OK")'
+  $playwrightCheck = Join-Path $workDir 'check_x_playwright.cjs'
+  if (-not (Test-Path -LiteralPath $playwrightCheck)) { throw 'Playwright preflight module missing; rerun installer' }
+  & $node $playwrightCheck
   if ($LASTEXITCODE -ne 0) { throw 'Playwright not available locally' }
   Note ('X_CREDENTIALS ' + $(if ([Environment]::GetEnvironmentVariable('X_AUTH_TOKEN','User') -and [Environment]::GetEnvironmentVariable('X_CT0','User')){'configured'}else{'missing'}))
   exit 0
