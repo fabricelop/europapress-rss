@@ -1,15 +1,15 @@
 {
   "version": 1,
-  "id": "ttb-inbox-13-recipient-check-20261112",
+  "id": "ttb-site-inbox-feed-readonly-20261112",
   "project": "TTActualidad",
   "expires_at": "2026-11-13T08:00:00Z",
-  "description": "Confirm exactly which of the 13 newly requested original images have secure Site inbox receipts; read only",
+  "description": "Verify private Site inbox GET status and presence of a pre-authenticated Site browser tab without reading credentials or modifying app",
   "steps": [
     {
       "kind": "powershell",
-      "name": "count-thirteen-exact-inbox-receipts",
-      "script": "try {\n$d='C:\\TTiTTulares\\image-approval-receipts'\n$f=@('tr-img-auto-3b5034f473ba-r0-a1-1794458225789.json','tr-img-auto-5e5af80baed0-r0-a1-1794458225789.json','tr-img-auto-88e514ece616-r0-a1-1794458225789.json','tr-img-auto-95b49291de75-r0-a1-1794458225789.json','tr-img-auto-ba7633699cd1-r0-a1-1794458225790.json','tr-img-auto-ba9b353684f9-r0-a1-1794458225790.json','tr-img-auto-cf2df84a5714-r0-a1-1794458225790.json','tr-img-auto-e386f83a422f-r0-a1-1794458225790.json','tr-img-auto-ea81ac388672-r0-a1-1794458225790.json','tr-img-auto-f3c37f45aebd-r0-a1-1794458225791.json','tr-img-auto-40ae1da9ecb1-r0-a1-1794458225791.json','tr-img-auto-69beea7215d2-r0-a1-1794458225791.json','tt-img-auto-71bb196c625c-r1-a1-1794456625661.json')\n$ok=0;$pending=0;$missing=@();$states=@()\nforeach($n in $f) {\n $p=Join-Path $d $n\n if(-not (Test-Path -LiteralPath $p)){$missing+=$n;continue}\n try{$j=Get-Content -LiteralPath $p -Raw|ConvertFrom-Json\n if($j.id -and ([string]$j.rasterSHA256).Length -eq 64){$ok++}\n if([string]$j.state -eq 'pending'){$pending++}\n else{$states+=([string]$j.state)}\n }catch{$states+='invalid_json'}\n}\nWrite-Output ('TTRESULT:'+(@{total=$f.Count;valid=$ok;pending=$pending;missing=$missing;other=$states}|ConvertTo-Json -Compress -Depth 3))\n}catch{Write-Output ('TTRESULT:'+(@{error=$_.Exception.Message}|ConvertTo-Json -Compress))}\n",
-      "timeout_seconds": 30
+      "name": "site-inbox-feed-auth-and-presence",
+      "script": "$o=@{http='unknown';siteTabFound=$false;siteTabs=0;appApi='unknown'}\n$u='https://ttactualidad.rainyraven22.chatgpt.site/api/image-inbox/v1/images'\ntry{$r=Invoke-WebRequest -UseBasicParsing -Uri $u -TimeoutSec 12 -MaximumRedirection 0; $o.http=[string][int]$r.StatusCode;try{$j=$r.Content|ConvertFrom-Json;$o.apiItems=@($j.items).Count}catch{}}\ncatch {if($_.Exception.Response){$o.http=[string][int]$_.Exception.Response.StatusCode}else{$o.http='NETWORK_ERROR'}}\nforeach($p in @(9223,9234)){try{$tabs=Invoke-RestMethod -Uri \"http://127.0.0.1:$p/json/list\" -TimeoutSec 3;$o.siteTabs+=@($tabs|Where-Object{$_.url -like 'https://ttactualidad.rainyraven22.chatgpt.site/*'}).Count}catch{}}\n$o.siteTabFound=$o.siteTabs -gt 0\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress))\n",
+      "timeout_seconds": 35
     }
   ]
 }
