@@ -13,9 +13,9 @@ $base='C:\TTiTTulares'
 $receiver=Join-Path $base 'TTImageApprovalReceiver.cjs'
 $oldTaskName='TT Actualidad - Imagenes pendientes APP'
 $newTaskName='TT Actualidad - Entrega IA gradual'
-$home=Join-Path $env:LOCALAPPDATA 'TTImageInbox'
-$launcher=Join-Path $home 'Run-TTImageInbox-Hidden.vbs'
-$runner=Join-Path $home 'Run-TTImageInbox.ps1'
+$InboxHome=Join-Path $env:LOCALAPPDATA 'TTImageInbox'
+$launcher=Join-Path $InboxHome 'Run-TTImageInbox-Hidden.vbs'
+$runner=Join-Path $InboxHome 'Run-TTImageInbox.ps1'
 function Note([string]$code,[string]$value=''){Write-Host ('TT_IMAGE_INBOX '+$code+' '+$value)}
 function RequireMarkers([string]$file,[string[]]$markers,[string]$name){
   if(-not(Test-Path -LiteralPath $file)){throw ($name+'_NOT_INSTALLED')}
@@ -63,14 +63,14 @@ if(-not $Apply){
   Note 'DRY_RUN' 'Sin cambios; usar -Apply para instalar entrega gradual'
   return
 }
-if(-not(Test-Path -LiteralPath $home)){New-Item -ItemType Directory -Path $home -Force|Out-Null}
+if(-not(Test-Path -LiteralPath $InboxHome)){New-Item -ItemType Directory -Path $InboxHome -Force|Out-Null}
 $runnerText=@'
 #requires -Version 5.1
 # One receiver pass. No prompts, edits, approval or publication.
 $ErrorActionPreference='Stop'
 $base='C:\TTiTTulares'
-$home=Join-Path $env:LOCALAPPDATA 'TTImageInbox'
-$log=Join-Path $home 'delivery.log'
+$InboxHome=Join-Path $env:LOCALAPPDATA 'TTImageInbox'
+$log=Join-Path $InboxHome 'delivery.log'
 try {
   $old=Get-ScheduledTask -TaskName 'TT Actualidad - Imagenes pendientes APP' -ErrorAction SilentlyContinue
   if($old -and $old.State -ne 'Disabled'){ Add-Content -LiteralPath $log -Value 'SKIP_OLD_SCHEDULE_ACTIVE';exit 0}
@@ -111,7 +111,7 @@ Move-Item -LiteralPath $tmpRunner -Destination $runner -Force
 Move-Item -LiteralPath $tmpLauncher -Destination $launcher -Force
 $execute=Join-Path $env:SystemRoot 'System32\wscript.exe'
 $arguments='//B //Nologo "'+$launcher+'"'
-$action=New-ScheduledTaskAction -Execute $execute -Argument $arguments -WorkingDirectory $home
+$action=New-ScheduledTaskAction -Execute $execute -Argument $arguments -WorkingDirectory $InboxHome
 $trigger=New-ScheduledTaskTrigger -Once -At (Get-Date).AddMinutes(1) -RepetitionInterval (New-TimeSpan -Minutes 15) -RepetitionDuration (New-TimeSpan -Days 3650)
 $principal=New-ScheduledTaskPrincipal -UserId ([Security.Principal.WindowsIdentity]::GetCurrent().Name) -LogonType Interactive -RunLevel Limited
 $settings=New-ScheduledTaskSettingsSet -MultipleInstances IgnoreNew -ExecutionTimeLimit (New-TimeSpan -Minutes 12) -StartWhenAvailable -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries
