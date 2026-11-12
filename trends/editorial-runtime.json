@@ -7,14 +7,14 @@
   "previous_run_id": "tr-20261112T161000-manual",
   "command_id": "tr-20261112T162500-manual",
   "source": "chat",
-  "status": "success",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-12T16:25:00+01:00",
-  "updated_at": "2026-11-12T16:33:08+01:00",
-  "current": 0,
+  "updated_at": "2026-11-12T16:33:55+01:00",
+  "current": 1,
   "total": 1,
-  "trend_id": "f4fde19c25ea",
-  "title": "Aurá",
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
     "f4fde19c25ea"
@@ -27,10 +27,41 @@
   "remaining_problematic_ids": [
     "f4fde19c25ea"
   ],
-  "summary": null,
-  "outcomes": [],
-  "incident_count": 0,
-  "incidents": [],
+  "summary": {
+    "attempted": 1,
+    "observed": 1,
+    "closed": 1,
+    "explained": 0,
+    "maintenance": 0,
+    "problematic": 1,
+    "updates": 0,
+    "review_completed_no_distinct_event": 0,
+    "queue_remaining": 1,
+    "active_remaining": 0,
+    "imagegen_calls": 0,
+    "image_outbox_created": 0,
+    "publications": 0,
+    "incidents": 1
+  },
+  "outcomes": [
+    {
+      "id": "f4fde19c25ea",
+      "revision": 1,
+      "name": "Aurá",
+      "outcome": "problematic",
+      "problematic_attempts": 1,
+      "reason": "El fenómeno general «farmear aura» está documentado, pero no se verificó un detonante concreto del pico actual; la pista editorial no se elevó a hecho."
+    }
+  ],
+  "incident_count": 1,
+  "incidents": [
+    {
+      "id": "f4fde19c25ea",
+      "name": "Aurá",
+      "kind": "unverified_cause",
+      "detail": "No se encontró evidencia independiente suficiente para atribuir el pico actual a un detonante concreto."
+    }
+  ],
   "error": null,
   "activity": [
     {
@@ -50,24 +81,29 @@
       "revision": 1,
       "name": "Aurá",
       "message": "Pista editorial contrastada con fuentes independientes: el fenómeno «farmear aura» está documentado, pero no se acredita el detonante concreto del pico actual de Aurá."
+    },
+    {
+      "at": "2026-11-12T16:33:55+01:00",
+      "phase": "closing",
+      "message": "Aplicador verificado en main. Aurá r1 queda problematic; cola sin preparing/update y con 1 problematic retriable mientras siga en Top 30."
     }
   ],
   "last_started_at": "2026-11-12T16:33:08+01:00",
-  "last_completed_at": "2026-11-12T16:33:08+01:00",
+  "last_completed_at": "2026-11-12T16:33:55+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261112T161000-manual",
+    "run_id": "tr-20261112T162500-manual",
     "status": "DONE",
-    "started_at": "2026-11-12T16:10:00+01:00",
-    "finished_at": "2026-11-12T16:16:00+01:00",
-    "total": 6,
-    "closed": 6,
-    "explained": 5,
-    "maintenance": 1,
+    "started_at": "2026-11-12T16:25:00+01:00",
+    "finished_at": "2026-11-12T16:33:55+01:00",
+    "total": 1,
+    "closed": 1,
+    "explained": 0,
+    "maintenance": 0,
     "pending": 0,
-    "problematic": 0
+    "problematic": 1
   },
-  "message": "Aurá r1 en investigación desde cero; la pista editorial sobre «aura/farmear aura» sigue sin verificación causal independiente. Sin ImageGen ni publicación.",
+  "message": "Pasada manual cerrada 1/1: Aurá r1 queda problematic de forma fail-closed; no hay preparing/update pendientes. Sin ImageGen ni publicación.",
   "history": [
     {
       "run_id": "tr-1794327332740-manual",
@@ -5022,6 +5058,50 @@
       "trend_id": "f4fde19c25ea",
       "title": "Aurá",
       "message": "Investigación JIT de Aurá r1; sin ImageGen ni publicación."
+    },
+    {
+      "run_id": "tr-20261112T162500-manual",
+      "status": "DONE",
+      "started_at": "2026-11-12T16:25:00+01:00",
+      "finished_at": "2026-11-12T16:33:55+01:00",
+      "at": "2026-11-12T16:33:55+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 1,
+        "observed": 1,
+        "closed": 1,
+        "explained": 0,
+        "maintenance": 0,
+        "problematic": 1,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "queue_remaining": 1,
+        "active_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 1
+      },
+      "outcomes": [
+        {
+          "id": "f4fde19c25ea",
+          "revision": 1,
+          "name": "Aurá",
+          "outcome": "problematic",
+          "problematic_attempts": 1,
+          "reason": "El fenómeno general «farmear aura» está documentado, pero no se verificó un detonante concreto del pico actual; la pista editorial no se elevó a hecho."
+        }
+      ],
+      "incident_count": 1,
+      "incidents": [
+        {
+          "id": "f4fde19c25ea",
+          "name": "Aurá",
+          "kind": "unverified_cause",
+          "detail": "No se encontró evidencia independiente suficiente para atribuir el pico actual a un detonante concreto."
+        }
+      ],
+      "message": "Pasada manual cerrada 1/1: Aurá r1 queda problematic de forma fail-closed; no hay preparing/update pendientes. Sin ImageGen ni publicación."
     }
   ],
   "current_item": null,
@@ -7791,15 +7871,15 @@
     }
   ],
   "outbox_comment_id": 6799589190,
-  "editorial_apply_commit": "d6841b6c6d3b5392ca442ef25e1685e493147d2b",
-  "refresh_workflow_run_id": 42929355766,
+  "editorial_apply_commit": "2daf01c5d74a3f9a30d615d4c9edcd657a3346e6",
+  "refresh_workflow_run_id": 43248005290,
   "refresh_conclusion": "success",
   "maintenance_apply_commits": [
     "eedbccdb94df1936c8997f1f2ced3536266ed14e",
     "8ac401943a74f6b1e15d582eac4c3bffb24294b5",
     "a3750716edf8e75aa9f7d3894516ef2da4b2aa57"
   ],
-  "outbox_commit": "d98a814e110f71921adab2ad984fde8a2a11979c",
+  "outbox_commit": "d4a002c34e63c0e825a820bc432b784b1353cbaa",
   "prior_last_run": {
     "run_id": "tr-autoguard-1794381666",
     "status": "DONE",
@@ -8100,5 +8180,5 @@
     }
   ],
   "processed": [],
-  "finished_at": "2026-11-12T16:16:00+01:00"
+  "finished_at": "2026-11-12T16:33:55+01:00"
 }
