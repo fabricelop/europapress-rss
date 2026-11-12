@@ -819,7 +819,8 @@ assert 'route.hasSuffix("/decision") && method == "POST"' in auth
 assert 'let validPage = components.path == "/v1/images"' not in auth
 assert 'seenCursors.insert(cursor).inserted' in inbox
 assert 'editorialAt: String?' in inbox
-assert 'items.sorted { $0.createdAt > $1.createdAt }' in inbox
+assert 'if $0.createdAt != $1.createdAt { return $0.createdAt > $1.createdAt }' in inbox
+assert 'return $0.id > $1.id' in inbox
 assert 'func currentImageApprovalTrendEpisodes() async throws' in auth
 assert 'if action == "approve" && [404, 503].contains(status)' in inbox
 assert 'if [401, 403, 409, 422].contains(status)' in inbox
@@ -1117,3 +1118,11 @@ assert project.count('0.4.87') == 4
 assert project.count('"99"') == 4
 print("TT_IMAGE_INBOX_BUILD99_STABLE_SNAPSHOT_AND_UNCONFIRMED_DECISIONS_OK")
 
+
+# Ingest retries may return the same PNG under another receipt ID.
+# Dedupe only identical raster+editorial episode, never by title alone.
+assert 'acceptedReceipts.values.contains { receipt in' in inbox
+assert 'unconfirmedDecisions.values.contains { record in' in inbox
+assert 'receipt.rasterSHA256 == item.identity.rasterSHA256' in inbox
+assert 'receipt.episode == episodeKey(item)' in inbox
+print("TT_IMAGE_INBOX_BUILD99_IDENTICAL_RASTER_EPISODE_NO_REINSERT_OK")
