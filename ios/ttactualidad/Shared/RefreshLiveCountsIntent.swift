@@ -96,9 +96,13 @@ private enum LiveCountsSource {
 
         let prepared = rows(docs["ttittulares/prepared.json"], "items")
         let decisions = rows(docs["ttittulares/decisions.json"], "items")
-        let closedNews = Set(decisions.filter {
-            terminal.contains(str($0, "status").lowercased())
-        }.map { str($0, "event_id") })
+        // Match EditorialStore.buildNews: the last editorial decision for
+        // each ID wins. An old deletion must not suppress a later re-admission.
+        var latestNewsStatus: [String: String] = [:]
+        for row in decisions {
+            let id = str(row, "event_id")
+            if !id.isEmpty { latestNewsStatus[id] = str(row, "status").lowercased() }
+        }
         // Live Activity must exclude the SAME Buffer-reserved/sent episodes
         // as the app's actual Listas. A missing ledger is a partial read,
         // never interpreted as an empty list of exclusions.
@@ -107,7 +111,7 @@ private enum LiveCountsSource {
         let openNews = prepared.filter {
             let id = str($0, "event_id")
             let revision = integer($0, "revision")
-            return !id.isEmpty && !closedNews.contains(id) &&
+            return !id.isEmpty && !terminal.contains(latestNewsStatus[id] ?? "") &&
                 ($0["rewrite_pending"] as? Bool != true) &&
                 LiveListasCountsPolicy.visible(
                     project: "ttittulares", id: id, revision: revision,
