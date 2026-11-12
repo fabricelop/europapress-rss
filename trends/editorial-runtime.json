@@ -7,39 +7,47 @@
   "previous_run_id": "tr-20261112T162500-manual",
   "command_id": "tr-20261112T165500-manual",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-12T16:55:00+01:00",
-  "updated_at": "2026-11-12T16:55:00+01:00",
-  "current": 0,
+  "updated_at": "2026-11-12T16:59:00+01:00",
+  "current": 1,
   "total": 1,
-  "trend_id": "f4fde19c25ea",
-  "title": "Aurá",
-  "queue_complete": false,
-  "processed_ids": [],
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
+    "f4fde19c25ea"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "f4fde19c25ea"
-  ],
-  "remaining_active_ids": [
-    "f4fde19c25ea"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 1,
     "observed": 1,
-    "closed": 0,
-    "explained": 0,
+    "closed": 1,
+    "explained": 1,
     "problematic": 0,
     "updates": 0,
-    "queue_remaining": 1,
-    "rewrite_pending_remaining": 1,
+    "queue_remaining": 0,
+    "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "f4fde19c25ea",
+      "revision": 2,
+      "name": "Aurá",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "c072450e51da0aeb480dbe710d7c36bb156b4033",
+      "outbox_comment_id": 6828616611
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -82,21 +90,21 @@
     }
   ],
   "last_started_at": "2026-11-12T16:55:00+01:00",
-  "last_completed_at": "2026-11-12T16:40:09+01:00",
+  "last_completed_at": "2026-11-12T16:59:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261112T162500-manual",
-    "status": "DONE_WITH_INCIDENTS",
-    "started_at": "2026-11-12T16:25:00+01:00",
-    "finished_at": "2026-11-12T16:40:09+01:00",
-    "total": 2,
-    "closed": 2,
-    "explained": 0,
-    "maintenance": 1,
+    "run_id": "tr-20261112T165500-manual",
+    "status": "DONE",
+    "started_at": "2026-11-12T16:55:00+01:00",
+    "finished_at": "2026-11-12T16:59:00+01:00",
+    "total": 1,
+    "closed": 1,
+    "explained": 1,
+    "maintenance": 0,
     "pending": 0,
-    "problematic": 1
+    "problematic": 0
   },
-  "message": "Ejecuta TTendencias: 1 revisión vigente. Investigando Aurá r2 desde cero; X-context no utilizable (403) y contraste abierto en curso.",
+  "message": "Pasada completada 1/1. Aurá r2 quedó explicada y persistida en main; cola final 0. La relación con «farmear aura» se formula como probable y el detonante concreto del pico de hoy permanece no confirmado. Sin ImageGen ni publicación.",
   "history": [
     {
       "run_id": "tr-1794327332740-manual",
@@ -5152,15 +5160,9 @@
       "message": "Pasada cerrada 2/2: Aurá r1 queda problematic por causa actual no verificada; la revisión roja de #FelizJueves queda unchanged y conserva texto/fecha. No hay preparing/update pendientes. Sin ImageGen ni publicación."
     }
   ],
-  "current_item": {
-    "id": "f4fde19c25ea",
-    "revision": 2,
-    "name": "Aurá",
-    "phase": "investigating",
-    "message": "Contrastando el uso viral de «aura/farmear aura» y el detonante actual de «Aurá» sin convertir la pista editorial en hecho."
-  },
+  "current_item": null,
   "withdrawn_ids": [],
-  "last_finished_at": "2026-11-12T15:53:00+01:00",
+  "last_finished_at": "2026-11-12T16:59:00+01:00",
   "last_revalidated_at": "2026-11-11T19:56:00+01:00",
   "last_revalidation": {
     "at": "2026-11-11T18:26:00+01:00",
@@ -5175,7 +5177,7 @@
     "updated_at": "2026-11-11T08:31:36+01:00"
   },
   "apply_workflow_run_id": 42930648566,
-  "apply_commit": "fc172e29a53e7da7111016413c6152830563409c",
+  "apply_commit": "c072450e51da0aeb480dbe710d7c36bb156b4033",
   "maintenance_workflow_run_id": 42713522083,
   "maintenance_job_id": "red-review-61d494cc18e2321aaa5b",
   "workflow_run_id": 43046392853,
@@ -7924,7 +7926,7 @@
       "message": "Pasada tr-20261111T182500-manual cerrada 0/0 contra main. Barrera JIT final: editorial-queue=0 (updated_at 2026-11-11T18:21:06+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
     }
   ],
-  "outbox_comment_id": 6799589190,
+  "outbox_comment_id": 6828616611,
   "editorial_apply_commit": "2daf01c5d74a3f9a30d615d4c9edcd657a3346e6",
   "refresh_workflow_run_id": 43248005290,
   "refresh_conclusion": "success",
@@ -8235,6 +8237,6 @@
     }
   ],
   "processed": [],
-  "finished_at": null,
+  "finished_at": "2026-11-12T16:59:00+01:00",
   "maintenance_outbox_commit": "970b545c88b09429a23d15ec893b9d66fb611297"
 }
