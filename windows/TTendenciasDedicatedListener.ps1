@@ -1107,8 +1107,45 @@ function Refresh-ActiveImages($State,$Index) {
   $State.active_image_commands = @($active | Select-Object -Unique)
 }
 
-function Build-EditorialMessage([string]$CommandId) {
-  return "TTENDENCIAS_EDITORIAL_JOB_V2 $CommandId | Ejecuta AHORA la pasada editorial real de TTendencias. Lee primero trends/editorial-run-prompt.md y trends/editorial-queue.json desde main. Antes de declarar cola vacía, relee editorial-queue.json y procesa TODOS los items status preparing/update, del más antiguo al más reciente, validando cada (id,revision) justo antes de tratarlo. NO llames a ImageGen ni generes imágenes en esta pasada. Solo puedes cerrar 0/0 si, tras releer main, no queda ningún preparing/update ni reexplicación pendiente."
+function Build-EditorialMessage([string]$CommandId,$Control) {
+  # Do not send an unbounded 20-item request. One verified revision per chat
+  # lets the existing GitHub apply workflow close each entry independently.
+  $queue=Read-JsonUrl "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/trends/editorial-queue.json" $true
+  if($null -eq $queue -or $null -eq $queue.items){
+    Write-Log "EDITORIAL QUEUE UNAVAILABLE command=$CommandId; not sending generic prompt"
+    return ""
+  }
+  $active=@($queue.items | Where-Object {
+    $_.id -and ([string]$_.status -in @("preparing","update"))
+  } | Sort-Object @{Expression={ [string]$_.requested_at }},@{Expression={ [string]$_.id }})
+  $targetId=[string]$Control.target_id
+  $targetRevision=0
+  try { $targetRevision=[int]$Control.target_revision } catch {}
+  if($targetId){
+    $active=@($active | Where-Object {
+      [string]$_.id -eq $targetId -and [int]$_.revision -eq $targetRevision
+    })
+  }
+  if($active.Count -eq 0){
+    Write-Log "EDITORIAL NO ACTIVE TARGET command=$CommandId target=$targetId revision=$targetRevision"
+    return ""
+  }
+  $item=$active[0]
+  $itemId=[string]$item.id
+  $itemRevision=[int]$item.revision
+  $itemName=[string]$item.name
+  Write-Log "EDITORIAL TARGET command=$CommandId id=$itemId revision=$itemRevision name=$itemName"
+  return @"
+TT_ACTUALIDAD_MANUAL_EDITORIAL_V1 | Ejecuta AHORA la elaboración editorial REAL y PERSISTE el resultado de UNA SOLA tendencia desde esta conversación de ChatGPT, SIN depender del ordenador Windows. No devuelvas un plan ni delegues el trabajo a otro chat.
+
+Repositorio autoritativo: fabricelop/europapress-rss, rama main. Usa el conector GitHub para leer y escribir y la búsqueda web para investigar; si no puedes escribir, declara un fallo, nunca éxito.
+
+Proyecto: ttendencias. Elemento: $itemName. ID exacto: $itemId. Revisión solicitada: $itemRevision. Orden: $CommandId.
+
+ANTES DE EMPEZAR, lee trends/editorial-run-prompt.md y trends/editorial-queue.json desde main. Revalida el ID y revisión justo antes de investigar y escribir. Si la revisión ya está explicada, READY, publicada, desestimada, eliminada o sustituida, no la dupliques. Contrasta las pistas editoriales sin darlas por ciertas, realiza la investigación y redacta según el contrato. No proceses otras tendencias ni hagas imágenes.
+
+PERSISTE el resultado con el mecanismo editorial vigente en GitHub para esa revisión: trends/requests.json, trends/telegram-manual-explained.json y retirada de la cola en trends/editorial-queue.json. Comprueba que los tres estados convergen antes de declarar terminado. Si alguna fase no puede completarse, indícalo claramente y no marques el elemento como cerrado.
+"@
 }
 
 function Build-ImageMessage($Job) {
@@ -1235,9 +1272,17 @@ while ($true) {
               # Editorial usa el mismo lanzador robusto que las imágenes:
               # solo damos ACK launched cuando Ejecutar.js confirma que el mensaje
               # fue enviado o que ChatGPT ya empezó a responder.
-              $editorialMessage = Build-EditorialMessage $commandId
-              $editorialMarker = "TTENDENCIAS_EDITORIAL_JOB_V2 $commandId"
-              $messageSent = Launch-ProjectChat "editorial command=$commandId" $editorialMessage $editorialMarker
+              $editorialMessage = Build-EditorialMessage $commandId $doc
+              $editorialMarker = "TT_ACTUALIDAD_MANUAL_EDITORIAL_V1"
+              $messageSent = $false
+              if ($editorialMessage) {
+                $messageSent = Launch-ProjectChat "editorial command=$commandId" $editorialMessage $editorialMarker
+              } else {
+                # A missing/finished target must not fall back to generic 'Ejecuta'.
+                # Leave no false LAUNCHED ACK and no duplicate editorial request.
+                $state.last_command_id = $commandId
+                Save-State $state
+              }
               if ($messageSent) {
                 $launched = Send-Ack $commandId "launched"
                 if ($launched -ne "OK") { Write-Log "LAUNCH ACK WARNING command=$commandId result=$launched" }
@@ -1247,7 +1292,7 @@ while ($true) {
                 $state.editorial_retry_command_id = ""
                 $state.editorial_retry_after = ""
                 Save-State $state
-              } else {
+              } elseif ($editorialMessage) {
                 Set-EditorialRetryBackoff $state $commandId
                 Write-Log "LAUNCH NOT CONFIRMED command=$commandId; no launched ACK; retry deferred"
               }
