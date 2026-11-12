@@ -505,7 +505,7 @@ def main():
                     "source": "editorial_chat_direct",
                     "editorial_engine": "chatgpt-automation-outbox",
                     "verification_sources": verification_sources,
-                    "with_image": bool(req.get("with_image")),
+                    "with_image": True,
                     "image_strategy": "ai_plus_fallback",
                     "ai_image_status": "pending",
                     "fallback_image_status": "pending",
