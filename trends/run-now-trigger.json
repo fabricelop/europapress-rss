@@ -1,11 +1,31 @@
 {
   "version": 2,
-  "command_id": "tr-1794506455748-manual",
-  "requested_at": "2026-11-12T18:00:55.748Z",
+  "command_id": "tr-autoguard-1794507373",
+  "requested_at": "2026-11-12T18:16:13.041077Z",
   "mode": "manual_pc_chat",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
   "launcher_arg": "tendencias",
   "task": "editorial",
-  "auto_image_followup": false
+  "auto_image_followup": false,
+  "source": "tt_autoheal_editorial_watchdog",
+  "reason": "editorial_not_started_in_time",
+  "pending_ids": [
+    "009af898bf01",
+    "0293400ea789",
+    "04aab77349ea",
+    "327da4639abd",
+    "3887df46b9b3",
+    "4e23fee3dfdb",
+    "630897499802",
+    "93d43d8946ec",
+    "baf981a5ac70",
+    "f1963deff005",
+    "fb4305f17d11",
+    "fbe53fb478fe"
+  ],
+  "target_id": "009af898bf01",
+  "target_revision": 0,
+  "target_name": "Feijoo",
+  "scope": "single_item"
 }
