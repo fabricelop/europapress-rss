@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-12T14:59:26.884288+00:00",
+  "updated_at": "2026-11-12T15:01:00.814599+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -299520,37 +299520,43 @@
       "id": "f9c321a34c0c",
       "name": "1771 X",
       "rank": 30,
-      "status": "inactive",
-      "requested_at": "2026-11-12T10:04:17+01:00",
-      "revision": 0,
+      "created_at": "2026-11-12T15:01:00.814599+00:00",
+      "revision": 1,
+      "status": "preparing",
+      "requested_at": "2026-11-12T15:01:00.814599+00:00",
+      "updated_at": "2026-11-12T15:01:00.814599+00:00",
+      "auto_queued": false,
+      "request_source": "ttactualidad_editor_hints",
       "reexplain": false,
+      "rewrite_pending": false,
+      "task": "explain",
       "with_image": true,
-      "alternatives_target": 0,
-      "batch_id": "b07f002e6dd9",
+      "disable_ai_image": false,
+      "rewrite_with_image": true,
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "pending",
+      "fallback_image_status": "pending",
       "requested_together": [
         "1771 X"
       ],
-      "captured_with": [
-        "1771 X"
+      "user_pistas": [
+        {
+          "at": "2026-11-12T15:01:00.814599+00:00",
+          "source_revision": 0,
+          "text": "La palabra del día #1771 X/6 del juego lapalabradeldia",
+          "verification": "unverified_editor_context"
+        }
       ],
-      "automatic_grouping": false,
-      "grouping_disabled": true,
-      "auto_queued": true,
-      "auto_queue_scope": "top30",
-      "new_episode_review": false,
-      "recurring_top30_name": false,
-      "radar_episode_token": "",
-      "radar_episode_started_at": "2026-11-12T10:04:12+01:00",
-      "editor_approval_batch_id": "",
-      "previous_episode_id": "",
-      "distinct_event_required": false,
-      "review_instruction": "",
-      "problematic_at": "2026-11-12T11:05:17+01:00",
-      "problem_reason": "No se ha podido verificar que «1771 X» corresponda a una tendencia editorial coherente. El término desapareció del Top 30 en la siguiente captura y las búsquedas independientes no permitieron aislar un detonante actual fiable.",
-      "problematic_attempts": 1,
-      "editorial_engine": "chatgpt-automation-outbox",
-      "inactive_at": "2026-11-12T11:11:18+01:00",
-      "inactive_reason": "left-top30-radar"
+      "investigation_history": [
+        {
+          "revision": 0,
+          "status": "inactive",
+          "problem_reason": "No se ha podido verificar que «1771 X» corresponda a una tendencia editorial coherente. El término desapareció del Top 30 en la siguiente captura y las búsquedas independientes no permitieron aislar un detonante actual fiable.",
+          "last_attempt_at": ""
+        }
+      ],
+      "rewrite_instruction": "INVESTIGACIÓN NUEVA DESDE CERO. Pistas de un editor SIN verificar:\\nLa palabra del día #1771 X/6 del juego lapalabradeldia\\nContrasta cada dato, fecha, publicación y fuente con búsquedas independientes. Si no se verifica el detonante actual, deja el caso SIN EXPLICACIÓN VERIFICADA; nunca presentes las pistas como hechos. Si se verifica, escribe explicación factual completa y remate nuevo. No reutilices texto, remate ni imágenes de otra revisión.",
+      "hints_verification_status": "unverified"
     },
     {
       "id": "554d3b5f9168",
