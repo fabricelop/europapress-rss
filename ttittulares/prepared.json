@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-11-12T13:07:20.354573Z",
+  "updated_at": "2026-11-12T13:20:00Z",
   "items": [
     {
       "event_id": "c2c5fea57972",
@@ -869,8 +869,8 @@
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "none",
       "archive_image_status": "ready",
-      "fallback_image_status": "ready",
-      "image_choice": "fallback",
+      "fallback_image_status": "none",
+      "image_choice": "none",
       "sensitive_editorial": false,
       "prepared_at": "2026-11-12T13:05:44.867851Z",
       "image_status": "none",
@@ -880,14 +880,6 @@
       "archive_image_search_attempted_at": "2026-11-12T13:07:20.354573Z",
       "fallback_image_search_attempted_at": "2026-11-12T13:07:20.354573Z",
       "archive_image": {
-        "url": "https://www.servimedia.es/sites/default/files/noticias/A/A1-1413589494-1.jpg",
-        "source": "www.servimedia.es",
-        "source_url": "https://www.servimedia.es/noticias/madrid-enciende-navidad-21-noviembre-cibeles-bulevar-acabado-carlos-latre-presentando/1413589494",
-        "rights_status": "unverified",
-        "generated": false,
-        "alt": "Madrid enciende la Navidad el 21 de noviembre en Cibeles con el bulevar acabado y con Carlos Latre presentando"
-      },
-      "fallback_image": {
         "url": "https://www.servimedia.es/sites/default/files/noticias/A/A1-1413589494-1.jpg",
         "source": "www.servimedia.es",
         "source_url": "https://www.servimedia.es/noticias/madrid-enciende-navidad-21-noviembre-cibeles-bulevar-acabado-carlos-latre-presentando/1413589494",
@@ -950,8 +942,63 @@
       "image_pending": false,
       "image_app_available": false,
       "image_delivery": "none"
+    },
+    {
+      "event_id": "24a79538c864",
+      "revision": 1,
+      "title": "La Diputación Permanente convalida por un voto el decreto de vivienda",
+      "url": "https://www.ondacero.es/noticias/espana/estas-son-medidas-decretos-vivienda-que-vota-nuevo-gobierno-alquileres-desahucios_202611126af498f89a31a65adcd89194.html",
+      "selection_mode": "AUTO_WEB",
+      "factual_summary": "La Diputación Permanente del Congreso convalidó por 35 votos a 34 el Real Decreto-ley 29/2026 de vivienda. Incluye protección frente a desahucios de personas vulnerables, límites a determinadas compras especulativas e incentivos fiscales.",
+      "explanation": "La Diputación Permanente, competente con las Cortes disueltas, convalidó el RDL 29/2026 por 35-34. El texto contiene medidas de protección frente a desahucios, límites a determinadas adquisiciones por fondos y grandes tenedores e incentivos fiscales. El RDL 28/2026 sobre estabilidad y renovación de contratos no fue convalidado.",
+      "sources_at_draft": [
+        "Servimedia",
+        "BOE",
+        "Cadena SER"
+      ],
+      "source_evidence": [
+        {
+          "source": "Servimedia",
+          "url": "https://www.servimedia.es/noticias/diputacion-permanente-aprueba-decreto-vivienda-pese-voto-junts/1413589500",
+          "supports": "Confirma la convalidación por 35 votos a favor y 34 en contra."
+        },
+        {
+          "source": "BOE",
+          "url": "https://www.boe.es/eli/es/rdl/2026/10/06/29",
+          "supports": "Texto oficial del Real Decreto-ley 29/2026 y sus medidas de vivienda."
+        },
+        {
+          "source": "Cadena SER",
+          "url": "https://cadenaser.com/nacional/2026/11/12/bonificaciones-freno-a-los-desahucios-y-veto-a-la-compra-de-pisos-fondos-buitre-estas-son-las-medidas-de-vivienda-que-la-diputacion-permanente-debate-hoy-cadena-ser/",
+          "supports": "Detalla medidas sobre desahucios, fondos e incentivos fiscales sometidas a votación."
+        }
+      ],
+      "source_count": 4,
+      "drafted_source_count": 3,
+      "verified_source_count": 3,
+      "tweet": {
+        "text": "La Diputación Permanente convalida 35-34 el decreto de vivienda: freno a desahucios vulnerables, límites a fondos buitre e incentivos fiscales.\n\n#Vivienda #Congreso\n🌶️ El decreto encontró techo por un solo voto.",
+        "remate": "🌶️ El decreto encontró techo por un solo voto.",
+        "url": "https://twitter.com/intent/tweet?text=La%20Diputaci%C3%B3n%20Permanente%20convalida%2035-34%20el%20decreto%20de%20vivienda%3A%20freno%20a%20desahucios%20vulnerables%2C%20l%C3%ADmites%20a%20fondos%20buitre%20e%20incentivos%20fiscales.%0A%0A%23Vivienda%20%23Congreso%0A%F0%9F%8C%B6%EF%B8%8F%20El%20decreto%20encontr%C3%B3%20techo%20por%20un%20solo%20voto."
+      },
+      "category": "Vivienda",
+      "source": "editorial_chat_direct",
+      "with_image": true,
+      "image_mode": "ai_plus_fallback",
+      "image_strategy": "ai_plus_fallback",
+      "ai_image_status": "none",
+      "archive_image_status": "pending",
+      "fallback_image_status": "none",
+      "image_choice": "none",
+      "sensitive_editorial": false,
+      "prepared_at": "2026-11-12T13:20:00Z",
+      "editorial_verified_at": "2026-11-12T13:20:00Z",
+      "image_status": "none",
+      "image_pending": false,
+      "image_app_available": false,
+      "image_delivery": "none"
     }
   ],
-  "count": 16,
+  "count": 17,
   "delivery_refresh_requested_at": "2026-10-26T01:33:00Z"
 }
