@@ -1,4 +1,4 @@
-name: TTActualidad V2 - Paso 1 captura aislada
+name: TTActualidad V2 - Pasos 1 y 2 captura aislada
 on:
   push:
     branches: [feature/ttactualidad-v2-clean]
@@ -43,8 +43,10 @@ jobs:
           from pathlib import Path
           r=json.loads(Path("v2/ttendencias/state/freshness-report.json").read_text())
           assert r["step"]=="02_freshness"
-          assert r["eligible_for_editorial"] is False
+          assert r["eligible_for_editorial"] is True
           assert r["source_freshness_verified"] is False
+          assert r["source_policy"] == "getdaytrends_single_source"
+          assert r["status"] == "accepted_getdaytrends_single_source"
           print("TT_V2_STEP02_CAPTURE_STATUS",r["status"],"capture_age_minutes",r["capture_age_minutes"])
           PY
       - uses: actions/upload-artifact@v4
