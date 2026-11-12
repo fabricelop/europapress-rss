@@ -1,15 +1,15 @@
 {
   "version": 1,
-  "id": "ttb-inbox-latest-receipt-states-20261112",
+  "id": "ttb-inbox-one-receipt-20261112",
   "project": "TTActualidad",
   "expires_at": "2026-11-13T08:00:00Z",
-  "description": "Inspect status and age of actual private inbox receipts for latest generated images without exposing image bytes or secrets",
+  "description": "Read-only verify one real generated image private inbox receipt",
   "steps": [
     {
       "kind": "powershell",
-      "name": "read-exact-private-image-receipt-states",
-      "script": "try {\n$d='C:\\TTiTTulares\\image-approval-receipts'\n$a=@(Get-ChildItem -LiteralPath $d -File -Filter '*.json' | Where-Object {$_.Name -match '^(tt|tr)-img-'} | Sort-Object LastWriteTimeUtc -Descending | Select-Object -First 14)\n$o=@()\nforeach($f in $a){\n try {\n $j=Get-Content -LiteralPath $f.FullName -Raw | ConvertFrom-Json\n $o+=@{file=$f.Name;utc=$f.LastWriteTimeUtc.ToString('o');state=$j.state;receivedAt=$j.receivedAt;project=$j.project;revision=$j.revision;hasReceiptId=([string]$j.id).Length -gt 0;hasRasterHash=([string]$j.rasterSHA256).Length -eq 64}\n }catch{$o+=@{file=$f.Name;error='invalid_json'}}\n}\nWrite-Output ('TTRESULT:'+(@{rows=$o}|ConvertTo-Json -Compress -Depth 5))\n}catch{Write-Output ('TTRESULT:'+(@{error=$_.Exception.Message}|ConvertTo-Json -Compress))}\n",
-      "timeout_seconds": 35
+      "name": "verify-josue-image-inbox",
+      "script": "try{$p='C:\\TTiTTulares\\image-approval-receipts\\tr-img-auto-5e5af80baed0-r0-a1-1794458225789.json';$j=Get-Content $p -Raw|ConvertFrom-Json;$o=@{project=$j.project;state=$j.state;receivedAt=$j.receivedAt;validId=([string]$j.id).Length -gt 0;hasSha=([string]$j.rasterSHA256).Length -eq 64};Write-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress))}catch{Write-Output ('TTRESULT:'+(@{error=$_.Exception.Message}|ConvertTo-Json -Compress))}",
+      "timeout_seconds": 20
     }
   ]
 }
