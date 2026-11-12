@@ -1,0 +1,12 @@
+{
+  "enabled": true,
+  "automatic_start_at": "2026-11-12T14:35:00Z",
+  "max_new_jobs_per_run": 1,
+  "max_active_jobs": 1,
+  "one_time_backfill_ids": [
+    "693328099293",
+    "1a4db5caca84",
+    "a41c18d6ca3d"
+  ],
+  "notes": "Exclusivamente jobs automáticos de Gag IA post-READY en el control branch existente. Un job por evento+revisión; sin regeneración, sin backlog histórico, sin cambios en iPhone o aprobación. Los tres IDs de backfill corresponden a las noticias sin imagen comunicadas el 12/11. No se alteran config.images.generate=false ni generador legado."
+}

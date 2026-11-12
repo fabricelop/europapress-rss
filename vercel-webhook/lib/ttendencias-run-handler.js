@@ -155,13 +155,11 @@ async function imageEligibility(targetId){
   if(latestDelivery&&["deleted","dismissed","published","removed","delete_pending"].includes(String(latestDelivery.status||"").toLowerCase()))
     return {eligible:false,reason:"telegram_card_closed",row};
   const archived=explanationIsCopied(row,copyState).copied;
-  // La sensibilidad editorial no bloquea ImageGen. Tremending conserva su
-  // flujo específico de captura real del tuit y no entra en este endpoint.
-  const blocked=Boolean(row.tremending_origin);
+  // Ningún tema ni origen Tremending prohíbe solicitar ImageGen. La
+  // elegibilidad técnica sigue exigiendo un episodio explicado y vigente.
+  // La foto generada va al circuito privado y NUNCA se aprueba automáticamente.
   const hasAi=Boolean(String(row.ai_image?.url||"").trim());
-  // Una imagen existente no bloquea un nuevo gag: permite rehacerla conservando
-  // exactamente la misma explicación y revisión editorial.
-  return {eligible:!archived&&!blocked,reason:archived?"archived":blocked?"tremending":hasAi?"regenerate":"pending",row,hasAi}
+  return {eligible:!archived,reason:archived?"archived":hasAi?"regenerate":"pending",row,hasAi}
 }
 
 async function writeControlJson(path,doc,sha,message){
@@ -579,7 +577,7 @@ async function requestImageRun(req,res){
   const target_id=safeTargetId(req.body?.target_id||req.body?.id);
   const requestedRevision=Math.max(0,Number.parseInt(req.body?.revision??0,10)||0);
   // Revalidación autoritativa justo antes de crear el job: nunca mandar una revisión vieja,
-  // archivada, agrupada o realmente sensible aunque la UI se haya quedado abierta.
+  // archivada o agrupada aunque la UI se haya quedado abierta. El tema no veta IA.
   const eligible=await imageEligibility(target_id);
   if(!eligible.eligible)return res.status(409).json({ok:false,error:"target_no_elegible",reason:eligible.reason,target_id});
   const row=eligible.row||{};
@@ -630,7 +628,7 @@ async function requestImageRun(req,res){
       scope:"Genera UNA sola imagen IA para esta tendencia y no proceses ninguna otra entrada.",
       context:"Usa context_snapshot como contexto autoritativo: contiene la explicación factual y el remate exactos seleccionados por el usuario. No los reescribas ni reinvestigues; solo conviértelos en un gag visual.",
       visual:"Más gag, menos barroquismo: una sola idea visual fuerte, pocos elementos y acabado cuidado. Respeta image_style del context_snapshot; en regeneraciones el estilo puede cambiar.",
-      sensitivity:"No conviertas víctimas, muertes, duelo, violencia grave, abuso o sufrimiento humano en objeto del gag. Esos casos deben venir bloqueados antes del lanzamiento.",
+      sensitivity:"Todas las temáticas admiten una imagen IA; en casos de víctimas, muertes, duelo, violencia grave, abuso o sufrimiento, evita bromas a su costa y usa una representación respetuosa, sin hechos inventados. La aprobación posterior pertenece exclusivamente al editor.",
       political_guard:"Si el contexto es político, mantén el gag en la situación factual descrita; no inventes acusaciones, propaganda, llamadas al voto ni juicios partidistas como hechos.",
       lifecycle:"Una sola orden en ChatGPT Images; confirmar envío, cerrar LAUNCHED y nunca capturar ni persistir raster."
     },
