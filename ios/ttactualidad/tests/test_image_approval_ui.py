@@ -13,9 +13,10 @@ assert 'approved_awaiting_publication' in view and 'expectedIdentity' in view
 assert 'SHA256.hash(data: data)' in view
 assert not __import__('re').search(r'\bAsyncImage\s*\(', view)  # ignore comment; reject an actual call
 assert 'URLSession' not in view  # auth always remains in GitHubEditor
-# The optimistic UI hides a card before the POST, and restores only when
-# the authoritative private service cannot confirm a decision.
-assert 'Decisión no confirmada:' in view
+# The optimistic UI hides the card before POST. An ambiguous response is held
+# separately (not requeued), while a definite rejection restores the card.
+assert 'holdUnconfirmed(item, action: action' in view
+assert 'Section("Decisiones sin confirmación (" +' in view
 assert 'images.removeAll { $0.id == item.id }' in view
 assert 'decisionTail = Task {' in view
 assert 'await previous?.value' in view
