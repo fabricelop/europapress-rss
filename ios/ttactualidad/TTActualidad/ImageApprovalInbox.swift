@@ -79,11 +79,8 @@ private final class ApprovalInboxModel: ObservableObject {
     private let previewLimit = 64
     @Published private(set) var loading = false
     @Published private(set) var processingIDs = Set<String>()
-    // Keep HTTP rejections attached to the original, still-visible card.
+    // Keep explicit HTTP error details, without auto-restore jump.
     @Published private(set) var decisionFailures: [String: String] = [:]
-    // Restore a rejected original in its previous position rather than at
-    // the start of a 100-image inbox.
-    private var optimisticPositions: [String: Int] = [:]
     @Published var notice = ""
     // A successful receipt must not reappear during an eventually-consistent
     // refresh, but a failed decision always restores its original card.
@@ -106,6 +103,8 @@ private final class ApprovalInboxModel: ObservableObject {
         let title: String
         let action: String
         let notedAt: Date
+        // Optional to decode existing saved uncertainty records.
+        let rejectedHTTP: Int?
         var id: String { imageID }
     }
     private let unconfirmedKey = "TTActualidad.privateImageInbox.unconfirmed.v1"
@@ -161,7 +160,7 @@ private final class ApprovalInboxModel: ObservableObject {
         unconfirmedDecisions[item.id] = UnconfirmedDecision(
             imageID: item.id, rasterSHA256: item.identity.rasterSHA256,
             episode: episodeKey(item), title: item.title,
-            action: action, notedAt: Date())
+            action: action, notedAt: Date(), rejectedHTTP: nil)
         if unconfirmedDecisions.count > 4000 {
             let keep = unconfirmedDecisions.values.sorted { $0.notedAt > $1.notedAt }.prefix(3500)
             unconfirmedDecisions = Dictionary(uniqueKeysWithValues: keep.map { ($0.imageID, $0) })
@@ -170,6 +169,21 @@ private final class ApprovalInboxModel: ObservableObject {
         images.removeAll { $0.id == item.id }
         notice = "Decisión SIN CONFIRMAR para «" + item.title + "»: " + reason +
             ". No se reenviará automáticamente. Revisa el apartado de decisiones sin confirmación."
+    }
+
+    private func holdRejected(_ item: PendingImage, action: String, status: Int) {
+        // A definite 4xx is not a saved approval; preserve the exact original
+        // for deliberate review while leaving the NEXT image in place.
+        // No retry and no automatic remove -> restore -> next-image bounce.
+        unconfirmedDecisions[item.id] = UnconfirmedDecision(
+            imageID: item.id, rasterSHA256: item.identity.rasterSHA256,
+            episode: episodeKey(item), title: item.title,
+            action: action, notedAt: Date(), rejectedHTTP: status)
+        saveUnconfirmed()
+        images.removeAll { $0.id == item.id }
+        notice = "El servidor rechazó la decisión (HTTP " + String(status) +
+                 ") para «" + item.title +
+                 "». El original está en «Decisiones a revisar». No se reenviará solo."
     }
 
     func reopenUnconfirmed(_ id: String) {
@@ -370,10 +384,8 @@ private final class ApprovalInboxModel: ObservableObject {
             notice = "Necesitamos comprobar primero el PNG original antes de tomar una decisión."
             return
         }
-        // Required editorial interaction: immediately show the next image.
-        // The network is async and never blocks the tap; only a definitive
-        // rejection can restore this exact original in its previous position.
-        optimisticPositions[item.id] = images.firstIndex(where: { $0.id == item.id })
+        // Advance immediately; any definitive HTTP rejection goes to manual
+        // review rather than jumping back into the active image sequence.
         processingIDs.insert(item.id)
         decisionFailures.removeValue(forKey: item.id)
         images.removeAll { $0.id == item.id }
@@ -394,19 +406,9 @@ private final class ApprovalInboxModel: ObservableObject {
         }
     }
 
-    private func restoreRejected(_ item: PendingImage) {
-        guard !completedIDs.contains(item.id), !accepted(item), !unconfirmed(item),
-              !images.contains(where: { $0.id == item.id }) else { return }
-        let position = optimisticPositions[item.id] ?? 0
-        images.insert(item, at: min(position, images.count))
-    }
-
     private func persistDecision(_ item: PendingImage, action: String,
                                  using github: GitHubEditor) async {
-        defer {
-            processingIDs.remove(item.id)
-            optimisticPositions.removeValue(forKey: item.id)
-        }
+        defer { processingIDs.remove(item.id) }
         do {
             let body = try JSONEncoder().encode(ApprovalDecision(
                 action: action, expectedIdentity: item.identity))
@@ -421,9 +423,7 @@ private final class ApprovalInboxModel: ObservableObject {
                     decisionFailures[item.id] = "DECISIÓN NO APLICADA: " + detail +
                         " HTTP " + String(status) +
                         (code.map { " (" + $0 + ")" } ?? "") + "."
-                    restoreRejected(item)
-                    notice = "El servidor rechazó «" + item.title +
-                        "» (" + String(status) + "). Se ha restaurado la imagen exacta."
+                    holdRejected(item, action: action, status: status)
                     return
                 }
                 // An ambiguous 404/503 must never trigger a second
@@ -565,16 +565,23 @@ struct ImageApprovalInbox: View {
                             }
                         }
                         if !model.unconfirmedRows.isEmpty {
-                            Section("Decisiones sin confirmación (" +
+                            Section("Decisiones a revisar (" +
                                     String(model.unconfirmedRows.count) + ")") {
                                 ForEach(model.unconfirmedRows) { record in
                                     VStack(alignment: .leading, spacing: 6) {
                                         Text(record.title).font(.subheadline.weight(.semibold))
-                                        Text(record.action == "approve" ?
-                                             "Aprobación enviada, sin confirmación final." :
-                                             "Rechazo enviado, sin confirmación final.")
-                                            .font(.caption).foregroundStyle(.orange)
-                                        Text("No se considera publicada ni se reenvía sola.")
+                                        if let rejectedHTTP = record.rejectedHTTP {
+                                            Text("Decisión rechazada (HTTP " +
+                                                 String(rejectedHTTP) +
+                                                 "). No se ha aplicado ni publicado.")
+                                                .font(.caption).foregroundStyle(.red)
+                                        } else {
+                                            Text(record.action == "approve" ?
+                                                 "Aprobación enviada, sin confirmación final." :
+                                                 "Rechazo enviado, sin confirmación final.")
+                                                .font(.caption).foregroundStyle(.orange)
+                                        }
+                                        Text("No se reenvía automáticamente. El original se conserva.")
                                             .font(.caption2).foregroundStyle(.secondary)
                                         Button("Volver a revisar en la bandeja") {
                                             model.reopenUnconfirmed(record.id)
