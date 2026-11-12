@@ -9,7 +9,10 @@ const repo = process.env.TT_X_GIT_REPO || path.resolve(__dirname, '..');
 const EVIDENCE = 'trends/x-context-evidence.json';
 const QUEUE = 'trends/editorial-queue.json';
 function git(args, env = {}) {
-  return cp.execFileSync('git', args, {
+  // Git safe.directory is protected configuration. Trust only the explicit
+  // TT-XContext git-store for this invocation, including commit-tree and push.
+  const trusted = 'safe.directory=' + path.resolve(repo).replace(/\\/g, '/');
+  return cp.execFileSync('git', ['-c', trusted, ...args], {
     cwd: repo, encoding: 'utf8', timeout: 90000,
     env: { ...process.env, ...env }, maxBuffer: 16 * 1024 * 1024,
     stdio: ['ignore', 'pipe', 'pipe']
