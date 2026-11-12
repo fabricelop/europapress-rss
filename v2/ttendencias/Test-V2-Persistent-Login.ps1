@@ -1,6 +1,6 @@
 # TTActualidad V2: perfil exclusivo persistente; prueba manual de login.
 # No usa CDP ni el Chrome de V1. No borra el perfil de autenticacion.
-param([ValidateSet('login','verify')][string]$Mode='login',[int]$TimeoutSeconds=240)
+param([ValidateSet('login','verify','verify-clean')][string]$Mode='login',[int]$TimeoutSeconds=240)
 $ErrorActionPreference='Stop'
 if($TimeoutSeconds -lt 30 -or $TimeoutSeconds -gt 900){throw 'TimeoutSeconds debe estar entre 30 y 900'}
 $chrome=@(
@@ -26,6 +26,7 @@ try {
   Write-Host 'Abre ChatGPT. En login inicia sesion manualmente; en verify comprueba tus conversaciones.'
   Write-Host 'El perfil se conserva entre ejecuciones. NO introduzcas credenciales en PowerShell.'
   $args=@("--user-data-dir=`"$profile`"","--no-first-run","--no-default-browser-check","--new-window","https://chatgpt.com/")
+  if($Mode -eq "verify-clean"){$args=@("--disable-extensions") + $args;Write-Host "TT_V2_EXTENSIONS_DISABLED=YES"}
   $launched=Start-Process -FilePath $chrome -ArgumentList $args -PassThru
   Write-Host "TT_V2_AUTH_LAUNCH_PID=$($launched.Id)"
   $watch=[Diagnostics.Stopwatch]::StartNew()
