@@ -171,6 +171,21 @@ function projectUrl(project){
  const unique=[...new Set(options)];return unique.length===1?unique[0]:'https://chatgpt.com/';
 }
 function ledger(marker){return path.join(STATE,'sent',marker.replace(/[^a-zA-Z0-9_.-]/g,'_').slice(0,130)+'.json')}
+function editorialMarker(msg,project){
+ const expected=project==='titulares'?'TTITTULARES_EDITORIAL_JOB_V2':'TTENDENCIAS_EDITORIAL_JOB_V2';
+ const match=msg.match(new RegExp('\\b'+expected+'\\s+([a-zA-Z0-9._-]{8,90})'));
+ if(match)return match[0];
+ if(project==='tendencias' &&
+    /^TT_ACTUALIDAD_MANUAL_EDITORIAL_V1\s+\|/.test(msg) &&
+    /\bProyecto:\s*ttendencias\./.test(msg) &&
+    /\bID exacto:\s*[a-f0-9]{12}\./i.test(msg) &&
+    /\bRevisión solicitada:\s*\d+\./.test(msg)){
+   const order=msg.match(/\bOrden:\s*([A-Za-z0-9._-]{8,90})\./);
+   if(order)return 'Orden: '+order[1];
+ }
+ return null;
+}
+
 function lock(){fs.mkdirSync(STATE,{recursive:true});const f=path.join(STATE,'dispatch.lock');for(let i=0;i<2;i++){try{fs.writeFileSync(f,JSON.stringify({pid:process.pid,at:Date.now()}),{flag:'wx'});return()=>{try{let j=readJSON(f);if(j?.pid===process.pid)fs.unlinkSync(f)}catch{}}}catch(e){if(e.code!=='EEXIST')throw e;let old=readJSON(f);if(!old?.pid||Date.now()-Number(old.at||0)<10000)fail('another editorial send is locking Chrome');try{process.kill(Number(old.pid),0);fail('another editorial sender pid='+old.pid)}catch(err){if(err?.code!=='ESRCH')throw err;fs.unlinkSync(f)}}}fail('could not obtain dispatch lock')}
 async function preflight(){
  const pages=await targets(),pins=pinIds();const states=await scan(pages,4);
@@ -205,10 +220,9 @@ async function send(){
  if(!['titulares','tendencias'].includes(PROJECT))fail('unknown project');
  const buf=String(process.env.TT_CHAT_MESSAGE_B64||'');if(!buf)fail('missing TT_CHAT_MESSAGE_B64');
  const msg=Buffer.from(buf,'base64').toString('utf8');
- const expected=PROJECT==='titulares'?'TTITTULARES_EDITORIAL_JOB_V2':'TTENDENCIAS_EDITORIAL_JOB_V2';
- const marker=msg.match(new RegExp('\\b'+expected+'\\s+([a-zA-Z0-9._-]{8,90})'));
- if(!marker)fail('not a recognized editorial JOB V2 request');
- const unique=marker[0],f=ledger(unique),entry=readJSON(f);
+ const unique=editorialMarker(msg,PROJECT);
+ if(!unique)fail('not a recognized editorial job with exact ID and revision');
+ const f=ledger(unique),entry=readJSON(f);
  note('MODE MODO: ENVIO REAL project='+PROJECT+' marker='+unique);
  if(entry?.status==='confirmed'){note('MENSAJE ENVIADO: already confirmed marker='+unique);return}
  const release=lock();let c,created=null;let submitted=false;
@@ -222,6 +236,16 @@ async function send(){
   created=await createTarget(url);atomic(f,{status:'created',at:new Date().toISOString(),target:created.id,marker:unique});
   c=new WS(created.webSocketDebuggerUrl);await c.open();
   let s=await waitEditor(c,40000);
+  if(s&&url!=='https://chatgpt.com/'&&(s.editorLength!==0||s.users!==0||s.assistants!==0)){
+    // Project landing may redirect a new target to an existing conversation.
+    // Never touch the occupied page or its draft. Use a separate NEW home tab.
+    note('PROJECT_TARGET_OCCUPIED_OPEN_SEPARATE_HOME');
+    c.close();
+    created=await createTarget('https://chatgpt.com/');
+    atomic(f,{status:'created',at:new Date().toISOString(),target:created.id,marker:unique});
+    c=new WS(created.webSocketDebuggerUrl);await c.open();
+    s=await waitEditor(c,30000);
+  }
   if(!s&&url!=='https://chatgpt.com/'){
     note('PROJECT_EDITOR_UNAVAILABLE, NAVIGATE_HOME_ONE_TIME');
     await c.call('Page.navigate',{url:'https://chatgpt.com/'},10000);
@@ -258,6 +282,9 @@ async function main(){
  if(MODE==='--selftest'){
   if(!idSafe('1234567890abcdef')||chat('https://evilchatgpt.com/')||!chat('https://chatgpt.com/'))fail('selftest route');
   const s='TTENDENCIAS_EDITORIAL_JOB_V2 tr-test-12345678';if(!/TTENDENCIAS_EDITORIAL_JOB_V2\s+[a-zA-Z0-9._-]{8,90}/.test(s))fail('selftest marker');
+  const manual='TT_ACTUALIDAD_MANUAL_EDITORIAL_V1 | Proyecto: ttendencias. ID exacto: aabbccddeeff. Revisión solicitada: 1. Orden: tr-test-12345678.';
+  if(editorialMarker(manual,'tendencias')!=='Orden: tr-test-12345678')fail('selftest manual trends marker');
+  if(editorialMarker(manual,'titulares'))fail('cross-project manual marker');
   note('SELFTEST_OK regex route marker, Node='+process.versions.node);return
  }
  if(MODE==='--audit'){await cleanup();return}
@@ -280,7 +307,14 @@ const {spawn}=require('node:child_process'),path=require('node:path');
 const enviar = process.argv.includes("--enviar");
 const raw=String(process.env.TT_CHAT_MESSAGE_B64||'');
 let message='';try{message=Buffer.from(raw,'base64').toString('utf8')}catch{}
-const isEditorial=enviar&&/^(TTITTULARES|TTENDENCIAS)_EDITORIAL_JOB_V2\s+[A-Za-z0-9._-]{8,90}\s+\|/.test(message);
+const isV2=/^(TTITTULARES|TTENDENCIAS)_EDITORIAL_JOB_V2\s+[A-Za-z0-9._-]{8,90}\s+\|/.test(message);
+const isTrendManual=process.argv[2]==='tendencias' &&
+  /^TT_ACTUALIDAD_MANUAL_EDITORIAL_V1\s+\|/.test(message) &&
+  /\bProyecto:\s*ttendencias\./.test(message) &&
+  /\bID exacto:\s*[a-f0-9]{12}\./i.test(message) &&
+  /\bRevisión solicitada:\s*\d+\./.test(message) &&
+  /\bOrden:\s*[A-Za-z0-9._-]{8,90}\./.test(message);
+const isEditorial=enviar&&(isV2||isTrendManual);
 const base=__dirname;
 const script=path.join(base,isEditorial?'TT-Editorial-Guard.js':'Ejecutar.TT-Original.js');
 const args=isEditorial?[script,'--send',process.argv[2]==='titulares'?'titulares':'tendencias']:[script,...process.argv.slice(2)];
