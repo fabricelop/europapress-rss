@@ -27,7 +27,8 @@ class TriggerConflictTests(unittest.TestCase):
             if len(writes) <= failures:
                 raise RuntimeError('GITHUB_HTTP_409 branch head moved')
             return {}
-        with patch.object(guard, 'api', api), patch.object(guard.time, 'sleep'):
+        pending = [{'id': 'same-card', 'title': 'Same card', 'revision': 0}]
+        with patch.object(guard, 'api', api), patch.object(guard.time, 'sleep'), patch.object(guard, 'pending', return_value=pending):
             result = guard.request('ttendencias', self.now, {'pending_ids': ['same-card']})
         return result, writes, reads
 
@@ -52,7 +53,7 @@ class TriggerConflictTests(unittest.TestCase):
             self.run_request(5)
 
     def test_auth_failure_is_not_retried(self):
-        with patch.object(guard, 'api', side_effect=RuntimeError('GITHUB_HTTP_403 denied')) as api:
+        with patch.object(guard, 'api', side_effect=RuntimeError('GITHUB_HTTP_403 denied')) as api, patch.object(guard, 'pending', return_value=[]):
             with self.assertRaisesRegex(RuntimeError, 'GITHUB_HTTP_403'):
                 guard.request('ttendencias', self.now, {'pending_ids': []})
             self.assertEqual(api.call_count, 1)
