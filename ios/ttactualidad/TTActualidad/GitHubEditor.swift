@@ -28,6 +28,9 @@ final class GitHubEditor: ObservableObject {
     @Published private(set) var activeAction: String? = nil
     @Published private(set) var pendingReceipts: [EditorialReceiptPending] = []
     @Published private(set) var receiptChange = 0
+    // A successful user-initiated Listas removal scrolls the dashboard back to its menu.
+    // This signal is UI-only: it is not proof the GitHub decision has completed.
+    @Published private(set) var removalScrollToken = 0
     // Immediate visual closure; GitHub receipts, not HTTP 204, determine success.
     @Published private(set) var optimisticClosures = Set<String>()
 
@@ -253,6 +256,7 @@ final class GitHubEditor: ObservableObject {
             if ["published", "deleted"].contains(decision) {
                 optimisticClosures.insert(Self.closureKey(project: project, eventID: eventID, revision: revision))
             }
+            if decision == "deleted" { removalScrollToken += 1 }
             persistPendingReceipts()
             Task { await followReceipt(requestID) }
         }

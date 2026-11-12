@@ -55,6 +55,8 @@ struct TrendItem: Identifiable {
     var imageEditorialID: String = ""
     var imageRevision: Int = 0
     var explainedAtRaw: String = ""
+    // Only a separately dated editorial admission can establish a previous visit.
+    var previousListasAt: Date? = nil
 
     func ageBand(now: Date = Date()) -> Int {
         guard let lastExplained else { return 0 }
@@ -345,6 +347,19 @@ final class EditorialStore: ObservableObject {
             let id = str(row, "event_id")
             if !id.isEmpty && isNewer(row, than: latestDeliveries[id]) { latestDeliveries[id] = row }
         }
+        // Previous Listas appearances are evidenced by authoritative explained
+        // snapshots. A Top 30 sighting or simple editorial update is NOT one.
+        var listasHistory: [String: [(id: String, revision: Int, at: Date)]] = [:]
+        for previous in rows(manual, "items") {
+            let state = str(previous, "status").lowercased()
+            let nameKey = norm(str(previous, "name"))
+            guard ["explained", "deleted", "published"].contains(state),
+                  !nameKey.isEmpty,
+                  !str(previous, "explanation").trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
+                  let at = when(previous, ["explained_at"]) else { continue }
+            listasHistory[nameKey, default: []].append(
+                (id: str(previous, "id"), revision: int(previous, "revision"), at: at))
+        }
         let closures = rows(decisions, "items").filter { closed.contains(str($0, "status").lowercased()) }
         let activeQueue = rows(queue, "items")
         return latestManual.compactMap { id, row -> TrendItem? in
@@ -398,6 +413,14 @@ final class EditorialStore: ObservableObject {
                 [Self.str($0, "id"), Self.str($0, "event_id")].contains(id) && closureApplies($0)
             }) || closureApplies(delivery) { return nil }
 
+            let previousListasAt = listasHistory[norm(str(row, "name"))]?
+                .filter { episode in
+                    // An update of one episode does not constitute reentry.
+                    episode.at.timeIntervalSince(explained) < -60 &&
+                    (episode.id != id || episode.revision != rev ||
+                     explained.timeIntervalSince(episode.at) >= 48 * 3600)
+                }
+                .map { $0.at }.max()
             let archive = row["archive_image"] as? [String: Any] ??
                           row["fallback_image"] as? [String: Any] ?? [:]
             return TrendItem(id: id, rank: int(row, "rank"), name: str(row, "name"),
@@ -410,7 +433,8 @@ final class EditorialStore: ObservableObject {
                                  catalog: archivePhotos),
                              sourceURL: URL(string: str(row, "source_url")),
                              imageEditorialID: id, imageRevision: rev,
-                             explainedAtRaw: str(row, "explained_at"))
+                             explainedAtRaw: str(row, "explained_at"),
+                             previousListasAt: previousListasAt)
         }
         .sorted { ($0.lastExplained ?? .distantPast) > ($1.lastExplained ?? .distantPast) }
         .prefix(100)
@@ -502,6 +526,7 @@ final class EditorialStore: ObservableObject {
             let archive = explanation["archive_image"] as? [String: Any] ??
                           explanation["fallback_image"] as? [String: Any] ?? [:]
             let source = str(request, "source_url")
+            let priorListas = ready.first(where: { norm($0.name) == key })?.previousListasAt
             return TrendItem(id: "rank-\(rank)", rank: rank, name: name,
                              explanation: text, lastExplained: text.isEmpty ? nil : date,
                              status: status, inListas: readyNames.contains(key),
@@ -513,7 +538,8 @@ final class EditorialStore: ObservableObject {
                              sourceURL: URL(string: source),
                              imageEditorialID: str(explanation, "id"),
                              imageRevision: int(explanation, "revision"),
-                             explainedAtRaw: str(explanation, "explained_at"))
+                             explainedAtRaw: str(explanation, "explained_at"),
+                             previousListasAt: priorListas)
         }
     }
 
