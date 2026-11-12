@@ -1,0 +1,80 @@
+name: TT Fotos directo - consumir originales de tendencias
+# Solo el outbox existente; sin Cloudflare ni bandeja iPhone.
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'trends/image-outbox/**'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: tt-fotos-direct-trends-apply
+  cancel-in-progress: false
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Instalar validador de imágenes existente
+        run: python3 -m pip install --disable-pip-version-check --quiet Pillow
+      - name: Comprobar identidad antes de consumir outbox
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'tt-fotos-direct'
+          git config user.email 'actions@users.noreply.github.com'
+          for n in 1 2 3 4 5; do
+            git fetch --depth=1 origin main
+            git reset --hard origin/main
+            python3 - <<'PY'
+          import hashlib, json, re
+          from pathlib import Path
+          root = Path('trends/image-outbox')
+          if not root.exists():
+              raise SystemExit(0)
+          state = json.loads(Path('trends/telegram-manual-explained.json').read_text(encoding='utf-8'))
+          rows = state.get('items', [])
+          for file in root.glob('*.json'):
+              doc = json.loads(file.read_text(encoding='utf-8'))
+              command = str(doc.get('command_id') or '')
+              match = re.fullmatch(r'tr-img-auto-[a-z0-9]{12}-r(\d+)-a(\d+)-\d{10,}', command)
+              if not match or file.stem != command:
+                  raise ValueError(f'outbox sin comando exacto: {file.name}')
+              tid = str(doc.get('id') or '')
+              rev = int(doc.get('revision') or 0)
+              attempt = int(doc.get('attempt') or 1)
+              guard = (doc.get('ai_image') or {}).get('context_guard') or {}
+              if rev != int(match.group(1)) or attempt != int(match.group(2)) or int(guard.get('revision') or 0) != rev or guard.get('trend_id') != tid or guard.get('command_id') != command:
+                  raise ValueError(f'context_guard no coincide: {file.name}')
+              candidates = [x for x in rows if str(x.get('id') or '') == tid]
+              if not candidates:
+                  raise ValueError(f'ficha no encontrada: {file.name}')
+              latest = sorted(candidates, key=lambda x: (int(x.get('revision') or 0),str(x.get('explained_at') or '')),reverse=True)[0]
+              explanation = str(latest.get('explanation') or '').strip()
+              digest = hashlib.sha256(explanation.encode('utf-8')).hexdigest()
+              if int(latest.get('revision') or 0) != rev or not explanation or guard.get('explanation_sha256') != digest:
+                  raise ValueError(f'episodio cambiado: {file.name}')
+              if latest.get('disable_ai_image') or str(latest.get('ai_image_status') or '').lower() == 'disabled':
+                  raise ValueError(f'imagen IA deshabilitada: {file.name}')
+              ai = doc.get('ai_image') or {}
+              if ai.get('chunk_files') != [command+'.b64'] or not re.fullmatch('[a-f0-9]{64}',str(ai.get('chunk_sha256') or '')):
+                  raise ValueError(f'raster/huella inválido: {file.name}')
+          PY
+            python3 trends/apply_ai_image_outbox.py
+            git add trends/telegram-manual-explained.json
+            git add -A -- trends/image-outbox trends/generated-images
+            if git diff --cached --quiet; then
+              echo 'TT_FOTOS_DIRECTO_TRENDS_NO_CHANGES'
+              exit 0
+            fi
+            git commit -m 'TT Fotos: asociar original a ficha de tendencia'
+            if git push origin HEAD:main; then
+              echo 'TT_FOTOS_DIRECTO_TRENDS_APPLIED'
+              exit 0
+            fi
+            sleep "$((n * 2))"
+          done
+          echo 'Error de concurrencia: outbox intacto para reintento' >&2
+          exit 1
