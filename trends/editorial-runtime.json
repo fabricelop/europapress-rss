@@ -3,19 +3,19 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261113T205500-chat-direct",
-  "previous_run_id": "tr-20261113T203700-chat-direct",
-  "command_id": "tr-20261113T205500-chat-direct",
+  "run_id": "tr-20261113T211000-chat-direct",
+  "previous_run_id": "tr-20261113T205500-chat-direct",
+  "command_id": "tr-20261113T211000-chat-direct",
   "source": "chat_direct",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-13T20:55:00+01:00",
-  "updated_at": "2026-11-13T20:56:00+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-13T21:10:00+01:00",
+  "updated_at": "2026-11-13T21:10:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -744,9 +744,16 @@
       "status": "DONE",
       "phase": "closing",
       "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 2026-11-13T20:51:16+01:00) y mobile-decisions sin estados editoriales activos. No había investigaciones, anticipaciones ni revisiones pendientes que procesar. ImageGen=0; publicaciones=0; incidentes=0."
+    },
+    {
+      "at": "2026-11-13T21:10:00+01:00",
+      "run_id": "tr-20261113T211000-chat-direct",
+      "status": "RUNNING",
+      "phase": "preparing",
+      "message": "Pasada TTendencias RUNNING. Cola autoritativa inicial=0; barrera JIT sobre main en curso. ImageGen=0; publicaciones=0."
     }
   ],
-  "last_started_at": "2026-11-13T20:55:00+01:00",
+  "last_started_at": "2026-11-13T21:10:00+01:00",
   "last_completed_at": "2026-11-13T20:56:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -788,7 +795,7 @@
     "incidents": [],
     "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 2026-11-13T20:51:16+01:00) y mobile-decisions sin estados editoriales activos. No había investigaciones, anticipaciones ni revisiones pendientes que procesar. ImageGen=0; publicaciones=0; incidentes=0."
   },
-  "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 2026-11-13T20:51:16+01:00) y mobile-decisions sin estados editoriales activos. No había investigaciones, anticipaciones ni revisiones pendientes que procesar. ImageGen=0; publicaciones=0; incidentes=0.",
+  "message": "Pasada TTendencias RUNNING. Cola autoritativa inicial=0; barrera JIT sobre main en curso. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794361941170-manual",
@@ -9260,6 +9267,14 @@
       "revision": null,
       "name": null,
       "message": "Barrera final revalidada: 9/9 cerrados; cola=0; mobile activos=0; 4 cierres convergieron con aplicación concurrente."
+    },
+    {
+      "at": "2026-11-13T21:10:00+01:00",
+      "phase": "preparing",
+      "trend_id": null,
+      "revision": null,
+      "name": null,
+      "message": "Cola autoritativa inicial=0; comprobando barrera JIT y decisiones activas."
     }
   ],
   "processed": [
@@ -9275,8 +9290,8 @@
   ],
   "maintenance_outbox_commit": "c764cbdfc37ba7b67fedd38a16837ee068ae9467",
   "editorial_apply_run_id": 43477991983,
-  "finished_at": "2026-11-13T20:56:00+01:00",
-  "completed_at": "2026-11-13T20:56:00+01:00",
+  "finished_at": null,
+  "completed_at": null,
   "maintenance_outbox_commits": [
     "24805770cc5efabc2f14e0019c9fa592aecf4d7b",
     "82935552cfd2620c52c01e6603ac598051a8eec4",
