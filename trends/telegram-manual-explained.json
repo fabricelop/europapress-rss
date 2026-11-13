@@ -115055,10 +115055,10 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
-      "image_choice": "none",
-      "image_pending": true,
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false,
       "telegram_package_status": "pending",
       "new_episode_review": true,
       "previous_episode_id": "ce61aea68bb5",
@@ -115066,7 +115066,24 @@
       "material_event_key": "jordi-wild-publica-entrevistas-candidatos-29n-2026-11-13",
       "material_event_at": "2026-11-13T08:00:00+01:00",
       "material_change": true,
-      "significance_reason": "La publicación efectiva de las entrevistas a los candidatos es un hecho posterior e independiente del episodio anterior, centrado en la cancelación de Abascal."
+      "significance_reason": "La publicación efectiva de las entrevistas a los candidatos es un hecho posterior e independiente del episodio anterior, centrado en la cancelación de Abascal.",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://imagenes.20minutos.es/files/image_1920_1080/uploads/imagenes/2026/11/13/6af6d33f5a54b0-52928341.png",
+        "source": "www.20minutos.es",
+        "source_url": "https://www.20minutos.es/nacional/entrevistas-jordi-wild-directo-youtuber-publica-esta-manana-forma-sucesiva-las-entrevistas-colau-feijoo-sanchez_7060536_6.html",
+        "alt": "Imagen de archivo relacionada con Youtuber",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://imagenes.20minutos.es/files/image_1920_1080/uploads/imagenes/2026/11/13/6af6d33f5a54b0-52928341.png",
+        "source": "www.20minutos.es",
+        "source_url": "https://www.20minutos.es/nacional/entrevistas-jordi-wild-directo-youtuber-publica-esta-manana-forma-sucesiva-las-entrevistas-colau-feijoo-sanchez_7060536_6.html",
+        "alt": "Imagen de archivo relacionada con Youtuber",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "798b421b4c28",
@@ -115107,6 +115124,6 @@
       "significance_reason": "La publicación íntegra de la entrevista electoral es un hecho posterior e independiente de la ficha anterior y explica la reentrada de Colau."
     }
   ],
-  "updated_at": "2026-11-13T10:14:00+01:00",
+  "updated_at": "2026-11-13T09:16:20.016707Z",
   "count": 2019
 }
