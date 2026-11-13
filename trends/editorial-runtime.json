@@ -3,51 +3,36 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261113T203700-chat-direct",
-  "previous_run_id": "tr-20261113T192500-chat-direct",
-  "command_id": "tr-20261113T203700-chat-direct",
+  "run_id": "tr-20261113T205500-chat-direct",
+  "previous_run_id": "tr-20261113T203700-chat-direct",
+  "command_id": "tr-20261113T205500-chat-direct",
   "source": "chat_direct",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-13T20:37:00+01:00",
-  "updated_at": "2026-11-13T20:50:00+01:00",
-  "current": 9,
-  "total": 9,
+  "status": "RUNNING",
+  "phase": "verifying",
+  "started_at": "2026-11-13T20:55:00+01:00",
+  "updated_at": "2026-11-13T20:55:00+01:00",
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "red-review-89131aa94658e10a26da",
-    "red-review-97c4f94c705cb83a6f9d",
-    "red-review-38d12a6c09ae041727e7",
-    "aa6b1b152ea6",
-    "f893f7342d01",
-    "6728fbf70710",
-    "e8ba9370a79c",
-    "019f7a9bc80d",
-    "715515999e0e"
-  ],
-  "converged_ids": [
-    "6728fbf70710",
-    "e8ba9370a79c",
-    "019f7a9bc80d",
-    "715515999e0e"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
+  "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 9,
-    "observed": 9,
-    "closed": 9,
-    "explained": 6,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
-    "updates": 3,
+    "updates": 0,
     "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 3,
+    "maintenance_reviews": 0,
     "unchanged_reviews": 0,
-    "continuity_updates": 2,
-    "distinct_updates": 1,
+    "continuity_updates": 0,
+    "distinct_updates": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
     "anticipation_reviews": 0,
@@ -59,87 +44,9 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 4
+    "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "red-review-89131aa94658e10a26da",
-      "revision": 0,
-      "name": "Revisar novedades: Jordi Wild",
-      "outcome": "continuity",
-      "applied": true,
-      "apply_commit": "c59292cb3d9adf83c758565b34119dca8e1a8a7b"
-    },
-    {
-      "id": "red-review-97c4f94c705cb83a6f9d",
-      "revision": 0,
-      "name": "Revisar novedades: Feijoo",
-      "outcome": "distinct_update",
-      "applied": true,
-      "created_id": "trend-update-9f23b494f309db551157",
-      "apply_commit": "0c88a8cdd984fd47a820048890ed7a91e3db20f9"
-    },
-    {
-      "id": "red-review-38d12a6c09ae041727e7",
-      "revision": 0,
-      "name": "Revisar novedades: Corvillo",
-      "outcome": "continuity",
-      "applied": true,
-      "apply_commit": "0c88a8cdd984fd47a820048890ed7a91e3db20f9"
-    },
-    {
-      "id": "aa6b1b152ea6",
-      "revision": 0,
-      "name": "Marlaska",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "c1025b0b0ca9ec994ab4a3c929e96b9cc297b151"
-    },
-    {
-      "id": "f893f7342d01",
-      "revision": 0,
-      "name": "Jordi Wild",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "c1025b0b0ca9ec994ab4a3c929e96b9cc297b151"
-    },
-    {
-      "id": "6728fbf70710",
-      "revision": 0,
-      "name": "Anotop At",
-      "outcome": "explained",
-      "applied": true,
-      "converged": true,
-      "apply_commit": "64b7ddd4da692671ac3ac40b1ff39e87be9756ce"
-    },
-    {
-      "id": "e8ba9370a79c",
-      "revision": 0,
-      "name": "Enric Juliana",
-      "outcome": "explained",
-      "applied": true,
-      "converged": true,
-      "apply_commit": "64b7ddd4da692671ac3ac40b1ff39e87be9756ce"
-    },
-    {
-      "id": "019f7a9bc80d",
-      "revision": 0,
-      "name": "Jorge Salvaje",
-      "outcome": "explained",
-      "applied": true,
-      "converged": true,
-      "apply_commit": "64b7ddd4da692671ac3ac40b1ff39e87be9756ce"
-    },
-    {
-      "id": "715515999e0e",
-      "revision": 0,
-      "name": "Ayuso",
-      "outcome": "explained",
-      "applied": true,
-      "converged": true,
-      "apply_commit": "64b7ddd4da692671ac3ac40b1ff39e87be9756ce"
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -823,9 +730,16 @@
       "status": "DONE",
       "phase": "closing",
       "message": "Pasada TTendencias cerrada 9/9: 3 revisiones de mantenimiento y 6 reelaboraciones. Feijoo abrió episodio material nuevo; Jordi Wild y Corvillo se actualizaron por continuidad. Marlaska, Jordi Wild, Anotop At, Enric Juliana, Jorge Salvaje y Ayuso quedaron explicadas; Jorge Salvaje conserva causalidad no confirmada explícita. Barrera final editorial-queue=0. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-13T20:55:00+01:00",
+      "run_id": "tr-20261113T205500-chat-direct",
+      "status": "RUNNING",
+      "phase": "verifying",
+      "message": "Pasada tr-20261113T205500-chat-direct RUNNING. Cola autoritativa inicial=0; barrera JIT sobre main en curso. ImageGen=0; publicaciones=0."
     }
   ],
-  "last_started_at": "2026-11-13T20:48:33+01:00",
+  "last_started_at": "2026-11-13T20:55:00+01:00",
   "last_completed_at": "2026-11-13T20:50:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -884,7 +798,7 @@
     "incidents": [],
     "message": "Pasada TTendencias completada 2/2: La UCO unchanged y Tezanos actualizado como continuidad del mismo macrosondeo. Persistencia verificada en main por 13adfab38ac414db4a93f00fc551af9d1f12e4b2; cola final=0. ImageGen=0; publicaciones=0."
   },
-  "message": "Pasada TTendencias completada 9/9: 3 revisiones de novedades (Jordi Wild continuidad, Feijoo episodio nuevo, Corvillo continuidad) y 6 reelaboraciones ordinarias cerradas (Marlaska, Jordi Wild, Anotop At, Enric Juliana, Jorge Salvaje y Ayuso). Cuatro de las últimas convergieron con un aplicador concurrente y se verificó su persistencia. Barrera final: editorial-queue=0 y mobile-decisions activos=0. ImageGen=0; publicaciones=0; incidentes=0.",
+  "message": "Pasada tr-20261113T205500-chat-direct RUNNING. Cola autoritativa inicial=0; barrera JIT sobre main en curso. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794361941170-manual",
