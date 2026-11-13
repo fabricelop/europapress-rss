@@ -1,0 +1,21 @@
+name: TTActualidad V2 - Top 30 cada 15 minutos (aislado)
+
+# Reutiliza el patrón de schedule de TTendencias V1. No ejecuta V1.
+# Solo orquesta el workflow V2 existente en la rama de desarrollo.
+on:
+  schedule:
+    - cron: '0,15,30,45 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ttactualidad-v2-top30-history
+  cancel-in-progress: false
+
+jobs:
+  refresh-v2:
+    uses: fabricelop/europapress-rss/.github/workflows/ttactualidad-v2-step01.yml@feature/ttactualidad-v2-clean
+    permissions:
+      contents: write
