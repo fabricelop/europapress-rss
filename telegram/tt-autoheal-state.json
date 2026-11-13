@@ -2,91 +2,69 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-11-12T22:16:50.649951+00:00",
-      "issue_count": 3,
+      "checked_at": "2026-11-13T02:41:01.895573+00:00",
+      "issue_count": 1,
       "issues": [
-        {
-          "kind": "missing_delivery",
-          "id": "b25d4dd92fd2",
-          "title": "España no se cansa de ganar: tumba a República Checa y acaricia el liderato en la Nations League",
-          "seconds": 501,
-          "workflow": "send-ttittulares-ready-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "fbc5491b5529",
-          "title": "La Fiscalía Europea investiga un posible fraude en la compra de pulseras antimaltrato en España",
-          "seconds": 500,
-          "workflow": "send-ttittulares-ready-telegram.yml"
-        },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 2377358,
+          "seconds": 2393209,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
       "actions_started": [
-        "send-ttittulares-ready-telegram.yml",
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "0831f22646d8b32aac6601b9344f92f436ea56ff2455ff61e3f88ad3d29b41ec",
+      "open_signature": "b713f1c3f4a90157b05c0bc411e3f7a3420ba8147f7f0a578d9c128c7e94e639",
       "repair_via_workflow_run": false,
       "escalation_required": 0
     },
     "ttendencias": {
-      "checked_at": "2026-11-12T22:16:50.649951+00:00",
-      "issue_count": 7,
+      "checked_at": "2026-11-13T02:41:01.895573+00:00",
+      "issue_count": 6,
       "issues": [
+        {
+          "kind": "missing_delivery",
+          "id": "red-review-1a04b17ed021f8d9387f",
+          "title": "Revisar novedades: Alsina",
+          "seconds": 756,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
         {
           "kind": "missing_delivery",
           "id": "83a0f92b4210",
           "title": "Begoña Gómez",
-          "seconds": 8120,
+          "seconds": 23971,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
-          "id": "dfda32e4066b",
-          "title": "Rodrigo Marina",
-          "seconds": 3937,
+          "id": "01658a620b11",
+          "title": "Yola",
+          "seconds": 5403,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
-          "id": "e84ec14bccf9",
-          "title": "#SVFinal",
-          "seconds": 3937,
+          "id": "17129f359ea2",
+          "title": "#VotaPP",
+          "seconds": 5403,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
-          "id": "294e5a32fe81",
-          "title": "#Horizonte",
-          "seconds": 911,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "c8115e650043",
-          "title": "#PedroSanchezEnElPerro",
-          "seconds": 911,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "4918c539c4ae",
-          "title": "Isco",
-          "seconds": 911,
+          "id": "784d56a93b50",
+          "title": "#GHVIP9",
+          "seconds": 1755,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 2377357,
+          "seconds": 2393209,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -95,16 +73,16 @@
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "64fc29e73d2a279b2de2e0bfc8262b2b481299ead69b33c02664fc32cb880de5",
+      "open_signature": "8c25f3a927cdfcb93f7140dafb971599a27e0165ce564fb1aacbff9a823f2b07",
       "repair_via_workflow_run": false,
-      "escalation_required": 3
+      "escalation_required": 4
     }
   },
   "attempts": {
     "ttittulares:send-ttittulares-ready-telegram.yml": "2026-11-12T22:16:50.649951+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-11-12T22:16:50.649951+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-11-12T22:16:50.649951+00:00",
-    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-11-12T22:16:50.649951+00:00"
+    "ttittulares:telegram-pinned-index.yml": "2026-11-13T02:41:01.895573+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-11-13T02:41:01.895573+00:00",
+    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-11-13T02:41:01.895573+00:00"
   },
-  "checked_at": "2026-11-12T22:16:50.649951+00:00"
+  "checked_at": "2026-11-13T02:41:01.895573+00:00"
 }
