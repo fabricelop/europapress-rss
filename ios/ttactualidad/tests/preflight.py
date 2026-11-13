@@ -146,7 +146,7 @@ assert 'stage = "Confirmada"' in store
 assert "struct EditorialTombstone: Codable" in store
 assert '"TTActualidad.confirmed-terminals.v1"' in store
 assert "accumulateConfirmedTerminals(docs, downloaded)" in store
-assert "applyConfirmedTerminals(EditorialSnapshot(" in store
+assert "canonicalSnapshot = applyConfirmedTerminals(built.snapshot)" in store
 assert "snapshot = applyConfirmedTerminals(updated)" in store
 assert '"pilot/ttactualidad-action-receipts.json"' in store
 assert '"ttittulares/decisions.json"' in store
