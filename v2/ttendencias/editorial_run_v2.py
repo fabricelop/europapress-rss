@@ -24,6 +24,9 @@ ROOT = pathlib.Path(os.environ["LOCALAPPDATA"]) / "TTActualidadV2"
 PROFILE = ROOT / "ChromeProfile"
 DIAG_DIR = ROOT / "diagnostics"
 CHROME = pathlib.Path(os.environ.get("PROGRAMFILES", r"C:\Program Files")) / "Google" / "Chrome" / "Application" / "chrome.exe"
+# Headless moderno: misma sesión ChromeProfile V2, sin ventana visible.
+# Para diagnosticar, el operador puede usar TT_V2_CHROME_HEADLESS=0.
+HEADLESS = os.environ.get("TT_V2_CHROME_HEADLESS", "1").strip().lower() not in ("0", "false", "no")
 COMPOSERS = ("#prompt-textarea", "[data-testid='prompt-textarea']", "[contenteditable='true'][role='textbox']")
 STOP = "[data-testid='stop-button'],button[aria-label*='Stop'],button[aria-label*='Detener']"
 BRANCH = "feature/ttactualidad-v2-clean"
@@ -82,7 +85,8 @@ def profile_pids():
         "Select-Object -ExpandProperty ProcessId | ConvertTo-Json -Compress"
     )
     run = subprocess.run(["powershell.exe", "-NoProfile", "-Command", ps],
-                         capture_output=True, text=True, timeout=20)
+                         capture_output=True, text=True, timeout=20,
+                         creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     if run.returncode:
         raise RuntimeError("No se pudo inspeccionar Chrome V2")
     raw = run.stdout.strip()
@@ -167,11 +171,18 @@ def run_one(api, state, transcript, auth, item):
             port = sock.getsockname()[1]
         if port in (9223, 9234):
             raise RuntimeError("Puerto de V1 reservado")
-        proc = subprocess.Popen([str(CHROME), f"--user-data-dir={PROFILE}",
+        chrome_args = [str(CHROME), f"--user-data-dir={PROFILE}",
             f"--remote-debugging-port={port}", "--remote-debugging-address=127.0.0.1",
-            "--disable-extensions", "--no-first-run", "--no-default-browser-check",
-            "--new-window", "https://chatgpt.com/"],
-            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            "--disable-extensions", "--no-first-run", "--no-default-browser-check"]
+        if HEADLESS:
+            chrome_args.extend(["--headless=new", "--window-size=1280,900"])
+        else:
+            chrome_args.append("--new-window")
+        chrome_args.append("https://chatgpt.com/")
+        proc = subprocess.Popen(chrome_args,
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
+        print("TT_V2_CHROME_HEADLESS=" + ("YES" if HEADLESS else "NO"), flush=True)
         endpoint = "http://127.0.0.1:" + str(port)
         import urllib.request
         for _ in range(40):
@@ -299,7 +310,8 @@ def run_one(api, state, transcript, auth, item):
         remaining = profile_pids()
         for pid in remaining & owned:
             subprocess.run(["taskkill", "/PID", str(pid), "/F"],
-                           capture_output=True, timeout=15)
+                           capture_output=True, timeout=15,
+                           creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         time.sleep(2)
         remaining = profile_pids()
         record["remaining_v2_pids"] = sorted(remaining)
