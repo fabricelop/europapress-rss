@@ -3,32 +3,20 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261113T182500-chat-direct",
-  "previous_run_id": "tr-20261113T171000-chat-direct",
-  "command_id": "tr-20261113T182500-chat-direct",
+  "run_id": "tr-20261113T185500-chat-direct",
+  "previous_run_id": "tr-20261113T182500-chat-direct",
+  "command_id": "tr-20261113T185500-chat-direct",
   "source": "chat_direct",
-  "status": "DONE_WITH_INCIDENTS",
-  "phase": "closing",
-  "started_at": "2026-11-13T18:25:00+01:00",
-  "updated_at": "2026-11-13T18:35:23+01:00",
-  "current": 11,
-  "total": 11,
+  "status": "RUNNING",
+  "phase": "investigating",
+  "started_at": "2026-11-13T18:55:00+01:00",
+  "updated_at": "2026-11-13T18:55:00+01:00",
+  "current": 0,
+  "total": 2,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "455fa1e621c8",
-    "fc1948486c8e",
-    "80930a773479",
-    "baa5d49cc3e1",
-    "6f15e22798b1",
-    "4adb840bea1f",
-    "36d115697364",
-    "6010e51569ca",
-    "1d5814995248",
-    "manual-c550af7b734565e1d4042fae0ba8d74f",
-    "red-review-63bdf901402fd7b63ad7"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [
     "manual-c550af7b734565e1d4042fae0ba8d74f",
@@ -40,16 +28,16 @@
     "1d5814995248"
   ],
   "summary": {
-    "attempted": 11,
-    "observed": 11,
-    "closed": 9,
-    "explained": 8,
-    "problematic": 2,
-    "updates": 1,
+    "attempted": 0,
+    "observed": 2,
+    "closed": 0,
+    "explained": 0,
+    "problematic": 0,
+    "updates": 0,
     "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 1,
+    "maintenance_reviews": 0,
     "unchanged_reviews": 0,
-    "continuity_updates": 1,
+    "continuity_updates": 0,
     "distinct_updates": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
@@ -61,106 +49,12 @@
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 2,
+    "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "455fa1e621c8",
-      "revision": 0,
-      "name": "#TEM13N",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "fc1948486c8e",
-      "revision": 0,
-      "name": "Gaitán",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "80930a773479",
-      "revision": 0,
-      "name": "Ángel Gaitán",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "baa5d49cc3e1",
-      "revision": 0,
-      "name": "Medicina",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "6f15e22798b1",
-      "revision": 0,
-      "name": "Xunta",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "4adb840bea1f",
-      "revision": 0,
-      "name": "Grammy",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "36d115697364",
-      "revision": 0,
-      "name": "Fakejoo",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "6010e51569ca",
-      "revision": 0,
-      "name": "Plus Ultra",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "1d5814995248",
-      "revision": 0,
-      "name": "Isaac",
-      "outcome": "problematic",
-      "applied": true,
-      "reason": "Identidad/detonante actual no verificable con suficiente fiabilidad."
-    },
-    {
-      "id": "manual-c550af7b734565e1d4042fae0ba8d74f",
-      "revision": 0,
-      "name": "Miente",
-      "outcome": "problematic",
-      "applied": true,
-      "reason": "Usos actuales dispersos; sin detonante predominante verificable."
-    },
-    {
-      "id": "red-review-63bdf901402fd7b63ad7",
-      "revision": 0,
-      "name": "Revisar novedades: #PSOEyFrenteAmplioVetan",
-      "outcome": "continuity",
-      "applied": true,
-      "reason": "Actualización menor: condición del PSOE de incluir a Alvise; mismo episodio."
-    }
-  ],
-  "incident_count": 2,
-  "incidents": [
-    {
-      "id": "1d5814995248",
-      "name": "Isaac",
-      "type": "unverified_trigger",
-      "message": "No se pudo identificar con fiabilidad qué Isaac o qué hecho concreto impulsa el término."
-    },
-    {
-      "id": "manual-c550af7b734565e1d4042fae0ba8d74f",
-      "name": "Miente",
-      "type": "unverified_trigger",
-      "message": "La muestra vigente sigue dispersa y no acredita un detonante predominante."
-    }
-  ],
+  "outcomes": [],
+  "incident_count": 0,
+  "incidents": [],
   "error": null,
   "activity": [
     {
@@ -776,9 +670,16 @@
       "status": "DONE_WITH_INCIDENTS",
       "phase": "closing",
       "message": "Pasada TTendencias cerrada: 8 explicaciones persistidas, 1 revisión roja actualizada por continuidad y 2 casos problemáticos conservados por falta de detonante verificable. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-13T18:55:00+01:00",
+      "run_id": "tr-20261113T185500-chat-direct",
+      "status": "RUNNING",
+      "phase": "investigating",
+      "message": "Pasada TTendencias iniciada desde ChatGPT. Cola autoritativa observada=2, ambos problematic; reintento JIT con fuentes actuales y X cuando la muestra es vigente. Sin ImageGen ni publicación."
     }
   ],
-  "last_started_at": "2026-11-13T18:32:51+01:00",
+  "last_started_at": "2026-11-13T18:55:00+01:00",
   "last_completed_at": "2026-11-13T18:35:23+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -914,7 +815,7 @@
     ],
     "message": "Pasada TTendencias completada 9/9: 6 explicaciones aplicadas, 2 investigaciones sin detonante verificable (Miente sigue problemático por permanecer en Top30; españas r3 quedó problemático y ya no está activo al salir del Top30) y 1 revisión roja cerrada unchanged (#PSOEyFrenteAmplioVetan). Barrera final: 0 trabajos activos y 1 problemático visible. ImageGen=0; publicaciones=0."
   },
-  "message": "Pasada TTendencias cerrada: 8 explicaciones persistidas, 1 revisión roja actualizada por continuidad y 2 casos problemáticos conservados por falta de detonante verificable. Sin ImageGen ni publicación.",
+  "message": "Reintento JIT de Miente e Isaac: investigación actual contrastada; sin ImageGen ni publicación.",
   "history": [
     {
       "run_id": "tr-1794361941170-manual",
@@ -8766,11 +8667,16 @@
       "at": "2026-11-13T17:22:12+01:00",
       "phase": "closing",
       "message": "Pasada TTendencias completada 9/9: 6 explicaciones aplicadas, 2 investigaciones sin detonante verificable (Miente sigue problemático por permanecer en Top30; españas r3 quedó problemático y ya no está activo al salir del Top30) y 1 revisión roja cerrada unchanged (#PSOEyFrenteAmplioVetan). Barrera final: 0 trabajos activos y 1 problemático visible. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-13T18:55:00+01:00",
+      "phase": "investigating",
+      "message": "Reintentando Miente e Isaac tras revalidación de ID/revisión en main."
     }
   ],
   "processed": [],
   "maintenance_outbox_commit": "c764cbdfc37ba7b67fedd38a16837ee068ae9467",
   "editorial_apply_run_id": 43461904641,
-  "finished_at": "2026-11-13T18:35:23+01:00",
-  "completed_at": "2026-11-13T17:22:12+01:00"
+  "finished_at": null,
+  "completed_at": null
 }
