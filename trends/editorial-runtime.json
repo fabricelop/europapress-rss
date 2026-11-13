@@ -7,27 +7,22 @@
   "previous_run_id": "tr-20261113T004000-chat-direct",
   "command_id": "tr-20261113T011200-chat-direct",
   "source": "chat_direct",
-  "status": "RUNNING",
+  "status": "success",
   "phase": "persisting",
   "started_at": "2026-11-13T01:12:00+01:00",
-  "updated_at": "2026-11-13T01:16:09+01:00",
+  "updated_at": "2026-11-13T01:17:06+01:00",
   "current": 0,
   "total": 3,
   "trend_id": "c72804a0682f",
   "title": "YOLA GANADORA",
-  "queue_complete": false,
-  "processed_ids": [],
+  "queue_complete": true,
+  "processed_ids": [
+    "2730c829c8b2",
+    "c72804a0682f"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "c72804a0682f",
-    "2730c829c8b2",
-    "red-review-7c78b6a2e47ebe96c4d3"
-  ],
-  "remaining_active_ids": [
-    "c72804a0682f",
-    "2730c829c8b2",
-    "red-review-7c78b6a2e47ebe96c4d3"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
@@ -156,8 +151,8 @@
       "message": "Investigación JIT completada. Persistiendo YOLA GANADORA sin afirmar un resultado final no confirmado; después Sancet como episodio distinto y revisión roja de #ElPerroAndaluzTVE sin duplicar el episodio del 12/11."
     }
   ],
-  "last_started_at": "2026-11-13T01:12:00+01:00",
-  "last_completed_at": "2026-11-13T00:41:30+01:00",
+  "last_started_at": "2026-11-13T01:17:06+01:00",
+  "last_completed_at": "2026-11-13T01:17:06+01:00",
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-20261113T004000-chat-direct",
