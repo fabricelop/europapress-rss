@@ -898,7 +898,7 @@ final class EditorialStore: ObservableObject {
                                      trendsRadarAt: Self.when(docs["trends/recent.json"] ?? [:],
                                                               ["captured_at"]),
                                      trendsRadarReliability: Self.str(docs["trends/recent.json"] ?? [:],
-                                                                      "reliability"))
+                                                                      "reliability")))
         }.value
         accumulateConfirmedTerminals(docs, downloaded)
         canonicalSnapshot = applyConfirmedTerminals(built.snapshot)
