@@ -38,7 +38,7 @@ def _check(queue):
 def _refresh(q):
     active = sorted(
         (item for item in q["items"].values()
-         if item["status"] in {"pending", "review_pending", "in_progress", "captured_review"}),
+         if item["status"] in {"pending", "review_pending", "in_progress", "captured_review", "capture_recovery"}),
         key=lambda x: (x.get("requested_at", ""), x["trend_id"]),
     )
     q["pending_count"] = len(active)
@@ -61,6 +61,15 @@ def recover(queue, *, now=None):
         if moment(lease["expires_at"]) > t:
             continue
         attempts = int(item.get("attempts", 0))
+        # Si pudo enviarse un mensaje, un vencimiento NO autoriza repetirlo.
+        # Se conserva la identidad de la conversacion para recuperacion posterior.
+        if item.get("send_intent"):
+            item["status"] = "capture_recovery"
+            item.pop("lease", None)
+            item["updated_at"] = t.isoformat()
+            events.append({"action": "recover_sent_conversation", "trend_id": item["trend_id"],
+                           "revision": item["revision"], "status": item["status"]})
+            continue
         item["status"] = "review_pending" if item.get("revision", 1) > 1 else "pending"
         if attempts >= MAX_ATTEMPTS:
             item["status"] = "cancelled"
