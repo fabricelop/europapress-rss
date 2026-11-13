@@ -3,39 +3,35 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261113T152500-chat-direct",
-  "previous_run_id": "tr-20261113T142655-chat-direct",
-  "command_id": "tr-20261113T152500-chat-direct",
+  "run_id": "tr-20261113T154000-chat-direct",
+  "previous_run_id": "tr-20261113T152500-chat-direct",
+  "command_id": "tr-20261113T154000-chat-direct",
   "source": "chat_direct",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-13T15:25:00+01:00",
-  "updated_at": "2026-11-13T15:33:00+01:00",
-  "current": 3,
-  "total": 3,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-13T15:40:00+01:00",
+  "updated_at": "2026-11-13T15:42:00+01:00",
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": true,
-  "processed_ids": [
-    "adc96e398532",
-    "red-review-5fc81640689837421772",
-    "red-review-f9e321ef54a57c54bed2"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 3,
-    "observed": 3,
-    "closed": 3,
-    "explained": 1,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
-    "updates": 1,
+    "updates": 0,
     "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 2,
-    "unchanged_reviews": 1,
-    "continuity_updates": 1,
+    "maintenance_reviews": 0,
+    "unchanged_reviews": 0,
+    "continuity_updates": 0,
     "distinct_updates": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
@@ -50,29 +46,7 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "adc96e398532",
-      "revision": 1,
-      "name": "Opus",
-      "outcome": "explained",
-      "note": "Causa actual verificada: conversación sobre Claude Opus 5.5 y comparativas de modelos."
-    },
-    {
-      "id": "red-review-5fc81640689837421772",
-      "revision": 0,
-      "name": "#PSOEyFrenteAmplioVetan",
-      "outcome": "updated_continuity",
-      "note": "Continuidad actualizada: PSOE niega el veto mientras Podemos mantiene la acusación; sin episodio independiente."
-    },
-    {
-      "id": "red-review-f9e321ef54a57c54bed2",
-      "revision": 0,
-      "name": "Alejandra",
-      "outcome": "unchanged",
-      "note": "Sin novedad sustancial verificada; se conserva texto y fecha."
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -634,6 +608,13 @@
       "status": "DONE",
       "phase": "closing",
       "message": "Pasada TTendencias completada 3/3. Opus r1 explicado; #PSOEyFrenteAmplioVetan actualizado como continuidad; Alejandra unchanged. Barrera final editorial-queue=0. ImageGen=0; publicaciones=0; incidentes=0."
+    },
+    {
+      "at": "2026-11-13T15:42:00+01:00",
+      "run_id": "tr-20261113T154000-chat-direct",
+      "status": "RUNNING",
+      "phase": "preparing",
+      "message": "Pasada manual iniciada desde ChatGPT; cola autoritativa=0 tras refresco Top 30 de 15:41. Revalidando barrera final en main; sin ImageGen ni publicación."
     }
   ],
   "last_started_at": "2026-11-13T15:29:15+01:00",
@@ -8266,7 +8247,5 @@
   ],
   "processed": [],
   "maintenance_outbox_commit": "970b545c88b09429a23d15ec893b9d66fb611297",
-  "editorial_apply_run_id": 43378988402,
-  "finished_at": "2026-11-13T15:33:00+01:00",
-  "completed_at": "2026-11-13T15:33:00+01:00"
+  "editorial_apply_run_id": 43378988402
 }
