@@ -1,6 +1,75 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-13T05:13:51+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-13T04:14:22.020378+00:00",
+  "count": 2,
+  "items": [
+    {
+      "id": "red-review-cad2a320b2c272d2a551",
+      "revision": 0,
+      "name": "Revisar novedades: Hormiguero",
+      "rank": 20,
+      "status": "preparing",
+      "requested_at": "2026-11-13T04:14:22.020378+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "b689de23e49c",
+        "revision": 0,
+        "name": "Hormiguero",
+        "rank": 7,
+        "explanation": "TT#7 Hormiguero es tendencia por la entrevista de Feijóo y por el discurso previo de Pablo Motos sobre la negativa de Pedro Sánchez a acudir al programa tras más de un mes de invitaciones.\n#FeijóoEH #29N\n🌶️ El prime time abrió campaña antes que los carteles.",
+        "explanation_sha256": "2f64d40dff766c30bb8daf239d7d5c11c54a77b5e7710bf74ad0edbe0f55cc9b",
+        "explained_at": "2026-11-12T01:09:00+01:00",
+        "verification_sources": [
+          {
+            "url": "https://elpais.com/television/2026-11-11/el-discurso-de-pablo-motos-y-cual-es-mi-camara-los-momentos-destacados-de-feijoo-en-el-hormiguero.html"
+          },
+          {
+            "url": "https://www.elespanol.com/espana/politica/20261111/pone-mano-fuego-zp-preguntas-motos-hecho-sanchez-hormiguero/1003744454728_0.html"
+          }
+        ],
+        "fingerprint": "946e101a835ae84c6b1e72892dc3acaced8f524bf69edd441dc66bba47c4b7f3"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-a03ba46583f2a3fee89b",
+      "revision": 0,
+      "name": "Revisar novedades: Broncano",
+      "rank": 8,
+      "status": "preparing",
+      "requested_at": "2026-11-13T04:14:22.020378+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "9bb66f6db260",
+        "revision": 0,
+        "name": "Broncano",
+        "rank": 1,
+        "explanation": "TT#1 Broncano sigue siendo tendencia por la resaca de la entrevista a Abascal: tras disculparse, La Revuelta secundó la huelga general del 11N y no emitió programa.\n#LaRevuelta #11N",
+        "explanation_sha256": "2499cf8104829c45c57c0cb2708de23dc535560611f35efbc1d9a3eadb5285b5",
+        "explained_at": "2026-11-11T02:11:00+01:00",
+        "verification_sources": [
+          {
+            "url": "https://www.rtve.es/noticias/20261110/vivienda-impuestos-inmigracion-grandes-temas-entrevista-ada-colau-revuelta/17308762.shtml"
+          },
+          {
+            "url": "https://www.rtve.es/television/"
+          }
+        ],
+        "fingerprint": "62107a34ca7ea16cb2de85298530bae558c7908049bd4ab26c5c5669e4714a47"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
