@@ -6,6 +6,7 @@ on:
       - 'v2/**'
       - '.github/workflows/ttactualidad-v2-step01.yml'
   workflow_dispatch:
+  workflow_call:
 
 permissions:
   contents: write
@@ -16,11 +17,14 @@ concurrency:
 
 jobs:
   test-step-01:
-    if: github.ref == 'refs/heads/feature/ttactualidad-v2-clean'
+    if: github.ref == 'refs/heads/feature/ttactualidad-v2-clean' || github.event_name == 'workflow_call'
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: feature/ttactualidad-v2-clean
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
