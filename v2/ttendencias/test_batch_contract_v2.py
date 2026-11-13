@@ -2,7 +2,7 @@
 """Tests V2 sin navegador ni red para selección y persistencia secuencial."""
 import hashlib
 import unittest
-from batch_contract_v2 import eligible_items, verify_persisted
+from batch_contract_v2 import eligible_items, verify_persisted, validate_frozen_job
 
 def queue():
     return {"step": "04_editorial_queue", "effects_enabled": False, "items": {
@@ -48,6 +48,23 @@ class TestBatchContract(unittest.TestCase):
     def test_limits_enforced(self):
         for n in [0, 4, -1]:
             with self.assertRaises(ValueError): eligible_items(queue(), n)
+    def test_frozen_job_still_eligible_after_rank_exit(self):
+        q = queue()
+        # El histórico ya no incluye A; no se cancela un trabajo planificado.
+        self.assertEqual(validate_frozen_job(q, {"trend_id": "a", "revision": 1})["name"], "A")
+
+    def test_frozen_job_rejects_changed_revision(self):
+        q = queue()
+        q["items"]["a"]["revision"] = 2
+        with self.assertRaises(ValueError):
+            validate_frozen_job(q, {"trend_id": "a", "revision": 1})
+
+    def test_frozen_job_rejects_prior_send(self):
+        q = queue()
+        q["items"]["a"]["send_intent"] = {"token": "already_sent"}
+        with self.assertRaises(ValueError):
+            validate_frozen_job(q, {"trend_id": "a", "revision": 1})
+
     def test_verified_stage(self):
         q, journal = persisted()
         self.assertEqual(verify_persisted(q, journal),
