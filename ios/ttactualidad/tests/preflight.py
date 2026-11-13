@@ -567,7 +567,7 @@ assert 'quickButton("Crear Foto IA", "photo.badge.plus")' in actions
 assert 'quickButton("Añadir imagen", "photo.on.rectangle.angled")' in actions
 assert 'quickButton("Publicar en X", "square.and.arrow.up")' in actions
 # Preserve original stacked dual-image UI, verified images and Live Activity.
-assert 'private static func buildNews' in store
+assert 'private nonisolated static func buildNews' in store
 assert 'NewsAIImageCatalog.assigned(' in store
 assert 'LiveCountsAttributes' in shared
 print("NATIVE_BUILD56_LINKS_NEWS_ORDER_JPEG_NO_REGRESSION_OK")
