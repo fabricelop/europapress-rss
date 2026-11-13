@@ -5,32 +5,40 @@
   "canonical": true,
   "run_id": "tr-20261113T203700-chat-direct",
   "previous_run_id": "tr-20261113T192500-chat-direct",
-  "command_id": "tr-20261113T192500-chat-direct",
+  "command_id": "tr-20261113T203700-chat-direct",
   "source": "chat_direct",
-  "status": "success",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-13T20:37:00+01:00",
-  "updated_at": "2026-11-13T20:48:33+01:00",
-  "current": 3,
-  "total": 5,
-  "trend_id": "aa6b1b152ea6",
-  "title": "Marlaska",
+  "updated_at": "2026-11-13T20:48:49+01:00",
+  "current": 9,
+  "total": 9,
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
-    "019f7a9bc80d",
+    "red-review-89131aa94658e10a26da",
+    "red-review-97c4f94c705cb83a6f9d",
+    "red-review-38d12a6c09ae041727e7",
+    "aa6b1b152ea6",
+    "f893f7342d01",
     "6728fbf70710",
-    "715515999e0e",
-    "e8ba9370a79c"
+    "e8ba9370a79c",
+    "019f7a9bc80d",
+    "715515999e0e"
   ],
-  "converged_ids": [],
+  "converged_ids": [
+    "aa6b1b152ea6",
+    "f893f7342d01"
+  ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 3,
-    "observed": 3,
-    "closed": 3,
-    "explained": 0,
+    "attempted": 9,
+    "observed": 9,
+    "closed": 9,
+    "explained": 6,
     "problematic": 0,
     "updates": 3,
     "review_completed_no_distinct_event": 0,
@@ -49,7 +57,7 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 2
   },
   "outcomes": [
     {
@@ -76,6 +84,56 @@
       "outcome": "continuity",
       "applied": true,
       "apply_commit": "0c88a8cdd984fd47a820048890ed7a91e3db20f9"
+    },
+    {
+      "id": "aa6b1b152ea6",
+      "revision": 0,
+      "name": "Marlaska",
+      "outcome": "explained",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "apply_commit": "c1025b0b0ca9ec994ab4a3c929e96b9cc297b151"
+    },
+    {
+      "id": "f893f7342d01",
+      "revision": 0,
+      "name": "Jordi Wild",
+      "outcome": "explained",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "apply_commit": "c1025b0b0ca9ec994ab4a3c929e96b9cc297b151"
+    },
+    {
+      "id": "6728fbf70710",
+      "revision": 0,
+      "name": "Anotop At",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "64b7ddd4da692671ac3ac40b1ff39e87be9756ce"
+    },
+    {
+      "id": "e8ba9370a79c",
+      "revision": 0,
+      "name": "Enric Juliana",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "64b7ddd4da692671ac3ac40b1ff39e87be9756ce"
+    },
+    {
+      "id": "019f7a9bc80d",
+      "revision": 0,
+      "name": "Jorge Salvaje",
+      "outcome": "explained_cause_unconfirmed",
+      "applied": true,
+      "apply_commit": "64b7ddd4da692671ac3ac40b1ff39e87be9756ce"
+    },
+    {
+      "id": "715515999e0e",
+      "revision": 0,
+      "name": "Ayuso",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "64b7ddd4da692671ac3ac40b1ff39e87be9756ce"
     }
   ],
   "incident_count": 0,
@@ -754,6 +812,13 @@
       "status": "DONE",
       "phase": "closing",
       "message": "Pasada TTendencias completada 2/2. La UCO unchanged; Tezanos continuidad actualizada en el mismo ID/revisión, conservando explained_at e imagen. Barrera final editorial-queue=0. ImageGen=0; publicaciones=0; incidentes=0."
+    },
+    {
+      "at": "2026-11-13T20:48:49+01:00",
+      "run_id": "tr-20261113T203700-chat-direct",
+      "status": "DONE",
+      "phase": "closing",
+      "message": "Pasada TTendencias cerrada 9/9: 3 revisiones de mantenimiento y 6 reelaboraciones. Feijoo abrió episodio material nuevo; Jordi Wild y Corvillo se actualizaron por continuidad. Marlaska, Jordi Wild, Anotop At, Enric Juliana, Jorge Salvaje y Ayuso quedaron explicadas; Jorge Salvaje conserva causalidad no confirmada explícita. Barrera final editorial-queue=0. ImageGen=0; publicaciones=0."
     }
   ],
   "last_started_at": "2026-11-13T20:48:33+01:00",
@@ -9051,7 +9116,7 @@
   ],
   "maintenance_outbox_commit": "c764cbdfc37ba7b67fedd38a16837ee068ae9467",
   "editorial_apply_run_id": 43477991983,
-  "finished_at": null,
+  "finished_at": "2026-11-13T20:48:49+01:00",
   "completed_at": null,
   "maintenance_outbox_commits": [
     "24805770cc5efabc2f14e0019c9fa592aecf4d7b",
