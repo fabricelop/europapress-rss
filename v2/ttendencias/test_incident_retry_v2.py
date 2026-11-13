@@ -3,11 +3,13 @@
 import copy
 import pathlib
 import sys
+import tempfile
 import unittest
 from datetime import datetime, timedelta, timezone
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from incident_retry_v2 import eligible_incident, ranked_incident, restart_as_new_revision
+from auto_editorial_policy_v2 import eligible_plan
 
 NOW = datetime(2026, 11, 13, 20, 40, tzinfo=timezone.utc)
 STAMP = (NOW - timedelta(minutes=3)).isoformat()
@@ -101,6 +103,22 @@ class IncidentRetryTests(unittest.TestCase):
         self.assertNotIn("OLD_SECRET", str(new))
         self.assertEqual(original["items"][ident]["status"], "pending")
         self.assertEqual(q["items"][ident]["revision"], 1)
+
+    def test_new_revision_reenters_top30_by_rank_with_fresh_journal_name(self):
+        q, h = sample()
+        ident = "trv2-%024x" % 1
+        q["items"][ident].update(status="capture_recovery",
+                                  updated_at=(NOW-timedelta(hours=1)).isoformat(),
+                                  send_intent={"token":"OLD"})
+        newer = restart_as_new_revision(q, ident, now=NOW,
+            chrome_clear=True, recovery_checked=True)
+        with tempfile.TemporaryDirectory() as path:
+            pathlib.Path(path, "run-" + ident + "-r1.json").write_text("old")
+            selected, age, blocked = eligible_plan(newer, h, directory=path, now=NOW)
+        self.assertEqual(selected["trend_id"], ident)
+        self.assertEqual(selected["revision"], 2)
+        self.assertEqual(blocked, [])
+        self.assertEqual(age, 3)
 
     def test_retry_limit_prevents_infinite_loop(self):
         q, _ = sample()
