@@ -117162,15 +117162,30 @@
       "grouping_disabled": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "none",
-      "image_status": "none",
-      "image_choice": "none",
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
       "image_pending": false,
       "telegram_package_status": "pending",
       "fallback_image_strategy": "existing_web_image",
-      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+      "fallback_image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261113105835_1200.jpg",
+        "source": "www.culturaocio.com",
+        "source_url": "https://www.culturaocio.com/musica/noticia-rosalia-arrasa-latin-grammy-2026-lista-completa-ganadores-20261113105835.html",
+        "alt": "Imagen de archivo relacionada con Grammy",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261113105835_1200.jpg",
+        "source": "www.culturaocio.com",
+        "source_url": "https://www.culturaocio.com/musica/noticia-rosalia-arrasa-latin-grammy-2026-lista-completa-ganadores-20261113105835.html",
+        "alt": "Imagen de archivo relacionada con Grammy",
+        "rights_status": "unverified",
+        "generated": false
+      }
     }
   ],
-  "updated_at": "2026-11-13T17:41:30.585448+00:00",
+  "updated_at": "2026-11-13T17:42:00.250344Z",
   "count": 2059
 }
