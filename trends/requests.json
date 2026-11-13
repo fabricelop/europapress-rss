@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-13T15:33:48.793244+00:00",
+  "updated_at": "2026-11-13T15:33:58.329731+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -297155,11 +297155,11 @@
       "id": "1ea1a6c850b1",
       "name": "españas",
       "rank": 27,
-      "created_at": "2026-11-13T12:06:11.465377+00:00",
-      "revision": 2,
-      "status": "inactive",
-      "requested_at": "2026-11-13T12:06:11.465377+00:00",
-      "updated_at": "2026-11-13T12:06:11.465377+00:00",
+      "created_at": "2026-11-13T15:33:58.329731+00:00",
+      "revision": 3,
+      "status": "preparing",
+      "requested_at": "2026-11-13T15:33:58.329731+00:00",
+      "updated_at": "2026-11-13T15:33:58.329731+00:00",
       "auto_queued": false,
       "request_source": "ttactualidad_editor_hints",
       "reexplain": false,
@@ -297186,6 +297186,12 @@
           "source_revision": 1,
           "text": "Busca en x",
           "verification": "unverified_editor_context"
+        },
+        {
+          "at": "2026-11-13T15:33:58.329731+00:00",
+          "source_revision": 2,
+          "text": "Busca en x.",
+          "verification": "unverified_editor_context"
         }
       ],
       "investigation_history": [
@@ -297200,16 +297206,16 @@
           "status": "inactive",
           "problem_reason": "La pista editorial remite a un tuit concreto de Ximo Clemente sobre «las dos Españas», pero el tuit no es accesible desde las fuentes disponibles y no apareció corroboración independiente suficiente. No se atribuye el detonante.",
           "last_attempt_at": ""
+        },
+        {
+          "revision": 2,
+          "status": "inactive",
+          "problem_reason": "Investigación nueva desde cero: el muestreo actual de X mezcla usos de «españas» sobre la foto viral de la huelga, encuestas y otras conversaciones. No se ha podido aislar y verificar un detonante actual único sin especular.",
+          "last_attempt_at": ""
         }
       ],
-      "rewrite_instruction": "INVESTIGACIÓN NUEVA DESDE CERO. Pistas de un editor SIN verificar:\\nBusca en x\\nContrasta cada dato, fecha, publicación y fuente con búsquedas independientes. Si no se verifica el detonante actual, deja el caso SIN EXPLICACIÓN VERIFICADA; nunca presentes las pistas como hechos. Si se verifica, escribe explicación factual completa y remate nuevo. No reutilices texto, remate ni imágenes de otra revisión.",
-      "hints_verification_status": "unverified",
-      "problematic_at": "2026-11-13T14:07:48+01:00",
-      "problem_reason": "Investigación nueva desde cero: el muestreo actual de X mezcla usos de «españas» sobre la foto viral de la huelga, encuestas y otras conversaciones. No se ha podido aislar y verificar un detonante actual único sin especular.",
-      "problematic_attempts": 2,
-      "editorial_engine": "chatgpt-automation-outbox",
-      "inactive_at": "2026-11-13T14:11:12+01:00",
-      "inactive_reason": "left-top30-radar"
+      "rewrite_instruction": "INVESTIGACIÓN NUEVA DESDE CERO. Pistas de un editor SIN verificar:\\nBusca en x.\\nContrasta cada dato, fecha, publicación y fuente con búsquedas independientes. Si no se verifica el detonante actual, deja el caso SIN EXPLICACIÓN VERIFICADA; nunca presentes las pistas como hechos. Si se verifica, escribe explicación factual completa y remate nuevo. No reutilices texto, remate ni imágenes de otra revisión.",
+      "hints_verification_status": "unverified"
     },
     {
       "id": "47ef1a2cc908",
