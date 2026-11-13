@@ -1,11 +1,31 @@
 {
-  "generated_at": "2026-11-13T03:05:33.971Z",
-  "fetched_at": "2026-11-13T03:05:10.843Z",
+  "generated_at": "2026-11-13T04:05:42.863Z",
+  "fetched_at": "2026-11-13T04:05:12.720Z",
   "mode": "incremental",
   "query": "\"recordadme\" OR \"que alguien me recuerde\" OR \"alguien que me recuerde\" OR \"alguien me recuerde\" OR \"que me recuerden\" OR \"@SeLoRecordamos\"",
-  "status": "no_new_candidates",
-  "note": "Sin candidatos nuevos. Extraídos: 34; ya vistos: 34; descartados: 0.",
-  "extracted": 34,
-  "already_seen": 34,
-  "new_found": []
+  "status": "ok",
+  "note": "1 candidatos nuevos de 25 tuits extraídos.",
+  "extracted": 25,
+  "already_seen": 23,
+  "new_found": [
+    {
+      "id": "2121083591698334162",
+      "user": "@14GVNG_",
+      "text": "no quiero que me recuerden",
+      "datetime": "2026-11-13T03:31:50.000Z",
+      "url": "https://x.com/14GVNG_/status/2121083591698334162",
+      "first_seen_at": "2026-11-13T04:05:12.720Z",
+      "status": "pending",
+      "filter_status": "candidate"
+    },
+    {
+      "id": "2121091781525737840",
+      "user": "@edgarisdeadsoon",
+      "text": "vi Eternal Sunshine porque quería llorar y si lloro quisiera que sea pensando en ti y por cosas que me recuerden a ti\n\nporque te amo",
+      "datetime": "2026-11-13T04:04:23.000Z",
+      "url": "https://x.com/edgarisdeadsoon/status/2121091781525737840",
+      "reason": "excluded_phrase_me_recuerden_a",
+      "filter_status": "rejected"
+    }
+  ]
 }
