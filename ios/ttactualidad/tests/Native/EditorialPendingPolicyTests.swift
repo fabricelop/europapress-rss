@@ -29,3 +29,49 @@ final class EditorialPendingPolicyTests: XCTestCase {
         XCTAssertEqual(EditorialPendingPolicy.unidentifiedAge, 24 * 3600)
     }
 }
+
+
+final class TrendPendingRemovalPolicyTests: XCTestCase {
+    private let oldEntry = Date(timeIntervalSince1970: 1_794_602_000)
+    private let retirement = Date(timeIntervalSince1970: 1_794_603_000)
+    private let newEntry = Date(timeIntervalSince1970: 1_794_604_000)
+
+    private var records: [TrendPendingRetirement] {
+        [TrendPendingRetirement(editorialID: "1ea1a6c850b1",
+                                revision: 3, name: "españas",
+                                retiredAt: retirement)]
+    }
+
+    func testOldEspanasNoLongerAppearsInPendientes() {
+        XCTAssertFalse(TrendPendingRemovalPolicy.isVisible(
+            id: "1ea1a6c850b1", revision: 3,
+            name: "ESPAÑAS", enteredAt: oldEntry, retirements: records))
+        XCTAssertFalse(TrendPendingRemovalPolicy.isVisible(
+            id: "1ea1a6c850b1", revision: 3,
+            name: "españas", enteredAt: nil, retirements: records))
+        XCTAssertFalse(TrendPendingRemovalPolicy.isVisible(
+            id: "unexplained-1ea1a6c850b1", revision: 3,
+            name: "Españas", enteredAt: nil, retirements: records))
+    }
+
+    func testNewTop30EntryCanReturnWithoutTermBlacklist() {
+        XCTAssertTrue(TrendPendingRemovalPolicy.isVisible(
+            id: "new-episode", revision: 0,
+            name: "españas", enteredAt: newEntry, retirements: records))
+        XCTAssertTrue(TrendPendingRemovalPolicy.isVisible(
+            id: "other", revision: 0,
+            name: "Colau", enteredAt: nil, retirements: records))
+        XCTAssertTrue(TrendPendingRemovalPolicy.isVisible(
+            id: "1ea1a6c850b1", revision: 4,
+            name: "españas", enteredAt: newEntry, retirements: records))
+    }
+
+    func testLaterScanOrRankChangeDoesNotReopenOldEpisode() {
+        XCTAssertFalse(TrendPendingRemovalPolicy.isVisible(
+            id: "new-id-without-proven-entry", revision: 0,
+            name: "españas", enteredAt: nil, retirements: records))
+        XCTAssertTrue(TrendPendingRemovalPolicy.isVisible(
+            id: "1ea1a6c850b1", revision: 3,
+            name: "españas", enteredAt: oldEntry, retirements: []))
+    }
+}
