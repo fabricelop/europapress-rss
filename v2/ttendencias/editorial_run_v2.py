@@ -199,25 +199,34 @@ def run_one(api, state, transcript, auth, item):
             # la conversación después de Enter. Identificar por el ID del
             # prompt, nunca por título de pestaña o URL solamente.
             def matching_conversation():
-                for candidate in list(context.pages):
-                    try:
-                        if not candidate.url.startswith("https://chatgpt.com/c/"):
-                            continue
-                        body = candidate.locator("body").inner_text(timeout=4000)
-                        if (trend_id in body and
-                            ("Revisión: " + str(revision) in body or
-                             "revision " + str(revision) in body.lower())):
-                            return candidate
-                    except Exception:
-                        continue
-                return None
+                checked = []
+                for ctx in list(browser.contexts):
+                    for candidate in list(ctx.pages):
+                        try:
+                            url = candidate.url
+                            if not url.startswith("https://chatgpt.com/"):
+                                continue
+                            body = candidate.locator("body").inner_text(timeout=3500)
+                            id_seen = trend_id in body
+                            revision_seen = ("Revisión: " + str(revision) in body or
+                                             "revision " + str(revision) in body.lower())
+                            checked.append({"url": url, "id_seen": id_seen,
+                                            "revision_seen": revision_seen,
+                                            "body_chars": len(body)})
+                            if url.startswith("https://chatgpt.com/c/") and id_seen and revision_seen:
+                                return candidate, checked
+                        except Exception as exc:
+                            checked.append({"url": candidate.url,
+                                            "error_type": type(exc).__name__})
+                return None, checked
 
             # Capturar la URL tan pronto aparezca, INDEPENDIENTE de la respuesta.
             # La navegación SPA puede tardar; mantener diario incluso si falla
             # la posterior recuperación del texto.
             url_deadline = time.monotonic() + 45
+            seen_pages = []
             while time.monotonic() < url_deadline:
-                matched = matching_conversation()
+                matched, seen_pages = matching_conversation()
                 if matched is not None:
                     page = matched
                     record["chat_url"] = page.url.split("?", 1)[0]
@@ -226,6 +235,18 @@ def run_one(api, state, transcript, auth, item):
                     break
                 time.sleep(0.5)
             if not record.get("chat_url"):
+                record["cdp_pages_at_url_timeout"] = seen_pages
+                try:
+                    session = browser.new_browser_cdp_session()
+                    targets = session.send("Target.getTargets").get("targetInfos", [])
+                    record["cdp_targets_at_url_timeout"] = [
+                        {"type": t.get("type"), "url": t.get("url", ""),
+                         "title": t.get("title", "")}
+                        for t in targets if "chatgpt.com" in t.get("url", "")
+                    ][:25]
+                except Exception as exc:
+                    record["cdp_target_diagnostic_error"] = type(exc).__name__
+                store(journal, record)
                 print("TT_V2_CHAT_URL_RECORDED=NO", flush=True)
             print("TT_V2_MESSAGE_SENT_ONCE=YES", flush=True)
             # Lectura sobre LA MISMA sesion, con una unica recarga del chat
