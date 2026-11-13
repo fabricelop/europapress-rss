@@ -92,7 +92,8 @@ def claim(queue, *, worker_id, now=None, capacity=1):
     running = sum(x["status"] == "in_progress" for x in q["items"].values())
     available = max(0, capacity - running)
     candidates = sorted((x for x in q["items"].values() if x["status"] in OPEN),
-                        key=lambda x: (x.get("requested_at", ""), x["trend_id"]))
+                        key=lambda x: (0 if x["status"] == "review_pending" else 1,
+                                       x.get("requested_at", ""), x["trend_id"]))
     jobs = []
     for item in candidates[:available]:
         attempt = int(item.get("attempts", 0)) + 1
