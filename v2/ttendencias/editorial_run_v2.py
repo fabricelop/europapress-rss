@@ -145,6 +145,14 @@ def run_one(api, state, transcript, auth, item):
         "started_at": now.isoformat(),
         "expires_at": (now + timedelta(minutes=25)).isoformat()}
     queue_write(api, auth, sha, q, "claim " + trend_id)
+    # La web muestra EN ELABORACIÓN antes de abrir la sesión individual.
+    # Un fallo de proyección no provoca reenvío ni cambia la reserva.
+    web = module("web_top30_v2.py", "ttv2_web_top30")
+    try:
+        snapshot = web.sync_to_github(auth)
+        print("TT_V2_WEB_TOP30_CLAIM_SYNC=YES", flush=True)
+    except Exception as exc:
+        print("TT_V2_WEB_TOP30_CLAIM_SYNC=DEGRADED:" + type(exc).__name__, flush=True)
     record = {"trend_id": trend_id, "revision": revision, "lease_token": token,
               "message_sent": False, "reply_captured": False, "cleanup_verified": False,
               "queue_modified": True, "published": False,
@@ -352,6 +360,18 @@ def run_one(api, state, transcript, auth, item):
         raise RuntimeError("Listas V2 no refleja la captura; no avanzar lote")
     print("TT_V2_LISTAS_VERIFIED=YES", flush=True)
     print("TT_V2_LISTAS_CAUSE_STATUS=" + card["cause_status"], flush=True)
+    # Reflejar la explicación capturada en Top30 web sin esperar al cron.
+    web = module("web_top30_v2.py", "ttv2_web_top30")
+    snapshot = web.sync_to_github(auth)
+    current_top30 = next((entry for entry in snapshot["items"]
+                          if entry["trend_id"] == trend_id), None)
+    if current_top30 is not None:
+        if (current_top30["revision"] != revision
+            or current_top30["status"] != "explicada"
+            or current_top30["explanation"] != cap["answer"]):
+            raise RuntimeError("Top30 web V2 no refleja la explicación capturada")
+    # Si salió del ranking, permanece capturada en GitHub y Listas V2.
+    print("TT_V2_WEB_TOP30_VERIFIED=YES", flush=True)
     print("TT_V2_PUBLISHED=NO", flush=True)
 
 def main():
