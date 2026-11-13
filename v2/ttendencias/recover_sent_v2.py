@@ -131,6 +131,12 @@ def no_send_recovery(trend_id, revision):
                     time.sleep(2)
                     continue
                 body = page.locator("body").inner_text(timeout=8000)
+                if "Could not load this ChatGPT conversation" in body:
+                    result["status"] = "conversation_load_failed"
+                    result["last_reason"] = "conversation_inaccessible"
+                    result["visible_tail"] = body[-1200:]
+                    print("TT_V2_CONVERSATION_LOAD_FAILED=YES", flush=True)
+                    break
                 answer, reason = extractor.extract_reply(body, trend_id=trend_id, revision=revision)
                 stop = page.locator(STOP).count() > 0
                 if answer and answer == last:
@@ -144,7 +150,7 @@ def no_send_recovery(trend_id, revision):
                     result["validation"] = reason
                     break
                 time.sleep(2)
-            if not result["reply_captured"]:
+            if not result["reply_captured"] and result["status"] != "conversation_load_failed":
                 result["status"] = "not_verified"
                 result["visible_tail"] = page.locator("body").inner_text(timeout=8000)[-3000:]
                 result["last_reason"] = reason
