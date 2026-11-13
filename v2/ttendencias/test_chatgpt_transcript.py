@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Pruebas aisladas: sin Chrome, sin red, sin GitHub y sin V1."""
 import unittest
-from v2.ttendencias.chatgpt_transcript import extract_reply
+from v2.ttendencias.chatgpt_transcript import extract_reply, read_status
 
 TREND = "trv2-dd5de9a892ab6b7007ef26b6"
 BODY = (
@@ -28,6 +28,21 @@ class TestTranscript(unittest.TestCase):
     def test_followup_turn(self):
         extra = BODY.replace("ChatGPT can make mistakes.", "\nYou said:\nOtra orden\nChatGPT can make mistakes.")
         self.assertEqual(extract_reply(extra, trend_id=TREND, revision=1)[0], "")
+    def test_visible_loading_failure(self):
+        result = read_status("Could not load this ChatGPT conversation",
+                             trend_id=TREND, revision=1)
+        self.assertEqual(result["status"], "conversation_load_failed")
+        self.assertEqual(result["answer"], "")
+
+    def test_status_waits_for_completion(self):
+        result = read_status(BODY.split("ChatGPT can make mistakes.")[0],
+                             trend_id=TREND, revision=1)
+        self.assertEqual(result["status"], "waiting")
+
+    def test_status_captures_matching_transcript(self):
+        result = read_status(BODY, trend_id=TREND, revision=1)
+        self.assertEqual(result["status"], "captured")
+
     def test_empty(self):
         self.assertEqual(extract_reply("", trend_id=TREND, revision=1)[0], "")
 if __name__ == "__main__":
