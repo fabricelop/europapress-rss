@@ -42,7 +42,7 @@ def no_send_recovery(trend_id, revision):
         print("TT_V2_ALREADY_PERSISTED=YES")
         return
     url = record.get("chat_url") or ""
-    valid_url = r"https://chatgpt\\.com/c/[A-Za-z0-9-]{16,80}"
+    valid_url = r"https://chatgpt\.com/c/[A-Za-z0-9-]{16,80}"
     if not re.fullmatch(valid_url, url):
         # Descubrimiento local ya comprobado contra el turno del usuario:
         # identidad, revisión y cierre del Chrome aislado.
