@@ -7,28 +7,49 @@
   "previous_run_id": "tr-20261113T125500-chat-direct",
   "command_id": "tr-20261113T135500-chat-direct",
   "source": "chat_direct",
-  "status": "success",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-13T13:55:00+01:00",
   "updated_at": "2026-11-13T14:07:49+01:00",
-  "current": 0,
-  "total": 17,
+  "current": 21,
+  "total": 21,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
   "processed_ids": [
-    "1ea1a6c850b1"
+    "1ea1a6c850b1",
+    "29696212d3dd",
+    "4ff8063c6398",
+    "adc96e398532",
+    "35d12a3b3632",
+    "d19a15c70437",
+    "d68369a04f30"
   ],
-  "converged_ids": [],
+  "converged_ids": [
+    "11dd9ba8e83e",
+    "d931eb8b246f",
+    "7da7bd066548",
+    "9666b2b93842",
+    "1bac13f8b8a9",
+    "9469d3848691",
+    "6c960c86245f",
+    "58aede70c0ed",
+    "fb40ea486661",
+    "42a25e3d6736",
+    "0c33e3f2c8d6",
+    "0f539e3e91d6",
+    "382ad2c12d8e",
+    "42591dd67a4e"
+  ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 17,
-    "observed": 17,
-    "closed": 0,
-    "explained": 0,
-    "problematic": 0,
+    "attempted": 7,
+    "observed": 21,
+    "closed": 21,
+    "explained": 6,
+    "problematic": 1,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
     "maintenance_reviews": 0,
@@ -36,20 +57,140 @@
     "continuity_updates": 0,
     "distinct_updates": 0,
     "stale_reviews": 0,
-    "unverified_reviews": 0,
+    "unverified_reviews": 1,
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 17,
-    "rewrite_pending_remaining": 2,
+    "queue_remaining": 0,
+    "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0,
-    "cause_unconfirmed": 0
+    "concurrent_convergence": 14,
+    "cause_unconfirmed": 4
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "1ea1a6c850b1",
+      "revision": 2,
+      "name": "españas",
+      "outcome": "problematic",
+      "applied": true
+    },
+    {
+      "id": "29696212d3dd",
+      "revision": 0,
+      "name": "Y Podemos",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "4ff8063c6398",
+      "revision": 0,
+      "name": "Sábado 14",
+      "outcome": "explained_cause_unconfirmed",
+      "applied": true
+    },
+    {
+      "id": "adc96e398532",
+      "revision": 0,
+      "name": "Opus",
+      "outcome": "explained_cause_unconfirmed",
+      "applied": true
+    },
+    {
+      "id": "35d12a3b3632",
+      "revision": 0,
+      "name": "Hotmail",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "d19a15c70437",
+      "revision": 0,
+      "name": "Gmail",
+      "outcome": "explained_cause_unconfirmed",
+      "applied": true
+    },
+    {
+      "id": "d68369a04f30",
+      "revision": 0,
+      "name": "Domingo 15",
+      "outcome": "explained_cause_unconfirmed",
+      "applied": true
+    },
+    {
+      "id": "11dd9ba8e83e",
+      "outcome": "converged_concurrently",
+      "applied": true
+    },
+    {
+      "id": "d931eb8b246f",
+      "outcome": "converged_concurrently",
+      "applied": true
+    },
+    {
+      "id": "7da7bd066548",
+      "outcome": "converged_concurrently",
+      "applied": true
+    },
+    {
+      "id": "9666b2b93842",
+      "outcome": "converged_concurrently",
+      "applied": true
+    },
+    {
+      "id": "1bac13f8b8a9",
+      "outcome": "converged_concurrently",
+      "applied": true
+    },
+    {
+      "id": "9469d3848691",
+      "outcome": "converged_concurrently",
+      "applied": true
+    },
+    {
+      "id": "6c960c86245f",
+      "outcome": "converged_concurrently",
+      "applied": true
+    },
+    {
+      "id": "58aede70c0ed",
+      "outcome": "converged_concurrently",
+      "applied": true
+    },
+    {
+      "id": "fb40ea486661",
+      "outcome": "converged_concurrently",
+      "applied": true
+    },
+    {
+      "id": "42a25e3d6736",
+      "outcome": "converged_concurrently",
+      "applied": true
+    },
+    {
+      "id": "0c33e3f2c8d6",
+      "outcome": "converged_concurrently",
+      "applied": true
+    },
+    {
+      "id": "0f539e3e91d6",
+      "outcome": "converged_concurrently",
+      "applied": true
+    },
+    {
+      "id": "382ad2c12d8e",
+      "outcome": "converged_concurrently",
+      "applied": true
+    },
+    {
+      "id": "42591dd67a4e",
+      "outcome": "converged_concurrently",
+      "applied": true
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -566,6 +707,13 @@
       "status": "RUNNING",
       "phase": "investigating",
       "message": "Pasada manual iniciada desde ChatGPT; cola autoritativa inicial=17. Revalidación JIT e investigación actual en curso; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-13T14:07:49+01:00",
+      "run_id": "tr-20261113T135500-chat-direct",
+      "status": "DONE",
+      "phase": "closing",
+      "message": "Pasada TTendencias cerrada con barrera final editorial-queue=0. Se aplicaron directamente 7 resultados (6 explicaciones y españas r2 como problematic por detonante no verificable); 14 revisiones convergieron durante la ejecución y no se duplicaron. ImageGen=0; publicaciones=0; incidentes técnicos=0."
     }
   ],
   "last_started_at": "2026-11-13T14:07:48+01:00",
@@ -7789,6 +7937,6 @@
   "processed": [],
   "maintenance_outbox_commit": "970b545c88b09429a23d15ec893b9d66fb611297",
   "editorial_apply_run_id": 43378988402,
-  "finished_at": "2026-11-13T12:15:00+01:00",
+  "finished_at": "2026-11-13T14:07:49+01:00",
   "completed_at": "2026-11-13T13:03:30+01:00"
 }
