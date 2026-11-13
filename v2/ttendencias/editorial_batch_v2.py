@@ -15,7 +15,8 @@ import time
 import importlib.util
 
 import editorial_run_v2 as core
-from batch_contract_v2 import eligible_items, verify_persisted
+from batch_contract_v2 import verify_persisted
+from select_current_top30_v2 import read_history, select_current_top30
 
 LOCK = core.ROOT / "editorial_batch_v2.lock"
 
@@ -46,7 +47,10 @@ def run_batch(max_jobs, execute):
     # No token en el diagnóstico ni stdout.
     auth = api.token()
     queue, _ = core.queue_read(api, auth)
-    initial = eligible_items(queue, max_jobs)
+    history = read_history(auth)
+    initial, age = select_current_top30(queue, history, max_jobs)
+    print("TT_V2_BATCH_SOURCE=CURRENT_TOP30_ONLY", flush=True)
+    print("TT_V2_TOP30_AGE_MINUTES=" + str(age), flush=True)
     print("TT_V2_BATCH_MODE=" + ("RUN" if execute else "DRY_RUN"), flush=True)
     print("TT_V2_BATCH_PLAN_COUNT=" + str(len(initial)), flush=True)
     for i, item in enumerate(initial, 1):
@@ -62,9 +66,10 @@ def run_batch(max_jobs, execute):
     completed = 0
     for i in range(max_jobs):
         queue, _ = core.queue_read(api, auth)
-        candidates = eligible_items(queue, 1)
+        history = read_history(auth)
+        candidates, age = select_current_top30(queue, history, 1)
         if not candidates:
-            print("TT_V2_BATCH_QUEUE_EMPTY=YES", flush=True)
+            print("TT_V2_BATCH_CURRENT_TOP30_COMPLETE=YES", flush=True)
             break
         item = candidates[0]
         # El consumidor lee de nuevo la cola y hace CAS dentro de run_one.
