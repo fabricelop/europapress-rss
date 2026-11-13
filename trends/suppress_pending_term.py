@@ -12,24 +12,26 @@ import json
 from pathlib import Path
 
 try:
-    from suppression import CONFIG, active_request, is_suppressed, purge_pending
+    from suppression import CONFIG, active_request, is_suppressed, purge_pending, key
     from requests_json import dumps_for_path
 except ImportError:
-    from trends.suppression import CONFIG, active_request, is_suppressed, purge_pending
+    from trends.suppression import CONFIG, active_request, is_suppressed, purge_pending, key
     from trends.requests_json import dumps_for_path
 
 ROOT = Path(__file__).resolve().parent
 
 
 
-def current_retirement_keys():
-    """Exact ID+revision closures; never a permanent name/radar blacklist."""
+def retirement_rules():
+    """Exact one-off closures plus release of old global filters."""
     rules = json.loads(CONFIG.read_text(encoding="utf-8"))
-    return {
+    exact = {
         (str(row["id"]), int(row["revision"]))
         for row in rules.get("one_shot_retirements", [])
         if row.get("id") and row.get("revision") is not None
     }
+    released = {key(name) for name in rules.get("released_legacy_keys", [])}
+    return exact, released
 
 
 def matches_current_retirement(row, retirement_keys):
@@ -54,9 +56,16 @@ def clean_documents(root=ROOT):
     doc = json.loads(path.read_text(encoding="utf-8"))
     n = purge_pending(doc["requests"])
     changes["requests_terminated"] = n
-    retirements = current_retirement_keys()
+    retirements, released_legacy = retirement_rules()
     retired_once = 0
+    released_once = 0
     for row in doc["requests"]:
+        if (key(row.get("name")) in released_legacy
+                and str(row.get("status") or "").lower() == "removed"
+                and row.get("inactive_reason") == "editor_user_suppressed"):
+            row["status"] = "inactive"
+            row["inactive_reason"] = "editor_legacy_suppression_released"
+            released_once += 1
         if not matches_current_retirement(row, retirements):
             continue
         status = str(row.get("status") or "").lower()
@@ -74,7 +83,8 @@ def clean_documents(root=ROOT):
         row["disable_ai_image"] = True
         retired_once += 1
     changes["one_shot_requests_retired"] = retired_once
-    if n or retired_once:
+    changes["legacy_suppressions_released"] = released_once
+    if n or retired_once or released_once:
         rewrite_doc(path, doc)
 
     path = root / "editorial-queue.json"
