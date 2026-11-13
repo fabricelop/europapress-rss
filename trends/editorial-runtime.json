@@ -7,36 +7,29 @@
   "previous_run_id": "tr-20261113T212500-chat-direct",
   "command_id": "tr-20261113T234000-chat-direct",
   "source": "chat_direct",
-  "status": "success",
+  "status": "waiting",
   "phase": "closing",
   "started_at": "2026-11-13T23:40:00+01:00",
-  "updated_at": "2026-11-13T23:52:25+01:00",
+  "updated_at": "2026-11-14T00:13:46+01:00",
   "current": 16,
   "total": 16,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [
-    "1d5814995248",
-    "manual-c550af7b734565e1d4042fae0ba8d74f",
-    "3f3a1383fa90",
-    "a1caaebc2161",
-    "2030fcc48d35",
-    "7122a440e159",
-    "627119e08741",
-    "f2062a75e5d6",
-    "a10eb74fed88",
-    "fdc484cca6f9",
-    "1a3d472187ac",
-    "c14acdc5dbda",
-    "1134c775eb8c",
-    "ae38b5339403",
-    "red-review-ca673710a7f700743186",
-    "red-review-c4838b47cade0c9cfe7b"
+    "2dc763da3e69"
   ],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "3a22a8c57c62",
+    "456ebcfdd8f1",
+    "86a31f1f188d"
+  ],
+  "remaining_active_ids": [
+    "3a22a8c57c62",
+    "456ebcfdd8f1",
+    "86a31f1f188d"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 16,
@@ -928,7 +921,7 @@
       "message": "Pasada TTendencias completada 16/16: 12 explicaciones aplicadas, Isaac y Miente marcados problematic por falta de detonante verificable, #SVFinal actualizado en continuidad con el resultado de la final y Marlaska cerrado unchanged. Barrera final editorial-queue=0. ImageGen=0; image-outbox editorial=0; publicaciones=0; incidentes=0."
     }
   ],
-  "last_started_at": "2026-11-13T23:48:06+01:00",
+  "last_started_at": "2026-11-14T00:13:45+01:00",
   "last_completed_at": "2026-11-13T23:48:07+01:00",
   "api_failover_enabled": false,
   "last_run": {
