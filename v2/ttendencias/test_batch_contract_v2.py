@@ -21,7 +21,7 @@ def queue():
     }}
 
 def persisted():
-    text = "Texto de respuesta editorial validada para captura " * 4
+    text = ("Texto de respuesta editorial validada para captura " * 4).strip()
     digest = hashlib.sha256(text.encode("utf-8")).hexdigest()
     journal = {"trend_id": "a", "revision": 1, "message_sent": True,
                "reply_captured": True, "cleanup_verified": True,
