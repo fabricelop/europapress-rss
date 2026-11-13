@@ -17,6 +17,7 @@ import editorial_run_v2 as core
 from chrome_command_v2 import command
 from chrome_cleanup_v2 import cleanup_v2_profile
 from chrome_startup_v2 import wait_for_cdp
+from chrome_visibility_v2 import V2WindowHider, startupinfo_hidden
 from process_lock_v2 import exclusive_v2_lock
 
 
@@ -28,9 +29,12 @@ def verify_under_lock():
     with socket.socket() as sock:
         sock.bind(("127.0.0.1", 0))
         port = sock.getsockname()[1]
-    args = command(core.CHROME, core.PROFILE, port, headless=True)
+    # Previously tested headless has CDP but no authenticated composer.
+    # Use normal headed Chrome with its own windows hidden (no headless).
+    args = command(core.CHROME, core.PROFILE, port, headless=False, hidden=True)
     proc = None
     browser = None
+    hider = None
     chrome_stderr = None
     chrome_error_log = core.ROOT / "install-chrome-headless.stderr.log"
     composer_ready = False
@@ -43,7 +47,10 @@ def verify_under_lock():
         chrome_stderr = chrome_error_log.open("w", encoding="utf-8")
         proc = subprocess.Popen(args + ["--enable-logging=stderr"], stdout=subprocess.DEVNULL,
                                 stderr=chrome_stderr,
+                                startupinfo=startupinfo_hidden(),
                                 creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
+        hider = V2WindowHider(core.profile_pids).start()
+        print("TT_V2_CHROME_MODE=HEADED_HIDDEN", flush=True)
         endpoint = "http://127.0.0.1:" + str(port)
         def cdp_ready():
             try:
@@ -59,7 +66,7 @@ def verify_under_lock():
               ("YES" if startup["children_seen"] else "NO"), flush=True)
         if not core.profile_pids():
             raise RuntimeError("No se identificaron procesos ChromeProfile V2")
-        print("TT_V2_HEADLESS_CDP=YES", flush=True)
+        print("TT_V2_HIDDEN_CDP=YES", flush=True)
         with sync_playwright() as pw:
             browser = pw.chromium.connect_over_cdp(endpoint, timeout=18000)
             if not browser.contexts:
@@ -78,18 +85,26 @@ def verify_under_lock():
                         field = page.locator(selector).first
                         if field.count() and field.is_visible() and field.is_enabled():
                             composer_ready = True
-                            print("TT_V2_HEADLESS_COMPOSER_READY=YES", flush=True)
+                            print("TT_V2_HIDDEN_COMPOSER_READY=YES", flush=True)
                             break
                 if composer_ready:
                     break
                 time.sleep(2)
             if not composer_ready:
-                raise RuntimeError("ChatGPT V2 no muestra editor usable en headless")
+                # Diagnostic contains no prompt, conversation body, cookie or token.
+                print("TT_V2_HIDDEN_PAGE_HOST=" + (page.url.split("/")[2] if "://" in page.url else "unknown"), flush=True)
+                print("TT_V2_HIDDEN_PAGE_LOGIN=" + str("auth" in page.url.lower() or "login" in page.url.lower()).upper(), flush=True)
+                raise RuntimeError("ChatGPT V2 no muestra editor usable en Chrome normal oculto")
     except Exception as exc:
         # Conservar la causa original: un fallo de limpieza NO debe ocultar
         # un problema anterior de CDP, login o editor.
         original_error = exc
     finally:
+        if hider:
+            hider.stop()
+            print("TT_V2_WINDOW_HIDER_STATUS=" + ("OK" if not hider.last_error else "ERROR"), flush=True)
+            if hider.last_error and not original_error:
+                original_error = RuntimeError("No se pudo mantener Chrome V2 oculto: " + hider.last_error)
         if browser:
             try:
                 browser.new_browser_cdp_session().send("Browser.close")
@@ -128,12 +143,12 @@ def verify_under_lock():
         raise RuntimeError("Quedan " + str(len(remaining)) +
                            " procesos Chrome V2 tras cierre (" +
                            ",".join(map(str, remaining[:12])) + ")" + note)
-    print("TT_V2_HEADLESS_PROCESSES_CLOSED=YES", flush=True)
+    print("TT_V2_HIDDEN_PROCESSES_CLOSED=YES", flush=True)
     if original_error:
         raise original_error
     if not composer_ready:
         raise RuntimeError("El editor ChatGPT V2 no llegó a estar listo")
-    print("TT_V2_HEADLESS_MESSAGE_SENT=NO", flush=True)
+    print("TT_V2_HIDDEN_MESSAGE_SENT=NO", flush=True)
     print("TT_V2_PUBLISHED=NO", flush=True)
 
 
@@ -147,9 +162,9 @@ if __name__ == "__main__":
     try:
         verify()
     except Exception as exc:
-        print("TT_V2_HEADLESS_PREFLIGHT_ERROR=" + str(exc),
+        print("TT_V2_HIDDEN_PREFLIGHT_ERROR=" + str(exc),
               file=sys.stderr, flush=True)
-        print("TT_V2_HEADLESS_CHROME_STDERR_LOG=" +
+        print("TT_V2_HIDDEN_CHROME_STDERR_LOG=" +
               str(core.ROOT / "install-chrome-headless.stderr.log"),
               flush=True)
         print("TT_V2_HEADLESS_MESSAGE_SENT=NO", flush=True)
