@@ -1,0 +1,117 @@
+#!/usr/bin/env python3
+"""TTActualidad V2: consumidor secuencial y acotado.
+
+Sin --run: simula selección y no escribe en GitHub ni abre Chrome.
+Con --run: ejecuta 1..3 tendencias, una por vez, crea Chrome exclusivo en cada
+elaboración y exige lectura GitHub/verificación del diario ANTES de continuar.
+Nunca publica ni cambia estados a ready.
+"""
+import argparse
+import json
+import os
+import pathlib
+import sys
+import time
+import importlib.util
+
+import editorial_run_v2 as core
+from batch_contract_v2 import eligible_items, verify_persisted
+
+LOCK = core.ROOT / "editorial_batch_v2.lock"
+
+
+def take_lock():
+    LOCK.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        fd = os.open(str(LOCK), os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
+    except FileExistsError:
+        raise RuntimeError("Ya existe lock de consumidor V2; no abrir Chrome ni ignorarlo")
+    try:
+        os.write(fd, json.dumps({"pid": os.getpid(), "purpose": "ttactualidad-v2-batch"}).encode("utf-8"))
+    finally:
+        os.close(fd)
+
+
+def read_journal(trend_id, revision):
+    path = core.DIAG_DIR / ("run-" + trend_id + "-r" + str(revision) + ".json")
+    if not path.exists():
+        raise RuntimeError("Diario local no generado para " + trend_id)
+    return json.loads(path.read_text(encoding="utf-8-sig"))
+
+
+def run_batch(max_jobs, execute):
+    api = core.module("persist_capture_github.py", "ttv2_batch_github")
+    state = core.module("editorial_capture_state.py", "ttv2_batch_state")
+    transcript = core.module("chatgpt_transcript.py", "ttv2_batch_transcript")
+    # No token en el diagnóstico ni stdout.
+    auth = api.token()
+    queue, _ = core.queue_read(api, auth)
+    initial = eligible_items(queue, max_jobs)
+    print("TT_V2_BATCH_MODE=" + ("RUN" if execute else "DRY_RUN"), flush=True)
+    print("TT_V2_BATCH_PLAN_COUNT=" + str(len(initial)), flush=True)
+    for i, item in enumerate(initial, 1):
+        print("TT_V2_BATCH_PLAN_%d=%s:%s:r%d" % (
+            i, item["trend_id"], item["name"], item["revision"]), flush=True)
+    if not execute:
+        print("TT_V2_GITHUB_WRITE=NO", flush=True)
+        print("TT_V2_MESSAGE_SENT=NO", flush=True)
+        print("TT_V2_PUBLISHED=NO", flush=True)
+        return
+    if core.profile_pids():
+        raise RuntimeError("Chrome V2 ya está abierto; abortar")
+    completed = 0
+    for i in range(max_jobs):
+        queue, _ = core.queue_read(api, auth)
+        candidates = eligible_items(queue, 1)
+        if not candidates:
+            print("TT_V2_BATCH_QUEUE_EMPTY=YES", flush=True)
+            break
+        item = candidates[0]
+        # El consumidor lee de nuevo la cola y hace CAS dentro de run_one.
+        print("TT_V2_BATCH_START=%s:r%d" % (item["trend_id"], item["revision"]), flush=True)
+        try:
+            core.run_one(api, state, transcript, auth, item)
+        except Exception:
+            print("TT_V2_BATCH_STOP=RUN_FAILED_NO_RESEND", flush=True)
+            raise
+        # Un resultado de stdout por sí solo no es éxito: consultar GitHub.
+        current, _ = core.queue_read(api, auth)
+        journal = read_journal(item["trend_id"], item["revision"])
+        digest = verify_persisted(current, journal)
+        if core.profile_pids():
+            raise RuntimeError("Chrome V2 sigue abierto; no procesar siguiente tendencia")
+        completed += 1
+        print("TT_V2_BATCH_VERIFIED=%s:%s" % (item["trend_id"], digest), flush=True)
+        print("TT_V2_BATCH_COMPLETED=" + str(completed), flush=True)
+        if i < max_jobs - 1:
+            # Dejar la sesión cerrada antes de abrir otro Chrome.
+            time.sleep(2)
+    print("TT_V2_BATCH_RESULT=SUCCESS", flush=True)
+    print("TT_V2_BATCH_TOTAL=" + str(completed), flush=True)
+    print("TT_V2_PUBLISHED=NO", flush=True)
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--max-jobs", type=int, default=2, choices=(1, 2, 3))
+    parser.add_argument("--run", action="store_true",
+                        help="Autoriza una tanda secuencial real; sin --run no hay efectos")
+    args = parser.parse_args()
+    if not args.run:
+        run_batch(args.max_jobs, False)
+        return
+    take_lock()
+    try:
+        run_batch(args.max_jobs, True)
+    finally:
+        # Liberar únicamente nuestro propio lock.
+        LOCK.unlink(missing_ok=True)
+
+if __name__ == "__main__":
+    try:
+        main()
+    except Exception as exc:
+        print("TT_V2_BATCH_ERROR=" + str(exc), file=sys.stderr, flush=True)
+        print("TT_V2_BATCH_RESULT=FAILED", flush=True)
+        print("TT_V2_PUBLISHED=NO", flush=True)
+        sys.exit(1)
