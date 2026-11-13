@@ -42,6 +42,12 @@ $files = @(
     'batch_contract_v2.py',
     'editorial_batch_v2.py',
     'editorial_run_v2.py',
+    'chrome_command_v2.py',
+    'headless_preflight_v2.py',
+    'incident_retry_v2.py',
+    'incident_worker_v2.py',
+    'test_incident_retry_v2.py',
+    'test_chrome_command_v2.py',
     'recover_existing_chat_v2.py',
     'persist_capture_github.py',
     'editorial_capture_state.py',
@@ -68,18 +74,28 @@ $testFile = Join-Path $root 'test_auto_editorial_v2.py'
 $testStdout = Join-Path $root 'install-auto-tests.stdout.log'
 $testStderr = Join-Path $root 'install-auto-tests.stderr.log'
 $test = Start-Process -FilePath $py -ArgumentList @('-3', ('"' + $testFile + '"')) `
-    -NoNewWindow -Wait -PassThru -RedirectStandardOutput $testStdout -RedirectStandardError $testStderr
+    -WindowStyle Hidden -Wait -PassThru -RedirectStandardOutput $testStdout -RedirectStandardError $testStderr
 if (Test-Path $testStdout) { Get-Content -LiteralPath $testStdout | ForEach-Object { Write-Host $_ } }
 if (Test-Path $testStderr) { Get-Content -LiteralPath $testStderr | ForEach-Object { Write-Host $_ } }
 if ($test.ExitCode -ne 0) {
     throw ('No superó las pruebas de seguridad V2 (exit ' + $test.ExitCode + '). Ver ' + $testStderr)
 }
 Write-Host 'TT_V2_AUTO_TESTS=OK'
+foreach ($suite in @('test_chrome_command_v2.py','test_incident_retry_v2.py')) {
+    $testPath = Join-Path $root $suite
+    $result = Start-Process -FilePath $py -ArgumentList @('-3', ('"' + $testPath + '"')) `
+        -Wait -PassThru -WindowStyle Hidden -RedirectStandardOutput $testStdout -RedirectStandardError $testStderr
+    if ($result.ExitCode -ne 0) {
+        if (Test-Path $testStderr) { Get-Content $testStderr -Tail 20 | ForEach-Object { Write-Host $_ } }
+        throw ('Pruebas V2 no superadas: ' + $suite)
+    }
+    Write-Host ('TT_V2_TEST_SUITE_OK=' + $suite)
+}
 # Preflight de Playwright, sin abrir Chrome, capturando stderr igualmente.
 $checkStdout = Join-Path $root 'install-auto-check.stdout.log'
 $checkStderr = Join-Path $root 'install-auto-check.stderr.log'
 $check = Start-Process -FilePath $py -ArgumentList @('-3', '-c', '"import playwright.sync_api"') `
-    -NoNewWindow -Wait -PassThru -RedirectStandardOutput $checkStdout -RedirectStandardError $checkStderr
+    -WindowStyle Hidden -Wait -PassThru -RedirectStandardOutput $checkStdout -RedirectStandardError $checkStderr
 if ($check.ExitCode -ne 0) {
     if (Test-Path $checkStderr) { Get-Content -LiteralPath $checkStderr | ForEach-Object { Write-Host $_ } }
     throw ('Playwright no disponible para Chrome V2 (exit ' + $check.ExitCode + ')')
@@ -99,7 +115,7 @@ $recover = Join-Path $root 'recover_existing_chat_v2.py'
 $recoverOut = Join-Path $root 'install-auto-recovery.stdout.log'
 $recoverErr = Join-Path $root 'install-auto-recovery.stderr.log'
 $recovered = Start-Process -FilePath $py -ArgumentList @('-3', ('"' + $recover + '"'), '--auto') `
-    -NoNewWindow -Wait -PassThru -RedirectStandardOutput $recoverOut -RedirectStandardError $recoverErr
+    -WindowStyle Hidden -Wait -PassThru -RedirectStandardOutput $recoverOut -RedirectStandardError $recoverErr
 if (Test-Path -LiteralPath $recoverOut) {
     Get-Content -LiteralPath $recoverOut | ForEach-Object { Write-Host $_ }
 }
@@ -110,12 +126,23 @@ if ($recovered.ExitCode -ne 0) {
     throw 'Recuperación de chat V2 bloqueada: tarea seguirá desactivada, sin reenvíos ni borrados'
 }
 Write-Host 'TT_V2_EXISTING_CHAT_RECOVERY=OK'
+$headless = Join-Path $root 'headless_preflight_v2.py'
+$headlessOut = Join-Path $root 'install-headless.stdout.log'
+$headlessErr = Join-Path $root 'install-headless.stderr.log'
+$headlessResult = Start-Process -FilePath $py -ArgumentList @('-3', ('"' + $headless + '"')) `
+    -Wait -PassThru -WindowStyle Hidden -RedirectStandardOutput $headlessOut -RedirectStandardError $headlessErr
+if (Test-Path $headlessOut) { Get-Content $headlessOut | ForEach-Object { Write-Host $_ } }
+if ($headlessResult.ExitCode -ne 0) {
+    if (Test-Path $headlessErr) { Get-Content $headlessErr -Tail 20 | ForEach-Object { Write-Host $_ } }
+    throw 'Chrome V2 oculto no validado: consumidor seguirá desactivado, sin reenvíos'
+}
+Write-Host 'TT_V2_HEADLESS_VALIDATED=YES'
 # La bandera exacta es autorización para abrir chats. Guardarla solo
 # tras descargar/validar los módulos y justo antes de registrar la tarea.
 $flag = Join-Path $root 'auto-editorial-v2.enabled'
 [IO.File]::WriteAllText($flag, "TT_V2_AUTO_EDITORIAL_ENABLED=YES" + [Environment]::NewLine, (New-Object System.Text.UTF8Encoding($false)))
 $runner = Join-Path $root 'Run-V2-Editorial-Auto.ps1'
-$arguments = '-NoProfile -ExecutionPolicy Bypass -File "' + $runner + '"'
+$arguments = '-NoProfile -NonInteractive -WindowStyle Hidden -ExecutionPolicy Bypass -File "' + $runner + '"'
 $action = New-ScheduledTaskAction -Execute 'powershell.exe' -Argument $arguments
 $account = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
 $logonTrigger = New-ScheduledTaskTrigger -AtLogOn -User $account
@@ -136,7 +163,9 @@ Write-Host 'TT_V2_AUTO_SELF_HEAL_EVERY_MINUTES=3'
 Write-Host 'TT_V2_AUTO_ENABLED=YES'
 Write-Host 'TT_V2_AUTO_PUBLICATION=NO'
 Write-Host ('TT_V2_AUTO_TASK_NAME=' + $taskName)
-Write-Host 'TT_V2_AUTO_CHROME_VISIBLE=YES'
+Write-Host 'TT_V2_AUTO_CHROME_VISIBLE=NO'
+Write-Host 'TT_V2_AUTO_CHROME_HEADLESS=YES'
+Write-Host 'TT_V2_AUTO_POWERSHELL_HIDDEN=YES'
 # Inicio inmediato en esta sesión, no hay que cerrar y abrir Windows.
 Start-ScheduledTask -TaskName $taskName
 Write-Host 'TT_V2_AUTO_START_REQUESTED=YES'
