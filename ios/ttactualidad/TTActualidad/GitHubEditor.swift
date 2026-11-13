@@ -1173,6 +1173,7 @@ final class GitHubEditor: ObservableObject {
             "trend_name": title, "trend_rank": rank
         ], label: decision == "published" ? "Publicado · quitar de Listas" :
                   decision == "deleted" ? "No publicado · quitar de Listas" :
+                  decision == "retire" ? "Quitar de Pendientes · sin publicación" :
                   "Reelaborar / preparar")
     }
 

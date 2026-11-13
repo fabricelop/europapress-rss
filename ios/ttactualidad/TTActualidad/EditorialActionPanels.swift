@@ -53,6 +53,10 @@ struct EditorialActions: View {
     private var revision: Int { news?.revision ?? trend?.revision ?? 0 }
     private var editorialID: String { news?.id ?? trend?.editorialID ?? "" }
     private var project: String { news == nil ? "ttendencias" : "ttittulares" }
+    private var isPendingTrend: Bool {
+        news == nil && trend != nil && trend?.inListas == false &&
+        store.trendFilter == .pendientes
+    }
     private var trendRelationsCount: (Int, Int)? {
         guard project == "ttendencias" else { return nil }
         return relationCounts.counts(trendID: editorialID,
@@ -149,15 +153,19 @@ struct EditorialActions: View {
                 }
             }
             HStack(spacing: 7) {
-                quickButton("Quitar de Listas", "trash", danger: true) { request("deleted") }
-                    .disabled(!(news?.status == "LISTA" || trend?.inListas == true))
+                quickButton(isPendingTrend ? "Quitar" : "Quitar de Listas",
+                            "trash", danger: true) {
+                    request(isPendingTrend ? "retire" : "deleted")
+                }
+                    .disabled(!(news?.status == "LISTA" ||
+                                trend?.inListas == true || isPendingTrend))
                 quickButton("Elaborar desde 0", "arrow.triangle.2.circlepath") {
                     if news != nil && news?.status != "LISTA" { request("prepare") }
                     else { request("rework") }
                 }
                     .disabled(news?.status == "EN ELABORACIÓN" || trend?.status == "EN ELABORACIÓN")
             }
-            if let trend, !trend.inListas {
+            if let trend, !trend.inListas && !isPendingTrend {
                 Text("La ficha del iPhone no considera esta tendencia dentro de Listas. Actualiza los datos antes de retirarla.")
                     .font(.caption2)
                     .foregroundStyle(TTTheme.muted)
@@ -319,7 +327,8 @@ struct EditorialActions: View {
                 Task { await store.refreshIfStale(minInterval: 0) }
             }
         }
-        .confirmationDialog(intent == "deleted" ? "¿Quitar de Listas?" :
+        .confirmationDialog(intent == "retire" ? "¿Quitar esta tendencia de Pendientes?" :
+                            intent == "deleted" ? "¿Quitar de Listas?" :
                             intent == "discard" && news?.status == "EN ELABORACIÓN" ?
                             "¿Suprimir esta noticia en elaboración?" :
                             intent == "discard" ? "¿Desestimar esta entrada?" :
@@ -332,8 +341,9 @@ struct EditorialActions: View {
                     submit("deleted")
                 }
             } else {
-                Button("Confirmar", role: intent == "deleted" ||
-                    intent == "discard" ? .destructive : nil) { submit(intent) }
+                Button(intent == "retire" ? "Quitar de Pendientes" : "Confirmar",
+                       role: ["deleted", "discard", "retire"].contains(intent) ?
+                           .destructive : nil) { submit(intent) }
             }
             Button("Cancelar", role: .cancel) {}
         } message: {
@@ -342,6 +352,8 @@ struct EditorialActions: View {
                  ? "Ambas opciones retiran esta entrada. Solo «Publicado» suma al contador de publicaciones registradas en las últimas 24 horas, después de que GitHub lo confirme."
                  : intent == "rework" || intent == "prepare"
                  ? "Se solicitará una investigación nueva, sin reutilizar explicación ni remate. La orden se confirmará con GitHub."
+                 : intent == "retire"
+                 ? "Se retirará solamente esta aparición de Pendientes, sin publicar, eliminar del Top 30 ni impedir que vuelva si entra de nuevo."
                  : intent == "discard" && news?.status == "EN ELABORACIÓN"
                  ? "Se cancelará la investigación en GitHub y no se añadirá a Listas. Si ya terminó mientras confirmabas, se te avisará para que la quites desde Listas."
                  : "La orden se comprobará contra la revisión vigente de GitHub.")
@@ -439,7 +451,7 @@ struct EditorialActions: View {
 
     private func request(_ action: String) {
         guard github.authenticated else {
-            outcome = "No se puede retirar de Listas: conecta GitHub en Ajustes."
+            outcome = "Conecta GitHub en Ajustes para aplicar esta acción."
             showSettings = true
             return
         }
