@@ -8,48 +8,176 @@
   "command_id": "tr-20261113T234000-chat-direct",
   "source": "chat_direct",
   "status": "success",
-  "phase": "preparing",
+  "phase": "closing",
   "started_at": "2026-11-13T23:40:00+01:00",
-  "updated_at": "2026-11-13T23:48:07+01:00",
-  "current": 0,
-  "total": 14,
+  "updated_at": "2026-11-13T23:52:25+01:00",
+  "current": 16,
+  "total": 16,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
   "queue_complete": true,
   "processed_ids": [
-    "manual-c550af7b734565e1d4042fae0ba8d74f"
+    "1d5814995248",
+    "manual-c550af7b734565e1d4042fae0ba8d74f",
+    "3f3a1383fa90",
+    "a1caaebc2161",
+    "2030fcc48d35",
+    "7122a440e159",
+    "627119e08741",
+    "f2062a75e5d6",
+    "a10eb74fed88",
+    "fdc484cca6f9",
+    "1a3d472187ac",
+    "c14acdc5dbda",
+    "1134c775eb8c",
+    "ae38b5339403",
+    "red-review-ca673710a7f700743186",
+    "red-review-c4838b47cade0c9cfe7b"
   ],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 14,
-    "closed": 0,
-    "explained": 0,
-    "problematic": 0,
-    "updates": 0,
+    "attempted": 16,
+    "observed": 16,
+    "closed": 16,
+    "explained": 12,
+    "problematic": 2,
+    "updates": 1,
     "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 0,
-    "unchanged_reviews": 0,
-    "continuity_updates": 0,
-    "distinct_updates": 0,
+    "maintenance_reviews": 2,
+    "unchanged_reviews": 1,
+    "continuity_updates": 1,
+    "distinct_updates": 3,
     "stale_reviews": 0,
-    "unverified_reviews": 0,
+    "unverified_reviews": 2,
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 14,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
     "concurrent_convergence": 0,
-    "cause_unconfirmed": 0
+    "cause_unconfirmed": 2
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "1d5814995248",
+      "revision": 1,
+      "name": "Isaac",
+      "outcome": "problematic",
+      "applied": true
+    },
+    {
+      "id": "manual-c550af7b734565e1d4042fae0ba8d74f",
+      "revision": 1,
+      "name": "Miente",
+      "outcome": "problematic",
+      "applied": true
+    },
+    {
+      "id": "3f3a1383fa90",
+      "revision": 0,
+      "name": "#LaSextaDebate",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "a1caaebc2161",
+      "revision": 0,
+      "name": "Figaredo",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "2030fcc48d35",
+      "revision": 0,
+      "name": "Juan Bravo",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "7122a440e159",
+      "revision": 0,
+      "name": "Justin Robinson",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "627119e08741",
+      "revision": 0,
+      "name": "Carlos Cuerpo",
+      "outcome": "explained_distinct_event",
+      "applied": true
+    },
+    {
+      "id": "f2062a75e5d6",
+      "revision": 0,
+      "name": "Frigodedo",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "a10eb74fed88",
+      "revision": 0,
+      "name": "Bustinduy",
+      "outcome": "explained_distinct_event",
+      "applied": true
+    },
+    {
+      "id": "fdc484cca6f9",
+      "revision": 0,
+      "name": "OAKA",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "1a3d472187ac",
+      "revision": 0,
+      "name": "La FAA",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "c14acdc5dbda",
+      "revision": 0,
+      "name": "Ana Pastor",
+      "outcome": "explained_distinct_event",
+      "applied": true
+    },
+    {
+      "id": "1134c775eb8c",
+      "revision": 0,
+      "name": "Nebo",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "ae38b5339403",
+      "revision": 0,
+      "name": "Grecia",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "red-review-ca673710a7f700743186",
+      "revision": 0,
+      "name": "Revisar novedades: #SVFinal",
+      "outcome": "continuity_updated",
+      "applied": true
+    },
+    {
+      "id": "red-review-c4838b47cade0c9cfe7b",
+      "revision": 0,
+      "name": "Revisar novedades: Marlaska",
+      "outcome": "unchanged",
+      "applied": true
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -784,6 +912,20 @@
       "status": "RUNNING",
       "phase": "preparing",
       "message": "Pasada manual iniciada desde ChatGPT; cola autoritativa inicial=14. Revalidación JIT por ID/revisión; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-13T23:48:38+01:00",
+      "run_id": "tr-20261113T234000-chat-direct",
+      "status": "RUNNING",
+      "phase": "maintenance_review",
+      "message": "Barrera final detectó dos revisiones rojas nuevas: #SVFinal y Marlaska. Reabierta la misma pasada para investigación y persistencia JIT."
+    },
+    {
+      "at": "2026-11-13T23:52:25+01:00",
+      "run_id": "tr-20261113T234000-chat-direct",
+      "status": "DONE",
+      "phase": "closing",
+      "message": "Pasada TTendencias completada 16/16: 12 explicaciones aplicadas, Isaac y Miente marcados problematic por falta de detonante verificable, #SVFinal actualizado en continuidad con el resultado de la final y Marlaska cerrado unchanged. Barrera final editorial-queue=0. ImageGen=0; image-outbox editorial=0; publicaciones=0; incidentes=0."
     }
   ],
   "last_started_at": "2026-11-13T23:48:06+01:00",
@@ -9479,8 +9621,8 @@
   ],
   "maintenance_outbox_commit": "c764cbdfc37ba7b67fedd38a16837ee068ae9467",
   "editorial_apply_run_id": 43477991983,
-  "finished_at": null,
-  "completed_at": "2026-11-13T21:35:09+01:00",
+  "finished_at": "2026-11-13T23:52:25+01:00",
+  "completed_at": "2026-11-13T23:52:25+01:00",
   "maintenance_outbox_commits": [
     "24805770cc5efabc2f14e0019c9fa592aecf4d7b",
     "82935552cfd2620c52c01e6603ac598051a8eec4",
