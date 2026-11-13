@@ -43,6 +43,7 @@ class TestTranscript(unittest.TestCase):
                 self.text=text
                 self.markdown=markdown
             def count(self): return 1
+            @property
             def first(self): return self
             def inner_text(self,timeout=6000):return self.text
             def locator(self,sel):
