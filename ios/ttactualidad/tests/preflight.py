@@ -1206,3 +1206,15 @@ assert "confirmedSentKeys.union(confirmed)" in buffer_perf
 assert "pendingRequestIDs" in buffer_perf
 assert "change += 1  // A changed verified ledger" in buffer_perf
 print("TT_BUFFER_UI_PERFORMANCE_B103_GUARDS_OK")
+
+# Listas performance: index only matching queue revisions and terminal decisions.
+# Keep timestamps and revision-sensitive closureApplies() intact.
+store_perf = (root / "TTActualidad/EditorialStore.swift").read_text(encoding="utf8")
+assert "newestActiveRevisionByID" in store_perf
+assert "terminalDecisionsByID" in store_perf
+assert 'if (newestActiveRevisionByID[id] ?? Int.min) > rev' in store_perf
+assert '(terminalDecisionsByID[id] ?? []).contains(where: closureApplies)' in store_perf
+assert 'oldRev != rev { return oldRev > rev }' in store_perf
+assert 'closedAt!.timeIntervalSince(explained) < -60' in store_perf
+assert "previousListasAt" in store_perf
+print("TT_LISTAS_INDEXED_BUILD103_PERF_GUARDS_OK")
