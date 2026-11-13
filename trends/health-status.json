@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-13T05:15:49.998186+00:00",
+  "checked_at": "2026-11-13T05:26:52.687479+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -59,8 +59,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 4.9,
-      "run_id": 43370305364,
+      "age_minutes": 4.8,
+      "run_id": 43371545168,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -81,17 +81,24 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": true,
+      "ok": false,
       "pending_count": 3,
-      "overdue_count": 0,
-      "oldest_age_minutes": 28.8,
+      "overdue_count": 1,
+      "oldest_age_minutes": 39.9,
       "warning_after_minutes": 30,
-      "overdue_items": [],
+      "overdue_items": [
+        {
+          "id": "red-review-f5052ee0823a026c3feb",
+          "name": "Revisar novedades: NVIDIA",
+          "status": "preparing",
+          "age_minutes": 39.9
+        }
+      ],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": true,
-      "status": "not-required",
+      "ok": false,
+      "status": "overdue",
       "queue_complete": false,
       "remaining_active_ids": [
         "red-review-f5052ee0823a026c3feb",
@@ -109,9 +116,10 @@
   "repairs_started": [],
   "blocking": [
     "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos",
-    "cola con 812 estado(s) inválido(s)"
+    "cola con 812 estado(s) inválido(s)",
+    "cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 39.9 min"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 812 estado(s) inválido(s)"
+  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 812 estado(s) inválido(s) | cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 39.9 min"
 }
