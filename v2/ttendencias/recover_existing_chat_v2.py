@@ -249,17 +249,15 @@ def recover_closed_chat(trend_id, revision, *, lock_held=False):
                                     stderr=subprocess.DEVNULL,
                                     creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
             endpoint = "http://127.0.0.1:" + str(port)
-            for _ in range(35):
-                if proc.poll() is not None:
-                    raise RuntimeError("Chrome V2 recuperación terminó prematuramente")
+            startup = core.module("chrome_startup_v2.py", "ttv2_closed_recovery_startup")
+            def cdp_ready():
                 try:
                     with urllib.request.urlopen(endpoint + "/json/version", timeout=2) as response:
-                        if json.load(response).get("Browser"):
-                            break
+                        return bool(json.load(response).get("Browser"))
                 except (OSError, ValueError):
-                    time.sleep(1)
-            else:
-                raise RuntimeError("CDP recuperación V2 inaccesible")
+                    return False
+            startup.wait_for_cdp(proc, cdp_ready, core.profile_pids,
+                                 attempts=40, delay=time.sleep, absent_limit=6)
             owned = core.profile_pids()
             if not owned:
                 raise RuntimeError("Proceso Chrome V2 no identificable")
