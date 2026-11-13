@@ -114684,13 +114684,28 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "none",
-      "image_status": "none",
-      "image_choice": "none",
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
       "image_pending": false,
       "telegram_package_status": "pending",
       "fallback_image_strategy": "existing_web_image",
-      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+      "fallback_image": {
+        "url": "https://imagenes.elpais.com/resizer/v2/HPJ2VGCPHNA5FNIX2M6EUAFMMU.JPG?auth=eb8b2c4b569ee46c828c215c70c5eeaa33c310f7d0635ebbe86cd9532a3df638&width=1200",
+        "source": "elpais.com",
+        "source_url": "https://elpais.com/us/entretenimiento/2026-11-13/rosalia-reina-de-los-latin-grammy-gana-el-premio-a-disco-del-ano-por-lux-y-a-cancion-del-ano-por-la-perla.html",
+        "alt": "Imagen de archivo relacionada con Rosalia",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://imagenes.elpais.com/resizer/v2/HPJ2VGCPHNA5FNIX2M6EUAFMMU.JPG?auth=eb8b2c4b569ee46c828c215c70c5eeaa33c310f7d0635ebbe86cd9532a3df638&width=1200",
+        "source": "elpais.com",
+        "source_url": "https://elpais.com/us/entretenimiento/2026-11-13/rosalia-reina-de-los-latin-grammy-gana-el-premio-a-disco-del-ano-por-lux-y-a-cancion-del-ano-por-la-perla.html",
+        "alt": "Imagen de archivo relacionada con Rosalia",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "6132b2e3fed4",
@@ -114766,6 +114781,6 @@
       "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
     }
   ],
-  "updated_at": "2026-11-13T06:51:33.888757+00:00",
+  "updated_at": "2026-11-13T06:54:31.758957Z",
   "count": 2013
 }
