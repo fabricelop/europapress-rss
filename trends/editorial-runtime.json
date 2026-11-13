@@ -3,42 +3,36 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261113T021000-chat-direct",
-  "previous_run_id": "tr-20261113T015500-chat-direct",
-  "command_id": "tr-20261113T021000-chat-direct",
+  "run_id": "tr-20261113T022500-chat-direct",
+  "previous_run_id": "tr-20261113T021000-chat-direct",
+  "command_id": "tr-20261113T022500-chat-direct",
   "source": "chat_direct",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-13T02:10:00+01:00",
-  "updated_at": "2026-11-13T02:16:30+01:00",
-  "current": 5,
-  "total": 5,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-13T02:25:00+01:00",
+  "updated_at": "2026-11-13T02:25:00+01:00",
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": true,
-  "processed_ids": [
-    "01658a620b11",
-    "17129f359ea2",
-    "c37c1d4055f0",
-    "7b492dc6b2a4",
-    "39f9d712163b"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 5,
-    "observed": 5,
-    "closed": 5,
-    "explained": 5,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
-    "updates": 2,
+    "updates": 0,
     "review_completed_no_distinct_event": 0,
     "maintenance_reviews": 0,
     "unchanged_reviews": 0,
     "continuity_updates": 0,
-    "distinct_updates": 2,
+    "distinct_updates": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
     "anticipation_reviews": 0,
@@ -53,48 +47,7 @@
     "concurrent_convergence": 0,
     "cause_unconfirmed": 0
   },
-  "outcomes": [
-    {
-      "id": "01658a620b11",
-      "revision": 0,
-      "name": "Yola",
-      "outcome": "distinct_update",
-      "applied": true,
-      "apply_commit": "00352ec7fcd37ff36c29e6e7a92ebb7c69afd963"
-    },
-    {
-      "id": "17129f359ea2",
-      "revision": 0,
-      "name": "#VotaPP",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "00352ec7fcd37ff36c29e6e7a92ebb7c69afd963"
-    },
-    {
-      "id": "c37c1d4055f0",
-      "revision": 0,
-      "name": "Jorge Javier",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "00352ec7fcd37ff36c29e6e7a92ebb7c69afd963"
-    },
-    {
-      "id": "7b492dc6b2a4",
-      "revision": 0,
-      "name": "Supervivientes",
-      "outcome": "distinct_update",
-      "applied": true,
-      "apply_commit": "00352ec7fcd37ff36c29e6e7a92ebb7c69afd963"
-    },
-    {
-      "id": "39f9d712163b",
-      "revision": 0,
-      "name": "Belén Esteban",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "00352ec7fcd37ff36c29e6e7a92ebb7c69afd963"
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -249,9 +202,16 @@
       "status": "DONE",
       "phase": "closing",
       "message": "Pasada TTendencias completada 5/5. Yola y Supervivientes quedaron como episodios materiales distintos de la gran final; #VotaPP, Jorge Javier y Belén Esteban quedaron explicadas. Aplicador oficial 43343524401 success, commit 00352ec7; barrera final editorial-queue=0. Sin ImageGen ni publicaciones en esta pasada."
+    },
+    {
+      "at": "2026-11-13T02:25:00+01:00",
+      "run_id": "tr-20261113T022500-chat-direct",
+      "status": "RUNNING",
+      "phase": "preparing",
+      "message": "Pasada manual iniciada desde ChatGPT; cola autoritativa inicial=0 (updated_at 2026-11-13T02:21:03+01:00). Revalidando barrera final en main; sin ImageGen ni publicación."
     }
   ],
-  "last_started_at": "2026-11-13T02:15:55+01:00",
+  "last_started_at": "2026-11-13T02:25:00+01:00",
   "last_completed_at": "2026-11-13T02:16:30+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -287,7 +247,7 @@
     },
     "message": "Pasada TTendencias completada 5/5. Yola y Supervivientes quedaron como episodios materiales distintos de la gran final; #VotaPP, Jorge Javier y Belén Esteban quedaron explicadas. Aplicador oficial 43343524401 success, commit 00352ec7; barrera final editorial-queue=0. Sin ImageGen ni publicaciones en esta pasada."
   },
-  "message": "Pasada TTendencias completada 5/5. Yola y Supervivientes quedaron como episodios materiales distintos de la gran final; #VotaPP, Jorge Javier y Belén Esteban quedaron explicadas. Aplicador oficial 43343524401 success, commit 00352ec7; barrera final editorial-queue=0. Sin ImageGen ni publicaciones en esta pasada.",
+  "message": "Pasada manual iniciada desde ChatGPT; cola autoritativa inicial=0 (updated_at 2026-11-13T02:21:03+01:00). Revalidando barrera final en main; sin ImageGen ni publicación.",
   "history": [
     {
       "run_id": "tr-1794340649326-manual",
@@ -8226,6 +8186,5 @@
   ],
   "processed": [],
   "maintenance_outbox_commit": "970b545c88b09429a23d15ec893b9d66fb611297",
-  "finished_at": "2026-11-13T02:16:30+01:00",
   "editorial_apply_run_id": 43343524401
 }
