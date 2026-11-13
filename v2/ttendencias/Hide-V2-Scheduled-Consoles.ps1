@@ -51,9 +51,6 @@ function PatchTask([string]$name, [string]$scriptName, [string]$vbsName, [bool]$
         throw ('La tarea no usa el runner V2 esperado: ' + $name)
     }
     $backup = Join-Path $root ('backup-' + $name + '-before-silent.xml')
-    # Respaldo local para deshacer solo el cambio de lanzador si hiciera falta.
-    $xml = Export-ScheduledTask -TaskName $name -ErrorAction Stop
-    [IO.File]::WriteAllText($backup, $xml, (New-Object System.Text.UTF8Encoding($false)))
     $vbsPath = Join-Path $root $vbsName
     [IO.File]::WriteAllText($vbsPath, (AsLaunchText $scriptName), [System.Text.Encoding]::ASCII)
     $wscript = Join-Path $env:SystemRoot 'System32\wscript.exe'
@@ -62,6 +59,12 @@ function PatchTask([string]$name, [string]$scriptName, [string]$vbsName, [bool]$
     if ($alreadySilent -and $args -eq $newArgs) {
         Note 'TT_V2_TASK_ALREADY_SILENT' $name
         return
+    }
+    # Backup only once: rerunning the fix must not replace the original XML
+    # with a backup of the already-modified task.
+    if (!(Test-Path -LiteralPath $backup -PathType Leaf)) {
+        $xml = Export-ScheduledTask -TaskName $name -ErrorAction Stop
+        [IO.File]::WriteAllText($backup, $xml, (New-Object System.Text.UTF8Encoding($false)))
     }
     $newAction = New-ScheduledTaskAction -Execute $wscript -Argument $newArgs
     try {
