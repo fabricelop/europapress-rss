@@ -1,13 +1,15 @@
 {
   "version": 1,
-  "checked_at": "2026-11-13T11:01:38.827998+00:00",
+  "checked_at": "2026-11-13T11:15:15.411535+00:00",
   "projects": {
     "ttittulares": {
       "project": "ttittulares",
-      "checked_at": "2026-11-13T11:01:38.827998+00:00",
-      "pending_count": 0,
-      "pending_ids": [],
-      "oldest_at": null,
+      "checked_at": "2026-11-13T11:15:15.411535+00:00",
+      "pending_count": 1,
+      "pending_ids": [
+        "58371a896297"
+      ],
+      "oldest_at": "2026-11-13T11:03:40.776009Z",
       "latest_run": {
         "id": "tt-manual-20261113-1115-chat",
         "status": "DONE",
@@ -18,75 +20,49 @@
       },
       "control_command": "tt-urgent-1794564146012",
       "last_command_at": "2026-11-13T10:02:26.012Z",
-      "status": "no_work",
-      "should_dispatch": false,
-      "attempts": 0,
-      "last_request_at": "2026-11-13T09:59:47.070490+00:00"
-    },
-    "ttendencias": {
-      "project": "ttendencias",
-      "checked_at": "2026-11-13T11:01:38.827998+00:00",
-      "pending_count": 4,
-      "pending_ids": [
-        "289b3a5cdae3",
-        "25a914e9d748",
-        "ebd8d155e6d3",
-        "9f0be89bedc9"
-      ],
-      "oldest_at": "2026-11-13T10:34:21.659626+00:00",
-      "latest_run": {
-        "id": "tr-20261113T112500-chat-direct",
-        "status": "DONE",
-        "started_at": "2026-11-13T11:25:00+01:00",
-        "updated_at": "2026-11-13T10:26:00+00:00",
-        "finished_at": "2026-11-13T11:26:00+01:00",
-        "source": "github_pr_trace"
-      },
-      "control_command": "tr-1794566066169-manual",
-      "last_command_at": "2026-11-13T10:34:26.169Z",
       "status": "dispatch_requested_awaiting_run",
       "should_dispatch": true,
       "item_execution": [
         {
-          "id": "289b3a5cdae3",
-          "entered_at": "2026-11-13T10:34:21.659626+00:00",
-          "should_start_by": "2026-11-13T10:39:21.659626+00:00",
-          "global_run_after_entry": false,
-          "final_telegram_delivery_confirmed": false
-        },
-        {
-          "id": "25a914e9d748",
-          "entered_at": "2026-11-13T10:34:28.526365+00:00",
-          "should_start_by": "2026-11-13T10:39:28.526365+00:00",
-          "global_run_after_entry": false,
-          "final_telegram_delivery_confirmed": false
-        },
-        {
-          "id": "ebd8d155e6d3",
-          "entered_at": "2026-11-13T10:34:39.655152+00:00",
-          "should_start_by": "2026-11-13T10:39:39.655152+00:00",
-          "global_run_after_entry": false,
-          "final_telegram_delivery_confirmed": false
-        },
-        {
-          "id": "9f0be89bedc9",
-          "entered_at": "2026-11-13T10:34:52.263712+00:00",
-          "should_start_by": "2026-11-13T10:39:52.263712+00:00",
+          "id": "58371a896297",
+          "entered_at": "2026-11-13T11:03:40.776009Z",
+          "should_start_by": "2026-11-13T11:08:40.776009+00:00",
           "global_run_after_entry": false,
           "final_telegram_delivery_confirmed": false
         }
       ],
-      "backlog_signature": "dc3dff99627b29d9",
-      "expected_start_by": "2026-11-13T10:39:21.659626+00:00",
+      "backlog_signature": "c7056ba26bd4eb4b",
+      "expected_start_by": "2026-11-13T11:08:40.776009+00:00",
       "attempts": 1,
       "previous_target_completed_or_superseded": false,
       "dispatch": {
         "requested": true,
-        "command_id": "tr-autoguard-1794567698",
-        "requested_at": "2026-11-13T11:01:38.827998Z"
+        "command_id": "tt-autoguard-1794568515",
+        "requested_at": "2026-11-13T11:15:15.411535Z"
       },
-      "last_request_at": "2026-11-13T11:01:38.827998+00:00",
-      "last_requested_command_id": "tr-autoguard-1794567698"
+      "last_request_at": "2026-11-13T11:15:15.411535+00:00",
+      "last_requested_command_id": "tt-autoguard-1794568515"
+    },
+    "ttendencias": {
+      "project": "ttendencias",
+      "checked_at": "2026-11-13T11:15:15.411535+00:00",
+      "pending_count": 0,
+      "pending_ids": [],
+      "oldest_at": null,
+      "latest_run": {
+        "id": "tr-20261113T120600-chat-direct",
+        "status": "DONE_WITH_INCIDENTS",
+        "started_at": "2026-11-13T12:06:00+01:00",
+        "updated_at": "2026-11-13T11:15:00+00:00",
+        "finished_at": "2026-11-13T12:15:00+01:00",
+        "source": "editorial_runtime"
+      },
+      "control_command": "tr-autoguard-1794567698",
+      "last_command_at": "2026-11-13T11:01:38.827998Z",
+      "status": "no_work",
+      "should_dispatch": false,
+      "attempts": 0,
+      "last_request_at": "2026-11-13T11:01:38.827998+00:00"
     }
   },
   "policy": {
