@@ -3,44 +3,46 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261113T102500-chat-direct",
-  "previous_run_id": "tr-20261113T101000-chat-direct",
-  "command_id": "tr-20261113T102500-chat-direct",
+  "run_id": "tr-20261113T104000-chat-direct",
+  "previous_run_id": "tr-20261113T102500-chat-direct",
+  "command_id": "tr-20261113T104000-chat-direct",
   "source": "chat_direct",
   "status": "DONE",
   "phase": "closing",
-  "started_at": "2026-11-13T10:25:00+01:00",
-  "updated_at": "2026-11-13T10:29:30+01:00",
-  "current": 2,
-  "total": 2,
+  "started_at": "2026-11-13T10:40:00+01:00",
+  "updated_at": "2026-11-13T10:51:20+01:00",
+  "current": 4,
+  "total": 4,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
   "queue_complete": true,
   "processed_ids": [
-    "red-review-77adc81420e233ffb33c",
-    "red-review-7d6b52b5bc99fa5de8e4"
+    "radar-prepare-b6c8e95af01a25e37a90",
+    "radar-prepare-dcbad6134e8c1af628ba",
+    "red-review-7c1b8724ce143aa6f635",
+    "red-review-59d7da93507e2d8ab8ab"
   ],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
+    "attempted": 4,
+    "observed": 4,
+    "closed": 4,
     "explained": 0,
     "problematic": 0,
-    "updates": 0,
+    "updates": 2,
     "review_completed_no_distinct_event": 0,
     "maintenance_reviews": 2,
-    "unchanged_reviews": 2,
-    "continuity_updates": 0,
+    "unchanged_reviews": 0,
+    "continuity_updates": 2,
     "distinct_updates": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
-    "anticipation_reviews": 0,
+    "anticipation_reviews": 2,
     "anticipation_prepared": 0,
-    "anticipation_unverified": 0,
+    "anticipation_unverified": 2,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
@@ -52,20 +54,36 @@
   },
   "outcomes": [
     {
-      "id": "red-review-77adc81420e233ffb33c",
+      "id": "radar-prepare-b6c8e95af01a25e37a90",
       "revision": 0,
-      "name": "Revisar novedades: Xokas",
-      "outcome": "unchanged",
+      "name": "Radar · Gmail",
+      "outcome": "anticipation_unverified",
       "applied": true,
-      "apply_commit": "00152db0c75ff5ff248172ff3c5df70fcddf8304"
+      "apply_commit": "e0b58b9863ac15e4b050f7e300a60a9a52023d65"
     },
     {
-      "id": "red-review-7d6b52b5bc99fa5de8e4",
+      "id": "radar-prepare-dcbad6134e8c1af628ba",
       "revision": 0,
-      "name": "Revisar novedades: Hormiguero",
-      "outcome": "unchanged",
+      "name": "Radar · Pipi",
+      "outcome": "anticipation_unverified",
       "applied": true,
-      "apply_commit": "00152db0c75ff5ff248172ff3c5df70fcddf8304"
+      "apply_commit": "e0b58b9863ac15e4b050f7e300a60a9a52023d65"
+    },
+    {
+      "id": "red-review-7c1b8724ce143aa6f635",
+      "revision": 0,
+      "name": "Revisar novedades: Broncano",
+      "outcome": "continuity",
+      "applied": true,
+      "apply_commit": "010b0319f13579d58cd0b1d1a5a2111d8c9ec8ef"
+    },
+    {
+      "id": "red-review-59d7da93507e2d8ab8ab",
+      "revision": 0,
+      "name": "Revisar novedades: NVIDIA",
+      "outcome": "continuity",
+      "applied": true,
+      "apply_commit": "92f8142cf791b506dc3d590301a97bc785723eae"
     }
   ],
   "incident_count": 0,
@@ -437,35 +455,70 @@
       "status": "DONE",
       "phase": "closing",
       "message": "Pasada TTendencias completada 2/2. Xokas y Hormiguero revisados sin novedades materiales: ambos unchanged, conservando explicación y fecha. Aplicador de mantenimiento confirmado en 00152db0c75ff5ff248172ff3c5df70fcddf8304; editorial-queue=0. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-13T10:40:00+01:00",
+      "run_id": "tr-20261113T104000-chat-direct",
+      "status": "RUNNING",
+      "phase": "preparing",
+      "message": "Pasada manual iniciada desde ChatGPT; cola inicial=2 borradores Radar (Gmail y Pipi). Revalidación JIT; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-13T10:45:00+01:00",
+      "run_id": "tr-20261113T104000-chat-direct",
+      "status": "RUNNING",
+      "phase": "verifying",
+      "message": "Gmail y Pipi cerrados como anticipation_unverified. La barrera abrió dos revisiones rojas nuevas: Broncano y NVIDIA."
+    },
+    {
+      "at": "2026-11-13T10:46:57+01:00",
+      "run_id": "tr-20261113T104000-chat-direct",
+      "status": "RUNNING",
+      "phase": "verifying",
+      "message": "Broncano aplicado como actualización de continuidad. NVIDIA continúa pendiente por validación de formato."
+    },
+    {
+      "at": "2026-11-13T10:51:00+01:00",
+      "run_id": "tr-20261113T104000-chat-direct",
+      "status": "RUNNING",
+      "phase": "verifying",
+      "message": "Corregida la fórmula de continuidad de NVIDIA; workflow de mantenimiento completado con éxito y revisión aplicada."
+    },
+    {
+      "at": "2026-11-13T10:51:20+01:00",
+      "run_id": "tr-20261113T104000-chat-direct",
+      "status": "DONE",
+      "phase": "closing",
+      "message": "Pasada TTendencias completada 4/4. Radar Gmail y Pipi cerrados como anticipation_unverified por falta de causalidad suficientemente acreditada; Broncano y NVIDIA actualizados como continuidad del mismo episodio. NVIDIA requirió corregir la fórmula de continuidad exigida por el validador y quedó aplicada. Barrera final tras refresco Top 30: editorial-queue=0. Sin ImageGen ni publicaciones."
     }
   ],
-  "last_started_at": "2026-11-13T10:14:59+01:00",
-  "last_completed_at": "2026-11-13T10:15:30+01:00",
+  "last_started_at": "2026-11-13T10:40:00+01:00",
+  "last_completed_at": "2026-11-13T10:51:20+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261113T101000-chat-direct",
+    "run_id": "tr-20261113T104000-chat-direct",
     "status": "DONE",
-    "started_at": "2026-11-13T10:10:00+01:00",
-    "finished_at": "2026-11-13T10:15:30+01:00",
-    "at": "2026-11-13T10:15:30+01:00",
+    "started_at": "2026-11-13T10:40:00+01:00",
+    "finished_at": "2026-11-13T10:51:20+01:00",
+    "at": "2026-11-13T10:51:20+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 2,
-      "observed": 2,
-      "closed": 2,
-      "explained": 2,
+      "attempted": 4,
+      "observed": 4,
+      "closed": 4,
+      "explained": 0,
       "problematic": 0,
-      "updates": 0,
+      "updates": 2,
       "review_completed_no_distinct_event": 0,
-      "maintenance_reviews": 0,
+      "maintenance_reviews": 2,
       "unchanged_reviews": 0,
-      "continuity_updates": 0,
-      "distinct_updates": 2,
+      "continuity_updates": 2,
+      "distinct_updates": 0,
       "stale_reviews": 0,
       "unverified_reviews": 0,
-      "anticipation_reviews": 0,
+      "anticipation_reviews": 2,
       "anticipation_prepared": 0,
-      "anticipation_unverified": 0,
+      "anticipation_unverified": 2,
       "queue_remaining": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
@@ -476,33 +529,51 @@
       "cause_unconfirmed": 0
     },
     "processed_ids": [
-      "798b421b4c28",
-      "5a9d4f7ddfc2"
+      "radar-prepare-b6c8e95af01a25e37a90",
+      "radar-prepare-dcbad6134e8c1af628ba",
+      "red-review-7c1b8724ce143aa6f635",
+      "red-review-59d7da93507e2d8ab8ab"
     ],
     "converged_ids": [],
     "outcomes": [
       {
-        "id": "798b421b4c28",
+        "id": "radar-prepare-b6c8e95af01a25e37a90",
         "revision": 0,
-        "name": "Ada Colau",
-        "outcome": "explained_distinct_episode",
+        "name": "Radar · Gmail",
+        "outcome": "anticipation_unverified",
         "applied": true,
-        "material_event_key": "ada-colau-entrevista-jordi-wild-29n-2026-11-13"
+        "apply_commit": "e0b58b9863ac15e4b050f7e300a60a9a52023d65"
       },
       {
-        "id": "5a9d4f7ddfc2",
+        "id": "radar-prepare-dcbad6134e8c1af628ba",
         "revision": 0,
-        "name": "Youtuber",
-        "outcome": "explained_distinct_episode",
+        "name": "Radar · Pipi",
+        "outcome": "anticipation_unverified",
         "applied": true,
-        "material_event_key": "jordi-wild-publica-entrevistas-candidatos-29n-2026-11-13"
+        "apply_commit": "e0b58b9863ac15e4b050f7e300a60a9a52023d65"
+      },
+      {
+        "id": "red-review-7c1b8724ce143aa6f635",
+        "revision": 0,
+        "name": "Revisar novedades: Broncano",
+        "outcome": "continuity",
+        "applied": true,
+        "apply_commit": "010b0319f13579d58cd0b1d1a5a2111d8c9ec8ef"
+      },
+      {
+        "id": "red-review-59d7da93507e2d8ab8ab",
+        "revision": 0,
+        "name": "Revisar novedades: NVIDIA",
+        "outcome": "continuity",
+        "applied": true,
+        "apply_commit": "92f8142cf791b506dc3d590301a97bc785723eae"
       }
     ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada TTendencias completada 2/2. Ada Colau y Youtuber explicadas como episodios materiales distintos; cola final=0. Sin ImageGen ni publicaciones."
+    "message": "Pasada TTendencias completada 4/4. Radar Gmail y Pipi cerrados como anticipation_unverified por falta de causalidad suficientemente acreditada; Broncano y NVIDIA actualizados como continuidad del mismo episodio. NVIDIA requirió corregir la fórmula de continuidad exigida por el validador y quedó aplicada. Barrera final tras refresco Top 30: editorial-queue=0. Sin ImageGen ni publicaciones."
   },
-  "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 2026-11-13T08:51:07+01:00), mobile-decisions y requests sin estados editoriales activos. Top 30 vigente capturado a las 08:51:01. Sin ImageGen ni publicaciones; incidentes=0.",
+  "message": "Pasada TTendencias completada 4/4. Radar Gmail y Pipi cerrados como anticipation_unverified por falta de causalidad suficientemente acreditada; Broncano y NVIDIA actualizados como continuidad del mismo episodio. NVIDIA requirió corregir la fórmula de continuidad exigida por el validador y quedó aplicada. Barrera final tras refresco Top 30: editorial-queue=0. Sin ImageGen ni publicaciones.",
   "history": [
     {
       "run_id": "tr-1794361941170-manual",
@@ -4575,8 +4646,8 @@
   ],
   "current_item": null,
   "withdrawn_ids": [],
-  "last_finished_at": "2026-11-13T08:56:00+01:00",
-  "last_revalidated_at": "2026-11-13T08:56:00+01:00",
+  "last_finished_at": "2026-11-13T10:51:20+01:00",
+  "last_revalidated_at": "2026-11-13T10:51:20+01:00",
   "last_revalidation": {
     "at": "2026-11-13T08:56:00+01:00",
     "queue_count": 0,
@@ -7710,5 +7781,5 @@
   "processed": [],
   "maintenance_outbox_commit": "970b545c88b09429a23d15ec893b9d66fb611297",
   "editorial_apply_run_id": 43378988402,
-  "finished_at": "2026-11-13T10:29:30+01:00"
+  "finished_at": "2026-11-13T10:51:20+01:00"
 }
