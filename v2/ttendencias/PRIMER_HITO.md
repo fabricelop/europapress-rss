@@ -127,3 +127,19 @@ botones de decisión editorial ni nuevas funcionalidades accesorias.
   reinicio reales en Windows están pendientes** de ejecutar el instalador
   corregido. Nunca declarar el chat recuperado ni siguiente tendencia lanzada
   antes de ver prueba en logs/GitHub.
+
+## Incidencias recuperables y ejecución oculta (13/11/2026)
+
+**Política solicitada:** una tendencia en `capture_recovery` o una `in_progress` con lease vencido NO queda permanentemente bloqueada. El único consumidor V2 selecciona las incidencias del Top30 **por ranking 1→30** y aplica este orden antes de abrir nuevas conversaciones:
+
+1. Asegurar que no hay ningún proceso Chrome del perfil V2 abierto y que el consumidor mantiene su lock local.
+2. Si el diario conserva una respuesta completa, intentar persistir esa MISMA respuesta primero.
+3. Si conserva URL de conversación previa y evidencia del envío, abrirla **solo para lectura** en Chrome V2 oculto y recuperar el texto original, sin otro Enter.
+4. Si no se puede recuperar, y han pasado **8 minutos** desde el estado de recuperación o desde el vencimiento del lease, crear una **nueva revisión** del mismo ID con estado `pending`; archivar el ID/revisión/URL/fecha/causa del intento anterior. Nunca reusar el token de envío, lease ni diario de la revisión antigua. Continuar el ranking; la tendencia nueva pasará a `in_progress` en su siguiente selección.
+5. Hasta **dos reintentos automáticos por incidencia** (máximo tres revisiones de este ciclo). Al agotar el límite, mantener «Incidencia» para diagnóstico, nunca un bucle de chats. Un trabajo vigente no se cancela al salir del Top30, y uno histórico con incidencia espera a entrar de nuevo.
+
+Implementación: `incident_retry_v2.py` (transición pura), `incident_worker_v2.py` (rescate y CAS GitHub), `recover_existing_chat_v2.py` (lectura del chat previo por URL). Unit tests: `test_incident_retry_v2.py`.
+
+**Ejecución oculta:** siguiendo el patrón probado del watchdog de V1, el runner usa `Start-Process -WindowStyle Hidden` y redirige logs; la tarea Windows añade `-WindowStyle Hidden`. Chrome V2 utiliza `--headless=new` con el MISMO perfil aislado y puerto CDP localhost. `headless_preflight_v2.py` comprueba que el ChatGPT autenticado carga y su editor está operativo **sin enviar mensajes**; si falla, el instalador deja la tarea inactiva, sin reenviar ni publicar. Solo V2 cambia de modo, nunca V1. `Upgrade-V2-Hidden.ps1` desactiva nuevos trabajos, deja concluir el actual, actualiza los módulos y rearma la tarea. No mata Chrome ni borra capturas.
+
+**Lanzamiento:** cambios de GitHub implementados; la activación local de este modo permanece pendiente hasta ejecutar el upgrade en Windows. La salida de CI (93 tests en la última comprobación) valida lógica estática, no sustituye la prueba real del perfil autenticado en headless.
