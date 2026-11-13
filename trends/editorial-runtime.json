@@ -8,13 +8,13 @@
   "command_id": "tr-20261113T072500-chat-direct",
   "source": "chat_direct",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "persisting",
   "started_at": "2026-11-13T07:25:00+01:00",
-  "updated_at": "2026-11-13T07:25:00+01:00",
-  "current": 0,
+  "updated_at": "2026-11-13T07:28:30+01:00",
+  "current": 3,
   "total": 3,
-  "trend_id": null,
-  "title": "Pasada editorial TTendencias",
+  "trend_id": "d7a4b8618d4f",
+  "title": "álbum del año",
   "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
@@ -359,6 +359,13 @@
       "status": "RUNNING",
       "phase": "preparing",
       "message": "Pasada manual iniciada desde ChatGPT; cola autoritativa=3: #LaIslaDeLasTentaciones20 (reentrada), álbum del año (primera explicación) y Jorge Salvaje (reentrada). Revalidación JIT; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-13T07:28:30+01:00",
+      "run_id": "tr-20261113T072500-chat-direct",
+      "status": "RUNNING",
+      "phase": "persisting",
+      "message": "Investigación JIT completada: álbum del año tiene causa actual verificada (LUX gana Álbum del Año); #LaIslaDeLasTentaciones20 y Jorge Salvaje reingresan por el mismo episodio ya explicado, sin acontecimiento material independiente. Persistiendo 3/3; sin ImageGen ni publicación."
     }
   ],
   "last_started_at": "2026-11-13T06:32:47+01:00",
@@ -450,7 +457,7 @@
     "incidents": [],
     "message": "Pasada TTendencias completada 5/5. Asraf quedó como episodio material distinto por su victoria en la final; Rosalia quedó explicada por sus cinco Latin Grammy; NVIDIA y Jensen Huang se actualizaron como continuidad tras la dimisión de Huang y el nombramiento interino de Colette Kress; #HuelgaGeneral quedó unchanged al no aparecer un episodio material nuevo. Barrera final: editorial-queue=0 y mobile-decisions sin estados editoriales activos. ImageGen=0; publicaciones=0; incidentes=0."
   },
-  "message": "Pasada manual iniciada desde ChatGPT; cola autoritativa=3: #LaIslaDeLasTentaciones20 (reentrada), álbum del año (primera explicación) y Jorge Salvaje (reentrada). Revalidación JIT; sin ImageGen ni publicación.",
+  "message": "Investigación JIT completada: álbum del año tiene causa actual verificada (LUX gana Álbum del Año); #LaIslaDeLasTentaciones20 y Jorge Salvaje reingresan por el mismo episodio ya explicado, sin acontecimiento material independiente. Persistiendo 3/3; sin ImageGen ni publicación.",
   "history": [
     {
       "run_id": "tr-1794361941170-manual",
