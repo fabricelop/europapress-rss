@@ -8,31 +8,73 @@
   "command_id": "tr-20261113T041000-chat-direct",
   "source": "chat_direct",
   "status": "RUNNING",
-  "phase": "investigating",
+  "phase": "persisting",
   "started_at": "2026-11-13T04:10:00+01:00",
-  "updated_at": "2026-11-13T04:12:00+01:00",
-  "current": 0,
+  "updated_at": "2026-11-13T04:17:00+01:00",
+  "current": 13,
   "total": 13,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
   "queue_complete": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "09c8baed486f",
+    "e1c917b18472",
+    "220570dd0ac3",
+    "9002bf6fa6d5",
+    "b8cfcecfca21",
+    "a4c3be3f10c2",
+    "c1e5efd5f0d5",
+    "b6b2e9781775",
+    "8153fc9b27da",
+    "ce61aea68bb5",
+    "889a4dee7f07",
+    "419f43b42d22",
+    "c0bb94cc81ae"
+  ],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "09c8baed486f",
+    "e1c917b18472",
+    "220570dd0ac3",
+    "9002bf6fa6d5",
+    "b8cfcecfca21",
+    "a4c3be3f10c2",
+    "c1e5efd5f0d5",
+    "b6b2e9781775",
+    "8153fc9b27da",
+    "ce61aea68bb5",
+    "889a4dee7f07",
+    "419f43b42d22",
+    "c0bb94cc81ae"
+  ],
+  "remaining_active_ids": [
+    "09c8baed486f",
+    "e1c917b18472",
+    "220570dd0ac3",
+    "9002bf6fa6d5",
+    "b8cfcecfca21",
+    "a4c3be3f10c2",
+    "c1e5efd5f0d5",
+    "b6b2e9781775",
+    "8153fc9b27da",
+    "ce61aea68bb5",
+    "889a4dee7f07",
+    "419f43b42d22",
+    "c0bb94cc81ae"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 13,
     "observed": 13,
-    "closed": 0,
-    "explained": 0,
+    "closed": 11,
+    "explained": 2,
     "problematic": 0,
     "updates": 0,
-    "review_completed_no_distinct_event": 0,
+    "review_completed_no_distinct_event": 11,
     "maintenance_reviews": 0,
     "unchanged_reviews": 0,
     "continuity_updates": 0,
-    "distinct_updates": 0,
+    "distinct_updates": 2,
     "stale_reviews": 0,
     "unverified_reviews": 0,
     "anticipation_reviews": 0,
@@ -45,9 +87,90 @@
     "publications": 0,
     "incidents": 0,
     "concurrent_convergence": 0,
-    "cause_unconfirmed": 0
+    "cause_unconfirmed": 1
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "e1c917b18472",
+      "revision": 0,
+      "name": "Abascal",
+      "outcome": "distinct_update",
+      "verification": "Outbox textual persistido; aplicación pendiente de verificar"
+    },
+    {
+      "id": "419f43b42d22",
+      "revision": 0,
+      "name": "Barcelona",
+      "outcome": "distinct_update",
+      "verification": "Outbox textual persistido; aplicación pendiente de verificar"
+    },
+    {
+      "id": "09c8baed486f",
+      "revision": 0,
+      "outcome": "review_completed_no_distinct_event",
+      "verification": "Outbox textual persistido; aplicación pendiente de verificar"
+    },
+    {
+      "id": "220570dd0ac3",
+      "revision": 0,
+      "outcome": "review_completed_no_distinct_event",
+      "verification": "Outbox textual persistido; aplicación pendiente de verificar"
+    },
+    {
+      "id": "9002bf6fa6d5",
+      "revision": 0,
+      "outcome": "review_completed_no_distinct_event",
+      "verification": "Outbox textual persistido; aplicación pendiente de verificar"
+    },
+    {
+      "id": "b8cfcecfca21",
+      "revision": 0,
+      "outcome": "review_completed_no_distinct_event",
+      "verification": "Outbox textual persistido; aplicación pendiente de verificar"
+    },
+    {
+      "id": "a4c3be3f10c2",
+      "revision": 0,
+      "outcome": "review_completed_no_distinct_event",
+      "verification": "Outbox textual persistido; aplicación pendiente de verificar"
+    },
+    {
+      "id": "c1e5efd5f0d5",
+      "revision": 0,
+      "outcome": "review_completed_no_distinct_event",
+      "verification": "Outbox textual persistido; aplicación pendiente de verificar"
+    },
+    {
+      "id": "b6b2e9781775",
+      "revision": 0,
+      "outcome": "review_completed_no_distinct_event",
+      "verification": "Outbox textual persistido; aplicación pendiente de verificar"
+    },
+    {
+      "id": "8153fc9b27da",
+      "revision": 0,
+      "outcome": "review_completed_no_distinct_event",
+      "verification": "Outbox textual persistido; aplicación pendiente de verificar"
+    },
+    {
+      "id": "ce61aea68bb5",
+      "revision": 0,
+      "outcome": "review_completed_no_distinct_event",
+      "verification": "Outbox textual persistido; aplicación pendiente de verificar"
+    },
+    {
+      "id": "889a4dee7f07",
+      "revision": 0,
+      "outcome": "review_completed_no_distinct_event",
+      "verification": "Outbox textual persistido; aplicación pendiente de verificar"
+    },
+    {
+      "id": "c0bb94cc81ae",
+      "revision": 0,
+      "outcome": "review_completed_no_distinct_event",
+      "verification": "Outbox textual persistido; aplicación pendiente de verificar"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -302,6 +425,13 @@
       "status": "RUNNING",
       "phase": "investigating",
       "message": "Barrera posterior al cierre 0/0 detectó 13 reentradas nuevas. Se reabre la misma pasada y se investigan JIT; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-13T04:17:00+01:00",
+      "run_id": "tr-20261113T041000-chat-direct",
+      "status": "RUNNING",
+      "phase": "persisting",
+      "message": "13/13 investigados; 2 episodios distintos y 11 reentradas sin episodio independiente. Outbox textual en main (4009ce54e5832651f4aaf9ef1df649eb64752a17); verificando aplicación."
     }
   ],
   "last_started_at": "2026-11-13T04:10:00+01:00",
@@ -346,7 +476,7 @@
     "incidents": [],
     "message": "0/0 cerrado; cola 0; estados editoriales activos 0; ImageGen 0; publicaciones 0."
   },
-  "message": "La barrera final detectó 13 reentradas nuevas a las 04:11:10; investigación JIT en curso.",
+  "message": "13/13 investigados; 2 episodios distintos y 11 reentradas sin episodio independiente. Outbox textual en main (4009ce54e5832651f4aaf9ef1df649eb64752a17); verificando aplicación.",
   "history": [
     {
       "run_id": "tr-1794340649326-manual",
