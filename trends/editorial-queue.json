@@ -1,6 +1,79 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-13T04:17:12+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-13T03:17:40.246697+00:00",
+  "count": 2,
+  "items": [
+    {
+      "id": "red-review-dbdff8ab02b4b94f7b00",
+      "revision": 0,
+      "name": "Revisar novedades: Jordi Wild",
+      "rank": 2,
+      "status": "preparing",
+      "requested_at": "2026-11-13T03:17:40.246697+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "ac5218c64f99",
+        "revision": 0,
+        "name": "Jordi Wild",
+        "rank": 2,
+        "explanation": "TT#2 Jordi Wild vuelve a ser tendencia porque Vox ha cancelado la entrevista de Santiago Abascal en The Wild Project tras la polémica por su paso por La Revuelta.\n#SantiagoAbascal #TheWildProject\n🌶️ Una entrevista cayó antes de encender el micro.",
+        "explanation_sha256": "c35974309ddccf6d5885cff917edb3c6d4e3dbc35ac3e855d878503e74603297",
+        "explained_at": "2026-11-11T14:03:00+01:00",
+        "verification_sources": [
+          {
+            "title": "Demócrata: cancelada la entrevista de Abascal con Jordi Wild",
+            "url": "https://www.democrata.es/en/exclusive/the-controversy-over-the-40-minutes-removed-from-la-revuelta-causes-the-suspension-of-abascal-s-interview-with-jordi-wild/",
+            "published_at": "2026-11-11"
+          },
+          {
+            "title": "Demócrata: repercusión de la exclusiva",
+            "url": "https://www.democrata.es/en/general-elections-spain/the-media-are-picking-up-democrata-s-exclusive-about-santiago-abascal-jordi-wild-and-the-controversy-with-broncano-in-la-revuelta/",
+            "published_at": "2026-11-11"
+          }
+        ],
+        "fingerprint": "1091d32f8f51d6dc47aa8ba1d4d8fb89de9f13a9e9468c39831831a411755f0f"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-628f50a7fbbaaacf7af4",
+      "revision": 0,
+      "name": "Revisar novedades: Youtuber",
+      "rank": 26,
+      "status": "preparing",
+      "requested_at": "2026-11-13T03:17:40.246697+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "ee66c728b7bb",
+        "revision": 0,
+        "name": "Youtuber",
+        "rank": 30,
+        "explanation": "TT#30 Youtuber es tendencia por la cancelación de la entrevista de Santiago Abascal con Jordi Wild, prevista hoy para The Wild Project tras el conflicto de Vox con RTVE.\n#JordiWild #Abascal\n🌶️ La entrevista acabó convertida en contenido sin llegar a grabarse.",
+        "explanation_sha256": "a136f9ab0a72cc673140377b074af396a2b680dd33800b79228f59fad5e08a73",
+        "explained_at": "2026-11-11T15:15:48+01:00",
+        "verification_sources": [
+          {
+            "url": "https://as.com/actualidad/politica/abascal-cancela-su-entrevista-con-jordi-wild-f202611-n/"
+          },
+          {
+            "url": "https://www.elindependiente.com/espana/2026/11/11/abascal-cancela-su-entrevista-con-jordi-wild-tras-denunciar-manipulacion-en-la-revuelta/amp/"
+          }
+        ],
+        "fingerprint": "8631bcfa219089f592563411db0b9a85fca1b61d4011b1d7ee4bb6ceee9a09f7"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
