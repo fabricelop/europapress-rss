@@ -1,9 +1,10 @@
 // Validate both web variants expose a real, revision-scoped Quitar action.
-const assert = require('node:assert/strict');
-const fs = require('node:fs');
-const vm = require('node:vm');
-const path = require('node:path');
-const root = path.resolve(__dirname, '../..');
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import vm from 'node:vm';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 for (const relative of ['docs/ttactualidad/index.html', 'pilot/ttactualidad-live/index.html']) {
   const html = fs.readFileSync(path.join(root, relative), 'utf8');
   const match = html.match(/<script>([\s\S]*?)<\/script>/);
