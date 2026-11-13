@@ -155,17 +155,17 @@ st.data.manual.items.push({id:'test-group',name:'Evento agrupado',
   explanation:'Explicación compartida de la tercera tendencia.',
   explained_at:new Date().toISOString()});
 const topRows=tt.trendRows();
-assert.equal(topRows[0]._status,'PENDIENTE',
+assert.equal(topRows[0]._status,'SIN SOLICITUD EDITORIAL',
   'An old or unverified explanation cannot mark the Top30 published');
 assert.equal(topRows[0].explanation,'',
   'Never offer unpublished explanations directly in Top 30');
-assert.equal(topRows[1]._status,'EN COLA','Queued work must not be mistaken for active editorial execution');
-assert.equal(topRows[2]._status,'PENDIENTE',
+assert.equal(topRows[1]._status,'EN ELABORACIÓN','Actual queued work must be visible as active editorial processing');
+assert.equal(topRows[2]._status,'SIN SOLICITUD EDITORIAL',
   'Grouping cannot publish a new Top30 explanation directly');
 assert.equal(topRows[2].explanation,'',
   'Grouped explanations may not bypass Explicadas');
-assert.equal(topRows[3]._status,'PENDIENTE','Unexplained Top 10 positions remain pending');
-assert.equal(topRows[10]._status,'PREPARACIÓN MANUAL','Top 11-30 should not be auto-explained');
+assert.equal(topRows[3]._status,'SIN SOLICITUD EDITORIAL','No request means no editorial work has been started');
+assert.equal(topRows[10]._status,'SIN SOLICITUD EDITORIAL','Unrequested Top 11-30 entries cannot claim an active explanation');
 assert(html.includes("command('Volver a elaborar','rework');"),
   'Every Top 30 trend must offer the same fresh-elaboration command');
 for(const view of [html,liveHtml,mobileHtml]){
@@ -179,14 +179,14 @@ assert(topRows.every(row=>row.explanation===''&&!row.closer_text),
 st.data.deliveries.items.push({event_id:'test-ready',revision:0,
     name:'Tendencia 1',status:'sent',final:true,delivered_at:new Date().toISOString()});
 const stillInExplained=tt.trendRows()[0];
-assert.equal(stillInExplained._status,'PENDIENTE',
+assert.equal(stillInExplained._status,'SIN SOLICITUD EDITORIAL',
   'Top30 always remains a radar, not a second Listas');
 assert.equal(stillInExplained.explanation,'','Top30 must not reveal active Explicadas text');
 assert.equal(stillInExplained.closer_text,'','Top30 must not reveal active remate');
 assert.equal(stillInExplained._inExplained,true);
 st.data.mobileDecisions.items.push({id:'test-ready',status:'deleted'});
 const closedInExplained=tt.trendRows()[0];
-assert.equal(closedInExplained._status,'PENDIENTE',
+assert.equal(closedInExplained._status,'CERRADA',
   'Closing a historical episode cannot relabel the current radar trend');
 assert.equal(closedInExplained.explanation,'',
   'Historical explanations belong in Histórico, not the current Top30');
@@ -195,9 +195,9 @@ assert.equal(closedInExplained._telegramConfirmed,false,
 assert.equal(closedInExplained._inExplained,false);
 st.data.deliveries.items.push({event_id:'test-group',revision:0,
     name:'Evento agrupado',status:'sent',final:true,delivered_at:new Date().toISOString()});
-assert.equal(tt.trendRows()[2]._status,'PENDIENTE','Grouped trend cannot bypass current Listas');
+assert.equal(tt.trendRows()[2]._status,'SIN SOLICITUD EDITORIAL','Grouped trend cannot bypass current Listas');
 st.data.mobileDecisions.items.push({id:'test-group',status:'deleted'});
-assert.equal(tt.trendRows()[2]._status,'PENDIENTE','Old group closure cannot dictate a current trend state');
+assert.equal(tt.trendRows()[2]._status,'CERRADA','An old closed group must remain closed until a distinct, dated return is verified');
 assert.equal(tt.trendRows()[2].explanation,'',
   'Historical grouped copy stays out of the current radar');
 st.tab='explicadas';

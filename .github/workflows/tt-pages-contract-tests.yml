@@ -1,0 +1,28 @@
+name: TTActualidad Pages contract tests before release
+on:
+  pull_request:
+    paths:
+      - '.github/scripts/test_tt_pages_prompts.mjs'
+      - '.github/scripts/test_tt_mobile_unified_ui.mjs'
+      - '.github/scripts/test_tt_emergency_direct_api.mjs'
+      - '.github/scripts/test_tt_mobile_photo_page.mjs'
+      - 'pilot/ttactualidad-live/test_top30.mjs'
+      - 'docs/gag.html'
+      - 'docs/index.html'
+      - 'docs/ttactualidad/index.html'
+      - '.github/workflows/tt-pages-contract-tests.yml'
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate Pages scripts
+        run: |
+          node .github/scripts/test_tt_pages_prompts.mjs
+          node .github/scripts/test_tt_mobile_unified_ui.mjs
+          node pilot/ttactualidad-live/test_top30.mjs
+          node .github/scripts/test_tt_emergency_direct_api.mjs
+          node .github/scripts/test_tt_mobile_photo_page.mjs
