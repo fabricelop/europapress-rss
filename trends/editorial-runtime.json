@@ -7,38 +7,33 @@
   "previous_run_id": "tr-20261113T161000-chat-direct",
   "command_id": "tr-20261113T171000-chat-direct",
   "source": "chat_direct",
-  "status": "PROCESSING",
+  "status": "success",
   "phase": "investigating",
   "started_at": "2026-11-13T17:10:00+01:00",
-  "updated_at": "2026-11-13T17:15:00+01:00",
+  "updated_at": "2026-11-13T17:17:36+01:00",
   "current": 0,
   "total": 8,
   "trend_id": "8d5fe835b7e5",
   "title": "Isabel Peralta",
-  "queue_complete": false,
-  "processed_ids": [],
+  "queue_complete": true,
+  "processed_ids": [
+    "8d5fe835b7e5",
+    "1756300f75e8",
+    "6c05ca8b8512",
+    "de47f623a966",
+    "3444832e9337",
+    "manual-a5260954d0bdd646fad174dcdb3b892b",
+    "manual-c550af7b734565e1d4042fae0ba8d74f",
+    "1ea1a6c850b1"
+  ],
   "converged_ids": [],
   "remaining_ids": [
-    "8d5fe835b7e5",
-    "1756300f75e8",
-    "6c05ca8b8512",
-    "de47f623a966",
-    "3444832e9337",
-    "manual-a5260954d0bdd646fad174dcdb3b892b",
-    "manual-c550af7b734565e1d4042fae0ba8d74f",
-    "1ea1a6c850b1"
+    "manual-c550af7b734565e1d4042fae0ba8d74f"
   ],
-  "remaining_active_ids": [
-    "8d5fe835b7e5",
-    "1756300f75e8",
-    "6c05ca8b8512",
-    "de47f623a966",
-    "3444832e9337",
-    "manual-a5260954d0bdd646fad174dcdb3b892b",
-    "manual-c550af7b734565e1d4042fae0ba8d74f",
-    "1ea1a6c850b1"
+  "remaining_active_ids": [],
+  "remaining_problematic_ids": [
+    "manual-c550af7b734565e1d4042fae0ba8d74f"
   ],
-  "remaining_problematic_ids": [],
   "summary": {
     "attempted": 8,
     "observed": 8,
@@ -670,8 +665,8 @@
       "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 16:11:06), mobile-decisions sin estados editoriales activos y Top 30 vigente capturado a las 16:11:01. El refresco manual llegó al commit final de salud 94254d84368df096858e07fdef912f0866e4dac8. Incidencia no bloqueante: trends/health-status.json arrastra marcadores de conflicto y no es JSON válido. Sin ImageGen ni publicaciones."
     }
   ],
-  "last_started_at": "2026-11-13T16:38:02+01:00",
-  "last_completed_at": "2026-11-13T16:16:30+01:00",
+  "last_started_at": "2026-11-13T17:17:36+01:00",
+  "last_completed_at": "2026-11-13T17:17:36+01:00",
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-20261113T161000-chat-direct",
