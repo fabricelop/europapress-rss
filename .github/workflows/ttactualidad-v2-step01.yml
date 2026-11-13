@@ -17,6 +17,19 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  test-win32-hidden:
+    if: github.ref == 'refs/heads/feature/ttactualidad-v2-clean'
+    runs-on: windows-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/ttactualidad-v2-clean
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verificar Win32 ventanas V2 ocultas sin modificar ninguna ventana
+        run: python -m unittest -v v2.ttendencias.test_chrome_windows_v2
   test-step-01:
     if: github.ref == 'refs/heads/feature/ttactualidad-v2-clean' || github.event_name == 'schedule'
     runs-on: ubuntu-latest
