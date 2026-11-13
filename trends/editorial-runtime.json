@@ -7,48 +7,77 @@
   "previous_run_id": "tr-20261113T211000-chat-direct",
   "command_id": "tr-20261113T212500-chat-direct",
   "source": "chat_direct",
-  "status": "success",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-13T21:25:00+01:00",
-  "updated_at": "2026-11-13T21:29:38+01:00",
-  "current": 0,
-  "total": 1,
-  "trend_id": "019f7a9bc80d",
-  "title": "Jorge Salvaje",
+  "updated_at": "2026-11-13T21:35:09+01:00",
+  "current": 3,
+  "total": 3,
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
-    "019f7a9bc80d"
+    "019f7a9bc80d",
+    "red-review-2fd97b4bcc1404cb083e",
+    "red-review-859f7c478f636b3075b4"
   ],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 1,
-    "observed": 1,
-    "closed": 0,
-    "explained": 0,
+    "attempted": 3,
+    "observed": 3,
+    "closed": 3,
+    "explained": 1,
     "problematic": 0,
-    "updates": 1,
+    "updates": 2,
     "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 0,
+    "maintenance_reviews": 2,
     "unchanged_reviews": 0,
-    "continuity_updates": 0,
+    "continuity_updates": 2,
     "distinct_updates": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 1,
-    "rewrite_pending_remaining": 1,
+    "queue_remaining": 0,
+    "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "019f7a9bc80d",
+      "revision": 1,
+      "name": "Jorge Salvaje",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "0e8178e2936236c7392088507bda7fe9ad8e590a"
+    },
+    {
+      "id": "red-review-2fd97b4bcc1404cb083e",
+      "revision": 0,
+      "name": "Revisar novedades: #PazCasaTrabajo29N",
+      "outcome": "continuity",
+      "applied": true,
+      "source_id": "c04ca7365d3b",
+      "apply_commit": "eb933ea7a00e1a22d27dc8327255e475f825acbc"
+    },
+    {
+      "id": "red-review-859f7c478f636b3075b4",
+      "revision": 0,
+      "name": "Revisar novedades: Jensen Huang",
+      "outcome": "continuity",
+      "applied": true,
+      "source_id": "f3c37f45aebd",
+      "apply_commit": "e04624377a4fadb3646363f83ba4828cfc9d61f6"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -767,29 +796,38 @@
       "status": "RUNNING",
       "phase": "investigating",
       "message": "Investigando Jorge Salvaje r1 desde cero; revalidación JIT en main y contraste de la pista sobre Jordi Wild. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-13T21:35:09+01:00",
+      "run_id": "tr-20261113T212500-chat-direct",
+      "status": "DONE",
+      "phase": "closing",
+      "current": 3,
+      "total": 3,
+      "message": "Pasada TTendencias completada 3/3: Jorge Salvaje r1 corregido y explicado; #PazCasaTrabajo29N y Jensen Huang actualizados como continuidad en sus mismas fichas. Barrera final revalidada en main: editorial-queue=0 y mobile-decisions sin estados editoriales activos. ImageGen=0; publicaciones=0; incidentes=0."
     }
   ],
   "last_started_at": "2026-11-13T21:29:37+01:00",
-  "last_completed_at": "2026-11-13T21:29:38+01:00",
+  "last_completed_at": "2026-11-13T21:35:09+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261113T211000-chat-direct",
+    "run_id": "tr-20261113T212500-chat-direct",
     "status": "DONE",
-    "started_at": "2026-11-13T21:10:00+01:00",
-    "finished_at": "2026-11-13T21:11:00+01:00",
-    "at": "2026-11-13T21:11:00+01:00",
+    "started_at": "2026-11-13T21:25:00+01:00",
+    "finished_at": "2026-11-13T21:35:09+01:00",
+    "at": "2026-11-13T21:35:09+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 0,
-      "observed": 0,
-      "closed": 0,
-      "explained": 0,
+      "attempted": 3,
+      "observed": 3,
+      "closed": 3,
+      "explained": 1,
       "problematic": 0,
-      "updates": 0,
+      "updates": 2,
       "review_completed_no_distinct_event": 0,
-      "maintenance_reviews": 0,
+      "maintenance_reviews": 2,
       "unchanged_reviews": 0,
-      "continuity_updates": 0,
+      "continuity_updates": 2,
       "distinct_updates": 0,
       "stale_reviews": 0,
       "unverified_reviews": 0,
@@ -804,14 +842,45 @@
       "incidents": 0,
       "concurrent_convergence": 0
     },
-    "processed_ids": [],
+    "processed_ids": [
+      "019f7a9bc80d",
+      "red-review-2fd97b4bcc1404cb083e",
+      "red-review-859f7c478f636b3075b4"
+    ],
     "converged_ids": [],
-    "outcomes": [],
+    "outcomes": [
+      {
+        "id": "019f7a9bc80d",
+        "revision": 1,
+        "name": "Jorge Salvaje",
+        "outcome": "explained",
+        "applied": true,
+        "apply_commit": "0e8178e2936236c7392088507bda7fe9ad8e590a"
+      },
+      {
+        "id": "red-review-2fd97b4bcc1404cb083e",
+        "revision": 0,
+        "name": "Revisar novedades: #PazCasaTrabajo29N",
+        "outcome": "continuity",
+        "applied": true,
+        "source_id": "c04ca7365d3b",
+        "apply_commit": "eb933ea7a00e1a22d27dc8327255e475f825acbc"
+      },
+      {
+        "id": "red-review-859f7c478f636b3075b4",
+        "revision": 0,
+        "name": "Revisar novedades: Jensen Huang",
+        "outcome": "continuity",
+        "applied": true,
+        "source_id": "f3c37f45aebd",
+        "apply_commit": "e04624377a4fadb3646363f83ba4828cfc9d61f6"
+      }
+    ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 2026-11-13T21:01:17+01:00) y mobile-decisions sin estados editoriales activos. No había investigaciones, anticipaciones ni revisiones pendientes que procesar. ImageGen=0; publicaciones=0; incidentes=0."
+    "message": "Pasada TTendencias completada 3/3: Jorge Salvaje r1 corregido y explicado; #PazCasaTrabajo29N y Jensen Huang actualizados como continuidad en sus mismas fichas. Barrera final revalidada en main: editorial-queue=0 y mobile-decisions sin estados editoriales activos. ImageGen=0; publicaciones=0; incidentes=0."
   },
-  "message": "Investigando Jorge Salvaje r1 desde cero; revalidación JIT en main y contraste de la pista sobre Jordi Wild. ImageGen=0; publicaciones=0.",
+  "message": "Pasada TTendencias completada 3/3: Jorge Salvaje r1 corregido y explicado; #PazCasaTrabajo29N y Jensen Huang actualizados como continuidad en sus mismas fichas. Barrera final revalidada en main: editorial-queue=0 y mobile-decisions sin estados editoriales activos. ImageGen=0; publicaciones=0; incidentes=0.",
   "history": [
     {
       "run_id": "tr-1794361941170-manual",
@@ -5536,23 +5605,61 @@
       "title": "Jorge Salvaje",
       "queue_complete": false,
       "message": "Investigando Jorge Salvaje r1 desde cero; revalidación JIT en main y contraste de la pista sobre Jordi Wild. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-20261113T212500-chat-direct",
+      "status": "DONE",
+      "phase": "closing",
+      "started_at": "2026-11-13T21:25:00+01:00",
+      "updated_at": "2026-11-13T21:35:09+01:00",
+      "finished_at": "2026-11-13T21:35:09+01:00",
+      "current": 3,
+      "total": 3,
+      "queue_complete": true,
+      "processed_ids": [
+        "019f7a9bc80d",
+        "red-review-2fd97b4bcc1404cb083e",
+        "red-review-859f7c478f636b3075b4"
+      ],
+      "outcomes": [
+        {
+          "id": "019f7a9bc80d",
+          "revision": 1,
+          "name": "Jorge Salvaje",
+          "outcome": "explained",
+          "applied": true,
+          "apply_commit": "0e8178e2936236c7392088507bda7fe9ad8e590a"
+        },
+        {
+          "id": "red-review-2fd97b4bcc1404cb083e",
+          "revision": 0,
+          "name": "Revisar novedades: #PazCasaTrabajo29N",
+          "outcome": "continuity",
+          "applied": true,
+          "source_id": "c04ca7365d3b",
+          "apply_commit": "eb933ea7a00e1a22d27dc8327255e475f825acbc"
+        },
+        {
+          "id": "red-review-859f7c478f636b3075b4",
+          "revision": 0,
+          "name": "Revisar novedades: Jensen Huang",
+          "outcome": "continuity",
+          "applied": true,
+          "source_id": "f3c37f45aebd",
+          "apply_commit": "e04624377a4fadb3646363f83ba4828cfc9d61f6"
+        }
+      ],
+      "message": "Pasada TTendencias completada 3/3: Jorge Salvaje r1 corregido y explicado; #PazCasaTrabajo29N y Jensen Huang actualizados como continuidad en sus mismas fichas. Barrera final revalidada en main: editorial-queue=0 y mobile-decisions sin estados editoriales activos. ImageGen=0; publicaciones=0; incidentes=0."
     }
   ],
-  "current_item": {
-    "id": "019f7a9bc80d",
-    "revision": 1,
-    "name": "Jorge Salvaje",
-    "status": "preparing",
-    "task": "explain"
-  },
+  "current_item": null,
   "withdrawn_ids": [],
-  "last_finished_at": "2026-11-13T21:11:00+01:00",
-  "last_revalidated_at": "2026-11-13T21:11:00+01:00",
+  "last_finished_at": "2026-11-13T21:35:09+01:00",
+  "last_revalidated_at": "2026-11-13T21:35:09+01:00",
   "last_revalidation": {
-    "at": "2026-11-13T21:11:00+01:00",
+    "at": "2026-11-13T21:35:09+01:00",
     "queue_count": 0,
-    "queue_updated_at": "2026-11-13T21:01:17+01:00",
-    "active_mobile_decisions": 0
+    "mobile_active_count": 0
   },
   "prior_runtime_observed": {
     "run_id": "tr-autoguard-1794381666",
@@ -5560,8 +5667,8 @@
     "finished_at": "2026-11-11T08:31:36+01:00",
     "updated_at": "2026-11-11T08:31:36+01:00"
   },
-  "apply_workflow_run_id": 43477991983,
-  "apply_commit": "6e82d472feca711a890d2607a1285574e12e8c33",
+  "apply_workflow_run_id": 43501961421,
+  "apply_commit": "0e8178e2936236c7392088507bda7fe9ad8e590a",
   "maintenance_workflow_run_id": 43494709436,
   "maintenance_job_id": "red-review-61d494cc18e2321aaa5b",
   "workflow_run_id": 43046392853,
@@ -8861,12 +8968,12 @@
     }
   ],
   "outbox_comment_id": 6849930890,
-  "editorial_apply_commit": "c1025b0b0ca9ec994ab4a3c929e96b9cc297b151",
+  "editorial_apply_commit": "0e8178e2936236c7392088507bda7fe9ad8e590a",
   "refresh_workflow_run_id": null,
   "refresh_conclusion": "completed_with_health_status_conflict_markers",
   "maintenance_apply_commits": [
-    "c59292cb3d9adf83c758565b34119dca8e1a8a7b",
-    "0c88a8cdd984fd47a820048890ed7a91e3db20f9"
+    "eb933ea7a00e1a22d27dc8327255e475f825acbc",
+    "e04624377a4fadb3646363f83ba4828cfc9d61f6"
   ],
   "outbox_commit": "d4a002c34e63c0e825a820bc432b784b1353cbaa",
   "prior_last_run": {
@@ -9373,6 +9480,11 @@
       "revision": 1,
       "name": "Jorge Salvaje",
       "message": "Revisión 1 revalidada en main; investigando si «Jorge Salvaje» identifica a Jordi Wild y el contexto del plantón de Abascal."
+    },
+    {
+      "at": "2026-11-13T21:35:09+01:00",
+      "phase": "closing",
+      "message": "Barrera final: cola editorial 0, decisiones editoriales activas 0; ejecución cerrada 3/3."
     }
   ],
   "processed": [
@@ -9388,13 +9500,13 @@
   ],
   "maintenance_outbox_commit": "c764cbdfc37ba7b67fedd38a16837ee068ae9467",
   "editorial_apply_run_id": 43477991983,
-  "finished_at": null,
-  "completed_at": null,
+  "finished_at": "2026-11-13T21:35:09+01:00",
+  "completed_at": "2026-11-13T21:35:09+01:00",
   "maintenance_outbox_commits": [
     "24805770cc5efabc2f14e0019c9fa592aecf4d7b",
     "82935552cfd2620c52c01e6603ac598051a8eec4",
     "c74a2aca815578b22fd10e4d2ee66b3dd64f0693"
   ],
-  "maintenance_apply_run_id": 43494709436,
-  "maintenance_apply_commit": "0c88a8cdd984fd47a820048890ed7a91e3db20f9"
+  "maintenance_apply_run_id": 43502827908,
+  "maintenance_apply_commit": "e04624377a4fadb3646363f83ba4828cfc9d61f6"
 }
