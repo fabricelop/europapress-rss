@@ -16,6 +16,7 @@ LEASE_MINUTES = 15
 MAX_ATTEMPTS = 3
 OPEN = {"pending", "review_pending"}
 FINISHED = {"ready", "published", "dismissed", "cancelled"}
+# captured_review se cuenta como pendiente pero NO se vuelve a enviar a ChatGPT.
 
 
 def _now(value=None):
@@ -37,7 +38,7 @@ def _check(queue):
 def _refresh(q):
     active = sorted(
         (item for item in q["items"].values()
-         if item["status"] in {"pending", "review_pending", "in_progress"}),
+         if item["status"] in {"pending", "review_pending", "in_progress", "captured_review"}),
         key=lambda x: (x.get("requested_at", ""), x["trend_id"]),
     )
     q["pending_count"] = len(active)
