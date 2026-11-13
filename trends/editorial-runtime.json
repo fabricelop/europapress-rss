@@ -3,19 +3,19 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261113T012500-chat-direct",
-  "previous_run_id": "tr-20261113T011200-chat-direct",
-  "command_id": "tr-20261113T012500-chat-direct",
+  "run_id": "tr-20261113T014000-chat-direct",
+  "previous_run_id": "tr-20261113T012500-chat-direct",
+  "command_id": "tr-20261113T014000-chat-direct",
   "source": "chat_direct",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-13T01:25:00+01:00",
-  "updated_at": "2026-11-13T01:26:00+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-13T01:40:00+01:00",
+  "updated_at": "2026-11-13T01:40:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -176,7 +176,7 @@
       "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 2026-11-13T01:21:18+01:00) y mobile-decisions sin preparing/update/processing/problematic/rewrite_pending/reexplain activos. Sin ImageGen ni publicaciones."
     }
   ],
-  "last_started_at": "2026-11-13T01:25:00+01:00",
+  "last_started_at": "2026-11-13T01:40:00+01:00",
   "last_completed_at": "2026-11-13T01:26:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -212,7 +212,7 @@
     },
     "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 2026-11-13T01:21:18+01:00) y mobile-decisions sin preparing/update/processing/problematic/rewrite_pending/reexplain activos. Sin ImageGen ni publicaciones."
   },
-  "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 2026-11-13T01:21:18+01:00) y mobile-decisions sin preparing/update/processing/problematic/rewrite_pending/reexplain activos. Sin ImageGen ni publicaciones.",
+  "message": "Cola inicial 0; revalidando main, estados editoriales activos y barrera JIT. Sin ImageGen ni publicación.",
   "history": [
     {
       "run_id": "tr-20261110T205500-manual",
@@ -7996,5 +7996,5 @@
   ],
   "processed": [],
   "maintenance_outbox_commit": "970b545c88b09429a23d15ec893b9d66fb611297",
-  "finished_at": "2026-11-13T01:26:00+01:00"
+  "finished_at": null
 }
