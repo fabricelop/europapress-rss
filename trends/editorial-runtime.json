@@ -7,15 +7,15 @@
   "previous_run_id": "tr-20261113T154000-chat-direct",
   "command_id": "tr-20261113T155500-chat-direct",
   "source": "chat_direct",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-13T15:55:00+01:00",
-  "updated_at": "2026-11-13T15:55:00+01:00",
+  "updated_at": "2026-11-13T15:56:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -629,30 +629,37 @@
       "status": "RUNNING",
       "phase": "preparing",
       "message": "Pasada manual iniciada desde ChatGPT; cola autoritativa=0 con Top 30 actualizado a las 15:51. Revalidando barrera final en main; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-13T15:56:00+01:00",
+      "run_id": "tr-20261113T155500-chat-direct",
+      "status": "DONE",
+      "phase": "closing",
+      "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 15:51:06), mobile-decisions sin estados editoriales activos y Top 30 actualizado a las 15:51:00. Sin ImageGen ni publicaciones."
     }
   ],
   "last_started_at": "2026-11-13T15:55:00+01:00",
-  "last_completed_at": "2026-11-13T15:29:16+01:00",
+  "last_completed_at": "2026-11-13T15:56:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261113T135500-chat-direct",
-    "status": "DONE_WITH_INCIDENTS",
-    "started_at": "2026-11-13T13:55:00+01:00",
-    "finished_at": "2026-11-13T14:11:22+01:00",
-    "at": "2026-11-13T14:11:22+01:00",
+    "run_id": "tr-20261113T155500-chat-direct",
+    "status": "DONE",
+    "started_at": "2026-11-13T15:55:00+01:00",
+    "finished_at": "2026-11-13T15:56:00+01:00",
+    "at": "2026-11-13T15:56:00+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 23,
-      "observed": 23,
-      "closed": 23,
-      "explained": 18,
-      "problematic": 1,
+      "attempted": 0,
+      "observed": 0,
+      "closed": 0,
+      "explained": 0,
+      "problematic": 0,
       "updates": 0,
-      "review_completed_no_distinct_event": 2,
-      "maintenance_reviews": 2,
-      "unchanged_reviews": 2,
+      "review_completed_no_distinct_event": 0,
+      "maintenance_reviews": 0,
+      "unchanged_reviews": 0,
       "continuity_updates": 0,
-      "distinct_updates": 1,
+      "distinct_updates": 0,
       "stale_reviews": 0,
       "unverified_reviews": 0,
       "anticipation_reviews": 0,
@@ -663,188 +670,17 @@
       "imagegen_calls": 0,
       "image_outbox_created": 0,
       "publications": 0,
-      "incidents": 1,
+      "incidents": 0,
       "concurrent_convergence": 0
     },
-    "processed_ids": [
-      "0c33e3f2c8d6",
-      "fb40ea486661",
-      "11dd9ba8e83e",
-      "58aede70c0ed",
-      "42a25e3d6736",
-      "d931eb8b246f",
-      "7da7bd066548",
-      "9469d3848691",
-      "6c960c86245f",
-      "9666b2b93842",
-      "1bac13f8b8a9",
-      "0f539e3e91d6",
-      "42591dd67a4e",
-      "382ad2c12d8e",
-      "35d12a3b3632",
-      "d19a15c70437",
-      "29696212d3dd",
-      "4ff8063c6398",
-      "d68369a04f30",
-      "adc96e398532",
-      "1ea1a6c850b1",
-      "red-review-44e4666bab644fb2d097",
-      "red-review-a153dcf3c20303ef0a52"
-    ],
+    "processed_ids": [],
     "converged_ids": [],
-    "outcomes": [
-      {
-        "id": "0c33e3f2c8d6",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "fb40ea486661",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "11dd9ba8e83e",
-        "revision": 1,
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "58aede70c0ed",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "42a25e3d6736",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "d931eb8b246f",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "7da7bd066548",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "9469d3848691",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "6c960c86245f",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "9666b2b93842",
-        "revision": 0,
-        "outcome": "review_completed_no_distinct_event",
-        "applied": true
-      },
-      {
-        "id": "1bac13f8b8a9",
-        "revision": 0,
-        "outcome": "review_completed_no_distinct_event",
-        "applied": true
-      },
-      {
-        "id": "0f539e3e91d6",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "42591dd67a4e",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "382ad2c12d8e",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "35d12a3b3632",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "d19a15c70437",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "29696212d3dd",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "4ff8063c6398",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "d68369a04f30",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "adc96e398532",
-        "revision": 0,
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "1ea1a6c850b1",
-        "revision": 2,
-        "outcome": "problematic",
-        "applied": true
-      },
-      {
-        "id": "red-review-44e4666bab644fb2d097",
-        "revision": 0,
-        "outcome": "unchanged",
-        "applied": true
-      },
-      {
-        "id": "red-review-a153dcf3c20303ef0a52",
-        "revision": 0,
-        "outcome": "unchanged",
-        "applied": true
-      }
-    ],
-    "incident_count": 1,
-    "incidents": [
-      {
-        "id": "1ea1a6c850b1",
-        "revision": 2,
-        "name": "españas",
-        "status": "problematic",
-        "reason": "No se ha verificado detonante actual concreto para la revisión manual."
-      }
-    ],
-    "message": "TTendencias V1 cerrada 23/23 (18 explicaciones verificadas en ambos registros, 2 reentradas sin episodio independiente, 2 mantenimientos sin novedades y españas r2 problematic sin causa corroborada). Cola final main=0; mobile-decisions sin estado editorial activo. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    "outcomes": [],
+    "incident_count": 0,
+    "incidents": [],
+    "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 15:51:06), mobile-decisions sin estados editoriales activos y Top 30 actualizado a las 15:51:00. Sin ImageGen ni publicaciones."
   },
-  "message": "Pasada manual iniciada desde ChatGPT; cola autoritativa=0 con Top 30 actualizado a las 15:51. Revalidando barrera final en main; sin ImageGen ni publicación.",
+  "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 15:51:06), mobile-decisions sin estados editoriales activos y Top 30 actualizado a las 15:51:00. Sin ImageGen ni publicaciones.",
   "history": [
     {
       "run_id": "tr-1794361941170-manual",
@@ -5127,15 +4963,14 @@
   ],
   "current_item": null,
   "withdrawn_ids": [],
-  "last_finished_at": "2026-11-13T14:11:22+01:00",
-  "last_revalidated_at": "2026-11-13T10:51:20+01:00",
+  "last_finished_at": "2026-11-13T15:56:00+01:00",
+  "last_revalidated_at": "2026-11-13T15:56:00+01:00",
   "last_revalidation": {
-    "at": "2026-11-13T08:56:00+01:00",
+    "at": "2026-11-13T15:56:00+01:00",
     "queue_count": 0,
-    "queue_updated_at": "2026-11-13T08:51:07+01:00",
+    "queue_updated_at": "2026-11-13T15:51:06+01:00",
     "mobile_active": 0,
-    "requests_active": 0,
-    "recent_captured_at": "2026-11-13T08:51:01+01:00"
+    "recent_captured_at": "2026-11-13T15:51:00+01:00"
   },
   "prior_runtime_observed": {
     "run_id": "tr-autoguard-1794381666",
@@ -7931,6 +7766,45 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 2026-11-13T08:51:07+01:00), mobile-decisions y requests sin estados editoriales activos. Top 30 vigente capturado a las 08:51:01. Sin ImageGen ni publicaciones; incidentes=0."
+    },
+    {
+      "run_id": "tr-20261113T155500-chat-direct",
+      "status": "DONE",
+      "started_at": "2026-11-13T15:55:00+01:00",
+      "finished_at": "2026-11-13T15:56:00+01:00",
+      "at": "2026-11-13T15:56:00+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 0,
+        "observed": 0,
+        "closed": 0,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 0,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [],
+      "converged_ids": [],
+      "outcomes": [],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 15:51:06), mobile-decisions sin estados editoriales activos y Top 30 actualizado a las 15:51:00. Sin ImageGen ni publicaciones."
     }
   ],
   "outbox_comment_id": 6849930890,
@@ -8262,9 +8136,16 @@
       "at": "2026-11-13T15:55:00+01:00",
       "phase": "preparing",
       "message": "Cola inicial 0 con Top 30 de 15:51; verificando barrera editorial JIT contra main."
+    },
+    {
+      "at": "2026-11-13T15:56:00+01:00",
+      "phase": "closing",
+      "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 15:51:06), mobile-decisions sin estados editoriales activos y Top 30 actualizado a las 15:51:00. Sin ImageGen ni publicaciones."
     }
   ],
   "processed": [],
   "maintenance_outbox_commit": "970b545c88b09429a23d15ec893b9d66fb611297",
-  "editorial_apply_run_id": 43378988402
+  "editorial_apply_run_id": 43378988402,
+  "finished_at": "2026-11-13T15:56:00+01:00",
+  "completed_at": "2026-11-13T15:56:00+01:00"
 }
