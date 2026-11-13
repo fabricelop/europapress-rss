@@ -1,20 +1,17 @@
 {
   "schema_version": 1,
   "updated_at": "2026-11-13",
-  "terms": [
+  "terms": [],
+  "one_shot_retirements": [
     {
-      "name": "#DesterrarLaMonarquia",
-      "key": "desterrarlamonarquia",
-      "reason": "El editor ordena retirar esta tendencia bloqueada de Pendientes y de todas las listas",
-      "scope": "all_managed_trend_lists",
-      "do_not_requeue": true
-    },
-    {
-      "name": "#EncuestasManipuladas",
-      "key": "encuestasmanipuladas",
-      "reason": "Editor considera publicada la revisión 0 del elemento 35deccb4ce35; retirar de las listas activas sin republicar",
-      "scope": "all_managed_trend_lists",
-      "do_not_requeue": true
+      "id": "1ea1a6c850b1",
+      "revision": 3,
+      "name": "españas",
+      "reason": "Retirar exclusivamente la revisión 3 atascada en Pendientes de V1; permitir nuevas apariciones en Top30"
     }
+  ],
+  "released_legacy_keys": [
+    "desterrarlamonarquia",
+    "encuestasmanipuladas"
   ]
 }
