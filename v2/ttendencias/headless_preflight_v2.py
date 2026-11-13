@@ -17,7 +17,7 @@ import editorial_run_v2 as core
 from chrome_command_v2 import command
 from chrome_cleanup_v2 import cleanup_v2_profile
 from chrome_startup_v2 import wait_for_cdp
-from chrome_visibility_v2 import V2WindowHider, startupinfo_hidden
+from chrome_visibility_v2 import V2WindowHider, startupinfo_hidden, visible_windows_for_pids
 from process_lock_v2 import exclusive_v2_lock
 
 
@@ -90,6 +90,18 @@ def verify_under_lock():
                 if composer_ready:
                     break
                 time.sleep(2)
+            if composer_ready:
+                # Ensure the headed browser is REALLY hidden, not only
+                # minimized or off-screen. No other Chrome/profile is inspected.
+                for attempt in range(4):
+                    visible = visible_windows_for_pids(core.profile_pids())
+                    if visible == 0:
+                        break
+                    time.sleep(1)
+                if visible:
+                    raise RuntimeError("Chrome V2 conserva " + str(visible) +
+                                       " ventanas visibles; no activar")
+                print("TT_V2_HIDDEN_VISIBLE_WINDOWS=0", flush=True)
             if not composer_ready:
                 # Diagnostic contains no prompt, conversation body, cookie or token.
                 print("TT_V2_HIDDEN_PAGE_HOST=" + (page.url.split("/")[2] if "://" in page.url else "unknown"), flush=True)
