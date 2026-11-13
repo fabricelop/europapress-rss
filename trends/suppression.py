@@ -17,7 +17,8 @@ def key(value):
 
 def suppressed_keys():
     data = json.loads(CONFIG.read_text(encoding="utf-8"))
-    return {key(row["key"]) for row in data.get("terms", []) if row.get("key")}
+    return {key(row["key"]) for row in data.get("terms", [])
+            if row.get("key") and row.get("do_not_requeue") is True}
 
 
 def is_suppressed(value, keys=None):
