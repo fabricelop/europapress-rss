@@ -7,21 +7,21 @@
   "previous_run_id": "tr-20261113T014000-chat-direct",
   "command_id": "tr-20261113T015500-chat-direct",
   "source": "chat_direct",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-13T01:55:00+01:00",
-  "updated_at": "2026-11-13T01:57:00+01:00",
-  "current": 0,
+  "updated_at": "2026-11-13T02:01:50+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "radar-prepare-9e0310666132b2bd1a4f",
-  "title": "Radar · Este 29N",
-  "queue_complete": false,
-  "processed_ids": [],
-  "converged_ids": [],
-  "remaining_ids": [
+  "trend_id": null,
+  "title": "Pasada editorial TTendencias",
+  "queue_complete": true,
+  "processed_ids": [
     "radar-prepare-55ec4ae41a54016072c2",
     "radar-prepare-9e0310666132b2bd1a4f"
   ],
+  "converged_ids": [],
+  "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
@@ -180,17 +180,17 @@
     }
   ],
   "last_started_at": "2026-11-13T01:55:00+01:00",
-  "last_completed_at": "2026-11-13T01:41:15+01:00",
+  "last_completed_at": "2026-11-13T02:01:50+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261113T014000-chat-direct",
+    "run_id": "tr-20261113T015500-chat-direct",
     "status": "DONE",
-    "started_at": "2026-11-13T01:40:00+01:00",
-    "finished_at": "2026-11-13T01:41:15+01:00",
+    "started_at": "2026-11-13T01:55:00+01:00",
+    "finished_at": "2026-11-13T02:01:50+01:00",
     "summary": {
-      "attempted": 0,
-      "observed": 0,
-      "closed": 0,
+      "attempted": 2,
+      "observed": 2,
+      "closed": 2,
       "explained": 0,
       "problematic": 0,
       "updates": 0,
@@ -201,8 +201,8 @@
       "distinct_updates": 0,
       "stale_reviews": 0,
       "unverified_reviews": 0,
-      "anticipation_reviews": 0,
-      "anticipation_prepared": 0,
+      "anticipation_reviews": 2,
+      "anticipation_prepared": 2,
       "anticipation_unverified": 0,
       "queue_remaining": 0,
       "rewrite_pending_remaining": 0,
@@ -213,9 +213,9 @@
       "concurrent_convergence": 0,
       "cause_unconfirmed": 0
     },
-    "message": "Pasada TTendencias completada 0/0. Durante la ejecución el Top 30 se refrescó a 2026-11-13T01:40:54+01:00; barrera final main: editorial-queue=0 (updated_at 2026-11-13T01:41:00+01:00) y mobile-decisions sin estados editoriales activos. Sin ImageGen ni publicaciones."
+    "message": "Pasada TTendencias completada 2/2. Belén Esteban y Este 29N quedaron como anticipation_prepared mediante el aplicador oficial (7f4685b). Barrera final tras refresco Top 30 de 02:01:20: editorial-queue=0 (updated_at 02:01:27) y mobile-decisions sin estados editoriales activos. Sin ImageGen, Listas ni publicaciones."
   },
-  "message": "Belén Esteban: borrador Radar depositado en anticipation-outbox, pendiente de aplicación. Investigando Este 29N: la frase coincide con el arranque de campaña del PSOE para las generales del 29 de noviembre y con el llamamiento de Sánchez a una movilización histórica.",
+  "message": "Pasada TTendencias completada 2/2. Belén Esteban y Este 29N quedaron como anticipation_prepared mediante el aplicador oficial (7f4685b). Barrera final tras refresco Top 30 de 02:01:20: editorial-queue=0 (updated_at 02:01:27) y mobile-decisions sin estados editoriales activos. Sin ImageGen, Listas ni publicaciones.",
   "history": [
     {
       "run_id": "tr-1794340649326-manual",
@@ -4921,18 +4921,78 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada TTendencias completada 0/0. Durante la ejecución el Top 30 se refrescó a 2026-11-13T01:40:54+01:00; barrera final main: editorial-queue=0 (updated_at 2026-11-13T01:41:00+01:00) y mobile-decisions sin estados editoriales activos. Sin ImageGen ni publicaciones."
+    },
+    {
+      "run_id": "tr-20261113T015500-chat-direct",
+      "status": "DONE",
+      "started_at": "2026-11-13T01:55:00+01:00",
+      "finished_at": "2026-11-13T02:01:50+01:00",
+      "at": "2026-11-13T02:01:50+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 2,
+        "observed": 2,
+        "closed": 2,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 0,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 2,
+        "anticipation_prepared": 2,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0,
+        "cause_unconfirmed": 0
+      },
+      "processed_ids": [
+        "radar-prepare-55ec4ae41a54016072c2",
+        "radar-prepare-9e0310666132b2bd1a4f"
+      ],
+      "converged_ids": [],
+      "outcomes": [
+        {
+          "id": "radar-prepare-55ec4ae41a54016072c2",
+          "revision": 0,
+          "name": "Radar · Belén Esteban",
+          "outcome": "anticipation_prepared",
+          "applied": true,
+          "apply_commit": "7f4685b467df5cee8391998db1a3e19049b61c42"
+        },
+        {
+          "id": "radar-prepare-9e0310666132b2bd1a4f",
+          "revision": 0,
+          "name": "Radar · Este 29N",
+          "outcome": "anticipation_prepared",
+          "applied": true,
+          "apply_commit": "7f4685b467df5cee8391998db1a3e19049b61c42"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada TTendencias completada 2/2. Belén Esteban y Este 29N quedaron como anticipation_prepared mediante el aplicador oficial (7f4685b). Barrera final tras refresco Top 30 de 02:01:20: editorial-queue=0 (updated_at 02:01:27) y mobile-decisions sin estados editoriales activos. Sin ImageGen, Listas ni publicaciones."
     }
   ],
   "current_item": null,
   "withdrawn_ids": [],
-  "last_finished_at": "2026-11-13T01:41:15+01:00",
-  "last_revalidated_at": "2026-11-13T01:41:15+01:00",
+  "last_finished_at": "2026-11-13T02:01:50+01:00",
+  "last_revalidated_at": "2026-11-13T02:01:50+01:00",
   "last_revalidation": {
-    "at": "2026-11-13T01:41:15+01:00",
-    "queue_updated_at": "2026-11-13T01:41:00+01:00",
+    "at": "2026-11-13T02:01:50+01:00",
+    "queue_updated_at": "2026-11-13T02:01:27+01:00",
     "queue_count": 0,
     "active_mobile_decisions": 0,
-    "recent_captured_at": "2026-11-13T01:40:54+01:00"
+    "recent_captured_at": "2026-11-13T02:01:20+01:00"
   },
   "prior_runtime_observed": {
     "run_id": "tr-autoguard-1794381666",
@@ -8007,5 +8067,5 @@
   ],
   "processed": [],
   "maintenance_outbox_commit": "970b545c88b09429a23d15ec893b9d66fb611297",
-  "finished_at": null
+  "finished_at": "2026-11-13T02:01:50+01:00"
 }
