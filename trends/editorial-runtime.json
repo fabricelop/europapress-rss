@@ -7,24 +7,22 @@
   "previous_run_id": "tr-20261113T142655-chat-direct",
   "command_id": "tr-20261113T152500-chat-direct",
   "source": "chat_direct",
-  "status": "RUNNING",
+  "status": "success",
   "phase": "investigating",
   "started_at": "2026-11-13T15:25:00+01:00",
-  "updated_at": "2026-11-13T15:25:00+01:00",
+  "updated_at": "2026-11-13T15:29:16+01:00",
   "current": 1,
   "total": 1,
   "trend_id": "adc96e398532",
   "title": "Opus",
-  "queue_complete": false,
-  "processed_ids": [],
+  "queue_complete": true,
+  "processed_ids": [
+    "adc96e398532"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "adc96e398532"
-  ],
+  "remaining_ids": [],
   "remaining_active_ids": [],
-  "remaining_problematic_ids": [
-    "adc96e398532"
-  ],
+  "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
     "observed": 0,
@@ -607,8 +605,8 @@
       "message": "Ejecución manual desde ChatGPT. Revalidación JIT: Opus r1 sigue problematic y dentro del Top 30; investigación nueva desde cero con contexto X fresco y contraste independiente. Sin ImageGen ni publicación."
     }
   ],
-  "last_started_at": "2026-11-13T15:05:48+01:00",
-  "last_completed_at": "2026-11-13T15:05:48+01:00",
+  "last_started_at": "2026-11-13T15:29:15+01:00",
+  "last_completed_at": "2026-11-13T15:29:16+01:00",
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-20261113T135500-chat-direct",
