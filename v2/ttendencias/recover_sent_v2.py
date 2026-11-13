@@ -125,6 +125,8 @@ def no_send_recovery(trend_id, revision):
                 page.goto(url, wait_until="domcontentloaded", timeout=60000)
             last = ""
             stable = 0
+            reload_done = False
+            result["load_retries"] = 0
             deadline = time.monotonic() + 120
             while time.monotonic() < deadline:
                 if page.url != url:
@@ -132,8 +134,17 @@ def no_send_recovery(trend_id, revision):
                     continue
                 body = page.locator("body").inner_text(timeout=8000)
                 if "Could not load this ChatGPT conversation" in body:
+                    if not reload_done:
+                        reload_done = True
+                        result["load_retries"] = 1
+                        result["first_load_failure"] = True
+                        print("TT_V2_SINGLE_READ_ONLY_RELOAD=YES", flush=True)
+                        # Una sola recarga del MISMO chat; nunca pulsar Retry ni enviar texto.
+                        page.reload(wait_until="domcontentloaded", timeout=45000)
+                        time.sleep(3)
+                        continue
                     result["status"] = "conversation_load_failed"
-                    result["last_reason"] = "conversation_inaccessible"
+                    result["last_reason"] = "conversation_inaccessible_in_v2_profile"
                     result["visible_tail"] = body[-1200:]
                     print("TT_V2_CONVERSATION_LOAD_FAILED=YES", flush=True)
                     break
@@ -154,6 +165,13 @@ def no_send_recovery(trend_id, revision):
                 result["status"] = "not_verified"
                 result["visible_tail"] = page.locator("body").inner_text(timeout=8000)[-3000:]
                 result["last_reason"] = reason
+            result["page_url"] = page.url
+            result["page_title"] = page.title()
+            result["session_signals"] = {
+                "login_link_count": page.locator("a[href*='/auth/login'],a[href*='/login']").count(),
+                "account_menu_count": page.locator("[data-testid='profile-button'],button[aria-label*='Profile'],button[aria-label*='Perfil']").count(),
+                "composer_count": page.locator("#prompt-textarea,[data-testid='prompt-textarea']").count()
+            }
             try:
                 browser.new_browser_cdp_session().send("Browser.close")
             except Exception:
