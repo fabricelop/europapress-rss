@@ -14,6 +14,8 @@ import sys
 import urllib.error
 import urllib.parse
 import urllib.request
+import time
+from datetime import datetime, timezone
 
 BRANCH = "feature/ttactualidad-v2-clean"
 REPO = "fabricelop/europapress-rss"
@@ -71,6 +73,16 @@ def build(history, queue):
         if tech not in STATUS:
             raise ValueError("Estado editorial desconocido: " + str(tech))
         category, label = STATUS[tech]
+        if tech == "in_progress":
+            # El lease caducado es incidencia, NO una autorización de reenvío.
+            raw_expiry = (item.get("lease") or {}).get("expires_at")
+            try:
+                if raw_expiry:
+                    expiry = datetime.fromisoformat(raw_expiry.replace("Z", "+00:00"))
+                    if expiry.tzinfo is not None and expiry < datetime.now(timezone.utc):
+                        category, label = "incidencia", "Elaboración interrumpida"
+            except (ValueError, TypeError):
+                category, label = "incidencia", "Reserva no válida"
         answer = ""
         chat_url = ""
         captured_at = ""
@@ -152,30 +164,41 @@ def read_remote(auth, name):
 
 
 def sync_to_github(auth):
-    """Proyección derivada de los estados autoritativos, nunca de memoria local."""
-    history, _ = read_remote(auth, "history.json")
-    queue, _ = read_remote(auth, "editorial-queue.json")
-    expected = build(history, queue)
-    current = gh("GET", auth, "web-top30.json")
-    stored = json.loads(base64.b64decode(current["content"])) if current else None
-    if stored != expected:
-        # Una captura nueva entre lecturas NO debe dejar una web inconsistente:
-        # la próxima captura programada vuelve a sincronizar el snapshot.
-        payload = {
-            "branch": BRANCH, "message": "v2: refresh live Top30 web preview",
-            "content": base64.b64encode((json.dumps(expected, ensure_ascii=False, indent=2)
-                                        + "\n").encode("utf-8")).decode("ascii"),
-        }
-        if current:
-            payload["sha"] = current["sha"]
-        result = gh("PUT", auth, "web-top30.json", payload)
-        if not (result or {}).get("commit", {}).get("sha"):
-            raise RuntimeError("No se confirmó el commit de Top30 web")
-    verified, _ = read_remote(auth, "web-top30.json")
-    if verified != expected:
-        raise RuntimeError("Top30 web no coincide con la captura")
-    return expected
+    """Solo sincronizar la proyección V2, con tolerancia a refresco concurrente.
 
+    Si cambian los SHA de historial/cola por el cron, recomputar en vez de
+    publicar un snapshot de fechas mezcladas. Nunca toca V1 ni publica.
+    """
+    last_error = ""
+    for attempt in range(4):
+        try:
+            history, _ = read_remote(auth, "history.json")
+            queue, _ = read_remote(auth, "editorial-queue.json")
+            expected = build(history, queue)
+            current = gh("GET", auth, "web-top30.json")
+            stored = json.loads(base64.b64decode(current["content"])) if current else None
+            if stored != expected:
+                payload = {
+                    "branch": BRANCH,
+                    "message": "v2: refresh live Top30 web preview",
+                    "content": base64.b64encode((json.dumps(expected, ensure_ascii=False,
+                                                           indent=2) + "\\n").encode("utf-8")).decode("ascii"),
+                }
+                if current:
+                    payload["sha"] = current["sha"]
+                result = gh("PUT", auth, "web-top30.json", payload)
+                if not (result or {}).get("commit", {}).get("sha"):
+                    raise RuntimeError("GitHub no confirmó Top30 web")
+            verified, _ = read_remote(auth, "web-top30.json")
+            if verified != expected:
+                raise RuntimeError("Top30 web modificado concurrentemente")
+            return expected
+        except (RuntimeError, ValueError) as exc:
+            last_error = str(exc)
+            if attempt == 3:
+                raise RuntimeError("Top30 web no sincronizado: " + last_error) from exc
+            time.sleep(1 + attempt)
+    raise RuntimeError("Top30 web no sincronizado: " + last_error)
 
 def local_json(path):
     target = pathlib.Path(path).resolve()
