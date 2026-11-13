@@ -7,19 +7,25 @@
   "previous_run_id": "tr-20261113T072500-chat-direct",
   "command_id": "tr-20261113T085500-chat-direct",
   "source": "chat_direct",
-  "status": "DONE",
+  "status": "waiting",
   "phase": "closing",
   "started_at": "2026-11-13T08:55:00+01:00",
-  "updated_at": "2026-11-13T08:56:00+01:00",
+  "updated_at": "2026-11-13T09:33:54+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": true,
-  "processed_ids": [],
+  "queue_complete": false,
+  "processed_ids": [
+    "471fbc2933cf"
+  ],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "ee465ef30ece"
+  ],
+  "remaining_active_ids": [
+    "ee465ef30ece"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
@@ -381,7 +387,7 @@
       "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 2026-11-13T08:51:07+01:00), mobile-decisions y requests sin estados editoriales activos. Top 30 vigente capturado a las 08:51:01. Sin ImageGen ni publicaciones; incidentes=0."
     }
   ],
-  "last_started_at": "2026-11-13T08:37:57+01:00",
+  "last_started_at": "2026-11-13T09:33:54+01:00",
   "last_completed_at": "2026-11-13T08:56:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
