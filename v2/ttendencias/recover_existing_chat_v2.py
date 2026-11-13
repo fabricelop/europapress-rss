@@ -13,6 +13,8 @@ import hashlib
 import json
 import pathlib
 import re
+import socket
+import urllib.request
 import subprocess
 import sys
 import time
@@ -213,6 +215,120 @@ def recover(trend_id, revision, *, lock_held=False):
         print("TT_V2_RECOVERY_CHROME_CLOSED=YES", flush=True)
         persist_existing(api, auth, state, record, journal)
         print("TT_V2_RECOVERY_COMPLETED=YES", flush=True)
+
+
+def recover_closed_chat(trend_id, revision, *, lock_held=False):
+    """Open the KNOWN existing chat read-only in temporary headless Chrome V2.
+
+    Used only after the previous V2 Chrome has disappeared and its lease expired.
+    Never uses Enter, never creates a new chat, never touches a V1 profile.
+    """
+    with (contextlib.nullcontext() if lock_held else exclusive_v2_lock(LOCK)):
+        journal, record = journal_for(trend_id, revision)
+        api = core.module("persist_capture_github.py", "ttv2_offline_api")
+        state = core.module("editorial_capture_state.py", "ttv2_offline_state")
+        transcript = core.module("chatgpt_transcript.py", "ttv2_offline_transcript")
+        tracker = core.module("chatgpt_target_tracker.py", "ttv2_offline_tracker")
+        auth = api.token()
+        confirm_remote(api, auth, record)
+        if core.profile_pids():
+            raise RuntimeError("Chrome V2 activo: no lanzar recuperación paralela")
+        candidate = tracker.canonical(record.get("chat_url") or "")
+        if not CHAT_RE.fullmatch(candidate):
+            raise RuntimeError("Sin URL inequívoca del chat previo")
+        if not core.CHROME.exists() or not core.PROFILE.is_dir():
+            raise RuntimeError("Perfil Chrome V2 de recuperación no disponible")
+        with socket.socket() as sock:
+            sock.bind(("127.0.0.1", 0))
+            port = sock.getsockname()[1]
+        args = core.module("chrome_command_v2.py", "ttv2_offline_chrome").command(
+            core.CHROME, core.PROFILE, port, headless=True, url=candidate)
+        proc = None
+        owned = set()
+        browser = None
+        captured = False
+        try:
+            proc = subprocess.Popen(args, stdout=subprocess.DEVNULL,
+                                    stderr=subprocess.DEVNULL,
+                                    creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
+            endpoint = "http://127.0.0.1:" + str(port)
+            for _ in range(35):
+                if proc.poll() is not None:
+                    raise RuntimeError("Chrome V2 recuperación terminó prematuramente")
+                try:
+                    with urllib.request.urlopen(endpoint + "/json/version", timeout=2) as response:
+                        if json.load(response).get("Browser"):
+                            break
+                except (OSError, ValueError):
+                    time.sleep(1)
+            else:
+                raise RuntimeError("CDP recuperación V2 inaccesible")
+            owned = core.profile_pids()
+            if not owned:
+                raise RuntimeError("Proceso Chrome V2 no identificable")
+            with sync_playwright() as pw:
+                browser = pw.chromium.connect_over_cdp(endpoint, timeout=16000)
+                context = browser.contexts[0]
+                pages = list(context.pages)
+                page = next((p for p in pages if tracker.canonical(p.url) == candidate), None)
+                if page is None:
+                    page = context.new_page()
+                    page.goto(candidate, wait_until="domcontentloaded", timeout=45000)
+                found = False
+                for _ in range(24):
+                    if tracker.canonical(page.url) == candidate and tracker.verify_conversation(
+                        page, trend_id, revision
+                    ):
+                        found = True
+                        break
+                    time.sleep(2)
+                if not found:
+                    raise RuntimeError("Chat previo no visible o identidad no verificable")
+                result = transcript.capture_existing_page(
+                    page, trend_id=trend_id, revision=revision,
+                    seconds=90, allow_single_reload=False)
+                record["capture_diagnostic"] = {
+                    "status": result["status"], "reason": result["reason"],
+                    "observations": result["observations"]}
+                if result["status"] != "captured" or tracker.canonical(result["url"]) != candidate:
+                    core.store(journal, record)
+                    raise RuntimeError("Chat previo no recuperable sin reenvío")
+                record["answer"] = result["answer"]
+                record["chat_url"] = candidate
+                record["reply_captured"] = True
+                record["status"] = "captured_needs_editorial_validation"
+                record["validation"] = "previous_chat_identity_and_stable_dom_or_footer"
+                captured = True
+                core.store(journal, record)
+                print("TT_V2_CLOSED_CHAT_RECOVERED=YES", flush=True)
+        finally:
+            if browser:
+                try:
+                    session = browser.new_browser_cdp_session()
+                    session.send("Browser.close")
+                except Exception:
+                    pass
+                try: browser.close()
+                except Exception: pass
+            if proc:
+                try: proc.wait(timeout=8)
+                except subprocess.TimeoutExpired: pass
+            remaining = core.profile_pids()
+            for pid in remaining & owned:
+                subprocess.run(["taskkill", "/PID", str(pid), "/F"],
+                               capture_output=True, timeout=15,
+                               creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
+            if proc and proc.poll() is None:
+                try: proc.kill()
+                except OSError: pass
+            time.sleep(1)
+            record["remaining_v2_pids"] = sorted(core.profile_pids())
+            record["cleanup_verified"] = not record["remaining_v2_pids"]
+            core.store(journal, record)
+        if not captured or not record["cleanup_verified"]:
+            raise RuntimeError("No se verificó captura y cierre del chat previo")
+        persist_existing(api, auth, state, record, journal)
+        print("TT_V2_CLOSED_CHAT_PERSISTED=YES", flush=True)
 
 
 def recover_orphan_automatically():
