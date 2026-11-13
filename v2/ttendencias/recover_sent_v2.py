@@ -42,8 +42,25 @@ def no_send_recovery(trend_id, revision):
         print("TT_V2_ALREADY_PERSISTED=YES")
         return
     url = record.get("chat_url") or ""
-    if not re.fullmatch(r"https://chatgpt\.com/c/[A-Za-z0-9-]{16,80}", url):
-        raise RuntimeError("Falta URL de conversación válida en el diario local. NO REENVIAR.")
+    valid_url = r"https://chatgpt\\.com/c/[A-Za-z0-9-]{16,80}"
+    if not re.fullmatch(valid_url, url):
+        # Descubrimiento local ya comprobado contra el turno del usuario:
+        # identidad, revisión y cierre del Chrome aislado.
+        discovery = core.DIAG_DIR / ("discover-" + trend_id + ".json")
+        if not discovery.exists():
+            raise RuntimeError("Sin URL ni diagnóstico de descubrimiento: NO REENVIAR")
+        found = json.loads(discovery.read_text(encoding="utf-8-sig"))
+        if (found.get("found") is not True
+            or found.get("trend_id") != trend_id
+            or found.get("revision") != revision
+            or found.get("cleanup_verified") is not True
+            or found.get("message_sent") is not False
+            or found.get("github_write") is not False):
+            raise RuntimeError("Descubrimiento no validado: NO REENVIAR")
+        url = found.get("chat_url") or ""
+        if not re.fullmatch(valid_url, url):
+            raise RuntimeError("URL descubierta inválida: NO REENVIAR")
+        print("TT_V2_RECOVER_USING_DISCOVERY=YES", flush=True)
     api = core.module("persist_capture_github.py", "ttv2_gh_recovery")
     state = core.module("editorial_capture_state.py", "ttv2_capture_recovery")
     extractor = core.module("chatgpt_transcript.py", "ttv2_transcript_recovery")
@@ -174,6 +191,7 @@ def no_send_recovery(trend_id, revision):
         or cap.get("editorial_validated") is not False):
         raise RuntimeError("Lectura de verificación de GitHub fallida; NO reenviar")
     record["persisted"] = True
+    record["chat_url"] = url
     record["status"] = "persisted_captured_review"
     core.store(log, record)
     print("TT_V2_RECOVERY_STATUS=staged_pending_editorial_review")
