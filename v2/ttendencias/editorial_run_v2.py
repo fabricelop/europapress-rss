@@ -299,19 +299,20 @@ def run_one(api, state, transcript, auth, item):
             try: browser.close()
             except Exception: pass
         if proc:
-            try: proc.wait(timeout=10)
-            except subprocess.TimeoutExpired: pass
-        remaining = profile_pids()
-        for pid in remaining & owned:
-            subprocess.run(["taskkill", "/PID", str(pid), "/F"],
-                           capture_output=True, timeout=15,
-                           creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
-        time.sleep(2)
-        remaining = profile_pids()
-        record["remaining_v2_pids"] = sorted(remaining)
-        record["cleanup_verified"] = bool(proc) and not remaining
+            try: proc.wait(timeout=7)
+            except subprocess.TimeoutExpired:
+                # Solo el proceso Chrome V2 que este mismo run_one abrió.
+                try: proc.kill()
+                except OSError: pass
+        cleaner = module("chrome_cleanup_v2.py", "ttv2_editorial_chrome_cleanup")
+        cleanup = cleaner.cleanup_v2_profile(profile_pids)
+        remaining = cleanup["remaining"]
+        record["remaining_v2_pids"] = remaining
+        record["cleanup_verified"] = bool(proc) and cleanup["closed"]
+        record["cleanup_rounds"] = cleanup["rounds"]
         store(journal, record)
         print("TT_V2_REMAINING_PROCESSES=" + str(len(remaining)), flush=True)
+        print("TT_V2_CHROME_CLEANUP_ROUNDS=" + str(cleanup["rounds"]), flush=True)
     if not record["reply_captured"] or not record["cleanup_verified"]:
         # Asegurar un estado de recuperación persistente sin reabrir otro chat.
         # La cola tiene send_intent: NUNCA devolverla a pending.
