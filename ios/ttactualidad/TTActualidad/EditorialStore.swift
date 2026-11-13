@@ -1979,7 +1979,7 @@ final class EditorialStore: ObservableObject {
         }
     }
 
-    private static let closed: Set<String> = ["deleted", "dismissed", "published", "removed", "delete_pending"]
+    private nonisolated static let closed: Set<String> = ["deleted", "dismissed", "published", "removed", "delete_pending"]
 
     private nonisolated static func rows(_ doc: [String: Any], _ key: String) -> [[String: Any]] {
         doc[key] as? [[String: Any]] ?? []
@@ -1994,7 +1994,7 @@ final class EditorialStore: ObservableObject {
     }
     // NSCache synchronizes readers on MainActor and the detached builder.
     // Formatters are per-cache-miss, never shared across threads.
-    private nonisolated static let parsedISODates: NSCache<NSString, NSDate> = {
+    private nonisolated(unsafe) static let parsedISODates: NSCache<NSString, NSDate> = {
         let cache = NSCache<NSString, NSDate>()
         cache.countLimit = 8192
         return cache
