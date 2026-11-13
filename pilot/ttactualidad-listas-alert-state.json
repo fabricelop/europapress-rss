@@ -3,7 +3,7 @@
   "initialized": true,
   "lists": {
     "ttittulares": {
-      "count": 13,
+      "count": 12,
       "armed": false,
       "sequence": 130,
       "active_ids": [
@@ -13,7 +13,6 @@
         "5989af264cbe",
         "7766f94b0bb3",
         "91e007948839",
-        "b8db6c960303",
         "c2c5fea57972",
         "c7f33e091376",
         "ccf4b9a18b54",
@@ -21,23 +20,15 @@
         "f5d5443cdf03",
         "fe3c73635758"
       ],
-      "observed_at": "2026-11-13T16:07:09.077469+00:00"
+      "observed_at": "2026-11-13T16:29:34.002360+00:00"
     },
     "ttendencias": {
-      "count": 0,
-      "armed": true,
-      "sequence": 62
+      "count": 4,
+      "armed": false,
+      "sequence": 63
     }
   },
   "outbox": [
-    {
-      "id": "ttendencias-41",
-      "project": "ttendencias",
-      "count": 4,
-      "at": "2026-11-05T08:17:52.949770+00:00",
-      "status": "sent",
-      "sent_at": "2026-11-05T08:17:54.799444+00:00"
-    },
     {
       "id": "ttittulares-103",
       "project": "ttittulares",
@@ -429,6 +420,13 @@
       "at": "2026-11-13T16:04:15.722750+00:00",
       "status": "sent",
       "sent_at": "2026-11-13T16:04:17.513703+00:00"
+    },
+    {
+      "id": "ttendencias-63",
+      "project": "ttendencias",
+      "count": 4,
+      "at": "2026-11-13T16:29:34.002360+00:00",
+      "status": "pending"
     }
   ]
 }
