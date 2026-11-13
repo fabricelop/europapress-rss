@@ -4,6 +4,7 @@ on:
     branches: [feature/ttactualidad-v2-clean]
     paths:
       - 'v2/**'
+      - '!v2/ttendencias/state/**'
       - '.github/workflows/ttactualidad-v2-step01.yml'
   workflow_dispatch:
   workflow_call:
