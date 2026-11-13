@@ -1192,3 +1192,17 @@ assert 'buffer.hidesFromListas(project: "ttendencias"' in store
 print("TT_LIVE_ACTIVITY_BUILD103_LISTAS_PARITY_OK")
 
 
+
+# Performance regression: Buffer polling must not re-render Listas/Live Activity
+# on byte-identical ledgers. Preserve verified ledger and publication protections.
+buffer_perf = (root / "TTActualidad/BufferPublishTracker.swift").read_text(encoding="utf8")
+assert "private var blockingPostKeys = Set<String>()" in buffer_perf
+assert "private var lastVerifiedLedgerData: Data?" in buffer_perf
+assert "blockingPostKeys.contains(key)" in buffer_perf
+assert "blockingPostKeys.contains(Self.key(project, id, revision))" in buffer_perf
+assert "if data == lastVerifiedLedgerData" in buffer_perf
+assert "lastVerifiedLedgerData = data" in buffer_perf
+assert "confirmedSentKeys.union(confirmed)" in buffer_perf
+assert "pendingRequestIDs" in buffer_perf
+assert "change += 1  // A changed verified ledger" in buffer_perf
+print("TT_BUFFER_UI_PERFORMANCE_B103_GUARDS_OK")
