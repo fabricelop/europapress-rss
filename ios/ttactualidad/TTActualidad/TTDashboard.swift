@@ -1019,10 +1019,12 @@ struct TTDashboard: View {
             // Failed investigations remain findable even after leaving Top 30.
             var names = Set<String>()
             return (items.filter { $0.explanation.isEmpty } +
-                    store.snapshot.unexplainedTrends).filter {
-                names.insert($0.name.folding(options: [.caseInsensitive, .diacriticInsensitive],
-                                             locale: .current)).inserted
-            }
+                    store.snapshot.unexplainedTrends)
+                .filter { store.showInPendientes($0) }
+                .filter {
+                    names.insert($0.name.folding(options: [.caseInsensitive, .diacriticInsensitive],
+                                                 locale: .current)).inserted
+                }
         case .antiguas: return items.filter { $0.ageBand() == 3 }
         }
     }

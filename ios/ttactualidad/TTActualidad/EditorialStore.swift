@@ -192,6 +192,7 @@ struct EditorialOperation: Codable, Identifiable {
 final class EditorialStore: ObservableObject {
     @Published var section: EditorialSection = .trends
     @Published var trendFilter: TrendFilter = .top
+    @Published private(set) var pendingTrendRetirements: [TrendPendingRetirement] = []
     @Published var newsFilter: NewsFilter = .listas
     @Published private(set) var snapshot = EditorialSnapshot()
     // UI-only signal, not a receipt of a completed GitHub action.
@@ -604,6 +605,7 @@ final class EditorialStore: ObservableObject {
         "trends/explained.json",
         "trends/telegram-image-deliveries.json",
         "trends/mobile-decisions.json",
+        "trends/pending-retirements.json",
         "trends/editorial-queue.json"
     ]
 
@@ -725,6 +727,20 @@ final class EditorialStore: ObservableObject {
         let downloaded = loaded.downloaded
         let docs = loaded.docs
         let partial = loaded.partial
+        // Load the one-episode pending removal ledger independently of the
+        // large historical requests. Keep the previous verified copy on errors.
+        if downloaded["trends/pending-retirements.json"] != nil {
+            pendingTrendRetirements = Self.rows(
+                docs["trends/pending-retirements.json"] ?? [:], "items"
+            ).compactMap { row -> TrendPendingRetirement? in
+                guard let retiredAt = Self.when(row, ["retired_at"]),
+                      !Self.str(row, "name").isEmpty else { return nil }
+                return TrendPendingRetirement(
+                    editorialID: Self.str(row, "id"),
+                    revision: Self.int(row, "revision"),
+                    name: Self.str(row, "name"), retiredAt: retiredAt)
+            }
+        }
         editorialReadFreshness = [
             "ttittulares": ["ttittulares/editorial-queue.json", "ttittulares/prepared.json",
                             "ttittulares/decisions.json"].allSatisfy { downloaded[$0] != nil },
@@ -1587,6 +1603,24 @@ final class EditorialStore: ObservableObject {
         }
     }
 
+    // Pending is an editorial inbox, not Listas. A confirmed removal
+    // cannot suppress a new and independently timestamped Top30 entry.
+    func showInPendientes(_ item: TrendItem) -> Bool {
+        let removing = activeEditorialActions.values.contains { action in
+            action.project == "ttendencias" && action.decision == "retire" &&
+            action.revision == item.revision &&
+            (action.id == item.editorialID ||
+             action.title.folding(options: [.caseInsensitive, .diacriticInsensitive],
+                                  locale: Locale(identifier: "es_ES")) ==
+             item.name.folding(options: [.caseInsensitive, .diacriticInsensitive],
+                               locale: Locale(identifier: "es_ES")))
+        }
+        return !removing && TrendPendingRemovalPolicy.isVisible(
+            id: item.editorialID, revision: item.revision,
+            name: item.name, enteredAt: item.enteredAt,
+            retirements: pendingTrendRetirements)
+    }
+
     // A local action instantly changes ALL views using the shared store.
     // The operation is not marked verified until GitHub supplies its receipt.
     func beginEditorialAction(project: String, id: String, revision: Int, decision: String,
@@ -1612,8 +1646,10 @@ final class EditorialStore: ObservableObject {
                                     "Publicado: retirar de Listas y contabilizar tras confirmar" :
                                 decision == "deleted" ? "No publicado: retirar de Listas" :
                                 decision == "discard" ? "Destino: Desestimadas" :
+                                decision == "retire" ? "Quitar solo de Pendientes (sin veto al Top 30)" :
                                 "Destino: En elaboración → Listas")
         actionMessage = decision == "deleted" ? "Retirado de la vista · guardando en GitHub…" :
+                        decision == "retire" ? "Quitando de Pendientes · confirmando en GitHub…" :
                         decision == "discard" ? "Supresión solicitada · guardando en GitHub…" :
                         "Trasladado a elaboración · guardando en GitHub…"
         actionIsError = false
@@ -1653,6 +1689,17 @@ final class EditorialStore: ObservableObject {
         case .verified:
             // A successful direct receipt verification is sufficient proof to
             // persist the tombstone immediately, before any GitHub CDN reads.
+            if action.decision == "retire", project == "ttendencias" {
+                // A verified receipt hides just this pending episode.
+                // Do not mark the trend as published or remove it from Top30.
+                if !pendingTrendRetirements.contains(where: {
+                    $0.editorialID == id && $0.revision == revision
+                }) {
+                    pendingTrendRetirements.append(TrendPendingRetirement(
+                        editorialID: id, revision: revision,
+                        name: action.title, retiredAt: Date()))
+                }
+            }
             if ["deleted", "discard", "published"].contains(action.decision) {
                 markTerminal(project: project, id: id, revision: revision,
                              decision: action.decision == "discard" ? "dismissed" :
@@ -1739,6 +1786,13 @@ final class EditorialStore: ObservableObject {
                         activeEditorialActions.removeValue(forKey: key)
                     }
                 } else if !stillOriginal {
+                    activeEditorialActions.removeValue(forKey: key)
+                }
+            } else if action.decision == "retire" {
+                if pendingTrendRetirements.contains(where: {
+                    $0.editorialID == action.id &&
+                    $0.revision == action.revision
+                }) {
                     activeEditorialActions.removeValue(forKey: key)
                 }
             } else if action.decision == "deleted" {
@@ -1834,6 +1888,11 @@ final class EditorialStore: ObservableObject {
                     }
                 }
             } else {
+                if action.decision == "retire" {
+                    // Leave radar, Listas, editorial copy and images untouched.
+                    updated.unexplainedTrends.removeAll(where: sameTrend)
+                    continue
+                }
                 // A grouped original is not replaced by rework: the backend
                 // starts a NEW editorial ID, keeping the old text and the
                 // joint group until an independently reviewed result exists.
