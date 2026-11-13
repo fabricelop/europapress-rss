@@ -18,6 +18,8 @@ from trends_hints import submit_trend_hints
 from rework_ttittulares import rework_ready_news
 
 ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT / 'trends'))
+from pending_retirement import retire_pending
 REQ = re.compile(r"^[A-Za-z0-9-]{12,80}$")
 ID = re.compile(r"^[A-Za-z0-9:_-]{3,128}$")
 TERMINAL = {"published", "deleted", "dismissed"}
@@ -536,6 +538,20 @@ def apply_live(project: str, event_id: str, decision: str, revision: int, trend_
             mobile_path: mobile, ledger_path: deliveries, prepared_path: prepared,
         }, "applied"
     if project == "ttendencias":
+        if decision == "retire":
+            queue_path = "trends/editorial-queue.json"
+            req_path = "trends/requests.json"
+            ledger_path = "trends/pending-retirements.json"
+            queue = load(queue_path, {"items": [], "count": 0})
+            requests = load(req_path, {"requests": []})
+            retirements = load(ledger_path, {"items": []})
+            recent = load("trends/recent.json", {"items": []})
+            try:
+                result = retire_pending(requests, queue, recent, retirements,
+                                        event_id, revision, now, trend_name)
+            except ValueError as exc:
+                fail(str(exc))
+            return {queue_path: queue, req_path: requests, ledger_path: retirements}, result
         queue_path, req_path, mobile_path = "trends/editorial-queue.json", "trends/requests.json", "trends/mobile-decisions.json"
         queue = load(queue_path, {"items": []})
         requests = load(req_path, {"requests": []})
@@ -621,7 +637,7 @@ def main():
     trend_hints = cmd.get("hints", "")
     if project not in ("ttittulares", "ttendencias") or not ID.fullmatch(event_id) or not REQ.fullmatch(request_id):
         fail("Identificadores invalidos")
-    if decision not in {"deleted", "published", "discard", "prepare", "rework", "hints"}:
+    if decision not in {"deleted", "published", "discard", "prepare", "rework", "hints", "retire"}:
         fail("Decision no admitida")
     if decision == "hints" and (not isinstance(trend_hints, str) or not 8 <= len(trend_hints.strip()) <= 6000):
         fail("Pistas invalidas o proyecto no admitido")
