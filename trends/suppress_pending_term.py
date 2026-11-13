@@ -12,13 +12,28 @@ import json
 from pathlib import Path
 
 try:
-    from suppression import active_request, is_suppressed, purge_pending
+    from suppression import CONFIG, active_request, is_suppressed, purge_pending
     from requests_json import dumps_for_path
 except ImportError:
-    from trends.suppression import active_request, is_suppressed, purge_pending
+    from trends.suppression import CONFIG, active_request, is_suppressed, purge_pending
     from trends.requests_json import dumps_for_path
 
 ROOT = Path(__file__).resolve().parent
+
+
+
+def current_retirement_keys():
+    """Exact ID+revision closures; never a permanent name/radar blacklist."""
+    rules = json.loads(CONFIG.read_text(encoding="utf-8"))
+    return {
+        (str(row["id"]), int(row["revision"]))
+        for row in rules.get("one_shot_retirements", [])
+        if row.get("id") and row.get("revision") is not None
+    }
+
+
+def matches_current_retirement(row, retirement_keys):
+    return (str(row.get("id") or ""), int(row.get("revision") or 0)) in retirement_keys
 
 
 def filter_rows(rows):
@@ -39,13 +54,34 @@ def clean_documents(root=ROOT):
     doc = json.loads(path.read_text(encoding="utf-8"))
     n = purge_pending(doc["requests"])
     changes["requests_terminated"] = n
-    if n:
+    retirements = current_retirement_keys()
+    retired_once = 0
+    for row in doc["requests"]:
+        if not matches_current_retirement(row, retirements):
+            continue
+        status = str(row.get("status") or "").lower()
+        # Leave published/deleted decisions and every other revision untouched.
+        if status not in {"preparing", "update", "problematic", "ready", "pending", "inactive"} and not (
+                status == "removed" and row.get("inactive_reason") == "editor_user_suppressed"):
+            continue
+        if status == "inactive" and row.get("inactive_reason") == "editor_retired_current_occurrence":
+            continue
+        row["status"] = "inactive"
+        row["inactive_reason"] = "editor_retired_current_occurrence"
+        row["reexplain"] = False
+        row["rewrite_pending"] = False
+        row["with_image"] = False
+        row["disable_ai_image"] = True
+        retired_once += 1
+    changes["one_shot_requests_retired"] = retired_once
+    if n or retired_once:
         rewrite_doc(path, doc)
 
     path = root / "editorial-queue.json"
     doc = json.loads(path.read_text(encoding="utf-8"))
     before = len(doc.get("items", []))
-    doc["items"] = [r for r in doc.get("items", []) if not active_request(r)]
+    doc["items"] = [r for r in doc.get("items", [])
+                    if not active_request(r) and not matches_current_retirement(r, retirements)]
     if len(doc["items"]) != before:
         doc["count"] = len(doc["items"])
         rewrite_doc(path, doc)
