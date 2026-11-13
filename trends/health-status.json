@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-13T10:00:04.819289+00:00",
+  "checked_at": "2026-11-13T10:06:01.644729+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -42,12 +42,12 @@
     "top10": {
       "ok": false,
       "count": 10,
-      "non_stale_sources": 3,
+      "non_stale_sources": 4,
       "verified_fresh_sources": [
         "xtrendsiamrohit"
       ],
       "live_verified": false,
-      "captured_age_minutes": 0.2,
+      "captured_age_minutes": 0.3,
       "noise_count": 0
     },
     "listener": {
@@ -57,9 +57,9 @@
     },
     "refresh": {
       "ok": true,
-      "status": "pending",
+      "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 0.8,
+      "age_minutes": 5.8,
       "run_id": 43405601972,
       "reason": null,
       "repairable": true,
@@ -82,9 +82,9 @@
     },
     "editorial_queue": {
       "ok": true,
-      "pending_count": 0,
+      "pending_count": 2,
       "overdue_count": 0,
-      "oldest_age_minutes": 0,
+      "oldest_age_minutes": 3.5,
       "warning_after_minutes": 30,
       "overdue_items": [],
       "repairable": false
@@ -92,8 +92,11 @@
     "editorial_runtime": {
       "ok": true,
       "status": "not-required",
-      "queue_complete": true,
-      "remaining_active_ids": [],
+      "queue_complete": false,
+      "remaining_active_ids": [
+        "2b0dcb3597e4",
+        "4d4b553426b2"
+      ],
       "contradictory_success": false
     },
     "telegram_provisional": {
