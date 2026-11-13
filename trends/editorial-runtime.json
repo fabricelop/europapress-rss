@@ -7,10 +7,10 @@
   "previous_run_id": "tr-20261113T034000-chat-direct",
   "command_id": "tr-20261113T042500-chat-direct",
   "source": "chat_direct",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-13T04:25:00+01:00",
-  "updated_at": "2026-11-13T04:25:00+01:00",
+  "updated_at": "2026-11-13T04:26:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
@@ -38,17 +38,17 @@
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 15,
-    "observed": 15,
-    "closed": 15,
-    "explained": 2,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
-    "review_completed_no_distinct_event": 11,
-    "maintenance_reviews": 2,
-    "unchanged_reviews": 2,
+    "review_completed_no_distinct_event": 0,
+    "maintenance_reviews": 0,
+    "unchanged_reviews": 0,
     "continuity_updates": 0,
-    "distinct_updates": 2,
+    "distinct_updates": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
     "anticipation_reviews": 0,
@@ -60,8 +60,7 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0,
-    "cause_unconfirmed": 1
+    "concurrent_convergence": 0
   },
   "outcomes": [
     {
@@ -458,24 +457,24 @@
   "last_completed_at": "2026-11-13T04:20:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261113T041000-chat-direct",
+    "run_id": "tr-20261113T042500-chat-direct",
     "status": "DONE",
-    "started_at": "2026-11-13T04:10:00+01:00",
-    "finished_at": "2026-11-13T04:20:00+01:00",
-    "at": "2026-11-13T04:20:00+01:00",
+    "started_at": "2026-11-13T04:25:00+01:00",
+    "finished_at": "2026-11-13T04:26:00+01:00",
+    "at": "2026-11-13T04:26:00+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 15,
-      "observed": 15,
-      "closed": 15,
-      "explained": 2,
+      "attempted": 0,
+      "observed": 0,
+      "closed": 0,
+      "explained": 0,
       "problematic": 0,
       "updates": 0,
-      "review_completed_no_distinct_event": 11,
-      "maintenance_reviews": 2,
-      "unchanged_reviews": 2,
+      "review_completed_no_distinct_event": 0,
+      "maintenance_reviews": 0,
+      "unchanged_reviews": 0,
       "continuity_updates": 0,
-      "distinct_updates": 2,
+      "distinct_updates": 0,
       "stale_reviews": 0,
       "unverified_reviews": 0,
       "anticipation_reviews": 0,
@@ -487,138 +486,15 @@
       "image_outbox_created": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 0,
-      "cause_unconfirmed": 1
+      "concurrent_convergence": 0
     },
-    "processed_ids": [
-      "09c8baed486f",
-      "e1c917b18472",
-      "220570dd0ac3",
-      "9002bf6fa6d5",
-      "b8cfcecfca21",
-      "a4c3be3f10c2",
-      "c1e5efd5f0d5",
-      "b6b2e9781775",
-      "8153fc9b27da",
-      "ce61aea68bb5",
-      "889a4dee7f07",
-      "419f43b42d22",
-      "c0bb94cc81ae",
-      "red-review-dbdff8ab02b4b94f7b00",
-      "red-review-628f50a7fbbaaacf7af4"
-    ],
-    "outcomes": [
-      {
-        "id": "09c8baed486f",
-        "revision": 0,
-        "name": "Jordi Wild",
-        "outcome": "review_completed_no_distinct_event",
-        "verification": "Aplicado en main por 565df6e993d9664b54de8442ac963806504b0d85; cola autoritativa retirada"
-      },
-      {
-        "id": "e1c917b18472",
-        "revision": 0,
-        "name": "Abascal",
-        "outcome": "distinct_update",
-        "verification": "Aplicado en main por 565df6e993d9664b54de8442ac963806504b0d85; cola autoritativa retirada"
-      },
-      {
-        "id": "220570dd0ac3",
-        "revision": 0,
-        "name": "Marlaska",
-        "outcome": "review_completed_no_distinct_event",
-        "verification": "Aplicado en main por 565df6e993d9664b54de8442ac963806504b0d85; cola autoritativa retirada"
-      },
-      {
-        "id": "9002bf6fa6d5",
-        "revision": 0,
-        "name": "#HuelgaGeneral",
-        "outcome": "review_completed_no_distinct_event",
-        "verification": "Aplicado en main por 565df6e993d9664b54de8442ac963806504b0d85; cola autoritativa retirada"
-      },
-      {
-        "id": "b8cfcecfca21",
-        "revision": 0,
-        "name": "Anotop At",
-        "outcome": "review_completed_no_distinct_event",
-        "verification": "Aplicado en main por 565df6e993d9664b54de8442ac963806504b0d85; cola autoritativa retirada"
-      },
-      {
-        "id": "a4c3be3f10c2",
-        "revision": 0,
-        "name": "Hormiguero",
-        "outcome": "review_completed_no_distinct_event",
-        "verification": "Aplicado en main por 565df6e993d9664b54de8442ac963806504b0d85; cola autoritativa retirada"
-      },
-      {
-        "id": "c1e5efd5f0d5",
-        "revision": 0,
-        "name": "Pablo Motos",
-        "outcome": "review_completed_no_distinct_event",
-        "verification": "Aplicado en main por 565df6e993d9664b54de8442ac963806504b0d85; cola autoritativa retirada"
-      },
-      {
-        "id": "b6b2e9781775",
-        "revision": 0,
-        "name": "Xokas",
-        "outcome": "review_completed_no_distinct_event",
-        "verification": "Aplicado en main por 565df6e993d9664b54de8442ac963806504b0d85; cola autoritativa retirada"
-      },
-      {
-        "id": "8153fc9b27da",
-        "revision": 0,
-        "name": "Eddie",
-        "outcome": "review_completed_no_distinct_event",
-        "verification": "Aplicado en main por 565df6e993d9664b54de8442ac963806504b0d85; cola autoritativa retirada"
-      },
-      {
-        "id": "ce61aea68bb5",
-        "revision": 0,
-        "name": "Youtuber",
-        "outcome": "review_completed_no_distinct_event",
-        "verification": "Aplicado en main por 565df6e993d9664b54de8442ac963806504b0d85; cola autoritativa retirada"
-      },
-      {
-        "id": "889a4dee7f07",
-        "revision": 0,
-        "name": "alvise",
-        "outcome": "review_completed_no_distinct_event",
-        "verification": "Aplicado en main por 565df6e993d9664b54de8442ac963806504b0d85; cola autoritativa retirada"
-      },
-      {
-        "id": "419f43b42d22",
-        "revision": 0,
-        "name": "Barcelona",
-        "outcome": "distinct_update",
-        "verification": "Aplicado en main por 565df6e993d9664b54de8442ac963806504b0d85; cola autoritativa retirada"
-      },
-      {
-        "id": "c0bb94cc81ae",
-        "revision": 0,
-        "name": "Jorge Salvaje",
-        "outcome": "review_completed_no_distinct_event",
-        "verification": "Aplicado en main por 565df6e993d9664b54de8442ac963806504b0d85; cola autoritativa retirada"
-      },
-      {
-        "id": "red-review-dbdff8ab02b4b94f7b00",
-        "revision": 0,
-        "name": "Revisar novedades: Jordi Wild",
-        "outcome": "unchanged",
-        "verification": "Aplicado por mantenimiento; conserva texto y explained_at de ac5218c64f99"
-      },
-      {
-        "id": "red-review-628f50a7fbbaaacf7af4",
-        "revision": 0,
-        "name": "Revisar novedades: Youtuber",
-        "outcome": "unchanged",
-        "verification": "Aplicado por mantenimiento; conserva texto y explained_at de ee66c728b7bb"
-      }
-    ],
+    "processed_ids": [],
+    "outcomes": [],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada TTendencias completada 15/15. 13 reentradas: 2 episodios materiales distintos explicados (Abascal, Barcelona) y 11 cerrados no_distinct_event. 2 revisiones rojas posteriores (Jordi Wild, Youtuber) verificadas unchanged, conservando texto y fecha. Cola final=0. ImageGen=0; image-outbox editorial=0; publicaciones=0; incidentes=0."
+    "message": "Pasada TTendencias completada 0/0. Cola autoritativa vacía y sin rewrite_pending/reexplain activos en la barrera JIT final. No había investigaciones, anticipaciones ni revisiones rojas pendientes. ImageGen=0; publicaciones=0; incidentes=0."
   },
-  "message": "Cola autoritativa vacía; verificando estado, mantenimiento y barrera final.",
+  "message": "Pasada TTendencias completada 0/0. Cola autoritativa vacía y sin rewrite_pending/reexplain activos en la barrera JIT final. No había investigaciones, anticipaciones ni revisiones rojas pendientes. ImageGen=0; publicaciones=0; incidentes=0.",
   "history": [
     {
       "run_id": "tr-1794340649326-manual",
@@ -8847,5 +8723,5 @@
   "processed": [],
   "maintenance_outbox_commit": "970b545c88b09429a23d15ec893b9d66fb611297",
   "editorial_apply_run_id": 43343524401,
-  "finished_at": null
+  "finished_at": "2026-11-13T04:26:00+01:00"
 }
