@@ -1,5 +1,9 @@
 # TTActualidad V2 — construcción aislada
 
+> **Objetivo prioritario actual (13/11/2026):** [Primer hito funcional de TTActualidad V2](ttendencias/PRIMER_HITO.md) — Top 30 cada 15 minutos, web PC/móvil con estados y explicación, y un Chrome/chat independiente por tendencia, que se cierra tras persistir. Reutilizar las soluciones probadas de V1. No activar publicación.
+>
+> **Realizado:** proyección web de 30 puestos (`ttendencias/web_top30_v2.py`, `ttendencias/state/web-top30.json`), primera interfaz `ttendencias/web/index.html` y actualización desde GitHub. **Falta:** despliegue HTTPS de la interfaz, consumidor editorial autónomo y ensayo completo de estados en navegador.
+
 **Rama:** `feature/ttactualidad-v2-clean`. **Estado:** paso 1 validado en vivo (Actions #43320096517); paso 2B configurado con GetDayTrends como fuente única, pendiente de validar en Actions.
 
 ## Reglas de aislamiento
