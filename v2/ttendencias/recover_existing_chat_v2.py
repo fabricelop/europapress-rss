@@ -183,7 +183,7 @@ def recover(trend_id, revision):
             record["chat_url"] = result["url"].split("?",1)[0]
             record["reply_captured"] = True
             record["status"] = "captured_needs_editorial_validation"
-            record["validation"] = "paired_turn_id_revision_footer_and_stable_idle"
+            record["validation"] = "paired_turn_id_revision_dom_or_footer_and_stable_idle"
             core.store(journal, record)
             print("TT_V2_RECOVERY_REPLY_CAPTURED=YES", flush=True)
             # Sólo tras capturar y verificar la identidad, cerrar Chrome V2.
