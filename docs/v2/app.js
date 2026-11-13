@@ -1,7 +1,7 @@
 "use strict";
 const BASE="https://raw.githubusercontent.com/fabricelop/europapress-rss/feature/ttactualidad-v2-clean/v2/ttendencias/state/";
 const $=id=>document.getElementById(id);
-const state={items:[],captured:null,open:new Set()};
+const state={items:[],captured:null,open:null};
 function el(tag,className,content){const n=document.createElement(tag);if(className)n.className=className;if(content!==undefined)n.textContent=String(content);return n}
 function valid(data){if(!data||data.project!=="ttactualidad-v2"||data.country!=="ES"||!Array.isArray(data.items)||data.items.length!==data.count||data.count<1||data.count>40)throw Error("Ranking no disponible");const ranks=new Set(data.items.map(x=>x.rank));if(ranks.size!==data.items.length||data.items.some(x=>!Number.isInteger(x.rank)||x.rank<1||x.rank>40||!x.name))throw Error("Ranking incoherente");return data}
 function editorial(raw){
@@ -30,6 +30,29 @@ function editorial(raw){
  }
  return "Explicación capturada; formato editorial pendiente de adaptar.";
 }
-function render(){const root=$("results");root.replaceChildren();for(const item of state.items){const card=el("details","trend");card.open=state.open.has(item.trend_id);card.addEventListener("toggle",()=>{if(card.open)state.open.add(item.trend_id);else state.open.delete(item.trend_id)});const head=el("summary","trend-head");const icon=el("span","status-icon "+item.status,({explicada:"●",pendiente:"●",en_elaboracion:"●",incidencia:"●",desestimada:"●"})[item.status]||"●");icon.setAttribute("aria-label",({explicada:"Explicada",pendiente:"Pendiente",en_elaboracion:"En elaboración",incidencia:"Incidencia",desestimada:"Desestimada"})[item.status]||"Estado desconocido");icon.title=icon.getAttribute("aria-label");head.append(el("span","rank","T"+item.rank),el("strong","name",item.name),icon);card.append(head);const body=el("div","explanation",item.status==="explicada"?editorial(item.explanation):({en_elaboracion:"En elaboración.",incidencia:"Incidencia en la elaboración.",desestimada:"Desestimada."})[item.status]||"Explicación pendiente.");card.append(body);root.append(card)}}
+const WEB_URL="https://fabricelop.github.io/europapress-rss/v2/";
+function tweetText(raw){
+ const source=editorial(raw);
+ if(source.startsWith("Explicación pendiente")||source.startsWith("Explicación capturada"))return source;
+ const lines=source.split("\n").map(x=>x.trim()).filter(Boolean);
+ const jokeLine=lines.find(x=>x.includes("🌶"))||"";
+ const joke=jokeLine.replace(/^Remate:\s*/i,"").trim();
+ const hashLine=lines.filter(x=>!x.includes("🌶")&&(/^(?:Hashtags:\s*)?#\S+/i.test(x)||/^Hashtags:\s*#/i.test(x))).map(x=>x.replace(/^Hashtags:\s*/i,"").trim()).join(" ");
+ const hashes=[...new Set((hashLine.match(/#[\p{L}\p{N}_]+/gu)||[]))].join(" ");
+ const prose=lines.filter(x=>!x.includes("🌶")&&!/^Hashtags:\s*/i.test(x)&&!/^\s*#[\p{L}\p{N}_]+(?:\s+#[\p{L}\p{N}_]+)*\s*$/u.test(x)).join(" ").replace(/\s+/g," ").trim();
+ const suffix=[hashes,joke].filter(Boolean).join("\n");
+ // X counts any HTTPS URL as 23 characters, irrespective of its actual length.
+ const weightedSuffix=(suffix?suffix.length+1:0)+1+23;
+ const limit=280-weightedSuffix;
+ if(limit<45)return "Explicación pendiente de edición para X.";
+ let summary=prose;
+ if(summary.length>limit){
+  const first=summary.slice(0,limit+1);
+  const end=Math.max(first.lastIndexOf(". "),first.lastIndexOf("; "),first.lastIndexOf(", "));
+  summary=(end>Math.floor(limit*.55)?first.slice(0,end+1):first.slice(0,limit-1).replace(/\s+\S*$/,"")+"…").trim();
+ }
+ return [summary,suffix,WEB_URL].filter(Boolean).join("\n");
+}
+function render(){const root=$("results");root.replaceChildren();for(const item of state.items){const card=el("details","trend");card.open=state.open===item.trend_id;card.addEventListener("toggle",()=>{if(card.open){state.open=item.trend_id;for(const other of root.querySelectorAll("details.trend"))if(other!==card&&other.open)other.open=false}else if(state.open===item.trend_id)state.open=null});const head=el("summary","trend-head");const icon=el("span","status-icon "+item.status,"●");icon.setAttribute("aria-label",({explicada:"Explicada",pendiente:"Pendiente",en_elaboracion:"En elaboración",incidencia:"Incidencia",desestimada:"Desestimada"})[item.status]||"Estado desconocido");icon.title=icon.getAttribute("aria-label");head.append(el("span","rank","T"+item.rank),el("strong","name",item.name),icon);card.append(head);const body=el("div","explanation",item.status==="explicada"?tweetText(item.explanation):({en_elaboracion:"En elaboración.",incidencia:"Incidencia en la elaboración.",desestimada:"Desestimada."})[item.status]||"Explicación pendiente.");card.append(body);root.append(card)}}
 async function refresh(){try{const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),15000);let response;try{response=await fetch(BASE+"web-top30.json?v="+Math.floor(Date.now()/60000),{cache:"no-store",signal:controller.signal})}finally{clearTimeout(timer)}if(!response.ok)throw Error("HTTP "+response.status);const data=valid(await response.json());state.items=data.items.slice().sort((a,b)=>a.rank-b.rank);state.captured=data.captured_at;render();$("notice").hidden=true}catch(error){$("notice").textContent="No se pudieron actualizar las tendencias. "+error.message;$("notice").hidden=false;if(!state.items.length)$("results").replaceChildren(el("p","loading","Sin datos disponibles."))}}
 refresh();setInterval(()=>{if(!document.hidden)refresh()},90000);
