@@ -22,7 +22,7 @@ def _refresh(q):
     return q
 
 def stage_capture(queue, *, trend_id, revision, answer, chat_url, validated_capture,
-                  observed_at=None):
+                  observed_at=None, lease_token=None):
     if queue.get("step") != "04_editorial_queue" or queue.get("effects_enabled") is not False:
         raise ValueError("Cola V2 inválida o efectos activos")
     item = queue.get("items", {}).get(trend_id)
@@ -41,10 +41,19 @@ def stage_capture(queue, *, trend_id, revision, answer, chat_url, validated_capt
         if saved.get("sha256") == digest and saved.get("chat_url") == chat_url:
             return copy.deepcopy(queue), "already_staged"
         raise ValueError("Conflicto: captura existente diferente")
-    if item.get("status") not in OPEN:
-        raise ValueError("No se puede capturar sobre una reserva activa")
+    if item.get("status") == "in_progress":
+        lease = item.get("lease") or {}
+        if not lease.get("token") or not lease.get("worker_id"):
+            raise ValueError("Reserva activa sin identidad comprobable")
+        # El cierre del navegador puede haber ocurrido antes de persistir.
+        # La captura solo completa la reserva identificada por el consumidor.
+        if lease.get("token") != lease_token:
+            raise ValueError("La reserva pertenece a otro trabajo")
+    elif item.get("status") not in OPEN:
+        raise ValueError("No se puede capturar sobre este estado")
     q = copy.deepcopy(queue)
     target = q["items"][trend_id]
+    target.pop("lease", None)
     target["status"] = CAPTURED
     target["capture"] = {
         "revision": revision, "chat_url": chat_url, "sha256": digest,
