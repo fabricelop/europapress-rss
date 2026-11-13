@@ -19,12 +19,12 @@ jobs:
   test-step-01:
     if: github.ref == 'refs/heads/feature/ttactualidad-v2-clean' || github.event_name == 'schedule'
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
         with:
           ref: feature/ttactualidad-v2-clean
-          fetch-depth: 0
+          fetch-depth: 1
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
