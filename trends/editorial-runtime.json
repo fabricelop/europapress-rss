@@ -7,10 +7,10 @@
   "previous_run_id": "tr-20261113T072500-chat-direct",
   "command_id": "tr-20261113T085500-chat-direct",
   "source": "chat_direct",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-13T08:55:00+01:00",
-  "updated_at": "2026-11-13T08:55:00+01:00",
+  "updated_at": "2026-11-13T08:56:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
@@ -372,26 +372,33 @@
       "status": "RUNNING",
       "phase": "preparing",
       "message": "Pasada manual iniciada desde ChatGPT; cola autoritativa inicial=0 (updated_at 2026-11-13T08:51:07+01:00). Revalidando barrera final en main; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-13T08:56:00+01:00",
+      "run_id": "tr-20261113T085500-chat-direct",
+      "status": "DONE",
+      "phase": "closing",
+      "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 2026-11-13T08:51:07+01:00), mobile-decisions y requests sin estados editoriales activos. Top 30 vigente capturado a las 08:51:01. Sin ImageGen ni publicaciones; incidentes=0."
     }
   ],
   "last_started_at": "2026-11-13T08:37:57+01:00",
-  "last_completed_at": "2026-11-13T08:37:57+01:00",
+  "last_completed_at": "2026-11-13T08:56:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261113T072500-chat-direct",
+    "run_id": "tr-20261113T085500-chat-direct",
     "status": "DONE",
-    "started_at": "2026-11-13T07:25:00+01:00",
-    "finished_at": "2026-11-13T07:30:00+01:00",
-    "at": "2026-11-13T07:30:00+01:00",
+    "started_at": "2026-11-13T08:55:00+01:00",
+    "finished_at": "2026-11-13T08:56:00+01:00",
+    "at": "2026-11-13T08:56:00+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 3,
-      "observed": 3,
-      "closed": 3,
-      "explained": 1,
+      "attempted": 0,
+      "observed": 0,
+      "closed": 0,
+      "explained": 0,
       "problematic": 0,
       "updates": 0,
-      "review_completed_no_distinct_event": 2,
+      "review_completed_no_distinct_event": 0,
       "maintenance_reviews": 0,
       "unchanged_reviews": 0,
       "continuity_updates": 0,
@@ -410,40 +417,14 @@
       "concurrent_convergence": 0,
       "cause_unconfirmed": 0
     },
-    "processed_ids": [
-      "f94aacb61a8f",
-      "d7a4b8618d4f",
-      "4cd369e90554"
-    ],
+    "processed_ids": [],
     "converged_ids": [],
-    "outcomes": [
-      {
-        "id": "f94aacb61a8f",
-        "revision": 0,
-        "name": "#LaIslaDeLasTentaciones20",
-        "outcome": "review_completed_no_distinct_event",
-        "applied": true
-      },
-      {
-        "id": "d7a4b8618d4f",
-        "revision": 0,
-        "name": "álbum del año",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "4cd369e90554",
-        "revision": 0,
-        "name": "Jorge Salvaje",
-        "outcome": "review_completed_no_distinct_event",
-        "applied": true
-      }
-    ],
+    "outcomes": [],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada TTendencias completada 3/3. «álbum del año» quedó explicado por el Latin Grammy a Álbum del Año de LUX; #LaIslaDeLasTentaciones20 y Jorge Salvaje se cerraron como reentradas sin acontecimiento material distinto, evitando duplicados. Aplicador confirmado en 30ec69bd4063c9ff2b220bf6943cb37b1f142419. Barrera final: editorial-queue=0 y mobile-decisions sin estados editoriales activos. ImageGen=0; publicaciones=0; incidentes=0."
+    "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 2026-11-13T08:51:07+01:00), mobile-decisions y requests sin estados editoriales activos. Top 30 vigente capturado a las 08:51:01. Sin ImageGen ni publicaciones; incidentes=0."
   },
-  "message": "Pasada TTendencias completada 3/3. «álbum del año» quedó explicado por el Latin Grammy a Álbum del Año de LUX; #LaIslaDeLasTentaciones20 y Jorge Salvaje se cerraron como reentradas sin acontecimiento material distinto, evitando duplicados. Aplicador confirmado en 30ec69bd4063c9ff2b220bf6943cb37b1f142419. Barrera final: editorial-queue=0 y mobile-decisions sin estados editoriales activos. ImageGen=0; publicaciones=0; incidentes=0.",
+  "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 2026-11-13T08:51:07+01:00), mobile-decisions y requests sin estados editoriales activos. Top 30 vigente capturado a las 08:51:01. Sin ImageGen ni publicaciones; incidentes=0.",
   "history": [
     {
       "run_id": "tr-1794361941170-manual",
@@ -4516,14 +4497,15 @@
   ],
   "current_item": null,
   "withdrawn_ids": [],
-  "last_finished_at": "2026-11-13T04:42:30+01:00",
-  "last_revalidated_at": "2026-11-13T04:42:30+01:00",
+  "last_finished_at": "2026-11-13T08:56:00+01:00",
+  "last_revalidated_at": "2026-11-13T08:56:00+01:00",
   "last_revalidation": {
-    "at": "2026-11-13T04:42:30+01:00",
+    "at": "2026-11-13T08:56:00+01:00",
     "queue_count": 0,
-    "rewrite_pending_count": 0,
-    "active_count": 0,
-    "queue_updated_at": "2026-11-13T04:40:59+01:00"
+    "queue_updated_at": "2026-11-13T08:51:07+01:00",
+    "mobile_active": 0,
+    "requests_active": 0,
+    "recent_captured_at": "2026-11-13T08:51:01+01:00"
   },
   "prior_runtime_observed": {
     "run_id": "tr-autoguard-1794381666",
@@ -7279,6 +7261,46 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada tr-20261111T182500-manual cerrada 0/0 contra main. Barrera JIT final: editorial-queue=0 (updated_at 2026-11-11T18:21:06+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-20261113T085500-chat-direct",
+      "status": "DONE",
+      "started_at": "2026-11-13T08:55:00+01:00",
+      "finished_at": "2026-11-13T08:56:00+01:00",
+      "at": "2026-11-13T08:56:00+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 0,
+        "observed": 0,
+        "closed": 0,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 0,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0,
+        "cause_unconfirmed": 0
+      },
+      "processed_ids": [],
+      "converged_ids": [],
+      "outcomes": [],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 2026-11-13T08:51:07+01:00), mobile-decisions y requests sin estados editoriales activos. Top 30 vigente capturado a las 08:51:01. Sin ImageGen ni publicaciones; incidentes=0."
     }
   ],
   "outbox_comment_id": 6837437988,
@@ -7608,5 +7630,6 @@
   ],
   "processed": [],
   "maintenance_outbox_commit": "970b545c88b09429a23d15ec893b9d66fb611297",
-  "editorial_apply_run_id": 43378988402
+  "editorial_apply_run_id": 43378988402,
+  "finished_at": "2026-11-13T08:56:00+01:00"
 }
