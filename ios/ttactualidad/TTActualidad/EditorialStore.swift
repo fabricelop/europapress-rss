@@ -77,6 +77,8 @@ struct TrendItem: Identifiable {
     // AI image is independent from archive photographs.
     var siteImageURL: URL? = nil
     var siteImageSHA256: String = ""
+    // Last confirmed, distinct earlier editorial admission to Listas.
+    var previousListasAt: Date? = nil
     var isCovered: Bool { !coveredByID.isEmpty }
 
     func ageBand(now: Date = Date()) -> Int {
@@ -190,8 +192,11 @@ struct EditorialOperation: Codable, Identifiable {
 final class EditorialStore: ObservableObject {
     @Published var section: EditorialSection = .trends
     @Published var trendFilter: TrendFilter = .top
+    @Published private(set) var pendingTrendRetirements: [TrendPendingRetirement] = []
     @Published var newsFilter: NewsFilter = .listas
     @Published private(set) var snapshot = EditorialSnapshot()
+    // UI-only signal, not a receipt of a completed GitHub action.
+    @Published private(set) var listasRemovalScrollRevision = 0
     @Published private(set) var publicationLedgerAvailable = false
     @Published private var publicationEvents: [PublicationEvent] = []
 
@@ -600,6 +605,7 @@ final class EditorialStore: ObservableObject {
         "trends/explained.json",
         "trends/telegram-image-deliveries.json",
         "trends/mobile-decisions.json",
+        "trends/pending-retirements.json",
         "trends/editorial-queue.json"
     ]
 
@@ -721,6 +727,20 @@ final class EditorialStore: ObservableObject {
         let downloaded = loaded.downloaded
         let docs = loaded.docs
         let partial = loaded.partial
+        // Load the one-episode pending removal ledger independently of the
+        // large historical requests. Keep the previous verified copy on errors.
+        if downloaded["trends/pending-retirements.json"] != nil {
+            pendingTrendRetirements = Self.rows(
+                docs["trends/pending-retirements.json"] ?? [:], "items"
+            ).compactMap { row -> TrendPendingRetirement? in
+                guard let retiredAt = Self.when(row, ["retired_at"]),
+                      !Self.str(row, "name").isEmpty else { return nil }
+                return TrendPendingRetirement(
+                    editorialID: Self.str(row, "id"),
+                    revision: Self.int(row, "revision"),
+                    name: Self.str(row, "name"), retiredAt: retiredAt)
+            }
+        }
         editorialReadFreshness = [
             "ttittulares": ["ttittulares/editorial-queue.json", "ttittulares/prepared.json",
                             "ttittulares/decisions.json"].allSatisfy { downloaded[$0] != nil },
@@ -777,6 +797,7 @@ final class EditorialStore: ObservableObject {
               docs["trends/mobile-decisions.json"] != nil,
               docs["trends/editorial-queue.json"] != nil else {
             message = "Datos incompletos: conservando los últimos contadores"
+            await markLiveCountsUnavailable()
             return
         }
         let fresh = !downloaded.isEmpty
@@ -1582,6 +1603,24 @@ final class EditorialStore: ObservableObject {
         }
     }
 
+    // Pending is an editorial inbox, not Listas. A confirmed removal
+    // cannot suppress a new and independently timestamped Top30 entry.
+    func showInPendientes(_ item: TrendItem) -> Bool {
+        let removing = activeEditorialActions.values.contains { action in
+            action.project == "ttendencias" && action.decision == "retire" &&
+            action.revision == item.revision &&
+            (action.id == item.editorialID ||
+             action.title.folding(options: [.caseInsensitive, .diacriticInsensitive],
+                                  locale: Locale(identifier: "es_ES")) ==
+             item.name.folding(options: [.caseInsensitive, .diacriticInsensitive],
+                               locale: Locale(identifier: "es_ES")))
+        }
+        return !removing && TrendPendingRemovalPolicy.isVisible(
+            id: item.editorialID, revision: item.revision,
+            name: item.name, enteredAt: item.enteredAt,
+            retirements: pendingTrendRetirements)
+    }
+
     // A local action instantly changes ALL views using the shared store.
     // The operation is not marked verified until GitHub supplies its receipt.
     func beginEditorialAction(project: String, id: String, revision: Int, decision: String,
@@ -1607,12 +1646,18 @@ final class EditorialStore: ObservableObject {
                                     "Publicado: retirar de Listas y contabilizar tras confirmar" :
                                 decision == "deleted" ? "No publicado: retirar de Listas" :
                                 decision == "discard" ? "Destino: Desestimadas" :
+                                decision == "retire" ? "Quitar solo de Pendientes (sin veto al Top 30)" :
                                 "Destino: En elaboración → Listas")
         actionMessage = decision == "deleted" ? "Retirado de la vista · guardando en GitHub…" :
+                        decision == "retire" ? "Quitando de Pendientes · confirmando en GitHub…" :
                         decision == "discard" ? "Supresión solicitada · guardando en GitHub…" :
                         "Trasladado a elaboración · guardando en GitHub…"
         actionIsError = false
         applyOptimisticOverlay()
+        if ["deleted", "published"].contains(decision) {
+            // The card disappears optimistically: restore a useful scroll position.
+            listasRemovalScrollRevision += 1
+        }
         refreshOptimisticActivity()
         return true
     }
@@ -1644,6 +1689,17 @@ final class EditorialStore: ObservableObject {
         case .verified:
             // A successful direct receipt verification is sufficient proof to
             // persist the tombstone immediately, before any GitHub CDN reads.
+            if action.decision == "retire", project == "ttendencias" {
+                // A verified receipt hides just this pending episode.
+                // Do not mark the trend as published or remove it from Top30.
+                if !pendingTrendRetirements.contains(where: {
+                    $0.editorialID == id && $0.revision == revision
+                }) {
+                    pendingTrendRetirements.append(TrendPendingRetirement(
+                        editorialID: id, revision: revision,
+                        name: action.title, retiredAt: Date()))
+                }
+            }
             if ["deleted", "discard", "published"].contains(action.decision) {
                 markTerminal(project: project, id: id, revision: revision,
                              decision: action.decision == "discard" ? "dismissed" :
@@ -1732,6 +1788,13 @@ final class EditorialStore: ObservableObject {
                 } else if !stillOriginal {
                     activeEditorialActions.removeValue(forKey: key)
                 }
+            } else if action.decision == "retire" {
+                if pendingTrendRetirements.contains(where: {
+                    $0.editorialID == action.id &&
+                    $0.revision == action.revision
+                }) {
+                    activeEditorialActions.removeValue(forKey: key)
+                }
             } else if action.decision == "deleted" {
                 if !canonicalSnapshot.trendListas.contains(where: {
                     $0.editorialID == action.id && $0.revision == action.revision
@@ -1768,7 +1831,8 @@ final class EditorialStore: ObservableObject {
                   siteImageRevision: trend.siteImageRevision,
                   siteImageExplainedAt: trend.siteImageExplainedAt,
                   siteImageURL: trend.siteImageURL,
-                  siteImageSHA256: trend.siteImageSHA256)
+                  siteImageSHA256: trend.siteImageSHA256,
+                  previousListasAt: trend.previousListasAt)
     }
 
     private func overlayNews(_ item: NewsItem, status: String) -> NewsItem {
@@ -1824,6 +1888,11 @@ final class EditorialStore: ObservableObject {
                     }
                 }
             } else {
+                if action.decision == "retire" {
+                    // Leave radar, Listas, editorial copy and images untouched.
+                    updated.unexplainedTrends.removeAll(where: sameTrend)
+                    continue
+                }
                 // A grouped original is not replaced by rework: the backend
                 // starts a NEW editorial ID, keeping the old text and the
                 // joint group until an independently reviewed result exists.
@@ -2089,6 +2158,17 @@ final class EditorialStore: ObservableObject {
             let id = str(row, "event_id")
             if !id.isEmpty && isNewer(row, than: latestDeliveries[id]) { latestDeliveries[id] = row }
         }
+        // Dated earlier Listas entries, never mere Top 30 radar sightings.
+        var listasHistory: [String: [(id: String, revision: Int, at: Date)]] = [:]
+        for previous in rows(manual, "items") {
+            let key = norm(str(previous, "name"))
+            let state = str(previous, "status").lowercased()
+            guard !key.isEmpty, ["explained", "deleted", "published"].contains(state),
+                  !str(previous, "explanation").trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
+                  let at = when(previous, ["explained_at"]) else { continue }
+            listasHistory[key, default: []].append(
+                (id: str(previous, "id"), revision: int(previous, "revision"), at: at))
+        }
         let closures = rows(decisions, "items").filter { closed.contains(str($0, "status").lowercased()) }
         let activeQueue = rows(queue, "items")
         return latestManual.compactMap { id, row -> TrendItem? in
@@ -2128,6 +2208,12 @@ final class EditorialStore: ObservableObject {
                 [Self.str($0, "id"), Self.str($0, "event_id")].contains(id) && closureApplies($0)
             }) || closureApplies(delivery) { return nil }
 
+            let previousListasAt = listasHistory[norm(str(row, "name"))]?
+                .filter { episode in
+                    episode.at.timeIntervalSince(explained) < -60 &&
+                    (episode.id != id || episode.revision != rev ||
+                     explained.timeIntervalSince(episode.at) >= 48 * 3600)
+                }.map { $0.at }.max()
             let archive = row["archive_image"] as? [String: Any] ??
                           row["fallback_image"] as? [String: Any] ?? [:]
             return TrendItem(id: id, rank: int(row, "rank"), name: str(row, "name"),
@@ -2158,7 +2244,8 @@ final class EditorialStore: ObservableObject {
                                  id: id, revision: rev,
                                  explanation: str(row, "explanation"),
                                  explainedAt: str(row, "explained_at"),
-                                 catalog: siteImages) ?? "")
+                                 catalog: siteImages) ?? "",
+                              previousListasAt: previousListasAt)
         }
         .sorted {
             let leftRank = $0.rank > 0 ? $0.rank : Int.max
@@ -2430,6 +2517,17 @@ final class EditorialStore: ObservableObject {
         }.sorted { $0.name < $1.name }
     }
 
+    private func markLiveCountsUnavailable() async {
+        // A failed GitHub read cannot become a verified new timestamp or 0/0.
+        // Retain the last exact counts and original check time on the lock screen.
+        for activity in Activity<LiveCountsAttributes>.activities {
+            var previous = activity.content.state
+            previous.partialData = true
+            await activity.update(ActivityContent(state: previous, staleDate: Date()))
+        }
+        liveStatus = "Live Activity · última lectura conservada; faltan datos de GitHub"
+    }
+
     private func publishLiveCounts(checkedAt: Date, partial: Bool) async {
         guard ActivityAuthorizationInfo().areActivitiesEnabled else {
             liveStatus = "Activa las Live Activities en Ajustes del iPhone"
@@ -2454,15 +2552,20 @@ final class EditorialStore: ObservableObject {
         )
         let content = ActivityContent(state: state, staleDate: checkedAt.addingTimeInterval(30 * 60))
         do {
-            if let active = Activity<LiveCountsAttributes>.activities.first {
-                await active.update(content)
-            } else {
+            let activities = Activity<LiveCountsAttributes>.activities
+            if activities.isEmpty {
                 _ = try Activity<LiveCountsAttributes>.request(
                     attributes: LiveCountsAttributes(title: "TTActualidad"),
                     content: content, pushType: nil
                 )
+            } else {
+                // A restored/older lock-screen activity can coexist with a
+                // newer one after an update. Keep every active instance in sync.
+                for activity in activities {
+                    await activity.update(content)
+                }
             }
-            liveStatus = "Live Activity activa · actualización al abrir la app"
+            liveStatus = "Live Activity activa · sincronización al abrir y durante el uso"
         } catch {
             liveStatus = "No se pudo iniciar la Live Activity: \(error.localizedDescription)"
         }

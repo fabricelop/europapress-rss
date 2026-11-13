@@ -1,0 +1,19 @@
+name: TTActualidad relaciones - episodios exactos
+
+on:
+  pull_request:
+    paths:
+      - 'site-patches/ttactualidad-relations-exact-episodes/**'
+      - '.github/workflows/ttactualidad-relations-exact-tests.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  pure-contract-regressions:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test offline exact-episode resolution (no Site calls or writes)
+        run: node --test site-patches/ttactualidad-relations-exact-episodes/resolve-exact-episodes.test.cjs

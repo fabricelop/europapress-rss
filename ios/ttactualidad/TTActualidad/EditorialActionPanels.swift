@@ -17,12 +17,21 @@ enum TTTheme {
 }
 
 
+// The external X editor does not provide a reliable posted/not-posted receipt.
+// Keep the exact originating episode across the external share sheet.
+private struct TTManualXSharedEpisode: Equatable {
+    let project: String
+    let id: String
+    let revision: Int
+}
+
 struct EditorialActions: View {
     var news: NewsItem? = nil
     var trend: TrendItem? = nil
     @ObservedObject var github: GitHubEditor
     @EnvironmentObject private var store: EditorialStore
     @EnvironmentObject private var buffer: BufferPublishTracker
+    @ObservedObject private var relationCounts = EditorialRelationCountsStore.shared
     @Binding var showSettings: Bool
     @State private var confirm = false
     @State private var intent = "deleted"
@@ -30,6 +39,9 @@ struct EditorialActions: View {
     @State private var showHints = false
     @State private var showRelations = false
     @State private var showManualImage = false
+    @State private var manualXPhotoShare: TTManualXPhotoShare?
+    @State private var preparingXPhotoShare = false
+    @State private var xPhotoSharedEpisode: TTManualXSharedEpisode?
     @State private var showTTProjectLink = false
     @State private var ttProjectLinkInput = UserDefaults.standard.string(
         forKey: "TTActualidad.chatgpt.projectTT.url") ?? ""
@@ -41,6 +53,15 @@ struct EditorialActions: View {
     private var revision: Int { news?.revision ?? trend?.revision ?? 0 }
     private var editorialID: String { news?.id ?? trend?.editorialID ?? "" }
     private var project: String { news == nil ? "ttendencias" : "ttittulares" }
+    private var isPendingTrend: Bool {
+        news == nil && trend != nil && trend?.inListas == false &&
+        store.trendFilter == .pendientes
+    }
+    private var trendRelationsCount: (Int, Int)? {
+        guard project == "ttendencias" else { return nil }
+        return relationCounts.counts(trendID: editorialID,
+                                     revision: revision, name: title)
+    }
 
     var body: some View {
         VStack(spacing: 7) {
@@ -68,6 +89,18 @@ struct EditorialActions: View {
                     .disabled(fullText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                 quickButton("Copiar Texto", "doc.on.doc") { copy(xText) }
                     .disabled(fullText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+            }
+            // Separate experimental manual share: NEVER replace the existing
+            // text-only X intent or dispatch a Buffer publication.
+            quickButton("Publicar en X (F)", "photo.on.rectangle.angled") {
+                Task { await prepareManualXPhotoShare() }
+            }
+            .disabled(preparingXPhotoShare ||
+                      fullText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
+                      (aiPhotoURL == nil && archivePhotoURL == nil))
+            if preparingXPhotoShare {
+                Text("Preparando fotografía para compartir…")
+                    .font(.caption2).foregroundStyle(TTTheme.muted)
             }
             quickButton("Publicar directo · Buffer", "paperplane.fill") {
                 guard github.authenticated else { showSettings = true; return }
@@ -119,34 +152,20 @@ struct EditorialActions: View {
                     }
                 }
             }
-            quickButton("Comprobar estado de Buffer", "arrow.clockwise") {
-                Task {
-                    await buffer.refresh()
-                    if let receipt = buffer.latestReceipt(project: project, id: editorialID,
-                                                         revision: revision),
-                       receipt.state == "sent" && receipt.closure_verified == true {
-                        outcome = "Publicado en X y retirado de Listas (recibos confirmados)"
-                        await store.refreshIfStale(minInterval: 0)
-                    } else if let receipt = buffer.latestReceipt(project: project,
-                                                                 id: editorialID,
-                                                                 revision: revision) {
-                        outcome = "Buffer: " + receipt.state +
-                                  ". La retirada de Listas necesita un recibo independiente."
-                    } else {
-                        outcome = "No hay recibo definitivo de Buffer para esta revisión."
-                    }
-                }
-            }
             HStack(spacing: 7) {
-                quickButton("Quitar de Listas", "trash", danger: true) { request("deleted") }
-                    .disabled(!(news?.status == "LISTA" || trend?.inListas == true))
+                quickButton(isPendingTrend ? "Quitar" : "Quitar de Listas",
+                            "trash", danger: true) {
+                    request(isPendingTrend ? "retire" : "deleted")
+                }
+                    .disabled(!(news?.status == "LISTA" ||
+                                trend?.inListas == true || isPendingTrend))
                 quickButton("Elaborar desde 0", "arrow.triangle.2.circlepath") {
                     if news != nil && news?.status != "LISTA" { request("prepare") }
                     else { request("rework") }
                 }
                     .disabled(news?.status == "EN ELABORACIÓN" || trend?.status == "EN ELABORACIÓN")
             }
-            if let trend, !trend.inListas {
+            if let trend, !trend.inListas && !isPendingTrend {
                 Text("La ficha del iPhone no considera esta tendencia dentro de Listas. Actualiza los datos antes de retirarla.")
                     .font(.caption2)
                     .foregroundStyle(TTTheme.muted)
@@ -156,10 +175,20 @@ struct EditorialActions: View {
                 if github.authenticated { showHints = true } else { showSettings = true }
             }
                 .disabled(news != nil && news?.status != "LISTA")
-            quickButton("Relaciones", "point.3.connected.trianglepath.dotted") {
+            quickButton(
+                trendRelationsCount.map {
+                    "Relaciones " + String($0.0) + "/" + String($0.1)
+                } ?? "Relaciones",
+                "point.3.connected.trianglepath.dotted"
+            ) {
                 if github.authenticated { showRelations = true } else { showSettings = true }
             }
             .disabled(editorialID.isEmpty)
+            .accessibilityLabel(
+                trendRelationsCount.map {
+                    "Relaciones confirmadas " + String($0.0) +
+                    " de " + String($0.1) + " noticias encontradas"
+                } ?? "Consultar relaciones")
             HStack(spacing: 7) {
                 quickButton("Crear Foto IA", "photo.badge.plus") {
                     copy(imageOnlyPrompt)
@@ -258,6 +287,14 @@ struct EditorialActions: View {
                     .presentationDetents([.medium, .large])
             }
         }
+        .sheet(item: $manualXPhotoShare, onDismiss: {
+            // User chose one-touch X(F): registering as manually published
+            // is automatic on closing the share flow. No X delivery receipt
+            // is provided; this declaration also happens if X was cancelled.
+            recordManualXPhotoPublished()
+        }) { share in
+            TTManualXPhotoShareSheet(text: share.text, image: share.image)
+        }
         .sheet(isPresented: $showManualImage, onDismiss: {
             Task { await store.refreshIfStale(minInterval: 0) }
         }) {
@@ -267,7 +304,9 @@ struct EditorialActions: View {
                 .environmentObject(store)
                 .presentationDetents([.large])
         }
-        .sheet(isPresented: $showRelations) {
+        .sheet(isPresented: $showRelations, onDismiss: {
+            Task { await relationCounts.refresh(using: github, force: true) }
+        }) {
             EditorialRelationsView(github: github,
                                    scope: EditorialRelationsScope(
                 project: project, id: editorialID, revision: revision, title: title),
@@ -276,6 +315,11 @@ struct EditorialActions: View {
                                    listasNews: store.snapshot.news)
                 .presentationDetents([.large])
         }
+        .task {
+            guard project == "ttendencias" && !editorialID.isEmpty &&
+                  github.authenticated else { return }
+            await relationCounts.refresh(using: github)
+        }
         .onChange(of: buffer.change) { _, _ in
             outcome = buffer.notice
             if buffer.latestReceipt(project: project, id: editorialID,
@@ -283,7 +327,8 @@ struct EditorialActions: View {
                 Task { await store.refreshIfStale(minInterval: 0) }
             }
         }
-        .confirmationDialog(intent == "deleted" ? "¿Quitar de Listas?" :
+        .confirmationDialog(intent == "retire" ? "¿Quitar esta tendencia de Pendientes?" :
+                            intent == "deleted" ? "¿Quitar de Listas?" :
                             intent == "discard" && news?.status == "EN ELABORACIÓN" ?
                             "¿Suprimir esta noticia en elaboración?" :
                             intent == "discard" ? "¿Desestimar esta entrada?" :
@@ -296,8 +341,9 @@ struct EditorialActions: View {
                     submit("deleted")
                 }
             } else {
-                Button("Confirmar", role: intent == "deleted" ||
-                    intent == "discard" ? .destructive : nil) { submit(intent) }
+                Button(intent == "retire" ? "Quitar de Pendientes" : "Confirmar",
+                       role: ["deleted", "discard", "retire"].contains(intent) ?
+                           .destructive : nil) { submit(intent) }
             }
             Button("Cancelar", role: .cancel) {}
         } message: {
@@ -306,10 +352,52 @@ struct EditorialActions: View {
                  ? "Ambas opciones retiran esta entrada. Solo «Publicado» suma al contador de publicaciones registradas en las últimas 24 horas, después de que GitHub lo confirme."
                  : intent == "rework" || intent == "prepare"
                  ? "Se solicitará una investigación nueva, sin reutilizar explicación ni remate. La orden se confirmará con GitHub."
+                 : intent == "retire"
+                 ? "Se retirará solamente esta aparición de Pendientes, sin publicar, eliminar del Top 30 ni impedir que vuelva si entra de nuevo."
                  : intent == "discard" && news?.status == "EN ELABORACIÓN"
                  ? "Se cancelará la investigación en GitHub y no se añadirá a Listas. Si ya terminó mientras confirmabas, se te avisará para que la quites desde Listas."
                  : "La orden se comprobará contra la revisión vigente de GitHub.")
         }
+    }
+
+    // The single X(F) tap authorizes this explicit manual declaration.
+    // Dismissal is used so an optimistic Listas removal cannot interrupt
+    // the system share sheet. The user intentionally accepts that cancelling
+    // X still causes a published decision to be recorded.
+    private func recordManualXPhotoPublished() {
+        guard let episode = xPhotoSharedEpisode else {
+            outcome = "No hay una publicación manual pendiente de confirmar."
+            return
+        }
+        xPhotoSharedEpisode = nil
+        guard episode.project == project, episode.id == editorialID,
+              episode.revision == revision else {
+            outcome = "La ficha ha cambiado de revisión. Actualiza y " +
+                      "registra la publicación desde la ficha correcta."
+            return
+        }
+        guard news?.status == "LISTA" || trend?.inListas == true else {
+            outcome = "Esta revisión ya no figura en Listas. Actualiza " +
+                      "el estado antes de registrar la publicación."
+            return
+        }
+        guard github.authenticated else {
+            outcome = "Publicado en X, pero falta conectar GitHub para " +
+                      "registrarlo y retirarlo de Listas. Usa «Quitar de " +
+                      "Listas» → «Publicado» después de conectar."
+            showSettings = true
+            return
+        }
+        guard !store.isActionInProgress(project: episode.project,
+                                        id: episode.id,
+                                        revision: episode.revision) else {
+            outcome = "Ya hay una orden pendiente para esta revisión. " +
+                      "Comprueba su resultado antes de volver a marcarla."
+            return
+        }
+        // Reuse standard exact-revision, receipt-verified editorial closure.
+        // Nothing is sent to Buffer or to X from this callback.
+        submit("published")
     }
 
     private func submit(_ decision: String) {
@@ -363,7 +451,7 @@ struct EditorialActions: View {
 
     private func request(_ action: String) {
         guard github.authenticated else {
-            outcome = "No se puede retirar de Listas: conecta GitHub en Ajustes."
+            outcome = "Conecta GitHub en Ajustes para aplicar esta acción."
             showSettings = true
             return
         }
@@ -962,6 +1050,51 @@ struct EditorialActions: View {
         parts?.queryItems = [URLQueryItem(name: "text",
                                           value: xText)]
         if let url = parts?.url { openURL(url) }
+    }
+
+    // The iOS share extension may decide which provided items it accepts.
+    // Require the editor to verify both the text and the image in X before
+    // tapping X's final Publish control. No publishing API is invoked here.
+    @MainActor
+    private func prepareManualXPhotoShare() async {
+        guard !preparingXPhotoShare,
+              !fullText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
+        preparingXPhotoShare = true
+        defer { preparingXPhotoShare = false }
+        let draftText = xText
+        // Exactly the same editorial sources as the existing photo buttons:
+        // verified AI first, archive second. Failed downloads are not shared.
+        let candidates = [aiPhotoURL, archivePhotoURL].compactMap { $0 }
+        var attempted = Set<URL>()
+        for photoURL in candidates {
+            guard attempted.insert(photoURL).inserted,
+                  photoURL.scheme?.lowercased() == "https" else { continue }
+            do {
+                var request = URLRequest(url: photoURL, cachePolicy: .reloadIgnoringLocalCacheData)
+                request.timeoutInterval = 20
+                let (data, response) = try await URLSession.shared.data(for: request)
+                guard let http = response as? HTTPURLResponse, http.statusCode == 200,
+                      !data.isEmpty, data.count <= 20_000_000,
+                      let image = UIImage(data: data) else { continue }
+                // If X accepts the photo but drops the caption, the
+                // exact X-ready text remains pasteable without API calls.
+                UIPasteboard.general.string = draftText
+                outcome = "Compartir manual: elige X y comprueba texto y foto " +
+                          "antes de pulsar Publicar. El texto también está " +
+                          "copiado para pegar si X lo omite."
+                xPhotoSharedEpisode = TTManualXSharedEpisode(
+                    project: project, id: editorialID, revision: revision)
+                manualXPhotoShare = TTManualXPhotoShare(text: draftText, image: image)
+                return
+            } catch {
+                // Try the next known editorial source, without generating or
+                // attaching any different picture.
+                continue
+            }
+        }
+        outcome = candidates.isEmpty
+            ? "No hay foto asociada. Usa el botón original «Publicar en X»."
+            : "No se pudo preparar ninguna foto válida. No se ha publicado nada."
     }
 
     private func copyPhoto(ai: Bool) async {

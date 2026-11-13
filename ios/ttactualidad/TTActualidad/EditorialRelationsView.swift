@@ -1,6 +1,67 @@
 import Combine
 import SwiftUI
 
+// Single shared read-only summary. EditorialActions is instantiated for many
+// cards; querying Sites separately per card would waste requests and race.
+@MainActor
+final class EditorialRelationCountsStore: ObservableObject {
+    static let shared = EditorialRelationCountsStore()
+    @Published private(set) var revision = 0
+    private(set) var snapshot: EditorialRelationsSnapshot?
+    private(set) var news: [EditorialRelationEndpoint] = []
+    private var loadedAt: Date?
+    private var loading = false
+
+    func refresh(using github: GitHubEditor, force: Bool = false) async {
+        if loading { return }
+        if !force, let loadedAt, Date().timeIntervalSince(loadedAt) < 90 { return }
+        guard github.authenticated else { return }
+        loading = true
+        defer { loading = false }
+        // Do not claim 0/X when GET failed. A verified Site read is required.
+        do {
+            async let history = github.editorialRelationRecentNews()
+            let (raw, status) = try await github.privateEditorialRelationsRequest(
+                path: "/v1/snapshot")
+            guard status == 200 else { return }
+            let verified = try JSONDecoder().decode(
+                EditorialRelationsSnapshot.self, from: raw)
+            let recent = (try? await history) ?? []
+            snapshot = verified
+            var byIdentity: [String: EditorialRelationEndpoint] = [:]
+            let related = EditorialRelationsPolicy.canonical(verified.items)
+            for row in verified.news + related.map(\.news) + recent {
+                let id = EditorialRelationsPolicy.newsKey(
+                    id: row.id, revision: row.revision)
+                if let current = byIdentity[id],
+                   !current.episodeFingerprint.isEmpty &&
+                    row.episodeFingerprint.isEmpty {
+                    continue
+                }
+                byIdentity[id] = row
+            }
+            news = Array(byIdentity.values)
+            loadedAt = Date()
+            revision &+= 1
+        } catch {
+            // Keep previous verified snapshot, never convert an error to zero.
+        }
+    }
+
+    // X = ALL confirmed linked news for this exact editorial trend, including
+    // historical news not in today's Top 5. N = at most 5 matching candidates.
+    // Nothing is considered linked merely because its text mentions a name.
+    func counts(trendID: String, revision: Int, name: String) -> (Int, Int)? {
+        guard let snapshot, !trendID.isEmpty else { return nil }
+        let found = EditorialRelationsPolicy.newsForTrendIncludingLinked(
+            news, relations: snapshot.items, trendID: trendID,
+            revision: revision, name: name)
+        let associated = EditorialRelationsPolicy.confirmedCount(
+            snapshot.items, trendID: trendID, revision: revision)
+        return (associated, found.count)
+    }
+}
+
 struct EditorialRelationsScope {
     let project: String
     let id: String
@@ -55,11 +116,24 @@ private final class EditorialRelationsModel: ObservableObject {
         dataRevision &+= 1
     }
 
+    private func commandKey(news: EditorialRelationEndpoint,
+                            trend: EditorialRelationEndpoint, action: String) -> String {
+        // A Sites refresh may add fingerprints without changing the pair.
+        // Keep retries idempotent across that identity enrichment.
+        [action, news.id, String(news.revision), trend.id,
+         String(trend.revision)].joined(separator: "|")
+    }
+
+    private func retireVerifiedCommand(news: EditorialRelationEndpoint,
+                                       trend: EditorialRelationEndpoint, action: String) {
+        commands.removeValue(forKey: commandKey(news: news, trend: trend, action: action))
+        UserDefaults.standard.set(commands, forKey: commandStorageKey)
+    }
+
     private func postDecision(news: EditorialRelationEndpoint,
                               trend: EditorialRelationEndpoint,
                               action: String, using github: GitHubEditor) async throws {
-        let key = [action, news.id, String(news.revision), news.episodeFingerprint,
-                   trend.id, String(trend.revision), trend.episodeFingerprint].joined(separator: "|")
+        let key = commandKey(news: news, trend: trend, action: action)
         let command = commands[key] ?? UUID().uuidString.lowercased()
         commands[key] = command
         UserDefaults.standard.set(commands, forKey: commandStorageKey)
@@ -78,8 +152,8 @@ private final class EditorialRelationsModel: ObservableObject {
         guard EditorialRelationsPolicy.confirms(receipt, action: action) else {
             throw RelationsError.unconfirmed
         }
-        commands.removeValue(forKey: key)
-        UserDefaults.standard.set(commands, forKey: commandStorageKey)
+        // Keep the same commandId until a fresh Site snapshot exposes the
+        // relation. A stale GET must not create a new command on retry.
     }
 
     func decide(news: EditorialRelationEndpoint, trend: EditorialRelationEndpoint,
@@ -90,8 +164,16 @@ private final class EditorialRelationsModel: ObservableObject {
         do {
             try await postDecision(news: news, trend: trend, action: action, using: github)
             await load(using: github)
-            notice = action == "link" ? "Relación vinculada en ambos sentidos." :
-                "Relación bloqueada para este episodio. El automatismo no volverá a añadirla."
+            let persisted = EditorialRelationsPolicy.persisted(
+                snapshot?.items ?? [], news: news, trend: trend, action: action)
+            if persisted {
+                retireVerifiedCommand(news: news, trend: trend, action: action)
+            }
+            notice = persisted ?
+                (action == "link" ? "Relación guardada y comprobada en el Site." :
+                 "Relación bloqueada y comprobada en el Site.") :
+                "La orden fue aceptada, pero la relación aún no aparece en el Site. " +
+                "No se dará por guardada hasta confirmarla en la web."
         } catch {
             if let failure = error as? RelationsError, case .http(409) = failure {
                 await load(using: github)
@@ -123,7 +205,7 @@ private final class EditorialRelationsModel: ObservableObject {
         var errors: [String] = []
         var seen = Set<String>()
         for (index, change) in changes.enumerated() {
-            let pair = change.news.stableIdentity + "↔" + change.trend.stableIdentity
+            let pair = EditorialRelationsPolicy.pairKey(change.news, change.trend)
             guard seen.insert(pair).inserted else { continue }
             notice = "Solicitando guardado de relaciones: " +
                 String(index + 1) + "/" + String(changes.count)
@@ -140,13 +222,31 @@ private final class EditorialRelationsModel: ObservableObject {
             }
         }
         await load(using: github)
-        let summary = String(confirmed.count) + " de " + String(changes.count) +
-            " cambios confirmados por el servidor."
+        let visible = confirmed.filter { pair in
+            changes.contains { change in
+                EditorialRelationsPolicy.pairKey(change.news, change.trend) == pair &&
+                    EditorialRelationsPolicy.persisted(
+                        snapshot?.items ?? [], news: change.news,
+                        trend: change.trend, action: change.action)
+            }
+        }
+        for change in changes where visible.contains(
+            EditorialRelationsPolicy.pairKey(change.news, change.trend)) {
+            retireVerifiedCommand(news: change.news, trend: change.trend,
+                                  action: change.action)
+        }
+        if visible.count < confirmed.count {
+            errors.append("El Site aún no devuelve " +
+                String(confirmed.count - visible.count) +
+                " relación(es) aceptadas. Conserva las selecciones hasta comprobarlas.")
+        }
+        let summary = String(visible.count) + " de " + String(changes.count) +
+            " cambios visibles y confirmados en el Site."
         notice = errors.isEmpty ? summary :
             summary + " Pendientes o rechazados: " +
             errors.prefix(2).joined(separator: " · ") +
             (errors.count > 2 ? " (y más)" : "")
-        return TrendSaveResult(confirmedKeys: confirmed,
+        return TrendSaveResult(confirmedKeys: visible,
                                attempted: changes.count, errors: errors)
     }
 
@@ -183,12 +283,31 @@ private final class EditorialRelationsModel: ObservableObject {
             }
         }
         await load(using: github)
-        let completed = "\(linked) asociadas · \(unlinked) desasociadas"
+        let checkedLinks = links.filter {
+            EditorialRelationsPolicy.persisted(
+                snapshot?.items ?? [], news: news, trend: $0, action: "link")
+        }.count
+        let checkedUnlinks = unlinks.filter {
+            EditorialRelationsPolicy.persisted(
+                snapshot?.items ?? [], news: news, trend: $0, action: "unlink")
+        }.count
+        for trend in links where EditorialRelationsPolicy.persisted(
+            snapshot?.items ?? [], news: news, trend: trend, action: "link") {
+            retireVerifiedCommand(news: news, trend: trend, action: "link")
+        }
+        for trend in unlinks where EditorialRelationsPolicy.persisted(
+            snapshot?.items ?? [], news: news, trend: trend, action: "unlink") {
+            retireVerifiedCommand(news: news, trend: trend, action: "unlink")
+        }
+        if checkedLinks != linked || checkedUnlinks != unlinked {
+            errorMessage = "El Site todavía no muestra todas las relaciones aceptadas."
+        }
+        let completed = "\(checkedLinks) asociadas · \(checkedUnlinks) desasociadas"
         if let errorMessage {
             notice = completed + ". Hay cambios sin confirmar: " +
                 errorMessage + ". Revisa las marcas antes de reintentar."
         } else {
-            notice = completed + " para «\(news.title)»."
+            notice = completed + " para «\(news.title)», comprobadas en el Site."
         }
         return errorMessage == nil
     }
@@ -295,8 +414,8 @@ struct EditorialRelationsView: View {
                 byKey[key] = EditorialRelationEndpoint(
                     id: preferred.id, revision: preferred.revision,
                     episodeFingerprint: preferred.episodeFingerprint,
-                    title: preferred.title.isEmpty ? row.title : preferred.title,
-                    text: preferred.text.isEmpty ? row.text : preferred.text,
+                    title: preferred.title.count >= row.title.count ? preferred.title : row.title,
+                    text: preferred.text.count >= row.text.count ? preferred.text : row.text,
                     path: preferred.path, listedAt: date)
             } else {
                 byKey[key] = row
@@ -344,20 +463,29 @@ struct EditorialRelationsView: View {
         let news = buildAllNewsChoices(canonical: canonical)
         let dates = buildFallbackDates()
         let endpoints = (model.snapshot?.trends ?? []) + canonical.map(\.trend)
-        var states: [String: String] = [:]
-        for relation in canonical {
-            let key = pairKey(relation.news, relation.trend)
-            states[key] = relation.state
-        }
+        // A v85 snapshot may carry both a suggested row and a manual link
+        // for the same pair, potentially with enriched fingerprints.
+        // A manual decision must not be overwritten by loop order.
+        let states = EditorialRelationsPolicy.effectivePairStates(
+            model.snapshot?.items ?? [])
         var matches: [String: [EditorialRelationEndpoint]] = [:]
         var trends: [String: EditorialRelationEndpoint] = [:]
         let now = Date()
         for (index, name) in top30Names.prefix(30).enumerated() {
             let rank = index + 1
             let key = trendKey(rank: rank, name: name)
-            matches[key] = EditorialRelationsPolicy.newsForTrend(
-                news, name: name, now: now,
-                fallbackDates: dates, limit: 5)
+            if top30Trends.indices.contains(index),
+               top30Trends[index].name == name,
+               !top30Trends[index].editorialID.isEmpty {
+                let row = top30Trends[index]
+                matches[key] = EditorialRelationsPolicy.newsForTrendIncludingLinked(
+                    news, relations: model.snapshot?.items ?? [],
+                    trendID: row.editorialID, revision: row.revision,
+                    name: name, fallbackDates: dates, limit: 5)
+            } else {
+                matches[key] = EditorialRelationsPolicy.newsForTrend(
+                    news, name: name, now: now, fallbackDates: dates, limit: 5)
+            }
             if top30Trends.indices.contains(index) {
                 let row = top30Trends[index]
                 if row.name == name && !row.editorialID.isEmpty {
@@ -372,6 +500,26 @@ struct EditorialRelationsView: View {
                             text: row.explanation, path: nil)
                 }
             }
+        }
+        // The per-card button must work for the exact trend opened, including
+        // Listas, Recientes, Pendientes or Antiguas and changed Top 30 ranks.
+        // It is never gated by Top 30 membership or a historical time window.
+        if let scope, scope.project == "ttendencias" {
+            let key = trendKey(rank: 0, name: scope.title)
+            matches[key] = EditorialRelationsPolicy.newsForTrendIncludingLinked(
+                news, relations: model.snapshot?.items ?? [],
+                trendID: scope.id, revision: scope.revision,
+                name: scope.title, fallbackDates: dates, limit: 5)
+            let renderedText = top30Trends.first {
+                $0.editorialID == scope.id && $0.revision == scope.revision
+            }?.explanation ?? ""
+            trends[key] = EditorialRelationsPolicy.matchingTop30Endpoint(
+                id: scope.id, revision: scope.revision,
+                renderedText: renderedText, candidates: endpoints) ??
+                EditorialRelationEndpoint(
+                    id: scope.id, revision: scope.revision,
+                    episodeFingerprint: "", title: scope.title,
+                    text: renderedText, path: nil)
         }
         indexedCanonical = canonical
         indexedNews = news
@@ -433,7 +581,7 @@ struct EditorialRelationsView: View {
 
     private var top30RelationSection: some View {
         Section("Tendencias del Top 30 · \(min(30, top30Names.count))") {
-            Text("Abre una tendencia para ver hasta 5 noticias de los últimos 7 días que la mencionan en su titular o texto. El resultado de la búsqueda no crea una relación: tú decides qué asociar.")
+            Text("Cada tendencia muestra hasta 5 noticias recientes: relaciones ya confirmadas y coincidencias por texto. Desmarca una relación y pulsa Guardar para bloquearla en ese episodio.")
                 .font(.footnote).foregroundStyle(.secondary)
             Text("Noticias del historial recuperadas: \(model.historicalNews.count)")
                 .font(.caption).foregroundStyle(.secondary)
@@ -503,30 +651,46 @@ struct EditorialRelationsView: View {
         }
     }
 
-    private var scopedTop30Index: Int? {
-        guard let scope, scope.project == "ttendencias" else { return nil }
-        return top30Trends.firstIndex {
-            $0.editorialID == scope.id && $0.revision == scope.revision
-        }
-    }
-
+    // The relationship button belongs to a concrete editorial trend, not
+    // a global "Por revisar" menu. Show all known news matching this term,
+    // regardless of when or where the news appeared. Only the editor links.
     @ViewBuilder private var scopedTrendNewsSection: some View {
-        if let index = scopedTop30Index, top30Names.indices.contains(index) {
-            let rank = index + 1
-            let name = top30Names[index]
+        if let scope, scope.project == "ttendencias" {
+            let rank = 0
+            let name = scope.title
             let found = relatedNews(rank: rank, name: name)
             let changes = changesForTrend(found, rank: rank, name: name)
-            Section("Noticias encontradas · " + String(found.count) + "/5") {
-                Text("Búsqueda de «" + name + "» en titulares y textos de noticias. Sin límite de fecha, filtros de Listas ni exclusiones por ocultación. Marca las que quieras relacionar.")
+            // X includes every confirmed exact link, even when it is older
+            // than the five matching news shown in this picker. An unavailable
+            // snapshot must never masquerade as zero confirmed links.
+            let confirmed = model.snapshot.map {
+                EditorialRelationsPolicy.confirmedCount(
+                    $0.items, trendID: scope.id, revision: scope.revision)
+            }
+            Section("Noticias relacionadas · " +
+                    (confirmed.map { String($0) } ?? "—") + "/" +
+                    String(found.count)) {
+                Text("Las relaciones guardadas por el Site, incluidas las automáticas, " +
+                     "aparecen marcadas aunque no mencionen literalmente el nombre. " +
+                     "Se muestran las cinco noticias más recientes. Desmarca y " +
+                     "pulsa Guardar para bloquear una asociación incorrecta. " +
+                     "Las relaciones históricas se conservan.")
                     .font(.footnote).foregroundStyle(.secondary)
                 if found.isEmpty {
                     Text(model.loading ? "Buscando noticias…" :
-                         "No se encontraron noticias que mencionen esta tendencia en los catálogos disponibles.")
+                         allNewsChoices.isEmpty ?
+                         "No se ha recuperado ningún catálogo de noticias. " +
+                         "Actualiza y comprueba el aviso de carga." :
+                         "No se encontraron noticias que mencionen esta tendencia.")
                         .font(.footnote).foregroundStyle(.secondary)
                 } else {
                     ForEach(found, id: \.stableIdentity) { news in
                         trendNewsRow(news: news, rank: rank, name: name)
                     }
+                }
+                if model.snapshot == nil && !changes.isEmpty {
+                    Text("Las selecciones son provisionales: si el Site no responde o rechaza el episodio, permanecerán pendientes sin crear relaciones falsas.")
+                        .font(.caption2).foregroundStyle(.orange)
                 }
                 if !changes.isEmpty {
                     Button {
@@ -540,13 +704,13 @@ struct EditorialRelationsView: View {
                               systemImage: "checkmark.circle.fill")
                     }
                     .buttonStyle(.borderedProminent)
+                    // News are selected by exact id/revision even if the Site's
+                    // snapshot GET temporarily failed. POST stays authenticated
+                    // and the Site validates identities; no link is marked saved
+                    // until a fresh server readback confirms it.
+                    .tint(.orange)
                     .disabled(model.saving)
                 }
-            }
-        } else if scope?.project == "ttendencias" {
-            Section {
-                Text("La tendencia ya no figura con esta revisión en Top 30. Actualiza las fichas.")
-                    .font(.footnote).foregroundStyle(.secondary)
             }
         }
     }
@@ -631,8 +795,7 @@ struct EditorialRelationsView: View {
 
     private func same(_ left: EditorialRelationEndpoint,
                       _ right: EditorialRelationEndpoint) -> Bool {
-        left.id == right.id && left.revision == right.revision &&
-            left.episodeFingerprint == right.episodeFingerprint
+        left.id == right.id && left.revision == right.revision
     }
 
     // One card per actual news episode, regardless of how many trend proposals
@@ -705,7 +868,7 @@ struct EditorialRelationsView: View {
             if related.isEmpty {
                 Text(model.historicalNews.isEmpty ?
                      "No se ha podido comprobar esta tendencia: el historial está vacío. Actualiza y revisa el aviso de carga." :
-                     "No se encontraron coincidencias entre las noticias con fecha comprobada de los últimos 7 días.")
+                     "No se encontraron coincidencias entre las noticias del historial recuperado.")
                     .font(.footnote).foregroundStyle(.secondary)
             } else {
                 ForEach(related, id: \.stableIdentity) { news in
@@ -763,23 +926,33 @@ struct EditorialRelationsView: View {
                     .foregroundStyle(.secondary).lineLimit(3)
             }
             if let trend, selectable {
+                let changed = pendingSwitches[linkKey] != nil
                 Button {
                     toggleSelection(news, trend)
                 } label: {
-                    Label(selected ? "Asociada / seleccionada" : "Marcar para asociar",
-                          systemImage: selected ? "checkmark.square.fill" : "square")
+                    Label(
+                        changed
+                            ? (selected ? "Seleccionada para asociar" :
+                               "Seleccionada para desvincular")
+                            : (linked ? "Ya relacionada · guardada en el Site" :
+                               "Marcar para asociar"),
+                        systemImage: selected ? "checkmark.square.fill" : "square")
                 }
-                .buttonStyle(.plain).foregroundStyle(TTTheme.teal)
+                .buttonStyle(.plain)
+                .foregroundStyle(changed ? .orange : TTTheme.teal)
+                if changed {
+                    Text(selected ? "Se asociará al pulsar Guardar" :
+                         "Se desasociará al pulsar Guardar")
+                        .font(.caption2).foregroundStyle(.orange)
+                } else if linked {
+                    Text("Relación confirmada por el servidor; no requiere guardar de nuevo.")
+                        .font(.caption2).foregroundStyle(TTTheme.teal)
+                } else if model.snapshot == nil {
+                    Text("No se pudo consultar el estado remoto. Puedes marcar y pulsar Guardar; el Site validará los IDs y la APP no confirmará la relación hasta comprobarla.")
+                        .font(.caption2).foregroundStyle(.orange)
+                }
             } else {
-                Text("No se reconoce el identificador de la tendencia.")
-                    .font(.caption).foregroundStyle(.orange)
-            }
-            if pendingSwitches[linkKey] != nil && selectable {
-                Text(selected ? "Se asociará al pulsar Guardar" :
-                     "Se desasociará al pulsar Guardar")
-                    .font(.caption2).foregroundStyle(.orange)
-            } else if !selectable {
-                Text("Identificador de tendencia pendiente.")
+                Text("Identificador de tendencia pendiente o no reconocido.")
                     .font(.caption2).foregroundStyle(.orange)
             }
             if scope?.project != "ttendencias" {
@@ -799,7 +972,7 @@ struct EditorialRelationsView: View {
 
     private func pairKey(_ news: EditorialRelationEndpoint,
                          _ trend: EditorialRelationEndpoint) -> String {
-        news.stableIdentity + "↔" + trend.stableIdentity
+        EditorialRelationsPolicy.pairKey(news, trend)
     }
 
     private func toggleSelection(_ news: EditorialRelationEndpoint,
@@ -843,16 +1016,25 @@ struct EditorialRelationsView: View {
 
     private func changedTrends(for news: EditorialRelationEndpoint)
         -> (links: [EditorialRelationEndpoint], unlinks: [EditorialRelationEndpoint]) {
-        // A display-only historical row does not have the Sites-issued
-        // fingerprint required to authorize or verify a decision.
-        guard !news.episodeFingerprint.isEmpty else { return ([], []) }
-        let endpoints = (model.snapshot?.trends ?? []) + canonicalRelations.map(\.trend)
-        var seen = Set<String>()
+        // Every displayed news episode with a real ID/revision is selectable.
+        // Missing fingerprints are optional: the Site validates exact identity.
+        // Include current Top30 endpoints even when absent from private snapshot.
+        let endpoints = Array(indexedTrendEndpoints.values) +
+            (model.snapshot?.trends ?? []) + canonicalRelations.map(\.trend)
+        var preferred: [String: EditorialRelationEndpoint] = [:]
+        for trend in endpoints {
+            let key = EditorialRelationsPolicy.newsKey(
+                id: trend.id, revision: trend.revision)
+            if preferred[key] == nil ||
+               (preferred[key]?.episodeFingerprint.isEmpty == true &&
+                !trend.episodeFingerprint.isEmpty) {
+                preferred[key] = trend
+            }
+        }
         var links: [EditorialRelationEndpoint] = []
         var unlinks: [EditorialRelationEndpoint] = []
-        for trend in endpoints {
-            guard seen.insert(trend.stableIdentity).inserted,
-                  let desired = pendingSwitches[pairKey(news, trend)],
+        for trend in preferred.values {
+            guard let desired = pendingSwitches[pairKey(news, trend)],
                   let action = EditorialRelationsPolicy.actionForSwitch(
                     current: relationState(news, trend), selected: desired) else { continue }
             if action == "link" { links.append(trend) }
@@ -868,7 +1050,7 @@ struct EditorialRelationsView: View {
                 Text("Marca las tendencias que quieras asociar. Desmarca las ya vinculadas. Solo se guardan los cambios que hagas.")
                     .font(.footnote).foregroundStyle(.secondary)
                 if news.episodeFingerprint.isEmpty {
-                    Text("Noticia recuperada del historial. Pendiente de identidad del servidor de relaciones: puedes marcar tendencias, pero guardarlas requiere que el servidor reconozca esta noticia.")
+                    Text("Noticia recuperada del historial por ID y revisión. Puedes marcarla y guardar; el Site debe verificar el episodio y devolver la relación confirmada.")
                         .font(.caption).foregroundStyle(.orange)
                 }
                 if top30Names.isEmpty {

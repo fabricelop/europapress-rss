@@ -100,6 +100,8 @@ struct TTDashboard: View {
     @State private var publicationSheet: PublicationSheetRoute?
     @State private var requestingEditorialRun = false
     @State private var editorialRunMessage = ""
+    // Presentation-only: keep the global request count visible, details opt-in.
+    @State private var quotaDetailsExpanded = false
 
     // Presentation-only overlay. The canonical editorial snapshot is never
     // modified until the exact GitHub closure receipt has been verified.
@@ -191,13 +193,16 @@ struct TTDashboard: View {
                     (!showCombinedListas &&
                      ((store.section == .news && store.newsFilter == .elaboracion) ||
                       (store.section == .trends && store.trendFilter == .elaboracion)))
-                if EditorialProgressPolicy.shouldPoll(
+                // ActivityKit does not fetch GitHub in the background by itself.
+                // Keep counts alive during ANY foreground visit, not only while
+                // the editor is viewing an active/working queue.
+                guard UIApplication.shared.applicationState == .active else { continue }
+                let needsFastProgress = EditorialProgressPolicy.shouldPoll(
                     pendingOrders: store.pendingOperationsCount,
                     newsWorking: store.snapshot.newsElaboracion.count,
                     trendsWorking: store.snapshot.trendsElaboracion.count,
-                    viewingWorking: viewingWorking) {
-                    await store.refreshIfStale(minInterval: 45)
-                }
+                    viewingWorking: viewingWorking)
+                await store.refreshIfStale(minInterval: needsFastProgress ? 45 : 180)
             }
         }
         .onOpenURL { url in
@@ -233,6 +238,11 @@ struct TTDashboard: View {
         .onChange(of: store.section) { _, _ in
             search = ""
             UISelectionFeedbackGenerator().selectionChanged()
+        }
+        .onChange(of: store.listasRemovalScrollRevision) { _, _ in
+            // The optimistic Listas removal shortened LazyVStack. A fresh
+            // scroll identity returns to the menu without affecting GitHub.
+            quickNavigationID = UUID()
         }
     }
 
@@ -505,28 +515,151 @@ struct TTDashboard: View {
 
     private var bufferAPIQuota: some View {
         VStack(alignment: .leading, spacing: 7) {
-            Label("CUOTA BUFFER API GLOBAL · 30 DÍAS MÓVILES",
-                  systemImage: "chart.pie")
-                .font(.system(size: 10, weight: .bold))
-                .foregroundStyle(TTTheme.muted)
+            Button {
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    quotaDetailsExpanded.toggle()
+                }
+            } label: {
+                HStack(spacing: 7) {
+                    Label("CUOTA BUFFER API GLOBAL", systemImage: "chart.pie")
+                        .font(.system(size: 10, weight: .bold))
+                        .foregroundStyle(TTTheme.muted)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.75)
+                        .layoutPriority(1)
+                    Spacer(minLength: 2)
+                    if let quota = buffer.apiQuota, quota.window_seconds == 2592000,
+                       quota.limit > 0 {
+                        Text("\(quota.used)/\(quota.limit) solicitudes")
+                            .font(.system(size: 11, weight: .bold))
+                            .monospacedDigit()
+                            .foregroundStyle(.white)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.8)
+                    } else {
+                        Text("— solicitudes")
+                            .font(.system(size: 11, weight: .semibold))
+                            .foregroundStyle(TTTheme.muted)
+                            .lineLimit(1)
+                    }
+                    Image(systemName: quotaDetailsExpanded ? "chevron.up" : "chevron.down")
+                        .font(.system(size: 10, weight: .bold))
+                        .foregroundStyle(TTTheme.blue)
+                }
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel("Cuota Buffer API global")
+            .accessibilityValue(buffer.apiQuota.map {
+                "\($0.used) de \($0.limit) solicitudes"
+            } ?? "Sin lectura verificada")
+            .accessibilityHint(quotaDetailsExpanded ? "Plegar detalles de cuota" : "Desplegar detalles de cuota")
+            if quotaDetailsExpanded {
+                Text("30 DÍAS MÓVILES")
+                    .font(.system(size: 10, weight: .semibold))
+                    .foregroundStyle(TTTheme.muted)
             if let quota = buffer.apiQuota, quota.window_seconds == 2592000,
                quota.limit > 0 {
-                let daily = Double(quota.used) / 30.0
                 let sustainable = Double(quota.limit) / 30.0
+                // These are real response-header totals, not daily metrics.
+                // In a rolling 30-day window, reset countdown does NOT mean
+                // that 30 days of measurements have been collected.
+                let observedRate = TTBufferQuotaPolicy.recentRate(buffer.quotaHistory)
                 Text("\(quota.used) / \(quota.limit) solicitudes · \(quota.remaining) disponibles")
                     .font(.system(size: 14, weight: .bold))
                     .monospacedDigit()
                 ProgressView(value: Double(quota.used), total: Double(quota.limit))
                     .tint(TTTheme.blue)
-                Text("Media de consumo: \(daily.formatted(.number.precision(.fractionLength(1))))/día" +
-                     " · ritmo sostenible: \(sustainable.formatted(.number.precision(.fractionLength(1))))/día")
+                Text("Presupuesto medio de referencia: " +
+                     sustainable.formatted(.number.precision(.fractionLength(1))) +
+                     " solicitudes/día para ambas cuentas.")
                     .font(.system(size: 10)).foregroundStyle(TTTheme.muted)
-                Text("Una sola cuota para ambas cuentas. También consumen las consultas de la API." +
-                     " Ventana móvil; no se reinicia el día 1.")
+                if let observedRate {
+                    Text("Variación neta entre dos lecturas reales: " +
+                         String(observedRate.netRequests) + " solicitudes en " +
+                         observedRate.days.formatted(.number.precision(.fractionLength(1))) +
+                         " días · ritmo observado ≈" +
+                         observedRate.netRequestsPerDay.formatted(
+                             .number.precision(.fractionLength(1))) +
+                         " solicitudes/día.")
+                        .font(.system(size: 10)).foregroundStyle(TTTheme.muted)
+                    if observedRate.netRequestsPerDay > sustainable * 1.1 {
+                        Text("Aviso: la variación observada supera el presupuesto " +
+                             "medio sostenible de 30 días.")
+                            .font(.system(size: 10, weight: .semibold))
+                            .foregroundStyle(.orange)
+                    }
+                    if let cost = observedRate.observedRequestsPerNewPost {
+                        let guidance = Int((sustainable * 0.85 / cost)
+                                            .rounded(.down))
+                        Text("En este intervalo: " +
+                             String(observedRate.newConfirmedPosts) +
+                             " publicaciones nuevas confirmadas y ≈" +
+                             cost.formatted(.number.precision(.fractionLength(2))) +
+                             " solicitudes netas por publicación; referencia " +
+                             "prudente ≈" + String(max(0, guidance)) +
+                             " publicaciones/día entre ambas cuentas.")
+                            .font(.system(size: 10)).foregroundStyle(TTTheme.muted)
+                    } else {
+                        Text("Sin publicaciones confirmadas adicionales entre " +
+                             "estas lecturas: no se estima coste por tuit.")
+                            .font(.system(size: 10)).foregroundStyle(TTTheme.muted)
+                    }
+                    Text("Las ventanas son móviles: la caducidad de peticiones " +
+                         "antiguas puede reducir la variación neta. Esta " +
+                         "estimación no impone límites a publicar.")
+                        .font(.system(size: 10)).foregroundStyle(TTTheme.muted)
+                } else {
+                    Text("Ritmo aún no medible: faltan dos lecturas comparables " +
+                         "separadas por al menos una hora. No se inventa una " +
+                         "media a partir de las 30 jornadas de cuota.")
+                        .font(.system(size: 10)).foregroundStyle(TTTheme.muted)
+                }
+                if let windows = quota.other_windows {
+                    ForEach(windows, id: \.window_seconds) { window in
+                        if window.window_seconds == 900 ||
+                           window.window_seconds == 86400 {
+                            Text((window.window_seconds == 900 ? "15 minutos" : "24 horas") +
+                                 ": " + String(window.used) + "/" + String(window.limit) +
+                                 " solicitudes · " + String(window.remaining) +
+                                 " disponibles en la última lectura.")
+                                .font(.system(size: 10)).foregroundStyle(TTTheme.muted)
+                        }
+                    }
+                }
+                if let observed = ISO8601DateFormatter().date(from: quota.observed_at) {
+                    let windowStart = observed.addingTimeInterval(
+                        -Double(quota.window_seconds))
+                    let nextReset = observed.addingTimeInterval(
+                        Double(quota.resets_in_seconds))
+                    Text("Ventana en la última lectura: " +
+                         windowStart.formatted(date: .abbreviated, time: .shortened) +
+                         " → " +
+                         observed.formatted(date: .abbreviated, time: .shortened))
+                        .font(.system(size: 10)).foregroundStyle(TTTheme.muted)
+                    Text("Próximo vencimiento indicado por Buffer: " +
+                         nextReset.formatted(date: .abbreviated, time: .shortened) +
+                         " (no libera toda la cuota de golpe)")
+                        .font(.system(size: 10)).foregroundStyle(TTTheme.muted)
+                    Text("Última lectura real de Buffer: " +
+                         observed.formatted(date: .abbreviated, time: .shortened) +
+                         ". Los envíos posteriores aún pueden no estar contabilizados.")
+                        .font(.system(size: 10)).foregroundStyle(TTTheme.muted)
+                    if Date().timeIntervalSince(observed) > 6 * 3600 {
+                        Text("Datos antiguos: la app no ha recibido una " +
+                             "nueva lectura de Buffer en más de seis horas.")
+                            .font(.system(size: 10, weight: .semibold))
+                            .foregroundStyle(.orange)
+                    }
+                }
+                Text("Cuota común para ambas cuentas. Las consultas de canales y " +
+                     "comprobaciones de publicaciones también consumen solicitudes. " +
+                     "El ritmo es estimado, no un recuento exacto de las últimas 24 h.")
                     .font(.system(size: 10)).foregroundStyle(TTTheme.muted)
             } else {
                 Text("Cuota aún no verificada. Se mostrará cuando Buffer devuelva sus límites reales.")
                     .font(.system(size: 10)).foregroundStyle(TTTheme.muted)
+            }
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -554,9 +687,7 @@ struct TTDashboard: View {
                 .font(.system(size: 10)).foregroundStyle(TTTheme.muted)
                 .lineLimit(1).minimumScaleFactor(0.7)
             if buffer.loaded {
-                Text("30 d: \(buffer.sentLast30Days(account: account)) · Media: " +
-                     (Double(buffer.sentLast30Days(account: account)) / 30.0)
-                       .formatted(.number.precision(.fractionLength(1))) + "/día")
+                Text("Últimos 30 días: \(buffer.sentLast30Days(account: account)) publicaciones confirmadas")
                     .font(.system(size: 10)).foregroundStyle(TTTheme.muted)
                     .lineLimit(1).minimumScaleFactor(0.7)
             }
@@ -888,10 +1019,12 @@ struct TTDashboard: View {
             // Failed investigations remain findable even after leaving Top 30.
             var names = Set<String>()
             return (items.filter { $0.explanation.isEmpty } +
-                    store.snapshot.unexplainedTrends).filter {
-                names.insert($0.name.folding(options: [.caseInsensitive, .diacriticInsensitive],
-                                             locale: .current)).inserted
-            }
+                    store.snapshot.unexplainedTrends)
+                .filter { store.showInPendientes($0) }
+                .filter {
+                    names.insert($0.name.folding(options: [.caseInsensitive, .diacriticInsensitive],
+                                                 locale: .current)).inserted
+                }
         case .antiguas: return items.filter { $0.ageBand() == 3 }
         }
     }
@@ -1217,6 +1350,12 @@ private struct TrendTile: View {
                         .font(.system(size: 13, weight: .semibold, design: .rounded))
                         .foregroundStyle(.white)
                         .lineLimit(1).minimumScaleFactor(0.76)
+                    if item.inListas, let prior = item.previousListasAt {
+                        Text("Anterior en Listas: " + prior.formatted(.dateTime.day().month().year().hour().minute()))
+                            .font(.system(size: 9))
+                            .foregroundStyle(TTTheme.muted)
+                            .lineLimit(2)
+                    }
                     if important {
                         Text("Importante")
                             .font(.system(size: 10, weight: .bold)).foregroundStyle(.white)

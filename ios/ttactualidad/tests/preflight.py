@@ -27,7 +27,7 @@ assert "StaticConfiguration" not in activity and "AppIntentConfiguration" not in
 assert "newsReady" in shared and "trendsReady" in shared
 assert "ttactualidad://noticias" in activity and "ttactualidad://tendencias" in activity
 assert "Activity<LiveCountsAttributes>.request" in store
-assert "Activity<LiveCountsAttributes>.activities.first" in store
+assert "Activity<LiveCountsAttributes>.activities" in store
 assert "staleDate:" in store and "context.isStale" in activity
 assert "ttittulares/prepared.json" in store
 assert "ttittulares/decisions.json" in store
@@ -169,7 +169,8 @@ assert 'Button("Publicado · Quitar de Listas")' in actions
 assert '"No publicado · Quitar de Listas"' in actions
 # Grouped originals must use precisely the same actions as ordinary trends.
 assert 'if let trend, trend.isCovered {' not in actions
-assert 'quickButton("Quitar de Listas"' in actions
+assert 'quickButton(isPendingTrend ? "Quitar" : "Quitar de Listas"' in actions
+assert 'request(isPendingTrend ? "retire" : "deleted")' in actions
 assert 'quickButton("Elaborar desde 0"' in actions
 assert 'quickButton("Añadir imagen", "photo.on.rectangle.angled")' in actions
 assert 'quickLink("Proyecto TT", "folder"' in actions
@@ -252,9 +253,9 @@ assert 'store.snapshot.unexplainedTrends' in dashboard
 assert 'case "SIN EXPLICACIÓN": return "PISTAS"' in dashboard
 assert 'decision == "hints"' in store
 assert '"hints": text' in auth
-assert 'await store.refreshIfStale(minInterval: 45)' in dashboard
-assert 'MARKETING_VERSION: "0.4.76"' in project
-assert 'CURRENT_PROJECT_VERSION: "88"' in project
+assert 'await store.refreshIfStale(minInterval: needsFastProgress ? 45 : 180)' in dashboard
+assert 'MARKETING_VERSION: "0.4.90"' in project
+assert 'CURRENT_PROJECT_VERSION: "102"' in project
 print("TT_ACTUALIDAD_IOS_HINTS_PREFLIGHT_OK")
 
 # 0.4.45: remove image deletion UI/API and trend→news UI. Keep news functionality.
@@ -287,7 +288,7 @@ assert '"control/ttendencias-run-trigger"' in auth
 assert 'headName.hasPrefix("control/ttittulares-run-trigger")' in auth
 assert 'requestEditorialRun(project: project)' in dashboard
 assert 'Solicitar procesamiento de' in dashboard
-assert 'CURRENT_PROJECT_VERSION: "88"' in project
+assert 'CURRENT_PROJECT_VERSION: "102"' in project
 print("TT_ACTUALIDAD_IOS_0414_EDITORIAL_RUN_PREFLIGHT_OK")
 
 # 0.4.17: cancel PROCESSING without adding to Listas, and separate
@@ -299,7 +300,7 @@ assert '["Enviando", "Esperando GitHub", "Pendiente de GitHub",\n         "Sin c
 assert 'operationHistory.filter(\\.isOutstanding).count' in store
 assert 'Text("Órdenes por confirmar")' in pending_panel
 assert 'terminalMarks["ttittulares:" + draft.id] != nil' in store
-assert 'CURRENT_PROJECT_VERSION: "88"' in project
+assert 'CURRENT_PROJECT_VERSION: "102"' in project
 print("TT_ACTUALIDAD_IOS_0415_SUPPRESS_PREFLIGHT_OK")
 
 # 0.4.17: no Home Screen widgets; the same .appex serves a real Live Activity.
@@ -315,8 +316,8 @@ assert 'publishedCountsAvailable' in shared
 assert 'pilot/ttactualidad-publication-events.json' in widget_source
 assert "retireAbandonedNewsOperations(" in store
 assert 'requestID: requestID' in actions and 'requestID: requestID' in hints_sheet
-assert 'MARKETING_VERSION: "0.4.76"' in project
-assert 'CURRENT_PROJECT_VERSION: "88"' in project
+assert 'MARKETING_VERSION: "0.4.90"' in project
+assert 'CURRENT_PROJECT_VERSION: "102"' in project
 print("TT_ACTUALIDAD_IOS_0417_LIVE_NO_WIDGETS_PREFLIGHT_OK")
 
 
@@ -467,8 +468,8 @@ assert '"TEXTO EDITORIAL EXACTO (SOLO CONTEXTO, JAMÁS ROTULAR):' in actions
 assert 'news?.verifiedFacts' in actions
 assert 'news?.siteImageURL ?? trend?.siteImageURL' in actions
 assert 'EditorialActionPolicy.imageURL(ai: ai' in actions
-assert 'MARKETING_VERSION: "0.4.76"' in project
-assert 'CURRENT_PROJECT_VERSION: "88"' in project
+assert 'MARKETING_VERSION: "0.4.90"' in project
+assert 'CURRENT_PROJECT_VERSION: "102"' in project
 print("TT_ACTUALIDAD_IOS_046_NEWS_AI_PARITY_OK")
 
 # 0.4.47: no regressions to Copiar GAG's v0.4.44 generate+attach+verify+sync contract.
@@ -488,8 +489,8 @@ assert 'IMAGEN GENERADA; SITE Y APP PENDIENTES' in actions
 assert 'IMAGEN GENERADA; WEB Y APP PENDIENTES' in actions
 assert 'No generes una segunda imagen' in actions
 assert 'GitHub' in actions
-assert 'MARKETING_VERSION: "0.4.76"' in project
-assert 'CURRENT_PROJECT_VERSION: "88"' in project
+assert 'MARKETING_VERSION: "0.4.90"' in project
+assert 'CURRENT_PROJECT_VERSION: "102"' in project
 print("TT_ACTUALIDAD_IOS_047_GAG_ATTACH_SYNC_REGRESSION_OK")
 
 # 0.4.47 build 53: one identical image-action panel for news and trends.
@@ -508,7 +509,7 @@ assert 'if let archive = item.imageURL' in live
 assert 'if let current = catalog[key(id, revision)]' in news_ai
 assert '$0.revision < revision' in news_ai
 assert 'bestRevision = old' in catalog
-assert 'CURRENT_PROJECT_VERSION: "88"' in project
+assert 'CURRENT_PROJECT_VERSION: "102"' in project
 print("TT_ACTUALIDAD_IOS_046_BUILD54_DUAL_IMAGES_STABLE_ID_OK")
 
 
@@ -537,8 +538,8 @@ print("TT_ACTUALIDAD_STACKED_DUAL_IMAGES_OK")
 
 # 0.4.47 build57: native-only changes from the installed build55.
 # No reliance on web/Cloudflare deploy or the obsolete iOS code in main.
-assert project.count('CURRENT_PROJECT_VERSION: "88"') == 2
-assert project.count('CFBundleVersion: "88"') == 2
+assert project.count('CURRENT_PROJECT_VERSION: "102"') == 2
+assert project.count('CFBundleVersion: "102"') == 2
 assert 'TTActualidadXPost.payload(' in actions
 x_post = (root / 'TTActualidad' / 'TTActualidadXPost.swift').read_text()
 assert 'private static let contentBudget = 280' in x_post
@@ -576,7 +577,10 @@ print("NATIVE_BUILD56_LINKS_NEWS_ORDER_JPEG_NO_REGRESSION_OK")
 for label in ("GPT Images", "Proyecto TT", "Copiar F Archivo", "Copiar Foto IA",
               "Publicar en X", "Copiar Texto", "Quitar de Listas", "Elaborar desde 0",
               "Aportar Pistas", "Crear Foto IA", "Añadir imagen"):
-    assert actions.count('quickButton("'+label+'"') + actions.count('quickLink("'+label+'"') == 1, label
+    if label == "Quitar de Listas":
+        assert actions.count('quickButton(isPendingTrend ? "Quitar" : "Quitar de Listas"') == 1
+    else:
+        assert actions.count('quickButton("'+label+'"') + actions.count('quickLink("'+label+'"') == 1, label
 assert 'copy(xText)' in actions and 'value: xText' in actions
 assert 'await copyPhoto(ai: false)' in actions and 'await copyPhoto(ai: true)' in actions
 assert 'imagePrompt(associate: false)' in actions and 'imagePrompt(associate: true)' in actions
@@ -610,7 +614,9 @@ assert 'Label("Agrupar"' not in dashboard
 assert 'Eliminar agrupadas' not in dashboard
 assert 'removeAllTrendsFromListas' in dashboard
 assert 'Relaciones por revisar' not in dashboard
-assert 'quickButton("Relaciones"' in actions
+assert '"point.3.connected.trianglepath.dotted"' in actions
+assert 'relationCounts.counts(trendID: editorialID' in actions
+assert 'EditorialRelationCountsStore.shared' in actions
 assert 'privateEditorialRelationsRequest' in auth
 assert '/api/editorial-relations' in auth
 assert 'expectedNews: news.identity' in relations
@@ -662,7 +668,17 @@ assert 'canonical.map(\\.news) + model.historicalNews' in relations
 assert 'let candidates = (model.snapshot?.news ?? []) +' in relations
 assert 'private func rebuildRelationIndex()' in relations
 assert 'news.episodeFingerprint.isEmpty' in relations
-assert '!news.episodeFingerprint.isEmpty else { return ([], []) }' in relations
+# Exact IDs/revisions remain verified server-side; a missing optional fingerprint
+# must never exclude a news candidate the editor can see and select.
+assert '!news.episodeFingerprint.isEmpty else { return ([], []) }' not in relations
+assert 'let endpoints = Array(indexedTrendEndpoints.values) +' in relations
+assert 'EditorialRelationsPolicy.pairKey(news, trend)' in relations
+assert 'static func pairKey(_ news:' in relation_models
+assert 'static func persisted(_ items: [EditorialRelation]' in relation_models
+assert 'EditorialRelationsPolicy.persisted(' in relations
+assert 'snapshot?.items ?? []' in relations
+assert 'No se dará por guardada hasta confirmarla en la web.' in relations
+assert 'de los últimos 7 días que la mencionan' not in relations
 assert '!candidate.episodeFingerprint.isEmpty' not in relation_models
 assert 'func editorialRelationRecentNews() async throws' in auth
 assert 'telegram/editorial-processing.json' in auth
@@ -698,8 +714,8 @@ focused = store[store.index('func reconcilePendingOperations() async'):store.ind
 assert 'dispatch(' not in focused and 'submit(' not in focused
 assert 'await store.reconcilePendingOperations()' in panel
 assert 'Conciliar órdenes con GitHub' in panel
-assert project.count('CURRENT_PROJECT_VERSION: "88"') == 2
-assert project.count('CFBundleVersion: "88"') == 2
+assert project.count('CURRENT_PROJECT_VERSION: "102"') == 2
+assert project.count('CFBundleVersion: "102"') == 2
 print("NATIVE_BUILD66_PENDING_GITHUB_RECEIPT_RECONCILIATION_OK")
 
 # Build67: no stale "waiting GitHub" indicators after the remote rolling
@@ -726,8 +742,8 @@ assert 'private var showEveryPending = false' in pending_panel
 assert 'visiblePending' in pending_panel
 assert 'store.reconciliationSummary' in pending_panel
 assert 'EditorialPendingPolicy.swift' in project
-assert 'CURRENT_PROJECT_VERSION: "88"' in project
-assert 'CFBundleVersion: "88"' in project
+assert 'CURRENT_PROJECT_VERSION: "102"' in project
+assert 'CFBundleVersion: "102"' in project
 assert 'pendingOperationsDiagnostic' in store
 assert 'request_id=' in store
 assert 'sin-identificador' in store
@@ -775,22 +791,24 @@ inbox = (root / 'TTActualidad/ImageApprovalInbox.swift').read_text()
 assert 'associateVerifiedOriginalInGitHub' in inbox
 # Buffer requires a VERIFIED public GitHub original *after* approval;
 # a Sites published receipt is not evidence the X publisher can read it.
-assert 'response.appVerified == true && response.sitesVerified == true' in inbox
+assert 'response.appVerified == true' in inbox and 'response.sitesVerified == true' in inbox
 assert '_ = try await associateVerifiedOriginalInGitHub(item, using: github)' in inbox
-assert 'catálogo verificado para publicaciones en X' in inbox
-assert 'no está confirmada en GitHub' in inbox
+assert 'Aprobada en APP/Site y asociada en GitHub para X.' in inbox
+assert 'Aprobada en APP/Site, pero falta el espejo IA para X:' in inbox
+assert 'completedIDs.insert(item.id)' in inbox
+assert 'restoreRejected(item)' in inbox
 assert 'revision >= 0,  // READY news can legitimately be revision 0.' in auth
 assert 'images.removeAll { $0.id == item.id }' in inbox
 assert 'original.starts(with: [137, 80, 78, 71, 13, 10, 26, 10])' in inbox
 assert 'item.identity.rasterSHA256' in inbox
 assert 'static let maximumVisible = 20' not in inbox
 assert '2026-11-06T08:43:00.000Z' not in inbox
-assert 'currentImageApprovalTrendEpisodes()' in inbox
-assert 'readyNews.contains(episode)' in inbox
+assert 'let items = ApprovalInboxScope.visible(received)' in inbox
+assert 'readyNews.contains(episode)' not in inbox
 assert 'assignedAI' not in inbox
 assert 'guard seen.insert(key).inserted else { return false }' in inbox
-assert 'return pending && inScope' in inbox
-assert 'Un enlace de imagen roto no oculta un PNG pendiente' in inbox
+assert 'return pending && inScope' not in inbox
+assert 'Todas las imágenes originales pendientes recibidas' in inbox
 assert 'let key = identity.project + ":" + episode' in inbox
 assert 'page.hasMore == true' in inbox and 'nextCursor' in inbox
 # Build86: full URL includes the fixed /api/image-inbox prefix.
@@ -805,10 +823,31 @@ assert 'route.hasSuffix("/decision") && method == "POST"' in auth
 assert 'let validPage = components.path == "/v1/images"' not in auth
 assert 'seenCursors.insert(cursor).inserted' in inbox
 assert 'editorialAt: String?' in inbox
-assert 'items.sorted { $0.createdAt > $1.createdAt }' in inbox
+assert 'if $0.createdAt != $1.createdAt { return $0.createdAt > $1.createdAt }' in inbox
+assert 'return $0.id > $1.id' in inbox
 assert 'func currentImageApprovalTrendEpisodes() async throws' in auth
-assert '[404, 409, 503].contains(status)' in inbox
+assert 'if action == "approve" && [404, 503].contains(status)' not in inbox
+assert 'holdUnconfirmed(item, action: action' in inbox
+assert 'if [401, 403, 409, 422].contains(status)' in inbox
 assert 'imagen ya no está en Listas' not in inbox.lower()
+# 0.4.86 preserves the complete 0.4.84 codebase and fixes the blank
+# private inbox caused by a live Top 30 fetch or stale Listas constraints.
+assert 'return ["pending", "pending_approval"].contains(' in inbox
+assert 'currentTop30.contains(episode)' not in inbox
+assert 'try await github.currentImageApprovalTrendEpisodes()' not in inbox
+assert 'let supportsPagination = page.hasMore != nil' in inbox
+assert 'incomplete = true' in inbox
+assert 'Consulta parcial:' in inbox
+assert inbox.count('images = ready') == 1
+assert 'Consultando imágenes privadas…' in inbox
+assert 'Todas las imágenes originales pendientes recibidas' in inbox
+assert 'previousListasAt: Date? = nil' in store
+assert 'listasHistory' in store
+assert 'Anterior en Listas:' in dashboard
+assert 'listasRemovalScrollRevision += 1' in store
+assert 'quickNavigationID = UUID()' in dashboard
+assert '.onChange(of: store.listasRemovalScrollRevision)' in dashboard
+print("NATIVE_BUILD97_FULL_BASE_LISTAS_INBOX_REGRESSION_OK")
 print("NATIVE_HISTORIC_MANUAL_IMAGE_AND_APPROVAL_RECOVERY_OK")
 
 # Build76: Relations browse current Top30 first, not 12/24h news first.
@@ -850,6 +889,11 @@ assert 'indexedMatches: [String: [EditorialRelationEndpoint]]' in relations_view
 assert 'private func rebuildRelationIndex()' in relations_view
 assert 'indexedMatches[trendKey(rank: rank, name: name)] ?? []' in relations_view
 assert 'String(associated) + "/" + String(related.count)' in relations_view
+assert 'EditorialRelationsPolicy.effectivePairStates(' in relations_view
+assert 'Ya relacionada · guardada en el Site' in relations_view
+assert 'Relación confirmada por el servidor' in relations_view
+assert 'final class EditorialRelationCountsStore' in relations_view
+assert 'EditorialRelationsPolicy.confirmedCount(' in relations_view
 assert 'saveTrendChanges(' in relations_view
 assert 'Guardar " + String(changes.count)' in relations_view
 assert 'private func confirmedCount(' in relations_view
@@ -880,10 +924,18 @@ assert 'episodeFingerprint: String?' in relation_models
 assert 'episodeFingerprint.isEmpty ?' in relation_models
 assert 'episodeFingerprint: "", title: row.name' in relations_view
 assert 'String(associated) + "/" + String(related.count)' in relations_view
+assert 'EditorialRelationsPolicy.effectivePairStates(' in relations_view
+assert 'Ya relacionada · guardada en el Site' in relations_view
+assert 'Relación confirmada por el servidor' in relations_view
+assert 'final class EditorialRelationCountsStore' in relations_view
+assert 'EditorialRelationsPolicy.confirmedCount(' in relations_view
 assert 'snapshot = nil' in relations_view
 assert 'buffer.latestReceipt(' in actions
 assert 'project: project, id: editorialID, revision: revision' in actions
-assert 'Comprobar estado de Buffer' in actions
+# The manual status button is hidden, not the verified ledger, background
+# reconciliation, durable sent tombstones, or Buffer publisher.
+assert 'Comprobar estado de Buffer' not in actions
+assert 'buffer.latestReceipt(' in actions and 'buffer.stagePublish(' in actions
 assert 'func latestReceipt(project:' in buffer
 # A verified Buffer "sent" must never resurface after transient refresh or
 # process restart. Only the exact editorial revision becomes a tombstone.
@@ -894,3 +946,253 @@ assert 'UserDefaults.standard.set(Array(merged).sorted()' in buffer
 assert 'alreadySent(project: project, id: id, revision: revision)' in buffer
 assert 'Publicado en X y retirado de Listas (recibos confirmados)' in actions
 print('NATIVE_0468_BUFFER_STATUS_AND_NO_FAKE_RELATION_SELECTION_OK')
+
+# Build89: per-trend button is the ONLY primary trend relations route;
+# history lookup is scoped to the opened ID/revision and has no other filter.
+assert '"point.3.connected.trianglepath.dotted"' in actions
+assert 'relationCounts.counts(trendID: editorialID' in actions
+assert 'EditorialRelationCountsStore.shared' in actions
+assert 'scope: EditorialRelationsScope(' in actions
+assert '"Relaciones por revisar"' not in dashboard
+assert 'private var scopedTop30Index' not in relations_view
+assert 'let key = trendKey(rank: 0, name: scope.title)' in relations_view
+assert 'matches[key] = EditorialRelationsPolicy.newsForTrend(' in relations_view
+assert 'name: scope.title, fallbackDates: dates, limit: 5' in relations_view
+assert 'newsForTrendIncludingLinked(' in relations_view
+assert 'relations: model.snapshot?.items ?? []' in relations_view
+assert 'let rank = 0' in relations_view
+assert 'let name = scope.title' in relations_view
+assert 'listado no' not in relations_view.lower()
+assert 'limit: 5' in relations_view
+assert 'allNewsChoices.isEmpty' in relations_view
+assert 'row["status"] as? String == "READY"' not in auth[
+    auth.index('func editorialRelationRecentNews() async throws'):
+    auth.index('private func actionReceipt(')]
+assert 'TTActualidad.bufferPendingRequestIds.v1' in buffer
+assert 'registerPendingRequest(key, requestID: requestID)' in buffer
+assert '$0.request_id == requestID' in buffer
+assert 'pendingRequestIDs[Self.key(project, id, revision)] != nil' in buffer
+assert 'for (key, requestID) in Array(pendingRequestIDs)' in buffer
+assert 'confirmedSentKeys.union(confirmed)' in buffer
+assert 'UserDefaults.standard.stringArray(forKey: BufferPublishTracker.pendingHideStorageKey)' in buffer
+print('NATIVE_BUILD89_SCOPED_RELATIONS_BUFFER_DURABLE_EXACT_REQUEST_OK')
+
+# Build91: no misleading Buffer usage/30d median or a hard publication cap.
+quota_policy = (root / "TTActualidad" / "BufferQuotaPolicy.swift").read_text(encoding="utf-8")
+assert "recentRate(_ records:" in quota_policy
+assert "delta >= 3600" in quota_policy
+assert "observedRequestsPerNewPost" in quota_policy
+assert "api_quota_history" in (root / "TTActualidad" / "BufferPublishTracker.swift").read_text(encoding="utf-8")
+
+# Build92: experimental iOS manual photo share must NOT alter the original
+# X intent, automatic Buffer publishing, or verified image-copy buttons.
+manual_share = (root / "TTActualidad" / "TTManualXPhotoShareSheet.swift").read_text(encoding="utf-8")
+assert 'quickButton("Publicar en X", "square.and.arrow.up") { publishOnX() }' in actions
+assert 'URLComponents(string: "https://twitter.com/intent/tweet")' in actions
+assert 'parts?.queryItems = [URLQueryItem(name: "text",' in actions
+assert 'quickButton("Publicar en X (F)", "photo.on.rectangle.angled")' in actions
+assert actions.count('quickButton("Publicar en X (F)"') == 1
+assert 'Task { await prepareManualXPhotoShare() }' in actions
+assert 'let candidates = [aiPhotoURL, archivePhotoURL].compactMap { $0 }' in actions
+assert 'manualXPhotoShare = TTManualXPhotoShare(text: draftText, image: image)' in actions
+assert 'TTManualXPhotoShareSheet(text: share.text, image: share.image)' in actions
+assert 'UIActivityViewController(' in manual_share
+assert 'activityItems: [image, text]' in manual_share
+assert 'UIPasteboard.general.string = draftText' in actions
+assert 'No se ha publicado nada.' in actions
+assert 'quickButton("Publicar directo · Buffer", "paperplane.fill")' in actions
+assert 'quickButton("Copiar F Archivo", "photo")' in actions
+assert 'quickButton("Copiar Foto IA", "sparkles.rectangle.stack")' in actions
+assert 'Comprobar estado de Buffer' not in actions
+print("NATIVE_BUILD92_MANUAL_X_PHOTO_SHARE_BUFFER_UI_NO_REGRESSION_OK")
+
+# Build93: one-tap manual declaration after the working iOS X(F) photo share.
+# No additional confirmation, no Buffer dispatch, no modifications to X text intent.
+assert 'quickButton("Publicar en X", "square.and.arrow.up") { publishOnX() }' in actions
+assert 'quickButton("Publicar en X (F)", "photo.on.rectangle.angled")' in actions
+assert 'recordManualXPhotoPublished()' in actions
+assert 'private func recordManualXPhotoPublished()' in actions
+assert 'submit("published")' in actions
+assert 'if xPhotoSharedEpisode != nil' not in actions
+assert 'intent == "xPhotoPublished"' not in actions
+assert 'confirmManualXPhotoPublished' not in actions
+assert 'xPhotoSharedEpisode = TTManualXSharedEpisode(' in actions
+assert 'share in' in actions and 'TTManualXPhotoShareSheet(text: share.text, image: share.image)' in actions
+assert 'URLComponents(string: "https://twitter.com/intent/tweet")' in actions
+assert 'Comprobar estado de Buffer' not in actions
+print("NATIVE_BUILD93_ONE_TAP_X_PHOTO_EDITORIAL_PUBLISHED_OK")
+
+# Build100 supersedes build95's optimistic removal: the card remains
+# stable while the POST is in flight, and an explicit rejection is inline.
+# The serial task queue and original identity validation are retained.
+inbox = (root / "TTActualidad" / "ImageApprovalInbox.swift").read_text(encoding="utf-8")
+assert 'static let shared = ApprovalInboxModel()' in inbox
+assert 'private var decisionTail: Task<Void, Never>?' in inbox
+assert 'processingIDs.insert(item.id)' in inbox
+assert 'images.removeAll { $0.id == item.id }' in inbox
+assert 'images.removeAll { $0.id == item.id }' in inbox[
+    inbox.index('func decide(_ item: PendingImage'):
+    inbox.index('private func persistDecision(_ item: PendingImage')
+]
+assert 'await previous?.value' in inbox
+assert 'await persistDecision(item, action: action, using: github)' in inbox
+assert 'func decide(_ item: PendingImage, action: String, using github: GitHubEditor) {' in inbox
+assert 'model.decide(item, action: "approve", using: github)' in inbox
+assert 'model.decide(item, action: "reject", using: github)' in inbox
+assert 'model.actionID' not in inbox
+assert 'response.appVerified == true' in inbox and 'response.sitesVerified == true' in inbox
+assert 'restoreRejected(item)' in inbox
+assert 'private func associateVerifiedOriginalInGitHub' in inbox
+assert 'let (original, result) = try await github.privateImageInboxRequest(' in inbox
+assert 'SHA256.hash(data: original)' in inbox
+assert 'let ready = items.filter {' in inbox
+assert 'approvalID' not in inbox
+# Build95: keep Buffer quota tiny by default, without losing any detail.
+assert '@State private var quotaDetailsExpanded = false' in dashboard
+assert 'Label("CUOTA BUFFER API GLOBAL", systemImage: "chart.pie")' in dashboard
+assert 'if quotaDetailsExpanded {' in dashboard
+assert 'quotaDetailsExpanded.toggle()' in dashboard
+assert ' solicitudes")' in dashboard
+assert 'Text("30 DÍAS MÓVILES")' in dashboard
+# Live updates must not depend on an active editorial queue alone.
+assert 'needsFastProgress ? 45 : 180' in dashboard
+assert 'applicationState == .active' in dashboard
+assert 'markLiveCountsUnavailable()' in store
+assert 'for activity in activities {' in store
+assert 'previous.partialData = true' in store
+assert 'previous.partialData = true' in widget_source
+assert 'staleDate: Date()' in widget_source
+assert 'checkedAt: now' in widget_source
+print("NATIVE_BUILD95_LIVE_REFRESH_AND_BUFFER_COLLAPSE_OK")
+print("NATIVE_BUILD95_INSTANT_INBOX_PENDING_OR_ROLLBACK_OK")
+
+# Build96: a missing private Site snapshot must not grey out the exact-ID
+# manual Save button when verified GitHub news have been selected. Only an
+# in-flight request disables submission. POST is still authenticated by Site,
+# and a relation is not confirmed until a fresh server GET shows it.
+relation_screen = (root / "TTActualidad" / "EditorialRelationsView.swift").read_text(encoding="utf-8")
+scope_start = relation_screen.index("private var scopedTrendNewsSection:")
+scope_end = relation_screen.index("private var relationList:", scope_start)
+scoped_save = relation_screen[scope_start:scope_end]
+assert 'if !changes.isEmpty {' in scoped_save
+assert '.disabled(model.saving)' in scoped_save
+assert '.disabled(model.saving || model.snapshot == nil)' not in scoped_save
+assert 'result.confirmedKeys' in scoped_save
+assert '.tint(.orange)' in scoped_save
+assert 'Las selecciones son provisionales' in scoped_save
+assert 'guard status == 200' in relation_screen
+assert 'EditorialRelationsPolicy.persisted(' in relation_screen
+assert 'commands[key] ?? UUID()' in relation_screen
+assert 'siteRoot' not in scoped_save
+assert 'No se pudo consultar el estado remoto. Puedes marcar y pulsar Guardar' in relation_screen
+print("NATIVE_BUILD96_RELATIONS_SAVE_WITHOUT_SNAPSHOT_GET_REGRESSION_OK")
+
+# Exact image decisions survive app termination and do not repeat after
+# a successful authenticated server acceptance with a delayed X mirror.
+assert 'AcceptedReceipt: Codable' in inbox
+assert 'UserDefaults.standard.data(forKey: acceptedKey)' in inbox
+assert 'UserDefaults.standard.set(data, forKey: acceptedKey)' in inbox
+assert 'private func accepted(_ item: PendingImage)' in inbox
+assert 'accepted($0)' in inbox
+assert 'markAccepted(item, state: response.state)' in inbox
+assert 'markAccepted(item, state: "published_unverified")' in inbox
+assert 'Aprobación aceptada por el servidor' in inbox
+assert 'response.appVerified == true' in inbox and 'response.sitesVerified == true' in inbox
+assert 'No se repetirá la aprobación' in inbox
+assert 'associateVerifiedOriginalInGitHub(item, using: github)' in inbox
+assert 'restoreRejected(item)' in inbox
+print("TT_IMAGE_APPROVAL_PERSISTENT_IDEMPOTENCY_BUILD98_OK")
+
+# Build99: the page cursor must yield a single coherent view; a partial GET
+# is NOT an empty inbox. Ambiguous approval results are held for manual review
+# and never re-submitted automatically. The old build98 idempotency remains.
+assert 'feedVerified = false' in inbox
+assert 'feedVerified = true' in inbox
+assert 'guard !incomplete else {' in inbox
+assert inbox.count('images = ready') == 1
+assert 'images = ApprovalInboxScope.visible(received)' not in inbox
+assert 'Se conserva la última vista' in inbox
+assert 'struct UnconfirmedDecision: Codable, Identifiable' in inbox
+assert 'TTActualidad.privateImageInbox.unconfirmed.v1' in inbox
+assert 'func reopenUnconfirmed(_ id: String)' in inbox
+assert 'holdUnconfirmed(item, action: action' in inbox
+assert 'No se considera publicada ni se reenvía sola.' in inbox
+assert 'Section("Decisiones sin confirmación (" +' in inbox
+assert 'model.reopenUnconfirmed(record.id)' in inbox
+assert '.disabled(!model.feedVerified ||' in inbox
+assert '["approved_awaiting_publication", "published"]' in inbox
+assert 'response.appVerified == true' in inbox
+assert 'response.sitesVerified == true' in inbox
+project = (root / 'project.yml').read_text(encoding='utf-8')
+assert project.count('0.4.90') == 4
+assert project.count('"102"') == 4
+print("TT_IMAGE_INBOX_BUILD99_STABLE_SNAPSHOT_AND_UNCONFIRMED_DECISIONS_OK")
+
+
+# Ingest retries may return the same PNG under another receipt ID.
+# Dedupe only identical raster+editorial episode, never by title alone.
+assert 'acceptedReceipts.values.contains { receipt in' in inbox
+assert 'unconfirmedDecisions.values.contains { record in' in inbox
+assert 'receipt.rasterSHA256 == item.identity.rasterSHA256' in inbox
+assert 'receipt.episode == episodeKey(item)' in inbox
+print("TT_IMAGE_INBOX_BUILD99_IDENTICAL_RASTER_EPISODE_NO_REINSERT_OK")
+
+# Build99: many images must not arbitrarily evict an on-screen preview.
+assert 'private let previewLimit = 64' in inbox
+assert 'kCGImageSourceThumbnailMaxPixelSize: 640' in inbox
+assert 'previewOrder.append(item.id)' in inbox
+assert 'previews.keys.first' not in inbox
+print("TT_IMAGE_INBOX_THUMBNAIL_CACHE_STABLE_BUILD99_OK")
+
+# Build100: a rejected approval must not animate remove -> reinsert.
+assert '@Published private(set) var decisionFailures: [String: String]' in inbox
+decide_source = inbox[inbox.index('func decide(_ item: PendingImage'):
+                      inbox.index('private func persistDecision(_ item: PendingImage')]
+assert 'images.removeAll { $0.id == item.id }' in decide_source
+assert 'decisionFailures.removeValue(forKey: item.id)' in decide_source
+assert 'processingIDs.insert(item.id)' in decide_source
+assert 'decisionFailures[item.id] = "DECISIÓN NO APLICADA: "' in inbox
+assert 'restoreRejected(item)' in inbox
+assert '" HTTP " + String(status)' in inbox
+assert 'restoreRejected(item)' in inbox
+assert 'images = ready' in inbox
+assert 'if let failure = model.decisionFailures[item.id]' in inbox
+assert 'optimisticPositions[item.id] = images.firstIndex' in inbox
+assert 'if action == "approve" && [404, 503].contains(status)' not in inbox
+assert 'holdUnconfirmed(item, action: action' in inbox
+assert 'markAccepted(item, state: response.state)' in inbox
+print("TT_IMAGE_INBOX_BUILD100_NO_OPTIMISTIC_BOUNCE_AND_HTTP_ERROR_VISIBLE_OK")
+
+# Build101 restores the author's required optimistic UX, WITHOUT reintroducing
+# a card due to concurrent refresh. A real 409 still rolls back with details.
+decide_source = inbox[inbox.index('func decide(_ item: PendingImage'):
+    inbox.index('private func persistDecision(_ item: PendingImage')]
+assert 'optimisticPositions[item.id] = images.firstIndex' in decide_source
+assert 'images.removeAll { $0.id == item.id }' in decide_source
+assert 'let keys = Set(images.map(\\.id)).union(processingIDs)' in inbox
+assert '!processingIDs.contains($0.id) &&' in inbox
+assert 'restoreRejected(item)' in inbox
+assert 'decisionFailures[item.id] = "DECISIÓN NO APLICADA: "' in inbox
+assert 'if action == "approve" && [404, 503].contains(status)' not in inbox
+assert 'unconfirmedDecisions' in inbox
+print("TT_IMAGE_INBOX_BUILD101_INSTANT_APPROVAL_AND_REAL_ERROR_ROLLBACK_OK")
+
+
+# Build 102: REAL native app, not the unrelated GitHub Pages PWA.
+# Pendientes gets Quitar even if the trend has never reached Listas.
+pending_policy = (root / "TTActualidad/EditorialPendingPolicy.swift").read_text(encoding="utf8")
+assert 'quickButton(isPendingTrend ? "Quitar" : "Quitar de Listas"' in actions
+assert 'request(isPendingTrend ? "retire" : "deleted")' in actions
+assert 'role: ["deleted", "discard", "retire"].contains(intent)' in actions
+assert '¿Quitar esta tendencia de Pendientes?' in actions
+assert 'decision == "retire" ? "Quitar de Pendientes' in auth
+assert '["deleted", "discard", "published"].contains(action.decision)' in store
+assert 'if action.decision == "retire"' in store
+assert 'trends/pending-retirements.json' in store
+assert 'TrendPendingRemovalPolicy.isVisible(' in store
+assert 'func showInPendientes(_ item: TrendItem)' in store
+assert '.filter { store.showInPendientes($0) }' in dashboard
+assert 'private var isPendingTrend: Bool' in actions
+assert 'retire' in pending_policy
+assert 'CURRENT_PROJECT_VERSION: "102"' in project and '0.4.90' in project
+print("TT_ACTUALIDAD_IOS_PENDING_REMOVE_B102_OK")

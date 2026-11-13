@@ -24,6 +24,25 @@ struct EditorialRelationEndpoint: Codable, Identifiable, Equatable {
         self.listedAt = listedAt
     }
 
+    // The Site v85 can return legacy rows with no optional fingerprint,
+    // display text or timestamp. Do not discard all real relations because
+    // a non-identity presentation field was absent. IDs/revisions stay strict.
+    private enum CodingKeys: String, CodingKey {
+        case id, revision, episodeFingerprint, title, text, path, listedAt
+    }
+
+    init(from decoder: Decoder) throws {
+        let value = try decoder.container(keyedBy: CodingKeys.self)
+        id = try value.decode(String.self, forKey: .id)
+        revision = try value.decode(Int.self, forKey: .revision)
+        episodeFingerprint = try value.decodeIfPresent(
+            String.self, forKey: .episodeFingerprint) ?? ""
+        title = try value.decodeIfPresent(String.self, forKey: .title) ?? ""
+        text = try value.decodeIfPresent(String.self, forKey: .text) ?? ""
+        path = try value.decodeIfPresent(String.self, forKey: .path)
+        listedAt = try value.decodeIfPresent(String.self, forKey: .listedAt)
+    }
+
     var stableIdentity: String {
         [id, String(revision), episodeFingerprint].joined(separator: "|")
     }
@@ -50,12 +69,40 @@ struct EditorialRelation: Decodable, Identifiable {
     let state: String
     let origin: String
     let reason: String
+
+    private enum CodingKeys: String, CodingKey {
+        case id, news, trend, state, origin, reason
+    }
+
+    init(from decoder: Decoder) throws {
+        let value = try decoder.container(keyedBy: CodingKeys.self)
+        id = try value.decode(String.self, forKey: .id)
+        news = try value.decode(EditorialRelationEndpoint.self, forKey: .news)
+        trend = try value.decode(EditorialRelationEndpoint.self, forKey: .trend)
+        state = try value.decode(String.self, forKey: .state)
+        origin = try value.decodeIfPresent(String.self, forKey: .origin) ?? ""
+        reason = try value.decodeIfPresent(String.self, forKey: .reason) ?? ""
+    }
 }
 
 struct EditorialRelationsSnapshot: Decodable {
     let items: [EditorialRelation]
     let news: [EditorialRelationEndpoint]
     let trends: [EditorialRelationEndpoint]
+
+    private enum CodingKeys: String, CodingKey {
+        case items, news, trends
+    }
+
+    init(from decoder: Decoder) throws {
+        let value = try decoder.container(keyedBy: CodingKeys.self)
+        items = try value.decodeIfPresent([EditorialRelation].self,
+                                          forKey: .items) ?? []
+        news = try value.decodeIfPresent([EditorialRelationEndpoint].self,
+                                         forKey: .news) ?? []
+        trends = try value.decodeIfPresent([EditorialRelationEndpoint].self,
+                                           forKey: .trends) ?? []
+    }
 }
 
 struct EditorialRelationDecision: Encodable {
@@ -73,6 +120,65 @@ struct EditorialRelationReceipt: Decodable {
 enum EditorialRelationsPolicy {
     static func newsKey(id: String, revision: Int) -> String {
         id + ":r" + String(revision)
+    }
+
+    // A relationship always targets the two exact editorial IDs/revisions.
+    // A server-issued fingerprint is an additional write-time guard, not a
+    // reason for a visible checkbox to lose its state after snapshot refresh.
+    static func pairKey(_ news: EditorialRelationEndpoint,
+                        _ trend: EditorialRelationEndpoint) -> String {
+        newsKey(id: news.id, revision: news.revision) + "↔" +
+            newsKey(id: trend.id, revision: trend.revision)
+    }
+
+    // Sites v85 can expose the same exact pair through an older automatic
+    // suggestion AND a manual confirmed relation, with different fingerprints.
+    // Their identity is still (news ID/rev, trend ID/rev): the manual state wins.
+    // Never let a later suggested row overwrite a confirmed checkbox.
+    static func effectivePairStates(_ items: [EditorialRelation]) -> [String: String] {
+        var best: [String: EditorialRelation] = [:]
+        for item in items {
+            let key = pairKey(item.news, item.trend)
+            if let previous = best[key] {
+                if precedence(item) > precedence(previous) { best[key] = item }
+            } else {
+                best[key] = item
+            }
+        }
+        return best.mapValues { $0.state }
+    }
+
+    static func confirmedCount(_ items: [EditorialRelation],
+                               trendID: String, revision: Int) -> Int {
+        guard !trendID.isEmpty else { return 0 }
+        let states = effectivePairStates(items)
+        return Set(items.compactMap { relation -> String? in
+            guard relation.trend.id == trendID,
+                  relation.trend.revision == revision,
+                  states[pairKey(relation.news, relation.trend)] == "linked"
+            else { return nil }
+            return newsKey(id: relation.news.id, revision: relation.news.revision)
+        }).count
+    }
+
+    // A successful POST is not proof the relationship is visible on the Site.
+    // Confirm readback from the private authoritative snapshot before clearing
+    // a pending checkbox or reporting a saved relationship to the editor.
+    static func persisted(_ items: [EditorialRelation],
+                          news: EditorialRelationEndpoint,
+                          trend: EditorialRelationEndpoint, action: String) -> Bool {
+        let wanted = action == "link" ? "linked" : "blocked"
+        return canonical(items).contains { row in
+            row.state == wanted &&
+                row.news.id == news.id && row.news.revision == news.revision &&
+                row.trend.id == trend.id && row.trend.revision == trend.revision &&
+                (news.episodeFingerprint.isEmpty ||
+                 row.news.episodeFingerprint.isEmpty ||
+                 news.episodeFingerprint == row.news.episodeFingerprint) &&
+                (trend.episodeFingerprint.isEmpty ||
+                 row.trend.episodeFingerprint.isEmpty ||
+                 trend.episodeFingerprint == row.trend.episodeFingerprint)
+        }
     }
 
     // The normal Relations screen only lists actual READY/Listas news.
@@ -173,6 +279,49 @@ enum EditorialRelationsPolicy {
         var ids = Set<String>()
         return Array(matching.compactMap {
             ids.insert($0.0.id).inserted ? $0.0 : nil
+        }.prefix(max(0, min(5, limit))))
+    }
+
+    // Site automatic links can be semantically exact without repeating the
+    // trend's literal label in the news title. Always show confirmed pairs
+    // before applying the same five-most-recent display cap to text matches.
+    // This is display-only: it never creates/unlinks a Site relation.
+    static func newsForTrendIncludingLinked(
+        _ candidates: [EditorialRelationEndpoint],
+        relations: [EditorialRelation],
+        trendID: String, revision: Int, name: String,
+        fallbackDates: [String: Date] = [:], limit: Int = 5
+    ) -> [EditorialRelationEndpoint] {
+        let states = effectivePairStates(relations)
+        let linked = relations.filter {
+            $0.trend.id == trendID && $0.trend.revision == revision &&
+                states[pairKey($0.news, $0.trend)] == "linked"
+        }.map(\.news)
+        let linkedIDs = Set(linked.map { newsKey(id: $0.id, revision: $0.revision) })
+        var byEpisode: [String: EditorialRelationEndpoint] = [:]
+        for row in candidates + linked {
+            let key = newsKey(id: row.id, revision: row.revision)
+            if let old = byEpisode[key] {
+                if old.episodeFingerprint.isEmpty && !row.episodeFingerprint.isEmpty {
+                    byEpisode[key] = row
+                } else if old.title.isEmpty && !row.title.isEmpty {
+                    byEpisode[key] = row
+                }
+            } else {
+                byEpisode[key] = row
+            }
+        }
+        func date(_ news: EditorialRelationEndpoint) -> Date {
+            let key = newsKey(id: news.id, revision: news.revision)
+            return parsedDate(news.listedAt) ?? fallbackDates[key] ?? .distantPast
+        }
+        return Array(byEpisode.values.filter {
+            linkedIDs.contains(newsKey(id: $0.id, revision: $0.revision)) ||
+                newsMentionsTrend($0, name: name)
+        }.sorted { a, b in
+            if date(a) != date(b) { return date(a) > date(b) }
+            if a.revision != b.revision { return a.revision > b.revision }
+            return a.id < b.id
         }.prefix(max(0, min(5, limit))))
     }
 

@@ -796,13 +796,17 @@ final class GitHubEditor: ObservableObject {
             } else { entries[key] = candidate }
         }
 
-        // READY is retained after removal from Listas; PROCESSING is not a
-        // final news episode and must not leak into editorial relationship UI.
+        // Relations is a manual lookup over known news, not a READY/Listas
+        // inbox. All statuses with a real stable ID, revision and title remain
+        // searchable; a relation is only persisted after a server receipt.
         for row in processed?["items"] as? [[String: Any]] ?? [] {
-            guard row["status"] as? String == "READY",
-                  let id = row["event_id"] as? String,
+            // The authoritative queue carries both legacy event_id/title and
+            // newer id/canonical_title episodes. Ignoring the latter hid real
+            // selectable articles and forced an incomplete historical lookup.
+            guard let id = (row["event_id"] as? String) ?? (row["id"] as? String),
                   let revision = row["revision"] as? Int,
-                  let title = row["title"] as? String else { continue }
+                  let title = (row["title"] as? String) ??
+                              (row["canonical_title"] as? String) else { continue }
             let date = row["delivered_at"] as? String ??
                 row["rewrite_completed_at"] as? String ?? row["selected_at"] as? String
             let tweet = row["tweet"] as? [String: Any] ?? [:]
@@ -856,8 +860,11 @@ final class GitHubEditor: ObservableObject {
         for row in treated?["items"] as? [[String: Any]] ?? [] {
             guard let id = row["event_id"] as? String,
                   let title = row["title"] as? String else { continue }
-            let revision = (radarEvents[id]?["revision"] as? Int) ??
-                (row["revision"] as? Int) ?? 0
+            // No revision zero is fabricated for old treated records:
+            // a historical article is selectable only with a real revision
+            // from its own record or the authoritative radar history.
+            guard let revision = (radarEvents[id]?["revision"] as? Int) ??
+                                 (row["revision"] as? Int) else { continue }
             add(id, revision, title, (row["editorial_text"] as? String) ?? "",
                 row["treated_at"] as? String)
         }
@@ -1166,6 +1173,7 @@ final class GitHubEditor: ObservableObject {
             "trend_name": title, "trend_rank": rank
         ], label: decision == "published" ? "Publicado · quitar de Listas" :
                   decision == "deleted" ? "No publicado · quitar de Listas" :
+                  decision == "retire" ? "Quitar de Pendientes · sin publicación" :
                   "Reelaborar / preparar")
     }
 
