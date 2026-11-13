@@ -3,19 +3,19 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261113T022500-chat-direct",
-  "previous_run_id": "tr-20261113T021000-chat-direct",
-  "command_id": "tr-20261113T022500-chat-direct",
+  "run_id": "tr-20261113T024000-chat-direct",
+  "previous_run_id": "tr-20261113T022500-chat-direct",
+  "command_id": "tr-20261113T024000-chat-direct",
   "source": "chat_direct",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-13T02:25:00+01:00",
-  "updated_at": "2026-11-13T02:25:45+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-13T02:40:00+01:00",
+  "updated_at": "2026-11-13T02:40:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -216,9 +216,16 @@
       "status": "DONE",
       "phase": "closing",
       "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 2026-11-13T02:21:03+01:00) y mobile-decisions sin estados editoriales activos. Top 30 vigente capturado a las 02:20:58. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-13T02:40:00+01:00",
+      "run_id": "tr-20261113T024000-chat-direct",
+      "status": "RUNNING",
+      "phase": "preparing",
+      "message": "Pasada manual iniciada desde ChatGPT; refresco Top 30 #959 en ejecución y cola autoritativa inicial=0. Sin ImageGen ni publicación."
     }
   ],
-  "last_started_at": "2026-11-13T02:25:00+01:00",
+  "last_started_at": "2026-11-13T02:40:00+01:00",
   "last_completed_at": "2026-11-13T02:25:45+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -254,7 +261,7 @@
     },
     "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 2026-11-13T02:21:03+01:00) y mobile-decisions sin estados editoriales activos. Top 30 vigente capturado a las 02:20:58. Sin ImageGen ni publicaciones."
   },
-  "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 2026-11-13T02:21:03+01:00) y mobile-decisions sin estados editoriales activos. Top 30 vigente capturado a las 02:20:58. Sin ImageGen ni publicaciones.",
+  "message": "Pasada manual iniciada desde ChatGPT; refresco Top 30 #959 en ejecución y cola autoritativa inicial=0. Sin ImageGen ni publicación.",
   "history": [
     {
       "run_id": "tr-1794340649326-manual",
@@ -8233,6 +8240,5 @@
   ],
   "processed": [],
   "maintenance_outbox_commit": "970b545c88b09429a23d15ec893b9d66fb611297",
-  "editorial_apply_run_id": 43343524401,
-  "finished_at": "2026-11-13T02:25:45+01:00"
+  "editorial_apply_run_id": 43343524401
 }
