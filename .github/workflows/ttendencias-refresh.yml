@@ -16,6 +16,7 @@ on:
       - "trends/update_trends.py"
       - "trends/rank_movement.py"
       - "tests/test_site_top30_movement.py"
+      - "tests/test_getdaytrends_spain_current.py"
       - ".github/scripts/test_ttendencias_top30_queue.py"
       - ".github/scripts/test_ttendencias_anchor_freshness.py"
       - ".github/scripts/test_ttendencias_radar_source_diversity.py"
@@ -69,6 +70,9 @@ jobs:
 
       - name: Verificar movimientos persistentes del Top 30
         run: python3 -m unittest discover -s tests -p 'test_site_top30_movement.py' -v
+
+      - name: Verificar 30 tendencias reales y relleno España
+        run: python3 -m unittest discover -s tests -p 'test_getdaytrends_spain_current.py' -v
 
       - name: Comprobar inicio editorial inmediato e idempotente
         run: python3 -m unittest trends.test_ensure_pc_editorial -v
