@@ -17,7 +17,7 @@ concurrency:
 
 jobs:
   test-step-01:
-    if: github.ref == 'refs/heads/feature/ttactualidad-v2-clean' || github.event_name == 'workflow_call'
+    if: github.ref == 'refs/heads/feature/ttactualidad-v2-clean' || github.event_name == 'schedule'
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
