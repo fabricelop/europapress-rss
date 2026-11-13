@@ -799,6 +799,15 @@ final class EditorialStore: ObservableObject {
             importantTrendNames = names
             UserDefaults.standard.set(Array(names), forKey: "TTActualidad.trend-importance.v1")
         }
+        // Assemble the costly editorial models away from the SwiftUI actor.
+        // Local edits/verified receipts still reconcile on MainActor at commit.
+        let inputs = EditorialBuildInputs(docs: docs, archivePhotos: archivePhotos,
+                                          siteImages: siteImages, newsImages: newsImages)
+        let built = await Task.detached(priority: .userInitiated) {
+            let docs = inputs.docs
+            let archivePhotos = inputs.archivePhotos
+            let siteImages = inputs.siteImages
+            let newsImages = inputs.newsImages
         let news = Self.buildNews(prepared: docs["ttittulares/prepared.json"]!,
                                   decisions: docs["ttittulares/decisions.json"]!,
                                   archivePhotos: archivePhotos, newsImages: newsImages)
@@ -874,8 +883,7 @@ final class EditorialStore: ObservableObject {
             decisions: docs["trends/mobile-decisions.json"]!,
             ready: ready
         )
-        accumulateConfirmedTerminals(docs, downloaded)
-        canonicalSnapshot = applyConfirmedTerminals(EditorialSnapshot(
+        return EditorialBuiltSnapshot(snapshot: EditorialSnapshot(
                                      news: news, newsElaboracion: queueNews,
                                      newsRevision: problematic, newsCreciendo: growing,
                                      newsTremending: trending,
@@ -891,6 +899,9 @@ final class EditorialStore: ObservableObject {
                                                               ["captured_at"]),
                                      trendsRadarReliability: Self.str(docs["trends/recent.json"] ?? [:],
                                                                       "reliability")))
+        }.value
+        accumulateConfirmedTerminals(docs, downloaded)
+        canonicalSnapshot = applyConfirmedTerminals(built.snapshot)
         if !partial && downloaded.count == paths.count {
             updateRadarEntrants(docs["trends/recent.json"] ?? [:])
             updateNovedades(news: canonicalSnapshot.news,
@@ -1968,50 +1979,52 @@ final class EditorialStore: ObservableObject {
         }
     }
 
-    private static let closed: Set<String> = ["deleted", "dismissed", "published", "removed", "delete_pending"]
+    private nonisolated static let closed: Set<String> = ["deleted", "dismissed", "published", "removed", "delete_pending"]
 
-    private static func rows(_ doc: [String: Any], _ key: String) -> [[String: Any]] {
+    private nonisolated static func rows(_ doc: [String: Any], _ key: String) -> [[String: Any]] {
         doc[key] as? [[String: Any]] ?? []
     }
-    private static func str(_ row: [String: Any], _ key: String) -> String {
+    private nonisolated static func str(_ row: [String: Any], _ key: String) -> String {
         if let s = row[key] as? String { return s }
         if let n = row[key] as? NSNumber { return n.stringValue }
         return ""
     }
-    private static func int(_ row: [String: Any], _ key: String) -> Int {
+    private nonisolated static func int(_ row: [String: Any], _ key: String) -> Int {
         (row[key] as? NSNumber)?.intValue ?? Int(str(row, key)) ?? 0
     }
-    // ISO8601DateFormatter construction is expensive and these parsers are
-    // called for every item in multiple ledgers on each refresh. Reuse them
-    // only on the store's MainActor (they are never shared across threads).
-    private static let fractionalISO: ISO8601DateFormatter = {
-        let formatter = ISO8601DateFormatter()
-        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-        return formatter
-    }()
-    private static let standardISO: ISO8601DateFormatter = {
-        let formatter = ISO8601DateFormatter()
-        formatter.formatOptions = [.withInternetDateTime]
-        return formatter
+    // NSCache synchronizes readers on MainActor and the detached builder.
+    // Formatters are per-cache-miss, never shared across threads.
+    private nonisolated(unsafe) static let parsedISODates: NSCache<NSString, NSDate> = {
+        let cache = NSCache<NSString, NSDate>()
+        cache.countLimit = 8192
+        return cache
     }()
 
-    private static func when(_ row: [String: Any], _ keys: [String]) -> Date? {
+    private nonisolated static func when(_ row: [String: Any], _ keys: [String]) -> Date? {
         for key in keys {
             let text = str(row, key)
             guard !text.isEmpty else { continue }
-            if let date = fractionalISO.date(from: text) ?? standardISO.date(from: text) {
+            if let cached = parsedISODates.object(forKey: text as NSString) {
+                return cached as Date
+            }
+            let fractional = ISO8601DateFormatter()
+            fractional.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+            let standard = ISO8601DateFormatter()
+            standard.formatOptions = [.withInternetDateTime]
+            if let date = fractional.date(from: text) ?? standard.date(from: text) {
+                parsedISODates.setObject(date as NSDate, forKey: text as NSString)
                 return date
             }
         }
         return nil
     }
-    private static func norm(_ value: String) -> String {
+    private nonisolated static func norm(_ value: String) -> String {
         value.folding(options: [.diacriticInsensitive, .caseInsensitive], locale: Locale(identifier: "es_ES"))
             .trimmingCharacters(in: .whitespacesAndNewlines)
             .split(whereSeparator: \.isWhitespace)
             .joined(separator: " ")
     }
-    private static func isNewer(_ row: [String: Any], than previous: [String: Any]?) -> Bool {
+    private nonisolated static func isNewer(_ row: [String: Any], than previous: [String: Any]?) -> Bool {
         guard let previous else { return true }
         let revision = int(row, "revision"), oldRevision = int(previous, "revision")
         if revision != oldRevision { return revision > oldRevision }
@@ -2019,7 +2032,7 @@ final class EditorialStore: ObservableObject {
             (when(previous, ["updated_at", "deleted_at", "explained_at", "requested_at"]) ?? .distantPast)
     }
 
-    private static func buildNews(prepared: [String: Any], decisions: [String: Any],
+    private nonisolated static func buildNews(prepared: [String: Any], decisions: [String: Any],
                                   archivePhotos: [String: URL],
                                   newsImages: [String: NewsAIImageCatalog.Entry]) -> [NewsItem] {
         var statuses: [String: String] = [:]
@@ -2073,12 +2086,12 @@ final class EditorialStore: ObservableObject {
         }
     }
 
-    private static func isListasCovered(_ row: [String: Any]) -> Bool {
+    private nonisolated static func isListasCovered(_ row: [String: Any]) -> Bool {
         str(row, "listas_group_role") == "covered" && !str(row, "covered_by_id").isEmpty &&
             (row["covered_source_revision"] == nil || int(row, "covered_source_revision") == int(row, "revision"))
     }
 
-    private static func buildTrendListas(
+    private nonisolated static func buildTrendListas(
         manual: [String: Any], requests: [String: Any], deliveries: [String: Any],
         decisions: [String: Any], queue: [String: Any], now: Date,
         archivePhotos: [String: URL],
@@ -2110,8 +2123,26 @@ final class EditorialStore: ObservableObject {
             listasHistory[key, default: []].append(
                 (id: str(previous, "id"), revision: int(previous, "revision"), at: at))
         }
-        let closures = rows(decisions, "items").filter { closed.contains(str($0, "status").lowercased()) }
-        let activeQueue = rows(queue, "items")
+        // Build episode indexes once. Previously every Listas card scanned the
+        // entire editorial queue and all terminal decisions on MainActor.
+        // Preserve the original ID/revision/date precedence below.
+        var newestActiveRevisionByID: [String: Int] = [:]
+        for entry in rows(queue, "items") {
+            guard ["preparing", "update"].contains(str(entry, "status").lowercased()) else {
+                continue
+            }
+            let id = str(entry, "id")
+            if !id.isEmpty {
+                newestActiveRevisionByID[id] = max(
+                    newestActiveRevisionByID[id] ?? Int.min, int(entry, "revision"))
+            }
+        }
+        var terminalDecisionsByID: [String: [[String: Any]]] = [:]
+        for entry in rows(decisions, "items") {
+            guard closed.contains(str(entry, "status").lowercased()) else { continue }
+            let ids = Set([str(entry, "id"), str(entry, "event_id")].filter { !$0.isEmpty })
+            for id in ids { terminalDecisionsByID[id, default: []].append(entry) }
+        }
         return latestManual.compactMap { id, row -> TrendItem? in
             guard str(row, "status").lowercased() == "explained",
                   !str(row, "explanation").trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
@@ -2128,11 +2159,7 @@ final class EditorialStore: ObservableObject {
             if !req.isEmpty && reqRev > rev { return nil }
             if ["preparing", "update", "ready"].contains(reqStatus) &&
                 reqRev >= rev && !readyAfterRequest { return nil }
-            if activeQueue.contains(where: {
-                str($0, "id") == id &&
-                ["preparing", "update"].contains(str($0, "status").lowercased()) &&
-                int($0, "revision") > rev
-            }) { return nil }
+            if (newestActiveRevisionByID[id] ?? Int.min) > rev { return nil }
             if [str(row, "telegram_package_status"), str(req, "status"),
                 str(req, "telegram_package_status")].contains(where: { closed.contains($0.lowercased()) }) {
                 return nil
@@ -2145,9 +2172,8 @@ final class EditorialStore: ObservableObject {
                                                  "removed_at", "updated_at", "delivered_at", "decided_at"])
                 return !(closedAt != nil && closedAt!.timeIntervalSince(explained) < -60)
             }
-            if closures.contains(where: {
-                [Self.str($0, "id"), Self.str($0, "event_id")].contains(id) && closureApplies($0)
-            }) || closureApplies(delivery) { return nil }
+            if (terminalDecisionsByID[id] ?? []).contains(where: closureApplies) ||
+                closureApplies(delivery) { return nil }
 
             let previousListasAt = listasHistory[norm(str(row, "name"))]?
                 .filter { episode in
@@ -2205,7 +2231,6 @@ final class EditorialStore: ObservableObject {
     /// A terminal deletion is authoritative even when a previous rework
     /// started under another ID. Compare the timestamp: a *later* new request
     /// with the same name must remain eligible to run.
-    @MainActor
     private struct ClosedTrends {
         var byID: [String: Date]
         var byName: [String: Date]
@@ -2219,7 +2244,7 @@ final class EditorialStore: ObservableObject {
         }
     }
 
-    private static func closedTrends(manual: [String: Any], requests: [String: Any],
+    private nonisolated static func closedTrends(manual: [String: Any], requests: [String: Any],
                                      decisions: [String: Any]) -> ClosedTrends {
         var result = ClosedTrends(byID: [:], byName: [:])
         func remember(_ row: [String: Any]) {
@@ -2236,7 +2261,7 @@ final class EditorialStore: ObservableObject {
         return result
     }
 
-    private static func buildTrendsElaboracion(
+    private nonisolated static func buildTrendsElaboracion(
         requests: [String: Any], queue: [String: Any],
         manual: [String: Any], decisions: [String: Any], ready: [TrendItem]
     ) -> [TrendItem] {
@@ -2283,7 +2308,7 @@ final class EditorialStore: ObservableObject {
         .sorted { ($0.lastExplained ?? .distantPast) > ($1.lastExplained ?? .distantPast) }
     }
 
-    private static func buildTop30(
+    private nonisolated static func buildTop30(
         recent: [String: Any], site: [String: Any],
         manual: [String: Any], explained: [String: Any],
         requests: [String: Any], ready: [TrendItem], archivePhotos: [String: URL],
@@ -2429,7 +2454,7 @@ final class EditorialStore: ObservableObject {
 
     // Historical unresolved trends remain visible in Pendientes even after
     // dropping out of the current Top 30. Never resurrect terminal decisions.
-    private static func buildUnexplainedTrends(
+    private nonisolated static func buildUnexplainedTrends(
         requests: [String: Any], decisions: [String: Any], now: Date
     ) -> [TrendItem] {
         let closedIDs = Set(rows(decisions, "items").filter {
@@ -2537,6 +2562,17 @@ final class EditorialStore: ObservableObject {
 /// All GitHub bytes are downloaded, validated and cached outside MainActor.
 /// The returned JSON dictionaries are immutable after crossing the actor
 /// boundary; @unchecked Sendable is confined to this single read-only result.
+// Immutable crossing of the actor boundary; no mutation during the task.
+private struct EditorialBuildInputs: @unchecked Sendable {
+    let docs: [String: [String: Any]]
+    let archivePhotos: [String: URL]
+    let siteImages: [String: SiteAIImageCatalog.Entry]
+    let newsImages: [String: NewsAIImageCatalog.Entry]
+}
+private struct EditorialBuiltSnapshot: @unchecked Sendable {
+    let snapshot: EditorialSnapshot
+}
+
 private struct EditorialDocumentLoad: @unchecked Sendable {
     let downloaded: [String: Data]
     let docs: [String: [String: Any]]

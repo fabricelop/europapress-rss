@@ -146,7 +146,7 @@ assert 'stage = "Confirmada"' in store
 assert "struct EditorialTombstone: Codable" in store
 assert '"TTActualidad.confirmed-terminals.v1"' in store
 assert "accumulateConfirmedTerminals(docs, downloaded)" in store
-assert "applyConfirmedTerminals(EditorialSnapshot(" in store
+assert "canonicalSnapshot = applyConfirmedTerminals(built.snapshot)" in store
 assert "snapshot = applyConfirmedTerminals(updated)" in store
 assert '"pilot/ttactualidad-action-receipts.json"' in store
 assert '"ttittulares/decisions.json"' in store
@@ -324,8 +324,8 @@ print("TT_ACTUALIDAD_IOS_0417_LIVE_NO_WIDGETS_PREFLIGHT_OK")
 assert 'EditorialDocumentLoader.load(paths: paths)' in store
 assert 'private enum EditorialDocumentLoader' in store
 assert 'private struct EditorialDocumentLoad: @unchecked Sendable' in store
-assert 'private static let fractionalISO:' in store
-assert 'private static let standardISO:' in store
+assert 'private nonisolated(unsafe) static let parsedISODates: NSCache<NSString, NSDate>' in store
+assert 'cache.countLimit = 8192' in store
 assert 'terminalMarksNeedSave' in store
 catalog = (root / "TTActualidad/ArchivePhotoCatalog.swift").read_text(encoding="utf8")
 assert 'private actor ArchivePhotoMemory' in catalog
@@ -567,7 +567,7 @@ assert 'quickButton("Crear Foto IA", "photo.badge.plus")' in actions
 assert 'quickButton("Añadir imagen", "photo.on.rectangle.angled")' in actions
 assert 'quickButton("Publicar en X", "square.and.arrow.up")' in actions
 # Preserve original stacked dual-image UI, verified images and Live Activity.
-assert 'private static func buildNews' in store
+assert 'private nonisolated static func buildNews' in store
 assert 'NewsAIImageCatalog.assigned(' in store
 assert 'LiveCountsAttributes' in shared
 print("NATIVE_BUILD56_LINKS_NEWS_ORDER_JPEG_NO_REGRESSION_OK")
@@ -1192,3 +1192,53 @@ assert 'buffer.hidesFromListas(project: "ttendencias"' in store
 print("TT_LIVE_ACTIVITY_BUILD103_LISTAS_PARITY_OK")
 
 
+
+# Performance regression: Buffer polling must not re-render Listas/Live Activity
+# on byte-identical ledgers. Preserve verified ledger and publication protections.
+buffer_perf = (root / "TTActualidad/BufferPublishTracker.swift").read_text(encoding="utf8")
+assert "private var blockingPostKeys = Set<String>()" in buffer_perf
+assert "private var lastVerifiedLedgerData: Data?" in buffer_perf
+assert "blockingPostKeys.contains(key)" in buffer_perf
+assert "blockingPostKeys.contains(Self.key(project, id, revision))" in buffer_perf
+assert "if data == lastVerifiedLedgerData" in buffer_perf
+assert "lastVerifiedLedgerData = data" in buffer_perf
+assert "confirmedSentKeys.union(confirmed)" in buffer_perf
+assert "pendingRequestIDs" in buffer_perf
+assert "change += 1  // A changed verified ledger" in buffer_perf
+print("TT_BUFFER_UI_PERFORMANCE_B103_GUARDS_OK")
+
+# Listas performance: index only matching queue revisions and terminal decisions.
+# Keep timestamps and revision-sensitive closureApplies() intact.
+store_perf = (root / "TTActualidad/EditorialStore.swift").read_text(encoding="utf8")
+assert "newestActiveRevisionByID" in store_perf
+assert "terminalDecisionsByID" in store_perf
+assert 'if (newestActiveRevisionByID[id] ?? Int.min) > rev' in store_perf
+assert '(terminalDecisionsByID[id] ?? []).contains(where: closureApplies)' in store_perf
+assert 'oldRev != rev { return oldRev > rev }' in store_perf
+assert 'closedAt!.timeIntervalSince(explained) < -60' in store_perf
+assert "previousListasAt" in store_perf
+print("TT_LISTAS_INDEXED_BUILD103_PERF_GUARDS_OK")
+
+# Guard timestamp caching against unbounded retention or date-precedence changes.
+assert "NSCache<NSString, NSDate>" in store_perf
+assert "cache.countLimit = 8192" in store_perf
+assert "parsedISODates.object(forKey: text as NSString)" in store_perf
+assert "fractional.date(from: text) ?? standard.date(from: text)" in store_perf
+assert "parsedISODates.setObject(date as NSDate" in store_perf
+print("TT_IOS_TIMESTAMP_PARSE_CACHE_B103_OK")
+
+# SwiftUI responsiveness: model assembly must run on an isolated worker while
+# final receipt reconciliation, tombstones, overlays and Published state remain
+# on the main actor. These are structural checks, not device latency benchmarks.
+assert "let built = await Task.detached(priority: .userInitiated)" in store_perf
+assert "return EditorialBuiltSnapshot(snapshot: EditorialSnapshot(" in store_perf
+assert "canonicalSnapshot = applyConfirmedTerminals(built.snapshot)" in store_perf
+assert "private struct EditorialBuildInputs: @unchecked Sendable" in store_perf
+assert "private struct EditorialBuiltSnapshot: @unchecked Sendable" in store_perf
+assert "private nonisolated static func buildTop30(" in store_perf
+assert "private nonisolated static func buildTrendListas(" in store_perf
+print("TT_IOS_DETACHED_SNAPSHOT_BUILD103_GUARDS_OK")
+
+# Swift 6 isolation warnings from the detached path must remain addressed.
+assert 'private nonisolated static let closed: Set<String>' in store_perf
+print('TT_IOS_DETACHED_STATIC_ISOLATION_GUARDS_OK')
