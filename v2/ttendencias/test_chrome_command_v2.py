@@ -24,6 +24,16 @@ class ChromeCommandTests(unittest.TestCase):
         self.assertIn("--new-window", args)
         self.assertNotIn("--headless=new", args)
 
+    def test_headed_hidden_has_real_window_offscreen_without_headless(self):
+        args = command("chrome.exe", "C:/Test/TTActualidadV2/ChromeProfile",
+                       47331, headless=False, hidden=True)
+        self.assertIn("--start-minimized", args)
+        self.assertIn("--window-position=-32000,-32000", args)
+        self.assertIn("--new-window", args)
+        self.assertNotIn("--headless=new", args)
+        self.assertIn("--remote-debugging-address=127.0.0.1", args)
+        self.assertEqual(args[-1], "https://chatgpt.com/")
+
     def test_cannot_touch_v1_ports(self):
         for port in (9223, 9234):
             with self.assertRaises(ValueError):
