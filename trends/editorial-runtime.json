@@ -3,16 +3,16 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261113T192500-chat-direct",
+  "run_id": "tr-20261113T203700-chat-direct",
   "previous_run_id": "tr-20261113T191000-chat-direct",
   "command_id": "tr-20261113T192500-chat-direct",
   "source": "chat_direct",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-13T19:25:00+01:00",
-  "updated_at": "2026-11-13T19:31:40+01:00",
-  "current": 2,
-  "total": 2,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-13T20:37:00+01:00",
+  "updated_at": "2026-11-13T20:37:00+01:00",
+  "current": 0,
+  "total": 1,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
@@ -784,7 +784,7 @@
     "incidents": [],
     "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 y mobile-decisions sin estados editoriales activos; Top 30 fresco de las 19:10. Sin ImageGen ni publicaciones."
   },
-  "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 y mobile-decisions sin estados editoriales activos; Top 30 fresco de las 19:10. Sin ImageGen ni publicaciones.",
+  "message": "Revisando novedades: Jordi Wild. Revalidando la revisión roja y contrastando hechos posteriores al 11/11; sin ImageGen ni publicación.",
   "history": [
     {
       "run_id": "tr-1794361941170-manual",
@@ -5283,7 +5283,11 @@
       "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 y mobile-decisions sin estados editoriales activos; Top 30 fresco de las 19:10. Sin ImageGen ni publicaciones."
     }
   ],
-  "current_item": null,
+  "current_item": {
+    "id": "red-review-89131aa94658e10a26da",
+    "revision": 0,
+    "name": "Revisar novedades: Jordi Wild"
+  },
   "withdrawn_ids": [],
   "last_finished_at": "2026-11-13T19:11:02+01:00",
   "last_revalidated_at": "2026-11-13T19:11:02+01:00",
@@ -8812,13 +8816,21 @@
       "at": "2026-11-13T18:59:40+01:00",
       "phase": "closing",
       "message": "Pasada TTendencias cerrada 2/2 reintentos: Miente e Isaac siguen problematic por falta de detonante verificable. Aplicador oficial GitHub Actions 43477991983 success. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-13T20:37:00+01:00",
+      "phase": "preparing",
+      "trend_id": "red-review-89131aa94658e10a26da",
+      "revision": 0,
+      "name": "Revisar novedades: Jordi Wild",
+      "message": "Revisando novedades: Jordi Wild; revalidación JIT contra main antes de investigar."
     }
   ],
   "processed": [],
   "maintenance_outbox_commit": "c764cbdfc37ba7b67fedd38a16837ee068ae9467",
   "editorial_apply_run_id": 43477991983,
-  "finished_at": "2026-11-13T19:31:40+01:00",
-  "completed_at": "2026-11-13T19:31:40+01:00",
+  "finished_at": null,
+  "completed_at": null,
   "maintenance_outbox_commits": [
     "06d86dda15401f93684aba63d1fae3d01eba7960",
     "06d48d72a1e21365ce75c51284049eb798b0fd13"
