@@ -7,15 +7,15 @@
   "previous_run_id": "tr-20261113T034000-chat-direct",
   "command_id": "tr-20261113T041000-chat-direct",
   "source": "chat_direct",
-  "status": "DONE",
-  "phase": "closing",
+  "status": "RUNNING",
+  "phase": "maintenance_review",
   "started_at": "2026-11-13T04:10:00+01:00",
-  "updated_at": "2026-11-13T04:18:00+01:00",
+  "updated_at": "2026-11-13T04:19:00+01:00",
   "current": 13,
-  "total": 13,
+  "total": 15,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [
     "09c8baed486f",
     "e1c917b18472",
@@ -32,18 +32,24 @@
     "c0bb94cc81ae"
   ],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-dbdff8ab02b4b94f7b00",
+    "red-review-628f50a7fbbaaacf7af4"
+  ],
+  "remaining_active_ids": [
+    "red-review-dbdff8ab02b4b94f7b00",
+    "red-review-628f50a7fbbaaacf7af4"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 13,
-    "observed": 13,
+    "attempted": 15,
+    "observed": 15,
     "closed": 13,
     "explained": 2,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 11,
-    "maintenance_reviews": 0,
+    "maintenance_reviews": 2,
     "unchanged_reviews": 0,
     "continuity_updates": 0,
     "distinct_updates": 2,
@@ -52,7 +58,7 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -422,6 +428,13 @@
       "status": "DONE",
       "phase": "closing",
       "message": "Pasada TTendencias completada 13/13. Dos reentradas acreditaron episodio material distinto (Abascal y Barcelona) y quedaron explicadas; once se cerraron review_completed/no_distinct_event, incluida Eddie por causa actual no atribuible con fiabilidad. Aplicador confirmado en 565df6e993d9664b54de8442ac963806504b0d85. Cola final=0. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-13T04:19:00+01:00",
+      "run_id": "tr-20261113T041000-chat-direct",
+      "status": "RUNNING",
+      "phase": "maintenance_review",
+      "message": "Barrera final detectó 2 revisiones rojas de mantenimiento (Jordi Wild y Youtuber). Reabierta la misma pasada: 13/15 aplicados, 2 revisiones en curso."
     }
   ],
   "last_started_at": "2026-11-13T04:17:12+01:00",
@@ -572,7 +585,7 @@
     "incidents": [],
     "message": "Pasada TTendencias completada 13/13. Dos reentradas acreditaron episodio material distinto (Abascal y Barcelona) y quedaron explicadas; once se cerraron review_completed/no_distinct_event, incluida Eddie por causa actual no atribuible con fiabilidad. Aplicador confirmado en 565df6e993d9664b54de8442ac963806504b0d85. Cola final=0. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "Pasada TTendencias completada 13/13. Dos reentradas acreditaron episodio material distinto (Abascal y Barcelona) y quedaron explicadas; once se cerraron review_completed/no_distinct_event, incluida Eddie por causa actual no atribuible con fiabilidad. Aplicador confirmado en 565df6e993d9664b54de8442ac963806504b0d85. Cola final=0. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Barrera final detectó 2 revisiones rojas de mantenimiento (Jordi Wild y Youtuber). Reabierta la misma pasada: 13/15 aplicados, 2 revisiones en curso.",
   "history": [
     {
       "run_id": "tr-1794340649326-manual",
@@ -8784,6 +8797,5 @@
   ],
   "processed": [],
   "maintenance_outbox_commit": "970b545c88b09429a23d15ec893b9d66fb611297",
-  "editorial_apply_run_id": 43343524401,
-  "finished_at": "2026-11-13T04:18:00+01:00"
+  "editorial_apply_run_id": 43343524401
 }
