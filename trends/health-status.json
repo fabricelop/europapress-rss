@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-13T05:26:52.687479+00:00",
+  "checked_at": "2026-11-13T05:46:12.341409+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -44,7 +44,8 @@
       "count": 10,
       "non_stale_sources": 4,
       "verified_fresh_sources": [
-        "xtrendsiamrohit"
+        "xtrendsiamrohit",
+        "playersells"
       ],
       "live_verified": false,
       "captured_age_minutes": 0.2,
@@ -60,7 +61,7 @@
       "status": "in_progress",
       "conclusion": null,
       "age_minutes": 4.8,
-      "run_id": 43371545168,
+      "run_id": 43373642095,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -72,7 +73,7 @@
     },
     "request_queue": {
       "ok": false,
-      "invalid_count": 812,
+      "invalid_count": 815,
       "noise_count": 0
     },
     "ready_consistency": {
@@ -81,30 +82,19 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": false,
-      "pending_count": 3,
-      "overdue_count": 1,
-      "oldest_age_minutes": 39.9,
+      "ok": true,
+      "pending_count": 0,
+      "overdue_count": 0,
+      "oldest_age_minutes": 0,
       "warning_after_minutes": 30,
-      "overdue_items": [
-        {
-          "id": "red-review-f5052ee0823a026c3feb",
-          "name": "Revisar novedades: NVIDIA",
-          "status": "preparing",
-          "age_minutes": 39.9
-        }
-      ],
+      "overdue_items": [],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": false,
-      "status": "overdue",
-      "queue_complete": false,
-      "remaining_active_ids": [
-        "red-review-f5052ee0823a026c3feb",
-        "6132b2e3fed4",
-        "0edb044d5bb7"
-      ],
+      "ok": true,
+      "status": "not-required",
+      "queue_complete": true,
+      "remaining_active_ids": [],
       "contradictory_success": false
     },
     "telegram_provisional": {
@@ -116,10 +106,9 @@
   "repairs_started": [],
   "blocking": [
     "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos",
-    "cola con 812 estado(s) inválido(s)",
-    "cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 39.9 min"
+    "cola con 815 estado(s) inválido(s)"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 812 estado(s) inválido(s) | cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 39.9 min"
+  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 815 estado(s) inválido(s)"
 }
