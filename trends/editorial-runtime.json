@@ -5,30 +5,34 @@
   "canonical": true,
   "run_id": "tr-20261113T120600-chat-direct",
   "previous_run_id": "tr-20261113T112500-chat-direct",
-  "command_id": "tr-20261113T112500-chat-direct",
+  "command_id": "tr-20261113T120600-chat-direct",
   "source": "chat_direct",
-  "status": "success",
-  "phase": "preparing",
+  "status": "DONE_WITH_INCIDENTS",
+  "phase": "closing",
   "started_at": "2026-11-13T12:06:00+01:00",
-  "updated_at": "2026-11-13T12:14:27+01:00",
-  "current": 0,
-  "total": 4,
-  "trend_id": "289b3a5cdae3",
-  "title": "Begoña",
+  "updated_at": "2026-11-13T12:15:00+01:00",
+  "current": 6,
+  "total": 6,
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
-    "0615570f9ea1",
-    "35deccb4ce35"
+    "289b3a5cdae3",
+    "25a914e9d748",
+    "ebd8d155e6d3",
+    "9f0be89bedc9",
+    "35deccb4ce35",
+    "0615570f9ea1"
   ],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 4,
-    "closed": 0,
-    "explained": 0,
+    "attempted": 6,
+    "observed": 6,
+    "closed": 6,
+    "explained": 6,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
@@ -41,18 +45,75 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 4,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 0,
+    "incidents": 1,
     "concurrent_convergence": 0,
     "cause_unconfirmed": 0
   },
-  "outcomes": [],
-  "incident_count": 0,
-  "incidents": [],
+  "outcomes": [
+    {
+      "id": "289b3a5cdae3",
+      "revision": 0,
+      "name": "Begoña",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "4c0f6a601f27728a93b49b668ed5f5581138ea75"
+    },
+    {
+      "id": "25a914e9d748",
+      "revision": 0,
+      "name": "El CIS",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "4c0f6a601f27728a93b49b668ed5f5581138ea75"
+    },
+    {
+      "id": "ebd8d155e6d3",
+      "revision": 0,
+      "name": "Alfon",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "4c0f6a601f27728a93b49b668ed5f5581138ea75"
+    },
+    {
+      "id": "9f0be89bedc9",
+      "revision": 0,
+      "name": "La Revuelta",
+      "outcome": "explained_after_validation_fix",
+      "applied": true,
+      "apply_commit": "5faea7bb755091974ef78f808989b697dbde50cf"
+    },
+    {
+      "id": "35deccb4ce35",
+      "revision": 0,
+      "name": "#EncuestasManipuladas",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "34ddbf5f913f43fb5bfe4c20eb212901a712bc1f"
+    },
+    {
+      "id": "0615570f9ea1",
+      "revision": 0,
+      "name": "Claude",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "34ddbf5f913f43fb5bfe4c20eb212901a712bc1f"
+    }
+  ],
+  "incident_count": 1,
+  "incidents": [
+    {
+      "id": "9f0be89bedc9",
+      "revision": 0,
+      "name": "La Revuelta",
+      "issue": "La primera redacción superaba el límite de 279 caracteres y el aplicador la rechazó como explicación directa inválida.",
+      "resolution": "Se acortó manteniendo el hecho y el remate; la revisión corregida quedó aplicada en requests.json y telegram-manual-explained.json."
+    }
+  ],
   "error": null,
   "activity": [
     {
@@ -532,10 +593,17 @@
       "status": "DONE",
       "phase": "closing",
       "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 2026-11-13T11:20:59+01:00). Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-13T12:15:00+01:00",
+      "phase": "closing",
+      "current": 6,
+      "total": 6,
+      "message": "Pasada TTendencias completada 6/6. Begoña, El CIS, Alfon, La Revuelta, #EncuestasManipuladas y Claude quedaron explicadas y verificadas en ambos registros. La primera versión de La Revuelta excedía el límite de caracteres; se corrigió y aplicó en la misma pasada. Cola final 0. Sin ImageGen ni publicaciones."
     }
   ],
   "last_started_at": "2026-11-13T12:14:27+01:00",
-  "last_completed_at": "2026-11-13T12:14:27+01:00",
+  "last_completed_at": "2026-11-13T12:15:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-20261113T112500-chat-direct",
@@ -547,7 +615,7 @@
     "queue_remaining": 0,
     "message": "Pasada TTendencias completada 4/4. Radar Gmail y Pipi cerrados como anticipation_unverified por falta de causalidad suficientemente acreditada; Broncano y NVIDIA actualizados como continuidad del mismo episodio. NVIDIA requirió corregir la fórmula de continuidad exigida por el validador y quedó aplicada. Barrera final tras refresco Top 30: editorial-queue=0. Sin ImageGen ni publicaciones."
   },
-  "message": "Iniciando pasada TTendencias 0/4. Revalidando Begoña r0 antes de investigar.",
+  "message": "Pasada TTendencias completada 6/6. Begoña, El CIS, Alfon, La Revuelta, #EncuestasManipuladas y Claude quedaron explicadas y verificadas en ambos registros. La primera versión de La Revuelta excedía el límite de caracteres; se corrigió y aplicó en la misma pasada. Cola final 0. Sin ImageGen ni publicaciones.",
   "history": [
     {
       "run_id": "tr-1794361941170-manual",
@@ -4618,12 +4686,7 @@
       "message": "Pasada TTendencias completada 5/5. Asraf quedó como episodio material distinto por su victoria en la final; Rosalia quedó explicada por sus cinco Latin Grammy; NVIDIA y Jensen Huang se actualizaron como continuidad tras la dimisión de Huang y el nombramiento interino de Colette Kress; #HuelgaGeneral quedó unchanged al no aparecer un episodio material nuevo. Barrera final: editorial-queue=0 y mobile-decisions sin estados editoriales activos. ImageGen=0; publicaciones=0; incidentes=0."
     }
   ],
-  "current_item": {
-    "id": "289b3a5cdae3",
-    "revision": 0,
-    "name": "Begoña",
-    "title": "Begoña"
-  },
+  "current_item": null,
   "withdrawn_ids": [],
   "last_finished_at": "2026-11-13T10:51:20+01:00",
   "last_revalidated_at": "2026-11-13T10:51:20+01:00",
@@ -7760,5 +7823,5 @@
   "processed": [],
   "maintenance_outbox_commit": "970b545c88b09429a23d15ec893b9d66fb611297",
   "editorial_apply_run_id": 43378988402,
-  "finished_at": null
+  "finished_at": "2026-11-13T12:15:00+01:00"
 }
