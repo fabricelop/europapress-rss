@@ -8,9 +8,9 @@
   "command_id": "tr-20261113T192500-chat-direct",
   "source": "chat_direct",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "persisting",
   "started_at": "2026-11-13T20:37:00+01:00",
-  "updated_at": "2026-11-13T20:37:00+01:00",
+  "updated_at": "2026-11-13T20:40:00+01:00",
   "current": 0,
   "total": 1,
   "trend_id": null,
@@ -784,7 +784,7 @@
     "incidents": [],
     "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 y mobile-decisions sin estados editoriales activos; Top 30 fresco de las 19:10. Sin ImageGen ni publicaciones."
   },
-  "message": "Revisando novedades: Jordi Wild. Revalidando la revisión roja y contrastando hechos posteriores al 11/11; sin ImageGen ni publicación.",
+  "message": "Persistiendo actualización de continuidad para Jordi Wild: las tres entrevistas ya están publicadas y concentran cerca de seis millones de visualizaciones en diez horas.",
   "history": [
     {
       "run_id": "tr-1794361941170-manual",
@@ -8824,6 +8824,22 @@
       "revision": 0,
       "name": "Revisar novedades: Jordi Wild",
       "message": "Revisando novedades: Jordi Wild; revalidación JIT contra main antes de investigar."
+    },
+    {
+      "at": "2026-11-13T20:40:00+01:00",
+      "phase": "investigating",
+      "trend_id": "red-review-89131aa94658e10a26da",
+      "revision": 0,
+      "name": "Revisar novedades: Jordi Wild",
+      "message": "Verificado: Colau, Feijóo y Sánchez publicados el 13/11; cerca de 6M de visualizaciones en diez horas. Continuidad del mismo episodio."
+    },
+    {
+      "at": "2026-11-13T20:40:00+01:00",
+      "phase": "persisting",
+      "trend_id": "red-review-89131aa94658e10a26da",
+      "revision": 0,
+      "name": "Revisar novedades: Jordi Wild",
+      "message": "Guardando maintenance-outbox como updated de continuidad; sin nueva ficha, imagen ni publicación."
     }
   ],
   "processed": [],
