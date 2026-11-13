@@ -11,6 +11,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "trends"))
+from pending_retirement import retire_pending
 OWNER = "fabricelop"
 TERMINAL = {"published", "deleted", "dismissed", "removed"}
 
@@ -53,7 +55,7 @@ def parse_issue(event):
     instruction = field(body, "Instrucciones para reelaborar (opcional)")[:1000]
     if project not in {"ttittulares", "ttendencias"}:
         raise ValueError("Proyecto desconocido")
-    if action not in {"published", "deleted", "dismissed", "rework", "prepare"}:
+    if action not in {"published", "deleted", "dismissed", "rework", "prepare", "retire"}:
         raise ValueError("Acción no admitida")
     if not re.fullmatch(r"[^\x00-\x1f\x7f]{1,120}", element_id):
         raise ValueError("Identificador inválido")
@@ -301,11 +303,26 @@ def tti_command(action, element_id, context, instruction, now):
     return "TTiTTulares: nueva petición registrada en la cola editorial " + element_id
 
 
-def trend_command(action, element_id, context, instruction, now):
+def trend_command(action, element_id, context, instruction, now, expected_revision=None):
     p = "trends/requests.json"
     doc = load(p, {"requests": []})
     requests = doc.setdefault("requests", [])
     r = next((x for x in requests if matches(x, element_id)), None)
+    if action == "retire":
+        if expected_revision is None:
+            raise ValueError("Quitar de Pendientes exige ID y revisión exactos")
+        queue_path = "trends/editorial-queue.json"
+        retirements_path = "trends/pending-retirements.json"
+        queue = load(queue_path, {"items": [], "count": 0})
+        retirements = load(retirements_path, {"items": []})
+        recent = load("trends/recent.json", {"items": []})
+        result = retire_pending(doc, queue, recent, retirements,
+                                element_id, expected_revision, now, context)
+        save(p, doc)
+        save(queue_path, queue)
+        save(retirements_path, retirements)
+        return ("TTendencias: ya retirada de Pendientes: " if result == "already_applied"
+                else "TTendencias: retirada de Pendientes (reentrada permitida): ") + element_id
     deliveries_path = "trends/telegram-image-deliveries.json"
     deliveries = load(deliveries_path, {"items": []})
     msg = [x for x in deliveries.get("items", []) if matches(x, element_id)]
@@ -530,7 +547,16 @@ def main():
     event = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
     project, action, element_id, context, instruction = (parse_dispatch(event) if "inputs" in event else parse_issue(event))
     now = timestamp()
-    result = (tti_command if project == "ttittulares" else trend_command)(action, element_id, context, instruction, now)
+    if project == "ttendencias" and action == "retire":
+        issue_body = str((event.get("issue") or {}).get("body") or "")
+        raw_revision = field(issue_body, "Revisión del elemento")
+        if not re.fullmatch(r"\d{1,4}", raw_revision):
+            raise ValueError("Quitar de Pendientes exige revisión exacta")
+        result = trend_command(action, element_id, context, instruction, now,
+                               expected_revision=int(raw_revision))
+    else:
+        result = (tti_command if project == "ttittulares" else trend_command)(
+            action, element_id, context, instruction, now)
     print("TT_MOBILE_COMMAND_OK " + result)
     Path("/tmp/tt-mobile-issue-result.txt").write_text(result + "\n", encoding="utf-8")
 
