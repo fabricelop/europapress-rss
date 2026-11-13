@@ -7,25 +7,22 @@
   "previous_run_id": "tr-20261113T085500-chat-direct",
   "command_id": "tr-20261113T101000-chat-direct",
   "source": "chat_direct",
-  "status": "RUNNING",
+  "status": "success",
   "phase": "investigating",
   "started_at": "2026-11-13T10:10:00+01:00",
-  "updated_at": "2026-11-13T10:11:30+01:00",
+  "updated_at": "2026-11-13T10:14:59+01:00",
   "current": 0,
   "total": 2,
   "trend_id": "798b421b4c28",
   "title": "Ada Colau",
-  "queue_complete": false,
-  "processed_ids": [],
+  "queue_complete": true,
+  "processed_ids": [
+    "5a9d4f7ddfc2",
+    "798b421b4c28"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "798b421b4c28",
-    "5a9d4f7ddfc2"
-  ],
-  "remaining_active_ids": [
-    "798b421b4c28",
-    "5a9d4f7ddfc2"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
@@ -401,8 +398,8 @@
       "message": "Refresco Top 30 de 10:11 abrió 2 reentradas: Ada Colau y Youtuber. Revalidando si existe acontecimiento material distinto antes de crear cualquier ficha nueva; sin ImageGen ni publicación."
     }
   ],
-  "last_started_at": "2026-11-13T09:38:25+01:00",
-  "last_completed_at": "2026-11-13T09:38:25+01:00",
+  "last_started_at": "2026-11-13T10:14:59+01:00",
+  "last_completed_at": "2026-11-13T10:14:59+01:00",
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-20261113T085500-chat-direct",
