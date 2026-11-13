@@ -7,47 +7,43 @@
   "previous_run_id": "tr-20261113T120600-chat-direct",
   "command_id": "tr-20261113T125500-chat-direct",
   "source": "chat_direct",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "done",
   "started_at": "2026-11-13T12:55:00+01:00",
-  "updated_at": "2026-11-13T13:02:30+01:00",
-  "current": 2,
+  "updated_at": "2026-11-13T13:03:30+01:00",
+  "current": 4,
   "total": 4,
-  "trend_id": "red-review-5ff013f92616fc674f1e",
-  "title": "Revisando novedades: Ministerio de Igualdad / Fiscalía Europea",
-  "queue_complete": false,
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
   "processed_ids": [
     "red-review-0bf1509ba72c1c1f47a9",
-    "red-review-c349c92e073d9dd9fa77"
+    "red-review-c349c92e073d9dd9fa77",
+    "red-review-5ff013f92616fc674f1e",
+    "red-review-e0ce6f2cad58994007e9"
   ],
   "converged_ids": [],
-  "remaining_ids": [
-    "red-review-5ff013f92616fc674f1e",
-    "red-review-e0ce6f2cad58994007e9"
-  ],
-  "remaining_active_ids": [
-    "red-review-5ff013f92616fc674f1e",
-    "red-review-e0ce6f2cad58994007e9"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 4,
     "observed": 4,
-    "closed": 2,
+    "closed": 4,
     "explained": 0,
     "problematic": 0,
-    "updates": 0,
+    "updates": 4,
     "review_completed_no_distinct_event": 0,
     "maintenance_reviews": 4,
     "unchanged_reviews": 0,
-    "continuity_updates": 2,
+    "continuity_updates": 4,
     "distinct_updates": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -62,14 +58,32 @@
       "revision": 0,
       "name": "Revisar novedades: Marlaska",
       "outcome": "continuity",
-      "applied": true
+      "applied": true,
+      "apply_commit": "068c7d2538c9b010f78333e038547e5833ffb2f2"
     },
     {
       "id": "red-review-c349c92e073d9dd9fa77",
       "revision": 0,
       "name": "Revisar novedades: Anotop At",
       "outcome": "continuity",
-      "applied": true
+      "applied": true,
+      "apply_commit": "068c7d2538c9b010f78333e038547e5833ffb2f2"
+    },
+    {
+      "id": "red-review-5ff013f92616fc674f1e",
+      "revision": 0,
+      "name": "Revisar novedades: Ministerio de Igualdad",
+      "outcome": "continuity",
+      "applied": true,
+      "apply_commit": "eb6767cf1cf11e026e360c3df7f3fae081a0c3c5"
+    },
+    {
+      "id": "red-review-e0ce6f2cad58994007e9",
+      "revision": 0,
+      "name": "Revisar novedades: Fiscalía Europea",
+      "outcome": "continuity",
+      "applied": true,
+      "apply_commit": "eb6767cf1cf11e026e360c3df7f3fae081a0c3c5"
     }
   ],
   "incident_count": 0,
@@ -574,6 +588,13 @@
       "status": "RUNNING",
       "phase": "investigating",
       "message": "Primera pareja de revisiones rojas aplicada como continuidad (Marlaska y Anotop At). La barrera posterior abrió Ministerio de Igualdad y Fiscalía Europea; resultados de continuidad preparados en maintenance-outbox."
+    },
+    {
+      "at": "2026-11-13T13:03:30+01:00",
+      "run_id": "tr-20261113T125500-chat-direct",
+      "status": "DONE",
+      "phase": "done",
+      "message": "Pasada manual TTendencias finalizada: 4 revisiones rojas cerradas como continuidad, cola editorial=0. Sin ImageGen, sin nuevas fichas Listas y sin publicaciones."
     }
   ],
   "last_started_at": "2026-11-13T12:14:27+01:00",
@@ -7797,5 +7818,6 @@
   "processed": [],
   "maintenance_outbox_commit": "970b545c88b09429a23d15ec893b9d66fb611297",
   "editorial_apply_run_id": 43378988402,
-  "finished_at": "2026-11-13T12:15:00+01:00"
+  "finished_at": "2026-11-13T12:15:00+01:00",
+  "completed_at": "2026-11-13T13:03:30+01:00"
 }
