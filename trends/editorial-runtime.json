@@ -7,42 +7,27 @@
   "previous_run_id": "tr-20261113T171000-chat-direct",
   "command_id": "tr-20261113T182500-chat-direct",
   "source": "chat_direct",
-  "status": "RUNNING",
+  "status": "success",
   "phase": "preparing",
   "started_at": "2026-11-13T18:25:00+01:00",
-  "updated_at": "2026-11-13T18:25:00+01:00",
+  "updated_at": "2026-11-13T18:31:21+01:00",
   "current": 0,
   "total": 10,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
-  "processed_ids": [],
+  "queue_complete": true,
+  "processed_ids": [
+    "1d5814995248"
+  ],
   "converged_ids": [],
   "remaining_ids": [
-    "80930a773479",
-    "455fa1e621c8",
-    "6f15e22798b1",
-    "6010e51569ca",
-    "36d115697364",
     "manual-c550af7b734565e1d4042fae0ba8d74f",
-    "fc1948486c8e",
-    "baa5d49cc3e1",
-    "1d5814995248",
-    "4adb840bea1f"
+    "1d5814995248"
   ],
-  "remaining_active_ids": [
-    "80930a773479",
-    "455fa1e621c8",
-    "6f15e22798b1",
-    "6010e51569ca",
-    "36d115697364",
-    "fc1948486c8e",
-    "baa5d49cc3e1",
-    "1d5814995248",
-    "4adb840bea1f"
-  ],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [
-    "manual-c550af7b734565e1d4042fae0ba8d74f"
+    "manual-c550af7b734565e1d4042fae0ba8d74f",
+    "1d5814995248"
   ],
   "summary": {
     "attempted": 0,
@@ -682,8 +667,8 @@
       "message": "Pasada TTendencias iniciada desde ChatGPT. Cola autoritativa observada=10; procesamiento por rango ascendente, revalidación JIT; sin ImageGen ni publicación."
     }
   ],
-  "last_started_at": "2026-11-13T18:25:00+01:00",
-  "last_completed_at": "2026-11-13T17:22:12+01:00",
+  "last_started_at": "2026-11-13T18:31:20+01:00",
+  "last_completed_at": "2026-11-13T18:31:21+01:00",
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-20261113T171000-chat-direct",
