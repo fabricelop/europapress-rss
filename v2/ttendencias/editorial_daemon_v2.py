@@ -74,6 +74,14 @@ def run_forever(poll_seconds=90, max_jobs=0):
                     report("WAIT_EXISTING_V2_CHROME", completed=completed)
                     time.sleep(poll_seconds)
                     continue
+                # Los errores no se acumulan indefinidamente. Antes de crear
+                # cualquier chat nuevo, intentar rescatar la conversación
+                # anterior de la incidencia y, si no se puede, crear una
+                # nueva revisión con el historial anterior intacto.
+                incident_worker = core.module("incident_worker_v2.py", "ttv2_incident_worker")
+                if incident_worker.process_one(api, auth):
+                    print("TT_V2_AUTO_INCIDENT_PROCESSED=YES", flush=True)
+                    continue
                 item, age, blocked = check(api, auth)
             except Exception as exc:
                 # Captura antigua, caída de GitHub o desfase de fuentes:
