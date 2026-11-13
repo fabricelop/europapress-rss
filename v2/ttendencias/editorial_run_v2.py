@@ -90,13 +90,35 @@ def profile_pids():
     return set(map(int, value if isinstance(value, list) else [value]))
 
 def prompt_for(item):
+    # Alineado con la investigación prudente de V1, pero sin reutilizar su
+    # navegador, caché, sesión, tokens ni colas de producción.
     return (
         "TTActualidad V2. ELABORACIÓN EDITORIAL DE UNA SOLA TENDENCIA. "
-        "NO PUBLICAR NI MODIFICAR GITHUB. Investiga por qué es tendencia hoy en España "
-        + item["name"] + ". Comprueba el motivo con fuentes actuales fiables; "
-        "si no puedes verificarlo, indícalo y no inventes hechos. "
-        "Responde con una explicación periodística breve, hashtags relevantes, "
-        "un solo remate suave cuando proceda y enlaces HTTPS completos de fuentes. "
+        "NO PUBLICAR NI MODIFICAR GITHUB. Investiga por qué aparece entre las "
+        "tendencias de España: " + item["name"] + ". "
+        "Contrasta primero prensa, fuentes primarias y fechas de los hechos. "
+        "SI NO ENCUENTRAS UN MOTIVO PREDOMINANTE RAZONABLEMENTE ACREDITADO, "
+        "busca TAMBIÉN en X (x.com), revisando conversaciones recientes sobre "
+        "el término literal y variantes relevantes. Indica enlaces canónicos "
+        "https://x.com/usuario/status/ID y fechas de posts cuando los hayas "
+        "podido consultar. Una conversación en X puede explicar de qué se "
+        "habla, pero no demuestra por sí sola acusaciones ni causalidad; "
+        "contrasta hechos con fuentes independientes. "
+        "Si X es inaccesible, dilo claramente y NO finjas haber consultado "
+        "publicaciones. NO reutilices explicaciones anteriores sin contrastar. "
+        "Si después de buscar SIGUE SIN CONFIRMARSE el motivo, redacta de todos "
+        "modos una ficha útil y prudente para LISTAS, explicando qué se sabe "
+        "y qué no, sin adjudicar causas, personas o delitos sin pruebas. "
+        "No bloquees la ficha solo por duda causal. Si ni siquiera es fiable "
+        "la presencia de la tendencia, reconoce también ese límite. "
+        "Da explicación periodística breve, hashtags pertinentes, un solo "
+        "remate suave si procede y URLs HTTPS completas de fuentes reales. "
+        "Incluye exactamente las líneas "
+        "'ESTADO_CAUSA: CONFIRMADA' o 'ESTADO_CAUSA: NO_CONFIRMADA', "
+        "y 'ESTADO_X: CONSULTADO' o 'ESTADO_X: INACCESIBLE' o "
+        "'ESTADO_X: NO_NECESARIO'. En CONSULTADO, aporta las URL de posts "
+        "realmente revisados; NO marques CONSULTADO por abrir un buscador "
+        "sin poder leer posts. La ficha no autoriza publicación automática. "
         "Identificador: " + item["trend_id"] + ". Revisión: " + str(item["revision"]) + "."
     )
 
