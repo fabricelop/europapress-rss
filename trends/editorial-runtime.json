@@ -7,18 +7,18 @@
   "previous_run_id": "tr-20261113T182500-chat-direct",
   "command_id": "tr-20261113T185500-chat-direct",
   "source": "chat_direct",
-  "status": "success",
-  "phase": "investigating",
+  "status": "DONE_WITH_INCIDENTS",
+  "phase": "closing",
   "started_at": "2026-11-13T18:55:00+01:00",
-  "updated_at": "2026-11-13T18:58:52+01:00",
-  "current": 0,
+  "updated_at": "2026-11-13T18:59:40+01:00",
+  "current": 2,
   "total": 2,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
   "processed_ids": [
-    "1d5814995248",
-    "manual-c550af7b734565e1d4042fae0ba8d74f"
+    "manual-c550af7b734565e1d4042fae0ba8d74f",
+    "1d5814995248"
   ],
   "converged_ids": [],
   "remaining_ids": [
@@ -31,11 +31,11 @@
     "1d5814995248"
   ],
   "summary": {
-    "attempted": 0,
+    "attempted": 2,
     "observed": 2,
     "closed": 0,
     "explained": 0,
-    "problematic": 0,
+    "problematic": 2,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
     "maintenance_reviews": 0,
@@ -52,12 +52,44 @@
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 0,
+    "incidents": 2,
     "concurrent_convergence": 0
   },
-  "outcomes": [],
-  "incident_count": 0,
-  "incidents": [],
+  "outcomes": [
+    {
+      "id": "manual-c550af7b734565e1d4042fae0ba8d74f",
+      "revision": 0,
+      "name": "Miente",
+      "outcome": "problematic",
+      "applied": true,
+      "reason": "Sin detonante predominante verificable tras reintento con búsqueda web actual y muestra de X no concluyente."
+    },
+    {
+      "id": "1d5814995248",
+      "revision": 0,
+      "name": "Isaac",
+      "outcome": "problematic",
+      "applied": true,
+      "reason": "Identidad/detonante actual no verificables; la actualidad de Isaac Romero no basta para atribuir la tendencia."
+    }
+  ],
+  "incident_count": 2,
+  "incidents": [
+    {
+      "id": "manual-c550af7b734565e1d4042fae0ba8d74f",
+      "revision": 0,
+      "name": "Miente",
+      "status": "problematic",
+      "reason": "La evidencia reciente no permite identificar una causa predominante verificable."
+    },
+    {
+      "id": "1d5814995248",
+      "revision": 0,
+      "name": "Isaac",
+      "status": "problematic",
+      "reason": "No se puede acreditar con fiabilidad qué Isaac o qué hecho concreto impulsa el término."
+    }
+  ],
   "error": null,
   "activity": [
     {
@@ -680,28 +712,33 @@
       "status": "RUNNING",
       "phase": "investigating",
       "message": "Pasada TTendencias iniciada desde ChatGPT. Cola autoritativa observada=2, ambos problematic; reintento JIT con fuentes actuales y X cuando la muestra es vigente. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-13T18:59:40+01:00",
+      "run_id": "tr-20261113T185500-chat-direct",
+      "status": "DONE_WITH_INCIDENTS",
+      "phase": "closing",
+      "message": "Pasada TTendencias cerrada 2/2 reintentos: Miente e Isaac siguen problematic por falta de detonante verificable. Aplicador oficial GitHub Actions 43477991983 success. Sin ImageGen ni publicación."
     }
   ],
   "last_started_at": "2026-11-13T18:58:52+01:00",
-  "last_completed_at": "2026-11-13T18:58:52+01:00",
+  "last_completed_at": "2026-11-13T18:59:40+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261113T171000-chat-direct",
+    "run_id": "tr-20261113T185500-chat-direct",
     "status": "DONE_WITH_INCIDENTS",
-    "started_at": "2026-11-13T17:10:00+01:00",
-    "finished_at": "2026-11-13T17:22:12+01:00",
-    "at": "2026-11-13T17:22:12+01:00",
-    "phase": "closing",
+    "started_at": "2026-11-13T18:55:00+01:00",
+    "finished_at": "2026-11-13T18:59:40+01:00",
     "summary": {
-      "attempted": 9,
-      "observed": 9,
-      "closed": 9,
-      "explained": 6,
+      "attempted": 2,
+      "observed": 2,
+      "closed": 0,
+      "explained": 0,
       "problematic": 2,
       "updates": 0,
       "review_completed_no_distinct_event": 0,
-      "maintenance_reviews": 1,
-      "unchanged_reviews": 1,
+      "maintenance_reviews": 0,
+      "unchanged_reviews": 0,
       "continuity_updates": 0,
       "distinct_updates": 0,
       "stale_reviews": 0,
@@ -709,94 +746,34 @@
       "anticipation_reviews": 0,
       "anticipation_prepared": 0,
       "anticipation_unverified": 0,
-      "queue_remaining": 1,
+      "queue_remaining": 2,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
       "image_outbox_created": 0,
       "publications": 0,
       "incidents": 2,
-      "concurrent_convergence": 1
+      "concurrent_convergence": 0
     },
     "processed_ids": [
-      "8d5fe835b7e5",
-      "1756300f75e8",
-      "6c05ca8b8512",
-      "de47f623a966",
-      "3444832e9337",
-      "manual-a5260954d0bdd646fad174dcdb3b892b",
       "manual-c550af7b734565e1d4042fae0ba8d74f",
-      "1ea1a6c850b1",
-      "red-review-354123a1ee6757528f57"
+      "1d5814995248"
     ],
-    "converged_ids": [],
     "outcomes": [
-      {
-        "id": "8d5fe835b7e5",
-        "revision": 0,
-        "name": "Isabel Peralta",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "1756300f75e8",
-        "revision": 0,
-        "name": "Goebbels",
-        "outcome": "explained",
-        "applied": true,
-        "note": "causa exacta prudente/no atribuida a un único detonante"
-      },
-      {
-        "id": "6c05ca8b8512",
-        "revision": 0,
-        "name": "El Tribunal de Cuentas",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "de47f623a966",
-        "revision": 0,
-        "name": "#VotaVOX",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "3444832e9337",
-        "revision": 0,
-        "name": "Colau",
-        "outcome": "explained",
-        "applied": true
-      },
-      {
-        "id": "manual-a5260954d0bdd646fad174dcdb3b892b",
-        "revision": 0,
-        "name": "Narco",
-        "outcome": "explained",
-        "applied": true
-      },
       {
         "id": "manual-c550af7b734565e1d4042fae0ba8d74f",
         "revision": 0,
         "name": "Miente",
         "outcome": "problematic",
         "applied": true,
-        "retried": true,
-        "reason": "La muestra vigente de X es dispersa y no permite atribuir un detonante predominante verificable para España."
+        "reason": "Sin detonante predominante verificable tras reintento con búsqueda web actual y muestra de X no concluyente."
       },
       {
-        "id": "1ea1a6c850b1",
-        "revision": 3,
-        "name": "españas",
+        "id": "1d5814995248",
+        "revision": 0,
+        "name": "Isaac",
         "outcome": "problematic",
         "applied": true,
-        "reason": "La evidencia disponible no acredita un detonante actual concreto para la revisión 3; no permanece en cola al no seguir en Top30."
-      },
-      {
-        "id": "red-review-354123a1ee6757528f57",
-        "revision": 0,
-        "name": "Revisar novedades: #PSOEyFrenteAmplioVetan",
-        "outcome": "unchanged",
-        "applied": true,
-        "source_id": "b8593c0a3afe"
+        "reason": "Identidad/detonante actual no verificables; la actualidad de Isaac Romero no basta para atribuir la tendencia."
       }
     ],
     "incident_count": 2,
@@ -806,19 +783,19 @@
         "revision": 0,
         "name": "Miente",
         "status": "problematic",
-        "reason": "Sin detonante predominante verificable tras reintento con muestra vigente de X; se mantiene problemático en Top30."
+        "reason": "La evidencia reciente no permite identificar una causa predominante verificable."
       },
       {
-        "id": "1ea1a6c850b1",
-        "revision": 3,
-        "name": "españas",
+        "id": "1d5814995248",
+        "revision": 0,
+        "name": "Isaac",
         "status": "problematic",
-        "reason": "Sin detonante actual verificable para la revisión 3; el trabajo se aplicó como problemático y dejó de estar activo al salir del Top30."
+        "reason": "No se puede acreditar con fiabilidad qué Isaac o qué hecho concreto impulsa el término."
       }
     ],
-    "message": "Pasada TTendencias completada 9/9: 6 explicaciones aplicadas, 2 investigaciones sin detonante verificable (Miente sigue problemático por permanecer en Top30; españas r3 quedó problemático y ya no está activo al salir del Top30) y 1 revisión roja cerrada unchanged (#PSOEyFrenteAmplioVetan). Barrera final: 0 trabajos activos y 1 problemático visible. ImageGen=0; publicaciones=0."
+    "message": "Pasada TTendencias cerrada 2/2 reintentos: Miente e Isaac siguen problematic por falta de detonante verificable. Aplicador oficial GitHub Actions 43477991983 success. Sin ImageGen ni publicación."
   },
-  "message": "Reintento JIT de Miente e Isaac: investigación actual contrastada; sin ImageGen ni publicación.",
+  "message": "Pasada TTendencias cerrada 2/2 reintentos: Miente e Isaac siguen problematic por falta de detonante verificable. Aplicador oficial GitHub Actions 43477991983 success. Sin ImageGen ni publicación.",
   "history": [
     {
       "run_id": "tr-1794361941170-manual",
@@ -5230,11 +5207,85 @@
         }
       ],
       "message": "Pasada TTendencias completada 9/9: 6 explicaciones aplicadas, 2 investigaciones sin detonante verificable (Miente sigue problemático por permanecer en Top30; españas r3 quedó problemático y ya no está activo al salir del Top30) y 1 revisión roja cerrada unchanged (#PSOEyFrenteAmplioVetan). Barrera final: 0 trabajos activos y 1 problemático visible. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-20261113T185500-chat-direct",
+      "status": "DONE_WITH_INCIDENTS",
+      "started_at": "2026-11-13T18:55:00+01:00",
+      "finished_at": "2026-11-13T18:59:40+01:00",
+      "at": "2026-11-13T18:59:40+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 2,
+        "observed": 2,
+        "closed": 0,
+        "explained": 0,
+        "problematic": 2,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 0,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 2,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 2,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [
+        "manual-c550af7b734565e1d4042fae0ba8d74f",
+        "1d5814995248"
+      ],
+      "converged_ids": [],
+      "outcomes": [
+        {
+          "id": "manual-c550af7b734565e1d4042fae0ba8d74f",
+          "revision": 0,
+          "name": "Miente",
+          "outcome": "problematic",
+          "applied": true,
+          "reason": "Sin detonante predominante verificable tras reintento con búsqueda web actual y muestra de X no concluyente."
+        },
+        {
+          "id": "1d5814995248",
+          "revision": 0,
+          "name": "Isaac",
+          "outcome": "problematic",
+          "applied": true,
+          "reason": "Identidad/detonante actual no verificables; la actualidad de Isaac Romero no basta para atribuir la tendencia."
+        }
+      ],
+      "incident_count": 2,
+      "incidents": [
+        {
+          "id": "manual-c550af7b734565e1d4042fae0ba8d74f",
+          "revision": 0,
+          "name": "Miente",
+          "status": "problematic",
+          "reason": "La evidencia reciente no permite identificar una causa predominante verificable."
+        },
+        {
+          "id": "1d5814995248",
+          "revision": 0,
+          "name": "Isaac",
+          "status": "problematic",
+          "reason": "No se puede acreditar con fiabilidad qué Isaac o qué hecho concreto impulsa el término."
+        }
+      ],
+      "message": "Pasada TTendencias cerrada 2/2 reintentos: Miente e Isaac siguen problematic por falta de detonante verificable. Aplicador oficial GitHub Actions 43477991983 success. Sin ImageGen ni publicación."
     }
   ],
   "current_item": null,
   "withdrawn_ids": [],
-  "last_finished_at": "2026-11-13T17:22:12+01:00",
+  "last_finished_at": "2026-11-13T18:59:40+01:00",
   "last_revalidated_at": "2026-11-13T17:22:12+01:00",
   "last_revalidation": {
     "at": "2026-11-13T16:16:30+01:00",
@@ -5249,7 +5300,7 @@
     "finished_at": "2026-11-11T08:31:36+01:00",
     "updated_at": "2026-11-11T08:31:36+01:00"
   },
-  "apply_workflow_run_id": 43461904641,
+  "apply_workflow_run_id": 43477991983,
   "apply_commit": "6e82d472feca711a890d2607a1285574e12e8c33",
   "maintenance_workflow_run_id": 43461771128,
   "maintenance_job_id": "red-review-61d494cc18e2321aaa5b",
@@ -8254,6 +8305,80 @@
         }
       ],
       "message": "Pasada TTendencias completada 9/9: 6 explicaciones aplicadas, 2 investigaciones sin detonante verificable (Miente sigue problemático por permanecer en Top30; españas r3 quedó problemático y ya no está activo al salir del Top30) y 1 revisión roja cerrada unchanged (#PSOEyFrenteAmplioVetan). Barrera final: 0 trabajos activos y 1 problemático visible. ImageGen=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-20261113T185500-chat-direct",
+      "status": "DONE_WITH_INCIDENTS",
+      "started_at": "2026-11-13T18:55:00+01:00",
+      "finished_at": "2026-11-13T18:59:40+01:00",
+      "at": "2026-11-13T18:59:40+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 2,
+        "observed": 2,
+        "closed": 0,
+        "explained": 0,
+        "problematic": 2,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 0,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 2,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 2,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [
+        "manual-c550af7b734565e1d4042fae0ba8d74f",
+        "1d5814995248"
+      ],
+      "converged_ids": [],
+      "outcomes": [
+        {
+          "id": "manual-c550af7b734565e1d4042fae0ba8d74f",
+          "revision": 0,
+          "name": "Miente",
+          "outcome": "problematic",
+          "applied": true,
+          "reason": "Sin detonante predominante verificable tras reintento con búsqueda web actual y muestra de X no concluyente."
+        },
+        {
+          "id": "1d5814995248",
+          "revision": 0,
+          "name": "Isaac",
+          "outcome": "problematic",
+          "applied": true,
+          "reason": "Identidad/detonante actual no verificables; la actualidad de Isaac Romero no basta para atribuir la tendencia."
+        }
+      ],
+      "incident_count": 2,
+      "incidents": [
+        {
+          "id": "manual-c550af7b734565e1d4042fae0ba8d74f",
+          "revision": 0,
+          "name": "Miente",
+          "status": "problematic",
+          "reason": "La evidencia reciente no permite identificar una causa predominante verificable."
+        },
+        {
+          "id": "1d5814995248",
+          "revision": 0,
+          "name": "Isaac",
+          "status": "problematic",
+          "reason": "No se puede acreditar con fiabilidad qué Isaac o qué hecho concreto impulsa el término."
+        }
+      ],
+      "message": "Pasada TTendencias cerrada 2/2 reintentos: Miente e Isaac siguen problematic por falta de detonante verificable. Aplicador oficial GitHub Actions 43477991983 success. Sin ImageGen ni publicación."
     }
   ],
   "outbox_comment_id": 6849930890,
@@ -8675,11 +8800,16 @@
       "at": "2026-11-13T18:55:00+01:00",
       "phase": "investigating",
       "message": "Reintentando Miente e Isaac tras revalidación de ID/revisión en main."
+    },
+    {
+      "at": "2026-11-13T18:59:40+01:00",
+      "phase": "closing",
+      "message": "Pasada TTendencias cerrada 2/2 reintentos: Miente e Isaac siguen problematic por falta de detonante verificable. Aplicador oficial GitHub Actions 43477991983 success. Sin ImageGen ni publicación."
     }
   ],
   "processed": [],
   "maintenance_outbox_commit": "c764cbdfc37ba7b67fedd38a16837ee068ae9467",
-  "editorial_apply_run_id": 43461904641,
-  "finished_at": null,
-  "completed_at": null
+  "editorial_apply_run_id": 43477991983,
+  "finished_at": "2026-11-13T18:59:40+01:00",
+  "completed_at": "2026-11-13T18:59:40+01:00"
 }
