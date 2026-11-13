@@ -194,6 +194,19 @@ def run_one(api, state, transcript, auth, item):
             record["message_sent"] = True
             record["status"] = "sent_waiting_for_reply"
             store(journal, record)
+            # Capturar la URL tan pronto aparezca, INDEPENDIENTE de la respuesta.
+            # La navegación SPA puede tardar; mantener diario incluso si falla
+            # la posterior recuperación del texto.
+            url_deadline = time.monotonic() + 45
+            while time.monotonic() < url_deadline:
+                if page.url.startswith("https://chatgpt.com/c/"):
+                    record["chat_url"] = page.url.split("?", 1)[0]
+                    store(journal, record)
+                    print("TT_V2_CHAT_URL_RECORDED=YES", flush=True)
+                    break
+                time.sleep(0.5)
+            if not record.get("chat_url"):
+                print("TT_V2_CHAT_URL_RECORDED=NO", flush=True)
             print("TT_V2_MESSAGE_SENT_ONCE=YES", flush=True)
             last = ""
             stable = 0
@@ -203,6 +216,11 @@ def run_one(api, state, transcript, auth, item):
                     time.sleep(2)
                     continue
                 raw = page.locator("body").inner_text(timeout=7000)
+                if "Could not load this ChatGPT conversation" in raw:
+                    record["status"] = "conversation_load_failed"
+                    store(journal, record)
+                    print("TT_V2_CONVERSATION_LOAD_FAILED=YES", flush=True)
+                    break
                 answer, reason = transcript.extract_reply(raw, trend_id=trend_id, revision=revision)
                 stop = page.locator(STOP).count() > 0
                 if answer and answer == last:
@@ -218,7 +236,8 @@ def run_one(api, state, transcript, auth, item):
                     break
                 time.sleep(2)
             if not record["reply_captured"]:
-                record["chat_url"] = page.url
+                if page.url.startswith("https://chatgpt.com/c/"):
+                    record["chat_url"] = page.url.split("?", 1)[0]
                 record["status"] = "capture_recovery_required"
                 store(journal, record)
                 print("TT_V2_REPLY_CAPTURED=NO", flush=True)
