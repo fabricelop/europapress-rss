@@ -17,20 +17,10 @@ import importlib.util
 import editorial_run_v2 as core
 from batch_contract_v2 import verify_persisted, validate_frozen_job
 from select_current_top30_v2 import read_history, select_current_top30
+from process_lock_v2 import exclusive_v2_lock
 
 LOCK = core.ROOT / "editorial_batch_v2.lock"
 
-
-def take_lock():
-    LOCK.parent.mkdir(parents=True, exist_ok=True)
-    try:
-        fd = os.open(str(LOCK), os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
-    except FileExistsError:
-        raise RuntimeError("Ya existe lock de consumidor V2; no abrir Chrome ni ignorarlo")
-    try:
-        os.write(fd, json.dumps({"pid": os.getpid(), "purpose": "ttactualidad-v2-batch"}).encode("utf-8"))
-    finally:
-        os.close(fd)
 
 
 def read_journal(trend_id, revision):
@@ -104,12 +94,8 @@ def main():
     if not args.run:
         run_batch(args.max_jobs, False)
         return
-    take_lock()
-    try:
+    with exclusive_v2_lock(LOCK):
         run_batch(args.max_jobs, True)
-    finally:
-        # Liberar únicamente nuestro propio lock.
-        LOCK.unlink(missing_ok=True)
 
 if __name__ == "__main__":
     try:
