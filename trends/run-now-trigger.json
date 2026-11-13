@@ -1,11 +1,21 @@
 {
   "version": 2,
-  "command_id": "tr-1794543269731-manual",
-  "requested_at": "2026-11-13T04:14:29.731Z",
+  "command_id": "tr-autoguard-1794544266",
+  "requested_at": "2026-11-13T04:31:06.528549Z",
   "mode": "manual_pc_chat",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
   "launcher_arg": "tendencias",
   "task": "editorial",
-  "auto_image_followup": false
+  "auto_image_followup": false,
+  "source": "tt_autoheal_editorial_watchdog",
+  "reason": "editorial_not_started_in_time",
+  "pending_ids": [
+    "red-review-a03ba46583f2a3fee89b",
+    "red-review-cad2a320b2c272d2a551"
+  ],
+  "target_id": "red-review-a03ba46583f2a3fee89b",
+  "target_revision": 0,
+  "target_name": "Revisar novedades: Broncano",
+  "scope": "single_item"
 }
