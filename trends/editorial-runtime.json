@@ -3,36 +3,35 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261113T120600-chat-direct",
-  "previous_run_id": "tr-20261113T112500-chat-direct",
-  "command_id": "tr-20261113T120600-chat-direct",
+  "run_id": "tr-20261113T125500-chat-direct",
+  "previous_run_id": "tr-20261113T120600-chat-direct",
+  "command_id": "tr-20261113T125500-chat-direct",
   "source": "chat_direct",
-  "status": "DONE_WITH_INCIDENTS",
-  "phase": "closing",
-  "started_at": "2026-11-13T12:06:00+01:00",
-  "updated_at": "2026-11-13T12:15:00+01:00",
-  "current": 6,
-  "total": 6,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-13T12:55:00+01:00",
+  "updated_at": "2026-11-13T12:55:00+01:00",
+  "current": 0,
+  "total": 2,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "289b3a5cdae3",
-    "25a914e9d748",
-    "ebd8d155e6d3",
-    "9f0be89bedc9",
-    "35deccb4ce35",
-    "0615570f9ea1"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-0bf1509ba72c1c1f47a9",
+    "red-review-c349c92e073d9dd9fa77"
+  ],
+  "remaining_active_ids": [
+    "red-review-0bf1509ba72c1c1f47a9",
+    "red-review-c349c92e073d9dd9fa77"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 6,
-    "observed": 6,
-    "closed": 6,
-    "explained": 6,
+    "attempted": 0,
+    "observed": 2,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
@@ -45,75 +44,18 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 1,
+    "incidents": 0,
     "concurrent_convergence": 0,
     "cause_unconfirmed": 0
   },
-  "outcomes": [
-    {
-      "id": "289b3a5cdae3",
-      "revision": 0,
-      "name": "Begoña",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "4c0f6a601f27728a93b49b668ed5f5581138ea75"
-    },
-    {
-      "id": "25a914e9d748",
-      "revision": 0,
-      "name": "El CIS",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "4c0f6a601f27728a93b49b668ed5f5581138ea75"
-    },
-    {
-      "id": "ebd8d155e6d3",
-      "revision": 0,
-      "name": "Alfon",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "4c0f6a601f27728a93b49b668ed5f5581138ea75"
-    },
-    {
-      "id": "9f0be89bedc9",
-      "revision": 0,
-      "name": "La Revuelta",
-      "outcome": "explained_after_validation_fix",
-      "applied": true,
-      "apply_commit": "5faea7bb755091974ef78f808989b697dbde50cf"
-    },
-    {
-      "id": "35deccb4ce35",
-      "revision": 0,
-      "name": "#EncuestasManipuladas",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "34ddbf5f913f43fb5bfe4c20eb212901a712bc1f"
-    },
-    {
-      "id": "0615570f9ea1",
-      "revision": 0,
-      "name": "Claude",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "34ddbf5f913f43fb5bfe4c20eb212901a712bc1f"
-    }
-  ],
-  "incident_count": 1,
-  "incidents": [
-    {
-      "id": "9f0be89bedc9",
-      "revision": 0,
-      "name": "La Revuelta",
-      "issue": "La primera redacción superaba el límite de 279 caracteres y el aplicador la rechazó como explicación directa inválida.",
-      "resolution": "Se acortó manteniendo el hecho y el remate; la revisión corregida quedó aplicada en requests.json y telegram-manual-explained.json."
-    }
-  ],
+  "outcomes": [],
+  "incident_count": 0,
+  "incidents": [],
   "error": null,
   "activity": [
     {
@@ -600,6 +542,13 @@
       "current": 6,
       "total": 6,
       "message": "Pasada TTendencias completada 6/6. Begoña, El CIS, Alfon, La Revuelta, #EncuestasManipuladas y Claude quedaron explicadas y verificadas en ambos registros. La primera versión de La Revuelta excedía el límite de caracteres; se corrigió y aplicó en la misma pasada. Cola final 0. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-13T12:55:00+01:00",
+      "run_id": "tr-20261113T125500-chat-direct",
+      "status": "RUNNING",
+      "phase": "preparing",
+      "message": "Ejecución manual iniciada desde ChatGPT; cola autoritativa inicial=2 revisiones rojas: Marlaska y Anotop At. Revalidación JIT; sin ImageGen ni publicación."
     }
   ],
   "last_started_at": "2026-11-13T12:14:27+01:00",
