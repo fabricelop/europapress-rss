@@ -3,82 +3,78 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261113T104000-chat-direct",
-  "previous_run_id": "tr-20261113T102500-chat-direct",
-  "command_id": "tr-20261113T104000-chat-direct",
+  "run_id": "tr-20261113T1055-chat-direct",
+  "previous_run_id": "tr-20261113T104000-chat-direct",
+  "command_id": "Ejecuta TTendencias",
   "source": "chat_direct",
-  "status": "success",
+  "status": "DONE",
   "phase": "closing",
-  "started_at": "2026-11-13T10:40:00+01:00",
-  "updated_at": "2026-11-13T11:10:02+01:00",
-  "current": 4,
-  "total": 4,
+  "started_at": "2026-11-13T10:55:00+01:00",
+  "updated_at": "2026-11-13T11:10:00+01:00",
+  "current": 3,
+  "total": 3,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
   "queue_complete": true,
-  "processed_ids": [],
-  "converged_ids": [],
+  "processed_ids": [
+    "2b0dcb3597e4",
+    "4d4b553426b2"
+  ],
+  "converged_ids": [
+    "502ad110fc35"
+  ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 4,
-    "observed": 4,
-    "closed": 4,
+    "attempted": 2,
+    "observed": 3,
+    "closed": 3,
     "explained": 0,
     "problematic": 0,
-    "updates": 2,
-    "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 2,
+    "updates": 0,
+    "review_completed_no_distinct_event": 2,
+    "maintenance_reviews": 0,
     "unchanged_reviews": 0,
-    "continuity_updates": 2,
+    "continuity_updates": 0,
     "distinct_updates": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
-    "anticipation_reviews": 2,
+    "anticipation_reviews": 0,
     "anticipation_prepared": 0,
-    "anticipation_unverified": 2,
+    "anticipation_unverified": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0,
+    "concurrent_convergence": 1,
     "cause_unconfirmed": 0
   },
   "outcomes": [
     {
-      "id": "radar-prepare-b6c8e95af01a25e37a90",
+      "id": "502ad110fc35",
       "revision": 0,
-      "name": "Radar · Gmail",
-      "outcome": "anticipation_unverified",
-      "applied": true,
-      "apply_commit": "e0b58b9863ac15e4b050f7e300a60a9a52023d65"
+      "name": "Alfon",
+      "outcome": "concurrent_convergence",
+      "applied": true
     },
     {
-      "id": "radar-prepare-dcbad6134e8c1af628ba",
+      "id": "2b0dcb3597e4",
       "revision": 0,
-      "name": "Radar · Pipi",
-      "outcome": "anticipation_unverified",
+      "name": "La Revuelta",
+      "outcome": "review_completed_no_distinct_event",
       "applied": true,
-      "apply_commit": "e0b58b9863ac15e4b050f7e300a60a9a52023d65"
+      "apply_commit": "9d13ab7bd3931e9c62e146ad4abfebca29e0956f"
     },
     {
-      "id": "red-review-7c1b8724ce143aa6f635",
+      "id": "4d4b553426b2",
       "revision": 0,
-      "name": "Revisar novedades: Broncano",
-      "outcome": "continuity",
+      "name": "alvise",
+      "outcome": "review_completed_no_distinct_event",
       "applied": true,
-      "apply_commit": "010b0319f13579d58cd0b1d1a5a2111d8c9ec8ef"
-    },
-    {
-      "id": "red-review-59d7da93507e2d8ab8ab",
-      "revision": 0,
-      "name": "Revisar novedades: NVIDIA",
-      "outcome": "continuity",
-      "applied": true,
-      "apply_commit": "92f8142cf791b506dc3d590301a97bc785723eae"
+      "apply_commit": "9d13ab7bd3931e9c62e146ad4abfebca29e0956f"
     }
   ],
   "incident_count": 0,
@@ -485,6 +481,34 @@
       "status": "DONE",
       "phase": "closing",
       "message": "Pasada TTendencias completada 4/4. Radar Gmail y Pipi cerrados como anticipation_unverified por falta de causalidad suficientemente acreditada; Broncano y NVIDIA actualizados como continuidad del mismo episodio. NVIDIA requirió corregir la fórmula de continuidad exigida por el validador y quedó aplicada. Barrera final tras refresco Top 30: editorial-queue=0. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-13T11:02:35+01:00",
+      "run_id": "tr-20261113T1055-chat-direct",
+      "status": "RUNNING",
+      "phase": "preparing",
+      "message": "Refresco Top 30 abrió 3 trabajos: Alfon, La Revuelta y alvise. Revalidación JIT; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-13T11:07:12+01:00",
+      "run_id": "tr-20261113T1055-chat-direct",
+      "status": "RUNNING",
+      "phase": "verifying",
+      "message": "Barrera JIT: Alfon ya había convergido en otra ejecución; quedan La Revuelta y alvise r0 para revisión de reentrada."
+    },
+    {
+      "at": "2026-11-13T11:08:31+01:00",
+      "run_id": "tr-20261113T1055-chat-direct",
+      "status": "RUNNING",
+      "phase": "persisting",
+      "message": "La Revuelta y alvise cerrados como review_completed/no_distinct_event; aplicador persistió requests y retiró ambas revisiones de la cola."
+    },
+    {
+      "at": "2026-11-13T11:10:00+01:00",
+      "run_id": "tr-20261113T1055-chat-direct",
+      "status": "DONE",
+      "phase": "closing",
+      "message": "Pasada TTendencias completada: 3 observados, 2 revisiones cerradas y 1 convergencia JIT. editorial-queue=0; ImageGen=0; publicaciones=0; incidentes=0."
     }
   ],
   "last_started_at": "2026-11-13T11:10:01+01:00",
@@ -7447,8 +7471,8 @@
       "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 2026-11-13T08:51:07+01:00), mobile-decisions y requests sin estados editoriales activos. Top 30 vigente capturado a las 08:51:01. Sin ImageGen ni publicaciones; incidentes=0."
     }
   ],
-  "outbox_comment_id": 6837437988,
-  "editorial_apply_commit": "30ec69bd4063c9ff2b220bf6943cb37b1f142419",
+  "outbox_comment_id": 6849930890,
+  "editorial_apply_commit": "9d13ab7bd3931e9c62e146ad4abfebca29e0956f",
   "refresh_workflow_run_id": 43346742476,
   "refresh_conclusion": "in_progress_checkout",
   "maintenance_apply_commits": [
@@ -7776,5 +7800,5 @@
   "processed": [],
   "maintenance_outbox_commit": "970b545c88b09429a23d15ec893b9d66fb611297",
   "editorial_apply_run_id": 43378988402,
-  "finished_at": "2026-11-13T10:51:20+01:00"
+  "finished_at": "2026-11-13T11:10:00+01:00"
 }
