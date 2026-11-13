@@ -3,19 +3,19 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261113T154000-chat-direct",
-  "previous_run_id": "tr-20261113T152500-chat-direct",
-  "command_id": "tr-20261113T154000-chat-direct",
+  "run_id": "tr-20261113T155500-chat-direct",
+  "previous_run_id": "tr-20261113T154000-chat-direct",
+  "command_id": "tr-20261113T155500-chat-direct",
   "source": "chat_direct",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-13T15:40:00+01:00",
-  "updated_at": "2026-11-13T15:43:00+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-13T15:55:00+01:00",
+  "updated_at": "2026-11-13T15:55:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -622,9 +622,16 @@
       "status": "DONE",
       "phase": "closing",
       "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 15:41:19), mobile-decisions sin estados editoriales activos y Top 30 capturado a las 15:41:14. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-13T15:55:00+01:00",
+      "run_id": "tr-20261113T155500-chat-direct",
+      "status": "RUNNING",
+      "phase": "preparing",
+      "message": "Pasada manual iniciada desde ChatGPT; cola autoritativa=0 con Top 30 actualizado a las 15:51. Revalidando barrera final en main; sin ImageGen ni publicación."
     }
   ],
-  "last_started_at": "2026-11-13T15:29:15+01:00",
+  "last_started_at": "2026-11-13T15:55:00+01:00",
   "last_completed_at": "2026-11-13T15:29:16+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -837,7 +844,7 @@
     ],
     "message": "TTendencias V1 cerrada 23/23 (18 explicaciones verificadas en ambos registros, 2 reentradas sin episodio independiente, 2 mantenimientos sin novedades y españas r2 problematic sin causa corroborada). Cola final main=0; mobile-decisions sin estado editorial activo. ImageGen=0; image-outbox editorial=0; publicaciones=0."
   },
-  "message": "TTendencias V1 cerrada 23/23 (18 explicaciones verificadas en ambos registros, 2 reentradas sin episodio independiente, 2 mantenimientos sin novedades y españas r2 problematic sin causa corroborada). Cola final main=0; mobile-decisions sin estado editorial activo. ImageGen=0; image-outbox editorial=0; publicaciones=0.",
+  "message": "Pasada manual iniciada desde ChatGPT; cola autoritativa=0 con Top 30 actualizado a las 15:51. Revalidando barrera final en main; sin ImageGen ni publicación.",
   "history": [
     {
       "run_id": "tr-1794361941170-manual",
@@ -8250,11 +8257,14 @@
       "at": "2026-11-13T04:42:30+01:00",
       "phase": "closing",
       "message": "Pasada TTendencias completada 0/0. Top 30 refrescado a las 04:40:59; editorial-queue=0 y mobile-decisions sin estados editoriales activos en la barrera JIT final. No había investigaciones, anticipaciones ni revisiones rojas pendientes. ImageGen=0; publicaciones=0; incidentes=0."
+    },
+    {
+      "at": "2026-11-13T15:55:00+01:00",
+      "phase": "preparing",
+      "message": "Cola inicial 0 con Top 30 de 15:51; verificando barrera editorial JIT contra main."
     }
   ],
   "processed": [],
   "maintenance_outbox_commit": "970b545c88b09429a23d15ec893b9d66fb611297",
-  "editorial_apply_run_id": 43378988402,
-  "finished_at": "2026-11-13T15:43:00+01:00",
-  "completed_at": "2026-11-13T15:43:00+01:00"
+  "editorial_apply_run_id": 43378988402
 }
