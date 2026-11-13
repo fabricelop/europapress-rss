@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "command_id": "tr-img-auto-adc96e398532-r0-a1-1794575252299",
-  "requested_at": "2026-11-13T13:07:32.233073Z",
-  "updated_at": "2026-11-13T13:12:49.283Z",
-  "status": "LAUNCHED",
-  "phase": "pc_launched",
+  "command_id": "tr-img-auto-adc96e398532-r1-a1-1794580413291",
+  "requested_at": "2026-11-13T14:33:33.192355Z",
+  "updated_at": "2026-11-13T14:33:33.192355Z",
+  "status": "REQUESTED",
+  "phase": "queued",
   "mode": "automatic_explained_repair",
   "delivery_mode": "launch_only",
   "editorial_image_mode": "humor",
@@ -15,7 +15,7 @@
   "target_id": "adc96e398532",
   "trend_id": "adc96e398532",
   "target_name": "Opus",
-  "revision": 0,
+  "revision": 1,
   "attempt": 1,
   "auto_repair": true,
   "auto_repair_attempt": 1,
@@ -24,20 +24,33 @@
   "instruction_profile": "ttendencias_gag_v5_varied_style_single_gag",
   "context_snapshot": {
     "name": "Opus",
-    "revision": 0,
-    "explanation": "TT#27 Opus figura hoy en el Top 30 español, pero la palabra es ambigua y las búsquedas actuales no permiten confirmar qué asunto concreto la ha impulsado. No hay base suficiente para atribuirla a una noticia determinada.\n#Tendencias",
-    "closer_text": "",
+    "revision": 1,
+    "explanation": "TT#27 Opus es tendencia por la conversación tecnológica sobre Claude Opus 5.5, comparado estos días con los nuevos Fable 5.2 y Gemini 4 Carbon.\n#Claude #IA\n🌶️ En la carrera de modelos, Opus también pasa por el cronómetro.",
+    "closer_text": "🌶️ En la carrera de modelos, Opus también pasa por el cronómetro.",
     "trend_names": [
       "Opus"
     ],
     "group_title": "",
     "rank_at_explanation": 27,
-    "explained_at": "2026-11-13T14:06:48+01:00",
-    "verification_sources": [],
-    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ESTILO ASIGNADO PARA ESTA IMAGEN: Caricatura editorial contemporánea de alta calidad, línea de tinta expresiva y acuarela controlada, gestos muy trabajados y fondo ligero. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "explained_at": "2026-11-13T15:29:15+01:00",
+    "verification_sources": [
+      {
+        "url": "https://x.com/meine___meinung/status/2121237134048719231"
+      },
+      {
+        "url": "https://x.com/0xbawan/status/2121237142848622885"
+      },
+      {
+        "url": "https://www.anthropic.com/claude-fable-and-mythos-5-2"
+      },
+      {
+        "url": "https://venturebeat.com/technology/google-gemini-4-carbon-is-now-publicly-available-and-it-undercuts-claude-fable-5-2-and-opus-5-5-on-api-price"
+      }
+    ],
+    "image_style": "PRINCIPIO FIJO: más gag, menos barroquismo. Una sola idea visual fuerte, lectura inmediata en 1-2 segundos, composición limpia, uno a tres elementos protagonistas y fondo solo si ayuda al chiste. Acabado cuidado y rico en dibujo, pero sin acumulación decorativa. El gag debe nacer del hecho/remate y no limitarse a ilustrar literalmente el titular. Casi sin texto; solo el imprescindible para el gag. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ESTILO ASIGNADO PARA ESTA IMAGEN: Pop art editorial refinado, serigrafía y tramas controladas, energía gráfica sin llenar la escena de elementos. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
     "editorial_image_mode": "humor",
-    "image_style_name": "tinta_acuarela",
-    "image_style_index": 0
+    "image_style_name": "pop_art",
+    "image_style_index": 7
   },
   "instructions": {
     "scope": "Una sola tendencia y una sola imagen.",
@@ -46,16 +59,5 @@
     "prohibitions": "No infografía, interfaz, diagrama, collage ni screenshot. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
     "lifecycle": "Pestaña física fija; conversación nueva; raster limpio >=1024x576; Listas de TTActualidad."
   },
-  "message": "Prompt confirmado en ChatGPT Images; sin recuperación de imagen.",
-  "pc_upload_secret_hash": "668ee06760c6521093e67038f2f9fb58b0cab224ed602d48e9b4b71d0d387f79",
-  "pc_worker_id": "ttendencias-image-bridge-v34-sites-return",
-  "pc_picked_up_at": "2026-11-13T13:12:38.385Z",
-  "pc_launched_at": "2026-11-13T13:12:49.283Z",
-  "finished_at": "2026-11-13T13:12:49.283Z",
-  "web_image": {
-    "version": 2,
-    "stage": "waiting",
-    "reason": "manual_approval_required",
-    "checked_at": "2026-11-13T14:20:11.434Z"
-  }
+  "message": "Reparación automática de imagen IA para tendencia Explicada."
 }
