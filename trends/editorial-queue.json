@@ -1,6 +1,79 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-13T20:08:10+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-13T19:08:38.862496+00:00",
+  "count": 2,
+  "items": [
+    {
+      "id": "red-review-89131aa94658e10a26da",
+      "revision": 0,
+      "name": "Revisar novedades: Jordi Wild",
+      "rank": 1,
+      "status": "preparing",
+      "requested_at": "2026-11-13T19:08:38.862496+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "ac5218c64f99",
+        "revision": 0,
+        "name": "Jordi Wild",
+        "rank": 2,
+        "explanation": "TT#1 Jordi Wild sigue siendo tendencia porque hoy publica en The Wild Project sus entrevistas a Ada Colau, Feijóo y Pedro Sánchez; Abascal canceló la suya tras la polémica de La Revuelta.\n#29N #TheWildProject\n🌶️ La ronda electoral se quedó con tres micros encendidos.",
+        "explanation_sha256": "601c7dd2fab5a4ef2758cf7b77442a1497d2602672bf60ac5c8202c7317cb80f",
+        "explained_at": "2026-11-11T14:03:00+01:00",
+        "verification_sources": [
+          {
+            "title": "Demócrata: cancelada la entrevista de Abascal con Jordi Wild",
+            "url": "https://www.democrata.es/en/exclusive/the-controversy-over-the-40-minutes-removed-from-la-revuelta-causes-the-suspension-of-abascal-s-interview-with-jordi-wild/",
+            "published_at": "2026-11-11"
+          },
+          {
+            "title": "Demócrata: repercusión de la exclusiva",
+            "url": "https://www.democrata.es/en/general-elections-spain/the-media-are-picking-up-democrata-s-exclusive-about-santiago-abascal-jordi-wild-and-the-controversy-with-broncano-in-la-revuelta/",
+            "published_at": "2026-11-11"
+          }
+        ],
+        "fingerprint": "c59e33ddebbf80e398d821ebd05a0349004b3d5ea0834ebf98cc38600104655a"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-3dc63cff180c7119f2f3",
+      "revision": 0,
+      "name": "Revisar novedades: NVIDIA",
+      "rank": 11,
+      "status": "preparing",
+      "requested_at": "2026-11-13T19:08:38.862496+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "cf2df84a5714",
+        "revision": 0,
+        "name": "NVIDIA",
+        "rank": 28,
+        "explanation": "TT#11 NVIDIA sigue siendo tendencia porque, tras la dimisión de Jensen Huang, Trump propuso a Tim Cook como sustituto y Colette Kress continúa como CEO interina.\n#Nvidia #TimCook",
+        "explanation_sha256": "898da4fff066669bdd6a87eceeb5d9de71cb43603bd9534988359085c42c0daf",
+        "explained_at": "2026-11-12T05:31:00+01:00",
+        "verification_sources": [
+          {
+            "url": "https://www.reuters.com/technology/nvidia-is-preparing-oust-ceo-jensen-huang-wsj-reports-2026-11-11/"
+          },
+          {
+            "url": "https://twitter-trends.snaplytics.io/spain/"
+          }
+        ],
+        "fingerprint": "a3aecd3e2a89620d818aa01e6f0434a9a1956bde80799ecf28e34280a52ca83c"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
