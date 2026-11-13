@@ -197,7 +197,7 @@ st.data.deliveries.items.push({event_id:'test-group',revision:0,
     name:'Evento agrupado',status:'sent',final:true,delivered_at:new Date().toISOString()});
 assert.equal(tt.trendRows()[2]._status,'SIN SOLICITUD EDITORIAL','Grouped trend cannot bypass current Listas');
 st.data.mobileDecisions.items.push({id:'test-group',status:'deleted'});
-assert.equal(tt.trendRows()[2]._status,'SIN SOLICITUD EDITORIAL','Old group closure cannot dictate a current trend state');
+assert.equal(tt.trendRows()[2]._status,'CERRADA','An old closed group must remain closed until a distinct, dated return is verified');
 assert.equal(tt.trendRows()[2].explanation,'',
   'Historical grouped copy stays out of the current radar');
 st.tab='explicadas';
