@@ -7,41 +7,41 @@
   "previous_run_id": "tr-20261113T085500-chat-direct",
   "command_id": "tr-20261113T101000-chat-direct",
   "source": "chat_direct",
-  "status": "success",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-13T10:10:00+01:00",
-  "updated_at": "2026-11-13T10:14:59+01:00",
-  "current": 0,
+  "updated_at": "2026-11-13T10:15:30+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "798b421b4c28",
-  "title": "Ada Colau",
+  "trend_id": null,
+  "title": "Pasada editorial TTendencias",
   "queue_complete": true,
   "processed_ids": [
-    "5a9d4f7ddfc2",
-    "798b421b4c28"
+    "798b421b4c28",
+    "5a9d4f7ddfc2"
   ],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 2,
     "observed": 2,
-    "closed": 0,
-    "explained": 0,
+    "closed": 2,
+    "explained": 2,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
     "maintenance_reviews": 0,
     "unchanged_reviews": 0,
     "continuity_updates": 0,
-    "distinct_updates": 0,
+    "distinct_updates": 2,
     "stale_reviews": 0,
     "unverified_reviews": 0,
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -50,7 +50,24 @@
     "concurrent_convergence": 0,
     "cause_unconfirmed": 0
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "798b421b4c28",
+      "revision": 0,
+      "name": "Ada Colau",
+      "outcome": "explained_distinct_episode",
+      "applied": true,
+      "material_event_key": "ada-colau-entrevista-jordi-wild-29n-2026-11-13"
+    },
+    {
+      "id": "5a9d4f7ddfc2",
+      "revision": 0,
+      "name": "Youtuber",
+      "outcome": "explained_distinct_episode",
+      "applied": true,
+      "material_event_key": "jordi-wild-publica-entrevistas-candidatos-29n-2026-11-13"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -396,30 +413,37 @@
       "status": "RUNNING",
       "phase": "investigating",
       "message": "Refresco Top 30 de 10:11 abrió 2 reentradas: Ada Colau y Youtuber. Revalidando si existe acontecimiento material distinto antes de crear cualquier ficha nueva; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-13T10:15:30+01:00",
+      "run_id": "tr-20261113T101000-chat-direct",
+      "status": "DONE",
+      "phase": "closing",
+      "message": "Pasada TTendencias completada 2/2. Ada Colau y Youtuber se cerraron como episodios materiales distintos por la publicación de las entrevistas de Jordi Wild a los candidatos del 29-N. Aplicador verificado: ambas fichas EXPLICADA y editorial-queue=0. Sin ImageGen ni publicaciones."
     }
   ],
   "last_started_at": "2026-11-13T10:14:59+01:00",
-  "last_completed_at": "2026-11-13T10:14:59+01:00",
+  "last_completed_at": "2026-11-13T10:15:30+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261113T085500-chat-direct",
+    "run_id": "tr-20261113T101000-chat-direct",
     "status": "DONE",
-    "started_at": "2026-11-13T08:55:00+01:00",
-    "finished_at": "2026-11-13T08:56:00+01:00",
-    "at": "2026-11-13T08:56:00+01:00",
+    "started_at": "2026-11-13T10:10:00+01:00",
+    "finished_at": "2026-11-13T10:15:30+01:00",
+    "at": "2026-11-13T10:15:30+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 0,
-      "observed": 0,
-      "closed": 0,
-      "explained": 0,
+      "attempted": 2,
+      "observed": 2,
+      "closed": 2,
+      "explained": 2,
       "problematic": 0,
       "updates": 0,
       "review_completed_no_distinct_event": 0,
       "maintenance_reviews": 0,
       "unchanged_reviews": 0,
       "continuity_updates": 0,
-      "distinct_updates": 0,
+      "distinct_updates": 2,
       "stale_reviews": 0,
       "unverified_reviews": 0,
       "anticipation_reviews": 0,
@@ -434,12 +458,32 @@
       "concurrent_convergence": 0,
       "cause_unconfirmed": 0
     },
-    "processed_ids": [],
+    "processed_ids": [
+      "798b421b4c28",
+      "5a9d4f7ddfc2"
+    ],
     "converged_ids": [],
-    "outcomes": [],
+    "outcomes": [
+      {
+        "id": "798b421b4c28",
+        "revision": 0,
+        "name": "Ada Colau",
+        "outcome": "explained_distinct_episode",
+        "applied": true,
+        "material_event_key": "ada-colau-entrevista-jordi-wild-29n-2026-11-13"
+      },
+      {
+        "id": "5a9d4f7ddfc2",
+        "revision": 0,
+        "name": "Youtuber",
+        "outcome": "explained_distinct_episode",
+        "applied": true,
+        "material_event_key": "jordi-wild-publica-entrevistas-candidatos-29n-2026-11-13"
+      }
+    ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 2026-11-13T08:51:07+01:00), mobile-decisions y requests sin estados editoriales activos. Top 30 vigente capturado a las 08:51:01. Sin ImageGen ni publicaciones; incidentes=0."
+    "message": "Pasada TTendencias completada 2/2. Ada Colau y Youtuber explicadas como episodios materiales distintos; cola final=0. Sin ImageGen ni publicaciones."
   },
   "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 2026-11-13T08:51:07+01:00), mobile-decisions y requests sin estados editoriales activos. Top 30 vigente capturado a las 08:51:01. Sin ImageGen ni publicaciones; incidentes=0.",
   "history": [
@@ -7647,5 +7691,6 @@
   ],
   "processed": [],
   "maintenance_outbox_commit": "970b545c88b09429a23d15ec893b9d66fb611297",
-  "editorial_apply_run_id": 43378988402
+  "editorial_apply_run_id": 43378988402,
+  "finished_at": "2026-11-13T10:15:30+01:00"
 }
