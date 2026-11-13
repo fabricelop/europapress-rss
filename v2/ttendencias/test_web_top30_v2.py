@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Contrato público del Top30 V2, sin red ni efectos."""
 import unittest
-from web_top30_v2 import build
+from v2.ttendencias.web_top30_v2 import build
 
 
 def fixtures():
