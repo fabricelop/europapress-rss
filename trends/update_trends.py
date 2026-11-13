@@ -1198,7 +1198,10 @@ def main():
             primary_ranked = aligned[0][2]["trends"]
             print("Top 30: puestos 11-30 observados en", aligned[0][1],
                   "con", aligned[0][0], "coincidencias actuales de Top 10")
-    extend_ranked(primary_ranked[:30])
+    # If an expressly excluded label occupied a source slot, continue down
+    # that SAME observed Spain ranking to backfill it; never show 29 of 30
+    # when genuine ranks 31-50 are available.
+    extend_ranked(primary_ranked[:50] if direct_spain else primary_ranked[:30])
     if len(top30) < 30 and not direct_spain:
         # Only legacy consensus may use independent providers for fill.
         # A current GetDayTrends Spain ranking never mixes other rankings.
