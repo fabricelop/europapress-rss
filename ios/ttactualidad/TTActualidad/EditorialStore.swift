@@ -1995,11 +1995,20 @@ final class EditorialStore: ObservableObject {
         return formatter
     }()
 
+    // A single refresh repeatedly consults the same event timestamps across
+    // Listas, Top30, closures and receipts. Cache successful parses on MainActor
+    // without changing date precedence or sharing ISO8601DateFormatter across threads.
+    private static var parsedISODates: [String: Date] = [:]
+
     private static func when(_ row: [String: Any], _ keys: [String]) -> Date? {
         for key in keys {
             let text = str(row, key)
             guard !text.isEmpty else { continue }
+            if let cached = parsedISODates[text] { return cached }
             if let date = fractionalISO.date(from: text) ?? standardISO.date(from: text) {
+                // Limit retention of historical timestamps across foreground refreshes.
+                if parsedISODates.count >= 8192 { parsedISODates.removeAll(keepingCapacity: true) }
+                parsedISODates[text] = date
                 return date
             }
         }
