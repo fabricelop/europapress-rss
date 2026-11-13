@@ -56,6 +56,16 @@ function PatchTask([string]$name, [string]$scriptName, [string]$vbsName, [bool]$
     $wscript = Join-Path $env:SystemRoot 'System32\wscript.exe'
     if (!(Test-Path -LiteralPath $wscript -PathType Leaf)) { throw 'Windows Script Host no disponible' }
     $newArgs = '//B //Nologo "' + $vbsPath + '"'
+    # Validar que Windows Script Host no esta deshabilitado por la politica
+    # local antes de cambiar una tarea que hoy funciona.
+    $probe = Join-Path $root 'v2-wscript-silent-probe.vbs'
+    [IO.File]::WriteAllText($probe, 'WScript.Quit 0', [System.Text.Encoding]::ASCII)
+    try {
+        $check = Start-Process -FilePath $wscript -ArgumentList ('//B //Nologo "' + $probe + '"') -WindowStyle Hidden -Wait -PassThru -ErrorAction Stop
+        if ($check.ExitCode -ne 0) { throw ('Windows Script Host no operativo: ' + $check.ExitCode) }
+    } finally {
+        Remove-Item -LiteralPath $probe -Force -ErrorAction SilentlyContinue
+    }
     if ($alreadySilent -and $args -eq $newArgs) {
         Note 'TT_V2_TASK_ALREADY_SILENT' $name
         return
