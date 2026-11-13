@@ -7,15 +7,15 @@
   "previous_run_id": "tr-20261113T192500-chat-direct",
   "command_id": "tr-20261113T192500-chat-direct",
   "source": "chat_direct",
-  "status": "DONE",
-  "phase": "closing",
+  "status": "RUNNING",
+  "phase": "investigating",
   "started_at": "2026-11-13T20:37:00+01:00",
-  "updated_at": "2026-11-13T20:44:30+01:00",
+  "updated_at": "2026-11-13T20:46:00+01:00",
   "current": 3,
-  "total": 3,
-  "trend_id": null,
-  "title": null,
-  "queue_complete": true,
+  "total": 5,
+  "trend_id": "aa6b1b152ea6",
+  "title": "Marlaska",
+  "queue_complete": false,
   "processed_ids": [
     "red-review-89131aa94658e10a26da",
     "red-review-97c4f94c705cb83a6f9d",
@@ -23,7 +23,10 @@
   ],
   "converged_ids": [],
   "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_active_ids": [
+    "aa6b1b152ea6",
+    "f893f7342d01"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 3,
@@ -814,7 +817,7 @@
     "incidents": [],
     "message": "Pasada TTendencias completada 2/2: La UCO unchanged y Tezanos actualizado como continuidad del mismo macrosondeo. Persistencia verificada en main por 13adfab38ac414db4a93f00fc551af9d1f12e4b2; cola final=0. ImageGen=0; publicaciones=0."
   },
-  "message": "Pasada TTendencias completada 3/3: Jordi Wild actualizado como continuidad tras publicarse las tres entrevistas y rozar 6M de visualizaciones; Feijoo abrió un episodio nuevo por su entrevista con Jordi Wild; Corvillo actualizado como continuidad con la negación oficial del Gobierno. Persistencia verificada en main; cola final=0 y mobile-decisions activos=0. ImageGen=0; publicaciones=0.",
+  "message": "Han entrado dos reelaboraciones ordinarias tras la primera barrera. Investigando Marlaska desde cero; después Jordi Wild. Sin ImageGen ni publicación.",
   "history": [
     {
       "run_id": "tr-1794361941170-manual",
@@ -5382,7 +5385,11 @@
       "message": "Pasada TTendencias completada 3/3: Jordi Wild actualizado como continuidad tras publicarse las tres entrevistas y rozar 6M de visualizaciones; Feijoo abrió un episodio nuevo por su entrevista con Jordi Wild; Corvillo actualizado como continuidad con la negación oficial del Gobierno. Persistencia verificada en main; cola final=0 y mobile-decisions activos=0. ImageGen=0; publicaciones=0."
     }
   ],
-  "current_item": null,
+  "current_item": {
+    "id": "aa6b1b152ea6",
+    "revision": 0,
+    "name": "Marlaska"
+  },
   "withdrawn_ids": [],
   "last_finished_at": "2026-11-13T20:44:30+01:00",
   "last_revalidated_at": "2026-11-13T20:44:30+01:00",
@@ -9029,6 +9036,14 @@
       "revision": null,
       "name": null,
       "message": "Barrera final: editorial-queue=0 y mobile-decisions activos=0. Persistencia verificada; sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-13T20:46:00+01:00",
+      "phase": "investigating",
+      "trend_id": "aa6b1b152ea6",
+      "revision": 0,
+      "name": "Marlaska",
+      "message": "Reabierta la pasada por dos trabajos nuevos llegados tras la barrera: Marlaska y Jordi Wild. Investigación desde cero."
     }
   ],
   "processed": [
@@ -9038,8 +9053,8 @@
   ],
   "maintenance_outbox_commit": "c764cbdfc37ba7b67fedd38a16837ee068ae9467",
   "editorial_apply_run_id": 43477991983,
-  "finished_at": "2026-11-13T20:44:30+01:00",
-  "completed_at": "2026-11-13T20:44:30+01:00",
+  "finished_at": null,
+  "completed_at": null,
   "maintenance_outbox_commits": [
     "24805770cc5efabc2f14e0019c9fa592aecf4d7b",
     "82935552cfd2620c52c01e6603ac598051a8eec4",
