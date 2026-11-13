@@ -26,6 +26,24 @@ def eligible_items(queue, limit):
     filtered.sort(key=lambda x: (x.get("requested_at", ""), x["trend_id"]))
     return filtered[:limit]
 
+def validate_frozen_job(queue, planned):
+    """Permite terminar un trabajo planificado aunque haya salido del Top30.
+
+    Nunca abre un trabajo nuevo ni reenvía uno reclamado por otro consumidor.
+    La prioridad por puesto se aplica al congelar el plan inicial, no aquí.
+    """
+    if queue.get("step") != "04_editorial_queue" or queue.get("effects_enabled") is not False:
+        raise ValueError("Cola V2 inválida")
+    trend_id, revision = planned["trend_id"], planned["revision"]
+    live = queue.get("items", {}).get(trend_id)
+    if (not live or live.get("revision") != revision
+        or live.get("status") not in OPEN or live.get("send_intent")
+        or live.get("lease") or live.get("capture")
+        or int(live.get("attempts", 0)) >= 3):
+        raise ValueError("Trabajo planificado obsoleto o ya enviado; detener sin reenvío")
+    return live
+
+
 def verify_persisted(queue, journal):
     if queue.get("effects_enabled") is not False:
         raise ValueError("Efectos habilitados: detener")
