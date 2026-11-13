@@ -96,3 +96,34 @@ botones de decisión editorial ni nuevas funcionalidades accesorias.
 
 ### Validación de seguridad
 `python -m unittest test_auto_editorial_v2.py` desde el directorio V2 comprueba la selección por ranking, parada por captura caducada, bloqueo de reenvío, exclusión entre procesos y continuidad del plan seleccionado si el término sale del Top30. GitHub CI ejecuta estas pruebas sin navegador ni cambios de producción.
+
+## Reparación del primer consumidor autónomo — 13/11/2026
+
+- Primera elaboración autónoma real: **Jordi Wild**, ID exacto
+  `trv2-e94b2984c087ac403753b8c1`, revisión 1. Se guardó la intención de
+  envío y se encontró el chat, pero Windows terminó el proceso antes de capturar
+  la respuesta. Chrome V2 quedó abierto. **No se permite reenviar la orden**.
+- Se reutiliza el ciclo editorial V2 ya probado y se mejora la recuperación:
+  `chatgpt_transcript.py` reconoce la interfaz en español e inglés y extrae
+  una respuesta de un único par de turnos DOM verificado; el ciclo normal puede
+  observar hasta 15 min una investigación, con reserva de 40 min.
+- `recover_existing_chat_v2.py --auto` se conecta por CDP SOLO al Chrome del
+  perfil V2 existente, exige **un único** journal local que coincida con la
+  cola en GitHub en ID/revisión/token, lee la respuesta sin enviar, verifica
+  identidad, cierra solo Chrome V2, persiste en la cola y sincroniza Listas/web.
+  Si no identifica la conversación o no puede verificarla, **no cierra el
+  navegador ni arranca nuevas elaboraciones**.
+- `Run-V2-Editorial-Auto.ps1` recupera un chat previo ANTES de iniciar nuevos
+  trabajos. Reemplaza el pipe PowerShell largo `Tee-Object` por redirecciones
+  de salida a archivos separados, para que el cierre del pipeline no afecte
+  a la supervisión del navegador.
+- El instalador `Install-V2-Editorial-Auto.ps1` detiene temporalmente el
+  programador, mantiene el diario y perfil Chrome, descarga un commit coherente,
+  ejecuta pruebas, recupera el chat previo sin reenvío, y **solo después**
+  reactiva la tarea `TTActualidadV2-Editorial-Auto`, con dos disparadores:
+  al iniciar sesión y cada **3 minutos** para rearmar el consumidor si Windows
+  lo termina (sin lanzar duplicados por `IgnoreNew` y bloqueo SO).
+- Estado **implementado y probado estáticamente en CI**; **la recuperación y
+  reinicio reales en Windows están pendientes** de ejecutar el instalador
+  corregido. Nunca declarar el chat recuperado ni siguiente tendencia lanzada
+  antes de ver prueba en logs/GitHub.
