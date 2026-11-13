@@ -7,27 +7,22 @@
   "previous_run_id": "tr-20261113T044100-chat-direct",
   "command_id": "tr-20261113T062900-chat-direct",
   "source": "chat_direct",
-  "status": "RUNNING",
+  "status": "success",
   "phase": "investigating",
   "started_at": "2026-11-13T06:29:03+01:00",
-  "updated_at": "2026-11-13T06:29:03+01:00",
+  "updated_at": "2026-11-13T06:32:47+01:00",
   "current": 0,
   "total": 3,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": false,
-  "processed_ids": [],
+  "queue_complete": true,
+  "processed_ids": [
+    "0edb044d5bb7",
+    "6132b2e3fed4"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "6132b2e3fed4",
-    "0edb044d5bb7",
-    "red-review-f5052ee0823a026c3feb"
-  ],
-  "remaining_active_ids": [
-    "6132b2e3fed4",
-    "0edb044d5bb7",
-    "red-review-f5052ee0823a026c3feb"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 3,
@@ -347,8 +342,8 @@
       "message": "Pasada manual iniciada desde ChatGPT con cola autoritativa=3: Asraf (reentrada), Rosalia (entrada nueva) y revisión roja de NVIDIA. Investigación JIT; sin ImageGen ni publicación."
     }
   ],
-  "last_started_at": "2026-11-13T06:29:03+01:00",
-  "last_completed_at": "2026-11-13T05:13:51+01:00",
+  "last_started_at": "2026-11-13T06:32:47+01:00",
+  "last_completed_at": "2026-11-13T06:32:47+01:00",
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-20261113T044100-chat-direct",
