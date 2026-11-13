@@ -311,14 +311,26 @@ def run_one(api, state, transcript, auth, item):
             store(journal, record)
             print("TT_V2_CAPTURE_RECOVERY_STAGED=NO", flush=True)
         raise RuntimeError("Captura/cierre no verificados: recuperar sin reenviar")
-    # Guardar tras cerrar. El token impide cerrar la reserva de otro consumidor.
-    fresh, sha = queue_read(api, auth)
-    staged, status = state.stage_capture(fresh,
-        trend_id=trend_id, revision=revision, answer=record["answer"],
-        chat_url=record["chat_url"], validated_capture=True,
-        observed_at=record["observed_at"], lease_token=token)
-    if status != "already_staged":
-        queue_write(api, auth, sha, staged, "capture " + trend_id)
+    # El Top30 puede actualizarse cada 15 min y mover el SHA de la cola.
+    # Releer/rebasar SOLO la persistencia tras cerrar Chrome; jamás reenviar.
+    # stage_capture vuelve a verificar revisión, status y token del envío.
+    for persist_attempt in range(4):
+        fresh, sha = queue_read(api, auth)
+        staged, status = state.stage_capture(fresh,
+            trend_id=trend_id, revision=revision, answer=record["answer"],
+            chat_url=record["chat_url"], validated_capture=True,
+            observed_at=record["observed_at"], lease_token=token)
+        if status == "already_staged":
+            break
+        try:
+            queue_write(api, auth, sha, staged, "capture " + trend_id)
+            break
+        except RuntimeError as exc:
+            if ("GitHub conflict/changed revision" not in str(exc)
+                or persist_attempt == 3):
+                raise
+            time.sleep(1 + persist_attempt)
+    # La confirmación real siempre es la relectura posterior.
     verify, queue_blob_sha = queue_read(api, auth)
     cap = verify["items"][trend_id].get("capture") or {}
     if (verify["items"][trend_id]["status"] != "captured_review"
