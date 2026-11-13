@@ -239,15 +239,20 @@ def recover_closed_chat(trend_id, revision, *, lock_held=False):
             sock.bind(("127.0.0.1", 0))
             port = sock.getsockname()[1]
         args = core.module("chrome_command_v2.py", "ttv2_offline_chrome").command(
-            core.CHROME, core.PROFILE, port, headless=True, url=candidate)
+            core.CHROME, core.PROFILE, port, headless=False,
+            hidden=True, url=candidate)
+        visibility = core.module("chrome_visibility_v2.py", "ttv2_recover_visibility")
         proc = None
         owned = set()
         browser = None
+        hider = None
         captured = False
         try:
             proc = subprocess.Popen(args, stdout=subprocess.DEVNULL,
                                     stderr=subprocess.DEVNULL,
+                                    startupinfo=visibility.startupinfo_hidden(),
                                     creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
+            hider = visibility.V2WindowHider(core.profile_pids).start()
             endpoint = "http://127.0.0.1:" + str(port)
             startup = core.module("chrome_startup_v2.py", "ttv2_closed_recovery_startup")
             def cdp_ready():
@@ -297,6 +302,8 @@ def recover_closed_chat(trend_id, revision, *, lock_held=False):
                 core.store(journal, record)
                 print("TT_V2_CLOSED_CHAT_RECOVERED=YES", flush=True)
         finally:
+            if hider:
+                hider.stop()
             if browser:
                 try:
                     session = browser.new_browser_cdp_session()
