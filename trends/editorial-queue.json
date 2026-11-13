@@ -1,6 +1,75 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-13T11:10:02+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-13T10:10:34.231076+00:00",
+  "count": 2,
+  "items": [
+    {
+      "id": "red-review-0d0092fbb32ed2b11c3e",
+      "revision": 0,
+      "name": "Revisar novedades: Youtuber",
+      "rank": 28,
+      "status": "preparing",
+      "requested_at": "2026-11-13T10:10:34.231076+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "ee66c728b7bb",
+        "revision": 0,
+        "name": "Youtuber",
+        "rank": 30,
+        "explanation": "TT#30 Youtuber es tendencia por la cancelación de la entrevista de Santiago Abascal con Jordi Wild, prevista hoy para The Wild Project tras el conflicto de Vox con RTVE.\n#JordiWild #Abascal\n🌶️ La entrevista acabó convertida en contenido sin llegar a grabarse.",
+        "explanation_sha256": "a136f9ab0a72cc673140377b074af396a2b680dd33800b79228f59fad5e08a73",
+        "explained_at": "2026-11-11T15:15:48+01:00",
+        "verification_sources": [
+          {
+            "url": "https://as.com/actualidad/politica/abascal-cancela-su-entrevista-con-jordi-wild-f202611-n/"
+          },
+          {
+            "url": "https://www.elindependiente.com/espana/2026/11/11/abascal-cancela-su-entrevista-con-jordi-wild-tras-denunciar-manipulacion-en-la-revuelta/amp/"
+          }
+        ],
+        "fingerprint": "8631bcfa219089f592563411db0b9a85fca1b61d4011b1d7ee4bb6ceee9a09f7"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-42d2af8ed4e24f5e4623",
+      "revision": 0,
+      "name": "Revisar novedades: Jensen Huang",
+      "rank": 15,
+      "status": "preparing",
+      "requested_at": "2026-11-13T10:10:34.231076+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "f3c37f45aebd",
+        "revision": 0,
+        "name": "Jensen Huang",
+        "rank": 21,
+        "explanation": "TT#15 Jensen Huang sigue siendo tendencia porque dimitió como CEO y consejero de NVIDIA; Colette Kress asumió como consejera delegada interina mientras buscan sucesor.\n#Nvidia #JensenHuang",
+        "explanation_sha256": "fc74a37e1ca8c8da01c501145befaf25d0927a03c924874b49dbdd3e1892bd06",
+        "explained_at": "2026-11-12T05:31:00+01:00",
+        "verification_sources": [
+          {
+            "url": "https://www.reuters.com/technology/nvidia-is-preparing-oust-ceo-jensen-huang-wsj-reports-2026-11-11/"
+          },
+          {
+            "url": "https://twitter-trends.snaplytics.io/spain/"
+          }
+        ],
+        "fingerprint": "bbda35cc418b4889ee2e6d89cce719a20344b52ecbde12d1fb4d0b0722f8b05e"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
