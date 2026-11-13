@@ -3,16 +3,16 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261113T041000-chat-direct",
+  "run_id": "tr-20261113T042500-chat-direct",
   "previous_run_id": "tr-20261113T034000-chat-direct",
-  "command_id": "tr-20261113T041000-chat-direct",
+  "command_id": "tr-20261113T042500-chat-direct",
   "source": "chat_direct",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-13T04:10:00+01:00",
-  "updated_at": "2026-11-13T04:20:00+01:00",
-  "current": 15,
-  "total": 15,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-13T04:25:00+01:00",
+  "updated_at": "2026-11-13T04:25:00+01:00",
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
   "queue_complete": true,
@@ -618,7 +618,7 @@
     "incidents": [],
     "message": "Pasada TTendencias completada 15/15. 13 reentradas: 2 episodios materiales distintos explicados (Abascal, Barcelona) y 11 cerrados no_distinct_event. 2 revisiones rojas posteriores (Jordi Wild, Youtuber) verificadas unchanged, conservando texto y fecha. Cola final=0. ImageGen=0; image-outbox editorial=0; publicaciones=0; incidentes=0."
   },
-  "message": "Pasada TTendencias completada 15/15. 13 reentradas: 2 episodios materiales distintos explicados (Abascal, Barcelona) y 11 cerrados no_distinct_event. 2 revisiones rojas posteriores (Jordi Wild, Youtuber) verificadas unchanged, conservando texto y fecha. Cola final=0. ImageGen=0; image-outbox editorial=0; publicaciones=0; incidentes=0.",
+  "message": "Cola autoritativa vacía; verificando estado, mantenimiento y barrera final.",
   "history": [
     {
       "run_id": "tr-1794340649326-manual",
@@ -8847,5 +8847,5 @@
   "processed": [],
   "maintenance_outbox_commit": "970b545c88b09429a23d15ec893b9d66fb611297",
   "editorial_apply_run_id": 43343524401,
-  "finished_at": "2026-11-13T04:20:00+01:00"
+  "finished_at": null
 }
