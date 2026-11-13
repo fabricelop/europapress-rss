@@ -45,6 +45,7 @@ jobs:
           v2.ttendencias.test_incident_retry_v2
           v2.ttendencias.test_chrome_command_v2
           v2.ttendencias.test_chrome_cleanup_v2
+          v2.ttendencias.test_chrome_startup_v2
       - name: Validar sintaxis del rescate y arranque automatico V2
         run: >-
           python3 -m py_compile
@@ -58,6 +59,7 @@ jobs:
           v2/ttendencias/chrome_command_v2.py
           v2/ttendencias/headless_preflight_v2.py
           v2/ttendencias/chrome_cleanup_v2.py
+          v2/ttendencias/chrome_startup_v2.py
       - name: V2 5B - probar cierre de navegador efímero con simulación
         run: node --test v2/ttendencias/browser-lifecycle.test.cjs
       - name: Captura REAL GetDayTrends España (solo lectura)
