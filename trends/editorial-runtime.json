@@ -3,22 +3,25 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261113T014000-chat-direct",
-  "previous_run_id": "tr-20261113T012500-chat-direct",
-  "command_id": "tr-20261113T014000-chat-direct",
+  "run_id": "tr-20261113T015500-chat-direct",
+  "previous_run_id": "tr-20261113T014000-chat-direct",
+  "command_id": "tr-20261113T015500-chat-direct",
   "source": "chat_direct",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-13T01:40:00+01:00",
-  "updated_at": "2026-11-13T01:41:15+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-13T01:55:00+01:00",
+  "updated_at": "2026-11-13T01:55:00+01:00",
   "current": 0,
-  "total": 0,
+  "total": 2,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
+  "remaining_ids": [
+    "radar-prepare-55ec4ae41a54016072c2",
+    "radar-prepare-9e0310666132b2bd1a4f"
+  ],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
@@ -176,7 +179,7 @@
       "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 2026-11-13T01:21:18+01:00) y mobile-decisions sin preparing/update/processing/problematic/rewrite_pending/reexplain activos. Sin ImageGen ni publicaciones."
     }
   ],
-  "last_started_at": "2026-11-13T01:40:00+01:00",
+  "last_started_at": "2026-11-13T01:55:00+01:00",
   "last_completed_at": "2026-11-13T01:41:15+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -212,7 +215,7 @@
     },
     "message": "Pasada TTendencias completada 0/0. Durante la ejecución el Top 30 se refrescó a 2026-11-13T01:40:54+01:00; barrera final main: editorial-queue=0 (updated_at 2026-11-13T01:41:00+01:00) y mobile-decisions sin estados editoriales activos. Sin ImageGen ni publicaciones."
   },
-  "message": "Pasada TTendencias completada 0/0. Durante la ejecución el Top 30 se refrescó a 2026-11-13T01:40:54+01:00; barrera final main: editorial-queue=0 (updated_at 2026-11-13T01:41:00+01:00) y mobile-decisions sin estados editoriales activos. Sin ImageGen ni publicaciones.",
+  "message": "Pasada iniciada con 2 borradores Radar pendientes: Belén Esteban y Este 29N. Revalidando ID/revisión y contexto antes de investigar. Sin ImageGen ni publicación.",
   "history": [
     {
       "run_id": "tr-1794340649326-manual",
@@ -8004,5 +8007,5 @@
   ],
   "processed": [],
   "maintenance_outbox_commit": "970b545c88b09429a23d15ec893b9d66fb611297",
-  "finished_at": "2026-11-13T01:41:15+01:00"
+  "finished_at": null
 }
