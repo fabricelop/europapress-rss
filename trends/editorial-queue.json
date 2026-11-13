@@ -1,6 +1,78 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-13T06:32:47+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-13T05:33:14.115151+00:00",
+  "count": 2,
+  "items": [
+    {
+      "id": "red-review-910c95370d0f0195f25e",
+      "revision": 0,
+      "name": "Revisar novedades: Jensen Huang",
+      "rank": 15,
+      "status": "preparing",
+      "requested_at": "2026-11-13T05:33:14.115151+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "f3c37f45aebd",
+        "revision": 0,
+        "name": "Jensen Huang",
+        "rank": 21,
+        "explanation": "TT#21 Jensen Huang vuelve a las tendencias porque el consejo de Nvidia se reunió para decidir si continúa como CEO, tras nuevas revelaciones y una caída de más del 8% de la acción fuera de hora.\n#Nvidia #JensenHuang",
+        "explanation_sha256": "50dbb55853a219b98c1e2b416d8ebbfbb56830eb995e29899e15ae4761fe5476",
+        "explained_at": "2026-11-12T05:31:00+01:00",
+        "verification_sources": [
+          {
+            "url": "https://www.reuters.com/technology/nvidia-is-preparing-oust-ceo-jensen-huang-wsj-reports-2026-11-11/"
+          },
+          {
+            "url": "https://twitter-trends.snaplytics.io/spain/"
+          }
+        ],
+        "fingerprint": "41e11511fa90f80b0e4065f61bc162387202496f18cd0f14f4e167b44648063c"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-ed22c43fe843e72c0015",
+      "revision": 0,
+      "name": "Revisar novedades: #HuelgaGeneral",
+      "rank": 10,
+      "status": "preparing",
+      "requested_at": "2026-11-13T05:33:14.115151+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "4f1dae5df224",
+        "revision": 1,
+        "name": "#HuelgaGeneral",
+        "rank": 5,
+        "explanation": "TT#5 #HuelgaGeneral sigue siendo tendencia por el balance del 11N: al menos 75 detenidos y 1.044 incidencias en toda España tras una jornada con piquetes, manifestaciones y disturbios en Madrid y Barcelona.\n#11N",
+        "explanation_sha256": "faef3d7d30e261c28da5627cc30e4f4f8076aa10fae18a3261bd304a30078758",
+        "explained_at": "2026-11-11T07:54:00+01:00",
+        "verification_sources": [
+          {
+            "url": "https://www.rtve.es/noticias/20261111/huelga-general-espana-11n-directo-hoy-video-cronica/17308588.shtml"
+          },
+          {
+            "url": "https://www.rtve.es/temas/huelgas/8010/"
+          },
+          {
+            "url": "https://www.20minutos.es/nacional/huelga-general-11n-directo-ultima-hora-los-paros-manifestaciones-servicios-minimos-toda-espana_7059492_6.html"
+          }
+        ],
+        "fingerprint": "dd356ca07289af35428ac524e09f62ecf215ab5a9f441265c5b000bdabff93ed"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
