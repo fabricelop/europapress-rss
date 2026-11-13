@@ -246,7 +246,7 @@ with tempfile.TemporaryDirectory() as tmp:
     put(m.ROOT,"trends/recent.json",{"items":[
         {"name":"españas","rank":9,"entered_top30_at":"2026-11-13T20:00:00+01:00"}]})
     put(m.ROOT,"trends/pending-retirements.json",{"items":[]})
-    body="### Proyecto\\n\\nttendencias\\n\\n### Acción\\n\\nretire\\n\\n### ID del elemento\\n\\n"+eid+"\\n\\n### Revisión del elemento\\n\\n3\\n\\n### Titular o contexto\\n\\nespañas\\n"
+    body="### Proyecto\n\nttendencias\n\n### Acción\n\nretire\n\n### ID del elemento\n\n"+eid+"\n\n### Revisión del elemento\n\n3\n\n### Titular o contexto\n\nespañas\n"
     assert m.parse_issue({"sender":{"login":"fabricelop"},"issue":{
         "user":{"login":"fabricelop"},"title":"[TT-MOVIL] Quitar","body":body}})[:3]==("ttendencias","retire",eid)
     result=m.trend_command("retire",eid,"españas","",now,expected_revision=3)
