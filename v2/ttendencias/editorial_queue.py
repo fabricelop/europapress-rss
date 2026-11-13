@@ -11,7 +11,7 @@ from pathlib import Path
 
 from v2.ttendencias.detect_changes import local_json
 
-ACTIVE = {"pending", "review_pending", "in_progress"}
+ACTIVE = {"pending", "review_pending", "in_progress", "captured_review", "capture_recovery"}
 CLOSED = {"ready", "published", "dismissed", "cancelled"}
 VALID = ACTIVE | CLOSED
 
