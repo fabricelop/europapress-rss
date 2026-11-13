@@ -43,6 +43,7 @@ $files = @(
     'editorial_batch_v2.py',
     'editorial_run_v2.py',
     'chrome_command_v2.py',
+    'chrome_visibility_v2.py',
     'chrome_cleanup_v2.py',
     'chrome_startup_v2.py',
     'test_chrome_startup_v2.py',
@@ -138,9 +139,9 @@ $headlessResult = Start-Process -FilePath $py -ArgumentList @('-3', ('"' + $head
 if (Test-Path $headlessOut) { Get-Content $headlessOut | ForEach-Object { Write-Host $_ } }
 if ($headlessResult.ExitCode -ne 0) {
     if (Test-Path $headlessErr) { Get-Content $headlessErr -Tail 20 | ForEach-Object { Write-Host $_ } }
-    throw 'Chrome V2 oculto no validado: consumidor seguirá desactivado, sin reenvíos'
+    throw 'Chrome V2 normal oculto no validado: consumidor seguirá desactivado, sin reenvíos'
 }
-Write-Host 'TT_V2_HEADLESS_VALIDATED=YES'
+Write-Host 'TT_V2_HEADED_HIDDEN_VALIDATED=YES'
 # La bandera exacta es autorización para abrir chats. Guardarla solo
 # tras descargar/validar los módulos y justo antes de registrar la tarea.
 $flag = Join-Path $root 'auto-editorial-v2.enabled'
@@ -168,7 +169,8 @@ Write-Host 'TT_V2_AUTO_ENABLED=YES'
 Write-Host 'TT_V2_AUTO_PUBLICATION=NO'
 Write-Host ('TT_V2_AUTO_TASK_NAME=' + $taskName)
 Write-Host 'TT_V2_AUTO_CHROME_VISIBLE=NO'
-Write-Host 'TT_V2_AUTO_CHROME_HEADLESS=YES'
+Write-Host 'TT_V2_AUTO_CHROME_HEADLESS=NO'
+Write-Host 'TT_V2_AUTO_CHROME_HEADED_HIDDEN=YES'
 Write-Host 'TT_V2_AUTO_POWERSHELL_HIDDEN=YES'
 # Inicio inmediato en esta sesión, no hay que cerrar y abrir Windows.
 Start-ScheduledTask -TaskName $taskName
