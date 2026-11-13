@@ -79,6 +79,20 @@ botones de decisión editorial ni nuevas funcionalidades accesorias.
 - Cron remoto de 15 minutos: **configurado**, falta comprobar dos ejecuciones
   de horario consecutivas.
 - Web V2: **pendiente de completar y desplegar**.
-- Ejecución editorial automática que consuma toda la cola: **pendiente**;
-  las tandas manuales se han probado.
+- Ejecución editorial automática que recorra el Top30: **consumidor V2 e instalador Windows implementados**; falta instalarlo y verificar el primer lote autónomo en el PC.
 - Publicación V2: **desactivada expresamente**.
+
+## Automatización editorial local (implementación inicial)
+
+- `editorial_daemon_v2.py`: consumidor que consulta la cola y el historial GitHub V2 aproximadamente cada **90 segundos** mientras haya sesión Windows. Prioriza siempre el **Top 30 vigente (puesto 1→30)**, espera si la captura ha caducado, omite las explicadas y no procesa el backlog histórico fuera de ranking.
+- Reutiliza `editorial_run_v2.run_one` (ya probado en las tandas manuales): un único navegador exclusivo y nuevo chat por tendencia, persistencia SHA, Listas y web. El siguiente trabajo empieza tras la verificación del anterior. **No hay publicación.**
+- `auto_editorial_policy_v2.py` impide reenviar automáticamente un ID/revisión que ya tiene diario local. La cola GitHub verifica también `send_intent` y `lease`. Si cae la red, la sesión o la captura, el trabajo dudoso queda sin reenvío y el consumidor puede seguir con otros elegibles.
+- `process_lock_v2.py`: lock de sistema operativo compartido con `editorial_batch_v2.py`; si Windows cierra el proceso bruscamente, el lock se libera, sin interpretar un archivo residual como otra instancia activa.
+- `Install-V2-Editorial-Auto.ps1`: descarga todos los módulos desde **un único commit SHA V2**, ejecuta pruebas puras y comprueba Playwright y el perfil Chrome V2. Registra la tarea **`TTActualidadV2-Editorial-Auto`** al iniciar sesión Windows y la arranca en la sesión actual. NO modifica tareas de V1. Guarda logs bajo `%LOCALAPPDATA%/TTActualidadV2/editorial-auto-logs` y estado en `daemon-status.json`.
+- `Disable-V2-Editorial-Auto.ps1`: impide nuevos envíos y deshabilita el próximo arranque de la tarea. El chat que esté activo puede terminar su ciclo y cerrarse con seguridad.
+- **Puesta en marcha pendiente:** hasta ejecutar el instalador en Windows, el consumidor NO está activado. No confundir código listo con automatización instalada.
+- La captura Top30 por cron GitHub funciona sin PC. El consumo editorial con Chrome **sí necesita Windows encendido y sesión interactiva**. Queda disponible reanudación al inicio de sesión. La captura del ranking, la web y las explicaciones comparten siempre el estado de la rama V2.
+- El consumidor no renueva ni vuelve a enviar automáticamente una sesión dudosa, aunque su lease haya vencido; la web la identifica como incidencia. La recuperación del chat existente se tratará después de validar el primer lote automático.
+
+### Validación de seguridad
+`python -m unittest test_auto_editorial_v2.py` desde el directorio V2 comprueba la selección por ranking, parada por captura caducada, bloqueo de reenvío, exclusión entre procesos y continuidad del plan seleccionado si el término sale del Top30. GitHub CI ejecuta estas pruebas sin navegador ni cambios de producción.
