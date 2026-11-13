@@ -42,6 +42,14 @@ jobs:
           v2.ttendencias.test_editorial_queue
           v2.ttendencias.test_web_top30_v2
           v2.ttendencias.test_auto_editorial_v2
+      - name: Validar sintaxis del rescate y arranque automatico V2
+        run: >-
+          python3 -m py_compile
+          v2/ttendencias/recover_existing_chat_v2.py
+          v2/ttendencias/editorial_daemon_v2.py
+          v2/ttendencias/chatgpt_transcript.py
+          v2/ttendencias/chatgpt_target_tracker.py
+          v2/ttendencias/editorial_run_v2.py
       - name: V2 5B - probar cierre de navegador efímero con simulación
         run: node --test v2/ttendencias/browser-lifecycle.test.cjs
       - name: Captura REAL GetDayTrends España (solo lectura)
