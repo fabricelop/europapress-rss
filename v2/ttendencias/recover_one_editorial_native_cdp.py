@@ -86,6 +86,44 @@ def collect_assistant(page):
                 return selector, texts[-1]
     return None, ""
 
+def collect_from_visible_transcript(page):
+    """Fallback para la interfaz actual sin data-message-author-role.
+
+    Extrae solo el último bloque 'ChatGPT said:' del cuerpo visible, nunca
+    la navegación lateral ni el mensaje del usuario. No depende del iframe DIL.
+    """
+    body = page.locator("body").inner_text(timeout=7000)
+    marker = "ChatGPT said:"
+    if marker not in body:
+        return None, ""
+    response = body.rsplit(marker, 1)[1]
+    # Los pies de la interfaz no son parte del contenido editorial.
+    endings = ("ChatGPT can make mistakes.", "Latest response")
+    for ending in endings:
+        if ending in response:
+            response = response.split(ending, 1)[0]
+    return "body-transcript/ChatGPT said:", response.strip()
+
+
+def validates_existing_reply(page, answer, selector):
+    """Validación conservadora: no declarar captura si falta el final."""
+    if page.url != CHAT_URL or not answer:
+        return False
+    if TREND_ID not in answer or "Revisión: 1" not in answer:
+        return False
+    if "Explicación editorial" not in answer or "#SVFinal" not in answer:
+        return False
+    if "Fuentes consultadas:" not in answer:
+        return False
+    # En esta conversación histórica, el remate de fin es conocido y
+    # demuestra que no hemos extraído una respuesta parcial.
+    if "No se ha publicado contenido ni modificado GitHub." not in answer:
+        return False
+    if selector == "body-transcript/ChatGPT said:":
+        return "ChatGPT can make mistakes." in page.locator("body").inner_text()
+    return True
+
+
 def main():
     OUT.parent.mkdir(parents=True, exist_ok=True)
     result = {"trend_id": TREND_ID, "revision": REVISION, "chat_url": CHAT_URL,
@@ -141,6 +179,8 @@ def main():
                     time.sleep(2)
                     continue
                 selector, answer = collect_assistant(page)
+                if not answer:
+                    selector, answer = collect_from_visible_transcript(page)
                 stop = page.locator(STOP_SELECTOR).count() > 0
                 ready_control = page.locator(READY_CONTROLS).count() > 0
                 observations.append({"chars": len(answer), "selector": selector,
@@ -151,11 +191,12 @@ def main():
                     previous, stable = answer, 0
                 # La estabilidad NO basta: exigir control de acciones de respuesta
                 # terminada y ausencia de control de parada.
-                if answer and stable >= 3 and not stop and ready_control and len(answer) >= 80:
+                if answer and stable >= 3 and not stop and len(answer) >= 80 and (ready_control or selector == "body-transcript/ChatGPT said:") and validates_existing_reply(page, answer, selector):
                     result["answer"] = answer
                     result["reply_captured"] = True
                     result["status"] = "captured_needs_editorial_validation"
                     result["selector"] = selector
+                    result["validation"] = "historic_message_id_revision_and_terminal_marker"
                     break
                 time.sleep(2)
             result["observations"] = observations[-20:]
