@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-13T11:15:01.435586+00:00",
+  "checked_at": "2026-11-13T12:44:29.792036+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -42,7 +42,7 @@
     "top10": {
       "ok": false,
       "count": 10,
-      "non_stale_sources": 4,
+      "non_stale_sources": 5,
       "verified_fresh_sources": [
         "xtrendsiamrohit"
       ],
@@ -59,8 +59,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 4.1,
-      "run_id": 43414968269,
+      "age_minutes": 6.7,
+      "run_id": 43426782356,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -72,7 +72,7 @@
     },
     "request_queue": {
       "ok": false,
-      "invalid_count": 831,
+      "invalid_count": 835,
       "noise_count": 0
     },
     "ready_consistency": {
@@ -81,19 +81,99 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": true,
-      "pending_count": 0,
-      "overdue_count": 0,
-      "oldest_age_minutes": 0,
+      "ok": false,
+      "pending_count": 18,
+      "overdue_count": 18,
+      "oldest_age_minutes": 39.9,
       "warning_after_minutes": 30,
-      "overdue_items": [],
+      "overdue_items": [
+        {
+          "id": "1ea1a6c850b1",
+          "name": "españas",
+          "status": "preparing",
+          "age_minutes": 38.3
+        },
+        {
+          "id": "11dd9ba8e83e",
+          "name": "Layton",
+          "status": "preparing",
+          "age_minutes": 38.9
+        },
+        {
+          "id": "c62c0b344a57",
+          "name": "Marcial Dorado",
+          "status": "preparing",
+          "age_minutes": 39.9
+        },
+        {
+          "id": "d931eb8b246f",
+          "name": "#Mañaneros13N",
+          "status": "preparing",
+          "age_minutes": 39.9
+        },
+        {
+          "id": "29696212d3dd",
+          "name": "Y Podemos",
+          "status": "preparing",
+          "age_minutes": 39.9
+        },
+        {
+          "id": "7da7bd066548",
+          "name": "#VotaPSOE",
+          "status": "preparing",
+          "age_minutes": 39.9
+        },
+        {
+          "id": "9666b2b93842",
+          "name": "#VotoUtilEsPodemos",
+          "status": "preparing",
+          "age_minutes": 39.9
+        },
+        {
+          "id": "1bac13f8b8a9",
+          "name": "Alejandra",
+          "status": "preparing",
+          "age_minutes": 39.9
+        },
+        {
+          "id": "9469d3848691",
+          "name": "Sabiniano",
+          "status": "preparing",
+          "age_minutes": 39.9
+        },
+        {
+          "id": "6c960c86245f",
+          "name": "Manu",
+          "status": "preparing",
+          "age_minutes": 39.9
+        }
+      ],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": true,
-      "status": "not-required",
-      "queue_complete": true,
-      "remaining_active_ids": [],
+      "ok": false,
+      "status": "overdue",
+      "queue_complete": false,
+      "remaining_active_ids": [
+        "1ea1a6c850b1",
+        "11dd9ba8e83e",
+        "c62c0b344a57",
+        "d931eb8b246f",
+        "29696212d3dd",
+        "7da7bd066548",
+        "9666b2b93842",
+        "1bac13f8b8a9",
+        "9469d3848691",
+        "6c960c86245f",
+        "58aede70c0ed",
+        "4ff8063c6398",
+        "fb40ea486661",
+        "42a25e3d6736",
+        "adc96e398532",
+        "0f539e3e91d6",
+        "382ad2c12d8e",
+        "0c33e3f2c8d6"
+      ],
       "contradictory_success": false
     },
     "telegram_provisional": {
@@ -105,9 +185,10 @@
   "repairs_started": [],
   "blocking": [
     "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos",
-    "cola con 831 estado(s) inválido(s)"
+    "cola con 835 estado(s) inválido(s)",
+    "cola de explicaciones retrasada: 18 pendiente(s) superan 30 min; más antigua 39.9 min"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 831 estado(s) inválido(s)"
+  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 835 estado(s) inválido(s) | cola de explicaciones retrasada: 18 pendiente(s) superan 30 min; más antigua 39.9 min"
 }
