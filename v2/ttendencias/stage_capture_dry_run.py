@@ -4,11 +4,16 @@
 No requiere token GitHub, no escribe en GitHub ni altera archivos de V2.
 """
 import json
+import importlib.util
 import os
 import pathlib
 import sys
 import urllib.request
-from v2.ttendencias.editorial_capture_state import stage_capture
+STATE_SCRIPT = pathlib.Path(__file__).with_name('editorial_capture_state.py')
+spec = importlib.util.spec_from_file_location('v2_editorial_capture_state', STATE_SCRIPT)
+module = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(module)
+stage_capture = module.stage_capture
 
 ROOT = pathlib.Path(os.environ["LOCALAPPDATA"]) / "TTActualidadV2"
 DIAG = ROOT / "diagnostics" / "recover-svfinal-cdp.json"
