@@ -1,13 +1,15 @@
 {
   "version": 1,
-  "checked_at": "2026-11-13T03:39:31.403856+00:00",
+  "checked_at": "2026-11-13T04:15:53.060568+00:00",
   "projects": {
     "ttittulares": {
       "project": "ttittulares",
-      "checked_at": "2026-11-13T03:39:31.403856+00:00",
-      "pending_count": 0,
-      "pending_ids": [],
-      "oldest_at": null,
+      "checked_at": "2026-11-13T04:15:53.060568+00:00",
+      "pending_count": 1,
+      "pending_ids": [
+        "5ce66338998d"
+      ],
+      "oldest_at": "2026-11-13T04:04:18.742813Z",
       "latest_run": {
         "id": "tt-manual-20261113-0231-chat",
         "status": "DONE",
@@ -16,31 +18,70 @@
         "finished_at": "2026-11-13T01:34:20.627Z",
         "source": "github_pr_trace"
       },
-      "control_command": "tt-urgent-1794523101406",
-      "last_command_at": "2026-11-12T22:38:21.406Z",
-      "status": "no_work",
-      "should_dispatch": false,
-      "attempts": 0,
-      "last_request_at": "2026-11-12T21:19:06.579423+00:00"
+      "control_command": "tt-urgent-1794541787148",
+      "last_command_at": "2026-11-13T03:49:47.148Z",
+      "status": "dispatch_requested_awaiting_run",
+      "should_dispatch": true,
+      "item_execution": [
+        {
+          "id": "5ce66338998d",
+          "entered_at": "2026-11-13T04:04:18.742813Z",
+          "should_start_by": "2026-11-13T04:09:18.742813+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        }
+      ],
+      "backlog_signature": "24e7c04aa348984a",
+      "expected_start_by": "2026-11-13T04:09:18.742813+00:00",
+      "attempts": 1,
+      "previous_target_completed_or_superseded": false,
+      "dispatch": {
+        "requested": true,
+        "command_id": "tt-autoguard-1794543353",
+        "requested_at": "2026-11-13T04:15:53.060568Z"
+      },
+      "last_request_at": "2026-11-13T04:15:53.060568+00:00",
+      "last_requested_command_id": "tt-autoguard-1794543353"
     },
     "ttendencias": {
       "project": "ttendencias",
-      "checked_at": "2026-11-13T03:39:31.403856+00:00",
-      "pending_count": 0,
-      "pending_ids": [],
-      "oldest_at": null,
+      "checked_at": "2026-11-13T04:15:53.060568+00:00",
+      "pending_count": 2,
+      "pending_ids": [
+        "red-review-a03ba46583f2a3fee89b",
+        "red-review-cad2a320b2c272d2a551"
+      ],
+      "oldest_at": "2026-11-13T04:14:22.020378+00:00",
       "latest_run": {
-        "id": "tr-20261113T042500-chat-direct",
+        "id": "tr-20261113T044100-chat-direct",
         "status": "DONE",
-        "started_at": "2026-11-13T04:25:00+01:00",
-        "updated_at": "2026-11-13T03:26:00+00:00",
-        "finished_at": "2026-11-13T04:26:00+01:00",
+        "started_at": "2026-11-13T04:41:00+01:00",
+        "updated_at": "2026-11-13T03:42:30+00:00",
+        "finished_at": "2026-11-13T04:42:30+01:00",
         "source": "github_pr_trace"
       },
-      "control_command": "tr-1794539869533-manual",
-      "last_command_at": "2026-11-13T03:17:49.533Z",
-      "status": "no_work",
+      "control_command": "tr-1794543269731-manual",
+      "last_command_at": "2026-11-13T04:14:29.731Z",
+      "status": "within_start_window",
       "should_dispatch": false,
+      "item_execution": [
+        {
+          "id": "red-review-a03ba46583f2a3fee89b",
+          "entered_at": "2026-11-13T04:14:22.020378+00:00",
+          "should_start_by": "2026-11-13T04:19:22.020378+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "red-review-cad2a320b2c272d2a551",
+          "entered_at": "2026-11-13T04:14:22.020378+00:00",
+          "should_start_by": "2026-11-13T04:19:22.020378+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        }
+      ],
+      "backlog_signature": "b150327631df317d",
+      "expected_start_by": "2026-11-13T04:19:22.020378+00:00",
       "attempts": 0,
       "last_request_at": "2026-11-12T21:47:17.699544+00:00"
     }
