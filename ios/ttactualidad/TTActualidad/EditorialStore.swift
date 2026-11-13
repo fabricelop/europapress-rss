@@ -2110,8 +2110,26 @@ final class EditorialStore: ObservableObject {
             listasHistory[key, default: []].append(
                 (id: str(previous, "id"), revision: int(previous, "revision"), at: at))
         }
-        let closures = rows(decisions, "items").filter { closed.contains(str($0, "status").lowercased()) }
-        let activeQueue = rows(queue, "items")
+        // Build episode indexes once. Previously every Listas card scanned the
+        // entire editorial queue and all terminal decisions on MainActor.
+        // Preserve the original ID/revision/date precedence below.
+        var newestActiveRevisionByID: [String: Int] = [:]
+        for entry in rows(queue, "items") {
+            guard ["preparing", "update"].contains(str(entry, "status").lowercased()) else {
+                continue
+            }
+            let id = str(entry, "id")
+            if !id.isEmpty {
+                newestActiveRevisionByID[id] = max(
+                    newestActiveRevisionByID[id] ?? Int.min, int(entry, "revision"))
+            }
+        }
+        var terminalDecisionsByID: [String: [[String: Any]]] = [:]
+        for entry in rows(decisions, "items") {
+            guard closed.contains(str(entry, "status").lowercased()) else { continue }
+            let ids = Set([str(entry, "id"), str(entry, "event_id")].filter { !$0.isEmpty })
+            for id in ids { terminalDecisionsByID[id, default: []].append(entry) }
+        }
         return latestManual.compactMap { id, row -> TrendItem? in
             guard str(row, "status").lowercased() == "explained",
                   !str(row, "explanation").trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
@@ -2128,11 +2146,7 @@ final class EditorialStore: ObservableObject {
             if !req.isEmpty && reqRev > rev { return nil }
             if ["preparing", "update", "ready"].contains(reqStatus) &&
                 reqRev >= rev && !readyAfterRequest { return nil }
-            if activeQueue.contains(where: {
-                str($0, "id") == id &&
-                ["preparing", "update"].contains(str($0, "status").lowercased()) &&
-                int($0, "revision") > rev
-            }) { return nil }
+            if (newestActiveRevisionByID[id] ?? Int.min) > rev { return nil }
             if [str(row, "telegram_package_status"), str(req, "status"),
                 str(req, "telegram_package_status")].contains(where: { closed.contains($0.lowercased()) }) {
                 return nil
@@ -2145,9 +2159,8 @@ final class EditorialStore: ObservableObject {
                                                  "removed_at", "updated_at", "delivered_at", "decided_at"])
                 return !(closedAt != nil && closedAt!.timeIntervalSince(explained) < -60)
             }
-            if closures.contains(where: {
-                [Self.str($0, "id"), Self.str($0, "event_id")].contains(id) && closureApplies($0)
-            }) || closureApplies(delivery) { return nil }
+            if (terminalDecisionsByID[id] ?? []).contains(where: closureApplies) ||
+                closureApplies(delivery) { return nil }
 
             let previousListasAt = listasHistory[norm(str(row, "name"))]?
                 .filter { episode in
