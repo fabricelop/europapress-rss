@@ -32,14 +32,17 @@ def hide_windows_for_pids(pids):
     if not wanted:
         return 0
     user32 = ctypes.windll.user32
-    user32.EnumWindows.argtypes = [wintypes.WNDENUMPROC, wintypes.LPARAM]
+    callback_type = ctypes.WINFUNCTYPE(wintypes.BOOL, wintypes.HWND, wintypes.LPARAM)
+    user32.EnumWindows.argtypes = [callback_type, wintypes.LPARAM]
     user32.EnumWindows.restype = wintypes.BOOL
     user32.GetWindowThreadProcessId.argtypes = [wintypes.HWND,
                                                  ctypes.POINTER(wintypes.DWORD)]
     user32.ShowWindow.argtypes = [wintypes.HWND, ctypes.c_int]
+    user32.IsWindowVisible.argtypes = [wintypes.HWND]
+    user32.IsWindowVisible.restype = wintypes.BOOL
     hidden = []
 
-    @wintypes.WNDENUMPROC
+    @callback_type
     def callback(hwnd, param):
         pid = wintypes.DWORD()
         user32.GetWindowThreadProcessId(hwnd, ctypes.byref(pid))
