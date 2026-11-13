@@ -114462,10 +114462,10 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
-      "image_choice": "none",
-      "image_pending": true,
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false,
       "telegram_package_status": "pending",
       "new_episode_review": true,
       "previous_episode_id": "c3cd3ee44d92",
@@ -114473,7 +114473,24 @@
       "material_event_key": "barcelona-arsenal-uwcl-1-1-2026-11-12",
       "material_event_at": "2026-11-12T18:45:00+01:00",
       "material_change": true,
-      "significance_reason": "Resultado oficial posterior a la ficha previa y acontecimiento deportivo independiente: Barcelona y Arsenal empataron 1-1 en Champions femenina."
+      "significance_reason": "Resultado oficial posterior a la ficha previa y acontecimiento deportivo independiente: Barcelona y Arsenal empataron 1-1 en Champions femenina.",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://img.rtve.es/imagenes/barcelona-arsenal-resumen-hoy-partido-champions-resumen-resultado-goles/01794513725575.jpg",
+        "source": "www.rtve.es",
+        "source_url": "https://www.rtve.es/deportes/20261112/barcelona-arsenal-resumen-hoy-partido-champions-resumen-resultado-goles/17311505.shtml",
+        "alt": "Imagen de archivo relacionada con Barcelona",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://img.rtve.es/imagenes/barcelona-arsenal-resumen-hoy-partido-champions-resumen-resultado-goles/01794513725575.jpg",
+        "source": "www.rtve.es",
+        "source_url": "https://www.rtve.es/deportes/20261112/barcelona-arsenal-resumen-hoy-partido-champions-resumen-resultado-goles/17311505.shtml",
+        "alt": "Imagen de archivo relacionada con Barcelona",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "e1c917b18472",
@@ -114514,6 +114531,6 @@
       "significance_reason": "Declaración electoral nueva y posterior a la ficha previa: Abascal mantiene abierta una posible impugnación del 29-N por el voto exterior."
     }
   ],
-  "updated_at": "2026-11-13T03:19:44.553374+00:00",
+  "updated_at": "2026-11-13T03:21:41.359135Z",
   "count": 2009
 }
