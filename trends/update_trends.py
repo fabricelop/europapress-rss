@@ -576,6 +576,19 @@ def getdaytrends_spain_page(html):
     return any(h.startswith(("tendencias de twitter españa", "twitter trends in spain")) for h in titles)
 
 
+def extend_observed_ranking(selected, observed, limit=30):
+    """Backfill visible ranks from the same observed source, never from guesses."""
+    seen = {term_key(name) for name in selected}
+    for name in observed:
+        if len(selected) >= limit:
+            break
+        normalized = term_key(name)
+        if normalized and normalized not in seen and not is_suppressed(name):
+            selected.append(name)
+            seen.add(normalized)
+    return selected
+
+
 def getdaytrends_current_ranked(source_data):
     """Display ranks 1-30 from Spain Now, without cross-source blending."""
     row = (source_data or {}).get("getdaytrends") or {}
@@ -1156,15 +1169,8 @@ def main():
     # Mostrar un Top 30, pero conservar top10 como única entrada a la
     # cola editorial automática. Los puestos 11-30 son opt-in.
     top30 = list(top10)
-    seen_top30 = {term_key(x) for x in top30}
     def extend_ranked(names):
-        for name in names:
-            if len(top30) >= 30:
-                break
-            key = term_key(name)
-            if key and key not in seen_top30 and not is_suppressed(name):
-                top30.append(name)
-                seen_top30.add(key)
+        extend_observed_ranking(top30, names)
     # Mantener la fuente elegida como referencia para las posiciones,
     # sin presentar las señales de otras fuentes como posiciones verificadas.
     # Use all 50 genuine GetDayTrends terms only to replace topics that the
