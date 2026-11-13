@@ -14,7 +14,7 @@ function Note([string]$key, [string]$value) {
 }
 function AsLaunchText([string]$runner) {
     # ASCII only. Expand paths at launch, not while writing the .vbs file.
-    return (@'
+    $template = @'
 Option Explicit
 Dim shell, ps, runner, command, result
 Set shell = CreateObject("WScript.Shell")
@@ -23,7 +23,8 @@ runner = shell.ExpandEnvironmentStrings("%LOCALAPPDATA%\TTActualidadV2\RUNNER_FI
 command = Chr(34) & ps & Chr(34) & " -NoProfile -NonInteractive -ExecutionPolicy Bypass -WindowStyle Hidden -File " & Chr(34) & runner & Chr(34)
 result = shell.Run(command, 0, True)
 WScript.Quit result
-'@).Replace('RUNNER_FILE', $runner)
+'@
+    return $template.Replace('RUNNER_FILE', $runner)
 }
 function PatchTask([string]$name, [string]$scriptName, [string]$vbsName, [bool]$required) {
     $task = Get-ScheduledTask -TaskName $name -ErrorAction SilentlyContinue
@@ -54,7 +55,7 @@ function PatchTask([string]$name, [string]$scriptName, [string]$vbsName, [bool]$
     $xml = Export-ScheduledTask -TaskName $name -ErrorAction Stop
     [IO.File]::WriteAllText($backup, $xml, (New-Object System.Text.UTF8Encoding($false)))
     $vbsPath = Join-Path $root $vbsName
-    [IO.File]::WriteAllText($vbsPath, (AsLaunchText $scriptName), (New-Object System.Text.Encoding.ASCII))
+    [IO.File]::WriteAllText($vbsPath, (AsLaunchText $scriptName), [System.Text.Encoding]::ASCII)
     $wscript = Join-Path $env:SystemRoot 'System32\wscript.exe'
     if (!(Test-Path -LiteralPath $wscript -PathType Leaf)) { throw 'Windows Script Host no disponible' }
     $newArgs = '//B //Nologo "' + $vbsPath + '"'
