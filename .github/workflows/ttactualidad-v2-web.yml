@@ -1,0 +1,47 @@
+name: TTActualidad V2 - web preview checks
+on:
+  push:
+    branches: [feature/ttactualidad-v2-clean]
+    paths:
+      - 'v2/ttendencias/site/**'
+      - '.github/workflows/ttactualidad-v2-web.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate JavaScript and HTML
+        run: |
+          node --check v2/ttendencias/site/app.js
+          python3 - <<'PY'
+          from pathlib import Path
+          from html.parser import HTMLParser
+          root=Path('v2/ttendencias/site')
+          class Check(HTMLParser):
+              def __init__(self): super().__init__(); self.ids=set(); self.scripts=[]
+              def handle_starttag(self,tag,attrs):
+                  a=dict(attrs)
+                  if 'id' in a: self.ids.add(a['id'])
+                  if tag=='script': self.scripts.append(a.get('src'))
+          parser=Check()
+          parser.feed((root/'index.html').read_text())
+          required={'results','notice','detail','detail-title','search','filter','stat-count','stat-explained','stat-pending','refresh'}
+          assert required <= parser.ids, required-parser.ids
+          assert parser.scripts==['./app.js'],parser.scripts
+          js=(root/'app.js').read_text()
+          assert 'innerHTML' not in js, 'No untrusted HTML injection'
+          assert 'main' not in js.split('const BASE=')[1].split(';')[0], 'Must use V2 branch'
+          assert 'web-top30.json' in js and 'listas.json' in js
+          assert (root/'styles.css').stat().st_size>1000
+          print('TT_V2_WEB_VALIDATED=YES')
+          PY
+      - name: Upload standalone V2 web preview (no V1 deployment)
+        uses: actions/upload-artifact@v4
+        with:
+          name: ttactualidad-v2-web-preview
+          path: v2/ttendencias/site/
+          retention-days: 14
