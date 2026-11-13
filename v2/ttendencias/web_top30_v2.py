@@ -109,6 +109,7 @@ def build(history, queue):
         result.append({
             "rank": rank,
             "name": topic["name"],
+            "entered_top30_at": topic.get("entered_top30_at") or topic.get("first_seen_at") or "",
             "trend_id": topic["trend_id"],
             "revision": item.get("revision") or 1,
             "status": category,
