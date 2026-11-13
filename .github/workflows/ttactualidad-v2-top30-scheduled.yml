@@ -10,10 +10,6 @@ on:
 permissions:
   contents: write
 
-concurrency:
-  group: ttactualidad-v2-top30-history
-  cancel-in-progress: false
-
 jobs:
   refresh-v2:
     uses: fabricelop/europapress-rss/.github/workflows/ttactualidad-v2-step01.yml@feature/ttactualidad-v2-clean
