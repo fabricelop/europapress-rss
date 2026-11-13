@@ -7,36 +7,32 @@
   "previous_run_id": "tr-20261113T062900-chat-direct",
   "command_id": "tr-20261113T072500-chat-direct",
   "source": "chat_direct",
-  "status": "RUNNING",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-13T07:25:00+01:00",
-  "updated_at": "2026-11-13T07:28:30+01:00",
+  "updated_at": "2026-11-13T07:30:00+01:00",
   "current": 3,
   "total": 3,
-  "trend_id": "d7a4b8618d4f",
-  "title": "álbum del año",
-  "queue_complete": false,
-  "processed_ids": [],
+  "trend_id": null,
+  "title": "Pasada editorial TTendencias",
+  "queue_complete": true,
+  "processed_ids": [
+    "f94aacb61a8f",
+    "d7a4b8618d4f",
+    "4cd369e90554"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "f94aacb61a8f",
-    "d7a4b8618d4f",
-    "4cd369e90554"
-  ],
-  "remaining_active_ids": [
-    "f94aacb61a8f",
-    "d7a4b8618d4f",
-    "4cd369e90554"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 3,
     "observed": 3,
-    "closed": 0,
-    "explained": 0,
+    "closed": 3,
+    "explained": 1,
     "problematic": 0,
     "updates": 0,
-    "review_completed_no_distinct_event": 0,
+    "review_completed_no_distinct_event": 2,
     "maintenance_reviews": 0,
     "unchanged_reviews": 0,
     "continuity_updates": 0,
@@ -46,7 +42,7 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 3,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -55,7 +51,29 @@
     "concurrent_convergence": 0,
     "cause_unconfirmed": 0
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "f94aacb61a8f",
+      "revision": 0,
+      "name": "#LaIslaDeLasTentaciones20",
+      "outcome": "review_completed_no_distinct_event",
+      "applied": true
+    },
+    {
+      "id": "d7a4b8618d4f",
+      "revision": 0,
+      "name": "álbum del año",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "4cd369e90554",
+      "revision": 0,
+      "name": "Jorge Salvaje",
+      "outcome": "review_completed_no_distinct_event",
+      "applied": true
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -366,29 +384,36 @@
       "status": "RUNNING",
       "phase": "persisting",
       "message": "Investigación JIT completada: álbum del año tiene causa actual verificada (LUX gana Álbum del Año); #LaIslaDeLasTentaciones20 y Jorge Salvaje reingresan por el mismo episodio ya explicado, sin acontecimiento material independiente. Persistiendo 3/3; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-13T07:30:00+01:00",
+      "run_id": "tr-20261113T072500-chat-direct",
+      "status": "DONE",
+      "phase": "closing",
+      "message": "Pasada TTendencias completada 3/3. «álbum del año» quedó explicado por el Latin Grammy a Álbum del Año de LUX; #LaIslaDeLasTentaciones20 y Jorge Salvaje se cerraron como reentradas sin acontecimiento material distinto, evitando duplicados. Aplicador confirmado en 30ec69bd4063c9ff2b220bf6943cb37b1f142419. Barrera final: editorial-queue=0 y mobile-decisions sin estados editoriales activos. ImageGen=0; publicaciones=0; incidentes=0."
     }
   ],
   "last_started_at": "2026-11-13T06:32:47+01:00",
-  "last_completed_at": "2026-11-13T06:35:15+01:00",
+  "last_completed_at": "2026-11-13T07:30:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261113T062900-chat-direct",
+    "run_id": "tr-20261113T072500-chat-direct",
     "status": "DONE",
-    "started_at": "2026-11-13T06:29:03+01:00",
-    "finished_at": "2026-11-13T06:35:15+01:00",
-    "at": "2026-11-13T06:35:15+01:00",
+    "started_at": "2026-11-13T07:25:00+01:00",
+    "finished_at": "2026-11-13T07:30:00+01:00",
+    "at": "2026-11-13T07:30:00+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 5,
-      "observed": 5,
-      "closed": 5,
-      "explained": 2,
+      "attempted": 3,
+      "observed": 3,
+      "closed": 3,
+      "explained": 1,
       "problematic": 0,
-      "updates": 2,
-      "review_completed_no_distinct_event": 0,
-      "maintenance_reviews": 3,
-      "unchanged_reviews": 1,
-      "continuity_updates": 2,
+      "updates": 0,
+      "review_completed_no_distinct_event": 2,
+      "maintenance_reviews": 0,
+      "unchanged_reviews": 0,
+      "continuity_updates": 0,
       "distinct_updates": 0,
       "stale_reviews": 0,
       "unverified_reviews": 0,
@@ -405,59 +430,39 @@
       "cause_unconfirmed": 0
     },
     "processed_ids": [
-      "6132b2e3fed4",
-      "0edb044d5bb7",
-      "red-review-f5052ee0823a026c3feb",
-      "red-review-910c95370d0f0195f25e",
-      "red-review-ed22c43fe843e72c0015"
+      "f94aacb61a8f",
+      "d7a4b8618d4f",
+      "4cd369e90554"
     ],
     "converged_ids": [],
     "outcomes": [
       {
-        "id": "6132b2e3fed4",
+        "id": "f94aacb61a8f",
         "revision": 0,
-        "name": "Asraf",
-        "outcome": "explained_distinct_episode",
-        "applied": true,
-        "material_event_key": "asraf-wins-supervivientes-all-stars-3-2026-11-13"
+        "name": "#LaIslaDeLasTentaciones20",
+        "outcome": "review_completed_no_distinct_event",
+        "applied": true
       },
       {
-        "id": "0edb044d5bb7",
+        "id": "d7a4b8618d4f",
         "revision": 0,
-        "name": "Rosalia",
+        "name": "álbum del año",
         "outcome": "explained",
         "applied": true
       },
       {
-        "id": "red-review-f5052ee0823a026c3feb",
+        "id": "4cd369e90554",
         "revision": 0,
-        "name": "Revisar novedades: NVIDIA",
-        "outcome": "continuity",
-        "applied": true,
-        "source_id": "cf2df84a5714"
-      },
-      {
-        "id": "red-review-910c95370d0f0195f25e",
-        "revision": 0,
-        "name": "Revisar novedades: Jensen Huang",
-        "outcome": "continuity",
-        "applied": true,
-        "source_id": "f3c37f45aebd"
-      },
-      {
-        "id": "red-review-ed22c43fe843e72c0015",
-        "revision": 0,
-        "name": "Revisar novedades: #HuelgaGeneral",
-        "outcome": "unchanged",
-        "applied": true,
-        "source_id": "4f1dae5df224"
+        "name": "Jorge Salvaje",
+        "outcome": "review_completed_no_distinct_event",
+        "applied": true
       }
     ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada TTendencias completada 5/5. Asraf quedó como episodio material distinto por su victoria en la final; Rosalia quedó explicada por sus cinco Latin Grammy; NVIDIA y Jensen Huang se actualizaron como continuidad tras la dimisión de Huang y el nombramiento interino de Colette Kress; #HuelgaGeneral quedó unchanged al no aparecer un episodio material nuevo. Barrera final: editorial-queue=0 y mobile-decisions sin estados editoriales activos. ImageGen=0; publicaciones=0; incidentes=0."
+    "message": "Pasada TTendencias completada 3/3. «álbum del año» quedó explicado por el Latin Grammy a Álbum del Año de LUX; #LaIslaDeLasTentaciones20 y Jorge Salvaje se cerraron como reentradas sin acontecimiento material distinto, evitando duplicados. Aplicador confirmado en 30ec69bd4063c9ff2b220bf6943cb37b1f142419. Barrera final: editorial-queue=0 y mobile-decisions sin estados editoriales activos. ImageGen=0; publicaciones=0; incidentes=0."
   },
-  "message": "Investigación JIT completada: álbum del año tiene causa actual verificada (LUX gana Álbum del Año); #LaIslaDeLasTentaciones20 y Jorge Salvaje reingresan por el mismo episodio ya explicado, sin acontecimiento material independiente. Persistiendo 3/3; sin ImageGen ni publicación.",
+  "message": "Pasada TTendencias completada 3/3. «álbum del año» quedó explicado por el Latin Grammy a Álbum del Año de LUX; #LaIslaDeLasTentaciones20 y Jorge Salvaje se cerraron como reentradas sin acontecimiento material distinto, evitando duplicados. Aplicador confirmado en 30ec69bd4063c9ff2b220bf6943cb37b1f142419. Barrera final: editorial-queue=0 y mobile-decisions sin estados editoriales activos. ImageGen=0; publicaciones=0; incidentes=0.",
   "history": [
     {
       "run_id": "tr-1794361941170-manual",
@@ -7296,7 +7301,7 @@
     }
   ],
   "outbox_comment_id": 6837437988,
-  "editorial_apply_commit": "00352ec7fcd37ff36c29e6e7a92ebb7c69afd963",
+  "editorial_apply_commit": "30ec69bd4063c9ff2b220bf6943cb37b1f142419",
   "refresh_workflow_run_id": 43346742476,
   "refresh_conclusion": "in_progress_checkout",
   "maintenance_apply_commits": [
@@ -7622,6 +7627,6 @@
   ],
   "processed": [],
   "maintenance_outbox_commit": "970b545c88b09429a23d15ec893b9d66fb611297",
-  "editorial_apply_run_id": 43343524401,
-  "finished_at": null
+  "editorial_apply_run_id": 43378988402,
+  "finished_at": "2026-11-13T07:30:00+01:00"
 }
