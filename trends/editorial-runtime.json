@@ -4,38 +4,39 @@
   "version": 1,
   "canonical": true,
   "run_id": "tr-20261113T203700-chat-direct",
-  "previous_run_id": "tr-20261113T191000-chat-direct",
+  "previous_run_id": "tr-20261113T192500-chat-direct",
   "command_id": "tr-20261113T192500-chat-direct",
   "source": "chat_direct",
-  "status": "RUNNING",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-13T20:37:00+01:00",
-  "updated_at": "2026-11-13T20:40:00+01:00",
-  "current": 0,
-  "total": 1,
+  "updated_at": "2026-11-13T20:44:30+01:00",
+  "current": 3,
+  "total": 3,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
   "processed_ids": [
-    "red-review-1a5399823ae27612326e",
-    "red-review-e0497624508347621ae8"
+    "red-review-89131aa94658e10a26da",
+    "red-review-97c4f94c705cb83a6f9d",
+    "red-review-38d12a6c09ae041727e7"
   ],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
+    "attempted": 3,
+    "observed": 3,
+    "closed": 3,
     "explained": 0,
     "problematic": 0,
-    "updates": 1,
+    "updates": 3,
     "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 2,
-    "unchanged_reviews": 1,
-    "continuity_updates": 1,
-    "distinct_updates": 0,
+    "maintenance_reviews": 3,
+    "unchanged_reviews": 0,
+    "continuity_updates": 2,
+    "distinct_updates": 1,
     "stale_reviews": 0,
     "unverified_reviews": 0,
     "anticipation_reviews": 0,
@@ -51,20 +52,29 @@
   },
   "outcomes": [
     {
-      "id": "red-review-1a5399823ae27612326e",
+      "id": "red-review-89131aa94658e10a26da",
       "revision": 0,
-      "name": "Revisar novedades: La UCO",
-      "outcome": "unchanged",
-      "applied": true,
-      "apply_commit": "13adfab38ac414db4a93f00fc551af9d1f12e4b2"
-    },
-    {
-      "id": "red-review-e0497624508347621ae8",
-      "revision": 0,
-      "name": "Revisar novedades: Tezanos",
+      "name": "Revisar novedades: Jordi Wild",
       "outcome": "continuity",
       "applied": true,
-      "apply_commit": "13adfab38ac414db4a93f00fc551af9d1f12e4b2"
+      "apply_commit": "c59292cb3d9adf83c758565b34119dca8e1a8a7b"
+    },
+    {
+      "id": "red-review-97c4f94c705cb83a6f9d",
+      "revision": 0,
+      "name": "Revisar novedades: Feijoo",
+      "outcome": "distinct_update",
+      "applied": true,
+      "created_id": "trend-update-9f23b494f309db551157",
+      "apply_commit": "0c88a8cdd984fd47a820048890ed7a91e3db20f9"
+    },
+    {
+      "id": "red-review-38d12a6c09ae041727e7",
+      "revision": 0,
+      "name": "Revisar novedades: Corvillo",
+      "outcome": "continuity",
+      "applied": true,
+      "apply_commit": "0c88a8cdd984fd47a820048890ed7a91e3db20f9"
     }
   ],
   "incident_count": 0,
@@ -746,24 +756,24 @@
     }
   ],
   "last_started_at": "2026-11-13T19:10:00+01:00",
-  "last_completed_at": "2026-11-13T19:11:02+01:00",
+  "last_completed_at": "2026-11-13T20:44:30+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261113T191000-chat-direct",
+    "run_id": "tr-20261113T192500-chat-direct",
     "status": "DONE",
-    "started_at": "2026-11-13T19:10:00+01:00",
-    "finished_at": "2026-11-13T19:11:02+01:00",
+    "started_at": "2026-11-13T19:25:00+01:00",
+    "finished_at": "2026-11-13T19:31:40+01:00",
     "summary": {
-      "attempted": 0,
-      "observed": 0,
-      "closed": 0,
+      "attempted": 2,
+      "observed": 2,
+      "closed": 2,
       "explained": 0,
       "problematic": 0,
-      "updates": 0,
+      "updates": 1,
       "review_completed_no_distinct_event": 0,
-      "maintenance_reviews": 0,
-      "unchanged_reviews": 0,
-      "continuity_updates": 0,
+      "maintenance_reviews": 2,
+      "unchanged_reviews": 1,
+      "continuity_updates": 1,
       "distinct_updates": 0,
       "stale_reviews": 0,
       "unverified_reviews": 0,
@@ -778,13 +788,33 @@
       "incidents": 0,
       "concurrent_convergence": 0
     },
-    "processed_ids": [],
-    "outcomes": [],
+    "processed_ids": [
+      "red-review-1a5399823ae27612326e",
+      "red-review-e0497624508347621ae8"
+    ],
+    "outcomes": [
+      {
+        "id": "red-review-1a5399823ae27612326e",
+        "revision": 0,
+        "name": "Revisar novedades: La UCO",
+        "outcome": "unchanged",
+        "applied": true,
+        "apply_commit": "13adfab38ac414db4a93f00fc551af9d1f12e4b2"
+      },
+      {
+        "id": "red-review-e0497624508347621ae8",
+        "revision": 0,
+        "name": "Revisar novedades: Tezanos",
+        "outcome": "continuity",
+        "applied": true,
+        "apply_commit": "13adfab38ac414db4a93f00fc551af9d1f12e4b2"
+      }
+    ],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 y mobile-decisions sin estados editoriales activos; Top 30 fresco de las 19:10. Sin ImageGen ni publicaciones."
+    "message": "Pasada TTendencias completada 2/2: La UCO unchanged y Tezanos actualizado como continuidad del mismo macrosondeo. Persistencia verificada en main por 13adfab38ac414db4a93f00fc551af9d1f12e4b2; cola final=0. ImageGen=0; publicaciones=0."
   },
-  "message": "Persistiendo actualización de continuidad para Jordi Wild: las tres entrevistas ya están publicadas y concentran cerca de seis millones de visualizaciones en diez horas.",
+  "message": "Pasada TTendencias completada 3/3: Jordi Wild actualizado como continuidad tras publicarse las tres entrevistas y rozar 6M de visualizaciones; Feijoo abrió un episodio nuevo por su entrevista con Jordi Wild; Corvillo actualizado como continuidad con la negación oficial del Gobierno. Persistencia verificada en main; cola final=0 y mobile-decisions activos=0. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794361941170-manual",
@@ -5281,20 +5311,85 @@
       "explained": 0,
       "pending": 0,
       "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 y mobile-decisions sin estados editoriales activos; Top 30 fresco de las 19:10. Sin ImageGen ni publicaciones."
+    },
+    {
+      "run_id": "tr-20261113T203700-chat-direct",
+      "status": "DONE",
+      "started_at": "2026-11-13T20:37:00+01:00",
+      "finished_at": "2026-11-13T20:44:30+01:00",
+      "at": "2026-11-13T20:44:30+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 3,
+        "observed": 3,
+        "closed": 3,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 3,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 3,
+        "unchanged_reviews": 0,
+        "continuity_updates": 2,
+        "distinct_updates": 1,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [
+        "red-review-89131aa94658e10a26da",
+        "red-review-97c4f94c705cb83a6f9d",
+        "red-review-38d12a6c09ae041727e7"
+      ],
+      "converged_ids": [],
+      "outcomes": [
+        {
+          "id": "red-review-89131aa94658e10a26da",
+          "revision": 0,
+          "name": "Revisar novedades: Jordi Wild",
+          "outcome": "continuity",
+          "applied": true,
+          "apply_commit": "c59292cb3d9adf83c758565b34119dca8e1a8a7b"
+        },
+        {
+          "id": "red-review-97c4f94c705cb83a6f9d",
+          "revision": 0,
+          "name": "Revisar novedades: Feijoo",
+          "outcome": "distinct_update",
+          "applied": true,
+          "created_id": "trend-update-9f23b494f309db551157",
+          "apply_commit": "0c88a8cdd984fd47a820048890ed7a91e3db20f9"
+        },
+        {
+          "id": "red-review-38d12a6c09ae041727e7",
+          "revision": 0,
+          "name": "Revisar novedades: Corvillo",
+          "outcome": "continuity",
+          "applied": true,
+          "apply_commit": "0c88a8cdd984fd47a820048890ed7a91e3db20f9"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada TTendencias completada 3/3: Jordi Wild actualizado como continuidad tras publicarse las tres entrevistas y rozar 6M de visualizaciones; Feijoo abrió un episodio nuevo por su entrevista con Jordi Wild; Corvillo actualizado como continuidad con la negación oficial del Gobierno. Persistencia verificada en main; cola final=0 y mobile-decisions activos=0. ImageGen=0; publicaciones=0."
     }
   ],
-  "current_item": {
-    "id": "red-review-89131aa94658e10a26da",
-    "revision": 0,
-    "name": "Revisar novedades: Jordi Wild"
-  },
+  "current_item": null,
   "withdrawn_ids": [],
-  "last_finished_at": "2026-11-13T19:11:02+01:00",
-  "last_revalidated_at": "2026-11-13T19:11:02+01:00",
+  "last_finished_at": "2026-11-13T20:44:30+01:00",
+  "last_revalidated_at": "2026-11-13T20:44:30+01:00",
   "last_revalidation": {
     "queue_count": 0,
     "mobile_active_count": 0,
-    "queue_updated_at": "2026-11-13T19:11:02+01:00"
+    "queue_updated_at": "2026-11-13T19:42:51.429021+00:00"
   },
   "prior_runtime_observed": {
     "run_id": "tr-autoguard-1794381666",
@@ -5304,7 +5399,7 @@
   },
   "apply_workflow_run_id": 43477991983,
   "apply_commit": "6e82d472feca711a890d2607a1285574e12e8c33",
-  "maintenance_workflow_run_id": 43461771128,
+  "maintenance_workflow_run_id": 43494709436,
   "maintenance_job_id": "red-review-61d494cc18e2321aaa5b",
   "workflow_run_id": 43046392853,
   "trigger_commit": "bb0ffc53f748ed35a6875c6a5560857e8351768f",
@@ -8390,6 +8485,75 @@
       "current": 0,
       "total": 0,
       "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 y mobile-decisions sin estados editoriales activos; Top 30 fresco de las 19:10. Sin ImageGen ni publicaciones."
+    },
+    {
+      "run_id": "tr-20261113T203700-chat-direct",
+      "status": "DONE",
+      "started_at": "2026-11-13T20:37:00+01:00",
+      "finished_at": "2026-11-13T20:44:30+01:00",
+      "at": "2026-11-13T20:44:30+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 3,
+        "observed": 3,
+        "closed": 3,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 3,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 3,
+        "unchanged_reviews": 0,
+        "continuity_updates": 2,
+        "distinct_updates": 1,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [
+        "red-review-89131aa94658e10a26da",
+        "red-review-97c4f94c705cb83a6f9d",
+        "red-review-38d12a6c09ae041727e7"
+      ],
+      "converged_ids": [],
+      "outcomes": [
+        {
+          "id": "red-review-89131aa94658e10a26da",
+          "revision": 0,
+          "name": "Revisar novedades: Jordi Wild",
+          "outcome": "continuity",
+          "applied": true,
+          "apply_commit": "c59292cb3d9adf83c758565b34119dca8e1a8a7b"
+        },
+        {
+          "id": "red-review-97c4f94c705cb83a6f9d",
+          "revision": 0,
+          "name": "Revisar novedades: Feijoo",
+          "outcome": "distinct_update",
+          "applied": true,
+          "created_id": "trend-update-9f23b494f309db551157",
+          "apply_commit": "0c88a8cdd984fd47a820048890ed7a91e3db20f9"
+        },
+        {
+          "id": "red-review-38d12a6c09ae041727e7",
+          "revision": 0,
+          "name": "Revisar novedades: Corvillo",
+          "outcome": "continuity",
+          "applied": true,
+          "apply_commit": "0c88a8cdd984fd47a820048890ed7a91e3db20f9"
+        }
+      ],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada TTendencias completada 3/3: Jordi Wild actualizado como continuidad tras publicarse las tres entrevistas y rozar 6M de visualizaciones; Feijoo abrió un episodio nuevo por su entrevista con Jordi Wild; Corvillo actualizado como continuidad con la negación oficial del Gobierno. Persistencia verificada en main; cola final=0 y mobile-decisions activos=0. ImageGen=0; publicaciones=0."
     }
   ],
   "outbox_comment_id": 6849930890,
@@ -8397,7 +8561,8 @@
   "refresh_workflow_run_id": null,
   "refresh_conclusion": "completed_with_health_status_conflict_markers",
   "maintenance_apply_commits": [
-    "70b416d6c353890118c5ff180fa0f683bdc1cb99"
+    "c59292cb3d9adf83c758565b34119dca8e1a8a7b",
+    "0c88a8cdd984fd47a820048890ed7a91e3db20f9"
   ],
   "outbox_commit": "d4a002c34e63c0e825a820bc432b784b1353cbaa",
   "prior_last_run": {
@@ -8840,17 +9005,46 @@
       "revision": 0,
       "name": "Revisar novedades: Jordi Wild",
       "message": "Guardando maintenance-outbox como updated de continuidad; sin nueva ficha, imagen ni publicación."
+    },
+    {
+      "at": "2026-11-13T20:41:00+01:00",
+      "phase": "investigating",
+      "trend_id": "red-review-97c4f94c705cb83a6f9d",
+      "revision": 0,
+      "name": "Revisar novedades: Feijoo",
+      "message": "Verificado episodio posterior: entrevista de Jordi Wild publicada el 13/11 a las 10:00; materialmente distinta del macrosondeo del CIS."
+    },
+    {
+      "at": "2026-11-13T20:42:00+01:00",
+      "phase": "investigating",
+      "trend_id": "red-review-38d12a6c09ae041727e7",
+      "revision": 0,
+      "name": "Revisar novedades: Corvillo",
+      "message": "Verificada continuidad: el Gobierno niega la reunión descrita en los mensajes recogidos por la UCO; mismo episodio, sin nueva ficha."
+    },
+    {
+      "at": "2026-11-13T20:44:30+01:00",
+      "phase": "closing",
+      "trend_id": null,
+      "revision": null,
+      "name": null,
+      "message": "Barrera final: editorial-queue=0 y mobile-decisions activos=0. Persistencia verificada; sin ImageGen ni publicaciones."
     }
   ],
-  "processed": [],
+  "processed": [
+    "red-review-89131aa94658e10a26da",
+    "red-review-97c4f94c705cb83a6f9d",
+    "red-review-38d12a6c09ae041727e7"
+  ],
   "maintenance_outbox_commit": "c764cbdfc37ba7b67fedd38a16837ee068ae9467",
   "editorial_apply_run_id": 43477991983,
-  "finished_at": null,
-  "completed_at": null,
+  "finished_at": "2026-11-13T20:44:30+01:00",
+  "completed_at": "2026-11-13T20:44:30+01:00",
   "maintenance_outbox_commits": [
-    "06d86dda15401f93684aba63d1fae3d01eba7960",
-    "06d48d72a1e21365ce75c51284049eb798b0fd13"
+    "24805770cc5efabc2f14e0019c9fa592aecf4d7b",
+    "82935552cfd2620c52c01e6603ac598051a8eec4",
+    "c74a2aca815578b22fd10e4d2ee66b3dd64f0693"
   ],
-  "maintenance_apply_run_id": 43483165425,
-  "maintenance_apply_commit": "13adfab38ac414db4a93f00fc551af9d1f12e4b2"
+  "maintenance_apply_run_id": 43494709436,
+  "maintenance_apply_commit": "0c88a8cdd984fd47a820048890ed7a91e3db20f9"
 }
