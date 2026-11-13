@@ -43,9 +43,13 @@ def verify_conversation(page, trend_id, revision):
                           r"\b", text, re.I) is not None)
     try:
         users = page.locator('[data-message-author-role="user"]')
-        if users.count() == 1:
+        try:
+            role_count = users.count()
+        except AttributeError:
+            role_count = 0  # Tests/instancias antiguas sin API de roles.
+        if role_count == 1:
             return matches(users.first.inner_text(timeout=4500))
-        if users.count() > 1:
+        if role_count > 1:
             return False
         body = page.locator("body").inner_text(timeout=4500)
         markers = ("\nYou said:\n", "\nTú dijiste:\n", "\nHas dicho:\n")
