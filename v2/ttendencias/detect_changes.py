@@ -73,6 +73,7 @@ def build(snapshot, previous=None, *, now=None):
                 old["episode_token"] = episode_id(key, stamp)
             else:
                 status = "short_return"  # Hasta 24 h fuera: no proponer nueva explicación
+                old["entered_top30_at"] = stamp  # Nuevo tramo de presencia, SIN revisar el episodio
         elif prior_rank != rank:
             status = "up" if rank < prior_rank else "down"
         old.update(name=name, key=key, trend_id=stable_trend_id(key), active=True, rank=rank, last_seen_at=stamp,
