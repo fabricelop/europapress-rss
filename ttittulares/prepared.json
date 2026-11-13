@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-11-13T17:35:42.631485Z",
+  "updated_at": "2026-11-13T17:42:22.602Z",
   "items": [
     {
       "event_id": "c2c5fea57972",
@@ -922,7 +922,7 @@
       "image_strategy": "ai_plus_fallback",
       "sensitive_editorial": false,
       "prepared_at": "2026-11-13T17:34:55.143174Z",
-      "ai_image_status": "none",
+      "ai_image_status": "failed",
       "fallback_image_status": "ready",
       "image_choice": "fallback",
       "image_status": "none",
@@ -947,7 +947,10 @@
         "generated": false,
         "alt": "Facua denuncia que Ryanair se ahorre costes a costa de los pasajeros al adelantar 20 minutos el cierre de mostradores"
       },
-      "archive_image_status": "ready"
+      "archive_image_status": "ready",
+      "ai_image_last_attempt_status": "failed",
+      "ai_image_last_attempt_at": "2026-11-13T17:42:22.602Z",
+      "ai_image_failure_reason": "No hubo evidencia suficiente de envío del prompt ImageGen; {\"composerMarker\":false,\"submitted\":false,\"userTurns\":0,\"generating\":true,\"inConversation\":true,\"commandOutsideComposer\":false,\"send\":false,\"sendDisabled\":false,"
     }
   ],
   "count": 16,
