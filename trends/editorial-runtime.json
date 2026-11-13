@@ -3,35 +3,41 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261113T044100-chat-direct",
-  "previous_run_id": "tr-20261113T042500-chat-direct",
-  "command_id": "tr-20261113T044100-chat-direct",
+  "run_id": "tr-20261113T062900-chat-direct",
+  "previous_run_id": "tr-20261113T044100-chat-direct",
+  "command_id": "tr-20261113T062900-chat-direct",
   "source": "chat_direct",
-  "status": "success",
-  "phase": "closing",
-  "started_at": "2026-11-13T04:41:00+01:00",
-  "updated_at": "2026-11-13T05:13:51+01:00",
+  "status": "RUNNING",
+  "phase": "investigating",
+  "started_at": "2026-11-13T06:29:03+01:00",
+  "updated_at": "2026-11-13T06:29:03+01:00",
   "current": 0,
-  "total": 0,
+  "total": 3,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": true,
-  "processed_ids": [
-    "2b3928534a86"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "6132b2e3fed4",
+    "0edb044d5bb7",
+    "red-review-f5052ee0823a026c3feb"
+  ],
+  "remaining_active_ids": [
+    "6132b2e3fed4",
+    "0edb044d5bb7",
+    "red-review-f5052ee0823a026c3feb"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 0,
+    "attempted": 3,
+    "observed": 3,
     "closed": 0,
     "explained": 0,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 0,
+    "maintenance_reviews": 1,
     "unchanged_reviews": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
@@ -40,7 +46,7 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 3,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -332,9 +338,16 @@
       "status": "DONE",
       "phase": "closing",
       "message": "Pasada TTendencias completada 15/15. 13 reentradas: 2 episodios materiales distintos explicados (Abascal, Barcelona) y 11 cerrados no_distinct_event. 2 revisiones rojas posteriores (Jordi Wild, Youtuber) verificadas unchanged, conservando texto y fecha. Cola final=0. ImageGen=0; image-outbox editorial=0; publicaciones=0; incidentes=0."
+    },
+    {
+      "at": "2026-11-13T06:29:03+01:00",
+      "run_id": "tr-20261113T062900-chat-direct",
+      "status": "RUNNING",
+      "phase": "investigating",
+      "message": "Pasada manual iniciada desde ChatGPT con cola autoritativa=3: Asraf (reentrada), Rosalia (entrada nueva) y revisión roja de NVIDIA. Investigación JIT; sin ImageGen ni publicación."
     }
   ],
-  "last_started_at": "2026-11-13T05:13:51+01:00",
+  "last_started_at": "2026-11-13T06:29:03+01:00",
   "last_completed_at": "2026-11-13T05:13:51+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -377,7 +390,7 @@
     "incidents": [],
     "message": "Pasada TTendencias completada 0/0. Top 30 refrescado a las 04:40:59; editorial-queue=0 y mobile-decisions sin estados editoriales activos en la barrera JIT final. No había investigaciones, anticipaciones ni revisiones rojas pendientes. ImageGen=0; publicaciones=0; incidentes=0."
   },
-  "message": "Pasada TTendencias completada 0/0. Top 30 refrescado a las 04:40:59; editorial-queue=0 y mobile-decisions sin estados editoriales activos en la barrera JIT final. No había investigaciones, anticipaciones ni revisiones rojas pendientes. ImageGen=0; publicaciones=0; incidentes=0.",
+  "message": "Pasada manual iniciada desde ChatGPT con cola autoritativa=3: Asraf (reentrada), Rosalia (entrada nueva) y revisión roja de NVIDIA. Investigación JIT; sin ImageGen ni publicación.",
   "history": [
     {
       "run_id": "tr-1794340649326-manual",
