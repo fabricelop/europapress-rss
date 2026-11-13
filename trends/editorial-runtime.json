@@ -11,8 +11,8 @@
   "phase": "closing",
   "started_at": "2026-11-13T13:55:00+01:00",
   "updated_at": "2026-11-13T14:07:49+01:00",
-  "current": 21,
-  "total": 21,
+  "current": 23,
+  "total": 23,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
@@ -39,20 +39,22 @@
     "0c33e3f2c8d6",
     "0f539e3e91d6",
     "382ad2c12d8e",
-    "42591dd67a4e"
+    "42591dd67a4e",
+    "red-review-44e4666bab644fb2d097",
+    "red-review-a153dcf3c20303ef0a52"
   ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 7,
-    "observed": 21,
-    "closed": 21,
+    "observed": 23,
+    "closed": 23,
     "explained": 6,
     "problematic": 1,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 0,
+    "maintenance_reviews": 2,
     "unchanged_reviews": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
@@ -67,7 +69,7 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 14,
+    "concurrent_convergence": 16,
     "cause_unconfirmed": 4
   },
   "outcomes": [
@@ -714,6 +716,13 @@
       "status": "DONE",
       "phase": "closing",
       "message": "Pasada TTendencias cerrada con barrera final editorial-queue=0. Se aplicaron directamente 7 resultados (6 explicaciones y españas r2 como problematic por detonante no verificable); 14 revisiones convergieron durante la ejecución y no se duplicaron. ImageGen=0; publicaciones=0; incidentes técnicos=0."
+    },
+    {
+      "at": "2026-11-13T14:07:49+01:00",
+      "run_id": "tr-20261113T135500-chat-direct",
+      "status": "DONE",
+      "phase": "closing",
+      "message": "Barrera final repetida tras dos revisiones rojas concurrentes: ambas ya cerradas por otro consumidor antes de persistencia; no duplicadas. Cola autoritativa final=0."
     }
   ],
   "last_started_at": "2026-11-13T14:07:48+01:00",
