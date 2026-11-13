@@ -1,19 +1,19 @@
 {
   "version": 1,
-  "checked_at": "2026-11-13T10:06:16.905875+00:00",
+  "checked_at": "2026-11-13T10:44:07.233336+00:00",
   "projects": {
     "ttittulares": {
       "project": "ttittulares",
-      "checked_at": "2026-11-13T10:06:16.905875+00:00",
+      "checked_at": "2026-11-13T10:44:07.233336+00:00",
       "pending_count": 0,
       "pending_ids": [],
       "oldest_at": null,
       "latest_run": {
-        "id": "tt-manual-20261113-0945-chat",
+        "id": "tt-manual-20261113-1115-chat",
         "status": "DONE",
-        "started_at": "2026-11-13T08:45:00Z",
-        "updated_at": "2026-11-13T08:53:00+00:00",
-        "finished_at": "2026-11-13T08:53:00Z",
+        "started_at": "2026-11-13T10:15:00Z",
+        "updated_at": "2026-11-13T10:15:00+00:00",
+        "finished_at": "2026-11-13T10:15:00Z",
         "source": "github_pr_trace"
       },
       "control_command": "tt-urgent-1794564146012",
@@ -25,44 +25,61 @@
     },
     "ttendencias": {
       "project": "ttendencias",
-      "checked_at": "2026-11-13T10:06:16.905875+00:00",
-      "pending_count": 2,
+      "checked_at": "2026-11-13T10:44:07.233336+00:00",
+      "pending_count": 4,
       "pending_ids": [
-        "2b0dcb3597e4",
-        "4d4b553426b2"
+        "289b3a5cdae3",
+        "25a914e9d748",
+        "ebd8d155e6d3",
+        "9f0be89bedc9"
       ],
-      "oldest_at": "2026-11-13T11:02:34+01:00",
+      "oldest_at": "2026-11-13T10:34:21.659626+00:00",
       "latest_run": {
-        "id": "tr-20261113T104000-chat-direct",
+        "id": "tr-20261113T112500-chat-direct",
         "status": "DONE",
-        "started_at": "2026-11-13T10:40:00+01:00",
-        "updated_at": "2026-11-13T09:51:20+00:00",
-        "finished_at": "2026-11-13T10:51:20+01:00",
-        "source": "editorial_runtime"
+        "started_at": "2026-11-13T11:25:00+01:00",
+        "updated_at": "2026-11-13T10:26:00+00:00",
+        "finished_at": "2026-11-13T11:26:00+01:00",
+        "source": "github_pr_trace"
       },
-      "control_command": "tr-autoguard-1794564358",
-      "last_command_at": "2026-11-13T10:05:58.043476Z",
-      "status": "within_start_window",
+      "control_command": "tr-1794566066169-manual",
+      "last_command_at": "2026-11-13T10:34:26.169Z",
+      "status": "dispatch_pending_ack",
       "should_dispatch": false,
       "item_execution": [
         {
-          "id": "2b0dcb3597e4",
-          "entered_at": "2026-11-13T11:02:34+01:00",
-          "should_start_by": "2026-11-13T10:07:34+00:00",
+          "id": "289b3a5cdae3",
+          "entered_at": "2026-11-13T10:34:21.659626+00:00",
+          "should_start_by": "2026-11-13T10:39:21.659626+00:00",
           "global_run_after_entry": false,
           "final_telegram_delivery_confirmed": false
         },
         {
-          "id": "4d4b553426b2",
-          "entered_at": "2026-11-13T11:02:34+01:00",
-          "should_start_by": "2026-11-13T10:07:34+00:00",
+          "id": "25a914e9d748",
+          "entered_at": "2026-11-13T10:34:28.526365+00:00",
+          "should_start_by": "2026-11-13T10:39:28.526365+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "ebd8d155e6d3",
+          "entered_at": "2026-11-13T10:34:39.655152+00:00",
+          "should_start_by": "2026-11-13T10:39:39.655152+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "9f0be89bedc9",
+          "entered_at": "2026-11-13T10:34:52.263712+00:00",
+          "should_start_by": "2026-11-13T10:39:52.263712+00:00",
           "global_run_after_entry": false,
           "final_telegram_delivery_confirmed": false
         }
       ],
-      "backlog_signature": "6f666efc0e6b366a",
-      "expected_start_by": "2026-11-13T10:07:34+00:00",
+      "backlog_signature": "dc3dff99627b29d9",
+      "expected_start_by": "2026-11-13T10:39:21.659626+00:00",
       "attempts": 0,
+      "previous_target_completed_or_superseded": false,
       "last_request_at": "2026-11-13T08:29:33.517446+00:00"
     }
   },
