@@ -37,10 +37,11 @@ if (!$logErrText.Contains('TT_V2_HEADLESS_PREFLIGHT_ERROR=') -or
 $earliest = $logOut.LastWriteTime.AddMinutes(-5)
 
 function Get-ProfileV2Chrome {
-    $prefix = '--user-data-dir=' + $profile
     @(Get-CimInstance Win32_Process -Filter "Name='chrome.exe'" -ErrorAction Stop |
         Where-Object { $_.CommandLine -and
-            $_.CommandLine.IndexOf($prefix,
+            $_.CommandLine.IndexOf('--user-data-dir=',
+              [StringComparison]::OrdinalIgnoreCase) -ge 0 -and
+            $_.CommandLine.IndexOf($profile,
               [StringComparison]::OrdinalIgnoreCase) -ge 0 })
 }
 
