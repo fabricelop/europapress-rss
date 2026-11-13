@@ -3,22 +3,20 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261113T161000-chat-direct",
-  "previous_run_id": "tr-20261113T155500-chat-direct",
-  "command_id": "tr-20261113T161000-chat-direct",
+  "run_id": "tr-20261113T171000-chat-direct",
+  "previous_run_id": "tr-20261113T161000-chat-direct",
+  "command_id": "tr-20261113T171000-chat-direct",
   "source": "chat_direct",
-  "status": "waiting",
-  "phase": "closing",
-  "started_at": "2026-11-13T16:10:00+01:00",
-  "updated_at": "2026-11-13T16:38:02+01:00",
+  "status": "PROCESSING",
+  "phase": "preparing",
+  "started_at": "2026-11-13T17:10:00+01:00",
+  "updated_at": "2026-11-13T17:10:00+01:00",
   "current": 0,
-  "total": 0,
+  "total": 8,
   "trend_id": null,
-  "title": "Pasada editorial TTendencias",
+  "title": null,
   "queue_complete": false,
-  "processed_ids": [
-    "aa46bfd2625e"
-  ],
+  "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [
     "8d5fe835b7e5",
@@ -42,8 +40,8 @@
   ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 0,
+    "attempted": 8,
+    "observed": 8,
     "closed": 0,
     "explained": 0,
     "problematic": 0,
@@ -58,23 +56,17 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 8,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 1,
+    "incidents": 0,
     "concurrent_convergence": 0
   },
   "outcomes": [],
-  "incident_count": 1,
-  "incidents": [
-    {
-      "id": "health-status-json",
-      "status": "problematic",
-      "reason": "trends/health-status.json contiene marcadores de conflicto Git; la pasada actualizó la salud pero el archivo sigue sin ser JSON válido."
-    }
-  ],
+  "incident_count": 0,
+  "incidents": [],
   "error": null,
   "activity": [
     {
@@ -726,7 +718,7 @@
     ],
     "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 16:11:06), mobile-decisions sin estados editoriales activos y Top 30 vigente capturado a las 16:11:01. El refresco manual llegó al commit final de salud 94254d84368df096858e07fdef912f0866e4dac8. Incidencia no bloqueante: trends/health-status.json arrastra marcadores de conflicto y no es JSON válido. Sin ImageGen ni publicaciones."
   },
-  "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 16:11:06), mobile-decisions sin estados editoriales activos y Top 30 vigente capturado a las 16:11:01. El refresco manual llegó al commit final de salud 94254d84368df096858e07fdef912f0866e4dac8. Incidencia no bloqueante: trends/health-status.json arrastra marcadores de conflicto y no es JSON válido. Sin ImageGen ni publicaciones.",
+  "message": "Pasada TTendencias iniciada 0/8: revalidando cola autoritativa e investigando tendencias pendientes. Sin ImageGen ni publicación.",
   "history": [
     {
       "run_id": "tr-1794361941170-manual",
@@ -8242,6 +8234,11 @@
       "at": "2026-11-13T16:16:30+01:00",
       "phase": "closing",
       "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 16:11:06), mobile-decisions sin estados editoriales activos y Top 30 vigente capturado a las 16:11:01. El refresco manual llegó al commit final de salud 94254d84368df096858e07fdef912f0866e4dac8. Incidencia no bloqueante: trends/health-status.json arrastra marcadores de conflicto y no es JSON válido. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-13T17:10:00+01:00",
+      "phase": "preparing",
+      "message": "Cola inicial 8; iniciando pasada editorial real contra main, sin ImageGen ni publicación."
     }
   ],
   "processed": [],
