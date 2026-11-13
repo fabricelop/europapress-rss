@@ -53,6 +53,108 @@ function tweetText(raw){
  }
  return [summary,suffix,WEB_URL].filter(Boolean).join("\n");
 }
-function render(){const root=$("results");root.replaceChildren();for(const item of state.items){const card=el("details","trend");card.open=state.open===item.trend_id;card.addEventListener("toggle",()=>{if(card.open){state.open=item.trend_id;for(const other of root.querySelectorAll("details.trend"))if(other!==card&&other.open)other.open=false}else if(state.open===item.trend_id)state.open=null});const head=el("summary","trend-head");const icon=el("span","status-icon "+item.status,"●");icon.setAttribute("aria-label",({explicada:"Explicada",pendiente:"Pendiente",en_elaboracion:"En elaboración",incidencia:"Incidencia",desestimada:"Desestimada"})[item.status]||"Estado desconocido");icon.title=icon.getAttribute("aria-label");head.append(el("span","rank","T"+item.rank),el("strong","name",item.name),icon);card.append(head);const body=el("div","explanation",item.status==="explicada"?tweetText(item.explanation):({en_elaboracion:"En elaboración.",incidencia:"Incidencia en la elaboración.",desestimada:"Desestimada."})[item.status]||"Explicación pendiente.");card.append(body);root.append(card)}}
-async function refresh(){try{const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),15000);let response;try{response=await fetch(BASE+"web-top30.json?v="+Math.floor(Date.now()/60000),{cache:"no-store",signal:controller.signal})}finally{clearTimeout(timer)}if(!response.ok)throw Error("HTTP "+response.status);const data=valid(await response.json());state.items=data.items.slice().sort((a,b)=>a.rank-b.rank);state.captured=data.captured_at;render();$("notice").hidden=true}catch(error){$("notice").textContent="No se pudieron actualizar las tendencias. "+error.message;$("notice").hidden=false;if(!state.items.length)$("results").replaceChildren(el("p","loading","Sin datos disponibles."))}}
-refresh();setInterval(()=>{if(!document.hidden)refresh()},90000);
+const MARKS_KEY="ttactualidad-v2-red-marks-v1";
+let redMarks=loadRedMarks();
+let refreshing=false;
+function loadRedMarks(){
+ try {
+  const stored=JSON.parse(localStorage.getItem(MARKS_KEY)||"{}");
+  return stored&&typeof stored==="object"&&!Array.isArray(stored)?stored:{};
+ } catch {return {}}
+}
+function saveRedMarks(){
+ try {localStorage.setItem(MARKS_KEY,JSON.stringify(redMarks))} catch {/* Storage may be disabled */ }
+}
+function markStamp(item){return typeof item.entered_top30_at==="string"?item.entered_top30_at:""}
+function reconcileRedMarks(items){
+ const present=new Map(items.map(item=>[item.trend_id,markStamp(item)]));
+ let changed=false;
+ for(const [id,stamp] of Object.entries(redMarks)){
+  if(!present.has(id)||present.get(id)!==stamp){delete redMarks[id];changed=true}
+ }
+ if(changed)saveRedMarks();
+}
+function isMarked(item){return Object.hasOwn(redMarks,item.trend_id)&&redMarks[item.trend_id]===markStamp(item)}
+function toggleRedMark(item,card,button){
+ if(isMarked(item))delete redMarks[item.trend_id];
+ else redMarks[item.trend_id]=markStamp(item);
+ saveRedMarks();
+ const active=isMarked(item);
+ card.classList.toggle("marked-red",active);
+ button.setAttribute("aria-pressed",String(active));
+ button.setAttribute("aria-label",active?"Quitar marca roja de "+item.name:"Marcar en rojo "+item.name);
+ button.title=active?"Quitar marca roja":"Marcar en rojo";
+}
+function explanationTime(item){
+ if(item.status!=="explicada"||!item.captured_at)return null;
+ const date=new Date(item.captured_at);
+ if(!Number.isFinite(date.getTime()))return null;
+ const timezone="Europe/Madrid";
+ const clock=new Intl.DateTimeFormat("es-ES",{timeZone:timezone,hour:"2-digit",minute:"2-digit"}).format(date);
+ const full=new Intl.DateTimeFormat("es-ES",{timeZone:timezone,dateStyle:"short",timeStyle:"short"}).format(date);
+ const e=el("time","explained-at",clock);
+ e.dateTime=item.captured_at;
+ e.title="Explicación guardada el "+full+" (España)";
+ e.setAttribute("aria-label",e.title);
+ return e;
+}
+function render(){
+ const root=$("results");root.replaceChildren();
+ for(const item of state.items){
+  const card=el("details","trend");
+  card.classList.toggle("marked-red",isMarked(item));
+  card.open=state.open===item.trend_id;
+  card.addEventListener("toggle",()=>{
+   if(card.open){
+    state.open=item.trend_id;
+    for(const other of root.querySelectorAll("details.trend"))if(other!==card&&other.open)other.open=false;
+   }else if(state.open===item.trend_id)state.open=null;
+  });
+  const head=el("summary","trend-head");
+  const icon=el("span","status-icon "+item.status,"●");
+  icon.setAttribute("aria-label",({explicada:"Explicada",pendiente:"Pendiente",en_elaboracion:"En elaboración",incidencia:"Incidencia",desestimada:"Desestimada"})[item.status]||"Estado desconocido");
+  icon.title=icon.getAttribute("aria-label");
+  head.append(el("span","rank","T"+item.rank),el("strong","name",item.name));
+  const time=explanationTime(item);
+  if(time)head.append(time);
+  head.append(icon);
+  card.append(head);
+  const flag=el("button","red-toggle","R");
+  flag.type="button";
+  flag.setAttribute("aria-pressed",String(isMarked(item)));
+  flag.setAttribute("aria-label",isMarked(item)?"Quitar marca roja de "+item.name:"Marcar en rojo "+item.name);
+  flag.title=isMarked(item)?"Quitar marca roja":"Marcar en rojo";
+  flag.addEventListener("click",()=>toggleRedMark(item,card,flag));
+  card.append(flag);
+  const body=el("div","explanation",item.status==="explicada"?tweetText(item.explanation):({en_elaboracion:"En elaboración.",incidencia:"Incidencia en la elaboración.",desestimada:"Desestimada."})[item.status]||"Explicación pendiente.");
+  card.append(body);
+  root.append(card);
+ }
+}
+async function refresh(){
+ if(refreshing)return;
+ const button=$("refresh");refreshing=true;button.disabled=true;button.classList.add("loading-refresh");
+ try{
+  const controller=new AbortController();
+  const timer=setTimeout(()=>controller.abort(),15000);
+  let response;
+  try{response=await fetch(BASE+"web-top30.json?v="+Date.now(),{cache:"no-store",signal:controller.signal})}
+  finally{clearTimeout(timer)}
+  if(!response.ok)throw Error("HTTP "+response.status);
+  const data=valid(await response.json());
+  state.items=data.items.slice().sort((a,b)=>a.rank-b.rank);
+  state.captured=data.captured_at;
+  if(state.open&&!state.items.some(item=>item.trend_id===state.open))state.open=null;
+  reconcileRedMarks(state.items);
+  render();
+  $("notice").hidden=true;
+  button.title="Actualizar tendencias · última consulta "+new Intl.DateTimeFormat("es-ES",{hour:"2-digit",minute:"2-digit",timeZone:"Europe/Madrid"}).format(new Date());
+ }catch(error){
+  $("notice").textContent="No se pudieron actualizar las tendencias. "+error.message;
+  $("notice").hidden=false;
+  if(!state.items.length)$("results").replaceChildren(el("p","loading","Sin datos disponibles."));
+ }finally{refreshing=false;button.disabled=false;button.classList.remove("loading-refresh")}
+}
+$("refresh").addEventListener("click",refresh);
+refresh();
+setInterval(()=>{if(!document.hidden)refresh()},90000);
