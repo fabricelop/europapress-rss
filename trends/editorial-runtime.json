@@ -3,22 +3,20 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261113T085500-chat-direct",
-  "previous_run_id": "tr-20261113T072500-chat-direct",
-  "command_id": "tr-20261113T085500-chat-direct",
+  "run_id": "tr-20261113T101000-chat-direct",
+  "previous_run_id": "tr-20261113T085500-chat-direct",
+  "command_id": "tr-20261113T101000-chat-direct",
   "source": "chat_direct",
-  "status": "success",
-  "phase": "closing",
-  "started_at": "2026-11-13T08:55:00+01:00",
-  "updated_at": "2026-11-13T09:38:25+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-13T10:10:00+01:00",
+  "updated_at": "2026-11-13T10:10:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": true,
-  "processed_ids": [
-    "ee465ef30ece"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
@@ -381,6 +379,13 @@
       "status": "DONE",
       "phase": "closing",
       "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 2026-11-13T08:51:07+01:00), mobile-decisions y requests sin estados editoriales activos. Top 30 vigente capturado a las 08:51:01. Sin ImageGen ni publicaciones; incidentes=0."
+    },
+    {
+      "at": "2026-11-13T10:10:00+01:00",
+      "run_id": "tr-20261113T101000-chat-direct",
+      "status": "RUNNING",
+      "phase": "preparing",
+      "message": "Pasada manual iniciada desde ChatGPT; cola autoritativa inicial=0 (updated_at 2026-11-13T10:01:23+01:00). Revalidando barrera final en main; sin ImageGen ni publicación."
     }
   ],
   "last_started_at": "2026-11-13T09:38:25+01:00",
@@ -7632,6 +7637,5 @@
   ],
   "processed": [],
   "maintenance_outbox_commit": "970b545c88b09429a23d15ec893b9d66fb611297",
-  "editorial_apply_run_id": 43378988402,
-  "finished_at": "2026-11-13T08:56:00+01:00"
+  "editorial_apply_run_id": 43378988402
 }
