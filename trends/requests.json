@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-13T20:39:36.861276+00:00",
+  "updated_at": "2026-11-13T20:39:55.770439+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -311134,11 +311134,11 @@
       "id": "manual-c550af7b734565e1d4042fae0ba8d74f",
       "name": "Miente",
       "rank": 21,
-      "created_at": "2026-11-13T15:33:48.793244+00:00",
-      "revision": 0,
-      "status": "problematic",
-      "requested_at": "2026-11-13T15:33:48.793244+00:00",
-      "updated_at": "2026-11-13T15:33:48.793244+00:00",
+      "created_at": "2026-11-13T20:39:55.770439+00:00",
+      "revision": 1,
+      "status": "preparing",
+      "requested_at": "2026-11-13T20:39:55.770439+00:00",
+      "updated_at": "2026-11-13T20:39:55.770439+00:00",
       "auto_queued": false,
       "request_source": "ttactualidad_editor_hints",
       "reexplain": false,
@@ -311159,15 +311159,24 @@
           "source_revision": 0,
           "text": "Busca en x",
           "verification": "unverified_editor_context"
+        },
+        {
+          "at": "2026-11-13T20:39:55.770439+00:00",
+          "source_revision": 0,
+          "text": "Busca en x",
+          "verification": "unverified_editor_context"
         }
       ],
-      "investigation_history": [],
+      "investigation_history": [
+        {
+          "revision": 0,
+          "status": "problematic",
+          "problem_reason": "Reintento 13/11 18:55: la muestra reciente de X sigue dispersa y la búsqueda web actual no acredita un detonante predominante verificable para «Miente» en España; no se atribuye causa sin pruebas.",
+          "last_attempt_at": ""
+        }
+      ],
       "rewrite_instruction": "INVESTIGACIÓN NUEVA DESDE CERO. Pistas de un editor SIN verificar:\\nBusca en x\\nContrasta cada dato, fecha, publicación y fuente con búsquedas independientes. Si no se verifica el detonante actual, deja el caso SIN EXPLICACIÓN VERIFICADA; nunca presentes las pistas como hechos. Si se verifica, escribe explicación factual completa y remate nuevo. No reutilices texto, remate ni imágenes de otra revisión.",
-      "hints_verification_status": "unverified",
-      "problematic_at": "2026-11-13T18:58:52+01:00",
-      "problem_reason": "Reintento 13/11 18:55: la muestra reciente de X sigue dispersa y la búsqueda web actual no acredita un detonante predominante verificable para «Miente» en España; no se atribuye causa sin pruebas.",
-      "problematic_attempts": 4,
-      "editorial_engine": "chatgpt-automation-outbox"
+      "hints_verification_status": "unverified"
     },
     {
       "id": "red-review-354123a1ee6757528f57",
