@@ -7,22 +7,26 @@
   "previous_run_id": "tr-20261113T112500-chat-direct",
   "command_id": "tr-20261113T112500-chat-direct",
   "source": "chat_direct",
-  "status": "failure",
+  "status": "waiting",
   "phase": "preparing",
   "started_at": "2026-11-13T12:06:00+01:00",
-  "updated_at": "2026-11-13T12:11:13+01:00",
+  "updated_at": "2026-11-13T12:12:04+01:00",
   "current": 0,
   "total": 4,
   "trend_id": "289b3a5cdae3",
   "title": "Begoña",
   "queue_complete": false,
-  "processed_ids": [],
-  "converged_ids": [],
-  "remaining_ids": [
+  "processed_ids": [
     "9f0be89bedc9"
   ],
+  "converged_ids": [],
+  "remaining_ids": [
+    "35deccb4ce35",
+    "0615570f9ea1"
+  ],
   "remaining_active_ids": [
-    "9f0be89bedc9"
+    "35deccb4ce35",
+    "0615570f9ea1"
   ],
   "remaining_problematic_ids": [],
   "summary": {
@@ -54,7 +58,7 @@
   "outcomes": [],
   "incident_count": 0,
   "incidents": [],
-  "error": "9f0be89bedc9-r0.json: ValueError: explicación directa inválida",
+  "error": null,
   "activity": [
     {
       "at": "2026-11-12T16:14:00+01:00",
@@ -535,7 +539,7 @@
       "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 2026-11-13T11:20:59+01:00). Sin ImageGen ni publicaciones."
     }
   ],
-  "last_started_at": "2026-11-13T12:11:12+01:00",
+  "last_started_at": "2026-11-13T12:12:04+01:00",
   "last_completed_at": "2026-11-13T11:20:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
