@@ -30,7 +30,7 @@ def journal_path(trend, revision):
         raise ValueError("Revisión inválida")
     return core.DIAG_DIR / ("run-" + trend + "-r" + str(revision) + ".json")
 
-def no_send_recovery(trend_id, revision):
+def no_send_recovery(trend_id, revision, explicit_chat_url=None):
     log = journal_path(trend_id, revision)
     if not log.exists():
         raise RuntimeError("No existe diario de envío; no se puede reconstruir una conversación")
@@ -41,8 +41,14 @@ def no_send_recovery(trend_id, revision):
     if record.get("persisted"):
         print("TT_V2_ALREADY_PERSISTED=YES")
         return
-    url = record.get("chat_url") or ""
+    url = explicit_chat_url or record.get("chat_url") or ""
     valid_url = r"https://chatgpt\.com/c/[A-Za-z0-9-]{16,80}"
+    if explicit_chat_url:
+        if not re.fullmatch(valid_url, explicit_chat_url):
+            raise ValueError("URL de conversación explícita no válida")
+        print("TT_V2_RECOVER_EXPLICIT_CHAT_URL=YES", flush=True)
+        # La identidad no se confía a esta URL: el extractor comprueba ID y
+        # revisión dentro del prompt de usuario antes de guardar la respuesta.
     if not re.fullmatch(valid_url, url):
         # Descubrimiento local ya comprobado contra el turno del usuario:
         # identidad, revisión y cierre del Chrome aislado.
@@ -227,8 +233,9 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument("--trend-id", required=True)
     p.add_argument("--revision", required=True, type=int)
+    p.add_argument("--chat-url", help="URL de conversación existente (solo lectura); NUNCA envía texto")
     args = p.parse_args()
-    no_send_recovery(args.trend_id, args.revision)
+    no_send_recovery(args.trend_id, args.revision, explicit_chat_url=args.chat_url)
 
 if __name__ == "__main__":
     try:
