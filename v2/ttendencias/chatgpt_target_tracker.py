@@ -32,21 +32,35 @@ def conversation_urls(browser):
 
 
 def verify_conversation(page, trend_id, revision):
-    """Verifica el turno del usuario; el título no sirve como prueba."""
+    """Verifica el turno de usuario por rol DOM o rótulo localizado.
+
+    No confiar en un título ni en la respuesta del asistente: ambos podrían
+    contener el ID/revisión sin pertenecer a la conversación buscada.
+    """
+    def matches(text):
+        return (trend_id in text and
+                re.search(r"\brevisi[oó]n\s*[: ]\s*" + re.escape(str(revision)) +
+                          r"\b", text, re.I) is not None)
     try:
-        body = page.locator("body").inner_text(timeout=4500)
-        user_marker = body.rfind("\nYou said:\n")
-        if user_marker < 0:
-            user_marker = body.rfind("\nTú dijiste:\n")
-        if user_marker < 0:
+        users = page.locator('[data-message-author-role="user"]')
+        if users.count() == 1:
+            return matches(users.first.inner_text(timeout=4500))
+        if users.count() > 1:
             return False
-        prompt = body[user_marker:]
-        assistant = prompt.find("\nChatGPT said:\n")
-        if assistant >= 0:
-            prompt = prompt[:assistant]
-        return (trend_id in prompt and
-                re.search(r"\brevisi[oó]n\s*[: ]\s*" + str(revision) + r"\b",
-                          prompt, re.I) is not None)
+        body = page.locator("body").inner_text(timeout=4500)
+        markers = ("\nYou said:\n", "\nTú dijiste:\n", "\nHas dicho:\n")
+        positions = [(body.rfind(m),m) for m in markers]
+        start, marker = max(positions, key=lambda x:x[0])
+        if start < 0:
+            return False
+        prompt = body[start + len(marker):]
+        end_candidates = [prompt.find(m) for m in (
+            "\nChatGPT said:\n", "\nChatGPT dijo:\n",
+            "\nChatGPT ha dicho:\n", "\nChatGPT respondió:\n")]
+        ends = [p for p in end_candidates if p >= 0]
+        if ends:
+            prompt = prompt[:min(ends)]
+        return matches(prompt)
     except Exception:
         return False
 
