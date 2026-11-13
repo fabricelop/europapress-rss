@@ -72,7 +72,8 @@ def process_one(api, auth):
         if row.get("revision") != revision or row.get("status") != incident["status"]:
             return True  # changed elsewhere, never reset the wrong revision
         refreshed = restart_as_new_revision(
-            current, trend_id, chrome_clear=True, recovery_checked=True)
+            current, trend_id, chrome_clear=True, recovery_checked=True,
+            previous_chat_url=(journal or {}).get("chat_url") or "")
         try:
             core.queue_write(api, auth, sha, refreshed,
                              "retry incident in new revision " + trend_id)
