@@ -41,6 +41,10 @@ private struct TTBufferLedger: Decodable {
 final class BufferPublishTracker: ObservableObject {
     static let shared = BufferPublishTracker()
     @Published private(set) var posts: [TTBufferPublication] = []
+    // Read-only lookup refreshed with the same verified ledger as `posts`.
+    // Avoid scanning the entire Buffer history for every SwiftUI Listas row.
+    private var blockingPostKeys = Set<String>()
+    private var lastVerifiedLedgerData: Data?
     @Published private(set) var loaded = false
     // A GitHub 204 dispatch only acknowledges transport. Unless the default
     // branch exposes the publisher's verified ledger, a button tap MUST NOT
@@ -105,11 +109,7 @@ final class BufferPublishTracker: ObservableObject {
     func hidesFromListas(project: String, id: String, revision: Int) -> Bool {
         let key = Self.key(project, id, revision)
         return immediateHide.contains(key) || confirmedSentKeys.contains(key) ||
-            posts.contains {
-                $0.project == project && $0.event_id == id &&
-                $0.revision == revision &&
-                ["reserved", "unknown", "pending", "sent"].contains($0.state)
-            }
+            blockingPostKeys.contains(key)
     }
 
     // Receipt survives reopening the editorial card. A pending dispatch is
@@ -133,11 +133,8 @@ final class BufferPublishTracker: ObservableObject {
     func blocked(project: String, id: String, revision: Int) -> Bool {
         alreadySent(project: project, id: id, revision: revision) ||
             pendingRequestIDs[Self.key(project, id, revision)] != nil ||
-            sending.contains(Self.key(project, id, revision)) || posts.contains {
-            $0.project == project && $0.event_id == id &&
-            $0.revision == revision &&
-            ["reserved", "unknown", "pending", "sent"].contains($0.state)
-        }
+            sending.contains(Self.key(project, id, revision)) ||
+            blockingPostKeys.contains(Self.key(project, id, revision))
     }
 
     private func confirmedDate(_ raw: String?) -> Date? {
@@ -180,7 +177,6 @@ final class BufferPublishTracker: ObservableObject {
     // Public, read-only GitHub ledger. The Buffer key stays server-side in
     // GitHub Actions Secrets, never in a mobile binary or network request.
     func refresh() async {
-        backendAvailable = false
         var components = URLComponents(string:
             "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/pilot/ttactualidad-buffer-posts.json")!
         components.queryItems = [URLQueryItem(name: "readback", value: UUID().uuidString)]
@@ -190,8 +186,22 @@ final class BufferPublishTracker: ObservableObject {
         request.setValue("application/json", forHTTPHeaderField: "Accept")
         do {
             let (data, response) = try await URLSession.shared.data(for: request)
-            guard (response as? HTTPURLResponse)?.statusCode == 200 else { return }
+            guard (response as? HTTPURLResponse)?.statusCode == 200 else {
+                backendAvailable = false
+                return
+            }
+            // A byte-identical ledger must not republish large arrays or
+            // trigger another ActivityKit update during routine polling.
+            if data == lastVerifiedLedgerData {
+                backendAvailable = true
+                loaded = true
+                return
+            }
             let ledger = try JSONDecoder().decode(TTBufferLedger.self, from: data)
+            blockingPostKeys = Set(ledger.items.compactMap { post in
+                ["reserved", "unknown", "pending", "sent"].contains(post.state) ?
+                    Self.key(post.project, post.event_id, post.revision) : nil
+            })
             posts = ledger.items
             let confirmed = Set(ledger.items.filter { $0.state == "sent" }.map {
                 Self.key($0.project, $0.event_id, $0.revision)
@@ -222,8 +232,10 @@ final class BufferPublishTracker: ObservableObject {
             quotaHistory = ledger.api_quota_history ?? []
             loaded = true
             backendAvailable = true
-            change += 1  // A verified Buffer ledger may change visible Listas counts.
+            lastVerifiedLedgerData = data
+            change += 1  // A changed verified ledger may change Listas and Live Activity.
         } catch {
+            backendAvailable = false
             // An outdated or unreachable readback is not proof of publication.
             // Preserve the previous verified values and mark unavailable initially.
         }
