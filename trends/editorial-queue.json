@@ -1,6 +1,75 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-13T10:14:59+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-13T09:15:27.309361+00:00",
+  "count": 2,
+  "items": [
+    {
+      "id": "red-review-77adc81420e233ffb33c",
+      "revision": 0,
+      "name": "Revisar novedades: Xokas",
+      "rank": 30,
+      "status": "preparing",
+      "requested_at": "2026-11-13T09:15:27.309361+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "868a518462be",
+        "revision": 0,
+        "name": "Xokas",
+        "rank": 5,
+        "explanation": "TT#5 Xokas sigue siendo tendencia por criticar a Vox tras cancelar la entrevista de Abascal con Jordi Wild y pedir públicamente que no se vote al partido.\n#JordiWild #Abascal\n🌶️ El plantón acabó convertido en una llamada a las urnas.",
+        "explanation_sha256": "f726f74eb96bf781943b32aab6cbb8c0a3f84bd91f25cb35e80bb25c7fe6c74f",
+        "explained_at": "2026-11-11T19:14:30+01:00",
+        "verification_sources": [
+          {
+            "url": "https://as.com/tikitakas/famosos/el-xokas-tras-la-cancelacion-de-la-entrevista-de-jordi-wild-y-abascal-es-la-peor-decision-en-toda-vuestra-trayectoria-f202611-n/"
+          },
+          {
+            "url": "https://elpais.com/espana/elecciones-generales/2026-11-11/vox-cancela-la-entrevista-de-abascal-con-jordi-wild-tras-la-polemica-por-los-40-minutos-ineditos-de-la-revuelta.html"
+          }
+        ],
+        "fingerprint": "01bd1e7a3360da9fa48cc894c23872df8548b68816412e6ceb4c940bddbd1e70"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-7d6b52b5bc99fa5de8e4",
+      "revision": 0,
+      "name": "Revisar novedades: Hormiguero",
+      "rank": 21,
+      "status": "preparing",
+      "requested_at": "2026-11-13T09:15:27.309361+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "b689de23e49c",
+        "revision": 0,
+        "name": "Hormiguero",
+        "rank": 7,
+        "explanation": "TT#7 Hormiguero es tendencia por la entrevista de Feijóo y por el discurso previo de Pablo Motos sobre la negativa de Pedro Sánchez a acudir al programa tras más de un mes de invitaciones.\n#FeijóoEH #29N\n🌶️ El prime time abrió campaña antes que los carteles.",
+        "explanation_sha256": "2f64d40dff766c30bb8daf239d7d5c11c54a77b5e7710bf74ad0edbe0f55cc9b",
+        "explained_at": "2026-11-12T01:09:00+01:00",
+        "verification_sources": [
+          {
+            "url": "https://elpais.com/television/2026-11-11/el-discurso-de-pablo-motos-y-cual-es-mi-camara-los-momentos-destacados-de-feijoo-en-el-hormiguero.html"
+          },
+          {
+            "url": "https://www.elespanol.com/espana/politica/20261111/pone-mano-fuego-zp-preguntas-motos-hecho-sanchez-hormiguero/1003744454728_0.html"
+          }
+        ],
+        "fingerprint": "946e101a835ae84c6b1e72892dc3acaced8f524bf69edd441dc66bba47c4b7f3"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
