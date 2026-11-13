@@ -7,23 +7,21 @@
   "previous_run_id": "tr-20261113T211000-chat-direct",
   "command_id": "tr-20261113T212500-chat-direct",
   "source": "chat_direct",
-  "status": "RUNNING",
+  "status": "success",
   "phase": "investigating",
   "started_at": "2026-11-13T21:25:00+01:00",
-  "updated_at": "2026-11-13T21:25:00+01:00",
+  "updated_at": "2026-11-13T21:29:38+01:00",
   "current": 0,
   "total": 1,
   "trend_id": "019f7a9bc80d",
   "title": "Jorge Salvaje",
-  "queue_complete": false,
-  "processed_ids": [],
+  "queue_complete": true,
+  "processed_ids": [
+    "019f7a9bc80d"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "019f7a9bc80d"
-  ],
-  "remaining_active_ids": [
-    "019f7a9bc80d"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 1,
@@ -771,8 +769,8 @@
       "message": "Investigando Jorge Salvaje r1 desde cero; revalidación JIT en main y contraste de la pista sobre Jordi Wild. ImageGen=0; publicaciones=0."
     }
   ],
-  "last_started_at": "2026-11-13T21:25:00+01:00",
-  "last_completed_at": "2026-11-13T21:11:00+01:00",
+  "last_started_at": "2026-11-13T21:29:37+01:00",
+  "last_completed_at": "2026-11-13T21:29:38+01:00",
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-20261113T211000-chat-direct",
