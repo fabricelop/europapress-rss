@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-13T10:06:01.644729+00:00",
+  "checked_at": "2026-11-13T10:43:52.196996+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -42,12 +42,12 @@
     "top10": {
       "ok": false,
       "count": 10,
-      "non_stale_sources": 4,
+      "non_stale_sources": 3,
       "verified_fresh_sources": [
         "xtrendsiamrohit"
       ],
       "live_verified": false,
-      "captured_age_minutes": 0.3,
+      "captured_age_minutes": 0.2,
       "noise_count": 0
     },
     "listener": {
@@ -59,8 +59,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 5.8,
-      "run_id": 43405601972,
+      "age_minutes": 3.0,
+      "run_id": 43410925585,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -72,7 +72,7 @@
     },
     "request_queue": {
       "ok": false,
-      "invalid_count": 827,
+      "invalid_count": 831,
       "noise_count": 0
     },
     "ready_consistency": {
@@ -82,9 +82,9 @@
     },
     "editorial_queue": {
       "ok": true,
-      "pending_count": 2,
+      "pending_count": 4,
       "overdue_count": 0,
-      "oldest_age_minutes": 3.5,
+      "oldest_age_minutes": 9.5,
       "warning_after_minutes": 30,
       "overdue_items": [],
       "repairable": false
@@ -94,8 +94,10 @@
       "status": "not-required",
       "queue_complete": false,
       "remaining_active_ids": [
-        "2b0dcb3597e4",
-        "4d4b553426b2"
+        "289b3a5cdae3",
+        "25a914e9d748",
+        "ebd8d155e6d3",
+        "9f0be89bedc9"
       ],
       "contradictory_success": false
     },
@@ -108,9 +110,9 @@
   "repairs_started": [],
   "blocking": [
     "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos",
-    "cola con 827 estado(s) inválido(s)"
+    "cola con 831 estado(s) inválido(s)"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 827 estado(s) inválido(s)"
+  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 831 estado(s) inválido(s)"
 }
