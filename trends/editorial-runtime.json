@@ -3,23 +3,20 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261113T015500-chat-direct",
-  "previous_run_id": "tr-20261113T014000-chat-direct",
-  "command_id": "tr-20261113T015500-chat-direct",
+  "run_id": "tr-20261113T021000-chat-direct",
+  "previous_run_id": "tr-20261113T015500-chat-direct",
+  "command_id": "tr-20261113T021000-chat-direct",
   "source": "chat_direct",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-13T01:55:00+01:00",
-  "updated_at": "2026-11-13T02:01:50+01:00",
-  "current": 2,
-  "total": 2,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-13T02:10:00+01:00",
+  "updated_at": "2026-11-13T02:10:15+01:00",
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": true,
-  "processed_ids": [
-    "radar-prepare-55ec4ae41a54016072c2",
-    "radar-prepare-9e0310666132b2bd1a4f"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
@@ -177,9 +174,16 @@
       "status": "DONE",
       "phase": "closing",
       "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 2026-11-13T01:21:18+01:00) y mobile-decisions sin preparing/update/processing/problematic/rewrite_pending/reexplain activos. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-13T02:10:15+01:00",
+      "run_id": "tr-20261113T021000-chat-direct",
+      "status": "RUNNING",
+      "phase": "preparing",
+      "message": "Pasada manual iniciada desde ChatGPT; cola autoritativa inicial=0. Revalidando barrera final en main; sin ImageGen ni publicación."
     }
   ],
-  "last_started_at": "2026-11-13T01:55:00+01:00",
+  "last_started_at": "2026-11-13T02:10:00+01:00",
   "last_completed_at": "2026-11-13T02:01:50+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -215,7 +219,7 @@
     },
     "message": "Pasada TTendencias completada 2/2. Belén Esteban y Este 29N quedaron como anticipation_prepared mediante el aplicador oficial (7f4685b). Barrera final tras refresco Top 30 de 02:01:20: editorial-queue=0 (updated_at 02:01:27) y mobile-decisions sin estados editoriales activos. Sin ImageGen, Listas ni publicaciones."
   },
-  "message": "Pasada TTendencias completada 2/2. Belén Esteban y Este 29N quedaron como anticipation_prepared mediante el aplicador oficial (7f4685b). Barrera final tras refresco Top 30 de 02:01:20: editorial-queue=0 (updated_at 02:01:27) y mobile-decisions sin estados editoriales activos. Sin ImageGen, Listas ni publicaciones.",
+  "message": "Pasada manual iniciada desde ChatGPT; cola autoritativa inicial=0. Revalidando barrera final en main; sin ImageGen ni publicación.",
   "history": [
     {
       "run_id": "tr-1794340649326-manual",
