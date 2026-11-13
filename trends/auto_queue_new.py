@@ -10,6 +10,10 @@ from reconcile_prepared_ready import reconcile_prepared_ready
 from anticipation import sync as sync_anticipation, metrics as anticipation_metrics
 from requests_json import dumps_for_path
 try:
+    from pending_retirement import current_retirement
+except ImportError:
+    from trends.pending_retirement import current_retirement
+try:
     from suppression import active_request, purge_pending
 except ImportError:
     from trends.suppression import active_request, purge_pending
@@ -151,6 +155,7 @@ def save_editorial_queue(requests_doc):
     })
 
 recent = load("recent.json", {"items": []})
+pending_retirements = load("pending-retirements.json", {"items": []}).get("items") or []
 requests_doc = load("requests.json", {"requests": []})
 explained_doc = load("telegram-manual-explained.json", {"items": []})
 prepared_doc = load("prepared.json", {"items": []})
@@ -755,6 +760,10 @@ for item in current:
     radar_item = next((
         row for row in (recent.get("items") or [])[:30]
         if norm(row.get("name")) == key), item)
+    # Quitar de Pendientes retires only this radar occurrence. Do not
+    # recreate it on every refresh; allow a separately observed return.
+    if current_retirement(item["name"], radar_item, pending_retirements):
+        continue
     # An OBSERVED Top30 return more than 24 h after the last explanation
     # deserves investigation. Rank movement/age alone never do. Approval
     # remains an independent explicit route and overrides automatic tokens.

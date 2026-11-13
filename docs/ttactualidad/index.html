@@ -272,9 +272,9 @@ function imageWorkflowPrompt(x,associationOnly=false){
 
 const fields={
 tti:['shared/archive-photo-index.json','ttittulares/site-ai-images.json','ttittulares/prepared.json','ttittulares/status.json','ttittulares/decisions.json','telegram/editorial-processing.json','ttittulares/tremending/items.json','ttittulares/editorial-queue.json'],
-tr:['shared/archive-photo-index.json','trends/site-ai-images.json','trends/recent.json','trends/explained.json','trends/requests.json','trends/telegram-manual-explained.json','trends/telegram-image-deliveries.json','trends/mobile-decisions.json','trends/editorial-queue.json','trends/editorial-runtime.json']
+tr:['shared/archive-photo-index.json','trends/site-ai-images.json','trends/recent.json','trends/explained.json','trends/requests.json','trends/telegram-manual-explained.json','trends/telegram-image-deliveries.json','trends/mobile-decisions.json','trends/pending-retirements.json','trends/editorial-queue.json','trends/editorial-runtime.json']
 };
-const aliases={'shared/archive-photo-index.json':'archiveIndex','ttittulares/site-ai-images.json':'newsAi','ttittulares/prepared.json':'prepared','ttittulares/status.json':'status','ttittulares/decisions.json':'decisions','telegram/editorial-processing.json':'processing','ttittulares/tremending/items.json':'tremending','ttittulares/editorial-queue.json':'ttiQueue','trends/site-ai-images.json':'trendSiteAi','trends/recent.json':'recent','trends/explained.json':'explained','trends/requests.json':'requests','trends/telegram-manual-explained.json':'manual','trends/telegram-image-deliveries.json':'deliveries','trends/mobile-decisions.json':'mobileDecisions','trends/editorial-queue.json':'editorialQueue','trends/editorial-runtime.json':'editorialRuntime'};
+const aliases={'shared/archive-photo-index.json':'archiveIndex','ttittulares/site-ai-images.json':'newsAi','ttittulares/prepared.json':'prepared','ttittulares/status.json':'status','ttittulares/decisions.json':'decisions','telegram/editorial-processing.json':'processing','ttittulares/tremending/items.json':'tremending','ttittulares/editorial-queue.json':'ttiQueue','trends/site-ai-images.json':'trendSiteAi','trends/recent.json':'recent','trends/explained.json':'explained','trends/requests.json':'requests','trends/telegram-manual-explained.json':'manual','trends/telegram-image-deliveries.json':'deliveries','trends/mobile-decisions.json':'mobileDecisions','trends/pending-retirements.json':'pendingRetirements','trends/editorial-queue.json':'editorialQueue','trends/editorial-runtime.json':'editorialRuntime'};
 async function fetchJson(path,force=false){
  const key='tt-web-cache-'+path;
  // Choose the newer of a live radar and the last verified local snapshot.
@@ -581,8 +581,13 @@ function trendRows(){
   // A newly completed explanation must first exist in the actual Listas view.
   const liveListasNames=new Set(trendRowsFor('listas').flatMap(x=>
    [x.name,x.display_name,x.title,...(x.trend_names||[])].map(normal).filter(Boolean)));
+  const retiredRecords=state.data.pendingRetirements?.items||[];
   const mapped=currentTop30(recent).map((x,i)=>{
    const req=requestsByName.get(normal(x.name))||{};
+   const retired=retiredRecords.filter(row=>normal(row.name)===normal(x.name))
+     .sort((a,b)=>String(b.retired_at||'').localeCompare(String(a.retired_at||'')))[0];
+   const newEntry=Date.parse(x.entered_top30_at||'')>Date.parse(retired?.retired_at||'');
+   const retiredNow=Boolean(retired&&!newEntry);
    const finished=completedByName.get(normal(x.name))||{};
    const status=String(req.status||'').toLowerCase();
    const latestAt=finished.explained_at||req.explained_at||'';
@@ -640,6 +645,7 @@ function trendRows(){
    return {...x,title:x.name,_kind:'tr',_id:String(req.id||finished.id||x.name||i),
     _status:editorialState,_topOnly:true,_alreadyExplained:alreadyExplained,_priorReason:priorReason,_inExplained:inExplained,_manualPending:manualPending,
     _telegramConfirmed:!!(wasDelivered&&!terminal),_reworkable:!working&&!activelyEditing&&!reworkPending,
+    _retiredNow:retiredNow,
     rank:Number(x.rank||i+1),
     explanation:text,closer_text:!text?'':finished.closer_text||req.closer_text||'',
     explained_at:readyText&&Number.isFinite(Date.parse(latestAt))?latestAt:'',revision:Number(req.revision??finished.revision??0),
@@ -648,7 +654,7 @@ function trendRows(){
   // Top 10 enters Pendientes automatically. Top 11-30 only after Preparar novedad.
    return state.tab==='pendientes'?mapped.filter(x=>
      ['EN COLA','EN ELABORACIÓN','PENDIENTE','REVISIÓN','EXPLICACIÓN SIN ENTREGAR'].includes(x._status)&&
-     (x.rank<=10||x._manualPending)):mapped;
+     (x.rank<=10||x._manualPending)&&!x._retiredNow):mapped;
 
   }catch(e){
    console.warn('Top 30: metadatos editoriales inválidos; mostrando radar sin bloquear',e);
@@ -936,13 +942,15 @@ function confirmedAction(op,docs){
    return ['PROCESSING','UPDATE_PROCESSING'].includes(String(q?.status||'').toUpperCase())?'processing':false;
   }
  }else{
-  const [manual,mobile,queue,requestsDoc]=docs;
+  const [manual,mobile,queue,requestsDoc,retirementsDoc]=docs;
   const state=(mobile.items||[]).find(x=>String(x.id||x.event_id||'')===id);
   const normalize=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim().toLocaleLowerCase('es-ES');
   const q=(queue.items||[]).find(x=>String(x.id||'')===id||
     (op.decision==='prepare'&&normalize(x.name||x.title)===normalize(op.snapshot?.title||id)&&
      Date.parse(x.requested_at||x.updated_at||'')>=op.at-30000));
   if(op.decision==='deleted')return state?.status==='deleted';
+  if(op.decision==='retire')return (retirementsDoc?.items||[]).some(row=>
+   String(row.id||'')===id&&Number(row.revision||0)===Number(op.revision||0));
   if(op.decision==='discard')return ['published','dismissed'].includes(String(state?.status||''));
   if(op.decision==='prepare')return ['preparing','update'].includes(String(q?.status||'').toLowerCase());
   if(op.decision==='rework'){
@@ -986,7 +994,7 @@ async function checkPendingDeletes(){
  for(const project of [...new Set(pending.map(x=>x.project))]){
   const targets=project==='ttittulares'
    ?[['ttittulares/prepared.json','prepared'],['ttittulares/decisions.json','decisions'],['ttittulares/editorial-queue.json','ttiQueue']]
-   :[['trends/telegram-manual-explained.json','manual'],['trends/mobile-decisions.json','mobileDecisions'],['trends/editorial-queue.json','editorialQueue'],['trends/requests.json','requests']];
+   :[['trends/telegram-manual-explained.json','manual'],['trends/mobile-decisions.json','mobileDecisions'],['trends/editorial-queue.json','editorialQueue'],['trends/requests.json','requests'],['trends/pending-retirements.json','pendingRetirements']];
   if(project==='ttittulares'&&pending.some(x=>x.project===project&&x.kind==='tremending'))
    targets.push(['ttittulares/tremending/items.json','tremending']);
   let docs;
@@ -1002,7 +1010,7 @@ async function checkPendingDeletes(){
    if(outcome){
     op.status='confirmed';changed=true;
     if(op.decision==='prepare'||op.decision==='rework'){confirmedPrepare=true;if(outcome==='ready')readyConfirmed=true;}
-    if(op.decision==='deleted')confirmedDelete=true;
+    if(op.decision==='deleted'||op.decision==='retire')confirmedDelete=true;
    }else if(Date.now()-op.at>20*60000){
     pendingDeletes.delete(op.key);changed=true;failed=true;
    }else if(op.status!=='awaiting_github'&&Date.now()-op.at>175000){
@@ -1016,18 +1024,20 @@ async function checkPendingDeletes(){
  if(changed){savePending();render()}
  if(readyConfirmed&&state.app==='tti')showToast('Noticia elaborada: disponible en Listas sin cambiar de sección.');
   if(confirmedPrepare)void load(true);
- if(confirmedDelete)showToast('Quitada de Listas: borrado confirmado en GitHub.');
+ if(confirmedDelete)showToast('Retirada confirmada en GitHub.');
  if(failed)showToast('GitHub no confirmó la acción. La noticia vuelve a su sección anterior.');
 }
 function schedulePendingChecks(){
  [14000,35000,75000,150000,245000,360000,600000,900000,1240000].forEach(ms=>
   setTimeout(()=>{if(!document.hidden)void checkPendingDeletes()},ms));
 }
-function emergencyGithubIssueUrl(project,id,decision,title){
+function emergencyGithubIssueUrl(project,id,decision,title,revision){
  const action=decision==='discard'?'dismissed':decision;
- if(!['deleted','prepare','rework','dismissed','published'].includes(action)||!/^[^\u0000-\u001f\u007f]{1,120}$/u.test(id))return '';
+ if(!['deleted','prepare','rework','dismissed','published','retire'].includes(action)||!/^[^\u0000-\u001f\u007f]{1,120}$/u.test(id))return '';
  const issueTitle='[TT-MOVIL] '+project+' '+action+' '+id;
- const body=['### Proyecto','',project,'','### Acción','',action,'','### ID del elemento','',id,'','### Titular o contexto','',String(title||id).replace(/\s+/g,' ').trim().slice(0,280),'','### Instrucciones para reelaborar (opcional)','','_No response_'].join('\n');
+ const body=['### Proyecto','',project,'','### Acción','',action,'','### ID del elemento','',id,
+  ...(action==='retire'?['','### Revisión del elemento','',String(revision)]:[]),
+  '','### Titular o contexto','',String(title||id).replace(/\s+/g,' ').trim().slice(0,280),'','### Instrucciones para reelaborar (opcional)','','_No response_'].join('\n');
  const fields=new URLSearchParams({title:issueTitle,body});
  return 'https://github.com/fabricelop/europapress-rss/issues/new?'+fields.toString();
 }
@@ -1083,18 +1093,19 @@ async function emergencyPair(){
 async function sendEmergencyDirect(item,decision){
  const project=itemProject(item);
  let id=String(item._id||'');
- if(decision==='rework'&&project==='ttendencias'&&Number(item.rank||0)<=30){
+ if(['rework','retire'].includes(decision)&&project==='ttendencias'&&Number(item.rank||0)<=30){
   const known=(state.data.requests?.requests||[]).some(x=>String(x.id||'')===id);
   if(!known){
    const title=String(item.name||item.title||'').trim();
    const bytes=new TextEncoder().encode(title.normalize('NFC'));
    const hash=await crypto.subtle.digest('SHA-256',bytes);
-   id='manual-'+Array.from(new Uint8Array(hash)).map(x=>x.toString(16).padStart(2,'0')).join('').slice(0,32);
+   id=(decision==='retire'?'pending-':'manual-')+Array.from(new Uint8Array(hash)).map(x=>x.toString(16).padStart(2,'0')).join('').slice(0,32);
   }
  }
  const key=removeKey(project,id);
  if(decision==='rework'&&!confirm('¿Retirar esta tendencia de Listas y elaborar de cero un texto, remate y foto de archivo nuevos?'))return;
- const issueURL=emergencyGithubIssueUrl(project,id,decision,item.title||item.name||'');
+ if(decision==='retire'&&!confirm('¿Quitar esta tendencia de Pendientes? Podrá volver si entra de nuevo en el Top 30.'))return;
+ const issueURL=emergencyGithubIssueUrl(project,id,decision,item.title||item.name||'',Number(item.revision||0));
  if(!issueURL){showToast('No se puede ejecutar: identificador no admitido');return}
  const existing=pendingDeletes.get(key);
  if(emergencySending.has(key)||(existing&&['awaiting_github','confirmed'].includes(existing.status)&&
@@ -1111,7 +1122,8 @@ async function sendEmergencyDirect(item,decision){
  }
  const url=new URL(issueURL);
  const issueTitle=url.searchParams.get('title'),body=url.searchParams.get('body');
- const snapshot={title:String(item.title||item.name||id),revision:Number(item.revision||0)};
+ const snapshot={title:String(item.title||item.name||id),
+  trend_name:String(item.name||item.title||id),revision:Number(item.revision||0)};
  emergencySending.add(key);
  showToast('Enviando orden de forma segura…');
  try{
@@ -1283,7 +1295,7 @@ function rowCard(x,i){
  function btn(label,callback,primary=false){const b=document.createElement('button');b.className='action '+(primary?'primary':'secondary');b.type='button';b.textContent=label;b.addEventListener('click',callback);a.append(b);return b}
  function link(label,url,primary=false){const b=document.createElement('a');b.className='action '+(primary?'primary':'secondary');b.target='_blank';b.rel='noopener';b.href=url;b.textContent=label;a.append(b);return b}
  function command(label,action){
-  if(['prepare','deleted','discard','published','rework'].includes(action)){
+  if(['prepare','deleted','discard','published','rework','retire'].includes(action)){
    if(ON_PAGES)return btn(label,()=>sendEmergencyDirect(x,action),action==='prepare');
    return btn(label,()=>pilotSend(x,action),action==='prepare');
   }
@@ -1348,6 +1360,9 @@ function rowCard(x,i){
   }
   // El mismo botón «Volver a elaborar» también sirve para la primera explicación.
   link('Buscar en X','https://x.com/search?q='+encodeURIComponent(d.title)+'&f=live');
+  if(state.tab==='pendientes'&&x._kind==='tr'){
+   const remove=command('Quitar','retire');remove.classList.add('remove');
+  }
   return compactTop30Card(out,x);
  }
  if(x._kind==='tremending'){

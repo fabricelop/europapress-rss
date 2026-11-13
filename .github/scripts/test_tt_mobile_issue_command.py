@@ -231,4 +231,36 @@ with tempfile.TemporaryDirectory() as tmp:
         m.trend_command("rework",eid,"","","2026-10-20T23:01:00Z")
         raise AssertionError("Obsolete Listas card unexpectedly reworked again")
     except ValueError:pass
+
+# V1 Quitar operates on one pending revision without a permanent name ban.
+with tempfile.TemporaryDirectory() as tmp:
+    m.ROOT=Path(tmp)
+    eid="1ea1a6c850b1"
+    now="2026-11-13T21:55:00+01:00"
+    put(m.ROOT,"trends/requests.json",{"requests":[
+        {"id":eid,"name":"españas","status":"problematic","revision":3},
+        {"id":"other","name":"Colau","status":"preparing","revision":0}]})
+    put(m.ROOT,"trends/editorial-queue.json",{"items":[
+        {"id":eid,"name":"españas","status":"problematic","revision":3},
+        {"id":"other","name":"Colau","status":"preparing","revision":0}],"count":2})
+    put(m.ROOT,"trends/recent.json",{"items":[
+        {"name":"españas","rank":9,"entered_top30_at":"2026-11-13T20:00:00+01:00"}]})
+    put(m.ROOT,"trends/pending-retirements.json",{"items":[]})
+    body="### Proyecto\n\nttendencias\n\n### Acción\n\nretire\n\n### ID del elemento\n\n"+eid+"\n\n### Revisión del elemento\n\n3\n\n### Titular o contexto\n\nespañas\n"
+    assert m.parse_issue({"sender":{"login":"fabricelop"},"issue":{
+        "user":{"login":"fabricelop"},"title":"[TT-MOVIL] Quitar","body":body}})[:3]==("ttendencias","retire",eid)
+    result=m.trend_command("retire",eid,"españas","",now,expected_revision=3)
+    assert "reentrada permitida" in result
+    state=get(m.ROOT,"trends/requests.json")["requests"]
+    assert state[0]["status"]=="inactive" and state[1]["status"]=="preparing"
+    assert get(m.ROOT,"trends/editorial-queue.json")["count"]==1
+    records=get(m.ROOT,"trends/pending-retirements.json")["items"]
+    assert len(records)==1 and records[0]["revision"]==3
+    assert "ya retirada" in m.trend_command(
+        "retire",eid,"españas","",now,expected_revision=3)
+    try:
+        m.trend_command("retire",eid,"españas","",now,expected_revision=2)
+        raise AssertionError("Stale pending revision retired")
+    except ValueError:pass
+
 print("TT_MOBILE_ISSUE_FIXTURES_OK")

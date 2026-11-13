@@ -1,0 +1,50 @@
+name: TTActualidad - Quitar de Pendientes regression
+
+on:
+  pull_request:
+    paths:
+      - 'trends/pending_retirement.py'
+      - 'trends/pending-retirements.json'
+      - 'trends/auto_queue_new.py'
+      - 'trends/test_pending_retirement.py'
+      - 'pilot/apply-ttactualidad-action.py'
+      - 'pilot/test_pending_retirement_direct.py'
+      - 'pilot/ttactualidad-live/index.html'
+      - 'pilot/ttactualidad-live/worker.js'
+      - 'docs/ttactualidad/index.html'
+      - '.github/scripts/tt_mobile_issue_command.py'
+      - '.github/scripts/test_tt_mobile_issue_command.py'
+      - '.github/scripts/test_tt_pending_quitar.mjs'
+      - '.github/workflows/ttactualidad-pending-quit-tests.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'trends/pending_retirement.py'
+      - 'trends/auto_queue_new.py'
+      - 'pilot/apply-ttactualidad-action.py'
+      - 'pilot/ttactualidad-live/index.html'
+      - 'docs/ttactualidad/index.html'
+      - '.github/scripts/tt_mobile_issue_command.py'
+      - '.github/scripts/test_tt_pending_quitar.mjs'
+      - '.github/workflows/ttactualidad-pending-quit-tests.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compile affected Python
+        run: python3 -m py_compile trends/pending_retirement.py trends/auto_queue_new.py pilot/apply-ttactualidad-action.py .github/scripts/tt_mobile_issue_command.py
+      - name: Exact episode and reentry regressions
+        run: python3 -m unittest trends.test_pending_retirement pilot.test_pending_retirement_direct -v
+      - name: Existing authenticated issue command regressions
+        run: python3 .github/scripts/test_tt_mobile_issue_command.py
+      - name: Web controls and JavaScript parsing
+        run: node .github/scripts/test_tt_pending_quitar.mjs

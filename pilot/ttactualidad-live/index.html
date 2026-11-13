@@ -286,9 +286,9 @@ function imageWorkflowPrompt(x,associationOnly=false){
 
 const fields={
 tti:['shared/archive-photo-index.json','ttittulares/site-ai-images.json','ttittulares/prepared.json','ttittulares/status.json','ttittulares/decisions.json','telegram/editorial-processing.json','ttittulares/tremending/items.json','ttittulares/editorial-queue.json'],
-tr:['shared/archive-photo-index.json','trends/site-ai-images.json','trends/recent.json','trends/explained.json','trends/requests.json','trends/telegram-manual-explained.json','trends/telegram-image-deliveries.json','trends/mobile-decisions.json','trends/editorial-queue.json','trends/editorial-runtime.json']
+tr:['shared/archive-photo-index.json','trends/site-ai-images.json','trends/recent.json','trends/explained.json','trends/requests.json','trends/telegram-manual-explained.json','trends/telegram-image-deliveries.json','trends/mobile-decisions.json','trends/pending-retirements.json','trends/editorial-queue.json','trends/editorial-runtime.json']
 };
-const aliases={'shared/archive-photo-index.json':'archiveIndex','ttittulares/site-ai-images.json':'newsAi','ttittulares/prepared.json':'prepared','ttittulares/status.json':'status','ttittulares/decisions.json':'decisions','telegram/editorial-processing.json':'processing','ttittulares/tremending/items.json':'tremending','ttittulares/editorial-queue.json':'ttiQueue','trends/site-ai-images.json':'trendSiteAi','trends/recent.json':'recent','trends/explained.json':'explained','trends/requests.json':'requests','trends/telegram-manual-explained.json':'manual','trends/telegram-image-deliveries.json':'deliveries','trends/mobile-decisions.json':'mobileDecisions','trends/editorial-queue.json':'editorialQueue','trends/editorial-runtime.json':'editorialRuntime'};
+const aliases={'shared/archive-photo-index.json':'archiveIndex','ttittulares/site-ai-images.json':'newsAi','ttittulares/prepared.json':'prepared','ttittulares/status.json':'status','ttittulares/decisions.json':'decisions','telegram/editorial-processing.json':'processing','ttittulares/tremending/items.json':'tremending','ttittulares/editorial-queue.json':'ttiQueue','trends/site-ai-images.json':'trendSiteAi','trends/recent.json':'recent','trends/explained.json':'explained','trends/requests.json':'requests','trends/telegram-manual-explained.json':'manual','trends/telegram-image-deliveries.json':'deliveries','trends/mobile-decisions.json':'mobileDecisions','trends/pending-retirements.json':'pendingRetirements','trends/editorial-queue.json':'editorialQueue','trends/editorial-runtime.json':'editorialRuntime'};
 async function fetchJson(path,force=false){
  const key='tt-web-cache-'+path;
  // Choose the newer of a live radar and the last verified local snapshot.
@@ -709,8 +709,13 @@ function trendRows(){
    }
   }
   const liveListasNames=new Set(trendListasRows(state.data).flatMap(x=>[x.name,x.display_name,x.title].map(normal).filter(Boolean)));
+  const retiredRecords=state.data.pendingRetirements?.items||[];
   const mapped=currentTop30(recent).map((x,i)=>{
    const req=requestsByName.get(normal(x.name))||{};
+   const retired=retiredRecords.filter(row=>normal(row.name)===normal(x.name))
+     .sort((a,b)=>String(b.retired_at||'').localeCompare(String(a.retired_at||'')))[0];
+   const newEntry=Date.parse(x.entered_top30_at||'')>Date.parse(retired?.retired_at||'');
+   const retiredNow=Boolean(retired&&!newEntry);
    const finished=completedByName.get(normal(x.name))||{};
    const status=String(req.status||'').toLowerCase();
    const latestAt=finished.explained_at||req.explained_at||'';
@@ -766,6 +771,7 @@ function trendRows(){
    return {...x,title:x.name,_kind:'tr',_id:String(req.id||finished.id||x.name||i),
     _status:editorialState,_topOnly:true,_alreadyExplained:alreadyExplained,_priorReason:priorReason,_inExplained:inExplained,_manualPending:manualPending,
     _telegramConfirmed:!!(wasDelivered&&!terminal),_reworkable:!working&&!activelyEditing&&!reworkPending,
+    _retiredNow:retiredNow,
     rank:Number(x.rank||i+1),
     explanation:text,closer_text:!text?'':finished.closer_text||req.closer_text||'',
     explained_at:readyText&&Number.isFinite(Date.parse(latestAt))?latestAt:'',revision:Number(req.revision??finished.revision??0),
@@ -773,7 +779,7 @@ function trendRows(){
   });
   // Every valid Top30 entry is enqueued without an intermediate Pendientes stage.
    return state.tab==='pendientes'?mapped.filter(x=>
-     ['SIN SOLICITUD EDITORIAL','REVISIÓN'].includes(x._status)):mapped;
+     ['SIN SOLICITUD EDITORIAL','REVISIÓN'].includes(x._status)&&!x._retiredNow):mapped;
 
   }catch(e){
    console.warn('Top 30: metadatos editoriales inválidos; mostrando radar sin bloquear',e);
@@ -1117,13 +1123,15 @@ function confirmedAction(op,docs){
    return ['PROCESSING','UPDATE_PROCESSING'].includes(String(q?.status||'').toUpperCase())?'processing':false;
   }
  }else{
-  const [manual,mobile,queue,requestsDoc]=docs;
+  const [manual,mobile,queue,requestsDoc,retirementsDoc]=docs;
   const state=(mobile.items||[]).find(x=>String(x.id||x.event_id||'')===id);
   const normalize=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim().toLocaleLowerCase('es-ES');
   const q=(queue.items||[]).find(x=>String(x.id||'')===id||
     (op.decision==='prepare'&&normalize(x.name||x.title)===normalize(op.snapshot?.title||id)&&
      Date.parse(x.requested_at||x.updated_at||'')>=op.at-30000));
   if(op.decision==='deleted')return state?.status==='deleted';
+  if(op.decision==='retire')return (retirementsDoc?.items||[]).some(row=>
+    String(row.id||'')===id&&Number(row.revision||0)===Number(op.revision||0));
   if(op.decision==='discard')return ['published','dismissed'].includes(String(state?.status||''));
   if(op.decision==='prepare')return ['preparing','update'].includes(String(q?.status||'').toLowerCase());
   if(op.decision==='rework'){
@@ -1167,7 +1175,7 @@ async function checkPendingDeletes(){
  for(const project of [...new Set(pending.map(x=>x.project))]){
   const targets=project==='ttittulares'
    ?[['ttittulares/prepared.json','prepared'],['ttittulares/decisions.json','decisions'],['ttittulares/editorial-queue.json','ttiQueue']]
-   :[['trends/telegram-manual-explained.json','manual'],['trends/mobile-decisions.json','mobileDecisions'],['trends/editorial-queue.json','editorialQueue'],['trends/requests.json','requests']];
+   :[['trends/telegram-manual-explained.json','manual'],['trends/mobile-decisions.json','mobileDecisions'],['trends/editorial-queue.json','editorialQueue'],['trends/requests.json','requests'],['trends/pending-retirements.json','pendingRetirements']];
   if(project==='ttittulares'&&pending.some(x=>x.project===project&&x.kind==='tremending'))
    targets.push(['ttittulares/tremending/items.json','tremending']);
   let docs;
@@ -1209,16 +1217,16 @@ async function pilotSend(item,decision){
  if(!directPilot.real){showToast('Edición GitHub no conectada');return}
  const project=itemProject(item),trend_name=String(item.name||item.title||'').trim(),trend_rank=Number(item.rank||0);
  let event_id=String(item._id||'');
- if(['prepare','rework'].includes(decision)&&project==='ttendencias'&&trend_rank>=1&&trend_rank<=30){
+ if(['prepare','rework','retire'].includes(decision)&&project==='ttendencias'&&trend_rank>=1&&trend_rank<=30){
   const known=(state.data.requests?.requests||[]).some(x=>String(x.id||'')===event_id);
   if(!known){
    const bytes=new TextEncoder().encode(trend_name.normalize('NFC'));
    const hash=await crypto.subtle.digest('SHA-256',bytes);
-   event_id='manual-'+Array.from(new Uint8Array(hash)).map(x=>x.toString(16).padStart(2,'0')).join('').slice(0,32);
+   event_id=(decision==='retire'?'pending-':'manual-')+Array.from(new Uint8Array(hash)).map(x=>x.toString(16).padStart(2,'0')).join('').slice(0,32);
   }
  }
  if(!/^[A-Za-z0-9:_-]{3,128}$/.test(event_id)){showToast('Identificador editorial no válido');return}
- const label=decision==='deleted'?'Quitar de Listas':decision==='discard'?'Desestimar':decision==='rework'?'Volver a En elaboración y rehacer texto e imágenes':'Pasar a En Elaboración';
+ const label=decision==='retire'?'Quitar de Pendientes (podrá volver al Top 30)':decision==='deleted'?'Quitar de Listas':decision==='discard'?'Desestimar':decision==='rework'?'Volver a En elaboración y rehacer texto e imágenes':'Pasar a En Elaboración';
  if(!confirm('¿'+label+' esta '+(project==='ttendencias'?'tendencia':'noticia')+'?'))return;
  const key=hideOptimistically({...item,_source_id:String(item._id),_id:event_id},decision),op=pendingDeletes.get(key);
  try{
@@ -1347,7 +1355,7 @@ function rowCard(x,i){
  function btn(label,callback,primary=false){const b=document.createElement('button');b.className='action '+(primary?'primary':'secondary');b.type='button';b.textContent=label;b.addEventListener('click',callback);a.append(b);return b}
  function link(label,url,primary=false){const b=document.createElement('a');b.className='action '+(primary?'primary':'secondary');b.target='_blank';b.rel='noopener';b.href=url;b.textContent=label;a.append(b);return b}
  function command(label,action){
-  if(['prepare','deleted','discard','published','rework'].includes(action))return btn(label,()=>pilotSend(x,action),action==='prepare');
+  if(['prepare','deleted','discard','published','rework','retire'].includes(action))return btn(label,()=>pilotSend(x,action),action==='prepare');
   return btn(label+' (próximamente)',()=>showToast('No conectada todavía'));
  }
  if(!x._topOnly&&!x._historical&&(x._status==='LISTA'||['EXPLICADA'].includes(x._status))){
@@ -1421,6 +1429,9 @@ function rowCard(x,i){
   }
   // El botón único anterior también cubre la primera elaboración.
   link('Buscar en X','https://x.com/search?q='+encodeURIComponent(d.title)+'&f=live');
+  if(state.tab==='pendientes'&&x._kind==='tr'){
+   const remove=command('Quitar','retire');remove.classList.add('remove');
+  }
   return compactTop30Card(out,x);
  }
  if(x._kind==='tremending'){

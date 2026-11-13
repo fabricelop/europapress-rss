@@ -8,6 +8,8 @@ on:
       - 'telegram/tt-mobile-command-queue.json'
       - '.github/scripts/tt_mobile_issue_command.py'
       - '.github/scripts/test_tt_mobile_issue_command.py'
+      - 'trends/pending_retirement.py'
+      - 'trends/test_pending_retirement.py'
       - '.github/ISSUE_TEMPLATE/tt-mobile-command.yml'
       - '.github/workflows/tt-mobile-github-commands.yml'
 permissions:
@@ -40,6 +42,7 @@ jobs:
           print('TT_MOBILE_COMMANDS_SAFE_VALID')
           PY
           python3 .github/scripts/test_tt_mobile_issue_command.py
+          python3 -m unittest trends.test_pending_retirement -v
   apply:
     if: github.event_name == 'issues' && github.event.issue.user.login == 'fabricelop' && github.event.sender.login == 'fabricelop' && startsWith(github.event.issue.title, '[TT-MOVIL]')
     runs-on: ubuntu-latest
@@ -64,7 +67,7 @@ jobs:
             git add ttittulares/editorial-queue.json ttittulares/status.json ttittulares/decisions.json ttittulares/prepared.json ttittulares/tremending/items.json telegram/editorial-processing.json \
               telegram/ttittulares-deliveries.json telegram/delete-message-queue.json \
               trends/requests.json trends/telegram-image-deliveries.json trends/telegram-manual-explained.json trends/prepared.json \
-              telegram/tt-mobile-command-queue.json trends/editorial-queue.json || true
+              telegram/tt-mobile-command-queue.json trends/editorial-queue.json trends/pending-retirements.json || true
             if test -e trends/mobile-decisions.json; then git add trends/mobile-decisions.json; fi
             if git diff --cached --quiet; then
               echo "TT_MOBILE_NO_CHANGE"
