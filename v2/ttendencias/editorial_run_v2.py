@@ -208,39 +208,29 @@ def run_one(api, state, transcript, auth, item):
             if not record.get("chat_url"):
                 print("TT_V2_CHAT_URL_RECORDED=NO", flush=True)
             print("TT_V2_MESSAGE_SENT_ONCE=YES", flush=True)
-            last = ""
-            stable = 0
-            deadline = time.monotonic() + 240
-            while time.monotonic() < deadline:
-                if not page.url.startswith("https://chatgpt.com/c/"):
-                    time.sleep(2)
-                    continue
-                raw = page.locator("body").inner_text(timeout=7000)
-                if "Could not load this ChatGPT conversation" in raw:
-                    record["status"] = "conversation_load_failed"
-                    store(journal, record)
-                    print("TT_V2_CONVERSATION_LOAD_FAILED=YES", flush=True)
-                    break
-                answer, reason = transcript.extract_reply(raw, trend_id=trend_id, revision=revision)
-                stop = page.locator(STOP).count() > 0
-                if answer and answer == last:
-                    stable += 1
-                else:
-                    stable, last = 0, answer
-                if answer and stable >= 4 and not stop:
-                    record.update({"reply_captured": True, "answer": answer,
-                        "chat_url": page.url, "status": "captured_needs_editorial_validation",
-                        "validation": "paired_turn_id_revision_footer_and_stable_idle"})
-                    store(journal, record)
-                    print("TT_V2_REPLY_CAPTURED=YES", flush=True)
-                    break
-                time.sleep(2)
-            if not record["reply_captured"]:
-                if page.url.startswith("https://chatgpt.com/c/"):
-                    record["chat_url"] = page.url.split("?", 1)[0]
+            # Lectura sobre LA MISMA sesion, con una unica recarga del chat
+            # si la pagina falla. Nunca repite el envio ni pulsa botones.
+            capture = transcript.capture_existing_page(
+                page, trend_id=trend_id, revision=revision, seconds=240)
+            record["capture_diagnostic"] = {
+                "status": capture["status"],
+                "reason": capture["reason"],
+                "reloads": capture["reloads"],
+                "observations": capture["observations"]
+            }
+            if capture["url"].startswith("https://chatgpt.com/c/"):
+                record["chat_url"] = capture["url"].split("?", 1)[0]
+            if capture["status"] == "captured":
+                record.update({
+                    "reply_captured": True, "answer": capture["answer"],
+                    "status": "captured_needs_editorial_validation",
+                    "validation": "paired_turn_id_revision_footer_and_stable_idle"})
+                print("TT_V2_REPLY_CAPTURED=YES", flush=True)
+            else:
                 record["status"] = "capture_recovery_required"
-                store(journal, record)
                 print("TT_V2_REPLY_CAPTURED=NO", flush=True)
+                print("TT_V2_CAPTURE_REASON=" + capture["reason"], flush=True)
+            store(journal, record)
             try:
                 browser.new_browser_cdp_session().send("Browser.close")
             except Exception:
@@ -268,6 +258,28 @@ def run_one(api, state, transcript, auth, item):
         store(journal, record)
         print("TT_V2_REMAINING_PROCESSES=" + str(len(remaining)), flush=True)
     if not record["reply_captured"] or not record["cleanup_verified"]:
+        # Asegurar un estado de recuperación persistente sin reabrir otro chat.
+        # La cola tiene send_intent: NUNCA devolverla a pending.
+        try:
+            fresh, sha = queue_read(api, auth)
+            live = fresh["items"].get(trend_id, {})
+            if (live.get("status") == "in_progress"
+                and live.get("revision") == revision
+                and (live.get("send_intent") or {}).get("token") == token):
+                live["status"] = "capture_recovery"
+                live["capture_recovery_reason"] = record.get("capture_diagnostic", {}).get("reason", "not_verified")
+                live.pop("lease", None)
+                live["updated_at"] = utcnow()
+                fresh["pending_ids"] = [i["trend_id"] for i in sorted(
+                    fresh["items"].values(), key=lambda x: (x.get("requested_at", ""), x["trend_id"]))
+                    if i["status"] in ("pending", "review_pending", "in_progress", "capture_recovery", "captured_review")]
+                fresh["pending_count"] = len(fresh["pending_ids"])
+                queue_write(api, auth, sha, fresh, "quarantine interrupted capture " + trend_id)
+                print("TT_V2_CAPTURE_RECOVERY_STAGED=YES", flush=True)
+        except Exception as error:
+            record["quarantine_error"] = str(error)[:200]
+            store(journal, record)
+            print("TT_V2_CAPTURE_RECOVERY_STAGED=NO", flush=True)
         raise RuntimeError("Captura/cierre no verificados: recuperar sin reenviar")
     # Guardar tras cerrar. El token impide cerrar la reserva de otro consumidor.
     fresh, sha = queue_read(api, auth)
