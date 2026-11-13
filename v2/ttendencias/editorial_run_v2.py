@@ -209,14 +209,25 @@ def run_one(api, state, transcript, auth, item):
                 raise RuntimeError("ChatGPT no está listo; no enviar")
             # CRÍTICO: registrar intención en GitHub ANTES de pulsar Enter.
             # Si el proceso muere a continuación, NO puede reenviarse.
-            q, sha = queue_read(api, auth)
-            live = q["items"].get(trend_id, {})
-            if (live.get("status") != "in_progress" or live.get("revision") != revision
-                or (live.get("lease") or {}).get("token") != token):
-                raise RuntimeError("Reserva invalidada antes del envío")
-            live["send_intent"] = {"token": token, "at": utcnow()}
-            live["updated_at"] = utcnow()
-            queue_write(api, auth, sha, q, "send intent " + trend_id)
+            # GitHub puede refrescar el Top30 entre la reserva y el envío.
+            # Reintentar SOLO la intención (aún NO se ha pulsado Enter).
+            for send_cas_attempt in range(4):
+                q, sha = queue_read(api, auth)
+                live = q["items"].get(trend_id, {})
+                if (live.get("status") != "in_progress" or live.get("revision") != revision
+                    or (live.get("lease") or {}).get("token") != token
+                    or live.get("send_intent")):
+                    raise RuntimeError("Reserva invalidada antes del envío")
+                live["send_intent"] = {"token": token, "at": utcnow()}
+                live["updated_at"] = utcnow()
+                try:
+                    queue_write(api, auth, sha, q, "send intent " + trend_id)
+                    break
+                except RuntimeError as exc:
+                    if ("GitHub conflict/changed revision" not in str(exc)
+                        or send_cas_attempt == 3):
+                        raise
+                    time.sleep(1 + send_cas_attempt)
             record["status"] = "send_intent_recorded"
             store(journal, record)
             tracker = module("chatgpt_target_tracker.py", "ttv2_target_tracker")
