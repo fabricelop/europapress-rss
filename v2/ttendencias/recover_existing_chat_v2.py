@@ -201,14 +201,11 @@ def recover(trend_id, revision, *, lock_held=False):
             except Exception:
                 pass
         time.sleep(3)
-        remaining = core.profile_pids()
-        for pid in remaining & owned:
-            subprocess.run(["taskkill", "/PID", str(pid), "/F"],
-                           capture_output=True, timeout=15)
-        time.sleep(2)
-        remaining = core.profile_pids()
-        record["remaining_v2_pids"] = sorted(remaining)
-        record["cleanup_verified"] = not remaining
+        cleaner = core.module("chrome_cleanup_v2.py", "ttv2_recover_live_cleanup")
+        cleanup = cleaner.cleanup_v2_profile(core.profile_pids)
+        remaining = cleanup["remaining"]
+        record["remaining_v2_pids"] = remaining
+        record["cleanup_verified"] = cleanup["closed"]
         core.store(journal, record)
         if remaining:
             raise RuntimeError("Chrome V2 no cerrado: no confirmar recuperación")
@@ -313,17 +310,13 @@ def recover_closed_chat(trend_id, revision, *, lock_held=False):
             if proc:
                 try: proc.wait(timeout=8)
                 except subprocess.TimeoutExpired: pass
-            remaining = core.profile_pids()
-            for pid in remaining & owned:
-                subprocess.run(["taskkill", "/PID", str(pid), "/F"],
-                               capture_output=True, timeout=15,
-                               creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
             if proc and proc.poll() is None:
                 try: proc.kill()
                 except OSError: pass
-            time.sleep(1)
-            record["remaining_v2_pids"] = sorted(core.profile_pids())
-            record["cleanup_verified"] = not record["remaining_v2_pids"]
+            cleaner = core.module("chrome_cleanup_v2.py", "ttv2_recover_closed_cleanup")
+            cleanup = cleaner.cleanup_v2_profile(core.profile_pids)
+            record["remaining_v2_pids"] = cleanup["remaining"]
+            record["cleanup_verified"] = cleanup["closed"]
             core.store(journal, record)
         if not captured or not record["cleanup_verified"]:
             raise RuntimeError("No se verificó captura y cierre del chat previo")
