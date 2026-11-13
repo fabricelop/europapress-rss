@@ -7,23 +7,23 @@
   "previous_run_id": "tr-20261113T034000-chat-direct",
   "command_id": "tr-20261113T041000-chat-direct",
   "source": "chat_direct",
-  "status": "DONE",
-  "phase": "closing",
+  "status": "RUNNING",
+  "phase": "investigating",
   "started_at": "2026-11-13T04:10:00+01:00",
-  "updated_at": "2026-11-13T04:11:00+01:00",
+  "updated_at": "2026-11-13T04:12:00+01:00",
   "current": 0,
-  "total": 0,
+  "total": 13,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 0,
+    "attempted": 13,
+    "observed": 13,
     "closed": 0,
     "explained": 0,
     "problematic": 0,
@@ -38,7 +38,7 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 13,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -295,6 +295,13 @@
       "status": "DONE",
       "phase": "closing",
       "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 2026-11-13T04:01:29+01:00), mobile-decisions y requests sin estados editoriales activos ni rewrite_pending/reexplain. Top 30 vigente capturado a las 04:01:24. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-13T04:12:00+01:00",
+      "run_id": "tr-20261113T041000-chat-direct",
+      "status": "RUNNING",
+      "phase": "investigating",
+      "message": "Barrera posterior al cierre 0/0 detectó 13 reentradas nuevas. Se reabre la misma pasada y se investigan JIT; sin ImageGen ni publicación."
     }
   ],
   "last_started_at": "2026-11-13T04:10:00+01:00",
@@ -339,7 +346,7 @@
     "incidents": [],
     "message": "0/0 cerrado; cola 0; estados editoriales activos 0; ImageGen 0; publicaciones 0."
   },
-  "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 2026-11-13T04:01:29+01:00), mobile-decisions y requests sin estados editoriales activos ni rewrite_pending/reexplain. Top 30 vigente capturado a las 04:01:24. Sin ImageGen ni publicaciones.",
+  "message": "La barrera final detectó 13 reentradas nuevas a las 04:11:10; investigación JIT en curso.",
   "history": [
     {
       "run_id": "tr-1794340649326-manual",
@@ -8445,6 +8452,5 @@
   ],
   "processed": [],
   "maintenance_outbox_commit": "970b545c88b09429a23d15ec893b9d66fb611297",
-  "editorial_apply_run_id": 43343524401,
-  "finished_at": "2026-11-13T04:11:00+01:00"
+  "editorial_apply_run_id": 43343524401
 }
