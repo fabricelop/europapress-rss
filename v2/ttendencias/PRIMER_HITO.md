@@ -143,3 +143,37 @@ Implementación: `incident_retry_v2.py` (transición pura), `incident_worker_v2.
 **Ejecución oculta:** siguiendo el patrón probado del watchdog de V1, el runner usa `Start-Process -WindowStyle Hidden` y redirige logs; la tarea Windows añade `-WindowStyle Hidden`. Chrome V2 utiliza `--headless=new` con el MISMO perfil aislado y puerto CDP localhost. `headless_preflight_v2.py` comprueba que el ChatGPT autenticado carga y su editor está operativo **sin enviar mensajes**; si falla, el instalador deja la tarea inactiva, sin reenviar ni publicar. Solo V2 cambia de modo, nunca V1. `Upgrade-V2-Hidden.ps1` desactiva nuevos trabajos, deja concluir el actual, actualiza los módulos y rearma la tarea. No mata Chrome ni borra capturas.
 
 **Lanzamiento:** cambios de GitHub implementados; la activación local de este modo permanece pendiente hasta ejecutar el upgrade en Windows. La salida de CI (93 tests en la última comprobación) valida lógica estática, no sustituye la prueba real del perfil autenticado en headless.
+
+## Reparación de preflight headless residual (13/11/2026)
+
+La primera actualización a modo oculto pasó pruebas de Python/Playwright y
+`RECOVERY_ORPHAN=NONE`, pero no reactivó V2: el preflight terminó con
+`TT_V2_HEADLESS_PREFLIGHT_ERROR=Quedan procesos Chrome V2 tras prueba headless`.
+No se envió ningún mensaje; el instalador dejó correctamente tarea y bandera
+V2 deshabilitadas. La causa técnica probable es que el cierre verificaba solo
+los PIDs de una primera instantánea; Chrome puede crear hijos después. El
+primer error de CDP/login podía quedar ocultado por la excepción de limpieza.
+
+Reparado en `chrome_cleanup_v2.py`: solo enumera procesos del
+`TTActualidadV2/ChromeProfile` mediante `core.profile_pids()`, intenta
+cerrar sus árboles y vuelve a comprobar hasta dos rondas sin procesos. El
+preflight mantiene lock exclusivo V2, conserva cualquier error original y
+registra `HEADLESS_CDP`, `HEADLESS_COMPOSER_READY`,
+`HEADLESS_CLEANUP_REMAINING` y `HEADLESS_PROCESSES_CLOSED` sin enviar nada.
+El mismo cierre reforzado se comparte con las elaboraciones y con los
+rescatadores de chats, para evitar posteriores bloqueos al cambiar de tema.
+
+`Repair-V2-Headless-After-Preflight.ps1` es la única entrada de reparación
+para este caso concreto: exige tarea V2 **Disabled**, bandera exacta
+`AUTO_EDITORIAL_ENABLED=NO`, ningún consumidor V2 activo y dos registros
+locales que demuestren prueba fallida **sin envíos**. Solo puede terminar
+`chrome.exe` con el argumento `--user-data-dir` correspondiente al
+perfil V2 exacto y creado en la ventana de esa prueba. No toca V1, ni
+resetea/reenvía ningún trabajo. Si alguna comprobación falla, aborta sin
+reactivar la tarea. Tras limpiar, descarga e instala la última revisión
+consistente de V2, valida el editor oculto y solicita arranque automático.
+
+Pruebas puras Linux/CI validan hijos tardíos, dos lecturas vacías, ausencia
+de terminación fuera del conjunto de PIDs V2, y errores de cierre no ocultos.
+La ejecución **real en Windows** continúa pendiente de verificar; no dar
+por activado el modo oculto antes de ver `TT_V2_HIDDEN_REPAIR_INSTALLED=YES`.
