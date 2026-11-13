@@ -1,15 +1,13 @@
 {
   "version": 1,
-  "checked_at": "2026-11-12T23:43:51.449993+00:00",
+  "checked_at": "2026-11-13T00:01:25.688812+00:00",
   "projects": {
     "ttittulares": {
       "project": "ttittulares",
-      "checked_at": "2026-11-12T23:43:51.449993+00:00",
-      "pending_count": 1,
-      "pending_ids": [
-        "68e1646307a2"
-      ],
-      "oldest_at": "2026-11-12T23:43:41.905586Z",
+      "checked_at": "2026-11-13T00:01:25.688812+00:00",
+      "pending_count": 0,
+      "pending_ids": [],
+      "oldest_at": null,
       "latest_run": {
         "id": "tt-manual-20261112-2330-chat",
         "status": "DONE",
@@ -20,28 +18,19 @@
       },
       "control_command": "tt-urgent-1794523101406",
       "last_command_at": "2026-11-12T22:38:21.406Z",
-      "status": "within_start_window",
+      "status": "no_work",
       "should_dispatch": false,
-      "item_execution": [
-        {
-          "id": "68e1646307a2",
-          "entered_at": "2026-11-12T23:43:41.905586Z",
-          "should_start_by": "2026-11-12T23:48:41.905586+00:00",
-          "global_run_after_entry": false,
-          "final_telegram_delivery_confirmed": false
-        }
-      ],
-      "backlog_signature": "1c84d197df11413e",
-      "expected_start_by": "2026-11-12T23:48:41.905586+00:00",
       "attempts": 0,
       "last_request_at": "2026-11-12T21:19:06.579423+00:00"
     },
     "ttendencias": {
       "project": "ttendencias",
-      "checked_at": "2026-11-12T23:43:51.449993+00:00",
-      "pending_count": 0,
-      "pending_ids": [],
-      "oldest_at": null,
+      "checked_at": "2026-11-13T00:01:25.688812+00:00",
+      "pending_count": 1,
+      "pending_ids": [
+        "red-review-7c78b6a2e47ebe96c4d3"
+      ],
+      "oldest_at": "2026-11-12T23:49:04.291602+00:00",
       "latest_run": {
         "id": "tr-20261113T004000-chat-direct",
         "status": "DONE",
@@ -50,11 +39,23 @@
         "finished_at": "2026-11-13T00:41:30+01:00",
         "source": "github_pr_trace"
       },
-      "control_command": "tr-autoguard-1794524496",
-      "last_command_at": "2026-11-12T23:01:36.672105Z",
-      "status": "no_work",
+      "control_command": "tr-1794527352617-manual",
+      "last_command_at": "2026-11-12T23:49:12.617Z",
+      "status": "dispatch_pending_ack",
       "should_dispatch": false,
+      "item_execution": [
+        {
+          "id": "red-review-7c78b6a2e47ebe96c4d3",
+          "entered_at": "2026-11-12T23:49:04.291602+00:00",
+          "should_start_by": "2026-11-12T23:54:04.291602+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        }
+      ],
+      "backlog_signature": "abe7d061da3466b1",
+      "expected_start_by": "2026-11-12T23:54:04.291602+00:00",
       "attempts": 0,
+      "previous_target_completed_or_superseded": false,
       "last_request_at": "2026-11-12T21:47:17.699544+00:00"
     }
   },
