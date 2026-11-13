@@ -29,6 +29,7 @@ class Top30WebTests(unittest.TestCase):
         self.assertEqual(doc["count"], 30)
         self.assertEqual([t["rank"] for t in doc["items"]], list(range(1,31)))
         self.assertEqual(doc["items"][0]["name"], "Trend01")
+        self.assertIn("entered_top30_at", doc["items"][0])
         self.assertFalse(doc["publication_allowed"])
 
     def test_no_auth_or_lease_leak(self):
