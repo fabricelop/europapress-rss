@@ -155,17 +155,17 @@ st.data.manual.items.push({id:'test-group',name:'Evento agrupado',
   explanation:'Explicación compartida de la tercera tendencia.',
   explained_at:new Date().toISOString()});
 const topRows=tt.trendRows();
-assert.equal(topRows[0]._status,'PENDIENTE',
+assert.equal(topRows[0]._status,'SIN SOLICITUD EDITORIAL',
   'An old or unverified explanation cannot mark the Top30 published');
 assert.equal(topRows[0].explanation,'',
   'Never offer unpublished explanations directly in Top 30');
-assert.equal(topRows[1]._status,'EN COLA','Queued work must not be mistaken for active editorial execution');
-assert.equal(topRows[2]._status,'PENDIENTE',
+assert.equal(topRows[1]._status,'EN ELABORACIÓN','A real preparing request must show work in progress');
+assert.equal(topRows[2]._status,'SIN SOLICITUD EDITORIAL',
   'Grouping cannot publish a new Top30 explanation directly');
 assert.equal(topRows[2].explanation,'',
   'Grouped explanations may not bypass Explicadas');
-assert.equal(topRows[3]._status,'PENDIENTE','Unexplained Top 10 positions remain pending');
-assert.equal(topRows[10]._status,'PREPARACIÓN MANUAL','Top 11-30 should not be auto-explained');
+assert.equal(topRows[3]._status,'SIN SOLICITUD EDITORIAL','Unrequested Top 10 entries must not pretend to have a queue job');
+assert.equal(topRows[10]._status,'SIN SOLICITUD EDITORIAL','Top 11-30 without an active job should not be marked explained');
 assert(html.includes("command('Volver a elaborar','rework');"),
   'Every Top 30 trend must offer the same fresh-elaboration command');
 for(const view of [html,liveHtml,mobileHtml]){
