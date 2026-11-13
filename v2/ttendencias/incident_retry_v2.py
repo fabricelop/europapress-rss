@@ -28,6 +28,8 @@ def eligible_incident(item, *, now=None):
         return False
     if int(item.get("incident_retries", 0)) >= MAX_INCIDENT_RETRIES:
         return False
+    if (item.get("capture") or {}).get("verified_complete") is True:
+        return False
     now = now or datetime.now(timezone.utc)
     if now.tzinfo is None:
         raise ValueError("Reloj sin zona horaria")
@@ -62,7 +64,7 @@ def ranked_incident(queue, history, *, now=None):
 
 
 def restart_as_new_revision(queue, trend_id, *, now=None, chrome_clear=False,
-                            recovery_checked=False):
+                            recovery_checked=False, previous_chat_url=""):
     """Return a fresh PENDING revision, preserving evidence of every attempt.
 
     Explicit guard from the caller: no current V2 browser; attempted to recover
@@ -84,7 +86,7 @@ def restart_as_new_revision(queue, trend_id, *, now=None, chrome_clear=False,
         "revision": row["revision"],
         "status": row["status"],
         "attempts": row.get("attempts", 0),
-        "chat_url": (row.get("capture") or {}).get("chat_url"),
+        "chat_url": previous_chat_url or (row.get("capture") or {}).get("chat_url"),
         "started_at": (row.get("lease") or {}).get("started_at"),
         "send_intent_at": (row.get("send_intent") or {}).get("at"),
         "incident_reason": row.get("capture_recovery_reason") or "lease_expired_without_capture",
