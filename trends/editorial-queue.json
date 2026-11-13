@@ -1,6 +1,41 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-13T03:27:57+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-13T02:28:24.940510+00:00",
+  "count": 1,
+  "items": [
+    {
+      "id": "red-review-1a04b17ed021f8d9387f",
+      "revision": 0,
+      "name": "Revisar novedades: Alsina",
+      "rank": 29,
+      "status": "preparing",
+      "requested_at": "2026-11-13T02:28:24.940510+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "496f431505e0",
+        "revision": 0,
+        "name": "Alsina",
+        "rank": 9,
+        "explanation": "TT#9 Alsina es tendencia por su intervención en Al Rojo Vivo sobre la entrevista de Broncano a Abascal: criticó que RTVE aceptara la condición de que el partido aportara el público.\n#Broncano #Abascal\n🌶️ El debate acabó discutiendo también quién llenaba las butacas.",
+        "explanation_sha256": "ee0d31c69c2e028164bf7948f21c53ce768a1bed7087e296fed0a62bd8c31d63",
+        "explained_at": "2026-11-10T20:12:30+01:00",
+        "verification_sources": [
+          {
+            "url": "https://amp.ondacero.es/elecciones/generales/carlos-alsina-senala-cual-problema-fondo-entrevista-broncano-abascal-tve-habia-alternativa-hacerla-publico_202611106af32134d3bddc0868ac7e90.html"
+          },
+          {
+            "url": "https://www.lasexta.com/programas/al-rojo-vivo/alsina-defiende-broncano-senala-inaceptable-entrevista-abascal-que-programa-acepte-condicion-que-pone-lider-politico_202611106af3116c9a31a65adcd6fca3.html"
+          }
+        ],
+        "fingerprint": "7c3f333f8602d39221bfcff7f0202a5a24726b9fdeee4eae8b6bb4d96500712e"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
