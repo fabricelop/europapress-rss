@@ -14,6 +14,7 @@ import urllib.request
 from datetime import datetime, timezone
 
 from playwright.sync_api import sync_playwright
+from v2.ttendencias.chatgpt_transcript import extract_reply
 
 ROOT = pathlib.Path(os.environ["LOCALAPPDATA"]) / "TTActualidadV2"
 PROFILE = ROOT / "ChromeProfile"
@@ -87,22 +88,9 @@ def collect_assistant(page):
     return None, ""
 
 def collect_from_visible_transcript(page):
-    """Fallback para la interfaz actual sin data-message-author-role.
-
-    Extrae solo el último bloque 'ChatGPT said:' del cuerpo visible, nunca
-    la navegación lateral ni el mensaje del usuario. No depende del iframe DIL.
-    """
     body = page.locator("body").inner_text(timeout=7000)
-    marker = "ChatGPT said:"
-    if marker not in body:
-        return None, ""
-    response = body.rsplit(marker, 1)[1]
-    # Los pies de la interfaz no son parte del contenido editorial.
-    endings = ("ChatGPT can make mistakes.", "Latest response")
-    for ending in endings:
-        if ending in response:
-            response = response.split(ending, 1)[0]
-    return "body-transcript/ChatGPT said:", response.strip()
+    answer, status = extract_reply(body, trend_id=TREND_ID, revision=REVISION)
+    return ("body-transcript/paired-turns" if answer else None), answer
 
 
 def validates_existing_reply(page, answer, selector):
@@ -119,7 +107,7 @@ def validates_existing_reply(page, answer, selector):
     # demuestra que no hemos extraído una respuesta parcial.
     if "No se ha publicado contenido ni modificado GitHub." not in answer:
         return False
-    if selector == "body-transcript/ChatGPT said:":
+    if selector == "body-transcript/paired-turns":
         return "ChatGPT can make mistakes." in page.locator("body").inner_text()
     return True
 
@@ -191,12 +179,12 @@ def main():
                     previous, stable = answer, 0
                 # La estabilidad NO basta: exigir control de acciones de respuesta
                 # terminada y ausencia de control de parada.
-                if answer and stable >= 3 and not stop and len(answer) >= 80 and (ready_control or selector == "body-transcript/ChatGPT said:") and validates_existing_reply(page, answer, selector):
+                if answer and stable >= 3 and not stop and len(answer) >= 80 and (ready_control or selector == "body-transcript/paired-turns") and validates_existing_reply(page, answer, selector):
                     result["answer"] = answer
                     result["reply_captured"] = True
                     result["status"] = "captured_needs_editorial_validation"
                     result["selector"] = selector
-                    result["validation"] = "historic_message_id_revision_and_terminal_marker"
+                    result["validation"] = "paired_turn_id_revision_footer_and_stable_idle"
                     break
                 time.sleep(2)
             result["observations"] = observations[-20:]
