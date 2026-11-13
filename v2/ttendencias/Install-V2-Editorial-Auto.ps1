@@ -53,8 +53,9 @@ foreach ($file in $files) {
 & py.exe -3 (Join-Path $root 'test_auto_editorial_v2.py')
 if ($LASTEXITCODE -ne 0) { throw 'No superó las pruebas de seguridad V2' }
 # Preflight de Playwright, sin abrir Chrome.
-& py.exe -3 -c 'import playwright.sync_api; print("TT_V2_PLAYWRIGHT=READY")'
+& py.exe -3 -c 'import playwright.sync_api'
 if ($LASTEXITCODE -ne 0) { throw 'Playwright no disponible para Chrome V2' }
+Write-Host 'TT_V2_PLAYWRIGHT=READY'
 
 # La bandera exacta es autorización para abrir chats. Guardarla solo
 # tras descargar/validar los módulos y justo antes de registrar la tarea.
