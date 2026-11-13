@@ -50,12 +50,30 @@ foreach ($file in $files) {
         throw 'Descarga V2 inválida: ' + $file
     }
 }
-# Probar selector y exclusión sin mandar mensajes.
-& py.exe -3 (Join-Path $root 'test_auto_editorial_v2.py')
-if ($LASTEXITCODE -ne 0) { throw 'No superó las pruebas de seguridad V2' }
-# Preflight de Playwright, sin abrir Chrome.
-& py.exe -3 -c 'import playwright.sync_api'
-if ($LASTEXITCODE -ne 0) { throw 'Playwright no disponible para Chrome V2' }
+# Las pruebas unittest muestran puntos por stderr aun cuando son correctas.
+# Windows PowerShell 5.1 + ErrorActionPreference=Stop convierte ese stderr
+# en NativeCommandError. Capturar ambos canales y comprobar el exit code REAL.
+$py = (Get-Command py.exe -ErrorAction Stop).Source
+$testFile = Join-Path $root 'test_auto_editorial_v2.py'
+$testStdout = Join-Path $root 'install-auto-tests.stdout.log'
+$testStderr = Join-Path $root 'install-auto-tests.stderr.log'
+$test = Start-Process -FilePath $py -ArgumentList @('-3', ('"' + $testFile + '"')) `
+    -NoNewWindow -Wait -PassThru -RedirectStandardOutput $testStdout -RedirectStandardError $testStderr
+if (Test-Path $testStdout) { Get-Content -LiteralPath $testStdout | ForEach-Object { Write-Host $_ } }
+if (Test-Path $testStderr) { Get-Content -LiteralPath $testStderr | ForEach-Object { Write-Host $_ } }
+if ($test.ExitCode -ne 0) {
+    throw ('No superó las pruebas de seguridad V2 (exit ' + $test.ExitCode + '). Ver ' + $testStderr)
+}
+Write-Host 'TT_V2_AUTO_TESTS=OK'
+# Preflight de Playwright, sin abrir Chrome, capturando stderr igualmente.
+$checkStdout = Join-Path $root 'install-auto-check.stdout.log'
+$checkStderr = Join-Path $root 'install-auto-check.stderr.log'
+$check = Start-Process -FilePath $py -ArgumentList @('-3', '-c', '"import playwright.sync_api"') `
+    -NoNewWindow -Wait -PassThru -RedirectStandardOutput $checkStdout -RedirectStandardError $checkStderr
+if ($check.ExitCode -ne 0) {
+    if (Test-Path $checkStderr) { Get-Content -LiteralPath $checkStderr | ForEach-Object { Write-Host $_ } }
+    throw ('Playwright no disponible para Chrome V2 (exit ' + $check.ExitCode + ')')
+}
 Write-Host 'TT_V2_PLAYWRIGHT=READY'
 
 # Las pruebas anteriores ya utilizaron un perfil Chrome V2 autenticado.
