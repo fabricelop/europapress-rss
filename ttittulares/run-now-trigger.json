@@ -1,17 +1,21 @@
 {
   "version": 2,
-  "command_id": "tt-urgent-1794557984983",
-  "requested_at": "2026-11-13T08:19:44.983Z",
+  "command_id": "tt-autoguard-1794559513",
+  "requested_at": "2026-11-13T08:45:13.025001Z",
   "mode": "manual_pc_chat",
   "executor": "pc_chat_ttittulares_dedicated",
   "project": "ttittulares",
   "launcher_arg": "titulares",
   "task": "editorial",
   "auto_image_followup": false,
-  "source": "ttactualidad_mobile_immediate",
+  "source": "tt_autoheal_editorial_watchdog",
+  "reason": "editorial_not_started_in_time",
   "pending_ids": [
-    "3f2425da7ad8:r1",
-    "4610c2c79aa5:r1",
-    "807a6387ffe8:r1"
-  ]
+    "807a6387ffe8",
+    "4610c2c79aa5"
+  ],
+  "target_id": "807a6387ffe8",
+  "target_revision": 1,
+  "target_name": "El INE confirma que el IPC siguió en octubre en el 4,9% tras subir el gas y bajar las gasolinas",
+  "scope": "single_item"
 }
