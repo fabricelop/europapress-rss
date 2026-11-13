@@ -62,36 +62,57 @@ try {
     $all = Scan
     $owned = @(V2Tree $all)
     Log 'TT_V2_OWNED_PROCESSES_BEFORE_STOP' ([string]$owned.Count)
-    # Windows PowerShell 5.1: redirect taskkill stderr to files so a PID
-    # disappearing during shutdown does not terminate this script.
-    # Verify PID identity immediately before signalling it.
-    $roots = @(V2Roots $all)
-    foreach ($proc in $roots) {
-        if ($proc.ProcessId -eq $PID) { throw 'No terminar el proceso del propio script' }
-        $current = @(Scan | Where-Object { $_.ProcessId -eq $proc.ProcessId })
-        if ($current.Count -eq 0) {
-            Log 'TT_V2_ALREADY_EXITED' ([string]$proc.ProcessId)
-            continue
+    # Keep the original exact PID/creation-date inventory, including
+    # V2 Chrome descendants whose command line lacks --user-data-dir.
+    # A disappearing PID is normal and never aborts the restart.
+    $tracked = @{}
+    foreach ($p in $owned) { $tracked[[int]$p.ProcessId] = [string]$p.CreationDate }
+    $remaining = @()
+    for ($pass = 1; $pass -le 6; $pass++) {
+        $snapshot = @(Scan)
+        $currentTree = @(V2Tree $snapshot)
+        foreach ($p in $currentTree) {
+            $tracked[[int]$p.ProcessId] = [string]$p.CreationDate
         }
-        $actualV2 = @(V2Roots $current)
-        if ($actualV2.Count -ne 1 -or [string]$current[0].CreationDate -ne [string]$proc.CreationDate) {
-            Log 'TT_V2_PID_CHANGED_SKIP' ([string]$proc.ProcessId)
-            continue
+        # Use the original identities when parents disappeared in between scans.
+        $remaining = @($snapshot | Where-Object {
+            $id = [int]$_.ProcessId
+            $tracked.ContainsKey($id) -and $tracked[$id] -eq [string]$_.CreationDate
+        })
+        Log 'TT_V2_STOP_PASS' ([string]$pass)
+        Log 'TT_V2_STOP_PASS_REMAINING' ([string]$remaining.Count)
+        if ($remaining.Count -eq 0) { break }
+        # Child-first reduces noisy "process not found" messages. Never
+        # send a generic taskkill /IM chrome.exe or terminate a foreign PID.
+        foreach ($p in @($remaining | Sort-Object ProcessId -Descending)) {
+            $id = [int]$p.ProcessId
+            if ($id -eq $PID) { throw 'Se detectó el propio script dentro de V2: cancelar' }
+            try {
+                $live = Get-CimInstance Win32_Process -Filter ("ProcessId=" + $id) -ErrorAction Stop
+                if (!$live -or [string]$live.CreationDate -ne $tracked[$id]) {
+                    continue
+                }
+                Stop-Process -Id $id -Force -ErrorAction Stop
+                Log 'TT_V2_STOPPED_PID' ([string]$id)
+            } catch {
+                # Process-exited races are expected. Do not report an error
+                # unless the final verification still finds live V2 processes.
+                Log 'TT_V2_STOP_ATTEMPT' ([string]$id)
+            }
         }
-        $stdout = Join-Path $root ('v2-stop-' + $proc.ProcessId + '.stdout.log')
-        $stderr = Join-Path $root ('v2-stop-' + $proc.ProcessId + '.stderr.log')
-        $killed = Start-Process -FilePath 'taskkill.exe' -ArgumentList @('/PID',([string]$proc.ProcessId),'/T','/F') -Wait -PassThru -WindowStyle Hidden -RedirectStandardOutput $stdout -RedirectStandardError $stderr
-        if ($killed.ExitCode -ne 0) {
-            # A nonzero exit is not a complete stop; only the final scan
-            # below decides whether restarting would be safe.
-            Log 'TT_V2_TASKKILL_NONZERO' (([string]$proc.ProcessId) + ':' + $killed.ExitCode)
-        }
+        Start-Sleep -Seconds 2
     }
-    Start-Sleep -Seconds 3
-    $remaining = @(V2Tree (Scan))
+    $snapshot = @(Scan)
+    $currentTree = @(V2Tree $snapshot)
+    foreach ($p in $currentTree) { $tracked[[int]$p.ProcessId] = [string]$p.CreationDate }
+    $remaining = @($snapshot | Where-Object {
+        $id = [int]$_.ProcessId
+        $tracked.ContainsKey($id) -and $tracked[$id] -eq [string]$_.CreationDate
+    })
     Log 'TT_V2_OWNED_PROCESSES_AFTER_STOP' ([string]$remaining.Count)
     if ($remaining.Count -gt 0) {
-        Log 'TT_V2_RESULT' 'BLOCKED_PROCESSES_STILL_RUNNING_NO_RESTART'
+        Log 'TT_V2_REMAINING_PIDS' (($remaining | ForEach-Object { $_.ProcessId }) -join ',')
+        Log 'TT_V2_RESULT' 'BLOCKED_V2_PROCESSES_STILL_RUNNING_NO_RESTART'
         exit 2
     }
     $daemon = Join-Path $root 'editorial_daemon_v2.py'
