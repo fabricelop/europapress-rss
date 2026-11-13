@@ -3,8 +3,12 @@
 import os
 import unittest
 
-from v2.ttendencias.chrome_visibility_v2 import (
-    startupinfo_hidden, hide_windows_for_pids, visible_windows_for_pids)
+try:
+    from .chrome_visibility_v2 import (
+        startupinfo_hidden, hide_windows_for_pids, visible_windows_for_pids)
+except ImportError:
+    from chrome_visibility_v2 import (
+        startupinfo_hidden, hide_windows_for_pids, visible_windows_for_pids)
 
 
 @unittest.skipUnless(os.name == "nt", "Windows-only Win32 callback API")
