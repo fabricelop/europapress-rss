@@ -49,7 +49,7 @@ def run_batch(max_jobs, execute):
     queue, _ = core.queue_read(api, auth)
     history = read_history(auth)
     initial, age = select_current_top30(queue, history, max_jobs)
-    print("TT_V2_BATCH_SOURCE=CURRENT_TOP30_ONLY", flush=True)
+    print("TT_V2_BATCH_SOURCE=CURRENT_TOP30_RANK_ORDER_FROZEN", flush=True)
     print("TT_V2_TOP30_AGE_MINUTES=" + str(age), flush=True)
     print("TT_V2_BATCH_MODE=" + ("RUN" if execute else "DRY_RUN"), flush=True)
     print("TT_V2_BATCH_PLAN_COUNT=" + str(len(initial)), flush=True)
@@ -63,16 +63,17 @@ def run_batch(max_jobs, execute):
         return
     if core.profile_pids():
         raise RuntimeError("Chrome V2 ya está abierto; abortar")
+    # El orden se congela al INICIAR la tanda: 1 -> 30 del Top30 aceptado.
+    # Si la captura cambia mientras ChatGPT investiga y un tema sale del Top30,
+    # no cancelar, sustituir ni perder la ficha ya lanzada.
     completed = 0
-    for i in range(max_jobs):
+    for item in initial:
         queue, _ = core.queue_read(api, auth)
-        history = read_history(auth)
-        candidates, age = select_current_top30(queue, history, 1)
-        if not candidates:
-            print("TT_V2_BATCH_CURRENT_TOP30_COMPLETE=YES", flush=True)
-            break
-        item = candidates[0]
-        # El consumidor lee de nuevo la cola y hace CAS dentro de run_one.
+        current = core.selected(queue, item["trend_id"])
+        if current["revision"] != item["revision"]:
+            raise RuntimeError("Revisión cambiada durante el lote: detener sin reenviar")
+        # La tendencia puede estar ya fuera del Top30: mantener el plan original.
+        # run_one hace de nuevo reserva CAS y validaciones anti-duplicados.
         print("TT_V2_BATCH_START=%s:r%d" % (item["trend_id"], item["revision"]), flush=True)
         try:
             core.run_one(api, state, transcript, auth, item)
@@ -88,7 +89,7 @@ def run_batch(max_jobs, execute):
         completed += 1
         print("TT_V2_BATCH_VERIFIED=%s:%s" % (item["trend_id"], digest), flush=True)
         print("TT_V2_BATCH_COMPLETED=" + str(completed), flush=True)
-        if i < max_jobs - 1:
+        if completed < len(initial):
             # Dejar la sesión cerrada antes de abrir otro Chrome.
             time.sleep(2)
     print("TT_V2_BATCH_RESULT=SUCCESS", flush=True)
