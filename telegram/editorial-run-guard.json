@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "checked_at": "2026-11-13T06:59:56.761100+00:00",
+  "checked_at": "2026-11-13T07:15:37.885849+00:00",
   "projects": {
     "ttittulares": {
       "project": "ttittulares",
-      "checked_at": "2026-11-13T06:59:56.761100+00:00",
+      "checked_at": "2026-11-13T07:15:37.885849+00:00",
       "pending_count": 0,
       "pending_ids": [],
       "oldest_at": null,
@@ -25,10 +25,13 @@
     },
     "ttendencias": {
       "project": "ttendencias",
-      "checked_at": "2026-11-13T06:59:56.761100+00:00",
-      "pending_count": 0,
-      "pending_ids": [],
-      "oldest_at": null,
+      "checked_at": "2026-11-13T07:15:37.885849+00:00",
+      "pending_count": 2,
+      "pending_ids": [
+        "709be9244008",
+        "c5672e4fb4ea"
+      ],
+      "oldest_at": "2026-11-13T08:15:15+01:00",
       "latest_run": {
         "id": "tr-20261113T072500-chat-direct",
         "status": "DONE",
@@ -37,10 +40,28 @@
         "finished_at": "2026-11-13T07:30:00+01:00",
         "source": "github_pr_trace"
       },
-      "control_command": "tr-autoguard-1794549855",
-      "last_command_at": "2026-11-13T06:04:15.657514Z",
-      "status": "no_work",
+      "control_command": "tr-autoguard-1794554120",
+      "last_command_at": "2026-11-13T07:15:20.884959Z",
+      "status": "within_start_window",
       "should_dispatch": false,
+      "item_execution": [
+        {
+          "id": "709be9244008",
+          "entered_at": "2026-11-13T08:15:15+01:00",
+          "should_start_by": "2026-11-13T07:20:15+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "c5672e4fb4ea",
+          "entered_at": "2026-11-13T08:15:15+01:00",
+          "should_start_by": "2026-11-13T07:20:15+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        }
+      ],
+      "backlog_signature": "f0eccb00802cb699",
+      "expected_start_by": "2026-11-13T07:20:15+00:00",
       "attempts": 0,
       "last_request_at": "2026-11-13T05:27:06.843495+00:00"
     }
