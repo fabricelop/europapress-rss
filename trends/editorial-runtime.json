@@ -3,39 +3,30 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261113T185500-chat-direct",
-  "previous_run_id": "tr-20261113T182500-chat-direct",
-  "command_id": "tr-20261113T185500-chat-direct",
+  "run_id": "tr-20261113T191000-chat-direct",
+  "previous_run_id": "tr-20261113T185500-chat-direct",
+  "command_id": "tr-20261113T191000-chat-direct",
   "source": "chat_direct",
-  "status": "DONE_WITH_INCIDENTS",
+  "status": "DONE",
   "phase": "closing",
-  "started_at": "2026-11-13T18:55:00+01:00",
-  "updated_at": "2026-11-13T18:59:40+01:00",
-  "current": 2,
-  "total": 2,
+  "started_at": "2026-11-13T19:10:00+01:00",
+  "updated_at": "2026-11-13T19:11:02+01:00",
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": null,
   "queue_complete": true,
-  "processed_ids": [
-    "manual-c550af7b734565e1d4042fae0ba8d74f",
-    "1d5814995248"
-  ],
+  "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [
-    "manual-c550af7b734565e1d4042fae0ba8d74f",
-    "1d5814995248"
-  ],
+  "remaining_ids": [],
   "remaining_active_ids": [],
-  "remaining_problematic_ids": [
-    "manual-c550af7b734565e1d4042fae0ba8d74f",
-    "1d5814995248"
-  ],
+  "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
+    "attempted": 0,
+    "observed": 0,
     "closed": 0,
     "explained": 0,
-    "problematic": 2,
+    "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
     "maintenance_reviews": 0,
@@ -47,49 +38,17 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 2,
+    "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "manual-c550af7b734565e1d4042fae0ba8d74f",
-      "revision": 0,
-      "name": "Miente",
-      "outcome": "problematic",
-      "applied": true,
-      "reason": "Sin detonante predominante verificable tras reintento con búsqueda web actual y muestra de X no concluyente."
-    },
-    {
-      "id": "1d5814995248",
-      "revision": 0,
-      "name": "Isaac",
-      "outcome": "problematic",
-      "applied": true,
-      "reason": "Identidad/detonante actual no verificables; la actualidad de Isaac Romero no basta para atribuir la tendencia."
-    }
-  ],
-  "incident_count": 2,
-  "incidents": [
-    {
-      "id": "manual-c550af7b734565e1d4042fae0ba8d74f",
-      "revision": 0,
-      "name": "Miente",
-      "status": "problematic",
-      "reason": "La evidencia reciente no permite identificar una causa predominante verificable."
-    },
-    {
-      "id": "1d5814995248",
-      "revision": 0,
-      "name": "Isaac",
-      "status": "problematic",
-      "reason": "No se puede acreditar con fiabilidad qué Isaac o qué hecho concreto impulsa el término."
-    }
-  ],
+  "outcomes": [],
+  "incident_count": 0,
+  "incidents": [],
   "error": null,
   "activity": [
     {
@@ -719,22 +678,36 @@
       "status": "DONE_WITH_INCIDENTS",
       "phase": "closing",
       "message": "Pasada TTendencias cerrada 2/2 reintentos: Miente e Isaac siguen problematic por falta de detonante verificable. Aplicador oficial GitHub Actions 43477991983 success. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-13T19:10:00+01:00",
+      "run_id": "tr-20261113T191000-chat-direct",
+      "status": "RUNNING",
+      "phase": "preparing",
+      "message": "Pasada manual iniciada desde ChatGPT; revalidando cola autoritativa y barrera editorial JIT contra main. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-13T19:11:02+01:00",
+      "run_id": "tr-20261113T191000-chat-direct",
+      "status": "DONE",
+      "phase": "closing",
+      "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 y mobile-decisions sin estados editoriales activos; Top 30 fresco de las 19:10. Sin ImageGen ni publicaciones."
     }
   ],
-  "last_started_at": "2026-11-13T18:58:52+01:00",
-  "last_completed_at": "2026-11-13T18:59:40+01:00",
+  "last_started_at": "2026-11-13T19:10:00+01:00",
+  "last_completed_at": "2026-11-13T19:11:02+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261113T185500-chat-direct",
-    "status": "DONE_WITH_INCIDENTS",
-    "started_at": "2026-11-13T18:55:00+01:00",
-    "finished_at": "2026-11-13T18:59:40+01:00",
+    "run_id": "tr-20261113T191000-chat-direct",
+    "status": "DONE",
+    "started_at": "2026-11-13T19:10:00+01:00",
+    "finished_at": "2026-11-13T19:11:02+01:00",
     "summary": {
-      "attempted": 2,
-      "observed": 2,
+      "attempted": 0,
+      "observed": 0,
       "closed": 0,
       "explained": 0,
-      "problematic": 2,
+      "problematic": 0,
       "updates": 0,
       "review_completed_no_distinct_event": 0,
       "maintenance_reviews": 0,
@@ -746,56 +719,21 @@
       "anticipation_reviews": 0,
       "anticipation_prepared": 0,
       "anticipation_unverified": 0,
-      "queue_remaining": 2,
+      "queue_remaining": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
       "image_outbox_created": 0,
       "publications": 0,
-      "incidents": 2,
+      "incidents": 0,
       "concurrent_convergence": 0
     },
-    "processed_ids": [
-      "manual-c550af7b734565e1d4042fae0ba8d74f",
-      "1d5814995248"
-    ],
-    "outcomes": [
-      {
-        "id": "manual-c550af7b734565e1d4042fae0ba8d74f",
-        "revision": 0,
-        "name": "Miente",
-        "outcome": "problematic",
-        "applied": true,
-        "reason": "Sin detonante predominante verificable tras reintento con búsqueda web actual y muestra de X no concluyente."
-      },
-      {
-        "id": "1d5814995248",
-        "revision": 0,
-        "name": "Isaac",
-        "outcome": "problematic",
-        "applied": true,
-        "reason": "Identidad/detonante actual no verificables; la actualidad de Isaac Romero no basta para atribuir la tendencia."
-      }
-    ],
-    "incident_count": 2,
-    "incidents": [
-      {
-        "id": "manual-c550af7b734565e1d4042fae0ba8d74f",
-        "revision": 0,
-        "name": "Miente",
-        "status": "problematic",
-        "reason": "La evidencia reciente no permite identificar una causa predominante verificable."
-      },
-      {
-        "id": "1d5814995248",
-        "revision": 0,
-        "name": "Isaac",
-        "status": "problematic",
-        "reason": "No se puede acreditar con fiabilidad qué Isaac o qué hecho concreto impulsa el término."
-      }
-    ],
-    "message": "Pasada TTendencias cerrada 2/2 reintentos: Miente e Isaac siguen problematic por falta de detonante verificable. Aplicador oficial GitHub Actions 43477991983 success. Sin ImageGen ni publicación."
+    "processed_ids": [],
+    "outcomes": [],
+    "incident_count": 0,
+    "incidents": [],
+    "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 y mobile-decisions sin estados editoriales activos; Top 30 fresco de las 19:10. Sin ImageGen ni publicaciones."
   },
-  "message": "Pasada TTendencias cerrada 2/2 reintentos: Miente e Isaac siguen problematic por falta de detonante verificable. Aplicador oficial GitHub Actions 43477991983 success. Sin ImageGen ni publicación.",
+  "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 y mobile-decisions sin estados editoriales activos; Top 30 fresco de las 19:10. Sin ImageGen ni publicaciones.",
   "history": [
     {
       "run_id": "tr-1794361941170-manual",
@@ -5281,18 +5219,27 @@
         }
       ],
       "message": "Pasada TTendencias cerrada 2/2 reintentos: Miente e Isaac siguen problematic por falta de detonante verificable. Aplicador oficial GitHub Actions 43477991983 success. Sin ImageGen ni publicación."
+    },
+    {
+      "run_id": "tr-20261113T191000-chat-direct",
+      "status": "DONE",
+      "started_at": "2026-11-13T19:10:00+01:00",
+      "finished_at": "2026-11-13T19:11:02+01:00",
+      "total": 0,
+      "closed": 0,
+      "explained": 0,
+      "pending": 0,
+      "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 y mobile-decisions sin estados editoriales activos; Top 30 fresco de las 19:10. Sin ImageGen ni publicaciones."
     }
   ],
   "current_item": null,
   "withdrawn_ids": [],
-  "last_finished_at": "2026-11-13T18:59:40+01:00",
-  "last_revalidated_at": "2026-11-13T17:22:12+01:00",
+  "last_finished_at": "2026-11-13T19:11:02+01:00",
+  "last_revalidated_at": "2026-11-13T19:11:02+01:00",
   "last_revalidation": {
-    "at": "2026-11-13T16:16:30+01:00",
     "queue_count": 0,
-    "queue_updated_at": "2026-11-13T16:11:06+01:00",
-    "mobile_active": 0,
-    "recent_captured_at": "2026-11-13T16:11:01+01:00"
+    "mobile_active_count": 0,
+    "queue_updated_at": "2026-11-13T19:11:02+01:00"
   },
   "prior_runtime_observed": {
     "run_id": "tr-autoguard-1794381666",
@@ -8379,6 +8326,15 @@
         }
       ],
       "message": "Pasada TTendencias cerrada 2/2 reintentos: Miente e Isaac siguen problematic por falta de detonante verificable. Aplicador oficial GitHub Actions 43477991983 success. Sin ImageGen ni publicación."
+    },
+    {
+      "run_id": "tr-20261113T191000-chat-direct",
+      "status": "DONE",
+      "started_at": "2026-11-13T19:10:00+01:00",
+      "finished_at": "2026-11-13T19:11:02+01:00",
+      "current": 0,
+      "total": 0,
+      "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 y mobile-decisions sin estados editoriales activos; Top 30 fresco de las 19:10. Sin ImageGen ni publicaciones."
     }
   ],
   "outbox_comment_id": 6849930890,
@@ -8810,6 +8766,6 @@
   "processed": [],
   "maintenance_outbox_commit": "c764cbdfc37ba7b67fedd38a16837ee068ae9467",
   "editorial_apply_run_id": 43477991983,
-  "finished_at": "2026-11-13T18:59:40+01:00",
-  "completed_at": "2026-11-13T18:59:40+01:00"
+  "finished_at": "2026-11-13T19:11:02+01:00",
+  "completed_at": "2026-11-13T19:11:02+01:00"
 }
