@@ -1,6 +1,75 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-13T12:15:05+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-13T11:15:28.142603+00:00",
+  "count": 2,
+  "items": [
+    {
+      "id": "red-review-0bf1509ba72c1c1f47a9",
+      "revision": 0,
+      "name": "Revisar novedades: Marlaska",
+      "rank": 6,
+      "status": "preparing",
+      "requested_at": "2026-11-13T11:15:28.142603+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "43a9aa71ccc8",
+        "revision": 0,
+        "name": "Marlaska",
+        "rank": 8,
+        "explanation": "TT#4 Marlaska sigue siendo tendencia por las críticas a las cargas del 11N. Interior precisa que suspende el espray pimienta en orden público, pero mantiene los artificios lacrimógenos ATL; varios partidos reclaman su dimisión.\n#Marlaska #HuelgaGeneral",
+        "explanation_sha256": "0d29d78ed4c9db4ad15f19d3408470180bfb4c82dde41c2c515efee4ef9666e8",
+        "explained_at": "2026-11-11T17:14:00+01:00",
+        "verification_sources": [
+          {
+            "url": "https://www.europapress.es/nacional/noticia-maillo-critica-marlaska-violencia-policial-contra-piquetes-huelga-20261111140946.html"
+          },
+          {
+            "url": "https://www.infobae.com/espana/agencias/2026/11/11/iu-y-podemos-consideran-la-huelga-general-un-exito-y-denuncian-violencia-policial/"
+          }
+        ],
+        "fingerprint": "b9d654be9deb05b18756c020df993f05b80760a6d473cc6413fc7d2ffbe94ef2"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-c349c92e073d9dd9fa77",
+      "revision": 0,
+      "name": "Revisar novedades: Anotop At",
+      "rank": 20,
+      "status": "preparing",
+      "requested_at": "2026-11-13T11:15:28.142603+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "30e6d8577a00",
+        "revision": 0,
+        "name": "Anotop At",
+        "rank": 15,
+        "explanation": "TT#18 Anotop At sigue siendo tendencia porque el PP y Nuevas Generaciones han incorporado hoy el meme nacido del lapsus de Feijóo a su campaña digital para atraer voto joven.\n#Feijóo #PP\n🌶️ El lapsus pasó de archivo a material de campaña.",
+        "explanation_sha256": "100e1aefe41b3488747d07f91bd5005d5a558b43c56a93bfc023d702b098ab27",
+        "explained_at": "2026-11-11T17:14:00+01:00",
+        "verification_sources": [
+          {
+            "url": "https://www.publico.es/tremending/memes-descacharrantes-cortocircuito-feijoo-anotop-at-the-wire-soprano.html"
+          },
+          {
+            "url": "https://www.heraldo.es/noticias/nacional/2025/11/26/anotop-el-lapsus-de-feijoo-en-el-congreso-que-se-ha-convertido-en-meme-1873713.html"
+          }
+        ],
+        "fingerprint": "2fb1e5f2c9a430962019b4dff5c7c2c92eedba4d9eb0f442ebc6cb11d70908c2"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
