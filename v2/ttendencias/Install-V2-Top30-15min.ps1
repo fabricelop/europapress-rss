@@ -14,7 +14,10 @@ if (!(Get-Command gh.exe -ErrorAction SilentlyContinue) -and -not $env:GH_TOKEN 
 # No guardar credenciales: usar el login gh del usuario interactivo.
 $argument = '-NoProfile -NonInteractive -ExecutionPolicy Bypass -WindowStyle Hidden -File "' + $runner + '"'
 $action = New-ScheduledTaskAction -Execute 'powershell.exe' -Argument $argument
-$trigger = New-ScheduledTaskTrigger -Once -At (Get-Date).Date -RepetitionInterval (New-TimeSpan -Minutes 15) -RepetitionDuration (New-TimeSpan -Days 3650)
+$now = Get-Date
+$minutes = [Math]::Floor($now.TimeOfDay.TotalMinutes / 15) * 15 + 15
+$next = $now.Date.AddMinutes($minutes)
+$trigger = New-ScheduledTaskTrigger -Once -At $next -RepetitionInterval (New-TimeSpan -Minutes 15) -RepetitionDuration (New-TimeSpan -Days 3650)
 $settings = New-ScheduledTaskSettingsSet -MultipleInstances IgnoreNew -ExecutionTimeLimit (New-TimeSpan -Minutes 5)
 $account = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
 $principal = New-ScheduledTaskPrincipal -UserId $account -LogonType Interactive -RunLevel Limited
@@ -23,6 +26,7 @@ $task = Get-ScheduledTask -TaskName $taskName
 if ($task.State -eq 'Disabled') { throw 'Tarea registrada pero desactivada' }
 Write-Host 'TT_V2_TOP30_TASK_REGISTERED=YES'
 Write-Host 'TT_V2_TOP30_INTERVAL_MINUTES=15'
+Write-Host ('TT_V2_TOP30_NEXT_LOCAL=' + $next.ToString('yyyy-MM-dd HH:mm:ss'))
 Write-Host ('TT_V2_TOP30_TASK_NAME=' + $taskName)
 Write-Host 'TT_V2_TOP30_TASK_MODE=WINDOWS_SESSION'
 Write-Host 'TT_V2_PUBLISHED=NO'
