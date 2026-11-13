@@ -272,7 +272,9 @@ def run_one(api, state, transcript, auth, item):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--trend-id", required=True)
+    target = parser.add_mutually_exclusive_group(required=True)
+    target.add_argument("--trend-id")
+    target.add_argument("--next", action="store_true", help="Selecciona automáticamente la próxima tendencia sin envío previo")
     parser.add_argument("--run", action="store_true", help="Habilita un único envío real")
     args = parser.parse_args()
     api = module("persist_capture_github.py", "ttv2_github")
@@ -280,7 +282,20 @@ def main():
     transcript = module("chatgpt_transcript.py", "ttv2_transcript")
     auth = api.token()
     q, _ = queue_read(api, auth)
-    item = selected(q, args.trend_id)
+    if args.next:
+        eligible = sorted((x for x in q["items"].values()
+            if x.get("status") in ("pending", "review_pending")
+            and not x.get("send_intent") and not x.get("capture")
+            and int(x.get("attempts", 0)) < 3),
+            key=lambda x: (x.get("requested_at", ""), x["trend_id"]))
+        if not eligible:
+            print("TT_V2_NO_ELIGIBLE_JOB=YES")
+            return
+        item = selected(q, eligible[0]["trend_id"])
+    else:
+        item = selected(q, args.trend_id)
+    if int(item.get("attempts", 0)) >= 3:
+        raise RuntimeError("Max attempts reached: no send")
     if not args.run:
         print("TT_V2_PREFLIGHT=YES")
         print("TT_V2_TREND=" + item["name"])
