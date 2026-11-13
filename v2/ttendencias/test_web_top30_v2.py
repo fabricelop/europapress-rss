@@ -45,6 +45,16 @@ class Top30WebTests(unittest.TestCase):
         doc = build(h, q)
         self.assertEqual(doc["items"][0]["status"], "en_elaboracion")
 
+    def test_expired_lease_is_incident_without_reopening_chat(self):
+        h,q=fixtures()
+        q["items"]["trv2-id-01"]["status"]="in_progress"
+        q["items"]["trv2-id-01"]["lease"]={"token":"NEVER_EXPOSE",
+            "expires_at":"2026-01-01T00:00:00Z"}
+        row=build(h,q)["items"][0]
+        self.assertEqual(row["status"],"incidencia")
+        self.assertEqual(row["status_label"],"Elaboración interrumpida")
+        self.assertNotIn("NEVER_EXPOSE",str(row))
+
     def test_capture_verified_shows_text_and_cause(self):
         h, q = fixtures()
         row=q["items"]["trv2-id-01"]
