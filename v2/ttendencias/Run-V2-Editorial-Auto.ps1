@@ -1,5 +1,6 @@
 # TTActualidad V2 - runner robusto: recuperar chat interrumpido y seguir.
 # No modifica V1, perfiles 9223/9234, ni publica.
+# Reutiliza el patron V1 de procesos ocultos con salida a logs independientes.
 $ErrorActionPreference = 'Stop'
 $root = Join-Path $env:LOCALAPPDATA 'TTActualidadV2'
 $flag = Join-Path $root 'auto-editorial-v2.enabled'
@@ -23,10 +24,11 @@ $recoverErr = Join-Path $logDir ('recover-' + $stamp + '.stderr.log')
 $daemonOut = Join-Path $logDir ('auto-' + $stamp + '.log')
 $daemonErr = Join-Path $logDir ('auto-' + $stamp + '.stderr.log')
 Write-Host ('TT_V2_AUTO_LOG=' + $daemonOut)
+Write-Host 'TT_V2_POWERSHELL_HIDDEN=YES'
 # Si Windows mató al consumidor dejando Chrome V2 abierto, rescatar el
 # chat ya enviado. Nunca continuar con un Chrome huérfano no identificado.
 $proc = Start-Process -FilePath $py -ArgumentList @('-3', ('"' + $recovery + '"'), '--auto') `
-    -PassThru -Wait -NoNewWindow -RedirectStandardOutput $recoverOut -RedirectStandardError $recoverErr
+    -PassThru -Wait -WindowStyle Hidden -RedirectStandardOutput $recoverOut -RedirectStandardError $recoverErr
 if (Test-Path -LiteralPath $recoverOut) {
     Get-Content -LiteralPath $recoverOut | ForEach-Object { Write-Host $_ }
 }
@@ -41,7 +43,7 @@ if ($proc.ExitCode -ne 0) {
 # Las tareas con CTRL+C/terminal roto no deben perder el chat por cerrar un pipe.
 Write-Host 'TT_V2_AUTO_RECOVERY=OK'
 $worker = Start-Process -FilePath $py -ArgumentList @('-3', ('"' + $daemon + '"'),
-    '--run', '--poll-seconds', '90') -PassThru -Wait -NoNewWindow `
+    '--run', '--poll-seconds', '90') -PassThru -Wait -WindowStyle Hidden `
     -RedirectStandardOutput $daemonOut -RedirectStandardError $daemonErr
 if ($worker.ExitCode -ne 0) {
     Write-Host ('TT_V2_AUTO_WORKER_EXIT=' + $worker.ExitCode)
