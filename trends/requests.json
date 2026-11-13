@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-13T12:05:33.366776+00:00",
+  "updated_at": "2026-11-13T12:06:11.465377+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -297144,32 +297144,36 @@
       "id": "1ea1a6c850b1",
       "name": "españas",
       "rank": 27,
-      "revision": 1,
-      "status": "inactive",
-      "requested_at": "2026-11-11T21:57:38.945180+00:00",
-      "updated_at": "2026-11-11T21:57:38.945180+00:00",
+      "created_at": "2026-11-13T12:06:11.465377+00:00",
+      "revision": 2,
+      "status": "preparing",
+      "requested_at": "2026-11-13T12:06:11.465377+00:00",
+      "updated_at": "2026-11-13T12:06:11.465377+00:00",
+      "auto_queued": false,
+      "request_source": "ttactualidad_editor_hints",
       "reexplain": false,
       "rewrite_pending": false,
       "task": "explain",
-      "auto_queued": false,
-      "request_source": "ttactualidad_editor_hints",
       "with_image": true,
       "disable_ai_image": false,
       "rewrite_with_image": true,
       "image_strategy": "ai_plus_fallback",
-      "image_choice": "none",
-      "image_pending": true,
-      "fallback_image_status": "pending",
       "ai_image_status": "pending",
+      "fallback_image_status": "pending",
       "requested_together": [
         "españas"
       ],
-      "rewrite_instruction": "INVESTIGACIÓN NUEVA DESDE CERO. Pistas de un editor SIN verificar:\\nEs por la foto de este tuit https://x.com/ximoclemente/status/2120597962250412283?a=2rQ9oqA1zUVVgYn9CrE&s=46 en la que se habla de las dos Españas.\\nContrasta cada dato, fecha, publicación y fuente con búsquedas independientes. Si no se verifica el detonante actual, deja el caso SIN EXPLICACIÓN VERIFICADA; nunca presentes las pistas como hechos. Si se verifica, escribe explicación factual completa y remate nuevo. No reutilices texto, remate ni imágenes de otra revisión.",
       "user_pistas": [
         {
           "at": "2026-11-11T21:57:38.945180+00:00",
           "source_revision": 0,
           "text": "Es por la foto de este tuit https://x.com/ximoclemente/status/2120597962250412283?a=2rQ9oqA1zUVVgYn9CrE&s=46 en la que se habla de las dos Españas.",
+          "verification": "unverified_editor_context"
+        },
+        {
+          "at": "2026-11-13T12:06:11.465377+00:00",
+          "source_revision": 1,
+          "text": "Busca en x",
           "verification": "unverified_editor_context"
         }
       ],
@@ -297179,15 +297183,16 @@
           "status": "explained",
           "problem_reason": "",
           "last_attempt_at": "2026-11-11T21:05:22.097Z"
+        },
+        {
+          "revision": 1,
+          "status": "inactive",
+          "problem_reason": "La pista editorial remite a un tuit concreto de Ximo Clemente sobre «las dos Españas», pero el tuit no es accesible desde las fuentes disponibles y no apareció corroboración independiente suficiente. No se atribuye el detonante.",
+          "last_attempt_at": ""
         }
       ],
-      "hints_verification_status": "unverified",
-      "problematic_at": "2026-11-12T01:05:08+01:00",
-      "problem_reason": "La pista editorial remite a un tuit concreto de Ximo Clemente sobre «las dos Españas», pero el tuit no es accesible desde las fuentes disponibles y no apareció corroboración independiente suficiente. No se atribuye el detonante.",
-      "problematic_attempts": 1,
-      "editorial_engine": "chatgpt-automation-outbox",
-      "inactive_at": "2026-11-12T01:21:11+01:00",
-      "inactive_reason": "left-top30-radar"
+      "rewrite_instruction": "INVESTIGACIÓN NUEVA DESDE CERO. Pistas de un editor SIN verificar:\\nBusca en x\\nContrasta cada dato, fecha, publicación y fuente con búsquedas independientes. Si no se verifica el detonante actual, deja el caso SIN EXPLICACIÓN VERIFICADA; nunca presentes las pistas como hechos. Si se verifica, escribe explicación factual completa y remate nuevo. No reutilices texto, remate ni imágenes de otra revisión.",
+      "hints_verification_status": "unverified"
     },
     {
       "id": "47ef1a2cc908",
