@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-13T04:45:50.259433+00:00",
+  "checked_at": "2026-11-13T04:59:46.870105+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -60,7 +60,7 @@
       "status": "in_progress",
       "conclusion": null,
       "age_minutes": 3.9,
-      "run_id": 43367068868,
+      "run_id": 43368660967,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -72,7 +72,7 @@
     },
     "request_queue": {
       "ok": false,
-      "invalid_count": 810,
+      "invalid_count": 811,
       "noise_count": 0
     },
     "ready_consistency": {
@@ -83,21 +83,15 @@
     "editorial_queue": {
       "ok": false,
       "pending_count": 2,
-      "overdue_count": 2,
-      "oldest_age_minutes": 31.5,
+      "overdue_count": 1,
+      "oldest_age_minutes": 45.4,
       "warning_after_minutes": 30,
       "overdue_items": [
-        {
-          "id": "red-review-cad2a320b2c272d2a551",
-          "name": "Revisar novedades: Hormiguero",
-          "status": "preparing",
-          "age_minutes": 31.5
-        },
         {
           "id": "red-review-a03ba46583f2a3fee89b",
           "name": "Revisar novedades: Broncano",
           "status": "preparing",
-          "age_minutes": 31.5
+          "age_minutes": 45.4
         }
       ],
       "repairable": false
@@ -107,8 +101,8 @@
       "status": "overdue",
       "queue_complete": false,
       "remaining_active_ids": [
-        "red-review-cad2a320b2c272d2a551",
-        "red-review-a03ba46583f2a3fee89b"
+        "red-review-a03ba46583f2a3fee89b",
+        "red-review-f5052ee0823a026c3feb"
       ],
       "contradictory_success": false
     },
@@ -121,10 +115,10 @@
   "repairs_started": [],
   "blocking": [
     "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos",
-    "cola con 810 estado(s) inválido(s)",
-    "cola de explicaciones retrasada: 2 pendiente(s) superan 30 min; más antigua 31.5 min"
+    "cola con 811 estado(s) inválido(s)",
+    "cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 45.4 min"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 810 estado(s) inválido(s) | cola de explicaciones retrasada: 2 pendiente(s) superan 30 min; más antigua 31.5 min"
+  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 811 estado(s) inválido(s) | cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 45.4 min"
 }
