@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-13T04:59:46.870105+00:00",
+  "checked_at": "2026-11-13T05:15:49.998186+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -42,7 +42,7 @@
     "top10": {
       "ok": false,
       "count": 10,
-      "non_stale_sources": 3,
+      "non_stale_sources": 4,
       "verified_fresh_sources": [
         "xtrendsiamrohit"
       ],
@@ -59,8 +59,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 3.9,
-      "run_id": 43368660967,
+      "age_minutes": 4.9,
+      "run_id": 43370305364,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -72,7 +72,7 @@
     },
     "request_queue": {
       "ok": false,
-      "invalid_count": 811,
+      "invalid_count": 812,
       "noise_count": 0
     },
     "ready_consistency": {
@@ -81,28 +81,22 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": false,
-      "pending_count": 2,
-      "overdue_count": 1,
-      "oldest_age_minutes": 45.4,
+      "ok": true,
+      "pending_count": 3,
+      "overdue_count": 0,
+      "oldest_age_minutes": 28.8,
       "warning_after_minutes": 30,
-      "overdue_items": [
-        {
-          "id": "red-review-a03ba46583f2a3fee89b",
-          "name": "Revisar novedades: Broncano",
-          "status": "preparing",
-          "age_minutes": 45.4
-        }
-      ],
+      "overdue_items": [],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": false,
-      "status": "overdue",
+      "ok": true,
+      "status": "not-required",
       "queue_complete": false,
       "remaining_active_ids": [
-        "red-review-a03ba46583f2a3fee89b",
-        "red-review-f5052ee0823a026c3feb"
+        "red-review-f5052ee0823a026c3feb",
+        "6132b2e3fed4",
+        "0edb044d5bb7"
       ],
       "contradictory_success": false
     },
@@ -115,10 +109,9 @@
   "repairs_started": [],
   "blocking": [
     "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos",
-    "cola con 811 estado(s) inválido(s)",
-    "cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 45.4 min"
+    "cola con 812 estado(s) inválido(s)"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 811 estado(s) inválido(s) | cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 45.4 min"
+  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 812 estado(s) inválido(s)"
 }
