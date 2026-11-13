@@ -39,8 +39,9 @@ def running_cdp_port():
         "$_.CommandLine -notmatch '(?:^|\\s)--type=' } | "
         "Select-Object ProcessId,CommandLine | ConvertTo-Json -Compress"
     )
-    result = subprocess.run(["powershell.exe", "-NoProfile", "-Command", ps],
-                            capture_output=True, text=True, timeout=25)
+    result = subprocess.run(["powershell.exe", "-NoProfile", "-NonInteractive", "-WindowStyle", "Hidden", "-Command", ps],
+                            capture_output=True, text=True, timeout=25,
+                            creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     if result.returncode:
         raise RuntimeError("No se pudo comprobar el proceso Chrome V2")
     rows = json.loads(result.stdout) if result.stdout.strip() else []
