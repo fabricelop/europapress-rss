@@ -8,13 +8,13 @@
   "command_id": "tr-20261113T011200-chat-direct",
   "source": "chat_direct",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "persisting",
   "started_at": "2026-11-13T01:12:00+01:00",
-  "updated_at": "2026-11-13T01:12:00+01:00",
+  "updated_at": "2026-11-13T01:16:09+01:00",
   "current": 0,
   "total": 3,
-  "trend_id": null,
-  "title": "Pasada editorial TTendencias",
+  "trend_id": "c72804a0682f",
+  "title": "YOLA GANADORA",
   "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
@@ -144,6 +144,16 @@
       "status": "RUNNING",
       "phase": "preparing",
       "message": "Pasada manual iniciada desde ChatGPT con cola autoritativa inicial=3: YOLA GANADORA, Sancet (reentrada) y revisión roja de #ElPerroAndaluzTVE. Revalidación JIT; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-13T01:16:09+01:00",
+      "run_id": "tr-20261113T011200-chat-direct",
+      "status": "RUNNING",
+      "phase": "persisting",
+      "trend_id": "c72804a0682f",
+      "revision": 0,
+      "name": "YOLA GANADORA",
+      "message": "Investigación JIT completada. Persistiendo YOLA GANADORA sin afirmar un resultado final no confirmado; después Sancet como episodio distinto y revisión roja de #ElPerroAndaluzTVE sin duplicar el episodio del 12/11."
     }
   ],
   "last_started_at": "2026-11-13T01:12:00+01:00",
@@ -175,7 +185,7 @@
     },
     "message": "Pasada TTendencias completada 0/0. Snapshot de tendencias 00:31, cola autoritativa revalidada en 0 y sin estados editoriales activos en mobile-decisions. Sin ImageGen ni publicaciones."
   },
-  "message": "Pasada manual iniciada desde ChatGPT con cola autoritativa inicial=3: YOLA GANADORA, Sancet (reentrada) y revisión roja de #ElPerroAndaluzTVE. Revalidación JIT; sin ImageGen ni publicación.",
+  "message": "Investigación JIT completada. Persistiendo YOLA GANADORA sin afirmar un resultado final no confirmado; después Sancet como episodio distinto y revisión roja de #ElPerroAndaluzTVE sin duplicar el episodio del 12/11.",
   "history": [
     {
       "run_id": "tr-1794327332740-manual",
