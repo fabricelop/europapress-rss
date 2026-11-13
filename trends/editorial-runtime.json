@@ -7,15 +7,15 @@
   "previous_run_id": "tr-20261113T012500-chat-direct",
   "command_id": "tr-20261113T014000-chat-direct",
   "source": "chat_direct",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-13T01:40:00+01:00",
-  "updated_at": "2026-11-13T01:40:00+01:00",
+  "updated_at": "2026-11-13T01:41:15+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -177,13 +177,13 @@
     }
   ],
   "last_started_at": "2026-11-13T01:40:00+01:00",
-  "last_completed_at": "2026-11-13T01:26:00+01:00",
+  "last_completed_at": "2026-11-13T01:41:15+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261113T012500-chat-direct",
+    "run_id": "tr-20261113T014000-chat-direct",
     "status": "DONE",
-    "started_at": "2026-11-13T01:25:00+01:00",
-    "finished_at": "2026-11-13T01:26:00+01:00",
+    "started_at": "2026-11-13T01:40:00+01:00",
+    "finished_at": "2026-11-13T01:41:15+01:00",
     "summary": {
       "attempted": 0,
       "observed": 0,
@@ -210,49 +210,10 @@
       "concurrent_convergence": 0,
       "cause_unconfirmed": 0
     },
-    "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 2026-11-13T01:21:18+01:00) y mobile-decisions sin preparing/update/processing/problematic/rewrite_pending/reexplain activos. Sin ImageGen ni publicaciones."
+    "message": "Pasada TTendencias completada 0/0. Durante la ejecución el Top 30 se refrescó a 2026-11-13T01:40:54+01:00; barrera final main: editorial-queue=0 (updated_at 2026-11-13T01:41:00+01:00) y mobile-decisions sin estados editoriales activos. Sin ImageGen ni publicaciones."
   },
-  "message": "Cola inicial 0; revalidando main, estados editoriales activos y barrera JIT. Sin ImageGen ni publicación.",
+  "message": "Pasada TTendencias completada 0/0. Durante la ejecución el Top 30 se refrescó a 2026-11-13T01:40:54+01:00; barrera final main: editorial-queue=0 (updated_at 2026-11-13T01:41:00+01:00) y mobile-decisions sin estados editoriales activos. Sin ImageGen ni publicaciones.",
   "history": [
-    {
-      "run_id": "tr-20261110T205500-manual",
-      "status": "DONE",
-      "started_at": "2026-11-10T20:55:00+01:00",
-      "finished_at": "2026-11-10T20:56:30+01:00",
-      "at": "2026-11-10T20:56:30+01:00",
-      "phase": "closing",
-      "summary": {
-        "attempted": 0,
-        "observed": 0,
-        "closed": 0,
-        "explained": 0,
-        "problematic": 0,
-        "updates": 0,
-        "review_completed_no_distinct_event": 0,
-        "maintenance_reviews": 0,
-        "unchanged_reviews": 0,
-        "continuity_updates": 0,
-        "distinct_updates": 0,
-        "stale_reviews": 0,
-        "unverified_reviews": 0,
-        "anticipation_reviews": 0,
-        "anticipation_prepared": 0,
-        "anticipation_unverified": 0,
-        "queue_remaining": 0,
-        "rewrite_pending_remaining": 0,
-        "imagegen_calls": 0,
-        "image_outbox_created": 0,
-        "publications": 0,
-        "incidents": 0,
-        "concurrent_convergence": 0
-      },
-      "processed_ids": [],
-      "converged_ids": [],
-      "outcomes": [],
-      "incident_count": 0,
-      "incidents": [],
-      "message": "Pasada tr-20261110T205500-manual cerrada 0/0 contra main. Relectura JIT final: editorial-queue=0 (updated_at 2026-11-10T20:50:58+01:00) y mobile-decisions sin preparing/update/rewrite_pending/reexplain/anticipate/review_red activos. No había trabajo editorial textual pendiente. ImageGen=0; image-outbox editorial=0; publicaciones=0."
-    },
     {
       "run_id": "tr-1794340649326-manual",
       "status": "DONE",
@@ -4917,16 +4878,58 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 2026-11-13T01:21:18+01:00) y mobile-decisions sin preparing/update/processing/problematic/rewrite_pending/reexplain activos. Sin ImageGen ni publicaciones."
+    },
+    {
+      "run_id": "tr-20261113T014000-chat-direct",
+      "status": "DONE",
+      "started_at": "2026-11-13T01:40:00+01:00",
+      "finished_at": "2026-11-13T01:41:15+01:00",
+      "at": "2026-11-13T01:41:15+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 0,
+        "observed": 0,
+        "closed": 0,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 0,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0,
+        "cause_unconfirmed": 0
+      },
+      "processed_ids": [],
+      "converged_ids": [],
+      "outcomes": [],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada TTendencias completada 0/0. Durante la ejecución el Top 30 se refrescó a 2026-11-13T01:40:54+01:00; barrera final main: editorial-queue=0 (updated_at 2026-11-13T01:41:00+01:00) y mobile-decisions sin estados editoriales activos. Sin ImageGen ni publicaciones."
     }
   ],
   "current_item": null,
   "withdrawn_ids": [],
-  "last_finished_at": "2026-11-13T00:18:00+01:00",
-  "last_revalidated_at": "2026-11-13T00:16:53+01:00",
+  "last_finished_at": "2026-11-13T01:41:15+01:00",
+  "last_revalidated_at": "2026-11-13T01:41:15+01:00",
   "last_revalidation": {
+    "at": "2026-11-13T01:41:15+01:00",
+    "queue_updated_at": "2026-11-13T01:41:00+01:00",
     "queue_count": 0,
-    "queue_updated_at": "2026-11-13T00:16:53+01:00",
-    "queue_sha": "171dd2264cff06510074b6e912b078af574d4389"
+    "active_mobile_decisions": 0,
+    "recent_captured_at": "2026-11-13T01:40:54+01:00"
   },
   "prior_runtime_observed": {
     "run_id": "tr-autoguard-1794381666",
@@ -7992,9 +7995,14 @@
       "at": "2026-11-12T15:17:00+01:00",
       "phase": "closing",
       "message": "Barrera final: cola=1, solo Tamayo r1 problematic; 0 preparing/update. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-13T01:41:15+01:00",
+      "phase": "closing",
+      "message": "Barrera final main: editorial-queue=0 tras refresco Top 30 de 01:40:54; sin estados editoriales activos. Cierre 0/0."
     }
   ],
   "processed": [],
   "maintenance_outbox_commit": "970b545c88b09429a23d15ec893b9d66fb611297",
-  "finished_at": null
+  "finished_at": "2026-11-13T01:41:15+01:00"
 }
