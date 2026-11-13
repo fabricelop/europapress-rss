@@ -34,7 +34,9 @@ const news=await scenario('?app=ttittulares&id=abcdef123456&rev=2',{
     factual_summary:'Contexto factual complementario sin inventar.',explanation:'Explicación editorial completa y verificada.',tweet:{text:newsBody,remate:'🌶️ Remate de noticia exacto.'}}]},
   'telegram/editorial-processing.json':{items:[]}
 });
-assert(news.includes(newsBody),'News text was shortened');
+assert(news.includes('La noticia contiene hechos verificados completos y una frase irónica.'),'News factual text was shortened');
+assert(news.includes('🌶️ Remate de noticia exacto.'),'News remate was shortened');
+assert(!news.includes('BORRADOR NO CONFIRMADO'),'Prepared news must not be presented as provisional');
 assert(news.includes('🌶️ Remate de noticia exacto.'),'News remate missing');
 assert(news.includes('Contexto factual complementario sin inventar.'),'News factual summary missing');
 assert(news.includes('Explicación editorial completa y verificada.'),'News editorial explanation omitted');
