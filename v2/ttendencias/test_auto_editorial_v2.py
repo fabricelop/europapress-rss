@@ -3,8 +3,10 @@
 import pathlib
 import tempfile
 import unittest
+import sys
 from datetime import datetime, timedelta, timezone
 
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from auto_editorial_policy_v2 import eligible_plan, enabled_text
 from process_lock_v2 import exclusive_v2_lock, AlreadyRunning
 
