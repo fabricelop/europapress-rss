@@ -8,22 +8,28 @@
   "command_id": "tr-20261113T101000-chat-direct",
   "source": "chat_direct",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "investigating",
   "started_at": "2026-11-13T10:10:00+01:00",
-  "updated_at": "2026-11-13T10:10:00+01:00",
+  "updated_at": "2026-11-13T10:11:30+01:00",
   "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": "Pasada editorial TTendencias",
+  "total": 2,
+  "trend_id": "798b421b4c28",
+  "title": "Ada Colau",
   "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "798b421b4c28",
+    "5a9d4f7ddfc2"
+  ],
+  "remaining_active_ids": [
+    "798b421b4c28",
+    "5a9d4f7ddfc2"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
-    "observed": 0,
+    "observed": 2,
     "closed": 0,
     "explained": 0,
     "problematic": 0,
@@ -38,7 +44,7 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -386,6 +392,13 @@
       "status": "RUNNING",
       "phase": "preparing",
       "message": "Pasada manual iniciada desde ChatGPT; cola autoritativa inicial=0 (updated_at 2026-11-13T10:01:23+01:00). Revalidando barrera final en main; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-13T10:11:30+01:00",
+      "run_id": "tr-20261113T101000-chat-direct",
+      "status": "RUNNING",
+      "phase": "investigating",
+      "message": "Refresco Top 30 de 10:11 abrió 2 reentradas: Ada Colau y Youtuber. Revalidando si existe acontecimiento material distinto antes de crear cualquier ficha nueva; sin ImageGen ni publicación."
     }
   ],
   "last_started_at": "2026-11-13T09:38:25+01:00",
