@@ -26,7 +26,15 @@ jobs:
           python-version: '3.12'
       - run: python3 -m pip install --quiet requests beautifulsoup4
       - name: Validar Top30 V2 sin red y sin modificar producción
-        run: python3 -m unittest discover -s v2/ttendencias -p 'test_*.py' -v
+        run: >-
+          python3 -m unittest -v
+          v2.ttendencias.test_assess_freshness
+          v2.ttendencias.test_capture_top30
+          v2.ttendencias.test_chatgpt_transcript
+          v2.ttendencias.test_detect_changes
+          v2.ttendencias.test_editorial_capture_state
+          v2.ttendencias.test_editorial_consumer
+          v2.ttendencias.test_editorial_queue
       - name: V2 5B - probar cierre de navegador efímero con simulación
         run: node --test v2/ttendencias/browser-lifecycle.test.cjs
       - name: Captura REAL GetDayTrends España (solo lectura)
