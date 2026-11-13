@@ -56,6 +56,36 @@ def hide_windows_for_pids(pids):
     return len(hidden)
 
 
+def visible_windows_for_pids(pids):
+    """Count visible HWNDs owned by precisely the V2-profile processes."""
+    import ctypes
+    from ctypes import wintypes
+    wanted = {int(pid) for pid in pids}
+    if not wanted:
+        return 0
+    user32 = ctypes.windll.user32
+    callback_type = ctypes.WINFUNCTYPE(wintypes.BOOL, wintypes.HWND, wintypes.LPARAM)
+    user32.EnumWindows.argtypes = [callback_type, wintypes.LPARAM]
+    user32.EnumWindows.restype = wintypes.BOOL
+    user32.GetWindowThreadProcessId.argtypes = [wintypes.HWND,
+                                                 ctypes.POINTER(wintypes.DWORD)]
+    user32.IsWindowVisible.argtypes = [wintypes.HWND]
+    user32.IsWindowVisible.restype = wintypes.BOOL
+    visible = []
+
+    @callback_type
+    def callback(hwnd, param):
+        pid = wintypes.DWORD()
+        user32.GetWindowThreadProcessId(hwnd, ctypes.byref(pid))
+        if pid.value in wanted and user32.IsWindowVisible(hwnd):
+            visible.append(pid.value)
+        return True
+
+    if not user32.EnumWindows(callback, 0):
+        raise OSError("Cannot verify hidden Chrome V2 windows")
+    return len(visible)
+
+
 class V2WindowHider:
     """Maintain hidden V2 windows across navigation / Chrome-created windows."""
 
