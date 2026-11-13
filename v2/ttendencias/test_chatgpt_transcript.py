@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Pruebas aisladas: sin Chrome, sin red, sin GitHub y sin V1."""
 import unittest
-from v2.ttendencias.chatgpt_transcript import extract_reply, read_status
+from chatgpt_transcript import extract_reply, read_status
 
 TREND = "trv2-dd5de9a892ab6b7007ef26b6"
 BODY = (
