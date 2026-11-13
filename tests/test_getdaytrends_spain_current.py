@@ -44,6 +44,22 @@ class GetDayTrendsSpainContract(unittest.TestCase):
         self.assertEqual(selected,[f'España actual {i}' for i in range(1,31)])
         self.assertNotIn('Tendencia ajena',selected)
 
+    def test_excluded_rank_backfilled_from_same_spain_source(self):
+        ranked = mod.parse_getdaytrends(fixture())
+        with patch.object(mod, "is_suppressed",
+                          side_effect=lambda name: name == "España actual 17"):
+            selected = mod.extend_observed_ranking(ranked[:10].copy(), ranked[:50])
+        self.assertEqual(len(selected), 30)
+        self.assertNotIn("España actual 17", selected)
+        self.assertEqual(selected[-1], "España actual 31")
+        self.assertEqual(selected[:10], ranked[:10])
+        self.assertFalse(any("Tendencia ajena" in name for name in selected))
+
+    def test_does_not_invent_thirtieth_if_only_29_real_terms(self):
+        ranked = mod.parse_getdaytrends(fixture())
+        selected = mod.extend_observed_ranking(ranked[:10].copy(), ranked[:29])
+        self.assertEqual(len(selected), 29)
+
     def test_country_must_be_explicitly_spain_and_not_global(self):
         self.assertTrue(mod.getdaytrends_spain_page(fixture()))
         self.assertTrue(mod.getdaytrends_spain_page('<h1>Twitter Trends in Spain</h1>'))
