@@ -2,14 +2,91 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-11-13T02:41:01.895573+00:00",
+      "checked_at": "2026-11-13T09:59:50.283805+00:00",
+      "issue_count": 9,
+      "issues": [
+        {
+          "kind": "missing_delivery",
+          "id": "7dcfe0484b8a",
+          "title": "Oihan Sancet, internacional español: \"Ojalá el día de mañana podamos jugar el Mundial con la selecci",
+          "seconds": 3291,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "fc6fab8742ac",
+          "title": "Cómo evolucionan las encuestas y sondeos del 29N: así va el voto estimado y los escaños de PSOE, PP,",
+          "seconds": 2702,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "d4232efcd8ea",
+          "title": "Russell Brand, acusado por otras seis mujeres de conducta sexual inapropiada tras su condena a prisi",
+          "seconds": 1902,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "567f5e6d74e3",
+          "title": "Dos muertos en el incendio de una casa en Gran Canaria - Telecinco",
+          "seconds": 1487,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "c6d7770ba47d",
+          "title": "Atendidas 47 personas, 22 de ellas trasladadas a hospitales, tras el incendio de una vivienda en Bil",
+          "seconds": 1273,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "3a91dda12fff",
+          "title": "El PP resignifica el ‘Anotop At’ de Feijóo y lanza una campaña en redes para atraer el voto joven",
+          "seconds": 968,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "2d17df5b1573",
+          "title": "Detenida en Lleida la presunta autora de delitos de acoso y amenazas graves contra la cantante Niña ",
+          "seconds": 968,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "be790c8a0cad",
+          "title": "El CIS vuelve a poner al PSOE en cabeza, 8 puntos por encima de un PP que no alcanza la mayoría con ",
+          "seconds": 968,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "stale_index",
+          "id": "pinned-index",
+          "title": "Índice fijado sin actualizar",
+          "seconds": 2419537,
+          "workflow": "telegram-pinned-index.yml"
+        }
+      ],
+      "actions_started": [
+        "send-ttittulares-ready-telegram.yml",
+        "telegram-pinned-index.yml"
+      ],
+      "repair_errors": [],
+      "open_signature": "99ea39f7e2e73dd2963768c76532deff2e27465ba9d36be643531e74fb9a3a3d",
+      "repair_via_workflow_run": false,
+      "escalation_required": 5
+    },
+    "ttendencias": {
+      "checked_at": "2026-11-13T09:59:50.283805+00:00",
       "issue_count": 1,
       "issues": [
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 2393209,
+          "seconds": 2419537,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -20,69 +97,13 @@
       "open_signature": "b713f1c3f4a90157b05c0bc411e3f7a3420ba8147f7f0a578d9c128c7e94e639",
       "repair_via_workflow_run": false,
       "escalation_required": 0
-    },
-    "ttendencias": {
-      "checked_at": "2026-11-13T02:41:01.895573+00:00",
-      "issue_count": 6,
-      "issues": [
-        {
-          "kind": "missing_delivery",
-          "id": "red-review-1a04b17ed021f8d9387f",
-          "title": "Revisar novedades: Alsina",
-          "seconds": 756,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "83a0f92b4210",
-          "title": "Begoña Gómez",
-          "seconds": 23971,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "01658a620b11",
-          "title": "Yola",
-          "seconds": 5403,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "17129f359ea2",
-          "title": "#VotaPP",
-          "seconds": 5403,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "missing_delivery",
-          "id": "784d56a93b50",
-          "title": "#GHVIP9",
-          "seconds": 1755,
-          "workflow": "send-ttendencias-explained-telegram.yml"
-        },
-        {
-          "kind": "stale_index",
-          "id": "pinned-index",
-          "title": "Índice fijado sin actualizar",
-          "seconds": 2393209,
-          "workflow": "telegram-pinned-index.yml"
-        }
-      ],
-      "actions_started": [
-        "send-ttendencias-explained-telegram.yml",
-        "telegram-pinned-index.yml"
-      ],
-      "repair_errors": [],
-      "open_signature": "8c25f3a927cdfcb93f7140dafb971599a27e0165ce564fb1aacbff9a823f2b07",
-      "repair_via_workflow_run": false,
-      "escalation_required": 4
     }
   },
   "attempts": {
-    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-11-12T22:16:50.649951+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-11-13T02:41:01.895573+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-11-13T02:41:01.895573+00:00",
+    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-11-13T09:59:50.283805+00:00",
+    "ttittulares:telegram-pinned-index.yml": "2026-11-13T09:59:50.283805+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-11-13T09:59:50.283805+00:00",
     "ttendencias:send-ttendencias-explained-telegram.yml": "2026-11-13T02:41:01.895573+00:00"
   },
-  "checked_at": "2026-11-13T02:41:01.895573+00:00"
+  "checked_at": "2026-11-13T09:59:50.283805+00:00"
 }
