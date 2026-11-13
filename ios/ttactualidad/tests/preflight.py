@@ -1176,3 +1176,23 @@ assert 'decisionFailures[item.id] = "DECISIÓN NO APLICADA: "' in inbox
 assert 'if action == "approve" && [404, 503].contains(status)' not in inbox
 assert 'unconfirmedDecisions' in inbox
 print("TT_IMAGE_INBOX_BUILD101_INSTANT_APPROVAL_AND_REAL_ERROR_ROLLBACK_OK")
+
+
+# Build 102: REAL native app, not the unrelated GitHub Pages PWA.
+# Pendientes gets Quitar even if the trend has never reached Listas.
+pending_policy = (root / "TTActualidad/EditorialPendingPolicy.swift").read_text(encoding="utf8")
+assert 'quickButton(isPendingTrend ? "Quitar" : "Quitar de Listas"' in actions
+assert 'request(isPendingTrend ? "retire" : "deleted")' in actions
+assert 'role: ["deleted", "discard", "retire"].contains(intent)' in actions
+assert '¿Quitar esta tendencia de Pendientes?' in actions
+assert 'decision == "retire" ? "Quitar de Pendientes' in auth
+assert '["deleted", "discard", "published"].contains(action.decision)' in store
+assert 'if action.decision == "retire"' in store
+assert 'trends/pending-retirements.json' in store
+assert 'TrendPendingRemovalPolicy.isVisible(' in store
+assert 'func showInPendientes(_ item: TrendItem)' in store
+assert '.filter { store.showInPendientes($0) }' in dashboard
+assert 'private var isPendingTrend: Bool' in actions
+assert 'retire' in pending_policy
+assert 'CURRENT_PROJECT_VERSION: "102"' in project and '0.4.90' in project
+print("TT_ACTUALIDAD_IOS_PENDING_REMOVE_B102_OK")
