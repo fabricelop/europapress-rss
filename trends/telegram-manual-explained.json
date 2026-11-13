@@ -115539,13 +115539,30 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
-      "image_choice": "none",
-      "image_pending": true,
-      "telegram_package_status": "pending"
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false,
+      "telegram_package_status": "pending",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://www.infobae.com/assets/images/logos/fallback-promo-image-1200x630.png",
+        "source": "www.infobae.com",
+        "source_url": "https://www.infobae.com/espana/agencias/2026/11/13/feijoo-dice-que-prefiere-su-foto-con-marcial-dorado-que-la-coleccion-que-tiene-sanchez/",
+        "alt": "Imagen de archivo relacionada con Marcial Dorado",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://www.infobae.com/assets/images/logos/fallback-promo-image-1200x630.png",
+        "source": "www.infobae.com",
+        "source_url": "https://www.infobae.com/espana/agencias/2026/11/13/feijoo-dice-que-prefiere-su-foto-con-marcial-dorado-que-la-coleccion-que-tiene-sanchez/",
+        "alt": "Imagen de archivo relacionada con Marcial Dorado",
+        "rights_status": "unverified",
+        "generated": false
+      }
     }
   ],
-  "updated_at": "2026-11-13T13:46:04+01:00",
+  "updated_at": "2026-11-13T12:50:05.866858Z",
   "count": 2026
 }
