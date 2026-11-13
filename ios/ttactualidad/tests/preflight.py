@@ -324,7 +324,7 @@ print("TT_ACTUALIDAD_IOS_0417_LIVE_NO_WIDGETS_PREFLIGHT_OK")
 assert 'EditorialDocumentLoader.load(paths: paths)' in store
 assert 'private enum EditorialDocumentLoader' in store
 assert 'private struct EditorialDocumentLoad: @unchecked Sendable' in store
-assert 'private static let fractionalISO:' in store
+assert 'private nonisolated static let parsedISODates: NSCache<NSString, NSDate>' in store
 assert 'private static let standardISO:' in store
 assert 'terminalMarksNeedSave' in store
 catalog = (root / "TTActualidad/ArchivePhotoCatalog.swift").read_text(encoding="utf8")
