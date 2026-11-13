@@ -16,7 +16,8 @@ from datetime import datetime, timezone
 import editorial_run_v2 as core
 from batch_contract_v2 import verify_persisted
 from process_lock_v2 import AlreadyRunning, exclusive_v2_lock
-from select_current_top30_v2 import read_history, select_current_top30
+from select_current_top30_v2 import read_history
+from auto_editorial_policy_v2 import eligible_plan, enabled_text
 
 ROOT = core.ROOT
 LOCK = ROOT / "editorial_batch_v2.lock"
@@ -25,23 +26,9 @@ STATUS = ROOT / "daemon-status.json"
 SENTINEL = "TT_V2_AUTO_EDITORIAL_ENABLED=YES"
 
 
-def eligible_plan(queue, history, *, directory=core.DIAG_DIR, now=None):
-    """Selección pura del Top 30: saltar un diario local existente, nunca reenviar."""
-    ranked, age = select_current_top30(queue, history, 30, now=now)
-    blocked = []
-    for item in ranked:
-        journal = pathlib.Path(directory) / (
-            "run-" + item["trend_id"] + "-r" + str(item["revision"]) + ".json")
-        if journal.exists():
-            blocked.append(item["trend_id"])
-            continue
-        return item, age, blocked
-    return None, age, blocked
-
-
 def flag_is_enabled(path=ENABLED):
     try:
-        return pathlib.Path(path).read_text(encoding="utf-8-sig").strip() == SENTINEL
+        return enabled_text(pathlib.Path(path).read_text(encoding="utf-8-sig"))
     except FileNotFoundError:
         return False
 
