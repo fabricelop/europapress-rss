@@ -1218,3 +1218,10 @@ assert 'oldRev != rev { return oldRev > rev }' in store_perf
 assert 'closedAt!.timeIntervalSince(explained) < -60' in store_perf
 assert "previousListasAt" in store_perf
 print("TT_LISTAS_INDEXED_BUILD103_PERF_GUARDS_OK")
+
+# Guard timestamp caching against unbounded retention or date-precedence changes.
+assert "private static var parsedISODates: [String: Date] = [:]" in store_perf
+assert "if let cached = parsedISODates[text] { return cached }" in store_perf
+assert "parsedISODates.count >= 8192" in store_perf
+assert "fractionalISO.date(from: text) ?? standardISO.date(from: text)" in store_perf
+print("TT_IOS_TIMESTAMP_PARSE_CACHE_B103_OK")
