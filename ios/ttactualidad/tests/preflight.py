@@ -1220,8 +1220,21 @@ assert "previousListasAt" in store_perf
 print("TT_LISTAS_INDEXED_BUILD103_PERF_GUARDS_OK")
 
 # Guard timestamp caching against unbounded retention or date-precedence changes.
-assert "private static var parsedISODates: [String: Date] = [:]" in store_perf
-assert "if let cached = parsedISODates[text] { return cached }" in store_perf
-assert "parsedISODates.count >= 8192" in store_perf
-assert "fractionalISO.date(from: text) ?? standardISO.date(from: text)" in store_perf
+assert "NSCache<NSString, NSDate>" in store_perf
+assert "cache.countLimit = 8192" in store_perf
+assert "parsedISODates.object(forKey: text as NSString)" in store_perf
+assert "fractional.date(from: text) ?? standard.date(from: text)" in store_perf
+assert "parsedISODates.setObject(date as NSDate" in store_perf
 print("TT_IOS_TIMESTAMP_PARSE_CACHE_B103_OK")
+
+# SwiftUI responsiveness: model assembly must run on an isolated worker while
+# final receipt reconciliation, tombstones, overlays and Published state remain
+# on the main actor. These are structural checks, not device latency benchmarks.
+assert "let built = await Task.detached(priority: .userInitiated)" in store_perf
+assert "return EditorialBuiltSnapshot(snapshot: EditorialSnapshot(" in store_perf
+assert "canonicalSnapshot = applyConfirmedTerminals(built.snapshot)" in store_perf
+assert "private struct EditorialBuildInputs: @unchecked Sendable" in store_perf
+assert "private struct EditorialBuiltSnapshot: @unchecked Sendable" in store_perf
+assert "private nonisolated static func buildTop30(" in store_perf
+assert "private nonisolated static func buildTrendListas(" in store_perf
+print("TT_IOS_DETACHED_SNAPSHOT_BUILD103_GUARDS_OK")
