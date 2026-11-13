@@ -14,6 +14,15 @@ $existing = Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue
 if ($existing -and $existing.State -eq 'Running') {
     throw 'Consumidor V2 activo. Desactivarlo y dejar que termine antes de actualizar.'
 }
+# Impedir que el programador reinicie una instancia vieja a mitad del cambio.
+if ($existing) {
+    Disable-ScheduledTask -TaskName $taskName | Out-Null
+    Write-Host 'TT_V2_OLD_TASK_TEMPORARILY_DISABLED=YES'
+}
+$flag = Join-Path $root 'auto-editorial-v2.enabled'
+[IO.File]::WriteAllText($flag, "TT_V2_AUTO_EDITORIAL_ENABLED=NO" + [Environment]::NewLine,
+    (New-Object System.Text.UTF8Encoding($false)))
+
 if (!(Get-Command py.exe -ErrorAction SilentlyContinue)) { throw 'Falta py.exe' }
 if (!(Get-Command gh.exe -ErrorAction SilentlyContinue) -and
     -not $env:GH_TOKEN -and -not $env:GITHUB_TOKEN) {
@@ -33,6 +42,7 @@ $files = @(
     'batch_contract_v2.py',
     'editorial_batch_v2.py',
     'editorial_run_v2.py',
+    'recover_existing_chat_v2.py',
     'persist_capture_github.py',
     'editorial_capture_state.py',
     'chatgpt_transcript.py',
@@ -83,6 +93,23 @@ if (!(Test-Path -LiteralPath $profile -PathType Container)) {
     throw 'No hay perfil Chrome V2. Probar primero la elaboración individual autenticada.'
 }
 
+# Primero recuperar el chat V2 que ya se envió si Windows cortó el
+# consumidor. No reenviar Jordi Wild, no cerrar un Chrome V2 sin captura.
+$recover = Join-Path $root 'recover_existing_chat_v2.py'
+$recoverOut = Join-Path $root 'install-auto-recovery.stdout.log'
+$recoverErr = Join-Path $root 'install-auto-recovery.stderr.log'
+$recovered = Start-Process -FilePath $py -ArgumentList @('-3', ('"' + $recover + '"'), '--auto') `
+    -NoNewWindow -Wait -PassThru -RedirectStandardOutput $recoverOut -RedirectStandardError $recoverErr
+if (Test-Path -LiteralPath $recoverOut) {
+    Get-Content -LiteralPath $recoverOut | ForEach-Object { Write-Host $_ }
+}
+if ($recovered.ExitCode -ne 0) {
+    if (Test-Path -LiteralPath $recoverErr) {
+        Get-Content -LiteralPath $recoverErr -Tail 14 | ForEach-Object { Write-Host $_ }
+    }
+    throw 'Recuperación de chat V2 bloqueada: tarea seguirá desactivada, sin reenvíos ni borrados'
+}
+Write-Host 'TT_V2_EXISTING_CHAT_RECOVERY=OK'
 # La bandera exacta es autorización para abrir chats. Guardarla solo
 # tras descargar/validar los módulos y justo antes de registrar la tarea.
 $flag = Join-Path $root 'auto-editorial-v2.enabled'
@@ -91,13 +118,21 @@ $runner = Join-Path $root 'Run-V2-Editorial-Auto.ps1'
 $arguments = '-NoProfile -ExecutionPolicy Bypass -File "' + $runner + '"'
 $action = New-ScheduledTaskAction -Execute 'powershell.exe' -Argument $arguments
 $account = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
-$trigger = New-ScheduledTaskTrigger -AtLogOn -User $account
+$logonTrigger = New-ScheduledTaskTrigger -AtLogOn -User $account
+# Además del inicio de sesión, rearmar cada 3 minutos: la última
+# instalación quedó en Ready tras un cierre inesperado de Windows.
+$repeatStart = (Get-Date).AddMinutes(3)
+$repeatTrigger = New-ScheduledTaskTrigger -Once -At $repeatStart `
+    -RepetitionInterval (New-TimeSpan -Minutes 3) `
+    -RepetitionDuration (New-TimeSpan -Days 3650)
+$triggers = @($logonTrigger, $repeatTrigger)
 $principal = New-ScheduledTaskPrincipal -UserId $account -LogonType Interactive -RunLevel Limited
 $settings = New-ScheduledTaskSettingsSet -MultipleInstances IgnoreNew -StartWhenAvailable -ExecutionTimeLimit ([TimeSpan]::Zero) -RestartCount 3 -RestartInterval (New-TimeSpan -Minutes 3)
-Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $trigger -Principal $principal -Settings $settings -Force | Out-Null
+Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $triggers -Principal $principal -Settings $settings -Force | Out-Null
 if ((Get-ScheduledTask -TaskName $taskName).State -eq 'Disabled') { throw 'Tarea V2 quedó desactivada' }
 Write-Host ('TT_V2_INSTALL_COMMIT=' + $sha)
 Write-Host 'TT_V2_AUTO_TASK_REGISTERED=YES'
+Write-Host 'TT_V2_AUTO_SELF_HEAL_EVERY_MINUTES=3'
 Write-Host 'TT_V2_AUTO_ENABLED=YES'
 Write-Host 'TT_V2_AUTO_PUBLICATION=NO'
 Write-Host ('TT_V2_AUTO_TASK_NAME=' + $taskName)
