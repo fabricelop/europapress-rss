@@ -367,16 +367,19 @@ def main():
     auth = api.token()
     q, _ = queue_read(api, auth)
     if args.next:
-        eligible = sorted((x for x in q["items"].values()
-            if x.get("status") in ("pending", "review_pending")
-            and not x.get("send_intent") and not x.get("capture")
-            and int(x.get("attempts", 0)) < 3),
-            key=lambda x: (x.get("requested_at", ""), x["trend_id"]))
+        # Selección automática por puesto de un Top30 vigente. No recurrir
+        # al backlog histórico solo porque es más antiguo.
+        ranker = module("select_current_top30_v2.py", "ttv2_ranker")
+        history = ranker.read_history(auth)
+        eligible, age = ranker.select_current_top30(q, history, 1)
+        print("TT_V2_SELECTION=CURRENT_TOP30_RANK_ORDER", flush=True)
+        print("TT_V2_TOP30_AGE_MINUTES=" + str(age), flush=True)
         if not eligible:
             print("TT_V2_NO_ELIGIBLE_JOB=YES")
             return
         item = selected(q, eligible[0]["trend_id"])
     else:
+        # Una selección explícita puede terminarse aunque haya salido del Top30.
         item = selected(q, args.trend_id)
     if int(item.get("attempts", 0)) >= 3:
         raise RuntimeError("Max attempts reached: no send")
