@@ -35,8 +35,8 @@ def select_current_top30(queue, history, limit, *, now=None, max_age_minutes=20)
     Rechaza fuentes desactualizadas o inconsistentes y jamás recurre
     silenciosamente a tendencias históricas. El backlog permanece guardado.
     """
-    if not 1 <= limit <= 3 or not isinstance(limit, int):
-        raise ValueError("Máximo por tanda: entre 1 y 3")
+    if not isinstance(limit, int) or isinstance(limit, bool) or not 1 <= limit <= 30:
+        raise ValueError("Consulta de ranking: límite entre 1 y 30; tanda limitada por su CLI")
     if queue.get("step") != "04_editorial_queue" or queue.get("effects_enabled") is not False:
         raise ValueError("Cola V2 inválida")
     if history.get("step") != "03_movement" or history.get("country") != "ES":
