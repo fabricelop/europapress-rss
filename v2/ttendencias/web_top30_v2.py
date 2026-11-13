@@ -182,7 +182,7 @@ def sync_to_github(auth):
                     "branch": BRANCH,
                     "message": "v2: refresh live Top30 web preview",
                     "content": base64.b64encode((json.dumps(expected, ensure_ascii=False,
-                                                           indent=2) + "\\n").encode("utf-8")).decode("ascii"),
+                                                           indent=2) + "\n").encode("utf-8")).decode("ascii"),
                 }
                 if current:
                     payload["sha"] = current["sha"]
