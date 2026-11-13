@@ -7,17 +7,25 @@
   "previous_run_id": "tr-20261113T161000-chat-direct",
   "command_id": "tr-20261113T171000-chat-direct",
   "source": "chat_direct",
-  "status": "success",
-  "phase": "investigating",
+  "status": "DONE_WITH_INCIDENTS",
+  "phase": "closing",
   "started_at": "2026-11-13T17:10:00+01:00",
-  "updated_at": "2026-11-13T17:21:59+01:00",
-  "current": 0,
-  "total": 8,
-  "trend_id": "8d5fe835b7e5",
-  "title": "Isabel Peralta",
+  "updated_at": "2026-11-13T17:22:12+01:00",
+  "current": 9,
+  "total": 9,
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
-    "manual-c550af7b734565e1d4042fae0ba8d74f"
+    "8d5fe835b7e5",
+    "1756300f75e8",
+    "6c05ca8b8512",
+    "de47f623a966",
+    "3444832e9337",
+    "manual-a5260954d0bdd646fad174dcdb3b892b",
+    "manual-c550af7b734565e1d4042fae0ba8d74f",
+    "1ea1a6c850b1",
+    "red-review-354123a1ee6757528f57"
   ],
   "converged_ids": [],
   "remaining_ids": [
@@ -28,15 +36,15 @@
     "manual-c550af7b734565e1d4042fae0ba8d74f"
   ],
   "summary": {
-    "attempted": 8,
-    "observed": 8,
-    "closed": 0,
-    "explained": 0,
-    "problematic": 0,
+    "attempted": 9,
+    "observed": 9,
+    "closed": 9,
+    "explained": 6,
+    "problematic": 2,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 0,
-    "unchanged_reviews": 0,
+    "maintenance_reviews": 1,
+    "unchanged_reviews": 1,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "stale_reviews": 0,
@@ -44,17 +52,101 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 8,
+    "queue_remaining": 1,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 0,
-    "concurrent_convergence": 0
+    "incidents": 2,
+    "concurrent_convergence": 1
   },
-  "outcomes": [],
-  "incident_count": 0,
-  "incidents": [],
+  "outcomes": [
+    {
+      "id": "8d5fe835b7e5",
+      "revision": 0,
+      "name": "Isabel Peralta",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "1756300f75e8",
+      "revision": 0,
+      "name": "Goebbels",
+      "outcome": "explained",
+      "applied": true,
+      "note": "causa exacta prudente/no atribuida a un único detonante"
+    },
+    {
+      "id": "6c05ca8b8512",
+      "revision": 0,
+      "name": "El Tribunal de Cuentas",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "de47f623a966",
+      "revision": 0,
+      "name": "#VotaVOX",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "3444832e9337",
+      "revision": 0,
+      "name": "Colau",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "manual-a5260954d0bdd646fad174dcdb3b892b",
+      "revision": 0,
+      "name": "Narco",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "manual-c550af7b734565e1d4042fae0ba8d74f",
+      "revision": 0,
+      "name": "Miente",
+      "outcome": "problematic",
+      "applied": true,
+      "retried": true,
+      "reason": "La muestra vigente de X es dispersa y no permite atribuir un detonante predominante verificable para España."
+    },
+    {
+      "id": "1ea1a6c850b1",
+      "revision": 3,
+      "name": "españas",
+      "outcome": "problematic",
+      "applied": true,
+      "reason": "La evidencia disponible no acredita un detonante actual concreto para la revisión 3; no permanece en cola al no seguir en Top30."
+    },
+    {
+      "id": "red-review-354123a1ee6757528f57",
+      "revision": 0,
+      "name": "Revisar novedades: #PSOEyFrenteAmplioVetan",
+      "outcome": "unchanged",
+      "applied": true,
+      "source_id": "b8593c0a3afe"
+    }
+  ],
+  "incident_count": 2,
+  "incidents": [
+    {
+      "id": "manual-c550af7b734565e1d4042fae0ba8d74f",
+      "revision": 0,
+      "name": "Miente",
+      "status": "problematic",
+      "reason": "Sin detonante predominante verificable tras reintento con muestra vigente de X; se mantiene problemático en Top30."
+    },
+    {
+      "id": "1ea1a6c850b1",
+      "revision": 3,
+      "name": "españas",
+      "status": "problematic",
+      "reason": "Sin detonante actual verificable para la revisión 3; el trabajo se aplicó como problemático y dejó de estar activo al salir del Top30."
+    }
+  ],
   "error": null,
   "activity": [
     {
@@ -659,25 +751,25 @@
     }
   ],
   "last_started_at": "2026-11-13T17:21:59+01:00",
-  "last_completed_at": "2026-11-13T17:21:59+01:00",
+  "last_completed_at": "2026-11-13T17:22:12+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261113T161000-chat-direct",
+    "run_id": "tr-20261113T171000-chat-direct",
     "status": "DONE_WITH_INCIDENTS",
-    "started_at": "2026-11-13T16:10:00+01:00",
-    "finished_at": "2026-11-13T16:16:30+01:00",
-    "at": "2026-11-13T16:16:30+01:00",
+    "started_at": "2026-11-13T17:10:00+01:00",
+    "finished_at": "2026-11-13T17:22:12+01:00",
+    "at": "2026-11-13T17:22:12+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 0,
-      "observed": 0,
-      "closed": 0,
-      "explained": 0,
-      "problematic": 0,
+      "attempted": 9,
+      "observed": 9,
+      "closed": 9,
+      "explained": 6,
+      "problematic": 2,
       "updates": 0,
       "review_completed_no_distinct_event": 0,
-      "maintenance_reviews": 0,
-      "unchanged_reviews": 0,
+      "maintenance_reviews": 1,
+      "unchanged_reviews": 1,
       "continuity_updates": 0,
       "distinct_updates": 0,
       "stale_reviews": 0,
@@ -685,28 +777,116 @@
       "anticipation_reviews": 0,
       "anticipation_prepared": 0,
       "anticipation_unverified": 0,
-      "queue_remaining": 0,
+      "queue_remaining": 1,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
       "image_outbox_created": 0,
       "publications": 0,
-      "incidents": 1,
-      "concurrent_convergence": 0
+      "incidents": 2,
+      "concurrent_convergence": 1
     },
-    "processed_ids": [],
+    "processed_ids": [
+      "8d5fe835b7e5",
+      "1756300f75e8",
+      "6c05ca8b8512",
+      "de47f623a966",
+      "3444832e9337",
+      "manual-a5260954d0bdd646fad174dcdb3b892b",
+      "manual-c550af7b734565e1d4042fae0ba8d74f",
+      "1ea1a6c850b1",
+      "red-review-354123a1ee6757528f57"
+    ],
     "converged_ids": [],
-    "outcomes": [],
-    "incident_count": 1,
-    "incidents": [
+    "outcomes": [
       {
-        "id": "health-status-json",
-        "status": "problematic",
-        "reason": "trends/health-status.json contiene marcadores de conflicto Git; la pasada actualizó la salud pero el archivo sigue sin ser JSON válido."
+        "id": "8d5fe835b7e5",
+        "revision": 0,
+        "name": "Isabel Peralta",
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "1756300f75e8",
+        "revision": 0,
+        "name": "Goebbels",
+        "outcome": "explained",
+        "applied": true,
+        "note": "causa exacta prudente/no atribuida a un único detonante"
+      },
+      {
+        "id": "6c05ca8b8512",
+        "revision": 0,
+        "name": "El Tribunal de Cuentas",
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "de47f623a966",
+        "revision": 0,
+        "name": "#VotaVOX",
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "3444832e9337",
+        "revision": 0,
+        "name": "Colau",
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "manual-a5260954d0bdd646fad174dcdb3b892b",
+        "revision": 0,
+        "name": "Narco",
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "manual-c550af7b734565e1d4042fae0ba8d74f",
+        "revision": 0,
+        "name": "Miente",
+        "outcome": "problematic",
+        "applied": true,
+        "retried": true,
+        "reason": "La muestra vigente de X es dispersa y no permite atribuir un detonante predominante verificable para España."
+      },
+      {
+        "id": "1ea1a6c850b1",
+        "revision": 3,
+        "name": "españas",
+        "outcome": "problematic",
+        "applied": true,
+        "reason": "La evidencia disponible no acredita un detonante actual concreto para la revisión 3; no permanece en cola al no seguir en Top30."
+      },
+      {
+        "id": "red-review-354123a1ee6757528f57",
+        "revision": 0,
+        "name": "Revisar novedades: #PSOEyFrenteAmplioVetan",
+        "outcome": "unchanged",
+        "applied": true,
+        "source_id": "b8593c0a3afe"
       }
     ],
-    "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 16:11:06), mobile-decisions sin estados editoriales activos y Top 30 vigente capturado a las 16:11:01. El refresco manual llegó al commit final de salud 94254d84368df096858e07fdef912f0866e4dac8. Incidencia no bloqueante: trends/health-status.json arrastra marcadores de conflicto y no es JSON válido. Sin ImageGen ni publicaciones."
+    "incident_count": 2,
+    "incidents": [
+      {
+        "id": "manual-c550af7b734565e1d4042fae0ba8d74f",
+        "revision": 0,
+        "name": "Miente",
+        "status": "problematic",
+        "reason": "Sin detonante predominante verificable tras reintento con muestra vigente de X; se mantiene problemático en Top30."
+      },
+      {
+        "id": "1ea1a6c850b1",
+        "revision": 3,
+        "name": "españas",
+        "status": "problematic",
+        "reason": "Sin detonante actual verificable para la revisión 3; el trabajo se aplicó como problemático y dejó de estar activo al salir del Top30."
+      }
+    ],
+    "message": "Pasada TTendencias completada 9/9: 6 explicaciones aplicadas, 2 investigaciones sin detonante verificable (Miente sigue problemático por permanecer en Top30; españas r3 quedó problemático y ya no está activo al salir del Top30) y 1 revisión roja cerrada unchanged (#PSOEyFrenteAmplioVetan). Barrera final: 0 trabajos activos y 1 problemático visible. ImageGen=0; publicaciones=0."
   },
-  "message": "Investigación completada para 8/8; preparando persistencia: 6 cierres editoriales y 2 problemáticos por detonante no verificable.",
+  "message": "Pasada TTendencias completada 9/9: 6 explicaciones aplicadas, 2 investigaciones sin detonante verificable (Miente sigue problemático por permanecer en Top30; españas r3 quedó problemático y ya no está activo al salir del Top30) y 1 revisión roja cerrada unchanged (#PSOEyFrenteAmplioVetan). Barrera final: 0 trabajos activos y 1 problemático visible. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794361941170-manual",
@@ -4985,17 +5165,145 @@
         }
       ],
       "message": "TTendencias V1 cerrada 23/23 (18 explicaciones verificadas en ambos registros, 2 reentradas sin episodio independiente, 2 mantenimientos sin novedades y españas r2 problematic sin causa corroborada). Cola final main=0; mobile-decisions sin estado editorial activo. ImageGen=0; image-outbox editorial=0; publicaciones=0."
+    },
+    {
+      "run_id": "tr-20261113T171000-chat-direct",
+      "status": "DONE_WITH_INCIDENTS",
+      "started_at": "2026-11-13T17:10:00+01:00",
+      "finished_at": "2026-11-13T17:22:12+01:00",
+      "at": "2026-11-13T17:22:12+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 9,
+        "observed": 9,
+        "closed": 9,
+        "explained": 6,
+        "problematic": 2,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 1,
+        "unchanged_reviews": 1,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 1,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 2,
+        "concurrent_convergence": 1
+      },
+      "processed_ids": [
+        "8d5fe835b7e5",
+        "1756300f75e8",
+        "6c05ca8b8512",
+        "de47f623a966",
+        "3444832e9337",
+        "manual-a5260954d0bdd646fad174dcdb3b892b",
+        "manual-c550af7b734565e1d4042fae0ba8d74f",
+        "1ea1a6c850b1",
+        "red-review-354123a1ee6757528f57"
+      ],
+      "converged_ids": [],
+      "outcomes": [
+        {
+          "id": "8d5fe835b7e5",
+          "revision": 0,
+          "name": "Isabel Peralta",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "1756300f75e8",
+          "revision": 0,
+          "name": "Goebbels",
+          "outcome": "explained",
+          "applied": true,
+          "note": "causa exacta prudente/no atribuida a un único detonante"
+        },
+        {
+          "id": "6c05ca8b8512",
+          "revision": 0,
+          "name": "El Tribunal de Cuentas",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "de47f623a966",
+          "revision": 0,
+          "name": "#VotaVOX",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "3444832e9337",
+          "revision": 0,
+          "name": "Colau",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "manual-a5260954d0bdd646fad174dcdb3b892b",
+          "revision": 0,
+          "name": "Narco",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "manual-c550af7b734565e1d4042fae0ba8d74f",
+          "revision": 0,
+          "name": "Miente",
+          "outcome": "problematic",
+          "applied": true,
+          "retried": true,
+          "reason": "La muestra vigente de X es dispersa y no permite atribuir un detonante predominante verificable para España."
+        },
+        {
+          "id": "1ea1a6c850b1",
+          "revision": 3,
+          "name": "españas",
+          "outcome": "problematic",
+          "applied": true,
+          "reason": "La evidencia disponible no acredita un detonante actual concreto para la revisión 3; no permanece en cola al no seguir en Top30."
+        },
+        {
+          "id": "red-review-354123a1ee6757528f57",
+          "revision": 0,
+          "name": "Revisar novedades: #PSOEyFrenteAmplioVetan",
+          "outcome": "unchanged",
+          "applied": true,
+          "source_id": "b8593c0a3afe"
+        }
+      ],
+      "incident_count": 2,
+      "incidents": [
+        {
+          "id": "manual-c550af7b734565e1d4042fae0ba8d74f",
+          "revision": 0,
+          "name": "Miente",
+          "status": "problematic",
+          "reason": "Sin detonante predominante verificable tras reintento con muestra vigente de X; se mantiene problemático en Top30."
+        },
+        {
+          "id": "1ea1a6c850b1",
+          "revision": 3,
+          "name": "españas",
+          "status": "problematic",
+          "reason": "Sin detonante actual verificable para la revisión 3; el trabajo se aplicó como problemático y dejó de estar activo al salir del Top30."
+        }
+      ],
+      "message": "Pasada TTendencias completada 9/9: 6 explicaciones aplicadas, 2 investigaciones sin detonante verificable (Miente sigue problemático por permanecer en Top30; españas r3 quedó problemático y ya no está activo al salir del Top30) y 1 revisión roja cerrada unchanged (#PSOEyFrenteAmplioVetan). Barrera final: 0 trabajos activos y 1 problemático visible. ImageGen=0; publicaciones=0."
     }
   ],
-  "current_item": {
-    "id": "8d5fe835b7e5",
-    "revision": 0,
-    "name": "Isabel Peralta",
-    "phase": "investigating"
-  },
+  "current_item": null,
   "withdrawn_ids": [],
-  "last_finished_at": "2026-11-13T16:16:30+01:00",
-  "last_revalidated_at": "2026-11-13T16:16:30+01:00",
+  "last_finished_at": "2026-11-13T17:22:12+01:00",
+  "last_revalidated_at": "2026-11-13T17:22:12+01:00",
   "last_revalidation": {
     "at": "2026-11-13T16:16:30+01:00",
     "queue_count": 0,
@@ -5009,9 +5317,9 @@
     "finished_at": "2026-11-11T08:31:36+01:00",
     "updated_at": "2026-11-11T08:31:36+01:00"
   },
-  "apply_workflow_run_id": 43256680336,
+  "apply_workflow_run_id": 43461904641,
   "apply_commit": "6e82d472feca711a890d2607a1285574e12e8c33",
-  "maintenance_workflow_run_id": 42713522083,
+  "maintenance_workflow_run_id": 43461771128,
   "maintenance_job_id": "red-review-61d494cc18e2321aaa5b",
   "workflow_run_id": 43046392853,
   "trigger_commit": "bb0ffc53f748ed35a6875c6a5560857e8351768f",
@@ -7881,18 +8189,147 @@
         }
       ],
       "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 16:11:06), mobile-decisions sin estados editoriales activos y Top 30 vigente capturado a las 16:11:01. El refresco manual llegó al commit final de salud 94254d84368df096858e07fdef912f0866e4dac8. Incidencia no bloqueante: trends/health-status.json arrastra marcadores de conflicto y no es JSON válido. Sin ImageGen ni publicaciones."
+    },
+    {
+      "run_id": "tr-20261113T171000-chat-direct",
+      "status": "DONE_WITH_INCIDENTS",
+      "started_at": "2026-11-13T17:10:00+01:00",
+      "finished_at": "2026-11-13T17:22:12+01:00",
+      "at": "2026-11-13T17:22:12+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 9,
+        "observed": 9,
+        "closed": 9,
+        "explained": 6,
+        "problematic": 2,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 1,
+        "unchanged_reviews": 1,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 1,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 2,
+        "concurrent_convergence": 1
+      },
+      "processed_ids": [
+        "8d5fe835b7e5",
+        "1756300f75e8",
+        "6c05ca8b8512",
+        "de47f623a966",
+        "3444832e9337",
+        "manual-a5260954d0bdd646fad174dcdb3b892b",
+        "manual-c550af7b734565e1d4042fae0ba8d74f",
+        "1ea1a6c850b1",
+        "red-review-354123a1ee6757528f57"
+      ],
+      "converged_ids": [],
+      "outcomes": [
+        {
+          "id": "8d5fe835b7e5",
+          "revision": 0,
+          "name": "Isabel Peralta",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "1756300f75e8",
+          "revision": 0,
+          "name": "Goebbels",
+          "outcome": "explained",
+          "applied": true,
+          "note": "causa exacta prudente/no atribuida a un único detonante"
+        },
+        {
+          "id": "6c05ca8b8512",
+          "revision": 0,
+          "name": "El Tribunal de Cuentas",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "de47f623a966",
+          "revision": 0,
+          "name": "#VotaVOX",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "3444832e9337",
+          "revision": 0,
+          "name": "Colau",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "manual-a5260954d0bdd646fad174dcdb3b892b",
+          "revision": 0,
+          "name": "Narco",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "manual-c550af7b734565e1d4042fae0ba8d74f",
+          "revision": 0,
+          "name": "Miente",
+          "outcome": "problematic",
+          "applied": true,
+          "retried": true,
+          "reason": "La muestra vigente de X es dispersa y no permite atribuir un detonante predominante verificable para España."
+        },
+        {
+          "id": "1ea1a6c850b1",
+          "revision": 3,
+          "name": "españas",
+          "outcome": "problematic",
+          "applied": true,
+          "reason": "La evidencia disponible no acredita un detonante actual concreto para la revisión 3; no permanece en cola al no seguir en Top30."
+        },
+        {
+          "id": "red-review-354123a1ee6757528f57",
+          "revision": 0,
+          "name": "Revisar novedades: #PSOEyFrenteAmplioVetan",
+          "outcome": "unchanged",
+          "applied": true,
+          "source_id": "b8593c0a3afe"
+        }
+      ],
+      "incident_count": 2,
+      "incidents": [
+        {
+          "id": "manual-c550af7b734565e1d4042fae0ba8d74f",
+          "revision": 0,
+          "name": "Miente",
+          "status": "problematic",
+          "reason": "Sin detonante predominante verificable tras reintento con muestra vigente de X; se mantiene problemático en Top30."
+        },
+        {
+          "id": "1ea1a6c850b1",
+          "revision": 3,
+          "name": "españas",
+          "status": "problematic",
+          "reason": "Sin detonante actual verificable para la revisión 3; el trabajo se aplicó como problemático y dejó de estar activo al salir del Top30."
+        }
+      ],
+      "message": "Pasada TTendencias completada 9/9: 6 explicaciones aplicadas, 2 investigaciones sin detonante verificable (Miente sigue problemático por permanecer en Top30; españas r3 quedó problemático y ya no está activo al salir del Top30) y 1 revisión roja cerrada unchanged (#PSOEyFrenteAmplioVetan). Barrera final: 0 trabajos activos y 1 problemático visible. ImageGen=0; publicaciones=0."
     }
   ],
   "outbox_comment_id": 6849930890,
-  "editorial_apply_commit": "9d13ab7bd3931e9c62e146ad4abfebca29e0956f",
+  "editorial_apply_commit": "5af5cd4f3136830f815262a9ff6779546c31e8e9",
   "refresh_workflow_run_id": null,
   "refresh_conclusion": "completed_with_health_status_conflict_markers",
   "maintenance_apply_commits": [
-    "eedbccdb94df1936c8997f1f2ced3536266ed14e",
-    "8ac401943a74f6b1e15d582eac4c3bffb24294b5",
-    "a3750716edf8e75aa9f7d3894516ef2da4b2aa57",
-    "bb059164e18f56cd1f87c876ddebc2be501a4f79",
-    "00152db0c75ff5ff248172ff3c5df70fcddf8304"
+    "70b416d6c353890118c5ff180fa0f683bdc1cb99"
   ],
   "outbox_commit": "d4a002c34e63c0e825a820bc432b784b1353cbaa",
   "prior_last_run": {
@@ -8296,11 +8733,16 @@
       "revision": 3,
       "name": "españas",
       "message": "Investigación contrastada: españas"
+    },
+    {
+      "at": "2026-11-13T17:22:12+01:00",
+      "phase": "closing",
+      "message": "Pasada TTendencias completada 9/9: 6 explicaciones aplicadas, 2 investigaciones sin detonante verificable (Miente sigue problemático por permanecer en Top30; españas r3 quedó problemático y ya no está activo al salir del Top30) y 1 revisión roja cerrada unchanged (#PSOEyFrenteAmplioVetan). Barrera final: 0 trabajos activos y 1 problemático visible. ImageGen=0; publicaciones=0."
     }
   ],
   "processed": [],
-  "maintenance_outbox_commit": "970b545c88b09429a23d15ec893b9d66fb611297",
-  "editorial_apply_run_id": 43378988402,
-  "finished_at": "2026-11-13T16:16:30+01:00",
-  "completed_at": "2026-11-13T16:16:30+01:00"
+  "maintenance_outbox_commit": "c764cbdfc37ba7b67fedd38a16837ee068ae9467",
+  "editorial_apply_run_id": 43461904641,
+  "finished_at": "2026-11-13T17:22:12+01:00",
+  "completed_at": "2026-11-13T17:22:12+01:00"
 }
