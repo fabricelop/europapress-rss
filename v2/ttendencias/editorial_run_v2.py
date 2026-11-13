@@ -194,12 +194,32 @@ def run_one(api, state, transcript, auth, item):
             record["message_sent"] = True
             record["status"] = "sent_waiting_for_reply"
             store(journal, record)
+            # La interfaz puede abrir la conversación en otra pestaña/target
+            # de Chrome. No asumir que la pestaña del composer sigue siendo
+            # la conversación después de Enter. Identificar por el ID del
+            # prompt, nunca por título de pestaña o URL solamente.
+            def matching_conversation():
+                for candidate in list(context.pages):
+                    try:
+                        if not candidate.url.startswith("https://chatgpt.com/c/"):
+                            continue
+                        body = candidate.locator("body").inner_text(timeout=4000)
+                        if (trend_id in body and
+                            ("Revisión: " + str(revision) in body or
+                             "revision " + str(revision) in body.lower())):
+                            return candidate
+                    except Exception:
+                        continue
+                return None
+
             # Capturar la URL tan pronto aparezca, INDEPENDIENTE de la respuesta.
             # La navegación SPA puede tardar; mantener diario incluso si falla
             # la posterior recuperación del texto.
             url_deadline = time.monotonic() + 45
             while time.monotonic() < url_deadline:
-                if page.url.startswith("https://chatgpt.com/c/"):
+                matched = matching_conversation()
+                if matched is not None:
+                    page = matched
                     record["chat_url"] = page.url.split("?", 1)[0]
                     store(journal, record)
                     print("TT_V2_CHAT_URL_RECORDED=YES", flush=True)
