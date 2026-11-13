@@ -148,8 +148,25 @@ Write-Host 'TT_V2_HEADED_HIDDEN_VALIDATED=YES'
 $flag = Join-Path $root 'auto-editorial-v2.enabled'
 [IO.File]::WriteAllText($flag, "TT_V2_AUTO_EDITORIAL_ENABLED=YES" + [Environment]::NewLine, (New-Object System.Text.UTF8Encoding($false)))
 $runner = Join-Path $root 'Run-V2-Editorial-Auto.ps1'
-$arguments = '-NoProfile -NonInteractive -WindowStyle Hidden -ExecutionPolicy Bypass -File "' + $runner + '"'
-$action = New-ScheduledTaskAction -Execute 'powershell.exe' -Argument $arguments
+# "powershell.exe -WindowStyle Hidden" still flashes briefly under Task Scheduler.
+# WScript has no console. Run(..., 0, True) keeps the task Running until
+# the existing PowerShell worker exits, preserving MultipleInstances IgnoreNew.
+$launcher = Join-Path $root 'TTActualidadV2-Editorial-Silent.vbs'
+$launcherText = @'
+Option Explicit
+Dim shell, ps, runner, command, result
+Set shell = CreateObject("WScript.Shell")
+ps = shell.ExpandEnvironmentStrings("%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe")
+runner = shell.ExpandEnvironmentStrings("%LOCALAPPDATA%\TTActualidadV2\Run-V2-Editorial-Auto.ps1")
+command = Chr(34) & ps & Chr(34) & " -NoProfile -NonInteractive -ExecutionPolicy Bypass -WindowStyle Hidden -File " & Chr(34) & runner & Chr(34)
+result = shell.Run(command, 0, True)
+WScript.Quit result
+'@
+[IO.File]::WriteAllText($launcher, $launcherText, [System.Text.Encoding]::ASCII)
+$wscript = Join-Path $env:SystemRoot 'System32\wscript.exe'
+if (!(Test-Path -LiteralPath $wscript -PathType Leaf)) { throw 'Windows Script Host no disponible' }
+$arguments = '//B //Nologo "' + $launcher + '"'
+$action = New-ScheduledTaskAction -Execute $wscript -Argument $arguments
 $account = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
 $logonTrigger = New-ScheduledTaskTrigger -AtLogOn -User $account
 # Además del inicio de sesión, rearmar cada 3 minutos: la última
@@ -173,6 +190,7 @@ Write-Host 'TT_V2_AUTO_CHROME_VISIBLE=NO'
 Write-Host 'TT_V2_AUTO_CHROME_HEADLESS=NO'
 Write-Host 'TT_V2_AUTO_CHROME_HEADED_HIDDEN=YES'
 Write-Host 'TT_V2_AUTO_POWERSHELL_HIDDEN=YES'
+Write-Host 'TT_V2_AUTO_NO_CONSOLE_WSCRIPT=YES'
 # Inicio inmediato en esta sesión, no hay que cerrar y abrir Windows.
 Start-ScheduledTask -TaskName $taskName
 Write-Host 'TT_V2_AUTO_START_REQUESTED=YES'
