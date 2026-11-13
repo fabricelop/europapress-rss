@@ -7,6 +7,7 @@ existente por CDP y comprueba ID/revisión/lease antes de capturar y persistir.
 NO toca perfiles de V1, no publica, no modifica main.
 """
 import argparse
+import contextlib
 import base64
 import hashlib
 import json
@@ -142,8 +143,9 @@ def persist_existing(api, auth, state, record, journal):
     print("TT_V2_RECOVERY_WEB_VERIFIED=YES", flush=True)
 
 
-def recover(trend_id, revision):
-    with exclusive_v2_lock(LOCK):
+def recover(trend_id, revision, *, lock_held=False):
+    # En el reinicio solo el proceso encargado puede rescatar un chat V2.
+    with (contextlib.nullcontext() if lock_held else exclusive_v2_lock(LOCK)):
         journal, record = journal_for(trend_id, revision)
         api = core.module("persist_capture_github.py", "ttv2_existing_api")
         state = core.module("editorial_capture_state.py", "ttv2_existing_state")
@@ -213,15 +215,66 @@ def recover(trend_id, revision):
         print("TT_V2_RECOVERY_COMPLETED=YES", flush=True)
 
 
+def recover_orphan_automatically():
+    """Rescata el ÚNICO trabajo en ChatGPT ya enviado si quedó Chrome abierto.
+
+    No genera prompts ni elimina diarios, no usa ni modifica ninguna cola V1.
+    Si falta evidencia unívoca, detiene el arranque automático sin cerrar Chrome.
+    """
+    if not core.profile_pids():
+        print("TT_V2_RECOVERY_ORPHAN=NONE", flush=True)
+        return "none"
+    # Solo el worker previo pudo tener Chrome V2 abierto en este perfil.
+    api = core.module("persist_capture_github.py", "ttv2_orphan_github")
+    auth = api.token()
+    queue, _ = core.queue_read(api, auth)
+    candidates = []
+    for item in queue.get("items", {}).values():
+        if item.get("status") not in ("in_progress", "capture_recovery"):
+            continue
+        intent = item.get("send_intent") or {}
+        if not intent.get("token"):
+            continue
+        path = core.DIAG_DIR / JOURNAL_NAME.format(
+            trend_id=item["trend_id"], revision=item["revision"])
+        if not path.exists():
+            continue
+        try:
+            journal = json.loads(path.read_text(encoding="utf-8-sig"))
+        except (OSError, ValueError):
+            continue
+        if (journal.get("trend_id") == item["trend_id"]
+            and journal.get("revision") == item["revision"]
+            and journal.get("message_sent") is True
+            and journal.get("lease_token") == intent["token"]
+            and CHAT_RE.fullmatch((journal.get("chat_url") or "").split("?", 1)[0])):
+            candidates.append(item)
+    if len(candidates) != 1:
+        raise RuntimeError("Chrome V2 huérfano sin UN envío identificado: conservarlo y bloquear reinicio")
+    item = candidates[0]
+    print("TT_V2_RECOVERY_ORPHAN_ID=" + item["trend_id"], flush=True)
+    recover(item["trend_id"], item["revision"])
+    print("TT_V2_RECOVERY_ORPHAN=VERIFIED", flush=True)
+    return "recovered"
+
+
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--trend-id", required=True)
-    parser.add_argument("--revision", type=int, required=True)
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument("--trend-id")
+    group.add_argument("--auto", action="store_true",
+                       help="Solo rescatar una sesión V2 huérfana unívoca; sin envío")
+    parser.add_argument("--revision", type=int)
     args = parser.parse_args()
+    if args.auto:
+        if args.revision is not None:
+            parser.error("--auto no admite --revision")
+        recover_orphan_automatically()
+        return
     if not re.fullmatch(r"trv2-[0-9a-f]{24}", args.trend_id):
         parser.error("El ID no es una tendencia V2 válida")
-    if args.revision < 1:
-        parser.error("La revisión debe ser positiva")
+    if args.revision is None or args.revision < 1:
+        parser.error("Se requiere revisión positiva")
     recover(args.trend_id, args.revision)
 
 
