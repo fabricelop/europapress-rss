@@ -324,7 +324,7 @@ print("TT_ACTUALIDAD_IOS_0417_LIVE_NO_WIDGETS_PREFLIGHT_OK")
 assert 'EditorialDocumentLoader.load(paths: paths)' in store
 assert 'private enum EditorialDocumentLoader' in store
 assert 'private struct EditorialDocumentLoad: @unchecked Sendable' in store
-assert 'private nonisolated static let parsedISODates: NSCache<NSString, NSDate>' in store
+assert 'private nonisolated(unsafe) static let parsedISODates: NSCache<NSString, NSDate>' in store
 assert 'cache.countLimit = 8192' in store
 assert 'terminalMarksNeedSave' in store
 catalog = (root / "TTActualidad/ArchivePhotoCatalog.swift").read_text(encoding="utf8")
@@ -1238,3 +1238,7 @@ assert "private struct EditorialBuiltSnapshot: @unchecked Sendable" in store_per
 assert "private nonisolated static func buildTop30(" in store_perf
 assert "private nonisolated static func buildTrendListas(" in store_perf
 print("TT_IOS_DETACHED_SNAPSHOT_BUILD103_GUARDS_OK")
+
+# Swift 6 isolation warnings from the detached path must remain addressed.
+assert 'private nonisolated static let closed: Set<String>' in store_perf
+print('TT_IOS_DETACHED_STATIC_ISOLATION_GUARDS_OK')
