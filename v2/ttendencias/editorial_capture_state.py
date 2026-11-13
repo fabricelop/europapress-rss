@@ -15,7 +15,7 @@ FINISHED = {"ready", "published", "dismissed", "cancelled"}
 def _refresh(q):
     active = sorted(
         (item for item in q["items"].values()
-         if item["status"] in OPEN | {"in_progress", CAPTURED}),
+         if item["status"] in OPEN | {"in_progress", "capture_recovery", CAPTURED}),
         key=lambda x: (x.get("requested_at", ""), x["trend_id"]))
     q["pending_count"] = len(active)
     q["pending_ids"] = [item["trend_id"] for item in active]
