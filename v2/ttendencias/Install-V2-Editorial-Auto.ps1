@@ -40,7 +40,8 @@ $files = @(
     'web_top30_v2.py',
     'listas_v2.py',
     'test_auto_editorial_v2.py',
-    'Run-V2-Editorial-Auto.ps1'
+    'Run-V2-Editorial-Auto.ps1',
+    'Disable-V2-Editorial-Auto.ps1'
 )
 foreach ($file in $files) {
     $target = Join-Path $root $file
@@ -56,6 +57,13 @@ if ($LASTEXITCODE -ne 0) { throw 'No superó las pruebas de seguridad V2' }
 & py.exe -3 -c 'import playwright.sync_api'
 if ($LASTEXITCODE -ne 0) { throw 'Playwright no disponible para Chrome V2' }
 Write-Host 'TT_V2_PLAYWRIGHT=READY'
+
+# Las pruebas anteriores ya utilizaron un perfil Chrome V2 autenticado.
+# No habilitar envíos automáticos si ese perfil no existe.
+$profile = Join-Path $root 'ChromeProfile'
+if (!(Test-Path -LiteralPath $profile -PathType Container)) {
+    throw 'No hay perfil Chrome V2. Probar primero la elaboración individual autenticada.'
+}
 
 # La bandera exacta es autorización para abrir chats. Guardarla solo
 # tras descargar/validar los módulos y justo antes de registrar la tarea.
