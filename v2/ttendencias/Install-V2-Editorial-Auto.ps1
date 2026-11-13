@@ -43,6 +43,8 @@ $files = @(
     'editorial_batch_v2.py',
     'editorial_run_v2.py',
     'chrome_command_v2.py',
+    'chrome_cleanup_v2.py',
+    'test_chrome_cleanup_v2.py',
     'headless_preflight_v2.py',
     'incident_retry_v2.py',
     'incident_worker_v2.py',
@@ -81,7 +83,7 @@ if ($test.ExitCode -ne 0) {
     throw ('No superó las pruebas de seguridad V2 (exit ' + $test.ExitCode + '). Ver ' + $testStderr)
 }
 Write-Host 'TT_V2_AUTO_TESTS=OK'
-foreach ($suite in @('test_chrome_command_v2.py','test_incident_retry_v2.py')) {
+foreach ($suite in @('test_chrome_command_v2.py','test_chrome_cleanup_v2.py','test_incident_retry_v2.py')) {
     $testPath = Join-Path $root $suite
     $result = Start-Process -FilePath $py -ArgumentList @('-3', ('"' + $testPath + '"')) `
         -Wait -PassThru -WindowStyle Hidden -RedirectStandardOutput $testStdout -RedirectStandardError $testStderr
