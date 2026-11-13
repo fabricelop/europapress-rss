@@ -7,16 +7,19 @@
   "previous_run_id": "tr-20261113T182500-chat-direct",
   "command_id": "tr-20261113T185500-chat-direct",
   "source": "chat_direct",
-  "status": "RUNNING",
+  "status": "success",
   "phase": "investigating",
   "started_at": "2026-11-13T18:55:00+01:00",
-  "updated_at": "2026-11-13T18:55:00+01:00",
+  "updated_at": "2026-11-13T18:58:52+01:00",
   "current": 0,
   "total": 2,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
-  "processed_ids": [],
+  "queue_complete": true,
+  "processed_ids": [
+    "1d5814995248",
+    "manual-c550af7b734565e1d4042fae0ba8d74f"
+  ],
   "converged_ids": [],
   "remaining_ids": [
     "manual-c550af7b734565e1d4042fae0ba8d74f",
@@ -679,8 +682,8 @@
       "message": "Pasada TTendencias iniciada desde ChatGPT. Cola autoritativa observada=2, ambos problematic; reintento JIT con fuentes actuales y X cuando la muestra es vigente. Sin ImageGen ni publicación."
     }
   ],
-  "last_started_at": "2026-11-13T18:55:00+01:00",
-  "last_completed_at": "2026-11-13T18:35:23+01:00",
+  "last_started_at": "2026-11-13T18:58:52+01:00",
+  "last_completed_at": "2026-11-13T18:58:52+01:00",
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-20261113T171000-chat-direct",
