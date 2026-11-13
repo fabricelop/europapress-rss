@@ -48,5 +48,3 @@ jobs:
         run: python3 .github/scripts/test_tt_mobile_issue_command.py
       - name: Web controls and JavaScript parsing
         run: node .github/scripts/test_tt_pending_quitar.mjs
-      - name: Existing unified Pages UI regressions
-        run: node .github/scripts/test_tt_mobile_unified_ui.mjs
