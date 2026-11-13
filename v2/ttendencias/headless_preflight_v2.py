@@ -16,6 +16,7 @@ from playwright.sync_api import sync_playwright
 import editorial_run_v2 as core
 from chrome_command_v2 import command
 from chrome_cleanup_v2 import cleanup_v2_profile
+from chrome_startup_v2 import wait_for_cdp
 from process_lock_v2 import exclusive_v2_lock
 
 
@@ -30,25 +31,32 @@ def verify_under_lock():
     args = command(core.CHROME, core.PROFILE, port, headless=True)
     proc = None
     browser = None
+    chrome_stderr = None
+    chrome_error_log = core.ROOT / "install-chrome-headless.stderr.log"
     composer_ready = False
     original_error = None
     cleanup = None
     try:
-        proc = subprocess.Popen(args, stdout=subprocess.DEVNULL,
-                                stderr=subprocess.DEVNULL,
+        # Chrome Windows may exit its launcher after moving the browser
+        # to child processes; don't confuse launcher exit with CDP failure.
+        # Keep Chrome's own diagnostics locally instead of discarding stderr.
+        chrome_stderr = chrome_error_log.open("w", encoding="utf-8")
+        proc = subprocess.Popen(args + ["--enable-logging=stderr"], stdout=subprocess.DEVNULL,
+                                stderr=chrome_stderr,
                                 creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         endpoint = "http://127.0.0.1:" + str(port)
-        for _ in range(35):
-            if proc.poll() is not None:
-                raise RuntimeError("Chrome V2 oculto terminó antes de CDP")
+        def cdp_ready():
             try:
                 with urllib.request.urlopen(endpoint + "/json/version", timeout=2) as resp:
-                    if json.load(resp).get("Browser"):
-                        break
+                    return bool(json.load(resp).get("Browser"))
             except (OSError, ValueError):
-                time.sleep(1)
-        else:
-            raise RuntimeError("CDP no disponible en Chrome V2 oculto")
+                return False
+        startup = wait_for_cdp(proc, cdp_ready, core.profile_pids,
+                               attempts=40, delay=time.sleep, absent_limit=6)
+        print("TT_V2_CHROME_LAUNCHER_EXITED=" +
+              ("YES" if startup["launcher_exited"] else "NO"), flush=True)
+        print("TT_V2_CHROME_SCOPED_CHILD_SEEN=" +
+              ("YES" if startup["children_seen"] else "NO"), flush=True)
         if not core.profile_pids():
             raise RuntimeError("No se identificaron procesos ChromeProfile V2")
         print("TT_V2_HEADLESS_CDP=YES", flush=True)
@@ -91,6 +99,8 @@ def verify_under_lock():
                 browser.close()
             except Exception:
                 pass
+        if chrome_stderr:
+            chrome_stderr.close()
         if proc:
             try:
                 proc.wait(timeout=5)
@@ -139,5 +149,8 @@ if __name__ == "__main__":
     except Exception as exc:
         print("TT_V2_HEADLESS_PREFLIGHT_ERROR=" + str(exc),
               file=sys.stderr, flush=True)
+        print("TT_V2_HEADLESS_CHROME_STDERR_LOG=" +
+              str(core.ROOT / "install-chrome-headless.stderr.log"),
+              flush=True)
         print("TT_V2_HEADLESS_MESSAGE_SENT=NO", flush=True)
         sys.exit(1)
