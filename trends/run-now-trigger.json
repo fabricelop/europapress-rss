@@ -1,11 +1,21 @@
 {
   "version": 2,
-  "command_id": "tr-1794528620173-manual",
-  "requested_at": "2026-11-13T00:10:20.173Z",
+  "command_id": "tr-autoguard-1794531068",
+  "requested_at": "2026-11-13T00:51:08.248151Z",
   "mode": "manual_pc_chat",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
   "launcher_arg": "tendencias",
   "task": "editorial",
-  "auto_image_followup": false
+  "auto_image_followup": false,
+  "source": "tt_autoheal_editorial_watchdog",
+  "reason": "editorial_not_started_in_time",
+  "pending_ids": [
+    "radar-prepare-55ec4ae41a54016072c2",
+    "radar-prepare-9e0310666132b2bd1a4f"
+  ],
+  "target_id": "radar-prepare-55ec4ae41a54016072c2",
+  "target_revision": 0,
+  "target_name": "Radar · Belén Esteban",
+  "scope": "single_item"
 }
