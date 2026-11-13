@@ -7,36 +7,33 @@
   "previous_run_id": "tr-20261113T101000-chat-direct",
   "command_id": "tr-20261113T102500-chat-direct",
   "source": "chat_direct",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-13T10:25:00+01:00",
-  "updated_at": "2026-11-13T10:25:00+01:00",
-  "current": 0,
+  "updated_at": "2026-11-13T10:29:30+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "red-review-77adc81420e233ffb33c",
-  "title": "Revisando novedades: Xokas",
-  "queue_complete": false,
-  "processed_ids": [],
+  "trend_id": null,
+  "title": "Pasada editorial TTendencias",
+  "queue_complete": true,
+  "processed_ids": [
+    "red-review-77adc81420e233ffb33c",
+    "red-review-7d6b52b5bc99fa5de8e4"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "red-review-77adc81420e233ffb33c",
-    "red-review-7d6b52b5bc99fa5de8e4"
-  ],
-  "remaining_active_ids": [
-    "red-review-77adc81420e233ffb33c",
-    "red-review-7d6b52b5bc99fa5de8e4"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 2,
     "observed": 2,
-    "closed": 0,
+    "closed": 2,
     "explained": 0,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 0,
-    "unchanged_reviews": 0,
+    "maintenance_reviews": 2,
+    "unchanged_reviews": 2,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "stale_reviews": 0,
@@ -44,7 +41,7 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -53,7 +50,24 @@
     "concurrent_convergence": 0,
     "cause_unconfirmed": 0
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "red-review-77adc81420e233ffb33c",
+      "revision": 0,
+      "name": "Revisar novedades: Xokas",
+      "outcome": "unchanged",
+      "applied": true,
+      "apply_commit": "00152db0c75ff5ff248172ff3c5df70fcddf8304"
+    },
+    {
+      "id": "red-review-7d6b52b5bc99fa5de8e4",
+      "revision": 0,
+      "name": "Revisar novedades: Hormiguero",
+      "outcome": "unchanged",
+      "applied": true,
+      "apply_commit": "00152db0c75ff5ff248172ff3c5df70fcddf8304"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -416,6 +430,13 @@
       "revision": 0,
       "name": "Revisar novedades: Xokas",
       "message": "Pasada manual iniciada desde ChatGPT; cola autoritativa=2 revisiones rojas: Xokas y Hormiguero. Revalidación JIT e investigación de novedades sustanciales; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-13T10:29:30+01:00",
+      "run_id": "tr-20261113T102500-chat-direct",
+      "status": "DONE",
+      "phase": "closing",
+      "message": "Pasada TTendencias completada 2/2. Xokas y Hormiguero revisados sin novedades materiales: ambos unchanged, conservando explicación y fecha. Aplicador de mantenimiento confirmado en 00152db0c75ff5ff248172ff3c5df70fcddf8304; editorial-queue=0. Sin ImageGen ni publicaciones."
     }
   ],
   "last_started_at": "2026-11-13T10:14:59+01:00",
@@ -7368,7 +7389,8 @@
     "eedbccdb94df1936c8997f1f2ced3536266ed14e",
     "8ac401943a74f6b1e15d582eac4c3bffb24294b5",
     "a3750716edf8e75aa9f7d3894516ef2da4b2aa57",
-    "bb059164e18f56cd1f87c876ddebc2be501a4f79"
+    "bb059164e18f56cd1f87c876ddebc2be501a4f79",
+    "00152db0c75ff5ff248172ff3c5df70fcddf8304"
   ],
   "outbox_commit": "d4a002c34e63c0e825a820bc432b784b1353cbaa",
   "prior_last_run": {
@@ -7687,5 +7709,6 @@
   ],
   "processed": [],
   "maintenance_outbox_commit": "970b545c88b09429a23d15ec893b9d66fb611297",
-  "editorial_apply_run_id": 43378988402
+  "editorial_apply_run_id": 43378988402,
+  "finished_at": "2026-11-13T10:29:30+01:00"
 }
