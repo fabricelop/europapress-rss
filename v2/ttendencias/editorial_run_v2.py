@@ -171,14 +171,8 @@ def run_one(api, state, transcript, auth, item):
             port = sock.getsockname()[1]
         if port in (9223, 9234):
             raise RuntimeError("Puerto de V1 reservado")
-        chrome_args = [str(CHROME), f"--user-data-dir={PROFILE}",
-            f"--remote-debugging-port={port}", "--remote-debugging-address=127.0.0.1",
-            "--disable-extensions", "--no-first-run", "--no-default-browser-check"]
-        if HEADLESS:
-            chrome_args.extend(["--headless=new", "--window-size=1280,900"])
-        else:
-            chrome_args.append("--new-window")
-        chrome_args.append("https://chatgpt.com/")
+        chrome_builder = module("chrome_command_v2.py", "ttv2_chrome_command")
+        chrome_args = chrome_builder.command(CHROME, PROFILE, port, headless=HEADLESS)
         proc = subprocess.Popen(chrome_args,
             stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
             creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
