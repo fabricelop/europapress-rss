@@ -3,18 +3,18 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261113T112500-chat-direct",
-  "previous_run_id": "tr-20261113T111000-chat-direct",
+  "run_id": "tr-20261113T120600-chat-direct",
+  "previous_run_id": "tr-20261113T112500-chat-direct",
   "command_id": "tr-20261113T112500-chat-direct",
   "source": "chat_direct",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-13T11:25:00+01:00",
-  "updated_at": "2026-11-13T11:26:00+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-13T12:06:00+01:00",
+  "updated_at": "2026-11-13T12:06:00+01:00",
   "current": 0,
-  "total": 0,
-  "trend_id": null,
-  "title": "Pasada editorial TTendencias",
+  "total": 4,
+  "trend_id": "289b3a5cdae3",
+  "title": "Begoña",
   "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
@@ -23,7 +23,7 @@
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
-    "observed": 0,
+    "observed": 4,
     "closed": 0,
     "explained": 0,
     "problematic": 0,
@@ -38,7 +38,7 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 4,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -535,16 +535,16 @@
   "last_completed_at": "2026-11-13T11:20:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261113T111000-chat-direct",
+    "run_id": "tr-20261113T112500-chat-direct",
     "status": "DONE",
-    "started_at": "2026-11-13T11:10:30+01:00",
-    "finished_at": "2026-11-13T11:20:00+01:00",
-    "observed": 3,
-    "closed": 3,
+    "started_at": "2026-11-13T11:25:00+01:00",
+    "finished_at": "2026-11-13T11:26:00+01:00",
+    "observed": 0,
+    "closed": 0,
     "queue_remaining": 0,
-    "message": "Youtuber y Jensen Huang actualizados como continuidad; Microsoft r1 reelaborado desde cero con estado actual de la incidencia. Cola final 0. Sin ImageGen ni publicaciones."
+    "message": "Pasada TTendencias completada 4/4. Radar Gmail y Pipi cerrados como anticipation_unverified por falta de causalidad suficientemente acreditada; Broncano y NVIDIA actualizados como continuidad del mismo episodio. NVIDIA requirió corregir la fórmula de continuidad exigida por el validador y quedó aplicada. Barrera final tras refresco Top 30: editorial-queue=0. Sin ImageGen ni publicaciones."
   },
-  "message": "Pasada TTendencias completada 4/4. Radar Gmail y Pipi cerrados como anticipation_unverified por falta de causalidad suficientemente acreditada; Broncano y NVIDIA actualizados como continuidad del mismo episodio. NVIDIA requirió corregir la fórmula de continuidad exigida por el validador y quedó aplicada. Barrera final tras refresco Top 30: editorial-queue=0. Sin ImageGen ni publicaciones.",
+  "message": "Iniciando pasada TTendencias 0/4. Revalidando Begoña r0 antes de investigar.",
   "history": [
     {
       "run_id": "tr-1794361941170-manual",
@@ -4615,7 +4615,12 @@
       "message": "Pasada TTendencias completada 5/5. Asraf quedó como episodio material distinto por su victoria en la final; Rosalia quedó explicada por sus cinco Latin Grammy; NVIDIA y Jensen Huang se actualizaron como continuidad tras la dimisión de Huang y el nombramiento interino de Colette Kress; #HuelgaGeneral quedó unchanged al no aparecer un episodio material nuevo. Barrera final: editorial-queue=0 y mobile-decisions sin estados editoriales activos. ImageGen=0; publicaciones=0; incidentes=0."
     }
   ],
-  "current_item": null,
+  "current_item": {
+    "id": "289b3a5cdae3",
+    "revision": 0,
+    "name": "Begoña",
+    "title": "Begoña"
+  },
   "withdrawn_ids": [],
   "last_finished_at": "2026-11-13T10:51:20+01:00",
   "last_revalidated_at": "2026-11-13T10:51:20+01:00",
@@ -7752,5 +7757,5 @@
   "processed": [],
   "maintenance_outbox_commit": "970b545c88b09429a23d15ec893b9d66fb611297",
   "editorial_apply_run_id": 43378988402,
-  "finished_at": "2026-11-13T11:26:00+01:00"
+  "finished_at": null
 }
