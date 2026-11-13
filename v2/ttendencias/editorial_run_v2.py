@@ -319,7 +319,7 @@ def run_one(api, state, transcript, auth, item):
         observed_at=record["observed_at"], lease_token=token)
     if status != "already_staged":
         queue_write(api, auth, sha, staged, "capture " + trend_id)
-    verify, _ = queue_read(api, auth)
+    verify, queue_blob_sha = queue_read(api, auth)
     cap = verify["items"][trend_id].get("capture") or {}
     if (verify["items"][trend_id]["status"] != "captured_review"
         or cap.get("sha256") != hashlib.sha256(record["answer"].strip().encode()).hexdigest()
@@ -329,6 +329,17 @@ def run_one(api, state, transcript, auth, item):
     record["persisted"] = True
     store(journal, record)
     print("TT_V2_GITHUB_VERIFIED=YES", flush=True)
+    # Sin reenvío: incluir inmediatamente la ficha capturada en el modelo de
+    # Listas V2, incluso si el motivo no está confirmado. No implica READY.
+    listas = module("listas_v2.py", "ttv2_listas")
+    projection = listas.sync_to_github(api, auth, verify, queue_blob_sha)
+    card = projection["items"].get(trend_id)
+    if (not card or card["revision"] != revision
+        or card["capture_sha256"] != cap["sha256"]
+        or card["publication_allowed"] is not False):
+        raise RuntimeError("Listas V2 no refleja la captura; no avanzar lote")
+    print("TT_V2_LISTAS_VERIFIED=YES", flush=True)
+    print("TT_V2_LISTAS_CAUSE_STATUS=" + card["cause_status"], flush=True)
     print("TT_V2_PUBLISHED=NO", flush=True)
 
 def main():
