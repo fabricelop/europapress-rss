@@ -48,6 +48,7 @@ class ChangeTests(unittest.TestCase):
         back = self.run_step(20, ORIGINAL, absent)
         self.assertEqual(back["state"]["topics"]["trend 30"]["episode_token"], before)
         self.assertIn("short_return", [e["kind"] for e in back["changes"]])
+        self.assertNotEqual(back["state"]["topics"]["trend 30"]["entered_top30_at"], base["topics"]["trend 30"]["entered_top30_at"])
 
     def test_return_after_35_minutes_keeps_identity_and_explanation(self):
         base = self.run_step(0)["state"]
