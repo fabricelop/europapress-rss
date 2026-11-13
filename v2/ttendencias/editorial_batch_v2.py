@@ -15,7 +15,7 @@ import time
 import importlib.util
 
 import editorial_run_v2 as core
-from batch_contract_v2 import verify_persisted
+from batch_contract_v2 import verify_persisted, validate_frozen_job
 from select_current_top30_v2 import read_history, select_current_top30
 
 LOCK = core.ROOT / "editorial_batch_v2.lock"
@@ -69,9 +69,7 @@ def run_batch(max_jobs, execute):
     completed = 0
     for item in initial:
         queue, _ = core.queue_read(api, auth)
-        current = core.selected(queue, item["trend_id"])
-        if current["revision"] != item["revision"]:
-            raise RuntimeError("Revisión cambiada durante el lote: detener sin reenviar")
+        validate_frozen_job(queue, item)
         # La tendencia puede estar ya fuera del Top30: mantener el plan original.
         # run_one hace de nuevo reserva CAS y validaciones anti-duplicados.
         print("TT_V2_BATCH_START=%s:r%d" % (item["trend_id"], item["revision"]), flush=True)
