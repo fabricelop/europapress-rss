@@ -24,9 +24,9 @@ ROOT = pathlib.Path(os.environ["LOCALAPPDATA"]) / "TTActualidadV2"
 PROFILE = ROOT / "ChromeProfile"
 DIAG_DIR = ROOT / "diagnostics"
 CHROME = pathlib.Path(os.environ.get("PROGRAMFILES", r"C:\Program Files")) / "Google" / "Chrome" / "Application" / "chrome.exe"
-# Headless moderno: misma sesión ChromeProfile V2, sin ventana visible.
-# Para diagnosticar, el operador puede usar TT_V2_CHROME_HEADLESS=0.
-HEADLESS = os.environ.get("TT_V2_CHROME_HEADLESS", "1").strip().lower() not in ("0", "false", "no")
+# Chrome normal con ventana oculta conserva el comportamiento de autenticación
+# de V2. El headless real queda reservado para diagnósticos explícitos.
+HEADLESS = os.environ.get("TT_V2_CHROME_HEADLESS", "0").strip().lower() not in ("0", "false", "no")
 COMPOSERS = ("#prompt-textarea", "[data-testid='prompt-textarea']", "[contenteditable='true'][role='textbox']")
 STOP = "[data-testid='stop-button'],button[aria-label*='Stop'],button[aria-label*='Detener']"
 BRANCH = "feature/ttactualidad-v2-clean"
@@ -164,6 +164,7 @@ def run_one(api, state, transcript, auth, item):
     store(journal, record)
     proc = None
     browser = None
+    hider = None
     owned = set()
     try:
         with socket.socket() as sock:
@@ -172,11 +173,16 @@ def run_one(api, state, transcript, auth, item):
         if port in (9223, 9234):
             raise RuntimeError("Puerto de V1 reservado")
         chrome_builder = module("chrome_command_v2.py", "ttv2_chrome_command")
-        chrome_args = chrome_builder.command(CHROME, PROFILE, port, headless=HEADLESS)
+        chrome_args = chrome_builder.command(CHROME, PROFILE, port,
+                                             headless=HEADLESS, hidden=not HEADLESS)
+        visibility = module("chrome_visibility_v2.py", "ttv2_editorial_visibility")
         proc = subprocess.Popen(chrome_args,
             stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            startupinfo=visibility.startupinfo_hidden() if not HEADLESS else None,
             creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
-        print("TT_V2_CHROME_HEADLESS=" + ("YES" if HEADLESS else "NO"), flush=True)
+        if not HEADLESS:
+            hider = visibility.V2WindowHider(profile_pids).start()
+        print("TT_V2_CHROME_MODE=" + ("HEADLESS" if HEADLESS else "HEADED_HIDDEN"), flush=True)
         endpoint = "http://127.0.0.1:" + str(port)
         import urllib.request
         for _ in range(40):
@@ -191,6 +197,8 @@ def run_one(api, state, transcript, auth, item):
         owned = profile_pids()
         if not owned:
             raise RuntimeError("No se identificaron procesos Chrome V2 propios")
+        if hider and hider.last_error:
+            raise RuntimeError("No se pudo ocultar Chrome V2: " + hider.last_error)
         print("TT_V2_CDP_CONNECTED=YES", flush=True)
         with sync_playwright() as pw:
             browser = pw.chromium.connect_over_cdp(endpoint)
@@ -212,6 +220,8 @@ def run_one(api, state, transcript, auth, item):
                 time.sleep(2)
             if composer is None or not page.url.startswith("https://chatgpt.com/"):
                 raise RuntimeError("ChatGPT no está listo; no enviar")
+            if hider and hider.last_error:
+                raise RuntimeError("Chrome V2 no se puede mantener oculto; no enviar")
             # CRÍTICO: registrar intención en GitHub ANTES de pulsar Enter.
             # Si el proceso muere a continuación, NO puede reenviarse.
             # GitHub puede refrescar el Top30 entre la reserva y el envío.
@@ -295,6 +305,8 @@ def run_one(api, state, transcript, auth, item):
         store(journal, record)
         raise
     finally:
+        if hider:
+            hider.stop()
         if browser:
             try: browser.close()
             except Exception: pass
