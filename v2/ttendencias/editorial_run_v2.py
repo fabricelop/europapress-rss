@@ -143,7 +143,7 @@ def run_one(api, state, transcript, auth, item):
     q["items"][trend_id]["lease"] = {
         "token": token, "worker_id": "ttv2-native-cdp",
         "started_at": now.isoformat(),
-        "expires_at": (now + timedelta(minutes=25)).isoformat()}
+        "expires_at": (now + timedelta(minutes=40)).isoformat()}
     queue_write(api, auth, sha, q, "claim " + trend_id)
     # La web muestra EN ELABORACIÓN antes de abrir la sesión individual.
     # Un fallo de proyección no provoca reenvío ni cambia la reserva.
@@ -260,7 +260,7 @@ def run_one(api, state, transcript, auth, item):
                            "observations": ["target_discovery_failed"]}
             else:
                 capture = transcript.capture_existing_page(
-                    page, trend_id=trend_id, revision=revision, seconds=180)
+                    page, trend_id=trend_id, revision=revision, seconds=900)
             record["capture_diagnostic"] = {
                 "status": capture["status"],
                 "reason": capture["reason"],
@@ -273,7 +273,7 @@ def run_one(api, state, transcript, auth, item):
                 record.update({
                     "reply_captured": True, "answer": capture["answer"],
                     "status": "captured_needs_editorial_validation",
-                    "validation": "paired_turn_id_revision_footer_and_stable_idle"})
+                    "validation": "paired_turn_id_revision_dom_or_footer_and_stable_idle"})
                 print("TT_V2_REPLY_CAPTURED=YES", flush=True)
             else:
                 record["status"] = "capture_recovery_required"
