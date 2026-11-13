@@ -325,7 +325,7 @@ assert 'EditorialDocumentLoader.load(paths: paths)' in store
 assert 'private enum EditorialDocumentLoader' in store
 assert 'private struct EditorialDocumentLoad: @unchecked Sendable' in store
 assert 'private nonisolated static let parsedISODates: NSCache<NSString, NSDate>' in store
-assert 'private static let standardISO:' in store
+assert 'cache.countLimit = 8192' in store
 assert 'terminalMarksNeedSave' in store
 catalog = (root / "TTActualidad/ArchivePhotoCatalog.swift").read_text(encoding="utf8")
 assert 'private actor ArchivePhotoMemory' in catalog
