@@ -17,6 +17,8 @@ if (!(Test-Path -LiteralPath $flag) -or
     Write-Host 'TT_V2_AUTO_ENABLED=NO'
     exit 0
 }
+# The V2 Chrome must be normal headed but hidden, not headless.
+$env:TT_V2_CHROME_HEADLESS = '0'
 $py = (Get-Command py.exe -ErrorAction Stop).Source
 $stamp = Get-Date -Format 'yyyyMMdd-HHmmss'
 $recoverOut = Join-Path $logDir ('recover-' + $stamp + '.stdout.log')
