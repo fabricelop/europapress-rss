@@ -64,8 +64,17 @@ def snapshot(page):
       title: document.title,
       roles: [...document.querySelectorAll('[data-message-author-role]')]
         .map(x => ({role:x.getAttribute('data-message-author-role'),chars:(x.innerText||'').length})).slice(-12),
+      readyState: document.readyState,
+      bodyLength: (document.body?.innerText || '').length,
+      bodyPreview: (document.body?.innerText || '').slice(0, 3500),
+      bodyHtmlPreview: (document.body?.innerHTML || '').slice(0, 1500),
+      frames: [...document.querySelectorAll('iframe')].map(x=>({src:x.src, title:x.title})).slice(0,10),
+      domCounts: {articles:document.querySelectorAll('article').length,
+        main:document.querySelectorAll('main').length,
+        markdown:document.querySelectorAll('.markdown').length,
+        shadowHosts:[...document.querySelectorAll('*')].filter(x=>x.shadowRoot).length},
       testids: [...document.querySelectorAll('[data-testid]')]
-        .map(x=>x.getAttribute('data-testid')).filter(x=>/message|turn|stop|copy|regenerat/i.test(x)).slice(-35)
+        .map(x=>x.getAttribute('data-testid')).slice(-50)
     })""")
 
 def collect_assistant(page):
@@ -123,7 +132,7 @@ def main():
             if page is None:
                 page = context.new_page()
                 page.goto(CHAT_URL, wait_until="domcontentloaded", timeout=60000)
-            deadline = time.monotonic() + 150
+            deadline = time.monotonic() + 50
             previous = ""
             stable = 0
             observations = []
@@ -151,6 +160,17 @@ def main():
                 time.sleep(2)
             result["observations"] = observations[-20:]
             result["dom"] = snapshot(page)
+            result["frames"] = [{"url": f.url, "name": f.name} for f in page.frames]
+            result["page_count"] = len(context.pages)
+            result["page_urls"] = [p.url for p in context.pages]
+            # Los diagnósticos se guardan localmente; no se envían a GitHub.
+            if not result["reply_captured"]:
+                try:
+                    shot = OUT.with_suffix(".png")
+                    page.screenshot(path=str(shot), full_page=False, timeout=10000)
+                    result["screenshot"] = str(shot)
+                except Exception as exc:
+                    result["screenshot_error"] = str(exc)[:200]
             if not result["reply_captured"]:
                 result["status"] = "not_verified"
                 result["last_visible_answer"] = previous[:12000]
