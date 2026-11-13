@@ -7,50 +7,49 @@
   "previous_run_id": "tr-20261113T1055-chat-direct",
   "command_id": "tr-20261113T111000-chat-direct",
   "source": "chat_direct",
-  "status": "waiting",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-13T11:10:30+01:00",
-  "updated_at": "2026-11-13T11:18:36+01:00",
-  "current": 0,
-  "total": 2,
+  "updated_at": "2026-11-13T11:20:00+01:00",
+  "current": 3,
+  "total": 3,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [
     "c7bac46904be"
   ],
-  "converged_ids": [],
-  "remaining_ids": [
+  "converged_ids": [
+    "red-review-0d0092fbb32ed2b11c3e",
     "red-review-42d2af8ed4e24f5e4623"
   ],
-  "remaining_active_ids": [
-    "red-review-42d2af8ed4e24f5e4623"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 2,
-    "closed": 0,
-    "explained": 0,
+    "attempted": 3,
+    "observed": 3,
+    "closed": 3,
+    "explained": 1,
     "problematic": 0,
-    "updates": 0,
+    "updates": 2,
     "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 0,
+    "maintenance_reviews": 2,
     "unchanged_reviews": 0,
-    "continuity_updates": 0,
+    "continuity_updates": 2,
     "distinct_updates": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0,
+    "concurrent_convergence": 2,
     "cause_unconfirmed": 0
   },
   "outcomes": [],
@@ -493,88 +492,48 @@
       "status": "RUNNING",
       "phase": "preparing",
       "message": "Pasada manual iniciada desde ChatGPT; cola autoritativa inicial=2 (updated_at 2026-11-13T11:10:50+01:00). Revalidando barrera final en main; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-13T11:13:11+01:00",
+      "run_id": "tr-20261113T111000-chat-direct",
+      "status": "RUNNING",
+      "phase": "persisting",
+      "message": "Youtuber aplicado como actualización de continuidad por el estreno de las entrevistas electorales de Jordi Wild."
+    },
+    {
+      "at": "2026-11-13T11:18:36+01:00",
+      "run_id": "tr-20261113T111000-chat-direct",
+      "status": "RUNNING",
+      "phase": "persisting",
+      "message": "Microsoft r1 reelaborado desde cero con la incidencia de Microsoft 365 aún activa y señales de estabilización; imagen queda en circuito independiente."
+    },
+    {
+      "at": "2026-11-13T11:18:51+01:00",
+      "run_id": "tr-20261113T111000-chat-direct",
+      "status": "RUNNING",
+      "phase": "verifying",
+      "message": "Jensen Huang aplicado como actualización de continuidad tras corregir el formato requerido por el validador."
+    },
+    {
+      "at": "2026-11-13T11:20:00+01:00",
+      "run_id": "tr-20261113T111000-chat-direct",
+      "status": "DONE",
+      "phase": "closing",
+      "message": "Pasada TTendencias cerrada: 3/3 trabajos del ciclo final resueltos; editorial-queue=0; ImageGen=0; publicaciones=0; incidentes=0."
     }
   ],
   "last_started_at": "2026-11-13T11:18:36+01:00",
-  "last_completed_at": "2026-11-13T11:10:02+01:00",
+  "last_completed_at": "2026-11-13T11:20:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261113T104000-chat-direct",
+    "run_id": "tr-20261113T111000-chat-direct",
     "status": "DONE",
-    "started_at": "2026-11-13T10:40:00+01:00",
-    "finished_at": "2026-11-13T10:51:20+01:00",
-    "at": "2026-11-13T10:51:20+01:00",
-    "phase": "closing",
-    "summary": {
-      "attempted": 4,
-      "observed": 4,
-      "closed": 4,
-      "explained": 0,
-      "problematic": 0,
-      "updates": 2,
-      "review_completed_no_distinct_event": 0,
-      "maintenance_reviews": 2,
-      "unchanged_reviews": 0,
-      "continuity_updates": 2,
-      "distinct_updates": 0,
-      "stale_reviews": 0,
-      "unverified_reviews": 0,
-      "anticipation_reviews": 2,
-      "anticipation_prepared": 0,
-      "anticipation_unverified": 2,
-      "queue_remaining": 0,
-      "rewrite_pending_remaining": 0,
-      "imagegen_calls": 0,
-      "image_outbox_created": 0,
-      "publications": 0,
-      "incidents": 0,
-      "concurrent_convergence": 0,
-      "cause_unconfirmed": 0
-    },
-    "processed_ids": [
-      "radar-prepare-b6c8e95af01a25e37a90",
-      "radar-prepare-dcbad6134e8c1af628ba",
-      "red-review-7c1b8724ce143aa6f635",
-      "red-review-59d7da93507e2d8ab8ab"
-    ],
-    "converged_ids": [],
-    "outcomes": [
-      {
-        "id": "radar-prepare-b6c8e95af01a25e37a90",
-        "revision": 0,
-        "name": "Radar · Gmail",
-        "outcome": "anticipation_unverified",
-        "applied": true,
-        "apply_commit": "e0b58b9863ac15e4b050f7e300a60a9a52023d65"
-      },
-      {
-        "id": "radar-prepare-dcbad6134e8c1af628ba",
-        "revision": 0,
-        "name": "Radar · Pipi",
-        "outcome": "anticipation_unverified",
-        "applied": true,
-        "apply_commit": "e0b58b9863ac15e4b050f7e300a60a9a52023d65"
-      },
-      {
-        "id": "red-review-7c1b8724ce143aa6f635",
-        "revision": 0,
-        "name": "Revisar novedades: Broncano",
-        "outcome": "continuity",
-        "applied": true,
-        "apply_commit": "010b0319f13579d58cd0b1d1a5a2111d8c9ec8ef"
-      },
-      {
-        "id": "red-review-59d7da93507e2d8ab8ab",
-        "revision": 0,
-        "name": "Revisar novedades: NVIDIA",
-        "outcome": "continuity",
-        "applied": true,
-        "apply_commit": "92f8142cf791b506dc3d590301a97bc785723eae"
-      }
-    ],
-    "incident_count": 0,
-    "incidents": [],
-    "message": "Pasada TTendencias completada 4/4. Radar Gmail y Pipi cerrados como anticipation_unverified por falta de causalidad suficientemente acreditada; Broncano y NVIDIA actualizados como continuidad del mismo episodio. NVIDIA requirió corregir la fórmula de continuidad exigida por el validador y quedó aplicada. Barrera final tras refresco Top 30: editorial-queue=0. Sin ImageGen ni publicaciones."
+    "started_at": "2026-11-13T11:10:30+01:00",
+    "finished_at": "2026-11-13T11:20:00+01:00",
+    "observed": 3,
+    "closed": 3,
+    "queue_remaining": 0,
+    "message": "Youtuber y Jensen Huang actualizados como continuidad; Microsoft r1 reelaborado desde cero con estado actual de la incidencia. Cola final 0. Sin ImageGen ni publicaciones."
   },
   "message": "Pasada TTendencias completada 4/4. Radar Gmail y Pipi cerrados como anticipation_unverified por falta de causalidad suficientemente acreditada; Broncano y NVIDIA actualizados como continuidad del mismo episodio. NVIDIA requirió corregir la fórmula de continuidad exigida por el validador y quedó aplicada. Barrera final tras refresco Top 30: editorial-queue=0. Sin ImageGen ni publicaciones.",
   "history": [
@@ -7784,5 +7743,5 @@
   "processed": [],
   "maintenance_outbox_commit": "970b545c88b09429a23d15ec893b9d66fb611297",
   "editorial_apply_run_id": 43378988402,
-  "finished_at": null
+  "finished_at": "2026-11-13T11:20:00+01:00"
 }
