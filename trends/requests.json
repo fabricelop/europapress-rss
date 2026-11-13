@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-13T20:15:37.165105+00:00",
+  "updated_at": "2026-11-13T20:25:46.346926+00:00",
   "requests": [
     {
       "id": "ff7da32ed7b2",
@@ -312171,47 +312171,47 @@
     },
     {
       "id": "019f7a9bc80d",
+      "created_at": "2026-11-13T19:45:30.769550+00:00",
       "name": "Jorge Salvaje",
       "rank": 26,
-      "revision": 0,
-      "status": "explained",
-      "created_at": "2026-11-13T19:45:30.769550+00:00",
-      "requested_at": "2026-11-13T19:45:30.769550+00:00",
-      "updated_at": "2026-11-13T20:48:33+01:00",
+      "revision": 1,
+      "status": "preparing",
+      "requested_at": "2026-11-13T20:25:46.346926+00:00",
+      "updated_at": "2026-11-13T20:25:46.346926+00:00",
+      "reexplain": false,
+      "rewrite_pending": false,
       "task": "explain",
       "auto_queued": false,
-      "request_source": "ttactualidad_direct_rework",
+      "request_source": "ttactualidad_editor_hints",
       "with_image": true,
       "disable_ai_image": false,
       "rewrite_with_image": true,
       "image_strategy": "ai_plus_fallback",
+      "image_choice": "none",
+      "image_pending": true,
       "fallback_image_status": "pending",
       "ai_image_status": "pending",
       "requested_together": [
         "Jorge Salvaje"
       ],
-      "originated_from_prior_id": "4cd369e90554",
-      "rewrite_instruction": "Investigación desde cero: verifica el contexto ACTUAL de Jorge Salvaje, eventos, marcador y fecha. Redacta texto y remate nuevos y consigue una nueva foto de archivo para esta revisión. No reutilices explicaciones ni imágenes de una versión ya publicada o cerrada.",
-      "explained_at": "2026-11-13T20:48:33+01:00",
-      "last_attempt_at": "2026-11-13T20:48:33+01:00",
-      "explanation": "TT#26 Jorge Salvaje aparece entre las tendencias junto a la conversación sobre la final de Supervivientes All Stars, pero no hay una fuente fiable que permita atribuir el término a una persona o episodio concreto.\n#SVFinal\n🌶️ El apellido está claro; el Jorge, no tanto.",
-      "closer_text": "🌶️ El apellido está claro; el Jorge, no tanto.",
-      "rank_at_explanation": 26,
-      "category": "Televisión",
-      "source": "editorial_chat_direct",
-      "editorial_engine": "chatgpt-automation-outbox",
-      "verification_sources": [
+      "rewrite_instruction": "INVESTIGACIÓN NUEVA DESDE CERO. Pistas de un editor SIN verificar:\\nBusca en x si no es por Jordi wild\\nContrasta cada dato, fecha, publicación y fuente con búsquedas independientes. Si no se verifica el detonante actual, deja el caso SIN EXPLICACIÓN VERIFICADA; nunca presentes las pistas como hechos. Si se verifica, escribe explicación factual completa y remate nuevo. No reutilices texto, remate ni imágenes de otra revisión.",
+      "user_pistas": [
         {
-          "url": "https://www.mediasetinfinity.es/programas-tv/supervivientes/"
-        },
-        {
-          "url": "https://fowtools.com/x-trends/spain"
+          "at": "2026-11-13T20:25:46.346926+00:00",
+          "source_revision": 0,
+          "text": "Busca en x si no es por Jordi wild",
+          "verification": "unverified_editor_context"
         }
       ],
-      "image_status": "pending",
-      "image_choice": "none",
-      "image_pending": true,
-      "telegram_package_status": "pending"
+      "investigation_history": [
+        {
+          "revision": 0,
+          "status": "explained",
+          "problem_reason": "",
+          "last_attempt_at": "2026-11-13T20:48:33+01:00"
+        }
+      ],
+      "hints_verification_status": "unverified"
     },
     {
       "id": "715515999e0e",
