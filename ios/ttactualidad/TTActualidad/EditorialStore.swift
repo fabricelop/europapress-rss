@@ -1689,6 +1689,17 @@ final class EditorialStore: ObservableObject {
         case .verified:
             // A successful direct receipt verification is sufficient proof to
             // persist the tombstone immediately, before any GitHub CDN reads.
+            if action.decision == "retire", project == "ttendencias" {
+                // A verified receipt hides just this pending episode.
+                // Do not mark the trend as published or remove it from Top30.
+                if !pendingTrendRetirements.contains(where: {
+                    $0.editorialID == id && $0.revision == revision
+                }) {
+                    pendingTrendRetirements.append(TrendPendingRetirement(
+                        editorialID: id, revision: revision,
+                        name: action.title, retiredAt: Date()))
+                }
+            }
             if ["deleted", "discard", "published"].contains(action.decision) {
                 markTerminal(project: project, id: id, revision: revision,
                              decision: action.decision == "discard" ? "dismissed" :
@@ -1775,6 +1786,13 @@ final class EditorialStore: ObservableObject {
                         activeEditorialActions.removeValue(forKey: key)
                     }
                 } else if !stillOriginal {
+                    activeEditorialActions.removeValue(forKey: key)
+                }
+            } else if action.decision == "retire" {
+                if pendingTrendRetirements.contains(where: {
+                    $0.editorialID == action.id &&
+                    $0.revision == action.revision
+                }) {
                     activeEditorialActions.removeValue(forKey: key)
                 }
             } else if action.decision == "deleted" {
@@ -1870,6 +1888,11 @@ final class EditorialStore: ObservableObject {
                     }
                 }
             } else {
+                if action.decision == "retire" {
+                    // Leave radar, Listas, editorial copy and images untouched.
+                    updated.unexplainedTrends.removeAll(where: sameTrend)
+                    continue
+                }
                 // A grouped original is not replaced by rework: the backend
                 // starts a NEW editorial ID, keeping the old text and the
                 // joint group until an independently reviewed result exists.
