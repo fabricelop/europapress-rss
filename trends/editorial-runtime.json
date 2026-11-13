@@ -7,15 +7,15 @@
   "previous_run_id": "tr-20261113T025500-chat-direct",
   "command_id": "tr-20261113T031000-chat-direct",
   "source": "chat_direct",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-13T03:10:00+01:00",
-  "updated_at": "2026-11-13T03:10:00+01:00",
+  "updated_at": "2026-11-13T03:11:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -257,17 +257,24 @@
       "status": "RUNNING",
       "phase": "preparing",
       "message": "Pasada manual iniciada desde ChatGPT; cola autoritativa inicial=0. Revalidando barrera final en main; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-13T03:11:00+01:00",
+      "run_id": "tr-20261113T031000-chat-direct",
+      "status": "DONE",
+      "phase": "closing",
+      "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 y mobile-decisions sin estados editoriales activos. Top 30 vigente capturado a las 03:01:22. Sin ImageGen ni publicaciones."
     }
   ],
-  "last_started_at": "2026-11-13T02:40:00+01:00",
-  "last_completed_at": "2026-11-13T02:43:34+01:00",
+  "last_started_at": "2026-11-13T03:10:00+01:00",
+  "last_completed_at": "2026-11-13T03:11:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261113T024000-chat-direct",
-    "status": "DONE_WITH_INCIDENTS",
-    "started_at": "2026-11-13T02:40:00+01:00",
-    "finished_at": "2026-11-13T02:43:34+01:00",
-    "at": "2026-11-13T02:43:34+01:00",
+    "run_id": "tr-20261113T031000-chat-direct",
+    "status": "DONE",
+    "started_at": "2026-11-13T03:10:00+01:00",
+    "finished_at": "2026-11-13T03:11:00+01:00",
+    "at": "2026-11-13T03:11:00+01:00",
     "phase": "closing",
     "summary": {
       "attempted": 0,
@@ -291,26 +298,18 @@
       "imagegen_calls": 0,
       "image_outbox_created": 0,
       "publications": 0,
-      "incidents": 1,
+      "incidents": 0,
       "concurrent_convergence": 0,
       "cause_unconfirmed": 0
     },
     "processed_ids": [],
     "converged_ids": [],
     "outcomes": [],
-    "incident_count": 1,
-    "incidents": [
-      {
-        "at": "2026-11-13T02:43:34+01:00",
-        "phase": "closing",
-        "trend_id": null,
-        "title": "Refresco manual #959",
-        "reason": "GitHub Actions run 43346742476 seguía in_progress en el paso checkout al cerrar; la cola autoritativa ya había sido refrescada a las 02:41:01 por el proceso periódico y permanecía vacía."
-      }
-    ],
-    "message": "Pasada TTendencias cerrada 0/0 con estado fresco de main: editorial-queue=0 (updated_at 2026-11-13T02:41:01+01:00), mobile-decisions y requests sin estados editoriales activos. El refresco manual GitHub Actions #959 quedó aún in_progress en checkout; se registra como incidencia no bloqueante porque el refresco periódico de Top 10 actualizó la cola durante la pasada. Sin ImageGen ni publicaciones."
+    "incident_count": 0,
+    "incidents": [],
+    "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 y mobile-decisions sin estados editoriales activos. Top 30 vigente capturado a las 03:01:22. Sin ImageGen ni publicaciones."
   },
-  "message": "Pasada TTendencias cerrada 0/0 con estado fresco de main: editorial-queue=0 (updated_at 2026-11-13T02:41:01+01:00), mobile-decisions y requests sin estados editoriales activos. El refresco manual GitHub Actions #959 quedó aún in_progress en checkout; se registra como incidencia no bloqueante porque el refresco periódico de Top 10 actualizó la cola durante la pasada. Sin ImageGen ni publicaciones.",
+  "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 y mobile-decisions sin estados editoriales activos. Top 30 vigente capturado a las 03:01:22. Sin ImageGen ni publicaciones.",
   "history": [
     {
       "run_id": "tr-1794340649326-manual",
@@ -5251,6 +5250,46 @@
         }
       ],
       "message": "Pasada TTendencias cerrada 0/0 con estado fresco de main: editorial-queue=0 (updated_at 2026-11-13T02:41:01+01:00), mobile-decisions y requests sin estados editoriales activos. El refresco manual GitHub Actions #959 quedó aún in_progress en checkout; se registra como incidencia no bloqueante porque el refresco periódico de Top 10 actualizó la cola durante la pasada. Sin ImageGen ni publicaciones."
+    },
+    {
+      "run_id": "tr-20261113T031000-chat-direct",
+      "status": "DONE",
+      "started_at": "2026-11-13T03:10:00+01:00",
+      "finished_at": "2026-11-13T03:11:00+01:00",
+      "at": "2026-11-13T03:11:00+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 0,
+        "observed": 0,
+        "closed": 0,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 0,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0,
+        "cause_unconfirmed": 0
+      },
+      "processed_ids": [],
+      "converged_ids": [],
+      "outcomes": [],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 y mobile-decisions sin estados editoriales activos. Top 30 vigente capturado a las 03:01:22. Sin ImageGen ni publicaciones."
     }
   ],
   "current_item": null,
@@ -8338,5 +8377,5 @@
   "processed": [],
   "maintenance_outbox_commit": "970b545c88b09429a23d15ec893b9d66fb611297",
   "editorial_apply_run_id": 43343524401,
-  "finished_at": null
+  "finished_at": "2026-11-13T03:11:00+01:00"
 }
