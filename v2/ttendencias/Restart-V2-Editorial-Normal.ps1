@@ -62,11 +62,30 @@ try {
     $all = Scan
     $owned = @(V2Tree $all)
     Log 'TT_V2_OWNED_PROCESSES_BEFORE_STOP' ([string]$owned.Count)
-    # Stop roots and their entire V2-owned process trees; no generic Chrome kill.
+    # Windows PowerShell 5.1: redirect taskkill stderr to files so a PID
+    # disappearing during shutdown does not terminate this script.
+    # Verify PID identity immediately before signalling it.
     $roots = @(V2Roots $all)
     foreach ($proc in $roots) {
-        if ($proc.ProcessId -eq $PID) { throw 'El script de reinicio es propietario de un proceso V2: abortar' }
-        & taskkill.exe /PID ([string]$proc.ProcessId) /T /F 2>$null | Out-Null
+        if ($proc.ProcessId -eq $PID) { throw 'No terminar el proceso del propio script' }
+        $current = @(Scan | Where-Object { $_.ProcessId -eq $proc.ProcessId })
+        if ($current.Count -eq 0) {
+            Log 'TT_V2_ALREADY_EXITED' ([string]$proc.ProcessId)
+            continue
+        }
+        $actualV2 = @(V2Roots $current)
+        if ($actualV2.Count -ne 1 -or [string]$current[0].CreationDate -ne [string]$proc.CreationDate) {
+            Log 'TT_V2_PID_CHANGED_SKIP' ([string]$proc.ProcessId)
+            continue
+        }
+        $stdout = Join-Path $root ('v2-stop-' + $proc.ProcessId + '.stdout.log')
+        $stderr = Join-Path $root ('v2-stop-' + $proc.ProcessId + '.stderr.log')
+        $killed = Start-Process -FilePath 'taskkill.exe' -ArgumentList @('/PID',([string]$proc.ProcessId),'/T','/F') -Wait -PassThru -WindowStyle Hidden -RedirectStandardOutput $stdout -RedirectStandardError $stderr
+        if ($killed.ExitCode -ne 0) {
+            # A nonzero exit is not a complete stop; only the final scan
+            # below decides whether restarting would be safe.
+            Log 'TT_V2_TASKKILL_NONZERO' (([string]$proc.ProcessId) + ':' + $killed.ExitCode)
+        }
     }
     Start-Sleep -Seconds 3
     $remaining = @(V2Tree (Scan))
