@@ -85,6 +85,8 @@ def main():
               "observed_at": datetime.now(timezone.utc).isoformat()}
     proc = None
     browser = None
+    owned_pids = set()
+    launched = False
     try:
         existing = matching_profile_pids()
         if existing:
@@ -100,6 +102,7 @@ def main():
             "--disable-extensions", "--no-first-run", "--no-default-browser-check",
             "--new-window", CHAT_URL
         ], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        launched = True
         endpoint = f"http://127.0.0.1:{port}"
         for _ in range(40):
             try:
@@ -109,6 +112,9 @@ def main():
                 time.sleep(1)
         else:
             raise RuntimeError("CDP no disponible")
+        owned_pids = set(matching_profile_pids())
+        if not owned_pids:
+            raise RuntimeError("No se pudo identificar el Chrome V2 lanzado; se aborta sin limpieza ajena")
         print("TT_V2_CDP_CONNECTED=YES", flush=True)
         with sync_playwright() as pw:
             browser = pw.chromium.connect_over_cdp(endpoint)
@@ -136,7 +142,7 @@ def main():
                     previous, stable = answer, 0
                 # La estabilidad NO basta: exigir control de acciones de respuesta
                 # terminada y ausencia de control de parada.
-                if answer and stable >= 3 and not stop and ready_control:
+                if answer and stable >= 3 and not stop and ready_control and len(answer) >= 80:
                     result["answer"] = answer
                     result["reply_captured"] = True
                     result["status"] = "captured_needs_editorial_validation"
@@ -147,6 +153,8 @@ def main():
             result["dom"] = snapshot(page)
             if not result["reply_captured"]:
                 result["status"] = "not_verified"
+                result["last_visible_answer"] = previous[:12000]
+                result["last_selector"] = selector
             print("TT_V2_REPLY_CAPTURED=" + ("YES" if result["reply_captured"] else "NO"), flush=True)
             print("TT_V2_REPLY_STATUS=" + result["status"], flush=True)
             if result["reply_captured"]:
@@ -174,12 +182,19 @@ def main():
                 pass
         try:
             remaining = matching_profile_pids()
-            for pid in remaining:
+            # NO terminar procesos anteriores a la ejecución ni desconocidos.
+            # Si no se confirmó propiedad, solamente registrar la incidencia.
+            targets = sorted(set(remaining) & owned_pids)
+            for pid in targets:
                 subprocess.run(["taskkill", "/PID", str(pid), "/F"],
                                capture_output=True, timeout=15)
-            time.sleep(2)
+            if targets:
+                time.sleep(2)
             remaining = matching_profile_pids()
             result["remaining_v2_pids"] = remaining
+            result["cleanup_verified"] = not remaining and launched
+            if remaining:
+                result["cleanup_warning"] = "Quedan procesos V2; no se terminan procesos no identificados como propios"
             print("TT_V2_REMAINING_PROCESSES=" + str(len(remaining)), flush=True)
         except Exception as exc:
             result["cleanup_error"] = str(exc)[:500]
