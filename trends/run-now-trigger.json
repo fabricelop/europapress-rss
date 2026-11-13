@@ -1,11 +1,23 @@
 {
   "version": 2,
-  "command_id": "tr-1794610232983-manual",
-  "requested_at": "2026-11-13T22:50:32.983Z",
+  "command_id": "tr-autoguard-1794611472",
+  "requested_at": "2026-11-13T23:11:12.166359Z",
   "mode": "manual_pc_chat",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
   "launcher_arg": "tendencias",
   "task": "editorial",
-  "auto_image_followup": false
+  "auto_image_followup": false,
+  "source": "tt_autoheal_editorial_watchdog",
+  "reason": "editorial_not_started_in_time",
+  "pending_ids": [
+    "3a22a8c57c62",
+    "456ebcfdd8f1",
+    "2dc763da3e69",
+    "86a31f1f188d"
+  ],
+  "target_id": "2dc763da3e69",
+  "target_revision": 0,
+  "target_name": "El del PP",
+  "scope": "single_item"
 }
