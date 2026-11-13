@@ -7,23 +7,23 @@
   "previous_run_id": "tr-20261113T1055-chat-direct",
   "command_id": "tr-20261113T111000-chat-direct",
   "source": "chat_direct",
-  "status": "RUNNING",
+  "status": "waiting",
   "phase": "preparing",
   "started_at": "2026-11-13T11:10:30+01:00",
-  "updated_at": "2026-11-13T11:10:30+01:00",
+  "updated_at": "2026-11-13T11:18:36+01:00",
   "current": 0,
   "total": 2,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
   "queue_complete": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "c7bac46904be"
+  ],
   "converged_ids": [],
   "remaining_ids": [
-    "red-review-0d0092fbb32ed2b11c3e",
     "red-review-42d2af8ed4e24f5e4623"
   ],
   "remaining_active_ids": [
-    "red-review-0d0092fbb32ed2b11c3e",
     "red-review-42d2af8ed4e24f5e4623"
   ],
   "remaining_problematic_ids": [],
@@ -495,7 +495,7 @@
       "message": "Pasada manual iniciada desde ChatGPT; cola autoritativa inicial=2 (updated_at 2026-11-13T11:10:50+01:00). Revalidando barrera final en main; sin ImageGen ni publicación."
     }
   ],
-  "last_started_at": "2026-11-13T11:10:01+01:00",
+  "last_started_at": "2026-11-13T11:18:36+01:00",
   "last_completed_at": "2026-11-13T11:10:02+01:00",
   "api_failover_enabled": false,
   "last_run": {
