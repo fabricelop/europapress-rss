@@ -6,7 +6,7 @@ Este proyecto monta una COPIA de la PWA real `docs/v2/` de `main` en un Cloudfla
 - Sin secretos en GitHub ni navegador: `AUTH_PASSWORD` (al menos 16 caracteres) y `SESSION_SECRET` (32 o más caracteres aleatorios) son **Cloudflare Worker Secrets**.
 - Cookies firmadas HMAC, HttpOnly + Secure + SameSite=Strict, expiran en 12 horas. Cerrar sesión invalida la cookie de ese navegador; rotar `SESSION_SECRET` invalida todas.
 - `assets.run_worker_first=true`: cada acceso a HTML, JS, CSS, iconos y API se autentica; las peticiones sin cookie no reciben archivos.
-- El código no usa KV, D1 ni R2 para login; no necesita cron y no añade consumo de almacenamiento. Se carga la página y se consulta el Top30 mediante un proxy autenticado.
+- El código no usa KV, D1 ni R2 para login; no necesita cron ni añade consumo de almacenamiento. Se carga la página y se consulta el Top30 mediante un proxy autenticado.\n- Login: binding Cloudflare Rate Limiting `LOGIN_LIMITER`, aprox. 5 intentos por minuto y dirección de red dentro de cada ubicación (no es un bloqueo global estricto). No requiere escrituras KV.
 - Las acciones editoriales están bloqueadas deliberadamente hasta habilitar un endpoint seguro y comprobar el flujo E.
 - **Limitación temporal de privacidad:** el snapshot de Top30 original aún existe en el repositorio GitHub público, y la página anterior de GitHub Pages sigue pública. Esta primera fase protege la COPIA de Cloudflare, NO hace confidencial el origen. Para privacidad integral, trasladar también los datos a almacenamiento privado y retirar el sitio público.
 
@@ -26,6 +26,6 @@ El Worker Free tiene 100.000 invocaciones/día en el conjunto de la cuenta y 10 
 - Entregar la imagen de Jordi Wild desde un recurso privado, no el URL GitHub directo.
 - Reemplazar el botón R de marca roja por botón separado E; E enviará revisión autenticada y hará CAS sobre el estado, sin sobrescribir chats activos.
 - Sustituir repositorio público como origen del Top 30 y retirar la web pública, sin afectar V1.
-- Configurar un mecanismo efectivo de limitación de intentos en Cloudflare antes de ofrecer una contraseña corta o reutilizada.
+- Mantener una contraseña larga, única y aleatoria; el limitador de Cloudflare no sustituye la fortaleza de la clave.
 
 No activar pagos ni vincular despliegue automático sin autorización explícita.
