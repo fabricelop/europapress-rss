@@ -7,15 +7,15 @@
   "previous_run_id": "tr-20261114T062500-chat-direct",
   "command_id": "tr-20261114T105400-chat-direct",
   "source": "chat_direct",
-  "status": "DONE",
-  "phase": "closing",
+  "status": "RUNNING",
+  "phase": "maintenance_review",
   "started_at": "2026-11-14T10:54:00+01:00",
-  "updated_at": "2026-11-14T11:00:00+01:00",
+  "updated_at": "2026-11-14T11:03:28+01:00",
   "current": 4,
-  "total": 4,
+  "total": 6,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [
     "7c236b3d8b56",
     "ccc33f06ab22",
@@ -23,12 +23,18 @@
     "a27f2f3186b0"
   ],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-1a52b7baf5ba425336b0",
+    "red-review-3ba426c1c8a2d6f1dd7a"
+  ],
+  "remaining_active_ids": [
+    "red-review-1a52b7baf5ba425336b0",
+    "red-review-3ba426c1c8a2d6f1dd7a"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 4,
-    "observed": 4,
+    "observed": 6,
     "closed": 4,
     "explained": 3,
     "problematic": 0,
@@ -43,7 +49,7 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -494,6 +500,13 @@
       "status": "DONE",
       "phase": "closing",
       "message": "Pasada TTendencias completada 4/4: #FelizSábado, Lc 18 y Teresa explicadas; #PSOEyFrenteAmplioVetan cerrado como reentrada sin episodio material distinto. Barrera final editorial-queue=0 y mobile-decisions activos=0. ImageGen=0; publicaciones=0; incidentes=0."
+    },
+    {
+      "at": "2026-11-14T11:03:28+01:00",
+      "run_id": "tr-20261114T105400-chat-direct",
+      "status": "RUNNING",
+      "phase": "maintenance_review",
+      "message": "Barrera posterior detectó 2 revisiones rojas nuevas: Widilo y Feijoo. Se amplía la misma ejecución; sin ImageGen ni publicación."
     }
   ],
   "last_started_at": "2026-11-14T10:59:53+01:00",
@@ -9176,6 +9189,6 @@
   ],
   "maintenance_apply_run_id": 43502827908,
   "maintenance_apply_commit": "e04624377a4fadb3646363f83ba4828cfc9d61f6",
-  "finished_at": "2026-11-14T11:00:00+01:00",
+  "finished_at": null,
   "completed_at": "2026-11-14T11:00:00+01:00"
 }
