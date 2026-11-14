@@ -21,3 +21,17 @@
 @keyframes turn-refresh{to{transform:rotate(360deg)}}
 @media(max-width:450px){.trend-head{padding-right:48px;gap:8px}.explained-at{font-size:11px}.red-toggle{top:11px;right:9px;width:28px;height:28px}.refresh-control{width:42px;height:42px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom))}}
 @media(prefers-reduced-motion:reduce){.refresh-control.loading-refresh{animation:none}}
+
+/* Top 30 privado: fecha y hora visibles por tendencia y variación real de posición. */
+.title-details{display:flex;flex:1;min-width:0;flex-direction:column;gap:3px}
+.title-details .name{font-size:inherit;display:block;min-width:0}
+.title-details .entered-top30{color:#8797aa;font-size:11px;font-variant-numeric:tabular-nums;line-height:1.25}
+.title-details .explained-at{display:block;color:#b7c2d2;font-size:11px;line-height:1.25;white-space:normal}
+.movement-indicator{flex:none;align-self:center;white-space:nowrap;padding:5px 7px;border-radius:7px;font-size:12px;line-height:1;font-weight:800;font-variant-numeric:tabular-nums}
+.movement-indicator.up{background:#103c2d;color:#70e3ad}
+.movement-indicator.down{background:#4c2029;color:#ff9da3}
+.movement-indicator.same{background:#252b35;color:#acb5c1}
+.movement-indicator.entry{background:#1a3050;color:#a6c9ff;font-size:11px}
+.movement-indicator.unknown{background:#242832;color:#949dab}
+.trend.marked-red .title-details .entered-top30,.trend.marked-red .title-details .explained-at{color:#ffccd1}
+@media(max-width:450px){.movement-indicator{font-size:11px;padding:4px 5px}.title-details .entered-top30,.title-details .explained-at{font-size:10px}}
