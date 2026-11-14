@@ -7,44 +7,41 @@
   "previous_run_id": "tr-20261114T151000-chat-direct",
   "command_id": "tr-20261114T152500-chat-direct",
   "source": "chat_direct",
-  "status": "RUNNING",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-14T15:25:00+01:00",
   "updated_at": "2026-11-14T15:30:00+01:00",
-  "current": 0,
+  "current": 2,
   "total": 2,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": false,
-  "processed_ids": [],
+  "queue_complete": true,
+  "processed_ids": [
+    "red-review-f1d54e870e0b088fd921",
+    "red-review-6b86b17ba53670f185c0"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "red-review-f1d54e870e0b088fd921",
-    "red-review-6b86b17ba53670f185c0"
-  ],
-  "remaining_active_ids": [
-    "red-review-f1d54e870e0b088fd921",
-    "red-review-6b86b17ba53670f185c0"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 2,
     "observed": 2,
-    "closed": 0,
+    "closed": 2,
     "explained": 0,
     "problematic": 0,
-    "updates": 0,
-    "review_completed_no_distinct_event": 0,
+    "updates": 1,
+    "review_completed_no_distinct_event": 2,
     "maintenance_reviews": 2,
-    "unchanged_reviews": 0,
-    "continuity_updates": 0,
+    "unchanged_reviews": 1,
+    "continuity_updates": 1,
     "distinct_updates": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -52,7 +49,24 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "red-review-f1d54e870e0b088fd921",
+      "revision": 0,
+      "name": "Revisar novedades: Marcial Dorado",
+      "outcome": "updated_continuity",
+      "applied": true,
+      "source_id": "c62c0b344a57"
+    },
+    {
+      "id": "red-review-6b86b17ba53670f185c0",
+      "revision": 0,
+      "name": "Revisar novedades: #PSOEyFrenteAmplioVetan",
+      "outcome": "unchanged",
+      "applied": true,
+      "source_id": "b8593c0a3afe"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -507,17 +521,24 @@
     }
   ],
   "last_started_at": "2026-11-14T15:25:00+01:00",
-  "last_completed_at": "2026-11-14T15:16:00+01:00",
+  "last_completed_at": "2026-11-14T15:30:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261114T151000-chat-direct",
+    "run_id": "tr-20261114T152500-chat-direct",
     "status": "DONE",
-    "finished_at": "2026-11-14T15:16:00+01:00",
-    "current": 4,
-    "total": 4,
-    "queue_complete": true
+    "started_at": "2026-11-14T15:25:00+01:00",
+    "finished_at": "2026-11-14T15:30:00+01:00",
+    "attempted": 2,
+    "closed": 2,
+    "maintenance_reviews": 2,
+    "unchanged_reviews": 1,
+    "continuity_updates": 1,
+    "queue_remaining": 0,
+    "imagegen_calls": 0,
+    "publications": 0,
+    "incidents": 0
   },
-  "message": "Persistiendo 2 revisiones de mantenimiento tras revalidación JIT: Marcial Dorado (continuidad actualizada) y #PSOEyFrenteAmplioVetan (sin novedades sustanciales).",
+  "message": "Pasada TTendencias completada 2/2: Marcial Dorado actualizado como continuidad del mismo episodio; #PSOEyFrenteAmplioVetan sin novedades sustanciales. Barrera final: cola=0 y decisiones editoriales activas=0. Sin ImageGen ni publicación.",
   "history": [
     {
       "run_id": "tr-1794361941170-manual",
@@ -5391,12 +5412,12 @@
   ],
   "current_item": null,
   "withdrawn_ids": [],
-  "last_finished_at": "2026-11-14T12:57:02+01:00",
-  "last_revalidated_at": "2026-11-14T15:25:00+01:00",
+  "last_finished_at": "2026-11-14T15:30:00+01:00",
+  "last_revalidated_at": "2026-11-14T15:30:00+01:00",
   "last_revalidation": {
-    "queue_count": 2,
-    "active_count": 2,
-    "at": "2026-11-14T15:25:00+01:00"
+    "queue_count": 0,
+    "active_count": 0,
+    "at": "2026-11-14T15:30:00+01:00"
   },
   "prior_runtime_observed": {
     "run_id": "tr-autoguard-1794381666",
@@ -9375,27 +9396,30 @@
       "at": "2026-11-14T15:30:00+01:00",
       "phase": "persisting",
       "message": "Persistiendo 2 revisiones de mantenimiento tras revalidación JIT: Marcial Dorado (continuidad actualizada) y #PSOEyFrenteAmplioVetan (sin novedades sustanciales)."
+    },
+    {
+      "at": "2026-11-14T15:30:00+01:00",
+      "phase": "verifying",
+      "message": "Aplicador oficial 43605043710 success; commit 597799b; ambos trabajos retirados de la cola."
+    },
+    {
+      "at": "2026-11-14T15:30:00+01:00",
+      "phase": "closing",
+      "message": "Barrera final revalidada: editorial-queue=0; mobile-decisions activos=0; 2/2 cerrados. ImageGen=0; publicaciones=0."
     }
   ],
   "processed": [
-    "red-review-89131aa94658e10a26da",
-    "red-review-97c4f94c705cb83a6f9d",
-    "red-review-38d12a6c09ae041727e7",
-    "aa6b1b152ea6",
-    "f893f7342d01",
-    "6728fbf70710",
-    "e8ba9370a79c",
-    "019f7a9bc80d",
-    "715515999e0e"
+    "red-review-f1d54e870e0b088fd921",
+    "red-review-6b86b17ba53670f185c0"
   ],
-  "maintenance_outbox_commit": "c764cbdfc37ba7b67fedd38a16837ee068ae9467",
+  "maintenance_outbox_commit": "c40ef7c7688d137adf9c59ec1fb4f551c0d1975c",
   "editorial_apply_run_id": 43477991983,
   "maintenance_outbox_commits": [
-    "513192a72fbfd324769794ece35c1990aaee7c6e",
-    "e0c34acf0a5d3d705d4b19194d474b9c0e15e6c0"
+    "87f044c1d60fccb4187d9b2490720860e8f8249d",
+    "c40ef7c7688d137adf9c59ec1fb4f551c0d1975c"
   ],
-  "maintenance_apply_run_id": 43591648599,
-  "maintenance_apply_commit": "546b8bc0d973aea944724c441f17b8ffa3cdb53d",
-  "finished_at": null,
-  "completed_at": null
+  "maintenance_apply_run_id": 43605043710,
+  "maintenance_apply_commit": "597799b97993606dd510591c591664283854101e",
+  "finished_at": "2026-11-14T15:30:00+01:00",
+  "completed_at": "2026-11-14T15:30:00+01:00"
 }
