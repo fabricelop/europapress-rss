@@ -3,178 +3,61 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261113T234000-chat-direct",
-  "previous_run_id": "tr-20261113T212500-chat-direct",
-  "command_id": "tr-20261113T234000-chat-direct",
+  "run_id": "tr-20261114T035500-chat-direct",
+  "previous_run_id": "tr-20261113T234000-chat-direct",
+  "command_id": "tr-20261114T035500-chat-direct",
   "source": "chat_direct",
-  "status": "waiting",
-  "phase": "closing",
-  "started_at": "2026-11-13T23:40:00+01:00",
-  "updated_at": "2026-11-14T01:04:07+01:00",
-  "current": 16,
-  "total": 16,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-14T03:55:00+01:00",
+  "updated_at": "2026-11-14T03:55:00+01:00",
+  "current": 0,
+  "total": 9,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
   "queue_complete": false,
-  "processed_ids": [
-    "3a22a8c57c62"
-  ],
+  "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [
     "86a31f1f188d",
     "5ccfacd3e4b2",
     "2c8ace5a3074",
     "c51a3aa0c0e4",
-    "cdaa9045b822"
+    "cdaa9045b822",
+    "5a28fa1fccb6",
+    "8b006bddf692",
+    "0f9f984a750e",
+    "97b0810372fa"
   ],
   "remaining_active_ids": [
     "86a31f1f188d",
     "5ccfacd3e4b2",
     "2c8ace5a3074",
     "c51a3aa0c0e4",
-    "cdaa9045b822"
+    "cdaa9045b822",
+    "5a28fa1fccb6",
+    "8b006bddf692",
+    "0f9f984a750e",
+    "97b0810372fa"
   ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 16,
-    "observed": 16,
-    "closed": 16,
-    "explained": 12,
-    "problematic": 2,
-    "updates": 1,
+    "attempted": 9,
+    "observed": 9,
+    "closed": 0,
+    "explained": 0,
+    "problematic": 0,
+    "updates": 0,
     "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 2,
-    "unchanged_reviews": 1,
-    "continuity_updates": 1,
-    "distinct_updates": 3,
-    "stale_reviews": 0,
-    "unverified_reviews": 2,
-    "anticipation_reviews": 0,
-    "anticipation_prepared": 0,
-    "anticipation_unverified": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 9,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0,
-    "cause_unconfirmed": 2
+    "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "1d5814995248",
-      "revision": 1,
-      "name": "Isaac",
-      "outcome": "problematic",
-      "applied": true
-    },
-    {
-      "id": "manual-c550af7b734565e1d4042fae0ba8d74f",
-      "revision": 1,
-      "name": "Miente",
-      "outcome": "problematic",
-      "applied": true
-    },
-    {
-      "id": "3f3a1383fa90",
-      "revision": 0,
-      "name": "#LaSextaDebate",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "a1caaebc2161",
-      "revision": 0,
-      "name": "Figaredo",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "2030fcc48d35",
-      "revision": 0,
-      "name": "Juan Bravo",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "7122a440e159",
-      "revision": 0,
-      "name": "Justin Robinson",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "627119e08741",
-      "revision": 0,
-      "name": "Carlos Cuerpo",
-      "outcome": "explained_distinct_event",
-      "applied": true
-    },
-    {
-      "id": "f2062a75e5d6",
-      "revision": 0,
-      "name": "Frigodedo",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "a10eb74fed88",
-      "revision": 0,
-      "name": "Bustinduy",
-      "outcome": "explained_distinct_event",
-      "applied": true
-    },
-    {
-      "id": "fdc484cca6f9",
-      "revision": 0,
-      "name": "OAKA",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "1a3d472187ac",
-      "revision": 0,
-      "name": "La FAA",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "c14acdc5dbda",
-      "revision": 0,
-      "name": "Ana Pastor",
-      "outcome": "explained_distinct_event",
-      "applied": true
-    },
-    {
-      "id": "1134c775eb8c",
-      "revision": 0,
-      "name": "Nebo",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "ae38b5339403",
-      "revision": 0,
-      "name": "Grecia",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "red-review-ca673710a7f700743186",
-      "revision": 0,
-      "name": "Revisar novedades: #SVFinal",
-      "outcome": "continuity_updated",
-      "applied": true
-    },
-    {
-      "id": "red-review-c4838b47cade0c9cfe7b",
-      "revision": 0,
-      "name": "Revisar novedades: Marlaska",
-      "outcome": "unchanged",
-      "applied": true
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -923,6 +806,13 @@
       "status": "DONE",
       "phase": "closing",
       "message": "Pasada TTendencias completada 16/16: 12 explicaciones aplicadas, Isaac y Miente marcados problematic por falta de detonante verificable, #SVFinal actualizado en continuidad con el resultado de la final y Marlaska cerrado unchanged. Barrera final editorial-queue=0. ImageGen=0; image-outbox editorial=0; publicaciones=0; incidentes=0."
+    },
+    {
+      "at": "2026-11-14T03:55:00+01:00",
+      "run_id": "tr-20261114T035500-chat-direct",
+      "status": "RUNNING",
+      "phase": "preparing",
+      "message": "Pasada manual iniciada desde ChatGPT con cola autoritativa inicial=9; investigación JIT de antiguas a recientes. Sin ImageGen ni publicación."
     }
   ],
   "last_started_at": "2026-11-14T01:04:07+01:00",
