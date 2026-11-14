@@ -1,18 +1,19 @@
 {
   "version": 1,
-  "checked_at": "2026-11-14T13:04:12.258298+00:00",
+  "checked_at": "2026-11-14T13:17:10.689702+00:00",
   "projects": {
     "ttittulares": {
       "project": "ttittulares",
-      "checked_at": "2026-11-14T13:04:12.258298+00:00",
-      "pending_count": 6,
+      "checked_at": "2026-11-14T13:17:10.689702+00:00",
+      "pending_count": 7,
       "pending_ids": [
         "69bb1c52ee2d",
         "331686e6ad13",
         "2e633c36a1b6",
         "d64438ee166f",
         "5c18da5c8485",
-        "d803b9139072"
+        "d803b9139072",
+        "ffebafb957e3"
       ],
       "oldest_at": "2026-11-14T11:04:08.729669Z",
       "latest_run": {
@@ -23,8 +24,8 @@
         "finished_at": "2026-11-14T10:54:45Z",
         "source": "github_pr_trace"
       },
-      "control_command": "tt-autoguard-1794661133",
-      "last_command_at": "2026-11-14T12:58:53.450879Z",
+      "control_command": "tt-urgent-1794662190689",
+      "last_command_at": "2026-11-14T13:16:30.689Z",
       "status": "dispatch_pending_ack",
       "should_dispatch": false,
       "item_execution": [
@@ -69,17 +70,24 @@
           "should_start_by": "2026-11-14T12:25:56.115553+00:00",
           "global_run_after_entry": false,
           "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "ffebafb957e3",
+          "entered_at": "2026-11-14T13:13:39.362322Z",
+          "should_start_by": "2026-11-14T13:18:39.362322+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
         }
       ],
-      "backlog_signature": "abdc0cdc37f65754",
+      "backlog_signature": "29704395e370bfa5",
       "expected_start_by": "2026-11-14T11:09:08.729669+00:00",
-      "attempts": 2,
+      "attempts": 0,
       "previous_target_completed_or_superseded": false,
       "last_request_at": "2026-11-14T12:58:53.450879+00:00"
     },
     "ttendencias": {
       "project": "ttendencias",
-      "checked_at": "2026-11-14T13:04:12.258298+00:00",
+      "checked_at": "2026-11-14T13:17:10.689702+00:00",
       "pending_count": 3,
       "pending_ids": [
         "1e250ecf49df",
@@ -95,8 +103,8 @@
         "finished_at": "2026-11-14T12:57:02+01:00",
         "source": "editorial_runtime"
       },
-      "control_command": "tr-1794661253747-manual",
-      "last_command_at": "2026-11-14T13:00:53.747Z",
+      "control_command": "tr-recover-20261114T131554Z",
+      "last_command_at": "2026-11-14T13:15:54Z",
       "status": "dispatch_pending_ack",
       "should_dispatch": false,
       "item_execution": [
