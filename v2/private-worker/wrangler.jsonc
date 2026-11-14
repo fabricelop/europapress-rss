@@ -12,5 +12,15 @@
   "vars": {
     "SESSION_HOURS": "12",
     "REELABORATION_ENABLED": "NO"
-  }
+  },
+  "ratelimits": [
+    {
+      "name": "LOGIN_LIMITER",
+      "namespace_id": "2611149301",
+      "simple": {
+        "limit": 5,
+        "period": 60
+      }
+    }
+  ]
 }
