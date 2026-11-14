@@ -7,51 +7,83 @@
   "previous_run_id": "tr-20261114T191000-chat-direct",
   "command_id": "tr-20261114T193600-chat-direct",
   "source": "chat_direct",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-14T19:36:00+01:00",
-  "updated_at": "2026-11-14T19:36:00+01:00",
-  "current": 0,
-  "total": 2,
+  "updated_at": "2026-11-14T19:41:27+01:00",
+  "current": 4,
+  "total": 4,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": false,
-  "processed_ids": [],
+  "queue_complete": true,
+  "processed_ids": [
+    "red-review-70f1a7eea919bc290e68",
+    "red-review-f3bb0412b1008eea5e54",
+    "red-review-b4eed0091d6997ae1a10",
+    "red-review-9db7f418c5ddf75651a5"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "red-review-70f1a7eea919bc290e68",
-    "red-review-f3bb0412b1008eea5e54"
-  ],
-  "remaining_active_ids": [
-    "red-review-70f1a7eea919bc290e68",
-    "red-review-f3bb0412b1008eea5e54"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 2,
-    "closed": 0,
+    "attempted": 4,
+    "observed": 4,
+    "closed": 4,
     "explained": 0,
     "problematic": 0,
-    "updates": 0,
+    "updates": 3,
     "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 0,
-    "unchanged_reviews": 0,
-    "continuity_updates": 0,
+    "maintenance_reviews": 4,
+    "unchanged_reviews": 1,
+    "continuity_updates": 3,
     "distinct_updates": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "red-review-70f1a7eea919bc290e68",
+      "revision": 0,
+      "name": "Revisar novedades: Begoña",
+      "outcome": "unchanged",
+      "applied": true,
+      "apply_commit": "3c5ca82dc22c0050647eab410d6ec2cec5d20b20"
+    },
+    {
+      "id": "red-review-f3bb0412b1008eea5e54",
+      "revision": 0,
+      "name": "Revisar novedades: #PSOEyFrenteAmplioVetan",
+      "outcome": "continuity",
+      "applied": true,
+      "apply_commit": "3c5ca82dc22c0050647eab410d6ec2cec5d20b20"
+    },
+    {
+      "id": "red-review-b4eed0091d6997ae1a10",
+      "revision": 0,
+      "name": "Revisar novedades: Marcial Dorado",
+      "outcome": "continuity",
+      "applied": true,
+      "apply_commit": "94956eb88764d27a4cf46644a080fedbea5bf250"
+    },
+    {
+      "id": "red-review-9db7f418c5ddf75651a5",
+      "revision": 0,
+      "name": "Revisar novedades: #PazCasaTrabajo29N",
+      "outcome": "continuity",
+      "applied": true,
+      "apply_commit": "94956eb88764d27a4cf46644a080fedbea5bf250"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -619,6 +651,13 @@
       "status": "RUNNING",
       "phase": "preparing",
       "message": "Pasada manual iniciada desde ChatGPT; cola autoritativa inicial=2 revisiones rojas (Begoña y #PSOEyFrenteAmplioVetan). Revalidación JIT e investigación de novedades sustanciales; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-14T19:41:27+01:00",
+      "run_id": "tr-20261114T193600-chat-direct",
+      "status": "DONE",
+      "phase": "closing",
+      "message": "Pasada TTendencias completada 4/4 revisiones rojas: Begoña sin cambios; #PSOEyFrenteAmplioVetan, Marcial Dorado y #PazCasaTrabajo29N actualizadas como continuidad. Barrera final editorial-queue=0, Top 30 fresco capturado a las 19:31:57 y mobile-decisions sin estados editoriales activos. ImageGen=0; publicaciones=0; incidentes=0."
     }
   ],
   "last_started_at": "2026-11-14T19:14:21+01:00",
@@ -9584,5 +9623,6 @@
   "maintenance_apply_run_id": 43614430012,
   "maintenance_apply_commit": "074b3f7e87b6260fde12e02ec813bdd56b8cc218",
   "completed_at": "2026-11-14T17:42:00+01:00",
-  "input_commit": "0c7e18479768676fa11a998fd66efc8d3b43f687"
+  "input_commit": "0c7e18479768676fa11a998fd66efc8d3b43f687",
+  "finished_at": "2026-11-14T19:41:27+01:00"
 }
