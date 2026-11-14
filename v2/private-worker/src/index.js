@@ -165,11 +165,10 @@ export default {
     }
     if (url.pathname === "/pilot/jordi-wild.webp") {
       if (request.method !== "GET") return json({error:"method_not_allowed"},405);
-      const upstream=await fetch("https://raw.githubusercontent.com/fabricelop/europapress-rss/feature/v2-tuit-radar-reevaluacion-piloto-20261114/v2/ttendencias/site/images/jordi-wild-r1-pilot-thumb.webp",{cf:{cacheTtl:3600,cacheEverything:true}});
-      if (!upstream.ok) return json({error:"image_unavailable"},502);
-      const data=await upstream.arrayBuffer();
-      if(data.byteLength>500000) return json({error:"image_too_large"},502);
-      return new Response(data,{headers:headers({"Content-Type":"image/webp"})});
+      const asset=await env.ASSETS.fetch(request);
+      if(!asset.ok) return json({error:"pilot_image_missing"},404);
+      const h=new Headers(headers({"Content-Type":"image/webp"}));
+      return new Response(asset.body,{status:asset.status,headers:h});
     }
     if (url.pathname.startsWith("/api/")) return json({error:"action_not_enabled"},503);
     if (request.method !== "GET" && request.method !== "HEAD") return json({error:"method_not_allowed"},405);
