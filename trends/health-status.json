@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-14T11:30:08.608827+00:00",
+  "checked_at": "2026-11-14T12:00:28.935189+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -42,9 +42,10 @@
     "top10": {
       "ok": false,
       "count": 10,
-      "non_stale_sources": 4,
+      "non_stale_sources": 5,
       "verified_fresh_sources": [
-        "xtrendsiamrohit"
+        "xtrendsiamrohit",
+        "playersells"
       ],
       "live_verified": false,
       "captured_age_minutes": 0.2,
@@ -59,8 +60,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 4.0,
-      "run_id": 43590000681,
+      "age_minutes": 4.2,
+      "run_id": 43592352758,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -72,7 +73,7 @@
     },
     "request_queue": {
       "ok": false,
-      "invalid_count": 873,
+      "invalid_count": 879,
       "noise_count": 0
     },
     "ready_consistency": {
@@ -81,45 +82,19 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": false,
-      "pending_count": 6,
-      "overdue_count": 3,
-      "oldest_age_minutes": 79.0,
+      "ok": true,
+      "pending_count": 0,
+      "overdue_count": 0,
+      "oldest_age_minutes": 0,
       "warning_after_minutes": 30,
-      "overdue_items": [
-        {
-          "id": "bad47f0232c5",
-          "name": "#PazCasaTrabajo29N",
-          "status": "preparing",
-          "age_minutes": 79.0
-        },
-        {
-          "id": "86b2f018766f",
-          "name": "Año 2026",
-          "status": "preparing",
-          "age_minutes": 79.0
-        },
-        {
-          "id": "9bddd4111803",
-          "name": "día de partido",
-          "status": "preparing",
-          "age_minutes": 79.0
-        }
-      ],
+      "overdue_items": [],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": false,
-      "status": "overdue",
-      "queue_complete": false,
-      "remaining_active_ids": [
-        "bad47f0232c5",
-        "86b2f018766f",
-        "9bddd4111803",
-        "14d8f9069bdb",
-        "b78d0dbb6a47",
-        "d3e97077e377"
-      ],
+      "ok": true,
+      "status": "not-required",
+      "queue_complete": true,
+      "remaining_active_ids": [],
       "contradictory_success": false
     },
     "telegram_provisional": {
@@ -131,10 +106,9 @@
   "repairs_started": [],
   "blocking": [
     "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos",
-    "cola con 873 estado(s) inválido(s)",
-    "cola de explicaciones retrasada: 3 pendiente(s) superan 30 min; más antigua 79.0 min"
+    "cola con 879 estado(s) inválido(s)"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 873 estado(s) inválido(s) | cola de explicaciones retrasada: 3 pendiente(s) superan 30 min; más antigua 79.0 min"
+  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 879 estado(s) inválido(s)"
 }
