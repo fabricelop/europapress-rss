@@ -71,3 +71,11 @@ test("the backend does not accept unauthorized POST actions",async()=>{
  const response=await worker.fetch(req("/api/reelaborar",{method:"POST",headers:{"origin":origin,"x-ttv2-action":"1"}}),env);
  assert.equal(response.status,401);
 });
+
+test("Cloudflare login rate limit fails closed at threshold",async()=>{
+ const guarded={...env,LOGIN_LIMITER:{limit:async()=>({success:false})}};
+ const blocked=await worker.fetch(loginBody(env.AUTH_PASSWORD),guarded);
+ assert.equal(blocked.status,429);
+ assert.equal(blocked.headers.get("retry-after"),"60");
+ assert.equal(blocked.headers.get("set-cookie"),null);
+});
