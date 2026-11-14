@@ -3,45 +3,39 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261114T035500-chat-direct",
-  "previous_run_id": "tr-20261113T234000-chat-direct",
-  "command_id": "tr-20261114T035500-chat-direct",
+  "run_id": "tr-20261114T042500-chat-direct",
+  "previous_run_id": "tr-20261114T035500-chat-direct",
+  "command_id": "tr-20261114T042500-chat-direct",
   "source": "chat_direct",
-  "status": "success",
-  "phase": "closing",
-  "started_at": "2026-11-14T03:55:00+01:00",
-  "updated_at": "2026-11-14T04:13:28+01:00",
-  "current": 9,
-  "total": 9,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-14T04:25:00+01:00",
+  "updated_at": "2026-11-14T04:25:00+01:00",
+  "current": 0,
+  "total": 2,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": true,
-  "processed_ids": [
-    "e529dcefe413"
+  "queue_complete": false,
+  "processed_ids": [],
+  "converged_ids": [],
+  "remaining_ids": [
+    "red-review-c2ca4290946e6f4a3e20",
+    "red-review-cf018056e5f3399f5e4c"
   ],
-  "converged_ids": [
-    "86a31f1f188d",
-    "5ccfacd3e4b2",
-    "2c8ace5a3074",
-    "c51a3aa0c0e4",
-    "cdaa9045b822",
-    "5a28fa1fccb6",
-    "8b006bddf692",
-    "0f9f984a750e",
-    "97b0810372fa"
+  "remaining_active_ids": [
+    "red-review-c2ca4290946e6f4a3e20",
+    "red-review-cf018056e5f3399f5e4c"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 9,
-    "observed": 9,
-    "closed": 9,
-    "explained": 7,
+    "attempted": 0,
+    "observed": 2,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
-    "review_completed_no_distinct_event": 2,
-    "queue_remaining": 0,
+    "review_completed_no_distinct_event": 0,
+    "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -49,548 +43,11 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "86a31f1f188d",
-      "revision": 0,
-      "name": "Jensen Huang",
-      "outcome": "review_completed",
-      "applied": true,
-      "review_reason": "no_distinct_event"
-    },
-    {
-      "id": "5ccfacd3e4b2",
-      "revision": 0,
-      "name": "EEUU",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "2c8ace5a3074",
-      "revision": 0,
-      "name": "Estados Unidos",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "c51a3aa0c0e4",
-      "revision": 0,
-      "name": "Nueva Orleans",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "cdaa9045b822",
-      "revision": 0,
-      "name": "Panathinaikos",
-      "outcome": "review_completed",
-      "applied": true,
-      "review_reason": "no_distinct_event"
-    },
-    {
-      "id": "5a28fa1fccb6",
-      "revision": 0,
-      "name": "Lydia",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "8b006bddf692",
-      "revision": 0,
-      "name": "Santi Acosta",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "0f9f984a750e",
-      "revision": 0,
-      "name": "Sálvame",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "97b0810372fa",
-      "revision": 0,
-      "name": "Telecinco",
-      "outcome": "explained",
-      "applied": true
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
   "activity": [
-    {
-      "at": "2026-11-12T16:14:00+01:00",
-      "phase": "persisting",
-      "message": "Investigación completada para 6 elementos; preparando persistencia editorial sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-11-12T16:16:00+01:00",
-      "phase": "closing",
-      "message": "Persistencia verificada en main. Cola editorial=0; 5 explicaciones aplicadas y #felizjueves cerrado como no_distinct_event."
-    },
-    {
-      "at": "2026-11-12T16:31:03+01:00",
-      "phase": "investigating",
-      "trend_id": "f4fde19c25ea",
-      "revision": 1,
-      "name": "Aurá",
-      "message": "Pista editorial contrastada con fuentes independientes: el fenómeno «farmear aura» está documentado, pero no se acredita el detonante concreto del pico actual de Aurá."
-    },
-    {
-      "at": "2026-11-12T16:33:55+01:00",
-      "phase": "closing",
-      "message": "Aplicador verificado en main. Aurá r1 queda problematic; cola sin preparing/update y con 1 problematic retriable mientras siga en Top 30."
-    },
-    {
-      "at": "2026-11-12T16:37:48+01:00",
-      "phase": "investigating",
-      "trend_id": "red-review-a59f622b276c0d4d0cfe",
-      "revision": 0,
-      "name": "Revisar novedades: #FelizJueves",
-      "message": "Revisión roja nueva detectada en barrera final; comprobando si hay novedades sustanciales."
-    },
-    {
-      "at": "2026-11-12T16:40:09+01:00",
-      "phase": "closing",
-      "message": "Barrera final main: 0 preparing/update. Aurá r1 permanece problematic; #FelizJueves revisión roja cerrada unchanged conservando explicación y fecha. Sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-11-12T19:39:00+01:00",
-      "phase": "preparing",
-      "message": "Pasada manual iniciada: 12 reentradas preparing pendientes; se investigan JIT para detectar solo acontecimientos materiales distintos. ImageGen=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-12T19:46:00+01:00",
-      "phase": "closing",
-      "message": "Persistencia verificada en main por commit cf5bedf8: editorial-queue=0; requests.json y telegram-manual-explained.json modificados; 5 explicaciones nuevas y 7 no_distinct_event. ImageGen=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-12T23:17:00+01:00",
-      "phase": "investigating",
-      "message": "Ejecución manual: cola inicial observada 9; Pubill y Merino convergieron antes de persistir. Quedan 7 revisiones activas en investigación JIT. Sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-11-12T23:18:20+01:00",
-      "phase": "verifying",
-      "message": "Aplicador GitHub Actions 43318372232 verificado success: 7 revisiones aplicadas y persistidas en main por 1be7c84; modificados requests, telegram-manual-explained y editorial-queue."
-    },
-    {
-      "at": "2026-11-12T23:18:23+01:00",
-      "phase": "closing",
-      "message": "Barrera final main: editorial-queue=0. Total observado 9: 7 cerradas en esta pasada y Pubill/Merino convergieron concurrentemente. ImageGen=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-13T00:10:00+01:00",
-      "phase": "preparing",
-      "message": "Cola inicial 9; revalidación JIT contra main, sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-11-13T00:18:00+01:00",
-      "phase": "closing",
-      "message": "Barrera final main: editorial-queue=0; 6 resultados procesados sin errores por el aplicador oficial y 3 convergencias JIT. ImageGen=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-13T00:40:00+01:00",
-      "run_id": "tr-20261113T004000-chat-direct",
-      "status": "RUNNING",
-      "phase": "preparing",
-      "message": "Ejecución manual iniciada desde ChatGPT; cola autoritativa observada inicialmente en 0."
-    },
-    {
-      "at": "2026-11-13T00:41:30+01:00",
-      "run_id": "tr-20261113T004000-chat-direct",
-      "status": "DONE",
-      "phase": "closing",
-      "message": "Cola editorial revalidada en main: 0 items. mobile-decisions sin preparing/update/processing/problematic/rewrite_pending activos. Sin ImageGen ni publicaciones."
-    },
-    {
-      "at": "2026-11-13T01:12:00+01:00",
-      "run_id": "tr-20261113T011200-chat-direct",
-      "status": "RUNNING",
-      "phase": "preparing",
-      "message": "Pasada manual iniciada desde ChatGPT con cola autoritativa inicial=3: YOLA GANADORA, Sancet (reentrada) y revisión roja de #ElPerroAndaluzTVE. Revalidación JIT; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-11-13T01:16:09+01:00",
-      "run_id": "tr-20261113T011200-chat-direct",
-      "status": "RUNNING",
-      "phase": "persisting",
-      "trend_id": "c72804a0682f",
-      "revision": 0,
-      "name": "YOLA GANADORA",
-      "message": "Investigación JIT completada. Persistiendo YOLA GANADORA sin afirmar un resultado final no confirmado; después Sancet como episodio distinto y revisión roja de #ElPerroAndaluzTVE sin duplicar el episodio del 12/11."
-    },
-    {
-      "at": "2026-11-13T01:18:00+01:00",
-      "run_id": "tr-20261113T011200-chat-direct",
-      "status": "DONE",
-      "phase": "closing",
-      "message": "Pasada TTendencias completada 3/3. YOLA GANADORA explicada con contexto verificado sin atribuir una victoria no confirmada; Sancet aplicado como episodio material distinto; revisión roja de #ElPerroAndaluzTVE cerrada unchanged para evitar duplicar el episodio del 12/11 ya registrado. Barrera final: editorial-queue=0. Sin ImageGen ni publicaciones."
-    },
-    {
-      "at": "2026-11-13T01:25:00+01:00",
-      "run_id": "tr-20261113T012500-chat-direct",
-      "status": "RUNNING",
-      "phase": "preparing",
-      "message": "Pasada manual iniciada desde ChatGPT; cola autoritativa inicial=0. Revalidando barrera final en main; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-11-13T01:26:00+01:00",
-      "run_id": "tr-20261113T012500-chat-direct",
-      "status": "DONE",
-      "phase": "closing",
-      "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 2026-11-13T01:21:18+01:00) y mobile-decisions sin preparing/update/processing/problematic/rewrite_pending/reexplain activos. Sin ImageGen ni publicaciones."
-    },
-    {
-      "at": "2026-11-13T02:10:15+01:00",
-      "run_id": "tr-20261113T021000-chat-direct",
-      "status": "RUNNING",
-      "phase": "preparing",
-      "message": "Pasada manual iniciada desde ChatGPT; cola autoritativa inicial=0. Revalidando barrera final en main; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-11-13T02:11:30+01:00",
-      "run_id": "tr-20261113T021000-chat-direct",
-      "status": "RUNNING",
-      "phase": "investigating",
-      "message": "Refresco Top 30 de 02:10:52 abrió 5 trabajos: Yola, #VotaPP, Jorge Javier, Supervivientes y Belén Esteban. Investigación JIT en curso; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-11-13T02:15:56+01:00",
-      "run_id": "tr-20261113T021000-chat-direct",
-      "status": "RUNNING",
-      "phase": "verifying",
-      "message": "Aplicador oficial procesó los cinco IDs sin errores; site-top30-current muestra las cinco revisiones como EXPLICADA."
-    },
-    {
-      "at": "2026-11-13T02:16:30+01:00",
-      "run_id": "tr-20261113T021000-chat-direct",
-      "status": "DONE",
-      "phase": "closing",
-      "message": "Pasada TTendencias completada 5/5. Yola y Supervivientes quedaron como episodios materiales distintos de la gran final; #VotaPP, Jorge Javier y Belén Esteban quedaron explicadas. Aplicador oficial 43343524401 success, commit 00352ec7; barrera final editorial-queue=0. Sin ImageGen ni publicaciones en esta pasada."
-    },
-    {
-      "at": "2026-11-13T02:25:00+01:00",
-      "run_id": "tr-20261113T022500-chat-direct",
-      "status": "RUNNING",
-      "phase": "preparing",
-      "message": "Pasada manual iniciada desde ChatGPT; cola autoritativa inicial=0 (updated_at 2026-11-13T02:21:03+01:00). Revalidando barrera final en main; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-11-13T02:25:45+01:00",
-      "run_id": "tr-20261113T022500-chat-direct",
-      "status": "DONE",
-      "phase": "closing",
-      "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 2026-11-13T02:21:03+01:00) y mobile-decisions sin estados editoriales activos. Top 30 vigente capturado a las 02:20:58. Sin ImageGen ni publicaciones."
-    },
-    {
-      "at": "2026-11-13T02:40:00+01:00",
-      "run_id": "tr-20261113T024000-chat-direct",
-      "status": "RUNNING",
-      "phase": "preparing",
-      "message": "Pasada manual iniciada desde ChatGPT; refresco Top 30 #959 en ejecución y cola autoritativa inicial=0. Sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-11-13T02:43:34+01:00",
-      "run_id": "tr-20261113T024000-chat-direct",
-      "status": "DONE_WITH_INCIDENTS",
-      "phase": "closing",
-      "message": "Pasada TTendencias cerrada 0/0 con estado fresco de main: editorial-queue=0 (updated_at 2026-11-13T02:41:01+01:00), mobile-decisions y requests sin estados editoriales activos. El refresco manual GitHub Actions #959 quedó aún in_progress en checkout; se registra como incidencia no bloqueante porque el refresco periódico de Top 10 actualizó la cola durante la pasada. Sin ImageGen ni publicaciones."
-    },
-    {
-      "at": "2026-11-13T02:55:00+01:00",
-      "run_id": "tr-20261113T025500-chat-direct",
-      "status": "RUNNING",
-      "phase": "investigating",
-      "trend_id": "radar-prepare-8a52b351d42fac01f015",
-      "revision": 0,
-      "name": "Radar · #LatinGRAMMY",
-      "message": "Pasada manual iniciada desde ChatGPT. Cola autoritativa=1: borrador Radar #LatinGRAMMY r0. Revalidando detonante actual; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-11-13T03:02:52+01:00",
-      "run_id": "tr-20261113T025500-chat-direct",
-      "status": "DONE",
-      "phase": "completed",
-      "trend_id": "radar-prepare-8a52b351d42fac01f015",
-      "revision": 0,
-      "name": "Radar · #LatinGRAMMY",
-      "message": "Anticipación preparada y aplicada. Cola autoritativa=0. Sin ImageGen, sin imagen, sin publicación."
-    },
-    {
-      "at": "2026-11-13T03:10:00+01:00",
-      "run_id": "tr-20261113T031000-chat-direct",
-      "status": "RUNNING",
-      "phase": "preparing",
-      "message": "Pasada manual iniciada desde ChatGPT; cola autoritativa inicial=0. Revalidando barrera final en main; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-11-13T03:11:00+01:00",
-      "run_id": "tr-20261113T031000-chat-direct",
-      "status": "DONE",
-      "phase": "closing",
-      "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 y mobile-decisions sin estados editoriales activos. Top 30 vigente capturado a las 03:01:22. Sin ImageGen ni publicaciones."
-    },
-    {
-      "at": "2026-11-13T03:40:00+01:00",
-      "run_id": "tr-20261113T034000-chat-direct",
-      "status": "RUNNING",
-      "phase": "investigating",
-      "trend_id": "red-review-1a04b17ed021f8d9387f",
-      "revision": 0,
-      "name": "Revisar novedades: Alsina",
-      "message": "Ejecución manual iniciada desde ChatGPT. Cola autoritativa=1: revisión roja de Alsina. Revalidación JIT e investigación de novedades sustanciales; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-11-13T03:45:10+01:00",
-      "run_id": "tr-20261113T034000-chat-direct",
-      "status": "DONE",
-      "phase": "closing",
-      "message": "Pasada TTendencias completada 1/1. Alsina actualizado como continuidad del mismo episodio Broncano-Abascal por el aplicador de mantenimiento; se conserva ID, revisión, explained_at, estado publicado e imagen. Barrera editorial-queue=0. Sin ImageGen ni publicaciones."
-    },
-    {
-      "at": "2026-11-13T04:10:00+01:00",
-      "run_id": "tr-20261113T041000-chat-direct",
-      "status": "RUNNING",
-      "phase": "preparing",
-      "message": "Pasada manual iniciada desde ChatGPT; cola autoritativa inicial=0 (updated_at 2026-11-13T04:01:29+01:00). Revalidando barrera final en main; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-11-13T04:11:00+01:00",
-      "run_id": "tr-20261113T041000-chat-direct",
-      "status": "DONE",
-      "phase": "closing",
-      "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 2026-11-13T04:01:29+01:00), mobile-decisions y requests sin estados editoriales activos ni rewrite_pending/reexplain. Top 30 vigente capturado a las 04:01:24. Sin ImageGen ni publicaciones."
-    },
-    {
-      "at": "2026-11-13T04:12:00+01:00",
-      "run_id": "tr-20261113T041000-chat-direct",
-      "status": "RUNNING",
-      "phase": "investigating",
-      "message": "Barrera posterior al cierre 0/0 detectó 13 reentradas nuevas. Se reabre la misma pasada y se investigan JIT; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-11-13T04:17:00+01:00",
-      "run_id": "tr-20261113T041000-chat-direct",
-      "status": "RUNNING",
-      "phase": "persisting",
-      "message": "13/13 investigados; 2 episodios distintos y 11 reentradas sin episodio independiente. Outbox textual en main (4009ce54e5832651f4aaf9ef1df649eb64752a17); verificando aplicación."
-    },
-    {
-      "at": "2026-11-13T04:18:00+01:00",
-      "run_id": "tr-20261113T041000-chat-direct",
-      "status": "DONE",
-      "phase": "closing",
-      "message": "Pasada TTendencias completada 13/13. Dos reentradas acreditaron episodio material distinto (Abascal y Barcelona) y quedaron explicadas; once se cerraron review_completed/no_distinct_event, incluida Eddie por causa actual no atribuible con fiabilidad. Aplicador confirmado en 565df6e993d9664b54de8442ac963806504b0d85. Cola final=0. ImageGen=0; image-outbox editorial=0; publicaciones=0."
-    },
-    {
-      "at": "2026-11-13T04:19:00+01:00",
-      "run_id": "tr-20261113T041000-chat-direct",
-      "status": "RUNNING",
-      "phase": "maintenance_review",
-      "message": "Barrera final detectó 2 revisiones rojas de mantenimiento (Jordi Wild y Youtuber). Reabierta la misma pasada: 13/15 aplicados, 2 revisiones en curso."
-    },
-    {
-      "at": "2026-11-13T04:20:00+01:00",
-      "run_id": "tr-20261113T041000-chat-direct",
-      "status": "DONE",
-      "phase": "closing",
-      "message": "Pasada TTendencias completada 15/15. 13 reentradas: 2 episodios materiales distintos explicados (Abascal, Barcelona) y 11 cerrados no_distinct_event. 2 revisiones rojas posteriores (Jordi Wild, Youtuber) verificadas unchanged, conservando texto y fecha. Cola final=0. ImageGen=0; image-outbox editorial=0; publicaciones=0; incidentes=0."
-    },
-    {
-      "at": "2026-11-13T06:29:03+01:00",
-      "run_id": "tr-20261113T062900-chat-direct",
-      "status": "RUNNING",
-      "phase": "investigating",
-      "message": "Pasada manual iniciada desde ChatGPT con cola autoritativa=3: Asraf (reentrada), Rosalia (entrada nueva) y revisión roja de NVIDIA. Investigación JIT; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-11-13T06:35:15+01:00",
-      "run_id": "tr-20261113T062900-chat-direct",
-      "status": "DONE",
-      "phase": "closing",
-      "message": "Pasada TTendencias completada 5/5. Asraf quedó como episodio material distinto por su victoria en la final; Rosalia quedó explicada por sus cinco Latin Grammy; NVIDIA y Jensen Huang se actualizaron como continuidad tras la dimisión de Huang y el nombramiento interino de Colette Kress; #HuelgaGeneral quedó unchanged al no aparecer un episodio material nuevo. Barrera final: editorial-queue=0 y mobile-decisions sin estados editoriales activos. ImageGen=0; publicaciones=0; incidentes=0."
-    },
-    {
-      "at": "2026-11-13T07:25:00+01:00",
-      "run_id": "tr-20261113T072500-chat-direct",
-      "status": "RUNNING",
-      "phase": "preparing",
-      "message": "Pasada manual iniciada desde ChatGPT; cola autoritativa=3: #LaIslaDeLasTentaciones20 (reentrada), álbum del año (primera explicación) y Jorge Salvaje (reentrada). Revalidación JIT; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-11-13T07:28:30+01:00",
-      "run_id": "tr-20261113T072500-chat-direct",
-      "status": "RUNNING",
-      "phase": "persisting",
-      "message": "Investigación JIT completada: álbum del año tiene causa actual verificada (LUX gana Álbum del Año); #LaIslaDeLasTentaciones20 y Jorge Salvaje reingresan por el mismo episodio ya explicado, sin acontecimiento material independiente. Persistiendo 3/3; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-11-13T07:30:00+01:00",
-      "run_id": "tr-20261113T072500-chat-direct",
-      "status": "DONE",
-      "phase": "closing",
-      "message": "Pasada TTendencias completada 3/3. «álbum del año» quedó explicado por el Latin Grammy a Álbum del Año de LUX; #LaIslaDeLasTentaciones20 y Jorge Salvaje se cerraron como reentradas sin acontecimiento material distinto, evitando duplicados. Aplicador confirmado en 30ec69bd4063c9ff2b220bf6943cb37b1f142419. Barrera final: editorial-queue=0 y mobile-decisions sin estados editoriales activos. ImageGen=0; publicaciones=0; incidentes=0."
-    },
-    {
-      "at": "2026-11-13T08:55:00+01:00",
-      "run_id": "tr-20261113T085500-chat-direct",
-      "status": "RUNNING",
-      "phase": "preparing",
-      "message": "Pasada manual iniciada desde ChatGPT; cola autoritativa inicial=0 (updated_at 2026-11-13T08:51:07+01:00). Revalidando barrera final en main; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-11-13T08:56:00+01:00",
-      "run_id": "tr-20261113T085500-chat-direct",
-      "status": "DONE",
-      "phase": "closing",
-      "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 2026-11-13T08:51:07+01:00), mobile-decisions y requests sin estados editoriales activos. Top 30 vigente capturado a las 08:51:01. Sin ImageGen ni publicaciones; incidentes=0."
-    },
-    {
-      "at": "2026-11-13T10:10:00+01:00",
-      "run_id": "tr-20261113T101000-chat-direct",
-      "status": "RUNNING",
-      "phase": "preparing",
-      "message": "Pasada manual iniciada desde ChatGPT; cola autoritativa inicial=0 (updated_at 2026-11-13T10:01:23+01:00). Revalidando barrera final en main; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-11-13T10:11:30+01:00",
-      "run_id": "tr-20261113T101000-chat-direct",
-      "status": "RUNNING",
-      "phase": "investigating",
-      "message": "Refresco Top 30 de 10:11 abrió 2 reentradas: Ada Colau y Youtuber. Revalidando si existe acontecimiento material distinto antes de crear cualquier ficha nueva; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-11-13T10:15:30+01:00",
-      "run_id": "tr-20261113T101000-chat-direct",
-      "status": "DONE",
-      "phase": "closing",
-      "message": "Pasada TTendencias completada 2/2. Ada Colau y Youtuber se cerraron como episodios materiales distintos por la publicación de las entrevistas de Jordi Wild a los candidatos del 29-N. Aplicador verificado: ambas fichas EXPLICADA y editorial-queue=0. Sin ImageGen ni publicaciones."
-    },
-    {
-      "at": "2026-11-13T10:25:00+01:00",
-      "run_id": "tr-20261113T102500-chat-direct",
-      "status": "RUNNING",
-      "phase": "investigating",
-      "trend_id": "red-review-77adc81420e233ffb33c",
-      "revision": 0,
-      "name": "Revisar novedades: Xokas",
-      "message": "Pasada manual iniciada desde ChatGPT; cola autoritativa=2 revisiones rojas: Xokas y Hormiguero. Revalidación JIT e investigación de novedades sustanciales; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-11-13T10:29:30+01:00",
-      "run_id": "tr-20261113T102500-chat-direct",
-      "status": "DONE",
-      "phase": "closing",
-      "message": "Pasada TTendencias completada 2/2. Xokas y Hormiguero revisados sin novedades materiales: ambos unchanged, conservando explicación y fecha. Aplicador de mantenimiento confirmado en 00152db0c75ff5ff248172ff3c5df70fcddf8304; editorial-queue=0. Sin ImageGen ni publicaciones."
-    },
-    {
-      "at": "2026-11-13T10:40:00+01:00",
-      "run_id": "tr-20261113T104000-chat-direct",
-      "status": "RUNNING",
-      "phase": "preparing",
-      "message": "Pasada manual iniciada desde ChatGPT; cola inicial=2 borradores Radar (Gmail y Pipi). Revalidación JIT; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-11-13T10:45:00+01:00",
-      "run_id": "tr-20261113T104000-chat-direct",
-      "status": "RUNNING",
-      "phase": "verifying",
-      "message": "Gmail y Pipi cerrados como anticipation_unverified. La barrera abrió dos revisiones rojas nuevas: Broncano y NVIDIA."
-    },
-    {
-      "at": "2026-11-13T10:46:57+01:00",
-      "run_id": "tr-20261113T104000-chat-direct",
-      "status": "RUNNING",
-      "phase": "verifying",
-      "message": "Broncano aplicado como actualización de continuidad. NVIDIA continúa pendiente por validación de formato."
-    },
-    {
-      "at": "2026-11-13T10:51:00+01:00",
-      "run_id": "tr-20261113T104000-chat-direct",
-      "status": "RUNNING",
-      "phase": "verifying",
-      "message": "Corregida la fórmula de continuidad de NVIDIA; workflow de mantenimiento completado con éxito y revisión aplicada."
-    },
-    {
-      "at": "2026-11-13T10:51:20+01:00",
-      "run_id": "tr-20261113T104000-chat-direct",
-      "status": "DONE",
-      "phase": "closing",
-      "message": "Pasada TTendencias completada 4/4. Radar Gmail y Pipi cerrados como anticipation_unverified por falta de causalidad suficientemente acreditada; Broncano y NVIDIA actualizados como continuidad del mismo episodio. NVIDIA requirió corregir la fórmula de continuidad exigida por el validador y quedó aplicada. Barrera final tras refresco Top 30: editorial-queue=0. Sin ImageGen ni publicaciones."
-    },
-    {
-      "at": "2026-11-13T11:02:35+01:00",
-      "run_id": "tr-20261113T1055-chat-direct",
-      "status": "RUNNING",
-      "phase": "preparing",
-      "message": "Refresco Top 30 abrió 3 trabajos: Alfon, La Revuelta y alvise. Revalidación JIT; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-11-13T11:07:12+01:00",
-      "run_id": "tr-20261113T1055-chat-direct",
-      "status": "RUNNING",
-      "phase": "verifying",
-      "message": "Barrera JIT: Alfon ya había convergido en otra ejecución; quedan La Revuelta y alvise r0 para revisión de reentrada."
-    },
-    {
-      "at": "2026-11-13T11:08:31+01:00",
-      "run_id": "tr-20261113T1055-chat-direct",
-      "status": "RUNNING",
-      "phase": "persisting",
-      "message": "La Revuelta y alvise cerrados como review_completed/no_distinct_event; aplicador persistió requests y retiró ambas revisiones de la cola."
-    },
-    {
-      "at": "2026-11-13T11:10:00+01:00",
-      "run_id": "tr-20261113T1055-chat-direct",
-      "status": "DONE",
-      "phase": "closing",
-      "message": "Pasada TTendencias completada: 3 observados, 2 revisiones cerradas y 1 convergencia JIT. editorial-queue=0; ImageGen=0; publicaciones=0; incidentes=0."
-    },
-    {
-      "at": "2026-11-13T11:10:30+01:00",
-      "run_id": "tr-20261113T111000-chat-direct",
-      "status": "RUNNING",
-      "phase": "preparing",
-      "message": "Pasada manual iniciada desde ChatGPT; cola autoritativa inicial=2 (updated_at 2026-11-13T11:10:50+01:00). Revalidando barrera final en main; sin ImageGen ni publicación."
-    },
-    {
-      "at": "2026-11-13T11:13:11+01:00",
-      "run_id": "tr-20261113T111000-chat-direct",
-      "status": "RUNNING",
-      "phase": "persisting",
-      "message": "Youtuber aplicado como actualización de continuidad por el estreno de las entrevistas electorales de Jordi Wild."
-    },
-    {
-      "at": "2026-11-13T11:18:36+01:00",
-      "run_id": "tr-20261113T111000-chat-direct",
-      "status": "RUNNING",
-      "phase": "persisting",
-      "message": "Microsoft r1 reelaborado desde cero con la incidencia de Microsoft 365 aún activa y señales de estabilización; imagen queda en circuito independiente."
-    },
-    {
-      "at": "2026-11-13T11:18:51+01:00",
-      "run_id": "tr-20261113T111000-chat-direct",
-      "status": "RUNNING",
-      "phase": "verifying",
-      "message": "Jensen Huang aplicado como actualización de continuidad tras corregir el formato requerido por el validador."
-    },
-    {
-      "at": "2026-11-13T11:20:00+01:00",
-      "run_id": "tr-20261113T111000-chat-direct",
-      "status": "DONE",
-      "phase": "closing",
-      "message": "Pasada TTendencias cerrada: 3/3 trabajos del ciclo final resueltos; editorial-queue=0; ImageGen=0; publicaciones=0; incidentes=0."
-    },
-    {
-      "at": "2026-11-13T11:25:00+01:00",
-      "run_id": "tr-20261113T112500-chat-direct",
-      "status": "RUNNING",
-      "phase": "preparing",
-      "message": "Pasada manual iniciada desde ChatGPT; cola autoritativa inicial=0 (updated_at 2026-11-13T11:20:59+01:00). Revalidando barrera final en main; sin ImageGen ni publicación."
-    },
     {
       "at": "2026-11-13T11:26:00+01:00",
       "run_id": "tr-20261113T112500-chat-direct",
@@ -878,6 +335,11 @@
       "status": "DONE",
       "phase": "closing",
       "message": "Pasada TTendencias completada 9/9. 7 fichas explicadas y persistidas; Jensen Huang y Panathinaikos cerrados como reentradas sin episodio material distinto. Aplicador confirmado en 991c9174f7c01d0ec35a34d79a82f28101302297; cola final=0. ImageGen=0; publicaciones=0; incidentes=0."
+    },
+    {
+      "at": "2026-11-14T04:25:00+01:00",
+      "phase": "preparing",
+      "message": "Inicio de pasada editorial directa; cola autoritativa con 2 revisiones de novedades, sin ImageGen ni publicación."
     }
   ],
   "last_started_at": "2026-11-14T04:13:28+01:00",
@@ -9573,7 +9035,7 @@
   ],
   "maintenance_outbox_commit": "c764cbdfc37ba7b67fedd38a16837ee068ae9467",
   "editorial_apply_run_id": 43477991983,
-  "finished_at": "2026-11-14T04:02:09+01:00",
+  "finished_at": null,
   "completed_at": "2026-11-13T23:52:25+01:00",
   "maintenance_outbox_commits": [
     "24805770cc5efabc2f14e0019c9fa592aecf4d7b",
