@@ -1,11 +1,22 @@
 {
   "version": 2,
-  "command_id": "tr-1794650429265-manual",
-  "requested_at": "2026-11-14T10:00:29.265Z",
+  "command_id": "tr-autoguard-1794651388",
+  "requested_at": "2026-11-14T10:16:28.282956Z",
   "mode": "manual_pc_chat",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
   "launcher_arg": "tendencias",
   "task": "editorial",
-  "auto_image_followup": false
+  "auto_image_followup": false,
+  "source": "tt_autoheal_editorial_watchdog",
+  "reason": "editorial_not_started_in_time",
+  "pending_ids": [
+    "bad47f0232c5",
+    "86b2f018766f",
+    "9bddd4111803"
+  ],
+  "target_id": "86b2f018766f",
+  "target_revision": 0,
+  "target_name": "Año 2026",
+  "scope": "single_item"
 }
