@@ -30,15 +30,15 @@ const radarFunction = [
 ' banner.textContent="Radar · "+time;',
 ' banner.title="Última captura: "+new Intl.DateTimeFormat("es-ES",{timeZone:"Europe/Madrid",dateStyle:"full",timeStyle:"short"}).format(date);',
 '}',
-].join("\\n");
+].join("\n");
 if (!app.includes('const MARKS_KEY=')) throw Error("Cannot add Radar function");
-app = app.replace('const MARKS_KEY=', radarFunction + "\\nconst MARKS_KEY=");
+app = app.replace('const MARKS_KEY=', radarFunction + "\nconst MARKS_KEY=");
 if (!app.includes('state.captured=data.captured_at;')) throw Error("Cannot attach radar data");
-app = app.replace('state.captured=data.captured_at;', 'state.captured=data.captured_at;\\n  updateRadar(state.captured);');
+app = app.replace('state.captured=data.captured_at;', 'state.captured=data.captured_at;\n  updateRadar(state.captured);');
 
 await writeFile(resolve(output, "app.js"), app, "utf8");
 let css=await readFile(resolve(output, "styles.css"), "utf8");
-css += "\\n.radar-time{padding:11px clamp(15px,4vw,36px);background:#121720;color:#b4c3d4;border-bottom:1px solid #272b33;font-size:13px;font-variant-numeric:tabular-nums}\\n";
+css += "\n.radar-time{padding:11px clamp(15px,4vw,36px);background:#121720;color:#b4c3d4;border-bottom:1px solid #272b33;font-size:13px;font-variant-numeric:tabular-nums}\n";
 await writeFile(resolve(output,"styles.css"),css,"utf8");
 let html = await readFile(resolve(output, "index.html"), "utf8");
 html = html.replace(/<script>if\("serviceWorker" in navigator\)[\s\S]*?<\/script>/, "");
