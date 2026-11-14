@@ -2,8 +2,8 @@
 """V2-only ImageGen in the ALREADY OPEN verified editorial ChatGPT tab.
 
 Never opens a second conversation, never touches V1, never publishes, and
-never retries an uncertain prompt. Original raster must reach private R2/D1
-before the caller closes its single Chrome session.
+never retries an uncertain prompt. Original raster is committed to the
+isolated GitHub V2 branch before the caller closes its Chrome session.
 """
 from __future__ import annotations
 import base64
@@ -17,43 +17,14 @@ import urllib.request
 try:
     from . import image_intake_v2 as intake
     from . import image_job_v2 as jobs
+    from . import image_github_v2 as github
 except ImportError:
     import image_intake_v2 as intake
     import image_job_v2 as jobs
+    import image_github_v2 as github
 
-READY_ENDPOINT="https://ttactualidad-v2-private-test.fabricelop.workers.dev/api/image-ingest-ready"
 WAIT_SECONDS=300
 COMPOSERS=("#prompt-textarea","[data-testid='prompt-textarea']","[contenteditable='true'][role='textbox']")
-
-def private_secret(root):
-    path=pathlib.Path(root)/"image-ingest-secret.dpapi"
-    if not path.exists():raise RuntimeError("V2_IMAGE_UPLOAD_NOT_ENROLLED")
-    ciphertext=path.read_text(encoding="utf-8-sig").strip()
-    if not ciphertext or len(ciphertext)>8192:raise RuntimeError("V2_IMAGE_UPLOAD_TOKEN_INVALID")
-    script=("$s=ConvertTo-SecureString ([Console]::In.ReadToEnd());"
-            "$p=[Runtime.InteropServices.Marshal]::SecureStringToBSTR($s);"
-            "try{[Console]::Write([Runtime.InteropServices.Marshal]::PtrToStringBSTR($p))}"
-            "finally{[Runtime.InteropServices.Marshal]::ZeroFreeBSTR($p)}")
-    proc=subprocess.run(["powershell.exe","-NoProfile","-NonInteractive","-Command",script],
-         input=ciphertext,text=True,capture_output=True,timeout=15,
-         creationflags=getattr(subprocess,"CREATE_NO_WINDOW",0))
-    secret=proc.stdout.strip()
-    if proc.returncode or len(secret)<32:raise RuntimeError("V2_IMAGE_UPLOAD_DPAPI_FAILED")
-    return secret
-
-def check_storage_ready(secret,*,send=None):
-    request=urllib.request.Request(READY_ENDPOINT,
-        headers={"X-TTV2-Image-Ingest":secret,"Accept":"application/json"},
-        method="GET")
-    if send is None:send=lambda r:urllib.request.urlopen(r,timeout=15)
-    try:
-        with send(request) as response:
-            payload=json.loads(response.read(1024))
-            if payload.get("ok") is not True or payload.get("storage")!="ready":
-                raise RuntimeError("V2_IMAGE_STORAGE_NOT_READY")
-    except (urllib.error.URLError,ValueError) as exc:
-        raise RuntimeError("V2_IMAGE_STORAGE_NOT_READY") from exc
-    return True
 
 def probe(command):
     return """(async()=>{
@@ -111,8 +82,8 @@ def original_from_same_page(page, job, *, timeout=WAIT_SECONDS, clock=time.monot
         sleep(3)
     raise RuntimeError("V2_IMAGE_NOT_READY:"+reason)
 
-def run(page,row,*,root,secret=None,storage_check=check_storage_ready,
-        raster_get=original_from_same_page,upload=intake.upload):
+def run(page,row,*,root,github_auth,raster_get=original_from_same_page,
+        upload=github.save_original,editorial_preflight=github.current_editorial):
     """Requires row just reread from GitHub after stage_capture was committed."""
     capture=row.get("capture") or {}
     if (row.get("status")!="captured_review" or
@@ -120,11 +91,13 @@ def run(page,row,*,root,secret=None,storage_check=check_storage_ready,
         page.url.split("?",1)[0].rstrip("/")!=str(capture.get("chat_url") or "").rstrip("/")):
         raise RuntimeError("V2_IMAGE_EDITORIAL_CHAT_NOT_VERIFIED")
     root=pathlib.Path(root)
-    if secret is None:secret=private_secret(root)
-    # Fail closed before asking ImageGen when R2/D1 or the secret is unavailable.
-    storage_check(secret)
+    if not isinstance(github_auth,str) or len(github_auth)<10:
+        raise RuntimeError("V2_IMAGE_GITHUB_AUTH_MISSING")
     job,status=jobs.stage(root/"image-jobs",row)
     intake.validate_editorial(job,row)
+    # Same branch, same token already used to persist the editorial reply.
+    # Read the authoritative V2 queue immediately before sending ImageGen.
+    editorial_preflight(job,github_auth)
     receipts=root/"image-receipts"
     receipts.mkdir(parents=True,exist_ok=True)
     receipt=receipts/(job["command_id"]+".json")
@@ -158,7 +131,7 @@ def run(page,row,*,root,secret=None,storage_check=check_storage_ready,
         composer.press("Enter")
     raw=raster_get(page,job)
     intake.persist_original(root/"image-originals",job,raw)
-    saved=upload(job,raw,secret)
+    saved=upload(job,raw,github_auth)
     if saved.get("status") not in ("saved","already_saved"):
         raise RuntimeError("V2_IMAGE_REMOTE_RECEIPT_INVALID")
     saved["command_id"]=job["command_id"]
