@@ -31,8 +31,8 @@ const radarFunction = [
 ' banner.title="Última captura: "+new Intl.DateTimeFormat("es-ES",{timeZone:"Europe/Madrid",dateStyle:"full",timeStyle:"short"}).format(date);',
 '}',
 ].join("\n");
-if (!app.includes('const MARKS_KEY=')) throw Error("Cannot add Radar function");
-app = app.replace('const MARKS_KEY=', radarFunction + "\nconst MARKS_KEY=");
+if (!app.includes('function markStamp(item)')) throw Error("Cannot add Radar function");
+app = app.replace('function markStamp(item)', radarFunction + "\nfunction markStamp(item)");
 if (!app.includes('state.captured=data.captured_at;')) throw Error("Cannot attach radar data");
 app = app.replace('state.captured=data.captured_at;', 'state.captured=data.captured_at;\n  updateRadar(state.captured);');
 const pilotBefore = '  card.append(body);';
