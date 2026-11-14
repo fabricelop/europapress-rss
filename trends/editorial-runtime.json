@@ -8,9 +8,9 @@
   "command_id": "tr-20261114T152500-chat-direct",
   "source": "chat_direct",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "persisting",
   "started_at": "2026-11-14T15:25:00+01:00",
-  "updated_at": "2026-11-14T15:25:00+01:00",
+  "updated_at": "2026-11-14T15:30:00+01:00",
   "current": 0,
   "total": 2,
   "trend_id": null,
@@ -517,7 +517,7 @@
     "total": 4,
     "queue_complete": true
   },
-  "message": "Cola inicial 2; revisando novedades en Marcial Dorado y #PSOEyFrenteAmplioVetan, sin ImageGen ni publicación.",
+  "message": "Persistiendo 2 revisiones de mantenimiento tras revalidación JIT: Marcial Dorado (continuidad actualizada) y #PSOEyFrenteAmplioVetan (sin novedades sustanciales).",
   "history": [
     {
       "run_id": "tr-1794361941170-manual",
@@ -9354,6 +9354,27 @@
       "at": "2026-11-14T15:25:00+01:00",
       "phase": "preparing",
       "message": "Cola inicial 2; revisando novedades en Marcial Dorado y #PSOEyFrenteAmplioVetan, sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-14T15:30:00+01:00",
+      "phase": "investigating",
+      "trend_id": "red-review-f1d54e870e0b088fd921",
+      "revision": 0,
+      "name": "Revisar novedades: Marcial Dorado",
+      "message": "Revisando novedades: continuidad del mismo episodio con nuevas referencias de campaña."
+    },
+    {
+      "at": "2026-11-14T15:30:00+01:00",
+      "phase": "investigating",
+      "trend_id": "red-review-6b86b17ba53670f185c0",
+      "revision": 0,
+      "name": "Revisar novedades: #PSOEyFrenteAmplioVetan",
+      "message": "Sin novedades sustanciales verificables: no consta resolución posterior que cambie el pulso sobre los debates."
+    },
+    {
+      "at": "2026-11-14T15:30:00+01:00",
+      "phase": "persisting",
+      "message": "Persistiendo 2 revisiones de mantenimiento tras revalidación JIT: Marcial Dorado (continuidad actualizada) y #PSOEyFrenteAmplioVetan (sin novedades sustanciales)."
     }
   ],
   "processed": [
