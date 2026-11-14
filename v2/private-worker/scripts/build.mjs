@@ -35,10 +35,24 @@ if (!app.includes('const MARKS_KEY=')) throw Error("Cannot add Radar function");
 app = app.replace('const MARKS_KEY=', radarFunction + "\nconst MARKS_KEY=");
 if (!app.includes('state.captured=data.captured_at;')) throw Error("Cannot attach radar data");
 app = app.replace('state.captured=data.captured_at;', 'state.captured=data.captured_at;\n  updateRadar(state.captured);');
+const pilotBefore = '  card.append(body);';
+if (!app.includes(pilotBefore)) throw Error("Pilot card anchor missing");
+app = app.replace(pilotBefore, [
+'  card.append(body);',
+'  if(item.trend_id==="trv2-e94b2984c087ac403753b8c1"){',
+'   const figure=el("figure","pilot-figure");',
+'   const img=document.createElement("img");',
+'   img.src="/pilot/jordi-wild.webp";img.alt="Viñeta piloto: tres entrevistas y una silla vacía";',
+'   img.loading="lazy";figure.append(img);',
+'   const cap=el("figcaption","pilot-caption","Imagen piloto · no publicada");figure.append(cap);',
+'   card.append(figure);',
+'  }',
+].join("\n"));
+
 
 await writeFile(resolve(output, "app.js"), app, "utf8");
 let css=await readFile(resolve(output, "styles.css"), "utf8");
-css += "\n.radar-time{padding:11px clamp(15px,4vw,36px);background:#121720;color:#b4c3d4;border-bottom:1px solid #272b33;font-size:13px;font-variant-numeric:tabular-nums}\n";
+css += "\n.radar-time{padding:11px clamp(15px,4vw,36px);background:#121720;color:#b4c3d4;border-bottom:1px solid #272b33;font-size:13px;font-variant-numeric:tabular-nums}.pilot-figure{margin:0;padding:0 clamp(15px,4vw,36px) 22px calc(clamp(15px,4vw,36px) + 48px)}.pilot-figure img{display:block;max-width:360px;width:100%;height:auto;border-radius:10px}.pilot-caption{font-size:11px;color:#929eab;margin-top:6px}@media(max-width:450px){.pilot-figure{padding:0 14px 18px 52px}}\n";
 await writeFile(resolve(output,"styles.css"),css,"utf8");
 let html = await readFile(resolve(output, "index.html"), "utf8");
 html = html.replace(/<script>if\("serviceWorker" in navigator\)[\s\S]*?<\/script>/, "");
