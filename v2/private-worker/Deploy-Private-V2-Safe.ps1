@@ -20,7 +20,7 @@ function Run([string]$program, [string[]]$arguments, [switch]$CaptureOutput) {
     $stdout = Join-Path $env:TEMP ('ttv2-deploy-' + $marker + '.stdout.log')
     $stderr = Join-Path $env:TEMP ('ttv2-deploy-' + $marker + '.stderr.log')
     $escapedArgs = @($arguments | ForEach-Object {
-        if ($_ -match '[\\s"]') { '"' + ($_.Replace('"','\\"')) + '"' } else { $_ }
+        if ($_ -match '[\s"]') { '"' + ($_.Replace('"','\"')) + '"' } else { $_ }
     })
     try {
         $process = Start-Process -FilePath $program -ArgumentList ($escapedArgs -join ' ') `
