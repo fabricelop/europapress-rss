@@ -67,8 +67,10 @@ class SameChatTests(unittest.TestCase):
                 self.assertEqual(raw,raster)
                 self.assertEqual(intake.raster_metadata(raw)["width"],1024)
                 return {"status":"saved","trend_id":ID,"revision":1,
+                        "path":"v2/ttendencias/generated-images/example.png",
+                        "mime":"image/png",
                         "sha256":intake.raster_metadata(raw)["sha256"]}
-            args={"root":d,"secret":"s"*48,"storage_check":lambda token:True,
+            args={"root":d,"github_auth":"s"*48,"editorial_preflight":lambda job,auth:True,
                   "raster_get":lambda page,job:raster,"upload":upload}
             saved=same.run(p,row(),**args)
             self.assertEqual(saved["status"],"saved")
@@ -82,8 +84,8 @@ class SameChatTests(unittest.TestCase):
         p=Page()
         with tempfile.TemporaryDirectory() as d:
             with self.assertRaisesRegex(RuntimeError,"STORAGE_NOT_READY"):
-                same.run(p,row(),root=d,secret="s"*48,
-                    storage_check=lambda token:(_ for _ in ()).throw(
+                same.run(p,row(),root=d,github_auth="s"*48,
+                    editorial_preflight=lambda job,auth:(_ for _ in ()).throw(
                         RuntimeError("V2_IMAGE_STORAGE_NOT_READY")))
             self.assertEqual(p.send_count,0)
             self.assertFalse(list(Path(d).rglob("*.intent.json")))
@@ -91,7 +93,7 @@ class SameChatTests(unittest.TestCase):
     def test_uncertain_prompt_does_not_resend(self):
         p=Page()
         with tempfile.TemporaryDirectory() as d:
-            args={"root":d,"secret":"s"*48,"storage_check":lambda token:True,
+            args={"root":d,"github_auth":"s"*48,"editorial_preflight":lambda job,auth:True,
                   "raster_get":lambda page,job:(_ for _ in ()).throw(
                       RuntimeError("image_pending"))}
             with self.assertRaisesRegex(RuntimeError,"image_pending"):
@@ -107,6 +109,6 @@ class SameChatTests(unittest.TestCase):
         p.url="https://chatgpt.com/c/12345678-1234-1234-1234-123456789abc"
         with tempfile.TemporaryDirectory() as d:
             with self.assertRaisesRegex(RuntimeError,"CHAT_NOT_VERIFIED"):
-                same.run(p,row(),root=d,secret="s"*48,storage_check=lambda _:True)
+                same.run(p,row(),root=d,github_auth="s"*48,editorial_preflight=lambda j,a:True)
 
 if __name__=="__main__":unittest.main()
