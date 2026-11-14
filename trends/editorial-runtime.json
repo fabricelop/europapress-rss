@@ -7,10 +7,10 @@
   "previous_run_id": "tr-20261114T154000-chat-direct",
   "command_id": "tr-20261114T171000-chat-direct",
   "source": "chat_direct",
-  "status": "DONE_WITH_INCIDENTS",
+  "status": "DONE",
   "phase": "closing",
   "started_at": "2026-11-14T17:10:00+01:00",
-  "updated_at": "2026-11-14T17:14:32+01:00",
+  "updated_at": "2026-11-14T17:16:10+01:00",
   "current": 2,
   "total": 2,
   "trend_id": null,
@@ -46,7 +46,7 @@
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 1,
+    "incidents": 0,
     "concurrent_convergence": 0
   },
   "outcomes": [
@@ -72,16 +72,8 @@
       "apply_run_id": 43614430012
     }
   ],
-  "incident_count": 1,
-  "incidents": [
-    {
-      "at": "2026-11-14T17:14:32+01:00",
-      "phase": "closing",
-      "trend_id": null,
-      "title": "Refresco manual 17:10",
-      "reason": "GitHub Actions run 43614186407 seguía in_progress en checkout al cerrar; main ya tenía Top 30 fresco capturado a las 17:11:04 y la cola editorial estaba vacía."
-    }
-  ],
+  "incident_count": 0,
+  "incidents": [],
   "error": null,
   "activity": [
     {
@@ -575,6 +567,13 @@
       "status": "DONE_WITH_INCIDENTS",
       "phase": "closing",
       "message": "Pasada TTendencias completada 2/2: #DeViernes abrió episodio distinto por la emisión del 13/11 con Belén Esteban y Outlook se actualizó como continuidad del mismo incidente Microsoft 365. Cola final=0; Top 30 fresco capturado a las 17:11:04. El workflow manual 43614186407 seguía in_progress en checkout al cierre, incidencia no bloqueante. ImageGen=0; publicaciones=0."
+    },
+    {
+      "at": "2026-11-14T17:16:10+01:00",
+      "run_id": "tr-20261114T171000-chat-direct",
+      "status": "DONE",
+      "phase": "closing",
+      "message": "Cierre definitivo tras completar el refresco manual 43614186407 con success. Barrera final en main: editorial-queue=0 (updated_at 17:16:01), sin activos. ImageGen=0; publicaciones=0; incidentes=0."
     }
   ],
   "last_started_at": "2026-11-14T15:43:47+01:00",
@@ -658,7 +657,7 @@
     "incidents": [],
     "message": "Pasada completada 3/3: #PSOEyFrenteAmplioVetan explicada; #PazCasaTrabajo29N revisada sin cambios; NVIDIA actualizada como continuidad. Cola final 0; sin ImageGen ni publicación."
   },
-  "message": "Pasada completada 2/2. #DeViernes: episodio distinto; Outlook: continuidad actualizada. Barrera final editorial-queue=0 y Top 30 fresco 17:11:04. Sin ImageGen ni publicaciones. Incidencia no bloqueante: el workflow manual de refresco seguía en checkout.",
+  "message": "Pasada completada 2/2. #DeViernes: episodio distinto; Outlook: continuidad actualizada. Refresco manual 43614186407 completado con éxito; barrera final editorial-queue=0 (17:16:01) y Top 30 fresco. Sin ImageGen ni publicaciones.",
   "history": [
     {
       "run_id": "tr-1794361941170-manual",
@@ -8947,7 +8946,7 @@
   "outbox_comment_id": 6849930890,
   "editorial_apply_commit": "115549892232ee15c0217e5d4653827aa56aafec",
   "refresh_workflow_run_id": 43614186407,
-  "refresh_conclusion": "in_progress_checkout",
+  "refresh_conclusion": "success",
   "maintenance_apply_commits": [
     "eb933ea7a00e1a22d27dc8327255e475f825acbc",
     "e04624377a4fadb3646363f83ba4828cfc9d61f6"
@@ -9540,7 +9539,7 @@
   ],
   "maintenance_apply_run_id": 43614430012,
   "maintenance_apply_commit": "074b3f7e87b6260fde12e02ec813bdd56b8cc218",
-  "finished_at": "2026-11-14T17:14:32+01:00",
-  "completed_at": "2026-11-14T17:14:32+01:00",
+  "finished_at": "2026-11-14T17:16:10+01:00",
+  "completed_at": "2026-11-14T17:16:10+01:00",
   "input_commit": "0c7e18479768676fa11a998fd66efc8d3b43f687"
 }
