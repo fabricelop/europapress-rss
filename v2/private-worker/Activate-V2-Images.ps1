@@ -38,18 +38,26 @@ try {
         $databases = @($rawD1 | ConvertFrom-Json)
         $match = @($databases | Where-Object { $_.name -eq $db -and $_.uuid })
         if ($match.Count -ne 1) { throw 'No se encontro la D1 aislada de las marcas V2' }
-        # R2 must exist BEFORE deployment. Creation may require R2 activated in Cloudflare.
-        $rawR2 = (& npx.cmd wrangler r2 bucket list --json | Out-String)
-        if ($LASTEXITCODE -ne 0) { throw 'R2 no esta habilitado o no se puede consultar. No desplegar.' }
-        $buckets = @($rawR2 | ConvertFrom-Json)
-        $found = @($buckets | Where-Object { $_.name -eq $bucket })
-        if ($found.Count -eq 0) {
+        # R2 must exist BEFORE deployment. Wrangler r2 bucket list does not
+        # guarantee JSON output; use r2 bucket info --json (documented).
+        $bucketInfo = Join-Path $temp 'bucket-info.json'
+        $bucketErrors = Join-Path $temp 'bucket-info-errors.txt'
+        $checkBucket = Start-Process -FilePath 'npx.cmd' -ArgumentList @(
+            'wrangler','r2','bucket','info',$bucket,'--json') -Wait -PassThru -NoNewWindow `
+            -RedirectStandardOutput $bucketInfo -RedirectStandardError $bucketErrors
+        if ($checkBucket.ExitCode -ne 0) {
+            # Creation is attempted only on the expected V2 bucket; an auth
+            # failure also fails closed here without deploying anything.
             Run-Checked 'npx.cmd' @('wrangler','r2','bucket','create',$bucket)
-            $rawR2 = (& npx.cmd wrangler r2 bucket list --json | Out-String)
-            if ($LASTEXITCODE -ne 0) { throw 'No se pudo verificar el bucket R2' }
-            $found = @((@($rawR2 | ConvertFrom-Json)) | Where-Object { $_.name -eq $bucket })
+            $checkBucket = Start-Process -FilePath 'npx.cmd' -ArgumentList @(
+                'wrangler','r2','bucket','info',$bucket,'--json') -Wait -PassThru -NoNewWindow `
+                -RedirectStandardOutput $bucketInfo -RedirectStandardError $bucketErrors
         }
-        if ($found.Count -ne 1) { throw 'R2 no existe o su identidad es ambigua; no desplegar.' }
+        if ($checkBucket.ExitCode -ne 0) { throw 'No se pudo verificar el bucket R2 V2; no desplegar.' }
+        $bucketDetails = Get-Content -LiteralPath $bucketInfo -Raw | ConvertFrom-Json
+        if ([string]$bucketDetails.name -ne $bucket) {
+            throw 'Bucket R2 distinto al esperado. No se despliega.'
+        }
         $config = Get-Content -LiteralPath 'wrangler.jsonc' -Raw | ConvertFrom-Json
         if ($config.name -ne $worker) { throw 'Worker inesperado; no desplegar' }
         $config | Add-Member -Force -NotePropertyName 'd1_databases' -NotePropertyValue @(
