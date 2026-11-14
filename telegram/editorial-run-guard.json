@@ -1,16 +1,13 @@
 {
   "version": 1,
-  "checked_at": "2026-11-14T16:16:20.327810+00:00",
+  "checked_at": "2026-11-14T17:00:05.154079+00:00",
   "projects": {
     "ttittulares": {
       "project": "ttittulares",
-      "checked_at": "2026-11-14T16:16:20.327810+00:00",
-      "pending_count": 2,
-      "pending_ids": [
-        "d9a36f5aadeb",
-        "11acf71d0938"
-      ],
-      "oldest_at": "2026-11-14T16:00:31.660676Z",
+      "checked_at": "2026-11-14T17:00:05.154079+00:00",
+      "pending_count": 0,
+      "pending_ids": [],
+      "oldest_at": null,
       "latest_run": {
         "id": "tt-chat-20261114-1504",
         "status": "DONE",
@@ -19,56 +16,52 @@
         "finished_at": "2026-11-14T14:06:30.041Z",
         "source": "github_pr_trace"
       },
-      "control_command": "tt-urgent-1794672037176",
-      "last_command_at": "2026-11-14T16:00:37.176Z",
-      "status": "dispatch_requested_awaiting_run",
-      "should_dispatch": true,
+      "control_command": "tt-manual-1794674700000",
+      "last_command_at": "2026-11-14T16:45:00Z",
+      "status": "no_work",
+      "should_dispatch": false,
+      "attempts": 0,
+      "last_request_at": "2026-11-14T16:16:20.327810+00:00"
+    },
+    "ttendencias": {
+      "project": "ttendencias",
+      "checked_at": "2026-11-14T17:00:05.154079+00:00",
+      "pending_count": 2,
+      "pending_ids": [
+        "red-review-22f4b8b62def3fd943ba",
+        "red-review-a7711b59da0d7943f631"
+      ],
+      "oldest_at": "2026-11-14T16:58:51.443078+00:00",
+      "latest_run": {
+        "id": "tr-20261114T174000-chat-direct",
+        "status": "DONE",
+        "started_at": "2026-11-14T17:40:00+01:00",
+        "updated_at": "2026-11-14T16:42:00+00:00",
+        "finished_at": "2026-11-14T17:42:00+01:00",
+        "source": "github_pr_trace"
+      },
+      "control_command": "tr-1794675537815-manual",
+      "last_command_at": "2026-11-14T16:58:57.815Z",
+      "status": "within_start_window",
+      "should_dispatch": false,
       "item_execution": [
         {
-          "id": "d9a36f5aadeb",
-          "entered_at": "2026-11-14T16:00:31.660676Z",
-          "should_start_by": "2026-11-14T16:05:31.660676+00:00",
+          "id": "red-review-22f4b8b62def3fd943ba",
+          "entered_at": "2026-11-14T16:58:51.443078+00:00",
+          "should_start_by": "2026-11-14T17:03:51.443078+00:00",
           "global_run_after_entry": false,
           "final_telegram_delivery_confirmed": false
         },
         {
-          "id": "11acf71d0938",
-          "entered_at": "2026-11-14T16:06:37.069135Z",
-          "should_start_by": "2026-11-14T16:11:37.069135+00:00",
+          "id": "red-review-a7711b59da0d7943f631",
+          "entered_at": "2026-11-14T16:58:51.443078+00:00",
+          "should_start_by": "2026-11-14T17:03:51.443078+00:00",
           "global_run_after_entry": false,
           "final_telegram_delivery_confirmed": false
         }
       ],
-      "backlog_signature": "45bb8af18099dac3",
-      "expected_start_by": "2026-11-14T16:05:31.660676+00:00",
-      "attempts": 1,
-      "previous_target_completed_or_superseded": false,
-      "dispatch": {
-        "requested": true,
-        "command_id": "tt-autoguard-1794672980",
-        "requested_at": "2026-11-14T16:16:20.327810Z"
-      },
-      "last_request_at": "2026-11-14T16:16:20.327810+00:00",
-      "last_requested_command_id": "tt-autoguard-1794672980"
-    },
-    "ttendencias": {
-      "project": "ttendencias",
-      "checked_at": "2026-11-14T16:16:20.327810+00:00",
-      "pending_count": 0,
-      "pending_ids": [],
-      "oldest_at": null,
-      "latest_run": {
-        "id": "tr-20261114T171000-chat-direct",
-        "status": "DONE_WITH_INCIDENTS",
-        "started_at": "2026-11-14T17:10:00+01:00",
-        "updated_at": "2026-11-14T16:14:32+00:00",
-        "finished_at": "2026-11-14T17:14:32+01:00",
-        "source": "github_pr_trace"
-      },
-      "control_command": "tr-1794672442032-manual",
-      "last_command_at": "2026-11-14T16:07:22.032Z",
-      "status": "no_work",
-      "should_dispatch": false,
+      "backlog_signature": "c5465ba8fd301334",
+      "expected_start_by": "2026-11-14T17:03:51.443078+00:00",
       "attempts": 0,
       "last_request_at": "2026-11-14T13:56:58.243402+00:00"
     }
