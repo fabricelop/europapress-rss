@@ -115,6 +115,18 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: npx wrangler deploy --keep-vars
+      - name: Read actual Cloudflare cron and last D1 snapshot
+        working-directory: v2/private-worker
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fsS -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/workers/scripts/ttactualidad-v2-private-test/schedules" -o /tmp/tt-v2-cron.json
+          node -e "const d=require('/tmp/tt-v2-cron.json'); console.log('TT_V2_ACTUAL_CLOUDFLARE_CRONS',JSON.stringify(d.result??d.errors)); if(d.success!==true)process.exitCode=1"
+          npx wrangler d1 execute ttactualidad-v2-marks --remote --command "SELECT updated_at, json_extract(payload,'$.captured_at') AS captured_at, json_extract(payload,'$.identical_captures') AS identical_captures FROM v2_radar WHERE id=1" --json
+          echo "TT_V2_DIAGNOSTIC_NOW_UTC=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
       - name: Check private Worker health after deploy
         run: |
           node --input-type=module <<'NODE'
