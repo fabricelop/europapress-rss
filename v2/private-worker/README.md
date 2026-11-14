@@ -4,7 +4,7 @@ Este proyecto monta una COPIA de la PWA real `docs/v2/` de `main` en un Cloudfla
 
 ## Seguridad
 - Sin secretos en GitHub ni navegador: `AUTH_PASSWORD` (al menos 16 caracteres) y `SESSION_SECRET` (32 o más caracteres aleatorios) son **Cloudflare Worker Secrets**.
-- Cookies firmadas HMAC, HttpOnly + Secure + SameSite=Strict, expiran en 12 horas. Cerrar sesión invalida la cookie de ese navegador; rotar `SESSION_SECRET` invalida todas.
+- Cookies firmadas HMAC, HttpOnly + Secure + SameSite=Strict, expiran en 30 días. Cerrar sesión invalida la cookie de ese navegador; rotar `SESSION_SECRET` invalida todas.
 - `assets.run_worker_first=true`: cada acceso a HTML, JS, CSS, iconos y API se autentica; las peticiones sin cookie no reciben archivos.
 - El código no usa KV, D1 ni R2 para login; no necesita cron ni añade consumo de almacenamiento. Se carga la página y se consulta el Top30 mediante un proxy autenticado.\n- Login: binding Cloudflare Rate Limiting `LOGIN_LIMITER`, aprox. 5 intentos por minuto y dirección de red dentro de cada ubicación (no es un bloqueo global estricto). No requiere escrituras KV.
 - Las acciones editoriales están bloqueadas deliberadamente hasta habilitar un endpoint seguro y comprobar el flujo E.
@@ -29,3 +29,6 @@ El Worker Free tiene 100.000 invocaciones/día en el conjunto de la cuenta y 10 
 - Mantener una contraseña larga, única y aleatoria; el limitador de Cloudflare no sustituye la fortaleza de la clave.
 
 No activar pagos ni vincular despliegue automático sin autorización explícita.
+
+## Duración de sesión
+Se ha preparado `SESSION_HOURS=720` (30 días exactos). El código valida el máximo de 30 días para la firma; tras desplegar la nueva versión la cookie existente de 12 horas sigue expirando en su fecha anterior y el próximo inicio de sesión emitirá una cookie de 30 días. No hay renovación silenciosa, cada navegador tiene su propia cookie. Reiniciar sesión o borrar cookies requiere entrar otra vez.
