@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-14T22:59:53.420880+00:00",
+  "checked_at": "2026-11-14T23:16:00.619642+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -42,8 +42,9 @@
     "top10": {
       "ok": true,
       "count": 10,
-      "non_stale_sources": 2,
+      "non_stale_sources": 4,
       "verified_fresh_sources": [
+        "whatstrends",
         "xtrendsiamrohit"
       ],
       "live_verified": true,
@@ -59,8 +60,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 4.0,
-      "run_id": 43650621391,
+      "age_minutes": 5.3,
+      "run_id": 43651907577,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -72,7 +73,7 @@
     },
     "request_queue": {
       "ok": false,
-      "invalid_count": 905,
+      "invalid_count": 238,
       "noise_count": 0
     },
     "ready_consistency": {
@@ -84,7 +85,7 @@
       "ok": true,
       "pending_count": 1,
       "overdue_count": 0,
-      "oldest_age_minutes": 3.4,
+      "oldest_age_minutes": 19.5,
       "warning_after_minutes": 30,
       "overdue_items": [],
       "repairable": false
@@ -106,9 +107,9 @@
   },
   "repairs_started": [],
   "blocking": [
-    "cola con 905 estado(s) inválido(s)"
+    "cola con 238 estado(s) inválido(s)"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "cola con 905 estado(s) inválido(s)"
+  "last_alert_signature": "cola con 238 estado(s) inválido(s)"
 }
