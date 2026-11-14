@@ -154,6 +154,14 @@ async function imageRead(request,env,trendId) {
   return new Response(object.body,{headers:headers({"Content-Type":meta.content_type,"ETag":object.httpEtag||object.etag})});
  }catch{return json({error:"image_read_unavailable"},503);}
 }
+function imageIngestReady(request,env) {
+  if(request.method!=="GET")return json({error:"method_not_allowed"},405);
+  const supplied=request.headers.get("x-ttv2-image-ingest")||"";
+  if(typeof env.IMAGE_INGEST_SECRET!=="string"||env.IMAGE_INGEST_SECRET.length<32 ||
+     !safeEqual(supplied,env.IMAGE_INGEST_SECRET))return json({error:"forbidden"},403);
+  if(!env.V2_IMAGES||!env.MARKS_DB)return json({ok:false,error:"image_storage_not_configured"},503);
+  return json({ok:true,storage:"ready"});
+}
 async function imageIngest(request,env) {
  if(request.method!=="POST")return json({error:"method_not_allowed"},405);
  if(!env.V2_IMAGES||!env.MARKS_DB||typeof env.IMAGE_INGEST_SECRET!=="string"||env.IMAGE_INGEST_SECRET.length<32)return json({error:"image_ingest_not_configured"},503);
@@ -209,6 +217,7 @@ export default {
     const url = new URL(request.url);
     if (url.pathname === "/health") return json({ok:true,service:"ttactualidad-v2-private",configured:configured(env)});
     if (!configured(env)) return result("Acceso privado no configurado",503);
+    if (url.pathname === "/api/image-ingest-ready") return imageIngestReady(request,env);
     if (url.pathname === "/api/image-ingest") return imageIngest(request,env);
     if (url.pathname === "/api/login") {
       if (request.method !== "POST" || !sameOrigin(request)) return json({ok:false},403);
