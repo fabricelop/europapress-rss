@@ -1279,34 +1279,35 @@
       "event_id": "260e23cb9df1",
       "revision": 1,
       "account": "ttittulares",
-      "state": "reserved",
+      "state": "pending",
       "requested_at": "2026-11-14T11:37:54+00:00",
       "channel_id": "6aeed01ae29c69a1719020c2",
       "media_type": "text",
-      "checked_at": "2026-11-14T11:37:56+00:00"
+      "checked_at": "2026-11-14T11:37:59+00:00",
+      "buffer_post_id": "6af84816bb36d00909087825"
     }
   ],
   "api_quota": {
     "limit": 2000,
-    "remaining": 1704,
-    "used": 296,
+    "remaining": 1703,
+    "used": 297,
     "window_seconds": 2592000,
-    "resets_in_seconds": 1973855,
-    "observed_at": "2026-11-14T11:37:56+00:00",
+    "resets_in_seconds": 1973853,
+    "observed_at": "2026-11-14T11:37:59+00:00",
     "other_windows": [
       {
         "window_seconds": 900,
         "limit": 150,
-        "remaining": 148,
-        "used": 2,
-        "resets_in_seconds": 900
+        "remaining": 147,
+        "used": 3,
+        "resets_in_seconds": 899
       },
       {
         "window_seconds": 86400,
         "limit": 600,
-        "remaining": 591,
-        "used": 9,
-        "resets_in_seconds": 72709
+        "remaining": 590,
+        "used": 10,
+        "resets_in_seconds": 72707
       }
     ]
   },
@@ -1771,6 +1772,12 @@
       "observed_at": "2026-11-14T11:37:56+00:00",
       "limit": 2000,
       "used": 296,
+      "sent_total": 61
+    },
+    {
+      "observed_at": "2026-11-14T11:37:59+00:00",
+      "limit": 2000,
+      "used": 297,
       "sent_total": 61
     }
   ]
