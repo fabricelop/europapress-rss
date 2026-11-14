@@ -7,46 +7,43 @@
   "previous_run_id": "tr-20261114T055500-chat-direct",
   "command_id": "tr-20261114T062500-chat-direct",
   "source": "chat_direct",
-  "status": "RUNNING",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-14T06:25:00+01:00",
-  "updated_at": "2026-11-14T06:29:00+01:00",
-  "current": 0,
-  "total": 2,
-  "trend_id": "red-review-144a37a5a62752d42d1e",
-  "title": "Revisar novedades: Jensen Huang",
-  "queue_complete": false,
-  "processed_ids": [],
+  "updated_at": "2026-11-14T06:32:30+01:00",
+  "current": 3,
+  "total": 3,
+  "trend_id": null,
+  "title": "Pasada editorial TTendencias",
+  "queue_complete": true,
+  "processed_ids": [
+    "red-review-144a37a5a62752d42d1e",
+    "red-review-fc6b439ee91ccb04519c"
+  ],
   "converged_ids": [
     "b282b0745468"
   ],
-  "remaining_ids": [
-    "red-review-144a37a5a62752d42d1e",
-    "red-review-fc6b439ee91ccb04519c"
-  ],
-  "remaining_active_ids": [
-    "red-review-144a37a5a62752d42d1e",
-    "red-review-fc6b439ee91ccb04519c"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 0,
+    "attempted": 3,
+    "observed": 3,
+    "closed": 3,
     "explained": 0,
     "problematic": 0,
-    "updates": 0,
-    "review_completed_no_distinct_event": 0,
+    "updates": 2,
+    "review_completed_no_distinct_event": 1,
     "maintenance_reviews": 2,
     "unchanged_reviews": 0,
-    "continuity_updates": 0,
+    "continuity_updates": 2,
     "distinct_updates": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -54,7 +51,35 @@
     "incidents": 0,
     "concurrent_convergence": 1
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "b282b0745468",
+      "revision": 0,
+      "name": "Jensen Huang",
+      "outcome": "review_completed_no_distinct_event",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "apply_commit": "e30a815465b38f1b60e25ea5abc9174d171cc1fa"
+    },
+    {
+      "id": "red-review-144a37a5a62752d42d1e",
+      "revision": 0,
+      "name": "Revisar novedades: Jensen Huang",
+      "outcome": "continuity",
+      "applied": true,
+      "source_id": "f3c37f45aebd",
+      "apply_commit": "ff00bc7d6522d290ee26bd8f0e7dde3209ba9a87"
+    },
+    {
+      "id": "red-review-fc6b439ee91ccb04519c",
+      "revision": 0,
+      "name": "Revisar novedades: NVIDIA",
+      "outcome": "continuity",
+      "applied": true,
+      "source_id": "cf2df84a5714",
+      "apply_commit": "6b3c08575ce512afdf7444b3e036317b7acb2733"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -433,29 +458,35 @@
       "revision": 0,
       "name": "Revisar novedades: Jensen Huang",
       "message": "Barrera JIT=2 review_red. Reuters publica una novedad del 14/11 sobre declaraciones engañosas de Huang a directivos; se prepara actualización de continuidad, no episodio distinto. NVIDIA se revisa en la misma crisis de liderazgo. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-14T06:32:30+01:00",
+      "run_id": "tr-20261114T062500-chat-direct",
+      "status": "DONE",
+      "phase": "closing",
+      "message": "Pasada 3/3 cerrada. Jensen reentry: no_distinct_event por convergencia; Jensen y NVIDIA review_red: continuidad aplicada. editorial-queue=0, mobile activo=0. Sin ImageGen ni publicaciones."
     }
   ],
   "last_started_at": "2026-11-14T06:26:38+01:00",
   "last_completed_at": "2026-11-14T06:26:38+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261114T054000-chat-direct",
+    "run_id": "tr-20261114T062500-chat-direct",
     "status": "DONE",
-    "started_at": "2026-11-14T05:40:00+01:00",
-    "finished_at": "2026-11-14T05:42:00+01:00",
-    "at": "2026-11-14T05:42:00+01:00",
+    "started_at": "2026-11-14T06:25:00+01:00",
+    "finished_at": "2026-11-14T06:32:30+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 0,
-      "observed": 0,
-      "closed": 0,
+      "attempted": 3,
+      "observed": 3,
+      "closed": 3,
       "explained": 0,
       "problematic": 0,
-      "updates": 0,
-      "review_completed_no_distinct_event": 0,
-      "maintenance_reviews": 0,
+      "updates": 2,
+      "review_completed_no_distinct_event": 1,
+      "maintenance_reviews": 2,
       "unchanged_reviews": 0,
-      "continuity_updates": 0,
+      "continuity_updates": 2,
       "distinct_updates": 0,
       "stale_reviews": 0,
       "unverified_reviews": 0,
@@ -468,16 +499,40 @@
       "image_outbox_created": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 0
+      "concurrent_convergence": 1
     },
-    "processed_ids": [],
-    "converged_ids": [],
-    "outcomes": [],
-    "incident_count": 0,
-    "incidents": [],
-    "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: Top 30 capturado a las 05:41:32, editorial-queue=0 (updated_at 2026-11-14T05:41:39+01:00) y mobile-decisions sin estados editoriales activos. Sin ImageGen ni publicaciones."
+    "outcomes": [
+      {
+        "id": "b282b0745468",
+        "revision": 0,
+        "name": "Jensen Huang",
+        "outcome": "review_completed_no_distinct_event",
+        "applied": true,
+        "via": "concurrent_convergence",
+        "apply_commit": "e30a815465b38f1b60e25ea5abc9174d171cc1fa"
+      },
+      {
+        "id": "red-review-144a37a5a62752d42d1e",
+        "revision": 0,
+        "name": "Revisar novedades: Jensen Huang",
+        "outcome": "continuity",
+        "applied": true,
+        "source_id": "f3c37f45aebd",
+        "apply_commit": "ff00bc7d6522d290ee26bd8f0e7dde3209ba9a87"
+      },
+      {
+        "id": "red-review-fc6b439ee91ccb04519c",
+        "revision": 0,
+        "name": "Revisar novedades: NVIDIA",
+        "outcome": "continuity",
+        "applied": true,
+        "source_id": "cf2df84a5714",
+        "apply_commit": "6b3c08575ce512afdf7444b3e036317b7acb2733"
+      }
+    ],
+    "message": "Pasada TTendencias 3/3 cerrada con cola 0; dos actualizaciones de continuidad y una reentrada sin episodio distinto."
   },
-  "message": "Pasada TTendencias RUNNING. La reentrada b282b0745468 convergió con otro consumidor; la barrera JIT abrió dos review_red vigentes (Jensen Huang y NVIDIA). Investigación completada y persistencia en curso; sin ImageGen ni publicación.",
+  "message": "Pasada TTendencias completada 3/3: la reentrada Jensen Huang b282b0745468 convergió como no_distinct_event y las revisiones rojas de Jensen Huang y NVIDIA se aplicaron como continuidad con la novedad Reuters del 14/11. Barrera final: editorial-queue=0 y sin estados móviles activos. Sin ImageGen ni publicaciones.",
   "history": [
     {
       "run_id": "tr-1794361941170-manual",
@@ -5247,13 +5302,21 @@
         }
       ],
       "message": "Pasada TTendencias completada 3/3: Jorge Salvaje r1 corregido y explicado; #PazCasaTrabajo29N y Jensen Huang actualizados como continuidad en sus mismas fichas. Barrera final revalidada en main: editorial-queue=0 y mobile-decisions sin estados editoriales activos. ImageGen=0; publicaciones=0; incidentes=0."
+    },
+    {
+      "run_id": "tr-20261114T062500-chat-direct",
+      "status": "DONE",
+      "started_at": "2026-11-14T06:25:00+01:00",
+      "finished_at": "2026-11-14T06:32:30+01:00",
+      "attempted": 3,
+      "closed": 3,
+      "queue_remaining": 0,
+      "continuity_updates": 2,
+      "review_completed_no_distinct_event": 1,
+      "incidents": 0
     }
   ],
-  "current_item": {
-    "id": "red-review-144a37a5a62752d42d1e",
-    "revision": 0,
-    "name": "Revisar novedades: Jensen Huang"
-  },
+  "current_item": null,
   "withdrawn_ids": [],
   "last_finished_at": "2026-11-14T05:42:00+01:00",
   "last_revalidated_at": "2026-11-14T05:42:00+01:00",
@@ -9139,5 +9202,5 @@
   ],
   "maintenance_apply_run_id": 43502827908,
   "maintenance_apply_commit": "e04624377a4fadb3646363f83ba4828cfc9d61f6",
-  "finished_at": "2026-11-14T05:57:00+01:00"
+  "finished_at": "2026-11-14T06:32:30+01:00"
 }
