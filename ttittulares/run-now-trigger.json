@@ -1,13 +1,20 @@
 {
   "version": 2,
-  "command_id": "tt-1794645900000-chatgpt",
-  "requested_at": "2026-11-14T08:45:00.000Z",
-  "mode": "manual",
-  "executor": "chatgpt",
+  "command_id": "tt-autoguard-1794646874",
+  "requested_at": "2026-11-14T09:01:14.083080Z",
+  "mode": "manual_pc_chat",
+  "executor": "pc_chat_ttittulares_dedicated",
   "project": "ttittulares",
   "launcher_arg": "titulares",
   "task": "editorial",
   "auto_image_followup": false,
-  "source": "chatgpt_manual_user_request",
-  "reason": "user_requested_ejecuta_ttittulares"
+  "source": "tt_autoheal_editorial_watchdog",
+  "reason": "editorial_not_started_in_time",
+  "pending_ids": [
+    "46c3fe5722cb"
+  ],
+  "target_id": "46c3fe5722cb",
+  "target_revision": 1,
+  "target_name": "Tres accidente de camiones con un muerto cortan la autopista AP-7 en Tarragona y Barcelona que permanecer cerrada unas 10 horas",
+  "scope": "single_item"
 }
