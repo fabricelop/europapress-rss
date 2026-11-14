@@ -7,29 +7,24 @@
   "previous_run_id": "tr-20261114T184000-chat-direct",
   "command_id": "tr-20261114T191000-chat-direct",
   "source": "chat_direct",
-  "status": "RUNNING",
+  "status": "success",
   "phase": "preparing",
   "started_at": "2026-11-14T19:10:00+01:00",
-  "updated_at": "2026-11-14T19:10:00+01:00",
+  "updated_at": "2026-11-14T19:14:21+01:00",
   "current": 0,
   "total": 4,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": false,
-  "processed_ids": [],
+  "queue_complete": true,
+  "processed_ids": [
+    "45137e61aac6",
+    "91130efbcdc5",
+    "98ac3cfea2c8",
+    "a30822730978"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "a30822730978",
-    "98ac3cfea2c8",
-    "91130efbcdc5",
-    "45137e61aac6"
-  ],
-  "remaining_active_ids": [
-    "a30822730978",
-    "98ac3cfea2c8",
-    "91130efbcdc5",
-    "45137e61aac6"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
@@ -609,8 +604,8 @@
       "message": "Pasada manual iniciada desde ChatGPT; cola autoritativa inicial=4 (#EurovisionAsia, Hernani, Japón, Raphinha). Revalidación JIT; sin ImageGen ni publicación."
     }
   ],
-  "last_started_at": "2026-11-14T15:43:47+01:00",
-  "last_completed_at": "2026-11-14T17:42:00+01:00",
+  "last_started_at": "2026-11-14T19:14:21+01:00",
+  "last_completed_at": "2026-11-14T19:14:21+01:00",
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-20261114T174000-chat-direct",
