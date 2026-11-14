@@ -161,6 +161,7 @@ def run(page,row,*,root,secret=None,storage_check=check_storage_ready,
     saved=upload(job,raw,secret)
     if saved.get("status") not in ("saved","already_saved"):
         raise RuntimeError("V2_IMAGE_REMOTE_RECEIPT_INVALID")
+    saved["command_id"]=job["command_id"]
     temp=receipt.with_suffix(".json.tmp")
     temp.write_text(json.dumps(saved,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     temp.replace(receipt)
