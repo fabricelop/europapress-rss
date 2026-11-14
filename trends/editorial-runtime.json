@@ -7,15 +7,15 @@
   "previous_run_id": "tr-20261114T054000-chat-direct",
   "command_id": "tr-20261114T055500-chat-direct",
   "source": "chat_direct",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE_WITH_INCIDENTS",
+  "phase": "closing",
   "started_at": "2026-11-14T05:55:00+01:00",
-  "updated_at": "2026-11-14T05:55:00+01:00",
+  "updated_at": "2026-11-14T05:57:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -43,12 +43,20 @@
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 0,
+    "incidents": 1,
     "concurrent_convergence": 0
   },
   "outcomes": [],
-  "incident_count": 0,
-  "incidents": [],
+  "incident_count": 1,
+  "incidents": [
+    {
+      "at": "2026-11-14T05:57:00+01:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": "Refresco manual TTendencias",
+      "reason": "GitHub Actions run 43559070619 seguía in_progress en checkout al cerrar; la cola autoritativa persistida más reciente era de 05:51:24 y permanecía vacía, con Top 30 capturado a las 05:51:19."
+    }
+  ],
   "error": null,
   "activity": [
     {
@@ -408,6 +416,13 @@
       "status": "RUNNING",
       "phase": "preparing",
       "message": "Ejecución manual iniciada desde ChatGPT; refresco real del Top 30 solicitado y barrera editorial JIT en curso. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-14T05:57:00+01:00",
+      "run_id": "tr-20261114T055500-chat-direct",
+      "status": "DONE_WITH_INCIDENTS",
+      "phase": "closing",
+      "message": "Pasada TTendencias completada 0/0 sobre la última barrera persistida: editorial-queue=0 y mobile-decisions sin estados activos. El refresco manual 43559070619 seguía en checkout; incidencia no bloqueante. Sin ImageGen ni publicaciones."
     }
   ],
   "last_started_at": "2026-11-14T05:40:00+01:00",
@@ -8543,8 +8558,8 @@
   ],
   "outbox_comment_id": 6849930890,
   "editorial_apply_commit": "0e8178e2936236c7392088507bda7fe9ad8e590a",
-  "refresh_workflow_run_id": null,
-  "refresh_conclusion": "completed_with_health_status_conflict_markers",
+  "refresh_workflow_run_id": 43559070619,
+  "refresh_conclusion": "in_progress_checkout",
   "maintenance_apply_commits": [
     "eb933ea7a00e1a22d27dc8327255e475f825acbc",
     "e04624377a4fadb3646363f83ba4828cfc9d61f6"
@@ -9109,5 +9124,6 @@
     "c74a2aca815578b22fd10e4d2ee66b3dd64f0693"
   ],
   "maintenance_apply_run_id": 43502827908,
-  "maintenance_apply_commit": "e04624377a4fadb3646363f83ba4828cfc9d61f6"
+  "maintenance_apply_commit": "e04624377a4fadb3646363f83ba4828cfc9d61f6",
+  "finished_at": "2026-11-14T05:57:00+01:00"
 }
