@@ -3,45 +3,46 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261114T152500-chat-direct",
-  "previous_run_id": "tr-20261114T151000-chat-direct",
-  "command_id": "tr-20261114T152500-chat-direct",
+  "run_id": "tr-20261114T154000-chat-direct",
+  "previous_run_id": "tr-20261114T152500-chat-direct",
+  "command_id": "tr-20261114T154000-chat-direct",
   "source": "chat_direct",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-14T15:25:00+01:00",
-  "updated_at": "2026-11-14T15:30:00+01:00",
-  "current": 2,
-  "total": 2,
-  "trend_id": null,
-  "title": "Pasada editorial TTendencias",
-  "queue_complete": true,
-  "processed_ids": [
-    "red-review-f1d54e870e0b088fd921",
-    "red-review-6b86b17ba53670f185c0"
-  ],
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-14T15:40:00+01:00",
+  "updated_at": "2026-11-14T15:40:00+01:00",
+  "current": 0,
+  "total": 1,
+  "trend_id": "4a0b99c27aaf",
+  "title": "#PSOEyFrenteAmplioVetan",
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "4a0b99c27aaf"
+  ],
+  "remaining_active_ids": [
+    "4a0b99c27aaf"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
+    "attempted": 0,
+    "observed": 1,
+    "closed": 0,
     "explained": 0,
     "problematic": 0,
-    "updates": 1,
-    "review_completed_no_distinct_event": 2,
-    "maintenance_reviews": 2,
-    "unchanged_reviews": 1,
-    "continuity_updates": 1,
+    "updates": 0,
+    "review_completed_no_distinct_event": 0,
+    "maintenance_reviews": 0,
+    "unchanged_reviews": 0,
+    "continuity_updates": 0,
     "distinct_updates": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 1,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -49,24 +50,7 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "red-review-f1d54e870e0b088fd921",
-      "revision": 0,
-      "name": "Revisar novedades: Marcial Dorado",
-      "outcome": "updated_continuity",
-      "applied": true,
-      "source_id": "c62c0b344a57"
-    },
-    {
-      "id": "red-review-6b86b17ba53670f185c0",
-      "revision": 0,
-      "name": "Revisar novedades: #PSOEyFrenteAmplioVetan",
-      "outcome": "unchanged",
-      "applied": true,
-      "source_id": "b8593c0a3afe"
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -518,6 +502,16 @@
       "status": "DONE",
       "phase": "closing",
       "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 2026-11-14T11:57:10.351658+00:00) y mobile-decisions sin estados editoriales activos; Top 30 capturado a las 2026-11-14T12:51:02+01:00. Disparo manual persistido en 58e909a3d03ce1a337deed86a1721f58e2198855. Sin ImageGen ni publicaciones; incidentes=0."
+    },
+    {
+      "at": "2026-11-14T15:40:00+01:00",
+      "run_id": "tr-20261114T154000-chat-direct",
+      "status": "RUNNING",
+      "phase": "preparing",
+      "trend_id": "4a0b99c27aaf",
+      "revision": 0,
+      "name": "#PSOEyFrenteAmplioVetan",
+      "message": "Pasada manual TTendencias iniciada desde ChatGPT. Cola autoritativa inicial=1: reelaboración explícita de #PSOEyFrenteAmplioVetan r0. Revalidación JIT e investigación desde cero; sin ImageGen ni publicación."
     }
   ],
   "last_started_at": "2026-11-14T15:25:00+01:00",
@@ -5410,7 +5404,13 @@
       "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 2026-11-14T11:57:10.351658+00:00) y mobile-decisions sin estados editoriales activos; Top 30 capturado a las 2026-11-14T12:51:02+01:00. Disparo manual persistido en 58e909a3d03ce1a337deed86a1721f58e2198855. Sin ImageGen ni publicaciones; incidentes=0."
     }
   ],
-  "current_item": null,
+  "current_item": {
+    "id": "4a0b99c27aaf",
+    "revision": 0,
+    "name": "#PSOEyFrenteAmplioVetan",
+    "task": "explain",
+    "status": "preparing"
+  },
   "withdrawn_ids": [],
   "last_finished_at": "2026-11-14T15:30:00+01:00",
   "last_revalidated_at": "2026-11-14T15:30:00+01:00",
