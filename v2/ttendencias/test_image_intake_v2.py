@@ -52,7 +52,7 @@ class IntakeTests(unittest.TestCase):
             first=intake.persist_original(folder,JOB,raw)
             self.assertEqual(first.read_bytes(),raw)
             self.assertEqual(intake.persist_original(folder,JOB,raw),first)
-            changed=raw[:-1]+bytes([raw[-1]^1])
+            changed=original_png()
             with self.assertRaisesRegex(RuntimeError,"LOCAL_ORIGINAL_CONFLICT"):
                 intake.persist_original(folder,JOB,changed)
         def upload(req):
