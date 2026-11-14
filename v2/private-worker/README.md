@@ -32,3 +32,20 @@ No activar pagos ni vincular despliegue automático sin autorización explícita
 
 ## Duración de sesión
 Se ha preparado `SESSION_HOURS=720` (30 días exactos). El código valida el máximo de 30 días para la firma; tras desplegar la nueva versión la cookie existente de 12 horas sigue expirando en su fecha anterior y el próximo inicio de sesión emitirá una cookie de 30 días. No hay renovación silenciosa, cada navegador tiene su propia cookie. Reiniciar sesión o borrar cookies requiere entrar otra vez.
+
+
+## Imágenes ImageGen V2 (arquitectura equivalente a V1)
+
+**La miniatura de Jordi Wild no es el procedimiento definitivo.** V1 recupera el original renderizado del ChatGPT concreto, comprueba la relación inmutable con el trabajo editorial (ID, revisión, comando, hash del texto), guarda el fichero real en `generated-images` y asocia su URL a la entidad editorial.
+
+V2 mantiene el mismo contrato de identidad pero almacena imágenes **privadas** en R2, no en carpetas públicas de GitHub:
+1. Tras capturar la explicación, programar un trabajo ImageGen **por tendencia/revisión**, con `command_id` exclusivo y `editorial_sha256` del texto exacto capturado.
+2. Generar mediante ImageGen en la conversación correspondiente. El receptor de V2 debe recuperar el **raster original** de la respuesta, sin hacer capturas de pantalla, miniaturas ni regeneraciones involuntarias.
+3. Subirlo al Worker usando `POST /api/image-ingest` con secreto de ingestión **solo en Windows**, nunca en el navegador ni en GitHub. Cabeceras: `x-ttv2-image-ingest`, `x-ttv2-trend-id`, `x-ttv2-revision`, `x-ttv2-command-id`, `x-ttv2-editorial-sha256`, `x-ttv2-raster-sha256`, `x-ttv2-width`, `x-ttv2-height`, `content-type`. Cuerpo: fichero original PNG/JPEG/WebP, máximo 8 MiB y mínimo 100 KB.
+4. El Worker verifica la tendencia y revisión **actualmente presentes en el Top 30**, hash editorial, tipo binario y SHA256 de píxeles/carga, y rechaza duplicidades o imágenes de otra revisión. Conserva el original en el bucket `ttactualidad-v2-images`, con referencia en `v2_images` de D1.
+5. La aplicación muestra cada imagen exclusivamente mediante `GET /api/image/<trend_id>?revision=N` **con sesión**. Si no existe todavía, no muestra una miniatura falsa.
+6. Si la explicación pasa a otra revisión, su imagen anterior permanece archivada en R2, pero no aparece en la revisión nueva. No se usan imágenes de otros elementos por semejanza de nombres.
+
+**Estado de implementación:** backend privado y presentación genérica preparados en rama; el receptor Windows ImageGen V2 y su registro automático de trabajos todavía deben conectarse. La creación del bucket R2, la clave `IMAGE_INGEST_SECRET` y el despliegue de esa versión también están pendientes. **No desplegar** hasta tener el bucket y D1. No solicitar al usuario descargas manuales por cada imagen.
+
+Nota de cuotas: R2 Standard Free contempla almacenamiento y operaciones gratuitos dentro de determinados límites; puede requerir habilitación en la cuenta y cualquier exceso puede facturarse según las condiciones de Cloudflare. Verificar antes de activar.
