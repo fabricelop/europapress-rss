@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-14T08:01:08.714606+00:00",
+  "checked_at": "2026-11-14T08:15:41.580625+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -42,12 +42,12 @@
     "top10": {
       "ok": false,
       "count": 10,
-      "non_stale_sources": 4,
+      "non_stale_sources": 5,
       "verified_fresh_sources": [
         "xtrendsiamrohit"
       ],
       "live_verified": false,
-      "captured_age_minutes": 7.0,
+      "captured_age_minutes": 11.0,
       "noise_count": 0
     },
     "listener": {
@@ -59,8 +59,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 4.8,
-      "run_id": 43573404893,
+      "age_minutes": 4.9,
+      "run_id": 43574553364,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -72,7 +72,7 @@
     },
     "request_queue": {
       "ok": false,
-      "invalid_count": 867,
+      "invalid_count": 868,
       "noise_count": 0
     },
     "ready_consistency": {
@@ -81,21 +81,31 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": true,
-      "pending_count": 2,
-      "overdue_count": 0,
-      "oldest_age_minutes": 19.2,
+      "ok": false,
+      "pending_count": 5,
+      "overdue_count": 1,
+      "oldest_age_minutes": 33.8,
       "warning_after_minutes": 30,
-      "overdue_items": [],
+      "overdue_items": [
+        {
+          "id": "red-review-1fc81745644308aa89e3",
+          "name": "Revisar novedades: Outlook",
+          "status": "preparing",
+          "age_minutes": 33.8
+        }
+      ],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": true,
-      "status": "not-required",
+      "ok": false,
+      "status": "overdue",
       "queue_complete": false,
       "remaining_active_ids": [
         "red-review-1fc81745644308aa89e3",
-        "red-review-12bf0a73c6dac468ff7a"
+        "6c3719ad5c9a",
+        "fee8a9b98cf8",
+        "8ac816dd3bd8",
+        "79900272eaad"
       ],
       "contradictory_success": false
     },
@@ -108,9 +118,10 @@
   "repairs_started": [],
   "blocking": [
     "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos",
-    "cola con 867 estado(s) inválido(s)"
+    "cola con 868 estado(s) inválido(s)",
+    "cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 33.8 min"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 867 estado(s) inválido(s)"
+  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 868 estado(s) inválido(s) | cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 33.8 min"
 }
