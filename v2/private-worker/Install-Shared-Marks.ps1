@@ -7,7 +7,7 @@ Push-Location $dir
 try {
   # Redirect native Git chatter to an ordinary text file; Windows PowerShell can misclassify stderr.
   $log = Join-Path $env:TEMP "ttactualidad-v2-git-pull.log"
-  & cmd.exe /d /c "git pull --ff-only origin feature/ttactualidad-v2-private-worker-20261114 > \"$log\" 2>&1"
+  & cmd.exe /d /c "git pull --ff-only origin feature/ttactualidad-v2-private-worker-20261114 > $log 2>&1"
   if ($LASTEXITCODE -ne 0) { throw "No se pudo actualizar Git; revisa $log" }
   $branch = (& git.exe branch --show-current | Out-String).Trim()
   if ($branch -ne "feature/ttactualidad-v2-private-worker-20261114") { throw "Rama de Git incorrecta" }
@@ -15,9 +15,9 @@ try {
   $cfg = Get-Content ".\wrangler.jsonc" -Raw
   if (!$cfg.Contains('"name": "ttactualidad-v2-private-test"')) { throw "Nombre del Worker inesperado" }
   Write-Host "Comprobando base de datos de V2..."
-  $all = & npx.cmd wrangler d1 list --json 2>&1 | Out-String
+  $all = & npx.cmd wrangler d1 list --json | Out-String
   if ($LASTEXITCODE -ne 0) { throw "No se pudo consultar D1: $all" }
-  $db = @($all | ConvertFrom-Json | Where-Object { $_.name -eq "ttactualidad-v2-marks" })
+  $db = @(@($all | ConvertFrom-Json) | Where-Object { $_.name -eq "ttactualidad-v2-marks" })
   if ($db.Count -eq 0) {
     Write-Host "Creando D1 exclusiva de TTActualidad V2..."
     & npx.cmd wrangler d1 create ttactualidad-v2-marks --binding MARKS_DB --update-config
