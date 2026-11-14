@@ -48,6 +48,17 @@ jobs:
           python3 -m py_compile v2/ttendencias/image_intake_v2.py v2/ttendencias/image_capture_v2.py v2/ttendencias/image_job_v2.py v2/ttendencias/image_daemon_v2.py
           python3 -m pip install --quiet Pillow
           python3 -m unittest -v v2.ttendencias.test_image_intake_v2
+      - name: Read isolated editorial implementation from exact V2 work branch
+        uses: actions/checkout@v4
+        with:
+          ref: feature/ttactualidad-v2-clean
+          path: editorial-clean
+          persist-credentials: false
+      - name: Validate same-chat editorial image integration without browser or Cloudflare
+        working-directory: editorial-clean
+        run: |
+          python3 -m py_compile v2/ttendencias/editorial_run_v2.py v2/ttendencias/image_intake_v2.py v2/ttendencias/image_job_v2.py v2/ttendencias/image_same_chat_v2.py
+          python3 -m unittest -v v2.ttendencias.test_image_same_chat_v2
       - name: Private gate regression suite
         working-directory: v2/private-worker
         run: npm test
