@@ -123,8 +123,18 @@ const HEX64=/^[a-f0-9]{64}$/;
 const IMAGE_COMMAND=/^v2-img-trv2-[a-f0-9]{24}-r[1-9][0-9]*-a[1-9][0-9]*-[a-zA-Z0-9_-]{8,60}$/;
 const IMAGE_TYPES={"image/png":"png","image/jpeg":"jpg","image/webp":"webp"};
 async function currentImageIdentity(trendId,revision) {
- const rows=await currentRanking();
- return rows.find(x=>x.trend_id===trendId&&x.revision===revision&&x.status==="explicada"&&typeof x.explanation==="string"&&x.explanation.trim())||null;
+ // Source of truth is the isolated V2 editorial ledger, not ephemeral Top30.
+ // A completed ImageGen raster must remain eligible even after the trend exits.
+ const upstream=await fetch(SOURCE+"editorial-queue.json",{headers:{"Accept":"application/json"},cf:{cacheTtl:10,cacheEverything:true}});
+ if(!upstream.ok)throw Error("EDITORIAL_UNAVAILABLE");
+ const queue=await upstream.json();
+ if(queue?.step!=="04_editorial_queue"||queue.effects_enabled!==false)throw Error("EDITORIAL_NOT_ISOLATED");
+ const row=queue.items?.[trendId];
+ if(!row||row.trend_id!==trendId||row.revision!==revision||
+    !["captured_review","ready","published"].includes(row.status)||
+    row.capture?.revision!==revision||
+    typeof row.capture.answer!=="string"||!row.capture.answer.trim())return null;
+ return {explanation:row.capture.answer};
 }
 async function imageRead(request,env,trendId) {
  if(request.method!=="GET"||!TREND_ID.test(trendId))return json({error:"not_found"},404);
