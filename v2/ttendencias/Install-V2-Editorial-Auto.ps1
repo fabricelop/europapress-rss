@@ -1,4 +1,7 @@
 # Installer V2: consumidor editorial automático al iniciar sesión Windows.
+# -PilotOnly instala y valida módulos pero deja deshabilitado el programador,
+# para probar UNA sola tendencia manualmente sin arrancar las pendientes.
+param([switch]$PilotOnly)
 # SOLO escribe en %LOCALAPPDATA%\TTActualidadV2 y crea su propia tarea.
 # No modifica V1, puertos 9223/9234, main, Cloudflare ni publicaciones.
 $ErrorActionPreference = 'Stop'
@@ -160,6 +163,13 @@ if ($headlessResult.ExitCode -ne 0) {
     throw 'Chrome V2 normal oculto no validado: consumidor seguirá desactivado, sin reenvíos'
 }
 Write-Host 'TT_V2_HEADED_HIDDEN_VALIDATED=YES'
+if ($PilotOnly) {
+    Write-Host 'TT_V2_PILOT_ONLY=YES'
+    Write-Host 'TT_V2_IMAGE_MODULES_READY=YES'
+    Write-Host 'TT_V2_AUTO_TASK_ENABLED=NO'
+    Write-Host 'TT_V2_PILOT_NEXT=ACTIVATE_PRIVATE_R2_AND_RUN_ONE'
+    return
+}
 # La bandera exacta es autorización para abrir chats. Guardarla solo
 # tras descargar/validar los módulos y justo antes de registrar la tarea.
 $flag = Join-Path $root 'auto-editorial-v2.enabled'
