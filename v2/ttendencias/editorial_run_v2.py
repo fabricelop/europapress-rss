@@ -361,13 +361,15 @@ def run_one(api, state, transcript, auth, item):
                 image_status = {"status": "pending_recovery"}
                 try:
                     same_chat = module("image_same_chat_v2.py", "ttv2_same_chat_image")
-                    saved = same_chat.run(page, verified["items"][trend_id], root=ROOT)
+                    saved = same_chat.run(page, verified["items"][trend_id], root=ROOT, github_auth=auth)
                     image_status = {
                         "status": "saved", "command_id": saved["command_id"],
-                        "sha256": saved["sha256"]}
+                        "sha256": saved["sha256"],"path": saved["path"],
+                        "mime": saved["mime"],"revision": revision,
+                        "backend": "github_v1_style"}
                     record["image_status"] = "saved"
                     record["image_sha256"] = saved["sha256"]
-                    print("TT_V2_IMAGE_SAVED_IN_SAME_CHAT=YES", flush=True)
+                    print("TT_V2_IMAGE_SAVED_IN_SAME_CHAT=YES_GITHUB", flush=True)
                 except Exception as image_error:
                     # The editorial capture is already durable. Never rewrite
                     # or reopen it, never resend an uncertain ImageGen command.
