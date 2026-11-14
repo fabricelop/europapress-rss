@@ -3,26 +3,26 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261114T125500-chat-direct",
-  "previous_run_id": "tr-20261114T124000-chat-direct",
-  "command_id": "tr-20261114T125500-chat-direct",
+  "run_id": "tr-20261114T151000-chat-direct",
+  "previous_run_id": "tr-20261114T125500-chat-direct",
+  "command_id": "tr-20261114T151000-chat-direct",
   "source": "chat_direct",
-  "status": "waiting",
-  "phase": "closing",
-  "started_at": "2026-11-14T12:55:00+01:00",
-  "updated_at": "2026-11-14T13:13:50+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-14T15:10:00+01:00",
+  "updated_at": "2026-11-14T15:10:00+01:00",
   "current": 0,
-  "total": 0,
+  "total": 4,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
   "queue_complete": false,
-  "processed_ids": [
-    "1e1a1c078af2"
-  ],
+  "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [
     "fb1af5a9fcd0",
-    "1e250ecf49df"
+    "3cd0ce287609",
+    "1e250ecf49df",
+    "c6a2d5e7527e"
   ],
   "remaining_active_ids": [
     "fb1af5a9fcd0",
@@ -519,7 +519,7 @@
     "total": 0,
     "queue_complete": true
   },
-  "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 2026-11-14T11:57:10.351658+00:00) y mobile-decisions sin estados editoriales activos; Top 30 capturado a las 2026-11-14T12:51:02+01:00. Disparo manual persistido en 58e909a3d03ce1a337deed86a1721f58e2198855. Sin ImageGen ni publicaciones; incidentes=0.",
+  "message": "Pasada editorial real iniciada desde ChatGPT; 4 revisiones activas revalidadas en main.",
   "history": [
     {
       "run_id": "tr-1794361941170-manual",
