@@ -35,11 +35,15 @@ class Top30WebTests(unittest.TestCase):
     def test_movement_details_reach_public_ranking(self):
         h, q = fixtures()
         h["previous_observed_at"] = "2026-11-13T17:30:00+00:00"
+        h["ranking_unchanged"] = True
+        h["ranking_change_at"] = "2026-11-13T17:30:00+00:00"
         h["topics"]["Trend01"].update(last_change="up", previous_rank=5, positions_changed=4)
         h["topics"]["Trend02"].update(last_change="down", previous_rank=1, positions_changed=-1)
         h["topics"]["Trend03"].update(last_change="unchanged", previous_rank=3, positions_changed=0)
         doc = build(h, q)
         self.assertEqual(doc["comparison_at"], h["previous_observed_at"])
+        self.assertTrue(doc["ranking_unchanged"])
+        self.assertEqual(doc["ranking_change_at"], h["ranking_change_at"])
         self.assertEqual([(i["previous_rank"], i["positions_changed"]) for i in doc["items"][:3]],
                          [(5, 4), (1, -1), (3, 0)])
         self.assertIsNone(doc["items"][3]["previous_rank"])
