@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-14T02:48:38.079081+00:00",
+  "checked_at": "2026-11-14T03:14:27.014862+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -42,12 +42,12 @@
     "top10": {
       "ok": false,
       "count": 10,
-      "non_stale_sources": 3,
+      "non_stale_sources": 4,
       "verified_fresh_sources": [
         "xtrendsiamrohit"
       ],
       "live_verified": false,
-      "captured_age_minutes": 6.8,
+      "captured_age_minutes": 13.0,
       "noise_count": 0
     },
     "listener": {
@@ -59,8 +59,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 4.0,
-      "run_id": 43547959084,
+      "age_minutes": 3.9,
+      "run_id": 43550230503,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -72,7 +72,7 @@
     },
     "request_queue": {
       "ok": false,
-      "invalid_count": 853,
+      "invalid_count": 855,
       "noise_count": 0
     },
     "ready_consistency": {
@@ -81,84 +81,19 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": false,
-      "pending_count": 9,
-      "overdue_count": 9,
-      "oldest_age_minutes": 217.5,
+      "ok": true,
+      "pending_count": 0,
+      "overdue_count": 0,
+      "oldest_age_minutes": 0,
       "warning_after_minutes": 30,
-      "overdue_items": [
-        {
-          "id": "86a31f1f188d",
-          "name": "Jensen Huang",
-          "status": "preparing",
-          "age_minutes": 217.5
-        },
-        {
-          "id": "5ccfacd3e4b2",
-          "name": "EEUU",
-          "status": "preparing",
-          "age_minutes": 167.1
-        },
-        {
-          "id": "2c8ace5a3074",
-          "name": "Estados Unidos",
-          "status": "preparing",
-          "age_minutes": 167.1
-        },
-        {
-          "id": "c51a3aa0c0e4",
-          "name": "Nueva Orleans",
-          "status": "preparing",
-          "age_minutes": 167.1
-        },
-        {
-          "id": "cdaa9045b822",
-          "name": "Panathinaikos",
-          "status": "preparing",
-          "age_minutes": 167.1
-        },
-        {
-          "id": "5a28fa1fccb6",
-          "name": "Lydia",
-          "status": "preparing",
-          "age_minutes": 97.6
-        },
-        {
-          "id": "8b006bddf692",
-          "name": "Santi Acosta",
-          "status": "preparing",
-          "age_minutes": 97.6
-        },
-        {
-          "id": "0f9f984a750e",
-          "name": "Sálvame",
-          "status": "preparing",
-          "age_minutes": 97.6
-        },
-        {
-          "id": "97b0810372fa",
-          "name": "Telecinco",
-          "status": "preparing",
-          "age_minutes": 97.6
-        }
-      ],
+      "overdue_items": [],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": false,
-      "status": "overdue",
-      "queue_complete": false,
-      "remaining_active_ids": [
-        "86a31f1f188d",
-        "5ccfacd3e4b2",
-        "2c8ace5a3074",
-        "c51a3aa0c0e4",
-        "cdaa9045b822",
-        "5a28fa1fccb6",
-        "8b006bddf692",
-        "0f9f984a750e",
-        "97b0810372fa"
-      ],
+      "ok": true,
+      "status": "not-required",
+      "queue_complete": true,
+      "remaining_active_ids": [],
       "contradictory_success": false
     },
     "telegram_provisional": {
@@ -170,10 +105,9 @@
   "repairs_started": [],
   "blocking": [
     "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos",
-    "cola con 853 estado(s) inválido(s)",
-    "cola de explicaciones retrasada: 9 pendiente(s) superan 30 min; más antigua 217.5 min"
+    "cola con 855 estado(s) inválido(s)"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 853 estado(s) inválido(s) | cola de explicaciones retrasada: 9 pendiente(s) superan 30 min; más antigua 217.5 min"
+  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 855 estado(s) inválido(s)"
 }
