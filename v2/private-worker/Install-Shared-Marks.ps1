@@ -1,6 +1,6 @@
 # TTActualidad V2 private: install dedicated D1 storage for red marks.
 # Never touches V1 or FabCalendar; keeps Worker secrets.
-$ErrorActionPreference = "Stop"
+$ErrorActionPreference = "Continue"
 $dir = Join-Path $env:TEMP "ttactualidad-v2-private"
 if (!(Test-Path (Join-Path $dir ".git"))) { throw "Falta el repositorio local V2" }
 Push-Location $dir
