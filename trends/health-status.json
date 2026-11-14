@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-14T19:30:23.410825+00:00",
+  "checked_at": "2026-11-14T19:44:04.194406+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -42,9 +42,8 @@
     "top10": {
       "ok": true,
       "count": 10,
-      "non_stale_sources": 4,
+      "non_stale_sources": 3,
       "verified_fresh_sources": [
-        "whatstrends",
         "xtrendsiamrohit"
       ],
       "live_verified": true,
@@ -60,8 +59,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 3.3,
-      "run_id": 43632040199,
+      "age_minutes": 3.2,
+      "run_id": 43633394785,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -73,7 +72,7 @@
     },
     "request_queue": {
       "ok": false,
-      "invalid_count": 893,
+      "invalid_count": 894,
       "noise_count": 0
     },
     "ready_consistency": {
@@ -84,21 +83,15 @@
     "editorial_queue": {
       "ok": false,
       "pending_count": 2,
-      "overdue_count": 2,
-      "oldest_age_minutes": 31.2,
+      "overdue_count": 1,
+      "oldest_age_minutes": 44.9,
       "warning_after_minutes": 30,
       "overdue_items": [
-        {
-          "id": "red-review-b719f6d49a3b8dc73f27",
-          "name": "Revisar novedades: NVIDIA",
-          "status": "preparing",
-          "age_minutes": 31.2
-        },
         {
           "id": "red-review-eaa9a9adcedb607c5e2f",
           "name": "Revisar novedades: #DeViernes",
           "status": "preparing",
-          "age_minutes": 31.2
+          "age_minutes": 44.9
         }
       ],
       "repairable": false
@@ -108,8 +101,8 @@
       "status": "overdue",
       "queue_complete": false,
       "remaining_active_ids": [
-        "red-review-b719f6d49a3b8dc73f27",
-        "red-review-eaa9a9adcedb607c5e2f"
+        "red-review-eaa9a9adcedb607c5e2f",
+        "red-review-3df8edd6016d540195df"
       ],
       "contradictory_success": false
     },
@@ -121,10 +114,10 @@
   },
   "repairs_started": [],
   "blocking": [
-    "cola con 893 estado(s) inválido(s)",
-    "cola de explicaciones retrasada: 2 pendiente(s) superan 30 min; más antigua 31.2 min"
+    "cola con 894 estado(s) inválido(s)",
+    "cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 44.9 min"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "cola con 893 estado(s) inválido(s) | cola de explicaciones retrasada: 2 pendiente(s) superan 30 min; más antigua 31.2 min"
+  "last_alert_signature": "cola con 894 estado(s) inválido(s) | cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 44.9 min"
 }
