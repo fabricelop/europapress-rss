@@ -3,22 +3,20 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261114T105400-chat-direct",
-  "previous_run_id": "tr-20261114T062500-chat-direct",
-  "command_id": "tr-20261114T105400-chat-direct",
+  "run_id": "tr-20261114T124000-chat-direct",
+  "previous_run_id": "tr-20261114T105400-chat-direct",
+  "command_id": "tr-20261114T124000-chat-direct",
   "source": "chat_direct",
-  "status": "waiting",
-  "phase": "closing",
-  "started_at": "2026-11-14T10:54:00+01:00",
-  "updated_at": "2026-11-14T12:38:12+01:00",
-  "current": 6,
-  "total": 6,
-  "trend_id": null,
+  "status": "RUNNING",
+  "phase": "investigating",
+  "started_at": "2026-11-14T12:40:00+01:00",
+  "updated_at": "2026-11-14T12:40:00+01:00",
+  "current": 0,
+  "total": 5,
+  "trend_id": "86b2f018766f",
   "title": "Pasada editorial TTendencias",
   "queue_complete": false,
-  "processed_ids": [
-    "14d8f9069bdb"
-  ],
+  "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [
     "bad47f0232c5",
@@ -60,59 +58,7 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "7c236b3d8b56",
-      "revision": 0,
-      "name": "#FelizSábado",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "ada3f9ee4ca0c71057b29a4d9148e2d162d2c4b1"
-    },
-    {
-      "id": "ccc33f06ab22",
-      "revision": 0,
-      "name": "#PSOEyFrenteAmplioVetan",
-      "outcome": "review_completed_no_distinct_event",
-      "applied": true,
-      "apply_commit": "ada3f9ee4ca0c71057b29a4d9148e2d162d2c4b1"
-    },
-    {
-      "id": "2ca47e06ac77",
-      "revision": 0,
-      "name": "Lc 18",
-      "outcome": "explained",
-      "applied": true,
-      "apply_commit": "ada3f9ee4ca0c71057b29a4d9148e2d162d2c4b1"
-    },
-    {
-      "id": "a27f2f3186b0",
-      "revision": 0,
-      "name": "Teresa",
-      "outcome": "explained_cause_unconfirmed",
-      "applied": true,
-      "apply_commit": "3fd487b6257f8d3293dad60c1893319a4a8390af"
-    },
-    {
-      "id": "red-review-1a52b7baf5ba425336b0",
-      "revision": 0,
-      "name": "Revisar novedades: Widilo",
-      "outcome": "continuity",
-      "applied": true,
-      "apply_commit": "db66b710ae81802cc5e62461663c3cc6d3b170be",
-      "source_id": "ff856dec111d"
-    },
-    {
-      "id": "red-review-3ba426c1c8a2d6f1dd7a",
-      "revision": 0,
-      "name": "Revisar novedades: Feijoo",
-      "outcome": "distinct_update",
-      "applied": true,
-      "created_id": "trend-update-ec13de99e455af782132",
-      "apply_commit": "db66b710ae81802cc5e62461663c3cc6d3b170be",
-      "source_id": "009af898bf01"
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -536,6 +482,13 @@
       "status": "DONE",
       "phase": "closing",
       "message": "Pasada TTendencias completada 6/6. #FelizSábado, Lc 18 y Teresa explicadas; #PSOEyFrenteAmplioVetan cerrado sin episodio material distinto; Widilo actualizado en continuidad; Feijoo abrió episodio distinto por el cara a cara del 19/11. Barrera final editorial-queue=0 y mobile-decisions activos=0. ImageGen=0; publicaciones=0; incidentes=0."
+    },
+    {
+      "at": "2026-11-14T12:40:00+01:00",
+      "run_id": "tr-20261114T124000-chat-direct",
+      "status": "RUNNING",
+      "phase": "investigating",
+      "message": "Pasada manual iniciada desde ChatGPT; cola autoritativa inicial=5. Revalidación JIT e investigación actual en curso; sin ImageGen ni publicación."
     }
   ],
   "last_started_at": "2026-11-14T12:38:11+01:00",
@@ -549,7 +502,7 @@
     "total": 4,
     "queue_complete": true
   },
-  "message": "Pasada TTendencias completada 3/3: la reentrada Jensen Huang b282b0745468 convergió como no_distinct_event y las revisiones rojas de Jensen Huang y NVIDIA se aplicaron como continuidad con la novedad Reuters del 14/11. Barrera final: editorial-queue=0 y sin estados móviles activos. Sin ImageGen ni publicaciones.",
+  "message": "Pasada manual iniciada desde ChatGPT; cola autoritativa inicial=5. Revalidación JIT e investigación actual en curso; sin ImageGen ni publicación.",
   "history": [
     {
       "run_id": "tr-1794361941170-manual",
