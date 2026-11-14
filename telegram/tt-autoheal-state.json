@@ -2,111 +2,98 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-11-14T02:44:44.354573+00:00",
-      "issue_count": 1,
+      "checked_at": "2026-11-14T09:29:19.988208+00:00",
+      "issue_count": 3,
       "issues": [
+        {
+          "kind": "missing_delivery",
+          "id": "46c3fe5722cb",
+          "title": "Tres accidente de camiones con un muerto cortan la autopista AP-7 en Tarragona y Barcelona que perma",
+          "seconds": 3072,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "e2dd10df6484",
+          "title": "La Guardia Civil cierra un canal de TikTok que captaba cuentas bancarias para cometer ciberdelitos",
+          "seconds": 317,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 2479832,
+          "seconds": 2504107,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
       "actions_started": [
+        "send-ttittulares-ready-telegram.yml",
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "b713f1c3f4a90157b05c0bc411e3f7a3420ba8147f7f0a578d9c128c7e94e639",
+      "open_signature": "af72d8ae092ce58960195be29e825e170845d5f84b8818ed24f3f9bc06c41478",
       "repair_via_workflow_run": false,
-      "escalation_required": 0
+      "escalation_required": 1
     },
     "ttendencias": {
-      "checked_at": "2026-11-14T02:44:44.354573+00:00",
-      "issue_count": 12,
+      "checked_at": "2026-11-14T09:29:19.988208+00:00",
+      "issue_count": 8,
       "issues": [
         {
           "kind": "editorial_overdue",
-          "id": "86a31f1f188d",
-          "title": "Jensen Huang",
-          "seconds": 12817,
-          "workflow": null
-        },
-        {
-          "kind": "editorial_overdue",
-          "id": "5ccfacd3e4b2",
-          "title": "EEUU",
-          "seconds": 9789,
-          "workflow": null
-        },
-        {
-          "kind": "editorial_overdue",
-          "id": "2c8ace5a3074",
-          "title": "Estados Unidos",
-          "seconds": 9789,
-          "workflow": null
-        },
-        {
-          "kind": "editorial_overdue",
-          "id": "c51a3aa0c0e4",
-          "title": "Nueva Orleans",
-          "seconds": 9789,
-          "workflow": null
-        },
-        {
-          "kind": "editorial_overdue",
-          "id": "cdaa9045b822",
-          "title": "Panathinaikos",
-          "seconds": 9789,
-          "workflow": null
-        },
-        {
-          "kind": "editorial_overdue",
-          "id": "5a28fa1fccb6",
-          "title": "Lydia",
-          "seconds": 5621,
-          "workflow": null
-        },
-        {
-          "kind": "editorial_overdue",
-          "id": "8b006bddf692",
-          "title": "Santi Acosta",
-          "seconds": 5621,
-          "workflow": null
-        },
-        {
-          "kind": "editorial_overdue",
-          "id": "0f9f984a750e",
-          "title": "Sálvame",
-          "seconds": 5621,
-          "workflow": null
-        },
-        {
-          "kind": "editorial_overdue",
-          "id": "97b0810372fa",
-          "title": "Telecinco",
-          "seconds": 5621,
+          "id": "6c3719ad5c9a",
+          "title": "#AgropopularSanMartín",
+          "seconds": 5071,
           "workflow": null
         },
         {
           "kind": "missing_delivery",
-          "id": "627119e08741",
-          "title": "Carlos Cuerpo",
-          "seconds": 16424,
+          "id": "7c236b3d8b56",
+          "title": "#FelizSábado",
+          "seconds": 970,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "missing_delivery",
-          "id": "3a22a8c57c62",
-          "title": "#DeViernes",
-          "seconds": 12817,
+          "id": "ccc33f06ab22",
+          "title": "#PSOEyFrenteAmplioVetan",
+          "seconds": 846,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "962d933dd4c2",
+          "title": "Widilo",
+          "seconds": 846,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "2ca47e06ac77",
+          "title": "Lc 18",
+          "seconds": 846,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "a27f2f3186b0",
+          "title": "Teresa",
+          "seconds": 846,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "e0eeea40ff32",
+          "title": "Terelu",
+          "seconds": 12907,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 2479831,
+          "seconds": 2504107,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -115,16 +102,16 @@
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "41791eb53f8bdca2b10d0b205fad43789733c3e73c897cbd6a4fb8fb78e73549",
+      "open_signature": "fed0f0b7b5ab37c031db21648d02e52c858413f4250ab6a17f31f1bb5539ba64",
       "repair_via_workflow_run": false,
-      "escalation_required": 11
+      "escalation_required": 2
     }
   },
   "attempts": {
-    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-11-13T09:59:50.283805+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-11-14T02:44:44.354573+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-11-14T02:44:44.354573+00:00",
-    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-11-14T02:44:44.354573+00:00"
+    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-11-14T09:29:19.988208+00:00",
+    "ttittulares:telegram-pinned-index.yml": "2026-11-14T09:29:19.988208+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-11-14T09:29:19.988208+00:00",
+    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-11-14T09:29:19.988208+00:00"
   },
-  "checked_at": "2026-11-14T02:44:44.354573+00:00"
+  "checked_at": "2026-11-14T09:29:19.988208+00:00"
 }
