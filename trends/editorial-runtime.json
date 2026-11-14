@@ -7,50 +7,83 @@
   "previous_run_id": "tr-20261114T184000-chat-direct",
   "command_id": "tr-20261114T191000-chat-direct",
   "source": "chat_direct",
-  "status": "success",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-14T19:10:00+01:00",
   "updated_at": "2026-11-14T19:14:21+01:00",
-  "current": 0,
+  "current": 4,
   "total": 4,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
   "queue_complete": true,
   "processed_ids": [
-    "45137e61aac6",
-    "91130efbcdc5",
+    "a30822730978",
     "98ac3cfea2c8",
-    "a30822730978"
+    "91130efbcdc5",
+    "45137e61aac6"
   ],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 4,
     "observed": 4,
-    "closed": 0,
-    "explained": 0,
+    "closed": 4,
+    "explained": 4,
     "problematic": 0,
-    "updates": 0,
+    "updates": 2,
     "review_completed_no_distinct_event": 0,
     "maintenance_reviews": 0,
     "unchanged_reviews": 0,
     "continuity_updates": 0,
-    "distinct_updates": 0,
+    "distinct_updates": 2,
     "stale_reviews": 0,
     "unverified_reviews": 0,
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 4,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "a30822730978",
+      "revision": 0,
+      "name": "#EurovisionAsia",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "6a9ca4ba9d0cdb9e74727505a99155cc2a09360c"
+    },
+    {
+      "id": "98ac3cfea2c8",
+      "revision": 0,
+      "name": "Hernani",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "6a9ca4ba9d0cdb9e74727505a99155cc2a09360c"
+    },
+    {
+      "id": "91130efbcdc5",
+      "revision": 0,
+      "name": "Japón",
+      "outcome": "distinct_episode_explained",
+      "applied": true,
+      "apply_commit": "6a9ca4ba9d0cdb9e74727505a99155cc2a09360c"
+    },
+    {
+      "id": "45137e61aac6",
+      "revision": 0,
+      "name": "Raphinha",
+      "outcome": "distinct_episode_explained",
+      "applied": true,
+      "apply_commit": "6a9ca4ba9d0cdb9e74727505a99155cc2a09360c"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -602,6 +635,15 @@
       "status": "RUNNING",
       "phase": "preparing",
       "message": "Pasada manual iniciada desde ChatGPT; cola autoritativa inicial=4 (#EurovisionAsia, Hernani, Japón, Raphinha). Revalidación JIT; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-14T19:14:21+01:00",
+      "run_id": "tr-20261114T191000-chat-direct",
+      "status": "DONE",
+      "phase": "closing",
+      "current": 4,
+      "total": 4,
+      "message": "Pasada TTendencias completada 4/4: #EurovisionAsia y Hernani explicadas; Japón y Raphinha cerrados como episodios materiales nuevos. Aplicador confirmado en 6a9ca4ba9d0cdb9e74727505a99155cc2a09360c; cola final=0. ImageGen=0; publicaciones=0; incidentes=0."
     }
   ],
   "last_started_at": "2026-11-14T19:14:21+01:00",
@@ -9567,5 +9609,6 @@
   "maintenance_apply_run_id": 43614430012,
   "maintenance_apply_commit": "074b3f7e87b6260fde12e02ec813bdd56b8cc218",
   "completed_at": "2026-11-14T17:42:00+01:00",
-  "input_commit": "0c7e18479768676fa11a998fd66efc8d3b43f687"
+  "input_commit": "0c7e18479768676fa11a998fd66efc8d3b43f687",
+  "finished_at": "2026-11-14T19:14:21+01:00"
 }
