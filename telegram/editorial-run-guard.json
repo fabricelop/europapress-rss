@@ -1,13 +1,15 @@
 {
   "version": 1,
-  "checked_at": "2026-11-14T17:00:05.154079+00:00",
+  "checked_at": "2026-11-14T17:31:10.384136+00:00",
   "projects": {
     "ttittulares": {
       "project": "ttittulares",
-      "checked_at": "2026-11-14T17:00:05.154079+00:00",
-      "pending_count": 0,
-      "pending_ids": [],
-      "oldest_at": null,
+      "checked_at": "2026-11-14T17:31:10.384136+00:00",
+      "pending_count": 1,
+      "pending_ids": [
+        "6253da8ae96a"
+      ],
+      "oldest_at": "2026-11-14T17:24:50.231394Z",
       "latest_run": {
         "id": "tt-chat-20261114-1504",
         "status": "DONE",
@@ -16,52 +18,43 @@
         "finished_at": "2026-11-14T14:06:30.041Z",
         "source": "github_pr_trace"
       },
-      "control_command": "tt-manual-1794674700000",
-      "last_command_at": "2026-11-14T16:45:00Z",
-      "status": "no_work",
-      "should_dispatch": false,
-      "attempts": 0,
-      "last_request_at": "2026-11-14T16:16:20.327810+00:00"
-    },
-    "ttendencias": {
-      "project": "ttendencias",
-      "checked_at": "2026-11-14T17:00:05.154079+00:00",
-      "pending_count": 2,
-      "pending_ids": [
-        "red-review-22f4b8b62def3fd943ba",
-        "red-review-a7711b59da0d7943f631"
-      ],
-      "oldest_at": "2026-11-14T16:58:51.443078+00:00",
-      "latest_run": {
-        "id": "tr-20261114T174000-chat-direct",
-        "status": "DONE",
-        "started_at": "2026-11-14T17:40:00+01:00",
-        "updated_at": "2026-11-14T16:42:00+00:00",
-        "finished_at": "2026-11-14T17:42:00+01:00",
-        "source": "github_pr_trace"
-      },
-      "control_command": "tr-1794675537815-manual",
-      "last_command_at": "2026-11-14T16:58:57.815Z",
-      "status": "within_start_window",
+      "control_command": "tt-urgent-1794677096301",
+      "last_command_at": "2026-11-14T17:24:56.301Z",
+      "status": "dispatch_pending_ack",
       "should_dispatch": false,
       "item_execution": [
         {
-          "id": "red-review-22f4b8b62def3fd943ba",
-          "entered_at": "2026-11-14T16:58:51.443078+00:00",
-          "should_start_by": "2026-11-14T17:03:51.443078+00:00",
-          "global_run_after_entry": false,
-          "final_telegram_delivery_confirmed": false
-        },
-        {
-          "id": "red-review-a7711b59da0d7943f631",
-          "entered_at": "2026-11-14T16:58:51.443078+00:00",
-          "should_start_by": "2026-11-14T17:03:51.443078+00:00",
+          "id": "6253da8ae96a",
+          "entered_at": "2026-11-14T17:24:50.231394Z",
+          "should_start_by": "2026-11-14T17:29:50.231394+00:00",
           "global_run_after_entry": false,
           "final_telegram_delivery_confirmed": false
         }
       ],
-      "backlog_signature": "c5465ba8fd301334",
-      "expected_start_by": "2026-11-14T17:03:51.443078+00:00",
+      "backlog_signature": "7a2f02b61304d0a7",
+      "expected_start_by": "2026-11-14T17:29:50.231394+00:00",
+      "attempts": 0,
+      "previous_target_completed_or_superseded": false,
+      "last_request_at": "2026-11-14T16:16:20.327810+00:00"
+    },
+    "ttendencias": {
+      "project": "ttendencias",
+      "checked_at": "2026-11-14T17:31:10.384136+00:00",
+      "pending_count": 0,
+      "pending_ids": [],
+      "oldest_at": null,
+      "latest_run": {
+        "id": "tr-20261114T181000-chat-direct",
+        "status": "DONE",
+        "started_at": "2026-11-14T18:10:00+01:00",
+        "updated_at": "2026-11-14T17:12:16+00:00",
+        "finished_at": "2026-11-14T18:12:16+01:00",
+        "source": "github_pr_trace"
+      },
+      "control_command": "tr-1794675537815-manual",
+      "last_command_at": "2026-11-14T16:58:57.815Z",
+      "status": "no_work",
+      "should_dispatch": false,
       "attempts": 0,
       "last_request_at": "2026-11-14T13:56:58.243402+00:00"
     }
