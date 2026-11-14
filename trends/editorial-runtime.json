@@ -7,16 +7,19 @@
   "previous_run_id": "tr-20261114T062500-chat-direct",
   "command_id": "tr-20261114T105400-chat-direct",
   "source": "chat_direct",
-  "status": "success",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-14T10:54:00+01:00",
-  "updated_at": "2026-11-14T10:59:53+01:00",
-  "current": 0,
+  "updated_at": "2026-11-14T11:00:00+01:00",
+  "current": 4,
   "total": 4,
-  "trend_id": "7c236b3d8b56",
-  "title": "#FelizSábado",
+  "trend_id": null,
+  "title": "Pasada editorial TTendencias",
   "queue_complete": true,
   "processed_ids": [
+    "7c236b3d8b56",
+    "ccc33f06ab22",
+    "2ca47e06ac77",
     "a27f2f3186b0"
   ],
   "converged_ids": [],
@@ -24,13 +27,13 @@
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 4,
     "observed": 4,
-    "closed": 0,
-    "explained": 0,
+    "closed": 4,
+    "explained": 3,
     "problematic": 0,
     "updates": 0,
-    "review_completed_no_distinct_event": 0,
+    "review_completed_no_distinct_event": 1,
     "maintenance_reviews": 0,
     "unchanged_reviews": 0,
     "continuity_updates": 0,
@@ -40,7 +43,7 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 4,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -48,7 +51,40 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "7c236b3d8b56",
+      "revision": 0,
+      "name": "#FelizSábado",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "ada3f9ee4ca0c71057b29a4d9148e2d162d2c4b1"
+    },
+    {
+      "id": "ccc33f06ab22",
+      "revision": 0,
+      "name": "#PSOEyFrenteAmplioVetan",
+      "outcome": "review_completed_no_distinct_event",
+      "applied": true,
+      "apply_commit": "ada3f9ee4ca0c71057b29a4d9148e2d162d2c4b1"
+    },
+    {
+      "id": "2ca47e06ac77",
+      "revision": 0,
+      "name": "Lc 18",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "ada3f9ee4ca0c71057b29a4d9148e2d162d2c4b1"
+    },
+    {
+      "id": "a27f2f3186b0",
+      "revision": 0,
+      "name": "Teresa",
+      "outcome": "explained_cause_unconfirmed",
+      "applied": true,
+      "apply_commit": "3fd487b6257f8d3293dad60c1893319a4a8390af"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -451,72 +487,25 @@
       "revision": 0,
       "name": "#FelizSábado",
       "message": "Investigación actual completada: patrón social recurrente de saludos del sábado 14/11; persistiendo reelaboración manual con rango vigente TT#9. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-14T11:00:00+01:00",
+      "run_id": "tr-20261114T105400-chat-direct",
+      "status": "DONE",
+      "phase": "closing",
+      "message": "Pasada TTendencias completada 4/4: #FelizSábado, Lc 18 y Teresa explicadas; #PSOEyFrenteAmplioVetan cerrado como reentrada sin episodio material distinto. Barrera final editorial-queue=0 y mobile-decisions activos=0. ImageGen=0; publicaciones=0; incidentes=0."
     }
   ],
   "last_started_at": "2026-11-14T10:59:53+01:00",
-  "last_completed_at": "2026-11-14T10:59:53+01:00",
+  "last_completed_at": "2026-11-14T11:00:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261114T062500-chat-direct",
+    "run_id": "tr-20261114T105400-chat-direct",
     "status": "DONE",
-    "started_at": "2026-11-14T06:25:00+01:00",
-    "finished_at": "2026-11-14T06:32:30+01:00",
-    "phase": "closing",
-    "summary": {
-      "attempted": 3,
-      "observed": 3,
-      "closed": 3,
-      "explained": 0,
-      "problematic": 0,
-      "updates": 2,
-      "review_completed_no_distinct_event": 1,
-      "maintenance_reviews": 2,
-      "unchanged_reviews": 0,
-      "continuity_updates": 2,
-      "distinct_updates": 0,
-      "stale_reviews": 0,
-      "unverified_reviews": 0,
-      "anticipation_reviews": 0,
-      "anticipation_prepared": 0,
-      "anticipation_unverified": 0,
-      "queue_remaining": 0,
-      "rewrite_pending_remaining": 0,
-      "imagegen_calls": 0,
-      "image_outbox_created": 0,
-      "publications": 0,
-      "incidents": 0,
-      "concurrent_convergence": 1
-    },
-    "outcomes": [
-      {
-        "id": "b282b0745468",
-        "revision": 0,
-        "name": "Jensen Huang",
-        "outcome": "review_completed_no_distinct_event",
-        "applied": true,
-        "via": "concurrent_convergence",
-        "apply_commit": "e30a815465b38f1b60e25ea5abc9174d171cc1fa"
-      },
-      {
-        "id": "red-review-144a37a5a62752d42d1e",
-        "revision": 0,
-        "name": "Revisar novedades: Jensen Huang",
-        "outcome": "continuity",
-        "applied": true,
-        "source_id": "f3c37f45aebd",
-        "apply_commit": "ff00bc7d6522d290ee26bd8f0e7dde3209ba9a87"
-      },
-      {
-        "id": "red-review-fc6b439ee91ccb04519c",
-        "revision": 0,
-        "name": "Revisar novedades: NVIDIA",
-        "outcome": "continuity",
-        "applied": true,
-        "source_id": "cf2df84a5714",
-        "apply_commit": "6b3c08575ce512afdf7444b3e036317b7acb2733"
-      }
-    ],
-    "message": "Pasada TTendencias 3/3 cerrada con cola 0; dos actualizaciones de continuidad y una reentrada sin episodio distinto."
+    "finished_at": "2026-11-14T11:00:00+01:00",
+    "current": 4,
+    "total": 4,
+    "queue_complete": true
   },
   "message": "Pasada TTendencias completada 3/3: la reentrada Jensen Huang b282b0745468 convergió como no_distinct_event y las revisiones rojas de Jensen Huang y NVIDIA se aplicaron como continuidad con la novedad Reuters del 14/11. Barrera final: editorial-queue=0 y sin estados móviles activos. Sin ImageGen ni publicaciones.",
   "history": [
@@ -9186,5 +9175,7 @@
     "c74a2aca815578b22fd10e4d2ee66b3dd64f0693"
   ],
   "maintenance_apply_run_id": 43502827908,
-  "maintenance_apply_commit": "e04624377a4fadb3646363f83ba4828cfc9d61f6"
+  "maintenance_apply_commit": "e04624377a4fadb3646363f83ba4828cfc9d61f6",
+  "finished_at": "2026-11-14T11:00:00+01:00",
+  "completed_at": "2026-11-14T11:00:00+01:00"
 }
