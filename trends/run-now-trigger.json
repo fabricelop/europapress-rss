@@ -1,11 +1,20 @@
 {
   "version": 2,
-  "command_id": "tr-1794697112350-manual",
-  "requested_at": "2026-11-14T22:58:32.350Z",
+  "command_id": "tr-autoguard-1794698176",
+  "requested_at": "2026-11-14T23:16:16.681119Z",
   "mode": "manual_pc_chat",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
   "launcher_arg": "tendencias",
   "task": "editorial",
-  "auto_image_followup": false
+  "auto_image_followup": false,
+  "source": "tt_autoheal_editorial_watchdog",
+  "reason": "editorial_not_started_in_time",
+  "pending_ids": [
+    "red-review-ec1a4385af2b2c043b0e"
+  ],
+  "target_id": "red-review-ec1a4385af2b2c043b0e",
+  "target_revision": 0,
+  "target_name": "Revisar novedades: Carlos Cuerpo",
+  "scope": "single_item"
 }
