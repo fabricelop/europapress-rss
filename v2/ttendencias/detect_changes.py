@@ -76,8 +76,11 @@ def build(snapshot, previous=None, *, now=None):
                 old["entered_top30_at"] = stamp  # Nuevo tramo de presencia, SIN revisar el episodio
         elif prior_rank != rank:
             status = "up" if rank < prior_rank else "down"
+        # Comparación con la captura inmediatamente anterior, no con el último
+        # movimiento conocido. Las entradas y regresos carecen de puesto previo.
         old.update(name=name, key=key, trend_id=stable_trend_id(key), active=True, rank=rank, last_seen_at=stamp,
-                   exited_at=None, last_change=status)
+                   exited_at=None, last_change=status, previous_rank=prior_rank,
+                   positions_changed=(prior_rank - rank) if prior_rank is not None else None)
         fresh[key] = old
         if status in {"entry", "reentry", "up", "down", "short_return"}:
             changes.append({"kind": status, "key": key, "name": name,
@@ -101,6 +104,7 @@ def build(snapshot, previous=None, *, now=None):
         fresh[key] = old
     state = {"schema_version": 1, "step": "03_movement", "country": "ES",
              "source": snapshot["source"], "observed_at": stamp,
+             "previous_observed_at": previous_at if not initial else None,
              "top30": list(snapshot["top30"]), "topics": fresh,
              "change_count": len(changes), "bootstrap": initial}
     return {"state": state, "changes": changes, "idempotent": False}
