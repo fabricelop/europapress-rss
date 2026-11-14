@@ -7,35 +7,35 @@
   "previous_run_id": "tr-20261114T035500-chat-direct",
   "command_id": "tr-20261114T042500-chat-direct",
   "source": "chat_direct",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-14T04:25:00+01:00",
-  "updated_at": "2026-11-14T04:33:00+01:00",
-  "current": 2,
+  "updated_at": "2026-11-14T04:34:00+01:00",
+  "current": 4,
   "total": 4,
-  "trend_id": "red-review-abe5863f083f1a117060",
-  "title": "Revisar novedades: Abascal",
-  "queue_complete": false,
-  "processed_ids": [],
+  "trend_id": null,
+  "title": "Pasada editorial TTendencias",
+  "queue_complete": true,
+  "processed_ids": [
+    "red-review-c2ca4290946e6f4a3e20",
+    "red-review-cf018056e5f3399f5e4c",
+    "red-review-abe5863f083f1a117060",
+    "red-review-1f4a54341d51c8e67aec"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "red-review-abe5863f083f1a117060",
-    "red-review-1f4a54341d51c8e67aec"
-  ],
-  "remaining_active_ids": [
-    "red-review-abe5863f083f1a117060",
-    "red-review-1f4a54341d51c8e67aec"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
+    "attempted": 4,
     "observed": 4,
-    "closed": 2,
-    "explained": 0,
+    "closed": 4,
+    "explained": 1,
     "problematic": 0,
-    "updates": 2,
-    "review_completed_no_distinct_event": 0,
-    "queue_remaining": 2,
+    "updates": 3,
+    "maintenance_unchanged": 1,
+    "new_distinct_episodes": 1,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -43,18 +43,45 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "red-review-c2ca4290946e6f4a3e20",
+      "revision": 0,
+      "name": "#PSOEyFrenteAmplioVetan",
+      "outcome": "continuity_updated",
+      "applied": true,
+      "source_id": "b8593c0a3afe"
+    },
+    {
+      "id": "red-review-cf018056e5f3399f5e4c",
+      "revision": 0,
+      "name": "NVIDIA",
+      "outcome": "continuity_updated",
+      "applied": true,
+      "source_id": "cf2df84a5714"
+    },
+    {
+      "id": "red-review-abe5863f083f1a117060",
+      "revision": 0,
+      "name": "Abascal",
+      "outcome": "distinct_episode_created",
+      "applied": true,
+      "source_id": "e1c917b18472",
+      "created_id": "trend-update-7219f13b64b3a9e09b55"
+    },
+    {
+      "id": "red-review-1f4a54341d51c8e67aec",
+      "revision": 0,
+      "name": "#PazCasaTrabajo29N",
+      "outcome": "unchanged",
+      "applied": true,
+      "source_id": "c04ca7365d3b"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
   "activity": [
-    {
-      "at": "2026-11-13T12:15:00+01:00",
-      "phase": "closing",
-      "current": 6,
-      "total": 6,
-      "message": "Pasada TTendencias completada 6/6. Begoña, El CIS, Alfon, La Revuelta, #EncuestasManipuladas y Claude quedaron explicadas y verificadas en ambos registros. La primera versión de La Revuelta excedía el límite de caracteres; se corrigió y aplicó en la misma pasada. Cola final 0. Sin ImageGen ni publicaciones."
-    },
     {
       "at": "2026-11-13T12:55:00+01:00",
       "run_id": "tr-20261113T125500-chat-direct",
@@ -341,6 +368,11 @@
       "revision": 0,
       "name": "Abascal",
       "message": "El mantenedor añadió dos revisiones rojas tras aplicar el primer lote; se amplía la pasada a 4 elementos y se investiga Abascal."
+    },
+    {
+      "at": "2026-11-14T04:34:00+01:00",
+      "phase": "closing",
+      "message": "Pasada cerrada: 4 revisiones tratadas y aplicadas; cola editorial vacía. Dos actualizaciones de continuidad, un episodio distinto de Abascal y una revisión sin cambios. Sin ImageGen ni publicación."
     }
   ],
   "last_started_at": "2026-11-14T04:13:28+01:00",
@@ -9036,7 +9068,7 @@
   ],
   "maintenance_outbox_commit": "c764cbdfc37ba7b67fedd38a16837ee068ae9467",
   "editorial_apply_run_id": 43477991983,
-  "finished_at": null,
+  "finished_at": "2026-11-14T04:34:00+01:00",
   "completed_at": "2026-11-13T23:52:25+01:00",
   "maintenance_outbox_commits": [
     "24805770cc5efabc2f14e0019c9fa592aecf4d7b",
