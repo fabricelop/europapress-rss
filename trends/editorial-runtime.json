@@ -3,25 +3,21 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261114T062500-chat-direct",
-  "previous_run_id": "tr-20261114T055500-chat-direct",
-  "command_id": "tr-20261114T062500-chat-direct",
+  "run_id": "tr-20261114T105400-chat-direct",
+  "previous_run_id": "tr-20261114T062500-chat-direct",
+  "command_id": "tr-20261114T105400-chat-direct",
   "source": "chat_direct",
-  "status": "waiting",
-  "phase": "closing",
-  "started_at": "2026-11-14T06:25:00+01:00",
-  "updated_at": "2026-11-14T10:53:22+01:00",
-  "current": 3,
-  "total": 3,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-14T10:54:00+01:00",
+  "updated_at": "2026-11-14T10:54:00+01:00",
+  "current": 0,
+  "total": 4,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
   "queue_complete": false,
-  "processed_ids": [
-    "962d933dd4c2"
-  ],
-  "converged_ids": [
-    "b282b0745468"
-  ],
+  "processed_ids": [],
+  "converged_ids": [],
   "remaining_ids": [
     "7c236b3d8b56",
     "ccc33f06ab22",
@@ -36,59 +32,31 @@
   ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 3,
-    "observed": 3,
-    "closed": 3,
+    "attempted": 0,
+    "observed": 4,
+    "closed": 0,
     "explained": 0,
     "problematic": 0,
-    "updates": 2,
-    "review_completed_no_distinct_event": 1,
-    "maintenance_reviews": 2,
+    "updates": 0,
+    "review_completed_no_distinct_event": 0,
+    "maintenance_reviews": 0,
     "unchanged_reviews": 0,
-    "continuity_updates": 2,
+    "continuity_updates": 0,
     "distinct_updates": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 4,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 1
+    "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "b282b0745468",
-      "revision": 0,
-      "name": "Jensen Huang",
-      "outcome": "review_completed_no_distinct_event",
-      "applied": true,
-      "via": "concurrent_convergence",
-      "apply_commit": "e30a815465b38f1b60e25ea5abc9174d171cc1fa"
-    },
-    {
-      "id": "red-review-144a37a5a62752d42d1e",
-      "revision": 0,
-      "name": "Revisar novedades: Jensen Huang",
-      "outcome": "continuity",
-      "applied": true,
-      "source_id": "f3c37f45aebd",
-      "apply_commit": "ff00bc7d6522d290ee26bd8f0e7dde3209ba9a87"
-    },
-    {
-      "id": "red-review-fc6b439ee91ccb04519c",
-      "revision": 0,
-      "name": "Revisar novedades: NVIDIA",
-      "outcome": "continuity",
-      "applied": true,
-      "source_id": "cf2df84a5714",
-      "apply_commit": "6b3c08575ce512afdf7444b3e036317b7acb2733"
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -474,6 +442,13 @@
       "status": "DONE",
       "phase": "closing",
       "message": "Pasada 3/3 cerrada. Jensen reentry: no_distinct_event por convergencia; Jensen y NVIDIA review_red: continuidad aplicada. editorial-queue=0, mobile activo=0. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-14T10:54:00+01:00",
+      "run_id": "tr-20261114T105400-chat-direct",
+      "status": "RUNNING",
+      "phase": "preparing",
+      "message": "Pasada manual iniciada desde ChatGPT; cola autoritativa inicial=4. Revalidación JIT por ID/revisión; sin ImageGen ni publicación."
     }
   ],
   "last_started_at": "2026-11-14T10:53:21+01:00",
@@ -9203,13 +9178,11 @@
   ],
   "maintenance_outbox_commit": "c764cbdfc37ba7b67fedd38a16837ee068ae9467",
   "editorial_apply_run_id": 43477991983,
-  "completed_at": "2026-11-14T05:42:00+01:00",
   "maintenance_outbox_commits": [
     "24805770cc5efabc2f14e0019c9fa592aecf4d7b",
     "82935552cfd2620c52c01e6603ac598051a8eec4",
     "c74a2aca815578b22fd10e4d2ee66b3dd64f0693"
   ],
   "maintenance_apply_run_id": 43502827908,
-  "maintenance_apply_commit": "e04624377a4fadb3646363f83ba4828cfc9d61f6",
-  "finished_at": "2026-11-14T06:32:30+01:00"
+  "maintenance_apply_commit": "e04624377a4fadb3646363f83ba4828cfc9d61f6"
 }
