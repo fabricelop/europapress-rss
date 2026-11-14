@@ -121,6 +121,28 @@ function top30Since(item){
  node.title="Entrada en el Top 30: "+stamp+" (hora peninsular)";
  return node;
 }
+function attachGeneratedImage(card,item){
+  // One original per editorial revision; private R2 endpoint, not GitHub thumbnail.
+  if(item.status!=="explicada"||!/^trv2-[a-f0-9]{24}$/.test(item.trend_id)
+     ||!Number.isSafeInteger(item.revision)||item.revision<1)return;
+  const wrap=el("div","trend-generated-image");
+  const picture=el("img","generated-original");
+  picture.alt="Ilustración editorial de "+item.name;
+  picture.loading="lazy";
+  picture.decoding="async";
+  picture.hidden=true;
+  picture.addEventListener("load",()=>{picture.hidden=false;wrap.classList.add("loaded")});
+  picture.addEventListener("error",()=>{picture.hidden=true;wrap.classList.remove("loaded")});
+  wrap.append(picture);card.append(wrap);
+  let requested=false;
+  const openImage=()=>{
+   if(requested||!card.open)return;
+   requested=true;
+   picture.src="/api/image/"+encodeURIComponent(item.trend_id)+"?revision="+item.revision;
+  };
+  card.addEventListener("toggle",openImage);
+  openImage();
+}
 function render(){
  const root=$("results");root.replaceChildren();
  for(const item of state.items){
@@ -154,6 +176,7 @@ function render(){
   card.append(flag);
   const body=el("div","explanation",item.status==="explicada"?tweetText(item.explanation):({en_elaboracion:"En elaboración.",incidencia:"Incidencia en la elaboración.",desestimada:"Desestimada."})[item.status]||"Explicación pendiente.");
   card.append(body);
+  attachGeneratedImage(card,item);
   root.append(card);
  }
 }
