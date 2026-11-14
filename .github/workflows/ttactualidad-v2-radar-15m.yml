@@ -1,15 +1,18 @@
 name: TTActualidad V2 - Radar cada 15 minutos
 on:
+  # GitHub Actions no garantiza puntualidad del cron. Intentos cada 5 min
+  # permiten recuperar capturas perdidas. Los commits de datos se protegen
+  # con reintentos y control de antiguedad en el workflow reutilizable.
   schedule:
-    - cron: '2,17,32,47 * * * *'
+    - cron: '*/5 * * * *'
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/ttactualidad-v2-radar-15m.yml'
 
 permissions:
   contents: write
-
-concurrency:
-  group: ttactualidad-v2-radar15-scheduler
-  cancel-in-progress: false
 
 jobs:
   capture:
