@@ -83,18 +83,43 @@ async function toggleRedMark(item,card,button){
   $("notice").hidden=false;
  }finally{button.disabled=false}
 }
+function spanishStamp(value){
+ const date=new Date(value);
+ return Number.isFinite(date.getTime())?new Intl.DateTimeFormat("es-ES",{timeZone:"Europe/Madrid",day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"}).format(date):null;
+}
 function explanationTime(item){
  if(item.status!=="explicada"||!item.captured_at)return null;
- const date=new Date(item.captured_at);
- if(!Number.isFinite(date.getTime()))return null;
- const timezone="Europe/Madrid";
- const clock=new Intl.DateTimeFormat("es-ES",{timeZone:timezone,hour:"2-digit",minute:"2-digit"}).format(date);
- const full=new Intl.DateTimeFormat("es-ES",{timeZone:timezone,dateStyle:"short",timeStyle:"short"}).format(date);
- const e=el("time","explained-at",clock);
+ const stamp=spanishStamp(item.captured_at);
+ if(!stamp)return null;
+ const e=el("time","explained-at",stamp);
  e.dateTime=item.captured_at;
- e.title="Explicación guardada el "+full+" (España)";
+ e.title="Explicación guardada: "+stamp+" (hora peninsular)";
  e.setAttribute("aria-label",e.title);
  return e;
+}
+function movementIndicator(item){
+ const previous=Number.isInteger(item.previous_rank) && item.previous_rank>=1 && item.previous_rank<=40?item.previous_rank:null;
+ let label="—",description="Sin captura anterior comparable",kind="unknown";
+ if(previous!==null){
+  const difference=previous-item.rank;
+  if(difference>0){label="↑ "+difference;description="Sube "+difference+" puesto"+(difference===1?"":"s")+" desde el "+previous;kind="up"}
+  else if(difference<0){label="↓ "+(-difference);description="Baja "+(-difference)+" puesto"+(difference===-1?"":"s")+" desde el "+previous;kind="down"}
+  else{label="→ 0";description="Se mantiene en el puesto "+item.rank;kind="same"}
+ }else if(["entry","reentry","short_return"].includes(item.movement)){
+  label="Nueva";description="Entra o regresa al Top 30";kind="entry";
+ }
+ const badge=el("span","movement-indicator "+kind,label);
+ badge.title=description;
+ badge.setAttribute("aria-label",description);
+ return badge;
+}
+function top30Since(item){
+ const stamp=spanishStamp(item.entered_top30_at);
+ if(!stamp)return null;
+ const node=el("time","entered-top30","Desde "+stamp);
+ node.dateTime=item.entered_top30_at;
+ node.title="Entrada en el Top 30: "+stamp+" (hora peninsular)";
+ return node;
 }
 function render(){
  const root=$("results");root.replaceChildren();
@@ -112,7 +137,11 @@ function render(){
   const icon=el("span","status-icon "+item.status,"●");
   icon.setAttribute("aria-label",({explicada:"Explicada",pendiente:"Pendiente",en_elaboracion:"En elaboración",incidencia:"Incidencia",desestimada:"Desestimada"})[item.status]||"Estado desconocido");
   icon.title=icon.getAttribute("aria-label");
-  head.append(el("span","rank","T"+item.rank),el("strong","name",item.name));
+  const title=el("span","title-details");
+  title.append(el("strong","name",item.name));
+  const entered=top30Since(item);
+  if(entered)title.append(entered);
+  head.append(el("span","rank","T"+item.rank),title,movementIndicator(item));
   const time=explanationTime(item);
   if(time)head.append(time);
   head.append(icon);
