@@ -1,15 +1,15 @@
 {
   "version": 1,
-  "id": "ttb-v2-shared-red-marks-20261114-04",
+  "id": "ttb-v2-radar15-diagnose-20261114-01",
   "project": "TTActualidad",
   "expires_at": "2026-11-15T23:00:00Z",
-  "description": "Instalar exclusivamente base D1 de marcas R y desplegar Worker TTActualidad V2 privado; preserva secretos, otros Workers, V1 y FabCalendar. Requiere aprobacion Windows.",
+  "description": "Diagnóstico de solo lectura del programador Windows de Radar V2 cada 15 min; no crea tareas ni publica ni toca V1.",
   "steps": [
     {
       "kind": "powershell",
-      "name": "install-shared-red-marks-d1",
-      "script": "$ErrorActionPreference='Continue'\n$o=@{action='install_v2_shared_red_marks';state='failed';worker='ttactualidad-v2-private-test';v1_untouched=$true}\ntry {\n $url='https://raw.githubusercontent.com/fabricelop/europapress-rss/19b741b625f618c3df2253156e60e7f3b575131b/v2/private-worker/Install-Shared-Marks.ps1'\n $file=Join-Path $env:TEMP 'ttactualidad-v2-shared-marks-pinned.ps1'\n Invoke-WebRequest -UseBasicParsing -Uri $url -OutFile $file -TimeoutSec 30\n $src=Get-Content -LiteralPath $file -Raw\n if(!$src.Contains('ttactualidad-v2-marks') -or !$src.Contains('wrangler deploy --keep-vars') -or !$src.Contains('TT_V2_R_MARKS_REMOTE_READY=YES')){throw 'SOURCE_MISMATCH'}\n $out= & powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File $file 2>&1 | Out-String\n if($out.Contains('TT_V2_R_MARKS_REMOTE_READY=YES')){$o.state='deployed'}else{throw 'INSTALL_NOT_CONFIRMED'}\n}catch{$o.error_class=$_.Exception.GetType().Name;$o.reason=$_.Exception.Message}\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress))",
-      "timeout_seconds": 180
+      "name": "diagnose-v2-top30-task",
+      "script": "$o=@{diagnostic='v2_top30_schedule';state='checked';task_present=$false;task_state='';last_result=$null;last_run=$null;next_run=$null;local_runner=$false;local_tick=$false;gh_available=$false}\ntry {\n $t=Get-ScheduledTask -TaskName 'TTActualidadV2-Top30-15m' -ErrorAction SilentlyContinue\n if($t){$o.task_present=$true;$o.task_state=$t.State.ToString();$i=Get-ScheduledTaskInfo -TaskName 'TTActualidadV2-Top30-15m';$o.last_result=$i.LastTaskResult;$o.last_run=([string]$i.LastRunTime);$o.next_run=([string]$i.NextRunTime)}\n $root=Join-Path $env:LOCALAPPDATA 'TTActualidadV2'\n $o.local_runner=Test-Path (Join-Path $root 'Run-V2-Top30-Tick.ps1')\n $o.local_tick=Test-Path (Join-Path $root 'top30_tick_v2.py')\n $o.gh_available=!!(Get-Command gh.exe -ErrorAction SilentlyContinue)\n}catch{$o.state='failed';$o.error=$_.Exception.GetType().Name}\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress))",
+      "timeout_seconds": 30
     }
   ]
 }
