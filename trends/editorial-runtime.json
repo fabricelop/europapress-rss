@@ -7,15 +7,15 @@
   "previous_run_id": "tr-20261114T172500-chat-direct",
   "command_id": "tr-20261114T174000-chat-direct",
   "source": "chat_direct",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-14T17:40:00+01:00",
-  "updated_at": "2026-11-14T17:40:00+01:00",
+  "updated_at": "2026-11-14T17:42:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -570,42 +570,37 @@
       "status": "RUNNING",
       "phase": "preparing",
       "message": "Pasada manual TTendencias iniciada desde ChatGPT; revalidando Top 30, cola editorial y estados activos en main. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-14T17:42:00+01:00",
+      "run_id": "tr-20261114T174000-chat-direct",
+      "status": "DONE",
+      "phase": "closing",
+      "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: Top 30 capturado a las 17:41:08, editorial-queue=0 (updated_at 17:41:15) y mobile-decisions sin estados editoriales activos. Sin ImageGen ni publicaciones."
     }
   ],
   "last_started_at": "2026-11-14T15:43:47+01:00",
-  "last_completed_at": "2026-11-14T15:51:10+01:00",
+  "last_completed_at": "2026-11-14T17:42:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261114T154000-chat-direct",
-    "command_id": "tr-20261114T154000-chat-direct",
-    "source": "chat_direct",
+    "run_id": "tr-20261114T174000-chat-direct",
     "status": "DONE",
-    "phase": "closing",
-    "started_at": "2026-11-14T15:40:00+01:00",
-    "updated_at": "2026-11-14T15:51:10+01:00",
-    "finished_at": "2026-11-14T15:51:10+01:00",
-    "current": 3,
-    "total": 3,
+    "started_at": "2026-11-14T17:40:00+01:00",
+    "finished_at": "2026-11-14T17:42:00+01:00",
+    "current": 0,
+    "total": 0,
     "queue_complete": true,
-    "processed_ids": [
-      "4a0b99c27aaf",
-      "red-review-d984f804b0844e5d156a"
-    ],
-    "converged_ids": [
-      "red-review-4e2aa3d4a7601bdf7c3e"
-    ],
-    "remaining_active_ids": [],
     "summary": {
-      "attempted": 3,
-      "observed": 3,
-      "closed": 3,
-      "explained": 1,
+      "attempted": 0,
+      "observed": 0,
+      "closed": 0,
+      "explained": 0,
       "problematic": 0,
-      "updates": 1,
+      "updates": 0,
       "review_completed_no_distinct_event": 0,
-      "maintenance_reviews": 2,
-      "unchanged_reviews": 1,
-      "continuity_updates": 1,
+      "maintenance_reviews": 0,
+      "unchanged_reviews": 0,
+      "continuity_updates": 0,
       "distinct_updates": 0,
       "stale_reviews": 0,
       "unverified_reviews": 0,
@@ -618,42 +613,11 @@
       "image_outbox_created": 0,
       "publications": 0,
       "incidents": 0,
-      "concurrent_convergence": 1
+      "concurrent_convergence": 0
     },
-    "outcomes": [
-      {
-        "id": "4a0b99c27aaf",
-        "revision": 0,
-        "name": "#PSOEyFrenteAmplioVetan",
-        "outcome": "explained",
-        "applied": true,
-        "apply_commit": "115549892232ee15c0217e5d4653827aa56aafec"
-      },
-      {
-        "id": "red-review-4e2aa3d4a7601bdf7c3e",
-        "revision": 0,
-        "name": "Revisar novedades: #PazCasaTrabajo29N",
-        "outcome": "unchanged",
-        "applied": true,
-        "via": "concurrent_convergence",
-        "source_id": "c04ca7365d3b",
-        "apply_commit": "b2971a704179457e64a671dc6c0e57d74abdf1d8"
-      },
-      {
-        "id": "red-review-d984f804b0844e5d156a",
-        "revision": 0,
-        "name": "Revisar novedades: NVIDIA",
-        "outcome": "updated_continuity",
-        "applied": true,
-        "source_id": "cf2df84a5714",
-        "apply_commit": "13bc171b067b973ef391f80a1c57c8048c336fe1"
-      }
-    ],
-    "incident_count": 0,
-    "incidents": [],
-    "message": "Pasada completada 3/3: #PSOEyFrenteAmplioVetan explicada; #PazCasaTrabajo29N revisada sin cambios; NVIDIA actualizada como continuidad. Cola final 0; sin ImageGen ni publicación."
+    "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: Top 30 capturado a las 17:41:08, editorial-queue=0 (updated_at 17:41:15) y mobile-decisions sin estados editoriales activos. Sin ImageGen ni publicaciones."
   },
-  "message": "Pasada completada 2/2. #DeViernes: episodio distinto; Outlook: continuidad actualizada. Refresco manual 43614186407 completado con éxito; barrera final editorial-queue=0 (17:16:01) y Top 30 fresco. Sin ImageGen ni publicaciones.",
+  "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: Top 30 capturado a las 17:41:08, editorial-queue=0 (updated_at 17:41:15) y mobile-decisions sin estados editoriales activos. Sin ImageGen ni publicaciones.",
   "history": [
     {
       "run_id": "tr-1794361941170-manual",
@@ -5523,16 +5487,58 @@
       "processed_ids": [],
       "outcomes": [],
       "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 2026-11-14T11:57:10.351658+00:00) y mobile-decisions sin estados editoriales activos; Top 30 capturado a las 2026-11-14T12:51:02+01:00. Disparo manual persistido en 58e909a3d03ce1a337deed86a1721f58e2198855. Sin ImageGen ni publicaciones; incidentes=0."
+    },
+    {
+      "run_id": "tr-20261114T174000-chat-direct",
+      "status": "DONE",
+      "started_at": "2026-11-14T17:40:00+01:00",
+      "finished_at": "2026-11-14T17:42:00+01:00",
+      "at": "2026-11-14T17:42:00+01:00",
+      "phase": "closing",
+      "summary": {
+        "attempted": 0,
+        "observed": 0,
+        "closed": 0,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 0,
+        "unchanged_reviews": 0,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "processed_ids": [],
+      "converged_ids": [],
+      "outcomes": [],
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: Top 30 capturado a las 17:41:08, editorial-queue=0 (updated_at 17:41:15) y mobile-decisions sin estados editoriales activos. Sin ImageGen ni publicaciones."
     }
   ],
   "current_item": null,
   "withdrawn_ids": [],
-  "last_finished_at": "2026-11-14T15:51:10+01:00",
-  "last_revalidated_at": "2026-11-14T15:30:00+01:00",
+  "last_finished_at": "2026-11-14T17:42:00+01:00",
+  "last_revalidated_at": "2026-11-14T17:41:15+01:00",
   "last_revalidation": {
+    "at": "2026-11-14T17:41:15+01:00",
     "queue_count": 0,
-    "active_count": 0,
-    "at": "2026-11-14T15:30:00+01:00"
+    "queue_updated_at": "2026-11-14T17:41:15+01:00",
+    "recent_captured_at": "2026-11-14T17:41:08+01:00",
+    "live_verified": true,
+    "mobile_active_count": 0
   },
   "prior_runtime_observed": {
     "run_id": "tr-autoguard-1794381666",
@@ -9535,7 +9541,7 @@
   ],
   "maintenance_apply_run_id": 43614430012,
   "maintenance_apply_commit": "074b3f7e87b6260fde12e02ec813bdd56b8cc218",
-  "completed_at": "2026-11-14T17:16:10+01:00",
+  "completed_at": "2026-11-14T17:42:00+01:00",
   "input_commit": "0c7e18479768676fa11a998fd66efc8d3b43f687",
-  "finished_at": null
+  "finished_at": "2026-11-14T17:42:00+01:00"
 }
