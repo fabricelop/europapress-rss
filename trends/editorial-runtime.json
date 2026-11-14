@@ -7,31 +7,25 @@
   "previous_run_id": "tr-20261114T105400-chat-direct",
   "command_id": "tr-20261114T124000-chat-direct",
   "source": "chat_direct",
-  "status": "RUNNING",
+  "status": "success",
   "phase": "investigating",
   "started_at": "2026-11-14T12:40:00+01:00",
-  "updated_at": "2026-11-14T12:40:00+01:00",
+  "updated_at": "2026-11-14T12:44:42+01:00",
   "current": 0,
   "total": 5,
   "trend_id": "86b2f018766f",
   "title": "Pasada editorial TTendencias",
-  "queue_complete": false,
-  "processed_ids": [],
+  "queue_complete": true,
+  "processed_ids": [
+    "86b2f018766f",
+    "9bddd4111803",
+    "b78d0dbb6a47",
+    "bad47f0232c5",
+    "d3e97077e377"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "bad47f0232c5",
-    "86b2f018766f",
-    "9bddd4111803",
-    "b78d0dbb6a47",
-    "d3e97077e377"
-  ],
-  "remaining_active_ids": [
-    "bad47f0232c5",
-    "86b2f018766f",
-    "9bddd4111803",
-    "b78d0dbb6a47",
-    "d3e97077e377"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 6,
@@ -491,8 +485,8 @@
       "message": "Pasada manual iniciada desde ChatGPT; cola autoritativa inicial=5. Revalidación JIT e investigación actual en curso; sin ImageGen ni publicación."
     }
   ],
-  "last_started_at": "2026-11-14T12:38:11+01:00",
-  "last_completed_at": "2026-11-14T11:00:00+01:00",
+  "last_started_at": "2026-11-14T12:44:42+01:00",
+  "last_completed_at": "2026-11-14T12:44:42+01:00",
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-20261114T105400-chat-direct",
