@@ -11,9 +11,41 @@ $database = 'ttactualidad-v2-marks'
 $publicUrl = 'https://ttactualidad-v2-private-test.fabricelop.workers.dev'
 $work = Join-Path $env:TEMP ('ttv2-deploy-' + [guid]::NewGuid().ToString('N').Substring(0,10))
 
-function Run([string]$program, [string[]]$arguments) {
-    & $program @arguments
-    if ($LASTEXITCODE -ne 0) { throw "Falló $program (código $LASTEXITCODE)" }
+# Windows PowerShell 5.1 reports NORMAL native stderr progress (for example
+# git: "Cloning into...") as NativeCommandError when ErrorActionPreference=Stop.
+# Use the REAL process exit code, keeping separate output streams and rejecting
+# only actual non-zero exits. This applies equally to npm and Wrangler.
+function Run([string]$program, [string[]]$arguments, [switch]$CaptureOutput) {
+    $marker = [guid]::NewGuid().ToString('N')
+    $stdout = Join-Path $env:TEMP ('ttv2-deploy-' + $marker + '.stdout.log')
+    $stderr = Join-Path $env:TEMP ('ttv2-deploy-' + $marker + '.stderr.log')
+    $escapedArgs = @($arguments | ForEach-Object {
+        if ($_ -match '[\\s"]') { '"' + ($_.Replace('"','\\"')) + '"' } else { $_ }
+    })
+    try {
+        $process = Start-Process -FilePath $program -ArgumentList ($escapedArgs -join ' ') `
+            -Wait -PassThru -NoNewWindow `
+            -RedirectStandardOutput $stdout -RedirectStandardError $stderr
+        $out = if (Test-Path -LiteralPath $stdout) {
+            [System.IO.File]::ReadAllText($stdout, [System.Text.Encoding]::UTF8)
+        } else { '' }
+        $err = if (Test-Path -LiteralPath $stderr) {
+            [System.IO.File]::ReadAllText($stderr, [System.Text.Encoding]::UTF8)
+        } else { '' }
+        if ($process.ExitCode -ne 0) {
+            if ($out.Trim()) { Write-Host $out.TrimEnd() }
+            if ($err.Trim()) { Write-Host $err.TrimEnd() }
+            throw ("TT_V2_NATIVE_EXIT_CODE={0}; programa={1}" -f $process.ExitCode, $program)
+        }
+        if ($CaptureOutput) {
+            return $out
+        }
+        if ($out.Trim()) { Write-Host $out.TrimEnd() }
+        if ($err.Trim()) { Write-Host $err.TrimEnd() }
+    }
+    finally {
+        Remove-Item -LiteralPath $stdout,$stderr -Force -ErrorAction SilentlyContinue
+    }
 }
 
 try {
@@ -31,8 +63,8 @@ try {
 
         # Wrangler usa la sesión Cloudflare que ya está iniciada en este ordenador.
         Write-Host "3/6 Localizando D1 de las marcas R (sin reemplazar su contenido)..."
-        $raw = (& npx.cmd wrangler d1 list --json | Out-String)
-        if ($LASTEXITCODE -ne 0) { throw "No se pudo consultar D1 de Cloudflare. Ejecuta npx wrangler login." }
+        $raw = Run 'npx.cmd' @('wrangler','d1','list','--json') -CaptureOutput
+        if (-not $raw.Trim()) { throw "Wrangler D1 no devolvio JSON; no se despliega." }
         $entries = @($raw | ConvertFrom-Json)
         $matches = @($entries | Where-Object { $_.name -eq $database })
         if ($matches.Count -ne 1 -or -not $matches[0].uuid) {
