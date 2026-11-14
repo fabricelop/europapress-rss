@@ -20,6 +20,7 @@ from rework_ttittulares import rework_ready_news
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / 'trends'))
 from pending_retirement import retire_pending
+from requests_json import dumps_for_path
 REQ = re.compile(r"^[A-Za-z0-9-]{12,80}$")
 ID = re.compile(r"^[A-Za-z0-9:_-]{3,128}$")
 TERMINAL = {"published", "deleted", "dismissed"}
@@ -43,7 +44,7 @@ def load(relative: str, default):
 def save(relative: str, doc):
     path = ROOT / relative
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(doc, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    path.write_text(dumps_for_path(relative, doc), encoding="utf-8")
 
 
 def fail(msg):
