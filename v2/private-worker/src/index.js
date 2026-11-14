@@ -80,6 +80,44 @@ function sameOrigin(request) {
   return origin === new URL(request.url).origin
     && request.headers.get("x-ttv2-action") === "1";
 }
+
+const TREND_ID = /^trv2-[a-f0-9]{24}$/;
+function entryStamp(item) {return typeof item?.entered_top30_at==="string" ? item.entered_top30_at : "";}
+async function currentRanking() {
+  const upstream=await fetch(SOURCE+"web-top30.json",{headers:{"Accept":"application/json"},cf:{cacheTtl:15,cacheEverything:true}});
+  if(!upstream.ok) throw Error("RANKING_UNAVAILABLE");
+  const data=await upstream.json();
+  if(data?.project!=="ttactualidad-v2" || !Array.isArray(data.items) || data.items.length!==data.count || data.items.length>40) throw Error("RANKING_INVALID");
+  return data.items;
+}
+async function redMarks(request,env) {
+  if(!env.MARKS_DB) return json({error:"marks_storage_not_configured"},503);
+  if(request.method!=="GET" && (request.method!=="POST" || !sameOrigin(request))) return json({error:"method_not_allowed"},405);
+  let ranking;
+  try { ranking=await currentRanking(); } catch {return json({error:"ranking_temporarily_unavailable"},503);}
+  const active=new Map(ranking.filter(row=>TREND_ID.test(row.trend_id) && entryStamp(row)).map(row=>[row.trend_id,entryStamp(row)]));
+  try {
+    const rows=(await env.MARKS_DB.prepare("SELECT trend_id, entered_top30_at FROM red_marks").all()).results || [];
+    const valid=new Map(), stale=[];
+    for(const row of rows) {
+      if(active.get(row.trend_id)===row.entered_top30_at) valid.set(row.trend_id,row.entered_top30_at);
+      else stale.push(row.trend_id);
+    }
+    // Every GET reconciles against the authoritative current Top30, not a browser-local cache.
+    for(const id of stale) await env.MARKS_DB.prepare("DELETE FROM red_marks WHERE trend_id = ?").bind(id).run();
+    if(request.method==="GET") return json({marks:Object.fromEntries(valid),captured_at:new Date().toISOString()});
+    if(Number(request.headers.get("content-length")||0)>1024) return json({error:"invalid_payload"},413);
+    let body;
+    try{body=await request.json();}catch{return json({error:"invalid_payload"},400);}
+    if(!body || typeof body!=="object" || !TREND_ID.test(body.trend_id) || typeof body.entered_top30_at!=="string" || typeof body.marked!=="boolean") return json({error:"invalid_payload"},400);
+    const stamp=active.get(body.trend_id);
+    if(!stamp || stamp!==body.entered_top30_at) return json({error:"trend_not_current"},409);
+    if(body.marked) await env.MARKS_DB.prepare("INSERT INTO red_marks (trend_id, entered_top30_at) VALUES (?,?) ON CONFLICT(trend_id) DO UPDATE SET entered_top30_at=excluded.entered_top30_at").bind(body.trend_id,stamp).run();
+    else await env.MARKS_DB.prepare("DELETE FROM red_marks WHERE trend_id=?").bind(body.trend_id).run();
+    return json({ok:true,trend_id:body.trend_id,marked:body.marked});
+  }catch{return json({error:"marks_storage_unavailable"},503);}
+}
+
 const LOGIN = `<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex,nofollow"><meta name="color-scheme" content="dark"><title>TTActualidad V2 · Acceso privado</title><style>body{background:#090b0f;color:#f2f5fa;min-height:100vh;display:grid;place-items:center;font:16px system-ui;margin:0}main{padding:32px;width:min(380px,90vw);background:#171c26;border:1px solid #354052;border-radius:16px}h1{font-size:22px}input,button{font:inherit;padding:13px;border-radius:9px;width:100%;box-sizing:border-box;margin-top:10px}input{background:#0c111c;color:white;border:1px solid #667187}button{background:#e25d44;color:white;font-weight:700;border:0;cursor:pointer}p{color:#a6b4c7}#msg{color:#ffaaaa}</style></head><body><main><h1>TTActualidad V2</h1><p>Acceso privado</p><form id="f"><label for="p">Contraseña</label><input id="p" type="password" minlength="16" autocomplete="current-password" required autofocus><button type="submit">Entrar</button><p id="msg" role="status"></p></form></main><script>document.getElementById("f").addEventListener("submit",async e=>{e.preventDefault();const b=e.target.querySelector("button");b.disabled=true;try{const r=await fetch("/api/login",{method:"POST",headers:{"content-type":"application/json","x-ttv2-action":"1"},body:JSON.stringify({password:document.getElementById("p").value}),credentials:"same-origin"});document.getElementById("p").value="";if(!r.ok){document.getElementById("msg").textContent="Contraseña incorrecta o acceso no configurado.";return}location.replace("/")}catch{document.getElementById("msg").textContent="No se pudo iniciar sesión."}finally{b.disabled=false}})</script></body></html>`;
 export default {
   async fetch(request,env) {
@@ -114,6 +152,7 @@ export default {
       return json({error:"unauthorized"},401);
     }
     if (url.pathname === "/api/me") return json({authenticated:true});
+    if (url.pathname === "/api/marks") return redMarks(request,env);
     if (url.pathname.startsWith("/api/state/")) {
       if (request.method !== "GET") return json({error:"method_not_allowed"},405);
       const name = url.pathname.slice("/api/state/".length);
