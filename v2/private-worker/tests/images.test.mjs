@@ -51,7 +51,7 @@ function req(body,overrides={}){
 test("ImageGen original stored once by immutable trend, revision, command and editorial SHA",async()=>{
  const env=mockEnv();
  try{
- globalThis.fetch=async()=>Response.json({project:"ttactualidad-v2",count:1,items:[row]});
+ globalThis.fetch=async()=>Response.json({step:"04_editorial_queue",effects_enabled:false,items:{[id]:{trend_id:id,revision:1,status:"captured_review",capture:{revision:1,answer:explanation}}}});
  let res=await worker.fetch(req(raster),env);assert.equal(res.status,200);assert.equal((await res.json()).status,"saved");
  assert.equal(env.stored.images.size,1);
  res=await worker.fetch(req(raster),env);assert.equal(res.status,200);assert.equal((await res.json()).status,"already_saved");
@@ -62,7 +62,7 @@ test("ImageGen original stored once by immutable trend, revision, command and ed
 test("ImageGen original rejects wrong secret, wrong editorial fingerprint and tiny thumbnail",async()=>{
  const env=mockEnv();
  try{
- globalThis.fetch=async()=>Response.json({project:"ttactualidad-v2",count:1,items:[row]});
+ globalThis.fetch=async()=>Response.json({step:"04_editorial_queue",effects_enabled:false,items:{[id]:{trend_id:id,revision:1,status:"captured_review",capture:{revision:1,answer:explanation}}}});
  assert.equal((await worker.fetch(req(raster,{"x-ttv2-image-ingest":"wrong"}),env)).status,403);
  assert.equal((await worker.fetch(req(raster,{"x-ttv2-editorial-sha256":"a".repeat(64)}),env)).status,409);
  assert.equal((await worker.fetch(req(raster.subarray(0,3316),{"x-ttv2-raster-sha256":sha(raster.subarray(0,3316))}),env)).status,413);
