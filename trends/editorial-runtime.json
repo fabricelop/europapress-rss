@@ -7,22 +7,22 @@
   "previous_run_id": "tr-20261114T210600-chat-direct",
   "command_id": "tr-20261114T232800-chat-direct",
   "source": "chat_direct",
-  "status": "success",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-14T23:28:00+01:00",
   "updated_at": "2026-11-14T23:32:36+01:00",
-  "current": 0,
+  "current": 8,
   "total": 8,
-  "trend_id": "9815547839b9",
+  "trend_id": null,
   "title": "Pasada editorial TTendencias",
   "queue_complete": true,
   "processed_ids": [
-    "0098c2de3f01",
-    "1708cda7e3f9",
-    "34426d93a44e",
-    "44addc309df0",
-    "69f566b11cfb",
     "9815547839b9",
+    "1708cda7e3f9",
+    "69f566b11cfb",
+    "44addc309df0",
+    "0098c2de3f01",
+    "34426d93a44e",
     "red-review-2836ecb9eea08e91ece2",
     "red-review-e41e6f5741f494aeff15"
   ],
@@ -33,21 +33,21 @@
   "summary": {
     "attempted": 8,
     "observed": 8,
-    "closed": 0,
-    "explained": 0,
+    "closed": 8,
+    "explained": 6,
     "problematic": 0,
     "updates": 0,
-    "review_completed_no_distinct_event": 0,
+    "review_completed_no_distinct_event": 2,
     "maintenance_reviews": 2,
-    "unchanged_reviews": 0,
+    "unchanged_reviews": 2,
     "continuity_updates": 0,
-    "distinct_updates": 0,
+    "distinct_updates": 4,
     "stale_reviews": 0,
     "unverified_reviews": 0,
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 8,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -56,7 +56,72 @@
     "concurrent_convergence": 0,
     "cause_unconfirmed": 0
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "9815547839b9",
+      "revision": 0,
+      "name": "Bolivia",
+      "outcome": "explained_distinct_episode",
+      "applied": true,
+      "apply_commit": "36a6bdedee2ab6b1689dab6eb97f1f5f56e0ba70"
+    },
+    {
+      "id": "1708cda7e3f9",
+      "revision": 0,
+      "name": "Corredera",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "36a6bdedee2ab6b1689dab6eb97f1f5f56e0ba70"
+    },
+    {
+      "id": "69f566b11cfb",
+      "revision": 0,
+      "name": "Dani Díaz",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "36a6bdedee2ab6b1689dab6eb97f1f5f56e0ba70"
+    },
+    {
+      "id": "44addc309df0",
+      "revision": 0,
+      "name": "Sánchez",
+      "outcome": "explained_distinct_episode",
+      "applied": true,
+      "apply_commit": "36a6bdedee2ab6b1689dab6eb97f1f5f56e0ba70"
+    },
+    {
+      "id": "0098c2de3f01",
+      "revision": 0,
+      "name": "Sporting",
+      "outcome": "explained_distinct_episode",
+      "applied": true,
+      "apply_commit": "36a6bdedee2ab6b1689dab6eb97f1f5f56e0ba70"
+    },
+    {
+      "id": "34426d93a44e",
+      "revision": 0,
+      "name": "Goiria",
+      "outcome": "explained_distinct_episode",
+      "applied": true,
+      "apply_commit": "36a6bdedee2ab6b1689dab6eb97f1f5f56e0ba70"
+    },
+    {
+      "id": "red-review-2836ecb9eea08e91ece2",
+      "revision": 0,
+      "name": "Revisar novedades: El Tribunal de Cuentas",
+      "outcome": "review_completed_no_distinct_event",
+      "applied": true,
+      "apply_commit": "36a6bdedee2ab6b1689dab6eb97f1f5f56e0ba70"
+    },
+    {
+      "id": "red-review-e41e6f5741f494aeff15",
+      "revision": 0,
+      "name": "Revisar novedades: #PSOEyFrenteAmplioVetan",
+      "outcome": "review_completed_no_distinct_event",
+      "applied": true,
+      "apply_commit": "36a6bdedee2ab6b1689dab6eb97f1f5f56e0ba70"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -652,6 +717,13 @@
       "status": "RUNNING",
       "phase": "persisting",
       "message": "Ejecución manual iniciada desde ChatGPT; cola autoritativa revalidada en 8 elementos. Investigación contrastada y resultados preparados para persistencia por el aplicador oficial. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-14T23:32:36+01:00",
+      "run_id": "tr-20261114T232800-chat-direct",
+      "status": "DONE",
+      "phase": "closing",
+      "message": "Pasada TTendencias completada 8/8: 6 explicaciones persistidas (4 reentradas con episodio material distinto) y 2 revisiones rojas cerradas sin episodio distinto. Aplicador oficial 43648596524 success; cola final=0. Sin ImageGen ni publicaciones."
     }
   ],
   "last_started_at": "2026-11-14T23:32:36+01:00",
@@ -9609,7 +9681,7 @@
     "red-review-6b86b17ba53670f185c0"
   ],
   "maintenance_outbox_commit": "c40ef7c7688d137adf9c59ec1fb4f551c0d1975c",
-  "editorial_apply_run_id": 43477991983,
+  "editorial_apply_run_id": 43648596524,
   "maintenance_outbox_commits": [
     "87f044c1d60fccb4187d9b2490720860e8f8249d",
     "c40ef7c7688d137adf9c59ec1fb4f551c0d1975c"
@@ -9617,10 +9689,9 @@
   "maintenance_apply_run_id": 43614430012,
   "maintenance_apply_commit": "074b3f7e87b6260fde12e02ec813bdd56b8cc218",
   "completed_at": "2026-11-14T17:42:00+01:00",
-  "input_commit": "0c7e18479768676fa11a998fd66efc8d3b43f687",
-  "finished_at": "2026-11-14T21:13:20+01:00",
+  "input_commit": "d657e81fd73a9f4f14a0bc2ac55d968a79eaf428",
+  "finished_at": "2026-11-14T23:32:36+01:00",
   "apply_commits": [
-    "c8be00fdba06dda862fb7a4c4b2485f2831dbc6e",
-    "e5b83ed149926b5a9231d5358ebdeb2f70e76969"
+    "36a6bdedee2ab6b1689dab6eb97f1f5f56e0ba70"
   ]
 }
