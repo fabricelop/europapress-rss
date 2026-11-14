@@ -1,83 +1,96 @@
 {
   "version": 1,
-  "checked_at": "2026-11-14T06:07:34.964909+00:00",
+  "checked_at": "2026-11-14T08:42:10.939597+00:00",
   "projects": {
     "ttittulares": {
       "project": "ttittulares",
-      "checked_at": "2026-11-14T06:07:34.964909+00:00",
-      "pending_count": 0,
-      "pending_ids": [],
-      "oldest_at": null,
+      "checked_at": "2026-11-14T08:42:10.939597+00:00",
+      "pending_count": 1,
+      "pending_ids": [
+        "46c3fe5722cb"
+      ],
+      "oldest_at": "2026-11-14T08:38:07.218725Z",
       "latest_run": {
-        "id": "tt-chat-20261114-0445",
+        "id": "tt-chat-20261114-0715",
         "status": "DONE",
-        "started_at": "2026-11-14T03:45:00Z",
-        "updated_at": "2026-11-14T03:45:00+00:00",
-        "finished_at": "2026-11-14T03:45:00Z",
+        "started_at": "2026-11-14T06:15:00Z",
+        "updated_at": "2026-11-14T06:17:30+00:00",
+        "finished_at": "2026-11-14T06:17:30Z",
         "source": "github_pr_trace"
       },
-      "control_command": "tt-1794636000000-chatgpt",
-      "last_command_at": "2026-11-14T06:00:00.000Z",
-      "status": "no_work",
+      "control_command": "tt-1794644100000-chatgpt",
+      "last_command_at": "2026-11-14T08:15:00.000Z",
+      "status": "within_start_window",
       "should_dispatch": false,
+      "item_execution": [
+        {
+          "id": "46c3fe5722cb",
+          "entered_at": "2026-11-14T08:38:07.218725Z",
+          "should_start_by": "2026-11-14T08:43:07.218725+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        }
+      ],
+      "backlog_signature": "4e83a7f5badb8e9d",
+      "expected_start_by": "2026-11-14T08:43:07.218725+00:00",
       "attempts": 0,
       "last_request_at": "2026-11-13T21:27:00.961885+00:00"
     },
     "ttendencias": {
       "project": "ttendencias",
-      "checked_at": "2026-11-14T06:07:34.964909+00:00",
+      "checked_at": "2026-11-14T08:42:10.939597+00:00",
       "pending_count": 4,
       "pending_ids": [
-        "746ea7ec1310",
-        "e0eeea40ff32",
-        "ec856044c608",
-        "602ab510add3"
+        "6c3719ad5c9a",
+        "79900272eaad",
+        "8ac816dd3bd8",
+        "fee8a9b98cf8"
       ],
-      "oldest_at": "2026-11-14T05:54:02.904150+00:00",
+      "oldest_at": "2026-11-14T09:04:48+01:00",
       "latest_run": {
-        "id": "tr-20261114T062500-chat-direct",
+        "id": "tr-20261114T0810-chat-direct",
         "status": "DONE",
-        "started_at": "2026-11-14T06:25:00+01:00",
-        "updated_at": "2026-11-14T05:32:30+00:00",
-        "finished_at": "2026-11-14T06:32:30+01:00",
+        "started_at": "2026-11-14T08:10:00+01:00",
+        "updated_at": "2026-11-14T07:15:20+00:00",
+        "finished_at": "2026-11-14T08:15:20+01:00",
         "source": "github_pr_trace"
       },
-      "control_command": "tr-1794635648552-manual",
-      "last_command_at": "2026-11-14T05:54:08.552Z",
+      "control_command": "tr-1794645456158-manual",
+      "last_command_at": "2026-11-14T08:37:36.158Z",
       "status": "dispatch_pending_ack",
       "should_dispatch": false,
       "item_execution": [
         {
-          "id": "746ea7ec1310",
-          "entered_at": "2026-11-14T05:54:02.904150+00:00",
-          "should_start_by": "2026-11-14T05:59:02.904150+00:00",
+          "id": "6c3719ad5c9a",
+          "entered_at": "2026-11-14T09:04:48+01:00",
+          "should_start_by": "2026-11-14T08:09:48+00:00",
           "global_run_after_entry": false,
           "final_telegram_delivery_confirmed": false
         },
         {
-          "id": "e0eeea40ff32",
-          "entered_at": "2026-11-14T05:54:12.080752+00:00",
-          "should_start_by": "2026-11-14T05:59:12.080752+00:00",
+          "id": "79900272eaad",
+          "entered_at": "2026-11-14T09:04:48+01:00",
+          "should_start_by": "2026-11-14T08:09:48+00:00",
           "global_run_after_entry": false,
           "final_telegram_delivery_confirmed": false
         },
         {
-          "id": "ec856044c608",
-          "entered_at": "2026-11-14T05:54:20.379278+00:00",
-          "should_start_by": "2026-11-14T05:59:20.379278+00:00",
+          "id": "8ac816dd3bd8",
+          "entered_at": "2026-11-14T09:04:48+01:00",
+          "should_start_by": "2026-11-14T08:09:48+00:00",
           "global_run_after_entry": false,
           "final_telegram_delivery_confirmed": false
         },
         {
-          "id": "602ab510add3",
-          "entered_at": "2026-11-14T05:54:58.613700+00:00",
-          "should_start_by": "2026-11-14T05:59:58.613700+00:00",
+          "id": "fee8a9b98cf8",
+          "entered_at": "2026-11-14T09:04:48+01:00",
+          "should_start_by": "2026-11-14T08:09:48+00:00",
           "global_run_after_entry": false,
           "final_telegram_delivery_confirmed": false
         }
       ],
-      "backlog_signature": "9b89a6c7c488dd1f",
-      "expected_start_by": "2026-11-14T05:59:02.904150+00:00",
+      "backlog_signature": "41d1fe4ea019f67e",
+      "expected_start_by": "2026-11-14T08:09:48+00:00",
       "attempts": 0,
       "previous_target_completed_or_superseded": false,
       "last_request_at": "2026-11-14T02:44:40.897172+00:00"
