@@ -261,8 +261,8 @@
       "checked_at": "2026-11-07T17:09:35+00:00",
       "buffer_post_id": "6aef5b4d51492b796eecec0c",
       "verification_note": "Buffer indicó enviado, sin enlace verificable a X de esta cuenta.",
-      "last_buffer_check_at": "2026-11-13T16:22:45+00:00",
-      "buffer_poll_attempts": 8
+      "last_buffer_check_at": "2026-11-14T07:49:50+00:00",
+      "buffer_poll_attempts": 9
     },
     {
       "request_id": "78fd6926-5baf-42a3-8a8d-3fd50e59a696",
@@ -1237,35 +1237,39 @@
       "event_id": "671072ff440b",
       "revision": 0,
       "account": "ttendenciasesp",
-      "state": "pending",
+      "state": "sent",
       "requested_at": "2026-11-14T07:49:42+00:00",
       "channel_id": "6aeed045e29c69a171902233",
       "media_type": "ai",
-      "checked_at": "2026-11-14T07:49:48+00:00",
-      "buffer_post_id": "6af8129ad16af15d4dfdec7b"
+      "checked_at": "2026-11-14T07:49:50+00:00",
+      "buffer_post_id": "6af8129ad16af15d4dfdec7b",
+      "last_buffer_check_at": "2026-11-14T07:49:50+00:00",
+      "buffer_poll_attempts": 1,
+      "sent_at": "2026-11-14T07:49:48.811Z",
+      "post_url": "https://twitter.com/TTendenciasESP/status/2121510897868808388"
     }
   ],
   "api_quota": {
     "limit": 2000,
-    "remaining": 1710,
-    "used": 290,
+    "remaining": 1708,
+    "used": 292,
     "window_seconds": 2592000,
-    "resets_in_seconds": 1987545,
-    "observed_at": "2026-11-14T07:49:48+00:00",
+    "resets_in_seconds": 1987540,
+    "observed_at": "2026-11-14T07:49:50+00:00",
     "other_windows": [
       {
         "window_seconds": 900,
         "limit": 150,
-        "remaining": 147,
-        "used": 3,
-        "resets_in_seconds": 899
+        "remaining": 145,
+        "used": 5,
+        "resets_in_seconds": 895
       },
       {
         "window_seconds": 86400,
         "limit": 600,
-        "remaining": 597,
-        "used": 3,
-        "resets_in_seconds": 86399
+        "remaining": 595,
+        "used": 5,
+        "resets_in_seconds": 86395
       }
     ]
   },
@@ -1707,6 +1711,12 @@
       "limit": 2000,
       "used": 290,
       "sent_total": 59
+    },
+    {
+      "observed_at": "2026-11-14T07:49:50+00:00",
+      "limit": 2000,
+      "used": 292,
+      "sent_total": 60
     }
   ]
 }
