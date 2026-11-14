@@ -1,7 +1,7 @@
 "use strict";
 const BASE="https://raw.githubusercontent.com/fabricelop/europapress-rss/feature/ttactualidad-v2-clean/v2/ttendencias/state/";
 const $=id=>document.getElementById(id);
-const state={items:[],captured:null,open:null};
+const state={items:[],captured:null,open:null,rankingUnchanged:false,rankingChangeAt:null};
 function el(tag,className,content){const n=document.createElement(tag);if(className)n.className=className;if(content!==undefined)n.textContent=String(content);return n}
 function valid(data){if(!data||data.project!=="ttactualidad-v2"||data.country!=="ES"||!Array.isArray(data.items)||data.items.length!==data.count||data.count<1||data.count>40)throw Error("Ranking no disponible");const ranks=new Set(data.items.map(x=>x.rank));if(ranks.size!==data.items.length||data.items.some(x=>!Number.isInteger(x.rank)||x.rank<1||x.rank>40||!x.name))throw Error("Ranking incoherente");return data}
 function editorial(raw){
@@ -108,7 +108,11 @@ function movementIndicator(item){
  }else if(["entry","reentry","short_return"].includes(item.movement)){
   label="Nueva";description="Entra o regresa al Top 30";kind="entry";
  }
- const badge=el("span","movement-indicator "+kind,label);
+ if(state.rankingUnchanged){
+  const stamp=state.rankingChangeAt?spanishStamp(state.rankingChangeAt):null;
+  description+=". Última consulta con Top 30 idéntico; se conserva la comparación anterior"+(stamp?" ("+stamp+")":"");
+ }
+ const badge=el("span","movement-indicator "+kind+(state.rankingUnchanged?" held":""),label);
  badge.title=description;
  badge.setAttribute("aria-label",description);
  return badge;
@@ -193,6 +197,8 @@ async function refresh(){
   const data=valid(await response.json());
   state.items=data.items.slice().sort((a,b)=>a.rank-b.rank);
   state.captured=data.captured_at;
+  state.rankingUnchanged=data.ranking_unchanged===true;
+  state.rankingChangeAt=typeof data.ranking_change_at==="string"?data.ranking_change_at:null;
   if(state.open&&!state.items.some(item=>item.trend_id===state.open))state.open=null;
   await loadSharedMarks();
   render();
