@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-13T23:15:48.411585+00:00",
+  "checked_at": "2026-11-14T02:15:07.181678+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -42,10 +42,12 @@
     "top10": {
       "ok": false,
       "count": 10,
-      "non_stale_sources": 3,
-      "verified_fresh_sources": [],
+      "non_stale_sources": 4,
+      "verified_fresh_sources": [
+        "xtrendsiamrohit"
+      ],
       "live_verified": false,
-      "captured_age_minutes": 14.5,
+      "captured_age_minutes": 13.9,
       "noise_count": 0
     },
     "listener": {
@@ -57,8 +59,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 4.8,
-      "run_id": 43525153750,
+      "age_minutes": 4.0,
+      "run_id": 43544851561,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -79,19 +81,84 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": true,
-      "pending_count": 0,
-      "overdue_count": 0,
-      "oldest_age_minutes": 0,
+      "ok": false,
+      "pending_count": 9,
+      "overdue_count": 9,
+      "oldest_age_minutes": 184.0,
       "warning_after_minutes": 30,
-      "overdue_items": [],
+      "overdue_items": [
+        {
+          "id": "86a31f1f188d",
+          "name": "Jensen Huang",
+          "status": "preparing",
+          "age_minutes": 184.0
+        },
+        {
+          "id": "5ccfacd3e4b2",
+          "name": "EEUU",
+          "status": "preparing",
+          "age_minutes": 133.5
+        },
+        {
+          "id": "2c8ace5a3074",
+          "name": "Estados Unidos",
+          "status": "preparing",
+          "age_minutes": 133.5
+        },
+        {
+          "id": "c51a3aa0c0e4",
+          "name": "Nueva Orleans",
+          "status": "preparing",
+          "age_minutes": 133.5
+        },
+        {
+          "id": "cdaa9045b822",
+          "name": "Panathinaikos",
+          "status": "preparing",
+          "age_minutes": 133.5
+        },
+        {
+          "id": "5a28fa1fccb6",
+          "name": "Lydia",
+          "status": "preparing",
+          "age_minutes": 64.1
+        },
+        {
+          "id": "8b006bddf692",
+          "name": "Santi Acosta",
+          "status": "preparing",
+          "age_minutes": 64.1
+        },
+        {
+          "id": "0f9f984a750e",
+          "name": "Sálvame",
+          "status": "preparing",
+          "age_minutes": 64.1
+        },
+        {
+          "id": "97b0810372fa",
+          "name": "Telecinco",
+          "status": "preparing",
+          "age_minutes": 64.1
+        }
+      ],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": true,
-      "status": "not-required",
-      "queue_complete": true,
-      "remaining_active_ids": [],
+      "ok": false,
+      "status": "overdue",
+      "queue_complete": false,
+      "remaining_active_ids": [
+        "86a31f1f188d",
+        "5ccfacd3e4b2",
+        "2c8ace5a3074",
+        "c51a3aa0c0e4",
+        "cdaa9045b822",
+        "5a28fa1fccb6",
+        "8b006bddf692",
+        "0f9f984a750e",
+        "97b0810372fa"
+      ],
       "contradictory_success": false
     },
     "telegram_provisional": {
@@ -103,9 +170,10 @@
   "repairs_started": [],
   "blocking": [
     "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos",
-    "cola con 853 estado(s) inválido(s)"
+    "cola con 853 estado(s) inválido(s)",
+    "cola de explicaciones retrasada: 9 pendiente(s) superan 30 min; más antigua 184.0 min"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 853 estado(s) inválido(s)"
+  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 853 estado(s) inválido(s) | cola de explicaciones retrasada: 9 pendiente(s) superan 30 min; más antigua 184.0 min"
 }
