@@ -141,10 +141,9 @@ function render(){
   title.append(el("strong","name",item.name));
   const entered=top30Since(item);
   if(entered)title.append(entered);
-  head.append(el("span","rank","T"+item.rank),title,movementIndicator(item));
   const time=explanationTime(item);
-  if(time)head.append(time);
-  head.append(icon);
+  if(time)title.append(time);
+  head.append(el("span","rank","T"+item.rank),title,movementIndicator(item),icon);
   card.append(head);
   const flag=el("button","red-toggle","R");
   flag.type="button";
