@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-14T12:00:28.935189+00:00",
+  "checked_at": "2026-11-14T12:14:27.423361+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -42,7 +42,7 @@
     "top10": {
       "ok": false,
       "count": 10,
-      "non_stale_sources": 5,
+      "non_stale_sources": 6,
       "verified_fresh_sources": [
         "xtrendsiamrohit",
         "playersells"
@@ -60,8 +60,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 4.2,
-      "run_id": 43592352758,
+      "age_minutes": 3.4,
+      "run_id": 43593536932,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -83,9 +83,9 @@
     },
     "editorial_queue": {
       "ok": true,
-      "pending_count": 0,
+      "pending_count": 2,
       "overdue_count": 0,
-      "oldest_age_minutes": 0,
+      "oldest_age_minutes": 12.0,
       "warning_after_minutes": 30,
       "overdue_items": [],
       "repairable": false
@@ -93,8 +93,11 @@
     "editorial_runtime": {
       "ok": true,
       "status": "not-required",
-      "queue_complete": true,
-      "remaining_active_ids": [],
+      "queue_complete": false,
+      "remaining_active_ids": [
+        "1e250ecf49df",
+        "fb1af5a9fcd0"
+      ],
       "contradictory_success": false
     },
     "telegram_provisional": {
