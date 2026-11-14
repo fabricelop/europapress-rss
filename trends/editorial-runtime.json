@@ -3,43 +3,35 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261114T124000-chat-direct",
-  "previous_run_id": "tr-20261114T105400-chat-direct",
-  "command_id": "tr-20261114T124000-chat-direct",
+  "run_id": "tr-20261114T125500-chat-direct",
+  "previous_run_id": "tr-20261114T124000-chat-direct",
+  "command_id": "tr-20261114T125500-chat-direct",
   "source": "chat_direct",
   "status": "DONE",
   "phase": "closing",
-  "started_at": "2026-11-14T12:40:00+01:00",
-  "updated_at": "2026-11-14T12:48:00+01:00",
-  "current": 7,
-  "total": 7,
+  "started_at": "2026-11-14T12:55:00+01:00",
+  "updated_at": "2026-11-14T12:57:02+01:00",
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
   "queue_complete": true,
-  "processed_ids": [
-    "bad47f0232c5",
-    "86b2f018766f",
-    "9bddd4111803",
-    "b78d0dbb6a47",
-    "d3e97077e377",
-    "red-review-48aee01e7fa751c0311e",
-    "red-review-8b120d88ff43221cc3a6"
-  ],
+  "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 7,
-    "observed": 7,
-    "closed": 7,
-    "explained": 1,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
-    "updates": 2,
-    "review_completed_no_distinct_event": 4,
-    "maintenance_reviews": 2,
+    "updates": 0,
+    "review_completed_no_distinct_event": 0,
+    "maintenance_reviews": 0,
     "unchanged_reviews": 0,
-    "continuity_updates": 2,
+    "continuity_updates": 0,
     "distinct_updates": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
@@ -54,59 +46,7 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "bad47f0232c5",
-      "revision": 0,
-      "name": "#PazCasaTrabajo29N",
-      "outcome": "review_completed_no_distinct_event",
-      "applied": true
-    },
-    {
-      "id": "86b2f018766f",
-      "revision": 0,
-      "name": "Año 2026",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "9bddd4111803",
-      "revision": 0,
-      "name": "día de partido",
-      "outcome": "review_completed_no_distinct_event",
-      "applied": true
-    },
-    {
-      "id": "b78d0dbb6a47",
-      "revision": 0,
-      "name": "Feliz Sábado",
-      "outcome": "review_completed_no_distinct_event",
-      "applied": true
-    },
-    {
-      "id": "d3e97077e377",
-      "revision": 0,
-      "name": "Viernes 13",
-      "outcome": "review_completed_no_distinct_event",
-      "applied": true
-    },
-    {
-      "id": "red-review-48aee01e7fa751c0311e",
-      "revision": 0,
-      "name": "Revisar novedades: Microsoft",
-      "outcome": "continuity",
-      "applied": true,
-      "source_id": "c7bac46904be"
-    },
-    {
-      "id": "red-review-8b120d88ff43221cc3a6",
-      "revision": 0,
-      "name": "Revisar novedades: Begoña",
-      "outcome": "continuity",
-      "applied": true,
-      "source_id": "289b3a5cdae3"
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -544,20 +484,34 @@
       "status": "DONE",
       "phase": "closing",
       "message": "Pasada TTendencias completada 7/7: Año 2026 explicado; cuatro reentradas (#PazCasaTrabajo29N, día de partido, Feliz Sábado y Viernes 13) cerradas sin episodio distinto; Microsoft y Begoña actualizados como continuidad en sus mismas fichas. Barrera final editorial-queue=0 y mobile-decisions sin estados editoriales activos. ImageGen=0; publicaciones=0; incidentes=0."
+    },
+    {
+      "at": "2026-11-14T12:55:00+01:00",
+      "run_id": "tr-20261114T125500-chat-direct",
+      "status": "RUNNING",
+      "phase": "verifying",
+      "message": "Pasada manual TTendencias iniciada desde ChatGPT; revalidación JIT de cola y estados activos en main. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-14T12:57:02+01:00",
+      "run_id": "tr-20261114T125500-chat-direct",
+      "status": "DONE",
+      "phase": "closing",
+      "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 2026-11-14T11:57:10.351658+00:00) y mobile-decisions sin estados editoriales activos; Top 30 capturado a las 2026-11-14T12:51:02+01:00. Disparo manual persistido en 58e909a3d03ce1a337deed86a1721f58e2198855. Sin ImageGen ni publicaciones; incidentes=0."
     }
   ],
-  "last_started_at": "2026-11-14T12:44:42+01:00",
-  "last_completed_at": "2026-11-14T12:48:00+01:00",
+  "last_started_at": "2026-11-14T12:55:00+01:00",
+  "last_completed_at": "2026-11-14T12:57:02+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261114T124000-chat-direct",
+    "run_id": "tr-20261114T125500-chat-direct",
     "status": "DONE",
-    "finished_at": "2026-11-14T12:48:00+01:00",
-    "current": 7,
-    "total": 7,
+    "finished_at": "2026-11-14T12:57:02+01:00",
+    "current": 0,
+    "total": 0,
     "queue_complete": true
   },
-  "message": "Pasada TTendencias completada 7/7: Año 2026 explicado; cuatro reentradas (#PazCasaTrabajo29N, día de partido, Feliz Sábado y Viernes 13) cerradas sin episodio distinto; Microsoft y Begoña actualizados como continuidad en sus mismas fichas. Barrera final editorial-queue=0 y mobile-decisions sin estados editoriales activos. ImageGen=0; publicaciones=0; incidentes=0.",
+  "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 2026-11-14T11:57:10.351658+00:00) y mobile-decisions sin estados editoriales activos; Top 30 capturado a las 2026-11-14T12:51:02+01:00. Disparo manual persistido en 58e909a3d03ce1a337deed86a1721f58e2198855. Sin ImageGen ni publicaciones; incidentes=0.",
   "history": [
     {
       "run_id": "tr-1794361941170-manual",
@@ -5413,16 +5367,30 @@
         }
       ],
       "message": "Pasada TTendencias completada 7/7: Año 2026 explicado; cuatro reentradas (#PazCasaTrabajo29N, día de partido, Feliz Sábado y Viernes 13) cerradas sin episodio distinto; Microsoft y Begoña actualizados como continuidad en sus mismas fichas. Barrera final editorial-queue=0 y mobile-decisions sin estados editoriales activos. ImageGen=0; publicaciones=0; incidentes=0."
+    },
+    {
+      "run_id": "tr-20261114T125500-chat-direct",
+      "status": "DONE",
+      "phase": "closing",
+      "started_at": "2026-11-14T12:55:00+01:00",
+      "updated_at": "2026-11-14T12:57:02+01:00",
+      "finished_at": "2026-11-14T12:57:02+01:00",
+      "current": 0,
+      "total": 0,
+      "queue_complete": true,
+      "processed_ids": [],
+      "outcomes": [],
+      "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 2026-11-14T11:57:10.351658+00:00) y mobile-decisions sin estados editoriales activos; Top 30 capturado a las 2026-11-14T12:51:02+01:00. Disparo manual persistido en 58e909a3d03ce1a337deed86a1721f58e2198855. Sin ImageGen ni publicaciones; incidentes=0."
     }
   ],
   "current_item": null,
   "withdrawn_ids": [],
-  "last_finished_at": "2026-11-14T12:48:00+01:00",
-  "last_revalidated_at": "2026-11-14T05:42:00+01:00",
+  "last_finished_at": "2026-11-14T12:57:02+01:00",
+  "last_revalidated_at": "2026-11-14T12:57:02+01:00",
   "last_revalidation": {
-    "at": "2026-11-14T05:42:00+01:00",
-    "queue_updated_at": "2026-11-14T05:41:39+01:00",
-    "recent_captured_at": "2026-11-14T05:41:32+01:00",
+    "at": "2026-11-14T12:57:02+01:00",
+    "queue_updated_at": "2026-11-14T11:57:10.351658+00:00",
+    "recent_captured_at": "2026-11-14T12:51:02+01:00",
     "queue_count": 0,
     "mobile_active": 0
   },
@@ -5437,7 +5405,7 @@
   "maintenance_workflow_run_id": 43494709436,
   "maintenance_job_id": "red-review-61d494cc18e2321aaa5b",
   "workflow_run_id": 43046392853,
-  "trigger_commit": "bb0ffc53f748ed35a6875c6a5560857e8351768f",
+  "trigger_commit": "58e909a3d03ce1a337deed86a1721f58e2198855",
   "refresh_convergence_commit": "64b7ddd4da692671ac3ac40b1ff39e87be9756ce",
   "runs": [
     {
@@ -9398,6 +9366,6 @@
   ],
   "maintenance_apply_run_id": 43591648599,
   "maintenance_apply_commit": "546b8bc0d973aea944724c441f17b8ffa3cdb53d",
-  "finished_at": "2026-11-14T12:48:00+01:00",
-  "completed_at": "2026-11-14T12:48:00+01:00"
+  "finished_at": "2026-11-14T12:57:02+01:00",
+  "completed_at": "2026-11-14T12:57:02+01:00"
 }
