@@ -1,0 +1,19 @@
+name: TTActualidad V2 - Radar cada 15 minutos
+on:
+  schedule:
+    - cron: '2,17,32,47 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ttactualidad-v2-radar15-scheduler
+  cancel-in-progress: false
+
+jobs:
+  capture:
+    name: Refrescar Top30 exclusivamente en rama V2
+    uses: fabricelop/europapress-rss/.github/workflows/ttactualidad-v2-step01.yml@feature/ttactualidad-v2-clean
+    permissions:
+      contents: write
