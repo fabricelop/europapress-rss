@@ -1,0 +1,36 @@
+name: TTActualidad V2 - E reelaboracion autenticada
+
+on:
+  issues:
+    types: [opened]
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: ttactualidad-v2-reelaboracion-e
+  cancel-in-progress: false
+
+jobs:
+  reelaboracion-v2:
+    if: ${{ github.event_name != 'issues' || (github.event.issue.user.login == 'fabricelop' && github.event.sender.login == 'fabricelop' && startsWith(github.event.issue.title, 'V2-REELABORAR:')) }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Cargar solo codigo de V2
+        uses: actions/checkout@v4
+        with:
+          ref: feature/v2-tuit-radar-reevaluacion-piloto-20261114
+          persist-credentials: false
+      - name: Testear transiciones E sin efectos
+        run: python -m unittest discover -s v2/ttendencias -p 'test_reelaboration_v2.py' -v
+      - name: Procesar solicitud E autorizada y verificable
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_EVENT_NAME: ${{ github.event_name }}
+          GITHUB_EVENT_PATH: ${{ github.event_path }}
+        run: python v2/ttendencias/reelaboration_issue_worker_v2.py
