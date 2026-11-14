@@ -4,6 +4,7 @@
 const COOKIE = "__Host-ttv2";
 const SESSION_VERSION = "v1";
 const HOUR = 3600000;
+const MAX_SESSION_HOURS = 30 * 24;
 const SOURCE = "https://raw.githubusercontent.com/fabricelop/europapress-rss/feature/ttactualidad-v2-clean/v2/ttendencias/state/";
 const ALLOWED = new Set(["web-top30.json", "listas.json"]);
 const encoder = new TextEncoder();
@@ -55,7 +56,7 @@ function configured(env) {
 }
 function duration(env) {
   const hours = Number(env.SESSION_HOURS);
-  return (Number.isFinite(hours) && hours >= 1 && hours <= 24 ? hours : 12) * HOUR;
+  return (Number.isFinite(hours) && hours >= 1 && hours <= MAX_SESSION_HOURS ? hours : 12) * HOUR;
 }
 async function newSession(env) {
   const expires = Date.now() + duration(env);
@@ -69,7 +70,7 @@ async function isAuthorized(request,env) {
   if (parts.length !== 4 || parts[0] !== SESSION_VERSION) return false;
   const expires = Number(parts[1]);
   if (!Number.isSafeInteger(expires) || expires <= Date.now()
-      || expires > Date.now() + 24 * HOUR) return false;
+      || expires > Date.now() + MAX_SESSION_HOURS * HOUR) return false;
   if (!/^[A-Za-z0-9_-]{16,64}$/.test(parts[2])) return false;
   const data = parts.slice(0,3).join(".");
   return safeEqual(await signature(data,env.SESSION_SECRET),parts[3]);
