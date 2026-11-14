@@ -363,10 +363,7 @@ def run_one(api, state, transcript, auth, item):
                     same_chat = module("image_same_chat_v2.py", "ttv2_same_chat_image")
                     saved = same_chat.run(page, verified["items"][trend_id], root=ROOT)
                     image_status = {
-                        "status": "saved", "command_id": (
-                            next((p.stem for p in (ROOT / "image-receipts").glob(
-                                "v2-img-" + trend_id + "-r" + str(revision) + "-*.json")
-                                if not p.name.endswith(".intent.json")), "")),
+                        "status": "saved", "command_id": saved["command_id"],
                         "sha256": saved["sha256"]}
                     record["image_status"] = "saved"
                     record["image_sha256"] = saved["sha256"]
