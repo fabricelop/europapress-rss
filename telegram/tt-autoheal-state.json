@@ -2,14 +2,14 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-11-13T22:50:56.642822+00:00",
+      "checked_at": "2026-11-14T02:44:44.354573+00:00",
       "issue_count": 1,
       "issues": [
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 2465804,
+          "seconds": 2479832,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -22,49 +22,91 @@
       "escalation_required": 0
     },
     "ttendencias": {
-      "checked_at": "2026-11-13T22:50:56.642822+00:00",
-      "issue_count": 6,
+      "checked_at": "2026-11-14T02:44:44.354573+00:00",
+      "issue_count": 12,
       "issues": [
         {
-          "kind": "missing_delivery",
-          "id": "red-review-ca673710a7f700743186",
-          "title": "Revisar novedades: #SVFinal",
-          "seconds": 138,
-          "workflow": "send-ttendencias-explained-telegram.yml"
+          "kind": "editorial_overdue",
+          "id": "86a31f1f188d",
+          "title": "Jensen Huang",
+          "seconds": 12817,
+          "workflow": null
         },
         {
-          "kind": "missing_delivery",
-          "id": "3f3a1383fa90",
-          "title": "#LaSextaDebate",
-          "seconds": 6493,
-          "workflow": "send-ttendencias-explained-telegram.yml"
+          "kind": "editorial_overdue",
+          "id": "5ccfacd3e4b2",
+          "title": "EEUU",
+          "seconds": 9789,
+          "workflow": null
         },
         {
-          "kind": "missing_delivery",
-          "id": "2030fcc48d35",
-          "title": "Juan Bravo",
-          "seconds": 2396,
-          "workflow": "send-ttendencias-explained-telegram.yml"
+          "kind": "editorial_overdue",
+          "id": "2c8ace5a3074",
+          "title": "Estados Unidos",
+          "seconds": 9789,
+          "workflow": null
         },
         {
-          "kind": "missing_delivery",
-          "id": "7122a440e159",
-          "title": "Justin Robinson",
-          "seconds": 2396,
-          "workflow": "send-ttendencias-explained-telegram.yml"
+          "kind": "editorial_overdue",
+          "id": "c51a3aa0c0e4",
+          "title": "Nueva Orleans",
+          "seconds": 9789,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "cdaa9045b822",
+          "title": "Panathinaikos",
+          "seconds": 9789,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "5a28fa1fccb6",
+          "title": "Lydia",
+          "seconds": 5621,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "8b006bddf692",
+          "title": "Santi Acosta",
+          "seconds": 5621,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "0f9f984a750e",
+          "title": "Sálvame",
+          "seconds": 5621,
+          "workflow": null
+        },
+        {
+          "kind": "editorial_overdue",
+          "id": "97b0810372fa",
+          "title": "Telecinco",
+          "seconds": 5621,
+          "workflow": null
         },
         {
           "kind": "missing_delivery",
           "id": "627119e08741",
           "title": "Carlos Cuerpo",
-          "seconds": 2396,
+          "seconds": 16424,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "3a22a8c57c62",
+          "title": "#DeViernes",
+          "seconds": 12817,
           "workflow": "send-ttendencias-explained-telegram.yml"
         },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 2465803,
+          "seconds": 2479831,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
@@ -73,16 +115,16 @@
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "5d369c55ebb0db6edf42ebd78fccd0ab715c555e8c033ce337f4ada8cd9789ea",
+      "open_signature": "41791eb53f8bdca2b10d0b205fad43789733c3e73c897cbd6a4fb8fb78e73549",
       "repair_via_workflow_run": false,
-      "escalation_required": 4
+      "escalation_required": 11
     }
   },
   "attempts": {
     "ttittulares:send-ttittulares-ready-telegram.yml": "2026-11-13T09:59:50.283805+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-11-13T22:50:56.642822+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-11-13T22:50:56.642822+00:00",
-    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-11-13T22:50:56.642822+00:00"
+    "ttittulares:telegram-pinned-index.yml": "2026-11-14T02:44:44.354573+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-11-14T02:44:44.354573+00:00",
+    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-11-14T02:44:44.354573+00:00"
   },
-  "checked_at": "2026-11-13T22:50:56.642822+00:00"
+  "checked_at": "2026-11-14T02:44:44.354573+00:00"
 }
