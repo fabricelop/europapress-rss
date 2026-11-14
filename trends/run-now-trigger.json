@@ -1,11 +1,21 @@
 {
   "version": 2,
-  "command_id": "tr-1794689143393-manual",
-  "requested_at": "2026-11-14T20:45:43.393Z",
+  "command_id": "tr-autoguard-1794690103",
+  "requested_at": "2026-11-14T21:01:43.578576Z",
   "mode": "manual_pc_chat",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
   "launcher_arg": "tendencias",
   "task": "editorial",
-  "auto_image_followup": false
+  "auto_image_followup": false,
+  "source": "tt_autoheal_editorial_watchdog",
+  "reason": "editorial_not_started_in_time",
+  "pending_ids": [
+    "red-review-2836ecb9eea08e91ece2",
+    "red-review-e41e6f5741f494aeff15"
+  ],
+  "target_id": "red-review-2836ecb9eea08e91ece2",
+  "target_revision": 0,
+  "target_name": "Revisar novedades: El Tribunal de Cuentas",
+  "scope": "single_item"
 }
