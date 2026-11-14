@@ -7,27 +7,25 @@
   "previous_run_id": "tr-20261114T062500-chat-direct",
   "command_id": "tr-20261114T105400-chat-direct",
   "source": "chat_direct",
-  "status": "RUNNING",
+  "status": "waiting",
   "phase": "persisting",
   "started_at": "2026-11-14T10:54:00+01:00",
-  "updated_at": "2026-11-14T10:55:00+01:00",
+  "updated_at": "2026-11-14T10:59:10+01:00",
   "current": 0,
   "total": 4,
   "trend_id": "7c236b3d8b56",
   "title": "#FelizSábado",
   "queue_complete": false,
-  "processed_ids": [],
+  "processed_ids": [
+    "2ca47e06ac77",
+    "7c236b3d8b56",
+    "ccc33f06ab22"
+  ],
   "converged_ids": [],
   "remaining_ids": [
-    "7c236b3d8b56",
-    "ccc33f06ab22",
-    "2ca47e06ac77",
     "a27f2f3186b0"
   ],
   "remaining_active_ids": [
-    "7c236b3d8b56",
-    "ccc33f06ab22",
-    "2ca47e06ac77",
     "a27f2f3186b0"
   ],
   "remaining_problematic_ids": [],
@@ -461,7 +459,7 @@
       "message": "Investigación actual completada: patrón social recurrente de saludos del sábado 14/11; persistiendo reelaboración manual con rango vigente TT#9. Sin ImageGen ni publicación."
     }
   ],
-  "last_started_at": "2026-11-14T10:53:21+01:00",
+  "last_started_at": "2026-11-14T10:59:10+01:00",
   "last_completed_at": "2026-11-14T08:15:12+01:00",
   "api_failover_enabled": false,
   "last_run": {
