@@ -1,19 +1,22 @@
 {
   "version": 2,
-  "command_id": "tr-recover-20261114T131554Z",
-  "requested_at": "2026-11-14T13:15:54Z",
+  "command_id": "tr-autoguard-1794663113",
+  "requested_at": "2026-11-14T13:31:53.632028Z",
   "mode": "manual_pc_chat",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
   "launcher_arg": "tendencias",
   "task": "editorial",
   "auto_image_followup": false,
-  "source": "chatgpt_manual_recovery",
-  "reason": "preparing_backlog_without_progress",
-  "scope": "all_preparing",
+  "source": "tt_autoheal_editorial_watchdog",
+  "reason": "editorial_not_started_in_time",
   "pending_ids": [
+    "1e250ecf49df",
     "fb1af5a9fcd0",
-    "3cd0ce287609",
-    "1e250ecf49df"
-  ]
+    "3cd0ce287609"
+  ],
+  "target_id": "1e250ecf49df",
+  "target_revision": 0,
+  "target_name": "#PSOEyFrenteAmplioVetan",
+  "scope": "single_item"
 }
