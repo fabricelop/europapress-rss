@@ -1,13 +1,14 @@
 {
   "version": 1,
-  "checked_at": "2026-11-14T09:15:34.545524+00:00",
+  "checked_at": "2026-11-14T09:26:31.189201+00:00",
   "projects": {
     "ttittulares": {
       "project": "ttittulares",
-      "checked_at": "2026-11-14T09:15:34.545524+00:00",
-      "pending_count": 1,
+      "checked_at": "2026-11-14T09:26:31.189201+00:00",
+      "pending_count": 2,
       "pending_ids": [
-        "46c3fe5722cb"
+        "46c3fe5722cb",
+        "e2dd10df6484"
       ],
       "oldest_at": "2026-11-14T08:38:07.218725Z",
       "latest_run": {
@@ -18,9 +19,9 @@
         "finished_at": "2026-11-14T06:17:30Z",
         "source": "github_pr_trace"
       },
-      "control_command": "tt-1794646800000-chatgpt",
-      "last_command_at": "2026-11-14T09:00:00.000Z",
-      "status": "retry_cooldown",
+      "control_command": "tt-1794647700000-chatgpt",
+      "last_command_at": "2026-11-14T09:15:00.000Z",
+      "status": "dispatch_pending_ack",
       "should_dispatch": false,
       "item_execution": [
         {
@@ -29,17 +30,24 @@
           "should_start_by": "2026-11-14T08:43:07.218725+00:00",
           "global_run_after_entry": false,
           "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "e2dd10df6484",
+          "entered_at": "2026-11-14T09:24:02.891050Z",
+          "should_start_by": "2026-11-14T09:29:02.891050+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
         }
       ],
-      "backlog_signature": "4e83a7f5badb8e9d",
+      "backlog_signature": "54eb4e1bfbf9c1c7",
       "expected_start_by": "2026-11-14T08:43:07.218725+00:00",
-      "attempts": 1,
+      "attempts": 0,
       "previous_target_completed_or_superseded": false,
       "last_request_at": "2026-11-14T09:01:14.083080+00:00"
     },
     "ttendencias": {
       "project": "ttendencias",
-      "checked_at": "2026-11-14T09:15:34.545524+00:00",
+      "checked_at": "2026-11-14T09:26:31.189201+00:00",
       "pending_count": 6,
       "pending_ids": [
         "6c3719ad5c9a",
