@@ -60,7 +60,7 @@ def current_editorial(job,auth,*,send=request):
     if not isinstance(ledger,dict) or ledger.get("encoding")!="base64":
         raise RuntimeError("V2_IMAGE_EDITORIAL_LEDGER_UNAVAILABLE")
     try:
-        queue=json.loads(base64.b64decode(ledger["content"],validate=True))
+        queue=json.loads(base64.b64decode(ledger["content"].replace("\\n",""),validate=True))
     except (KeyError,ValueError) as exc:
         raise RuntimeError("V2_IMAGE_EDITORIAL_LEDGER_CORRUPT") from exc
     if (queue.get("step")!="04_editorial_queue"
