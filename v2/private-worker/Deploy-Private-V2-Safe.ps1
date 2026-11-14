@@ -40,7 +40,7 @@ try {
         }
         $settings = Get-Content '.\wrangler.jsonc' -Raw | ConvertFrom-Json
         if ($settings.name -ne $worker) { throw "Worker inesperado: abortando" }
-        if ($settings.r2_buckets) { throw "R2 no debe activarse para imagenes V2. Abortando." }
+        if ($settings.PSObject.Properties["r2_buckets"] -and $settings.r2_buckets) { throw "R2 no debe activarse para imagenes V2. Abortando." }
         $id = [string]$matches[0].uuid
         $binding = @([ordered]@{ binding = 'MARKS_DB'; database_name = $database; database_id = $id })
         $settings | Add-Member -Force -NotePropertyName 'd1_databases' -NotePropertyValue $binding
