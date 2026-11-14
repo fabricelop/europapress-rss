@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-14T09:31:00.742585+00:00",
+  "checked_at": "2026-11-14T09:35:15.451074+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -57,9 +57,9 @@
     },
     "refresh": {
       "ok": true,
-      "status": "pending",
+      "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 4.3,
+      "age_minutes": 4.1,
       "run_id": 43580576809,
       "reason": null,
       "repairable": true,
@@ -81,27 +81,19 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": false,
-      "pending_count": 6,
-      "overdue_count": 1,
-      "oldest_age_minutes": 86.2,
+      "ok": true,
+      "pending_count": 5,
+      "overdue_count": 0,
+      "oldest_age_minutes": 22.1,
       "warning_after_minutes": 30,
-      "overdue_items": [
-        {
-          "id": "6c3719ad5c9a",
-          "name": "#AgropopularSanMartín",
-          "status": "preparing",
-          "age_minutes": 86.2
-        }
-      ],
+      "overdue_items": [],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": false,
-      "status": "overdue",
+      "ok": true,
+      "status": "not-required",
       "queue_complete": false,
       "remaining_active_ids": [
-        "6c3719ad5c9a",
         "7c236b3d8b56",
         "ccc33f06ab22",
         "962d933dd4c2",
@@ -119,10 +111,9 @@
   "repairs_started": [],
   "blocking": [
     "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos",
-    "cola con 869 estado(s) inválido(s)",
-    "cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 86.2 min"
+    "cola con 869 estado(s) inválido(s)"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 869 estado(s) inválido(s) | cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 86.2 min"
+  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 869 estado(s) inválido(s)"
 }
