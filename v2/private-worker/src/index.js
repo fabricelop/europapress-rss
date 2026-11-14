@@ -142,17 +142,53 @@ async function currentImageIdentity(trendId,revision) {
  return {explanation:row.capture.answer};
 }
 async function imageRead(request,env,trendId) {
- if(request.method!=="GET"||!TREND_ID.test(trendId))return json({error:"not_found"},404);
- if(!env.MARKS_DB||!env.V2_IMAGES)return json({error:"image_storage_not_configured"},503);
- const revision=Number(new URL(request.url).searchParams.get("revision"));
- if(!Number.isSafeInteger(revision)||revision<1||revision>100000)return json({error:"revision_invalid"},400);
- try {
-  const meta=await env.MARKS_DB.prepare("SELECT r2_key, content_type FROM v2_images WHERE trend_id=? AND revision=?").bind(trendId,revision).first();
-  if(!meta)return json({error:"image_not_ready"},404);
-  const object=await env.V2_IMAGES.get(meta.r2_key);
-  if(!object)return json({error:"image_missing"},404);
-  return new Response(object.body,{headers:headers({"Content-Type":meta.content_type,"ETag":object.httpEtag||object.etag})});
- }catch{return json({error:"image_read_unavailable"},503);}
+  // Same as V1: original raster lives on the isolated GitHub branch.
+  // This endpoint requires the existing private site session.
+  if(request.method!=="GET"||!TREND_ID.test(trendId))return json({error:"not_found"},404);
+  const revision=Number(new URL(request.url).searchParams.get("revision"));
+  if(!Number.isSafeInteger(revision)||revision<1||revision>100000)return json({error:"revision_invalid"},400);
+  try {
+    const response=await fetch(SOURCE+"editorial-queue.json",{
+      headers:{"Accept":"application/json"},cf:{cacheTtl:5,cacheEverything:true}});
+    if(!response.ok)return json({error:"editorial_unavailable"},502);
+    const queue=await response.json();
+    if(queue?.step!=="04_editorial_queue"||queue.effects_enabled!==false)
+      return json({error:"editorial_not_isolated"},503);
+    const row=queue.items?.[trendId];
+    const cap=row?.capture||{};
+    const img=cap.image||{};
+    if(row?.trend_id!==trendId||row?.revision!==revision||
+       !["captured_review","ready","published"].includes(row.status)||
+       cap.revision!==revision||img.status!=="saved"||
+       img.revision!==revision||img.backend!=="github_v1_style"||
+       !HEX64.test(img.sha256||"")||!IMAGE_COMMAND.test(img.command_id||""))
+       return json({error:"image_not_ready"},404);
+    const ext=IMAGE_TYPES[img.mime];
+    const expected="v2/ttendencias/generated-images/"+trendId+"-r"+revision+
+                   "-"+img.sha256.slice(0,24)+"."+ext;
+    if(!ext||img.path!==expected)
+      return json({error:"image_identity_invalid"},409);
+    const raw="https://raw.githubusercontent.com/fabricelop/europapress-rss/"+
+      "feature/ttactualidad-v2-clean/"+expected;
+    const original=await fetch(raw,{headers:{"Accept":img.mime},cf:{cacheTtl:30,cacheEverything:true}});
+    if(!original.ok)return json({error:"image_missing"},404);
+    const buffer=await original.arrayBuffer();
+    if(buffer.byteLength<100000||buffer.byteLength>8388608||
+       await sha256Bytes(buffer)!==img.sha256)
+      return json({error:"image_integrity_invalid"},502);
+    const first=new Uint8Array(buffer.slice(0,16));
+    const png=first.slice(0,8).every((v,i)=>v===[137,80,78,71,13,10,26,10][i]);
+    const jpg=first[0]===255&&first[1]===216&&first[2]===255;
+    const webp=String.fromCharCode(...first.slice(0,4))==="RIFF"&&
+               String.fromCharCode(...first.slice(8,12))==="WEBP";
+    if(!({"image/png":png,"image/jpeg":jpg,"image/webp":webp})[img.mime])
+      return json({error:"image_format_invalid"},502);
+    return new Response(buffer,{headers:headers({
+      "Content-Type":img.mime,"ETag":'"'+img.sha256+'"',
+      "Content-Disposition":"inline"})});
+  } catch {
+    return json({error:"image_read_unavailable"},503);
+  }
 }
 function imageIngestReady(request,env) {
   if(request.method!=="GET")return json({error:"method_not_allowed"},405);
