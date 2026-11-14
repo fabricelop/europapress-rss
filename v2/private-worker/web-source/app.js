@@ -97,7 +97,8 @@ function explanationTime(item){
  e.setAttribute("aria-label",e.title);
  return e;
 }
-function movementIndicator(item){
+function movementIndicator(item,rankingMeta){
+ const meta=rankingMeta||{};
  const previous=Number.isInteger(item.previous_rank) && item.previous_rank>=1 && item.previous_rank<=40?item.previous_rank:null;
  let label="—",description="Sin captura anterior comparable",kind="unknown";
  if(previous!==null){
@@ -108,11 +109,11 @@ function movementIndicator(item){
  }else if(["entry","reentry","short_return"].includes(item.movement)){
   label="Nueva";description="Entra o regresa al Top 30";kind="entry";
  }
- if(state.rankingUnchanged){
-  const stamp=state.rankingChangeAt?spanishStamp(state.rankingChangeAt):null;
+ if(meta.rankingUnchanged){
+  const stamp=meta.rankingChangeAt?spanishStamp(meta.rankingChangeAt):null;
   description+=". Última consulta con Top 30 idéntico; se conserva la comparación anterior"+(stamp?" ("+stamp+")":"");
  }
- const badge=el("span","movement-indicator "+kind+(state.rankingUnchanged?" held":""),label);
+ const badge=el("span","movement-indicator "+kind+(meta.rankingUnchanged?" held":""),label);
  badge.title=description;
  badge.setAttribute("aria-label",description);
  return badge;
@@ -169,7 +170,7 @@ function render(){
   if(entered)title.append(entered);
   const time=explanationTime(item);
   if(time)title.append(time);
-  head.append(el("span","rank","T"+item.rank),title,movementIndicator(item),icon);
+  head.append(el("span","rank","T"+item.rank),title,movementIndicator(item,state),icon);
   card.append(head);
   const flag=el("button","red-toggle","R");
   flag.type="button";
