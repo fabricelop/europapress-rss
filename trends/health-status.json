@@ -1,9 +1,5 @@
 {
-<<<<<<< Updated upstream
-  "checked_at": "2026-11-14T08:30:36.832262+00:00",
-=======
-  "checked_at": "2026-11-14T08:35:37.764882+00:00",
->>>>>>> Stashed changes
+  "checked_at": "2026-11-14T08:41:56.700653+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -46,16 +42,12 @@
     "top10": {
       "ok": false,
       "count": 10,
-      "non_stale_sources": 4,
+      "non_stale_sources": 3,
       "verified_fresh_sources": [
         "xtrendsiamrohit"
       ],
       "live_verified": false,
-<<<<<<< Updated upstream
-      "captured_age_minutes": 9.7,
-=======
-      "captured_age_minutes": 14.7,
->>>>>>> Stashed changes
+      "captured_age_minutes": 0.2,
       "noise_count": 0
     },
     "listener": {
@@ -67,12 +59,8 @@
       "ok": true,
       "status": "pending",
       "conclusion": null,
-<<<<<<< Updated upstream
-      "age_minutes": 2.3,
-=======
-      "age_minutes": 4.9,
->>>>>>> Stashed changes
-      "run_id": 43575977737,
+      "age_minutes": 0.9,
+      "run_id": 43576978552,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -84,7 +72,7 @@
     },
     "request_queue": {
       "ok": false,
-      "invalid_count": 868,
+      "invalid_count": 869,
       "noise_count": 0
     },
     "ready_consistency": {
@@ -94,49 +82,34 @@
     },
     "editorial_queue": {
       "ok": false,
-      "pending_count": 5,
-<<<<<<< Updated upstream
-      "overdue_count": 1,
-      "oldest_age_minutes": 48.7,
-=======
-      "overdue_count": 5,
-      "oldest_age_minutes": 53.7,
->>>>>>> Stashed changes
+      "pending_count": 4,
+      "overdue_count": 4,
+      "oldest_age_minutes": 37.1,
       "warning_after_minutes": 30,
       "overdue_items": [
-        {
-          "id": "red-review-1fc81745644308aa89e3",
-          "name": "Revisar novedades: Outlook",
-          "status": "preparing",
-<<<<<<< Updated upstream
-          "age_minutes": 48.7
-=======
-          "age_minutes": 53.7
-        },
         {
           "id": "6c3719ad5c9a",
           "name": "#AgropopularSanMartín",
           "status": "preparing",
-          "age_minutes": 30.8
+          "age_minutes": 37.1
         },
         {
           "id": "fee8a9b98cf8",
           "name": "Pollo Carvajal",
           "status": "preparing",
-          "age_minutes": 30.8
+          "age_minutes": 37.1
         },
         {
           "id": "8ac816dd3bd8",
           "name": "Inda",
           "status": "preparing",
-          "age_minutes": 30.8
+          "age_minutes": 37.1
         },
         {
           "id": "79900272eaad",
           "name": "Ministerio de Igualdad",
           "status": "preparing",
-          "age_minutes": 30.8
->>>>>>> Stashed changes
+          "age_minutes": 37.1
         }
       ],
       "repairable": false
@@ -146,7 +119,6 @@
       "status": "overdue",
       "queue_complete": false,
       "remaining_active_ids": [
-        "red-review-1fc81745644308aa89e3",
         "6c3719ad5c9a",
         "fee8a9b98cf8",
         "8ac816dd3bd8",
@@ -163,18 +135,10 @@
   "repairs_started": [],
   "blocking": [
     "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos",
-    "cola con 868 estado(s) inválido(s)",
-<<<<<<< Updated upstream
-    "cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 48.7 min"
+    "cola con 869 estado(s) inválido(s)",
+    "cola de explicaciones retrasada: 4 pendiente(s) superan 30 min; más antigua 37.1 min"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 868 estado(s) inválido(s) | cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 48.7 min"
-=======
-    "cola de explicaciones retrasada: 5 pendiente(s) superan 30 min; más antigua 53.7 min"
-  ],
-  "warnings": [],
-  "alert_sent": false,
-  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 868 estado(s) inválido(s) | cola de explicaciones retrasada: 5 pendiente(s) superan 30 min; más antigua 53.7 min"
->>>>>>> Stashed changes
+  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 869 estado(s) inválido(s) | cola de explicaciones retrasada: 4 pendiente(s) superan 30 min; más antigua 37.1 min"
 }
