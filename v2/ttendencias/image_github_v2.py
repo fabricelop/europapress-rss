@@ -52,7 +52,7 @@ def request(method,path,auth,payload=None,*,opener=None):
         raise RuntimeError("V2_IMAGE_GITHUB_HTTP_"+str(err.code)) from None
 
 def git_blob_sha(raw):
-    return hashlib.sha1(b"blob "+str(len(raw)).encode("ascii")+b"\\x00"+raw).hexdigest()
+    return hashlib.sha1(b"blob "+str(len(raw)).encode("ascii")+bytes([0])+raw).hexdigest()
 
 def current_editorial(job,auth,*,send=request):
     intake.validate_job(job)
