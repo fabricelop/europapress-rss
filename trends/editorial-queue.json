@@ -1,6 +1,79 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-14T15:43:47+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-14T14:44:15.944307+00:00",
+  "count": 2,
+  "items": [
+    {
+      "id": "red-review-4e2aa3d4a7601bdf7c3e",
+      "revision": 0,
+      "name": "Revisar novedades: #PazCasaTrabajo29N",
+      "rank": 8,
+      "status": "preparing",
+      "requested_at": "2026-11-14T14:44:15.944307+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "c04ca7365d3b",
+        "revision": 0,
+        "name": "#PazCasaTrabajo29N",
+        "rank": 4,
+        "explanation": "TT#7 #PazCasaTrabajo29N sigue siendo tendencia por la campaña de Podemos para el 29N: hoy ha desplegado tres camionetas para difundir propuestas sobre vivienda, gasolina y alimentos.\n#29N #Podemos\n🌶️ La campaña salió a rodar.",
+        "explanation_sha256": "da19e6bfc951f9aafc535c8d5195d407de40fb965e2c6ed30715cbd6beac95bf",
+        "explained_at": "2026-11-12T21:01:00+01:00",
+        "verification_sources": [
+          {
+            "title": "Navarra.com: arranque de campaña de Podemos Navarra",
+            "url": "https://navarra.okdiario.com/navarra/politica/podemos-distancia-sanchez-navarra-denuncia-que-gobierno-solo-ofrece-politicas-vacias/20261112193328667465.html",
+            "published_at": "2026-11-12"
+          },
+          {
+            "title": "Cadena SER: Podemos concurre al 29N con «Paz, casa y trabajo»",
+            "url": "https://cadenaser.com/castillayleon/2026/10/26/podemos-concurre-al-29n-en-palencia-con-la-bandera-de-paz-casa-y-trabajo-radio-palencia/",
+            "published_at": "2026-10-26"
+          }
+        ],
+        "fingerprint": "f117829a88e66effe35151665d3e14b28bb3505554bd4aaa9ec0649b8a58b812"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-d984f804b0844e5d156a",
+      "revision": 0,
+      "name": "Revisar novedades: NVIDIA",
+      "rank": 25,
+      "status": "preparing",
+      "requested_at": "2026-11-14T14:44:15.944307+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "cf2df84a5714",
+        "revision": 0,
+        "name": "NVIDIA",
+        "rank": 28,
+        "explanation": "TT#16 NVIDIA sigue siendo tendencia porque Reuters informa de que Huang indujo a error a directivos sobre su relación con Alice Huang; el consejo mantiene abierta su investigación mientras busca CEO.\n#JensenHuang\n🌶️ El casting llegó con revisión de versiones.",
+        "explanation_sha256": "694909ea9cdd3097090b3aea4ae98c60229f28290bacf8ef8ac7e2f3afab8a3e",
+        "explained_at": "2026-11-12T05:31:00+01:00",
+        "verification_sources": [
+          {
+            "url": "https://www.reuters.com/technology/nvidia-is-preparing-oust-ceo-jensen-huang-wsj-reports-2026-11-11/"
+          },
+          {
+            "url": "https://twitter-trends.snaplytics.io/spain/"
+          }
+        ],
+        "fingerprint": "0419d4dfb6fca64fc26a5128187eb51a531d59682865a19a24c69feabe084f33"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
