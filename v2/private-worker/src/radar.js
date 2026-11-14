@@ -117,6 +117,15 @@ async function stableId(key) {
 export async function mergeEditorialRadar(editorial, snapshot, clock=Date.now()) {
   if(!snapshot||!Array.isArray(snapshot.names)||snapshot.names.length!==THIRTY)
     return editorial;
+  // Manual GitHub dispatch is a first-class backup. Whichever successful
+  // capture is newer wins; an older Cloudflare snapshot cannot hide it.
+  const githubTime=Date.parse(editorial?.captured_at||"");
+  const cloudflareTime=Date.parse(snapshot.captured_at||"");
+  if(Number.isFinite(githubTime)&&Number.isFinite(cloudflareTime)&&githubTime>cloudflareTime){
+    return {...editorial,radar_source:"github_manual_or_latest",
+      radar_last_captured_at:editorial.captured_at,
+      radar_cloudflare_last_captured_at:snapshot.captured_at};
+  }
   if(radarAgeMinutes(snapshot,clock)>45)
     return {...editorial,radar_source:"cloudflare_stale_fallback",radar_last_captured_at:snapshot.captured_at,
       radar_warning:"La captura de Cloudflare supera los 45 minutos; se muestra el último estado GitHub."};
