@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "checked_at": "2026-11-14T23:16:16.681119+00:00",
+  "checked_at": "2026-11-14T23:30:10.310398+00:00",
   "projects": {
     "ttittulares": {
       "project": "ttittulares",
-      "checked_at": "2026-11-14T23:16:16.681119+00:00",
+      "checked_at": "2026-11-14T23:30:10.310398+00:00",
       "pending_count": 0,
       "pending_ids": [],
       "oldest_at": null,
@@ -18,12 +18,12 @@
     },
     "ttendencias": {
       "project": "ttendencias",
-      "checked_at": "2026-11-14T23:16:16.681119+00:00",
+      "checked_at": "2026-11-14T23:30:10.310398+00:00",
       "pending_count": 1,
       "pending_ids": [
-        "red-review-ec1a4385af2b2c043b0e"
+        "red-review-633101f08356033b0cf1"
       ],
-      "oldest_at": "2026-11-14T22:56:30.233375+00:00",
+      "oldest_at": "2026-11-14T23:18:15.157235+00:00",
       "latest_run": {
         "id": "tr-20261114T232800-chat-direct",
         "status": "DONE",
@@ -32,30 +32,24 @@
         "finished_at": "2026-11-14T23:38:31+01:00",
         "source": "github_pr_trace"
       },
-      "control_command": "tr-1794697112350-manual",
-      "last_command_at": "2026-11-14T22:58:32.350Z",
-      "status": "dispatch_requested_awaiting_run",
-      "should_dispatch": true,
+      "control_command": "tr-1794698450413-manual",
+      "last_command_at": "2026-11-14T23:20:50.413Z",
+      "status": "dispatch_pending_ack",
+      "should_dispatch": false,
       "item_execution": [
         {
-          "id": "red-review-ec1a4385af2b2c043b0e",
-          "entered_at": "2026-11-14T22:56:30.233375+00:00",
-          "should_start_by": "2026-11-14T23:01:30.233375+00:00",
+          "id": "red-review-633101f08356033b0cf1",
+          "entered_at": "2026-11-14T23:18:15.157235+00:00",
+          "should_start_by": "2026-11-14T23:23:15.157235+00:00",
           "global_run_after_entry": false,
           "final_telegram_delivery_confirmed": false
         }
       ],
-      "backlog_signature": "ac177dd9d76518ec",
-      "expected_start_by": "2026-11-14T23:01:30.233375+00:00",
-      "attempts": 1,
+      "backlog_signature": "c4df2cce35f9beda",
+      "expected_start_by": "2026-11-14T23:23:15.157235+00:00",
+      "attempts": 0,
       "previous_target_completed_or_superseded": false,
-      "dispatch": {
-        "requested": true,
-        "command_id": "tr-autoguard-1794698176",
-        "requested_at": "2026-11-14T23:16:16.681119Z"
-      },
-      "last_request_at": "2026-11-14T23:16:16.681119+00:00",
-      "last_requested_command_id": "tr-autoguard-1794698176"
+      "last_request_at": "2026-11-14T23:16:16.681119+00:00"
     }
   },
   "policy": {
