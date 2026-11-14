@@ -32,6 +32,30 @@ class ChangeTests(unittest.TestCase):
         same = self.run_step(10, prev=later["state"])
         self.assertTrue(same["idempotent"])
 
+    def test_position_delta_compares_adjacent_captures(self):
+        first = self.run_step(0)["state"]
+        names = ORIGINAL.copy()
+        names[0], names[4] = names[4], names[0]
+        moved = self.run_step(15, names, first)["state"]
+        self.assertEqual(moved["previous_observed_at"], first["observed_at"])
+        self.assertEqual(moved["topics"]["trend 5"]["previous_rank"], 5)
+        self.assertEqual(moved["topics"]["trend 5"]["positions_changed"], 4)
+        self.assertEqual(moved["topics"]["trend 1"]["previous_rank"], 1)
+        self.assertEqual(moved["topics"]["trend 1"]["positions_changed"], -4)
+        self.assertEqual(moved["topics"]["trend 2"]["positions_changed"], 0)
+        steady = self.run_step(30, names, moved)["state"]
+        self.assertEqual(steady["topics"]["trend 5"]["positions_changed"], 0)
+        self.assertEqual(steady["topics"]["trend 5"]["previous_rank"], 1)
+
+    def test_new_entry_has_no_previous_rank(self):
+        first = self.run_step(0)["state"]
+        names = ["New"] + ORIGINAL[:29]
+        moved = self.run_step(15, names, first)["state"]
+        item = moved["topics"]["new"]
+        self.assertIsNone(item["previous_rank"])
+        self.assertIsNone(item["positions_changed"])
+        self.assertEqual(item["last_change"], "entry")
+
     def test_new_exit_and_ranking(self):
         first = self.run_step(0)["state"]
         names = ["New"] + ORIGINAL[:29]
