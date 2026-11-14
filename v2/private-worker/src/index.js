@@ -160,7 +160,7 @@ async function imageIngest(request,env) {
  if(Number(request.headers.get("content-length")||0)>8388608)return json({error:"image_too_large"},413);
  let row;
  try{row=await currentImageIdentity(id,revision);}catch{return json({error:"editorial_unavailable"},503);}
- if(!row||await sha256(row.explanation.trim())!==editorialHash)return json({error:"editorial_revision_changed"},409);
+ if(!row||await sha256Bytes(encoder.encode(row.explanation.trim()).buffer)!==editorialHash)return json({error:"editorial_revision_changed"},409);
  let bytes;
  try{bytes=await request.arrayBuffer();}catch{return json({error:"invalid_image"},400);}
  if(bytes.byteLength<100000||bytes.byteLength>8388608)return json({error:"invalid_image_size"},413);
