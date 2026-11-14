@@ -14,6 +14,7 @@ reconcile_source = source.with_name("reconcile_prepared_ready.py")
 anticipation_source = source.with_name("anticipation.py")
 requests_json_source = source.with_name("requests_json.py")
 episode_source = source.with_name("trend_episode_policy.py")
+pending_retirement_source = source.with_name("pending_retirement.py")
 
 def load(path):
     return json.loads(path.read_text(encoding="utf8"))
@@ -28,6 +29,7 @@ with tempfile.TemporaryDirectory() as foldername:
     shutil.copy2(reconcile_source, folder / "reconcile_prepared_ready.py")
     shutil.copy2(requests_json_source, folder / "requests_json.py")
     shutil.copy2(episode_source, folder / "trend_episode_policy.py")
+    shutil.copy2(pending_retirement_source, folder / "pending_retirement.py")
     shutil.copy2(source.with_name("suppression.py"), folder / "suppression.py")
     shutil.copy2(source.with_name("suppressed-terms.json"), folder / "suppressed-terms.json")
     names = [f"Tendencia {i}" for i in range(1, 31)]
@@ -115,6 +117,7 @@ with tempfile.TemporaryDirectory() as foldername:
     shutil.copy2(reconcile_source, folder/"reconcile_prepared_ready.py")
     shutil.copy2(requests_json_source, folder/"requests_json.py")
     shutil.copy2(episode_source, folder/"trend_episode_policy.py")
+    shutil.copy2(pending_retirement_source, folder/"pending_retirement.py")
     shutil.copy2(source.with_name("suppression.py"), folder/"suppression.py")
     shutil.copy2(source.with_name("suppressed-terms.json"), folder/"suppressed-terms.json")
     old=(datetime.now(ZoneInfo("Europe/Madrid"))-timedelta(days=5)).isoformat(timespec="seconds")
@@ -152,6 +155,7 @@ with tempfile.TemporaryDirectory() as foldername:
     shutil.copy2(reconcile_source, folder/"reconcile_prepared_ready.py")
     shutil.copy2(requests_json_source, folder/"requests_json.py")
     shutil.copy2(episode_source, folder/"trend_episode_policy.py")
+    shutil.copy2(pending_retirement_source, folder/"pending_retirement.py")
     shutil.copy2(source.with_name("suppression.py"), folder/"suppression.py")
     shutil.copy2(source.with_name("suppressed-terms.json"), folder/"suppressed-terms.json")
     now=datetime.now(ZoneInfo("Europe/Madrid"))
@@ -190,6 +194,7 @@ with tempfile.TemporaryDirectory() as foldername:
     shutil.copy2(reconcile_source, folder / "reconcile_prepared_ready.py")
     shutil.copy2(requests_json_source, folder / "requests_json.py")
     shutil.copy2(episode_source, folder / "trend_episode_policy.py")
+    shutil.copy2(pending_retirement_source, folder / "pending_retirement.py")
     shutil.copy2(source.with_name("suppression.py"), folder / "suppression.py")
     shutil.copy2(source.with_name("suppressed-terms.json"), folder / "suppressed-terms.json")
     put(folder / "recent.json", {"selection_method":"consensus",
@@ -261,7 +266,7 @@ with tempfile.TemporaryDirectory() as foldername:
     folder = Path(foldername)
     for script in ("auto_queue_new.py", "anticipation.py",
                    "reconcile_prepared_ready.py", "requests_json.py",
-                   "trend_episode_policy.py", "suppression.py",
+                   "trend_episode_policy.py", "pending_retirement.py", "suppression.py",
                    "suppressed-terms.json"):
         shutil.copy2(source.with_name(script), folder / script)
     names = [f"ES Agora Example {i:02}" for i in range(1, 51)]
