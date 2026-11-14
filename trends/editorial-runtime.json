@@ -3,41 +3,39 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261114T154000-chat-direct",
-  "previous_run_id": "tr-20261114T152500-chat-direct",
-  "command_id": "tr-20261114T154000-chat-direct",
+  "run_id": "tr-20261114T171000-chat-direct",
+  "previous_run_id": "tr-20261114T154000-chat-direct",
+  "command_id": "tr-20261114T171000-chat-direct",
   "source": "chat_direct",
-  "status": "DONE",
+  "status": "DONE_WITH_INCIDENTS",
   "phase": "closing",
-  "started_at": "2026-11-14T15:40:00+01:00",
-  "updated_at": "2026-11-14T15:51:10+01:00",
-  "current": 3,
-  "total": 3,
+  "started_at": "2026-11-14T17:10:00+01:00",
+  "updated_at": "2026-11-14T17:14:32+01:00",
+  "current": 2,
+  "total": 2,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
   "queue_complete": true,
   "processed_ids": [
-    "4a0b99c27aaf",
-    "red-review-d984f804b0844e5d156a"
+    "red-review-4f901afddeea0ff9ef1f",
+    "red-review-1115997276fd0b4a37dd"
   ],
-  "converged_ids": [
-    "red-review-4e2aa3d4a7601bdf7c3e"
-  ],
+  "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 3,
-    "observed": 3,
-    "closed": 3,
-    "explained": 1,
+    "attempted": 2,
+    "observed": 2,
+    "closed": 2,
+    "explained": 0,
     "problematic": 0,
-    "updates": 1,
+    "updates": 2,
     "review_completed_no_distinct_event": 0,
     "maintenance_reviews": 2,
-    "unchanged_reviews": 1,
+    "unchanged_reviews": 0,
     "continuity_updates": 1,
-    "distinct_updates": 0,
+    "distinct_updates": 1,
     "stale_reviews": 0,
     "unverified_reviews": 0,
     "anticipation_reviews": 0,
@@ -48,40 +46,42 @@
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 0,
-    "concurrent_convergence": 1
+    "incidents": 1,
+    "concurrent_convergence": 0
   },
   "outcomes": [
     {
-      "id": "4a0b99c27aaf",
+      "id": "red-review-4f901afddeea0ff9ef1f",
       "revision": 0,
-      "name": "#PSOEyFrenteAmplioVetan",
-      "outcome": "explained",
+      "name": "Revisar novedades: #DeViernes",
+      "outcome": "distinct_update",
       "applied": true,
-      "apply_commit": "115549892232ee15c0217e5d4653827aa56aafec"
+      "source_id": "de982193d4bd",
+      "created_id": "trend-update-5eea149fdaf9fb24a46c",
+      "apply_commit": "074b3f7e87b6260fde12e02ec813bdd56b8cc218",
+      "apply_run_id": 43614430012
     },
     {
-      "id": "red-review-4e2aa3d4a7601bdf7c3e",
+      "id": "red-review-1115997276fd0b4a37dd",
       "revision": 0,
-      "name": "Revisar novedades: #PazCasaTrabajo29N",
-      "outcome": "unchanged",
-      "applied": true,
-      "via": "concurrent_convergence",
-      "source_id": "c04ca7365d3b",
-      "apply_commit": "b2971a704179457e64a671dc6c0e57d74abdf1d8"
-    },
-    {
-      "id": "red-review-d984f804b0844e5d156a",
-      "revision": 0,
-      "name": "Revisar novedades: NVIDIA",
+      "name": "Revisar novedades: Outlook",
       "outcome": "updated_continuity",
       "applied": true,
-      "source_id": "cf2df84a5714",
-      "apply_commit": "13bc171b067b973ef391f80a1c57c8048c336fe1"
+      "source_id": "709be9244008",
+      "apply_commit": "074b3f7e87b6260fde12e02ec813bdd56b8cc218",
+      "apply_run_id": 43614430012
     }
   ],
-  "incident_count": 0,
-  "incidents": [],
+  "incident_count": 1,
+  "incidents": [
+    {
+      "at": "2026-11-14T17:14:32+01:00",
+      "phase": "closing",
+      "trend_id": null,
+      "title": "Refresco manual 17:10",
+      "reason": "GitHub Actions run 43614186407 seguía in_progress en checkout al cerrar; main ya tenía Top 30 fresco capturado a las 17:11:04 y la cola editorial estaba vacía."
+    }
+  ],
   "error": null,
   "activity": [
     {
@@ -561,6 +561,20 @@
       "revision": null,
       "name": "Pasada editorial TTendencias",
       "message": "Pasada completada 3/3: #PSOEyFrenteAmplioVetan explicada; #PazCasaTrabajo29N revisada sin cambios; NVIDIA actualizada como continuidad. Cola final 0; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-14T17:10:00+01:00",
+      "run_id": "tr-20261114T171000-chat-direct",
+      "status": "RUNNING",
+      "phase": "preparing",
+      "message": "Pasada manual TTendencias iniciada desde ChatGPT; trigger persistido en main y cola revalidada con 2 revisiones de mantenimiento: #DeViernes y Outlook. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-14T17:14:32+01:00",
+      "run_id": "tr-20261114T171000-chat-direct",
+      "status": "DONE_WITH_INCIDENTS",
+      "phase": "closing",
+      "message": "Pasada TTendencias completada 2/2: #DeViernes abrió episodio distinto por la emisión del 13/11 con Belén Esteban y Outlook se actualizó como continuidad del mismo incidente Microsoft 365. Cola final=0; Top 30 fresco capturado a las 17:11:04. El workflow manual 43614186407 seguía in_progress en checkout al cierre, incidencia no bloqueante. ImageGen=0; publicaciones=0."
     }
   ],
   "last_started_at": "2026-11-14T15:43:47+01:00",
@@ -644,7 +658,7 @@
     "incidents": [],
     "message": "Pasada completada 3/3: #PSOEyFrenteAmplioVetan explicada; #PazCasaTrabajo29N revisada sin cambios; NVIDIA actualizada como continuidad. Cola final 0; sin ImageGen ni publicación."
   },
-  "message": "Pasada completada 3/3: #PSOEyFrenteAmplioVetan explicada; #PazCasaTrabajo29N revisada sin cambios; NVIDIA actualizada como continuidad. Cola final 0; sin ImageGen ni publicación.",
+  "message": "Pasada completada 2/2. #DeViernes: episodio distinto; Outlook: continuidad actualizada. Barrera final editorial-queue=0 y Top 30 fresco 17:11:04. Sin ImageGen ni publicaciones. Incidencia no bloqueante: el workflow manual de refresco seguía en checkout.",
   "history": [
     {
       "run_id": "tr-1794361941170-manual",
@@ -8932,7 +8946,7 @@
   ],
   "outbox_comment_id": 6849930890,
   "editorial_apply_commit": "115549892232ee15c0217e5d4653827aa56aafec",
-  "refresh_workflow_run_id": 43559070619,
+  "refresh_workflow_run_id": 43614186407,
   "refresh_conclusion": "in_progress_checkout",
   "maintenance_apply_commits": [
     "eb933ea7a00e1a22d27dc8327255e475f825acbc",
@@ -9524,8 +9538,9 @@
     "87f044c1d60fccb4187d9b2490720860e8f8249d",
     "c40ef7c7688d137adf9c59ec1fb4f551c0d1975c"
   ],
-  "maintenance_apply_run_id": 43606963954,
-  "maintenance_apply_commit": "13bc171b067b973ef391f80a1c57c8048c336fe1",
-  "finished_at": "2026-11-14T15:51:10+01:00",
-  "completed_at": "2026-11-14T15:51:10+01:00"
+  "maintenance_apply_run_id": 43614430012,
+  "maintenance_apply_commit": "074b3f7e87b6260fde12e02ec813bdd56b8cc218",
+  "finished_at": "2026-11-14T17:14:32+01:00",
+  "completed_at": "2026-11-14T17:14:32+01:00",
+  "input_commit": "0c7e18479768676fa11a998fd66efc8d3b43f687"
 }
