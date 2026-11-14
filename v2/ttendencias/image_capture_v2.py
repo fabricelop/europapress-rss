@@ -88,7 +88,7 @@ def exact_job(path):
     if file.stem!=job["command_id"]:raise ValueError("V2_IMAGE_JOB_FILENAME_MISMATCH")
     return job
 
-def fetch_raster(job):
+def fetch_raster(job, *, generate=False, intent_file=None):
     if editor.profile_pids():raise RuntimeError("V2_EDITOR_BROWSER_BUSY")
     if not editor.CHROME.exists():raise RuntimeError("V2_CHROME_MISSING")
     port=None
@@ -120,6 +120,28 @@ def fetch_raster(job):
                     page.goto(job["conversation_url"],wait_until="domcontentloaded",timeout=45000)
                 if page.url.rstrip("/")!=job["conversation_url"].rstrip("/"):
                     raise RuntimeError("V2_IMAGE_CHAT_URL_CHANGED")
+                if generate:
+                    prompt=str(job.get("prompt") or "")
+                    if not prompt.startswith("TT_V2_IMAGE_JOB_V1 "+job["command_id"]+" "):
+                        raise RuntimeError("V2_IMAGE_PROMPT_CONTEXT_MISMATCH")
+                    already=page.evaluate("""(cmd)=>{
+                      const users=[...document.querySelectorAll('[data-user-message-bubble="true"]')];
+                      return users.some(n=>String(n.innerText||n.textContent||'').includes(cmd));
+                    }""",job["command_id"])
+                    if not already:
+                        if not intent_file:raise RuntimeError("V2_IMAGE_INTENT_PATH_REQUIRED")
+                        if intent_file.exists():raise RuntimeError("V2_IMAGE_SEND_INTENT_UNCERTAIN_NO_RESEND")
+                        composer=None
+                        for selector in editor.COMPOSERS:
+                            node=page.locator(selector).first
+                            if node.count() and node.is_visible() and node.is_enabled():
+                                composer=node;break
+                        if composer is None:raise RuntimeError("V2_IMAGE_COMPOSER_UNAVAILABLE")
+                        intent_file.write_text(json.dumps({"command_id":job["command_id"],
+                          "trend_id":job["trend_id"],"revision":job["revision"],
+                          "state":"send_intent_not_retriable"},sort_keys=True),encoding="utf-8")
+                        composer.fill(prompt)
+                        composer.press("Enter")
                 until=time.monotonic()+STOP_TIMEOUT
                 last_reason="no_raster"
                 while time.monotonic()<until:
@@ -148,7 +170,7 @@ def fetch_raster(job):
                 proc.kill();proc.wait(timeout=10)
         if editor.profile_pids():raise RuntimeError("V2_IMAGE_CHROME_NOT_CLOSED")
 
-def run(jobfile):
+def run(jobfile, *, generate=False):
     job=exact_job(jobfile)
     RECEIPTS.mkdir(parents=True,exist_ok=True)
     receipt=RECEIPTS/(job["command_id"]+".json")
@@ -164,7 +186,7 @@ def run(jobfile):
     intake.validate_editorial(job,row)
     secret=private_secret()
     with exclusive_v2_lock(LOCK):
-        raw=fetch_raster(job)
+        raw=fetch_raster(job,generate=generate,intent_file=RECEIPTS/(job["command_id"]+".intent.json"))
         intake.persist_original(ORIGINALS,job,raw)
         saved=intake.upload(job,raw,secret)
         tmp=receipt.with_suffix(".json.tmp")
@@ -177,13 +199,14 @@ def main():
     parser=argparse.ArgumentParser()
     parser.add_argument("--job",type=pathlib.Path,required=True)
     parser.add_argument("--run",action="store_true")
+    parser.add_argument("--generate",action="store_true",help="Send scoped ImageGen prompt once, then capture original; never resend uncertain commands")
     args=parser.parse_args()
     job=exact_job(args.job)
     if not args.run:
         print("TT_V2_IMAGE_JOB_VALID=YES")
         print("TT_V2_IMAGE_AUTOMATIC_UPLOAD=DRY_RUN")
         return
-    run(args.job)
+    run(args.job,generate=args.generate)
 
 if __name__=="__main__":
     try:main()
