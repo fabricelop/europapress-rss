@@ -229,13 +229,6 @@ export default {
       if (body.length>2000000) return json({error:"oversized_source"},502);
       return result(body,200,{"Content-Type":"application/json; charset=utf-8"});
     }
-    if (url.pathname === "/pilot/jordi-wild.webp") {
-      if (request.method !== "GET") return json({error:"method_not_allowed"},405);
-      const asset=await env.ASSETS.fetch(request);
-      if(!asset.ok) return json({error:"pilot_image_missing"},404);
-      const h=new Headers(headers({"Content-Type":"image/webp"}));
-      return new Response(asset.body,{status:asset.status,headers:h});
-    }
     if (url.pathname.startsWith("/api/")) return json({error:"action_not_enabled"},503);
     if (request.method !== "GET" && request.method !== "HEAD") return json({error:"method_not_allowed"},405);
     const response=await env.ASSETS.fetch(request);
