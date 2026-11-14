@@ -7,33 +7,28 @@
   "previous_run_id": "tr-20261114T055500-chat-direct",
   "command_id": "tr-20261114T062500-chat-direct",
   "source": "chat_direct",
-  "status": "waiting",
+  "status": "success",
   "phase": "closing",
   "started_at": "2026-11-14T06:25:00+01:00",
-  "updated_at": "2026-11-14T07:57:27+01:00",
+  "updated_at": "2026-11-14T08:15:12+01:00",
   "current": 3,
   "total": 3,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [
-    "746ea7ec1310"
+    "514c9e82da43",
+    "602ab510add3",
+    "671072ff440b",
+    "c1949122f6b4",
+    "e0eeea40ff32",
+    "ec856044c608"
   ],
   "converged_ids": [
     "b282b0745468"
   ],
-  "remaining_ids": [
-    "e0eeea40ff32",
-    "ec856044c608",
-    "602ab510add3",
-    "671072ff440b"
-  ],
-  "remaining_active_ids": [
-    "e0eeea40ff32",
-    "ec856044c608",
-    "602ab510add3",
-    "671072ff440b"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 3,
@@ -476,8 +471,8 @@
       "message": "Pasada 3/3 cerrada. Jensen reentry: no_distinct_event por convergencia; Jensen y NVIDIA review_red: continuidad aplicada. editorial-queue=0, mobile activo=0. Sin ImageGen ni publicaciones."
     }
   ],
-  "last_started_at": "2026-11-14T07:57:26+01:00",
-  "last_completed_at": "2026-11-14T06:26:38+01:00",
+  "last_started_at": "2026-11-14T08:15:12+01:00",
+  "last_completed_at": "2026-11-14T08:15:12+01:00",
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-20261114T062500-chat-direct",
