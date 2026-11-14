@@ -137,6 +137,9 @@ def build(history, queue):
         "source": history.get("source") or "GetDayTrends",
         "captured_at": history["observed_at"],
         "comparison_at": history.get("previous_observed_at"),
+        # Hora de consulta y hora de último cambio REAL son conceptos distintos.
+        "ranking_unchanged": history.get("ranking_unchanged") is True,
+        "ranking_change_at": history.get("ranking_change_at"),
         "source_verified_against_x": False,
         "publication_allowed": False,
         "count": 30,
