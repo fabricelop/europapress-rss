@@ -1,6 +1,78 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-14T12:44:42+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-14T11:45:13.176551+00:00",
+  "count": 2,
+  "items": [
+    {
+      "id": "red-review-48aee01e7fa751c0311e",
+      "revision": 0,
+      "name": "Revisar novedades: Microsoft",
+      "rank": 7,
+      "status": "preparing",
+      "requested_at": "2026-11-14T11:45:13.176551+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "c7bac46904be",
+        "revision": 1,
+        "name": "Microsoft",
+        "rank": 28,
+        "explanation": "TT#28 Microsoft es tendencia por la caída global de Microsoft 365: Outlook, Teams y Copilot siguen con fallos. Microsoft ve señales de estabilización, pero el servicio aún no ha vuelto a la normalidad.\n#Microsoft365 #Outlook\n🌶️ La nube sigue buscando suelo firme.",
+        "explanation_sha256": "80025e8c7240a2ce614b0c74b204eeeef382d4d5641aa680360afd2b1a800f0a",
+        "explained_at": "2026-11-13T11:18:36+01:00",
+        "verification_sources": [
+          {
+            "url": "https://www.reuters.com/technology/microsoft-365-outlook-down-thousands-us-users-downdetector-shows-2026-11-12/"
+          },
+          {
+            "url": "https://www.20minutos.es/tecnologia/actualidad/caida-outlook-teams-directo-espana-microsoft-365_7060565_6.html"
+          }
+        ],
+        "fingerprint": "93480c14b2dd6567a81aa8c225f971c30ef5298e7f03c6b3031f41fcd7a42ce2"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-8b120d88ff43221cc3a6",
+      "revision": 0,
+      "name": "Revisar novedades: Begoña",
+      "rank": 13,
+      "status": "preparing",
+      "requested_at": "2026-11-14T11:45:13.176551+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "289b3a5cdae3",
+        "revision": 0,
+        "name": "Begoña",
+        "rank": 5,
+        "explanation": "TT#5 Begoña es tendencia por la intervención sorpresa de Begoña Gómez en el arranque de campaña del PSOE en Sevilla: tomó la palabra por primera vez en un mitin del partido.\n#BegoñaGómez #29N\n🌶️ La sorpresa del mitin acabó con micrófono propio.",
+        "explanation_sha256": "6b7d70d04b66d7bfd789e29265a98cd15e311b2daf890e03214c0553d8a477dc",
+        "explained_at": "2026-11-13T12:10:32+01:00",
+        "verification_sources": [
+          {
+            "url": "https://www.rtve.es/noticias/20261112/psoe-campana-elecciones-generales-2026-cronica/17311520.shtml"
+          },
+          {
+            "url": "https://www.europapress.es/nacional/noticia-begona-gomez-entra-lleno-campana-interviene-primera-vez-mitin-psoe-20261112200930.html"
+          },
+          {
+            "url": "https://cadenaser.com/nacional/2026/11/12/begona-gomez-interviene-por-primera-vez-en-un-mitin-del-psoe-en-sevilla-gracias-porque-me-habeis-dado-la-mano-en-este-tiempo-cadena-ser/"
+          }
+        ],
+        "fingerprint": "664dce25d1a72259dc54ffd637876330830b9e1184c91f16fdecce9247059524"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
