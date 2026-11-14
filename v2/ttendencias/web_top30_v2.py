@@ -44,6 +44,40 @@ def cause_status(answer):
     return "no_confirmada" if any(p in answer.lower() for p in patterns) else "sin_clasificar"
 
 
+PUBLIC_TWEET_URL = "https://ttactualidad.rainyraven22.chatgpt.site/"
+TWEET_BLOCK = re.compile(r"(?ms)^TUIT_INICIO\\s*\\n(.*?)\\nTUIT_FIN\\s*$")
+
+
+def x_weighted_length(text):
+    """Conservative X length approximation for this fixed single-link format.
+
+    X URLs count 23, emoji/astral Unicode count 2; non-BMP and variation
+    selectors are treated conservatively. For final publication use twitter-text.
+    """
+    urls = list(re.finditer(r"https?://[^\\s]+", text))
+    count = 0
+    previous = 0
+    for found in urls:
+        count += sum(2 if ord(c) > 0xFFFF else 1 for c in text[previous:found.start()])
+        count += 23
+        previous = found.end()
+    return count + sum(2 if ord(c) > 0xFFFF else 1 for c in text[previous:])
+
+
+def tweet_from_capture(answer):
+    match = TWEET_BLOCK.search(answer)
+    if not match:
+        return "", "sin_bloque"
+    tweet = match.group(1).strip()
+    if not tweet.endswith(PUBLIC_TWEET_URL):
+        return "", "url_final_incorrecta"
+    if tweet.count(PUBLIC_TWEET_URL) != 1:
+        return "", "url_duplicada"
+    if x_weighted_length(tweet) > 280:
+        return "", "excede_280"
+    return tweet, "listo"
+
+
 def build(history, queue):
     if (history.get("step") != "03_movement" or history.get("country") != "ES"
         or queue.get("step") != "04_editorial_queue"
@@ -117,6 +151,8 @@ def build(history, queue):
             "editorial_status": tech,
             "pending_editorial_review": tech == "captured_review",
             "explanation": answer,
+            "tweet_text": tweet_from_capture(answer)[0] if answer else "",
+            "tweet_status": tweet_from_capture(answer)[1] if answer else "sin_datos",
             "cause_status": cause_status(answer) if answer else "sin_datos",
             "chat_url": chat_url,
             "captured_at": captured_at,
@@ -129,6 +165,8 @@ def build(history, queue):
         "country": "ES",
         "source": history.get("source") or "GetDayTrends",
         "captured_at": history["observed_at"],
+        "radar_source": "https://getdaytrends.com/es/spain/",
+        "radar_last_retrieved_at": history["observed_at"],
         "source_verified_against_x": False,
         "publication_allowed": False,
         "count": 30,
