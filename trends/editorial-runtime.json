@@ -7,18 +7,16 @@
   "previous_run_id": "tr-20261113T234000-chat-direct",
   "command_id": "tr-20261114T035500-chat-direct",
   "source": "chat_direct",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-14T03:55:00+01:00",
-  "updated_at": "2026-11-14T03:55:00+01:00",
-  "current": 0,
+  "updated_at": "2026-11-14T04:02:09+01:00",
+  "current": 9,
   "total": 9,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": false,
-  "processed_ids": [],
-  "converged_ids": [],
-  "remaining_ids": [
+  "queue_complete": true,
+  "processed_ids": [
     "86a31f1f188d",
     "5ccfacd3e4b2",
     "2c8ace5a3074",
@@ -29,7 +27,7 @@
     "0f9f984a750e",
     "97b0810372fa"
   ],
-  "remaining_active_ids": [
+  "converged_ids": [
     "86a31f1f188d",
     "5ccfacd3e4b2",
     "2c8ace5a3074",
@@ -40,16 +38,18 @@
     "0f9f984a750e",
     "97b0810372fa"
   ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 9,
     "observed": 9,
-    "closed": 0,
-    "explained": 0,
+    "closed": 9,
+    "explained": 7,
     "problematic": 0,
     "updates": 0,
-    "review_completed_no_distinct_event": 0,
-    "queue_remaining": 9,
+    "review_completed_no_distinct_event": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -57,7 +57,73 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "86a31f1f188d",
+      "revision": 0,
+      "name": "Jensen Huang",
+      "outcome": "review_completed",
+      "applied": true,
+      "review_reason": "no_distinct_event"
+    },
+    {
+      "id": "5ccfacd3e4b2",
+      "revision": 0,
+      "name": "EEUU",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "2c8ace5a3074",
+      "revision": 0,
+      "name": "Estados Unidos",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "c51a3aa0c0e4",
+      "revision": 0,
+      "name": "Nueva Orleans",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "cdaa9045b822",
+      "revision": 0,
+      "name": "Panathinaikos",
+      "outcome": "review_completed",
+      "applied": true,
+      "review_reason": "no_distinct_event"
+    },
+    {
+      "id": "5a28fa1fccb6",
+      "revision": 0,
+      "name": "Lydia",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "8b006bddf692",
+      "revision": 0,
+      "name": "Santi Acosta",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "0f9f984a750e",
+      "revision": 0,
+      "name": "Sálvame",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "97b0810372fa",
+      "revision": 0,
+      "name": "Telecinco",
+      "outcome": "explained",
+      "applied": true
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -813,6 +879,13 @@
       "status": "RUNNING",
       "phase": "preparing",
       "message": "Pasada manual iniciada desde ChatGPT con cola autoritativa inicial=9; investigación JIT de antiguas a recientes. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-14T04:02:09+01:00",
+      "run_id": "tr-20261114T035500-chat-direct",
+      "status": "DONE",
+      "phase": "closing",
+      "message": "Pasada TTendencias completada 9/9. 7 fichas explicadas y persistidas; Jensen Huang y Panathinaikos cerrados como reentradas sin episodio material distinto. Aplicador confirmado en 991c9174f7c01d0ec35a34d79a82f28101302297; cola final=0. ImageGen=0; publicaciones=0; incidentes=0."
     }
   ],
   "last_started_at": "2026-11-14T01:04:07+01:00",
@@ -9508,7 +9581,7 @@
   ],
   "maintenance_outbox_commit": "c764cbdfc37ba7b67fedd38a16837ee068ae9467",
   "editorial_apply_run_id": 43477991983,
-  "finished_at": "2026-11-13T23:52:25+01:00",
+  "finished_at": "2026-11-14T04:02:09+01:00",
   "completed_at": "2026-11-13T23:52:25+01:00",
   "maintenance_outbox_commits": [
     "24805770cc5efabc2f14e0019c9fa592aecf4d7b",
