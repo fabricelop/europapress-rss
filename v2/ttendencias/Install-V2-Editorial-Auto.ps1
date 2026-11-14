@@ -48,6 +48,8 @@ $files = @(
     'image_intake_v2.py',
     'image_job_v2.py',
     'image_same_chat_v2.py',
+    'image_github_v2.py',
+    'test_image_github_v2.py',
     'test_image_same_chat_v2.py',
     'chrome_command_v2.py',
     'chrome_visibility_v2.py',
@@ -116,6 +118,11 @@ if ($imgResult.ExitCode -ne 0) {
     throw 'Pruebas de imagen en el mismo chat fallidas; no habilitar consumidor V2'
 }
 Write-Host 'TT_V2_SAME_CHAT_IMAGE_TESTS=OK'
+$gitImageTest = Join-Path $root 'test_image_github_v2.py'
+$gitImageResult = Start-Process -FilePath $py -ArgumentList @('-3', ('"' + $gitImageTest + '"')) `
+    -WindowStyle Hidden -Wait -PassThru -RedirectStandardOutput $testStdout -RedirectStandardError $testStderr
+if ($gitImageResult.ExitCode -ne 0) { throw 'GitHub ImageGen tests failed; V2 remains disabled' }
+Write-Host 'TT_V2_GITHUB_IMAGE_TESTS=OK'
 
 # Preflight de Playwright, sin abrir Chrome, capturando stderr igualmente.
 $checkStdout = Join-Path $root 'install-auto-check.stdout.log'
