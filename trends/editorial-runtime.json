@@ -7,15 +7,15 @@
   "previous_run_id": "tr-20261114T171000-chat-direct",
   "command_id": "tr-20261114T172500-chat-direct",
   "source": "chat_direct",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-14T17:25:00+01:00",
-  "updated_at": "2026-11-14T17:25:00+01:00",
+  "updated_at": "2026-11-14T17:26:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -556,6 +556,13 @@
       "status": "RUNNING",
       "phase": "preparing",
       "message": "Pasada manual iniciada desde ChatGPT; Top 30 fresco observado a las 17:21, cola autoritativa inicial=0 y sin decisiones editoriales móviles activas. Revalidación JIT; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-14T17:26:00+01:00",
+      "run_id": "tr-20261114T172500-chat-direct",
+      "status": "DONE",
+      "phase": "closing",
+      "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: Top 30 capturado a las 17:21:11, editorial-queue=0 (updated_at 17:21:15) y mobile-decisions sin estados editoriales activos. Sin ImageGen ni publicaciones."
     }
   ],
   "last_started_at": "2026-11-14T15:43:47+01:00",
@@ -9522,5 +9529,6 @@
   "maintenance_apply_run_id": 43614430012,
   "maintenance_apply_commit": "074b3f7e87b6260fde12e02ec813bdd56b8cc218",
   "completed_at": "2026-11-14T17:16:10+01:00",
-  "input_commit": "0c7e18479768676fa11a998fd66efc8d3b43f687"
+  "input_commit": "0c7e18479768676fa11a998fd66efc8d3b43f687",
+  "finished_at": "2026-11-14T17:26:00+01:00"
 }
