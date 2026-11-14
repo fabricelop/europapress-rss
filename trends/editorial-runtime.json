@@ -7,19 +7,27 @@
   "previous_run_id": "tr-20261114T124000-chat-direct",
   "command_id": "tr-20261114T125500-chat-direct",
   "source": "chat_direct",
-  "status": "DONE",
+  "status": "waiting",
   "phase": "closing",
   "started_at": "2026-11-14T12:55:00+01:00",
-  "updated_at": "2026-11-14T12:57:02+01:00",
+  "updated_at": "2026-11-14T13:13:50+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": true,
-  "processed_ids": [],
+  "queue_complete": false,
+  "processed_ids": [
+    "1e1a1c078af2"
+  ],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "fb1af5a9fcd0",
+    "1e250ecf49df"
+  ],
+  "remaining_active_ids": [
+    "fb1af5a9fcd0",
+    "1e250ecf49df"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
@@ -500,7 +508,7 @@
       "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 2026-11-14T11:57:10.351658+00:00) y mobile-decisions sin estados editoriales activos; Top 30 capturado a las 2026-11-14T12:51:02+01:00. Disparo manual persistido en 58e909a3d03ce1a337deed86a1721f58e2198855. Sin ImageGen ni publicaciones; incidentes=0."
     }
   ],
-  "last_started_at": "2026-11-14T12:55:00+01:00",
+  "last_started_at": "2026-11-14T13:13:50+01:00",
   "last_completed_at": "2026-11-14T12:57:02+01:00",
   "api_failover_enabled": false,
   "last_run": {
