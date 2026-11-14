@@ -7,15 +7,15 @@
   "previous_run_id": "tr-20261114T052500-chat-direct",
   "command_id": "tr-20261114T054000-chat-direct",
   "source": "chat_direct",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-14T05:40:00+01:00",
-  "updated_at": "2026-11-14T05:40:00+01:00",
+  "updated_at": "2026-11-14T05:42:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -394,17 +394,24 @@
       "status": "RUNNING",
       "phase": "preparing",
       "message": "Ejecución manual iniciada desde ChatGPT; revalidando cola autoritativa, Top 30 y estados editoriales activos en main. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-14T05:42:00+01:00",
+      "run_id": "tr-20261114T054000-chat-direct",
+      "status": "DONE",
+      "phase": "closing",
+      "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: Top 30 capturado a las 05:41:32, editorial-queue=0 (updated_at 2026-11-14T05:41:39+01:00) y mobile-decisions sin estados editoriales activos. Sin ImageGen ni publicaciones."
     }
   ],
   "last_started_at": "2026-11-14T05:40:00+01:00",
-  "last_completed_at": "2026-11-14T05:26:00+01:00",
+  "last_completed_at": "2026-11-14T05:42:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261114T052500-chat-direct",
+    "run_id": "tr-20261114T054000-chat-direct",
     "status": "DONE",
-    "started_at": "2026-11-14T05:25:00+01:00",
-    "finished_at": "2026-11-14T05:26:00+01:00",
-    "at": "2026-11-14T05:26:00+01:00",
+    "started_at": "2026-11-14T05:40:00+01:00",
+    "finished_at": "2026-11-14T05:42:00+01:00",
+    "at": "2026-11-14T05:42:00+01:00",
     "phase": "closing",
     "summary": {
       "attempted": 0,
@@ -436,9 +443,9 @@
     "outcomes": [],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 2026-11-14T05:21:06+01:00) y mobile-decisions sin estados editoriales activos. Sin ImageGen ni publicaciones."
+    "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: Top 30 capturado a las 05:41:32, editorial-queue=0 (updated_at 2026-11-14T05:41:39+01:00) y mobile-decisions sin estados editoriales activos. Sin ImageGen ni publicaciones."
   },
-  "message": "Ejecución manual iniciada desde ChatGPT; revalidando cola autoritativa, Top 30 y estados editoriales activos en main. Sin ImageGen ni publicación.",
+  "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: Top 30 capturado a las 05:41:32, editorial-queue=0 (updated_at 2026-11-14T05:41:39+01:00) y mobile-decisions sin estados editoriales activos. Sin ImageGen ni publicaciones.",
   "history": [
     {
       "run_id": "tr-1794361941170-manual",
@@ -5212,12 +5219,14 @@
   ],
   "current_item": null,
   "withdrawn_ids": [],
-  "last_finished_at": "2026-11-13T21:35:09+01:00",
-  "last_revalidated_at": "2026-11-13T21:35:09+01:00",
+  "last_finished_at": "2026-11-14T05:42:00+01:00",
+  "last_revalidated_at": "2026-11-14T05:42:00+01:00",
   "last_revalidation": {
-    "at": "2026-11-13T21:35:09+01:00",
+    "at": "2026-11-14T05:42:00+01:00",
+    "queue_updated_at": "2026-11-14T05:41:39+01:00",
+    "recent_captured_at": "2026-11-14T05:41:32+01:00",
     "queue_count": 0,
-    "mobile_active_count": 0
+    "mobile_active": 0
   },
   "prior_runtime_observed": {
     "run_id": "tr-autoguard-1794381666",
@@ -8535,15 +8544,43 @@
   ],
   "outbox_commit": "d4a002c34e63c0e825a820bc432b784b1353cbaa",
   "prior_last_run": {
-    "run_id": "tr-autoguard-1794381666",
+    "run_id": "tr-20261114T052500-chat-direct",
     "status": "DONE",
-    "started_at": "2026-11-11T08:22:00+01:00",
-    "finished_at": "2026-11-11T08:31:36+01:00",
-    "total": 5,
-    "closed": 5,
-    "explained": 3,
-    "maintenance": 2,
-    "pending": 0
+    "started_at": "2026-11-14T05:25:00+01:00",
+    "finished_at": "2026-11-14T05:26:00+01:00",
+    "at": "2026-11-14T05:26:00+01:00",
+    "phase": "closing",
+    "summary": {
+      "attempted": 0,
+      "observed": 0,
+      "closed": 0,
+      "explained": 0,
+      "problematic": 0,
+      "updates": 0,
+      "review_completed_no_distinct_event": 0,
+      "maintenance_reviews": 0,
+      "unchanged_reviews": 0,
+      "continuity_updates": 0,
+      "distinct_updates": 0,
+      "stale_reviews": 0,
+      "unverified_reviews": 0,
+      "anticipation_reviews": 0,
+      "anticipation_prepared": 0,
+      "anticipation_unverified": 0,
+      "queue_remaining": 0,
+      "rewrite_pending_remaining": 0,
+      "imagegen_calls": 0,
+      "image_outbox_created": 0,
+      "publications": 0,
+      "incidents": 0,
+      "concurrent_convergence": 0
+    },
+    "processed_ids": [],
+    "converged_ids": [],
+    "outcomes": [],
+    "incident_count": 0,
+    "incidents": [],
+    "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 2026-11-14T05:21:06+01:00) y mobile-decisions sin estados editoriales activos. Sin ImageGen ni publicaciones."
   },
   "absorbed_run_ids": [],
   "phase_history": [
@@ -9058,7 +9095,7 @@
   ],
   "maintenance_outbox_commit": "c764cbdfc37ba7b67fedd38a16837ee068ae9467",
   "editorial_apply_run_id": 43477991983,
-  "completed_at": "2026-11-13T23:52:25+01:00",
+  "completed_at": "2026-11-14T05:42:00+01:00",
   "maintenance_outbox_commits": [
     "24805770cc5efabc2f14e0019c9fa592aecf4d7b",
     "82935552cfd2620c52c01e6603ac598051a8eec4",
@@ -9066,5 +9103,5 @@
   ],
   "maintenance_apply_run_id": 43502827908,
   "maintenance_apply_commit": "e04624377a4fadb3646363f83ba4828cfc9d61f6",
-  "finished_at": "2026-11-14T05:26:00+01:00"
+  "finished_at": "2026-11-14T05:42:00+01:00"
 }
