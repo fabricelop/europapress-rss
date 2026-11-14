@@ -35,3 +35,9 @@
 .movement-indicator.unknown{background:#242832;color:#949dab}
 .trend.marked-red .title-details .entered-top30,.trend.marked-red .title-details .explained-at{color:#ffccd1}
 @media(max-width:450px){.movement-indicator{font-size:11px;padding:4px 5px}.title-details .entered-top30,.title-details .explained-at{font-size:10px}}
+
+/* Original ImageGen en la ficha desplegada, sin descargar miniaturas. */
+.trend-generated-image{padding:0 clamp(15px,4vw,36px) 20px calc(clamp(15px,4vw,36px) + 48px)}
+.trend-generated-image:not(.loaded){display:none}
+.generated-original{display:block;max-width:min(100%,620px);width:auto;height:auto;max-height:640px;object-fit:contain;border-radius:12px;background:#12161d}
+@media(max-width:450px){.trend-generated-image{padding:0 14px 18px 52px}}
