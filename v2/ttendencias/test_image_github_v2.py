@@ -9,8 +9,12 @@ import tempfile
 import unittest
 from PIL import Image
 
-from v2.ttendencias import image_github_v2 as github
-from v2.ttendencias import image_intake_v2 as intake
+try:
+    from v2.ttendencias import image_github_v2 as github
+    from v2.ttendencias import image_intake_v2 as intake
+except ModuleNotFoundError:
+    import image_github_v2 as github
+    import image_intake_v2 as intake
 
 ID="trv2-e94b2984c087ac403753b8c1"
 CHAT="https://chatgpt.com/c/6af75cfb-a8ec-83eb-a56e-068f3f313e3b"
