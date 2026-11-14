@@ -28,5 +28,10 @@
       "binding": "V2_IMAGES",
       "bucket_name": "ttactualidad-v2-images"
     }
-  ]
+  ],
+  "triggers": {
+    "crons": [
+      "*/15 * * * *"
+    ]
+  }
 }
