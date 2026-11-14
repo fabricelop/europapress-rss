@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-14T22:31:01.089554+00:00",
+  "checked_at": "2026-11-14T22:36:28.845848+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -48,7 +48,7 @@
         "xtrendsiamrohit"
       ],
       "live_verified": true,
-      "captured_age_minutes": 0.7,
+      "captured_age_minutes": 0.2,
       "noise_count": 0
     },
     "listener": {
@@ -60,8 +60,8 @@
       "ok": true,
       "status": "pending",
       "conclusion": null,
-      "age_minutes": 5.0,
-      "run_id": 43648069329,
+      "age_minutes": 0.4,
+      "run_id": 43648948523,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -73,7 +73,7 @@
     },
     "request_queue": {
       "ok": false,
-      "invalid_count": 900,
+      "invalid_count": 902,
       "noise_count": 0
     },
     "ready_consistency": {
@@ -82,76 +82,21 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": false,
-      "pending_count": 8,
-      "overdue_count": 8,
-      "oldest_age_minutes": 105.4,
+      "ok": true,
+      "pending_count": 2,
+      "overdue_count": 0,
+      "oldest_age_minutes": 3.4,
       "warning_after_minutes": 30,
-      "overdue_items": [
-        {
-          "id": "red-review-2836ecb9eea08e91ece2",
-          "name": "Revisar novedades: El Tribunal de Cuentas",
-          "status": "preparing",
-          "age_minutes": 105.4
-        },
-        {
-          "id": "red-review-e41e6f5741f494aeff15",
-          "name": "Revisar novedades: #PSOEyFrenteAmplioVetan",
-          "status": "preparing",
-          "age_minutes": 105.4
-        },
-        {
-          "id": "9815547839b9",
-          "name": "Bolivia",
-          "status": "preparing",
-          "age_minutes": 59.6
-        },
-        {
-          "id": "1708cda7e3f9",
-          "name": "Corredera",
-          "status": "preparing",
-          "age_minutes": 59.6
-        },
-        {
-          "id": "69f566b11cfb",
-          "name": "Dani Díaz",
-          "status": "preparing",
-          "age_minutes": 59.6
-        },
-        {
-          "id": "44addc309df0",
-          "name": "Sánchez",
-          "status": "preparing",
-          "age_minutes": 59.6
-        },
-        {
-          "id": "0098c2de3f01",
-          "name": "Sporting",
-          "status": "preparing",
-          "age_minutes": 59.6
-        },
-        {
-          "id": "34426d93a44e",
-          "name": "Goiria",
-          "status": "preparing",
-          "age_minutes": 59.6
-        }
-      ],
+      "overdue_items": [],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": false,
-      "status": "overdue",
+      "ok": true,
+      "status": "not-required",
       "queue_complete": false,
       "remaining_active_ids": [
-        "red-review-2836ecb9eea08e91ece2",
-        "red-review-e41e6f5741f494aeff15",
-        "9815547839b9",
-        "1708cda7e3f9",
-        "69f566b11cfb",
-        "44addc309df0",
-        "0098c2de3f01",
-        "34426d93a44e"
+        "red-review-6c294118ea9c76409403",
+        "red-review-e5aa34f135ca04a06338"
       ],
       "contradictory_success": false
     },
@@ -163,10 +108,9 @@
   },
   "repairs_started": [],
   "blocking": [
-    "cola con 900 estado(s) inválido(s)",
-    "cola de explicaciones retrasada: 8 pendiente(s) superan 30 min; más antigua 105.4 min"
+    "cola con 902 estado(s) inválido(s)"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "cola con 900 estado(s) inválido(s) | cola de explicaciones retrasada: 8 pendiente(s) superan 30 min; más antigua 105.4 min"
+  "last_alert_signature": "cola con 902 estado(s) inválido(s)"
 }
