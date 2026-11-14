@@ -7,6 +7,10 @@ on:
     branches: [feature/ttactualidad-v2-private-worker-20261114]
     paths:
       - '.github/workflows/ttactualidad-v2-private-deploy.yml'
+      - 'v2/private-worker/src/**'
+      - 'v2/private-worker/tests/**'
+      - 'v2/private-worker/wrangler.jsonc'
+      - 'v2/private-worker/schema.sql'
 
 permissions:
   contents: read
