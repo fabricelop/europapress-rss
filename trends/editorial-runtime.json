@@ -7,23 +7,21 @@
   "previous_run_id": "tr-20261114T152500-chat-direct",
   "command_id": "tr-20261114T154000-chat-direct",
   "source": "chat_direct",
-  "status": "RUNNING",
+  "status": "success",
   "phase": "preparing",
   "started_at": "2026-11-14T15:40:00+01:00",
-  "updated_at": "2026-11-14T15:40:00+01:00",
+  "updated_at": "2026-11-14T15:43:47+01:00",
   "current": 0,
   "total": 1,
   "trend_id": "4a0b99c27aaf",
   "title": "#PSOEyFrenteAmplioVetan",
-  "queue_complete": false,
-  "processed_ids": [],
+  "queue_complete": true,
+  "processed_ids": [
+    "4a0b99c27aaf"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "4a0b99c27aaf"
-  ],
-  "remaining_active_ids": [
-    "4a0b99c27aaf"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 0,
@@ -514,8 +512,8 @@
       "message": "Pasada manual TTendencias iniciada desde ChatGPT. Cola autoritativa inicial=1: reelaboración explícita de #PSOEyFrenteAmplioVetan r0. Revalidación JIT e investigación desde cero; sin ImageGen ni publicación."
     }
   ],
-  "last_started_at": "2026-11-14T15:25:00+01:00",
-  "last_completed_at": "2026-11-14T15:30:00+01:00",
+  "last_started_at": "2026-11-14T15:43:47+01:00",
+  "last_completed_at": "2026-11-14T15:43:47+01:00",
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-20261114T152500-chat-direct",
