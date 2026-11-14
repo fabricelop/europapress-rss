@@ -48,6 +48,33 @@ def build(snapshot, previous=None, *, now=None):
                 raise ValueError("Capturas contradictorias para la misma fecha")
             return {"state": previous, "changes": [], "idempotent": True}
 
+    # Una consulta nueva NO implica un ranking nuevo. Si las 30 posiciones
+    # siguen idénticas, conservar el último movimiento de una captura que sí
+    # cambió el Top 30, en lugar de convertirlo en 30 flechas "→ 0".
+    same_ranking = bool(previous) and (
+        [term_key(n) for n in snapshot["top30"]]
+        == [term_key(n) for n in previous.get("top30") or []]
+    )
+    if same_ranking:
+        fresh = {key: dict(topic) for key, topic in rows.items()}
+        # Migración desde historiales antiguos: un Top30 inalterado con
+        # change_count=0 no acredita que las 30 posiciones sean estables.
+        # No recuperar movimientos previos si ya fueron sobrescritos.
+        prior_movement_known = bool(previous.get("ranking_change_at") or previous.get("change_count"))
+        for rank, name in enumerate(snapshot["top30"], 1):
+            key = term_key(name)
+            topic = fresh[key]
+            topic.update(name=name, rank=rank, last_seen_at=stamp)
+            if not prior_movement_known and topic.get("last_change") == "unchanged":
+                topic.update(last_change="unverified", previous_rank=None, positions_changed=None)
+        state = {**previous, "source": snapshot["source"], "observed_at": stamp,
+                 "previous_observed_at": previous_at,
+                 "top30": list(snapshot["top30"]), "topics": fresh,
+                 "change_count": 0, "ranking_unchanged": True,
+                 "ranking_change_at": previous.get("ranking_change_at") or (
+                     previous_at if previous.get("change_count") else None)}
+        return {"state": state, "changes": [], "idempotent": False}
+
     fresh = {}
     changes = []
     initial = previous is None
@@ -106,7 +133,9 @@ def build(snapshot, previous=None, *, now=None):
              "source": snapshot["source"], "observed_at": stamp,
              "previous_observed_at": previous_at if not initial else None,
              "top30": list(snapshot["top30"]), "topics": fresh,
-             "change_count": len(changes), "bootstrap": initial}
+             "change_count": len(changes), "bootstrap": initial,
+             "ranking_unchanged": False,
+             "ranking_change_at": stamp if changes else None}
     return {"state": state, "changes": changes, "idempotent": False}
 
 
