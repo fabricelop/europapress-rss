@@ -30,10 +30,10 @@ def image():
     return buff.getvalue()
 
 class Node:
-    def __init__(self,page):self.page=page
+    def __init__(self,page,selector):self.page=page;self.selector=selector
     @property
     def first(self):return self
-    def count(self):return 1 if self.page.composer_available else 0
+    def count(self):return 1 if self.page.composer_available and 'stop-button' not in self.selector else 0
     def is_visible(self):return True
     def is_enabled(self):return True
     def fill(self,text):self.page.filled=text
@@ -50,7 +50,7 @@ class Page:
         self.send_count=0
         self.filled=""
     def evaluate(self,script):return self.last
-    def locator(self,selector):return Node(self)
+    def locator(self,selector):return Node(self,selector)
 
 class SameChatTests(unittest.TestCase):
     def test_same_chat_one_send_original_and_idempotent_receipt(self):
