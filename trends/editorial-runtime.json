@@ -3,19 +3,19 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261114T054000-chat-direct",
-  "previous_run_id": "tr-20261114T052500-chat-direct",
-  "command_id": "tr-20261114T054000-chat-direct",
+  "run_id": "tr-20261114T055500-chat-direct",
+  "previous_run_id": "tr-20261114T054000-chat-direct",
+  "command_id": "tr-20261114T055500-chat-direct",
   "source": "chat_direct",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-14T05:40:00+01:00",
-  "updated_at": "2026-11-14T05:42:00+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-14T05:55:00+01:00",
+  "updated_at": "2026-11-14T05:55:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -401,6 +401,13 @@
       "status": "DONE",
       "phase": "closing",
       "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: Top 30 capturado a las 05:41:32, editorial-queue=0 (updated_at 2026-11-14T05:41:39+01:00) y mobile-decisions sin estados editoriales activos. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-14T05:55:00+01:00",
+      "run_id": "tr-20261114T055500-chat-direct",
+      "status": "RUNNING",
+      "phase": "preparing",
+      "message": "Ejecución manual iniciada desde ChatGPT; refresco real del Top 30 solicitado y barrera editorial JIT en curso. Sin ImageGen ni publicación."
     }
   ],
   "last_started_at": "2026-11-14T05:40:00+01:00",
@@ -9102,6 +9109,5 @@
     "c74a2aca815578b22fd10e4d2ee66b3dd64f0693"
   ],
   "maintenance_apply_run_id": 43502827908,
-  "maintenance_apply_commit": "e04624377a4fadb3646363f83ba4828cfc9d61f6",
-  "finished_at": "2026-11-14T05:42:00+01:00"
+  "maintenance_apply_commit": "e04624377a4fadb3646363f83ba4828cfc9d61f6"
 }
