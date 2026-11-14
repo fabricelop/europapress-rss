@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-14T09:45:07.659570+00:00",
+  "checked_at": "2026-11-14T10:16:30.783735+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -42,12 +42,12 @@
     "top10": {
       "ok": false,
       "count": 10,
-      "non_stale_sources": 3,
+      "non_stale_sources": 4,
       "verified_fresh_sources": [
         "xtrendsiamrohit"
       ],
       "live_verified": false,
-      "captured_age_minutes": 0.2,
+      "captured_age_minutes": 0.3,
       "noise_count": 0
     },
     "listener": {
@@ -59,8 +59,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 3.9,
-      "run_id": 43581715569,
+      "age_minutes": 5.5,
+      "run_id": 43584041636,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -72,7 +72,7 @@
     },
     "request_queue": {
       "ok": false,
-      "invalid_count": 869,
+      "invalid_count": 873,
       "noise_count": 0
     },
     "ready_consistency": {
@@ -81,31 +81,22 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": false,
-      "pending_count": 5,
-      "overdue_count": 1,
-      "oldest_age_minutes": 32.0,
+      "ok": true,
+      "pending_count": 3,
+      "overdue_count": 0,
+      "oldest_age_minutes": 5.4,
       "warning_after_minutes": 30,
-      "overdue_items": [
-        {
-          "id": "7c236b3d8b56",
-          "name": "#FelizSábado",
-          "status": "preparing",
-          "age_minutes": 32.0
-        }
-      ],
+      "overdue_items": [],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": false,
-      "status": "overdue",
+      "ok": true,
+      "status": "not-required",
       "queue_complete": false,
       "remaining_active_ids": [
-        "7c236b3d8b56",
-        "ccc33f06ab22",
-        "962d933dd4c2",
-        "2ca47e06ac77",
-        "a27f2f3186b0"
+        "bad47f0232c5",
+        "86b2f018766f",
+        "9bddd4111803"
       ],
       "contradictory_success": false
     },
@@ -118,10 +109,9 @@
   "repairs_started": [],
   "blocking": [
     "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos",
-    "cola con 869 estado(s) inválido(s)",
-    "cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 32.0 min"
+    "cola con 873 estado(s) inválido(s)"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 869 estado(s) inválido(s) | cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 32.0 min"
+  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 873 estado(s) inválido(s)"
 }
