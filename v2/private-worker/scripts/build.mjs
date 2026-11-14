@@ -26,7 +26,7 @@ const radarFunction = [
 ' if(!banner){banner=document.createElement("div");banner.id="radar-time";banner.className="radar-time";root.before(banner)}',
 ' const date=new Date(capturedAt);',
 ' if(!capturedAt||!Number.isFinite(date.getTime())){banner.textContent="Radar · hora no disponible";banner.removeAttribute("title");return}',
-' const time=new Intl.DateTimeFormat("es-ES",{timeZone:"Europe/Madrid",hour:"2-digit",minute:"2-digit"}).format(date);',
+' const time=new Intl.DateTimeFormat("es-ES",{timeZone:"Europe/Madrid",weekday:"short",day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"}).format(date);',
 ' banner.textContent="Radar · "+time;',
 ' banner.title="Última captura: "+new Intl.DateTimeFormat("es-ES",{timeZone:"Europe/Madrid",dateStyle:"full",timeStyle:"short"}).format(date);',
 '}',
