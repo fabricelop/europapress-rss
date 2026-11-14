@@ -104,7 +104,7 @@ async function redMarks(request,env) {
       else stale.push(row.trend_id);
     }
     // Every GET reconciles against the authoritative current Top30, not a browser-local cache.
-    for(const id of stale) await env.MARKS_DB.prepare("DELETE FROM red_marks WHERE trend_id = ?").bind(id).run();
+    for(const id of stale) await env.MARKS_DB.prepare("DELETE FROM red_marks WHERE trend_id = ? AND entered_top30_at <> ?").bind(id,active.get(id)||"").run();
     if(request.method==="GET") return json({marks:Object.fromEntries(valid),captured_at:new Date().toISOString()});
     if(Number(request.headers.get("content-length")||0)>1024) return json({error:"invalid_payload"},413);
     let body;
