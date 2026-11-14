@@ -85,14 +85,19 @@ jobs:
           if(response.success!==true)throw Error('Could not verify existing Worker bindings; refusing deploy');
           const bindings=response.result?.bindings??response.result?.settings?.bindings;
           if(!Array.isArray(bindings))throw Error('Unknown current Worker bindings; refusing deploy');
-          if(bindings.some(item=>item.name==='V2_IMAGES'))throw Error('Existing image binding must not be removed');
+          const hasImages=bindings.some(item=>item.name==='V2_IMAGES'&&item.type==='r2_bucket');
+          const conflicting=bindings.find(item=>item.name==='V2_IMAGES'&&item.type!=='r2_bucket');
+          if(conflicting)throw Error('Unexpected V2_IMAGES binding; refusing deploy');
           const file='wrangler.jsonc', config=JSON.parse(fs.readFileSync(file,'utf8'));
           if(config.name!=='ttactualidad-v2-private-test')throw Error('Unexpected Worker name');
-          // Named R2 bucket does not yet exist; leave future image feature pending.
-          delete config.r2_buckets;
+          // Do not accidentally remove a configured R2 binding on subsequent UI deployments.
+          // If R2 is not provisioned yet, preserve current UI-only configuration.
+          if(!hasImages)delete config.r2_buckets;
+          else if(!config.r2_buckets?.some(x=>x.binding==='V2_IMAGES'))
+            throw Error('Existing R2 cannot be preserved from current config');
           fs.writeFileSync(file,JSON.stringify(config,null,2)+'\n');
-          console.log('TT_V2_NO_EXISTING_IMAGE_BINDING_LOST=YES');
-          console.log('TT_V2_UI_ONLY_DEPLOY=YES');
+          console.log('TT_V2_IMAGE_BINDING_PRESERVED='+String(hasImages).toUpperCase());
+          console.log('TT_V2_UI_ONLY_DEPLOY='+String(!hasImages).toUpperCase());
           NODE
           rm -f /tmp/ttv2-worker-settings.json
       - name: Build, run security and movement tests, perform Wrangler dry run
