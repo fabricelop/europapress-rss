@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-14T07:46:43.507703+00:00",
+  "checked_at": "2026-11-14T08:01:08.714606+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -42,12 +42,12 @@
     "top10": {
       "ok": false,
       "count": 10,
-      "non_stale_sources": 5,
+      "non_stale_sources": 4,
       "verified_fresh_sources": [
         "xtrendsiamrohit"
       ],
       "live_verified": false,
-      "captured_age_minutes": 15.6,
+      "captured_age_minutes": 7.0,
       "noise_count": 0
     },
     "listener": {
@@ -59,8 +59,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 5.7,
-      "run_id": 43572233992,
+      "age_minutes": 4.8,
+      "run_id": 43573404893,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -72,7 +72,7 @@
     },
     "request_queue": {
       "ok": false,
-      "invalid_count": 866,
+      "invalid_count": 867,
       "noise_count": 0
     },
     "ready_consistency": {
@@ -81,27 +81,21 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": false,
-      "pending_count": 1,
-      "overdue_count": 1,
-      "oldest_age_minutes": 31.1,
+      "ok": true,
+      "pending_count": 2,
+      "overdue_count": 0,
+      "oldest_age_minutes": 19.2,
       "warning_after_minutes": 30,
-      "overdue_items": [
-        {
-          "id": "red-review-cb3fdfff8c26c8b70770",
-          "name": "Revisar novedades: #FelizSábado",
-          "status": "preparing",
-          "age_minutes": 31.1
-        }
-      ],
+      "overdue_items": [],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": false,
-      "status": "overdue",
+      "ok": true,
+      "status": "not-required",
       "queue_complete": false,
       "remaining_active_ids": [
-        "red-review-cb3fdfff8c26c8b70770"
+        "red-review-1fc81745644308aa89e3",
+        "red-review-12bf0a73c6dac468ff7a"
       ],
       "contradictory_success": false
     },
@@ -114,10 +108,9 @@
   "repairs_started": [],
   "blocking": [
     "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos",
-    "cola con 866 estado(s) inválido(s)",
-    "cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 31.1 min"
+    "cola con 867 estado(s) inválido(s)"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 866 estado(s) inválido(s) | cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 31.1 min"
+  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 867 estado(s) inválido(s)"
 }
