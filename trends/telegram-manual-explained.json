@@ -119554,11 +119554,28 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
-      "image_choice": "none",
-      "image_pending": true,
-      "telegram_package_status": "pending"
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false,
+      "telegram_package_status": "pending",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://www.iglesianoticias.com/images/evangelio-del-dia/evangelio-del-dia.jpg",
+        "source": "www.iglesianoticias.com",
+        "source_url": "https://www.iglesianoticias.com/vida-interior/evangelio-del-dia/22974-evangelio-de-hoy-14-de-noviembre-de-2026.html",
+        "alt": "Imagen de archivo relacionada con Lc 18",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://www.iglesianoticias.com/images/evangelio-del-dia/evangelio-del-dia.jpg",
+        "source": "www.iglesianoticias.com",
+        "source_url": "https://www.iglesianoticias.com/vida-interior/evangelio-del-dia/22974-evangelio-de-hoy-14-de-noviembre-de-2026.html",
+        "alt": "Imagen de archivo relacionada con Lc 18",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "7c236b3d8b56",
@@ -119588,11 +119605,13 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
+      "fallback_image_status": "none",
+      "image_status": "none",
       "image_choice": "none",
-      "image_pending": true,
-      "telegram_package_status": "pending"
+      "image_pending": false,
+      "telegram_package_status": "pending",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
     },
     {
       "id": "a27f2f3186b0",
@@ -119622,13 +119641,30 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
-      "image_choice": "none",
-      "image_pending": true,
-      "telegram_package_status": "pending"
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false,
+      "telegram_package_status": "pending",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://okdiario.com/img/2026/10/26/el-drama-de-teresa-jubilada-en-barcelona-que-paga-1.300-euros-de-alquiler-con-una-pension-de-840-no-me-llega-ni-para-empezar.jpg",
+        "source": "okdiario.com",
+        "source_url": "https://okdiario.com/sociedad/drama-teresa-jubilada-barcelona-que-paga-1-300-euros-alquiler-pension-840-no-llega-ni-empezar-20628033",
+        "alt": "Imagen de archivo relacionada con Teresa",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://okdiario.com/img/2026/10/26/el-drama-de-teresa-jubilada-en-barcelona-que-paga-1.300-euros-de-alquiler-con-una-pension-de-840-no-me-llega-ni-para-empezar.jpg",
+        "source": "okdiario.com",
+        "source_url": "https://okdiario.com/sociedad/drama-teresa-jubilada-barcelona-que-paga-1-300-euros-alquiler-pension-840-no-llega-ni-empezar-20628033",
+        "alt": "Imagen de archivo relacionada con Teresa",
+        "rights_status": "unverified",
+        "generated": false
+      }
     }
   ],
-  "updated_at": "2026-11-14T10:59:53+01:00",
+  "updated_at": "2026-11-14T10:01:53.634041Z",
   "count": 2105
 }
