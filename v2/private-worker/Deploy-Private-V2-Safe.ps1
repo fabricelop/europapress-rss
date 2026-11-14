@@ -11,8 +11,8 @@ $database = 'ttactualidad-v2-marks'
 $publicUrl = 'https://ttactualidad-v2-private-test.fabricelop.workers.dev'
 $work = Join-Path $env:TEMP ('ttv2-deploy-' + [guid]::NewGuid().ToString('N').Substring(0,10))
 
-function Run([string]$program, [string[]]$args) {
-    & $program @args
+function Run([string]$program, [string[]]$arguments) {
+    & $program @arguments
     if ($LASTEXITCODE -ne 0) { throw "Falló $program (código $LASTEXITCODE)" }
 }
 
