@@ -7,15 +7,15 @@
   "previous_run_id": "tr-20261114T044000-chat-direct",
   "command_id": "tr-20261114T045500-chat-direct",
   "source": "chat_direct",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-14T04:55:00+01:00",
-  "updated_at": "2026-11-14T04:55:00+01:00",
+  "updated_at": "2026-11-14T04:56:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -363,29 +363,36 @@
       "status": "RUNNING",
       "phase": "preparing",
       "message": "Ejecución manual iniciada desde ChatGPT; revalidación JIT de la cola autoritativa y estados editoriales activos. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-14T04:56:00+01:00",
+      "run_id": "tr-20261114T045500-chat-direct",
+      "status": "DONE",
+      "phase": "closing",
+      "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 2026-11-14T04:50:58+01:00) y mobile-decisions sin estados editoriales activos. Sin ImageGen ni publicaciones."
     }
   ],
   "last_started_at": "2026-11-14T04:13:28+01:00",
-  "last_completed_at": "2026-11-14T04:13:28+01:00",
+  "last_completed_at": "2026-11-14T04:56:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261113T212500-chat-direct",
+    "run_id": "tr-20261114T045500-chat-direct",
     "status": "DONE",
-    "started_at": "2026-11-13T21:25:00+01:00",
-    "finished_at": "2026-11-13T21:35:09+01:00",
-    "at": "2026-11-13T21:35:09+01:00",
+    "started_at": "2026-11-14T04:55:00+01:00",
+    "finished_at": "2026-11-14T04:56:00+01:00",
+    "at": "2026-11-14T04:56:00+01:00",
     "phase": "closing",
     "summary": {
-      "attempted": 3,
-      "observed": 3,
-      "closed": 3,
-      "explained": 1,
+      "attempted": 0,
+      "observed": 0,
+      "closed": 0,
+      "explained": 0,
       "problematic": 0,
-      "updates": 2,
+      "updates": 0,
       "review_completed_no_distinct_event": 0,
-      "maintenance_reviews": 2,
+      "maintenance_reviews": 0,
       "unchanged_reviews": 0,
-      "continuity_updates": 2,
+      "continuity_updates": 0,
       "distinct_updates": 0,
       "stale_reviews": 0,
       "unverified_reviews": 0,
@@ -400,45 +407,14 @@
       "incidents": 0,
       "concurrent_convergence": 0
     },
-    "processed_ids": [
-      "019f7a9bc80d",
-      "red-review-2fd97b4bcc1404cb083e",
-      "red-review-859f7c478f636b3075b4"
-    ],
+    "processed_ids": [],
     "converged_ids": [],
-    "outcomes": [
-      {
-        "id": "019f7a9bc80d",
-        "revision": 1,
-        "name": "Jorge Salvaje",
-        "outcome": "explained",
-        "applied": true,
-        "apply_commit": "0e8178e2936236c7392088507bda7fe9ad8e590a"
-      },
-      {
-        "id": "red-review-2fd97b4bcc1404cb083e",
-        "revision": 0,
-        "name": "Revisar novedades: #PazCasaTrabajo29N",
-        "outcome": "continuity",
-        "applied": true,
-        "source_id": "c04ca7365d3b",
-        "apply_commit": "eb933ea7a00e1a22d27dc8327255e475f825acbc"
-      },
-      {
-        "id": "red-review-859f7c478f636b3075b4",
-        "revision": 0,
-        "name": "Revisar novedades: Jensen Huang",
-        "outcome": "continuity",
-        "applied": true,
-        "source_id": "f3c37f45aebd",
-        "apply_commit": "e04624377a4fadb3646363f83ba4828cfc9d61f6"
-      }
-    ],
+    "outcomes": [],
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada TTendencias completada 3/3: Jorge Salvaje r1 corregido y explicado; #PazCasaTrabajo29N y Jensen Huang actualizados como continuidad en sus mismas fichas. Barrera final revalidada en main: editorial-queue=0 y mobile-decisions sin estados editoriales activos. ImageGen=0; publicaciones=0; incidentes=0."
+    "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 2026-11-14T04:50:58+01:00) y mobile-decisions sin estados editoriales activos. Sin ImageGen ni publicaciones."
   },
-  "message": "Pasada TTendencias completada 3/3: Jorge Salvaje r1 corregido y explicado; #PazCasaTrabajo29N y Jensen Huang actualizados como continuidad en sus mismas fichas. Barrera final revalidada en main: editorial-queue=0 y mobile-decisions sin estados editoriales activos. ImageGen=0; publicaciones=0; incidentes=0.",
+  "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 2026-11-14T04:50:58+01:00) y mobile-decisions sin estados editoriales activos. Sin ImageGen ni publicaciones.",
   "history": [
     {
       "run_id": "tr-1794361941170-manual",
@@ -9066,5 +9042,5 @@
   ],
   "maintenance_apply_run_id": 43502827908,
   "maintenance_apply_commit": "e04624377a4fadb3646363f83ba4828cfc9d61f6",
-  "finished_at": null
+  "finished_at": "2026-11-14T04:56:00+01:00"
 }
