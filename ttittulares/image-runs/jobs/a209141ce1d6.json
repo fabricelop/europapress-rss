@@ -1,0 +1,63 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-a209141ce1d6-r1-a1-1792764645738",
+  "requested_at": "2026-10-23T14:10:45.673025Z",
+  "updated_at": "2026-10-23T14:14:27.739Z",
+  "status": "ERROR",
+  "phase": "pc_launch_failed",
+  "mode": "automatic_ready_repair",
+  "delivery_mode": "launch_only",
+  "editorial_image_mode": "rigor",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "a209141ce1d6",
+  "event_id": "a209141ce1d6",
+  "target_name": "Al menos siete muertos y decenas de heridos por un tiroteo en una iglesia en el oeste de Jordania",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "Al menos siete muertos y decenas de heridos por un tiroteo en una iglesia en el oeste de Jordania",
+    "revision": 1,
+    "factual_summary": "Hombres armados abrieron fuego en una iglesia ortodoxa de Karak, Jordania, durante un funeral. Medios jordanos citados por Xinhua cifran el balance en al menos siete muertos y diez heridos, algunos graves; la Seguridad Pública jordana confirmó que hubo muertos y heridos y mantiene la búsqueda de los atacantes.",
+    "tweet_text": "Medios jordanos cifran en al menos siete muertos y diez heridos el tiroteo en una iglesia de Karak durante un funeral. Seguridad Pública confirmó víctimas y busca a los atacantes.\n\n#Jordania #Karak\n🌶️ La investigación sigue abierta.",
+    "remate": "🌶️ La investigación sigue abierta.",
+    "image_style": "ILUSTRACIÓN PERIODÍSTICA SERIA: rigor documental, sobriedad y respeto. Evita humor, sátira, caricaturas, ironías, metáforas que banalicen daños, víctimas reconocibles inventadas y escenas gráficas. Una única imagen editorial sobria, contextual y no sensacionalista. Sin afirmaciones visuales no documentadas. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "editorial_image_mode": "rigor",
+    "image_style_name": "rigor_y_respeto",
+    "image_style_index": -1,
+    "image_prompt": "ILUSTRACIÓN PERIODÍSTICA SERIA: rigor documental, sobriedad y respeto. Evita humor, sátira, caricaturas, ironías, metáforas que banalicen daños, víctimas reconocibles inventadas y escenas gráficas. Una única imagen editorial sobria, contextual y no sensacionalista. Sin afirmaciones visuales no documentadas. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. \n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nMedios jordanos cifran en al menos siete muertos y diez heridos el tiroteo en una iglesia de Karak durante un funeral. Seguridad Pública confirmó víctimas y busca a los atacantes.\n\n#Jordania #Karak\n🌶️ La investigación sigue abierta.\n\nREMATE EXACTO:\n🌶️ La investigación sigue abierta.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nHombres armados abrieron fuego en una iglesia ortodoxa de Karak, Jordania, durante un funeral. Medios jordanos citados por Xinhua cifran el balance en al menos siete muertos y diez heridos, algunos graves; la Seguridad Pública jordana confirmó que hubo muertos y heridos y mantiene la búsqueda de los atacantes.\n\nREGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. \n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://www.rtve.es/noticias/20261023/tiroteo-iglesia-jordania-muertas-heridos/17280490.shtml",
+    "citations": [
+      {
+        "source": "Associated Press",
+        "url": "https://apnews.com/article/jordan-gunmen-greek-orthodox-church-deaths-karak-19599ce75b9ab6749a1e1bf2ff66f2ab"
+      },
+      {
+        "source": "Xinhua",
+        "url": "https://www.xinhuanet.com/20261023/749fcc216a3f42d4b294e7ed4082c470/c.html"
+      },
+      {
+        "source": "RTVE",
+        "url": "https://www.rtve.es/noticias/20261023/tiroteo-iglesia-jordania-muertas-heridos/17280490.shtml"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Imagen sobria y rigurosa, sin humor ni banalización. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "lifecycle": "Pestaña fija ChatGPT; prompt lanzado; el usuario recoge la imagen en ChatGPT Images. NO capturar ni enviar raster a Telegram."
+  },
+  "message": "No hubo evidencia suficiente de envío del prompt ImageGen; {\"composerMarker\":false,\"submitted\":false,\"userTurns\":0,\"generating\":true,\"inConversation\":true,\"commandOutsideComposer\":false,\"send\":true,\"sendDisabled\":false,\"",
+  "pc_upload_secret_hash": "76242687300c4ff51188481be58c40f04120003f5226df767c842c91fc25652a",
+  "pc_worker_id": "ttittulares-image-bridge-v29-raw-job-recovery",
+  "pc_picked_up_at": "2026-10-23T14:13:32.571Z",
+  "finished_at": "2026-10-23T14:14:27.739Z"
+}
