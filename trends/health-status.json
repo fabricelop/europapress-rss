@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-14T20:02:55.035494+00:00",
+  "checked_at": "2026-11-14T20:16:10.783981+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -57,10 +57,10 @@
     },
     "refresh": {
       "ok": true,
-      "status": "in_progress",
+      "status": "pending",
       "conclusion": null,
-      "age_minutes": 7.1,
-      "run_id": 43634726885,
+      "age_minutes": 0.2,
+      "run_id": 43636570278,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -72,7 +72,7 @@
     },
     "request_queue": {
       "ok": false,
-      "invalid_count": 894,
+      "invalid_count": 900,
       "noise_count": 0
     },
     "ready_consistency": {
@@ -81,31 +81,19 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": false,
-      "pending_count": 4,
-      "overdue_count": 1,
-      "oldest_age_minutes": 63.8,
+      "ok": true,
+      "pending_count": 0,
+      "overdue_count": 0,
+      "oldest_age_minutes": 0,
       "warning_after_minutes": 30,
-      "overdue_items": [
-        {
-          "id": "red-review-eaa9a9adcedb607c5e2f",
-          "name": "Revisar novedades: #DeViernes",
-          "status": "preparing",
-          "age_minutes": 63.8
-        }
-      ],
+      "overdue_items": [],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": false,
-      "status": "overdue",
-      "queue_complete": false,
-      "remaining_active_ids": [
-        "red-review-eaa9a9adcedb607c5e2f",
-        "red-review-3df8edd6016d540195df",
-        "radar-prepare-b58d2f45046683d9f428",
-        "radar-prepare-623e3f582cf5bcf22e75"
-      ],
+      "ok": true,
+      "status": "not-required",
+      "queue_complete": true,
+      "remaining_active_ids": [],
       "contradictory_success": false
     },
     "telegram_provisional": {
@@ -116,10 +104,9 @@
   },
   "repairs_started": [],
   "blocking": [
-    "cola con 894 estado(s) inválido(s)",
-    "cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 63.8 min"
+    "cola con 900 estado(s) inválido(s)"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "cola con 894 estado(s) inválido(s) | cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 63.8 min"
+  "last_alert_signature": "cola con 900 estado(s) inválido(s)"
 }
