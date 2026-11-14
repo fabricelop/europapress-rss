@@ -40,6 +40,7 @@ try {
         }
         $settings = Get-Content '.\wrangler.jsonc' -Raw | ConvertFrom-Json
         if ($settings.name -ne $worker) { throw "Worker inesperado: abortando" }
+        if ($settings.r2_buckets) { throw "R2 no debe activarse para imagenes V2. Abortando." }
         $id = [string]$matches[0].uuid
         $binding = @([ordered]@{ binding = 'MARKS_DB'; database_name = $database; database_id = $id })
         $settings | Add-Member -Force -NotePropertyName 'd1_databases' -NotePropertyValue $binding
@@ -63,10 +64,14 @@ try {
 
         Write-Host "6/6 Verificando la respuesta pública de salud..."
         $health = Invoke-RestMethod -Method Get -Uri ($publicUrl + '/health') -TimeoutSec 20
-        if ($health.ok -ne $true -or $health.service -ne 'ttactualidad-v2-private' -or $health.configured -ne $true) {
+        if ($health.ok -ne $true -or $health.service -ne 'ttactualidad-v2-private' -or $health.configured -ne $true -or
+            $health.image_storage -ne 'github' -or $health.image_flow -ne 'same-chat' -or
+            $health.build -ne 'v2-same-chat-github-20261114') {
             throw "El Worker respondió pero el estado o los secretos no son válidos"
         }
         Write-Host "TT_V2_PRIVATE_DEPLOYED=YES"
+        Write-Host "TT_V2_GITHUB_IMAGE_BACKEND=READY"
+        Write-Host "TT_V2_R2_REQUIRED=NO"
         Write-Host $publicUrl
         Write-Host "Las flechas y las fechas se verán al recargar la web autenticada."
     } finally { Pop-Location }
