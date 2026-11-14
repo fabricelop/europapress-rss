@@ -12,7 +12,7 @@ function indicator(item,rankingUnchanged=false,rankingChangeAt=null){
  const el=(tag,className,label)=>({tag,className,label,setAttribute(k,v){this[k]=v;}});
  const spanishStamp=(value)=>value;
  const fn=runInNewContext(match[0].replace(/\nfunction top30Since$/,"")+"\nmovementIndicator",{state,el,spanishStamp});
- return fn(item);
+ return fn(item,state);
 }
 test("flechas con número correcto para subida, bajada y estabilidad comprobada",()=>{
  assert.equal(indicator({rank:2,previous_rank:7}).label,"↑ 5");
