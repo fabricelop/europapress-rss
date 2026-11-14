@@ -1,15 +1,15 @@
 {
   "version": 1,
-  "id": "ttb-tt-guard-safehotfix-20261112-1414",
+  "id": "ttb-v2-cloudflare-update-20261114-01",
   "project": "TTActualidad",
-  "expires_at": "2026-11-13T12:00:00Z",
-  "description": "Instalar actualización puntual del guard editorial desde commit fijo. Copia de seguridad, comprobación Node; sin abrir Chrome, sin modificar Ejecución original, sin enviar mensajes. Requiere aprobación Windows.",
+  "expires_at": "2026-11-15T23:00:00Z",
+  "description": "Desplegar exclusivamente V2 private Worker tras verificaciones de rama, revision y build. Conserva variables y secretos. No modifica V1 ni FabCalendar. Requiere aprobacion local Windows.",
   "steps": [
     {
       "kind": "powershell",
-      "name": "update-existing-guard-only",
-      "script": "$o=@{mode='safe_guard_hotfix';state='unknown';exit_code=$null;confirmed_guard=$false;chrome_untouched=$true}\ntry {\n $url='https://raw.githubusercontent.com/fabricelop/europapress-rss/db43ff0621b9d363c83aa68fb48a3c2dd0ca0976/windows/Update-TT-Editorial-Guard-Only.ps1'\n $file=Join-Path $env:TEMP 'tt-editorial-guard-only-pinned.ps1'\n Invoke-WebRequest -UseBasicParsing -Uri $url -OutFile $file -TimeoutSec 25 -ErrorAction Stop\n $source=Get-Content -LiteralPath $file -Raw -Encoding UTF8 -ErrorAction Stop\n if(-not($source.Contains('TT_EDITORIAL_GUARD_HOTFIX_V1') -and $source.Contains('51b6f70504cad0594a85f290e84d791edb38f09b') -and $source.Contains('CheckOnly'))){throw 'UNEXPECTED_SOURCE'}\n & \"$env:WINDIR\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\" -NoProfile -NonInteractive -ExecutionPolicy Bypass -File $file 1>$null 2>$null\n $o.exit_code=$LASTEXITCODE\n $guard='C:\\TTiTTulares\\TT-Editorial-Guard.js'\n if(Test-Path -LiteralPath $guard){\n  $g=Get-Content -LiteralPath $guard -Raw -Encoding UTF8 -ErrorAction Stop\n  $o.confirmed_guard=$g.Contains('function confirmedUserState(s,marker)') -and $g.Contains('TRANSMISSION_STATE')\n }\n $o.state=if($o.exit_code -eq 0 -and $o.confirmed_guard){'installed_verified'}else{'not_installed'}\n}catch{$o.state='failed';$o.error_class=$_.Exception.GetType().Name}\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress))\n",
-      "timeout_seconds": 55
+      "name": "deploy-v2-private-worker-only",
+      "script": "$ErrorActionPreference='Stop'\n$o=@{action='deploy_v2_private';state='started';repo='fabricelop/europapress-rss';worker='ttactualidad-v2-private-test';revision='a0d51f6e8a6e05e2e5011755905f5c8c951aecc5';secrets_untouched=$true;v1_untouched=$true}\ntry {\n  $dir=Join-Path $env:TEMP 'ttactualidad-v2-private'\n  if(!(Test-Path (Join-Path $dir '.git'))){throw 'REPO_MISSING'}\n  Push-Location $dir\n  try {\n    $branch=(& git branch --show-current | Out-String).Trim()\n    if($branch -ne 'feature/ttactualidad-v2-private-worker-20261114'){throw 'WRONG_BRANCH'}\n    & git -c advice.detachedHead=false pull --ff-only origin feature/ttactualidad-v2-private-worker-20261114 *> $null\n    if($LASTEXITCODE -ne 0){throw 'GIT_PULL_FAILED'}\n    $sha=(& git rev-parse HEAD | Out-String).Trim()\n    if($sha -ne 'a0d51f6e8a6e05e2e5011755905f5c8c951aecc5'){throw 'UNEXPECTED_REVISION'}\n    Set-Location (Join-Path $dir 'v2\\private-worker')\n    $cfg=Get-Content -LiteralPath 'wrangler.jsonc' -Raw\n    if(!$cfg.Contains('\"name\": \"ttactualidad-v2-private-test\"')){throw 'WORKER_NAME_MISMATCH'}\n    $build=(& npm.cmd run build 2>&1 | Out-String)\n    if($LASTEXITCODE -ne 0 -or !$build.Contains('TT_V2_PRIVATE_BUILD_READY=YES')){throw 'BUILD_FAILED'}\n    $bundle=Get-Content -LiteralPath '.\\dist\\app.js' -Raw\n    if(!$bundle.Contains('Radar · ') -or !$bundle.Contains('ttactualidad.rainyraven22.chatgpt.site')){throw 'BUILD_CONTENT_MISMATCH'}\n    $deploy=(& npx.cmd wrangler deploy --keep-vars 2>&1 | Out-String)\n    if($LASTEXITCODE -ne 0){throw 'DEPLOY_FAILED'}\n    if(!$deploy.Contains('Deployed ttactualidad-v2-private-test')){throw 'DEPLOY_UNCONFIRMED'}\n    $o.state='deployed';$o.version=$sha;$o.url='https://ttactualidad-v2-private-test.fabricelop.workers.dev'\n  } finally {Pop-Location}\n}catch {$o.state='failed';$o.error_class=$_.Exception.Message}\nWrite-Output ('TTRESULT:'+($o|ConvertTo-Json -Compress))",
+      "timeout_seconds": 180
     }
   ]
 }
