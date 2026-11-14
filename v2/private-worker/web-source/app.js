@@ -53,37 +53,35 @@ function tweetText(raw){
  }
  return [summary,suffix,WEB_URL].filter(Boolean).join("\n");
 }
-const MARKS_KEY="ttactualidad-v2-red-marks-v1";
-let redMarks=loadRedMarks();
+// Server-side marks: same state on every authenticated browser and device.
+let redMarks={};
 let refreshing=false;
-function loadRedMarks(){
- try {
-  const stored=JSON.parse(localStorage.getItem(MARKS_KEY)||"{}");
-  return stored&&typeof stored==="object"&&!Array.isArray(stored)?stored:{};
- } catch {return {}}
-}
-function saveRedMarks(){
- try {localStorage.setItem(MARKS_KEY,JSON.stringify(redMarks))} catch {/* Storage may be disabled */ }
-}
 function markStamp(item){return typeof item.entered_top30_at==="string"?item.entered_top30_at:""}
-function reconcileRedMarks(items){
- const present=new Map(items.map(item=>[item.trend_id,markStamp(item)]));
- let changed=false;
- for(const [id,stamp] of Object.entries(redMarks)){
-  if(!present.has(id)||present.get(id)!==stamp){delete redMarks[id];changed=true}
- }
- if(changed)saveRedMarks();
+function isMarked(item){return redMarks[item.trend_id]===markStamp(item)&&!!markStamp(item)}
+async function loadSharedMarks() {
+ const res=await fetch("/api/marks",{cache:"no-store",credentials:"same-origin"});
+ if(!res.ok)throw Error("No se pueden sincronizar las marcas R (HTTP "+res.status+")");
+ const data=await res.json();
+ if(!data.marks||typeof data.marks!=="object")throw Error("Respuesta de marcas no válida");
+ redMarks=data.marks;
 }
-function isMarked(item){return Object.hasOwn(redMarks,item.trend_id)&&redMarks[item.trend_id]===markStamp(item)}
-function toggleRedMark(item,card,button){
- if(isMarked(item))delete redMarks[item.trend_id];
- else redMarks[item.trend_id]=markStamp(item);
- saveRedMarks();
- const active=isMarked(item);
- card.classList.toggle("marked-red",active);
- button.setAttribute("aria-pressed",String(active));
- button.setAttribute("aria-label",active?"Quitar marca roja de "+item.name:"Marcar en rojo "+item.name);
- button.title=active?"Quitar marca roja":"Marcar en rojo";
+async function toggleRedMark(item,card,button){
+ if(button.disabled)return;
+ button.disabled=true;
+ const next=!isMarked(item);
+ try{
+  const res=await fetch("/api/marks",{method:"POST",credentials:"same-origin",headers:{"content-type":"application/json","x-ttv2-action":"1"},body:JSON.stringify({trend_id:item.trend_id,entered_top30_at:markStamp(item),marked:next})});
+  if(!res.ok)throw Error("HTTP "+res.status);
+  if(next)redMarks[item.trend_id]=markStamp(item);else delete redMarks[item.trend_id];
+  // Another tab/device can change the same R; reload server truth on refresh.
+  card.classList.toggle("marked-red",next);
+  button.setAttribute("aria-pressed",String(next));
+  button.setAttribute("aria-label",next?"Quitar marca roja de "+item.name:"Marcar en rojo "+item.name);
+  button.title=next?"Quitar marca roja":"Marcar en rojo";
+ }catch{
+  $("notice").textContent="No se ha guardado la marca R. Comprueba la conexión e inténtalo de nuevo.";
+  $("notice").hidden=false;
+ }finally{button.disabled=false}
 }
 function explanationTime(item){
  if(item.status!=="explicada"||!item.captured_at)return null;
@@ -145,7 +143,7 @@ async function refresh(){
   state.items=data.items.slice().sort((a,b)=>a.rank-b.rank);
   state.captured=data.captured_at;
   if(state.open&&!state.items.some(item=>item.trend_id===state.open))state.open=null;
-  reconcileRedMarks(state.items);
+  await loadSharedMarks();
   render();
   $("notice").hidden=true;
   button.title="Actualizar tendencias · última consulta "+new Intl.DateTimeFormat("es-ES",{hour:"2-digit",minute:"2-digit",timeZone:"Europe/Madrid"}).format(new Date());
