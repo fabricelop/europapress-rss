@@ -120,6 +120,12 @@ def build(history, queue):
             "cause_status": cause_status(answer) if answer else "sin_datos",
             "chat_url": chat_url,
             "captured_at": captured_at,
+            "image_available": bool(
+                (item.get("capture") or {}).get("image", {}).get("status") == "saved"
+                and (item.get("capture") or {}).get("image", {}).get("revision") == item.get("revision")
+                and (item.get("capture") or {}).get("image", {}).get("backend") == "github_v1_style"
+                and isinstance((item.get("capture") or {}).get("image", {}).get("path"), str)
+            ),
             "movement": topic.get("last_change") or "",
             "previous_rank": topic.get("previous_rank") if isinstance(topic.get("previous_rank"), int) else None,
             "positions_changed": topic.get("positions_changed") if isinstance(topic.get("positions_changed"), int) else None,
