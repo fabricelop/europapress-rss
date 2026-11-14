@@ -7,49 +7,45 @@
   "previous_run_id": "tr-20261114T062500-chat-direct",
   "command_id": "tr-20261114T105400-chat-direct",
   "source": "chat_direct",
-  "status": "RUNNING",
-  "phase": "maintenance_review",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-14T10:54:00+01:00",
-  "updated_at": "2026-11-14T11:03:28+01:00",
-  "current": 4,
+  "updated_at": "2026-11-14T11:05:03+01:00",
+  "current": 6,
   "total": 6,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [
     "7c236b3d8b56",
     "ccc33f06ab22",
     "2ca47e06ac77",
-    "a27f2f3186b0"
+    "a27f2f3186b0",
+    "red-review-1a52b7baf5ba425336b0",
+    "red-review-3ba426c1c8a2d6f1dd7a"
   ],
   "converged_ids": [],
-  "remaining_ids": [
-    "red-review-1a52b7baf5ba425336b0",
-    "red-review-3ba426c1c8a2d6f1dd7a"
-  ],
-  "remaining_active_ids": [
-    "red-review-1a52b7baf5ba425336b0",
-    "red-review-3ba426c1c8a2d6f1dd7a"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 4,
+    "attempted": 6,
     "observed": 6,
-    "closed": 4,
+    "closed": 6,
     "explained": 3,
     "problematic": 0,
-    "updates": 0,
+    "updates": 2,
     "review_completed_no_distinct_event": 1,
-    "maintenance_reviews": 0,
+    "maintenance_reviews": 2,
     "unchanged_reviews": 0,
-    "continuity_updates": 0,
-    "distinct_updates": 0,
+    "continuity_updates": 1,
+    "distinct_updates": 1,
     "stale_reviews": 0,
     "unverified_reviews": 0,
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -89,6 +85,25 @@
       "outcome": "explained_cause_unconfirmed",
       "applied": true,
       "apply_commit": "3fd487b6257f8d3293dad60c1893319a4a8390af"
+    },
+    {
+      "id": "red-review-1a52b7baf5ba425336b0",
+      "revision": 0,
+      "name": "Revisar novedades: Widilo",
+      "outcome": "continuity",
+      "applied": true,
+      "apply_commit": "db66b710ae81802cc5e62461663c3cc6d3b170be",
+      "source_id": "ff856dec111d"
+    },
+    {
+      "id": "red-review-3ba426c1c8a2d6f1dd7a",
+      "revision": 0,
+      "name": "Revisar novedades: Feijoo",
+      "outcome": "distinct_update",
+      "applied": true,
+      "created_id": "trend-update-ec13de99e455af782132",
+      "apply_commit": "db66b710ae81802cc5e62461663c3cc6d3b170be",
+      "source_id": "009af898bf01"
     }
   ],
   "incident_count": 0,
@@ -507,6 +522,13 @@
       "status": "RUNNING",
       "phase": "maintenance_review",
       "message": "Barrera posterior detectó 2 revisiones rojas nuevas: Widilo y Feijoo. Se amplía la misma ejecución; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-14T11:05:03+01:00",
+      "run_id": "tr-20261114T105400-chat-direct",
+      "status": "DONE",
+      "phase": "closing",
+      "message": "Pasada TTendencias completada 6/6. #FelizSábado, Lc 18 y Teresa explicadas; #PSOEyFrenteAmplioVetan cerrado sin episodio material distinto; Widilo actualizado en continuidad; Feijoo abrió episodio distinto por el cara a cara del 19/11. Barrera final editorial-queue=0 y mobile-decisions activos=0. ImageGen=0; publicaciones=0; incidentes=0."
     }
   ],
   "last_started_at": "2026-11-14T10:59:53+01:00",
@@ -9183,12 +9205,11 @@
   "maintenance_outbox_commit": "c764cbdfc37ba7b67fedd38a16837ee068ae9467",
   "editorial_apply_run_id": 43477991983,
   "maintenance_outbox_commits": [
-    "24805770cc5efabc2f14e0019c9fa592aecf4d7b",
-    "82935552cfd2620c52c01e6603ac598051a8eec4",
-    "c74a2aca815578b22fd10e4d2ee66b3dd64f0693"
+    "513192a72fbfd324769794ece35c1990aaee7c6e",
+    "e0c34acf0a5d3d705d4b19194d474b9c0e15e6c0"
   ],
-  "maintenance_apply_run_id": 43502827908,
-  "maintenance_apply_commit": "e04624377a4fadb3646363f83ba4828cfc9d61f6",
-  "finished_at": null,
+  "maintenance_apply_run_id": 43583472859,
+  "maintenance_apply_commit": "db66b710ae81802cc5e62461663c3cc6d3b170be",
+  "finished_at": "2026-11-14T11:05:03+01:00",
   "completed_at": "2026-11-14T11:00:00+01:00"
 }
