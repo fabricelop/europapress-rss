@@ -61,6 +61,36 @@ jobs:
           console.log('TT_V2_EXISTING_MARKS_D1_BOUND=YES');
           NODE
           rm -f /tmp/ttv2-d1-list.json
+      - name: Keep deployed images safe; exclude unavailable R2 from UI-only update
+        working-directory: v2/private-worker
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Read only. Never remove a currently deployed image binding.
+          curl --fail --silent --show-error \
+            -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+            -H "Accept: application/json" \
+            "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/workers/scripts/ttactualidad-v2-private-test/settings" \
+            -o /tmp/ttv2-worker-settings.json
+          node --input-type=commonjs <<'NODE'
+          const fs=require('node:fs');
+          const response=JSON.parse(fs.readFileSync('/tmp/ttv2-worker-settings.json','utf8'));
+          if(response.success!==true)throw Error('Could not verify existing Worker bindings; refusing deploy');
+          const bindings=response.result?.bindings??response.result?.settings?.bindings;
+          if(!Array.isArray(bindings))throw Error('Unknown current Worker bindings; refusing deploy');
+          if(bindings.some(item=>item.name==='V2_IMAGES'))throw Error('Existing image binding must not be removed');
+          const file='wrangler.jsonc', config=JSON.parse(fs.readFileSync(file,'utf8'));
+          if(config.name!=='ttactualidad-v2-private-test')throw Error('Unexpected Worker name');
+          // Named R2 bucket does not yet exist; leave future image feature pending.
+          delete config.r2_buckets;
+          fs.writeFileSync(file,JSON.stringify(config,null,2)+'\n');
+          console.log('TT_V2_NO_EXISTING_IMAGE_BINDING_LOST=YES');
+          console.log('TT_V2_UI_ONLY_DEPLOY=YES');
+          NODE
+          rm -f /tmp/ttv2-worker-settings.json
       - name: Build, run security and movement tests, perform Wrangler dry run
         working-directory: v2/private-worker
         run: |
