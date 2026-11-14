@@ -1,5 +1,6 @@
 // TTActualidad V2, private single-password frontend.
-// NO V1 changes. Stateless signed sessions; zero KV/D1 operations per visit.
+// NO V1 changes. Signed sessions; V2 D1 stores red marks and 15-minute radar.
+import {captureRadar,loadRadar,mergeEditorialRadar,radarAgeMinutes} from "./radar.js";
 // All static assets require a session because run_worker_first=true.
 const COOKIE = "__Host-ttv2";
 const SESSION_VERSION = "v1";
@@ -83,18 +84,22 @@ function sameOrigin(request) {
 
 const TREND_ID = /^trv2-[a-f0-9]{24}$/;
 function entryStamp(item) {return typeof item?.entered_top30_at==="string" ? item.entered_top30_at : "";}
-async function currentRanking() {
+async function currentRanking(env) {
   const upstream=await fetch(SOURCE+"web-top30.json",{headers:{"Accept":"application/json"},cf:{cacheTtl:15,cacheEverything:true}});
   if(!upstream.ok) throw Error("RANKING_UNAVAILABLE");
   const data=await upstream.json();
   if(data?.project!=="ttactualidad-v2" || !Array.isArray(data.items) || data.items.length!==data.count || data.items.length>40) throw Error("RANKING_INVALID");
-  return data.items;
+  // The Cloudflare cron is the authoritative ranking for the private website.
+  // Editorial explanations still come from the separate, read-only GitHub V2 ledger.
+  let live=null;
+  try{live=await loadRadar(env?.MARKS_DB);}catch(error){console.warn("TT_V2_RADAR_READ_FALLBACK",String(error));}
+  return (await mergeEditorialRadar(data,live)).items;
 }
 async function redMarks(request,env) {
   if(!env.MARKS_DB) return json({error:"marks_storage_not_configured"},503);
   if(request.method!=="GET" && (request.method!=="POST" || !sameOrigin(request))) return json({error:"method_not_allowed"},405);
   let ranking;
-  try { ranking=await currentRanking(); } catch {return json({error:"ranking_temporarily_unavailable"},503);}
+  try { ranking=await currentRanking(env); } catch {return json({error:"ranking_temporarily_unavailable"},503);}
   const active=new Map(ranking.filter(row=>TREND_ID.test(row.trend_id) && entryStamp(row)).map(row=>[row.trend_id,entryStamp(row)]));
   try {
     const rows=(await env.MARKS_DB.prepare("SELECT trend_id, entered_top30_at FROM red_marks").all()).results || [];
@@ -194,7 +199,13 @@ async function sha256Bytes(bytes){return [...new Uint8Array(await crypto.subtle.
 
 const LOGIN = `<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex,nofollow"><meta name="color-scheme" content="dark"><title>TTActualidad V2 · Acceso privado</title><style>body{background:#090b0f;color:#f2f5fa;min-height:100vh;display:grid;place-items:center;font:16px system-ui;margin:0}main{padding:32px;width:min(380px,90vw);background:#171c26;border:1px solid #354052;border-radius:16px}h1{font-size:22px}input,button{font:inherit;padding:13px;border-radius:9px;width:100%;box-sizing:border-box;margin-top:10px}input{background:#0c111c;color:white;border:1px solid #667187}button{background:#e25d44;color:white;font-weight:700;border:0;cursor:pointer}p{color:#a6b4c7}#msg{color:#ffaaaa}</style></head><body><main><h1>TTActualidad V2</h1><p>Acceso privado</p><form id="f"><label for="p">Contraseña</label><input id="p" type="password" minlength="16" autocomplete="current-password" required autofocus><button type="submit">Entrar</button><p id="msg" role="status"></p></form></main><script>document.getElementById("f").addEventListener("submit",async e=>{e.preventDefault();const b=e.target.querySelector("button");b.disabled=true;try{const r=await fetch("/api/login",{method:"POST",headers:{"content-type":"application/json","x-ttv2-action":"1"},body:JSON.stringify({password:document.getElementById("p").value}),credentials:"same-origin"});document.getElementById("p").value="";if(!r.ok){document.getElementById("msg").textContent="Contraseña incorrecta o acceso no configurado.";return}location.replace("/")}catch{document.getElementById("msg").textContent="No se pudo iniciar sesión."}finally{b.disabled=false}})</script></body></html>`;
 export default {
-  async fetch(request,env) {
+  async scheduled(controller,env,ctx) {
+    // Cloudflare Cron Trigger: exactly one scheduled attempt every 15 minutes.
+    // A failed third-party read must fail visibly in Cron Events rather than
+    // writing a misleading fresh timestamp.
+    await captureRadar(env.MARKS_DB);
+  },
+  async fetch(request,env,ctx) {
     const url = new URL(request.url);
     if (url.pathname === "/health") return json({ok:true,service:"ttactualidad-v2-private",configured:configured(env)});
     if (!configured(env)) return result("Acceso privado no configurado",503);
@@ -237,6 +248,23 @@ export default {
       if (!upstream.ok) return json({error:"source_unavailable"},502);
       const body=await upstream.text();
       if (body.length>2000000) return json({error:"oversized_source"},502);
+      if(name==="web-top30.json"){
+        let live=null;
+        try{live=await loadRadar(env.MARKS_DB);}catch(error){console.warn("TT_V2_RADAR_NOT_READY",String(error));}
+        const raw=JSON.parse(body);
+        const view=await mergeEditorialRadar(raw,live);
+        if(!live) {
+          view.radar_source="github_fallback";
+          const age=(Date.now()-Date.parse(raw.captured_at))/60000;
+          if(age>25)view.radar_warning="Radar desactualizado: Cloudflare todavía no ha guardado su primera captura programada.";
+        }
+        if(live&&radarAgeMinutes(live)>22&&ctx?.waitUntil){
+          // Recovery only if the previous full 15m window has been missed.
+          // No extra scheduled executions and no dependency on Windows.
+          ctx.waitUntil(captureRadar(env.MARKS_DB).catch(e=>console.error("TT_V2_RADAR_RECOVERY_FAILED",String(e))));
+        }
+        return json(view);
+      }
       return result(body,200,{"Content-Type":"application/json; charset=utf-8"});
     }
     if (url.pathname.startsWith("/api/")) return json({error:"action_not_enabled"},503);
