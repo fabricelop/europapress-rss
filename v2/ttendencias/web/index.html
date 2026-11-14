@@ -34,6 +34,13 @@ article.trend:last-child{border-bottom:0}
 .pill.incidencia{color:var(--bad);border-color:#f3c9cb;background:#fff4f4}
 .pill.desestimada{color:var(--muted)}
 .chev{font-size:18px;color:var(--muted)}
+.trend-actions{display:flex;align-items:center;gap:7px;padding-right:14px}
+.rework{width:30px;height:30px;border-radius:8px;border:1px solid #bfd0ec;background:#f2f6fe;color:#2251d1;font-weight:800;font-size:13px;flex-shrink:0}
+.rework:hover,.rework:focus-visible{background:#dce9ff}
+.image-preview{display:block;max-width:min(320px,100%);max-height:360px;object-fit:contain;border-radius:10px;border:1px solid var(--border);background:white;margin:12px 0}
+.image-caption{font-size:12px;color:var(--muted);margin-top:4px}
+.tweet-preview{white-space:pre-wrap;background:#f1f5fc;padding:13px;border-radius:10px;border:1px solid #e1e7f0;margin:8px 0}
+
 .trend-body{padding:4px 20px 20px 67px;color:var(--ink)}
 .explanation{white-space:pre-wrap;line-height:1.65;font-size:13px;overflow-wrap:anywhere;margin:8px 0}
 .small{font-size:12px;color:var(--muted);line-height:1.6}
@@ -72,6 +79,18 @@ footer{padding:22px 0 0;color:var(--muted);font-size:12px;line-height:1.5}
 "use strict";
 const API="https://api.github.com/repos/fabricelop/europapress-rss/contents/v2/ttendencias/state/web-top30.json?ref=feature%2Fttactualidad-v2-clean";
 const $=(id)=>document.getElementById(id);
+const ISSUE_URL="https://github.com/fabricelop/europapress-rss/issues/new";
+const PILOT_IMAGE="https://raw.githubusercontent.com/fabricelop/europapress-rss/feature/v2-tuit-radar-reevaluacion-piloto-20261114/v2/ttendencias/site/images/jordi-wild-r1-pilot-thumb.webp";
+const PILOT_TREND="trv2-e94b2984c087ac403753b8c1";
+function rework(t){
+ const name=String(t.name||"tendencia");
+ const rev=Number(t.revision);
+ if(!/^[a-z0-9-]{12,80}$/i.test(t.trend_id)||!Number.isSafeInteger(rev)||rev<1){message("Identificador o revisión no válidos. No se ha solicitado ningún cambio.");return}
+ if(!confirm("Reelaborar desde cero: "+name+" (revisión "+rev+")?\\n\\nLa revisión anterior se conservará. GitHub solicitará que confirmes el envío como editor."))return;
+ const title="V2-REELABORAR:"+t.trend_id+":r"+rev;
+ const body="Solicitud editorial V2, sin publicación automática.\\nTendencia: "+name+"\\nID: "+t.trend_id+"\\nRevisión esperada: "+rev+"\\nAcción: REELABORAR_DESDE_CERO";
+ window.open(ISSUE_URL+"?"+new URLSearchParams({title,body}).toString(),"_blank","noopener,noreferrer");
+}
 const pollMs=120000; // 30 solicitudes/h como máximo por pestaña visible
 let busy=false, lastVersion="", expanded=new Set();
 function message(text){$("warning").textContent=text;$("warning").hidden=!text}
@@ -101,15 +120,22 @@ function render(data){
   head.children[1].append(el("span","trend-title",t.name),el("div","trend-meta",t.movement==="entry"?"Nueva entrada":t.movement==="up"?"Sube":t.movement==="down"?"Baja":""));
   const labels=el("span","trend-labels"),tag=el("span","pill "+t.status,t.status_label);
   labels.append(tag,el("span","chev",expanded.has(t.trend_id)?"−":"+"));head.append(labels);
+  const actions=el("div","trend-actions");const retry=el("button","rework","E");retry.type="button";retry.title="Solicitar reelaboración desde cero";retry.setAttribute("aria-label","Reelaborar "+t.name+" desde cero");retry.addEventListener("click",()=>rework(t));actions.append(retry);
   const body=el("div","trend-body");body.hidden=!expanded.has(t.trend_id);
+  if(t.tweet_text){body.append(el("div","tweet-preview",t.tweet_text));}
   if(t.explanation){body.append(el("div","explanation",t.explanation));if(t.cause_status==="no_confirmada")body.append(el("p","small","Motivo no confirmado: la ficha reconoce la incertidumbre."));}
   else body.append(el("p","small",t.status==="en_elaboracion"?"ChatGPT está elaborando esta tendencia. La explicación aparecerá cuando la respuesta esté guardada.":t.status==="pendiente"?"Pendiente de su turno de elaboración.":"No hay explicación verificada disponible."));
+  if(t.trend_id===PILOT_TREND&&Number(t.revision)===1&&t.status==="explicada"){
+   const fig=el("figure","");fig.style.margin="16px 0";const img=el("img","image-preview");img.src=PILOT_IMAGE;img.alt="Ilustración piloto: Jordi Wild en un estudio con tres invitados y una silla vacía";img.loading="lazy";img.width=220;img.height=220;fig.append(img,el("figcaption","image-caption","Imagen piloto · Esta ilustración no acredita hechos ni está publicada en X"));body.append(fig);
+  }else if(t.image&&t.image.status==="ready"&&t.image.revision===t.revision&&t.image.verified===true&&typeof t.image.url==="string"&&t.image.url.startsWith("https://raw.githubusercontent.com/fabricelop/europapress-rss/")){
+   const img=el("img","image-preview");img.src=t.image.url;img.alt=t.image.alt||"Imagen asociada a "+t.name;img.loading="lazy";body.append(img);
+  }
   if(t.captured_at)body.append(el("p","small","Respuesta guardada: "+fmt(t.captured_at)));
   if(typeof t.chat_url==="string"&&/^https:\/\/chatgpt\.com\/c\/[A-Za-z0-9-]+$/.test(t.chat_url)){
     const link=el("a","","Abrir su chat independiente");link.href=t.chat_url;link.target="_blank";link.rel="noopener noreferrer";body.append(link);
   }
   head.addEventListener("click",()=>{if(expanded.has(t.trend_id))expanded.delete(t.trend_id);else expanded.add(t.trend_id);body.hidden=!expanded.has(t.trend_id);head.setAttribute("aria-expanded",String(expanded.has(t.trend_id)));head.querySelector(".chev").textContent=expanded.has(t.trend_id)?"−":"+";});
-  card.append(head,body);list.append(card);
+  card.append(head,actions,body);list.append(card);
  });
  $("trends").replaceChildren(list);
 }
