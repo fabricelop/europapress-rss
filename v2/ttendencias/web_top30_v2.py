@@ -121,7 +121,8 @@ def build(history, queue):
             "chat_url": chat_url,
             "captured_at": captured_at,
             "movement": topic.get("last_change") or "",
-            "previous_rank": None,
+            "previous_rank": topic.get("previous_rank") if isinstance(topic.get("previous_rank"), int) else None,
+            "positions_changed": topic.get("positions_changed") if isinstance(topic.get("positions_changed"), int) else None,
         })
     return {
         "schema_version": 1,
@@ -129,6 +130,7 @@ def build(history, queue):
         "country": "ES",
         "source": history.get("source") or "GetDayTrends",
         "captured_at": history["observed_at"],
+        "comparison_at": history.get("previous_observed_at"),
         "source_verified_against_x": False,
         "publication_allowed": False,
         "count": 30,
