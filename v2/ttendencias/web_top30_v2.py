@@ -45,7 +45,7 @@ def cause_status(answer):
 
 
 PUBLIC_TWEET_URL = "https://ttactualidad.rainyraven22.chatgpt.site/"
-TWEET_BLOCK = re.compile(r"(?ms)^TUIT_INICIO\\s*\\n(.*?)\\nTUIT_FIN\\s*$")
+TWEET_BLOCK = re.compile(r"(?ms)^TUIT_INICIO\s*\n(.*?)\nTUIT_FIN\s*$")
 
 
 def x_weighted_length(text):
@@ -54,7 +54,7 @@ def x_weighted_length(text):
     X URLs count 23, emoji/astral Unicode count 2; non-BMP and variation
     selectors are treated conservatively. For final publication use twitter-text.
     """
-    urls = list(re.finditer(r"https?://[^\\s]+", text))
+    urls = list(re.finditer(r"https?://[^\s]+", text))
     count = 0
     previous = 0
     for found in urls:
