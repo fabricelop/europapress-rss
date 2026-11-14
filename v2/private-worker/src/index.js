@@ -87,6 +87,13 @@ export default {
     if (!configured(env)) return result("Acceso privado no configurado",503);
     if (url.pathname === "/api/login") {
       if (request.method !== "POST" || !sameOrigin(request)) return json({ok:false},403);
+      // Five approximate login attempts per minute per network origin, no KV writes.
+      // The counter is local to a Cloudflare location, not a global strict lock.
+      if (env.LOGIN_LIMITER) {
+        const ip=request.headers.get("cf-connecting-ip") || "missing-ip";
+        const verdict=await env.LOGIN_LIMITER.limit({key:"ttv2-login:"+ip});
+        if (!verdict.success) return json({ok:false,error:"too_many_attempts"},429,{"Retry-After":"60"});
+      }
       if (Number(request.headers.get("content-length") || 0) > 2048) return json({ok:false},413);
       let password = "";
       try {const obj=await request.json();password=typeof obj.password==="string" ? obj.password : "";}catch{}
