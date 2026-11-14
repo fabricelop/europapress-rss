@@ -7,32 +7,38 @@
   "previous_run_id": "tr-20261114T152500-chat-direct",
   "command_id": "tr-20261114T154000-chat-direct",
   "source": "chat_direct",
-  "status": "success",
-  "phase": "preparing",
+  "status": "RUNNING",
+  "phase": "persisting",
   "started_at": "2026-11-14T15:40:00+01:00",
-  "updated_at": "2026-11-14T15:43:47+01:00",
-  "current": 0,
-  "total": 1,
-  "trend_id": "4a0b99c27aaf",
-  "title": "#PSOEyFrenteAmplioVetan",
-  "queue_complete": true,
+  "updated_at": "2026-11-14T15:50:00+01:00",
+  "current": 2,
+  "total": 3,
+  "trend_id": "red-review-d984f804b0844e5d156a",
+  "title": "Revisar novedades: NVIDIA",
+  "queue_complete": false,
   "processed_ids": [
     "4a0b99c27aaf"
   ],
-  "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "converged_ids": [
+    "red-review-4e2aa3d4a7601bdf7c3e"
+  ],
+  "remaining_ids": [
+    "red-review-d984f804b0844e5d156a"
+  ],
+  "remaining_active_ids": [
+    "red-review-d984f804b0844e5d156a"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 1,
-    "closed": 0,
-    "explained": 0,
+    "attempted": 3,
+    "observed": 3,
+    "closed": 2,
+    "explained": 1,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 0,
-    "unchanged_reviews": 0,
+    "maintenance_reviews": 2,
+    "unchanged_reviews": 1,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "stale_reviews": 0,
@@ -46,9 +52,28 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 1
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "4a0b99c27aaf",
+      "revision": 0,
+      "name": "#PSOEyFrenteAmplioVetan",
+      "outcome": "explained",
+      "applied": true,
+      "apply_commit": "115549892232ee15c0217e5d4653827aa56aafec"
+    },
+    {
+      "id": "red-review-4e2aa3d4a7601bdf7c3e",
+      "revision": 0,
+      "name": "Revisar novedades: #PazCasaTrabajo29N",
+      "outcome": "unchanged",
+      "applied": true,
+      "via": "concurrent_convergence",
+      "source_id": "c04ca7365d3b",
+      "apply_commit": "b2971a704179457e64a671dc6c0e57d74abdf1d8"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -510,6 +535,16 @@
       "revision": 0,
       "name": "#PSOEyFrenteAmplioVetan",
       "message": "Pasada manual TTendencias iniciada desde ChatGPT. Cola autoritativa inicial=1: reelaboración explícita de #PSOEyFrenteAmplioVetan r0. Revalidación JIT e investigación desde cero; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-14T15:50:00+01:00",
+      "run_id": "tr-20261114T154000-chat-direct",
+      "status": "RUNNING",
+      "phase": "persisting",
+      "trend_id": "red-review-d984f804b0844e5d156a",
+      "revision": 0,
+      "name": "NVIDIA",
+      "message": "Barrera final amplió la pasada a 3 elementos. #PazCasaTrabajo29N convergió unchanged con otro aplicador; NVIDIA se persiste como actualización de continuidad, sin nueva ficha, imagen ni publicación."
     }
   ],
   "last_started_at": "2026-11-14T15:43:47+01:00",
@@ -5403,10 +5438,10 @@
     }
   ],
   "current_item": {
-    "id": "4a0b99c27aaf",
+    "id": "red-review-d984f804b0844e5d156a",
     "revision": 0,
-    "name": "#PSOEyFrenteAmplioVetan",
-    "task": "explain",
+    "name": "Revisar novedades: NVIDIA",
+    "task": "review_red",
     "status": "preparing"
   },
   "withdrawn_ids": [],
