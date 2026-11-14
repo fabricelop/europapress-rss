@@ -38,7 +38,7 @@ def validate_job(job):
         or match.group(1)!=tid or int(match.group(2))!=rev
         or not isinstance(digest,str) or not HEX.fullmatch(digest)
         or not isinstance(chat,str) or not re.fullmatch(
-          r"https://chatgpt\\.com/(?:c/[a-f0-9-]{25,}|g/[A-Za-z0-9_-]+/c/[a-f0-9-]{25,})/?",chat)):
+          r"https://chatgpt\.com/(?:c/[a-f0-9-]{25,}|g/[A-Za-z0-9_-]+/c/[a-f0-9-]{25,})/?",chat)):
         raise ValueError("V2_IMAGE_JOB_IDENTITY_INVALID")
     return job
 
