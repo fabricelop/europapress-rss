@@ -1,0 +1,33 @@
+name: TTActualidad V2 privada - pruebas de interfaz y seguridad
+on:
+  push:
+    branches: [feature/ttactualidad-v2-private-worker-20261114]
+    paths:
+      - 'v2/private-worker/**'
+      - '.github/workflows/ttactualidad-v2-private-check.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install V2 private Worker dependencies
+        working-directory: v2/private-worker
+        run: npm install --no-audit --no-fund
+      - name: Verify build, behavior and Wrangler dry-run (no deployment)
+        working-directory: v2/private-worker
+        run: npm run check
+      - name: Verify private deployment assets
+        working-directory: v2/private-worker
+        run: |
+          node --check dist/app.js
+          test -s dist/index.html
+          test -s dist/styles.css
