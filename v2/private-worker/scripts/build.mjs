@@ -1,14 +1,14 @@
 import { cp, mkdir, readFile, writeFile, rm } from "node:fs/promises";
 import { resolve } from "node:path";
 
-const root = resolve(import.meta.dirname, "../../..");
 const output = resolve(import.meta.dirname, "../dist");
-const source = resolve(root, "docs/v2");
+const source = resolve(import.meta.dirname, "../web-source");
 await rm(output, { recursive: true, force: true });
 await mkdir(output, { recursive: true });
 for (const filename of ["index.html", "styles.css", "app.js", "manifest.webmanifest"]) {
   await cp(resolve(source, filename), resolve(output, filename));
 }
+// Private UI sources live here; they no longer depend on docs/v2 on main.
 // The private origin must never fetch its JSON directly from public GitHub.
 // Nor should the old Pages service worker cache authenticated content.
 let app = await readFile(resolve(output, "app.js"), "utf8");
