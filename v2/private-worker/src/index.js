@@ -46,7 +46,7 @@ async function sha256(value) {
   return b64(await crypto.subtle.digest("SHA-256", encoder.encode(value)));
 }
 async function signature(data,secret) {
-  const key = await crypto.subtle.importKey("raw",encoder.encode(secret),"HMAC",false,["sign"]);
+  const key = await crypto.subtle.importKey("raw",encoder.encode(secret),{name:"HMAC",hash:"SHA-256"},false,["sign"]);
   return b64(await crypto.subtle.sign("HMAC",key,encoder.encode(data)));
 }
 function configured(env) {
