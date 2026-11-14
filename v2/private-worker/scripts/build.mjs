@@ -57,7 +57,7 @@ app = app.replace(imageAnchor, [
 '    img.onerror=()=>figure.remove();',
 '    figure.append(img);card.append(figure);',
 '  }',
-].join("\\n"));
+].join("\n"));
 await writeFile(resolve(output, "app.js"), app, "utf8");
 let css=await readFile(resolve(output, "styles.css"), "utf8");
 css += "\n.radar-time{padding:11px clamp(15px,4vw,36px);background:#121720;color:#b4c3d4;border-bottom:1px solid #272b33;font-size:13px;font-variant-numeric:tabular-nums}.pilot-figure{margin:0;padding:0 clamp(15px,4vw,36px) 22px calc(clamp(15px,4vw,36px) + 48px)}.pilot-figure img{display:block;max-width:360px;width:100%;height:auto;border-radius:10px}.pilot-caption{font-size:11px;color:#929eab;margin-top:6px}@media(max-width:450px){.pilot-figure{padding:0 14px 18px 52px}}\n";
