@@ -27,7 +27,7 @@ article.trend:last-child{border-bottom:0}
 .trend-head{display:flex;gap:13px;align-items:center;padding:15px 18px;width:100%;border:0;background:transparent;text-align:left;color:inherit}
 .trend-head:hover{background:#f9fbff}
 .rank{display:grid;place-items:center;background:#edf2fb;color:#2f4c82;width:36px;height:36px;border-radius:9px;font-weight:800;font-variant-numeric:tabular-nums;flex-shrink:0}
-.trend-title{font-weight:720;font-size:15px;line-height:1.35;overflow-wrap:anywhere}.trend-meta{font-size:11px;color:var(--muted);padding-top:4px}.trend-labels{margin-left:auto;display:flex;gap:7px;align-items:center;flex-shrink:0}
+.trend-title{font-weight:720;font-size:15px;line-height:1.35;overflow-wrap:anywhere}.trend-meta{font-size:11px;color:var(--muted);padding-top:4px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}.position{font-weight:800;font-variant-numeric:tabular-nums;border-radius:5px;padding:2px 6px}.position.up{color:#16774b;background:#e5f5eb}.position.down{color:#a5363a;background:#ffeaec}.position.same{color:#64748b;background:#edf0f5}.position.entry{color:#2251d1;background:#eaf0ff}.position.unknown{color:#66738b;background:#edf0f5}.trend-labels{margin-left:auto;display:flex;gap:7px;align-items:center;flex-shrink:0}
 .pill{font-size:11px;line-height:1.3;font-weight:750;border:1px solid #dce3ed;padding:5px 8px;border-radius:20px;white-space:nowrap;color:#4c5c71;background:#f8fafc}
 .pill.explicada{color:var(--ok);border-color:#bcdccb;background:#eff9f2}
 .pill.en_elaboracion{color:#0d58ae;border-color:#b3d1fa;background:#f0f7ff}
@@ -74,7 +74,8 @@ const $=(id)=>document.getElementById(id);
 const pollMs=120000; // 30 solicitudes/h como máximo por pestaña visible
 let busy=false, lastVersion="", expanded=new Set();
 function message(text){$("warning").textContent=text;$("warning").hidden=!text}
-function fmt(iso){if(!iso)return "Sin fecha";const date=new Date(iso);return Number.isFinite(date.getTime())?date.toLocaleString("es-ES",{dateStyle:"medium",timeStyle:"short"}):"Sin fecha"}
+function fmt(iso){if(!iso)return "Sin fecha";const date=new Date(iso);return Number.isFinite(date.getTime())?date.toLocaleString("es-ES",{dateStyle:"medium",timeStyle:"short",timeZone:"Europe/Madrid"}):"Sin fecha"}
+function movement(t){const before=Number.isInteger(t.previous_rank)?t.previous_rank:null;if(before!==null){const delta=before-t.rank;return {kind:delta>0?"up":delta<0?"down":"same",label:delta>0?"↑ "+delta:delta<0?"↓ "+(-delta):"→ 0",title:delta>0?"Sube "+delta+" puestos":delta<0?"Baja "+(-delta)+" puestos":"Se mantiene en el puesto "+t.rank}}if(["entry","reentry","short_return"].includes(t.movement))return {kind:"entry",label:"Nueva",title:"Entra o regresa al Top 30"};return {kind:"unknown",label:"—",title:"Sin captura anterior comparable"}}
 function el(name,className,text){const node=document.createElement(name);if(className)node.className=className;if(text!==undefined)node.textContent=String(text);return node}
 function render(data){
  if(data.project!=="ttactualidad-v2"||data.count!==30||!Array.isArray(data.items)||data.items.length!==30||data.publication_allowed!==false)
@@ -91,7 +92,10 @@ function render(data){
   const card=el("article","trend");const head=el("button","trend-head");
   head.type="button";head.setAttribute("aria-expanded",expanded.has(t.trend_id)?"true":"false");
   head.append(el("span","rank",t.rank),el("span","trend-info"));
-  head.children[1].append(el("span","trend-title",t.name),el("div","trend-meta",t.movement==="entry"?"Nueva entrada":t.movement==="up"?"Sube":t.movement==="down"?"Baja":""));
+  const info=head.children[1],meta=el("div","trend-meta"),pos=movement(t);
+  if(t.entered_top30_at)meta.append(el("span","", "En Top 30 desde "+fmt(t.entered_top30_at)));
+  const badge=el("span","position "+pos.kind,pos.label);badge.title=pos.title;badge.setAttribute("aria-label",pos.title);meta.append(badge);
+  info.append(el("span","trend-title",t.name),meta);
   const labels=el("span","trend-labels"),tag=el("span","pill "+t.status,t.status_label);
   labels.append(tag,el("span","chev",expanded.has(t.trend_id)?"−":"+"));head.append(labels);
   const body=el("div","trend-body");body.hidden=!expanded.has(t.trend_id);
