@@ -1,16 +1,16 @@
 {
   "version": 1,
-  "checked_at": "2026-11-14T23:30:10.310398+00:00",
+  "checked_at": "2026-11-14T23:44:52.437685+00:00",
   "projects": {
     "ttittulares": {
       "project": "ttittulares",
-      "checked_at": "2026-11-14T23:30:10.310398+00:00",
+      "checked_at": "2026-11-14T23:44:52.437685+00:00",
       "pending_count": 0,
       "pending_ids": [],
       "oldest_at": null,
       "latest_run": {},
-      "control_command": "tt-urgent-1794694820943",
-      "last_command_at": "2026-11-14T22:20:20.943Z",
+      "control_command": "tt-1794699214125-chat",
+      "last_command_at": "2026-11-14T23:33:34.125Z",
       "status": "no_work",
       "should_dispatch": false,
       "attempts": 0,
@@ -18,12 +18,13 @@
     },
     "ttendencias": {
       "project": "ttendencias",
-      "checked_at": "2026-11-14T23:30:10.310398+00:00",
-      "pending_count": 1,
+      "checked_at": "2026-11-14T23:44:52.437685+00:00",
+      "pending_count": 2,
       "pending_ids": [
-        "red-review-633101f08356033b0cf1"
+        "red-review-7ed8815ee6cbd8089c35",
+        "red-review-c9c7c587bd4e807e2212"
       ],
-      "oldest_at": "2026-11-14T23:18:15.157235+00:00",
+      "oldest_at": "2026-11-14T23:44:14.324778+00:00",
       "latest_run": {
         "id": "tr-20261114T232800-chat-direct",
         "status": "DONE",
@@ -32,23 +33,29 @@
         "finished_at": "2026-11-14T23:38:31+01:00",
         "source": "github_pr_trace"
       },
-      "control_command": "tr-1794698450413-manual",
-      "last_command_at": "2026-11-14T23:20:50.413Z",
-      "status": "dispatch_pending_ack",
+      "control_command": "tr-1794699860681-manual",
+      "last_command_at": "2026-11-14T23:44:20.681Z",
+      "status": "within_start_window",
       "should_dispatch": false,
       "item_execution": [
         {
-          "id": "red-review-633101f08356033b0cf1",
-          "entered_at": "2026-11-14T23:18:15.157235+00:00",
-          "should_start_by": "2026-11-14T23:23:15.157235+00:00",
+          "id": "red-review-7ed8815ee6cbd8089c35",
+          "entered_at": "2026-11-14T23:44:14.324778+00:00",
+          "should_start_by": "2026-11-14T23:49:14.324778+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "red-review-c9c7c587bd4e807e2212",
+          "entered_at": "2026-11-14T23:44:14.324778+00:00",
+          "should_start_by": "2026-11-14T23:49:14.324778+00:00",
           "global_run_after_entry": false,
           "final_telegram_delivery_confirmed": false
         }
       ],
-      "backlog_signature": "c4df2cce35f9beda",
-      "expected_start_by": "2026-11-14T23:23:15.157235+00:00",
+      "backlog_signature": "92eed43b782c5679",
+      "expected_start_by": "2026-11-14T23:49:14.324778+00:00",
       "attempts": 0,
-      "previous_target_completed_or_superseded": false,
       "last_request_at": "2026-11-14T23:16:16.681119+00:00"
     }
   },
