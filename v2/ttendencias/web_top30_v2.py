@@ -140,6 +140,9 @@ def build(history, queue):
             if not answer.strip():
                 category, label = "incidencia", "Sin texto confirmado"
             captured_at = item.get("completed_at") or ""
+        rework = item.get("reelaboration_requested") or {}
+        if rework.get("expected_revision") == item.get("revision"):
+            label = "Reelaboración solicitada"
         result.append({
             "rank": rank,
             "name": topic["name"],
@@ -150,6 +153,7 @@ def build(history, queue):
             "status_label": label,
             "editorial_status": tech,
             "pending_editorial_review": tech == "captured_review",
+            "reelaboration_requested": bool(rework.get("expected_revision") == item.get("revision")),
             "explanation": answer,
             "tweet_text": tweet_from_capture(answer)[0] if answer else "",
             "tweet_status": tweet_from_capture(answer)[1] if answer else "sin_datos",
