@@ -69,3 +69,17 @@ test("ImageGen original rejects wrong secret, wrong editorial fingerprint and ti
  assert.equal(env.stored.images.size,0);
  }finally{globalThis.fetch=nativeFetch;}
 });
+
+test("same-chat preflight is secret-scoped and refuses missing R2",async()=>{
+ const env=mockEnv();
+ const request=secret=>new Request(origin+"/api/image-ingest-ready",{
+   headers:{"x-ttv2-image-ingest":secret}});
+ let response=await worker.fetch(request("wrong"),env);
+ assert.equal(response.status,403);
+ response=await worker.fetch(request(env.IMAGE_INGEST_SECRET),env);
+ assert.equal(response.status,200);
+ assert.equal((await response.json()).storage,"ready");
+ delete env.V2_IMAGES;
+ response=await worker.fetch(request(env.IMAGE_INGEST_SECRET),env);
+ assert.equal(response.status,503);
+});
