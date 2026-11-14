@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-14T13:16:54.541433+00:00",
+  "checked_at": "2026-11-14T13:56:43.874817+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -40,13 +40,14 @@
       "required": false
     },
     "top10": {
-      "ok": false,
+      "ok": true,
       "count": 10,
-      "non_stale_sources": 5,
+      "non_stale_sources": 4,
       "verified_fresh_sources": [
+        "whatstrends",
         "xtrendsiamrohit"
       ],
-      "live_verified": false,
+      "live_verified": true,
       "captured_age_minutes": 0.2,
       "noise_count": 0
     },
@@ -59,8 +60,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 5.3,
-      "run_id": 43598518007,
+      "age_minutes": 4.1,
+      "run_id": 43601945281,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -82,22 +83,28 @@
     },
     "editorial_queue": {
       "ok": false,
-      "pending_count": 3,
-      "overdue_count": 2,
-      "oldest_age_minutes": 74.5,
+      "pending_count": 4,
+      "overdue_count": 3,
+      "oldest_age_minutes": 114.3,
       "warning_after_minutes": 30,
       "overdue_items": [
         {
           "id": "1e250ecf49df",
           "name": "#PSOEyFrenteAmplioVetan",
           "status": "preparing",
-          "age_minutes": 74.5
+          "age_minutes": 114.3
         },
         {
           "id": "fb1af5a9fcd0",
           "name": "Widilo",
           "status": "preparing",
-          "age_minutes": 73.1
+          "age_minutes": 112.9
+        },
+        {
+          "id": "3cd0ce287609",
+          "name": "Vini",
+          "status": "preparing",
+          "age_minutes": 55.9
         }
       ],
       "repairable": false
@@ -109,7 +116,8 @@
       "remaining_active_ids": [
         "1e250ecf49df",
         "fb1af5a9fcd0",
-        "3cd0ce287609"
+        "3cd0ce287609",
+        "c6a2d5e7527e"
       ],
       "contradictory_success": false
     },
@@ -121,11 +129,10 @@
   },
   "repairs_started": [],
   "blocking": [
-    "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos",
     "cola con 879 estado(s) inválido(s)",
-    "cola de explicaciones retrasada: 2 pendiente(s) superan 30 min; más antigua 74.5 min"
+    "cola de explicaciones retrasada: 3 pendiente(s) superan 30 min; más antigua 114.3 min"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 879 estado(s) inválido(s) | cola de explicaciones retrasada: 2 pendiente(s) superan 30 min; más antigua 74.5 min"
+  "last_alert_signature": "cola con 879 estado(s) inválido(s) | cola de explicaciones retrasada: 3 pendiente(s) superan 30 min; más antigua 114.3 min"
 }
