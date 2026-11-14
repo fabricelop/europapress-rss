@@ -97,8 +97,8 @@ function explanationTime(item){
  e.setAttribute("aria-label",e.title);
  return e;
 }
-function movementIndicator(item,rankingMeta){
- const meta=rankingMeta||{};
+function movementIndicator(item){
+ const meta=item._rankingMeta||{};
  const previous=Number.isInteger(item.previous_rank) && item.previous_rank>=1 && item.previous_rank<=40?item.previous_rank:null;
  let label="—",description="Sin captura anterior comparable",kind="unknown";
  if(previous!==null){
@@ -170,7 +170,7 @@ function render(){
   if(entered)title.append(entered);
   const time=explanationTime(item);
   if(time)title.append(time);
-  head.append(el("span","rank","T"+item.rank),title,movementIndicator(item,state),icon);
+  head.append(el("span","rank","T"+item.rank),title,movementIndicator({...item,_rankingMeta:state}),icon);
   card.append(head);
   const flag=el("button","red-toggle","R");
   flag.type="button";
