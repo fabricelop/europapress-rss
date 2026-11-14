@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-14T07:30:24.221462+00:00",
+  "checked_at": "2026-11-14T07:46:43.507703+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -42,12 +42,12 @@
     "top10": {
       "ok": false,
       "count": 10,
-      "non_stale_sources": 6,
+      "non_stale_sources": 5,
       "verified_fresh_sources": [
         "xtrendsiamrohit"
       ],
       "live_verified": false,
-      "captured_age_minutes": 19.5,
+      "captured_age_minutes": 15.6,
       "noise_count": 0
     },
     "listener": {
@@ -59,8 +59,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 4.8,
-      "run_id": 43571038579,
+      "age_minutes": 5.7,
+      "run_id": 43572233992,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -81,17 +81,24 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": true,
+      "ok": false,
       "pending_count": 1,
-      "overdue_count": 0,
-      "oldest_age_minutes": 14.8,
+      "overdue_count": 1,
+      "oldest_age_minutes": 31.1,
       "warning_after_minutes": 30,
-      "overdue_items": [],
+      "overdue_items": [
+        {
+          "id": "red-review-cb3fdfff8c26c8b70770",
+          "name": "Revisar novedades: #FelizSábado",
+          "status": "preparing",
+          "age_minutes": 31.1
+        }
+      ],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": true,
-      "status": "not-required",
+      "ok": false,
+      "status": "overdue",
       "queue_complete": false,
       "remaining_active_ids": [
         "red-review-cb3fdfff8c26c8b70770"
@@ -107,9 +114,10 @@
   "repairs_started": [],
   "blocking": [
     "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos",
-    "cola con 866 estado(s) inválido(s)"
+    "cola con 866 estado(s) inválido(s)",
+    "cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 31.1 min"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 866 estado(s) inválido(s)"
+  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 866 estado(s) inválido(s) | cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 31.1 min"
 }
