@@ -8,32 +8,32 @@
   "command_id": "tr-20261114T042500-chat-direct",
   "source": "chat_direct",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "investigating",
   "started_at": "2026-11-14T04:25:00+01:00",
-  "updated_at": "2026-11-14T04:25:00+01:00",
-  "current": 0,
-  "total": 2,
-  "trend_id": null,
-  "title": "Pasada editorial TTendencias",
+  "updated_at": "2026-11-14T04:33:00+01:00",
+  "current": 2,
+  "total": 4,
+  "trend_id": "red-review-abe5863f083f1a117060",
+  "title": "Revisar novedades: Abascal",
   "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [
-    "red-review-c2ca4290946e6f4a3e20",
-    "red-review-cf018056e5f3399f5e4c"
+    "red-review-abe5863f083f1a117060",
+    "red-review-1f4a54341d51c8e67aec"
   ],
   "remaining_active_ids": [
-    "red-review-c2ca4290946e6f4a3e20",
-    "red-review-cf018056e5f3399f5e4c"
+    "red-review-abe5863f083f1a117060",
+    "red-review-1f4a54341d51c8e67aec"
   ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 2,
-    "closed": 0,
+    "attempted": 2,
+    "observed": 4,
+    "closed": 2,
     "explained": 0,
     "problematic": 0,
-    "updates": 0,
+    "updates": 2,
     "review_completed_no_distinct_event": 0,
     "queue_remaining": 2,
     "rewrite_pending_remaining": 0,
@@ -48,13 +48,6 @@
   "incidents": [],
   "error": null,
   "activity": [
-    {
-      "at": "2026-11-13T11:26:00+01:00",
-      "run_id": "tr-20261113T112500-chat-direct",
-      "status": "DONE",
-      "phase": "closing",
-      "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 2026-11-13T11:20:59+01:00). Sin ImageGen ni publicaciones."
-    },
     {
       "at": "2026-11-13T12:15:00+01:00",
       "phase": "closing",
@@ -340,6 +333,14 @@
       "at": "2026-11-14T04:25:00+01:00",
       "phase": "preparing",
       "message": "Inicio de pasada editorial directa; cola autoritativa con 2 revisiones de novedades, sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-14T04:33:00+01:00",
+      "phase": "investigating",
+      "trend_id": "red-review-abe5863f083f1a117060",
+      "revision": 0,
+      "name": "Abascal",
+      "message": "El mantenedor añadió dos revisiones rojas tras aplicar el primer lote; se amplía la pasada a 4 elementos y se investiga Abascal."
     }
   ],
   "last_started_at": "2026-11-14T04:13:28+01:00",
