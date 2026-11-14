@@ -1,11 +1,23 @@
 {
   "version": 2,
-  "command_id": "tr-1794675537815-manual",
-  "requested_at": "2026-11-14T16:58:57.815Z",
+  "command_id": "tr-autoguard-1794678678",
+  "requested_at": "2026-11-14T17:51:18.340561Z",
   "mode": "manual_pc_chat",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
   "launcher_arg": "tendencias",
   "task": "editorial",
-  "auto_image_followup": false
+  "auto_image_followup": false,
+  "source": "tt_autoheal_editorial_watchdog",
+  "reason": "editorial_not_started_in_time",
+  "pending_ids": [
+    "a30822730978",
+    "98ac3cfea2c8",
+    "91130efbcdc5",
+    "45137e61aac6"
+  ],
+  "target_id": "45137e61aac6",
+  "target_revision": 0,
+  "target_name": "Raphinha",
+  "scope": "single_item"
 }
