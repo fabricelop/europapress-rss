@@ -6,7 +6,7 @@ const origin="https://v2-private.example.workers.dev";
 const env={
  AUTH_PASSWORD:"An-example-long-unique-password-12345",
  SESSION_SECRET:"an-example-super-secret-longer-than-32-chars-for-tests-only",
- SESSION_HOURS:"12",
+ SESSION_HOURS:"720",
  ASSETS:{fetch:async()=>new Response("<h1>Private V2</h1>",{headers:{"content-type":"text/html"}})}
 };
 const req=(path="/",init={})=>new Request(origin+path,init);
@@ -45,7 +45,7 @@ test("login sets HttpOnly cookie, app accessible, logout revokes browser cookie"
  assert.match(cookie,/HttpOnly/);
  assert.match(cookie,/SameSite=Strict/);
  assert.match(cookie,/Secure/);
- assert.match(cookie,/Max-Age=43200/);
+ assert.match(cookie,/Max-Age=2592000/);
  const value=cookie.split(";")[0];
  const privateReq=(path,options={})=>req(path,{...options,headers:{"cookie":value,...options.headers}});
  const page=await worker.fetch(privateReq("/"),env);
@@ -78,4 +78,15 @@ test("Cloudflare login rate limit fails closed at threshold",async()=>{
  assert.equal(blocked.status,429);
  assert.equal(blocked.headers.get("retry-after"),"60");
  assert.equal(blocked.headers.get("set-cookie"),null);
+});
+
+test("session expiry is exactly 30 days, not more",async()=>{
+ const response=await worker.fetch(loginBody(env.AUTH_PASSWORD),env);
+ const token=response.headers.get("set-cookie").split(";")[0];
+ const parts=token.split("=")[1].split(".");
+ const expires=Number(parts[1]);
+ assert.ok(expires>Date.now()+29*24*3600000);
+ assert.ok(expires<=Date.now()+30*24*3600000);
+ const ok=await worker.fetch(req("/api/me",{headers:{"cookie":token}}),env);
+ assert.equal(ok.status,200);
 });
