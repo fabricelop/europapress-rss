@@ -29,6 +29,9 @@ class ChangeTests(unittest.TestCase):
         first = self.run_step(0)["state"]
         later = self.run_step(10, prev=first)
         self.assertEqual(later["changes"], [])
+        self.assertTrue(later["state"]["ranking_unchanged"])
+        self.assertIsNone(later["state"]["ranking_change_at"])
+        self.assertIsNone(later["state"]["topics"]["trend 1"]["previous_rank"])
         same = self.run_step(10, prev=later["state"])
         self.assertTrue(same["idempotent"])
 
@@ -44,8 +47,43 @@ class ChangeTests(unittest.TestCase):
         self.assertEqual(moved["topics"]["trend 1"]["positions_changed"], -4)
         self.assertEqual(moved["topics"]["trend 2"]["positions_changed"], 0)
         steady = self.run_step(30, names, moved)["state"]
-        self.assertEqual(steady["topics"]["trend 5"]["positions_changed"], 0)
-        self.assertEqual(steady["topics"]["trend 5"]["previous_rank"], 1)
+        self.assertTrue(steady["ranking_unchanged"])
+        self.assertEqual(steady["ranking_change_at"], moved["observed_at"])
+        self.assertEqual(steady["topics"]["trend 5"]["positions_changed"], 4)
+        self.assertEqual(steady["topics"]["trend 5"]["previous_rank"], 5)
+        self.assertEqual(steady["topics"]["trend 1"]["positions_changed"], -4)
+        self.assertEqual(steady["topics"]["trend 2"]["positions_changed"], 0)
+        self.assertEqual(steady["observed_at"], snap(30)["observed_at"])
+        still = self.run_step(45, names, steady)["state"]
+        self.assertEqual(still["topics"]["trend 5"]["positions_changed"], 4)
+        self.assertEqual(still["topics"]["trend 1"]["positions_changed"], -4)
+        self.assertEqual(still["ranking_change_at"], moved["observed_at"])
+
+    def test_next_real_change_recalculates_against_last_snapshot(self):
+        initial = self.run_step(0)["state"]
+        names = ORIGINAL.copy()
+        names[0], names[4] = names[4], names[0]
+        changed = self.run_step(10, names, initial)["state"]
+        identical = self.run_step(20, names, changed)["state"]
+        names[0], names[1] = names[1], names[0]
+        changed_again = self.run_step(30, names, identical)["state"]
+        self.assertFalse(changed_again["ranking_unchanged"])
+        self.assertEqual(changed_again["ranking_change_at"], snap(30)["observed_at"])
+        self.assertEqual(changed_again["topics"]["trend 2"]["positions_changed"], 1)
+        self.assertEqual(changed_again["topics"]["trend 5"]["positions_changed"], -1)
+        self.assertEqual(changed_again["topics"]["trend 1"]["positions_changed"], 0)
+
+    def test_legacy_all_zeros_become_unknown_when_source_is_unchanged(self):
+        first = self.run_step(0)["state"]
+        legacy = self.run_step(10, prev=first)["state"]
+        legacy.pop("ranking_unchanged", None)
+        legacy.pop("ranking_change_at", None)
+        for item in legacy["topics"].values():
+            item.update(last_change="unchanged", previous_rank=item["rank"], positions_changed=0)
+        again = self.run_step(20, prev=legacy)["state"]
+        self.assertIsNone(again["topics"]["trend 1"]["previous_rank"])
+        self.assertIsNone(again["topics"]["trend 1"]["positions_changed"])
+        self.assertEqual(again["topics"]["trend 1"]["last_change"], "unverified")
 
     def test_new_entry_has_no_previous_rank(self):
         first = self.run_step(0)["state"]
