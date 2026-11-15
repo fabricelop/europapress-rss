@@ -3,11 +3,11 @@
 
 /* Controles discretos de V2: sin cabecera ni herramientas de publicación. */
 .trend{position:relative}
-.trend-head{padding-right:73px;align-items:center}
+.trend-head{align-items:center}
 .name{flex:1;min-width:0}
 .explained-at{color:#aab5c5;white-space:nowrap;font-size:12px;font-variant-numeric:tabular-nums;font-weight:500}
 .status-icon{margin-left:0}
-.red-toggle{position:absolute;top:12px;right:clamp(13px,3vw,25px);width:31px;height:31px;border-radius:8px;border:1px solid #6f3b40;background:#17191f;color:#fa8a93;font-size:12px;font-weight:800;cursor:pointer;z-index:1}
+.red-toggle{position:static;flex:none;width:31px;height:31px;border-radius:8px;border:1px solid #6f3b40;background:#17191f;color:#fa8a93;font-size:12px;font-weight:800;cursor:pointer}
 .red-toggle:hover,.red-toggle:focus-visible{border-color:#fa8a93;outline-offset:2px}
 .red-toggle[aria-pressed="true"]{background:#f9e5e7;color:#83202b;border-color:#fff}
 .trend.marked-red{background:#6b1e27;border-bottom-color:#9a3943}
@@ -19,7 +19,7 @@
 .refresh-control:disabled{opacity:.65;cursor:progress}
 .refresh-control.loading-refresh{animation:turn-refresh 1s linear infinite}
 @keyframes turn-refresh{to{transform:rotate(360deg)}}
-@media(max-width:450px){.trend-head{padding-right:48px;gap:8px}.explained-at{font-size:11px}.red-toggle{top:11px;right:9px;width:28px;height:28px}.refresh-control{width:42px;height:42px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom))}}
+@media(max-width:450px){.trend-head{gap:8px}.explained-at{font-size:11px}.red-toggle{width:28px;height:28px}.refresh-control{width:42px;height:42px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom))}}
 @media(prefers-reduced-motion:reduce){.refresh-control.loading-refresh{animation:none}}
 
 /* Top 30 privado: fecha y hora visibles por tendencia y variación real de posición. */
