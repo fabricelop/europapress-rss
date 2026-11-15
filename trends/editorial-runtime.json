@@ -7,35 +7,37 @@
   "previous_run_id": "tr-20261115T055500-chat-direct",
   "command_id": "tr-20261115T061000-chat-direct",
   "source": "chat_direct",
-  "status": "success",
-  "phase": "preparing",
+  "status": "DONE_WITH_INCIDENTS",
+  "phase": "closing",
   "started_at": "2026-11-15T06:10:00+01:00",
-  "updated_at": "2026-11-15T06:15:00+01:00",
-  "current": 0,
-  "total": 4,
+  "updated_at": "2026-11-15T06:20:00+01:00",
+  "current": 6,
+  "total": 6,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
   "queue_complete": true,
   "processed_ids": [
-    "153a799bb14d",
     "25877b98fccb",
+    "153a799bb14d",
+    "891abd5656f7",
     "52e8e47b38e8",
-    "891abd5656f7"
+    "red-review-4e85408dd9aa52b68051",
+    "red-review-2386767be56fc0eda1cf"
   ],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 4,
-    "observed": 4,
-    "closed": 0,
-    "explained": 0,
+    "attempted": 6,
+    "observed": 6,
+    "closed": 6,
+    "explained": 4,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 0,
-    "unchanged_reviews": 0,
+    "maintenance_reviews": 2,
+    "unchanged_reviews": 2,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "stale_reviews": 0,
@@ -43,17 +45,68 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 4,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 0,
+    "incidents": 1,
     "concurrent_convergence": 0
   },
-  "outcomes": [],
-  "incident_count": 0,
-  "incidents": [],
+  "outcomes": [
+    {
+      "id": "25877b98fccb",
+      "revision": 0,
+      "name": "Medic",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "153a799bb14d",
+      "revision": 0,
+      "name": "Holland",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "891abd5656f7",
+      "revision": 0,
+      "name": "Kayla",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "52e8e47b38e8",
+      "revision": 0,
+      "name": "amanda",
+      "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "red-review-4e85408dd9aa52b68051",
+      "revision": 0,
+      "name": "Revisar novedades: Microsoft",
+      "outcome": "unchanged",
+      "applied": true
+    },
+    {
+      "id": "red-review-2386767be56fc0eda1cf",
+      "revision": 0,
+      "name": "Revisar novedades: Jordi Wild",
+      "outcome": "unchanged",
+      "applied": true
+    }
+  ],
+  "incident_count": 1,
+  "incidents": [
+    {
+      "at": "2026-11-15T06:12:30+01:00",
+      "phase": "persisting",
+      "trend_id": "25877b98fccb",
+      "title": "Medic",
+      "reason": "La escritura atómica directa de los registros grandes falló por transporte h2; se recuperó mediante editorial-outbox y el aplicador oficial."
+    }
+  ],
   "error": null,
   "activity": [
     {
@@ -697,67 +750,67 @@
     }
   ],
   "last_started_at": "2026-11-15T06:14:59+01:00",
-  "last_completed_at": "2026-11-15T06:15:00+01:00",
+  "last_completed_at": "2026-11-15T06:20:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261115T051000-chat-direct",
-    "status": "DONE",
+    "run_id": "tr-20261115T061000-chat-direct",
+    "status": "DONE_WITH_INCIDENTS",
     "phase": "closing",
-    "started_at": "2026-11-15T05:10:00+01:00",
-    "updated_at": "2026-11-15T05:19:00+01:00",
-    "finished_at": "2026-11-15T05:19:00+01:00",
+    "started_at": "2026-11-15T06:10:00+01:00",
+    "updated_at": "2026-11-15T06:20:00+01:00",
+    "finished_at": "2026-11-15T06:20:00+01:00",
     "current": 6,
     "total": 6,
     "queue_complete": true,
     "processed_ids": [
-      "cee2e8ebb0fa",
-      "126f19ace8a4",
-      "003925188bc7",
-      "8d30967e70ee",
-      "red-review-3d16757ddb9bcc7d9cff",
-      "red-review-c27fa11b2ec913f0a690"
+      "25877b98fccb",
+      "153a799bb14d",
+      "891abd5656f7",
+      "52e8e47b38e8",
+      "red-review-4e85408dd9aa52b68051",
+      "red-review-2386767be56fc0eda1cf"
     ],
     "remaining_ids": [],
     "outcomes": [
       {
-        "id": "cee2e8ebb0fa",
+        "id": "25877b98fccb",
         "revision": 0,
-        "name": "#UFCHBOMax",
-        "outcome": "explained_new_episode",
-        "applied": true
-      },
-      {
-        "id": "126f19ace8a4",
-        "revision": 0,
-        "name": "#UFC334",
+        "name": "Medic",
         "outcome": "explained",
         "applied": true
       },
       {
-        "id": "003925188bc7",
+        "id": "153a799bb14d",
         "revision": 0,
-        "name": "Hasan",
+        "name": "Holland",
         "outcome": "explained",
         "applied": true
       },
       {
-        "id": "8d30967e70ee",
+        "id": "891abd5656f7",
         "revision": 0,
-        "name": "enol",
+        "name": "Kayla",
         "outcome": "explained",
         "applied": true
       },
       {
-        "id": "red-review-3d16757ddb9bcc7d9cff",
+        "id": "52e8e47b38e8",
         "revision": 0,
-        "name": "Revisar novedades: Marcial Dorado",
+        "name": "amanda",
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "red-review-4e85408dd9aa52b68051",
+        "revision": 0,
+        "name": "Revisar novedades: Microsoft",
         "outcome": "unchanged",
         "applied": true
       },
       {
-        "id": "red-review-c27fa11b2ec913f0a690",
+        "id": "red-review-2386767be56fc0eda1cf",
         "revision": 0,
-        "name": "Revisar novedades: Outlook",
+        "name": "Revisar novedades: Jordi Wild",
         "outcome": "unchanged",
         "applied": true
       }
@@ -773,7 +826,7 @@
       "maintenance_reviews": 2,
       "unchanged_reviews": 2,
       "continuity_updates": 0,
-      "distinct_updates": 1,
+      "distinct_updates": 0,
       "stale_reviews": 0,
       "unverified_reviews": 0,
       "anticipation_reviews": 0,
@@ -784,14 +837,22 @@
       "imagegen_calls": 0,
       "image_outbox_created": 0,
       "publications": 0,
-      "incidents": 0,
+      "incidents": 1,
       "concurrent_convergence": 0
     },
-    "incident_count": 0,
-    "incidents": [],
-    "message": "Pasada TTendencias completada 6/6. Cuatro trabajos editoriales cerrados (#UFCHBOMax como episodio nuevo; #UFC334, Hasan y enol explicados) y dos revisiones sobrevenidas (Marcial Dorado y Outlook) cerradas sin novedad material. Cola final=0. Sin ImageGen ni publicaciones desde la pasada editorial."
+    "incident_count": 1,
+    "incidents": [
+      {
+        "at": "2026-11-15T06:12:30+01:00",
+        "phase": "persisting",
+        "trend_id": "25877b98fccb",
+        "title": "Medic",
+        "reason": "La escritura atómica directa de los registros grandes falló por transporte h2; se recuperó mediante editorial-outbox y el aplicador oficial."
+      }
+    ],
+    "message": "Pasada TTendencias completada 6/6: Medic, Holland, Kayla y amanda explicadas; Microsoft y Jordi Wild revisadas sin novedad material. Cola final=0. Una incidencia de transporte h2 fue recuperada mediante editorial-outbox. Sin ImageGen ni publicaciones."
   },
-  "message": "Pasada TTendencias iniciada en chat directo con 4 trabajos revalidados en main.",
+  "message": "Pasada TTendencias completada 6/6: Medic, Holland, Kayla y amanda explicadas; Microsoft y Jordi Wild revisadas sin novedad material. Cola final=0. Una incidencia de transporte h2 fue recuperada mediante editorial-outbox. Sin ImageGen ni publicaciones.",
   "history": [
     {
       "run_id": "tr-1794361941170-manual",
@@ -5796,15 +5857,19 @@
   ],
   "current_item": null,
   "withdrawn_ids": [],
-  "last_finished_at": "2026-11-14T17:42:00+01:00",
-  "last_revalidated_at": "2026-11-14T17:41:15+01:00",
+  "last_finished_at": "2026-11-15T06:20:00+01:00",
+  "last_revalidated_at": "2026-11-15T06:20:00+01:00",
   "last_revalidation": {
-    "at": "2026-11-14T17:41:15+01:00",
     "queue_count": 0,
-    "queue_updated_at": "2026-11-14T17:41:15+01:00",
-    "recent_captured_at": "2026-11-14T17:41:08+01:00",
-    "live_verified": true,
-    "mobile_active_count": 0
+    "processed_ids": [
+      "25877b98fccb",
+      "153a799bb14d",
+      "891abd5656f7",
+      "52e8e47b38e8",
+      "red-review-4e85408dd9aa52b68051",
+      "red-review-2386767be56fc0eda1cf"
+    ],
+    "status": "verified"
   },
   "prior_runtime_observed": {
     "run_id": "tr-autoguard-1794381666",
@@ -9807,9 +9872,9 @@
   ],
   "maintenance_apply_run_id": 43614430012,
   "maintenance_apply_commit": "074b3f7e87b6260fde12e02ec813bdd56b8cc218",
-  "completed_at": null,
+  "completed_at": "2026-11-15T06:20:00+01:00",
   "input_commit": "d657e81fd73a9f4f14a0bc2ac55d968a79eaf428",
-  "finished_at": null,
+  "finished_at": "2026-11-15T06:20:00+01:00",
   "apply_commits": [
     "36a6bdedee2ab6b1689dab6eb97f1f5f56e0ba70"
   ]
