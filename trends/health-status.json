@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-15T04:44:59.474333+00:00",
+  "checked_at": "2026-11-15T06:14:59.019194+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -40,13 +40,13 @@
       "required": false
     },
     "top10": {
-      "ok": true,
+      "ok": false,
       "count": 10,
-      "non_stale_sources": 2,
+      "non_stale_sources": 4,
       "verified_fresh_sources": [
         "xtrendsiamrohit"
       ],
-      "live_verified": true,
+      "live_verified": false,
       "captured_age_minutes": 0.1,
       "noise_count": 0
     },
@@ -57,10 +57,10 @@
     },
     "refresh": {
       "ok": true,
-      "status": "in_progress",
+      "status": "pending",
       "conclusion": null,
-      "age_minutes": 4.1,
-      "run_id": 43677813030,
+      "age_minutes": 3.8,
+      "run_id": 43684285943,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -72,7 +72,7 @@
     },
     "request_queue": {
       "ok": false,
-      "invalid_count": 250,
+      "invalid_count": 253,
       "noise_count": 0
     },
     "ready_consistency": {
@@ -82,9 +82,9 @@
     },
     "editorial_queue": {
       "ok": true,
-      "pending_count": 0,
+      "pending_count": 2,
       "overdue_count": 0,
-      "oldest_age_minutes": 0,
+      "oldest_age_minutes": 1.1,
       "warning_after_minutes": 30,
       "overdue_items": [],
       "repairable": false
@@ -92,8 +92,11 @@
     "editorial_runtime": {
       "ok": true,
       "status": "not-required",
-      "queue_complete": true,
-      "remaining_active_ids": [],
+      "queue_complete": false,
+      "remaining_active_ids": [
+        "red-review-2306eb1d1343790f118f",
+        "red-review-60590e44cbbbb4fdfa51"
+      ],
       "contradictory_success": false
     },
     "telegram_provisional": {
@@ -104,9 +107,10 @@
   },
   "repairs_started": [],
   "blocking": [
-    "cola con 250 estado(s) inválido(s)"
+    "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos",
+    "cola con 253 estado(s) inválido(s)"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "cola con 250 estado(s) inválido(s)"
+  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 253 estado(s) inválido(s)"
 }
