@@ -53,8 +53,8 @@ jobs:
         working-directory: v2/ttendencias/private-worker
         run: |
           npm install --no-audit --no-fund
-          npm test
           npm run build
+          npm test
       - name: Preparar configuración preservando bindings y secretos existentes
         working-directory: v2/ttendencias/private-worker
         env:
