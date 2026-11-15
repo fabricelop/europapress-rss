@@ -15,6 +15,7 @@ sys.path.insert(0, str(pathlib.Path(__file__).parent))
 import editorial_run_v2 as editorial
 import image_same_chat_v2 as same_chat
 import image_worker_v2 as image
+import image_target_tracker_v2 as tracker
 from auto_editorial_policy_v2 import eligible_plan
 from image_intake_v2 import fingerprint
 
@@ -43,6 +44,60 @@ def fixture():
 
 
 class SplitTest(unittest.TestCase):
+    def test_image_target_accepts_new_separate_chat_and_not_assistant_echo(self):
+        command = "v2-img-trv2-15fbf166ba6a2f83c7a45b75-r1-a2-testnonce"
+        class Locator:
+            def __init__(self, text):
+                self.text = text
+                self.last = self
+            def count(self):
+                return 1 if self.text else 0
+            def inner_text(self, timeout=None):
+                return self.text
+        class Page:
+            def __init__(self, user_text, body=""):
+                self.user_text = user_text
+                self.body = body
+            def locator(self, selector):
+                return Locator(self.body if selector == "body" else self.user_text)
+        self.assertTrue(tracker.verify_image_turn(Page(command), command))
+        self.assertFalse(tracker.verify_image_turn(Page("", "El asistente repitió " + command), command))
+
+    def test_target_discovery_in_another_chrome_tab(self):
+        command = "v2-img-trv2-15fbf166ba6a2f83c7a45b75-r1-a2-testnonce"
+        target = "https://chatgpt.com/g/imagegen/c/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
+        class Node:
+            def __init__(self, text):
+                self.text = text
+                self.last = self
+            def count(self):
+                return int(bool(self.text))
+            def inner_text(self, timeout=None):
+                return self.text
+        class Page:
+            def __init__(self, url, user):
+                self.url = url
+                self.user = user
+                self.context = None
+            def locator(self, selector):
+                return Node(self.user if selector != "body" else self.user)
+        root, chat = Page("https://chatgpt.com/", ""), Page(target, command)
+        context = type("Context", (), {"pages": [root, chat]})()
+        root.context = chat.context = context
+        class Cdp:
+            def send(self, _):
+                return {"targetInfos": [{"type": "page", "url": target}]}
+            def detach(self):
+                pass
+        class Browser:
+            contexts = [context]
+            def new_browser_cdp_session(self):
+                return Cdp()
+        match, evidence = tracker.await_image_conversation(
+            Browser(), root, command, seconds=1, baseline_urls=())
+        self.assertIs(match, chat)
+        self.assertEqual(evidence["url"], target)
+
     def test_first_editorial_is_bolivia_while_image_is_felizdomingo(self):
         queue, history = fixture()
         with tempfile.TemporaryDirectory() as folder:
