@@ -7,15 +7,15 @@
   "previous_run_id": "tr-20261115T065500-chat-direct",
   "command_id": "tr-20261115T071000-chat-direct",
   "source": "chat_direct",
-  "status": "RUNNING",
+  "status": "DONE",
   "phase": "closing",
   "started_at": "2026-11-15T07:10:00+01:00",
-  "updated_at": "2026-11-15T07:17:30+01:00",
+  "updated_at": "2026-11-15T07:18:43+01:00",
   "current": 6,
   "total": 6,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [
     "4bd437d1d3a9",
     "fc95d3051d65",
@@ -24,7 +24,10 @@
     "red-review-2306eb1d1343790f118f",
     "red-review-60590e44cbbbb4fdfa51"
   ],
-  "converged_ids": [],
+  "converged_ids": [
+    "4bd437d1d3a9",
+    "fc95d3051d65"
+  ],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
@@ -51,20 +54,24 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 2,
+    "deleted_after_apply": 2,
+    "active_new_explanations": 2
   },
   "outcomes": [
     {
       "id": "4bd437d1d3a9",
       "revision": 0,
       "name": "Hokit",
-      "outcome": "explained"
+      "outcome": "explained_then_deleted_concurrent",
+      "decision_source": "ttactualidad_direct"
     },
     {
       "id": "fc95d3051d65",
       "revision": 0,
       "name": "Gane",
-      "outcome": "explained"
+      "outcome": "explained_then_deleted_concurrent",
+      "decision_source": "ttactualidad_direct"
     },
     {
       "id": "3e6b47750af6",
@@ -810,6 +817,13 @@
       "status": "RUNNING",
       "phase": "closing",
       "message": "6/6 resultados editoriales aplicados; cola=0. Barrera final espera únicamente la conclusión del refresco manual ya disparado para revalidar que no aparezca trabajo nuevo."
+    },
+    {
+      "at": "2026-11-15T07:18:43+01:00",
+      "run_id": "tr-20261115T071000-chat-direct",
+      "status": "DONE",
+      "phase": "closing",
+      "message": "Pasada 6/6 cerrada. Cola final=0. Amanda Nunes quedó explicada; #laSextaXplica generó una ficha nueva por episodio distinto; #LaSextaDebate se cerró sin duplicado. Hokit y Gane fueron explicados y después eliminados por decisiones concurrentes TTActualidad direct, respetadas en la barrera final. ImageGen=0; publicaciones=0; incidentes=0."
     }
   ],
   "last_started_at": "2026-11-15T07:13:25+01:00",
@@ -857,7 +871,7 @@
     "incidents": [],
     "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 2026-11-15T06:51:03+01:00) y mobile-decisions sin estados editoriales activos. Sin ImageGen ni publicaciones."
   },
-  "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 2026-11-15T06:51:03+01:00) y mobile-decisions sin estados editoriales activos. Sin ImageGen ni publicaciones.",
+  "message": "Pasada 6/6 cerrada. Cola final=0. Amanda Nunes quedó explicada; #laSextaXplica generó una ficha nueva por episodio distinto; #LaSextaDebate se cerró sin duplicado. Hokit y Gane fueron explicados y después eliminados por decisiones concurrentes TTActualidad direct, respetadas en la barrera final. ImageGen=0; publicaciones=0; incidentes=0.",
   "history": [
     {
       "run_id": "tr-1794361941170-manual",
@@ -9928,5 +9942,6 @@
     "red-review-f1d54e870e0b088fd921",
     "red-review-6b86b17ba53670f185c0"
   ],
-  "completed_at": "2026-11-15T06:55:30+01:00"
+  "completed_at": "2026-11-15T06:55:30+01:00",
+  "finished_at": "2026-11-15T07:18:43+01:00"
 }
