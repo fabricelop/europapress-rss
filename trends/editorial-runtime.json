@@ -3,22 +3,20 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261115T055500-chat-direct",
-  "previous_run_id": "tr-20261115T051000-chat-direct",
-  "command_id": "tr-20261115T055500-chat-direct",
+  "run_id": "tr-20261115T061000-chat-direct",
+  "previous_run_id": "tr-20261115T055500-chat-direct",
+  "command_id": "tr-20261115T061000-chat-direct",
   "source": "chat_direct",
-  "status": "waiting",
-  "phase": "closing",
-  "started_at": "2026-11-15T05:55:00+01:00",
-  "updated_at": "2026-11-15T06:06:40+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-15T06:10:00+01:00",
+  "updated_at": "2026-11-15T06:10:00+01:00",
   "current": 0,
-  "total": 0,
+  "total": 4,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
   "queue_complete": false,
-  "processed_ids": [
-    "15143660b114"
-  ],
+  "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [
     "25877b98fccb",
@@ -34,8 +32,8 @@
   ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 0,
+    "attempted": 4,
+    "observed": 4,
     "closed": 0,
     "explained": 0,
     "problematic": 0,
@@ -50,7 +48,7 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 4,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -703,7 +701,7 @@
       "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 2026-11-15T05:51:21+01:00) y sin estados editoriales activos en requests/mobile-decisions. No había investigaciones, anticipaciones ni revisiones pendientes que procesar. ImageGen=0; publicaciones=0; incidentes=0."
     }
   ],
-  "last_started_at": "2026-11-15T06:06:40+01:00",
+  "last_started_at": "2026-11-15T06:10:00+01:00",
   "last_completed_at": "2026-11-15T05:19:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -798,7 +796,7 @@
     "incidents": [],
     "message": "Pasada TTendencias completada 6/6. Cuatro trabajos editoriales cerrados (#UFCHBOMax como episodio nuevo; #UFC334, Hasan y enol explicados) y dos revisiones sobrevenidas (Marcial Dorado y Outlook) cerradas sin novedad material. Cola final=0. Sin ImageGen ni publicaciones desde la pasada editorial."
   },
-  "message": "Pasada TTendencias completada 6/6. Cuatro trabajos editoriales cerrados (#UFCHBOMax como episodio nuevo; #UFC334, Hasan y enol explicados) y dos revisiones sobrevenidas (Marcial Dorado y Outlook) cerradas sin novedad material. Cola final=0. Sin ImageGen ni publicaciones desde la pasada editorial.",
+  "message": "Pasada TTendencias iniciada en chat directo con 4 trabajos revalidados en main.",
   "history": [
     {
       "run_id": "tr-1794361941170-manual",
@@ -9814,9 +9812,9 @@
   ],
   "maintenance_apply_run_id": 43614430012,
   "maintenance_apply_commit": "074b3f7e87b6260fde12e02ec813bdd56b8cc218",
-  "completed_at": "2026-11-14T17:42:00+01:00",
+  "completed_at": null,
   "input_commit": "d657e81fd73a9f4f14a0bc2ac55d968a79eaf428",
-  "finished_at": "2026-11-15T05:56:00+01:00",
+  "finished_at": null,
   "apply_commits": [
     "36a6bdedee2ab6b1689dab6eb97f1f5f56e0ba70"
   ]
