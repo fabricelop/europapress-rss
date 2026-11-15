@@ -57,6 +57,37 @@ function RequirePreparedGuards {
     }
   }
 }
+function DisableLegacyScheduledTasks {
+  foreach($task in ExistingTasks){
+    if($task.state -ne 'Disabled'){
+      Disable-ScheduledTask -TaskName $task.name -ErrorAction Stop|Out-Null
+    }
+  }
+}
+function StopLegacyListeners {
+  foreach($p in LegacyListeners){
+    Stop-Process -Id $p.ProcessId -Force -ErrorAction SilentlyContinue
+  }
+}
+function RestartSharedSupervisors {
+  # Los procesos cargados en memoria pueden seguir ejecutando la version vieja
+  # aunque el archivo actualizado ya contenga la proteccion de V1.
+  $targets=@(Processes|Where-Object{
+    ($_.Name -ieq 'powershell.exe' -or $_.Name -ieq 'pwsh.exe') -and
+    (([string]$_.CommandLine -match '(?i)[\\/]TT-LocalWatchdog[.]ps1(?:\\s|"|$)') -or
+     ([string]$_.CommandLine -match '(?i)[\\/]TT-AutoUpdater[.]ps1(?:\\s|"|$)'))
+  })
+  foreach($p in $targets){
+    Stop-Process -Id $p.ProcessId -Force -ErrorAction SilentlyContinue
+  }
+  Start-Sleep -Milliseconds 700
+  $watchdog=Join-Path $base 'TT-LocalWatchdog.ps1'
+  $p=Start-Process -FilePath 'powershell.exe' -ArgumentList @('-NoProfile','-ExecutionPolicy','Bypass','-WindowStyle','Hidden','-File',$watchdog) -WindowStyle Hidden -WorkingDirectory $base -PassThru -ErrorAction Stop
+  Start-Sleep -Seconds 7
+  $p.Refresh()
+  if($p.HasExited){throw 'No se pudo iniciar la vigilancia compartida. V1 permanece marcada como retirada.'}
+  Say 'TT_V1_SHARED_SUPERVISORS_RELOADED=YES'
+}
 function State {
   Say ('TT_V1_WINDOWS_DISABLED='+$(if(Test-Path -LiteralPath $flag){'YES'}else{'NO'}))
   foreach($task in ExistingTasks){Say ('TT_V1_TASK '+$task.name+'='+$task.state)}
@@ -120,7 +151,22 @@ if($Action -eq 'Restore'){Restore;exit 0}
 
 if(-not (Test-Path -LiteralPath $base -PathType Container)){throw 'Instalacion TT antigua no encontrada.'}
 if(Test-Path -LiteralPath $flag){
+  RequirePreparedGuards
+  $needsRepair=@(ExistingTasks|Where-Object{$_.state -ne 'Disabled'}).Count -gt 0
+  if($needsRepair -or (LegacyListeners).Count -gt 0 -or (Test-Path -LiteralPath $shortcut)){
+    Say 'TT_V1_RETIRE_REPAIRING_REACTIVATION=YES'
+    StopLegacyListeners
+    DisableLegacyScheduledTasks
+    if(Test-Path -LiteralPath $shortcut){
+      $last=Get-ChildItem -LiteralPath $backups -Directory -ErrorAction SilentlyContinue|Sort-Object Name -Descending|Select-Object -First 1
+      if(-not $last){throw 'Falta copia de seguridad para retirar el arranque antiguo.'}
+      Move-Item -LiteralPath $shortcut -Destination (Join-Path $last.FullName 'startup.repaired.cmd') -Force -ErrorAction Stop
+    }
+    RestartSharedSupervisors
+    DisableLegacyScheduledTasks
+  }
   WaitForQuiet
+  Start-Sleep -Seconds 70
   AssertDisabled
   Say 'TT_V1_WINDOWS_ALREADY_DISABLED=YES'
   State
@@ -144,19 +190,16 @@ if(Test-Path -LiteralPath $shortcut){
 
 # Bloquear nuevas entradas antes de esperar al trabajo que ya estaba en marcha.
 [IO.File]::WriteAllText($flag,('TTENDENCIAS_V1_DISABLED=YES '+(Get-Date).ToString('o')),$utf8)
-foreach($task in ExistingTasks){
-  if($task.state -ne 'Disabled'){
-    Disable-ScheduledTask -TaskName $task.name -ErrorAction Stop|Out-Null
-  }
-}
+DisableLegacyScheduledTasks
 if(Test-Path -LiteralPath $shortcut){
   Move-Item -LiteralPath $shortcut -Destination (Join-Path $save 'startup.disabled.cmd') -ErrorAction Stop
 }
-foreach($p in LegacyListeners){
-  Stop-Process -Id $p.ProcessId -Force -ErrorAction SilentlyContinue
-}
+StopLegacyListeners
+RestartSharedSupervisors
+DisableLegacyScheduledTasks
 Say 'TT_V1_RETIRE_NO_NEW_WORK=YES'
 WaitForQuiet
+Start-Sleep -Seconds 70
 AssertDisabled
 Say 'TT_V1_WINDOWS_DISABLED=YES'
 Say 'TT_V1_BACKUP_READY=YES'
