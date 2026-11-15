@@ -63,21 +63,31 @@ try {
 
         # Wrangler usa la sesión Cloudflare que ya está iniciada en este ordenador.
         Write-Host "3/6 Localizando D1 de las marcas R (sin reemplazar su contenido)..."
+        # Cloudflare verified on 2026-11-15: this existing D1 has 3 tables.
+        # The binding lives in wrangler.jsonc, avoiding PowerShell JSON rewrites.
+        $expectedDbId = 'bc11570d-5f1e-40cc-9692-861e7103eca2'
         $raw = Run 'npx.cmd' @('wrangler','d1','list','--json') -CaptureOutput
         if (-not $raw.Trim()) { throw "Wrangler D1 no devolvio JSON; no se despliega." }
         $entries = @($raw | ConvertFrom-Json)
-        $matches = @($entries | Where-Object { $_.name -eq $database })
-        if ($matches.Count -ne 1 -or -not $matches[0].uuid) {
-            throw "No se encontró una única D1 '$database'. No se despliega para evitar perder las marcas R."
+        $dbEntries = @($entries | Where-Object { $_.name -eq $database })
+        if ($dbEntries.Count -ne 1 -or ([string]$dbEntries[0].uuid) -ne $expectedDbId) {
+            throw "La D1 '$database' no coincide con el UUID existente. No se despliega para proteger las marcas R."
+        }
+        $dbInfoRaw = Run 'npx.cmd' @('wrangler','d1','info',$database,'--json') -CaptureOutput
+        if (-not $dbInfoRaw.Trim()) { throw "No se pudo comprobar la D1 remota. No se despliega." }
+        $dbInfo = $dbInfoRaw | ConvertFrom-Json
+        if ($dbInfo.name -ne $database -or ([string]$dbInfo.uuid) -ne $expectedDbId) {
+            throw "La información remota de D1 no coincide. No se despliega."
         }
         $settings = Get-Content '.\wrangler.jsonc' -Raw | ConvertFrom-Json
         if ($settings.name -ne $worker) { throw "Worker inesperado: abortando" }
         if ($settings.PSObject.Properties["r2_buckets"] -and $settings.r2_buckets) { throw "R2 no debe activarse para imagenes V2. Abortando." }
-        $id = [string]$matches[0].uuid
-        $binding = @([ordered]@{ binding = 'MARKS_DB'; database_name = $database; database_id = $id })
-        $settings | Add-Member -Force -NotePropertyName 'd1_databases' -NotePropertyValue $binding
-        $settingsJson = $settings | ConvertTo-Json -Depth 30
-        [System.IO.File]::WriteAllText((Join-Path (Get-Location) 'wrangler.jsonc'), $settingsJson, (New-Object System.Text.UTF8Encoding($false)))
+        $bindings = @($settings.d1_databases)
+        if ($bindings.Count -ne 1 -or $bindings[0].binding -ne 'MARKS_DB' -or
+            $bindings[0].database_name -ne $database -or ([string]$bindings[0].database_id) -ne $expectedDbId) {
+            throw "El binding MARKS_DB del Worker no coincide con la D1 verificada. No se despliega."
+        }
+        Write-Host "TT_V2_D1_BINDING_VERIFIED=YES"
 
         Write-Host "4/6 Ejecutando las pruebas y compilación..."
         Run 'npm.cmd' @('run','check')
