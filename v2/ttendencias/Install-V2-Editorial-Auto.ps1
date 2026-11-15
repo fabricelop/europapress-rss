@@ -67,7 +67,8 @@ $files = @(
     'test_auto_editorial_v2.py',
     'Run-V2-Editorial-Auto.ps1',
     'Run-V2-Editorial-One.ps1',
-    'Disable-V2-Editorial-Auto.ps1'
+    'Disable-V2-Editorial-Auto.ps1',
+    'Launch-V2-Hidden.vbs'
 )
 foreach ($file in $files) {
     $target = Join-Path $root $file
@@ -161,8 +162,8 @@ if ($PilotOnly) {
 $flag = Join-Path $root 'auto-editorial-v2.enabled'
 [IO.File]::WriteAllText($flag, "TT_V2_AUTO_EDITORIAL_ENABLED=YES" + [Environment]::NewLine, (New-Object System.Text.UTF8Encoding($false)))
 $runner = Join-Path $root 'Run-V2-Editorial-Auto.ps1'
-$arguments = '-NoProfile -NonInteractive -WindowStyle Hidden -ExecutionPolicy Bypass -File "' + $runner + '"'
-$action = New-ScheduledTaskAction -Execute 'powershell.exe' -Argument $arguments
+$arguments = '//B //Nologo "' + (Join-Path $root 'Launch-V2-Hidden.vbs') + '" "' + $runner + '"'
+$action = New-ScheduledTaskAction -Execute (Join-Path $env:WINDIR 'System32\wscript.exe') -Argument $arguments
 $account = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
 $logonTrigger = New-ScheduledTaskTrigger -AtLogOn -User $account
 # Además del inicio de sesión, rearmar cada 3 minutos: la última
