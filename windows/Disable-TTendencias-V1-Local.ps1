@@ -74,8 +74,8 @@ function RestartSharedSupervisors {
   # aunque el archivo actualizado ya contenga la proteccion de V1.
   $targets=@(Processes|Where-Object{
     ($_.Name -ieq 'powershell.exe' -or $_.Name -ieq 'pwsh.exe') -and
-    (([string]$_.CommandLine -match '(?i)[\\/]TT-LocalWatchdog[.]ps1(?:\\s|"|$)') -or
-     ([string]$_.CommandLine -match '(?i)[\\/]TT-AutoUpdater[.]ps1(?:\\s|"|$)'))
+    (([string]$_.CommandLine -match '(?i)TT-LocalWatchdog[.]ps1') -or
+     ([string]$_.CommandLine -match '(?i)TT-AutoUpdater[.]ps1'))
   })
   foreach($p in $targets){
     Stop-Process -Id $p.ProcessId -Force -ErrorAction SilentlyContinue
