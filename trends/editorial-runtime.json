@@ -7,22 +7,27 @@
   "previous_run_id": "tr-20261115T113700-chat-direct",
   "command_id": "tr-20261115T130700-chat-direct",
   "source": "chat_direct",
-  "status": "DONE",
+  "status": "waiting",
   "phase": "closing",
   "started_at": "2026-11-15T13:07:00+01:00",
-  "updated_at": "2026-11-15T13:13:00+01:00",
+  "updated_at": "2026-11-15T14:40:14+01:00",
   "current": 2,
   "total": 2,
   "trend_id": null,
   "title": "Pasada editorial TTendencias completada",
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [
-    "e91bfa95d1e6",
-    "b186b88b4160"
+    "9503ec979794"
   ],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "6be6a0bdaab2",
+    "7424a29ae1ce"
+  ],
+  "remaining_active_ids": [
+    "6be6a0bdaab2",
+    "7424a29ae1ce"
+  ],
   "remaining_problematic_ids": [],
   "summary": "2/2 explicadas y persistidas; cola final vacía. Sin ImageGen ni publicaciones.",
   "outcomes": [
@@ -897,7 +902,7 @@
       "message": "Pasada TTendencias completada 2/2. Aplicador oficial confirmó ambos ID/revisión y la cola final quedó vacía. Sin ImageGen ni publicaciones."
     }
   ],
-  "last_started_at": "2026-11-15T12:44:19+01:00",
+  "last_started_at": "2026-11-15T14:40:14+01:00",
   "last_completed_at": "2026-11-15T11:43:38+01:00",
   "api_failover_enabled": false,
   "last_run": {
