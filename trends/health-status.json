@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-15T15:47:18.184105+00:00",
+  "checked_at": "2026-11-15T16:16:12.433252+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -42,12 +42,13 @@
     "top10": {
       "ok": false,
       "count": 10,
-      "non_stale_sources": 3,
+      "non_stale_sources": 5,
       "verified_fresh_sources": [
+        "whatstrends",
         "xtrendsiamrohit"
       ],
       "live_verified": false,
-      "captured_age_minutes": 0.1,
+      "captured_age_minutes": 0.2,
       "noise_count": 0
     },
     "listener": {
@@ -59,8 +60,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 5.4,
-      "run_id": 43731318888,
+      "age_minutes": 5.3,
+      "run_id": 43734003723,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -72,7 +73,7 @@
     },
     "request_queue": {
       "ok": false,
-      "invalid_count": 273,
+      "invalid_count": 278,
       "noise_count": 0
     },
     "ready_consistency": {
@@ -81,41 +82,21 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": false,
-      "pending_count": 3,
-      "overdue_count": 3,
-      "oldest_age_minutes": 49.3,
+      "ok": true,
+      "pending_count": 2,
+      "overdue_count": 0,
+      "oldest_age_minutes": 5.5,
       "warning_after_minutes": 30,
-      "overdue_items": [
-        {
-          "id": "red-review-3e78ee3a7b1278ce8aca",
-          "name": "Revisar novedades: #OcultacionAntidemocratica",
-          "status": "preparing",
-          "age_minutes": 49.3
-        },
-        {
-          "id": "red-review-8e106a1113481d0d6ba0",
-          "name": "Revisar novedades: #PSOEyFrenteAmplioVetan",
-          "status": "preparing",
-          "age_minutes": 49.3
-        },
-        {
-          "id": "2c401aa17d0b",
-          "name": "Pollo Carvajal",
-          "status": "preparing",
-          "age_minutes": 42.5
-        }
-      ],
+      "overdue_items": [],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": false,
-      "status": "overdue",
+      "ok": true,
+      "status": "not-required",
       "queue_complete": false,
       "remaining_active_ids": [
-        "red-review-3e78ee3a7b1278ce8aca",
-        "red-review-8e106a1113481d0d6ba0",
-        "2c401aa17d0b"
+        "1e989dcc6d17",
+        "df6038ca94ee"
       ],
       "contradictory_success": false
     },
@@ -128,10 +109,9 @@
   "repairs_started": [],
   "blocking": [
     "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos",
-    "cola con 273 estado(s) inválido(s)",
-    "cola de explicaciones retrasada: 3 pendiente(s) superan 30 min; más antigua 49.3 min"
+    "cola con 278 estado(s) inválido(s)"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 273 estado(s) inválido(s) | cola de explicaciones retrasada: 3 pendiente(s) superan 30 min; más antigua 49.3 min"
+  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 278 estado(s) inválido(s)"
 }
