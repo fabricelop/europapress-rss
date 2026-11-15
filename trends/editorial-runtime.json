@@ -7,27 +7,31 @@
   "previous_run_id": "tr-20261115T102500-chat-direct",
   "command_id": "tr-20261115T113700-chat-direct",
   "source": "chat_direct",
-  "status": "DONE",
+  "status": "waiting",
   "phase": "closing",
   "started_at": "2026-11-15T11:37:00+01:00",
-  "updated_at": "2026-11-15T11:47:40+01:00",
+  "updated_at": "2026-11-15T12:14:07+01:00",
   "current": 6,
   "total": 6,
   "trend_id": null,
   "title": "Pasada editorial completada",
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [
-    "fbdff5b1d1bf",
-    "4c6b146e335a",
-    "58d1af20a0d3",
-    "red-review-63c68e0ff95ff25cae6b",
-    "red-review-59123f3efdd7cf372c0a"
+    "33a3ef107174"
   ],
   "converged_ids": [
     "30aed7408eba"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "e91bfa95d1e6",
+    "4c1b1c26ef67",
+    "b186b88b4160"
+  ],
+  "remaining_active_ids": [
+    "e91bfa95d1e6",
+    "4c1b1c26ef67",
+    "b186b88b4160"
+  ],
   "remaining_problematic_ids": [],
   "summary": "2 explicadas, 1 reentrada cerrada sin episodio distinto, 1 convergencia paralela, 1 mantenimiento actualizado en continuidad y 1 mantenimiento sin cambios; cola final vacía.",
   "outcomes": [
@@ -904,7 +908,7 @@
       "message": "Pasada TTendencias cerrada 0/0 contra main. Barrera JIT: editorial-queue=0 (updated_at 2026-11-15T10:20:59+01:00); Top 30 capturado a las 2026-11-15T10:20:54+01:00. Incidencia no bloqueante: refresco manual 43699226418 sigue in_progress en checkout y aún no ha generado snapshot nuevo. Sin ImageGen ni publicaciones."
     }
   ],
-  "last_started_at": "2026-11-15T11:43:38+01:00",
+  "last_started_at": "2026-11-15T12:14:07+01:00",
   "last_completed_at": "2026-11-15T11:43:38+01:00",
   "api_failover_enabled": false,
   "last_run": {
