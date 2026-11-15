@@ -5,7 +5,8 @@ import { resolve } from "node:path";
 import { runInNewContext } from "node:vm";
 
 const source=readFileSync(resolve(import.meta.dirname,"../web-source/app.js"),"utf8");
-const match=source.match(/function movementIndicator\(item\)\{[\s\S]*?\r?\n\}\r?\nfunction top30Since/);
+const extractMovement = input => input.match(/function movementIndicator\(item\)\{[\s\S]*?\r?\n\}\r?\nfunction top30Since/);
+const match=extractMovement(source);
 assert.ok(match,"movementIndicator debe existir");
 function indicator(item,rankingUnchanged=false,rankingChangeAt=null){
  const state={rankingUnchanged,rankingChangeAt};
@@ -30,4 +31,9 @@ test("sin comparación válida no genera flechas falsas",()=>{
  const row=indicator({rank:4,previous_rank:null,movement:"unverified"},true,null);
  assert.equal(row.label,"—");
  assert.doesNotMatch(row.label,/0/);
+});
+
+test("Windows CRLF checkout preserves the movement indicator extractor",()=>{
+ const windowsSource=source.replace(/\r?\n/g,"\r\n");
+ assert.ok(extractMovement(windowsSource),"CRLF must not hide movementIndicator");
 });
