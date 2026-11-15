@@ -77,3 +77,52 @@ test("public-facing explanation does not name the internal TTActualidad V2 pipel
  assert.match(displayed,/es tendencia en España/);
  assert.doesNotMatch(displayed,/TTActualidad V2/);
 });
+
+const dossier=(name,cause,lead,following)=>[
+  `${name} — Ficha editorial`,
+  "",`${cause} Solo LISTAS · Sin publicación automática`,
+  "","15 de noviembre de 2026 · España", "","ESTADO_CAUSA: CONFIRMADA",
+  "","ESTADO_X: NO_NECESARIO","","Explicación principal — apta para X",
+  "Writing","",lead,"",following,"",
+  "Una segunda parte de la ficha que no debe utilizarse como tuit.",
+].join("\n");
+
+test("Maledon: the V2 panel and P-X select the actual factual lead, not dossier metadata",()=>{
+ const lead="Théo Maledon reaparece tras su lesión y brilla con 18 puntos y 29 de valoración en la victoria del Real Madrid ante Baskonia (84-98).";
+ const raw=dossier("Maledon","Causa identificada y contrastada",lead,"¿Por qué es tendencia?");
+ const shown=editorial(raw),post=tweetText(raw,{rank:13,name:"Maledon"});
+ assert.equal(shown,lead);
+ assert.ok(post.startsWith(`TT#13 MALEDON es tendencia: ${lead}`));
+ assert.ok(xLength(post)<=280);
+ assert.doesNotMatch(post,/Solo LISTAS|Ficha editorial|Writing|Explicación principal|Sin publicación automática/i);
+});
+
+test("Damian Jones: prioritise the recorded summary over the 'Causa de la tendencia' section",()=>{
+ const lead="Damian Jones brilla con 18 puntos y 21 de valoración en la victoria del Real Madrid ante Baskonia (84-98), que mantiene invicto al equipo blanco en Liga.";
+ const raw=dossier("Damian Jones","Causa identificada y contrastada",lead,"Causa de la tendencia");
+ assert.equal(editorial(raw),lead);
+ const post=tweetText(raw,{rank:14,name:"Damian Jones"});
+ assert.match(post,/^TT#14 DAMIAN JONES es tendencia porque brilla con 18 puntos y 21 de valoración/);
+ assert.ok(xLength(post)<=280);
+ assert.doesNotMatch(post,/Causa identificada|Solo LISTAS|Explicación principal/);
+});
+
+test("Ontiveros: preserve an unconfirmed causal link, never promote it to a fact",()=>{
+ const lead="Javi Ontiveros participa en la jugada del empate del Cádiz ante el Eibar (1-1). El partido podría explicar su tendencia, pero no está confirmado.";
+ const raw=dossier("Ontiveros","Causa probable, no confirmada",lead,"Qué ha ocurrido")
+  .replace("ESTADO_CAUSA: CONFIRMADA","ESTADO_CAUSA: NO_CONFIRMADA");
+ assert.equal(editorial(raw),lead);
+ const post=tweetText(raw,{rank:18,name:"Ontiveros"});
+ assert.match(post,/participa en la jugada del empate/);
+ assert.match(post,/podría explicar su tendencia, pero no está confirmado/);
+ assert.doesNotMatch(post,/Solo LISTAS|Causa probable|Sin publicación automática|Explicación principal/);
+ assert.ok(xLength(post)<=280);
+});
+
+test("if a dossier has no usable editorial lead, fail closed instead of publishing boilerplate",()=>{
+ const raw=["Maledon — Ficha editorial","Causa identificada y contrastada Solo LISTAS · Sin publicación automática",
+  "15 de noviembre de 2026 · España","ESTADO_CAUSA: CONFIRMADA","Explicación principal — apta para X",
+  "Writing","","¿Por qué es tendencia?","Datos adicionales no listos."].join("\n");
+ assert.equal(editorial(raw),"Explicación capturada; formato editorial pendiente de adaptar.");
+ assert.match(tweetText(raw,{rank:13,name:"Maledon"}),/^Explicación capturada/);
+});

@@ -15,18 +15,36 @@ function withoutInternalProvenance(text){
 function editorial(raw){
  if(typeof raw!=="string"||!raw.trim())return "Explicación pendiente.";
  const s=raw.replace(/\r\n/g,"\n"), lines=s.split("\n");
- const anchors=[/^\s*(?:Texto(?: editorial| propuesto)? para LISTAS|Explicaci[oó]n para LISTAS|Explicaci[oó]n editorial|Explicaci[oó]n period[ií]stica(?: para LISTAS)?|Texto para LISTAS)\s*:?\s*$/i];
- const indices=[];for(let i=0;i<lines.length;i++)if(anchors.some(r=>r.test(lines[i])))indices.push(i);
- const candidates=indices.length?indices.reverse():[0];
+ // ChatGPT sometimes returns an editorial dossier headed by "Explicación
+ // principal — apta para X". The main line is inside that section; the
+ // dossier title, certainty labels and publication rules are NOT tweet text.
+ const primary=/^\s*Explicaci[oó]n principal(?:\s*[—–:-]\s*apta\s+para\s+X)?\s*:?\s*$/i;
+ const secondary=/^\s*(?:Texto(?: editorial| propuesto)? para LISTAS|Explicaci[oó]n para LISTAS|Explicaci[oó]n editorial|Explicaci[oó]n period[ií]stica(?: para LISTAS)?|Texto para LISTAS)\s*:?\s*$/i;
+ const primaryIndices=[],secondaryIndices=[];
+ for(let i=0;i<lines.length;i++){
+  if(primary.test(lines[i]))primaryIndices.push(i);
+  else if(secondary.test(lines[i]))secondaryIndices.push(i);
+ }
+ // A recognised X-ready section is authoritative. Never use later dossier
+ // sections as a fallback if that section happens to be empty or malformed.
+ const candidates=[...primaryIndices.reverse(),...secondaryIndices.reverse()];
+ if(!candidates.length)candidates.push(-1);
  for(const from of candidates){
   let out=[],started=false,hasProse=false;
-  for(let i=from+1;i<Math.min(lines.length,from+22);i++){
+  for(let i=from+1;i<Math.min(lines.length,from+24);i++){
    const line=lines[i].trim();
-   if(!line){if(started&&out[out.length-1]!=="")out.push("");continue}
+   if(!line){
+    // The X-ready lead is a standalone paragraph. Subsequent paragraphs and
+    // their headings are context for LISTAS, never the P-X publication text.
+    if(from>=0&&primary.test(lines[from])&&started)break;
+    if(started&&out[out.length-1]!=="")out.push("");
+    continue;
+   }
    if(/^(?:Writing|Standard|Document|Texto editorial|Causa confirmada|Causa predominante acreditada)$/i.test(line))continue;
-   if(/^(?:Contraste cronol[oó]gico|Fuentes verificadas|Fuentes consultadas|Fuentes y contraste|Control editorial|Conclusi[oó]n|Resultado(?: editorial| de la prueba)?|Presencia de la tendencia|L[ií]mite:|La causa est[aá]|La coincidencia temporal|Verificaci[oó]n|Referencias|Notas de cautela|Contexto y fuentes|Cronolog[ií]a|Justificaci[oó]n|Contexto adicional)/i.test(line))break;
+   if(/^(?:\s*¿?Por qu[eé] es tendencia\??|(?:¿?Qu[eé] ha ocurrido\??)|Qu[eé] sabemos|Lo que se sabe|Lo que no sabemos|Causa de la tendencia|Explicaci[oó]n principal|Explicaci[oó]n period[ií]stica|Contraste cronol[oó]gico|Fuentes verificadas|Fuentes consultadas|Fuentes y contraste|Control editorial|Conclusi[oó]n|Resultado(?: editorial| de la prueba)?|Presencia de la tendencia|L[ií]mite:|La causa est[aá]|La coincidencia temporal|Verificaci[oó]n|Referencias|Notas de cautela|Contexto y fuentes|Cronolog[ií]a|Justificaci[oó]n|Contexto adicional)/i.test(line))break;
    if(/^https?:\/\//i.test(line)||/^www\./i.test(line))break;
-   if(/^(?:Tendencia:|Identificador:|Revisi[oó]n:|ESTADO_|ID:|Fecha:|Ficha editorial)/i.test(line))continue;
+   if(/^(?:Tendencia:|Identificador:|Revisi[oó]n:|ESTADO_|ID:|Fecha:|Ficha editorial|Solo LISTAS|Sin publicaci[oó]n autom[aá]tica|Causa (?:identificada|probable|confirmada|no confirmada)|\d{1,2} de \p{L}+ de 20\d{2}\b)/iu.test(line))continue;
+   if(/^[^\n]{1,100}\s+[—–]\s+Ficha editorial\s*$/iu.test(line))continue;
    if(!started&&line.length<40&&!line.startsWith("#")&&!/^(?:TT#|🌶)/u.test(line))continue;
    if(line.length>70)hasProse=true;
    started=true;
@@ -34,7 +52,7 @@ function editorial(raw){
    if(line.includes("🌶"))break;
   }
   const value=out.join("\n").trim();
-  if(hasProse&&value.length>60)return withoutInternalProvenance(value);
+  if(hasProse&&value.length>60&&/[.!?]/u.test(value))return withoutInternalProvenance(value);
  }
  return "Explicación capturada; formato editorial pendiente de adaptar.";
 }
