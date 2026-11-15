@@ -69,6 +69,18 @@ def run_forever(poll_seconds=90, max_jobs=0):
             if max_jobs and completed >= max_jobs:
                 report("LIMIT_REACHED", completed=completed)
                 break
+            # RE explícitos: consultar la señal firmada en D1 a través de su
+            # proyección pública de solo lectura. Se incorporan a GitHub aun
+            # si su tendencia ya ha salido del Top30, sin depender del cron.
+            try:
+                re_sync = core.module("sync_private_re_v2.py", "ttv2_direct_re")
+                new_re = re_sync.synchronize_requests(core, api, auth)
+                if new_re:
+                    print("TT_V2_AUTO_RE_ENQUEUED=" + str(new_re), flush=True)
+            except Exception as exc:
+                # GitHub Actions sigue actuando como respaldo. No detener la
+                # elaboración ordinaria ni revelar direcciones o credenciales.
+                print("TT_V2_AUTO_RE_SYNC_DELAYED=" + type(exc).__name__, flush=True)
             try:
                 if core.profile_pids():
                     report("WAIT_EXISTING_V2_CHROME", completed=completed)
