@@ -51,7 +51,9 @@ def plan_requested_reviews(queue, history, requests, *, now=None):
                 # The user's D1 entry clock need not equal GitHub's; an
                 # informative nonempty timestamp is sufficient for validation.
                 entered_top30_at=history.get("observed_at"),
-                requested_at=timestamp)
+                requested_at=timestamp,
+                mode=req.get("mode", "standard"),
+                hints=req.get("hints", ""))
         except ValueError:
             ignored += 1
             continue
