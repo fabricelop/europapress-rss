@@ -1,0 +1,67 @@
+name: TTActualidad V2 - private Worker gate validation
+on:
+  pull_request:
+    paths:
+      - 'v2/private-worker/**'
+      - 'docs/v2/**'
+      - 'v2/ttendencias/image_intake_v2.py'
+      - 'v2/ttendencias/image_capture_v2.py'
+      - 'v2/ttendencias/image_job_v2.py'
+      - 'v2/ttendencias/image_daemon_v2.py'
+      - 'v2/ttendencias/test_image_intake_v2.py'
+      - '.github/workflows/ttactualidad-v2-private-ci.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-private-v2:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Wrangler in isolated project
+        working-directory: v2/private-worker
+        run: npm install --no-audit --no-fund
+      - name: Build real V2 PWA and validate no browser-side GitHub state URL
+        working-directory: v2/private-worker
+        run: |
+          npm run build
+          node --check src/index.js
+          node --check dist/app.js
+          if grep -q 'const BASE="https://raw.githubusercontent.com' dist/app.js; then
+            echo 'Public data URL remained in private app' >&2
+            exit 1
+          fi
+          if grep -q 'serviceWorker.register' dist/index.html; then
+            echo 'Legacy Pages service worker remained' >&2
+            exit 1
+          fi
+      - name: Validate isolated V2 ImageGen receiver and original raster
+        run: |
+          python3 -m py_compile v2/ttendencias/image_intake_v2.py v2/ttendencias/image_capture_v2.py v2/ttendencias/image_job_v2.py v2/ttendencias/image_daemon_v2.py
+          python3 -m pip install --quiet Pillow
+          python3 -m unittest -v v2.ttendencias.test_image_intake_v2
+      - name: Read isolated editorial implementation from exact V2 work branch
+        uses: actions/checkout@v4
+        with:
+          ref: feature/ttactualidad-v2-clean
+          path: editorial-clean
+          persist-credentials: false
+      - name: Validate same-chat editorial image integration without browser or Cloudflare
+        working-directory: editorial-clean
+        run: |
+          python3 -m py_compile v2/ttendencias/editorial_run_v2.py v2/ttendencias/image_intake_v2.py v2/ttendencias/image_job_v2.py v2/ttendencias/image_same_chat_v2.py v2/ttendencias/image_github_v2.py
+          python3 -m unittest -v v2.ttendencias.test_image_same_chat_v2 v2.ttendencias.test_image_github_v2
+      - name: Private gate regression suite
+        working-directory: v2/private-worker
+        run: npm test
+      - name: Wrangler bundle check - NO deployment
+        working-directory: v2/private-worker
+        run: npx wrangler deploy --dry-run --outdir .wrangler-test-bundle

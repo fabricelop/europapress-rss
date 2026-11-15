@@ -1,0 +1,150 @@
+name: TTActualidad V2 - desplegar SOLO staging privado Cloudflare
+
+on:
+  workflow_dispatch:
+  # Disparo único al cambiar este workflow: no incrementa la frecuencia del Radar.
+  push:
+    branches: [feature/ttactualidad-v2-private-worker-20261114]
+    paths:
+      - '.github/workflows/ttactualidad-v2-private-deploy.yml'
+      - 'v2/private-worker/src/**'
+      - 'v2/private-worker/tests/**'
+      - 'v2/private-worker/wrangler.jsonc'
+      - 'v2/private-worker/schema.sql'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ttactualidad-v2-private-staging-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy-staging:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Verify Cloudflare credentials present without printing them
+        env:
+          CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CF_ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          test -n "$CF_TOKEN" || { echo "::error::Missing CLOUDFLARE_API_TOKEN; live worker untouched"; exit 1; }
+          test -n "$CF_ACCOUNT" || { echo "::error::Missing CLOUDFLARE_ACCOUNT_ID; live worker untouched"; exit 1; }
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          ref: feature/ttactualidad-v2-private-worker-20261114
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install Worker dependencies
+        working-directory: v2/private-worker
+        run: npm install --no-audit --no-fund
+      - name: Resolve EXISTING marks D1 before any deployment
+        working-directory: v2/private-worker
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          npx wrangler d1 list --json > /tmp/ttv2-d1-list.json
+          node --input-type=commonjs <<'NODE'
+          const fs=require('node:fs');
+          const raw=JSON.parse(fs.readFileSync('/tmp/ttv2-d1-list.json','utf8'));
+          const list=Array.isArray(raw)?raw:(raw.databases||raw.result||[]);
+          const found=list.filter(x=>x.name==='ttactualidad-v2-marks'&&x.uuid);
+          if(found.length!==1)throw Error('The existing marks D1 database must be found uniquely; refusing deploy');
+          const file='wrangler.jsonc';
+          const config=JSON.parse(fs.readFileSync(file,'utf8'));
+          if(config.name!=='ttactualidad-v2-private-test')throw Error('Refusing to deploy an unexpected Worker');
+          if(config.d1_databases?.some(x=>x.binding!=='MARKS_DB'))throw Error('Unexpected D1 binding; refusing to overwrite');
+          config.d1_databases=[{binding:'MARKS_DB',database_name:'ttactualidad-v2-marks',database_id:found[0].uuid}];
+          fs.writeFileSync(file,JSON.stringify(config,null,2)+'\n');
+          console.log('TT_V2_EXISTING_MARKS_D1_BOUND=YES');
+          NODE
+          rm -f /tmp/ttv2-d1-list.json
+      - name: Keep deployed images safe; exclude unavailable R2 from UI-only update
+        working-directory: v2/private-worker
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Read only. Never remove a currently deployed image binding.
+          curl --fail --silent --show-error \
+            -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+            -H "Accept: application/json" \
+            "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/workers/scripts/ttactualidad-v2-private-test/settings" \
+            -o /tmp/ttv2-worker-settings.json
+          node --input-type=commonjs <<'NODE'
+          const fs=require('node:fs');
+          const response=JSON.parse(fs.readFileSync('/tmp/ttv2-worker-settings.json','utf8'));
+          if(response.success!==true)throw Error('Could not verify existing Worker bindings; refusing deploy');
+          const bindings=response.result?.bindings??response.result?.settings?.bindings;
+          if(!Array.isArray(bindings))throw Error('Unknown current Worker bindings; refusing deploy');
+          const hasImages=bindings.some(item=>item.name==='V2_IMAGES'&&item.type==='r2_bucket');
+          const conflicting=bindings.find(item=>item.name==='V2_IMAGES'&&item.type!=='r2_bucket');
+          if(conflicting)throw Error('Unexpected V2_IMAGES binding; refusing deploy');
+          const file='wrangler.jsonc', config=JSON.parse(fs.readFileSync(file,'utf8'));
+          if(config.name!=='ttactualidad-v2-private-test')throw Error('Unexpected Worker name');
+          // Do not accidentally remove a configured R2 binding on subsequent UI deployments.
+          // If R2 is not provisioned yet, preserve current UI-only configuration.
+          if(!hasImages)delete config.r2_buckets;
+          else if(!config.r2_buckets?.some(x=>x.binding==='V2_IMAGES'))
+            throw Error('Existing R2 cannot be preserved from current config');
+          fs.writeFileSync(file,JSON.stringify(config,null,2)+'\n');
+          console.log('TT_V2_IMAGE_BINDING_PRESERVED='+String(hasImages).toUpperCase());
+          console.log('TT_V2_UI_ONLY_DEPLOY='+String(!hasImages).toUpperCase());
+          NODE
+          rm -f /tmp/ttv2-worker-settings.json
+      - name: Build, run security and movement tests, perform Wrangler dry run
+        working-directory: v2/private-worker
+        run: |
+          npm run check
+          node --check dist/app.js
+          grep -Fq 'function movementIndicator(item)' dist/app.js
+          grep -Fq 'function top30Since(item)' dist/app.js
+          grep -Fq 'updateRadar(state.captured)' dist/app.js
+      - name: Maintain isolated V2 DB schema (idempotent)
+        working-directory: v2/private-worker
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx wrangler d1 execute ttactualidad-v2-marks --remote --file ./schema.sql
+      - name: Deploy ONLY ttactualidad-v2-private-test and preserve secrets
+        working-directory: v2/private-worker
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx wrangler deploy --keep-vars
+      - name: Read actual Cloudflare cron and last D1 snapshot
+        working-directory: v2/private-worker
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fsS -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/workers/scripts/ttactualidad-v2-private-test/schedules" -o /tmp/tt-v2-cron.json
+          node -e "const d=require('/tmp/tt-v2-cron.json'); console.log('TT_V2_ACTUAL_CLOUDFLARE_CRONS',JSON.stringify(d.result??d.errors)); if(d.success!==true)process.exitCode=1"
+          npx wrangler d1 execute ttactualidad-v2-marks --remote --command "SELECT updated_at, json_extract(payload,'$.captured_at') AS captured_at, json_extract(payload,'$.identical_captures') AS identical_captures FROM v2_radar WHERE id=1" --json
+          echo "TT_V2_DIAGNOSTIC_NOW_UTC=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+      - name: Check private Worker health after deploy
+        run: |
+          node --input-type=module <<'NODE'
+          const url='https://ttactualidad-v2-private-test.fabricelop.workers.dev/health';
+          let ok=false;
+          for(let i=0;i<6;i++){
+            try{
+              const response=await fetch(url,{cache:'no-store'});
+              const value=await response.json();
+              if(response.ok&&value.ok===true&&value.service==='ttactualidad-v2-private'&&value.configured===true){ok=true;break;}
+            }catch{}
+            await new Promise(resolve=>setTimeout(resolve,2500));
+          }
+          if(!ok)throw Error('Worker health check failed; inspect deployment (not confirmed)');
+          console.log('TT_V2_PRIVATE_DEPLOYED_AND_HEALTHY=YES');
+          NODE

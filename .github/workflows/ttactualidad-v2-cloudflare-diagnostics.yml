@@ -1,0 +1,45 @@
+name: TTActualidad V2 - diagnostico Cloudflare cron y D1
+on:
+  workflow_dispatch:
+  push:
+    branches: [feature/ttactualidad-v2-private-worker-20261114]
+    paths:
+      - '.github/workflows/ttactualidad-v2-cloudflare-diagnostics.yml'
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Inspect actual Cloudflare Cron Trigger configuration
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "$CLOUDFLARE_API_TOKEN" && test -n "$CLOUDFLARE_ACCOUNT_ID"
+          curl -fsS -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+            "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/workers/scripts/ttactualidad-v2-private-test/schedules" \
+            -o /tmp/cron-schedules.json
+          node - <<'NODE'
+          const data=require('/tmp/cron-schedules.json');
+          console.log('CLOUDFLARE_SCHEDULES',JSON.stringify(data.result??data.errors));
+          if(data.success!==true)process.exitCode=1;
+          NODE
+      - name: Read-only last actual radar snapshot in Cloudflare D1
+        working-directory: v2/private-worker
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm install --no-audit --no-fund >/dev/null 2>&1
+          npx wrangler d1 execute ttactualidad-v2-marks --remote --command "SELECT updated_at, json_extract(payload,'$.captured_at') AS captured_at, json_extract(payload,'$.identical_captures') AS identical_captures, json_extract(payload,'$.unchanged_since') AS unchanged_since FROM v2_radar WHERE id=1;" --json
+          echo "DIAGNOSTIC_NOW_UTC=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
