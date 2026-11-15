@@ -7,15 +7,15 @@
   "previous_run_id": "tr-20261115T051000-chat-direct",
   "command_id": "tr-20261115T055500-chat-direct",
   "source": "chat_direct",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-15T05:55:00+01:00",
-  "updated_at": "2026-11-15T05:55:00+01:00",
+  "updated_at": "2026-11-15T05:56:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -28,14 +28,23 @@
     "explained": 0,
     "problematic": 0,
     "updates": 0,
+    "review_completed_no_distinct_event": 0,
     "maintenance_reviews": 0,
     "unchanged_reviews": 0,
+    "continuity_updates": 0,
+    "distinct_updates": 0,
+    "stale_reviews": 0,
+    "unverified_reviews": 0,
+    "anticipation_reviews": 0,
+    "anticipation_prepared": 0,
+    "anticipation_unverified": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 0
+    "incidents": 0,
+    "concurrent_convergence": 0
   },
   "outcomes": [],
   "incident_count": 0,
@@ -673,6 +682,13 @@
       "status": "RUNNING",
       "phase": "preparing",
       "message": "Pasada iniciada desde ChatGPT. Cola autoritativa inicial=0; revalidación JIT en main. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-15T05:56:00+01:00",
+      "run_id": "tr-20261115T055500-chat-direct",
+      "status": "DONE",
+      "phase": "closing",
+      "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 2026-11-15T05:51:21+01:00) y sin estados editoriales activos en requests/mobile-decisions. No había investigaciones, anticipaciones ni revisiones pendientes que procesar. ImageGen=0; publicaciones=0; incidentes=0."
     }
   ],
   "last_started_at": "2026-11-15T05:14:30+01:00",
@@ -9788,7 +9804,7 @@
   "maintenance_apply_commit": "074b3f7e87b6260fde12e02ec813bdd56b8cc218",
   "completed_at": "2026-11-14T17:42:00+01:00",
   "input_commit": "d657e81fd73a9f4f14a0bc2ac55d968a79eaf428",
-  "finished_at": null,
+  "finished_at": "2026-11-15T05:56:00+01:00",
   "apply_commits": [
     "36a6bdedee2ab6b1689dab6eb97f1f5f56e0ba70"
   ]
