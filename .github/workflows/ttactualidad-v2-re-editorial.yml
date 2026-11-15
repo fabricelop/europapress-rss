@@ -1,0 +1,41 @@
+name: TTActualidad V2 - atender solicitudes RE privadas
+
+# Se consulta D1 cada 15 minutos; no envía nada a X ni usa el PC Windows.
+# No modifica colas de TTiTTulares, TTendencias V1 ni otros proyectos.
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ttactualidad-v2-private-re-editorial
+  cancel-in-progress: false
+
+jobs:
+  consume-re:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/ttactualidad-v2-clean
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verificar revisión RE sin efectos
+        run: |
+          python3 -m unittest -v \
+            v2.ttendencias.test_re_request_v2 \
+            v2.ttendencias.test_re_projection_v2
+      - name: Transferir peticiones autorizadas D1 a la cola V2
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          test -n "$GH_TOKEN" && test -n "$CLOUDFLARE_API_TOKEN" && test -n "$CLOUDFLARE_ACCOUNT_ID"
+          python3 -m v2.ttendencias.consume_re_requests
