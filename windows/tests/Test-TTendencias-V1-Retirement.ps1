@@ -6,6 +6,7 @@ $paths=@(
   'windows/TT-LocalWatchdog.ps1',
   'windows/TT-AutoUpdater.ps1',
   'windows/TTendenciasDedicatedListener.ps1',
+  'windows/TTendenciasMobileChatTriggerListener.ps1',
   'windows/Run-TTendencias-X-Local.ps1'
 )
 foreach($rel in $paths){
@@ -17,6 +18,7 @@ foreach($rel in $paths){
 $watch=[IO.File]::ReadAllText((Join-Path $repo 'windows/TT-LocalWatchdog.ps1'))
 $update=[IO.File]::ReadAllText((Join-Path $repo 'windows/TT-AutoUpdater.ps1'))
 $listen=[IO.File]::ReadAllText((Join-Path $repo 'windows/TTendenciasDedicatedListener.ps1'))
+$mobile=[IO.File]::ReadAllText((Join-Path $repo 'windows/TTendenciasMobileChatTriggerListener.ps1'))
 $x=[IO.File]::ReadAllText((Join-Path $repo 'windows/Run-TTendencias-X-Local.ps1'))
 $retire=[IO.File]::ReadAllText((Join-Path $repo 'windows/Disable-TTendencias-V1-Local.ps1'))
 $prepare=[IO.File]::ReadAllText((Join-Path $repo 'windows/Prepare-TTendencias-V1-Local.ps1'))
@@ -27,6 +29,7 @@ $required=@(
   @($watch,'if($spec.project -eq "ttendencias" -and -not (TrendsV1Enabled)){continue}'),
   @($update,'SKIP RETIRED TRENDS RESTART'),
   @($listen,'V1 RETIRED; listener exits'),
+  @($mobile,'V1 RETIRED; mobile receiver exits'),
   @($x,'TT_X_WINDOWS RETIRED: no work'),
   @($retire,"[ValidateSet('Status','Disable','Restore')]"),
   @($retire,"TTActualidadV2-Editorial-Auto"),
@@ -34,7 +37,8 @@ $required=@(
   @($retire,"function AssertDisabled"),
   @($retire,"TT_V1_BACKUP_READY=YES"),
   @($prepare,"TT_V1_SHARED_UPDATER_PREPARED=YES"),
-  @($prepare,"TT-AutoUpdater-before-retirement-")
+  @($prepare,"-before-retirement-"),
+  @($prepare,"TTendenciasMobileChatTriggerListener.ps1")
 )
 foreach($check in $required){
   if(-not ([string]$check[0]).Contains([string]$check[1])){throw ('Falta proteccion: '+$check[1])}

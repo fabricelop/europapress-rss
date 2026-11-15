@@ -14,6 +14,10 @@ $shortcut=Join-Path $startup 'TTendencias Mobile Trigger Listener.cmd'
 $tasks=@('TTendencias Local','TTendencias Local Ready','TTendencias-XContext')
 $listeners=@('TTendenciasDedicatedListener.ps1','TTendenciasMobileChatTriggerListener.ps1')
 $guard=@('TT-LocalWatchdog.ps1','TT-AutoUpdater.ps1','TTendenciasDedicatedListener.ps1')
+# El receptor movil es opcional en instalaciones historicas.
+if(Test-Path -LiteralPath (Join-Path $base 'TTendenciasMobileChatTriggerListener.ps1')){
+  $guard+='TTendenciasMobileChatTriggerListener.ps1'
+}
 $marker='TTENDENCIAS_V1_RETIRE_GUARD'
 
 function Say([string]$msg){Write-Host $msg}
