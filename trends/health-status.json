@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-15T11:46:00.350512+00:00",
+  "checked_at": "2026-11-15T12:14:50.632190+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -42,12 +42,13 @@
     "top10": {
       "ok": false,
       "count": 10,
-      "non_stale_sources": 4,
+      "non_stale_sources": 6,
       "verified_fresh_sources": [
+        "whatstrends",
         "xtrendsiamrohit"
       ],
       "live_verified": false,
-      "captured_age_minutes": 0.2,
+      "captured_age_minutes": 0.1,
       "noise_count": 0
     },
     "listener": {
@@ -59,8 +60,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 5.3,
-      "run_id": 43710076043,
+      "age_minutes": 4.1,
+      "run_id": 43712501122,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -81,34 +82,21 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": false,
+      "ok": true,
       "pending_count": 2,
-      "overdue_count": 2,
-      "oldest_age_minutes": 34.8,
+      "overdue_count": 0,
+      "oldest_age_minutes": 3.8,
       "warning_after_minutes": 30,
-      "overdue_items": [
-        {
-          "id": "e91bfa95d1e6",
-          "name": "Madrid y Ávila",
-          "status": "preparing",
-          "age_minutes": 34.8
-        },
-        {
-          "id": "b186b88b4160",
-          "name": "País Vasco",
-          "status": "preparing",
-          "age_minutes": 34.8
-        }
-      ],
+      "overdue_items": [],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": false,
-      "status": "overdue",
+      "ok": true,
+      "status": "not-required",
       "queue_complete": false,
       "remaining_active_ids": [
-        "e91bfa95d1e6",
-        "b186b88b4160"
+        "c1e252f0fdd9",
+        "9503ec979794"
       ],
       "contradictory_success": false
     },
@@ -121,10 +109,9 @@
   "repairs_started": [],
   "blocking": [
     "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos",
-    "cola con 272 estado(s) inválido(s)",
-    "cola de explicaciones retrasada: 2 pendiente(s) superan 30 min; más antigua 34.8 min"
+    "cola con 272 estado(s) inválido(s)"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 272 estado(s) inválido(s) | cola de explicaciones retrasada: 2 pendiente(s) superan 30 min; más antigua 34.8 min"
+  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 272 estado(s) inválido(s)"
 }
