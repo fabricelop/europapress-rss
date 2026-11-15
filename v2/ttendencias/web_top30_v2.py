@@ -111,7 +111,8 @@ def build(history, queue):
         captured_at = ""
         displayed_revision = item.get("revision") or 1
         image_available = saved_image_for_revision(item)
-        re_in_progress = False
+        re_in_progress = (item.get("reason") == "user_reexplanation"
+                          and tech in ("review_pending", "in_progress", "capture_recovery"))
         if tech == "captured_review":
             capture = item.get("capture") or {}
             if (capture.get("verified_complete") is True
@@ -132,35 +133,11 @@ def build(history, queue):
             if not answer.strip():
                 category, label = "incidencia", "Sin texto confirmado"
             captured_at = item.get("completed_at") or ""
-        elif tech in ("review_pending", "in_progress", "capture_recovery"):
-            # Durante RE, conservar la explicación y la imagen anteriores.
-            # Solo desaparecen al confirmarse una NUEVA explicación.
-            previous_revision = item.get("previous_revision")
-            previous_status = item.get("previous_status")
-            previous_capture = item.get("previous_capture") or {}
-            previous_text = (item.get("previous_explanation") or {}).get("text")
-            if (isinstance(previous_revision, int)
-                and previous_revision + 1 == item.get("revision")
-                and previous_status in ("captured_review", "ready", "published")):
-                previous = {"trend_id": topic["trend_id"], "revision": previous_revision,
-                            "status": previous_status, "capture": previous_capture}
-                if previous_status == "captured_review" and (
-                    previous_capture.get("verified_complete") is True
-                    and previous_capture.get("revision") == previous_revision
-                    and isinstance(previous_capture.get("answer"), str)
-                    and len(previous_capture["answer"].strip()) >= 80
-                    and isinstance(previous_capture.get("sha256"), str)
-                    and len(previous_capture["sha256"]) == 64):
-                    answer = previous_capture["answer"].strip()
-                    captured_at = previous_capture.get("captured_at") or ""
-                elif previous_status in ("ready", "published") and isinstance(previous_text, str):
-                    answer = previous_text.strip()
-                    captured_at = (item.get("previous_explanation") or {}).get("completed_at") or ""
-                if answer:
-                    category, label = "explicada", "Reelaboración en curso; se muestra la explicación anterior"
-                    displayed_revision = previous_revision
-                    image_available = saved_image_for_revision(previous)
-                    re_in_progress = True
+        elif re_in_progress:
+            # Un RE aceptado comienza una ficha limpia en la nueva revisión.
+            # Nunca proyectar texto/imagen de una revisión anterior.
+            category, label = ("en_elaboracion", "En revisión · nueva explicación") if tech == "in_progress" else ("pendiente", "En revisión · reinicio editorial")
+            image_available = False
         result.append({
             "rank": rank,
             "name": topic["name"],
