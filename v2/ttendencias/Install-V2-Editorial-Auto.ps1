@@ -39,6 +39,8 @@ if ($sha -notmatch '^[a-f0-9]{40}$') { throw 'No se pudo fijar commit V2' }
 $base = 'https://raw.githubusercontent.com/' + $repo + '/' + $sha + '/v2/ttendencias'
 $files = @(
     'editorial_daemon_v2.py',
+    'parallel_dispatch_v2.py',
+    'test_parallel_dispatch_v2.py',
     'auto_editorial_policy_v2.py',
     're_request_v2.py',
     'sync_private_re_v2.py',
@@ -95,7 +97,7 @@ if ($test.ExitCode -ne 0) {
     throw ('No superó las pruebas de seguridad V2 (exit ' + $test.ExitCode + '). Ver ' + $testStderr)
 }
 Write-Host 'TT_V2_AUTO_TESTS=OK'
-foreach ($suite in @('test_chrome_command_v2.py','test_chrome_cleanup_v2.py','test_chrome_startup_v2.py','test_chrome_windows_v2.py','test_incident_retry_v2.py')) {
+foreach ($suite in @('test_parallel_dispatch_v2.py','test_chrome_command_v2.py','test_chrome_cleanup_v2.py','test_chrome_startup_v2.py','test_chrome_windows_v2.py','test_incident_retry_v2.py')) {
     $testPath = Join-Path $root $suite
     $result = Start-Process -FilePath $py -ArgumentList @('-3', ('"' + $testPath + '"')) `
         -Wait -PassThru -WindowStyle Hidden -RedirectStandardOutput $testStdout -RedirectStandardError $testStderr
