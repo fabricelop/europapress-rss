@@ -105,7 +105,7 @@ function movementIndicator(item){
   const difference=previous-item.rank;
   if(difference>0){label="↑ "+difference;description="Sube "+difference+" puesto"+(difference===1?"":"s")+" desde el "+previous;kind="up"}
   else if(difference<0){label="↓ "+(-difference);description="Baja "+(-difference)+" puesto"+(difference===-1?"":"s")+" desde el "+previous;kind="down"}
-  else{label="→ 0";description="Se mantiene en el puesto "+item.rank;kind="same"}
+  else{label="—";description="Sin nuevo cambio de posición acreditado";kind="same"}
  }else if(["entry","reentry","short_return"].includes(item.movement)){
   label="Nueva";description="Entra o regresa al Top 30";kind="entry";
  }
@@ -127,9 +127,8 @@ function top30Since(item){
  return node;
 }
 function attachGeneratedImage(card,item){
-  // One original per editorial revision; private R2 endpoint, not GitHub thumbnail.
-  if(item.status!=="explicada"||!/^trv2-[a-f0-9]{24}$/.test(item.trend_id)
-     ||!Number.isSafeInteger(item.revision)||item.revision<1)return;
+  // Only request the original if this editorial revision has a verified image.
+  if(!imageReady(item))return;
   const wrap=el("div","trend-generated-image");
   const picture=el("img","generated-original");
   picture.alt="Ilustración editorial de "+item.name;
@@ -147,6 +146,72 @@ function attachGeneratedImage(card,item){
   };
   card.addEventListener("toggle",openImage);
   openImage();
+}
+function imageReady(item){
+ return item.image_available===true&&item.status==="explicada"&&
+   /^trv2-[a-f0-9]{24}$/.test(item.trend_id)&&
+   Number.isSafeInteger(item.revision)&&item.revision>=1;
+}
+function publishNotice(message){
+ const notice=$("notice");notice.textContent=message;notice.hidden=false;
+}
+function makePublishButtons(card,item){
+ if(item.status!=="explicada")return;
+ const text=tweetText(item.explanation);
+ if(text.startsWith("Explicación pendiente"))return;
+ const actions=el("div","publish-actions");
+ const x=el("button","publish-action","P-X");
+ x.type="button";x.title="Preparar la publicación de texto en X";
+ x.setAttribute("aria-label","Publicar texto en X para "+item.name);
+ x.addEventListener("click",()=>{
+  const link="https://twitter.com/intent/tweet?text="+encodeURIComponent(text);
+  const opened=window.open(link,"_blank");
+  if(opened)opened.opener=null;
+  if(!opened)publishNotice("El navegador bloqueó la ventana de X. Permite abrir ventanas emergentes para publicar.");
+ });
+ actions.append(x);
+ if(imageReady(item)){
+  const withImage=el("button","publish-action publish-with-image","P-IA");
+  withImage.type="button";withImage.title="Compartir en X con la imagen IA original";
+  withImage.setAttribute("aria-label","Preparar publicación con imagen IA para "+item.name);
+  withImage.addEventListener("click",async()=>{
+   if(withImage.disabled)return;
+   withImage.disabled=true;
+   // Opening before any await avoids the pop-up blocker on desktop.
+   const composer=typeof navigator.share!=="function"?window.open("about:blank","_blank"):null;
+   if(composer)composer.opener=null;
+   try{
+    const endpoint="/api/image/"+encodeURIComponent(item.trend_id)+"?revision="+item.revision;
+    const res=await fetch(endpoint,{credentials:"same-origin",cache:"no-store"});
+    if(!res.ok)throw Error("Imagen no disponible (HTTP "+res.status+")");
+    const blob=await res.blob();
+    if(!["image/png","image/jpeg","image/webp"].includes(blob.type))throw Error("Formato de imagen no válido");
+    const ext={"image/png":"png","image/jpeg":"jpg","image/webp":"webp"}[blob.type];
+    const file=new File([blob],item.trend_id+"-r"+item.revision+"."+ext,{type:blob.type});
+    if(navigator.canShare?.({files:[file]})&&navigator.share){
+     await navigator.share({text,files:[file]});
+    }else{
+     // X intents cannot attach an image. Download the original for manual
+     // attachment, then prepare the exact text in X's composer.
+     const anchor=document.createElement("a");
+     const local=URL.createObjectURL(blob);
+     anchor.href=local;anchor.download=file.name;document.body.append(anchor);anchor.click();anchor.remove();
+     setTimeout(()=>URL.revokeObjectURL(local),60000);
+     const link="https://twitter.com/intent/tweet?text="+encodeURIComponent(text);
+     if(composer)composer.location.replace(link);
+     const opened=composer||window.open(link,"_blank");
+     if(opened)opened.opener=null;
+     publishNotice(opened?"Imagen descargada. Adjunta el archivo en X antes de confirmar la publicación.":
+       "Imagen descargada. Abre X y adjunta el archivo; el navegador bloqueó la ventana de X.");
+    }
+   }catch(error){
+    if(composer)composer.close();
+    if(error.name!=="AbortError")publishNotice("P-IA: "+error.message);
+   }finally{withImage.disabled=false}
+  });
+  actions.append(withImage);
+ }
+ card.append(actions);
 }
 function render(){
  const root=$("results");root.replaceChildren();
@@ -185,8 +250,15 @@ function render(){
    void toggleRedMark(item,card,flag);
   });
   head.append(flag);
+  if(imageReady(item)){
+   const photo=el("span","image-ready-icon","▣");
+   photo.title="Imagen IA asociada a esta revisión";
+   photo.setAttribute("aria-label",photo.title);
+   head.append(photo);
+  }
   const body=el("div","explanation",item.status==="explicada"?tweetText(item.explanation):({en_elaboracion:"En elaboración.",incidencia:"Incidencia en la elaboración.",desestimada:"Desestimada."})[item.status]||"Explicación pendiente.");
   card.append(body);
+  makePublishButtons(card,item);
   attachGeneratedImage(card,item);
   root.append(card);
  }
