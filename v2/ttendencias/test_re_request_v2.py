@@ -36,9 +36,10 @@ class ReRequestTest(unittest.TestCase):
         self.assertEqual(updated["pending_ids"], [ID])
         self.assertIn("capture", self.queue["items"][ID])
 
-    def test_reject_changed_episode(self):
-        with self.assertRaises(ValueError):
-            self.invoke(entered_top30_at="2026-11-14T01:00:00Z")
+    def test_accept_independent_cloudflare_and_github_entry_clocks(self):
+        updated, status = self.invoke(entered_top30_at="2026-11-14T01:00:00Z")
+        self.assertEqual(status, "ENQUEUED")
+        self.assertEqual(updated["items"][ID]["revision"], 2)
 
     def test_idempotent(self):
         updated, _ = self.invoke()
