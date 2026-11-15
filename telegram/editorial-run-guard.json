@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "checked_at": "2026-11-15T18:44:55.037786+00:00",
+  "checked_at": "2026-11-15T19:00:04.759803+00:00",
   "projects": {
     "ttittulares": {
       "project": "ttittulares",
-      "checked_at": "2026-11-15T18:44:55.037786+00:00",
+      "checked_at": "2026-11-15T19:00:04.759803+00:00",
       "pending_count": 0,
       "pending_ids": [],
       "oldest_at": null,
@@ -16,8 +16,8 @@
         "finished_at": "2026-11-15T13:53:10Z",
         "source": "github_pr_trace"
       },
-      "control_command": "tt-20261115T184500-chat",
-      "last_command_at": "2026-11-15T18:45:00+01:00",
+      "control_command": "tt-20261115T194500-chat",
+      "last_command_at": "2026-11-15T19:45:00+01:00",
       "status": "no_work",
       "should_dispatch": false,
       "attempts": 0,
@@ -25,7 +25,7 @@
     },
     "ttendencias": {
       "project": "ttendencias",
-      "checked_at": "2026-11-15T18:44:55.037786+00:00",
+      "checked_at": "2026-11-15T19:00:04.759803+00:00",
       "pending_count": 11,
       "pending_ids": [
         "ccb05dc4bbe8",
@@ -51,8 +51,8 @@
       },
       "control_command": "tr-autoguard-1794767764",
       "last_command_at": "2026-11-15T18:36:04.391291Z",
-      "status": "dispatch_pending_ack",
-      "should_dispatch": false,
+      "status": "dispatch_requested_awaiting_run",
+      "should_dispatch": true,
       "item_execution": [
         {
           "id": "ccb05dc4bbe8",
@@ -134,9 +134,15 @@
       ],
       "backlog_signature": "ea42e99ee0bcb551",
       "expected_start_by": "2026-11-15T17:07:30+00:00",
-      "attempts": 1,
+      "attempts": 2,
       "previous_target_completed_or_superseded": false,
-      "last_request_at": "2026-11-15T18:36:04.391291+00:00"
+      "dispatch": {
+        "requested": true,
+        "command_id": "tr-autoguard-1794769204",
+        "requested_at": "2026-11-15T19:00:04.759803Z"
+      },
+      "last_request_at": "2026-11-15T19:00:04.759803+00:00",
+      "last_requested_command_id": "tr-autoguard-1794769204"
     }
   },
   "policy": {
