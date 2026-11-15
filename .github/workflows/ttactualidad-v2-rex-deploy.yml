@@ -60,9 +60,9 @@ jobs:
           namespace=str(limit.get("namespace_id") or "")
           if not namespace.isdigit() or cfg_limit.get("period") not in (10,60) or not isinstance(cfg_limit.get("limit"),int):
               raise SystemExit("CLOUDFLARE_RATE_LIMIT_NOT_VERIFIED")
-          schedules=get("/schedules") or []
-          crons=[x.get("cron") for x in schedules if isinstance(x,dict)]
-          if crons!=["*/15 * * * *"]:
+          schedules=get("/schedules") or {}
+          crons=[x.get("cron") for x in schedules.get("schedules",[]) if isinstance(x,dict)]
+          if crons not in (["*/15 * * * *"], ["0,15,30,45 * * * *"]):
               raise SystemExit("CLOUDFLARE_CRON_DIFFERENT_NO_DEPLOY")
           config={"name":"ttactualidad-v2-private-test","main":"src/index.js",
               "compatibility_date":settings.get("compatibility_date") or "2026-11-14",
