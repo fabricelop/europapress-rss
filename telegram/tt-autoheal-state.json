@@ -2,51 +2,109 @@
   "version": 1,
   "projects": {
     "ttittulares": {
-      "checked_at": "2026-11-15T06:35:43.394065+00:00",
-      "issue_count": 1,
+      "checked_at": "2026-11-15T14:17:13.343809+00:00",
+      "issue_count": 3,
       "issues": [
+        {
+          "kind": "missing_delivery",
+          "id": "ebd4fa436d82",
+          "title": "Muere Antonio Sabugueiro, fundador de la San Silvestre Vallecana",
+          "seconds": 607,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "e021d7201b8e",
+          "title": "La infanta Margarita, hermana del rey Juan Carlos, ingresada en la UCI por una infección - Telecinco",
+          "seconds": 425,
+          "workflow": "send-ttittulares-ready-telegram.yml"
+        },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 2580091,
+          "seconds": 2607781,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
       "actions_started": [
+        "send-ttittulares-ready-telegram.yml",
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "b713f1c3f4a90157b05c0bc411e3f7a3420ba8147f7f0a578d9c128c7e94e639",
+      "open_signature": "b54e303b0600bcae9cbe7283e3d9bc2f5aabff6f031b13f4d54bd6599e123506",
       "repair_via_workflow_run": false,
       "escalation_required": 0
     },
     "ttendencias": {
-      "checked_at": "2026-11-15T06:35:43.394065+00:00",
-      "issue_count": 1,
+      "checked_at": "2026-11-15T14:17:13.343809+00:00",
+      "issue_count": 7,
       "issues": [
+        {
+          "kind": "editorial_overdue",
+          "id": "7424a29ae1ce",
+          "title": "Ávila",
+          "seconds": 4419,
+          "workflow": null
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "f64771fce4c4",
+          "title": "Ikurriña",
+          "seconds": 800,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "097f3535c4b7",
+          "title": "FINAL DEL PARTIDO",
+          "seconds": 800,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "571d07b4907e",
+          "title": "Jon Echeverría",
+          "seconds": 800,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "752f3a2f0204",
+          "title": "Naranjo",
+          "seconds": 800,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
+        {
+          "kind": "missing_delivery",
+          "id": "7d69a24d0507",
+          "title": "Euskadi",
+          "seconds": 800,
+          "workflow": "send-ttendencias-explained-telegram.yml"
+        },
         {
           "kind": "stale_index",
           "id": "pinned-index",
           "title": "Índice fijado sin actualizar",
-          "seconds": 2580090,
+          "seconds": 2607780,
           "workflow": "telegram-pinned-index.yml"
         }
       ],
       "actions_started": [
+        "send-ttendencias-explained-telegram.yml",
         "telegram-pinned-index.yml"
       ],
       "repair_errors": [],
-      "open_signature": "b713f1c3f4a90157b05c0bc411e3f7a3420ba8147f7f0a578d9c128c7e94e639",
+      "open_signature": "212dce789d4cd09e39a2507fb148559f13768e084d11796f5b4b04f032e3fad4",
       "repair_via_workflow_run": false,
-      "escalation_required": 0
+      "escalation_required": 1
     }
   },
   "attempts": {
-    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-11-14T20:33:59.876585+00:00",
-    "ttittulares:telegram-pinned-index.yml": "2026-11-15T06:35:43.394065+00:00",
-    "ttendencias:telegram-pinned-index.yml": "2026-11-15T06:35:43.394065+00:00",
-    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-11-15T00:12:47.008010+00:00"
+    "ttittulares:send-ttittulares-ready-telegram.yml": "2026-11-15T14:17:13.343809+00:00",
+    "ttittulares:telegram-pinned-index.yml": "2026-11-15T14:17:13.343809+00:00",
+    "ttendencias:telegram-pinned-index.yml": "2026-11-15T14:17:13.343809+00:00",
+    "ttendencias:send-ttendencias-explained-telegram.yml": "2026-11-15T14:17:13.343809+00:00"
   },
-  "checked_at": "2026-11-15T06:35:43.394065+00:00"
+  "checked_at": "2026-11-15T14:17:13.343809+00:00"
 }
