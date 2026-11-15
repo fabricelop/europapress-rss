@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "checked_at": "2026-11-14T23:44:52.437685+00:00",
+  "checked_at": "2026-11-15T00:00:10.238231+00:00",
   "projects": {
     "ttittulares": {
       "project": "ttittulares",
-      "checked_at": "2026-11-14T23:44:52.437685+00:00",
+      "checked_at": "2026-11-15T00:00:10.238231+00:00",
       "pending_count": 0,
       "pending_ids": [],
       "oldest_at": null,
@@ -18,7 +18,7 @@
     },
     "ttendencias": {
       "project": "ttendencias",
-      "checked_at": "2026-11-14T23:44:52.437685+00:00",
+      "checked_at": "2026-11-15T00:00:10.238231+00:00",
       "pending_count": 2,
       "pending_ids": [
         "red-review-7ed8815ee6cbd8089c35",
@@ -35,8 +35,8 @@
       },
       "control_command": "tr-1794699860681-manual",
       "last_command_at": "2026-11-14T23:44:20.681Z",
-      "status": "within_start_window",
-      "should_dispatch": false,
+      "status": "dispatch_requested_awaiting_run",
+      "should_dispatch": true,
       "item_execution": [
         {
           "id": "red-review-7ed8815ee6cbd8089c35",
@@ -55,8 +55,15 @@
       ],
       "backlog_signature": "92eed43b782c5679",
       "expected_start_by": "2026-11-14T23:49:14.324778+00:00",
-      "attempts": 0,
-      "last_request_at": "2026-11-14T23:16:16.681119+00:00"
+      "attempts": 1,
+      "previous_target_completed_or_superseded": false,
+      "dispatch": {
+        "requested": true,
+        "command_id": "tr-autoguard-1794700810",
+        "requested_at": "2026-11-15T00:00:10.238231Z"
+      },
+      "last_request_at": "2026-11-15T00:00:10.238231+00:00",
+      "last_requested_command_id": "tr-autoguard-1794700810"
     }
   },
   "policy": {
