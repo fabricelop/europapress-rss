@@ -1,6 +1,6 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-15T10:36:43.464Z",
+  "updated_at": "2026-11-15T10:38:00Z",
   "requests": [
     {
       "id": "3983b7d095c2",
@@ -42462,7 +42462,7 @@
       "id": "30aed7408eba",
       "name": "AVE Madrid-Sevilla",
       "rank": 22,
-      "status": "preparing",
+      "status": "explained",
       "requested_at": "2026-11-15T11:11:09+01:00",
       "revision": 0,
       "reexplain": false,
@@ -42486,7 +42486,40 @@
       "editor_approval_batch_id": "",
       "previous_episode_id": "",
       "distinct_event_required": false,
-      "review_instruction": ""
+      "review_instruction": "",
+      "explained_at": "2026-11-15T10:38:00Z",
+      "updated_at": "2026-11-15T10:38:00Z",
+      "last_attempt_at": "2026-11-15T10:38:00Z",
+      "explanation": "TT#22 AVE Madrid-Sevilla es tendencia por una información publicada hoy: Adif aceptó una oferta de Thales un 28,45% inferior y un recorte del 72% en la partida para renovar software LZB. No se ha establecido que ese recorte causara el accidente de Urda.\n#Adif #Thales",
+      "closer_text": "",
+      "rank_at_explanation": 22,
+      "category": "Transportes",
+      "source": "editorial_chat_direct",
+      "editorial_engine": "chatgpt-manual",
+      "verification_sources": [
+        {
+          "url": "https://www.elconfidencial.com/empresas/2026-11-15/accidente-urda-contrato-ahorro-software_4463214/",
+          "title": "El Confidencial, 15/11/2026: recortes en el software de seguridad del AVE Madrid-Sevilla"
+        },
+        {
+          "url": "https://www.rtve.es/noticias/20261029/sistema-seguridad-tren-lzb-ertms-accidente-urda/17288810.shtml",
+          "title": "RTVE, 29/10/2026: contrato de señalización y sustitución LZB-ERTMS"
+        },
+        {
+          "url": "https://www.lavozdegalicia.es/noticia/espana/2026/11/08/adif-recorto-37-millones-plan-renovacion-informatico-linea-madrid-sevilla/0003_202611G8P21991.htm",
+          "title": "La Voz de Galicia/Colpisa, 08/11/2026: recortes técnicos en la renovación"
+        },
+        {
+          "url": "https://x.com/nachocardero/status/2121891809035186616",
+          "published_at": "2026-11-15T09:03:24Z",
+          "source": "x_recent_posts_windows"
+        }
+      ],
+      "news_note": "La muestra reciente de X repite desde primera hora la información de El Confidencial publicada hoy. RTVE y Colpisa corroboran que la oferta de Thales fue un 28,45% inferior y que la renovación prevista se redujo de diez a tres centrales/software. Las fuentes no establecen que esos recortes causaran el accidente de Urda.",
+      "image_status": "pending",
+      "image_choice": "none",
+      "image_pending": true,
+      "telegram_package_status": "pending"
     }
   ],
   "count": 805
