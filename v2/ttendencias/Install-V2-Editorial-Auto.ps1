@@ -1,4 +1,4 @@
-# Installer V2: consumidor editorial automático al iniciar sesión Windows.
+# Installer V2: SOLO explicaciones; imágenes en Chrome independiente.
 # -PilotOnly instala y valida módulos pero deja deshabilitado el programador,
 # para probar UNA sola tendencia manualmente sin arrancar las pendientes.
 param([switch]$PilotOnly)
@@ -45,12 +45,6 @@ $files = @(
     'batch_contract_v2.py',
     'editorial_batch_v2.py',
     'editorial_run_v2.py',
-    'image_intake_v2.py',
-    'image_job_v2.py',
-    'image_same_chat_v2.py',
-    'image_github_v2.py',
-    'test_image_github_v2.py',
-    'test_image_same_chat_v2.py',
     'chrome_command_v2.py',
     'chrome_visibility_v2.py',
     'test_chrome_windows_v2.py',
@@ -107,41 +101,7 @@ foreach ($suite in @('test_chrome_command_v2.py','test_chrome_cleanup_v2.py','te
     }
     Write-Host ('TT_V2_TEST_SUITE_OK=' + $suite)
 }
-# Validar Pillow antes de activar el circuito de originales ImageGen.
-# En Windows PowerShell 5.1, el stderr de pip puede lanzar NativeCommandError
-# incluso con exit code 0; usar Start-Process y comprobar el código real.
-# Evitar acceso a pip/red si Pillow ya está instalado.
-$pillowOut = Join-Path $root 'install-pillow.stdout.log'
-$pillowErr = Join-Path $root 'install-pillow.stderr.log'
-$pillowCheck = Start-Process -FilePath $py -ArgumentList @('-3', '-c', '"from PIL import Image"') `
-    -WindowStyle Hidden -Wait -PassThru -RedirectStandardOutput $pillowOut -RedirectStandardError $pillowErr
-if ($pillowCheck.ExitCode -ne 0) {
-    $pillowInstall = Start-Process -FilePath $py -ArgumentList @('-3', '-m', 'pip', 'install', '--quiet', 'Pillow') `
-        -WindowStyle Hidden -Wait -PassThru -RedirectStandardOutput $pillowOut -RedirectStandardError $pillowErr
-    if ($pillowInstall.ExitCode -ne 0) {
-        if (Test-Path -LiteralPath $pillowErr) {
-            Get-Content -LiteralPath $pillowErr -Tail 12 | ForEach-Object { Write-Host $_ }
-        }
-        throw ('Pillow no disponible (pip exit ' + $pillowInstall.ExitCode + '); consumidor V2 permanece desactivado')
-    }
-    $pillowCheck = Start-Process -FilePath $py -ArgumentList @('-3', '-c', '"from PIL import Image"') `
-        -WindowStyle Hidden -Wait -PassThru -RedirectStandardOutput $pillowOut -RedirectStandardError $pillowErr
-    if ($pillowCheck.ExitCode -ne 0) { throw 'Pillow instalado pero no importable; consumidor V2 permanece desactivado' }
-}
-Write-Host 'TT_V2_PILLOW=OK'
-$imgTest = Join-Path $root 'test_image_same_chat_v2.py'
-$imgResult = Start-Process -FilePath $py -ArgumentList @('-3', ('"' + $imgTest + '"')) `
-    -WindowStyle Hidden -Wait -PassThru -RedirectStandardOutput $testStdout -RedirectStandardError $testStderr
-if ($imgResult.ExitCode -ne 0) {
-    if (Test-Path $testStderr) { Get-Content $testStderr -Tail 20 | ForEach-Object { Write-Host $_ } }
-    throw 'Pruebas de imagen en el mismo chat fallidas; no habilitar consumidor V2'
-}
-Write-Host 'TT_V2_SAME_CHAT_IMAGE_TESTS=OK'
-$gitImageTest = Join-Path $root 'test_image_github_v2.py'
-$gitImageResult = Start-Process -FilePath $py -ArgumentList @('-3', ('"' + $gitImageTest + '"')) `
-    -WindowStyle Hidden -Wait -PassThru -RedirectStandardOutput $testStdout -RedirectStandardError $testStderr
-if ($gitImageResult.ExitCode -ne 0) { throw 'GitHub ImageGen tests failed; V2 remains disabled' }
-Write-Host 'TT_V2_GITHUB_IMAGE_TESTS=OK'
+Write-Host 'TT_V2_EDITORIAL_IMAGE_DEPENDENCIES=NONE'
 
 # Preflight de Playwright, sin abrir Chrome, capturando stderr igualmente.
 $checkStdout = Join-Path $root 'install-auto-check.stdout.log'
@@ -191,9 +151,9 @@ if ($headlessResult.ExitCode -ne 0) {
 Write-Host 'TT_V2_HEADED_HIDDEN_VALIDATED=YES'
 if ($PilotOnly) {
     Write-Host 'TT_V2_PILOT_ONLY=YES'
-    Write-Host 'TT_V2_IMAGE_MODULES_READY=YES'
+    Write-Host 'TT_V2_IMAGE_AUTOMATION=INDEPENDENT_UNCHANGED'
     Write-Host 'TT_V2_AUTO_TASK_ENABLED=NO'
-    Write-Host 'TT_V2_PILOT_NEXT=RUN_ONE_TEXT_IMAGE_NO_WORKER_REQUIRED'
+    Write-Host 'TT_V2_PILOT_NEXT=RUN_ONE_TEXT_ONLY'
     return
 }
 # La bandera exacta es autorización para abrir chats. Guardarla solo
@@ -221,6 +181,7 @@ Write-Host 'TT_V2_AUTO_TASK_REGISTERED=YES'
 Write-Host 'TT_V2_AUTO_SELF_HEAL_EVERY_MINUTES=3'
 Write-Host 'TT_V2_AUTO_ENABLED=YES'
 Write-Host 'TT_V2_AUTO_PUBLICATION=NO'
+Write-Host 'TT_V2_AUTO_SCOPE=EDITORIAL_ONLY'
 Write-Host ('TT_V2_AUTO_TASK_NAME=' + $taskName)
 Write-Host 'TT_V2_AUTO_CHROME_VISIBLE=NO'
 Write-Host 'TT_V2_AUTO_CHROME_HEADLESS=NO'
