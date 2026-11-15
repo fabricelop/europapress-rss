@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-15T03:30:01.721815+00:00",
+  "checked_at": "2026-11-15T04:01:15.031790+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -42,12 +42,13 @@
     "top10": {
       "ok": true,
       "count": 10,
-      "non_stale_sources": 3,
+      "non_stale_sources": 4,
       "verified_fresh_sources": [
+        "whatstrends",
         "xtrendsiamrohit"
       ],
       "live_verified": true,
-      "captured_age_minutes": 0.1,
+      "captured_age_minutes": 0.2,
       "noise_count": 0
     },
     "listener": {
@@ -59,8 +60,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 4.3,
-      "run_id": 43672310892,
+      "age_minutes": 5.3,
+      "run_id": 43674516934,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -72,7 +73,7 @@
     },
     "request_queue": {
       "ok": false,
-      "invalid_count": 244,
+      "invalid_count": 248,
       "noise_count": 0
     },
     "ready_consistency": {
@@ -81,96 +82,23 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": false,
-      "pending_count": 16,
-      "overdue_count": 16,
-      "oldest_age_minutes": 188.9,
+      "ok": true,
+      "pending_count": 4,
+      "overdue_count": 0,
+      "oldest_age_minutes": 0.1,
       "warning_after_minutes": 30,
-      "overdue_items": [
-        {
-          "id": "7d14ea90ddc9",
-          "name": "#laSextaXplica",
-          "status": "preparing",
-          "age_minutes": 188.9
-        },
-        {
-          "id": "c40bacf26f23",
-          "name": "#MalasLenguasN",
-          "status": "preparing",
-          "age_minutes": 188.9
-        },
-        {
-          "id": "da1b6aaf7d73",
-          "name": "Cristiano",
-          "status": "preparing",
-          "age_minutes": 188.9
-        },
-        {
-          "id": "fa8aecbc4a8e",
-          "name": "LoL 2",
-          "status": "preparing",
-          "age_minutes": 188.9
-        },
-        {
-          "id": "c4218e7b3336",
-          "name": "Dinamarca",
-          "status": "preparing",
-          "age_minutes": 188.9
-        },
-        {
-          "id": "65b2bb5d8420",
-          "name": "Chovy",
-          "status": "preparing",
-          "age_minutes": 178.8
-        },
-        {
-          "id": "b2eb0fa2b016",
-          "name": "Ruler",
-          "status": "preparing",
-          "age_minutes": 178.8
-        },
-        {
-          "id": "e55be0abf8a8",
-          "name": "Gazir",
-          "status": "preparing",
-          "age_minutes": 178.8
-        },
-        {
-          "id": "f24b52468bfa",
-          "name": "Knight",
-          "status": "preparing",
-          "age_minutes": 178.8
-        },
-        {
-          "id": "5413818bec36",
-          "name": "GenG",
-          "status": "preparing",
-          "age_minutes": 178.8
-        }
-      ],
+      "overdue_items": [],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": false,
-      "status": "overdue",
+      "ok": true,
+      "status": "not-required",
       "queue_complete": false,
       "remaining_active_ids": [
-        "7d14ea90ddc9",
-        "c40bacf26f23",
-        "da1b6aaf7d73",
-        "fa8aecbc4a8e",
-        "c4218e7b3336",
-        "65b2bb5d8420",
-        "b2eb0fa2b016",
-        "e55be0abf8a8",
-        "f24b52468bfa",
-        "5413818bec36",
-        "1c7dfddd5335",
-        "b60673ab34ed",
-        "c454cd997976",
-        "180a8346f226",
-        "a84ae67bcb59",
-        "9675e198b09e"
+        "cee2e8ebb0fa",
+        "126f19ace8a4",
+        "003925188bc7",
+        "8d30967e70ee"
       ],
       "contradictory_success": false
     },
@@ -182,10 +110,9 @@
   },
   "repairs_started": [],
   "blocking": [
-    "cola con 244 estado(s) inválido(s)",
-    "cola de explicaciones retrasada: 16 pendiente(s) superan 30 min; más antigua 188.9 min"
+    "cola con 248 estado(s) inválido(s)"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "cola con 244 estado(s) inválido(s) | cola de explicaciones retrasada: 16 pendiente(s) superan 30 min; más antigua 188.9 min"
+  "last_alert_signature": "cola con 248 estado(s) inválido(s)"
 }
