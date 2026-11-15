@@ -85,13 +85,18 @@ class WorkerPool:
         env = os.environ.copy()
         env[self.env_key] = str(self.profiles[slot])
         flags = getattr(subprocess, "CREATE_NO_WINDOW", 0)
+        startupinfo = None
+        if os.name == "nt":
+            startupinfo = subprocess.STARTUPINFO()
+            startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+            startupinfo.wShowWindow = 0  # SW_HIDE, incluso el Python hijo.
         with logfile.open("a", encoding="utf-8") as output:
             output.write("V2_PARALLEL_STARTED=" + datetime.now(timezone.utc).isoformat() + "\n")
             output.flush()
             proc = subprocess.Popen([sys.executable, str(script), *map(str, args)],
                                     cwd=str(pathlib.Path(script).parent), env=env,
                                     stdout=output, stderr=subprocess.STDOUT,
-                                    creationflags=flags)
+                                    creationflags=flags, startupinfo=startupinfo)
         self.active[slot] = {"process": proc, "trend_id": trend_id,
                              "revision": revision, "attempt": attempt,
                              "log": str(logfile), "slot": slot}
