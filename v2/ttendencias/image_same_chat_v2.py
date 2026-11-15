@@ -107,6 +107,9 @@ def run(page,row,*,root,github_auth,raster_get=original_from_same_page,
     if not isinstance(github_auth,str) or len(github_auth)<10:
         raise RuntimeError("V2_IMAGE_GITHUB_AUTH_MISSING")
     job,status=jobs.stage(root/"image-jobs",row)
+    # Legacy same-chat pilot only: the active V2 image worker never calls run().
+    # The new job schema deliberately contains no editorial conversation URL.
+    job["conversation_url"] = page.url
     intake.validate_editorial(job,row)
     # Same branch, same token already used to persist the editorial reply.
     # Read the authoritative V2 queue immediately before sending ImageGen.
