@@ -42,18 +42,19 @@ enum SiteAIImageCatalog {
         do {
             let (responseData, response) = try await URLSession.shared.data(for: request)
             guard (response as? HTTPURLResponse)?.statusCode == 200,
-                  responseData.count < 2_000_000 else { throw URLError(.badServerResponse) }
+                  responseData.count < 10_000_000 else { throw URLError(.badServerResponse) }
             data = responseData
         } catch {
             data = try? Data(contentsOf: disk)
         }
         guard let data = await ApprovedImageFeed.merge(data, project: "ttendencias"),
               let manifest = try? JSONDecoder().decode(Manifest.self, from: data),
-              manifest.schema_version == 1, manifest.project_id == projectID,
-              manifest.images.count <= 1_000 else { return [:] }
+              manifest.schema_version == 1, manifest.project_id == projectID else { return [:] }
 
         var result: [String: Entry] = [:]
-        for entry in manifest.images {
+        // Process newest approved images first, even if the historical catalog
+        // is larger than the bounded client index. Never discard ALL entries.
+        for entry in manifest.images.prefix(ApprovedImageFeed.maxApprovedRows) {
             guard entry.target_id.range(of: "^[A-Za-z0-9_-]{3,160}$",
                                         options: .regularExpression) != nil,
                   entry.revision >= 0, !entry.explanation.isEmpty,

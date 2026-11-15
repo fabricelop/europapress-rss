@@ -2,6 +2,24 @@ import XCTest
 
 final class ApprovedImageIdentityTests: XCTestCase {
     private let sha = String(repeating: "a", count: 64)
+
+    func testLargeApprovedCatalogKeepsRecentAndHistoricalEntries() {
+        // Regression on 2026-11-14: 923 approved + 108 legacy entries exceeded
+        // a hard limit of 1,000 and every trend image vanished from the app.
+        let approved: [[String: Any]] = (0..<923).map { index in
+            ["target_id": "trend-\(index)", "revision": 0,
+             "approval_id": String(repeating: "b", count: 64)]
+        }
+        let legacy: [[String: Any]] = (0..<108).map { index in
+            ["target_id": "old-trend-\(index)", "revision": 0]
+        }
+        let merged = ApprovedImageFeed.combinedRows(approved: approved, legacy: legacy)
+        XCTAssertGreaterThan(ApprovedImageFeed.maxApprovedRows, merged.count)
+        XCTAssertEqual(merged.count, 1_031)
+        XCTAssertEqual(merged.first?["target_id"] as? String, "trend-0")
+        XCTAssertEqual(merged.last?["target_id"] as? String, "old-trend-107")
+    }
+
     func testApprovedTrendCannotCarryAcrossRevisionOrDate() {
         let text = "Texto editorial suficientemente largo para probar que ni una corrección pequeña permite reutilizar una aprobación antigua."
         var image = SiteAIImageCatalog.Entry(target_id: "trend-abc", revision: 1,
