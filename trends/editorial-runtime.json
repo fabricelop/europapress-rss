@@ -7,15 +7,15 @@
   "previous_run_id": "tr-20261114T232800-chat-direct",
   "command_id": "tr-20261115T051000-chat-direct",
   "source": "chat_direct",
-  "status": "DONE",
-  "phase": "closing",
+  "status": "RUNNING",
+  "phase": "investigating",
   "started_at": "2026-11-15T05:10:00+01:00",
-  "updated_at": "2026-11-15T05:15:00+01:00",
+  "updated_at": "2026-11-15T05:16:00+01:00",
   "current": 4,
-  "total": 4,
+  "total": 6,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [
     "cee2e8ebb0fa",
     "126f19ace8a4",
@@ -23,8 +23,14 @@
     "8d30967e70ee"
   ],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-3d16757ddb9bcc7d9cff",
+    "red-review-c27fa11b2ec913f0a690"
+  ],
+  "remaining_active_ids": [
+    "red-review-3d16757ddb9bcc7d9cff",
+    "red-review-c27fa11b2ec913f0a690"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 4,
@@ -771,7 +777,7 @@
     "incidents": [],
     "message": "Pasada TTendencias completada 4/4: #UFCHBOMax cerrado como episodio nuevo verificado; #UFC334, Hasan y enol explicados y persistidos. Aplicador oficial success; cola final=0. Sin ImageGen ni publicaciones desde la pasada editorial."
   },
-  "message": "Pasada TTendencias completada 4/4: #UFCHBOMax cerrado como episodio nuevo verificado; #UFC334, Hasan y enol explicados y persistidos. Aplicador oficial success; cola final=0. Sin ImageGen ni publicaciones desde la pasada editorial.",
+  "message": "Revisando novedades: Marcial Dorado y Outlook. Ambos son mantenimientos de continuidad; no se abre una ficha nueva ni se publica.",
   "history": [
     {
       "run_id": "tr-1794361941170-manual",
@@ -5749,7 +5755,7 @@
       "message": "Pasada TTendencias completada 4/4: #UFCHBOMax cerrado como episodio nuevo verificado; #UFC334, Hasan y enol explicados y persistidos. Aplicador oficial success; cola final=0. Sin ImageGen ni publicaciones desde la pasada editorial."
     }
   ],
-  "current_item": null,
+  "current_item": "Revisar novedades: Marcial Dorado",
   "withdrawn_ids": [],
   "last_finished_at": "2026-11-14T17:42:00+01:00",
   "last_revalidated_at": "2026-11-14T17:41:15+01:00",
