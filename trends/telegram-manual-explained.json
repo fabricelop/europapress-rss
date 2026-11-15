@@ -123483,10 +123483,10 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
-      "image_choice": "none",
-      "image_pending": true,
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
+      "image_pending": false,
       "telegram_package_status": "pending",
       "new_episode_review": true,
       "previous_episode_id": "",
@@ -123494,9 +123494,26 @@
       "material_event_key": "psoe-presentacion-programa-alcorcon-2026-11-15",
       "material_event_at": "2026-11-15T12:00:00+01:00",
       "material_change": true,
-      "significance_reason": "Episodio nuevo e independiente: el 15 de noviembre Sánchez presentó en Alcorcón el programa electoral del PSOE para el 29N; la explicación anterior del 7 de noviembre era un partido AD Alcorcón-Real Jaén."
+      "significance_reason": "Episodio nuevo e independiente: el 15 de noviembre Sánchez presentó en Alcorcón el programa electoral del PSOE para el 29N; la explicación anterior del 7 de noviembre era un partido AD Alcorcón-Real Jaén.",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image": {
+        "url": "https://www.psoe.es/media/themes/views/portadas/img/psoe-4.png",
+        "source": "www.psoe.es",
+        "source_url": "https://www.psoe.es/agenda/previsiones-domingo-15-de-noviembre/",
+        "alt": "Imagen de archivo relacionada con Alcorcon",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://www.psoe.es/media/themes/views/portadas/img/psoe-4.png",
+        "source": "www.psoe.es",
+        "source_url": "https://www.psoe.es/agenda/previsiones-domingo-15-de-noviembre/",
+        "alt": "Imagen de archivo relacionada con Alcorcon",
+        "rights_status": "unverified",
+        "generated": false
+      }
     }
   ],
-  "updated_at": "2026-11-15T14:45:00+01:00",
+  "updated_at": "2026-11-15T13:51:22.050438Z",
   "count": 2175
 }
