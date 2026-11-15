@@ -23,8 +23,19 @@ test("collapsed card shows image indicator only when exact revision is bound",()
  assert.match(src,/function imageReady\(item\)/);
  assert.match(src,/item\.image_available===true/);
  assert.match(src,/Number\.isSafeInteger\(item\.revision\)/);
- assert.match(src,/if\(!reset&&imageReady\(item\)\)\{\s*const photo=el\("span","image-ready-icon"/);
+ assert.match(src,/if\(!reset&&\(imageReady\(item\)\|\|item\.image_suppressed===true\)\)\{\s*const photo=el\("span","image-ready-icon"/);
  assert.match(src,/if\(!reset\)\{makePublishButtons\(card,item\);attachGeneratedImage\(card,item\);\}/);
+});
+
+test("a red crossed image icon marks images hidden in V1 and reacts to public switch changes",()=>{
+ const src=readFileSync(new URL("../web-source/app.js",import.meta.url),"utf8");
+ const css=readFileSync(new URL("../web-source/styles.css",import.meta.url),"utf8");
+ assert.match(src,/item\.image_suppressed===true\|\|item\.public_image_visible===false/);
+ assert.match(src,/"image-ready-icon image-public-hidden-icon","▣"/);
+ assert.match(src,/hidden\.append\(el\("span","image-hidden-x","×"\)\)/);
+ assert.match(src,/item\.public_image_visible=visible;\s*publishNotice\([^;]+;\s*render\(\)/);
+ assert.match(css,/\.image-public-hidden-icon\{[^}]+color:#ff9aa4/);
+ assert.match(css,/\.image-hidden-x\{[^}]+color:#ff4058/);
 });
 
 test("P-X and P-IA are manual, revision-bound and never mark a V2 trend published",()=>{
