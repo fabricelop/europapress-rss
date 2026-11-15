@@ -1,0 +1,104 @@
+name: TTActualidad V2 - publicar RE-X en Worker privado
+on:
+  push:
+    branches: [feature/ttactualidad-v2-clean]
+    paths:
+      - '.github/workflows/ttactualidad-v2-rex-deploy.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ttactualidad-v2-private-rex-deploy
+  cancel-in-progress: false
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/ttactualidad-v2-clean
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Pruebas integrales del Worker privado
+        working-directory: v2/ttendencias/private-worker
+        run: |
+          npm install --no-audit --no-fund
+          npm run build
+          npm test
+      - name: Conservar configuracion, credenciales, reloj y privacidad actuales
+        working-directory: v2/ttendencias/private-worker
+        run: |
+          python3 - <<'PY'
+          import json,os,re,urllib.request
+          token=os.environ.get("CLOUDFLARE_API_TOKEN","")
+          account=os.environ.get("CLOUDFLARE_ACCOUNT_ID","")
+          if not token or not account: raise SystemExit("CLOUDFLARE_CREDENTIALS_MISSING")
+          base="https://api.cloudflare.com/client/v4/accounts/"+account+"/workers/scripts/ttactualidad-v2-private-test"
+          def get(path):
+              req=urllib.request.Request(base+path,headers={"Authorization":"Bearer "+token,"Accept":"application/json"})
+              with urllib.request.urlopen(req,timeout=30) as resp: result=json.load(resp)
+              if not result.get("success"): raise SystemExit("CLOUDFLARE_PREFLIGHT_FAILED")
+              return result.get("result")
+          settings=get("/settings") or {}
+          bindings={b.get("name"):b for b in settings.get("bindings",[])}
+          expected={"ASSETS":"assets","MARKS_DB":"d1","LOGIN_LIMITER":"ratelimit",
+              "AUTH_PASSWORD":"secret_text","SESSION_SECRET":"secret_text",
+              "REELABORATION_ENABLED":"plain_text","SESSION_HOURS":"plain_text"}
+          if {k:v.get("type") for k,v in bindings.items()}!=expected:
+              raise SystemExit("CLOUDFLARE_BINDINGS_CHANGED_NO_DEPLOY")
+          db=bindings["MARKS_DB"]
+          dbid=db.get("id") or db.get("database_id")
+          if not isinstance(dbid,str) or not re.fullmatch("[a-f0-9-]{36}",dbid):
+              raise SystemExit("CLOUDFLARE_D1_ID_NOT_VERIFIED")
+          limit=bindings["LOGIN_LIMITER"]
+          cfg_limit=limit.get("simple") or {}
+          namespace=str(limit.get("namespace_id") or "")
+          if not namespace.isdigit() or cfg_limit.get("period") not in (10,60) or not isinstance(cfg_limit.get("limit"),int):
+              raise SystemExit("CLOUDFLARE_RATE_LIMIT_NOT_VERIFIED")
+          schedules=get("/schedules") or []
+          crons=[x.get("cron") for x in schedules if isinstance(x,dict)]
+          if crons!=["*/15 * * * *"]:
+              raise SystemExit("CLOUDFLARE_CRON_DIFFERENT_NO_DEPLOY")
+          config={"name":"ttactualidad-v2-private-test","main":"src/index.js",
+              "compatibility_date":settings.get("compatibility_date") or "2026-11-14",
+              "keep_vars":True,"workers_dev":True,
+              "assets":{"directory":"./dist","binding":"ASSETS","run_worker_first":True},
+              "d1_databases":[{"binding":"MARKS_DB","database_name":"ttactualidad-v2-marks","database_id":dbid}],
+              "ratelimits":[{"name":"LOGIN_LIMITER","namespace_id":namespace,
+                 "simple":{"limit":cfg_limit["limit"],"period":cfg_limit["period"]}}],
+              "vars":{"REELABORATION_ENABLED":bindings["REELABORATION_ENABLED"].get("text"),
+                      "SESSION_HOURS":bindings["SESSION_HOURS"].get("text")},
+              "triggers":{"crons":crons}}
+          if any(not isinstance(x,str) or len(x)>100 for x in config["vars"].values()):
+              raise SystemExit("CLOUDFLARE_VARS_NOT_VERIFIED")
+          if not re.fullmatch(r"20\d\d-\d\d-\d\d",config["compatibility_date"]):
+              raise SystemExit("CLOUDFLARE_COMPAT_DATE_NOT_VERIFIED")
+          with open("wrangler.json","w",encoding="utf-8") as out:json.dump(config,out,indent=2)
+          print("TT_V2_PRIVATE_BINDINGS_AND_CRON_PRESERVED=YES")
+          PY
+      - name: Publicar solo el Worker privado conservando variables y secretos
+        working-directory: v2/ttendencias/private-worker
+        run: |
+          npx wrangler deploy --keep-vars --config wrangler.json
+      - name: Verificar version y rutas del Worker publicado
+        run: |
+          python3 - <<'PY'
+          import json,time,urllib.request
+          origin="https://ttactualidad-v2-private-test.fabricelop.workers.dev"
+          for attempt in range(6):
+              try:
+                  with urllib.request.urlopen(origin+"/health",timeout=15) as r: health=json.load(r)
+                  with urllib.request.urlopen(origin+"/api/public-editorial-overrides",timeout=15) as r: flags=json.load(r)
+                  if health.get("build")=="v2-re-x-20261115" and health.get("configured") is True and flags.get("schema_version")==1:
+                      print("TT_V2_PRIVATE_RE_X_LIVE=YES")
+                      break
+              except Exception:
+                  pass
+              if attempt==5:raise SystemExit("RE_X_DEPLOY_NOT_VERIFIED")
+              time.sleep(7)
+          PY
