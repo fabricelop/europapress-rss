@@ -89,11 +89,18 @@ function RestartSharedSupervisors {
   Say 'TT_V1_SHARED_SUPERVISORS_RELOADED=YES'
 }
 function State {
-  Say ('TT_V1_WINDOWS_DISABLED='+$(if(Test-Path -LiteralPath $flag){'YES'}else{'NO'}))
-  foreach($task in ExistingTasks){Say ('TT_V1_TASK '+$task.name+'='+$task.state)}
-  Say ('TT_V1_STARTUP='+$(if(Test-Path -LiteralPath $shortcut){'YES'}else{'NO'}))
-  Say ('TT_V1_LISTENERS='+(LegacyListeners).Count)
+  $stateTasks=@(ExistingTasks)
+  $startupPresent=Test-Path -LiteralPath $shortcut
+  $listenerCount=(LegacyListeners).Count
   $busy=BusyLegacy
+  $retired=Test-Path -LiteralPath $flag
+  $allTasksOff=@($stateTasks|Where-Object{$_.state -ne 'Disabled'}).Count -eq 0
+  $fullyOff=$retired -and $allTasksOff -and -not $startupPresent -and $listenerCount -eq 0 -and @($busy.processes).Count -eq 0 -and @($busy.tasks).Count -eq 0
+  $result=if($fullyOff){'YES'}elseif($retired){'PARTIAL'}else{'NO'}
+  Say ('TT_V1_WINDOWS_DISABLED='+$result)
+  foreach($task in $stateTasks){Say ('TT_V1_TASK '+$task.name+'='+$task.state)}
+  Say ('TT_V1_STARTUP='+$(if($startupPresent){'YES'}else{'NO'}))
+  Say ('TT_V1_LISTENERS='+$listenerCount)
   Say ('TT_V1_BUSY_PROCESSES='+@($busy.processes).Count)
   Say ('TT_V1_BUSY_TASKS='+@($busy.tasks).Count)
 }
