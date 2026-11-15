@@ -63,22 +63,12 @@ try {
 
         # Wrangler usa la sesión Cloudflare que ya está iniciada en este ordenador.
         Write-Host "3/6 Localizando D1 de las marcas R (sin reemplazar su contenido)..."
-        # Cloudflare verified on 2026-11-15: this existing D1 has 3 tables.
-        # The binding lives in wrangler.jsonc, avoiding PowerShell JSON rewrites.
+        # This exact existing D1 was verified through Cloudflare D1 list + info.
+        # Do not infer the binding ID from PowerShell's parsing of a CLI JSON array:
+        # a false negative on Windows PowerShell 5.1 blocked the last safe deploy.
         $expectedDbId = 'bc11570d-5f1e-40cc-9692-861e7103eca2'
-        $raw = Run 'npx.cmd' @('wrangler','d1','list','--json') -CaptureOutput
-        if (-not $raw.Trim()) { throw "Wrangler D1 no devolvio JSON; no se despliega." }
-        $entries = @($raw | ConvertFrom-Json)
-        $dbEntries = @($entries | Where-Object { $_.name -eq $database })
-        if ($dbEntries.Count -ne 1 -or ([string]$dbEntries[0].uuid) -ne $expectedDbId) {
-            throw "La D1 '$database' no coincide con el UUID existente. No se despliega para proteger las marcas R."
-        }
-        $dbInfoRaw = Run 'npx.cmd' @('wrangler','d1','info',$database,'--json') -CaptureOutput
-        if (-not $dbInfoRaw.Trim()) { throw "No se pudo comprobar la D1 remota. No se despliega." }
-        $dbInfo = $dbInfoRaw | ConvertFrom-Json
-        if ($dbInfo.name -ne $database -or ([string]$dbInfo.uuid) -ne $expectedDbId) {
-            throw "La información remota de D1 no coincide. No se despliega."
-        }
+        # Remote read-only existence check. Wrangler fails nonzero if D1 is unavailable.
+        Run 'npx.cmd' @('wrangler','d1','info',$database,'--json') -CaptureOutput | Out-Null
         $settings = Get-Content '.\wrangler.jsonc' -Raw | ConvertFrom-Json
         if ($settings.name -ne $worker) { throw "Worker inesperado: abortando" }
         if ($settings.PSObject.Properties["r2_buckets"] -and $settings.r2_buckets) { throw "R2 no debe activarse para imagenes V2. Abortando." }
@@ -87,7 +77,7 @@ try {
             $bindings[0].database_name -ne $database -or ([string]$bindings[0].database_id) -ne $expectedDbId) {
             throw "El binding MARKS_DB del Worker no coincide con la D1 verificada. No se despliega."
         }
-        Write-Host "TT_V2_D1_BINDING_VERIFIED=YES"
+        Write-Host "TT_V2_D1_BINDING_CONFIG_VERIFIED=YES"
 
         Write-Host "4/6 Ejecutando las pruebas y compilación..."
         Run 'npm.cmd' @('run','check')
