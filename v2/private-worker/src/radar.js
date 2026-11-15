@@ -83,10 +83,35 @@ export async function captureRadar(db, {fetcher=fetch, now=new Date()}={}) {
   const previousActive=new Map((old?.names||[]).map(name=>[trendKey(name),old.entered_at?.[trendKey(name)]||old.captured_at]));
   const entered={};
   const previous_ranks={};
-  for(const name of names) {
+  const movement_kinds={};
+  const movement_at={};
+  for(const [index,name] of names.entries()) {
     const k=trendKey(name);
+    const rank=index+1;
+    const prev=prior.get(k);
     entered[k]=previousActive.get(k)||timestamp;
-    previous_ranks[k]=prior.get(k)??null;
+    if(!old){
+      previous_ranks[k]=null;
+      movement_kinds[k]="baseline";
+      movement_at[k]=null;
+    }else if(prev===undefined){
+      previous_ranks[k]=null;
+      movement_kinds[k]="entry";
+      movement_at[k]=timestamp;
+    }else if(prev!==rank){
+      previous_ranks[k]=prev;
+      movement_kinds[k]=rank<prev?"up":"down";
+      movement_at[k]=timestamp;
+    }else{
+      // A non-moving trend retains ITS last genuine delta even if other
+      // trends changed. The previous cron tick is not a new movement.
+      const oldRank=old.previous_ranks?.[k];
+      const oldKind=old.movement_kinds?.[k];
+      const kind=oldKind||(!Number.isInteger(oldRank)?"baseline":oldRank===rank?"baseline":oldRank>rank?"up":"down");
+      movement_kinds[k]=kind;
+      previous_ranks[k]=(kind==="up"||kind==="down")&&Number.isInteger(oldRank)&&oldRank!==rank?oldRank:null;
+      movement_at[k]=old.movement_at?.[k]||null;
+    }
   }
   const unchanged=old && names.every((name,index)=>trendKey(name)===trendKey(old.names[index]));
   const snapshot={
@@ -97,7 +122,8 @@ export async function captureRadar(db, {fetcher=fetch, now=new Date()}={}) {
     previous_capture_at:old?.captured_at||null,
     unchanged_since:unchanged?(old.unchanged_since||old.captured_at):timestamp,
     identical_captures:unchanged?(old.identical_captures||1)+1:1,
-    names,entered_at:entered,previous_ranks,
+    names,entered_at:entered,previous_ranks,movement_kinds,movement_at,
+    last_change_at:unchanged?(old.last_change_at||null):timestamp,
     source_http_date:response.headers.get("date")||null,
     source_http_age:response.headers.get("age")||null,
     source_http_etag:response.headers.get("etag")||null
@@ -137,6 +163,8 @@ export async function mergeEditorialRadar(editorial, snapshot, clock=Date.now())
     const rank=i+1;
     const previous_rank=Number.isInteger(prev)?prev:null;
     const diff=previous_rank===null?null:previous_rank-rank;
+    const kind=snapshot.movement_kinds?.[key]||
+      (diff===null?"entry":diff>0?"up":diff<0?"down":"baseline");
     rows.push({...source,rank,name,trend_id:source.trend_id||await stableId(key),
       entered_top30_at:snapshot.entered_at?.[key]||snapshot.captured_at,
       revision:source.revision||1,
@@ -144,13 +172,15 @@ export async function mergeEditorialRadar(editorial, snapshot, clock=Date.now())
       status_label:source.status_label||"Pendiente",
       editorial_status:source.editorial_status||"pending",
       explanation:source.explanation||"",
-      movement:diff===null?"entry":diff>0?"up":diff<0?"down":"unchanged",
+      movement:kind,
       previous_rank,positions_changed:diff
     });
   }
   const stuckMinutes=Math.max(0,(Date.parse(snapshot.captured_at)-Date.parse(snapshot.unchanged_since))/60000);
   return {...editorial,count:THIRTY,items:rows,captured_at:snapshot.captured_at,
     comparison_at:snapshot.previous_capture_at,radar_source:"cloudflare_cron_15m",
+    ranking_unchanged:snapshot.identical_captures>1,
+    ranking_change_at:snapshot.last_change_at||null,
     radar_identical_captures:snapshot.identical_captures,
     radar_unchanged_minutes:Math.floor(stuckMinutes),
     radar_source_verified_against_x:false,
