@@ -130,14 +130,22 @@ function attachGeneratedImage(card,item){
   // Only request the original if this editorial revision has a verified image.
   if(!imageReady(item))return;
   const wrap=el("div","trend-generated-image");
+  const status=el("p","image-load-status","Cargando imagen IA…");
+  status.setAttribute("role","status");
   const picture=el("img","generated-original");
   picture.alt="Ilustración editorial de "+item.name;
-  picture.loading="lazy";
+  // An image with loading=lazy inside a display:none parent might never
+  // be requested, and the load event can never make that parent visible.
+  picture.loading="eager";
   picture.decoding="async";
   picture.hidden=true;
-  picture.addEventListener("load",()=>{picture.hidden=false;wrap.classList.add("loaded")});
-  picture.addEventListener("error",()=>{picture.hidden=true;wrap.classList.remove("loaded")});
-  wrap.append(picture);card.append(wrap);
+  picture.addEventListener("load",()=>{picture.hidden=false;wrap.classList.add("loaded");status.hidden=true});
+  picture.addEventListener("error",()=>{
+   picture.hidden=true;wrap.classList.remove("loaded");
+   status.hidden=false;status.textContent="No se pudo cargar la imagen IA. Cierra y vuelve a abrir la ficha para reintentar.";
+   requested=false;
+  });
+  wrap.append(status,picture);card.append(wrap);
   let requested=false;
   const openImage=()=>{
    if(requested||!card.open)return;
