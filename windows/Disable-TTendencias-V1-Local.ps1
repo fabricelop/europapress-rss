@@ -153,7 +153,7 @@ if(Test-Path -LiteralPath $shortcut){
   Move-Item -LiteralPath $shortcut -Destination (Join-Path $save 'startup.disabled.cmd') -ErrorAction Stop
 }
 foreach($p in LegacyListeners){
-  Stop-Process -Id $p.ProcessId -Force -ErrorAction Stop
+  Stop-Process -Id $p.ProcessId -Force -ErrorAction SilentlyContinue
 }
 Say 'TT_V1_RETIRE_NO_NEW_WORK=YES'
 WaitForQuiet
