@@ -127,7 +127,7 @@ def prompt_for(item):
     )
 
 def persist_capture_live(api, state, auth, record, trend_id, revision, token):
-    """Commit editorial text before ImageGen; never send a second editorial prompt."""
+    """Commit editorial text independently of ImageGen."""
     for attempt in range(4):
         fresh, sha = queue_read(api, auth)
         staged, status = state.stage_capture(
@@ -137,7 +137,7 @@ def persist_capture_live(api, state, auth, record, trend_id, revision, token):
         if status == "already_staged":
             break
         try:
-            queue_write(api, auth, sha, staged, "capture before image " + trend_id)
+            queue_write(api, auth, sha, staged, "editorial capture " + trend_id)
             break
         except RuntimeError as exc:
             if "GitHub conflict/changed revision" not in str(exc) or attempt == 3:
@@ -164,7 +164,9 @@ def update_image_receipt(api, auth, trend_id, revision, expected_hash, image):
         if row.get("status") not in ("captured_review", "ready"):
             raise RuntimeError("V2_IMAGE_EDITORIAL_NOT_CURRENT")
         existing = cap.get("image") or {}
-        if existing.get("status") == "saved" and image.get("status") != "saved":
+        # First successfully associated raster wins. Later duplicate attempts
+        # must never replace it, even if their upload completed independently.
+        if existing.get("status") == "saved":
             return
         if existing == image:
             return
@@ -349,47 +351,15 @@ def run_one(api, state, transcript, auth, item):
                 print("TT_V2_CAPTURE_REASON=" + capture["reason"], flush=True)
             store(journal, record)
             if record["reply_captured"]:
-                # Keep the SAME verified ChatGPT tab alive for the image.
-                # Commit the editorial answer first so R2 ingest can enforce
-                # the exact ID, revision and editorial fingerprint.
-                verified, _, cap = persist_capture_live(
+                # Editorial worker owns TEXT ONLY. The image worker has its
+                # own Chrome profile and independent ChatGPT conversation.
+                persist_capture_live(
                     api, state, auth, record, trend_id, revision, token)
                 record["persisted"] = True
-                record["status"] = "persisted_before_imagegen"
+                record["status"] = "editorial_persisted"
                 store(journal, record)
                 print("TT_V2_GITHUB_VERIFIED=YES", flush=True)
-                image_status = {"status": "pending_recovery"}
-                try:
-                    same_chat = module("image_same_chat_v2.py", "ttv2_same_chat_image")
-                    saved = same_chat.run(page, verified["items"][trend_id], root=ROOT, github_auth=auth)
-                    image_status = {
-                        "status": "saved", "command_id": saved["command_id"],
-                        "sha256": saved["sha256"],"path": saved["path"],
-                        "mime": saved["mime"],"revision": revision,
-                        "backend": "github_v1_style"}
-                    record["image_status"] = "saved"
-                    record["image_sha256"] = saved["sha256"]
-                    print("TT_V2_IMAGE_SAVED_IN_SAME_CHAT=YES_GITHUB", flush=True)
-                except Exception as image_error:
-                    # The editorial capture is already durable. Never rewrite
-                    # or reopen it, never resend an uncertain ImageGen command.
-                    reason = str(image_error)[:180]
-                    image_status = {
-                        "status": "blocked_configuration" if any(x in reason for x in
-                          ("NOT_ENROLLED", "STORAGE_NOT_READY", "DPAPI_FAILED"))
-                          else "pending_recovery",
-                        "reason": reason}
-                    record["image_status"] = image_status["status"]
-                    record["image_error"] = reason
-                    print("TT_V2_IMAGE_SAVED_IN_SAME_CHAT=NO:" + reason, flush=True)
-                store(journal, record)
-                try:
-                    update_image_receipt(api, auth, trend_id, revision, cap["sha256"], image_status)
-                    record["image_receipt_synced"] = True
-                except Exception as image_metadata_error:
-                    record["image_receipt_synced"] = False
-                    record["image_metadata_error"] = str(image_metadata_error)[:180]
-                store(journal, record)
+                print("TT_V2_IMAGE_WORKER=INDEPENDENT_NOT_STARTED_HERE", flush=True)
             try:
                 browser.new_browser_cdp_session().send("Browser.close")
             except Exception:
@@ -444,7 +414,7 @@ def run_one(api, state, transcript, auth, item):
             store(journal, record)
             print("TT_V2_CAPTURE_RECOVERY_STAGED=NO", flush=True)
         raise RuntimeError("Captura/cierre no verificados: recuperar sin reenviar")
-    # La captura se guardó ANTES de generar la imagen y cerrar el chat.
+    # La captura editorial se guardó antes de cerrar su propio Chrome.
     if not record.get("persisted"):
         raise RuntimeError("V2_CAPTURE_NOT_PERSISTED_NO_RESEND")
     verify, queue_blob_sha = queue_read(api, auth)
@@ -452,7 +422,7 @@ def run_one(api, state, transcript, auth, item):
     if (verify["items"][trend_id].get("revision") != revision
         or verify["items"][trend_id].get("status") != "captured_review"
         or cap.get("sha256") != hashlib.sha256(record["answer"].strip().encode()).hexdigest()):
-        raise RuntimeError("V2_CAPTURE_CHANGED_DURING_IMAGE")
+        raise RuntimeError("V2_CAPTURE_CHANGED_AFTER_EDITORIAL")
     # Sin reenvío: incluir inmediatamente la ficha capturada en el modelo de
     # Listas V2, incluso si el motivo no está confirmado. No implica READY.
     listas = module("listas_v2.py", "ttv2_listas")
