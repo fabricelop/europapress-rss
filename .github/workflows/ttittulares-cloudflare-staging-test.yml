@@ -31,17 +31,25 @@ jobs:
         run: npm install --no-audit --no-fund
       - name: Tests autenticación, PWA y raster sin Vercel
         run: npm test
-      - name: Compile embedded GitHub Actions Telegram processor (never run it in CI)
+      - name: Validar procesador Telegram retirado o compilar código embebido sin ejecutarlo
         run: |
           python3 - <<'PY'
           import pathlib
           source=pathlib.Path('../../.github/workflows/process-ttittulares-telegram-decisions.yml').read_text(encoding='utf8')
-          block=source.split('          python3 - <<\'PY\'\n',1)[1].split('\n          PY',1)[0]
-          code='\n'.join(line[10:] if line.startswith('          ') else line for line in block.splitlines())
-          compile(code,'telegram-decision-processor.py','exec')
-          assert 'verified_by_telegram' in code and 'answerCallbackQuery' not in code
-          assert 'ttittulares-callback-inbox.json' in code
-          print('TELEGRAM_DECISION_PROCESSOR_PYTHON_SYNTAX_OK')
+          marker="          python3 - <<'PY'\n"
+          if marker in source:
+              block=source.split(marker,1)[1].split('\n          PY',1)[0]
+              code='\n'.join(line[10:] if line.startswith('          ') else line for line in block.splitlines())
+              compile(code,'telegram-decision-processor.py','exec')
+              assert 'verified_by_telegram' in code and 'answerCallbackQuery' not in code
+              assert 'ttittulares-callback-inbox.json' in code
+              print('TELEGRAM_DECISION_PROCESSOR_PYTHON_SYNTAX_OK')
+          else:
+              # Workflow desactivado desde el 16/10/2026; el procesador ya no existe.
+              assert 'Desactivado 16-10-2026 a petición del usuario' in source
+              assert 'run: echo "Workflow antiguo sin operaciones' in source
+              assert 'workflow_dispatch:' in source and 'contents: read' in source
+              print('TELEGRAM_DECISION_PROCESSOR_RETIRED_OK')
           PY
       - name: Compilar Worker sin desplegar
         run: npx wrangler deploy --dry-run --outdir .wrangler-bundle-check
