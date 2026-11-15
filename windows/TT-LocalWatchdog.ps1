@@ -144,10 +144,9 @@ function Test-ControlNetwork{
   }catch{return $false}
 }
 function Has-PendingImageQueue{
-  foreach($url in @(
-    "https://raw.githubusercontent.com/fabricelop/europapress-rss/control/ttittulares-run-trigger-v2/ttittulares/image-runs/index.json",
-    "https://raw.githubusercontent.com/fabricelop/europapress-rss/control/ttendencias-run-trigger/trends/image-runs/index.json"
-  )){
+  $urls=@("https://raw.githubusercontent.com/fabricelop/europapress-rss/control/ttittulares-run-trigger-v2/ttittulares/image-runs/index.json")
+  if(TrendsV1Enabled){$urls+="https://raw.githubusercontent.com/fabricelop/europapress-rss/control/ttendencias-run-trigger/trends/image-runs/index.json"}
+  foreach($url in $urls){
     try{
       $separator=if($url.Contains("?")){"&"}else{"?"}
       $doc=Invoke-RestMethod -Uri ($url+$separator+"t="+[DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()) -TimeoutSec 7 -Headers @{"Cache-Control"="no-cache"}
