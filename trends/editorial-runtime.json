@@ -7,36 +7,38 @@
   "previous_run_id": "tr-20261115T092500-chat-direct",
   "command_id": "tr-20261115T101100-chat-direct",
   "source": "chat_direct",
-  "status": "success",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-15T10:11:15+01:00",
-  "updated_at": "2026-11-15T10:15:27+01:00",
-  "current": 0,
-  "total": 5,
+  "updated_at": "2026-11-15T10:18:30+01:00",
+  "current": 7,
+  "total": 7,
   "trend_id": null,
-  "title": "Pasada editorial TTendencias",
+  "title": "Pasada editorial TTendencias completada",
   "queue_complete": true,
   "processed_ids": [
+    "ae4989cc1764",
     "147eef6249e3",
     "5e3f4544230f",
-    "673ba7640524",
     "67bc5a61fda3",
-    "ae4989cc1764"
+    "673ba7640524",
+    "red-review-d8f2d5325d80ac5e2096",
+    "red-review-25d850be2049c1e32a95"
   ],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 5,
-    "observed": 5,
-    "closed": 0,
-    "explained": 0,
+    "attempted": 7,
+    "observed": 7,
+    "closed": 7,
+    "explained": 4,
     "problematic": 0,
     "updates": 0,
-    "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 0,
-    "unchanged_reviews": 0,
+    "review_completed_no_distinct_event": 1,
+    "maintenance_reviews": 2,
+    "unchanged_reviews": 2,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "stale_reviews": 0,
@@ -44,13 +46,14 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 5,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 0
+    "concurrent_convergence": 0,
+    "cause_unconfirmed": 1
   },
   "outcomes": [],
   "incident_count": 1,
@@ -943,7 +946,7 @@
     "message": "Pasada TTendencias cerrada 0/0 contra main. Barrera JIT: editorial-queue=0 (updated_at 2026-11-15T09:50:57+01:00); mobile-decisions activos=0; Top 30 capturado a las 2026-11-15T09:50:52+01:00. Incidencia no bloqueante: refresco manual 43696856247 sigue in_progress en checkout y aún no ha generado snapshot nuevo. Sin ImageGen ni publicaciones.",
     "at": "2026-11-15T10:00:23+01:00"
   },
-  "message": "Cola inicial 5; revalidando ID/revisión e investigando 5 trabajos contra main. Sin ImageGen ni publicaciones.",
+  "message": "Pasada TTendencias cerrada 7/7: 4 explicaciones aplicadas (San Alberto Magno, Mt 25, Josh Hokit y Chano), #PazCasaTrabajo29N cerrada sin episodio distinto y 2 revisiones rojas unchanged (Naranjo y Terelu). Barrera final editorial-queue=0. ImageGen=0; publicaciones=0; incidentes=0.",
   "history": [
     {
       "run_id": "tr-1794361941170-manual",
@@ -6111,6 +6114,11 @@
       "at": "2026-11-15T10:11:15+01:00",
       "phase": "preparing",
       "message": "Cola inicial 5; iniciando pasada editorial real contra main, sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-15T10:18:30+01:00",
+      "phase": "closing",
+      "message": "Pasada TTendencias cerrada 7/7: 4 explicaciones aplicadas (San Alberto Magno, Mt 25, Josh Hokit y Chano), #PazCasaTrabajo29N cerrada sin episodio distinto y 2 revisiones rojas unchanged (Naranjo y Terelu). Barrera final editorial-queue=0. ImageGen=0; publicaciones=0; incidentes=0."
     }
   ],
   "current_item": null,
@@ -10239,9 +10247,17 @@
       "message": "Pasada TTendencias cerrada 0/0 contra main. Barrera JIT: editorial-queue=0 (updated_at 2026-11-15T09:50:57+01:00); mobile-decisions activos=0; Top 30 capturado a las 2026-11-15T09:50:52+01:00. Incidencia no bloqueante: refresco manual 43696856247 sigue in_progress en checkout y aún no ha generado snapshot nuevo. Sin ImageGen ni publicaciones."
     }
   ],
-  "processed": [],
-  "completed_at": null,
-  "finished_at": null,
+  "processed": [
+    "ae4989cc1764",
+    "147eef6249e3",
+    "5e3f4544230f",
+    "67bc5a61fda3",
+    "673ba7640524",
+    "red-review-d8f2d5325d80ac5e2096",
+    "red-review-25d850be2049c1e32a95"
+  ],
+  "completed_at": "2026-11-15T10:18:30+01:00",
+  "finished_at": "2026-11-15T10:18:30+01:00",
   "revision": null,
   "name": null
 }
