@@ -106,10 +106,28 @@ foreach ($suite in @('test_chrome_command_v2.py','test_chrome_cleanup_v2.py','te
     }
     Write-Host ('TT_V2_TEST_SUITE_OK=' + $suite)
 }
-# Validar Pillow antes de activar el nuevo circuito de originales ImageGen.
-# No sustituir un raster por una miniatura: se exige comprobación real de formato.
-& $py -3 -m pip install --quiet Pillow
-if ($LASTEXITCODE -ne 0) { throw 'Pillow no disponible; consumidor V2 permanece desactivado' }
+# Validar Pillow antes de activar el circuito de originales ImageGen.
+# En Windows PowerShell 5.1, el stderr de pip puede lanzar NativeCommandError
+# incluso con exit code 0; usar Start-Process y comprobar el código real.
+# Evitar acceso a pip/red si Pillow ya está instalado.
+$pillowOut = Join-Path $root 'install-pillow.stdout.log'
+$pillowErr = Join-Path $root 'install-pillow.stderr.log'
+$pillowCheck = Start-Process -FilePath $py -ArgumentList @('-3', '-c', '"from PIL import Image"') `
+    -WindowStyle Hidden -Wait -PassThru -RedirectStandardOutput $pillowOut -RedirectStandardError $pillowErr
+if ($pillowCheck.ExitCode -ne 0) {
+    $pillowInstall = Start-Process -FilePath $py -ArgumentList @('-3', '-m', 'pip', 'install', '--quiet', 'Pillow') `
+        -WindowStyle Hidden -Wait -PassThru -RedirectStandardOutput $pillowOut -RedirectStandardError $pillowErr
+    if ($pillowInstall.ExitCode -ne 0) {
+        if (Test-Path -LiteralPath $pillowErr) {
+            Get-Content -LiteralPath $pillowErr -Tail 12 | ForEach-Object { Write-Host $_ }
+        }
+        throw ('Pillow no disponible (pip exit ' + $pillowInstall.ExitCode + '); consumidor V2 permanece desactivado')
+    }
+    $pillowCheck = Start-Process -FilePath $py -ArgumentList @('-3', '-c', '"from PIL import Image"') `
+        -WindowStyle Hidden -Wait -PassThru -RedirectStandardOutput $pillowOut -RedirectStandardError $pillowErr
+    if ($pillowCheck.ExitCode -ne 0) { throw 'Pillow instalado pero no importable; consumidor V2 permanece desactivado' }
+}
+Write-Host 'TT_V2_PILLOW=OK'
 $imgTest = Join-Path $root 'test_image_same_chat_v2.py'
 $imgResult = Start-Process -FilePath $py -ArgumentList @('-3', ('"' + $imgTest + '"')) `
     -WindowStyle Hidden -Wait -PassThru -RedirectStandardOutput $testStdout -RedirectStandardError $testStderr
