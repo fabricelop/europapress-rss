@@ -14,7 +14,9 @@ function withoutInternalProvenance(text){
 }
 function editorial(raw){
  if(typeof raw!=="string"||!raw.trim())return "Explicación pendiente.";
- const s=raw.replace(/\r\n/g,"\n"), lines=s.split("\n");
+ const s=raw.replace(/\r\n/g,"\n")
+  .replace(/:::writing(?:\s*\{[^}\n]*\})?/giu,"")
+  .replace(/(^|\s):::(?=\s|$)/gmu,"$1"), lines=s.split("\n");
  // ChatGPT sometimes returns an editorial dossier headed by "Explicación
  // principal — apta para X". The main line is inside that section; the
  // dossier title, certainty labels and publication rules are NOT tweet text.
