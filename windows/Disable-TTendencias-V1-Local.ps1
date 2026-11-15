@@ -62,6 +62,14 @@ function State {
   Say ('TT_V1_BUSY_PROCESSES='+@($busy.processes).Count)
   Say ('TT_V1_BUSY_TASKS='+@($busy.tasks).Count)
 }
+function AssertDisabled {
+  if(-not (Test-Path -LiteralPath $flag)){throw 'Falta marca de retirada de V1.'}
+  foreach($task in ExistingTasks){
+    if($task.state -ne 'Disabled'){throw ('La tarea antigua sigue habilitada: '+$task.name)}
+  }
+  if(Test-Path -LiteralPath $shortcut){throw 'El arranque automatico antiguo sigue presente.'}
+  if((LegacyListeners).Count -gt 0){throw 'Un receptor antiguo sigue abierto.'}
+}
 function Restore {
   if(-not (Test-Path -LiteralPath $flag)){Say 'TT_V1_WINDOWS_ALREADY_ENABLED=YES';return}
   $latest=Get-ChildItem -LiteralPath $backups -Directory -ErrorAction SilentlyContinue|
@@ -86,7 +94,12 @@ if($Action -eq 'Status'){State;exit 0}
 if($Action -eq 'Restore'){Restore;exit 0}
 
 if(-not (Test-Path -LiteralPath $base -PathType Container)){throw 'Instalacion TT antigua no encontrada.'}
-if(Test-Path -LiteralPath $flag){Say 'TT_V1_WINDOWS_ALREADY_DISABLED=YES';State;exit 0}
+if(Test-Path -LiteralPath $flag){
+  AssertDisabled
+  Say 'TT_V1_WINDOWS_ALREADY_DISABLED=YES'
+  State
+  exit 0
+}
 $v2=Get-ScheduledTask -TaskName 'TTActualidadV2-Editorial-Auto' -ErrorAction SilentlyContinue
 if(-not $v2 -or [string]$v2.State -eq 'Disabled'){
   throw 'No se confirma V2 activa en Windows. Desactivacion cancelada.'
@@ -134,10 +147,7 @@ foreach($p in LegacyListeners){
   Stop-Process -Id $p.ProcessId -Force -ErrorAction Stop
 }
 Start-Sleep -Seconds 7
-if((LegacyListeners).Count -gt 0){throw 'El receptor antiguo sigue abierto: comprobar vigilancia compartida.'}
-foreach($task in ExistingTasks){
-  if($task.state -ne 'Disabled'){throw ('La tarea sigue activa: '+$task.name)}
-}
+AssertDisabled
 Say 'TT_V1_WINDOWS_DISABLED=YES'
 Say 'TT_V1_BACKUP_READY=YES'
 Say 'TT_V2_PRESERVED=YES'
