@@ -84,6 +84,8 @@ function sameOrigin(request) {
 
 const TREND_ID = /^trv2-[a-f0-9]{24}$/;
 function entryStamp(item) {return typeof item?.entered_top30_at==="string" ? item.entered_top30_at : "";}
+const RE_DISPLAYED = new Set(["captured_review","ready","published"]);
+const RE_PROCESSING = new Set(["review_pending","in_progress","capture_recovery"]);
 async function currentRanking(env) {
   const upstream=await fetch(SOURCE+"web-top30.json",{headers:{"Accept":"application/json"},cf:{cacheTtl:15,cacheEverything:true}});
   if(!upstream.ok) throw Error("RANKING_UNAVAILABLE");
@@ -103,8 +105,9 @@ async function redMarks(request,env) {
   const active=new Map(ranking.filter(row=>TREND_ID.test(row.trend_id) && entryStamp(row)).map(row=>[row.trend_id,entryStamp(row)]));
   try {
     const rows=(await env.MARKS_DB.prepare("SELECT trend_id, entered_top30_at FROM red_marks").all()).results || [];
-    // La consulta nunca debe borrar marcas: Cloudflare y GitHub pueden discrepar
-    // en entered_top30_at pese a ser la misma tendencia.
+    // Cloudflare/GitHub capturan en momentos distintos y pueden discrepar sobre
+    // entered_top30_at. Consultar NUNCA debe borrar una preferencia del usuario.
+    // La marca pertenece al ID estable hasta que el usuario la quite con R.
     const valid=new Map(rows.filter(row=>TREND_ID.test(row.trend_id)).map(row=>[row.trend_id,row.entered_top30_at]));
     if(request.method==="GET") return json({marks:Object.fromEntries(valid),captured_at:new Date().toISOString()});
     if(Number(request.headers.get("content-length")||0)>1024) return json({error:"invalid_payload"},413);
@@ -117,6 +120,37 @@ async function redMarks(request,env) {
     else await env.MARKS_DB.prepare("DELETE FROM red_marks WHERE trend_id=?").bind(body.trend_id).run();
     return json({ok:true,trend_id:body.trend_id,marked:body.marked});
   }catch{return json({error:"marks_storage_unavailable"},503);}
+}
+
+async function reRequests(request,env) {
+  if(!env.MARKS_DB)return json({error:"re_storage_not_configured"},503);
+  if(request.method!=="GET" && (request.method!=="POST" || !sameOrigin(request)))
+    return json({error:"method_not_allowed"},405);
+  try {
+    if(request.method==="GET") {
+      const rows=(await env.MARKS_DB.prepare(
+        "SELECT trend_id, base_revision, status FROM re_requests WHERE status IN ('requested','applied') ORDER BY requested_at DESC LIMIT 100").all()).results||[];
+      return json({requests:rows});
+    }
+    if(Number(request.headers.get("content-length")||0)>1024)return json({error:"invalid_payload"},413);
+    let body;
+    try{body=await request.json();}catch{return json({error:"invalid_payload"},400);}
+    const {trend_id,revision,entered_top30_at}=body||{};
+    if(!TREND_ID.test(trend_id)||!Number.isSafeInteger(revision)||revision<1||revision>100000||
+       typeof entered_top30_at!=="string"||entered_top30_at.length>64)
+      return json({error:"invalid_payload"},400);
+    let ranking;
+    try{ranking=await currentRanking(env);}catch{return json({error:"ranking_unavailable"},503);}
+    const current=ranking.find(x=>x.trend_id===trend_id);
+    if(!current||entryStamp(current)!==entered_top30_at||current.revision!==revision||
+       current.status!=="explicada")return json({error:"trend_not_current"},409);
+    if(current.re_in_progress===true)return json({error:"re_already_processing"},409);
+    await env.MARKS_DB.prepare(
+      "INSERT INTO re_requests (trend_id, base_revision, entered_top30_at, status) VALUES (?,?,?,'requested') " +
+      "ON CONFLICT(trend_id,base_revision) DO NOTHING"
+    ).bind(trend_id,revision,entered_top30_at).run();
+    return json({ok:true,queued:true,trend_id,base_revision:revision},202);
+  }catch{return json({error:"re_storage_unavailable"},503);}
 }
 
 
@@ -137,10 +171,12 @@ async function imageRead(request,env,trendId) {
     if(queue?.step!=="04_editorial_queue"||queue.effects_enabled!==false)
       return json({error:"editorial_not_isolated"},503);
     const row=queue.items?.[trendId];
-    const cap=row?.capture||{};
+    const previous=RE_PROCESSING.has(row?.status)&&row?.previous_revision===revision&&
+      row?.revision===revision+1&&RE_DISPLAYED.has(row?.previous_status);
+    const cap=previous?(row.previous_capture||{}):(row?.capture||{});
     const img=cap.image||{};
-    if(row?.trend_id!==trendId||row?.revision!==revision||
-       !["captured_review","ready","published"].includes(row.status)||
+    if(row?.trend_id!==trendId||(!previous&&row?.revision!==revision)||
+       !(previous||RE_DISPLAYED.has(row.status))||
        cap.revision!==revision||img.status!=="saved"||
        img.revision!==revision||img.backend!=="github_v1_style"||
        !HEX64.test(img.sha256||"")||!IMAGE_COMMAND.test(img.command_id||""))
@@ -217,6 +253,7 @@ export default {
     if (url.pathname === "/api/me") return json({authenticated:true});
     if (url.pathname.startsWith("/api/image/")) return imageRead(request,env,url.pathname.slice("/api/image/".length));
     if (url.pathname === "/api/marks") return redMarks(request,env);
+    if (url.pathname === "/api/re-explain") return reRequests(request,env);
     if (url.pathname.startsWith("/api/state/")) {
       if (request.method !== "GET") return json({error:"method_not_allowed"},405);
       const name = url.pathname.slice("/api/state/".length);
