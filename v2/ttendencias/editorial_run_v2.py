@@ -21,7 +21,7 @@ from datetime import datetime, timedelta, timezone
 from playwright.sync_api import sync_playwright
 
 ROOT = pathlib.Path(os.environ["LOCALAPPDATA"]) / "TTActualidadV2"
-PROFILE = ROOT / "ChromeProfile"
+PROFILE = pathlib.Path(os.environ.get("TT_V2_EDITORIAL_PROFILE", str(ROOT / "ChromeProfile")))
 DIAG_DIR = ROOT / "diagnostics"
 CHROME = pathlib.Path(os.environ.get("PROGRAMFILES", r"C:\Program Files")) / "Google" / "Chrome" / "Application" / "chrome.exe"
 # Chrome normal con ventana oculta conserva el comportamiento de autenticación
@@ -78,7 +78,8 @@ def selected(queue, trend_id):
 
 def profile_pids():
     ps = (
-        "$p=$env:LOCALAPPDATA+'\\TTActualidadV2\\ChromeProfile';"
+        "$p=$env:TT_V2_EDITORIAL_PROFILE;"
+        "if (-not $p) { $p=Join-Path $env:LOCALAPPDATA 'TTActualidadV2\\ChromeProfile' };"
         "Get-CimInstance Win32_Process -Filter \"Name='chrome.exe'\" | "
         "Where-Object { $_.CommandLine -and $_.CommandLine.Contains('--user-data-dir=') "
         "-and $_.CommandLine.Contains($p) } | "
@@ -209,19 +210,34 @@ def run_one(api, state, transcript, auth, item):
     if not CHROME.exists():
         raise RuntimeError("Chrome no encontrado")
     token = secrets.token_hex(24)
-    q, sha = queue_read(api, auth)
-    current = selected(q, trend_id)
-    if current["revision"] != revision:
-        raise RuntimeError("Revisión cambiada; no enviar")
-    # Reserva CAS, con token exclusivo.
-    now = datetime.now(timezone.utc)
-    q["items"][trend_id]["status"] = "in_progress"
-    q["items"][trend_id]["attempts"] = int(current.get("attempts", 0)) + 1
-    q["items"][trend_id]["lease"] = {
-        "token": token, "worker_id": "ttv2-native-cdp",
-        "started_at": now.isoformat(),
-        "expires_at": (now + timedelta(minutes=40)).isoformat()}
-    queue_write(api, auth, sha, q, "claim " + trend_id)
+    # Cada proceso reclama SOLO su revisión. Varias reservas simultáneas
+    # compiten por el SHA de GitHub, no por el chat: reintentar el CAS leyendo
+    # una cola fresca, sin crear un envío duplicado.
+    for claim_attempt in range(8):
+        q, sha = queue_read(api, auth)
+        current = q["items"].get(trend_id) or {}
+        if ((current.get("lease") or {}).get("token") == token
+                and current.get("revision") == revision):
+            break  # El PUT anterior pudo confirmar aunque se perdió la respuesta.
+        current = selected(q, trend_id)
+        if current["revision"] != revision:
+            raise RuntimeError("Revisión cambiada; no enviar")
+        now = datetime.now(timezone.utc)
+        q["items"][trend_id]["status"] = "in_progress"
+        q["items"][trend_id]["attempts"] = int(current.get("attempts", 0)) + 1
+        q["items"][trend_id]["lease"] = {
+            "token": token, "worker_id": "ttv2-native-cdp",
+            "started_at": now.isoformat(),
+            "expires_at": (now + timedelta(minutes=40)).isoformat()}
+        try:
+            queue_write(api, auth, sha, q, "claim " + trend_id)
+            break
+        except RuntimeError as exc:
+            if "GitHub conflict/changed revision" not in str(exc) or claim_attempt == 7:
+                raise
+            time.sleep(min(1 + claim_attempt, 4))
+    else:
+        raise RuntimeError("V2_EDITORIAL_CLAIM_EXHAUSTED")
     # La web muestra EN ELABORACIÓN antes de abrir la sesión individual.
     # Un fallo de proyección no provoca reenvío ni cambia la reserva.
     web = module("web_top30_v2.py", "ttv2_web_top30")
@@ -472,6 +488,7 @@ def main():
     target.add_argument("--trend-id")
     target.add_argument("--next", action="store_true", help="Selecciona automáticamente la próxima tendencia sin envío previo")
     parser.add_argument("--run", action="store_true", help="Habilita un único envío real")
+    parser.add_argument("--revision", type=int, help="Revisión exacta seleccionada por el consumidor")
     args = parser.parse_args()
     api = module("persist_capture_github.py", "ttv2_github")
     state = module("editorial_capture_state.py", "ttv2_state")
@@ -495,6 +512,8 @@ def main():
         item = selected(q, args.trend_id)
     if int(item.get("attempts", 0)) >= 3:
         raise RuntimeError("Max attempts reached: no send")
+    if args.revision is not None and item["revision"] != args.revision:
+        raise RuntimeError("V2_EDITORIAL_REVISION_CHANGED_NO_SEND")
     if not args.run:
         print("TT_V2_PREFLIGHT=YES")
         print("TT_V2_TREND=" + item["name"])
