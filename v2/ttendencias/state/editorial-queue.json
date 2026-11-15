@@ -3005,19 +3005,27 @@
     "trv2-876beecc59c543665de75939": {
       "trend_id": "trv2-876beecc59c543665de75939",
       "name": "País Vasco",
-      "revision": 1,
-      "status": "capture_recovery",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "ef49ebb5aeb88691",
-      "requested_at": "2026-11-15T11:39:31.412243+00:00",
-      "updated_at": "2026-11-15T12:39:15.677923+00:00",
+      "requested_at": "2026-11-15T12:53:11.795395+00:00",
+      "updated_at": "2026-11-15T12:53:11.795395+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "send_intent": {
-        "token": "aa908b97fb4114c92ec61f956b27e9a5800e4b6478f4a36e",
-        "at": "2026-11-15T12:37:13.714583+00:00"
-      },
-      "capture_recovery_reason": "chat_target_identity_not_verified"
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "capture_recovery",
+          "attempts": 1,
+          "chat_url": "https://chatgpt.com/c/local-chatgpt%3A1f776d50-7a30-4b7e-841a-271d8df91d50",
+          "started_at": null,
+          "send_intent_at": "2026-11-15T12:37:13.714583+00:00",
+          "incident_reason": "chat_target_identity_not_verified",
+          "archived_at": "2026-11-15T12:53:11.795395+00:00"
+        }
+      ],
+      "incident_retries": 1
     },
     "trv2-61c0694b4d5ab42ee2c92000": {
       "trend_id": "trv2-61c0694b4d5ab42ee2c92000",
@@ -3207,11 +3215,11 @@
     "trv2-bae8a748bd4134b1dd60ad3f",
     "trv2-c1f63537f2b9a8cd05041196",
     "trv2-1359496304a8037128e06013",
-    "trv2-876beecc59c543665de75939",
     "trv2-a6b491f4e05fc2c4e625df3f",
     "trv2-61c0694b4d5ab42ee2c92000",
     "trv2-a64d9ecc61a1f3d6e5161ba7",
-    "trv2-c4e08c84bcf5c1273c445576"
+    "trv2-c4e08c84bcf5c1273c445576",
+    "trv2-876beecc59c543665de75939"
   ],
   "effects_enabled": false
 }
