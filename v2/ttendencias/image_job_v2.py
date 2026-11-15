@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Create immutable V2 ImageGen jobs only for explicit per-trend requests.
+"""Build self-contained V2 ImageGen jobs from a persisted editorial record.
 
-This is the V2 equivalent of V1 command-scoped ImageGen jobs. Nothing is
-generated or published here; the separate V2 Chrome worker consumes the job.
+The source editorial chat is deliberately irrelevant. A new chat and its URL
+belong only to the image worker, which attaches that URL after sending.
 """
 from __future__ import annotations
 import argparse
@@ -24,10 +24,10 @@ def proposed_job(row, *, attempt=1, nonce=None):
     revision=row.get("revision")
     capture=row.get("capture") or {}
     answer=capture.get("answer")
-    chat=capture.get("chat_url")
     if (not isinstance(answer,str) or not answer.strip() or
         capture.get("revision")!=revision or
-        not isinstance(chat,str)):
+        (capture.get("sha256") is not None and
+         capture["sha256"]!=fingerprint(answer))):
         raise ValueError("V2_IMAGE_SOURCE_CAPTURE_INVALID")
     if type(attempt) is not int or not 1<=attempt<=99:
         raise ValueError("V2_IMAGE_ATTEMPT_INVALID")
@@ -35,25 +35,36 @@ def proposed_job(row, *, attempt=1, nonce=None):
     if not isinstance(nonce,str) or not 8<=len(nonce)<=60 or not all(ch.isalnum() or ch in "_-" for ch in nonce):
         raise ValueError("V2_IMAGE_NONCE_INVALID")
     command="v2-img-"+tid+"-r"+str(revision)+"-a"+str(attempt)+"-"+nonce
-    brief=" ".join(answer.split())[:1800]
-    # Mismo criterio visual de V1: gag comprensible, un estilo coherente, sin collage.
-    styles=("caricatura editorial 3D con luz cinematográfica y expresiones claras",
-            "novela gráfica satírica con tinta nítida y volumen",
-            "cartoon editorial de gran calidad con siluetas expresivas",
-            "ilustración editorial semirrealista de humor visual")
+    # Texto contrastado ya guardado en GitHub; no se pide al chat de imagen que
+    # investigue ni que reescriba la explicación. No se consulta su chat origen.
+    brief=" ".join(answer.split())[:6000]
+    # Referencia V1: trends/editorial-style.md, escena narrativa tipo Cleveland.
+    styles=("cómic europeo editorial con personajes expresivos y dibujo nítido",
+            "grabado moderno con volumen, luces y humor narrativo",
+            "tinta y acuarela con profundidad, textura y una escena viva",
+            "caricatura editorial 3D con iluminación cinematográfica")
     style=styles[int.from_bytes(hashlib.sha256(tid.encode("utf-8")).digest()[:2],"big")%len(styles)]
     prompt=("TT_V2_IMAGE_JOB_V1 "+command+" "+tid+" | "
-            "Usa ImageGen AHORA. Genera UNA SOLA imagen GAG editorial original "
-            "basada únicamente en el contexto facilitado; estilo: "+style+". Dibujo nítido y acabado "
-            "de gran calidad, resolución al menos 1024px, composición limpia y "
-            "una SOLA idea visual cómica que se entienda al instante: más gag, menos barroquismo. No hagas un collage "
-            "ni incrustes titulares, hashtags, rótulos, marcas de agua ni texto. "
-            "No inventes hechos ni presentes una situación satírica como fotografía real. "
-            "No publiques en redes ni modifiques Github. "
+            "Usa ImageGen AHORA y genera UNA SOLA imagen GAG original. "
+            "Este es un CHAT NUEVO e independiente: no busques ni abras la conversación "
+            "donde se redactó el texto, no investigues ni reescribas la explicación. "
             "Tendencia: "+str(row.get("name") or tid)+". "
-            "Contexto editorial: "+brief)
+            "Identificador: "+tid+". Revisión: "+str(revision)+". "
+            "TEXTO EDITORIAL YA EXPLICADO (fuente del gag; no lo reescribas): "+brief+". "
+            "DIRECCIÓN VISUAL: "+style+". Aplica el estilo editorial V1: "
+            "escena narrativa única con protagonistas, acción reconocible, una metáfora "
+            "o exageración visual relacionada con el hecho, expresiones, profundidad, "
+            "iluminación y textura. Una sola idea que se entienda sin leer texto, "
+            "en 1-2 segundos; más gag, menos barroquismo. Acabado profesional "
+            "y mínimo 1024px de anchura. No esquemas, infografías, flechas, "
+            "conectores, medallones, avatares flotantes, paneles, marcadores, "
+            "dashboards ni collage. Cero titulares, hashtags, rótulos, marcas "
+            "de agua o texto superpuesto; no dibujes guindillas, chiles ni símbolos 🌶️. "
+            "En sucesos graves no hagas humor a costa de víctimas. Si la causa "
+            "de la tendencia no está confirmada, evita presentar hipótesis como hechos. "
+            "No publiques en redes ni modifiques GitHub.")
     result={"version":1,"trend_id":tid,"revision":revision,"attempt":attempt,
-            "command_id":command,"conversation_url":chat,
+            "command_id":command,
             "editorial_sha256":fingerprint(answer),"prompt":prompt,
             "state":"pending_imagegen"}
     validate_job(result)
