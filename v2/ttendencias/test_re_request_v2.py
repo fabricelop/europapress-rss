@@ -25,14 +25,16 @@ class ReRequestTest(unittest.TestCase):
         args.update(changes)
         return request_reexplanation(self.queue, self.history, **args)
 
-    def test_keeps_previous_capture_but_unbinds_it_from_new_revision(self):
+    def test_restarts_entire_editorial_without_previous_text_or_image(self):
         updated, status = self.invoke()
         self.assertEqual(status, "ENQUEUED")
         row = updated["items"][ID]
         self.assertEqual(row["revision"], 2)
         self.assertEqual(row["status"], "review_pending")
         self.assertNotIn("capture", row)
-        self.assertEqual(row["previous_capture"]["image"]["status"], "saved")
+        self.assertNotIn("previous_capture", row)
+        self.assertNotIn("previous_explanation", row)
+        self.assertNotIn("previous_revision", row)
         self.assertEqual(updated["pending_ids"], [ID])
         self.assertIn("capture", self.queue["items"][ID])
 
