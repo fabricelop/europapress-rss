@@ -12,7 +12,7 @@ class ReProjectionTest(unittest.TestCase):
              "items":{k:{"trend_id":k,"status":"pending","revision":1} for k in ids}}
         return h,q,ids[0]
 
-    def test_previous_explanation_visible_until_new_capture(self):
+    def test_re_starts_without_old_explanation_or_image(self):
         h,q,id = self.sample()
         sha="a"*64
         cap={"revision":1,"verified_complete":True,"answer":"Noticia anterior verificada. "*5,
@@ -21,12 +21,13 @@ class ReProjectionTest(unittest.TestCase):
                       "mime":"image/png","command_id":"v2-img-"+id+"-r1-a1-1234567890abcd12",
                       "path":"v2/ttendencias/generated-images/"+id+"-r1-"+sha[:24]+".png"}}
         row=q["items"][id]
-        row.update(status="review_pending",revision=2,previous_revision=1,previous_status="captured_review",previous_capture=cap)
+        row.update(status="review_pending",revision=2,reason="user_reexplanation")
         first=web.build(h,q)["items"][0]
         self.assertTrue(first["re_in_progress"])
-        self.assertEqual(first["status"],"explicada")
-        self.assertEqual(first["revision"],1)
-        self.assertTrue(first["image_available"])
+        self.assertEqual(first["status"],"pendiente")
+        self.assertEqual(first["revision"],2)
+        self.assertFalse(first["image_available"])
+        self.assertEqual(first["explanation"], "")
         row.update(status="captured_review",capture={"revision":2,"verified_complete":True,
            "answer":"Explicación nueva verificada. "*6,"sha256":"c"*64})
         new=web.build(h,q)["items"][0]
