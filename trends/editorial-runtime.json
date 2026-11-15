@@ -7,16 +7,21 @@
   "previous_run_id": "tr-20261115T065500-chat-direct",
   "command_id": "tr-20261115T071000-chat-direct",
   "source": "chat_direct",
-  "status": "RUNNING",
+  "status": "success",
   "phase": "investigating",
   "started_at": "2026-11-15T07:10:00+01:00",
-  "updated_at": "2026-11-15T07:11:30+01:00",
+  "updated_at": "2026-11-15T07:13:26+01:00",
   "current": 0,
   "total": 4,
   "trend_id": "4bd437d1d3a9",
   "title": "Hokit",
-  "queue_complete": false,
-  "processed_ids": [],
+  "queue_complete": true,
+  "processed_ids": [
+    "0b6b06455b21",
+    "3e6b47750af6",
+    "4bd437d1d3a9",
+    "fc95d3051d65"
+  ],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
@@ -750,8 +755,8 @@
       "message": "Refresco 07:10 creó 4 pendientes: Hokit, Gane, #LaSextaDebate y Amanda Nunes. Inicia investigación JIT de Hokit; sin ImageGen ni publicación."
     }
   ],
-  "last_started_at": "2026-11-15T06:55:00+01:00",
-  "last_completed_at": "2026-11-15T06:55:30+01:00",
+  "last_started_at": "2026-11-15T07:13:25+01:00",
+  "last_completed_at": "2026-11-15T07:13:26+01:00",
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-20261115T065500-chat-direct",
