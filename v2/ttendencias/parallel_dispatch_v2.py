@@ -28,8 +28,9 @@ def _ignore_chrome_cache(directory, contents):
 def prepare_profiles(base, count, *, source_running):
     """Provision distinct Chrome data dirs while source is completely closed.
 
-    Never overwrite an existing worker profile. An interrupted copy is treated
-    as a safety stop, not silently reused or deleted.
+    Never overwrite an existing worker profile. A verified complete staging
+    directory may be used as its own slot if Windows blocks renaming it.
+    An incomplete copy is never silently reused or deleted.
     """
     base = pathlib.Path(base)
     if not 1 <= count <= 6:
@@ -43,16 +44,32 @@ def prepare_profiles(base, count, *, source_running):
         destination = base.with_name(base.name + "-Parallel-%02d" % index)
         marker = destination / "tt-v2-parallel-ready.marker"
         temporary = destination.with_name(destination.name + ".building")
+        selected = destination
         if destination.exists():
             if not marker.is_file():
                 raise RuntimeError("V2_PARALLEL_PROFILE_INCOMPLETE_" + str(index))
         else:
             if temporary.exists():
-                raise RuntimeError("V2_PARALLEL_PROFILE_PARTIAL_COPY_" + str(index))
-            shutil.copytree(base, temporary, ignore=_ignore_chrome_cache)
-            (temporary / marker.name).write_text("TT_V2_ISOLATED_PROFILE\n", encoding="utf-8")
-            temporary.replace(destination)
-        profiles.append(destination)
+                # A previous Windows rename may have failed with WinError 5
+                # AFTER copy and marker succeeded. Keep the fully prepared
+                # directory instead of copying credentials again or deleting it.
+                if not (temporary / marker.name).is_file():
+                    raise RuntimeError("V2_PARALLEL_PROFILE_PARTIAL_COPY_" + str(index))
+                selected = temporary
+            else:
+                shutil.copytree(base, temporary, ignore=_ignore_chrome_cache)
+                (temporary / marker.name).write_text(
+                    "TT_V2_ISOLATED_PROFILE\n", encoding="utf-8")
+                try:
+                    temporary.replace(destination)
+                except PermissionError:
+                    # NTFS/antivirus can forbid directory rename although
+                    # the staged profile itself is complete and writable.
+                    # The worker accepts an arbitrary absolute profile path.
+                    selected = temporary
+        if not (selected / marker.name).is_file() and selected != base:
+            raise RuntimeError("V2_PARALLEL_PROFILE_NOT_VERIFIED_" + str(index))
+        profiles.append(selected)
     return profiles
 
 
