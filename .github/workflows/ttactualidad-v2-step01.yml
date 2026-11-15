@@ -49,6 +49,25 @@ jobs:
           }
           if ($source -match '(?i)\b(Stop-Process|Stop-ScheduledTask|taskkill)\b') { throw 'Recuperacion V2 debe ser no destructiva' }
           Write-Host 'TT_V2_WINDOWS_RECOVERY_TESTS=OK'
+      - name: Validar instalación Pillow sin NativeCommandError en Windows
+        shell: powershell
+        run: |
+          $path = 'v2/ttendencias/Install-V2-Editorial-Auto.ps1'
+          $source = Get-Content $path -Raw
+          $tokens = $null
+          $errors = $null
+          [Management.Automation.Language.Parser]::ParseFile($path,[ref]$tokens,[ref]$errors) | Out-Null
+          if ($errors.Count -gt 0) { throw 'Sintaxis inválida en instalador V2' }
+          foreach ($marker in @('install-pillow.stderr.log','pillowInstall.ExitCode','TT_V2_PILLOW=OK')) {
+            if (!$source.Contains($marker)) { throw "Control de Pillow ausente: $marker" }
+          }
+          if ($source -match '(?m)^\s*&\s*\$py\s+-3\s+-m\s+pip') { throw 'pip en PowerShell 5.1 no debe usar llamada nativa directa' }
+          $out = Join-Path $env:RUNNER_TEMP 'v2-pip-check.stdout.log'
+          $err = Join-Path $env:RUNNER_TEMP 'v2-pip-check.stderr.log'
+          $py = (Get-Command py.exe -ErrorAction Stop).Source
+          $probe = Start-Process -FilePath $py -ArgumentList @('-3','-m','pip','--version') -Wait -PassThru -WindowStyle Hidden -RedirectStandardOutput $out -RedirectStandardError $err
+          if ($probe.ExitCode -ne 0) { throw 'Prueba Win32 de proceso Python fallida' }
+          Write-Host 'TT_V2_PILLOW_NATIVE_ERROR_REGRESSION=PASS'
   test-step-01:
     if: github.ref == 'refs/heads/feature/ttactualidad-v2-clean' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
