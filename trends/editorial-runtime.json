@@ -7,15 +7,15 @@
   "previous_run_id": "tr-20261115T081000-chat-direct",
   "command_id": "tr-20261115T084100-chat-direct",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-15T08:41:00+01:00",
-  "updated_at": "2026-11-15T08:41:00+01:00",
+  "updated_at": "2026-11-15T08:42:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
   "title": null,
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -807,63 +807,41 @@
       "status": "RUNNING",
       "phase": "preparing",
       "message": "Ejecución manual iniciada desde ChatGPT; Top30 capturado a las 08:40:56 con fuente sin cambio verificable y cola autoritativa inicial=0. Revalidación JIT; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-15T08:42:00+01:00",
+      "run_id": "tr-20261115T084100-chat-direct",
+      "status": "DONE",
+      "phase": "closing",
+      "message": "Pasada TTendencias completada 0/0. La barrera final revalidó editorial-queue=0 (updated_at 08:41:00). El Top 30 se capturó a las 08:40:56, pero la fuente quedó sin cambio verificable; no se inventaron movimientos. ImageGen editorial=0; publicaciones=0; incidentes=0."
     }
   ],
   "last_started_at": "2026-11-15T08:41:00+01:00",
-  "last_completed_at": "2026-11-15T08:16:05+01:00",
+  "last_completed_at": "2026-11-15T08:42:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261115T081000-chat-direct",
+    "run_id": "tr-20261115T084100-chat-direct",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-11-15T08:10:00+01:00",
-    "updated_at": "2026-11-15T08:16:05+01:00",
-    "finished_at": "2026-11-15T08:16:05+01:00",
-    "current": 3,
-    "total": 3,
+    "started_at": "2026-11-15T08:41:00+01:00",
+    "updated_at": "2026-11-15T08:42:00+01:00",
+    "finished_at": "2026-11-15T08:42:00+01:00",
+    "current": 0,
+    "total": 0,
     "queue_complete": true,
-    "processed_ids": [
-      "60c5d7941545",
-      "121f837d3b59",
-      "red-review-f679230c7cf95bb0617c"
-    ],
+    "processed_ids": [],
     "remaining_ids": [],
-    "outcomes": [
-      {
-        "id": "60c5d7941545",
-        "revision": 0,
-        "name": "#FelizDomingo",
-        "outcome": "review_completed_no_distinct_event",
-        "applied": true,
-        "apply_commit": "759a0825c30bf8a1acac455d42f8d46d65827f6e"
-      },
-      {
-        "id": "121f837d3b59",
-        "revision": 0,
-        "name": "Rosalia",
-        "outcome": "review_completed_no_distinct_event",
-        "applied": true,
-        "apply_commit": "759a0825c30bf8a1acac455d42f8d46d65827f6e"
-      },
-      {
-        "id": "red-review-f679230c7cf95bb0617c",
-        "revision": 0,
-        "name": "Revisar novedades: Carlos Cuerpo",
-        "outcome": "unchanged",
-        "applied": true,
-        "apply_commit": "42c3c63fe62c66531d6e00aa7a34332f1fbb619d"
-      }
-    ],
+    "outcomes": [],
     "summary": {
-      "attempted": 3,
-      "observed": 3,
-      "closed": 3,
+      "attempted": 0,
+      "observed": 0,
+      "closed": 0,
       "explained": 0,
       "problematic": 0,
       "updates": 0,
-      "review_completed_no_distinct_event": 2,
-      "maintenance_reviews": 1,
-      "unchanged_reviews": 1,
+      "review_completed_no_distinct_event": 0,
+      "maintenance_reviews": 0,
+      "unchanged_reviews": 0,
       "continuity_updates": 0,
       "distinct_updates": 0,
       "stale_reviews": 0,
@@ -881,7 +859,7 @@
     },
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada TTendencias completada 3/3. #FelizDomingo y Rosalia cerradas como reentradas sin episodio material distinto; Carlos Cuerpo revisado sin novedades sustanciales y conservado sin cambios. Barrera final editorial-queue=0. ImageGen editorial=0; publicaciones=0; incidentes=0."
+    "message": "Pasada TTendencias completada 0/0. La barrera final revalidó editorial-queue=0 (updated_at 08:41:00). El Top 30 se capturó a las 08:40:56, pero la fuente quedó sin cambio verificable; no se inventaron movimientos. ImageGen editorial=0; publicaciones=0; incidentes=0."
   },
   "message": "Pasada TTendencias completada 3/3. #FelizDomingo y Rosalia cerradas como reentradas sin episodio material distinto; Carlos Cuerpo revisado sin novedades sustanciales y conservado sin cambios. Barrera final editorial-queue=0. ImageGen editorial=0; publicaciones=0; incidentes=0.",
   "history": [
@@ -10069,5 +10047,5 @@
   ],
   "processed": [],
   "completed_at": "2026-11-15T08:16:05+01:00",
-  "finished_at": "2026-11-15T08:16:05+01:00"
+  "finished_at": "2026-11-15T08:42:00+01:00"
 }
