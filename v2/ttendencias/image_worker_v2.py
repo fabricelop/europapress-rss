@@ -27,7 +27,7 @@ import image_same_chat_v2 as image_page
 from select_current_top30_v2 import read_history, select_current_top30
 
 ROOT = editorial.ROOT
-PROFILE = ROOT / "ChromeProfileImages"
+PROFILE = pathlib.Path(os.environ.get("TT_V2_IMAGE_PROFILE", str(ROOT / "ChromeProfileImages")))
 JOURNALS = ROOT / "image-only-journals"
 CHROME = editorial.CHROME
 COOLDOWN_SECONDS = 240
@@ -38,7 +38,8 @@ HEADLESS = os.environ.get("TT_V2_IMAGE_CHROME_HEADLESS", "0").strip().lower() no
 def image_profile_pids():
     """Only image Chrome children; editorial/V1 may run at the same time."""
     ps = (
-        "$p=Join-Path $env:LOCALAPPDATA 'TTActualidadV2\\ChromeProfileImages';"
+        "$p=$env:TT_V2_IMAGE_PROFILE;"
+        "if (-not $p) { $p=Join-Path $env:LOCALAPPDATA 'TTActualidadV2\\ChromeProfileImages' };"
         "Get-CimInstance Win32_Process -Filter \"Name='chrome.exe'\" | "
         "Where-Object { $_.CommandLine -and $_.CommandLine.Contains('--user-data-dir=') "
         "-and $_.CommandLine.Contains($p) } | "
@@ -85,6 +86,8 @@ def next_attempt(row, *, now=None):
     now = now or datetime.now(timezone.utc)
     tid, rev = row["trend_id"], row["revision"]
     previous = sorted(JOURNALS.glob("%s-r%d-attempt-*.json" % (tid, rev)))
+    if len(previous) >= 99:
+        return None  # No reciclar el identificador de comando del intento 99.
     if previous:
         last = json.loads(previous[-1].read_text(encoding="utf-8"))
         if last.get("status") not in ("saved", "bound_by_other"):
@@ -131,6 +134,8 @@ def run_one(row, attempt, *, api, auth):
         raise RuntimeError("V2_IMAGE_CHROME_NOT_FOUND")
     if not PROFILE.is_dir():
         raise RuntimeError("V2_IMAGE_PROFILE_LOGIN_REQUIRED")
+    if journal_path(tid, rev, attempt).exists():
+        raise RuntimeError("V2_IMAGE_ATTEMPT_ALREADY_RECORDED_NO_RESEND")
     # The job is immutable for this attempt. Its destination chat URL will be
     # updated only after ChatGPT's new conversation is proven to contain it.
     job = jobs.proposed_job(row, attempt=min(attempt, 99),
@@ -268,12 +273,27 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--run-one", action="store_true",
                         help="Generate one image on a separate ChatGPT conversation")
+    parser.add_argument("--trend-id", help="ID reservado por el despachador paralelo")
+    parser.add_argument("--revision", type=int)
+    parser.add_argument("--attempt", type=int)
     args = parser.parse_args()
     api = editorial.module("persist_capture_github.py", "ttv2_image_github_api")
     auth = api.token()
     queue, _ = editorial.queue_read(api, auth)
     history = read_history(auth)
-    row, attempt = pick_next(queue, history)
+    if args.trend_id:
+        if not args.run_one or args.revision is None or args.attempt is None:
+            raise RuntimeError("V2_IMAGE_EXPLICIT_JOB_INCOMPLETE")
+        row = next((candidate for candidate in ranked_candidates(queue, history)
+                    if candidate["trend_id"] == args.trend_id
+                    and candidate["revision"] == args.revision), None)
+        if row is None:
+            raise RuntimeError("V2_IMAGE_EXPLICIT_JOB_NOT_CURRENT_TOP30")
+        attempt = next_attempt(row)
+        if attempt != args.attempt:
+            raise RuntimeError("V2_IMAGE_ATTEMPT_STALE_NO_RESEND")
+    else:
+        row, attempt = pick_next(queue, history)
     print("TT_V2_IMAGE_SELECTION=CURRENT_TOP30_RANK_ORDER")
     print("TT_V2_IMAGE_NEXT=" + ((row["name"] + ":r" + str(row["revision"])) if row else "NONE"))
     print("TT_V2_IMAGE_ATTEMPT=" + str(attempt or 0))
