@@ -1,0 +1,38 @@
+name: TTActualidad V2 - comprobar Worker privado antes del despliegue
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/ttactualidad-v2-private-deploy.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Comprobar permisos y bindings sin revelar valores secretos
+        env:
+          CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CF_ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          python3 - <<'PY'
+          import json,os,urllib.request,urllib.error
+          worker='ttactualidad-v2-private-test'
+          url='https://api.cloudflare.com/client/v4/accounts/'+os.environ['CF_ACCOUNT']+'/workers/scripts/'+worker+'/settings'
+          req=urllib.request.Request(url,headers={'Authorization':'Bearer '+os.environ['CF_TOKEN'],'Accept':'application/json'})
+          try:
+              with urllib.request.urlopen(req,timeout=20) as response: data=json.load(response)
+          except urllib.error.HTTPError as err:
+              print('TT_V2_PRIVATE_WORKER_SETTINGS_STATUS='+str(err.code))
+              raise SystemExit(1)
+          if data.get('success') is not True: raise SystemExit('WORKER_SETTINGS_NOT_AVAILABLE')
+          settings=data.get('result') or {}
+          print('TT_V2_PRIVATE_WORKER_SETTINGS_OK=YES')
+          print('WORKER_BINDING_NAMES_AND_TYPES='+json.dumps([{'name':b.get('name'),'type':b.get('type')} for b in settings.get('bindings',[])],ensure_ascii=False))
+          print('WORKER_COMPATIBILITY_DATE='+str(settings.get('compatibility_date','')))
+          PY
