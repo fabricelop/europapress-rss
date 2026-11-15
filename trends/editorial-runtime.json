@@ -3,41 +3,34 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261115T061000-chat-direct",
-  "previous_run_id": "tr-20261115T055500-chat-direct",
-  "command_id": "tr-20261115T061000-chat-direct",
+  "run_id": "tr-20261115T062500-chat-direct",
+  "previous_run_id": "tr-20261115T061000-chat-direct",
+  "command_id": "tr-20261115T062500-chat-direct",
   "source": "chat_direct",
-  "status": "DONE_WITH_INCIDENTS",
-  "phase": "closing",
-  "started_at": "2026-11-15T06:10:00+01:00",
-  "updated_at": "2026-11-15T06:20:00+01:00",
-  "current": 6,
-  "total": 6,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-15T06:25:00+01:00",
+  "updated_at": "2026-11-15T06:25:00+01:00",
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": true,
-  "processed_ids": [
-    "25877b98fccb",
-    "153a799bb14d",
-    "891abd5656f7",
-    "52e8e47b38e8",
-    "red-review-4e85408dd9aa52b68051",
-    "red-review-2386767be56fc0eda1cf"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 6,
-    "observed": 6,
-    "closed": 6,
-    "explained": 4,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 2,
-    "unchanged_reviews": 2,
+    "maintenance_reviews": 0,
+    "unchanged_reviews": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "stale_reviews": 0,
@@ -50,63 +43,12 @@
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 1,
+    "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "25877b98fccb",
-      "revision": 0,
-      "name": "Medic",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "153a799bb14d",
-      "revision": 0,
-      "name": "Holland",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "891abd5656f7",
-      "revision": 0,
-      "name": "Kayla",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "52e8e47b38e8",
-      "revision": 0,
-      "name": "amanda",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "red-review-4e85408dd9aa52b68051",
-      "revision": 0,
-      "name": "Revisar novedades: Microsoft",
-      "outcome": "unchanged",
-      "applied": true
-    },
-    {
-      "id": "red-review-2386767be56fc0eda1cf",
-      "revision": 0,
-      "name": "Revisar novedades: Jordi Wild",
-      "outcome": "unchanged",
-      "applied": true
-    }
-  ],
-  "incident_count": 1,
-  "incidents": [
-    {
-      "at": "2026-11-15T06:12:30+01:00",
-      "phase": "persisting",
-      "trend_id": "25877b98fccb",
-      "title": "Medic",
-      "reason": "La escritura atómica directa de los registros grandes falló por transporte h2; se recuperó mediante editorial-outbox y el aplicador oficial."
-    }
-  ],
+  "outcomes": [],
+  "incident_count": 0,
+  "incidents": [],
   "error": null,
   "activity": [
     {
@@ -747,6 +689,13 @@
       "status": "DONE",
       "phase": "closing",
       "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 2026-11-15T05:51:21+01:00) y sin estados editoriales activos en requests/mobile-decisions. No había investigaciones, anticipaciones ni revisiones pendientes que procesar. ImageGen=0; publicaciones=0; incidentes=0."
+    },
+    {
+      "at": "2026-11-15T06:25:00+01:00",
+      "run_id": "tr-20261115T062500-chat-direct",
+      "status": "RUNNING",
+      "phase": "preparing",
+      "message": "Pasada manual iniciada desde ChatGPT; cola autoritativa inicial=0 (actualizada 06:20:59). Revalidando barrera editorial JIT contra main; sin ImageGen ni publicación."
     }
   ],
   "last_started_at": "2026-11-15T06:14:59+01:00",
@@ -9872,9 +9821,7 @@
   ],
   "maintenance_apply_run_id": 43614430012,
   "maintenance_apply_commit": "074b3f7e87b6260fde12e02ec813bdd56b8cc218",
-  "completed_at": "2026-11-15T06:20:00+01:00",
   "input_commit": "d657e81fd73a9f4f14a0bc2ac55d968a79eaf428",
-  "finished_at": "2026-11-15T06:20:00+01:00",
   "apply_commits": [
     "36a6bdedee2ab6b1689dab6eb97f1f5f56e0ba70"
   ]
