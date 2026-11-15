@@ -1,4 +1,4 @@
-"""Solicitud RE V2: nueva revisión sin ocultar la edición ya visible.
+"""Solicitud RE V2: reinicio editorial, sin reutilizar texto ni imagen.
 
 Solo transforma una copia de la cola aislada y no publica contenido.
 """
@@ -42,15 +42,11 @@ def request_reexplanation(queue, history, *, trend_id, base_revision, entered_to
         raise ValueError("Fecha de solicitud no válida")
     copy = deepcopy(queue)
     item = copy["items"][trend_id]
-    item["previous_revision"] = base_revision
-    item["previous_status"] = old["status"]
-    item["previous_capture"] = deepcopy(old.get("capture") or {})
-    item["previous_explanation"] = {
-        "revision": base_revision,
-        "status": old["status"],
-        "completed_at": old.get("completed_at"),
-        "text": old.get("text"),
-    }
+    # La revisión previa sigue en el historial de Git, pero no en la cola activa:
+    # ni su imagen ni su texto deben aparecer durante el nuevo proceso editorial.
+    for key in ("previous_revision", "previous_status", "previous_capture",
+                "previous_explanation"):
+        item.pop(key, None)
     item["revision"] = base_revision + 1
     item["status"] = "review_pending"
     item["reason"] = "user_reexplanation"
