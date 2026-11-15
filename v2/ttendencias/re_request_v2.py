@@ -9,7 +9,16 @@ from copy import deepcopy
 DISPLAYED = {"captured_review", "ready", "published"}
 
 
-def request_reexplanation(queue, history, *, trend_id, base_revision, entered_top30_at, requested_at):
+def request_reexplanation(queue, history, *, trend_id, base_revision, entered_top30_at, requested_at, mode="standard", hints=""):
+    """RE or RE-X; hints are user-supplied search leads, not verified facts."""
+    if mode not in {"standard", "x"}:
+        raise ValueError("Modalidad RE incorrecta")
+    if mode == "x":
+        if not isinstance(hints, str) or not 10 <= len(hints.strip()) <= 1200:
+            raise ValueError("RE-X necesita pistas de 10 a 1200 caracteres")
+        hints = hints.strip()
+    elif hints:
+        raise ValueError("RE ordinaria no acepta pistas")
     if (queue.get("step") != "04_editorial_queue"
             or queue.get("effects_enabled") is not False
             or history.get("step") != "03_movement"
@@ -51,6 +60,11 @@ def request_reexplanation(queue, history, *, trend_id, base_revision, entered_to
     item["revision"] = base_revision + 1
     item["status"] = "review_pending"
     item["reason"] = "user_reexplanation"
+    item["review_mode"] = mode
+    if mode == "x":
+        item["review_hints"] = hints
+    else:
+        item.pop("review_hints", None)
     # New revision gets a fresh retry budget; failures of the old explanation
     # must not silently make the user-requested revision ineligible.
     item["attempts"] = 0
