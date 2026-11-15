@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-15T11:31:11.412253+00:00",
+  "checked_at": "2026-11-15T11:46:00.350512+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -59,8 +59,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 5.4,
-      "run_id": 43708873988,
+      "age_minutes": 5.3,
+      "run_id": 43710076043,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -81,21 +81,33 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": true,
-      "pending_count": 3,
-      "overdue_count": 0,
-      "oldest_age_minutes": 20.0,
+      "ok": false,
+      "pending_count": 2,
+      "overdue_count": 2,
+      "oldest_age_minutes": 34.8,
       "warning_after_minutes": 30,
-      "overdue_items": [],
+      "overdue_items": [
+        {
+          "id": "e91bfa95d1e6",
+          "name": "Madrid y Ávila",
+          "status": "preparing",
+          "age_minutes": 34.8
+        },
+        {
+          "id": "b186b88b4160",
+          "name": "País Vasco",
+          "status": "preparing",
+          "age_minutes": 34.8
+        }
+      ],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": true,
-      "status": "not-required",
+      "ok": false,
+      "status": "overdue",
       "queue_complete": false,
       "remaining_active_ids": [
         "e91bfa95d1e6",
-        "4c1b1c26ef67",
         "b186b88b4160"
       ],
       "contradictory_success": false
@@ -109,9 +121,10 @@
   "repairs_started": [],
   "blocking": [
     "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos",
-    "cola con 272 estado(s) inválido(s)"
+    "cola con 272 estado(s) inválido(s)",
+    "cola de explicaciones retrasada: 2 pendiente(s) superan 30 min; más antigua 34.8 min"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 272 estado(s) inválido(s)"
+  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 272 estado(s) inválido(s) | cola de explicaciones retrasada: 2 pendiente(s) superan 30 min; más antigua 34.8 min"
 }
