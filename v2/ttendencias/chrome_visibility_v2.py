@@ -89,21 +89,39 @@ def visible_windows_for_pids(pids):
 class V2WindowHider:
     """Maintain hidden V2 windows across navigation / Chrome-created windows."""
 
-    def __init__(self, find_pids, *, interval=0.8):
+    def __init__(self, find_pids, *, interval=0.25, refresh_seconds=3,
+                 primary_pid=None):
         self.find_pids = find_pids
         self.interval = interval
+        self.refresh_seconds = refresh_seconds
+        self.known_pids = {int(primary_pid)} if primary_pid else set()
         self.closed = threading.Event()
         self.thread = None
         self.last_error = None
         self.windows_hidden = 0
 
     def _watch(self):
+        last_refresh = 0.0
         while not self.closed.is_set():
             try:
-                self.windows_hidden += hide_windows_for_pids(self.find_pids())
+                now = time.monotonic()
+                # PowerShell process discovery costs much more than ShowWindow.
+                # Reuse exact verified PIDs between scans while hiding new HWNDs
+                # four times per second without affecting a personal Chrome.
+                if now - last_refresh >= self.refresh_seconds:
+                    self.known_pids = {int(pid) for pid in self.find_pids()}
+                    last_refresh = now
+                self.windows_hidden += hide_windows_for_pids(self.known_pids)
             except Exception as exc:
                 self.last_error = type(exc).__name__ + ": " + str(exc)[:120]
             self.closed.wait(self.interval)
+
+    def ensure_hidden(self):
+        """Fail closed if any HWND of this worker stays visible before send."""
+        pids = self.find_pids()
+        hide_windows_for_pids(pids)
+        if visible_windows_for_pids(pids):
+            raise RuntimeError("V2_CHROME_WINDOW_VISIBLE")
 
     def start(self):
         if os.name != "nt":
