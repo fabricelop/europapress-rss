@@ -1,11 +1,23 @@
 {
   "version": 2,
-  "command_id": "tr-1794737577108-manual",
-  "requested_at": "2026-11-15T10:12:57.108Z",
+  "command_id": "tr-autoguard-1794739037",
+  "requested_at": "2026-11-15T10:37:17.331408Z",
   "mode": "manual_pc_chat",
   "executor": "pc_chat_ttendencias_dedicated",
   "project": "ttendencias",
   "launcher_arg": "tendencias",
   "task": "editorial",
-  "auto_image_followup": false
+  "auto_image_followup": false,
+  "source": "tt_autoheal_editorial_watchdog",
+  "reason": "editorial_not_started_in_time",
+  "pending_ids": [
+    "30aed7408eba",
+    "4c6b146e335a",
+    "58d1af20a0d3",
+    "fbdff5b1d1bf"
+  ],
+  "target_id": "30aed7408eba",
+  "target_revision": 0,
+  "target_name": "AVE Madrid-Sevilla",
+  "scope": "single_item"
 }
