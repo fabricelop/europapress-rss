@@ -7,70 +7,54 @@
   "previous_run_id": "tr-20261114T232800-chat-direct",
   "command_id": "tr-20261115T043600-chat-direct",
   "source": "chat_direct",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-15T04:36:00+01:00",
-  "updated_at": "2026-11-15T04:44:00+01:00",
-  "current": 0,
+  "updated_at": "2026-11-15T04:45:00+01:00",
+  "current": 15,
   "total": 15,
-  "trend_id": "7d14ea90ddc9",
-  "title": "#laSextaXplica",
-  "queue_complete": false,
-  "processed_ids": [],
+  "trend_id": null,
+  "title": "Pasada editorial TTendencias",
+  "queue_complete": true,
+  "processed_ids": [
+    "7d14ea90ddc9",
+    "da1b6aaf7d73",
+    "fa8aecbc4a8e",
+    "c4218e7b3336",
+    "65b2bb5d8420",
+    "b2eb0fa2b016",
+    "e55be0abf8a8",
+    "f24b52468bfa",
+    "5413818bec36",
+    "1c7dfddd5335",
+    "b60673ab34ed",
+    "c454cd997976",
+    "180a8346f226",
+    "a84ae67bcb59",
+    "9675e198b09e"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "7d14ea90ddc9",
-    "da1b6aaf7d73",
-    "fa8aecbc4a8e",
-    "c4218e7b3336",
-    "65b2bb5d8420",
-    "b2eb0fa2b016",
-    "e55be0abf8a8",
-    "f24b52468bfa",
-    "5413818bec36",
-    "1c7dfddd5335",
-    "b60673ab34ed",
-    "c454cd997976",
-    "180a8346f226",
-    "a84ae67bcb59",
-    "9675e198b09e"
-  ],
-  "remaining_active_ids": [
-    "7d14ea90ddc9",
-    "da1b6aaf7d73",
-    "fa8aecbc4a8e",
-    "c4218e7b3336",
-    "65b2bb5d8420",
-    "b2eb0fa2b016",
-    "e55be0abf8a8",
-    "f24b52468bfa",
-    "5413818bec36",
-    "1c7dfddd5335",
-    "b60673ab34ed",
-    "c454cd997976",
-    "180a8346f226",
-    "a84ae67bcb59",
-    "9675e198b09e"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
+    "attempted": 15,
     "observed": 15,
-    "closed": 0,
-    "explained": 0,
+    "closed": 15,
+    "explained": 11,
     "problematic": 0,
     "updates": 0,
-    "review_completed_no_distinct_event": 0,
+    "review_completed_no_distinct_event": 4,
     "maintenance_reviews": 0,
-    "unchanged_reviews": 0,
+    "unchanged_reviews": 4,
     "continuity_updates": 0,
-    "distinct_updates": 0,
+    "distinct_updates": 4,
     "stale_reviews": 0,
     "unverified_reviews": 0,
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 15,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -79,7 +63,113 @@
     "concurrent_convergence": 0,
     "cause_unconfirmed": 0
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "7d14ea90ddc9",
+      "name": "#laSextaXplica",
+      "revision": 0,
+      "outcome": "explained",
+      "review_reason": null
+    },
+    {
+      "id": "da1b6aaf7d73",
+      "name": "Cristiano",
+      "revision": 0,
+      "outcome": "explained",
+      "review_reason": null
+    },
+    {
+      "id": "fa8aecbc4a8e",
+      "name": "LoL 2",
+      "revision": 0,
+      "outcome": "explained",
+      "review_reason": null
+    },
+    {
+      "id": "c4218e7b3336",
+      "name": "Dinamarca",
+      "revision": 0,
+      "outcome": "explained",
+      "review_reason": null
+    },
+    {
+      "id": "65b2bb5d8420",
+      "name": "Chovy",
+      "revision": 0,
+      "outcome": "explained",
+      "review_reason": null
+    },
+    {
+      "id": "b2eb0fa2b016",
+      "name": "Ruler",
+      "revision": 0,
+      "outcome": "explained",
+      "review_reason": null
+    },
+    {
+      "id": "e55be0abf8a8",
+      "name": "Gazir",
+      "revision": 0,
+      "outcome": "explained",
+      "review_reason": null
+    },
+    {
+      "id": "f24b52468bfa",
+      "name": "Knight",
+      "revision": 0,
+      "outcome": "explained",
+      "review_reason": null
+    },
+    {
+      "id": "5413818bec36",
+      "name": "GenG",
+      "revision": 0,
+      "outcome": "explained",
+      "review_reason": null
+    },
+    {
+      "id": "1c7dfddd5335",
+      "name": "#PazCasaTrabajo29N",
+      "revision": 0,
+      "outcome": "review_completed",
+      "review_reason": "no_distinct_event"
+    },
+    {
+      "id": "b60673ab34ed",
+      "name": "Colau",
+      "revision": 0,
+      "outcome": "explained",
+      "review_reason": null
+    },
+    {
+      "id": "c454cd997976",
+      "name": "Marcial Dorado",
+      "revision": 0,
+      "outcome": "review_completed",
+      "review_reason": "no_distinct_event"
+    },
+    {
+      "id": "180a8346f226",
+      "name": "Rosalia",
+      "revision": 0,
+      "outcome": "review_completed",
+      "review_reason": "no_distinct_event"
+    },
+    {
+      "id": "a84ae67bcb59",
+      "name": "El Tribunal de Cuentas",
+      "revision": 0,
+      "outcome": "review_completed",
+      "review_reason": "no_distinct_event"
+    },
+    {
+      "id": "9675e198b09e",
+      "name": "Frigodedo",
+      "revision": 0,
+      "outcome": "explained",
+      "review_reason": null
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -699,6 +789,15 @@
       "revision": 0,
       "name": "#laSextaXplica",
       "message": "Pasada tr-20261115T043600-chat-direct en investigación JIT de 15 revisiones vigentes; primeras apariciones y reentradas se contrastan por separado. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-15T04:45:00+01:00",
+      "run_id": "tr-20261115T043600-chat-direct",
+      "status": "DONE",
+      "phase": "closing",
+      "current": 15,
+      "total": 15,
+      "message": "Pasada TTendencias completada 15/15: 11 explicaciones persistidas y 4 reentradas cerradas como review_completed/no_distinct_event. Aplicador de chat success, commit 04a978540933893c00a9c8d7856a855526f3dd8a; barrera final editorial-queue=0 y mobile-decisions sin estados activos. ImageGen=0; publicaciones=0; incidentes=0."
     }
   ],
   "last_started_at": "2026-11-15T04:32:31+01:00",
@@ -9665,7 +9764,7 @@
   "maintenance_apply_commit": "074b3f7e87b6260fde12e02ec813bdd56b8cc218",
   "completed_at": "2026-11-14T17:42:00+01:00",
   "input_commit": "d657e81fd73a9f4f14a0bc2ac55d968a79eaf428",
-  "finished_at": null,
+  "finished_at": "2026-11-15T04:45:00+01:00",
   "apply_commits": [
     "36a6bdedee2ab6b1689dab6eb97f1f5f56e0ba70"
   ]
