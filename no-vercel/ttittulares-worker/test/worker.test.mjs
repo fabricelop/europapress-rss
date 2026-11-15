@@ -33,6 +33,13 @@ test("original TTiTTulares PWA and handlers staged (no replacement UI)",()=>{
   assert.match(source,/Copiar en X/);
 });
 
+test("new ImageGen jobs preserve the immutable prepared_at timestamp before Telegram clears the READY card",()=>{
+  const source=fs.readFileSync(path.join(root,"generated/lib/ttittulares-run-handler.js"),"utf8");
+  assert.match(source,/const prepared_at=String\(row\.prepared_at\|\|""\)\.trim\(\)/);
+  assert.match(source,/reason:"prepared_at_missing"/);
+  assert.match(source,/title:target_name,revision,prepared_at/);
+});
+
 test("Cloudflare health independent from Vercel and PC",async()=>{
   const r=await worker.fetch(new Request("https://tt.example/health"),{});
   assert.equal(r.status,200);
