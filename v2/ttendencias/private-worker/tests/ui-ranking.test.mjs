@@ -77,7 +77,7 @@ test("RE requested has visible pending state and hides previous explanation and 
  assert.match(app,/RE solicitada · reinicio pendiente/);
  assert.match(app,/En revisión · nueva explicación en preparación/);
  assert.match(app,/const time=reset\?null:explanationTime\(item\)/);
- assert.match(app,/if\(!reset&&imageReady\(item\)\)/);
+ assert.match(app,/if\(!reset&&\(imageReady\(item\)\|\|item\.image_suppressed===true\)\)/);
  assert.match(app,/if\(!reset\)\{makePublishButtons\(card,item\);attachGeneratedImage\(card,item\);\}/);
  assert.match(css,/\.review-state/);
 });
