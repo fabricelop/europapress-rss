@@ -1,6 +1,6 @@
 import unittest
 
-from v2.ttendencias.re_request_v2 import request_reexplanation
+from re_request_v2 import request_reexplanation
 
 
 ID = "trv2-1234567890abcdef12345678"
@@ -26,11 +26,13 @@ class ReRequestTest(unittest.TestCase):
         return request_reexplanation(self.queue, self.history, **args)
 
     def test_restarts_entire_editorial_without_previous_text_or_image(self):
+        self.queue["items"][ID]["attempts"] = 3
         updated, status = self.invoke()
         self.assertEqual(status, "ENQUEUED")
         row = updated["items"][ID]
         self.assertEqual(row["revision"], 2)
         self.assertEqual(row["status"], "review_pending")
+        self.assertEqual(row["attempts"], 0)
         self.assertNotIn("capture", row)
         self.assertNotIn("previous_capture", row)
         self.assertNotIn("previous_explanation", row)
@@ -49,6 +51,18 @@ class ReRequestTest(unittest.TestCase):
             base_revision=1, entered_top30_at=WHEN, requested_at="later")
         self.assertEqual(status, "ALREADY_APPLIED")
         self.assertEqual(again["items"][ID]["revision"], 2)
+
+    def test_reexplain_after_leaving_top30(self):
+        self.history["topics"]["x"].update(active=False, rank=None)
+        updated, action = self.invoke()
+        self.assertEqual(action, "ENQUEUED")
+        self.assertEqual(updated["items"][ID]["revision"], 2)
+        self.assertEqual(updated["items"][ID]["status"], "review_pending")
+
+    def test_unknown_historical_identity_rejected(self):
+        self.history["topics"].clear()
+        with self.assertRaisesRegex(ValueError, "historial"):
+            self.invoke()
 
 
 if __name__ == "__main__":
