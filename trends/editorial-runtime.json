@@ -3,19 +3,19 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261115T092500-chat-direct",
-  "previous_run_id": "tr-20261115T091000-chat-direct",
-  "command_id": "tr-20261115T092500-chat-direct",
+  "run_id": "tr-20261115T095500-chat-direct",
+  "previous_run_id": "tr-20261115T092500-chat-direct",
+  "command_id": "tr-20261115T095500-chat-direct",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-15T09:25:00+01:00",
-  "updated_at": "2026-11-15T09:26:00+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-15T09:55:00+01:00",
+  "updated_at": "2026-11-15T09:55:00+01:00",
   "current": 0,
   "total": 0,
   "trend_id": null,
-  "title": "Pasada editorial TTendencias completada",
-  "queue_complete": true,
+  "title": "Ejecutando TTendencias",
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
@@ -859,9 +859,16 @@
       "status": "DONE",
       "phase": "closing",
       "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 2026-11-15T09:20:58+01:00), mobile-decisions sin estados editoriales activos y Top 30 capturado a las 2026-11-15T09:20:53+01:00. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-15T09:55:00+01:00",
+      "run_id": "tr-20261115T095500-chat-direct",
+      "status": "RUNNING",
+      "phase": "preparing",
+      "message": "Pasada manual TTendencias iniciada desde ChatGPT; refresco Top 30 y barrera editorial JIT en curso. Sin ImageGen ni publicaciones."
     }
   ],
-  "last_started_at": "2026-11-15T08:41:00+01:00",
+  "last_started_at": "2026-11-15T09:55:00+01:00",
   "last_completed_at": "2026-11-15T08:42:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -906,7 +913,7 @@
     "incidents": [],
     "message": "Pasada TTendencias completada 0/0. La barrera final revalidó editorial-queue=0 (updated_at 08:41:00). El Top 30 se capturó a las 08:40:56, pero la fuente quedó sin cambio verificable; no se inventaron movimientos. ImageGen editorial=0; publicaciones=0; incidentes=0."
   },
-  "message": "Pasada TTendencias completada 3/3. #FelizDomingo y Rosalia cerradas como reentradas sin episodio material distinto; Carlos Cuerpo revisado sin novedades sustanciales y conservado sin cambios. Barrera final editorial-queue=0. ImageGen editorial=0; publicaciones=0; incidentes=0.",
+  "message": "Pasada manual TTendencias iniciada desde ChatGPT; refresco Top 30 y barrera editorial JIT en curso. Sin ImageGen ni publicaciones.",
   "history": [
     {
       "run_id": "tr-1794361941170-manual",
