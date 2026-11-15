@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-15T00:16:54.731529+00:00",
+  "checked_at": "2026-11-15T00:29:04.149007+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -42,8 +42,9 @@
     "top10": {
       "ok": true,
       "count": 10,
-      "non_stale_sources": 4,
+      "non_stale_sources": 5,
       "verified_fresh_sources": [
+        "whatstrends",
         "xtrendsiamrohit",
         "playersells"
       ],
@@ -60,8 +61,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 4.0,
-      "run_id": 43656881386,
+      "age_minutes": 3.0,
+      "run_id": 43658136765,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -73,7 +74,7 @@
     },
     "request_queue": {
       "ok": false,
-      "invalid_count": 242,
+      "invalid_count": 243,
       "noise_count": 0
     },
     "ready_consistency": {
@@ -82,28 +83,31 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": false,
-      "pending_count": 2,
-      "overdue_count": 1,
-      "oldest_age_minutes": 32.7,
+      "ok": true,
+      "pending_count": 12,
+      "overdue_count": 0,
+      "oldest_age_minutes": 26.6,
       "warning_after_minutes": 30,
-      "overdue_items": [
-        {
-          "id": "red-review-c9c7c587bd4e807e2212",
-          "name": "Revisar novedades: Frigodedo",
-          "status": "preparing",
-          "age_minutes": 32.7
-        }
-      ],
+      "overdue_items": [],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": false,
-      "status": "overdue",
+      "ok": true,
+      "status": "not-required",
       "queue_complete": false,
       "remaining_active_ids": [
-        "red-review-c9c7c587bd4e807e2212",
-        "red-review-08853a6f533413e07ecf"
+        "red-review-08853a6f533413e07ecf",
+        "7d14ea90ddc9",
+        "c40bacf26f23",
+        "3d893b39c6f4",
+        "b85a5a104402",
+        "da1b6aaf7d73",
+        "fa8aecbc4a8e",
+        "38ba4d10ca36",
+        "c4218e7b3336",
+        "37fea7740a70",
+        "721d3c5ac2bb",
+        "4744da73e37d"
       ],
       "contradictory_success": false
     },
@@ -115,10 +119,9 @@
   },
   "repairs_started": [],
   "blocking": [
-    "cola con 242 estado(s) inválido(s)",
-    "cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 32.7 min"
+    "cola con 243 estado(s) inválido(s)"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "cola con 242 estado(s) inválido(s) | cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 32.7 min"
+  "last_alert_signature": "cola con 243 estado(s) inválido(s)"
 }
