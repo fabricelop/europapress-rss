@@ -3,61 +3,38 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261115T102500-chat-direct",
-  "previous_run_id": "tr-20261115T101100-chat-direct",
-  "command_id": "tr-20261115T102500-chat-direct",
+  "run_id": "tr-20261115T113700-chat-direct",
+  "previous_run_id": "tr-20261115T102500-chat-direct",
+  "command_id": "tr-20261115T113700-chat-direct",
   "source": "chat_direct",
-  "status": "DONE_WITH_INCIDENTS",
-  "phase": "closing",
-  "started_at": "2026-11-15T10:25:55+01:00",
-  "updated_at": "2026-11-15T10:28:00+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-15T11:37:00+01:00",
+  "updated_at": "2026-11-15T11:37:00+01:00",
   "current": 0,
-  "total": 0,
+  "total": 4,
   "trend_id": null,
-  "title": "Pasada editorial TTendencias completada con incidencia",
-  "queue_complete": true,
+  "title": "Preparando pasada editorial TTendencias",
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
-  "remaining_problematic_ids": [],
-  "summary": {
-    "attempted": 0,
-    "observed": 0,
-    "closed": 0,
-    "explained": 0,
-    "problematic": 0,
-    "updates": 0,
-    "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 0,
-    "unchanged_reviews": 0,
-    "continuity_updates": 0,
-    "distinct_updates": 0,
-    "stale_reviews": 0,
-    "unverified_reviews": 0,
-    "anticipation_reviews": 0,
-    "anticipation_prepared": 0,
-    "anticipation_unverified": 0,
-    "queue_remaining": 0,
-    "rewrite_pending_remaining": 0,
-    "imagegen_calls": 0,
-    "image_outbox_created": 0,
-    "publications": 0,
-    "incidents": 1,
-    "concurrent_convergence": 0,
-    "cause_unconfirmed": 0
-  },
-  "outcomes": [],
-  "incident_count": 1,
-  "incidents": [
-    {
-      "at": "2026-11-15T10:28:00+01:00",
-      "phase": "verifying",
-      "trend_id": null,
-      "title": "Refresco manual TTendencias",
-      "reason": "El workflow 43699226418 sigue in_progress y detenido en actions/checkout@v4; no ha producido todavía un snapshot posterior al Top 30 capturado a las 2026-11-15T10:20:54+01:00."
-    }
+  "remaining_ids": [
+    "fbdff5b1d1bf",
+    "4c6b146e335a",
+    "58d1af20a0d3",
+    "30aed7408eba"
   ],
+  "remaining_active_ids": [
+    "fbdff5b1d1bf",
+    "4c6b146e335a",
+    "58d1af20a0d3",
+    "30aed7408eba"
+  ],
+  "remaining_problematic_ids": [],
+  "summary": null,
+  "outcomes": [],
+  "incident_count": 0,
+  "incidents": [],
   "error": null,
   "activity": [
     {
@@ -898,7 +875,7 @@
       "message": "Pasada TTendencias cerrada 0/0 contra main. Barrera JIT: editorial-queue=0 (updated_at 2026-11-15T10:20:59+01:00); Top 30 capturado a las 2026-11-15T10:20:54+01:00. Incidencia no bloqueante: refresco manual 43699226418 sigue in_progress en checkout y aún no ha generado snapshot nuevo. Sin ImageGen ni publicaciones."
     }
   ],
-  "last_started_at": "2026-11-15T10:25:55+01:00",
+  "last_started_at": "2026-11-15T11:37:00+01:00",
   "last_completed_at": "2026-11-15T10:28:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -953,7 +930,7 @@
     "message": "Pasada TTendencias cerrada 0/0 contra main. Barrera JIT: editorial-queue=0 (updated_at 2026-11-15T10:20:59+01:00); Top 30 capturado a las 2026-11-15T10:20:54+01:00. Incidencia no bloqueante: refresco manual 43699226418 sigue in_progress en checkout y aún no ha generado snapshot nuevo. Sin ImageGen ni publicaciones.",
     "at": "2026-11-15T10:28:00+01:00"
   },
-  "message": "Pasada TTendencias cerrada 0/0 contra main. Barrera JIT: editorial-queue=0 (updated_at 2026-11-15T10:20:59+01:00); Top 30 capturado a las 2026-11-15T10:20:54+01:00. Incidencia no bloqueante: refresco manual 43699226418 sigue in_progress en checkout y aún no ha generado snapshot nuevo. Sin ImageGen ni publicaciones.",
+  "message": "Cola autoritativa revalidada en main: 4 revisiones pendientes.",
   "history": [
     {
       "run_id": "tr-1794361941170-manual",
@@ -6141,11 +6118,15 @@
   "current_item": null,
   "withdrawn_ids": [],
   "last_finished_at": "2026-11-15T10:28:00+01:00",
-  "last_revalidated_at": "2026-11-15T10:28:00+01:00",
+  "last_revalidated_at": "2026-11-15T11:37:00+01:00",
   "last_revalidation": {
-    "queue_updated_at": "2026-11-15T10:20:59+01:00",
-    "top30_captured_at": "2026-11-15T10:20:54+01:00",
-    "queue_count": 0
+    "queue_count": 4,
+    "ids": [
+      "fbdff5b1d1bf",
+      "4c6b146e335a",
+      "58d1af20a0d3",
+      "30aed7408eba"
+    ]
   },
   "prior_runtime_observed": {
     "run_id": "tr-autoguard-1794381666",
@@ -9718,62 +9699,6 @@
   "absorbed_run_ids": [],
   "phase_history": [
     {
-      "at": "2026-11-11T05:22:00+01:00",
-      "phase": "investigating",
-      "name": "#VisionQuest",
-      "trend_id": "9ed2158bf34b",
-      "revision": 0,
-      "message": "investigating: #VisionQuest"
-    },
-    {
-      "at": "2026-11-11T05:23:00+01:00",
-      "phase": "drafting",
-      "name": "#VisionQuest",
-      "trend_id": "9ed2158bf34b",
-      "revision": 0,
-      "message": "drafting: #VisionQuest"
-    },
-    {
-      "at": "2026-11-11T05:23:30+01:00",
-      "phase": "remate_selection",
-      "name": "#VisionQuest",
-      "trend_id": "9ed2158bf34b",
-      "revision": 0,
-      "message": "remate_selection: #VisionQuest"
-    },
-    {
-      "at": "2026-11-11T05:24:00+01:00",
-      "phase": "persisting",
-      "name": "#VisionQuest",
-      "trend_id": "9ed2158bf34b",
-      "revision": 0,
-      "message": "persisting: #VisionQuest"
-    },
-    {
-      "at": "2026-11-11T05:25:54+01:00",
-      "phase": "verifying",
-      "trend_id": "9ed2158bf34b",
-      "revision": 0,
-      "name": "#VisionQuest",
-      "message": "Texto aplicado y sincronizado"
-    },
-    {
-      "at": "2026-11-11T05:25:54+01:00",
-      "phase": "verifying",
-      "trend_id": "950fada6496e",
-      "revision": 0,
-      "name": "Wanda",
-      "message": "Texto aplicado y sincronizado"
-    },
-    {
-      "at": "2026-11-11T05:25:54+01:00",
-      "phase": "verifying",
-      "trend_id": "61e7ab045e90",
-      "revision": 0,
-      "name": "Paul George",
-      "message": "Texto aplicado y sincronizado"
-    },
-    {
       "at": "2026-11-11T05:25:54+01:00",
       "phase": "verifying",
       "trend_id": "25c2287b87a9",
@@ -10274,11 +10199,18 @@
       "at": "2026-11-15T10:28:00+01:00",
       "phase": "closing",
       "message": "Pasada TTendencias cerrada 0/0 contra main. Barrera JIT: editorial-queue=0 (updated_at 2026-11-15T10:20:59+01:00); Top 30 capturado a las 2026-11-15T10:20:54+01:00. Incidencia no bloqueante: refresco manual 43699226418 sigue in_progress en checkout y aún no ha generado snapshot nuevo. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-15T11:37:00+01:00",
+      "run_id": "tr-20261115T113700-chat-direct",
+      "phase": "preparing",
+      "current": 0,
+      "total": 4
     }
   ],
   "processed": [],
   "completed_at": "2026-11-15T10:28:00+01:00",
-  "finished_at": "2026-11-15T10:28:00+01:00",
+  "finished_at": null,
   "revision": null,
   "name": null
 }
