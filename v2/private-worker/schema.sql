@@ -27,3 +27,15 @@ CREATE TABLE IF NOT EXISTS v2_radar (
  payload TEXT NOT NULL,
  updated_at TEXT NOT NULL
 );
+
+-- Solo solicitudes RE V2. No modifica ninguna tabla V1.
+CREATE TABLE IF NOT EXISTS re_requests (
+ trend_id TEXT NOT NULL,
+ base_revision INTEGER NOT NULL CHECK(base_revision > 0),
+ entered_top30_at TEXT NOT NULL,
+ status TEXT NOT NULL DEFAULT 'requested' CHECK(status IN ('requested','applied')),
+ requested_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ','now')),
+ applied_at TEXT,
+ PRIMARY KEY(trend_id, base_revision)
+);
+CREATE INDEX IF NOT EXISTS ix_v2_re_requests_status ON re_requests(status,requested_at);
