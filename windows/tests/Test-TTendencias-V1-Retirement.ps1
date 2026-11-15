@@ -38,7 +38,7 @@ $required=@(
   @($retire,"function WaitForQuiet"),
   @($retire,"function RestartSharedSupervisors"),
   @($retire,"TT_V1_SHARED_SUPERVISORS_RELOADED=YES"),
-  @($retire,"\u0027PARTIAL\u0027"),
+  @($retire,"PARTIAL"),
   @($retire,"TT_V1_RETIRE_NO_NEW_WORK=YES"),
   @($retire,"TT_V1_BACKUP_READY=YES"),
   @($prepare,"TT_V1_SHARED_UPDATER_PREPARED=YES"),
