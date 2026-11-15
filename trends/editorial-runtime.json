@@ -8,27 +8,27 @@
   "command_id": "tr-20261115T113700-chat-direct",
   "source": "chat_direct",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "research",
   "started_at": "2026-11-15T11:37:00+01:00",
-  "updated_at": "2026-11-15T11:37:00+01:00",
+  "updated_at": "2026-11-15T11:46:00+01:00",
   "current": 0,
   "total": 4,
-  "trend_id": null,
-  "title": "Preparando pasada editorial TTendencias",
+  "trend_id": "fbdff5b1d1bf",
+  "title": "#CCubicos442",
   "queue_complete": false,
   "processed_ids": [],
-  "converged_ids": [],
+  "converged_ids": [
+    "30aed7408eba"
+  ],
   "remaining_ids": [
     "fbdff5b1d1bf",
     "4c6b146e335a",
-    "58d1af20a0d3",
-    "30aed7408eba"
+    "58d1af20a0d3"
   ],
   "remaining_active_ids": [
     "fbdff5b1d1bf",
     "4c6b146e335a",
-    "58d1af20a0d3",
-    "30aed7408eba"
+    "58d1af20a0d3"
   ],
   "remaining_problematic_ids": [],
   "summary": null,
@@ -930,7 +930,7 @@
     "message": "Pasada TTendencias cerrada 0/0 contra main. Barrera JIT: editorial-queue=0 (updated_at 2026-11-15T10:20:59+01:00); Top 30 capturado a las 2026-11-15T10:20:54+01:00. Incidencia no bloqueante: refresco manual 43699226418 sigue in_progress en checkout y aún no ha generado snapshot nuevo. Sin ImageGen ni publicaciones.",
     "at": "2026-11-15T10:28:00+01:00"
   },
-  "message": "Cola autoritativa revalidada en main: 4 revisiones pendientes.",
+  "message": "AVE Madrid-Sevilla convergió en paralelo. Investigando #CCubicos442; quedan 3 revisiones activas. ImageGen=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794361941170-manual",
@@ -9699,14 +9699,6 @@
   "absorbed_run_ids": [],
   "phase_history": [
     {
-      "at": "2026-11-11T05:25:54+01:00",
-      "phase": "verifying",
-      "trend_id": "25c2287b87a9",
-      "revision": 0,
-      "name": "Jaylen Brown",
-      "message": "Texto aplicado y sincronizado"
-    },
-    {
       "at": "2026-11-11T05:27:22+01:00",
       "phase": "verifying",
       "trend_id": "red-review-9903399000f933239cc6",
@@ -10206,6 +10198,15 @@
       "phase": "preparing",
       "current": 0,
       "total": 4
+    },
+    {
+      "at": "2026-11-15T11:46:00+01:00",
+      "run_id": "tr-20261115T113700-chat-direct",
+      "phase": "research",
+      "current": 0,
+      "total": 4,
+      "trend_id": "fbdff5b1d1bf",
+      "title": "#CCubicos442"
     }
   ],
   "processed": [],
