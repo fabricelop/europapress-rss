@@ -177,8 +177,14 @@ function render(){
   flag.setAttribute("aria-pressed",String(isMarked(item)));
   flag.setAttribute("aria-label",isMarked(item)?"Quitar marca roja de "+item.name:"Marcar en rojo "+item.name);
   flag.title=isMarked(item)?"Quitar marca roja":"Marcar en rojo";
-  flag.addEventListener("click",()=>toggleRedMark(item,card,flag));
-  card.append(flag);
+  // The R must live inside <summary>: closed <details> hide other children.
+  // Cancel summary's default click action so R never expands/collapses the card.
+  flag.addEventListener("click",event=>{
+   event.preventDefault();
+   event.stopPropagation();
+   void toggleRedMark(item,card,flag);
+  });
+  head.append(flag);
   const body=el("div","explanation",item.status==="explicada"?tweetText(item.explanation):({en_elaboracion:"En elaboración.",incidencia:"Incidencia en la elaboración.",desestimada:"Desestimada."})[item.status]||"Explicación pendiente.");
   card.append(body);
   attachGeneratedImage(card,item);
