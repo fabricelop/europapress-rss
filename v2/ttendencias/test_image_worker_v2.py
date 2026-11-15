@@ -245,6 +245,30 @@ class SplitTest(unittest.TestCase):
                                                {"status": "saved", "path": "duplicate"})
                 writer.assert_not_called()
 
+    def test_image_generation_progress_is_revision_safe_and_cleared(self):
+        queue, _ = fixture()
+        tid = "trv2-%024x" % 1
+        row = queue["items"][tid]
+        job = image_jobs.proposed_job(row, nonce="progress123456789")
+        current = copy.deepcopy(queue)
+        class Api:
+            pass
+        with patch.object(editorial, "queue_read", return_value=(current, "blob")):
+            with patch.object(editorial, "queue_write") as writer:
+                self.assertTrue(image.update_image_progress(Api(), "auth", job, active=True))
+                writer.assert_called_once()
+                marker = current["items"][tid]["image_progress"]
+                self.assertEqual(marker["command_id"], job["command_id"])
+                self.assertEqual(marker["revision"], 1)
+                self.assertTrue(image.update_image_progress(Api(), "auth", job, active=False))
+                self.assertNotIn("image_progress", current["items"][tid])
+                self.assertEqual(writer.call_count, 2)
+        current["items"][tid]["revision"] = 2
+        with patch.object(editorial, "queue_read", return_value=(current, "blob")):
+            with patch.object(editorial, "queue_write") as writer:
+                self.assertFalse(image.update_image_progress(Api(), "auth", job, active=True))
+                writer.assert_not_called()
+
     def test_independent_profiles_and_loops(self):
         self.assertNotEqual(image.PROFILE, editorial.PROFILE)
         self.assertEqual(image.PROFILE.name, "ChromeProfileImages")
