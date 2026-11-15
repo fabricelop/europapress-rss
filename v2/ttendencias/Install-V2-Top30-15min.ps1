@@ -33,13 +33,14 @@ function Ensure-V2File([string]$filename, [string]$marker) {
 Ensure-V2File 'top30_tick_v2.py' 'TT_V2_REFRESH_SLOT_UTC='
 Ensure-V2File 'persist_capture_github.py' 'def token():'
 Ensure-V2File 'Run-V2-Top30-Tick.ps1' 'TT_V2_TOP30_TICK_EXIT_CODE='
+Ensure-V2File 'Launch-V2-Hidden.vbs' 'WScript.Arguments'
 if (!(Get-Command py.exe -ErrorAction SilentlyContinue)) { throw 'py.exe no disponible' }
 if (!(Get-Command gh.exe -ErrorAction SilentlyContinue) -and -not $env:GH_TOKEN -and -not $env:GITHUB_TOKEN) { throw 'Se necesita gh auth o GH_TOKEN' }
 
 # Cuartos de hora locales, 10 anos de duracion, sin solapamientos.
 # No guardar credenciales: usar el login gh del usuario interactivo.
-$argument = '-NoProfile -NonInteractive -ExecutionPolicy Bypass -WindowStyle Hidden -File "' + $runner + '"'
-$action = New-ScheduledTaskAction -Execute 'powershell.exe' -Argument $argument
+$argument = '//B //Nologo "' + (Join-Path $root 'Launch-V2-Hidden.vbs') + '" "' + $runner + '"'
+$action = New-ScheduledTaskAction -Execute (Join-Path $env:WINDIR 'System32\wscript.exe') -Argument $argument
 $now = Get-Date
 $minutes = [Math]::Floor($now.TimeOfDay.TotalMinutes / 15) * 15 + 15
 $next = $now.Date.AddMinutes($minutes)
@@ -59,4 +60,5 @@ Write-Host ('TT_V2_TOP30_NEXT_LOCAL=' + $next.ToString('yyyy-MM-dd HH:mm:ss'))
 Write-Host ('TT_V2_TOP30_TASK_NAME=' + $taskName)
 Write-Host 'TT_V2_TOP30_TASK_MODE=WINDOWS_SESSION'
 Write-Host 'TT_V2_TOP30_AT_LOGON=YES'
+Write-Host 'TT_V2_TOP30_CONSOLA_VISIBLE=NO'
 Write-Host 'TT_V2_PUBLISHED=NO'
