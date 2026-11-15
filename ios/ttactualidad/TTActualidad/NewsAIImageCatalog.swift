@@ -93,7 +93,7 @@ enum NewsAIImageCatalog {
             request.setValue("no-cache", forHTTPHeaderField: "Cache-Control")
             let (received, response) = try await URLSession.shared.data(for: request)
             guard (response as? HTTPURLResponse)?.statusCode == 200,
-                  received.count < 2_000_000 else { throw URLError(.badServerResponse) }
+                  received.count < 10_000_000 else { throw URLError(.badServerResponse) }
             data = received
             network = true
         } catch {
@@ -101,10 +101,9 @@ enum NewsAIImageCatalog {
         }
         guard let data = await ApprovedImageFeed.merge(data, project: "ttittulares"),
               let manifest = try? JSONDecoder().decode(Manifest.self, from: data),
-              manifest.schema_version == 1, manifest.project == "ttittulares",
-              manifest.images.count <= 1_000 else { return [:] }
+              manifest.schema_version == 1, manifest.project == "ttittulares" else { return [:] }
         var result: [String: Entry] = [:]
-        for entry in manifest.images {
+        for entry in manifest.images.prefix(ApprovedImageFeed.maxApprovedRows) {
             guard validID(entry.target_id), entry.revision >= 1,
                   !entry.prepared_at.isEmpty, !entry.editorial_text.isEmpty,
                   isSHA(entry.sha256),
