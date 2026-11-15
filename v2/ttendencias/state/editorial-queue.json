@@ -3006,13 +3006,13 @@
       "trend_id": "trv2-876beecc59c543665de75939",
       "name": "País Vasco",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "ef49ebb5aeb88691",
       "requested_at": "2026-11-15T12:53:11.795395+00:00",
       "updated_at": "2026-11-15T12:53:11.795395+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -3025,7 +3025,13 @@
           "archived_at": "2026-11-15T12:53:11.795395+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "98fe64536cece0ae4e2ac4156d8a459e0b67e9206449b79c",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-15T12:53:22.141266+00:00",
+        "expires_at": "2026-11-15T13:33:22.141266+00:00"
+      }
     },
     "trv2-61c0694b4d5ab42ee2c92000": {
       "trend_id": "trv2-61c0694b4d5ab42ee2c92000",
