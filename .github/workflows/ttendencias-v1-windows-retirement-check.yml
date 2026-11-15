@@ -3,12 +3,14 @@ on:
   push:
     branches:
       - feature/ttendencias-v1-windows-retirement
+      - fix/ttendencias-v1-mobile-retirement-guard
     paths:
       - windows/Disable-TTendencias-V1-Local.ps1
       - windows/Prepare-TTendencias-V1-Local.ps1
       - windows/TT-LocalWatchdog.ps1
       - windows/TT-AutoUpdater.ps1
       - windows/TTendenciasDedicatedListener.ps1
+      - windows/TTendenciasMobileChatTriggerListener.ps1
       - windows/Run-TTendencias-X-Local.ps1
       - windows/tests/Test-TTendencias-V1-Retirement.ps1
       - .github/workflows/ttendencias-v1-windows-retirement-check.yml
@@ -21,8 +23,6 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: feature/ttendencias-v1-windows-retirement
       - name: Comprobar protecciones, restauracion y diagnostico sin cambios
         shell: pwsh
         run: powershell.exe -NoProfile -ExecutionPolicy Bypass -File windows/tests/Test-TTendencias-V1-Retirement.ps1
