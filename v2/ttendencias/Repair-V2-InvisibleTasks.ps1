@@ -3,6 +3,8 @@
 $ErrorActionPreference = 'Stop'
 $root = Join-Path $env:LOCALAPPDATA 'TTActualidadV2'
 New-Item -ItemType Directory -Path $root -Force | Out-Null
+$backupRoot = Join-Path $root 'TaskBackups-Consola'
+New-Item -ItemType Directory -Path $backupRoot -Force | Out-Null
 $wrapper = Join-Path $root 'Launch-V2-Hidden.vbs'
 $vbs = @'
 Option Explicit
@@ -46,19 +48,33 @@ foreach ($target in $targets) {
         continue
     }
     $oldState = [string]$task.State
+    if ($alreadyHidden) {
+        Write-Host ('TT_V2_YA_OCULTA=' + $target.Task + ';ESTADO=' + $oldState)
+        continue
+    }
+    # Guardar XML recuperable antes de sustituir la accion. No se modifican
+    # trigger, principal, credenciales, estado, ni periodicidad de la tarea.
+    $backup = Join-Path $backupRoot ($target.Task + '-' + (Get-Date -Format 'yyyyMMdd-HHmmss') + '.xml')
+    $xml = Export-ScheduledTask -TaskName $target.Task -TaskPath $task.TaskPath -ErrorAction Stop
+    [IO.File]::WriteAllText($backup, $xml, (New-Object System.Text.UTF8Encoding($false)))
     $args = '//B //Nologo "' + $wrapper + '" "' + $runner + '"'
-    $newAction = New-ScheduledTaskAction -Execute $windowsWscript -Argument $args
-    Set-ScheduledTask -TaskName $target.Task -Action $newAction | Out-Null
-    $updated = Get-ScheduledTask -TaskName $target.Task
+    if ($oldAction.WorkingDirectory) {
+        $newAction = New-ScheduledTaskAction -Execute $windowsWscript -Argument $args -WorkingDirectory $oldAction.WorkingDirectory
+    } else {
+        $newAction = New-ScheduledTaskAction -Execute $windowsWscript -Argument $args
+    }
+    Set-ScheduledTask -TaskPath $task.TaskPath -TaskName $target.Task -Action $newAction | Out-Null
+    $updated = Get-ScheduledTask -TaskPath $task.TaskPath -TaskName $target.Task
     if ($updated.Actions[0].Execute -notmatch '(?i)wscript\.exe$') { throw ('No se reparó: ' + $target.Task) }
     if ($oldState -eq 'Disabled' -and $updated.State -ne 'Disabled') { throw ('Se ha cambiado indebidamente el estado de: ' + $target.Task) }
     Write-Host ('TT_V2_CONSOLA_OCULTA=' + $target.Task + ';ANTES=' + $oldState + ';DESPUES=' + $updated.State)
+    Write-Host ('TT_V2_TAREA_BACKUP=' + $backup)
 }
 
 # Diagnóstico de otras tareas del propio Windows: solo lectura y sin argumentos.
 # Si siguiera apareciendo la ventana, los últimos inicios ayudan a identificarla.
 $cutoff = (Get-Date).AddHours(-3)
-foreach ($task in (Get-ScheduledTask -ErrorAction SilentlyContinue)) {
+foreach ($task in @(Get-ScheduledTask -ErrorAction SilentlyContinue)) {
     $actions = @($task.Actions | Where-Object {
         $_.Execute -match '(?i)(powershell|pwsh|cmd|conhost|python|py|cscript)\.exe$'
     })
