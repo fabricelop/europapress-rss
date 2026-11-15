@@ -72,6 +72,7 @@ $files = @(
     'listas_v2.py',
     'test_auto_editorial_v2.py',
     'Run-V2-Editorial-Auto.ps1',
+    'Run-V2-Editorial-One.ps1',
     'Disable-V2-Editorial-Auto.ps1'
 )
 foreach ($file in $files) {
@@ -192,7 +193,7 @@ if ($PilotOnly) {
     Write-Host 'TT_V2_PILOT_ONLY=YES'
     Write-Host 'TT_V2_IMAGE_MODULES_READY=YES'
     Write-Host 'TT_V2_AUTO_TASK_ENABLED=NO'
-    Write-Host 'TT_V2_PILOT_NEXT=VERIFY_PRIVATE_GITHUB_WORKER_AND_RUN_ONE'
+    Write-Host 'TT_V2_PILOT_NEXT=RUN_ONE_TEXT_IMAGE_NO_WORKER_REQUIRED'
     return
 }
 # La bandera exacta es autorización para abrir chats. Guardarla solo
