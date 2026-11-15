@@ -7,15 +7,15 @@
   "previous_run_id": "tr-20261115T102500-chat-direct",
   "command_id": "tr-20261115T113700-chat-direct",
   "source": "chat_direct",
-  "status": "DONE",
-  "phase": "closing",
+  "status": "RUNNING",
+  "phase": "investigating",
   "started_at": "2026-11-15T11:37:00+01:00",
-  "updated_at": "2026-11-15T11:44:05+01:00",
+  "updated_at": "2026-11-15T11:46:02+01:00",
   "current": 4,
-  "total": 4,
-  "trend_id": null,
-  "title": "Pasada editorial completada",
-  "queue_complete": true,
+  "total": 6,
+  "trend_id": "red-review-63c68e0ff95ff25cae6b",
+  "title": "Revisando novedades: Feijoo",
+  "queue_complete": false,
   "processed_ids": [
     "fbdff5b1d1bf",
     "4c6b146e335a",
@@ -24,8 +24,14 @@
   "converged_ids": [
     "30aed7408eba"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-63c68e0ff95ff25cae6b",
+    "red-review-59123f3efdd7cf372c0a"
+  ],
+  "remaining_active_ids": [
+    "red-review-63c68e0ff95ff25cae6b",
+    "red-review-59123f3efdd7cf372c0a"
+  ],
   "remaining_problematic_ids": [],
   "summary": "2 explicadas en esta ejecución, 1 revisión cerrada sin episodio distinto y 1 convergencia paralela; cola final vacía.",
   "outcomes": [
@@ -905,7 +911,7 @@
     "converged_count": 1,
     "queue_remaining": 0
   },
-  "message": "Cola final vacía. #CCubicos442 y HA VUELTO AO3 explicadas; MATCH DAY cerrado sin episodio material distinto; AVE Madrid-Sevilla convergió en paralelo. ImageGen=0; publicaciones=0.",
+  "message": "La barrera final detectó 2 revisiones rojas nuevas posteriores al primer cierre. Se incorporan a la misma pasada; ImageGen=0; publicaciones=0.",
   "history": [
     {
       "run_id": "tr-1794361941170-manual",
@@ -9674,14 +9680,6 @@
   "absorbed_run_ids": [],
   "phase_history": [
     {
-      "at": "2026-11-11T05:27:22+01:00",
-      "phase": "verifying",
-      "trend_id": "red-review-0169e1cb13ea7c6218c6",
-      "revision": 0,
-      "name": "Carzzy",
-      "message": "Sin novedades: explicación conservada"
-    },
-    {
       "at": "2026-11-11T05:28:00+01:00",
       "phase": "closing",
       "message": "Cola releída en main: 0 preparing/update y 0 reexplicaciones pendientes"
@@ -10182,11 +10180,20 @@
       "current": 4,
       "total": 4,
       "status": "DONE"
+    },
+    {
+      "at": "2026-11-15T11:46:02+01:00",
+      "run_id": "tr-20261115T113700-chat-direct",
+      "phase": "investigating",
+      "current": 4,
+      "total": 6,
+      "trend_id": "red-review-63c68e0ff95ff25cae6b",
+      "title": "Revisando novedades: Feijoo"
     }
   ],
   "processed": [],
   "completed_at": "2026-11-15T10:28:00+01:00",
-  "finished_at": "2026-11-15T11:44:05+01:00",
+  "finished_at": null,
   "revision": null,
   "name": null
 }
