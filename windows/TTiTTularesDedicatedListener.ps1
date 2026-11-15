@@ -6,6 +6,7 @@
 
 $ErrorActionPreference = "Continue"
 $BaseDir = "C:\TTiTTulares"
+$ImagePauseFlag = Join-Path $BaseDir 'V1-ImageGen-Paused.flag'
 $Launcher = Join-Path $BaseDir "LanzarOculto.vbs"
 $Runner = Join-Path $BaseDir "Ejecutar.js"
 $ImageBridge = Join-Path $BaseDir "TTiTTularesImageBridge.js"
@@ -1462,6 +1463,9 @@ while ($true) {
 
   # 2) Jobs de Gag IA automáticos/manuales posteriores a READY
   try {
+    if (Test-Path -LiteralPath $ImagePauseFlag) {
+      if (($loopCount % 40) -eq 0) { Write-Log "IMAGE V1 PAUSED: persistent user decision" }
+    } else {
     $idx=Read-ImageIndex
     Refresh-ActiveImages $state $idx
     Save-State $state
@@ -1576,6 +1580,7 @@ while ($true) {
         Write-Log "IMAGE FIXED TAB BRIDGE STARTED target=$targetId command=$commandId"
         Mark-ImageCommand $state $commandId $true;Save-State $state;$slots--
       }
+    }
     }
   } catch {
     Write-Log "IMAGE LOOP ERROR :: $($_.Exception.Message)"
