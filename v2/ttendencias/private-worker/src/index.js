@@ -195,7 +195,7 @@ async function reRequests(request,env) {
         "SELECT trend_id, base_revision, status FROM re_requests WHERE status IN ('requested','applied') ORDER BY requested_at DESC LIMIT 100").all()).results||[];
       return json({requests:rows});
     }
-    if(Number(request.headers.get("content-length")||0)>1024)return json({error:"invalid_payload"},413);
+    if(Number(request.headers.get("content-length")||0)>4096)return json({error:"invalid_payload"},413);
     let body;
     try{body=await request.json();}catch{return json({error:"invalid_payload"},400);}
     const {trend_id,revision,entered_top30_at}=body||{};
