@@ -1,6 +1,9 @@
 param([int]$IntervalSeconds=120,[switch]$Once)
 $ErrorActionPreference="Stop"
 $BaseDir="C:\TTiTTulares"
+# TTENDENCIAS_V1_RETIRE_GUARD: preserve per-project retirement through updates.
+$TrendsV1RetiredFlag=Join-Path $BaseDir "TTendencias-V1-Disabled.flag"
+function TrendsV1Enabled { return -not (Test-Path -LiteralPath $TrendsV1RetiredFlag) }
 $LogPath=Join-Path $BaseDir "tt-auto-updater.log"
 
 $Managed=@(
@@ -130,6 +133,10 @@ function CheckOnce {
     $downloads=0
     $mainSha=Get-MainSha
     foreach($m in $Managed){
+      if(-not (TrendsV1Enabled) -and [string]$m.Local -like "TTendencias*"){
+        Log ("SKIP RETIRED TRENDS "+[string]$m.Local)
+        continue
+      }
       $local=Join-Path $BaseDir ([string]$m.Local)
       Log ("DOWNLOAD START "+[string]$m.Path)
       $bytes=Download-Raw ([string]$m.Path) $mainSha
@@ -154,6 +161,10 @@ function CheckOnce {
     }
 
     foreach($m in $restart){
+      if(-not (TrendsV1Enabled) -and [string]$m.Local -like "TTendencias*"){
+        Log ("SKIP RETIRED TRENDS RESTART "+[string]$m.Local)
+        continue
+      }
       StopMatch ([string]$m.Pattern)
       Start-Sleep -Milliseconds 500
       StartListener ([string]$m.Local)
