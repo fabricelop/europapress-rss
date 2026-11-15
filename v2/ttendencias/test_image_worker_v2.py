@@ -16,8 +16,9 @@ import editorial_run_v2 as editorial
 import image_same_chat_v2 as same_chat
 import image_worker_v2 as image
 import image_target_tracker_v2 as tracker
+import image_job_v2 as image_jobs
 from auto_editorial_policy_v2 import eligible_plan
-from image_intake_v2 import fingerprint
+from image_intake_v2 import fingerprint, validate_job
 
 
 def fixture():
@@ -106,6 +107,29 @@ class SplitTest(unittest.TestCase):
             with patch.object(image, "JOURNALS", pathlib.Path(folder)):
                 image_row, _ = image.pick_next(queue, history)
                 self.assertEqual(image_row["name"], "#FelizDomingo")
+
+    def test_new_image_job_never_depends_on_editorial_chat(self):
+        queue, _ = fixture()
+        row = queue["items"]["trv2-%024x" % 1]
+        self.assertNotIn("chat_url", row["capture"])
+        job = image_jobs.proposed_job(row, nonce="isolated123456")
+        self.assertNotIn("conversation_url", job)
+        validate_job(job)
+        self.assertIn(row["capture"]["answer"], job["prompt"])
+        self.assertIn("escena narrativa única", job["prompt"])
+        self.assertIn("no dibujes guindillas", job["prompt"])
+        self.assertIn("Identificador: " + row["trend_id"], job["prompt"])
+        job["conversation_url"] = "https://chatgpt.com/c/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
+        validate_job(job)
+
+    def test_source_editorial_chat_url_is_not_copied_to_image_request(self):
+        queue, _ = fixture()
+        row = queue["items"]["trv2-%024x" % 1]
+        editorial_chat = "https://chatgpt.com/c/bbbbbbbb-cccc-dddd-eeee-ffffffffffff"
+        row["capture"]["chat_url"] = editorial_chat
+        job = image_jobs.proposed_job(row, nonce="separate123456")
+        self.assertNotIn(editorial_chat, str(job))
+        self.assertNotIn("conversation_url", job)
 
     def test_first_image_is_rank_one_even_with_pending_editorial_at_17(self):
         queue, history = fixture()
