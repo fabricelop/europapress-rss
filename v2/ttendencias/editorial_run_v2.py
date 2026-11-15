@@ -115,7 +115,7 @@ def prompt_for(item):
         "y qué no, sin adjudicar causas, personas o delitos sin pruebas. "
         "No bloquees la ficha solo por duda causal. Si ni siquiera es fiable "
         "la presencia de la tendencia, reconoce también ese límite. "
-        "Da explicación periodística breve, hashtags pertinentes, un solo "
+        "Da un párrafo de explicación principal de máximo 155 caracteres apto para X, con frases completas, sin puntos suspensivos; menciona la causa y advierte de dudas cuando proceda. Coloca el detalle de las fuentes y el contraste FUERA de ese párrafo. Añade hashtags pertinentes, un solo "
         "remate suave si procede y URLs HTTPS completas de fuentes reales. "
         "Incluye exactamente las líneas "
         "'ESTADO_CAUSA: CONFIRMADA' o 'ESTADO_CAUSA: NO_CONFIRMADA', "
