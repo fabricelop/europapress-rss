@@ -7,26 +7,27 @@
   "previous_run_id": "tr-20261115T130700-chat-direct",
   "command_id": "tr-20261115T155200-chat-direct",
   "source": "chat_direct",
-  "status": "DONE",
+  "status": "waiting",
   "phase": "closing",
   "started_at": "2026-11-15T15:52:00+01:00",
-  "updated_at": "2026-11-15T14:58:02.757Z",
+  "updated_at": "2026-11-15T17:01:13+01:00",
   "current": 6,
   "total": 6,
   "trend_id": null,
   "title": "Pasada editorial TTendencias completada",
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [
-    "7424a29ae1ce",
-    "f64771fce4c4",
-    "097f3535c4b7",
-    "571d07b4907e",
-    "752f3a2f0204",
-    "7d69a24d0507"
+    "2c401aa17d0b"
   ],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "red-review-3e78ee3a7b1278ce8aca",
+    "red-review-8e106a1113481d0d6ba0"
+  ],
+  "remaining_active_ids": [
+    "red-review-3e78ee3a7b1278ce8aca",
+    "red-review-8e106a1113481d0d6ba0"
+  ],
   "remaining_problematic_ids": [],
   "summary": "6/6 cerradas: 5 explicadas y 1 reentrada sin episodio distinto; cola final vacía. Sin ImageGen ni publicaciones.",
   "outcomes": [
@@ -942,7 +943,7 @@
       "message": "Pasada TTendencias completada 6/6: 5 explicaciones persistidas; Naranjo cerrado como reentrada sin episodio distinto. Barrera final editorial-queue=0. Sin ImageGen ni publicaciones."
     }
   ],
-  "last_started_at": "2026-11-15T15:57:34+01:00",
+  "last_started_at": "2026-11-15T17:01:13+01:00",
   "last_completed_at": "2026-11-15T15:57:34+01:00",
   "api_failover_enabled": false,
   "last_run": {
