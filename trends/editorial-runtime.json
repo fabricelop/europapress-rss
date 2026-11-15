@@ -8,13 +8,13 @@
   "command_id": "tr-20261115T155200-chat-direct",
   "source": "chat_direct",
   "status": "RUNNING",
-  "phase": "preparing",
+  "phase": "persisting",
   "started_at": "2026-11-15T15:52:00+01:00",
-  "updated_at": "2026-11-15T15:52:00+01:00",
+  "updated_at": "2026-11-15T14:56:55.121Z",
   "current": 0,
   "total": 6,
-  "trend_id": null,
-  "title": "Pasada editorial TTendencias en curso",
+  "trend_id": "7424a29ae1ce",
+  "title": "Persistiendo resultados editoriales",
   "queue_complete": false,
   "processed_ids": [
     "6be6a0bdaab2"
@@ -915,6 +915,13 @@
       "status": "RUNNING",
       "phase": "preparing",
       "message": "Pasada manual iniciada desde ChatGPT; cola autoritativa inicial=6. Revalidación JIT e investigación actual; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-15T14:56:55.121Z",
+      "run_id": "tr-20261115T155200-chat-direct",
+      "status": "RUNNING",
+      "phase": "persisting",
+      "message": "Investigación completada para 6 trabajos; persistiendo 5 explicaciones y 1 cierre de reentrada sin episodio distinto. Sin ImageGen ni publicación."
     }
   ],
   "last_started_at": "2026-11-15T14:48:14+01:00",
