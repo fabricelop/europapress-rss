@@ -36,7 +36,7 @@ Actualización: 15 de noviembre de 2026.
 - No confundir apagar captura y redacción V1 con quitar /tendencias del Site público: el usuario quiere conservar esa vista alimentada desde V2.
 
 ## Estado que no se debe exagerar
-- CI Windows del activador pasó antes de la ampliación RE-X; repetir CI tras cambios.
+- Las pruebas Windows y RE-X posteriores a la ampliación pasaron en GitHub Actions (47 comprobaciones del panel privado).
 - No afirmar «activado en Windows» sin lectura de salida de la tarea real.
-- La modificación del código del Worker privado NO implica por sí sola despliegue de Cloudflare; verificar publicación real.
+- RE-X desplegado en el Worker privado el 15/11/2026: confirmado en producción por /health (build v2-re-x-20261115, configured=true) y /api/public-editorial-overrides (schema_version=1), ambos 200. La comprobación automática del workflow dio un falso negativo de verificación posterior al despliegue, pese a esas comprobaciones manuales correctas. RE-X necesita aún activación del consumidor local Windows para tener la prioridad solicitada.
 - V1 no ha sido apagada.
