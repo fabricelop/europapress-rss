@@ -11,7 +11,7 @@ $script = Join-Path $root 'top30_tick_v2.py'
 if (!(Test-Path -LiteralPath $script)) { throw "Falta $script" }
 $launcher = (Get-Command py.exe -ErrorAction Stop).Source
 $argline = '-3 "' + $script + '" --tick'
-$process = Start-Process -FilePath $launcher -ArgumentList $argline -Wait -PassThru -NoNewWindow -RedirectStandardOutput $out -RedirectStandardError $err
+$process = Start-Process -FilePath $launcher -ArgumentList $argline -Wait -PassThru -WindowStyle Hidden -RedirectStandardOutput $out -RedirectStandardError $err
 if ($process.ExitCode -ne 0) { throw ("TT_V2_TOP30_TICK_EXIT_CODE=" + $process.ExitCode + " (ver " + $err + ")") }
 # Máximo 500 ficheros de log de usuario, sin acumular indefinidamente.
 Get-ChildItem -LiteralPath $logdir -File -Filter '*.log' | Sort-Object LastWriteTime -Descending | Select-Object -Skip 500 | Remove-Item -Force -ErrorAction SilentlyContinue
