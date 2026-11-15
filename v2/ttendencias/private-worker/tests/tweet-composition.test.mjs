@@ -126,3 +126,29 @@ test("if a dossier has no usable editorial lead, fail closed instead of publishi
  assert.equal(editorial(raw),"Explicación capturada; formato editorial pendiente de adaptar.");
  assert.match(tweetText(raw,{rank:13,name:"Maledon"}),/^Explicación capturada/);
 });
+
+
+test("new ChatGPT writing blocks never leak into trend rows or P-X",()=>{
+ const samples=[
+  ["Bellingham",7,"Jude Bellingham destaca en la victoria de Inglaterra ante España (2-3), con una asistencia a Ben White y una polémica acción con Cucurella."],
+  ["Trafford",9,"James Trafford fue decisivo en el triunfo de Inglaterra ante España (2-3). Sus paradas finales evitaron el empate en la Nations League."],
+  ["Anderson",11,"Elliot Anderson es expulsado por derribar a Lamine Yamal y provocar un penalti en el España-Inglaterra, que termina con victoria inglesa por 2-3."],
+  ["Eurocopa",20,"«Eurocopa» coincide con el España-Inglaterra de la Nations League, reedición de la final de 2024, pero no está confirmado que ese sea el motivo de la tendencia."]
+ ];
+ for(const [name,rank,lead] of samples){
+  const raw=["ESTADO_CAUSA: CONFIRMADA","Explicación principal — apta para X",
+   ':::writing{variant="social_post" id="58321"}',lead,":::","¿Por qué es tendencia?","Contexto posterior."].join("\n");
+  const visible=editorial(raw);
+  const prepared=tweetText(raw,{rank,name});
+  assert.equal(visible,lead);
+  assert.ok(prepared.includes(lead),"se conserva la explicación: "+name);
+  assert.doesNotMatch(visible+prepared,/:::|writing\{|id="58321"/i);
+ }
+});
+
+test("inline writing markers are removed without deleting the factual lead",()=>{
+ const lead="Jude Bellingham destaca en la victoria de Inglaterra ante España (2-3).";
+ const raw='Explicación principal — apta para X\n:::writing{variant="social_post" id="58321"} '+lead+' :::';
+ assert.equal(editorial(raw),lead);
+ assert.match(tweetText(raw,{rank:7,name:"Bellingham"}),/Jude Bellingham destaca/);
+});
