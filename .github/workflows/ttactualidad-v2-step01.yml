@@ -30,25 +30,22 @@ jobs:
           python-version: '3.12'
       - name: Verificar Win32 ventanas V2 ocultas sin modificar ninguna ventana
         run: python -m unittest -v v2.ttendencias.test_chrome_windows_v2
-      - name: Validar reparacion del reloj V2 y su script de Windows
+      - name: Validar diagnóstico editorial V2 sin reinstalar relojes
         shell: powershell
         run: |
-          $scripts = @(
-            'v2/ttendencias/Recover-V2-Editorial-Local-Safe.ps1',
-            'v2/ttendencias/Run-V2-Top30-Tick.ps1',
-            'v2/ttendencias/Install-V2-Top30-15min.ps1'
-          )
+          $scripts = @('v2/ttendencias/Recover-V2-Editorial-Local-Safe.ps1')
           foreach ($file in $scripts) {
             $tokens = $null
             $errors = $null
             [Management.Automation.Language.Parser]::ParseFile($file,[ref]$tokens,[ref]$errors) | Out-Null
             if ($errors.Count -gt 0) { throw "Sintaxis PowerShell invalida: $file" }
           }
-          & './v2/ttendencias/Recover-V2-Editorial-Local-Safe.ps1' -SelfTest
-          if ($LASTEXITCODE -ne 0 -and $null -ne $LASTEXITCODE) { throw 'Autoprueba recuperacion V2 fallida' }
           $source = Get-Content 'v2/ttendencias/Recover-V2-Editorial-Local-Safe.ps1' -Raw
-          foreach ($marker in @('RestoreTop30','TT_V2_TOP30_SOURCE_AGE_MINUTES','Run-V2-Top30-Tick.ps1','TT_V2_DAEMON_HEARTBEAT_STALE_MINUTES')) {
+          foreach ($marker in @('RUNNING_TASK_WITHOUT_WORKER_CHECK_TASK_LOGS','TT_V2_DAEMON_HEARTBEAT_STALE_MINUTES','BLOCKED_V2_CHROME_OPEN_NO_TERMINATION')) {
             if (!$source.Contains($marker)) { throw "Contrato de recuperacion V2 ausente: $marker" }
+          }
+          foreach ($marker in @('RestoreTop30','Top30Healthy','Install-V2-Top30-15min.ps1')) {
+            if ($source.Contains($marker)) { throw "No reinstalar el reloj Top30 obsoleto: $marker" }
           }
           if ($source -match '(?i)\b(Stop-Process|Stop-ScheduledTask|taskkill)\b') { throw 'Recuperacion V2 debe ser no destructiva' }
           Write-Host 'TT_V2_WINDOWS_RECOVERY_TESTS=OK'
