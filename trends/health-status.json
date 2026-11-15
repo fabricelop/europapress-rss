@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-15T13:45:22.192188+00:00",
+  "checked_at": "2026-11-15T13:59:39.482877+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -42,13 +42,12 @@
     "top10": {
       "ok": false,
       "count": 10,
-      "non_stale_sources": 5,
+      "non_stale_sources": 4,
       "verified_fresh_sources": [
-        "whatstrends",
         "xtrendsiamrohit"
       ],
       "live_verified": false,
-      "captured_age_minutes": 0.1,
+      "captured_age_minutes": 0.2,
       "noise_count": 0
     },
     "listener": {
@@ -58,10 +57,10 @@
     },
     "refresh": {
       "ok": true,
-      "status": "in_progress",
+      "status": "pending",
       "conclusion": null,
-      "age_minutes": 4.1,
-      "run_id": 43720286465,
+      "age_minutes": 3.8,
+      "run_id": 43721572291,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -83,22 +82,16 @@
     },
     "editorial_queue": {
       "ok": false,
-      "pending_count": 2,
-      "overdue_count": 2,
-      "oldest_age_minutes": 41.8,
+      "pending_count": 1,
+      "overdue_count": 1,
+      "oldest_age_minutes": 56.1,
       "warning_after_minutes": 30,
       "overdue_items": [
-        {
-          "id": "6be6a0bdaab2",
-          "name": "Alcorcon",
-          "status": "preparing",
-          "age_minutes": 41.8
-        },
         {
           "id": "7424a29ae1ce",
           "name": "Ávila",
           "status": "preparing",
-          "age_minutes": 41.8
+          "age_minutes": 56.1
         }
       ],
       "repairable": false
@@ -108,7 +101,6 @@
       "status": "overdue",
       "queue_complete": false,
       "remaining_active_ids": [
-        "6be6a0bdaab2",
         "7424a29ae1ce"
       ],
       "contradictory_success": false
@@ -123,9 +115,9 @@
   "blocking": [
     "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos",
     "cola con 272 estado(s) inválido(s)",
-    "cola de explicaciones retrasada: 2 pendiente(s) superan 30 min; más antigua 41.8 min"
+    "cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 56.1 min"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 272 estado(s) inválido(s) | cola de explicaciones retrasada: 2 pendiente(s) superan 30 min; más antigua 41.8 min"
+  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 272 estado(s) inválido(s) | cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 56.1 min"
 }
