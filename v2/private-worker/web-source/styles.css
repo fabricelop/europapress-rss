@@ -44,7 +44,8 @@
 .publish-action:hover,.publish-action:focus-visible{background:#2b4560;border-color:#a3c9ee}
 .publish-action[disabled]{opacity:.55;cursor:wait}
 .publish-with-image{background:#214439;border-color:#498b76}
-.trend-generated-image:not(.loaded){display:none}
+.image-load-status{margin:0;padding:8px 0 12px;color:#b6c4d7;font-size:13px}
+.generated-original[hidden],.image-load-status[hidden]{display:none}
 .generated-original{display:block;max-width:min(100%,620px);width:auto;height:auto;max-height:640px;object-fit:contain;border-radius:12px;background:#12161d}
 @media(max-width:450px){.trend-generated-image{padding:0 14px 18px 52px}}
 @media(max-width:450px){.publish-actions{padding:0 14px 16px 52px;gap:8px}.image-ready-icon{font-size:12px;padding:2px 3px}}
