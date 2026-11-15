@@ -13,8 +13,8 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
-from v2.ttendencias.re_request_v2 import request_reexplanation
-from v2.ttendencias.web_top30_v2 import build
+from .re_request_v2 import request_reexplanation
+from .web_top30_v2 import build
 
 REPO = "fabricelop/europapress-rss"
 BRANCH = "feature/ttactualidad-v2-clean"
