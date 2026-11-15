@@ -7,23 +7,47 @@
   "previous_run_id": "tr-20261115T155200-chat-direct",
   "command_id": "tr-20261115T172500-chat-direct",
   "source": "chat_direct",
-  "status": "DONE",
+  "status": "waiting",
   "phase": "closing",
   "started_at": "2026-11-15T17:25:00+01:00",
-  "updated_at": "2026-11-15T17:32:00+01:00",
+  "updated_at": "2026-11-15T19:08:42+01:00",
   "current": 3,
   "total": 3,
   "trend_id": null,
   "title": null,
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [
-    "df6038ca94ee",
-    "red-review-4ecad327108e45b69c82",
-    "red-review-6773bd13ec18b9232fdd"
+    "2297cc60ccee"
   ],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "5e1e30b01ae3",
+    "ccb05dc4bbe8",
+    "d9f6589ca44c",
+    "198d8a9d4fd6",
+    "3248572c5b6c",
+    "5f0f53ab8f40",
+    "96d736c2f576",
+    "03a189b3780e",
+    "a6db34486bd0",
+    "c36cd75240d2",
+    "d1f4643c192b",
+    "4beb8cf76c9a"
+  ],
+  "remaining_active_ids": [
+    "5e1e30b01ae3",
+    "ccb05dc4bbe8",
+    "d9f6589ca44c",
+    "198d8a9d4fd6",
+    "3248572c5b6c",
+    "5f0f53ab8f40",
+    "96d736c2f576",
+    "03a189b3780e",
+    "a6db34486bd0",
+    "c36cd75240d2",
+    "d1f4643c192b",
+    "4beb8cf76c9a"
+  ],
   "remaining_problematic_ids": [],
   "summary": "Pasada 3/3 completada: Bildu aplicado como episodio distinto; revisión roja Begoña sin cambios; revisión roja Jordi Wild actualizada como continuidad. Cola final=0; sin ImageGen directo ni publicaciones.",
   "outcomes": [
@@ -980,7 +1004,7 @@
       "message": "Barrera final superada: editorial-queue=0 tras refresco de las 17:31; 3/3 cerrados, 0 incidentes, sin ImageGen directo ni publicación."
     }
   ],
-  "last_started_at": "2026-11-15T17:26:50+01:00",
+  "last_started_at": "2026-11-15T19:08:42+01:00",
   "last_completed_at": "2026-11-15T17:32:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
