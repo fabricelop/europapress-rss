@@ -1,7 +1,7 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-15T17:51:09+01:00",
-  "count": 1,
+  "updated_at": "2026-11-15T16:51:31.385694+00:00",
+  "count": 3,
   "items": [
     {
       "red_review_request": null,
@@ -93,6 +93,77 @@
       "anticipated_news_source_count": 0,
       "anticipated_news_title": "",
       "anticipated_entered_top10_at": null
+    },
+    {
+      "id": "red-review-e2b187d5397d4615eb9d",
+      "revision": 0,
+      "name": "Revisar novedades: #laSextaXplica",
+      "rank": 6,
+      "status": "preparing",
+      "requested_at": "2026-11-15T16:51:31.385694+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "c7bb6c3446ee",
+        "revision": 0,
+        "name": "#laSextaXplica",
+        "rank": 7,
+        "explanation": "TT#7 #laSextaXplica es tendencia por la emisión de este sábado, centrada en la actualidad y los debates de la precampaña del 29N, con José Yélamo.\n#29N #JoséYélamo\n🌶️ La campaña aún no empezó y la mesa ya está en modo debate.",
+        "explanation_sha256": "969e0e9d19c9151835574aa2eed4dcd1f01a178525fc0aa617c5d0b8d23bf9dc",
+        "explained_at": "2026-11-07T23:19:30+01:00",
+        "verification_sources": [
+          {
+            "url": "https://www.atresmedia.com/prensa/notas/destacados/destacados-programacion-sabado-07-domingo-08-noviembre_202611066aedd44203bbf30bb0425167.html"
+          },
+          {
+            "url": "https://www.eldiario.es/vertele/entrevistas/jose-yelamo-desmonta-timadores-debut-true-crime-cierra-filas-lasexta-audiencia-periodismo-honesto_1_13641620.html"
+          }
+        ],
+        "fingerprint": "e8c3b279c63a685d525f876f2b9db3f97b18d38dc83501cbeed3688f7a2c5c02"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-2deb9532e0bd8af7febe",
+      "revision": 0,
+      "name": "Revisar novedades: Belén",
+      "rank": 24,
+      "status": "preparing",
+      "requested_at": "2026-11-15T16:51:31.385694+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "746ea7ec1310",
+        "revision": 0,
+        "name": "Belén",
+        "rank": 16,
+        "explanation": "TT#16 Belén es tendencia por el regreso de Belén Esteban a De Viernes, donde anunció su participación en GH VIP 9 y discutió con Terelu Campos y Lydia Lozano.\n#DeViernes #GHVIP\n🌶️ Volvió para dar una exclusiva y acabó reuniendo a medio Sálvame.",
+        "explanation_sha256": "ef0ab48067be7a6ee275985ccfdfe70f56814f2a1c07ac1346213b3fdd61f53e",
+        "explained_at": "2026-11-14T06:56:52.386Z",
+        "verification_sources": [
+          {
+            "url": "https://www.mediasetinfinity.es/programas-tv/de-viernes/temporada-5/top-videos/terelu-campos-estalla-contra-lydia-lozano-posicionarse-belen-esteban-40_020610082/player/"
+          },
+          {
+            "url": "https://www.diezminutos.es/famosos-corazon/famosos-espanoles/a74428343/tenso-discusion-belen-esteban-terelu-campos-lydia-lozano-de-viernes/"
+          },
+          {
+            "url": "https://www.hola.com/actualidad/20261113934964/belen-esteban-importante-decision-antes-despues-vida/"
+          }
+        ],
+        "fingerprint": "d5bb9dd4865c0d00f33c65b22bade96c96d8bfd5fbca193ecbd245b66c0c7c75"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
     }
   ]
 }
