@@ -3,38 +3,27 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261115T043600-chat-direct",
+  "run_id": "tr-20261115T051000-chat-direct",
   "previous_run_id": "tr-20261114T232800-chat-direct",
   "command_id": "tr-20261115T043600-chat-direct",
   "source": "chat_direct",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-15T04:36:00+01:00",
-  "updated_at": "2026-11-15T04:45:00+01:00",
-  "current": 15,
-  "total": 15,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-15T05:10:00+01:00",
+  "updated_at": "2026-11-15T05:10:00+01:00",
+  "current": 0,
+  "total": 4,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": true,
-  "processed_ids": [
-    "7d14ea90ddc9",
-    "da1b6aaf7d73",
-    "fa8aecbc4a8e",
-    "c4218e7b3336",
-    "65b2bb5d8420",
-    "b2eb0fa2b016",
-    "e55be0abf8a8",
-    "f24b52468bfa",
-    "5413818bec36",
-    "1c7dfddd5335",
-    "b60673ab34ed",
-    "c454cd997976",
-    "180a8346f226",
-    "a84ae67bcb59",
-    "9675e198b09e"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
+  "remaining_ids": [
+    "cee2e8ebb0fa",
+    "126f19ace8a4",
+    "003925188bc7",
+    "8d30967e70ee"
+  ],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
@@ -838,7 +827,7 @@
     },
     "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: Top 30 capturado a las 17:41:08, editorial-queue=0 (updated_at 17:41:15) y mobile-decisions sin estados editoriales activos. Sin ImageGen ni publicaciones."
   },
-  "message": "Pasada tr-20261115T043600-chat-direct en investigación JIT de 15 revisiones vigentes; primeras apariciones y reentradas se contrastan por separado. Sin ImageGen ni publicación.",
+  "message": "Ejecuta TTendencias: 4 trabajos vigentes revalidados; iniciando investigación y persistencia textual.",
   "history": [
     {
       "run_id": "tr-1794361941170-manual",
@@ -5749,7 +5738,7 @@
       "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: Top 30 capturado a las 17:41:08, editorial-queue=0 (updated_at 17:41:15) y mobile-decisions sin estados editoriales activos. Sin ImageGen ni publicaciones."
     }
   ],
-  "current_item": null,
+  "current_item": "#UFCHBOMax",
   "withdrawn_ids": [],
   "last_finished_at": "2026-11-14T17:42:00+01:00",
   "last_revalidated_at": "2026-11-14T17:41:15+01:00",
@@ -9764,7 +9753,7 @@
   "maintenance_apply_commit": "074b3f7e87b6260fde12e02ec813bdd56b8cc218",
   "completed_at": "2026-11-14T17:42:00+01:00",
   "input_commit": "d657e81fd73a9f4f14a0bc2ac55d968a79eaf428",
-  "finished_at": "2026-11-15T04:45:00+01:00",
+  "finished_at": null,
   "apply_commits": [
     "36a6bdedee2ab6b1689dab6eb97f1f5f56e0ba70"
   ]
