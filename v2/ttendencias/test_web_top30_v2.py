@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Contrato público del Top30 V2, sin red ni efectos."""
 import unittest
+from datetime import datetime, timezone
 from v2.ttendencias.web_top30_v2 import build
 
 
@@ -116,6 +117,35 @@ class Top30WebTests(unittest.TestCase):
         image["revision"] = 1
         image["path"] = "v2/ttendencias/generated-images/wrong.png"
         self.assertFalse(build(h, q)["items"][0]["image_available"])
+
+    def test_image_in_progress_requires_live_matching_revision(self):
+        from datetime import timedelta
+        h, q = fixtures()
+        row = q["items"]["trv2-id-01"]
+        row["status"] = "captured_review"
+        row["capture"] = {"revision": 1, "verified_complete": True,
+                          "answer": "Texto editorial verificado " * 5,
+                          "sha256": "c" * 64}
+        progress = {"status": "in_progress", "revision": 1,
+                    "editorial_sha256": "c" * 64,
+                    "command_id": "PRIVATE_IMAGE_JOB",
+                    "expires_at": (datetime.now(timezone.utc)
+                                   + timedelta(minutes=15)).isoformat()}
+        row["image_progress"] = progress
+        view = build(h, q)["items"][0]
+        self.assertTrue(view["image_in_progress"])
+        self.assertFalse(view["image_available"])
+        self.assertNotIn("PRIVATE_IMAGE_JOB", str(view))
+        progress["revision"] = 2
+        self.assertFalse(build(h, q)["items"][0]["image_in_progress"])
+        progress["revision"] = 1
+        progress["editorial_sha256"] = "a" * 64
+        self.assertFalse(build(h, q)["items"][0]["image_in_progress"])
+        progress["editorial_sha256"] = "c" * 64
+        progress["expires_at"] = "2020-01-01T00:00:00Z"
+        self.assertFalse(build(h, q)["items"][0]["image_in_progress"])
+        row["status"] = "in_progress"
+        self.assertFalse(build(h, q)["items"][0]["image_in_progress"])
 
     def test_capture_recovery_shows_incident(self):
         h, q=fixtures()
