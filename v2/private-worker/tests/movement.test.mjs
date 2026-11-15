@@ -15,10 +15,10 @@ function indicator(item,rankingUnchanged=false,rankingChangeAt=null){
  const fn=runInNewContext(match[0].replace(/\r?\nfunction top30Since$/,"")+"\nmovementIndicator",{state,el,spanishStamp});
  return fn({...item,_rankingMeta:state});
 }
-test("flechas con número correcto para subida, bajada y estabilidad comprobada",()=>{
+test("flechas con número correcto sin mostrar cero artificial",()=>{
  assert.equal(indicator({rank:2,previous_rank:7}).label,"↑ 5");
  assert.equal(indicator({rank:7,previous_rank:2}).label,"↓ 5");
- assert.equal(indicator({rank:4,previous_rank:4}).label,"→ 0");
+ assert.equal(indicator({rank:4,previous_rank:4}).label,"—");
 });
 test("ranking idéntico retiene la flecha pero indica que no hay clasificación nueva",()=>{
  const row=indicator({rank:2,previous_rank:7},true,"2026-11-14T22:41:00Z");
