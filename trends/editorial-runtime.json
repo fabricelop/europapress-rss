@@ -7,16 +7,22 @@
   "previous_run_id": "tr-20261115T092500-chat-direct",
   "command_id": "tr-20261115T101100-chat-direct",
   "source": "chat_direct",
-  "status": "RUNNING",
+  "status": "success",
   "phase": "preparing",
   "started_at": "2026-11-15T10:11:15+01:00",
-  "updated_at": "2026-11-15T10:11:15+01:00",
+  "updated_at": "2026-11-15T10:15:27+01:00",
   "current": 0,
   "total": 5,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
   "queue_complete": true,
-  "processed_ids": [],
+  "processed_ids": [
+    "147eef6249e3",
+    "5e3f4544230f",
+    "673ba7640524",
+    "67bc5a61fda3",
+    "ae4989cc1764"
+  ],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
@@ -883,8 +889,8 @@
       "message": "Pasada TTendencias cerrada 0/0 contra main. Barrera JIT: editorial-queue=0 (updated_at 2026-11-15T09:50:57+01:00); mobile-decisions activos=0; Top 30 capturado a las 2026-11-15T09:50:52+01:00. Incidencia no bloqueante: refresco manual 43696856247 sigue in_progress en checkout y aún no ha generado snapshot nuevo. Sin ImageGen ni publicaciones."
     }
   ],
-  "last_started_at": "2026-11-15T09:55:00+01:00",
-  "last_completed_at": "2026-11-15T10:00:23+01:00",
+  "last_started_at": "2026-11-15T10:15:27+01:00",
+  "last_completed_at": "2026-11-15T10:15:27+01:00",
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-20261115T095500-chat-direct",
