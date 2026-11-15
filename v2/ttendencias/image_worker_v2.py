@@ -166,7 +166,7 @@ def run_one(row, attempt, *, api, auth):
                                    startupinfo=visibility.startupinfo_hidden() if not HEADLESS else None,
                                    creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         if not HEADLESS:
-            hider = visibility.V2WindowHider(image_profile_pids).start()
+            hider = visibility.V2WindowHider(image_profile_pids, primary_pid=process.pid).start()
         endpoint = "http://127.0.0.1:%d" % port
         import urllib.request
         for _ in range(40):
@@ -182,6 +182,8 @@ def run_one(row, attempt, *, api, auth):
             raise RuntimeError("V2_IMAGE_OWN_CHROME_NOT_IDENTIFIED")
         if hider and hider.last_error:
             raise RuntimeError("V2_IMAGE_HIDDEN_CHROME_FAILED")
+        if hider:
+            hider.ensure_hidden()
         from playwright.sync_api import sync_playwright
         with sync_playwright() as pw:
             browser = pw.chromium.connect_over_cdp(endpoint)
