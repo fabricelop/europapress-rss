@@ -49,3 +49,17 @@ test("P-X and P-IA are manual, revision-bound and never mark a V2 trend publishe
  assert.doesNotMatch(src,/\/api\/publish/);
  assert.doesNotMatch(src,/state\.items\[.*\]\.published/);
 });
+
+
+test("generating image has its own amber icon, independent of editorial blue dot",()=>{
+ const src=readFileSync(new URL("../web-source/app.js",import.meta.url),"utf8");
+ const css=readFileSync(new URL("../web-source/styles.css",import.meta.url),"utf8");
+ assert.match(src,/item\.image_in_progress===true/);
+ assert.match(src,/item\.status==="explicada"/);
+ assert.match(src,/!imageReady\(item\)/);
+ assert.match(src,/"image-working-icon","▧"/);
+ assert.match(src,/generating\.setAttribute\("aria-label",generating\.title\)/);
+ assert.match(src,/head\.append\(generating\)/);
+ assert.match(css,/\.image-working-icon\{[^}]*color:#ffe0a1/);
+ assert.match(css,/prefers-reduced-motion:reduce\)\{\.image-working-icon\{animation:none/);
+});
