@@ -3,18 +3,18 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261115T095500-chat-direct",
+  "run_id": "tr-20261115T101100-chat-direct",
   "previous_run_id": "tr-20261115T092500-chat-direct",
-  "command_id": "tr-20261115T095500-chat-direct",
-  "source": "chat",
-  "status": "DONE_WITH_INCIDENTS",
-  "phase": "closing",
-  "started_at": "2026-11-15T09:55:00+01:00",
-  "updated_at": "2026-11-15T10:00:23+01:00",
+  "command_id": "tr-20261115T101100-chat-direct",
+  "source": "chat_direct",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-15T10:11:15+01:00",
+  "updated_at": "2026-11-15T10:11:15+01:00",
   "current": 0,
-  "total": 0,
+  "total": 5,
   "trend_id": null,
-  "title": "Pasada editorial TTendencias completada con incidencia",
+  "title": "Pasada editorial TTendencias",
   "queue_complete": true,
   "processed_ids": [],
   "converged_ids": [],
@@ -22,8 +22,8 @@
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 0,
+    "attempted": 5,
+    "observed": 5,
     "closed": 0,
     "explained": 0,
     "problematic": 0,
@@ -38,12 +38,12 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 5,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 1,
+    "incidents": 0,
     "concurrent_convergence": 0
   },
   "outcomes": [],
@@ -937,7 +937,7 @@
     "message": "Pasada TTendencias cerrada 0/0 contra main. Barrera JIT: editorial-queue=0 (updated_at 2026-11-15T09:50:57+01:00); mobile-decisions activos=0; Top 30 capturado a las 2026-11-15T09:50:52+01:00. Incidencia no bloqueante: refresco manual 43696856247 sigue in_progress en checkout y aún no ha generado snapshot nuevo. Sin ImageGen ni publicaciones.",
     "at": "2026-11-15T10:00:23+01:00"
   },
-  "message": "Pasada TTendencias cerrada 0/0 contra main. Barrera JIT: editorial-queue=0 (updated_at 2026-11-15T09:50:57+01:00); mobile-decisions activos=0; Top 30 capturado a las 2026-11-15T09:50:52+01:00. Incidencia no bloqueante: refresco manual 43696856247 sigue in_progress en checkout y aún no ha generado snapshot nuevo. Sin ImageGen ni publicaciones.",
+  "message": "Cola inicial 5; revalidando ID/revisión e investigando 5 trabajos contra main. Sin ImageGen ni publicaciones.",
   "history": [
     {
       "run_id": "tr-1794361941170-manual",
@@ -6100,6 +6100,11 @@
       ],
       "message": "Pasada TTendencias cerrada 0/0 contra main. Barrera JIT: editorial-queue=0 (updated_at 2026-11-15T09:50:57+01:00); mobile-decisions activos=0; Top 30 capturado a las 2026-11-15T09:50:52+01:00. Incidencia no bloqueante: refresco manual 43696856247 sigue in_progress en checkout y aún no ha generado snapshot nuevo. Sin ImageGen ni publicaciones.",
       "at": "2026-11-15T10:00:23+01:00"
+    },
+    {
+      "at": "2026-11-15T10:11:15+01:00",
+      "phase": "preparing",
+      "message": "Cola inicial 5; iniciando pasada editorial real contra main, sin ImageGen ni publicación."
     }
   ],
   "current_item": null,
@@ -10229,6 +10234,8 @@
     }
   ],
   "processed": [],
-  "completed_at": "2026-11-15T10:00:23+01:00",
-  "finished_at": "2026-11-15T10:00:23+01:00"
+  "completed_at": null,
+  "finished_at": null,
+  "revision": null,
+  "name": null
 }
