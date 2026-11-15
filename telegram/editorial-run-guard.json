@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "checked_at": "2026-11-15T18:27:43.414744+00:00",
+  "checked_at": "2026-11-15T18:33:11.270089+00:00",
   "projects": {
     "ttittulares": {
       "project": "ttittulares",
-      "checked_at": "2026-11-15T18:27:43.414744+00:00",
+      "checked_at": "2026-11-15T18:33:11.270089+00:00",
       "pending_count": 0,
       "pending_ids": [],
       "oldest_at": null,
@@ -25,7 +25,7 @@
     },
     "ttendencias": {
       "project": "ttendencias",
-      "checked_at": "2026-11-15T18:27:43.414744+00:00",
+      "checked_at": "2026-11-15T18:33:11.270089+00:00",
       "pending_count": 12,
       "pending_ids": [
         "5e1e30b01ae3",
@@ -52,8 +52,8 @@
       },
       "control_command": "tr-autoguard-1794766655",
       "last_command_at": "2026-11-15T18:17:35.389734Z",
-      "status": "dispatch_pending_ack",
-      "should_dispatch": false,
+      "status": "dispatch_requested_awaiting_run",
+      "should_dispatch": true,
       "item_execution": [
         {
           "id": "5e1e30b01ae3",
@@ -142,9 +142,15 @@
       ],
       "backlog_signature": "c0a513918fe44025",
       "expected_start_by": "2026-11-15T17:07:30+00:00",
-      "attempts": 0,
+      "attempts": 1,
       "previous_target_completed_or_superseded": false,
-      "last_request_at": "2026-11-15T18:04:05.066515+00:00"
+      "dispatch": {
+        "requested": true,
+        "command_id": "tr-autoguard-1794767591",
+        "requested_at": "2026-11-15T18:33:11.270089Z"
+      },
+      "last_request_at": "2026-11-15T18:33:11.270089+00:00",
+      "last_requested_command_id": "tr-autoguard-1794767591"
     }
   },
   "policy": {
