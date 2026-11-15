@@ -8,42 +8,44 @@
   "command_id": "tr-20261115T071000-chat-direct",
   "source": "chat_direct",
   "status": "RUNNING",
-  "phase": "investigating",
+  "phase": "closing",
   "started_at": "2026-11-15T07:10:00+01:00",
-  "updated_at": "2026-11-15T07:15:00+01:00",
-  "current": 4,
+  "updated_at": "2026-11-15T07:17:30+01:00",
+  "current": 6,
   "total": 6,
-  "trend_id": "red-review-2306eb1d1343790f118f",
-  "title": "Revisando novedades: #laSextaXplica",
+  "trend_id": null,
+  "title": "Pasada editorial TTendencias",
   "queue_complete": false,
   "processed_ids": [
-    "0b6b06455b21",
-    "3e6b47750af6",
     "4bd437d1d3a9",
-    "fc95d3051d65"
+    "fc95d3051d65",
+    "3e6b47750af6",
+    "0b6b06455b21",
+    "red-review-2306eb1d1343790f118f",
+    "red-review-60590e44cbbbb4fdfa51"
   ],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 4,
+    "attempted": 6,
     "observed": 6,
-    "closed": 4,
+    "closed": 6,
     "explained": 3,
     "problematic": 0,
-    "updates": 0,
+    "updates": 1,
     "review_completed_no_distinct_event": 1,
-    "maintenance_reviews": 0,
-    "unchanged_reviews": 0,
+    "maintenance_reviews": 2,
+    "unchanged_reviews": 1,
     "continuity_updates": 0,
-    "distinct_updates": 0,
+    "distinct_updates": 1,
     "stale_reviews": 0,
     "unverified_reviews": 0,
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -51,7 +53,45 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "4bd437d1d3a9",
+      "revision": 0,
+      "name": "Hokit",
+      "outcome": "explained"
+    },
+    {
+      "id": "fc95d3051d65",
+      "revision": 0,
+      "name": "Gane",
+      "outcome": "explained"
+    },
+    {
+      "id": "3e6b47750af6",
+      "revision": 0,
+      "name": "#LaSextaDebate",
+      "outcome": "review_completed_no_distinct_event"
+    },
+    {
+      "id": "0b6b06455b21",
+      "revision": 0,
+      "name": "Amanda Nunes",
+      "outcome": "explained"
+    },
+    {
+      "id": "red-review-2306eb1d1343790f118f",
+      "revision": 0,
+      "name": "Revisar novedades: #laSextaXplica",
+      "outcome": "distinct_update",
+      "created_id": "trend-update-0b9ee22680d586ee49b5"
+    },
+    {
+      "id": "red-review-60590e44cbbbb4fdfa51",
+      "revision": 0,
+      "name": "Revisar novedades: #LaSextaDebate",
+      "outcome": "unchanged"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -763,6 +803,13 @@
       "revision": 0,
       "name": "Revisar novedades: #laSextaXplica",
       "message": "Barrera posterior abrió 2 revisiones rojas: #laSextaXplica y #LaSextaDebate. Se investiga episodio distinto vs continuidad; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-15T07:17:30+01:00",
+      "run_id": "tr-20261115T071000-chat-direct",
+      "status": "RUNNING",
+      "phase": "closing",
+      "message": "6/6 resultados editoriales aplicados; cola=0. Barrera final espera únicamente la conclusión del refresco manual ya disparado para revalidar que no aparezca trabajo nuevo."
     }
   ],
   "last_started_at": "2026-11-15T07:13:25+01:00",
