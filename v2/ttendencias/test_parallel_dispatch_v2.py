@@ -39,6 +39,28 @@ class ParallelDispatchTests(unittest.TestCase):
             self.assertEqual(profiles, prepare_profiles(base, 3, source_running=lambda: set()))
             self.assertTrue((profiles[1] / "test").exists())
 
+    def test_windows_denied_rename_uses_completed_staging_without_deleting(self):
+        with tempfile.TemporaryDirectory() as root:
+            base = pathlib.Path(root) / "ChromeProfile"
+            base.mkdir()
+            (base / "Local State").write_text("session", encoding="utf-8")
+            with patch.object(pathlib.Path, "replace", side_effect=PermissionError(5)):
+                profiles = prepare_profiles(base, 2, source_running=lambda: set())
+            self.assertEqual(profiles[1].name, "ChromeProfile-Parallel-01.building")
+            self.assertTrue((profiles[1] / "tt-v2-parallel-ready.marker").is_file())
+            self.assertEqual((profiles[1] / "Local State").read_text(), "session")
+            self.assertEqual(profiles, prepare_profiles(base, 2, source_running=lambda: set()))
+
+    def test_incomplete_staging_stops_without_reusing_or_deleting(self):
+        with tempfile.TemporaryDirectory() as root:
+            base = pathlib.Path(root) / "ChromeProfile"
+            base.mkdir()
+            partial = pathlib.Path(root) / "ChromeProfile-Parallel-01.building"
+            partial.mkdir()
+            with self.assertRaisesRegex(RuntimeError, "PARTIAL_COPY"):
+                prepare_profiles(base, 2, source_running=lambda: set())
+            self.assertTrue(partial.exists())
+
     def test_two_concurrent_jobs_do_not_share_profile_or_duplicate_revision(self):
         with tempfile.TemporaryDirectory() as root:
             base = pathlib.Path(root) / "ChromeProfile"
