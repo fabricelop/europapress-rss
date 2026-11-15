@@ -31,6 +31,7 @@ $required=@(
   @($retire,"[ValidateSet('Status','Disable','Restore')]"),
   @($retire,"TTActualidadV2-Editorial-Auto"),
   @($retire,"TTendencias-XContext"),
+  @($retire,"function AssertDisabled"),
   @($retire,"TT_V1_BACKUP_READY=YES"),
   @($prepare,"TT_V1_SHARED_UPDATER_PREPARED=YES"),
   @($prepare,"TT-AutoUpdater-before-retirement-")
