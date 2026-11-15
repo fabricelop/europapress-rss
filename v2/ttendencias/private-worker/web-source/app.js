@@ -224,6 +224,30 @@ function imageReady(item){
 function publishNotice(message){
  const notice=$("notice");notice.textContent=message;notice.hidden=false;
 }
+function openReXDialog(item,onSubmit){
+ const dialog=el("dialog","re-x-dialog");
+ const heading=el("h3","","RE-X · "+item.name);
+ const intro=el("p","","Escribe qué conversación, publicación, palabra clave o dato quieres que investigue en X. Las pistas se contrastarán; no se darán por ciertas.");
+ const textarea=el("textarea","re-x-hints");
+ textarea.rows=6;textarea.maxLength=1200;textarea.placeholder="Por ejemplo: se está comentando un vídeo publicado hoy por…; busca también #…";
+ textarea.setAttribute("aria-label","Pistas para la investigación en X");
+ const privacy=el("small","re-x-privacy","No incluyas información privada: las pistas pasan al historial editorial del proyecto.");
+ const error=el("p","re-x-error","");error.setAttribute("role","alert");
+ const buttons=el("div","re-x-actions");
+ const cancel=el("button","","Cancelar");cancel.type="button";
+ const submit=el("button","re-x-submit","Pedir RE-X");submit.type="button";
+ cancel.addEventListener("click",()=>dialog.close());
+ submit.addEventListener("click",async()=>{
+   const hints=textarea.value.trim();
+   if(hints.length<10){error.textContent="Escribe al menos 10 caracteres.";textarea.focus();return}
+   submit.disabled=true;cancel.disabled=true;error.textContent="";
+   try{await onSubmit(hints);dialog.close()}
+   catch(e){error.textContent="No se pudo pedir RE-X: "+e.message;submit.disabled=false;cancel.disabled=false}
+ });
+ buttons.append(cancel,submit);dialog.append(heading,intro,textarea,privacy,error,buttons);
+ dialog.addEventListener("close",()=>dialog.remove(),{once:true});
+ document.body.append(dialog);dialog.showModal();textarea.focus();
+}
 function makePublishButtons(card,item){
  if(item.status!=="explicada")return;
  const text=tweetText(item.explanation,item);
@@ -250,7 +274,25 @@ function makePublishButtons(card,item){
    publishNotice("No se pudo solicitar RE para «"+item.name+"»: "+error.message);
   }
  });
- actions.append(re);
+ const reX=el("button","publish-action re-x-action","RE-X");
+ reX.type="button";reX.title="Reevaluar buscando en X con tus pistas";
+ reX.setAttribute("aria-label","Investigar de nuevo "+item.name+" en X con pistas");
+ reX.disabled=item.re_in_progress===true||reRequested(item);
+ reX.addEventListener("click",()=>{
+   if(reX.disabled)return;
+   openReXDialog(item,async hints=>{
+     const response=await fetch("/api/re-explain",{method:"POST",credentials:"same-origin",
+       headers:{"content-type":"application/json","x-ttv2-action":"1"},
+       body:JSON.stringify({trend_id:item.trend_id,revision:item.revision,
+         entered_top30_at:markStamp(item),mode:"x",hints})});
+     if(!response.ok)throw Error("HTTP "+response.status);
+     state.reRequests.push({trend_id:item.trend_id,base_revision:item.revision,
+       status:"requested",mode:"x"});
+     publishNotice("RE-X solicitada para «"+item.name+"». Se investigará X con tus pistas antes de redactar la nueva explicación.");
+     render();
+   });
+ });
+ actions.append(re,reX);
  if(imageReady(item)||item.image_suppressed===true){
   const publicToggle=el("label","image-public-toggle");
   const switchInput=el("input");
