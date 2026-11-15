@@ -1,6 +1,6 @@
 name: TTActualidad V2 - atender solicitudes RE privadas
 
-# Se consulta D1 cada 15 minutos; no envía nada a X ni usa el PC Windows.
+# Se consulta D1 con respaldo de otro flujo periódico; no envía nada a X ni usa Windows.
 # No modifica colas de TTiTTulares, TTendencias V1 ni otros proyectos.
 on:
   # Comprobar la primera puesta en marcha al actualizar este workflow.
@@ -9,7 +9,12 @@ on:
     paths:
       - '.github/workflows/ttactualidad-v2-re-editorial.yml'
   schedule:
-    - cron: '*/15 * * * *'
+    - cron: '*/5 * * * *'
+  # Respaldo si GitHub retrasa u omite disparos programados.
+  workflow_run:
+    workflows:
+      - 'TTendencias Site - Top30 parity with iPhone'
+    types: [completed]
   workflow_dispatch:
 
 permissions:
@@ -21,6 +26,7 @@ concurrency:
 
 jobs:
   consume-re:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 6
     steps:
