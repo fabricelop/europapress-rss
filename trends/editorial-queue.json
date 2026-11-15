@@ -1,6 +1,75 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-15T10:53:26+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-15T09:53:52.169434+00:00",
+  "count": 2,
+  "items": [
+    {
+      "id": "red-review-05b9308a3bed734c2a57",
+      "revision": 0,
+      "name": "Revisar novedades: Pollo Carvajal",
+      "rank": 30,
+      "status": "preparing",
+      "requested_at": "2026-11-15T09:53:52.169434+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "fee8a9b98cf8",
+        "revision": 0,
+        "name": "Pollo Carvajal",
+        "rank": 15,
+        "explanation": "TT#15 Pollo Carvajal es tendencia tras conocerse la muerte en Madrid de Nielson de Souza Vilela, abogado que lo defendió en España. No se han aclarado las circunstancias del fallecimiento.\n#PolloCarvajal #Madrid",
+        "explanation_sha256": "cc520737bad11ab3191cec57dc6871408c233524b8e9ac69ea6171e4b929e1d7",
+        "explained_at": "2026-11-14T10:03:26+01:00",
+        "verification_sources": [
+          {
+            "url": "https://theobjective.com/espana/2026-11-14/hallan-muerto-abogado-pollo-carvajal/"
+          },
+          {
+            "url": "https://www.eldiarioalerta.com/articulo/sucesos-cantabria/hallan-muerto-trastero-madrid-abogado-espanol-pollo-carvajal/20261114075406586359.html"
+          }
+        ],
+        "fingerprint": "cb870a64f6d6d9ac84d52989a90b27463d5d80ad7831844ce99de0a03113813a"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-344edb5d3bac7b56f523",
+      "revision": 0,
+      "name": "Revisar novedades: #FelizDomingo",
+      "rank": 1,
+      "status": "preparing",
+      "requested_at": "2026-11-15T09:53:52.169434+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "a9d7e1af9f56",
+        "revision": 0,
+        "name": "#FelizDomingo",
+        "rank": 3,
+        "explanation": "TT#3 #FelizDomingo es tendencia por los saludos y buenos deseos que se comparten cada domingo en X; la etiqueta vuelve a aparecer hoy, 8 de noviembre.\n#Domingo #BuenosDeseos\n🌶️ El calendario volvió a pasar lista en la conversación.",
+        "explanation_sha256": "162249c332b6398d86fc7df653b4742113314d61744842a3688e4b5b78d49606",
+        "explained_at": "2026-11-08T09:08:45.369Z",
+        "verification_sources": [
+          {
+            "url": "https://getdaytrends.com/spain/top/longest/year/"
+          },
+          {
+            "url": "https://alert.gosocialsuite.com/tendencias/resumen/es"
+          }
+        ],
+        "fingerprint": "646b45011f5cbe156205aaf77bee594ca9c5e8eecf8f91fe7a21d1bef48d5797"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
