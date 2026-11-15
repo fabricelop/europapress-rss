@@ -35,6 +35,8 @@ $required=@(
   @($retire,"TTActualidadV2-Editorial-Auto"),
   @($retire,"TTendencias-XContext"),
   @($retire,"function AssertDisabled"),
+  @($retire,"function WaitForQuiet"),
+  @($retire,"TT_V1_RETIRE_NO_NEW_WORK=YES"),
   @($retire,"TT_V1_BACKUP_READY=YES"),
   @($prepare,"TT_V1_SHARED_UPDATER_PREPARED=YES"),
   @($prepare,"-before-retirement-"),
@@ -42,6 +44,12 @@ $required=@(
 )
 foreach($check in $required){
   if(-not ([string]$check[0]).Contains([string]$check[1])){throw ('Falta proteccion: '+$check[1])}
+}
+# La marca que impide nuevos trabajos debe escribirse ANTES de esperar.
+$flagPos=$retire.IndexOf("[IO.File]::WriteAllText(`$flag,")
+$drainPos=$retire.LastIndexOf("WaitForQuiet")
+if($flagPos -lt 0 -or $drainPos -le $flagPos -or $retire.Contains('TT_V1_RETIRE_DEFERRED=NEW_WORK_STARTED')){
+  throw 'La retirada todavia puede entrar en carrera con trabajos V1 nuevos'
 }
 if($retire -match '(?i)Stop-Process.*Chrome|Stop-Process.*TTiTTulares|Disable-ScheduledTask.*TTActualidadV2'){
   throw 'El instalador no puede parar Chrome, TTiTTulares ni V2'
