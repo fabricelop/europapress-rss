@@ -7,23 +7,21 @@
   "previous_run_id": "tr-20261115T155200-chat-direct",
   "command_id": "tr-20261115T172500-chat-direct",
   "source": "chat_direct",
-  "status": "RUNNING",
+  "status": "success",
   "phase": "preparing",
   "started_at": "2026-11-15T17:25:00+01:00",
-  "updated_at": "2026-11-15T17:25:00+01:00",
+  "updated_at": "2026-11-15T17:26:50+01:00",
   "current": 0,
   "total": 1,
   "trend_id": "df6038ca94ee",
   "title": "Bildu",
-  "queue_complete": false,
-  "processed_ids": [],
+  "queue_complete": true,
+  "processed_ids": [
+    "df6038ca94ee"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "df6038ca94ee"
-  ],
-  "remaining_active_ids": [
-    "df6038ca94ee"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": "Pasada manual TTendencias iniciada; 1 revisión de reentrada en cola.",
   "outcomes": [],
@@ -918,8 +916,8 @@
       "message": "Ejecución manual iniciada desde ChatGPT; cola autoritativa=1: Bildu r0, revisión de reentrada. Revalidación JIT e investigación de episodio distinto; sin ImageGen ni publicación."
     }
   ],
-  "last_started_at": "2026-11-15T17:01:13+01:00",
-  "last_completed_at": "2026-11-15T15:57:34+01:00",
+  "last_started_at": "2026-11-15T17:26:50+01:00",
+  "last_completed_at": "2026-11-15T17:26:50+01:00",
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-20261115T113700-chat-direct",
