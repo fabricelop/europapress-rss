@@ -7,37 +7,57 @@
   "previous_run_id": "tr-20261115T130700-chat-direct",
   "command_id": "tr-20261115T155200-chat-direct",
   "source": "chat_direct",
-  "status": "success",
-  "phase": "persisting",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-15T15:52:00+01:00",
-  "updated_at": "2026-11-15T15:57:34+01:00",
-  "current": 0,
+  "updated_at": "2026-11-15T14:58:02.757Z",
+  "current": 6,
   "total": 6,
-  "trend_id": "7424a29ae1ce",
-  "title": "Persistiendo resultados editoriales",
+  "trend_id": null,
+  "title": "Pasada editorial TTendencias completada",
   "queue_complete": true,
   "processed_ids": [
+    "7424a29ae1ce",
+    "f64771fce4c4",
     "097f3535c4b7",
     "571d07b4907e",
-    "7424a29ae1ce",
     "752f3a2f0204",
-    "7d69a24d0507",
-    "f64771fce4c4"
+    "7d69a24d0507"
   ],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "2/2 explicadas y persistidas; cola final vacía. Sin ImageGen ni publicaciones.",
+  "summary": "6/6 cerradas: 5 explicadas y 1 reentrada sin episodio distinto; cola final vacía. Sin ImageGen ni publicaciones.",
   "outcomes": [
     {
-      "id": "e91bfa95d1e6",
-      "name": "Madrid y Ávila",
+      "id": "7424a29ae1ce",
+      "name": "Ávila",
+      "outcome": "explained_new_episode"
+    },
+    {
+      "id": "f64771fce4c4",
+      "name": "Ikurriña",
       "outcome": "explained"
     },
     {
-      "id": "b186b88b4160",
-      "name": "País Vasco",
+      "id": "097f3535c4b7",
+      "name": "FINAL DEL PARTIDO",
+      "outcome": "explained_cause_unconfirmed"
+    },
+    {
+      "id": "571d07b4907e",
+      "name": "Jon Echeverría",
+      "outcome": "explained"
+    },
+    {
+      "id": "752f3a2f0204",
+      "name": "Naranjo",
+      "outcome": "review_completed_no_distinct_event"
+    },
+    {
+      "id": "7d69a24d0507",
+      "name": "Euskadi",
       "outcome": "explained"
     }
   ],
@@ -913,6 +933,13 @@
       "status": "RUNNING",
       "phase": "persisting",
       "message": "Investigación completada para 6 trabajos; persistiendo 5 explicaciones y 1 cierre de reentrada sin episodio distinto. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-15T14:58:02.757Z",
+      "run_id": "tr-20261115T155200-chat-direct",
+      "status": "DONE",
+      "phase": "closing",
+      "message": "Pasada TTendencias completada 6/6: 5 explicaciones persistidas; Naranjo cerrado como reentrada sin episodio distinto. Barrera final editorial-queue=0. Sin ImageGen ni publicaciones."
     }
   ],
   "last_started_at": "2026-11-15T15:57:34+01:00",
@@ -10213,7 +10240,7 @@
   ],
   "processed": [],
   "completed_at": "2026-11-15T13:13:00+01:00",
-  "finished_at": null,
+  "finished_at": "2026-11-15T14:58:02.757Z",
   "revision": null,
   "name": null
 }
