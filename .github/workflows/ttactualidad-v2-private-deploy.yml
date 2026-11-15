@@ -36,3 +36,68 @@ jobs:
           print('WORKER_BINDING_NAMES_AND_TYPES='+json.dumps([{'name':b.get('name'),'type':b.get('type')} for b in settings.get('bindings',[])],ensure_ascii=False))
           print('WORKER_COMPATIBILITY_DATE='+str(settings.get('compatibility_date','')))
           PY
+
+  deploy:
+    needs: inspect
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/ttactualidad-v2-clean
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verificar y compilar Worker privado
+        working-directory: v2/ttendencias/private-worker
+        run: |
+          npm install --no-audit --no-fund
+          npm test
+          npm run build
+      - name: Preparar configuración preservando bindings y secretos existentes
+        working-directory: v2/ttendencias/private-worker
+        env:
+          CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CF_ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          python3 - <<'PY'
+          import json,os,pathlib,urllib.request
+          worker='ttactualidad-v2-private-test'
+          url='https://api.cloudflare.com/client/v4/accounts/'+os.environ['CF_ACCOUNT']+'/workers/scripts/'+worker+'/settings'
+          req=urllib.request.Request(url,headers={'Authorization':'Bearer '+os.environ['CF_TOKEN'],'Accept':'application/json'})
+          with urllib.request.urlopen(req,timeout=30) as response: data=json.load(response)
+          if not data.get('success'): raise SystemExit('NO_EXISTING_WORKER_SETTINGS')
+          settings=data['result']; b=settings.get('bindings') or []
+          matches=lambda name:[row for row in b if row.get('name')==name]
+          if not all(len(matches(name))==1 for name in ['ASSETS','AUTH_PASSWORD','SESSION_SECRET','SESSION_HOURS','MARKS_DB','LOGIN_LIMITER']):
+              raise SystemExit('WORKER_BINDINGS_CHANGED_DO_NOT_DEPLOY')
+          database=matches('MARKS_DB')[0]; limiter=matches('LOGIN_LIMITER')[0]
+          database_id=database.get('id') or database.get('database_id')
+          namespace_id=limiter.get('namespace_id')
+          simple=limiter.get('simple') or {}
+          if not database_id or not namespace_id or simple.get('limit') is None or simple.get('period') not in (10,60):
+              raise SystemExit('WORKER_RESOURCE_IDENTIFIERS_MISSING')
+          config={
+              'name':worker,'main':'src/index.js',
+              'compatibility_date':settings.get('compatibility_date','2026-11-13'),
+              'keep_vars':True,
+              'workers_dev':True,
+              'assets':{'directory':'./dist','binding':'ASSETS','run_worker_first':True},
+              'd1_databases':[{'binding':'MARKS_DB','database_name':'ttactualidad-v2-marks','database_id':database_id}],
+              'ratelimits':[{'name':'LOGIN_LIMITER','namespace_id':str(namespace_id),'simple':simple}],
+              'triggers':{'crons':['*/15 * * * *']},
+          }
+          if settings.get('compatibility_flags'):config['compatibility_flags']=settings['compatibility_flags']
+          pathlib.Path('wrangler.deploy.json').write_text(json.dumps(config,ensure_ascii=False,indent=2))
+          print('TT_V2_PRIVATE_BINDINGS_PRESERVED=YES')
+          PY
+      - name: Validar despliegue y publicar solo V2 privado
+        working-directory: v2/ttendencias/private-worker
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          WRANGLER_SEND_METRICS: 'false'
+        run: |
+          npx wrangler deploy --config wrangler.deploy.json --dry-run --outdir .wrangler-check
+          npx wrangler deploy --config wrangler.deploy.json
