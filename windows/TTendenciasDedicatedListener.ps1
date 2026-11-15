@@ -5,6 +5,7 @@
 
 $ErrorActionPreference = "Continue"
 $BaseDir = "C:\TTiTTulares"
+$ImagePauseFlag = Join-Path $BaseDir 'V1-ImageGen-Paused.flag'
 $Launcher = Join-Path $BaseDir "LanzarOculto.vbs"
 $Runner = Join-Path $BaseDir "Ejecutar.js"
 $ImageBridge = Join-Path $BaseDir "TTendenciasImageBridge.js"
@@ -1329,6 +1330,9 @@ while ($true) {
 
   # 2) Imágenes independientes
   try {
+    if (Test-Path -LiteralPath $ImagePauseFlag) {
+      if (($loopCount % 40) -eq 0) { Write-Log "IMAGE V1 PAUSED: persistent user decision" }
+    } else {
     Ensure-StateFields $state
     $idx = Read-ImageIndex
     Refresh-ActiveImages $state $idx
@@ -1464,6 +1468,7 @@ while ($true) {
       }
     } elseif ($slots -gt 0 -and -not $CustomMessageSupport) {
       Write-Log "IMAGE QUEUE WAITING: custom message support unavailable"
+    }
     }
   } catch {
     Write-Log "IMAGE LOOP ERROR :: $($_.Exception.Message)"
