@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-15T10:43:07.066879+00:00",
+  "checked_at": "2026-11-15T11:00:08.261256+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -42,12 +42,13 @@
     "top10": {
       "ok": false,
       "count": 10,
-      "non_stale_sources": 3,
+      "non_stale_sources": 4,
       "verified_fresh_sources": [
+        "whatstrends",
         "xtrendsiamrohit"
       ],
       "live_verified": false,
-      "captured_age_minutes": 0.2,
+      "captured_age_minutes": 0.1,
       "noise_count": 0
     },
     "listener": {
@@ -57,10 +58,10 @@
     },
     "refresh": {
       "ok": true,
-      "status": "pending",
+      "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 1.5,
-      "run_id": 43705309824,
+      "age_minutes": 4.1,
+      "run_id": 43706438984,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -72,7 +73,7 @@
     },
     "request_queue": {
       "ok": false,
-      "invalid_count": 269,
+      "invalid_count": 272,
       "noise_count": 0
     },
     "ready_consistency": {
@@ -81,42 +82,19 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": false,
-      "pending_count": 3,
-      "overdue_count": 3,
-      "oldest_age_minutes": 32.0,
+      "ok": true,
+      "pending_count": 0,
+      "overdue_count": 0,
+      "oldest_age_minutes": 0,
       "warning_after_minutes": 30,
-      "overdue_items": [
-        {
-          "id": "fbdff5b1d1bf",
-          "name": "#CCubicos442",
-          "status": "preparing",
-          "age_minutes": 32.0
-        },
-        {
-          "id": "4c6b146e335a",
-          "name": "HA VUELTO AO3",
-          "status": "preparing",
-          "age_minutes": 32.0
-        },
-        {
-          "id": "58d1af20a0d3",
-          "name": "MATCH DAY",
-          "status": "preparing",
-          "age_minutes": 32.0
-        }
-      ],
+      "overdue_items": [],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": false,
-      "status": "overdue",
-      "queue_complete": false,
-      "remaining_active_ids": [
-        "fbdff5b1d1bf",
-        "4c6b146e335a",
-        "58d1af20a0d3"
-      ],
+      "ok": true,
+      "status": "not-required",
+      "queue_complete": true,
+      "remaining_active_ids": [],
       "contradictory_success": false
     },
     "telegram_provisional": {
@@ -128,10 +106,9 @@
   "repairs_started": [],
   "blocking": [
     "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos",
-    "cola con 269 estado(s) inválido(s)",
-    "cola de explicaciones retrasada: 3 pendiente(s) superan 30 min; más antigua 32.0 min"
+    "cola con 272 estado(s) inválido(s)"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 269 estado(s) inválido(s) | cola de explicaciones retrasada: 3 pendiente(s) superan 30 min; más antigua 32.0 min"
+  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 272 estado(s) inválido(s)"
 }
