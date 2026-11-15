@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-15T13:31:22.015192+00:00",
+  "checked_at": "2026-11-15T13:45:22.192188+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -42,8 +42,9 @@
     "top10": {
       "ok": false,
       "count": 10,
-      "non_stale_sources": 4,
+      "non_stale_sources": 5,
       "verified_fresh_sources": [
+        "whatstrends",
         "xtrendsiamrohit"
       ],
       "live_verified": false,
@@ -59,8 +60,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 3.1,
-      "run_id": 43718980349,
+      "age_minutes": 4.1,
+      "run_id": 43720286465,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -82,22 +83,22 @@
     },
     "editorial_queue": {
       "ok": false,
-      "pending_count": 4,
+      "pending_count": 2,
       "overdue_count": 2,
-      "oldest_age_minutes": 80.3,
+      "oldest_age_minutes": 41.8,
       "warning_after_minutes": 30,
       "overdue_items": [
         {
-          "id": "c1e252f0fdd9",
-          "name": "San Silvestre Vallecana",
+          "id": "6be6a0bdaab2",
+          "name": "Alcorcon",
           "status": "preparing",
-          "age_minutes": 80.3
+          "age_minutes": 41.8
         },
         {
-          "id": "9503ec979794",
-          "name": "Inglaterra",
+          "id": "7424a29ae1ce",
+          "name": "Ávila",
           "status": "preparing",
-          "age_minutes": 80.3
+          "age_minutes": 41.8
         }
       ],
       "repairable": false
@@ -107,8 +108,6 @@
       "status": "overdue",
       "queue_complete": false,
       "remaining_active_ids": [
-        "c1e252f0fdd9",
-        "9503ec979794",
         "6be6a0bdaab2",
         "7424a29ae1ce"
       ],
@@ -124,9 +123,9 @@
   "blocking": [
     "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos",
     "cola con 272 estado(s) inválido(s)",
-    "cola de explicaciones retrasada: 2 pendiente(s) superan 30 min; más antigua 80.3 min"
+    "cola de explicaciones retrasada: 2 pendiente(s) superan 30 min; más antigua 41.8 min"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 272 estado(s) inválido(s) | cola de explicaciones retrasada: 2 pendiente(s) superan 30 min; más antigua 80.3 min"
+  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 272 estado(s) inválido(s) | cola de explicaciones retrasada: 2 pendiente(s) superan 30 min; más antigua 41.8 min"
 }
