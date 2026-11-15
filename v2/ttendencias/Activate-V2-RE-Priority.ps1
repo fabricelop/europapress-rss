@@ -12,7 +12,7 @@ $repo = 'fabricelop/europapress-rss'
 $branch = 'feature/ttactualidad-v2-clean'
 $headers = @{ 'Accept'='application/vnd.github+json'; 'User-Agent'='TTActualidadV2-RE-Upgrade' }
 $utf8 = New-Object System.Text.UTF8Encoding($false)
-$files = @('editorial_daemon_v2.py','auto_editorial_policy_v2.py',
+$files = @('editorial_daemon_v2.py','editorial_run_v2.py','auto_editorial_policy_v2.py',
            're_request_v2.py','sync_private_re_v2.py',
            'test_auto_editorial_v2.py','test_re_request_v2.py',
            'test_sync_private_re_v2.py')
@@ -77,6 +77,13 @@ try {
     }
 } finally { $env:PYTHONPATH = $savedPythonPath }
 Write-Host ('TT_V2_RE_STAGE_TESTS=OK sha=' + $sha.Substring(0,12))
+$syntax = Start-Process -FilePath $python -ArgumentList @('-3','-m','py_compile',
+    ('"' + (Join-Path $stage 'editorial_run_v2.py') + '"')) `
+    -Wait -PassThru -WindowStyle Hidden -RedirectStandardOutput $stdOut -RedirectStandardError $stdErr
+if ($syntax.ExitCode -ne 0) {
+    Get-Content -LiteralPath $stdErr -Tail 20 | ForEach-Object { Write-Host $_ }
+    throw 'La nueva explicación RE-X no superó la comprobación de sintaxis; no se tocará el editor actual.'
+}
 
 # Pedir parada cooperativa del daemon: termina la ficha actual y sale del
 # bucle sin cerrar Chrome ni interrumpir ningún trabajo ya enviado.
