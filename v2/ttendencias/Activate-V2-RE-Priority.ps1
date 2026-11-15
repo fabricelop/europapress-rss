@@ -123,11 +123,29 @@ try {
     }
     Flag 'TT_V2_AUTO_EDITORIAL_ENABLED=YES'
     $activated = $true
+    $startedAt = [DateTime]::UtcNow
     Start-ScheduledTask -TaskName $taskName -ErrorAction Stop
     Write-Host 'TT_V2_RE_PRIORITY_INSTALLED=YES'
     Write-Host 'TT_V2_RE_PRIORITY_START_REQUESTED=YES'
     Write-Host ('TT_V2_RE_PRIORITY_BACKUP=' + $backup)
-    Write-Host 'TT_V2_RE_PRIORITY_CHECK=Consultar daemon-status.json dentro de 1 minuto'
+    $statusPath = Join-Path $root 'daemon-status.json'
+    $verified = $false
+    for ($check = 0; $check -lt 18; $check++) {
+        Start-Sleep -Seconds 5
+        if (-not (Test-Path -LiteralPath $statusPath)) { continue }
+        try {
+            $fresh = Get-Content -LiteralPath $statusPath -Raw | ConvertFrom-Json
+            $since = [DateTimeOffset]::Parse([string]$fresh.at).UtcDateTime
+            if ($fresh.service -eq 'ttactualidad-v2' -and $since -ge $startedAt -and
+                $fresh.state -in @('STARTED','WAIT_SOURCE','WAIT_NO_CURRENT_JOB',
+                    'WAIT_EXISTING_V2_CHROME','WORKING','COMPLETED','JOB_NEEDS_REVIEW')) {
+                $verified = $true
+                break
+            }
+        } catch { }
+    }
+    if ($verified) { Write-Host 'TT_V2_RE_PRIORITY_ACTIVE=YES' }
+    else { Write-Host 'TT_V2_RE_PRIORITY_ACTIVE=CHECK_PENDING_AFTER_RECOVERY' }
 } catch {
     $errorMessage = $_.Exception.Message
     # Restaurar los originales solo si seguimos sin un proceso V2 activo.
