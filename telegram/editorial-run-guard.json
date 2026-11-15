@@ -1,17 +1,16 @@
 {
   "version": 1,
-  "checked_at": "2026-11-15T16:16:25.919168+00:00",
+  "checked_at": "2026-11-15T16:23:42.110148+00:00",
   "projects": {
     "ttittulares": {
       "project": "ttittulares",
-      "checked_at": "2026-11-15T16:16:25.919168+00:00",
-      "pending_count": 3,
+      "checked_at": "2026-11-15T16:23:42.110148+00:00",
+      "pending_count": 2,
       "pending_ids": [
-        "c2c74430a23a",
         "42d99409ab97",
         "8b0efe911f3f"
       ],
-      "oldest_at": "2026-11-15T16:13:15.379227Z",
+      "oldest_at": "2026-11-15T16:13:15.517324Z",
       "latest_run": {
         "id": "tt-20261115T1345-chat",
         "status": "DONE",
@@ -20,18 +19,11 @@
         "finished_at": "2026-11-15T13:53:10Z",
         "source": "github_pr_trace"
       },
-      "control_command": "tt-1794757500000-chat",
-      "last_command_at": "2026-11-15T15:45:00.000Z",
-      "status": "within_start_window",
+      "control_command": "tt-1794759300000-chat",
+      "last_command_at": "2026-11-15T16:15:00.000Z",
+      "status": "dispatch_pending_ack",
       "should_dispatch": false,
       "item_execution": [
-        {
-          "id": "c2c74430a23a",
-          "entered_at": "2026-11-15T16:13:15.379227Z",
-          "should_start_by": "2026-11-15T16:18:15.379227+00:00",
-          "global_run_after_entry": false,
-          "final_telegram_delivery_confirmed": false
-        },
         {
           "id": "42d99409ab97",
           "entered_at": "2026-11-15T16:13:15.517324Z",
@@ -47,17 +39,17 @@
           "final_telegram_delivery_confirmed": false
         }
       ],
-      "backlog_signature": "e2091a7255eeabb5",
-      "expected_start_by": "2026-11-15T16:18:15.379227+00:00",
+      "backlog_signature": "247062e1bda1809a",
+      "expected_start_by": "2026-11-15T16:18:15.517324+00:00",
       "attempts": 0,
+      "previous_target_completed_or_superseded": false,
       "last_request_at": "2026-11-15T15:16:06.531356+00:00"
     },
     "ttendencias": {
       "project": "ttendencias",
-      "checked_at": "2026-11-15T16:16:25.919168+00:00",
-      "pending_count": 2,
+      "checked_at": "2026-11-15T16:23:42.110148+00:00",
+      "pending_count": 1,
       "pending_ids": [
-        "1e989dcc6d17",
         "df6038ca94ee"
       ],
       "oldest_at": "2026-11-15T17:10:42+01:00",
@@ -69,18 +61,11 @@
         "finished_at": "2026-11-15T17:03:00+01:00",
         "source": "github_pr_trace"
       },
-      "control_command": "tr-1794758495960-manual",
-      "last_command_at": "2026-11-15T16:01:35.960Z",
-      "status": "remote_command_active",
+      "control_command": "tr-autoguard-1794759650",
+      "last_command_at": "2026-11-15T16:20:50.042449Z",
+      "status": "dispatch_requested_awaiting_run",
       "should_dispatch": true,
       "item_execution": [
-        {
-          "id": "1e989dcc6d17",
-          "entered_at": "2026-11-15T17:10:42+01:00",
-          "should_start_by": "2026-11-15T16:15:42+00:00",
-          "global_run_after_entry": false,
-          "final_telegram_delivery_confirmed": false
-        },
         {
           "id": "df6038ca94ee",
           "entered_at": "2026-11-15T17:10:42+01:00",
@@ -89,17 +74,17 @@
           "final_telegram_delivery_confirmed": false
         }
       ],
-      "backlog_signature": "e629d2a8584f243b",
+      "backlog_signature": "19717b78d5bc4800",
       "expected_start_by": "2026-11-15T16:15:42+00:00",
-      "attempts": 0,
-      "previous_target_completed_or_superseded": false,
+      "attempts": 1,
+      "previous_target_completed_or_superseded": true,
       "dispatch": {
-        "requested": false,
-        "reason": "remote_recent_command",
-        "command_id": "tr-1794758495960-manual",
-        "requested_at": "2026-11-15T16:01:35.960Z"
+        "requested": true,
+        "command_id": "tr-autoguard-1794759822",
+        "requested_at": "2026-11-15T16:23:42.110148Z"
       },
-      "last_request_at": "2026-11-15T15:16:06.531356+00:00"
+      "last_request_at": "2026-11-15T16:23:42.110148+00:00",
+      "last_requested_command_id": "tr-autoguard-1794759822"
     }
   },
   "policy": {
