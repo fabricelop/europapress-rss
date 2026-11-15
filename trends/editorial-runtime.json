@@ -5,158 +5,70 @@
   "canonical": true,
   "run_id": "tr-20261115T051000-chat-direct",
   "previous_run_id": "tr-20261114T232800-chat-direct",
-  "command_id": "tr-20261115T043600-chat-direct",
+  "command_id": "tr-20261115T051000-chat-direct",
   "source": "chat_direct",
-  "status": "success",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-15T05:10:00+01:00",
-  "updated_at": "2026-11-15T05:14:30+01:00",
-  "current": 0,
+  "updated_at": "2026-11-15T05:15:00+01:00",
+  "current": 4,
   "total": 4,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
   "queue_complete": true,
   "processed_ids": [
-    "003925188bc7",
+    "cee2e8ebb0fa",
     "126f19ace8a4",
-    "8d30967e70ee",
-    "cee2e8ebb0fa"
+    "003925188bc7",
+    "8d30967e70ee"
   ],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 15,
-    "observed": 15,
-    "closed": 15,
-    "explained": 11,
+    "attempted": 4,
+    "observed": 4,
+    "closed": 4,
+    "explained": 4,
     "problematic": 0,
-    "updates": 0,
-    "review_completed_no_distinct_event": 4,
+    "review_completed_no_distinct_event": 0,
     "maintenance_reviews": 0,
-    "unchanged_reviews": 4,
-    "continuity_updates": 0,
-    "distinct_updates": 4,
-    "stale_reviews": 0,
-    "unverified_reviews": 0,
-    "anticipation_reviews": 0,
-    "anticipation_prepared": 0,
-    "anticipation_unverified": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 0,
-    "concurrent_convergence": 0,
-    "cause_unconfirmed": 0
+    "incidents": 0
   },
   "outcomes": [
     {
-      "id": "7d14ea90ddc9",
-      "name": "#laSextaXplica",
+      "id": "cee2e8ebb0fa",
       "revision": 0,
+      "name": "#UFCHBOMax",
+      "outcome": "explained_new_episode",
+      "applied": true
+    },
+    {
+      "id": "126f19ace8a4",
+      "revision": 0,
+      "name": "#UFC334",
       "outcome": "explained",
-      "review_reason": null
+      "applied": true
     },
     {
-      "id": "da1b6aaf7d73",
-      "name": "Cristiano",
+      "id": "003925188bc7",
       "revision": 0,
+      "name": "Hasan",
       "outcome": "explained",
-      "review_reason": null
+      "applied": true
     },
     {
-      "id": "fa8aecbc4a8e",
-      "name": "LoL 2",
+      "id": "8d30967e70ee",
       "revision": 0,
+      "name": "enol",
       "outcome": "explained",
-      "review_reason": null
-    },
-    {
-      "id": "c4218e7b3336",
-      "name": "Dinamarca",
-      "revision": 0,
-      "outcome": "explained",
-      "review_reason": null
-    },
-    {
-      "id": "65b2bb5d8420",
-      "name": "Chovy",
-      "revision": 0,
-      "outcome": "explained",
-      "review_reason": null
-    },
-    {
-      "id": "b2eb0fa2b016",
-      "name": "Ruler",
-      "revision": 0,
-      "outcome": "explained",
-      "review_reason": null
-    },
-    {
-      "id": "e55be0abf8a8",
-      "name": "Gazir",
-      "revision": 0,
-      "outcome": "explained",
-      "review_reason": null
-    },
-    {
-      "id": "f24b52468bfa",
-      "name": "Knight",
-      "revision": 0,
-      "outcome": "explained",
-      "review_reason": null
-    },
-    {
-      "id": "5413818bec36",
-      "name": "GenG",
-      "revision": 0,
-      "outcome": "explained",
-      "review_reason": null
-    },
-    {
-      "id": "1c7dfddd5335",
-      "name": "#PazCasaTrabajo29N",
-      "revision": 0,
-      "outcome": "review_completed",
-      "review_reason": "no_distinct_event"
-    },
-    {
-      "id": "b60673ab34ed",
-      "name": "Colau",
-      "revision": 0,
-      "outcome": "explained",
-      "review_reason": null
-    },
-    {
-      "id": "c454cd997976",
-      "name": "Marcial Dorado",
-      "revision": 0,
-      "outcome": "review_completed",
-      "review_reason": "no_distinct_event"
-    },
-    {
-      "id": "180a8346f226",
-      "name": "Rosalia",
-      "revision": 0,
-      "outcome": "review_completed",
-      "review_reason": "no_distinct_event"
-    },
-    {
-      "id": "a84ae67bcb59",
-      "name": "El Tribunal de Cuentas",
-      "revision": 0,
-      "outcome": "review_completed",
-      "review_reason": "no_distinct_event"
-    },
-    {
-      "id": "9675e198b09e",
-      "name": "Frigodedo",
-      "revision": 0,
-      "outcome": "explained",
-      "review_reason": null
+      "applied": true
     }
   ],
   "incident_count": 0,
@@ -790,44 +702,76 @@
     }
   ],
   "last_started_at": "2026-11-15T05:14:30+01:00",
-  "last_completed_at": "2026-11-15T05:14:30+01:00",
+  "last_completed_at": "2026-11-15T05:15:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261114T174000-chat-direct",
+    "run_id": "tr-20261115T051000-chat-direct",
     "status": "DONE",
-    "started_at": "2026-11-14T17:40:00+01:00",
-    "finished_at": "2026-11-14T17:42:00+01:00",
-    "current": 0,
-    "total": 0,
+    "phase": "closing",
+    "started_at": "2026-11-15T05:10:00+01:00",
+    "updated_at": "2026-11-15T05:15:00+01:00",
+    "finished_at": "2026-11-15T05:15:00+01:00",
+    "current": 4,
+    "total": 4,
     "queue_complete": true,
+    "processed_ids": [
+      "cee2e8ebb0fa",
+      "126f19ace8a4",
+      "003925188bc7",
+      "8d30967e70ee"
+    ],
+    "remaining_ids": [],
+    "remaining_active_ids": [],
+    "outcomes": [
+      {
+        "id": "cee2e8ebb0fa",
+        "revision": 0,
+        "name": "#UFCHBOMax",
+        "outcome": "explained_new_episode",
+        "applied": true
+      },
+      {
+        "id": "126f19ace8a4",
+        "revision": 0,
+        "name": "#UFC334",
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "003925188bc7",
+        "revision": 0,
+        "name": "Hasan",
+        "outcome": "explained",
+        "applied": true
+      },
+      {
+        "id": "8d30967e70ee",
+        "revision": 0,
+        "name": "enol",
+        "outcome": "explained",
+        "applied": true
+      }
+    ],
     "summary": {
-      "attempted": 0,
-      "observed": 0,
-      "closed": 0,
-      "explained": 0,
+      "attempted": 4,
+      "observed": 4,
+      "closed": 4,
+      "explained": 4,
       "problematic": 0,
-      "updates": 0,
       "review_completed_no_distinct_event": 0,
       "maintenance_reviews": 0,
-      "unchanged_reviews": 0,
-      "continuity_updates": 0,
-      "distinct_updates": 0,
-      "stale_reviews": 0,
-      "unverified_reviews": 0,
-      "anticipation_reviews": 0,
-      "anticipation_prepared": 0,
-      "anticipation_unverified": 0,
       "queue_remaining": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
       "image_outbox_created": 0,
       "publications": 0,
-      "incidents": 0,
-      "concurrent_convergence": 0
+      "incidents": 0
     },
-    "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: Top 30 capturado a las 17:41:08, editorial-queue=0 (updated_at 17:41:15) y mobile-decisions sin estados editoriales activos. Sin ImageGen ni publicaciones."
+    "incident_count": 0,
+    "incidents": [],
+    "message": "Pasada TTendencias completada 4/4: #UFCHBOMax cerrado como episodio nuevo verificado; #UFC334, Hasan y enol explicados y persistidos. Aplicador oficial success; cola final=0. Sin ImageGen ni publicaciones desde la pasada editorial."
   },
-  "message": "Ejecuta TTendencias: 4 trabajos vigentes revalidados; iniciando investigación y persistencia textual.",
+  "message": "Pasada TTendencias completada 4/4: #UFCHBOMax cerrado como episodio nuevo verificado; #UFC334, Hasan y enol explicados y persistidos. Aplicador oficial success; cola final=0. Sin ImageGen ni publicaciones desde la pasada editorial.",
   "history": [
     {
       "run_id": "tr-1794361941170-manual",
@@ -5736,9 +5680,76 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: Top 30 capturado a las 17:41:08, editorial-queue=0 (updated_at 17:41:15) y mobile-decisions sin estados editoriales activos. Sin ImageGen ni publicaciones."
+    },
+    {
+      "run_id": "tr-20261115T051000-chat-direct",
+      "status": "DONE",
+      "phase": "closing",
+      "started_at": "2026-11-15T05:10:00+01:00",
+      "updated_at": "2026-11-15T05:15:00+01:00",
+      "finished_at": "2026-11-15T05:15:00+01:00",
+      "current": 4,
+      "total": 4,
+      "queue_complete": true,
+      "processed_ids": [
+        "cee2e8ebb0fa",
+        "126f19ace8a4",
+        "003925188bc7",
+        "8d30967e70ee"
+      ],
+      "remaining_ids": [],
+      "remaining_active_ids": [],
+      "outcomes": [
+        {
+          "id": "cee2e8ebb0fa",
+          "revision": 0,
+          "name": "#UFCHBOMax",
+          "outcome": "explained_new_episode",
+          "applied": true
+        },
+        {
+          "id": "126f19ace8a4",
+          "revision": 0,
+          "name": "#UFC334",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "003925188bc7",
+          "revision": 0,
+          "name": "Hasan",
+          "outcome": "explained",
+          "applied": true
+        },
+        {
+          "id": "8d30967e70ee",
+          "revision": 0,
+          "name": "enol",
+          "outcome": "explained",
+          "applied": true
+        }
+      ],
+      "summary": {
+        "attempted": 4,
+        "observed": 4,
+        "closed": 4,
+        "explained": 4,
+        "problematic": 0,
+        "review_completed_no_distinct_event": 0,
+        "maintenance_reviews": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0
+      },
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada TTendencias completada 4/4: #UFCHBOMax cerrado como episodio nuevo verificado; #UFC334, Hasan y enol explicados y persistidos. Aplicador oficial success; cola final=0. Sin ImageGen ni publicaciones desde la pasada editorial."
     }
   ],
-  "current_item": "#UFCHBOMax",
+  "current_item": null,
   "withdrawn_ids": [],
   "last_finished_at": "2026-11-14T17:42:00+01:00",
   "last_revalidated_at": "2026-11-14T17:41:15+01:00",
@@ -9753,7 +9764,7 @@
   "maintenance_apply_commit": "074b3f7e87b6260fde12e02ec813bdd56b8cc218",
   "completed_at": "2026-11-14T17:42:00+01:00",
   "input_commit": "d657e81fd73a9f4f14a0bc2ac55d968a79eaf428",
-  "finished_at": null,
+  "finished_at": "2026-11-15T05:15:00+01:00",
   "apply_commits": [
     "36a6bdedee2ab6b1689dab6eb97f1f5f56e0ba70"
   ]
