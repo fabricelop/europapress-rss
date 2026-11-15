@@ -3,27 +3,35 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261115T075500-chat-direct",
-  "previous_run_id": "tr-20261115T074100-chat-direct",
-  "command_id": "tr-20261115T075500-chat-direct",
+  "run_id": "tr-20261115T081000-chat-direct",
+  "previous_run_id": "tr-20261115T075500-chat-direct",
+  "command_id": "tr-20261115T081000-chat-direct",
   "source": "chat_direct",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-15T07:55:00+01:00",
-  "updated_at": "2026-11-15T07:56:00+01:00",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-15T08:10:00+01:00",
+  "updated_at": "2026-11-15T08:10:00+01:00",
   "current": 0,
-  "total": 0,
+  "total": 3,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": true,
+  "queue_complete": false,
   "processed_ids": [],
   "converged_ids": [],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
+  "remaining_ids": [
+    "60c5d7941545",
+    "121f837d3b59",
+    "red-review-f679230c7cf95bb0617c"
+  ],
+  "remaining_active_ids": [
+    "60c5d7941545",
+    "121f837d3b59",
+    "red-review-f679230c7cf95bb0617c"
+  ],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 0,
-    "observed": 0,
+    "attempted": 3,
+    "observed": 3,
     "closed": 0,
     "explained": 0,
     "problematic": 0,
@@ -38,7 +46,7 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 3,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -802,7 +810,7 @@
       "message": "Barrera final verificada en main: editorial-queue=0 y solicitudes activas=0. Ejecución 0/0 cerrada; sin ImageGen ni publicaciones."
     }
   ],
-  "last_started_at": "2026-11-15T07:41:00+01:00",
+  "last_started_at": "2026-11-15T08:10:00+01:00",
   "last_completed_at": "2026-11-15T07:42:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
@@ -847,7 +855,7 @@
     "incidents": [],
     "message": "Pasada TTendencias completada 0/0. Top 30 fresco capturado a las 07:40:53; barrera final revalidada en main con editorial-queue=0 (updated_at 07:40:58). No había trabajo editorial pendiente. Sin ImageGen ni publicaciones."
   },
-  "message": "Pasada TTendencias completada 0/0. Top 30 fresco capturado a las 07:40:53; barrera final revalidada en main con editorial-queue=0 (updated_at 07:40:58). No había trabajo editorial pendiente. Sin ImageGen ni publicaciones.",
+  "message": "Pasada manual iniciada desde ChatGPT. Cola autoritativa=3: #FelizDomingo, Rosalia y revisión de Carlos Cuerpo. Revalidación JIT; sin ImageGen ni publicación.",
   "history": [
     {
       "run_id": "tr-1794361941170-manual",
@@ -9961,5 +9969,5 @@
   ],
   "processed": [],
   "completed_at": "2026-11-15T07:42:00+01:00",
-  "finished_at": "2026-11-15T07:56:00+01:00"
+  "finished_at": null
 }
