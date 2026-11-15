@@ -13,8 +13,8 @@ for (const filename of ["index.html", "styles.css", "app.js", "manifest.webmanif
 // Nor should the old Pages service worker cache authenticated content.
 let app = await readFile(resolve(output, "app.js"), "utf8");
 const old = 'const BASE="https://raw.githubusercontent.com/fabricelop/europapress-rss/feature/ttactualidad-v2-clean/v2/ttendencias/state/";';
-if (!app.includes(old)) throw Error("V2 upstream data URL has changed: stop before shipping");
-app = app.replace(old, 'const BASE="/api/state/";');
+if (app.includes(old)) app = app.replace(old, 'const BASE="/api/state/";');
+else if (!app.includes('const BASE="/api/state/";')) throw Error("V2 private data URL has changed: stop before shipping");
 const oldPublicUrl = 'const WEB_URL="https://fabricelop.github.io/europapress-rss/v2/";';
 if (!app.includes(oldPublicUrl)) throw Error("Old public tweet URL not found; stop build");
 app = app.replace(oldPublicUrl, 'const WEB_URL="https://ttactualidad.rainyraven22.chatgpt.site/";');
