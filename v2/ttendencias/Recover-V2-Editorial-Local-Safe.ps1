@@ -189,12 +189,18 @@ try {
     Emit 'TT_V2_ERROR' ($_.Exception.Message -replace '[\r\n]+',' ')
     exit 1
 } finally {
-    if (Test-Path -LiteralPath $logDir) {
-        $latest = Get-ChildItem -LiteralPath $logDir -Filter 'auto-*.log' -File -ErrorAction SilentlyContinue |
-            Sort-Object LastWriteTime -Descending | Select-Object -First 1
-        if ($latest) {
-            Emit 'TT_V2_LATEST_LOG' $latest.FullName
-            Get-Content -LiteralPath $latest.FullName -Tail 12 -ErrorAction SilentlyContinue
+    foreach ($logSpec in @(
+        @{ Dir=$logDir; Filter='auto-*.log'; Label='TT_V2_LATEST_EDITORIAL_LOG' },
+        @{ Dir=$logDir; Filter='auto-*.stderr.log'; Label='TT_V2_LATEST_EDITORIAL_ERROR' },
+        @{ Dir=(Join-Path $root 'logs-top30'); Filter='top30-*.err.log'; Label='TT_V2_LATEST_TOP30_ERROR' }
+    )) {
+        if (Test-Path -LiteralPath $logSpec.Dir) {
+            $latest = Get-ChildItem -LiteralPath $logSpec.Dir -Filter $logSpec.Filter -File -ErrorAction SilentlyContinue |
+                Sort-Object LastWriteTime -Descending | Select-Object -First 1
+            if ($latest) {
+                Emit $logSpec.Label $latest.FullName
+                Get-Content -LiteralPath $latest.FullName -Tail 12 -ErrorAction SilentlyContinue
+            }
         }
     }
     Emit 'TT_V1_MODIFIED' 'NO'
