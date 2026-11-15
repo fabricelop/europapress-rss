@@ -56,3 +56,16 @@ test("very long older material ends at a sentence boundary",()=>{
  assert.doesNotMatch(got,/…|\.\.\./);
  assert.ok(xLength(got)<=280);
 });
+
+test("exclude internal editorial labels from the visible and publishable remate",()=>{
+ const raw=["ESTADO_CAUSA: CONFIRMADA","Explicación periodística",
+  "TT#18 ÁVILA es tendencia por el descarrilamiento de un tren de mercancías en Zarzalejo.",
+  "Remate suave: 🌶️ El tren a Ávila ha terminado necesitando un plan B por carretera.",
+  "#Ávila #Zarzalejo #Renfe #Adif"].join("\n");
+ const displayed=editorial(raw);
+ const published=tweetText(raw,{rank:18,name:"Ávila"});
+ assert.doesNotMatch(displayed,/Remate suave:/i);
+ assert.doesNotMatch(published,/Remate suave:/i);
+ assert.match(displayed,/🌶️ El tren a Ávila/);
+ assert.match(published,/🌶️ El tren a Ávila/);
+});
