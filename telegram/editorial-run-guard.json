@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "checked_at": "2026-11-15T00:50:24.353103+00:00",
+  "checked_at": "2026-11-15T01:00:24.796600+00:00",
   "projects": {
     "ttittulares": {
       "project": "ttittulares",
-      "checked_at": "2026-11-15T00:50:24.353103+00:00",
+      "checked_at": "2026-11-15T01:00:24.796600+00:00",
       "pending_count": 0,
       "pending_ids": [],
       "oldest_at": null,
@@ -18,8 +18,8 @@
     },
     "ttendencias": {
       "project": "ttendencias",
-      "checked_at": "2026-11-15T00:50:24.353103+00:00",
-      "pending_count": 16,
+      "checked_at": "2026-11-15T01:00:24.796600+00:00",
+      "pending_count": 22,
       "pending_ids": [
         "37fea7740a70",
         "38ba4d10ca36",
@@ -36,7 +36,13 @@
         "65b2bb5d8420",
         "b2eb0fa2b016",
         "e55be0abf8a8",
-        "f24b52468bfa"
+        "f24b52468bfa",
+        "180a8346f226",
+        "1c7dfddd5335",
+        "9675e198b09e",
+        "a84ae67bcb59",
+        "b60673ab34ed",
+        "c454cd997976"
       ],
       "oldest_at": "2026-11-15T01:21:09+01:00",
       "latest_run": {
@@ -47,10 +53,10 @@
         "finished_at": "2026-11-14T23:38:31+01:00",
         "source": "github_pr_trace"
       },
-      "control_command": "tr-autoguard-1794703445",
-      "last_command_at": "2026-11-15T00:44:05.657691Z",
-      "status": "dispatch_requested_awaiting_run",
-      "should_dispatch": true,
+      "control_command": "tr-autoguard-1794703824",
+      "last_command_at": "2026-11-15T00:50:24.353103Z",
+      "status": "dispatch_pending_ack",
+      "should_dispatch": false,
       "item_execution": [
         {
           "id": "37fea7740a70",
@@ -163,19 +169,55 @@
           "should_start_by": "2026-11-15T00:36:11+00:00",
           "global_run_after_entry": false,
           "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "180a8346f226",
+          "entered_at": "2026-11-15T02:00:06+01:00",
+          "should_start_by": "2026-11-15T01:05:06+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "1c7dfddd5335",
+          "entered_at": "2026-11-15T02:00:06+01:00",
+          "should_start_by": "2026-11-15T01:05:06+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "9675e198b09e",
+          "entered_at": "2026-11-15T02:00:06+01:00",
+          "should_start_by": "2026-11-15T01:05:06+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "a84ae67bcb59",
+          "entered_at": "2026-11-15T02:00:06+01:00",
+          "should_start_by": "2026-11-15T01:05:06+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "b60673ab34ed",
+          "entered_at": "2026-11-15T02:00:06+01:00",
+          "should_start_by": "2026-11-15T01:05:06+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "c454cd997976",
+          "entered_at": "2026-11-15T02:00:06+01:00",
+          "should_start_by": "2026-11-15T01:05:06+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
         }
       ],
-      "backlog_signature": "d82d3534654b4709",
+      "backlog_signature": "17df1753e74d5660",
       "expected_start_by": "2026-11-15T00:26:09+00:00",
-      "attempts": 1,
-      "previous_target_completed_or_superseded": true,
-      "dispatch": {
-        "requested": true,
-        "command_id": "tr-autoguard-1794703824",
-        "requested_at": "2026-11-15T00:50:24.353103Z"
-      },
-      "last_request_at": "2026-11-15T00:50:24.353103+00:00",
-      "last_requested_command_id": "tr-autoguard-1794703824"
+      "attempts": 0,
+      "previous_target_completed_or_superseded": false,
+      "last_request_at": "2026-11-15T00:50:24.353103+00:00"
     }
   },
   "policy": {
