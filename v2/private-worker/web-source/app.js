@@ -1,5 +1,6 @@
 "use strict";
-const BASE="https://raw.githubusercontent.com/fabricelop/europapress-rss/feature/ttactualidad-v2-clean/v2/ttendencias/state/";
+// Ranking y marcas R comparten la misma instantánea validada por el Worker.
+const BASE="/api/state/";
 const $=id=>document.getElementById(id);
 const state={items:[],captured:null,open:null,rankingUnchanged:false,rankingChangeAt:null,reRequests:[]};
 function el(tag,className,content){const n=document.createElement(tag);if(className)n.className=className;if(content!==undefined)n.textContent=String(content);return n}
@@ -112,6 +113,7 @@ async function loadReRequests(){
 function reRequested(item){
  return state.reRequests.some(row=>row.trend_id===item.trend_id&&row.base_revision===item.revision);
 }
+function reResetPending(item){return item.re_in_progress===true||reRequested(item)}
 async function toggleRedMark(item,card,button){
  if(button.disabled)return;
  button.disabled=true;
@@ -125,8 +127,10 @@ async function toggleRedMark(item,card,button){
   button.setAttribute("aria-pressed",String(next));
   button.setAttribute("aria-label",next?"Quitar marca roja de "+item.name:"Marcar en rojo "+item.name);
   button.title=next?"Quitar marca roja":"Marcar en rojo";
- }catch{
-  $("notice").textContent="No se ha guardado la marca R. Comprueba la conexión e inténtalo de nuevo.";
+ }catch(error){
+  $("notice").textContent=error.message==="HTTP 409"?
+   "El Top 30 ha cambiado desde que abriste esta lista. Actualiza para marcar las tendencias vigentes.":
+   "No se ha guardado la marca R. Comprueba la conexión e inténtalo de nuevo.";
   $("notice").hidden=false;
  }finally{button.disabled=false}
 }
@@ -153,8 +157,10 @@ function movementIndicator(item){
   if(difference>0){label="↑ "+difference;description="Sube "+difference+" puesto"+(difference===1?"":"s")+" desde el "+previous;kind="up"}
   else if(difference<0){label="↓ "+(-difference);description="Baja "+(-difference)+" puesto"+(difference===-1?"":"s")+" desde el "+previous;kind="down"}
   else{label="—";description="Sin nuevo cambio de posición acreditado";kind="same"}
- }else if(["entry","reentry","short_return"].includes(item.movement)){
-  label="Nueva";description="Entra o regresa al Top 30";kind="entry";
+ }else if(["reentry","short_return"].includes(item.movement)){
+  label="Vuelve";description="Regresa al Top 30 después de haber salido";kind="return";
+ }else if(item.movement==="entry"){
+  label="Nueva";description="Entra por primera vez en el Top 30";kind="entry";
  }
  if(meta.rankingUnchanged){
   const stamp=meta.rankingChangeAt?spanishStamp(meta.rankingChangeAt):null;
@@ -168,9 +174,10 @@ function movementIndicator(item){
 function top30Since(item){
  const stamp=spanishStamp(item.entered_top30_at);
  if(!stamp)return null;
- const node=el("time","entered-top30","Desde "+stamp);
+ const returning=["reentry","short_return"].includes(item.movement);
+ const node=el("time","entered-top30",(returning?"Regresó el ":"Desde ")+stamp);
  node.dateTime=item.entered_top30_at;
- node.title="Entrada en el Top 30: "+stamp+" (hora peninsular)";
+ node.title=(returning?"Último regreso al Top 30: ":"Entrada en el Top 30: ")+stamp+" (hora peninsular)";
  return node;
 }
 function attachGeneratedImage(card,item){
@@ -217,19 +224,20 @@ function makePublishButtons(card,item){
  const actions=el("div","publish-actions");
  const re=el("button","publish-action re-explain-action","RE");
  re.type="button";
- re.title=item.re_in_progress?"Nueva explicación en elaboración":"Solicitar una nueva explicación editorial";
+ re.title=item.re_in_progress?"Nueva explicación en elaboración":"Reiniciar explicación editorial e imagen";
  re.setAttribute("aria-label","Volver a investigar y explicar "+item.name);
  re.disabled=item.re_in_progress===true||reRequested(item);
  re.addEventListener("click",async()=>{
   if(re.disabled)return;
-  if(!window.confirm("¿Solicitar una explicación nueva para «"+item.name+"»? La explicación y la imagen actuales seguirán visibles mientras se investiga."))return;
+  if(!window.confirm("¿Reiniciar por completo la explicación de «"+item.name+"»? Se retirarán de la ficha el texto y la imagen actuales mientras se elaboran otros nuevos."))return;
   re.disabled=true;
   try{
    const response=await fetch("/api/re-explain",{method:"POST",credentials:"same-origin",headers:{"content-type":"application/json","x-ttv2-action":"1"},body:JSON.stringify({trend_id:item.trend_id,revision:item.revision,entered_top30_at:markStamp(item)})});
    if(!response.ok)throw Error("HTTP "+response.status);
    state.reRequests.push({trend_id:item.trend_id,base_revision:item.revision,status:"requested"});
    re.title="Nueva explicación solicitada; esperando procesamiento";
-   publishNotice("RE solicitada para «"+item.name+"». Se conserva el texto y la imagen actuales hasta que termine la nueva explicación.");
+   publishNotice("RE solicitada para «"+item.name+"». Explicación e imagen anteriores retiradas de esta ficha. En espera de una nueva elaboración.");
+   render();
   }catch(error){
    re.disabled=false;
    publishNotice("No se pudo solicitar RE para «"+item.name+"»: "+error.message);
@@ -292,6 +300,7 @@ function makePublishButtons(card,item){
 function render(){
  const root=$("results");root.replaceChildren();
  for(const item of state.items){
+  const reset=reResetPending(item);
   const card=el("details","trend");
   card.classList.toggle("marked-red",isMarked(item));
   card.open=state.open===item.trend_id;
@@ -302,14 +311,19 @@ function render(){
    }else if(state.open===item.trend_id)state.open=null;
   });
   const head=el("summary","trend-head");
-  const icon=el("span","status-icon "+item.status,"●");
-  icon.setAttribute("aria-label",({explicada:"Explicada",pendiente:"Pendiente",en_elaboracion:"En elaboración",incidencia:"Incidencia",desestimada:"Desestimada"})[item.status]||"Estado desconocido");
+  const icon=el("span","status-icon "+(reset?"pendiente":item.status),"●");
+  icon.setAttribute("aria-label",reset?"Nueva explicación pendiente":({explicada:"Explicada",pendiente:"Pendiente",en_elaboracion:"En elaboración",incidencia:"Incidencia",desestimada:"Desestimada"})[item.status]||"Estado desconocido");
   icon.title=icon.getAttribute("aria-label");
   const title=el("span","title-details");
   title.append(el("strong","name",item.name));
+  if(reset){
+   const note=el("span","review-state",item.re_in_progress?"En revisión · nueva explicación en preparación":"RE solicitada · reinicio pendiente");
+   note.setAttribute("role","status");
+   title.append(note);
+  }
   const entered=top30Since(item);
   if(entered)title.append(entered);
-  const time=explanationTime(item);
+  const time=reset?null:explanationTime(item);
   if(time)title.append(time);
   head.append(el("span","rank","T"+item.rank),title,movementIndicator({...item,_rankingMeta:state}),icon);
   card.append(head);
@@ -326,16 +340,15 @@ function render(){
    void toggleRedMark(item,card,flag);
   });
   head.append(flag);
-  if(imageReady(item)){
+  if(!reset&&imageReady(item)){
    const photo=el("span","image-ready-icon","▣");
    photo.title="Imagen IA asociada a esta revisión";
    photo.setAttribute("aria-label",photo.title);
    head.append(photo);
   }
-  const body=el("div","explanation",item.status==="explicada"?tweetText(item.explanation,item):({en_elaboracion:"En elaboración.",incidencia:"Incidencia en la elaboración.",desestimada:"Desestimada."})[item.status]||"Explicación pendiente.");
+  const body=el("div","explanation",reset?"Revisión editorial solicitada. Se ha retirado la explicación anterior y su imagen; esperando una nueva explicación.":item.status==="explicada"?tweetText(item.explanation,item):({en_elaboracion:"En elaboración.",incidencia:"Incidencia en la elaboración.",desestimada:"Desestimada."})[item.status]||"Explicación pendiente.");
   card.append(body);
-  makePublishButtons(card,item);
-  attachGeneratedImage(card,item);
+  if(!reset){makePublishButtons(card,item);attachGeneratedImage(card,item);}
   root.append(card);
  }
 }
