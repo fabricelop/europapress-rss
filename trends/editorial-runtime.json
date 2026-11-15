@@ -7,36 +7,36 @@
   "previous_run_id": "tr-20261115T084100-chat-direct",
   "command_id": "tr-20261115T085500-chat-direct",
   "source": "chat",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-15T08:55:00+01:00",
-  "updated_at": "2026-11-15T08:55:00+01:00",
-  "current": 0,
+  "updated_at": "2026-11-15T08:58:00+01:00",
+  "current": 2,
   "total": 2,
-  "trend_id": "red-review-20fbb573682fb2fe174d",
-  "title": "Revisar novedades: Frigodedo",
-  "queue_complete": false,
-  "processed_ids": [],
-  "converged_ids": [],
-  "remaining_ids": [
+  "trend_id": null,
+  "title": null,
+  "queue_complete": true,
+  "processed_ids": [
     "red-review-20fbb573682fb2fe174d",
     "red-review-877d1b43798d00ffe29d"
   ],
-  "remaining_active_ids": [
+  "converged_ids": [
     "red-review-20fbb573682fb2fe174d",
     "red-review-877d1b43798d00ffe29d"
   ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 2,
     "observed": 2,
-    "closed": 0,
+    "closed": 2,
     "explained": 0,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
     "maintenance_reviews": 2,
-    "unchanged_reviews": 0,
+    "unchanged_reviews": 2,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "stale_reviews": 0,
@@ -44,7 +44,7 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 2,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -52,7 +52,26 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "red-review-20fbb573682fb2fe174d",
+      "revision": 0,
+      "name": "Revisar novedades: Frigodedo",
+      "outcome": "unchanged",
+      "applied": true,
+      "apply_commit": "4cb77f00c99d373392fb627546959ab9cc5ff2e1",
+      "workflow_run": 43692220033
+    },
+    {
+      "id": "red-review-877d1b43798d00ffe29d",
+      "revision": 0,
+      "name": "Revisar novedades: aldama",
+      "outcome": "unchanged",
+      "applied": true,
+      "apply_commit": "4cb77f00c99d373392fb627546959ab9cc5ff2e1",
+      "workflow_run": 43692224199
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -830,6 +849,13 @@
       "revision": 0,
       "name": "Revisar novedades: Frigodedo",
       "message": "Pasada manual iniciada desde ChatGPT con cola autoritativa=2: Frigodedo y aldama. Investigación JIT de novedades sustanciales; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-15T08:58:00+01:00",
+      "run_id": "tr-20261115T085500-chat-direct",
+      "status": "DONE",
+      "phase": "closing",
+      "message": "Pasada TTendencias completada 2/2. Frigodedo y aldama cerrados unchanged tras contraste de novedades; aplicador oficial confirmado en commit 4cb77f00c99d373392fb627546959ab9cc5ff2e1 y workflows 43692220033/43692224199 success. Barrera final editorial-queue=0. ImageGen=0; publicaciones=0; incidentes=0."
     }
   ],
   "last_started_at": "2026-11-15T08:41:00+01:00",
@@ -10062,6 +10088,6 @@
     }
   ],
   "processed": [],
-  "completed_at": null,
-  "finished_at": null
+  "completed_at": "2026-11-15T08:58:00+01:00",
+  "finished_at": "2026-11-15T08:58:00+01:00"
 }
