@@ -66,6 +66,27 @@ function State {
   Say ('TT_V1_BUSY_PROCESSES='+@($busy.processes).Count)
   Say ('TT_V1_BUSY_TASKS='+@($busy.tasks).Count)
 }
+function WaitForQuiet {
+  # Primero se cierran las entradas nuevas, despues se espera a los trabajos en curso.
+  Say 'TT_V1_RETIRE_WAITING_FOR_EXISTING_JOBS=YES'
+  $until=(Get-Date).AddMinutes($WaitMinutes)
+  $quietChecks=0
+  do{
+    $busy=BusyLegacy
+    $live=(LegacyListeners).Count
+    if(@($busy.processes).Count -eq 0 -and @($busy.tasks).Count -eq 0 -and $live -eq 0){
+      $quietChecks++
+      if($quietChecks -ge 3){return}
+    }else{
+      $quietChecks=0
+    }
+    if((Get-Date) -ge $until){
+      Say 'TT_V1_RETIRE_DRAINING=YES'
+      throw 'V1 ya no acepta trabajos nuevos, pero alguno anterior sigue terminando. La retirada queda activada y se puede comprobar mas tarde.'
+    }
+    Start-Sleep -Seconds 5
+  }while($true)
+}
 function AssertDisabled {
   if(-not (Test-Path -LiteralPath $flag)){throw 'Falta marca de retirada de V1.'}
   foreach($task in ExistingTasks){
@@ -99,6 +120,7 @@ if($Action -eq 'Restore'){Restore;exit 0}
 
 if(-not (Test-Path -LiteralPath $base -PathType Container)){throw 'Instalacion TT antigua no encontrada.'}
 if(Test-Path -LiteralPath $flag){
+  WaitForQuiet
   AssertDisabled
   Say 'TT_V1_WINDOWS_ALREADY_DISABLED=YES'
   State
@@ -109,18 +131,6 @@ if(-not $v2 -or [string]$v2.State -eq 'Disabled'){
   throw 'No se confirma V2 activa en Windows. Desactivacion cancelada.'
 }
 RequirePreparedGuards
-Say 'TT_V1_RETIRE_CHECKING_ACTIVE_JOBS=YES'
-$until=(Get-Date).AddMinutes($WaitMinutes)
-do{
-  $busy=BusyLegacy
-  if(@($busy.processes).Count -eq 0 -and @($busy.tasks).Count -eq 0){break}
-  if((Get-Date) -ge $until){
-    Say 'TT_V1_RETIRE_DEFERRED=ACTIVE_WORK_IN_PROGRESS'
-    throw 'Hay un trabajo antiguo activo. No se ha desactivado nada; vuelve a intentarlo despues.'
-  }
-  Start-Sleep -Seconds 5
-}while($true)
-
 New-Item -ItemType Directory -Path $backups -Force|Out-Null
 $stamp=Get-Date -Format 'yyyyMMdd-HHmmss'
 $save=Join-Path $backups $stamp
@@ -132,12 +142,7 @@ if(Test-Path -LiteralPath $shortcut){
   Copy-Item -LiteralPath $shortcut -Destination (Join-Path $save 'startup.cmd') -ErrorAction Stop
 }
 
-# Revalidate immediately before the irreversible phase of process stopping.
-$busy=BusyLegacy
-if(@($busy.processes).Count -gt 0 -or @($busy.tasks).Count -gt 0){
-  Say 'TT_V1_RETIRE_DEFERRED=NEW_WORK_STARTED'
-  throw 'Aparecio un trabajo nuevo; no se ha modificado nada.'
-}
+# Bloquear nuevas entradas antes de esperar al trabajo que ya estaba en marcha.
 [IO.File]::WriteAllText($flag,('TTENDENCIAS_V1_DISABLED=YES '+(Get-Date).ToString('o')),$utf8)
 foreach($task in ExistingTasks){
   if($task.state -ne 'Disabled'){
@@ -150,7 +155,8 @@ if(Test-Path -LiteralPath $shortcut){
 foreach($p in LegacyListeners){
   Stop-Process -Id $p.ProcessId -Force -ErrorAction Stop
 }
-Start-Sleep -Seconds 7
+Say 'TT_V1_RETIRE_NO_NEW_WORK=YES'
+WaitForQuiet
 AssertDisabled
 Say 'TT_V1_WINDOWS_DISABLED=YES'
 Say 'TT_V1_BACKUP_READY=YES'
