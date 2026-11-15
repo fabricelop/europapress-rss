@@ -3,65 +3,30 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261115T155200-chat-direct",
-  "previous_run_id": "tr-20261115T130700-chat-direct",
-  "command_id": "tr-20261115T155200-chat-direct",
+  "run_id": "tr-20261115T172500-chat-direct",
+  "previous_run_id": "tr-20261115T155200-chat-direct",
+  "command_id": "tr-20261115T172500-chat-direct",
   "source": "chat_direct",
-  "status": "waiting",
-  "phase": "closing",
-  "started_at": "2026-11-15T15:52:00+01:00",
-  "updated_at": "2026-11-15T17:01:13+01:00",
-  "current": 6,
-  "total": 6,
-  "trend_id": null,
-  "title": "Pasada editorial TTendencias completada",
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-15T17:25:00+01:00",
+  "updated_at": "2026-11-15T17:25:00+01:00",
+  "current": 0,
+  "total": 1,
+  "trend_id": "df6038ca94ee",
+  "title": "Bildu",
   "queue_complete": false,
-  "processed_ids": [
-    "2c401aa17d0b"
-  ],
+  "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [
-    "red-review-3e78ee3a7b1278ce8aca",
-    "red-review-8e106a1113481d0d6ba0"
+    "df6038ca94ee"
   ],
   "remaining_active_ids": [
-    "red-review-3e78ee3a7b1278ce8aca",
-    "red-review-8e106a1113481d0d6ba0"
+    "df6038ca94ee"
   ],
   "remaining_problematic_ids": [],
-  "summary": "6/6 cerradas: 5 explicadas y 1 reentrada sin episodio distinto; cola final vacía. Sin ImageGen ni publicaciones.",
-  "outcomes": [
-    {
-      "id": "7424a29ae1ce",
-      "name": "Ávila",
-      "outcome": "explained_new_episode"
-    },
-    {
-      "id": "f64771fce4c4",
-      "name": "Ikurriña",
-      "outcome": "explained"
-    },
-    {
-      "id": "097f3535c4b7",
-      "name": "FINAL DEL PARTIDO",
-      "outcome": "explained_cause_unconfirmed"
-    },
-    {
-      "id": "571d07b4907e",
-      "name": "Jon Echeverría",
-      "outcome": "explained"
-    },
-    {
-      "id": "752f3a2f0204",
-      "name": "Naranjo",
-      "outcome": "review_completed_no_distinct_event"
-    },
-    {
-      "id": "7d69a24d0507",
-      "name": "Euskadi",
-      "outcome": "explained"
-    }
-  ],
+  "summary": "Pasada manual TTendencias iniciada; 1 revisión de reentrada en cola.",
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -941,6 +906,16 @@
       "status": "DONE",
       "phase": "closing",
       "message": "Pasada TTendencias completada 6/6: 5 explicaciones persistidas; Naranjo cerrado como reentrada sin episodio distinto. Barrera final editorial-queue=0. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-15T17:25:00+01:00",
+      "run_id": "tr-20261115T172500-chat-direct",
+      "status": "RUNNING",
+      "phase": "preparing",
+      "trend_id": "df6038ca94ee",
+      "revision": 0,
+      "name": "Bildu",
+      "message": "Ejecución manual iniciada desde ChatGPT; cola autoritativa=1: Bildu r0, revisión de reentrada. Revalidación JIT e investigación de episodio distinto; sin ImageGen ni publicación."
     }
   ],
   "last_started_at": "2026-11-15T17:01:13+01:00",
