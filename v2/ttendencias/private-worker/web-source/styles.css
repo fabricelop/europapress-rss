@@ -60,3 +60,17 @@
 .generated-original{display:block;max-width:min(100%,620px);width:auto;height:auto;max-height:640px;object-fit:contain;border-radius:12px;background:#12161d}
 @media(max-width:450px){.trend-generated-image{padding:0 14px 18px 52px}}
 @media(max-width:450px){.publish-actions{padding:0 14px 16px 52px;gap:8px}.image-ready-icon{font-size:12px;padding:2px 3px}}
+
+/* Reevaluación con búsqueda específica en X: solo panel privado. */
+.re-x-action{background:#353051;border-color:#8d80d4;color:#eee9ff}
+.re-x-dialog{position:fixed;max-width:min(560px,calc(100vw - 24px));width:100%;box-sizing:border-box;background:#161d2a;color:#f2f5fa;border:1px solid #61738a;border-radius:14px;padding:22px;box-shadow:0 16px 50px #000b}
+.re-x-dialog::backdrop{background:#020611c9}
+.re-x-dialog h3{margin:0 0 12px;font-size:20px}
+.re-x-dialog p{margin:0 0 13px;line-height:1.5}
+.re-x-hints{display:block;width:100%;min-height:140px;box-sizing:border-box;border:1px solid #7890a9;border-radius:9px;background:#0c111c;color:#fff;padding:12px;font:inherit;resize:vertical}
+.re-x-privacy{display:block;margin:9px 0;color:#aebbd0}
+.re-x-error{min-height:1.3em;color:#ffadb9}
+.re-x-actions{display:flex;justify-content:flex-end;gap:10px}
+.re-x-actions button{border:1px solid #657b93;background:#273346;color:#fff;border-radius:8px;padding:10px 15px;font:inherit;cursor:pointer}
+.re-x-actions .re-x-submit{background:#55428d;border-color:#a48ae6}
+.re-x-actions button:disabled{opacity:.55;cursor:wait}
