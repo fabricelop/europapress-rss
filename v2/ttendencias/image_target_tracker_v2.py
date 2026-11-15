@@ -39,9 +39,20 @@ def verify_image_turn(page, command_id):
         ):
             messages = page.locator(selector)
             if messages.count() > 0:
-                content = messages.last.inner_text(timeout=3000)
-                if command_id in content:
-                    return True
+                # ChatGPT can collapse long user prompts or render their
+                # visible text asynchronously. The full DOM text of a USER
+                # bubble is more dependable than `last.inner_text()`.
+                try:
+                    if any(command_id in content
+                           for content in messages.all_text_contents()):
+                        return True
+                except Exception:
+                    pass
+                try:
+                    if command_id in messages.last.inner_text(timeout=3000):
+                        return True
+                except Exception:
+                    pass
         body = page.locator("body").inner_text(timeout=3000)
         markers = ("\nYou said:\n", "\nTú dijiste:\n", "\nHas dicho:\n")
         positions = [(body.rfind(marker), marker) for marker in markers]
@@ -68,7 +79,14 @@ def await_image_conversation(browser, starting_page, command_id, *,
     deadline = time.monotonic() + seconds
     while time.monotonic() < deadline:
         urls = image_conversation_urls(browser)
-        ordered = [url for url in urls if url not in baseline]
+        # A new prompt can be submitted in a tab whose URL was already in
+        # the CDP baseline (a reused /c/ route). Its unique USER command,
+        # not just the URL's novelty, identifies the correct conversation.
+        own_url = canonical(starting_page.url)
+        if IMAGE_CHAT_RE.fullmatch(own_url) and own_url not in urls:
+            urls.append(own_url)
+        ordered = [url for url in urls
+                   if url not in baseline or url == own_url]
         for url in ordered:
             pages = [p for context in browser.contexts
                      for p in context.pages if canonical(p.url) == url]
@@ -91,3 +109,4 @@ def await_image_conversation(browser, starting_page, command_id, *,
                   "seen_urls": image_conversation_urls(browser),
                   "inspected": inspected[-20:],
                   "starting_url": canonical(starting_page.url)}
+
