@@ -5,13 +5,13 @@ import { resolve } from "node:path";
 import { runInNewContext } from "node:vm";
 
 const source=readFileSync(resolve(import.meta.dirname,"../web-source/app.js"),"utf8");
-const match=source.match(/function movementIndicator\(item\)\{[\s\S]*?\n\}\nfunction top30Since/);
+const match=source.match(/function movementIndicator\(item\)\{[\s\S]*?\r?\n\}\r?\nfunction top30Since/);
 assert.ok(match,"movementIndicator debe existir");
 function indicator(item,rankingUnchanged=false,rankingChangeAt=null){
  const state={rankingUnchanged,rankingChangeAt};
  const el=(tag,className,label)=>({tag,className,label,setAttribute(k,v){this[k]=v;}});
  const spanishStamp=(value)=>value;
- const fn=runInNewContext(match[0].replace(/\nfunction top30Since$/,"")+"\nmovementIndicator",{state,el,spanishStamp});
+ const fn=runInNewContext(match[0].replace(/\r?\nfunction top30Since$/,"")+"\nmovementIndicator",{state,el,spanishStamp});
  return fn({...item,_rankingMeta:state});
 }
 test("flechas con número correcto para subida, bajada y estabilidad comprobada",()=>{
