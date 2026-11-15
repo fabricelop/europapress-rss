@@ -22,7 +22,7 @@ function editorial(raw){
    if(!started&&line.length<40&&!line.startsWith("#")&&!/^(?:TT#|🌶)/u.test(line))continue;
    if(line.length>70)hasProse=true;
    started=true;
-   out.push(line.replace(/^Hashtags:\s*/i,"").replace(/^Remate:\s*/i,""));
+   out.push(line.replace(/^Hashtags:\s*/i,"").replace(/^(?:Remate|Chiste)(?:\s+[^:]{1,35})?:\s*/iu,""));
    if(line.includes("🌶"))break;
   }
   const value=out.join("\n").trim();
@@ -65,7 +65,7 @@ function tweetText(raw,item){
  const prefix="TT#"+rank+" "+name+" es tendencia";
  const lines=source.split("\n").map(x=>x.trim()).filter(Boolean);
  const jokeLine=lines.find(x=>x.includes("🌶"))||"";
- const joke=jokeLine.replace(/^Remate:\s*/i,"").trim();
+ // Las etiquetas editoriales son metadatos, no texto publicable.\n const joke=jokeLine.replace(/^(?:Remate|Chiste)(?:\s+[^:]{1,35})?:\s*/iu,"").trim();
  const hashLine=lines.filter(x=>!x.includes("🌶")&&(/^(?:Hashtags:\s*)?#\S+/i.test(x)||/^Hashtags:\s*#/i.test(x))).map(x=>x.replace(/^Hashtags:\s*/i,"").trim()).join(" ");
  const hashes=[...new Set((hashLine.match(/#[\p{L}\p{N}_]+/gu)||[]))].join(" ");
  let prose=lines.filter(x=>!x.includes("🌶")&&!/^Hashtags:\s*/i.test(x)&&!/^\s*#[\p{L}\p{N}_]+(?:\s+#[\p{L}\p{N}_]+)*\s*$/u.test(x)).join(" ").replace(/\s+/g," ").trim();
