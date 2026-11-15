@@ -120827,13 +120827,28 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "none",
-      "image_status": "none",
-      "image_choice": "none",
+      "fallback_image_status": "ready",
+      "image_status": "ready",
+      "image_choice": "fallback",
       "image_pending": false,
       "telegram_package_status": "pending",
       "fallback_image_strategy": "existing_web_image",
-      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
+      "fallback_image": {
+        "url": "https://www.sotwe.com/icon.png",
+        "source": "www.sotwe.com",
+        "source_url": "https://www.sotwe.com/hashtag/DeS%C3%A1bado?lang=en",
+        "alt": "Imagen de archivo relacionada con #DeSábado",
+        "rights_status": "unverified",
+        "generated": false
+      },
+      "image": {
+        "url": "https://www.sotwe.com/icon.png",
+        "source": "www.sotwe.com",
+        "source_url": "https://www.sotwe.com/hashtag/DeS%C3%A1bado?lang=en",
+        "alt": "Imagen de archivo relacionada con #DeSábado",
+        "rights_status": "unverified",
+        "generated": false
+      }
     },
     {
       "id": "4744da73e37d",
@@ -121606,6 +121621,6 @@
       }
     }
   ],
-  "updated_at": "2026-11-15T03:46:04.589334Z",
+  "updated_at": "2026-11-15T03:51:25.062246Z",
   "count": 2141
 }
