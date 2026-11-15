@@ -23,7 +23,7 @@ Actualización: 15 de noviembre de 2026.
 - Tarea actual: TTActualidadV2-Editorial-Auto; perfiles, procesos y módulo V2 aislados de V1.
 - El instalador histórico copia una vez los módulos: actualizar GitHub NO actualiza un consumidor ya instalado.
 - Activador seguro: v2/ttendencias/Activate-V2-RE-Priority.ps1. Descarga una revisión fijada, prueba código, solicita salida cooperativa de un trabajo editorial en curso, respalda, instala y relanza. No mata Chrome ni V1.
-- CI en Windows: workflow ttactualidad-v2-re-windows-check.yml. Superar la CI NO confirma activación en el ordenador del propietario. Estado: **pendiente de ejecutar el activador en Windows y verificar daemon-status.json**.
+- CI en Windows: workflow ttactualidad-v2-re-windows-check.yml. Superar la CI NO confirma activación en el ordenador del propietario. Estado: **ACTIVO en el Windows de Fabrice**. El 15/11/2026 comunicó salida real del activador: TT_V2_RE_STAGE_TESTS=OK, TT_V2_RE_PRIORITY_INSTALLED=YES, TT_V2_RE_PRIORITY_START_REQUESTED=YES, TT_V2_RE_PRIORITY_ACTIVE=YES; revisión instalada ac4cf6ac6cb3. Se respetó el trabajo en curso (WAITING_FOR_CURRENT_JOB=YES).
 
 ## Auditoría de tareas V1: aún sin desactivar
 - ttendencias-refresh.yml: captura/cola histórica V1, cron cada 10 min.
@@ -38,5 +38,5 @@ Actualización: 15 de noviembre de 2026.
 ## Estado que no se debe exagerar
 - Las pruebas Windows y RE-X posteriores a la ampliación pasaron en GitHub Actions (47 comprobaciones del panel privado).
 - No afirmar «activado en Windows» sin lectura de salida de la tarea real.
-- RE-X desplegado en el Worker privado el 15/11/2026: confirmado en producción por /health (build v2-re-x-20261115, configured=true) y /api/public-editorial-overrides (schema_version=1), ambos 200. La comprobación automática del workflow dio un falso negativo de verificación posterior al despliegue, pese a esas comprobaciones manuales correctas. RE-X necesita aún activación del consumidor local Windows para tener la prioridad solicitada.
+- RE-X desplegado en el Worker privado el 15/11/2026: confirmado en producción por /health (build v2-re-x-20261115, configured=true) y /api/public-editorial-overrides (schema_version=1), ambos 200. La comprobación automática del workflow dio un falso negativo de verificación posterior al despliegue, pese a esas comprobaciones manuales correctas. La activación del consumidor Windows con prioridad RE/RE-X quedó confirmada por la salida real comunicada por Fabrice el 15/11/2026; resta comprobar el resultado de una solicitud RE-X concreta de extremo a extremo.
 - V1 no ha sido apagada.
