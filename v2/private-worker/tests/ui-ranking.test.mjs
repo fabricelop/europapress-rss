@@ -52,3 +52,17 @@ test("private app only loads state through its authorized Worker proxy",()=>{
  assert.doesNotMatch(built,/localStorage\.setItem\(MARKS_KEY/);
  assert.match(built,/\/api\/marks/);
 });
+
+test("R remains clickable in collapsed card without toggling its disclosure",()=>{
+ const r=app.indexOf('const flag=el("button","red-toggle","R");');
+ const end=app.indexOf('const body=el("div","explanation"',r);
+ assert.ok(r>=0&&end>r,"R control is part of every Top30 item");
+ const block=app.slice(r,end);
+ assert.match(block,/event\.preventDefault\(\)/);
+ assert.match(block,/event\.stopPropagation\(\)/);
+ assert.match(block,/head\.append\(flag\)/);
+ assert.doesNotMatch(block,/card\.append\(flag\)/);
+ assert.match(css,/\.trend\.marked-red\{background:/);
+ assert.match(css,/\.red-toggle\{position:static;flex:none/);
+ assert.match(built,/head\.append\(flag\)/);
+});
