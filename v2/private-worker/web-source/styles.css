@@ -40,6 +40,8 @@
 .trend-generated-image{padding:0 clamp(15px,4vw,36px) 20px calc(clamp(15px,4vw,36px) + 48px)}
 .image-ready-icon{flex:none;color:#9bd3ff;background:#16324b;border:1px solid #315a77;border-radius:6px;padding:2px 5px;font-size:14px;line-height:1.2;align-self:center}
 .publish-actions{display:flex;gap:10px;padding:0 clamp(15px,4vw,36px) 18px calc(clamp(15px,4vw,36px) + 48px)}
+.re-explain-action{border-color:#6484ae;color:#cbe0ff;background:#142439}
+.re-explain-action:disabled{opacity:.48;cursor:default}
 .publish-action{background:#203247;color:#f3f6fb;border:1px solid #54708b;border-radius:8px;min-width:56px;min-height:38px;font-size:13px;font-weight:800;cursor:pointer}
 .publish-action:hover,.publish-action:focus-visible{background:#2b4560;border-color:#a3c9ee}
 .publish-action[disabled]{opacity:.55;cursor:wait}
