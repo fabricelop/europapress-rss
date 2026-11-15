@@ -23,8 +23,10 @@ def request_reexplanation(queue, history, *, trend_id, base_revision, entered_to
     if len(matching) != 1:
         raise ValueError("La tendencia ya no está en el Top30")
     topic = matching[0]
-    if (topic.get("entered_top30_at") or topic.get("first_seen_at")) != entered_top30_at:
-        raise ValueError("La entrada al Top30 ha cambiado")
+    # El reloj Cloudflare y el de GitHub atribuyen fechas de entrada distintas.
+    # Esta diferencia no puede bloquear una solicitud explícita ni cambiar el ID.
+    if not isinstance(entered_top30_at, str) or not entered_top30_at:
+        raise ValueError("Falta fecha informativa de entrada")
     old = (queue.get("items") or {}).get(trend_id)
     if not old or old.get("trend_id") != trend_id:
         raise ValueError("Identidad editorial incorrecta")
