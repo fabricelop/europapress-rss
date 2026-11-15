@@ -1,6 +1,75 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-15T21:17:26+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-15T20:17:32.942595+00:00",
+  "count": 2,
+  "items": [
+    {
+      "id": "red-review-f82aef2544e34c9b9690",
+      "revision": 0,
+      "name": "Revisar novedades: La Peter",
+      "rank": 25,
+      "status": "preparing",
+      "requested_at": "2026-11-15T20:17:32.942595+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "63a056c511d3",
+        "revision": 0,
+        "name": "La Peter",
+        "rank": 17,
+        "explanation": "TT#17 La Peter es tendencia porque el apodo que Candela Peña puso a Pedro Sánchez en La Revuelta reaparece hoy en la conversación política y en una crónica de su mitin de Valencia.\n#PedroSánchez #29N\n🌶️ El apodo ya hace campaña por su cuenta.",
+        "explanation_sha256": "778ff0d2f7670552860c59e914f11d4b211bf87e1b7ee56d28220883370a52e6",
+        "explained_at": "2026-11-09T23:33:47+01:00",
+        "verification_sources": [
+          {
+            "url": "https://www.20minutos.es/comunidad-valenciana/mitin-peter_7058698_3.html"
+          },
+          {
+            "url": "https://www.20minutos.es/television/candela-pena-abrumada-por-las-reacciones-su-encuentro-con-pedro-sanchez-revuelta-me-vibraba-movil-cascoporro_7053825_0.html"
+          }
+        ],
+        "fingerprint": "a26885600a5a2acb8f4234e0e5e0c9d77ca6039b9313a745998005470406b668"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-fec6add765a364b5d614",
+      "revision": 0,
+      "name": "Revisar novedades: Procida",
+      "rank": 30,
+      "status": "preparing",
+      "requested_at": "2026-11-15T20:17:32.942595+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "b46e87f61b74",
+        "revision": 0,
+        "name": "Procida",
+        "rank": 16,
+        "explanation": "TT#16 Procida es tendencia por sus 19 puntos y 22 de valoración en el 105-84 del Real Madrid al Estrella Roja en Euroliga.\n#RealMadrid #Euroliga\n🌶️ Cuatro triples y 22 de valoración dejaron poca letra pequeña.",
+        "explanation_sha256": "53d396061ff59bb2be3b64ff7e9653556af81aa6318ec4dd4053822d6b8ebc2b",
+        "explained_at": "2026-11-13T00:14:00+01:00",
+        "verification_sources": [
+          {
+            "url": "https://www.realmadrid.com/en-US/news/basket/first-team/reports/cronica-real-madrid-estrella-roja-12-11-2026"
+          },
+          {
+            "url": "https://okdiario.com/diariomadridista/baloncesto/real-madrid-destroza-mejor-defensa-euroliga-endosa-mayor-paliza-677241"
+          }
+        ],
+        "fingerprint": "f388268878fcb4acf16ca43dc615c2d7c58cc0ff939e9de44878cf7d4721ff2f"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
