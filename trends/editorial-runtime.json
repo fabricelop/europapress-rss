@@ -7,27 +7,22 @@
   "previous_run_id": "tr-20261115T075500-chat-direct",
   "command_id": "tr-20261115T081000-chat-direct",
   "source": "chat_direct",
-  "status": "RUNNING",
+  "status": "success",
   "phase": "preparing",
   "started_at": "2026-11-15T08:10:00+01:00",
-  "updated_at": "2026-11-15T08:10:00+01:00",
+  "updated_at": "2026-11-15T08:15:18+01:00",
   "current": 0,
   "total": 3,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": false,
-  "processed_ids": [],
+  "queue_complete": true,
+  "processed_ids": [
+    "121f837d3b59",
+    "60c5d7941545"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "60c5d7941545",
-    "121f837d3b59",
-    "red-review-f679230c7cf95bb0617c"
-  ],
-  "remaining_active_ids": [
-    "60c5d7941545",
-    "121f837d3b59",
-    "red-review-f679230c7cf95bb0617c"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 3,
@@ -810,8 +805,8 @@
       "message": "Barrera final verificada en main: editorial-queue=0 y solicitudes activas=0. Ejecución 0/0 cerrada; sin ImageGen ni publicaciones."
     }
   ],
-  "last_started_at": "2026-11-15T08:10:00+01:00",
-  "last_completed_at": "2026-11-15T07:42:00+01:00",
+  "last_started_at": "2026-11-15T08:15:18+01:00",
+  "last_completed_at": "2026-11-15T08:15:18+01:00",
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-20261115T074100-chat-direct",
