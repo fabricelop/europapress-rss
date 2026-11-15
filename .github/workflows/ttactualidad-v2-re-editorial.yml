@@ -3,6 +3,11 @@ name: TTActualidad V2 - atender solicitudes RE privadas
 # Se consulta D1 cada 15 minutos; no envía nada a X ni usa el PC Windows.
 # No modifica colas de TTiTTulares, TTendencias V1 ni otros proyectos.
 on:
+  # Comprobar la primera puesta en marcha al actualizar este workflow.
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/ttactualidad-v2-re-editorial.yml'
   schedule:
     - cron: '*/15 * * * *'
   workflow_dispatch:
