@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-15T18:32:58.553760+00:00",
+  "checked_at": "2026-11-15T18:44:41.595096+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -42,9 +42,10 @@
     "top10": {
       "ok": false,
       "count": 10,
-      "non_stale_sources": 3,
+      "non_stale_sources": 4,
       "verified_fresh_sources": [
-        "xtrendsiamrohit"
+        "xtrendsiamrohit",
+        "playersells"
       ],
       "live_verified": false,
       "captured_age_minutes": 0.1,
@@ -59,8 +60,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 5.4,
-      "run_id": 43746718724,
+      "age_minutes": 3.3,
+      "run_id": 43748154106,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -82,28 +83,70 @@
     },
     "editorial_queue": {
       "ok": false,
-      "pending_count": 12,
-      "overdue_count": 3,
-      "oldest_age_minutes": 90.5,
+      "pending_count": 11,
+      "overdue_count": 11,
+      "oldest_age_minutes": 102.2,
       "warning_after_minutes": 30,
       "overdue_items": [
-        {
-          "id": "5e1e30b01ae3",
-          "name": "#SanchezFueraDeControl",
-          "status": "preparing",
-          "age_minutes": 90.5
-        },
         {
           "id": "ccb05dc4bbe8",
           "name": "Caro",
           "status": "preparing",
-          "age_minutes": 90.5
+          "age_minutes": 102.2
         },
         {
           "id": "d9f6589ca44c",
           "name": "Maye",
           "status": "preparing",
-          "age_minutes": 90.5
+          "age_minutes": 102.2
+        },
+        {
+          "id": "198d8a9d4fd6",
+          "name": "opoku",
+          "status": "preparing",
+          "age_minutes": 40.9
+        },
+        {
+          "id": "3248572c5b6c",
+          "name": "Granada",
+          "status": "preparing",
+          "age_minutes": 40.9
+        },
+        {
+          "id": "5f0f53ab8f40",
+          "name": "Manu Lama",
+          "status": "preparing",
+          "age_minutes": 40.9
+        },
+        {
+          "id": "96d736c2f576",
+          "name": "Alba Carrillo",
+          "status": "preparing",
+          "age_minutes": 40.9
+        },
+        {
+          "id": "03a189b3780e",
+          "name": "Jefté",
+          "status": "preparing",
+          "age_minutes": 40.9
+        },
+        {
+          "id": "a6db34486bd0",
+          "name": "La Peter",
+          "status": "preparing",
+          "age_minutes": 40.9
+        },
+        {
+          "id": "c36cd75240d2",
+          "name": "Ronaldinho",
+          "status": "preparing",
+          "age_minutes": 40.9
+        },
+        {
+          "id": "d1f4643c192b",
+          "name": "Jorge Pascual",
+          "status": "preparing",
+          "age_minutes": 40.9
         }
       ],
       "repairable": false
@@ -113,7 +156,6 @@
       "status": "overdue",
       "queue_complete": false,
       "remaining_active_ids": [
-        "5e1e30b01ae3",
         "ccb05dc4bbe8",
         "d9f6589ca44c",
         "198d8a9d4fd6",
@@ -138,9 +180,9 @@
   "blocking": [
     "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos",
     "cola con 283 estado(s) inválido(s)",
-    "cola de explicaciones retrasada: 3 pendiente(s) superan 30 min; más antigua 90.5 min"
+    "cola de explicaciones retrasada: 11 pendiente(s) superan 30 min; más antigua 102.2 min"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 283 estado(s) inválido(s) | cola de explicaciones retrasada: 3 pendiente(s) superan 30 min; más antigua 90.5 min"
+  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 283 estado(s) inválido(s) | cola de explicaciones retrasada: 11 pendiente(s) superan 30 min; más antigua 102.2 min"
 }
