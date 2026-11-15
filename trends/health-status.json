@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-15T14:48:21.536855+00:00",
+  "checked_at": "2026-11-15T15:00:13.357459+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -59,8 +59,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 6.0,
-      "run_id": 43725799886,
+      "age_minutes": 4.2,
+      "run_id": 43727033448,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -72,7 +72,7 @@
     },
     "request_queue": {
       "ok": false,
-      "invalid_count": 272,
+      "invalid_count": 273,
       "noise_count": 0
     },
     "ready_consistency": {
@@ -81,62 +81,21 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": false,
-      "pending_count": 6,
-      "overdue_count": 6,
-      "oldest_age_minutes": 104.8,
+      "ok": true,
+      "pending_count": 2,
+      "overdue_count": 0,
+      "oldest_age_minutes": 2.3,
       "warning_after_minutes": 30,
-      "overdue_items": [
-        {
-          "id": "7424a29ae1ce",
-          "name": "Ávila",
-          "status": "preparing",
-          "age_minutes": 104.8
-        },
-        {
-          "id": "f64771fce4c4",
-          "name": "Ikurriña",
-          "status": "preparing",
-          "age_minutes": 44.5
-        },
-        {
-          "id": "097f3535c4b7",
-          "name": "FINAL DEL PARTIDO",
-          "status": "preparing",
-          "age_minutes": 44.5
-        },
-        {
-          "id": "571d07b4907e",
-          "name": "Jon Echeverría",
-          "status": "preparing",
-          "age_minutes": 44.5
-        },
-        {
-          "id": "752f3a2f0204",
-          "name": "Naranjo",
-          "status": "preparing",
-          "age_minutes": 44.5
-        },
-        {
-          "id": "7d69a24d0507",
-          "name": "Euskadi",
-          "status": "preparing",
-          "age_minutes": 44.5
-        }
-      ],
+      "overdue_items": [],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": false,
-      "status": "overdue",
+      "ok": true,
+      "status": "not-required",
       "queue_complete": false,
       "remaining_active_ids": [
-        "7424a29ae1ce",
-        "f64771fce4c4",
-        "097f3535c4b7",
-        "571d07b4907e",
-        "752f3a2f0204",
-        "7d69a24d0507"
+        "red-review-3e78ee3a7b1278ce8aca",
+        "red-review-8e106a1113481d0d6ba0"
       ],
       "contradictory_success": false
     },
@@ -149,10 +108,9 @@
   "repairs_started": [],
   "blocking": [
     "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos",
-    "cola con 272 estado(s) inválido(s)",
-    "cola de explicaciones retrasada: 6 pendiente(s) superan 30 min; más antigua 104.8 min"
+    "cola con 273 estado(s) inválido(s)"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 272 estado(s) inválido(s) | cola de explicaciones retrasada: 6 pendiente(s) superan 30 min; más antigua 104.8 min"
+  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 273 estado(s) inválido(s)"
 }
