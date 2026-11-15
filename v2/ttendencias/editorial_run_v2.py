@@ -270,7 +270,7 @@ def run_one(api, state, transcript, auth, item):
             startupinfo=visibility.startupinfo_hidden() if not HEADLESS else None,
             creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         if not HEADLESS:
-            hider = visibility.V2WindowHider(profile_pids).start()
+            hider = visibility.V2WindowHider(profile_pids, primary_pid=proc.pid).start()
         print("TT_V2_CHROME_MODE=" + ("HEADLESS" if HEADLESS else "HEADED_HIDDEN"), flush=True)
         endpoint = "http://127.0.0.1:" + str(port)
         import urllib.request
@@ -288,6 +288,8 @@ def run_one(api, state, transcript, auth, item):
             raise RuntimeError("No se identificaron procesos Chrome V2 propios")
         if hider and hider.last_error:
             raise RuntimeError("No se pudo ocultar Chrome V2: " + hider.last_error)
+        if hider:
+            hider.ensure_hidden()
         print("TT_V2_CDP_CONNECTED=YES", flush=True)
         with sync_playwright() as pw:
             browser = pw.chromium.connect_over_cdp(endpoint)
