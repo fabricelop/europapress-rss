@@ -18,6 +18,7 @@ $sha = [string](Invoke-RestMethod -Uri $commitUrl -Headers $headers -UseBasicPar
 if ($sha -notmatch '^[a-f0-9]{40}$') { throw 'No se pudo fijar revisión V2' }
 $base = 'https://raw.githubusercontent.com/' + $repo + '/' + $sha + '/v2/ttendencias/'
 $files = @(
+    'image_target_tracker_v2.py',
     'image_worker_v2.py',
     'image_daemon_v2.py',
     'image_intake_v2.py',
