@@ -1,6 +1,6 @@
 {
   "project": "TTiTTulares",
-  "updated_at": "2026-11-15T21:05:50Z",
+  "updated_at": "2026-11-15T21:04:27.898051Z",
   "items": [
     {
       "event_id": "c2c5fea57972",
@@ -859,7 +859,7 @@
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "none",
-      "archive_image_status": "pending",
+      "archive_image_status": "none",
       "fallback_image_status": "none",
       "image_choice": "none",
       "sensitive_editorial": false,
@@ -867,7 +867,9 @@
       "image_status": "none",
       "image_pending": false,
       "image_app_available": false,
-      "image_delivery": "none"
+      "image_delivery": "none",
+      "archive_image_search_attempted_at": "2026-11-15T21:04:27.898051Z",
+      "fallback_image_search_attempted_at": "2026-11-15T21:04:27.898051Z"
     },
     {
       "event_id": "a47ad49bf58a",
@@ -907,15 +909,33 @@
       "image_mode": "ai_plus_fallback",
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "none",
-      "archive_image_status": "pending",
-      "fallback_image_status": "none",
-      "image_choice": "none",
+      "archive_image_status": "ready",
+      "fallback_image_status": "ready",
+      "image_choice": "fallback",
       "sensitive_editorial": false,
       "prepared_at": "2026-11-15T21:05:50Z",
       "image_status": "none",
       "image_pending": false,
       "image_app_available": false,
-      "image_delivery": "none"
+      "image_delivery": "none",
+      "archive_image_search_attempted_at": "2026-11-15T21:04:27.898051Z",
+      "fallback_image_search_attempted_at": "2026-11-15T21:04:27.898051Z",
+      "archive_image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261115203310_1200.jpg",
+        "source": "www.europapress.es",
+        "source_url": "https://www.europapress.es/cultura/noticia-sergio-ramirez-ingresa-rae-dedica-discurso-vargas-llosa-agradece-nunca-he-sido-extranjero-espana-20261115203310.html",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "Sergio Ramírez ingresa en la RAE, dedica su discurso a Vargas Llosa y agradece: \"Nunca he sido extranjero en España\""
+      },
+      "fallback_image": {
+        "url": "https://img.europapress.es/fotoweb/fotonoticia_20261115203310_1200.jpg",
+        "source": "www.europapress.es",
+        "source_url": "https://www.europapress.es/cultura/noticia-sergio-ramirez-ingresa-rae-dedica-discurso-vargas-llosa-agradece-nunca-he-sido-extranjero-espana-20261115203310.html",
+        "rights_status": "unverified",
+        "generated": false,
+        "alt": "Sergio Ramírez ingresa en la RAE, dedica su discurso a Vargas Llosa y agradece: \"Nunca he sido extranjero en España\""
+      }
     }
   ],
   "count": 16,
