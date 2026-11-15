@@ -469,6 +469,14 @@ function render(){
    void toggleRedMark(item,card,flag);
   });
   head.append(flag);
+  if(!reset&&item.status==="explicada"&&item.image_in_progress===true
+     &&!imageReady(item)&&item.image_suppressed!==true){
+   const generating=el("span","image-working-icon","▧");
+   generating.title="Imagen IA en elaboración";
+   generating.setAttribute("aria-label",generating.title);
+   generating.setAttribute("role","img");
+   head.append(generating);
+  }
   if(!reset&&(imageReady(item)||item.image_suppressed===true)){
    const photo=el("span","image-ready-icon","▣");
    photo.title=item.image_suppressed===true?"Imagen IA conservada pero retirada de las dos webs":"Imagen IA asociada a esta revisión";
