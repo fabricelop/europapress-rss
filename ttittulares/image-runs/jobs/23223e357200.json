@@ -1,0 +1,63 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-23223e357200-r1-a1-1792566748936",
+  "requested_at": "2026-10-21T07:12:28.881464Z",
+  "updated_at": "2026-10-21T07:15:59.314Z",
+  "status": "ERROR",
+  "phase": "pc_launch_failed",
+  "mode": "automatic_ready_repair",
+  "delivery_mode": "launch_only",
+  "editorial_image_mode": "rigor",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "23223e357200",
+  "event_id": "23223e357200",
+  "target_name": "Detenido un hombre por la muerte a puñaladas de una mujer en Carabanchel",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "Detenido un hombre por la muerte a puñaladas de una mujer en Carabanchel",
+    "revision": 1,
+    "factual_summary": "La Policía Nacional detuvo a un hombre como presunto autor de la muerte a puñaladas de una mujer de 52 años en Carabanchel. El caso se investiga como posible violencia de género.",
+    "tweet_text": "La Policía Nacional detuvo a un hombre como presunto autor de la muerte a puñaladas de una mujer de 52 años en Carabanchel; se investiga como posible caso de violencia de género.\n\n#Carabanchel #Madrid\n🌶️ La investigación sigue abierta.",
+    "remate": "🌶️ La investigación sigue abierta.",
+    "image_style": "ILUSTRACIÓN PERIODÍSTICA SERIA: rigor documental, sobriedad y respeto. Evita humor, sátira, caricaturas, ironías, metáforas que banalicen daños, víctimas reconocibles inventadas y escenas gráficas. Una única imagen editorial sobria, contextual y no sensacionalista. Sin afirmaciones visuales no documentadas. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "editorial_image_mode": "rigor",
+    "image_style_name": "rigor_y_respeto",
+    "image_style_index": -1,
+    "image_prompt": "ILUSTRACIÓN PERIODÍSTICA SERIA: rigor documental, sobriedad y respeto. Evita humor, sátira, caricaturas, ironías, metáforas que banalicen daños, víctimas reconocibles inventadas y escenas gráficas. Una única imagen editorial sobria, contextual y no sensacionalista. Sin afirmaciones visuales no documentadas. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. \n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nLa Policía Nacional detuvo a un hombre como presunto autor de la muerte a puñaladas de una mujer de 52 años en Carabanchel; se investiga como posible caso de violencia de género.\n\n#Carabanchel #Madrid\n🌶️ La investigación sigue abierta.\n\nREMATE EXACTO:\n🌶️ La investigación sigue abierta.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nLa Policía Nacional detuvo a un hombre como presunto autor de la muerte a puñaladas de una mujer de 52 años en Carabanchel. El caso se investiga como posible violencia de género.\n\nREGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. \n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://www.antena3.com/noticias/sociedad/mujer-asesinada-punaladas-carabanchel-madrid-iba-llevar-nina-que-cuidaba-colegio_202610216ad848e5bb4b267410504cc6.html",
+    "citations": [
+      {
+        "source": "Europa Press",
+        "url": "https://www.europapress.es/madrid/noticia-detenido-hombre-muerte-punaladas-mujer-urbanizacion-carabanchel-20261021083954.html"
+      },
+      {
+        "source": "EL PAÍS",
+        "url": "https://elpais.com/espana/madrid/2026-10-21/detenido-el-presunto-asesino-de-una-mujer-en-una-urbanizacion-de-carabanchel.html"
+      },
+      {
+        "source": "20minutos",
+        "url": "https://www.20minutos.es/madrid/detenido-un-hombre-por-muerte-punaladas-mujer-52-anos-carabanchel_7051345_0.html"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Imagen sobria y rigurosa, sin humor ni banalización. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "lifecycle": "Pestaña fija ChatGPT; prompt lanzado; el usuario recoge la imagen en ChatGPT Images. NO capturar ni enviar raster a Telegram."
+  },
+  "message": "No hubo evidencia suficiente de envío del prompt ImageGen; {\"hasMarker\":false,\"bodyMarker\":false,\"composerMarker\":false,\"targetMarker\":true,\"imageTitle\":false,\"generating\":true,\"turns\":0,\"images\":4,\"imageSrc\":\"blob:https",
+  "pc_upload_secret_hash": "dd4425ce784426c04943c809ed808df9babc5ec6dd55f3c6be79e510754feec5",
+  "pc_worker_id": "ttittulares-image-bridge-v29-raw-job-recovery",
+  "pc_picked_up_at": "2026-10-21T07:14:55.538Z",
+  "finished_at": "2026-10-21T07:15:59.314Z"
+}

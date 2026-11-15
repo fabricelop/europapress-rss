@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-223a5cfc1f54-r1-a1-1792748537610",
+  "requested_at": "2026-10-23T09:42:17.580577Z",
+  "updated_at": "2026-10-23T09:58:41.039885Z",
+  "status": "LAUNCHED",
+  "phase": "pc_launched",
+  "mode": "automatic_ready_repair",
+  "delivery_mode": "launch_only",
+  "editorial_image_mode": "rigor",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "223a5cfc1f54",
+  "event_id": "223a5cfc1f54",
+  "target_name": "Más de 50.000 personas han muerto este verano en Europa por el exceso de calor",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "Más de 50.000 personas han muerto este verano en Europa por el exceso de calor",
+    "revision": 1,
+    "factual_summary": "Dos estudios revisados por pares estiman 50.391 muertes relacionadas con el calor entre junio y agosto de 2026 en 854 áreas urbanas de 30 países europeos. Los autores atribuyen 32.619, alrededor del 65 %, al calentamiento causado por la actividad humana. Son estimaciones epidemiológicas, no un recuento individual de defunciones.",
+    "tweet_text": "Dos estudios estiman 50.391 muertes relacionadas con el calor este verano en 854 áreas urbanas de 30 países europeos; unas 32.600 se atribuyen al cambio climático.\n\n#CalorExtremo #CambioClimático #Europa\n🌶️ Cincuenta mil no son una anomalía meteorológica.",
+    "remate": "🌶️ Cincuenta mil no son una anomalía meteorológica.",
+    "image_style": "ILUSTRACIÓN PERIODÍSTICA SERIA: rigor documental, sobriedad y respeto. Evita humor, sátira, caricaturas, ironías, metáforas que banalicen daños, víctimas reconocibles inventadas y escenas gráficas. Una única imagen editorial sobria, contextual y no sensacionalista. Sin afirmaciones visuales no documentadas. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "editorial_image_mode": "rigor",
+    "image_style_name": "rigor_y_respeto",
+    "image_style_index": -1,
+    "image_prompt": "ILUSTRACIÓN PERIODÍSTICA SERIA: rigor documental, sobriedad y respeto. Evita humor, sátira, caricaturas, ironías, metáforas que banalicen daños, víctimas reconocibles inventadas y escenas gráficas. Una única imagen editorial sobria, contextual y no sensacionalista. Sin afirmaciones visuales no documentadas. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. \n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nDos estudios estiman 50.391 muertes relacionadas con el calor este verano en 854 áreas urbanas de 30 países europeos; unas 32.600 se atribuyen al cambio climático.\n\n#CalorExtremo #CambioClimático #Europa\n🌶️ Cincuenta mil no son una anomalía meteorológica.\n\nREMATE EXACTO:\n🌶️ Cincuenta mil no son una anomalía meteorológica.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nDos estudios revisados por pares estiman 50.391 muertes relacionadas con el calor entre junio y agosto de 2026 en 854 áreas urbanas de 30 países europeos. Los autores atribuyen 32.619, alrededor del 65 %, al calentamiento causado por la actividad humana. Son estimaciones epidemiológicas, no un recuento individual de defunciones.\n\nREGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. \n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://www.abc.es/sociedad/50000-personas-muerto-verano-europa-exceso-calor-20261023024027-nt.html",
+    "citations": [
+      {
+        "source": "Europa Press",
+        "url": "https://www.europapress.es/sociedad/noticia-50000-personas-muerto-verano-calor-europa-dos-tercios-cambio-climatico-20261023010049.html"
+      },
+      {
+        "source": "Associated Press",
+        "url": "https://apnews.com/article/d57dac06335203107caba8ae6ef67185"
+      },
+      {
+        "source": "Science Media Centre España",
+        "url": "https://sciencemediacentre.es/el-verano-de-2026-dejo-mas-de-50000-muertes-por-calor-en-europa-dos-tercios-de-ellas-atribuibles-al"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Imagen sobria y rigurosa, sin humor ni banalización. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "lifecycle": "Pestaña fija ChatGPT; prompt lanzado; el usuario recoge la imagen en ChatGPT Images. NO capturar ni enviar raster a Telegram."
+  },
+  "message": "Prompt confirmado en ChatGPT Images; sin recuperar raster.",
+  "pc_upload_secret_hash": "7f1d89fa1fe57214ba50786232859f3f9fa9ac54b18c56ebc2fc24e2fd3ecde7",
+  "pc_worker_id": "ttittulares-image-bridge-v29-raw-job-recovery",
+  "pc_picked_up_at": "2026-10-23T09:43:16.504Z",
+  "pc_launched_at": "2026-10-23T09:43:25.434Z",
+  "finished_at": "2026-10-23T09:43:25.434Z"
+}

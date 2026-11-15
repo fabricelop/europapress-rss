@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-27f9cf6bde11-r1-a1-1792935975581",
+  "requested_at": "2026-10-25T13:46:15.511414Z",
+  "updated_at": "2026-10-25T14:37:55.811377Z",
+  "status": "LAUNCHED",
+  "phase": "pc_launched",
+  "mode": "automatic_ready_repair",
+  "delivery_mode": "launch_only",
+  "editorial_image_mode": "rigor",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "27f9cf6bde11",
+  "event_id": "27f9cf6bde11",
+  "target_name": "Más de 50 heridos y 31 detenidos tras el desalojo de las acampadas por la vivienda de Lisboa y Oporto",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "Más de 50 heridos y 31 detenidos tras el desalojo de las acampadas por la vivienda de Lisboa y Oporto",
+    "revision": 1,
+    "factual_summary": "La Policía de Seguridad Pública desalojó de madrugada las acampadas por el derecho a la vivienda en Lisboa y Oporto. Hubo 31 detenidos por desobediencia. Los balances de heridos evolucionaron y difieren: la PSP comunicó inicialmente siete, RTP elevó después su recuento a once y los organizadores manejan cifras superiores.",
+    "tweet_text": "La policía portuguesa desalojó las acampadas por la vivienda de Lisboa y Oporto: 31 personas fueron detenidas y los balances de heridos difieren.\n\n#Lisboa #Oporto #Vivienda\n🌶️ La crisis de vivienda acabó disputándose hasta el suelo.",
+    "remate": "🌶️ La crisis de vivienda acabó disputándose hasta el suelo.",
+    "image_style": "ILUSTRACIÓN PERIODÍSTICA SERIA: rigor documental, sobriedad y respeto. Evita humor, sátira, caricaturas, ironías, metáforas que banalicen daños, víctimas reconocibles inventadas y escenas gráficas. Una única imagen editorial sobria, contextual y no sensacionalista. Sin afirmaciones visuales no documentadas. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "editorial_image_mode": "rigor",
+    "image_style_name": "rigor_y_respeto",
+    "image_style_index": -1,
+    "image_prompt": "ILUSTRACIÓN PERIODÍSTICA SERIA: rigor documental, sobriedad y respeto. Evita humor, sátira, caricaturas, ironías, metáforas que banalicen daños, víctimas reconocibles inventadas y escenas gráficas. Una única imagen editorial sobria, contextual y no sensacionalista. Sin afirmaciones visuales no documentadas. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. \n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nLa policía portuguesa desalojó las acampadas por la vivienda de Lisboa y Oporto: 31 personas fueron detenidas y los balances de heridos difieren.\n\n#Lisboa #Oporto #Vivienda\n🌶️ La crisis de vivienda acabó disputándose hasta el suelo.\n\nREMATE EXACTO:\n🌶️ La crisis de vivienda acabó disputándose hasta el suelo.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nLa Policía de Seguridad Pública desalojó de madrugada las acampadas por el derecho a la vivienda en Lisboa y Oporto. Hubo 31 detenidos por desobediencia. Los balances de heridos evolucionaron y difieren: la PSP comunicó inicialmente siete, RTP elevó después su recuento a once y los organizadores manejan cifras superiores.\n\nREGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. \n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://www.20minutos.es/internacional/mas-50-heridos-31-detenidos-tras-desalojo-las-acampadas-por-vivienda-lisboa-oporto_7053118_0.html",
+    "citations": [
+      {
+        "source": "RTP",
+        "url": "https://www.rtp.pt/noticias/pais/protesto-pelo-direito-a-habitacao-onze-feridos-e-31-detidos-em-lisboa-e-no-porto_n1774140"
+      },
+      {
+        "source": "EFE / Público",
+        "url": "https://www.publico.es/internacional/europa/31-detenidos-siete-heridos-portugal-choques-policia-desalojo-acampadas-lisboa-oporto.html"
+      },
+      {
+        "source": "Lusa",
+        "url": "https://www2.lusa.pt/"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Imagen sobria y rigurosa, sin humor ni banalización. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "lifecycle": "Pestaña fija ChatGPT; prompt lanzado; el usuario recoge la imagen en ChatGPT Images. NO capturar ni enviar raster a Telegram."
+  },
+  "message": "Prompt confirmado en ChatGPT Images; sin recuperar raster.",
+  "pc_upload_secret_hash": "b723add4f52dcf010929f80d1badf0a295b377eda437798d26e5ca4a1420e989",
+  "pc_worker_id": "ttittulares-image-bridge-v29-raw-job-recovery",
+  "pc_picked_up_at": "2026-10-25T13:48:34.777Z",
+  "pc_launched_at": "2026-10-25T13:48:42.833Z",
+  "finished_at": "2026-10-25T13:48:42.833Z"
+}

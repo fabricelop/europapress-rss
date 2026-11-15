@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-01929eabd724-r1-a1-1792939218072",
+  "requested_at": "2026-10-25T14:40:18.024389Z",
+  "updated_at": "2026-10-25T14:41:54.567817Z",
+  "status": "LAUNCHED",
+  "phase": "pc_launched",
+  "mode": "automatic_ready_repair",
+  "delivery_mode": "launch_only",
+  "editorial_image_mode": "rigor",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "01929eabd724",
+  "event_id": "01929eabd724",
+  "target_name": "Detenido en la acampada de Sol un hombre de 26 años por agredir sexualmente a una mujer de 22",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "Detenido en la acampada de Sol un hombre de 26 años por agredir sexualmente a una mujer de 22",
+    "revision": 1,
+    "factual_summary": "La Policía detuvo a un hombre de 26 años como presunto autor de una agresión sexual a una mujer de 22 en una tienda de campaña de la acampada de la Puerta del Sol. La investigación continúa abierta.",
+    "tweet_text": "La Policía detiene a un hombre de 26 años como presunto autor de una agresión sexual a una mujer de 22 en una tienda de la acampada de Sol.\n\n#PuertaDelSol #Madrid #PolicíaNacional\n🌶️ El caso queda en investigación policial.",
+    "remate": "🌶️ El caso queda en investigación policial.",
+    "image_style": "ILUSTRACIÓN PERIODÍSTICA SERIA: rigor documental, sobriedad y respeto. Evita humor, sátira, caricaturas, ironías, metáforas que banalicen daños, víctimas reconocibles inventadas y escenas gráficas. Una única imagen editorial sobria, contextual y no sensacionalista. Sin afirmaciones visuales no documentadas. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "editorial_image_mode": "rigor",
+    "image_style_name": "rigor_y_respeto",
+    "image_style_index": -1,
+    "image_prompt": "ILUSTRACIÓN PERIODÍSTICA SERIA: rigor documental, sobriedad y respeto. Evita humor, sátira, caricaturas, ironías, metáforas que banalicen daños, víctimas reconocibles inventadas y escenas gráficas. Una única imagen editorial sobria, contextual y no sensacionalista. Sin afirmaciones visuales no documentadas. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. \n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nLa Policía detiene a un hombre de 26 años como presunto autor de una agresión sexual a una mujer de 22 en una tienda de la acampada de Sol.\n\n#PuertaDelSol #Madrid #PolicíaNacional\n🌶️ El caso queda en investigación policial.\n\nREMATE EXACTO:\n🌶️ El caso queda en investigación policial.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nLa Policía detuvo a un hombre de 26 años como presunto autor de una agresión sexual a una mujer de 22 en una tienda de campaña de la acampada de la Puerta del Sol. La investigación continúa abierta.\n\nREGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. \n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://elpais.com/espana/madrid/2026-10-25/detenido-en-la-acampada-de-sol-un-hombre-de-26-anos-por-agredir-sexualmente-a-una-mujer-de-22.html",
+    "citations": [
+      {
+        "source": "Europa Press",
+        "url": "https://www.europapress.es/madrid/noticia-detenido-joven-26-anos-agresion-sexual-mujer-22-acampada-puerta-sol-20261025143555.html"
+      },
+      {
+        "source": "EL PAÍS",
+        "url": "https://elpais.com/espana/madrid/2026-10-25/detenido-en-la-acampada-de-sol-un-hombre-de-26-anos-por-agredir-sexualmente-a-una-mujer-de-22.html"
+      },
+      {
+        "source": "20minutos",
+        "url": "https://www.20minutos.es/madrid/detenido-un-joven-26-anos-por-agresion-sexual-una-chica-22-acampada-puerta-sol_7053128_0.html"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Imagen sobria y rigurosa, sin humor ni banalización. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "lifecycle": "Pestaña fija ChatGPT; prompt lanzado; el usuario recoge la imagen en ChatGPT Images. NO capturar ni enviar raster a Telegram."
+  },
+  "message": "Prompt confirmado en ChatGPT Images; sin recuperar raster.",
+  "pc_upload_secret_hash": "197172da6cb0e9d3a229ae50cc52ddc29907f8251b6d4b9df0e97c5a1e324072",
+  "pc_worker_id": "ttittulares-image-bridge-v29-raw-job-recovery",
+  "pc_picked_up_at": "2026-10-25T14:41:18.705Z",
+  "pc_launched_at": "2026-10-25T14:41:27.148Z",
+  "finished_at": "2026-10-25T14:41:27.148Z"
+}

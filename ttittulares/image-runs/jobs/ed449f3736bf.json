@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "command_id": "tt-img-auto-ed449f3736bf-r1-a1-1792435023063",
+  "requested_at": "2026-10-19T18:37:03.031230Z",
+  "updated_at": "2026-10-19T18:39:18.071832Z",
+  "status": "LAUNCHED",
+  "phase": "pc_launched",
+  "mode": "automatic_ready_repair",
+  "delivery_mode": "launch_only",
+  "editorial_image_mode": "rigor",
+  "executor": "pc_chat_ttittulares_dedicated",
+  "project": "ttittulares",
+  "task": "image",
+  "target_id": "ed449f3736bf",
+  "event_id": "ed449f3736bf",
+  "target_name": "Tres detenidos en Almería acusados de participar en la muerte de un policía en Bélgica",
+  "revision": 1,
+  "regenerate": false,
+  "auto_repair": true,
+  "auto_repair_attempt": 1,
+  "manual_retry_version": 0,
+  "chat_command_version": 7,
+  "instruction_profile": "ttittulares_gag_v9_varied_style_single_gag",
+  "context_snapshot": {
+    "title": "Tres detenidos en Almería acusados de participar en la muerte de un policía en Bélgica",
+    "revision": 1,
+    "factual_summary": "Tres sospechosos han sido detenidos en Almería por su presunta participación en la muerte de un policía belga que recibió un disparo cuando inspeccionaba un vehículo robado. La investigación suma seis arrestados.",
+    "tweet_text": "Detenidos en Almería tres sospechosos de participar en la muerte de un policía belga, tiroteado cuando inspeccionaba un vehículo robado. Ya hay seis arrestados en la investigación.\n\n#Almería #Bélgica\n🌶️ La investigación sigue abierta.",
+    "remate": "🌶️ La investigación sigue abierta.",
+    "image_style": "ILUSTRACIÓN PERIODÍSTICA SERIA: rigor documental, sobriedad y respeto. Evita humor, sátira, caricaturas, ironías, metáforas que banalicen daños, víctimas reconocibles inventadas y escenas gráficas. Una única imagen editorial sobria, contextual y no sensacionalista. Sin afirmaciones visuales no documentadas. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "editorial_image_mode": "rigor",
+    "image_style_name": "rigor_y_respeto",
+    "image_style_index": -1,
+    "image_prompt": "ILUSTRACIÓN PERIODÍSTICA SERIA: rigor documental, sobriedad y respeto. Evita humor, sátira, caricaturas, ironías, metáforas que banalicen daños, víctimas reconocibles inventadas y escenas gráficas. Una única imagen editorial sobria, contextual y no sensacionalista. Sin afirmaciones visuales no documentadas. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. \n\nTEXTO EXACTO DE LA NOTICIA YA LISTA:\nDetenidos en Almería tres sospechosos de participar en la muerte de un policía belga, tiroteado cuando inspeccionaba un vehículo robado. Ya hay seis arrestados en la investigación.\n\n#Almería #Bélgica\n🌶️ La investigación sigue abierta.\n\nREMATE EXACTO:\n🌶️ La investigación sigue abierta.\n\nCONTEXTO FACTUAL COMPLEMENTARIO:\nTres sospechosos han sido detenidos en Almería por su presunta participación en la muerte de un policía belga que recibió un disparo cuando inspeccionaba un vehículo robado. La investigación suma seis arrestados.\n\nREGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. \n\nConstruye una sola escena coherente. No hagas infografía, interfaz, diagrama, collage ni captura de pantalla. Genera exactamente UNA imagen.",
+    "url": "https://www.europapress.es/andalucia/almeria-00350/noticia-tres-detenidos-almeria-acusados-participar-muerte-policia-belgica-20261019184057.html",
+    "citations": [
+      {
+        "source": "Europa Press",
+        "title": "Tres detenidos en Almería acusados de participar en la muerte de un policía en Bélgica",
+        "url": "https://www.europapress.es/nacional/noticia-tres-detenidos-almeria-acusados-participar-muerte-policia-belgica-20261019183654.html"
+      },
+      {
+        "source": "EL PAÍS",
+        "title": "Tres detenidos en Almería por la muerte de un disparo en la cabeza de un policía belga",
+        "url": "https://elpais.com/espana/2026-10-19/tres-detenidos-en-almeria-por-la-muerte-de-un-disparo-en-la-cabeza-a-un-policia-belga.html"
+      }
+    ]
+  },
+  "instructions": {
+    "scope": "Una sola noticia y una sola imagen.",
+    "exact_input": "Usa literalmente tweet_text y remate.",
+    "visual": "Imagen sobria y rigurosa, sin humor ni banalización. Respeta image_style del context_snapshot.",
+    "prohibitions": "No infografía, no interfaz, no diagrama, no collage, no screenshot. REGLA VISUAL OBLIGATORIA: el emoji 🌶️ es únicamente un marcador TIPOGRÁFICO del remate escrito. PROHIBIDO dibujar guindillas, chiles, pimientos picantes o su icono, logotipo, silueta o mascota, tanto en primer plano como en fondo, carteles, ropa, objetos, decoración o firma. El gag debe representar la IDEA del remate, nunca el emoji. ",
+    "lifecycle": "Pestaña fija ChatGPT; prompt lanzado; el usuario recoge la imagen en ChatGPT Images. NO capturar ni enviar raster a Telegram."
+  },
+  "message": "Prompt confirmado en ChatGPT Images; sin recuperar raster.",
+  "pc_upload_secret_hash": "54cd1b80f9166a036f6c7d06f0e4dd2c88402496bd637aecc4c79438abbd9046",
+  "pc_worker_id": "ttittulares-image-bridge-v29-raw-job-recovery",
+  "pc_picked_up_at": "2026-10-19T18:38:25.778Z",
+  "pc_launched_at": "2026-10-19T18:38:36.081Z",
+  "finished_at": "2026-10-19T18:38:36.081Z"
+}
