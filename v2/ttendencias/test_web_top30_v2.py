@@ -96,6 +96,27 @@ class Top30WebTests(unittest.TestCase):
         self.assertEqual(doc["items"][0]["status"],"incidencia")
         self.assertEqual(doc["items"][0]["explanation"],"")
 
+    def test_image_indicator_requires_saved_original_of_same_revision(self):
+        h, q = fixtures()
+        ident = "trv2-" + "a" * 24
+        q["items"][ident] = q["items"].pop("trv2-id-01")
+        q["items"][ident]["trend_id"] = ident
+        h["topics"]["Trend01"]["trend_id"] = ident
+        item = q["items"][ident]
+        item["status"] = "captured_review"
+        sha = "c" * 64
+        image = {"status": "saved", "revision": 1,
+                 "backend": "github_v1_style", "sha256": sha, "mime": "image/png",
+                 "command_id": "v2-img-" + ident + "-r1-a1-1234567890abcdef",
+                 "path": "v2/ttendencias/generated-images/" + ident + "-r1-" + sha[:24] + ".png"}
+        item["capture"] = {"revision": 1, "image": image}
+        self.assertTrue(build(h, q)["items"][0]["image_available"])
+        image["revision"] = 2
+        self.assertFalse(build(h, q)["items"][0]["image_available"])
+        image["revision"] = 1
+        image["path"] = "v2/ttendencias/generated-images/wrong.png"
+        self.assertFalse(build(h, q)["items"][0]["image_available"])
+
     def test_capture_recovery_shows_incident(self):
         h, q=fixtures()
         q["items"]["trv2-id-01"]["status"]="capture_recovery"
