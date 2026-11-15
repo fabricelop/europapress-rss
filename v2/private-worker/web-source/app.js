@@ -1,7 +1,7 @@
 "use strict";
 const BASE="https://raw.githubusercontent.com/fabricelop/europapress-rss/feature/ttactualidad-v2-clean/v2/ttendencias/state/";
 const $=id=>document.getElementById(id);
-const state={items:[],captured:null,open:null,rankingUnchanged:false,rankingChangeAt:null};
+const state={items:[],captured:null,open:null,rankingUnchanged:false,rankingChangeAt:null,reRequests:[]};
 function el(tag,className,content){const n=document.createElement(tag);if(className)n.className=className;if(content!==undefined)n.textContent=String(content);return n}
 function valid(data){if(!data||data.project!=="ttactualidad-v2"||data.country!=="ES"||!Array.isArray(data.items)||data.items.length!==data.count||data.count<1||data.count>40)throw Error("Ranking no disponible");const ranks=new Set(data.items.map(x=>x.rank));if(ranks.size!==data.items.length||data.items.some(x=>!Number.isInteger(x.rank)||x.rank<1||x.rank>40||!x.name))throw Error("Ranking incoherente");return data}
 function editorial(raw){
@@ -65,7 +65,7 @@ function tweetText(raw,item){
  const prefix="TT#"+rank+" "+name+" es tendencia";
  const lines=source.split("\n").map(x=>x.trim()).filter(Boolean);
  const jokeLine=lines.find(x=>x.includes("🌶"))||"";
- // Las etiquetas editoriales son metadatos, no texto publicable.
+ // Editorial notes are metadata: never send labels such as "Remate suave" to X.
  const joke=jokeLine.replace(/^(?:Remate|Chiste)(?:\s+[^:]{1,35})?:\s*/iu,"").trim();
  const hashLine=lines.filter(x=>!x.includes("🌶")&&(/^(?:Hashtags:\s*)?#\S+/i.test(x)||/^Hashtags:\s*#/i.test(x))).map(x=>x.replace(/^Hashtags:\s*/i,"").trim()).join(" ");
  const hashes=[...new Set((hashLine.match(/#[\p{L}\p{N}_]+/gu)||[]))].join(" ");
@@ -101,6 +101,16 @@ async function loadSharedMarks() {
  const data=await res.json();
  if(!data.marks||typeof data.marks!=="object")throw Error("Respuesta de marcas no válida");
  redMarks=data.marks;
+}
+async function loadReRequests(){
+ const res=await fetch("/api/re-explain",{cache:"no-store",credentials:"same-origin"});
+ if(!res.ok)throw Error("No se puede consultar RE (HTTP "+res.status+")");
+ const data=await res.json();
+ if(!Array.isArray(data.requests))throw Error("Respuesta RE no válida");
+ state.reRequests=data.requests;
+}
+function reRequested(item){
+ return state.reRequests.some(row=>row.trend_id===item.trend_id&&row.base_revision===item.revision);
 }
 async function toggleRedMark(item,card,button){
  if(button.disabled)return;
@@ -205,6 +215,27 @@ function makePublishButtons(card,item){
  const text=tweetText(item.explanation,item);
  if(text.startsWith("Explicación pendiente"))return;
  const actions=el("div","publish-actions");
+ const re=el("button","publish-action re-explain-action","RE");
+ re.type="button";
+ re.title=item.re_in_progress?"Nueva explicación en elaboración":"Solicitar una nueva explicación editorial";
+ re.setAttribute("aria-label","Volver a investigar y explicar "+item.name);
+ re.disabled=item.re_in_progress===true||reRequested(item);
+ re.addEventListener("click",async()=>{
+  if(re.disabled)return;
+  if(!window.confirm("¿Solicitar una explicación nueva para «"+item.name+"»? La explicación y la imagen actuales seguirán visibles mientras se investiga."))return;
+  re.disabled=true;
+  try{
+   const response=await fetch("/api/re-explain",{method:"POST",credentials:"same-origin",headers:{"content-type":"application/json","x-ttv2-action":"1"},body:JSON.stringify({trend_id:item.trend_id,revision:item.revision,entered_top30_at:markStamp(item)})});
+   if(!response.ok)throw Error("HTTP "+response.status);
+   state.reRequests.push({trend_id:item.trend_id,base_revision:item.revision,status:"requested"});
+   re.title="Nueva explicación solicitada; esperando procesamiento";
+   publishNotice("RE solicitada para «"+item.name+"». Se conserva el texto y la imagen actuales hasta que termine la nueva explicación.");
+  }catch(error){
+   re.disabled=false;
+   publishNotice("No se pudo solicitar RE para «"+item.name+"»: "+error.message);
+  }
+ });
+ actions.append(re);
  const x=el("button","publish-action","P-X");
  x.type="button";x.title="Preparar la publicación de texto en X";
  x.setAttribute("aria-label","Publicar texto en X para "+item.name);
@@ -325,6 +356,7 @@ async function refresh(){
   state.rankingChangeAt=typeof data.ranking_change_at==="string"?data.ranking_change_at:null;
   if(state.open&&!state.items.some(item=>item.trend_id===state.open))state.open=null;
   await loadSharedMarks();
+  try{await loadReRequests()}catch{state.reRequests=[]}
   render();
   $("notice").hidden=true;
   button.title="Actualizar tendencias · última consulta "+new Intl.DateTimeFormat("es-ES",{hour:"2-digit",minute:"2-digit",timeZone:"Europe/Madrid"}).format(new Date());
