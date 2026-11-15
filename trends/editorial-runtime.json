@@ -3,28 +3,38 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261115T130700-chat-direct",
-  "previous_run_id": "tr-20261115T113700-chat-direct",
-  "command_id": "tr-20261115T130700-chat-direct",
+  "run_id": "tr-20261115T155200-chat-direct",
+  "previous_run_id": "tr-20261115T130700-chat-direct",
+  "command_id": "tr-20261115T155200-chat-direct",
   "source": "chat_direct",
-  "status": "waiting",
-  "phase": "closing",
-  "started_at": "2026-11-15T13:07:00+01:00",
-  "updated_at": "2026-11-15T14:48:14+01:00",
-  "current": 2,
-  "total": 2,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-15T15:52:00+01:00",
+  "updated_at": "2026-11-15T15:52:00+01:00",
+  "current": 0,
+  "total": 6,
   "trend_id": null,
-  "title": "Pasada editorial TTendencias completada",
+  "title": "Pasada editorial TTendencias en curso",
   "queue_complete": false,
   "processed_ids": [
     "6be6a0bdaab2"
   ],
   "converged_ids": [],
   "remaining_ids": [
-    "7424a29ae1ce"
+    "7424a29ae1ce",
+    "f64771fce4c4",
+    "097f3535c4b7",
+    "571d07b4907e",
+    "752f3a2f0204",
+    "7d69a24d0507"
   ],
   "remaining_active_ids": [
-    "7424a29ae1ce"
+    "7424a29ae1ce",
+    "f64771fce4c4",
+    "097f3535c4b7",
+    "571d07b4907e",
+    "752f3a2f0204",
+    "7d69a24d0507"
   ],
   "remaining_problematic_ids": [],
   "summary": "2/2 explicadas y persistidas; cola final vacía. Sin ImageGen ni publicaciones.",
@@ -898,6 +908,13 @@
       "current": 2,
       "total": 2,
       "message": "Pasada TTendencias completada 2/2. Aplicador oficial confirmó ambos ID/revisión y la cola final quedó vacía. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-15T15:52:00+01:00",
+      "run_id": "tr-20261115T155200-chat-direct",
+      "status": "RUNNING",
+      "phase": "preparing",
+      "message": "Pasada manual iniciada desde ChatGPT; cola autoritativa inicial=6. Revalidación JIT e investigación actual; sin ImageGen ni publicación."
     }
   ],
   "last_started_at": "2026-11-15T14:48:14+01:00",
@@ -10198,7 +10215,7 @@
   ],
   "processed": [],
   "completed_at": "2026-11-15T13:13:00+01:00",
-  "finished_at": "2026-11-15T13:13:00+01:00",
+  "finished_at": null,
   "revision": null,
   "name": null
 }
