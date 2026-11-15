@@ -3,25 +3,21 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261115T113700-chat-direct",
-  "previous_run_id": "tr-20261115T102500-chat-direct",
-  "command_id": "tr-20261115T113700-chat-direct",
+  "run_id": "tr-20261115T130700-chat-direct",
+  "previous_run_id": "tr-20261115T113700-chat-direct",
+  "command_id": "tr-20261115T130700-chat-direct",
   "source": "chat_direct",
-  "status": "waiting",
-  "phase": "closing",
-  "started_at": "2026-11-15T11:37:00+01:00",
-  "updated_at": "2026-11-15T12:44:19+01:00",
-  "current": 6,
-  "total": 6,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-15T13:07:00+01:00",
+  "updated_at": "2026-11-15T13:07:00+01:00",
+  "current": 0,
+  "total": 2,
   "trend_id": null,
-  "title": "Pasada editorial completada",
+  "title": "Pasada editorial TTendencias",
   "queue_complete": false,
-  "processed_ids": [
-    "4c1b1c26ef67"
-  ],
-  "converged_ids": [
-    "30aed7408eba"
-  ],
+  "processed_ids": [],
+  "converged_ids": [],
   "remaining_ids": [
     "e91bfa95d1e6",
     "b186b88b4160"
@@ -904,6 +900,15 @@
       "status": "DONE_WITH_INCIDENTS",
       "phase": "closing",
       "message": "Pasada TTendencias cerrada 0/0 contra main. Barrera JIT: editorial-queue=0 (updated_at 2026-11-15T10:20:59+01:00); Top 30 capturado a las 2026-11-15T10:20:54+01:00. Incidencia no bloqueante: refresco manual 43699226418 sigue in_progress en checkout y aún no ha generado snapshot nuevo. Sin ImageGen ni publicaciones."
+    },
+    {
+      "at": "2026-11-15T13:07:00+01:00",
+      "run_id": "tr-20261115T130700-chat-direct",
+      "status": "RUNNING",
+      "phase": "preparing",
+      "current": 0,
+      "total": 2,
+      "message": "Ejecución manual iniciada desde ChatGPT; cola autoritativa inicial=2: Madrid y Ávila y País Vasco. Revalidación JIT; sin ImageGen ni publicación."
     }
   ],
   "last_started_at": "2026-11-15T12:44:19+01:00",
@@ -10204,7 +10209,7 @@
   ],
   "processed": [],
   "completed_at": "2026-11-15T10:28:00+01:00",
-  "finished_at": "2026-11-15T11:47:40+01:00",
+  "finished_at": null,
   "revision": null,
   "name": null
 }
