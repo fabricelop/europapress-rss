@@ -57,7 +57,15 @@ Write-Host 'TT_V2_ONE_PILOT_AUTO_PAUSED_AND_CHROME_CLOSED=YES'
 # Refresh code and tests only after the current V2 job has exited.
 Invoke-WebRequest -Uri ($branchBase + '/Install-V2-Editorial-Auto.ps1') -OutFile $installerPath -UseBasicParsing
 & $installerPath -PilotOnly
-if ($LASTEXITCODE -and $LASTEXITCODE -ne 0) { throw 'Instalacion piloto V2 no verificada.' }
+# PowerShell script failures propagate via ErrorActionPreference=Stop.
+# LASTEXITCODE can remain nonzero from an earlier native command after the
+# installer returns successfully; it is not the script's exit status.
+if (-not (Test-Path -LiteralPath (Join-Path $root 'image_same_chat_v2.py') -PathType Leaf)) {
+    throw 'El modulo de imagen V2 no quedo instalado.'
+}
+if ((Get-Content -LiteralPath $flag -Raw) -notmatch 'TT_V2_AUTO_EDITORIAL_ENABLED=NO') {
+    throw 'La bandera del piloto no confirma el consumidor pausado.'
+}
 
 # Run a single fresh, still-pending Top30 trend, with new explanation +
 # one original ImageGen in the same ChatGPT conversation and exact GitHub ID.
