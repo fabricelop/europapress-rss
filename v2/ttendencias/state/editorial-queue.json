@@ -4815,13 +4815,13 @@
       "trend_id": "trv2-f46e7b6c7e713d161e0fd396",
       "name": "#CuartoMilenio",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "fbe3902def7671ef",
       "requested_at": "2026-11-15T23:40:24.387939+00:00",
       "updated_at": "2026-11-15T23:40:24.387939+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -4834,7 +4834,13 @@
           "archived_at": "2026-11-15T23:40:24.387939+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "a542db3a56d08ee3c3f6cf657e376b5370afdd69f7c313ee",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-15T23:41:46.817191+00:00",
+        "expires_at": "2026-11-16T00:21:46.817191+00:00"
+      }
     },
     "trv2-7d271aaf8f301a9340f1b2b8": {
       "trend_id": "trv2-7d271aaf8f301a9340f1b2b8",
