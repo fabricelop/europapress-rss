@@ -122,23 +122,6 @@ def new_image_chat(context, command_id):
     return page, composer
 
 
-def locate_sent_chat(context, starting_page, command_id):
-    """ChatGPT may redirect the page or open a separate CDP target."""
-    deadline = time.monotonic() + 120
-    while time.monotonic() < deadline:
-        for page in [starting_page, *context.pages]:
-            url = page.url.split("?", 1)[0].rstrip("/")
-            if not re.fullmatch(r"https://chatgpt\.com/c/[a-f0-9-]{25,}", url):
-                continue
-            try:
-                if command_id in image_page.last_user_text(page):
-                    return page, url
-            except Exception:
-                pass
-        time.sleep(2)
-    raise RuntimeError("V2_IMAGE_NEW_CHAT_ID_NOT_VERIFIED")
-
-
 def run_one(row, attempt, *, api, auth):
     """Isolated lifecycle, safe even while editorial Chrome is running."""
     tid, rev = row["trend_id"], row["revision"]
@@ -199,6 +182,8 @@ def run_one(row, attempt, *, api, auth):
             browser = pw.chromium.connect_over_cdp(endpoint)
             context = browser.contexts[0]
             page, composer = new_image_chat(context, job["command_id"])
+            tracker = editorial.module("image_target_tracker_v2.py", "ttv2_image_target_tracker")
+            baseline = tracker.image_conversation_urls(browser)
             # An attempt may be repeated in a NEW chat after a timeout.
             # Do not send this same attempt twice if the process is interrupted.
             record["status"] = "send_intent_recorded"
@@ -207,7 +192,14 @@ def run_one(row, attempt, *, api, auth):
             composer.press("Enter")
             record["status"] = "sent_waiting_for_image"
             editorial.store(journal, record)
-            page, url = locate_sent_chat(context, page, job["command_id"])
+            page, discovery = tracker.await_image_conversation(
+                browser, page, job["command_id"], seconds=150,
+                baseline_urls=baseline)
+            record["chat_discovery"] = discovery
+            editorial.store(journal, record)
+            if page is None:
+                raise RuntimeError("V2_IMAGE_NEW_CHAT_ID_NOT_VERIFIED")
+            url = discovery["url"]
             job["conversation_url"] = url
             record["image_chat_url"] = url
             editorial.store(journal, record)
