@@ -27,6 +27,8 @@ test("each private Top 30 rank displays the real previous-snapshot position delt
  assert.equal(same.textContent,"—");
  assert.match(same.className,/same/);
  assert.equal(move({rank:1,previous_rank:null,movement:"entry"}).textContent,"Nueva");
+ assert.equal(move({rank:1,previous_rank:null,movement:"short_return"}).textContent,"Vuelve");
+ assert.equal(move({rank:1,previous_rank:null,movement:"reentry"}).textContent,"Vuelve");
  assert.equal(move({rank:1,previous_rank:null,movement:"baseline"}).textContent,"—");
 });
 
@@ -43,6 +45,8 @@ test("private site shows entry date, explanation date, and full radar date",()=>
  assert.match(built,/weekday:"short"/);
  assert.match(css,/\.movement-indicator\.up/);
  assert.match(css,/\.movement-indicator\.down/);
+ assert.match(css,/\.movement-indicator\.return/);
+ assert.match(app,/Regresó el /);
  assert.match(index,/styles\.css/);
 });
 
@@ -65,4 +69,15 @@ test("R remains clickable in collapsed card without toggling its disclosure",()=
  assert.match(css,/\.trend\.marked-red\{background:/);
  assert.match(css,/\.red-toggle\{position:static;flex:none/);
  assert.match(built,/head\.append\(flag\)/);
+});
+
+test("RE requested has visible pending state and hides previous explanation and image",()=>{
+ assert.match(app,/function reResetPending\(item\)/);
+ assert.match(app,/const reset=reResetPending\(item\)/);
+ assert.match(app,/RE solicitada · reinicio pendiente/);
+ assert.match(app,/En revisión · nueva explicación en preparación/);
+ assert.match(app,/const time=reset\?null:explanationTime\(item\)/);
+ assert.match(app,/if\(!reset&&imageReady\(item\)\)/);
+ assert.match(app,/if\(!reset\)\{makePublishButtons\(card,item\);attachGeneratedImage\(card,item\);\}/);
+ assert.match(css,/\.review-state/);
 });
