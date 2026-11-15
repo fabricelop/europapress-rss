@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-15T18:59:50.561620+00:00",
+  "checked_at": "2026-11-15T19:14:26.270504+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -42,8 +42,9 @@
     "top10": {
       "ok": false,
       "count": 10,
-      "non_stale_sources": 4,
+      "non_stale_sources": 6,
       "verified_fresh_sources": [
+        "whatstrends",
         "xtrendsiamrohit",
         "playersells"
       ],
@@ -60,8 +61,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 4.5,
-      "run_id": 43749454729,
+      "age_minutes": 3.3,
+      "run_id": 43750988704,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -83,70 +84,70 @@
     },
     "editorial_queue": {
       "ok": false,
-      "pending_count": 11,
-      "overdue_count": 11,
-      "oldest_age_minutes": 117.3,
+      "pending_count": 13,
+      "overdue_count": 10,
+      "oldest_age_minutes": 131.9,
       "warning_after_minutes": 30,
       "overdue_items": [
         {
           "id": "ccb05dc4bbe8",
           "name": "Caro",
           "status": "preparing",
-          "age_minutes": 117.3
-        },
-        {
-          "id": "d9f6589ca44c",
-          "name": "Maye",
-          "status": "preparing",
-          "age_minutes": 117.3
+          "age_minutes": 131.9
         },
         {
           "id": "198d8a9d4fd6",
           "name": "opoku",
           "status": "preparing",
-          "age_minutes": 56.0
+          "age_minutes": 70.6
         },
         {
           "id": "3248572c5b6c",
           "name": "Granada",
           "status": "preparing",
-          "age_minutes": 56.0
+          "age_minutes": 70.6
         },
         {
           "id": "5f0f53ab8f40",
           "name": "Manu Lama",
           "status": "preparing",
-          "age_minutes": 56.0
+          "age_minutes": 70.6
         },
         {
           "id": "96d736c2f576",
           "name": "Alba Carrillo",
           "status": "preparing",
-          "age_minutes": 56.0
+          "age_minutes": 70.6
         },
         {
           "id": "03a189b3780e",
           "name": "Jefté",
           "status": "preparing",
-          "age_minutes": 56.0
+          "age_minutes": 70.6
         },
         {
           "id": "a6db34486bd0",
           "name": "La Peter",
           "status": "preparing",
-          "age_minutes": 56.0
+          "age_minutes": 70.6
         },
         {
           "id": "c36cd75240d2",
           "name": "Ronaldinho",
           "status": "preparing",
-          "age_minutes": 56.0
+          "age_minutes": 70.6
         },
         {
           "id": "d1f4643c192b",
           "name": "Jorge Pascual",
           "status": "preparing",
-          "age_minutes": 56.0
+          "age_minutes": 70.6
+        },
+        {
+          "id": "4beb8cf76c9a",
+          "name": "David Gil",
+          "status": "preparing",
+          "age_minutes": 70.6
         }
       ],
       "repairable": false
@@ -157,7 +158,6 @@
       "queue_complete": false,
       "remaining_active_ids": [
         "ccb05dc4bbe8",
-        "d9f6589ca44c",
         "198d8a9d4fd6",
         "3248572c5b6c",
         "5f0f53ab8f40",
@@ -166,7 +166,10 @@
         "a6db34486bd0",
         "c36cd75240d2",
         "d1f4643c192b",
-        "4beb8cf76c9a"
+        "4beb8cf76c9a",
+        "885103bff666",
+        "1a65b821a97c",
+        "fc059cfaf7f8"
       ],
       "contradictory_success": false
     },
@@ -180,9 +183,9 @@
   "blocking": [
     "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos",
     "cola con 283 estado(s) inválido(s)",
-    "cola de explicaciones retrasada: 11 pendiente(s) superan 30 min; más antigua 117.3 min"
+    "cola de explicaciones retrasada: 10 pendiente(s) superan 30 min; más antigua 131.9 min"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 283 estado(s) inválido(s) | cola de explicaciones retrasada: 11 pendiente(s) superan 30 min; más antigua 117.3 min"
+  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 283 estado(s) inválido(s) | cola de explicaciones retrasada: 10 pendiente(s) superan 30 min; más antigua 131.9 min"
 }
