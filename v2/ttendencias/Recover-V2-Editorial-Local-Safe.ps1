@@ -1,6 +1,7 @@
 # TTActualidad V2: diagnóstico y recuperación conservadora de la tarea editorial.
 # Solo se ejecuta en el Windows del usuario; NO abre ni toca V1.
 # Guarda las evidencias localmente, nunca las publica en GitHub.
+param([switch]$SelfTest)
 $ErrorActionPreference = 'Stop'
 $root = Join-Path $env:LOCALAPPDATA 'TTActualidadV2'
 $taskName = 'TTActualidadV2-Editorial-Auto'
@@ -26,6 +27,12 @@ function V2Processes {
         ($_.Name -ieq 'chrome.exe' -and $line.Contains($profile))
     })
 }
+function Top30Healthy([string]$taskState,[int]$lastResult,[double]$lastRunAge,[double]$sourceAge) {
+    # Ambos relojes importan: exito del programador no implica captura GitHub.
+    return $taskState -eq 'Ready' -and $lastResult -eq 0 -and
+        $lastRunAge -ge 0 -and $lastRunAge -lt 25 -and
+        $sourceAge -ge -2 -and $sourceAge -lt 20
+}
 function RestoreTop30 {
     # Sin esta captura la cola puede tener pendientes, pero el consumidor
     # rechaza todos los envios: exige historial con menos de 20 minutos.
@@ -46,21 +53,20 @@ function RestoreTop30 {
     } else { [double]::PositiveInfinity }
     # Un tick Windows correcto solo confirma el trigger, NO que la Action
     # haya guardado un Top30 nuevo. Verificar el historial real en GitHub.
-    $historyFresh = $false
+    $sourceAge = [double]::PositiveInfinity
     try {
         $historyUrl = 'https://api.github.com/repos/fabricelop/europapress-rss/contents/v2/ttendencias/state/history.json?ref=feature%2Fttactualidad-v2-clean'
         $historyResponse = Invoke-RestMethod -Uri $historyUrl -Headers @{ 'Accept'='application/vnd.github+json'; 'User-Agent'='TTActualidadV2-top30-health' } -TimeoutSec 20
         $historyText = [Text.Encoding]::UTF8.GetString([Convert]::FromBase64String(($historyResponse.content -replace '\s','')))
         $history = $historyText | ConvertFrom-Json
         $observed = [DateTimeOffset]::Parse([string]$history.observed_at)
-        $ageMinutes = ([DateTimeOffset]::UtcNow - $observed).TotalMinutes
-        Emit 'TT_V2_TOP30_SOURCE_AGE_MINUTES' ([Math]::Round($ageMinutes,1).ToString([Globalization.CultureInfo]::InvariantCulture))
-        $historyFresh = $ageMinutes -ge -2 -and $ageMinutes -lt 20
+        $sourceAge = ([DateTimeOffset]::UtcNow - $observed).TotalMinutes
+        Emit 'TT_V2_TOP30_SOURCE_AGE_MINUTES' ([Math]::Round($sourceAge,1).ToString([Globalization.CultureInfo]::InvariantCulture))
     } catch {
         Emit 'TT_V2_TOP30_SOURCE_CHECK' 'UNAVAILABLE_NOT_ASSUMED_HEALTHY'
     }
-    $healthy = $historyFresh -and $taskState -eq 'Ready' -and $info -and
-        $info.LastTaskResult -eq 0 -and $lastRunAge -ge 0 -and $lastRunAge -lt 25
+    $lastResult = if ($info) { [int]$info.LastTaskResult } else { -1 }
+    $healthy = Top30Healthy $taskState $lastResult $lastRunAge $sourceAge
     if ($healthy) {
         Emit 'TT_V2_TOP30_REPAIR' 'RECENT_SUCCESS_NO_ACTION'
         return
@@ -95,6 +101,15 @@ function RestoreTop30 {
     # Una captura inmediata; las posteriores quedan programadas cada 15 min.
     & (Join-Path $root 'Run-V2-Top30-Tick.ps1')
     Emit 'TT_V2_TOP30_REPAIR' 'TASK_REARMED_AND_TICK_EXECUTED_VERIFY_WORKFLOW'
+}
+if ($SelfTest) {
+    if (-not (Top30Healthy 'Ready' 0 4 6)) { throw 'Top30 sano rechazado' }
+    if (Top30Healthy 'Ready' 0 4 120) { throw 'Historial obsoleto aceptado' }
+    if (Top30Healthy 'Disabled' 0 4 6) { throw 'Tarea deshabilitada aceptada' }
+    if (Top30Healthy 'Ready' 1 4 6) { throw 'Tick fallido aceptado' }
+    if (Top30Healthy 'Ready' 0 31 6) { throw 'Programador obsoleto aceptado' }
+    Write-Host 'TT_V2_TOP30_RECOVERY_SELFTEST=PASS'
+    return
 }
 try {
     RestoreTop30
