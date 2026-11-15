@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-15T00:12:48.114429+00:00",
+  "checked_at": "2026-11-15T00:16:54.731529+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -58,9 +58,9 @@
     },
     "refresh": {
       "ok": true,
-      "status": "pending",
+      "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 2.0,
+      "age_minutes": 4.0,
       "run_id": 43656881386,
       "reason": null,
       "repairable": true,
@@ -82,17 +82,24 @@
       "orphan_items": []
     },
     "editorial_queue": {
-      "ok": true,
+      "ok": false,
       "pending_count": 2,
-      "overdue_count": 0,
-      "oldest_age_minutes": 28.6,
+      "overdue_count": 1,
+      "oldest_age_minutes": 32.7,
       "warning_after_minutes": 30,
-      "overdue_items": [],
+      "overdue_items": [
+        {
+          "id": "red-review-c9c7c587bd4e807e2212",
+          "name": "Revisar novedades: Frigodedo",
+          "status": "preparing",
+          "age_minutes": 32.7
+        }
+      ],
       "repairable": false
     },
     "editorial_runtime": {
-      "ok": true,
-      "status": "not-required",
+      "ok": false,
+      "status": "overdue",
       "queue_complete": false,
       "remaining_active_ids": [
         "red-review-c9c7c587bd4e807e2212",
@@ -108,9 +115,10 @@
   },
   "repairs_started": [],
   "blocking": [
-    "cola con 242 estado(s) inválido(s)"
+    "cola con 242 estado(s) inválido(s)",
+    "cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 32.7 min"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "cola con 242 estado(s) inválido(s)"
+  "last_alert_signature": "cola con 242 estado(s) inválido(s) | cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 32.7 min"
 }
