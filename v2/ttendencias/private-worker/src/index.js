@@ -297,7 +297,7 @@ export default {
   },
   async fetch(request,env,ctx) {
     const url = new URL(request.url);
-    if (url.pathname === "/health") return json({ok:true,service:"ttactualidad-v2-private",configured:configured(env),image_storage:"github",image_flow:"same-chat",build:"v2-same-chat-github-20261114"});
+    if (url.pathname === "/health") return json({ok:true,service:"ttactualidad-v2-private",configured:configured(env),image_storage:"github",image_flow:"same-chat",build:"v2-re-x-20261115"});
     // Única ruta pública adicional: devuelve identificadores y revisiones,
     // nunca contraseñas, marcas privadas, explicaciones ni imágenes.
     if (url.pathname === "/api/public-editorial-overrides") {
