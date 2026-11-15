@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-15T18:03:52.043108+00:00",
+  "checked_at": "2026-11-15T18:17:20.822148+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -42,12 +42,13 @@
     "top10": {
       "ok": false,
       "count": 10,
-      "non_stale_sources": 4,
+      "non_stale_sources": 5,
       "verified_fresh_sources": [
+        "whatstrends",
         "xtrendsiamrohit"
       ],
       "live_verified": false,
-      "captured_age_minutes": 0.1,
+      "captured_age_minutes": 0.2,
       "noise_count": 0
     },
     "listener": {
@@ -59,8 +60,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 5.3,
-      "run_id": 43743839233,
+      "age_minutes": 5.4,
+      "run_id": 43745365937,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -82,34 +83,28 @@
     },
     "editorial_queue": {
       "ok": false,
-      "pending_count": 13,
-      "overdue_count": 4,
-      "oldest_age_minutes": 61.4,
+      "pending_count": 12,
+      "overdue_count": 3,
+      "oldest_age_minutes": 74.8,
       "warning_after_minutes": 30,
       "overdue_items": [
         {
           "id": "5e1e30b01ae3",
           "name": "#SanchezFueraDeControl",
           "status": "preparing",
-          "age_minutes": 61.4
+          "age_minutes": 74.8
         },
         {
           "id": "ccb05dc4bbe8",
           "name": "Caro",
           "status": "preparing",
-          "age_minutes": 61.4
-        },
-        {
-          "id": "2297cc60ccee",
-          "name": "Weverse",
-          "status": "preparing",
-          "age_minutes": 61.4
+          "age_minutes": 74.8
         },
         {
           "id": "d9f6589ca44c",
           "name": "Maye",
           "status": "preparing",
-          "age_minutes": 61.4
+          "age_minutes": 74.8
         }
       ],
       "repairable": false
@@ -121,7 +116,6 @@
       "remaining_active_ids": [
         "5e1e30b01ae3",
         "ccb05dc4bbe8",
-        "2297cc60ccee",
         "d9f6589ca44c",
         "198d8a9d4fd6",
         "3248572c5b6c",
@@ -145,9 +139,9 @@
   "blocking": [
     "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos",
     "cola con 283 estado(s) inválido(s)",
-    "cola de explicaciones retrasada: 4 pendiente(s) superan 30 min; más antigua 61.4 min"
+    "cola de explicaciones retrasada: 3 pendiente(s) superan 30 min; más antigua 74.8 min"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 283 estado(s) inválido(s) | cola de explicaciones retrasada: 4 pendiente(s) superan 30 min; más antigua 61.4 min"
+  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 283 estado(s) inválido(s) | cola de explicaciones retrasada: 3 pendiente(s) superan 30 min; más antigua 74.8 min"
 }
