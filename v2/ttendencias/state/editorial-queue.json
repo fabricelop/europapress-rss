@@ -2900,13 +2900,13 @@
       "trend_id": "trv2-c4e08c84bcf5c1273c445576",
       "name": "Pablo Ortells",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "d85fb978c3c652ad",
       "requested_at": "2026-11-15T12:32:11.710203+00:00",
       "updated_at": "2026-11-15T12:32:11.710203+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -2919,7 +2919,13 @@
           "archived_at": "2026-11-15T12:32:11.710203+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "bc9026e7566277bf87d25abe7eadb553c95c4e1f6c386e2e",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-15T12:32:23.499422+00:00",
+        "expires_at": "2026-11-15T13:12:23.499422+00:00"
+      }
     },
     "trv2-a6b491f4e05fc2c4e625df3f": {
       "trend_id": "trv2-a6b491f4e05fc2c4e625df3f",
