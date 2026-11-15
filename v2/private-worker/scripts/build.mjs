@@ -35,23 +35,9 @@ if (!app.includes('function markStamp(item)')) throw Error("Cannot add Radar fun
 app = app.replace('function markStamp(item)', radarFunction + "\nfunction markStamp(item)");
 if (!app.includes('state.captured=data.captured_at;')) throw Error("Cannot attach radar data");
 app = app.replace('state.captured=data.captured_at;', 'state.captured=data.captured_at;\n  updateRadar(state.captured);');
-const imageAnchor = '  card.append(body);';
-if (!app.includes(imageAnchor)) throw Error("Card image anchor missing");
-app = app.replace(imageAnchor, [
-'  card.append(body);',
-'  if(item.status==="explicada" && Number.isInteger(item.revision)){',
-'    const figure=el("figure","pilot-figure");',
-'    const img=document.createElement("img");',
-'    img.src="/api/image/"+encodeURIComponent(item.trend_id)+"?revision="+item.revision;',
-'    img.alt="Ilustración IA de "+item.name;',
-'    img.loading="lazy";',
-'    img.onerror=()=>figure.remove();',
-'    figure.append(img);card.append(figure);',
-'  }',
-].join("\n"));
 await writeFile(resolve(output, "app.js"), app, "utf8");
 let css=await readFile(resolve(output, "styles.css"), "utf8");
-css += "\n.radar-time{padding:11px clamp(15px,4vw,36px);background:#121720;color:#b4c3d4;border-bottom:1px solid #272b33;font-size:13px;font-variant-numeric:tabular-nums}.pilot-figure{margin:0;padding:0 clamp(15px,4vw,36px) 22px calc(clamp(15px,4vw,36px) + 48px)}.pilot-figure img{display:block;max-width:360px;width:100%;height:auto;border-radius:10px}.pilot-caption{font-size:11px;color:#929eab;margin-top:6px}@media(max-width:450px){.pilot-figure{padding:0 14px 18px 52px}}\n";
+css += "\n.radar-time{padding:11px clamp(15px,4vw,36px);background:#121720;color:#b4c3d4;border-bottom:1px solid #272b33;font-size:13px;font-variant-numeric:tabular-nums}\n";
 await writeFile(resolve(output,"styles.css"),css,"utf8");
 let html = await readFile(resolve(output, "index.html"), "utf8");
 html = html.replace(/<script>if\("serviceWorker" in navigator\)[\s\S]*?<\/script>/, "");
