@@ -40,6 +40,9 @@ $base = 'https://raw.githubusercontent.com/' + $repo + '/' + $sha + '/v2/ttenden
 $files = @(
     'editorial_daemon_v2.py',
     'auto_editorial_policy_v2.py',
+    're_request_v2.py',
+    'sync_private_re_v2.py',
+    'test_sync_private_re_v2.py',
     'select_current_top30_v2.py',
     'process_lock_v2.py',
     'batch_contract_v2.py',
