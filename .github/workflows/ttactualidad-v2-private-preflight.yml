@@ -3,6 +3,7 @@ on:
   push:
     branches: [feature/ttactualidad-v2-clean]
     paths:
+      - 'v2/ttendencias/private-worker/**'
       - '.github/workflows/ttactualidad-v2-private-preflight.yml'
   workflow_dispatch:
 permissions:
