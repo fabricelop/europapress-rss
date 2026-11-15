@@ -78,7 +78,8 @@ def process_one(gh_token, d1_url, cf_token, row):
     history, _ = github_read(gh_token, "history.json")
     updated, action = request_reexplanation(queue, history,
         trend_id=row["trend_id"], base_revision=row["base_revision"],
-        entered_top30_at=row["entered_top30_at"], requested_at=row["requested_at"])
+        entered_top30_at=row["entered_top30_at"], requested_at=row["requested_at"],
+        mode=row.get("mode", "standard"), hints=row.get("hints", ""))
     if action == "ENQUEUED":
         github_write(gh_token, "editorial-queue.json", updated, sha)
     # Otro flujo puede haber actualizado el ranking mientras se escribía la cola.
@@ -113,7 +114,8 @@ def main():
     cf = os.environ["CLOUDFLARE_API_TOKEN"]
     account = os.environ["CLOUDFLARE_ACCOUNT_ID"]
     url = d1_database(cf, account)
-    requests = d1_sql(url, cf, "SELECT trend_id, base_revision, entered_top30_at, requested_at FROM re_requests WHERE status='requested' ORDER BY requested_at LIMIT 10")
+    d1_sql(url, cf, "CREATE TABLE IF NOT EXISTS re_x_context(trend_id TEXT NOT NULL,base_revision INTEGER NOT NULL,hints TEXT NOT NULL,PRIMARY KEY(trend_id,base_revision))")
+    requests = d1_sql(url, cf, "SELECT r.trend_id, r.base_revision, r.entered_top30_at, r.requested_at, COALESCE(x.hints,'') AS hints, CASE WHEN x.hints IS NULL THEN 'standard' ELSE 'x' END AS mode FROM re_requests r LEFT JOIN re_x_context x ON x.trend_id=r.trend_id AND x.base_revision=r.base_revision WHERE r.status='requested' ORDER BY r.requested_at LIMIT 10")
     print("TT_V2_RE_PENDING=" + str(len(requests)))
     errors=[]
     for item in requests:
