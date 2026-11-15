@@ -7,18 +7,19 @@
   "previous_run_id": "tr-20261115T075500-chat-direct",
   "command_id": "tr-20261115T081000-chat-direct",
   "source": "chat_direct",
-  "status": "success",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-15T08:10:00+01:00",
-  "updated_at": "2026-11-15T08:15:18+01:00",
-  "current": 0,
+  "updated_at": "2026-11-15T08:16:05+01:00",
+  "current": 3,
   "total": 3,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
   "queue_complete": true,
   "processed_ids": [
+    "60c5d7941545",
     "121f837d3b59",
-    "60c5d7941545"
+    "red-review-f679230c7cf95bb0617c"
   ],
   "converged_ids": [],
   "remaining_ids": [],
@@ -27,13 +28,13 @@
   "summary": {
     "attempted": 3,
     "observed": 3,
-    "closed": 0,
+    "closed": 3,
     "explained": 0,
     "problematic": 0,
     "updates": 0,
-    "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 0,
-    "unchanged_reviews": 0,
+    "review_completed_no_distinct_event": 2,
+    "maintenance_reviews": 1,
+    "unchanged_reviews": 1,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "stale_reviews": 0,
@@ -41,7 +42,7 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 3,
+    "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -49,7 +50,32 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [],
+  "outcomes": [
+    {
+      "id": "60c5d7941545",
+      "revision": 0,
+      "name": "#FelizDomingo",
+      "outcome": "review_completed_no_distinct_event",
+      "applied": true,
+      "apply_commit": "759a0825c30bf8a1acac455d42f8d46d65827f6e"
+    },
+    {
+      "id": "121f837d3b59",
+      "revision": 0,
+      "name": "Rosalia",
+      "outcome": "review_completed_no_distinct_event",
+      "applied": true,
+      "apply_commit": "759a0825c30bf8a1acac455d42f8d46d65827f6e"
+    },
+    {
+      "id": "red-review-f679230c7cf95bb0617c",
+      "revision": 0,
+      "name": "Revisar novedades: Carlos Cuerpo",
+      "outcome": "unchanged",
+      "applied": true,
+      "apply_commit": "42c3c63fe62c66531d6e00aa7a34332f1fbb619d"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -806,31 +832,60 @@
     }
   ],
   "last_started_at": "2026-11-15T08:15:18+01:00",
-  "last_completed_at": "2026-11-15T08:15:18+01:00",
+  "last_completed_at": "2026-11-15T08:16:05+01:00",
   "api_failover_enabled": false,
   "last_run": {
-    "run_id": "tr-20261115T074100-chat-direct",
+    "run_id": "tr-20261115T081000-chat-direct",
     "status": "DONE",
     "phase": "closing",
-    "started_at": "2026-11-15T07:41:00+01:00",
-    "updated_at": "2026-11-15T07:42:00+01:00",
-    "finished_at": "2026-11-15T07:42:00+01:00",
-    "current": 0,
-    "total": 0,
+    "started_at": "2026-11-15T08:10:00+01:00",
+    "updated_at": "2026-11-15T08:16:05+01:00",
+    "finished_at": "2026-11-15T08:16:05+01:00",
+    "current": 3,
+    "total": 3,
     "queue_complete": true,
-    "processed_ids": [],
+    "processed_ids": [
+      "60c5d7941545",
+      "121f837d3b59",
+      "red-review-f679230c7cf95bb0617c"
+    ],
     "remaining_ids": [],
-    "outcomes": [],
+    "outcomes": [
+      {
+        "id": "60c5d7941545",
+        "revision": 0,
+        "name": "#FelizDomingo",
+        "outcome": "review_completed_no_distinct_event",
+        "applied": true,
+        "apply_commit": "759a0825c30bf8a1acac455d42f8d46d65827f6e"
+      },
+      {
+        "id": "121f837d3b59",
+        "revision": 0,
+        "name": "Rosalia",
+        "outcome": "review_completed_no_distinct_event",
+        "applied": true,
+        "apply_commit": "759a0825c30bf8a1acac455d42f8d46d65827f6e"
+      },
+      {
+        "id": "red-review-f679230c7cf95bb0617c",
+        "revision": 0,
+        "name": "Revisar novedades: Carlos Cuerpo",
+        "outcome": "unchanged",
+        "applied": true,
+        "apply_commit": "42c3c63fe62c66531d6e00aa7a34332f1fbb619d"
+      }
+    ],
     "summary": {
-      "attempted": 0,
-      "observed": 0,
-      "closed": 0,
+      "attempted": 3,
+      "observed": 3,
+      "closed": 3,
       "explained": 0,
       "problematic": 0,
       "updates": 0,
-      "review_completed_no_distinct_event": 0,
-      "maintenance_reviews": 0,
-      "unchanged_reviews": 0,
+      "review_completed_no_distinct_event": 2,
+      "maintenance_reviews": 1,
+      "unchanged_reviews": 1,
       "continuity_updates": 0,
       "distinct_updates": 0,
       "stale_reviews": 0,
@@ -848,9 +903,9 @@
     },
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada TTendencias completada 0/0. Top 30 fresco capturado a las 07:40:53; barrera final revalidada en main con editorial-queue=0 (updated_at 07:40:58). No había trabajo editorial pendiente. Sin ImageGen ni publicaciones."
+    "message": "Pasada TTendencias completada 3/3. #FelizDomingo y Rosalia cerradas como reentradas sin episodio material distinto; Carlos Cuerpo revisado sin novedades sustanciales y conservado sin cambios. Barrera final editorial-queue=0. ImageGen editorial=0; publicaciones=0; incidentes=0."
   },
-  "message": "Pasada manual iniciada desde ChatGPT. Cola autoritativa=3: #FelizDomingo, Rosalia y revisión de Carlos Cuerpo. Revalidación JIT; sin ImageGen ni publicación.",
+  "message": "Pasada TTendencias completada 3/3. #FelizDomingo y Rosalia cerradas como reentradas sin episodio material distinto; Carlos Cuerpo revisado sin novedades sustanciales y conservado sin cambios. Barrera final editorial-queue=0. ImageGen editorial=0; publicaciones=0; incidentes=0.",
   "history": [
     {
       "run_id": "tr-1794361941170-manual",
@@ -5890,11 +5945,83 @@
       "incident_count": 0,
       "incidents": [],
       "message": "Pasada TTendencias completada 0/0. Top 30 fresco capturado a las 07:40:53; barrera final revalidada en main con editorial-queue=0 (updated_at 07:40:58). No había trabajo editorial pendiente. Sin ImageGen ni publicaciones."
+    },
+    {
+      "run_id": "tr-20261115T081000-chat-direct",
+      "status": "DONE",
+      "phase": "closing",
+      "started_at": "2026-11-15T08:10:00+01:00",
+      "updated_at": "2026-11-15T08:16:05+01:00",
+      "finished_at": "2026-11-15T08:16:05+01:00",
+      "current": 3,
+      "total": 3,
+      "queue_complete": true,
+      "processed_ids": [
+        "60c5d7941545",
+        "121f837d3b59",
+        "red-review-f679230c7cf95bb0617c"
+      ],
+      "remaining_ids": [],
+      "outcomes": [
+        {
+          "id": "60c5d7941545",
+          "revision": 0,
+          "name": "#FelizDomingo",
+          "outcome": "review_completed_no_distinct_event",
+          "applied": true,
+          "apply_commit": "759a0825c30bf8a1acac455d42f8d46d65827f6e"
+        },
+        {
+          "id": "121f837d3b59",
+          "revision": 0,
+          "name": "Rosalia",
+          "outcome": "review_completed_no_distinct_event",
+          "applied": true,
+          "apply_commit": "759a0825c30bf8a1acac455d42f8d46d65827f6e"
+        },
+        {
+          "id": "red-review-f679230c7cf95bb0617c",
+          "revision": 0,
+          "name": "Revisar novedades: Carlos Cuerpo",
+          "outcome": "unchanged",
+          "applied": true,
+          "apply_commit": "42c3c63fe62c66531d6e00aa7a34332f1fbb619d"
+        }
+      ],
+      "summary": {
+        "attempted": 3,
+        "observed": 3,
+        "closed": 3,
+        "explained": 0,
+        "problematic": 0,
+        "updates": 0,
+        "review_completed_no_distinct_event": 2,
+        "maintenance_reviews": 1,
+        "unchanged_reviews": 1,
+        "continuity_updates": 0,
+        "distinct_updates": 0,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
+        "queue_remaining": 0,
+        "rewrite_pending_remaining": 0,
+        "imagegen_calls": 0,
+        "image_outbox_created": 0,
+        "publications": 0,
+        "incidents": 0,
+        "concurrent_convergence": 0
+      },
+      "incident_count": 0,
+      "incidents": [],
+      "message": "Pasada TTendencias completada 3/3. #FelizDomingo y Rosalia cerradas como reentradas sin episodio material distinto; Carlos Cuerpo revisado sin novedades sustanciales y conservado sin cambios. Barrera final editorial-queue=0. ImageGen editorial=0; publicaciones=0; incidentes=0.",
+      "at": "2026-11-15T08:16:05+01:00"
     }
   ],
   "current_item": null,
   "withdrawn_ids": [],
-  "last_finished_at": "2026-11-15T07:42:00+01:00",
+  "last_finished_at": "2026-11-15T08:16:05+01:00",
   "last_revalidated_at": "2026-11-15T07:42:00+01:00",
   "last_revalidation": {
     "editorial_queue_count": 0,
@@ -9963,6 +10090,6 @@
     }
   ],
   "processed": [],
-  "completed_at": "2026-11-15T07:42:00+01:00",
-  "finished_at": null
+  "completed_at": "2026-11-15T08:16:05+01:00",
+  "finished_at": "2026-11-15T08:16:05+01:00"
 }
