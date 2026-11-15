@@ -3,40 +3,54 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261115T085500-chat-direct",
-  "previous_run_id": "tr-20261115T084100-chat-direct",
-  "command_id": "tr-20261115T085500-chat-direct",
+  "run_id": "tr-20261115T091000-chat-direct",
+  "previous_run_id": "tr-20261115T085500-chat-direct",
+  "command_id": "tr-20261115T091000-chat-direct",
   "source": "chat",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-15T08:55:00+01:00",
-  "updated_at": "2026-11-15T08:58:00+01:00",
-  "current": 2,
-  "total": 2,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-15T09:10:00+01:00",
+  "updated_at": "2026-11-15T09:10:00+01:00",
+  "current": 0,
+  "total": 9,
   "trend_id": null,
-  "title": null,
-  "queue_complete": true,
-  "processed_ids": [
-    "red-review-20fbb573682fb2fe174d",
-    "red-review-877d1b43798d00ffe29d"
+  "title": "Pasada editorial TTendencias",
+  "queue_complete": false,
+  "processed_ids": [],
+  "converged_ids": [],
+  "remaining_ids": [
+    "35d04d91217c",
+    "93f430bdcf41",
+    "480e1fbb035d",
+    "65af3853447a",
+    "a5c91fdcf1b7",
+    "f3c9b5760ed2",
+    "3b2f9e01b547",
+    "4e50bc54648e",
+    "0348bc7cd115"
   ],
-  "converged_ids": [
-    "red-review-20fbb573682fb2fe174d",
-    "red-review-877d1b43798d00ffe29d"
+  "remaining_active_ids": [
+    "35d04d91217c",
+    "93f430bdcf41",
+    "480e1fbb035d",
+    "65af3853447a",
+    "a5c91fdcf1b7",
+    "f3c9b5760ed2",
+    "3b2f9e01b547",
+    "4e50bc54648e",
+    "0348bc7cd115"
   ],
-  "remaining_ids": [],
-  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 2,
-    "observed": 2,
-    "closed": 2,
+    "attempted": 0,
+    "observed": 9,
+    "closed": 0,
     "explained": 0,
     "problematic": 0,
     "updates": 0,
     "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 2,
-    "unchanged_reviews": 2,
+    "maintenance_reviews": 0,
+    "unchanged_reviews": 0,
     "continuity_updates": 0,
     "distinct_updates": 0,
     "stale_reviews": 0,
@@ -44,7 +58,7 @@
     "anticipation_reviews": 0,
     "anticipation_prepared": 0,
     "anticipation_unverified": 0,
-    "queue_remaining": 0,
+    "queue_remaining": 9,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
@@ -52,26 +66,7 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "red-review-20fbb573682fb2fe174d",
-      "revision": 0,
-      "name": "Revisar novedades: Frigodedo",
-      "outcome": "unchanged",
-      "applied": true,
-      "apply_commit": "4cb77f00c99d373392fb627546959ab9cc5ff2e1",
-      "workflow_run": 43692220033
-    },
-    {
-      "id": "red-review-877d1b43798d00ffe29d",
-      "revision": 0,
-      "name": "Revisar novedades: aldama",
-      "outcome": "unchanged",
-      "applied": true,
-      "apply_commit": "4cb77f00c99d373392fb627546959ab9cc5ff2e1",
-      "workflow_run": 43692224199
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -856,6 +851,13 @@
       "status": "DONE",
       "phase": "closing",
       "message": "Pasada TTendencias completada 2/2. Frigodedo y aldama cerrados unchanged tras contraste de novedades; aplicador oficial confirmado en commit 4cb77f00c99d373392fb627546959ab9cc5ff2e1 y workflows 43692220033/43692224199 success. Barrera final editorial-queue=0. ImageGen=0; publicaciones=0; incidentes=0."
+    },
+    {
+      "at": "2026-11-15T09:10:00+01:00",
+      "run_id": "tr-20261115T091000-chat-direct",
+      "status": "RUNNING",
+      "phase": "preparing",
+      "message": "Pasada manual iniciada desde ChatGPT; cola autoritativa revalidada en 9 trabajos. Investigación textual real, sin ImageGen ni publicación."
     }
   ],
   "last_started_at": "2026-11-15T08:41:00+01:00",
@@ -10089,5 +10091,5 @@
   ],
   "processed": [],
   "completed_at": "2026-11-15T08:58:00+01:00",
-  "finished_at": "2026-11-15T08:58:00+01:00"
+  "finished_at": null
 }
