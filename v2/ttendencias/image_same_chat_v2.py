@@ -29,8 +29,10 @@ COMPOSERS=("#prompt-textarea","[data-testid='prompt-textarea']","[contenteditabl
 def probe(command):
     return """(async()=>{
       const cmd=__COMMAND__;
-      const users=[...document.querySelectorAll('[data-user-message-bubble="true"]')];
-      const turns=users.length?users:[...document.querySelectorAll('[data-message-author-role="user"]')];
+      // The UI may render older user turns as bubbles and the latest one
+      // under the author-role wrapper. Read both in actual document order.
+      const turns=[...document.querySelectorAll(
+        '[data-user-message-bubble="true"],[data-message-author-role="user"]')];
       const last=turns[turns.length-1];
       if(!last||!String(last.innerText||last.textContent||'').includes(cmd))
         return {ready:false,reason:'wrong_image_job_or_conversation'};
@@ -65,9 +67,13 @@ def last_user_text(page):
     }""")
 
 def original_from_same_page(page, job, *, timeout=WAIT_SECONDS, clock=time.monotonic, sleep=time.sleep):
-    until=clock()+timeout
+    started=clock()
+    until=started+timeout
     reason="not_generated"
     while clock()<until:
+        # A new prompt must never silently continue in another conversation.
+        if page.url.split("?",1)[0].rstrip("/")!=job["conversation_url"].rstrip("/"):
+            raise RuntimeError("V2_IMAGE_CHAT_CHANGED")
         result=page.evaluate(probe(job["command_id"]))
         if result and result.get("ready"):
             raw=base64.b64decode(result["data"],validate=True)
@@ -78,7 +84,10 @@ def original_from_same_page(page, job, *, timeout=WAIT_SECONDS, clock=time.monot
             return raw
         reason=str((result or {}).get("reason") or "probe_empty")
         if reason=="wrong_image_job_or_conversation":
-            raise RuntimeError("V2_IMAGE_WRONG_CHAT_JOB")
+            # Enter can return before ChatGPT inserts the new user bubble.
+            # Wait briefly for DOM reconciliation without ever resending it.
+            if clock()-started>=min(30,timeout/2):
+                raise RuntimeError("V2_IMAGE_WRONG_CHAT_JOB")
         sleep(3)
     raise RuntimeError("V2_IMAGE_NOT_READY:"+reason)
 
