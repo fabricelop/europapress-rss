@@ -7,29 +7,24 @@
   "previous_run_id": "tr-20261115T055500-chat-direct",
   "command_id": "tr-20261115T061000-chat-direct",
   "source": "chat_direct",
-  "status": "RUNNING",
+  "status": "success",
   "phase": "preparing",
   "started_at": "2026-11-15T06:10:00+01:00",
-  "updated_at": "2026-11-15T06:10:00+01:00",
+  "updated_at": "2026-11-15T06:15:00+01:00",
   "current": 0,
   "total": 4,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": false,
-  "processed_ids": [],
+  "queue_complete": true,
+  "processed_ids": [
+    "153a799bb14d",
+    "25877b98fccb",
+    "52e8e47b38e8",
+    "891abd5656f7"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "25877b98fccb",
-    "153a799bb14d",
-    "891abd5656f7",
-    "52e8e47b38e8"
-  ],
-  "remaining_active_ids": [
-    "25877b98fccb",
-    "153a799bb14d",
-    "891abd5656f7",
-    "52e8e47b38e8"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
     "attempted": 4,
@@ -701,8 +696,8 @@
       "message": "Pasada TTendencias completada 0/0. Barrera final revalidada en main: editorial-queue=0 (updated_at 2026-11-15T05:51:21+01:00) y sin estados editoriales activos en requests/mobile-decisions. No había investigaciones, anticipaciones ni revisiones pendientes que procesar. ImageGen=0; publicaciones=0; incidentes=0."
     }
   ],
-  "last_started_at": "2026-11-15T06:10:00+01:00",
-  "last_completed_at": "2026-11-15T05:19:00+01:00",
+  "last_started_at": "2026-11-15T06:14:59+01:00",
+  "last_completed_at": "2026-11-15T06:15:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-20261115T051000-chat-direct",
