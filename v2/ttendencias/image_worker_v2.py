@@ -17,7 +17,7 @@ import socket
 import subprocess
 import sys
 import time
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 import editorial_run_v2 as editorial
 import image_github_v2 as github
@@ -75,6 +75,66 @@ def ranked_candidates(queue, history, *, now=None):
                 by_rank[topic["rank"]] = topic["trend_id"]
     return [queue["items"][by_rank[rank]] for rank in range(1, 31)
             if eligible(queue["items"].get(by_rank[rank]) or {})]
+
+
+def update_image_progress(api, auth, job, *, active):
+    """Best-effort, revision-bound progress signal for the private V2 list.
+
+    An interrupted worker cannot leave a permanent 'generating' icon: the
+    public projection checks expiry and exact editorial fingerprint.
+    """
+    tid, rev, command = job["trend_id"], job["revision"], job["command_id"]
+    for retry in range(6):
+        queue, sha = editorial.queue_read(api, auth)
+        row = (queue.get("items") or {}).get(tid) or {}
+        cap = row.get("capture") or {}
+        if (row.get("revision") != rev or cap.get("revision") != rev
+            or cap.get("sha256") != job["editorial_sha256"]
+            or row.get("status") not in ("captured_review", "ready")):
+            return False
+        current = row.get("image_progress") or {}
+        if active:
+            if (cap.get("image") or {}).get("status") == "saved":
+                return False
+            if (current.get("status") == "in_progress"
+                and current.get("command_id") != command):
+                try:
+                    existing_expiry = datetime.fromisoformat(
+                        current.get("expires_at", "").replace("Z", "+00:00"))
+                    if existing_expiry.tzinfo and existing_expiry > datetime.now(timezone.utc):
+                        return False
+                except (ValueError, TypeError, AttributeError):
+                    pass
+            now = datetime.now(timezone.utc)
+            row["image_progress"] = {
+                "status": "in_progress", "revision": rev,
+                "editorial_sha256": job["editorial_sha256"],
+                "command_id": command,
+                "started_at": now.isoformat(),
+                "expires_at": (now + timedelta(minutes=25)).isoformat()
+            }
+        else:
+            if current.get("command_id") != command:
+                return False
+            row.pop("image_progress", None)
+        try:
+            editorial.queue_write(api, auth, sha, queue,
+                                  ("start image " if active else "finish image ") + tid)
+            return True
+        except RuntimeError as exc:
+            if "GitHub conflict/changed revision" not in str(exc) or retry == 5:
+                raise
+            time.sleep(min(retry + 1, 4))
+    return False
+
+
+def sync_image_progress(auth):
+    try:
+        web = editorial.module("web_top30_v2.py", "ttv2_image_progress_web")
+        web.sync_to_github(auth)
+        return "synced"
+    except Exception as exc:
+        return "retry_later:" + type(exc).__name__
 
 
 def journal_path(trend_id, revision, attempt):
@@ -151,6 +211,7 @@ def run_one(row, attempt, *, api, auth):
     process = None
     browser = None
     hider = None
+    progress_registered = False
     try:
         with socket.socket() as sock:
             sock.bind(("127.0.0.1", 0))
@@ -191,6 +252,15 @@ def run_one(row, attempt, *, api, auth):
             page, composer = new_image_chat(context, job["command_id"])
             tracker = editorial.module("image_target_tracker_v2.py", "ttv2_image_target_tracker")
             baseline = tracker.image_conversation_urls(browser)
+            try:
+                progress_registered = update_image_progress(api, auth, job, active=True)
+                if progress_registered:
+                    record["image_progress_projection"] = sync_image_progress(auth)
+                editorial.store(journal, record)
+            except Exception as exc:
+                # A UI indicator must never block actual ImageGen work.
+                record["image_progress_projection"] = "unavailable:" + type(exc).__name__
+                editorial.store(journal, record)
             # An attempt may be repeated in a NEW chat after a timeout.
             # Do not send this same attempt twice if the process is interrupted.
             record["status"] = "send_intent_recorded"
@@ -251,6 +321,14 @@ def run_one(row, attempt, *, api, auth):
         editorial.store(journal, record)
         raise
     finally:
+        if progress_registered:
+            try:
+                if update_image_progress(api, auth, job, active=False):
+                    record["image_progress_cleared"] = sync_image_progress(auth)
+                    editorial.store(journal, record)
+            except Exception as exc:
+                record["image_progress_cleared"] = "retry_later:" + type(exc).__name__
+                editorial.store(journal, record)
         if hider:
             hider.stop()
         if browser:
