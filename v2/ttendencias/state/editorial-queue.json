@@ -4814,19 +4814,27 @@
     "trv2-f46e7b6c7e713d161e0fd396": {
       "trend_id": "trv2-f46e7b6c7e713d161e0fd396",
       "name": "#CuartoMilenio",
-      "revision": 1,
-      "status": "capture_recovery",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "fbe3902def7671ef",
-      "requested_at": "2026-11-15T22:01:37.851187+00:00",
-      "updated_at": "2026-11-15T23:22:24.775230+00:00",
+      "requested_at": "2026-11-15T23:40:24.387939+00:00",
+      "updated_at": "2026-11-15T23:40:24.387939+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "send_intent": {
-        "token": "22f3aa57f2c7c6426cb45101850bb9152b5fe4dd224ede7e",
-        "at": "2026-11-15T23:20:22.045572+00:00"
-      },
-      "capture_recovery_reason": "chat_target_identity_not_verified"
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "capture_recovery",
+          "attempts": 1,
+          "chat_url": "https://chatgpt.com/c/local-chatgpt%3A5bf315bb-8bcf-43ca-ab8c-1819b2584479",
+          "started_at": null,
+          "send_intent_at": "2026-11-15T23:20:22.045572+00:00",
+          "incident_reason": "chat_target_identity_not_verified",
+          "archived_at": "2026-11-15T23:40:24.387939+00:00"
+        }
+      ],
+      "incident_retries": 1
     },
     "trv2-7d271aaf8f301a9340f1b2b8": {
       "trend_id": "trv2-7d271aaf8f301a9340f1b2b8",
@@ -5169,14 +5177,14 @@
     "trv2-d8a00f54a106bc21074e1fd9",
     "trv2-d9086065e36b580583ee6803",
     "trv2-ebe787a7b810aa71b4758fcd",
-    "trv2-f46e7b6c7e713d161e0fd396",
     "trv2-f8fdb72ac319bf8cc1bf6d76",
     "trv2-70944ec3e819521716244293",
     "trv2-a64d9ecc61a1f3d6e5161ba7",
     "trv2-3be4d81e777334370c3bce3e",
     "trv2-b30dc618bdf28d5210eda303",
     "trv2-d1e304ac5e99bb429622a4ab",
-    "trv2-de56caf995b798a058a05db0"
+    "trv2-de56caf995b798a058a05db0",
+    "trv2-f46e7b6c7e713d161e0fd396"
   ],
   "effects_enabled": false
 }
