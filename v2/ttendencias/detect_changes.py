@@ -83,6 +83,7 @@ def build(snapshot, previous=None, *, now=None):
         old = dict(rows.get(key) or {})
         prior_rank = old.get("rank") if old.get("active") else None
         status = "unchanged"
+        changed_now = False
         if not old:
             # Primera captura crea la línea base, no 30 novedades artificiales.
             status = "baseline" if initial else "entry"
@@ -90,6 +91,7 @@ def build(snapshot, previous=None, *, now=None):
             old = {"trend_id": stable_trend_id(key), "first_seen_at": stamp, "episode_number": 1,
                    "episode_token": episode_id(key, entered),
                    "entered_top30_at": entered}
+            changed_now = not initial
         elif not old.get("active"):
             exited = moment(old["exited_at"])
             absence = at - exited
@@ -101,15 +103,22 @@ def build(snapshot, previous=None, *, now=None):
             else:
                 status = "short_return"  # Hasta 24 h fuera: no proponer nueva explicación
                 old["entered_top30_at"] = stamp  # Nuevo tramo de presencia, SIN revisar el episodio
+            changed_now = True
         elif prior_rank != rank:
             status = "up" if rank < prior_rank else "down"
-        # Comparación con la captura inmediatamente anterior, no con el último
-        # movimiento conocido. Las entradas y regresos carecen de puesto previo.
+            changed_now = True
+        else:
+            # Solo cambia la flecha cuando ESTA tendencia cambia. Otras pueden
+            # moverse en la misma captura sin borrar el último movimiento suyo.
+            status = old.get("last_change")
+            if status not in {"up", "down", "entry", "reentry", "short_return"}:
+                status = "unverified"
+            prior_rank = old.get("previous_rank") if status in {"up", "down"} else None
         old.update(name=name, key=key, trend_id=stable_trend_id(key), active=True, rank=rank, last_seen_at=stamp,
                    exited_at=None, last_change=status, previous_rank=prior_rank,
                    positions_changed=(prior_rank - rank) if prior_rank is not None else None)
         fresh[key] = old
-        if status in {"entry", "reentry", "up", "down", "short_return"}:
+        if changed_now:
             changes.append({"kind": status, "key": key, "name": name,
                             "rank": rank, "previous_rank": prior_rank,
                             "trend_id": old["trend_id"],
