@@ -23,7 +23,8 @@ test("collapsed card shows image indicator only when exact revision is bound",()
  assert.match(src,/function imageReady\(item\)/);
  assert.match(src,/item\.image_available===true/);
  assert.match(src,/Number\.isSafeInteger\(item\.revision\)/);
- assert.match(src,/if\(imageReady\(item\)\)\{\s*const photo=el\("span","image-ready-icon"/);
+ assert.match(src,/if\(!reset&&imageReady\(item\)\)\{\s*const photo=el\("span","image-ready-icon"/);
+ assert.match(src,/if\(!reset\)\{makePublishButtons\(card,item\);attachGeneratedImage\(card,item\);\}/);
 });
 
 test("P-X and P-IA are manual, revision-bound and never mark a V2 trend published",()=>{
