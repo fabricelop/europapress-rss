@@ -4,10 +4,16 @@ import {readFileSync} from "node:fs";
 
 test("private Top30 displays revision-bound original only after opening card",()=>{
  const src=readFileSync(new URL("../web-source/app.js",import.meta.url),"utf8");
+ const css=readFileSync(new URL("../web-source/styles.css",import.meta.url),"utf8");
  assert.match(src,/function attachGeneratedImage\(card,item\)/);
  assert.match(src,/if\(!imageReady\(item\)\)return/);
  assert.match(src,/picture.src="\/api\/image\/"\+encodeURIComponent\(item.trend_id\)\+"\?revision="\+item.revision/);
  assert.match(src,/card.addEventListener\("toggle",openImage\)/);
+ assert.match(src,/picture.loading="eager"/);
+ assert.match(src,/"image-load-status","Cargando imagen IA…"/);
+ assert.doesNotMatch(src,/picture.loading="lazy"/);
+ assert.doesNotMatch(css,/\.trend-generated-image:not\(\.loaded\)\{display:none\}/);
+ assert.match(css,/\.generated-original\[hidden\]/);
  assert.match(src,/attachGeneratedImage\(card,item\);/);
  assert.doesNotMatch(src,/picture.src="https:\/\/raw.githubusercontent.com/);
 });
