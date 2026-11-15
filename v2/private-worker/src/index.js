@@ -100,9 +100,6 @@ async function currentRanking(env) {
 async function redMarks(request,env) {
   if(!env.MARKS_DB) return json({error:"marks_storage_not_configured"},503);
   if(request.method!=="GET" && (request.method!=="POST" || !sameOrigin(request))) return json({error:"method_not_allowed"},405);
-  let ranking;
-  try { ranking=await currentRanking(env); } catch {return json({error:"ranking_temporarily_unavailable"},503);}
-  const active=new Map(ranking.filter(row=>TREND_ID.test(row.trend_id) && entryStamp(row)).map(row=>[row.trend_id,entryStamp(row)]));
   try {
     const rows=(await env.MARKS_DB.prepare("SELECT trend_id, entered_top30_at FROM red_marks").all()).results || [];
     // Cloudflare/GitHub capturan en momentos distintos y pueden discrepar sobre
@@ -114,8 +111,12 @@ async function redMarks(request,env) {
     let body;
     try{body=await request.json();}catch{return json({error:"invalid_payload"},400);}
     if(!body || typeof body!=="object" || !TREND_ID.test(body.trend_id) || typeof body.entered_top30_at!=="string" || typeof body.marked!=="boolean") return json({error:"invalid_payload"},400);
-    const stamp=active.get(body.trend_id);
-    if(!stamp) return json({error:"trend_not_current"},409);
+    // El usuario puede estar viendo un Top30 anterior al último refresco. La R
+    // se vincula al ID estable, incluso si la tendencia acaba de salir.
+    const timestamp=Date.parse(body.entered_top30_at);
+    if(body.entered_top30_at.length>64 || !Number.isFinite(timestamp) || timestamp>Date.now()+3600000)
+      return json({error:"invalid_entry_stamp"},400);
+    const stamp=body.entered_top30_at;
     if(body.marked) await env.MARKS_DB.prepare("INSERT INTO red_marks (trend_id, entered_top30_at) VALUES (?,?) ON CONFLICT(trend_id) DO UPDATE SET entered_top30_at=excluded.entered_top30_at").bind(body.trend_id,stamp).run();
     else await env.MARKS_DB.prepare("DELETE FROM red_marks WHERE trend_id=?").bind(body.trend_id).run();
     return json({ok:true,trend_id:body.trend_id,marked:body.marked});
