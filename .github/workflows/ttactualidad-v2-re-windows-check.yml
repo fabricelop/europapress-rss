@@ -7,6 +7,9 @@ on:
       - 'v2/ttendencias/editorial_daemon_v2.py'
       - 'v2/ttendencias/auto_editorial_policy_v2.py'
       - 'v2/ttendencias/sync_private_re_v2.py'
+      - 'v2/ttendencias/private-worker/**'
+      - 'v2/ttendencias/re_request_v2.py'
+      - 'v2/ttendencias/editorial_run_v2.py'
       - '.github/workflows/ttactualidad-v2-re-windows-check.yml'
   workflow_dispatch:
 permissions:
@@ -41,3 +44,9 @@ jobs:
         run: |
           $env:PYTHONPATH = 'v2/ttendencias'
           python -m unittest -v test_auto_editorial_v2 test_re_request_v2 test_sync_private_re_v2
+      - name: Comprobar botón RE-X, validación de pistas y compatibilidad RE
+        shell: pwsh
+        run: |
+          node --test v2/ttendencias/private-worker/tests/re-x.test.mjs v2/ttendencias/private-worker/tests/re-explain.test.mjs v2/ttendencias/private-worker/tests/image-visibility.test.mjs
+          node --check v2/ttendencias/private-worker/web-source/app.js
+          node --check v2/ttendencias/private-worker/src/index.js
