@@ -3,46 +3,36 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261115T091000-chat-direct",
-  "previous_run_id": "tr-20261115T085500-chat-direct",
-  "command_id": "tr-20261115T091000-chat-direct",
+  "run_id": "tr-20261115T092500-chat-direct",
+  "previous_run_id": "tr-20261115T091000-chat-direct",
+  "command_id": "tr-20261115T092500-chat-direct",
   "source": "chat",
-  "status": "DONE",
-  "phase": "finished",
-  "started_at": "2026-11-15T09:10:00+01:00",
-  "updated_at": "2026-11-15T09:18:00+01:00",
-  "current": 9,
-  "total": 9,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-15T09:25:00+01:00",
+  "updated_at": "2026-11-15T09:25:00+01:00",
+  "current": 0,
+  "total": 0,
   "trend_id": null,
-  "title": "Pasada editorial TTendencias completada",
-  "queue_complete": true,
-  "processed_ids": [
-    "35d04d91217c",
-    "93f430bdcf41",
-    "480e1fbb035d",
-    "65af3853447a",
-    "a5c91fdcf1b7",
-    "f3c9b5760ed2",
-    "3b2f9e01b547",
-    "4e50bc54648e",
-    "0348bc7cd115"
-  ],
+  "title": "Pasada editorial TTendencias en curso",
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 9,
-    "observed": 9,
-    "closed": 9,
-    "explained": 6,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
-    "review_completed_no_distinct_event": 3,
-    "maintenance_reviews": 3,
+    "review_completed_no_distinct_event": 0,
+    "maintenance_reviews": 0,
     "unchanged_reviews": 0,
     "continuity_updates": 0,
-    "distinct_updates": 1,
+    "distinct_updates": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
     "anticipation_reviews": 0,
@@ -56,66 +46,7 @@
     "incidents": 0,
     "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "35d04d91217c",
-      "name": "Irene Montero",
-      "revision": 0,
-      "outcome": "explained"
-    },
-    {
-      "id": "93f430bdcf41",
-      "name": "Rosalia",
-      "revision": 0,
-      "outcome": "explained"
-    },
-    {
-      "id": "480e1fbb035d",
-      "name": "#FelizDomingo",
-      "revision": 0,
-      "outcome": "explained"
-    },
-    {
-      "id": "65af3853447a",
-      "name": "#LaSextaDebate",
-      "revision": 0,
-      "outcome": "review_completed",
-      "reason": "no_distinct_event"
-    },
-    {
-      "id": "a5c91fdcf1b7",
-      "name": "Juan Bravo",
-      "revision": 0,
-      "outcome": "explained",
-      "material_change": true
-    },
-    {
-      "id": "f3c9b5760ed2",
-      "name": "Identificados 18",
-      "revision": 0,
-      "outcome": "explained"
-    },
-    {
-      "id": "3b2f9e01b547",
-      "name": "día de partido",
-      "revision": 0,
-      "outcome": "review_completed",
-      "reason": "no_distinct_event"
-    },
-    {
-      "id": "4e50bc54648e",
-      "name": "Starship",
-      "revision": 0,
-      "outcome": "explained"
-    },
-    {
-      "id": "0348bc7cd115",
-      "name": "Outlook",
-      "revision": 0,
-      "outcome": "review_completed",
-      "reason": "no_distinct_event"
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -914,6 +845,13 @@
       "status": "DONE",
       "phase": "finished",
       "message": "Pasada completada: 9/9 cerrados, 6 explicados y 3 reentradas sin episodio distinto. Aplicador GitHub Actions 43693730172 OK; commit 3bb0fb21e6b47f8ce635d0a1cca5a25d8fb56da3; cola final 0. Telegram informativo 43693747901 OK. Sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-15T09:25:00+01:00",
+      "run_id": "tr-20261115T092500-chat-direct",
+      "status": "RUNNING",
+      "phase": "preparing",
+      "message": "Pasada manual TTendencias iniciada desde ChatGPT; cola autoritativa inicial=0, Top 30 vigente y barrera JIT en curso. Sin ImageGen ni publicaciones."
     }
   ],
   "last_started_at": "2026-11-15T08:41:00+01:00",
@@ -10147,5 +10085,5 @@
   ],
   "processed": [],
   "completed_at": "2026-11-15T08:58:00+01:00",
-  "finished_at": "2026-11-15T09:18:00+01:00"
+  "finished_at": null
 }
