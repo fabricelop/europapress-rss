@@ -95,7 +95,12 @@ def process_one(gh_token, d1_url, cf_token, row):
     assert verify.get("captured_at") == current_history.get("observed_at")
     expected_rev = current_row["revision"]
     displayed = next((x for x in verify.get("items", []) if x.get("trend_id") == row["trend_id"]), None)
-    if displayed is None or displayed.get("revision") not in (expected_rev, row["base_revision"]):
+    # The trend can have left Top30. In that case it must *not* be projected
+    # into today's ranking, but the queued review must still be acknowledged.
+    known = [topic for topic in current_history.get("topics", {}).values()
+             if topic.get("trend_id") == row["trend_id"]]
+    if len(known) != 1 or (displayed is not None and
+            displayed.get("revision") not in (expected_rev, row["base_revision"])):
         raise RuntimeError("No se verificó la proyección del RE")
     d1_sql(d1_url, cf_token, "UPDATE re_requests SET status='applied', applied_at=strftime('%Y-%m-%dT%H:%M:%fZ','now') WHERE trend_id=? AND base_revision=? AND status='requested'",
            [row["trend_id"], row["base_revision"]])
