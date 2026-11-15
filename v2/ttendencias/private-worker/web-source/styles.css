@@ -41,6 +41,8 @@
 /* Original ImageGen en la ficha desplegada, sin descargar miniaturas. */
 .trend-generated-image{padding:0 clamp(15px,4vw,36px) 20px calc(clamp(15px,4vw,36px) + 48px)}
 .image-ready-icon{flex:none;color:#9bd3ff;background:#16324b;border:1px solid #315a77;border-radius:6px;padding:2px 5px;font-size:14px;line-height:1.2;align-self:center}
+.image-public-hidden-icon{position:relative;color:#ff9aa4;background:#471b24;border-color:#cc4159}
+.image-hidden-x{position:absolute;inset:0;display:grid;place-items:center;color:#ff4058;font-size:20px;font-weight:900;line-height:1;text-shadow:0 1px 2px #26060a}
 .publish-actions{display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:0 clamp(15px,4vw,36px) 18px calc(clamp(15px,4vw,36px) + 48px)}
 .re-explain-action{border-color:#6484ae;color:#cbe0ff;background:#142439}
 .re-explain-action:disabled{opacity:.48;cursor:default}
