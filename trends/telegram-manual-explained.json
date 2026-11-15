@@ -121080,10 +121080,10 @@
       "with_image": true,
       "image_strategy": "ai_plus_fallback",
       "ai_image_status": "pending",
-      "fallback_image_status": "pending",
-      "image_status": "pending",
+      "fallback_image_status": "none",
+      "image_status": "none",
       "image_choice": "none",
-      "image_pending": true,
+      "image_pending": false,
       "telegram_package_status": "pending",
       "new_episode_review": true,
       "previous_episode_id": "",
@@ -121091,9 +121091,11 @@
       "material_event_key": "malas-lenguas-noche-emision-2026-11-14",
       "material_event_at": "2026-11-14T21:30:00+01:00",
       "material_change": true,
-      "significance_reason": "Nueva edición semanal emitida el 14 de noviembre, distinta de la del 7 de noviembre ya explicada."
+      "significance_reason": "Nueva edición semanal emitida el 14 de noviembre, distinta de la del 7 de noviembre ya explicada.",
+      "fallback_image_strategy": "existing_web_image",
+      "fallback_image_failure_reason": "No se encontró una fotografía raster HTTPS verificable en las fuentes de esta explicación."
     }
   ],
-  "updated_at": "2026-11-15T04:32:31+01:00",
+  "updated_at": "2026-11-15T03:36:56.413487Z",
   "count": 2130
 }
