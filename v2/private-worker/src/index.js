@@ -142,7 +142,7 @@ async function reRequests(request,env) {
     let ranking;
     try{ranking=await currentRanking(env);}catch{return json({error:"ranking_unavailable"},503);}
     const current=ranking.find(x=>x.trend_id===trend_id);
-    if(!current||entryStamp(current)!==entered_top30_at||current.revision!==revision||
+    if(!current||current.revision!==revision||
        current.status!=="explicada")return json({error:"trend_not_current"},409);
     if(current.re_in_progress===true)return json({error:"re_already_processing"},409);
     await env.MARKS_DB.prepare(
