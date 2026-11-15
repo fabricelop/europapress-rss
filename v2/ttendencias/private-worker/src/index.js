@@ -99,15 +99,24 @@ function sensitiveEditorial(item) {
     .normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
   return /\b(?:asesinat\w*|fallec\w*|muert\w*|suicid\w*|violacion\w*|abuso\s+sexual|agresion\s+sexual|menores?\s+de\s+edad|ninos?\s+(?:herid\w*|fallecid\w*|victim\w*)|atentad\w*|bombarde\w*|secuestro\w*|tortur\w*|cadaver\w*|victimas?\s+mortal\w*|catastrofe\w*|tragedia\w*|naufragio\w*|sangre|herid\w*\s+grave\w*)\b/u.test(words);
 }
+async function reXTable(db) {
+  await db.prepare("CREATE TABLE IF NOT EXISTS re_x_context (trend_id TEXT NOT NULL, base_revision INTEGER NOT NULL, hints TEXT NOT NULL, PRIMARY KEY(trend_id,base_revision))").run();
+}
 async function publicEditorialOverrides(env) {
   if (!env.MARKS_DB) throw Error("OVERRIDES_STORAGE_UNAVAILABLE");
   await imageSuppressionsTable(env.MARKS_DB);
-  const [pending,images,preferences]=await Promise.all([
+  await reXTable(env.MARKS_DB);
+  const [pending,images,preferences,contexts]=await Promise.all([
     env.MARKS_DB.prepare("SELECT trend_id,base_revision FROM re_requests WHERE status IN ('requested','applied') ORDER BY requested_at DESC LIMIT 200").all(),
     env.MARKS_DB.prepare("SELECT trend_id,revision FROM image_suppressions ORDER BY suppressed_at DESC LIMIT 200").all(),
-    env.MARKS_DB.prepare("SELECT trend_id,revision,visible FROM public_image_prefs ORDER BY updated_at DESC LIMIT 200").all()
+    env.MARKS_DB.prepare("SELECT trend_id,revision,visible FROM public_image_prefs ORDER BY updated_at DESC LIMIT 200").all(),
+    env.MARKS_DB.prepare("SELECT trend_id,base_revision,hints FROM re_x_context LIMIT 200").all()
   ]);
-  const re=(pending.results||[]).filter(x=>TREND_ID.test(x.trend_id)&&Number.isSafeInteger(x.base_revision)&&x.base_revision>0);
+  const notes=new Map((contexts.results||[]).filter(x=>TREND_ID.test(x.trend_id)&&Number.isSafeInteger(x.base_revision)&&typeof x.hints==="string"&&x.hints.length<=1200).map(x=>[x.trend_id+":"+x.base_revision,x.hints]));
+  const re=(pending.results||[]).filter(x=>TREND_ID.test(x.trend_id)&&Number.isSafeInteger(x.base_revision)&&x.base_revision>0).map(x=>{
+    const hints=notes.get(x.trend_id+":"+x.base_revision);
+    return hints?{...x,mode:"x",hints}:{...x,mode:"standard"};
+  });
   const suppressed=(images.results||[]).filter(x=>TREND_ID.test(x.trend_id)&&Number.isSafeInteger(x.revision)&&x.revision>0);
   const visibility=(preferences.results||[]).filter(x=>TREND_ID.test(x.trend_id)&&Number.isSafeInteger(x.revision)&&x.revision>0&&(x.visible===0||x.visible===1));
   return {re,suppressed,visibility};
@@ -190,7 +199,11 @@ async function reRequests(request,env) {
     let body;
     try{body=await request.json();}catch{return json({error:"invalid_payload"},400);}
     const {trend_id,revision,entered_top30_at}=body||{};
-    if(!TREND_ID.test(trend_id)||!Number.isSafeInteger(revision)||revision<1||revision>100000||
+    const mode=body?.mode===undefined?"standard":body.mode;
+    const hints=mode==="x"&&typeof body?.hints==="string"?body.hints.trim():"";
+    if((mode!=="standard"&&mode!=="x")||(mode==="x"&&(hints.length<10||hints.length>1200))||
+       (mode==="standard"&&body?.hints!==undefined)||
+       !TREND_ID.test(trend_id)||!Number.isSafeInteger(revision)||revision<1||revision>100000||
        typeof entered_top30_at!=="string"||entered_top30_at.length>64)
       return json({error:"invalid_payload"},400);
     let ranking;
@@ -199,11 +212,15 @@ async function reRequests(request,env) {
     if(!current||current.revision!==revision||
        current.status!=="explicada")return json({error:"trend_not_current"},409);
     if(current.re_in_progress===true)return json({error:"re_already_processing"},409);
+    if(mode==="x"){
+      await reXTable(env.MARKS_DB);
+      await env.MARKS_DB.prepare("INSERT INTO re_x_context(trend_id,base_revision,hints) VALUES(?,?,?) ON CONFLICT(trend_id,base_revision) DO UPDATE SET hints=excluded.hints").bind(trend_id,revision,hints).run();
+    }
     await env.MARKS_DB.prepare(
       "INSERT INTO re_requests (trend_id, base_revision, entered_top30_at, status) VALUES (?,?,?,'requested') " +
       "ON CONFLICT(trend_id,base_revision) DO NOTHING"
     ).bind(trend_id,revision,entered_top30_at).run();
-    return json({ok:true,queued:true,trend_id,base_revision:revision},202);
+    return json({ok:true,queued:true,trend_id,base_revision:revision,mode},202);
   }catch{return json({error:"re_storage_unavailable"},503);}
 }
 
