@@ -64,6 +64,60 @@ class SplitTest(unittest.TestCase):
         self.assertTrue(tracker.verify_image_turn(Page(command), command))
         self.assertFalse(tracker.verify_image_turn(Page("", "El asistente repitió " + command), command))
 
+    def test_image_user_command_in_collapsed_dom_text(self):
+        command = "v2-img-trv2-15fbf166ba6a2f83c7a45b75-r2-a1-testnonce"
+        class Messages:
+            last = None
+            def count(self):
+                return 1
+            def all_text_contents(self):
+                return ["TT_V2_IMAGE_JOB_V1 " + command + " explicación de revisión 2"]
+            def inner_text(self, timeout=None):
+                return "Show more"
+        messages = Messages()
+        messages.last = messages
+        class Page:
+            def locator(self, selector):
+                return messages
+        self.assertTrue(tracker.verify_image_turn(Page(), command))
+
+    def test_image_existing_starting_tab_url_can_be_verified(self):
+        """Do not reject a revisited URL solely because it was in baseline."""
+        command = "v2-img-trv2-15fbf166ba6a2f83c7a45b75-r2-a1-testnonce"
+        url = "https://chatgpt.com/c/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
+        class Node:
+            last = None
+            def count(self):
+                return 1
+            def all_text_contents(self):
+                return [command]
+            def inner_text(self, timeout=None):
+                return command
+        node = Node()
+        node.last = node
+        class Page:
+            def __init__(self):
+                self.url = url
+                self.context = None
+            def locator(self, selector):
+                return node
+        page = Page()
+        context = type("Context", (), {"pages": [page]})()
+        page.context = context
+        class Cdp:
+            def send(self, _):
+                return {"targetInfos": [{"type": "page", "url": url}]}
+            def detach(self):
+                pass
+        class Browser:
+            contexts = [context]
+            def new_browser_cdp_session(self):
+                return Cdp()
+        match, receipt = tracker.await_image_conversation(
+            Browser(), page, command, seconds=1, baseline_urls=(url,))
+        self.assertIs(match, page)
+        self.assertEqual(receipt["status"], "verified")
+
     def test_target_discovery_in_another_chrome_tab(self):
         command = "v2-img-trv2-15fbf166ba6a2f83c7a45b75-r1-a2-testnonce"
         target = "https://chatgpt.com/g/imagegen/c/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
@@ -146,6 +200,20 @@ class SplitTest(unittest.TestCase):
         self.assertEqual((row["name"], attempt), ("Explicada 02", 1))
         self.assertFalse(image.eligible(queue["items"]["trv2-%024x" % 17]))
 
+    def test_rex_revision_is_as_eligible_as_initial_explanation(self):
+        queue, history = fixture()
+        first = queue["items"]["trv2-%024x" % 1]
+        updated_answer = "Reexplicación confirmada desde X: detalle nuevo"
+        first.update(revision=2, review_mode="x", reason="user_reexplanation")
+        first["capture"] = {"revision": 2, "answer": updated_answer,
+                            "sha256": fingerprint(updated_answer), "image": {}}
+        self.assertTrue(image.eligible(first))
+        with tempfile.TemporaryDirectory() as folder:
+            with patch.object(image, "JOURNALS", pathlib.Path(folder)):
+                row, attempt = image.pick_next(queue, history)
+        self.assertEqual((row["trend_id"], row["revision"], attempt),
+                         (first["trend_id"], 2, 1))
+
     def test_retry_cooldown_does_not_stop_other_ranks(self):
         queue, history = fixture()
         with tempfile.TemporaryDirectory() as folder:
@@ -188,3 +256,4 @@ class SplitTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
