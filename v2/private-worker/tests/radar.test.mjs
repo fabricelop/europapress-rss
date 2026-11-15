@@ -44,7 +44,8 @@ test("Cloudflare cron stores exactly one snapshot and calculates adjacent ranks"
  const second=await captureRadar(db,{fetcher:fetcher(html(names)),now:time("21:15")});
  assert.equal(second.identical_captures,2);
  assert.equal(second.unchanged_since,first.captured_at);
- assert.equal(second.previous_ranks["trend 1"],1);
+ assert.equal(second.previous_ranks["trend 1"],null);
+ assert.equal(second.movement_kinds["trend 1"],"baseline");
  const changed=names.slice();
  [changed[0],changed[4]]=[changed[4],changed[0]];
  const third=await captureRadar(db,{fetcher:fetcher(html(changed)),now:time("21:30")});
@@ -56,9 +57,30 @@ test("Cloudflare cron stores exactly one snapshot and calculates adjacent ranks"
  assert.equal(merged.items[0].name,"Trend 5");
  assert.equal(merged.items[0].positions_changed,4);
  assert.equal(merged.items[4].positions_changed,-4);
- assert.equal(merged.items[1].positions_changed,0);
+ assert.equal(merged.items[1].positions_changed,null);
  assert.equal(merged.items[0].explanation,"Explicación de Trend 5");
  assert.equal(merged.radar_source,"cloudflare_cron_15m");
+});
+
+test("Each trend keeps its last real movement through later partial and identical changes",async()=>{
+ const db=database();
+ await captureRadar(db,{fetcher:fetcher(html(names)),now:time("21:00")});
+ const moved=names.slice();
+ [moved[0],moved[4]]=[moved[4],moved[0]];
+ await captureRadar(db,{fetcher:fetcher(html(moved)),now:time("21:15")});
+ const partial=moved.slice();
+ [partial[1],partial[2]]=[partial[2],partial[1]];
+ const third=await captureRadar(db,{fetcher:fetcher(html(partial)),now:time("21:30")});
+ assert.equal(third.previous_ranks["trend 5"],5);
+ assert.equal(third.movement_kinds["trend 5"],"up");
+ assert.equal(third.previous_ranks["trend 2"],2);
+ const fourth=await captureRadar(db,{fetcher:fetcher(html(partial)),now:time("21:45")});
+ const merged=await mergeEditorialRadar(bare,fourth,time("21:46").getTime());
+ assert.equal(merged.ranking_unchanged,true);
+ assert.equal(merged.ranking_change_at,third.captured_at);
+ assert.equal(merged.items[0].positions_changed,4);
+ assert.equal(merged.items[2].positions_changed,-1);
+ assert.equal(merged.items[5].positions_changed,null);
 });
 
 test("Unchanged third-party ranking is flagged but not silently called live X",async()=>{
