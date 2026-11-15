@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Isolated V2 image-on-the-same-chat tests; no real browser or Cloudflare."""
 import io
+import base64
+import itertools
 import json
 import os
 import tempfile
@@ -57,6 +59,47 @@ class Page:
     def locator(self,selector):return Node(self,selector)
 
 class SameChatTests(unittest.TestCase):
+    def test_image_prompt_dom_lag_does_not_abort_or_resend(self):
+        raw=image()
+        meta=intake.raster_metadata(raw)
+        replies=[
+          {"ready":False,"reason":"wrong_image_job_or_conversation"},
+          {"ready":False,"reason":"still_generating"},
+          {"ready":True,"data":base64.b64encode(raw).decode("ascii"),
+           "mime":meta["mime"],"width":meta["width"],"height":meta["height"]}
+        ]
+        class ProbePage:
+            url=CHAT
+            def evaluate(self,script):
+                self_outer.assertIn('data-user-message-bubble',script)
+                return replies.pop(0)
+        self_outer=self
+        ticks=itertools.count()
+        original=same.original_from_same_page(
+          ProbePage(),{"command_id":"v2-img-test","conversation_url":CHAT},
+          timeout=15,clock=lambda:next(ticks),sleep=lambda _:None)
+        self.assertEqual(original,raw)
+        self.assertEqual(replies,[])
+
+    def test_wrong_chat_url_is_rejected_immediately(self):
+        class WrongPage:
+            url="https://chatgpt.com/c/not-the-original"
+            def evaluate(self,script):raise AssertionError('Must not probe another chat')
+        with self.assertRaisesRegex(RuntimeError,"CHAT_CHANGED"):
+            same.original_from_same_page(
+              WrongPage(),{"command_id":"v2-img-test","conversation_url":CHAT},
+              timeout=5,clock=iter([0,1]).__next__,sleep=lambda _:None)
+
+    def test_wrong_job_that_never_appears_eventually_fails_without_resending(self):
+        class WrongPromptPage:
+            url=CHAT
+            def evaluate(self,script):return {"ready":False,"reason":"wrong_image_job_or_conversation"}
+        ticks=itertools.count()
+        with self.assertRaisesRegex(RuntimeError,"WRONG_CHAT_JOB"):
+            same.original_from_same_page(
+              WrongPromptPage(),{"command_id":"v2-img-test","conversation_url":CHAT},
+              timeout=12,clock=lambda:next(ticks),sleep=lambda _:None)
+
     def test_same_chat_one_send_original_and_idempotent_receipt(self):
         p=Page()
         raster=image()
