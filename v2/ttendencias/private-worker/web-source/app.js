@@ -231,7 +231,7 @@ function openReXDialog(item,onSubmit){
  const textarea=el("textarea","re-x-hints");
  textarea.rows=6;textarea.maxLength=1200;textarea.placeholder="Por ejemplo: se está comentando un vídeo publicado hoy por…; busca también #…";
  textarea.setAttribute("aria-label","Pistas para la investigación en X");
- const privacy=el("small","re-x-privacy","No incluyas información privada: las pistas pasan al historial editorial del proyecto.");
+ const privacy=el("small","re-x-privacy","No incluyas datos personales ni confidenciales: las pistas quedarán visibles en el repositorio público del proyecto.");
  const error=el("p","re-x-error","");error.setAttribute("role","alert");
  const buttons=el("div","re-x-actions");
  const cancel=el("button","","Cancelar");cancel.type="button";
