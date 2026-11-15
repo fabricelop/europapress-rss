@@ -43,7 +43,11 @@ def probe(command):
         &&Boolean(last.compareDocumentPosition(img)&Node.DOCUMENT_POSITION_FOLLOWING)
         &&!turns.some(u=>u.contains(img))
         &&!/avatar|icon|profile/i.test(String(img.alt||'')));
-      if(images.length!==1)return {ready:false,reason:'not_one_complete_original'};
+      // Several UI previews may be rendered for one ImageGen command.
+      // They are not a reason to block the trend; take the largest complete
+      // raster after this specific command and bind only one.
+      if(!images.length)return {ready:false,reason:'no_complete_original_yet'};
+      images.sort((a,b)=>b.naturalWidth*b.naturalHeight-a.naturalWidth*a.naturalHeight);
       const img=images[0];let response;
       try{response=await fetch(img.currentSrc||img.src,{credentials:'include'});}
       catch{return {ready:false,reason:'image_fetch_failed'};}
