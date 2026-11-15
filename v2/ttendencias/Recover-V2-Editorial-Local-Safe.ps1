@@ -1,11 +1,9 @@
 # TTActualidad V2: diagnóstico y recuperación conservadora de la tarea editorial.
 # Solo se ejecuta en el Windows del usuario; NO abre ni toca V1.
 # Guarda las evidencias localmente, nunca las publica en GitHub.
-param([switch]$SelfTest)
 $ErrorActionPreference = 'Stop'
 $root = Join-Path $env:LOCALAPPDATA 'TTActualidadV2'
 $taskName = 'TTActualidadV2-Editorial-Auto'
-$top30TaskName = 'TTActualidadV2-Top30-15m'
 $profile = Join-Path $root 'ChromeProfile'
 $flagPath = Join-Path $root 'auto-editorial-v2.enabled'
 $statusPath = Join-Path $root 'daemon-status.json'
@@ -27,92 +25,7 @@ function V2Processes {
         ($_.Name -ieq 'chrome.exe' -and $line.Contains($profile))
     })
 }
-function Top30Healthy([string]$taskState,[int]$lastResult,[double]$lastRunAge,[double]$sourceAge) {
-    # Ambos relojes importan: exito del programador no implica captura GitHub.
-    return $taskState -eq 'Ready' -and $lastResult -eq 0 -and
-        $lastRunAge -ge 0 -and $lastRunAge -lt 25 -and
-        $sourceAge -ge -2 -and $sourceAge -lt 20
-}
-function RestoreTop30 {
-    # Sin esta captura la cola puede tener pendientes, pero el consumidor
-    # rechaza todos los envios: exige historial con menos de 20 minutos.
-    $task = Get-ScheduledTask -TaskName $top30TaskName -ErrorAction SilentlyContinue
-    $taskState = if ($task) { [string]$task.State } else { 'MISSING' }
-    Emit 'TT_V2_TOP30_TASK_BEFORE' $taskState
-    $info = if ($task) { Get-ScheduledTaskInfo -TaskName $top30TaskName -ErrorAction SilentlyContinue } else { $null }
-    if ($info) {
-        Emit 'TT_V2_TOP30_LAST_RUN' ([string]$info.LastRunTime)
-        Emit 'TT_V2_TOP30_LAST_RESULT' ([string]$info.LastTaskResult)
-    }
-    if ($taskState -eq 'Running') {
-        Emit 'TT_V2_TOP30_REPAIR' 'RUNNING_NOT_INTERRUPTED_CHECK_LOGS'
-        return
-    }
-    $lastRunAge = if ($info -and $info.LastRunTime.Year -gt 2000) {
-        ((Get-Date) - $info.LastRunTime).TotalMinutes
-    } else { [double]::PositiveInfinity }
-    # Un tick Windows correcto solo confirma el trigger, NO que la Action
-    # haya guardado un Top30 nuevo. Verificar el historial real en GitHub.
-    $sourceAge = [double]::PositiveInfinity
-    try {
-        $historyUrl = 'https://api.github.com/repos/fabricelop/europapress-rss/contents/v2/ttendencias/state/history.json?ref=feature%2Fttactualidad-v2-clean'
-        $historyResponse = Invoke-RestMethod -Uri $historyUrl -Headers @{ 'Accept'='application/vnd.github+json'; 'User-Agent'='TTActualidadV2-top30-health' } -TimeoutSec 20
-        $historyText = [Text.Encoding]::UTF8.GetString([Convert]::FromBase64String(($historyResponse.content -replace '\s','')))
-        $history = $historyText | ConvertFrom-Json
-        $observed = [DateTimeOffset]::Parse([string]$history.observed_at)
-        $sourceAge = ([DateTimeOffset]::UtcNow - $observed).TotalMinutes
-        Emit 'TT_V2_TOP30_SOURCE_AGE_MINUTES' ([Math]::Round($sourceAge,1).ToString([Globalization.CultureInfo]::InvariantCulture))
-    } catch {
-        Emit 'TT_V2_TOP30_SOURCE_CHECK' 'UNAVAILABLE_NOT_ASSUMED_HEALTHY'
-    }
-    $lastResult = if ($info) { [int]$info.LastTaskResult } else { -1 }
-    $healthy = Top30Healthy $taskState $lastResult $lastRunAge $sourceAge
-    if ($healthy) {
-        Emit 'TT_V2_TOP30_REPAIR' 'RECENT_SUCCESS_NO_ACTION'
-        return
-    }
-    # Fijar una revision exacta de GitHub antes de descargar los modulos.
-    # Solo los ficheros de Top30 y, si falta, su cliente GitHub compartido.
-    $repo = 'fabricelop/europapress-rss'
-    $branch = 'feature/ttactualidad-v2-clean'
-    $headers = @{ 'Accept'='application/vnd.github+json'; 'User-Agent'='TTActualidadV2-top30-recovery' }
-    $commit = Invoke-RestMethod -Uri ('https://api.github.com/repos/' + $repo + '/commits/' + [uri]::EscapeDataString($branch)) -Headers $headers -TimeoutSec 20
-    $sha = [string]$commit.sha
-    if ($sha -notmatch '^[a-f0-9]{40}$') { throw 'No se pudo verificar commit V2 para Top30' }
-    foreach ($file in @('top30_tick_v2.py','Run-V2-Top30-Tick.ps1','Install-V2-Top30-15min.ps1','persist_capture_github.py')) {
-        $target = Join-Path $root $file
-        if ($file -eq 'persist_capture_github.py' -and (Test-Path -LiteralPath $target -PathType Leaf)) { continue }
-        $temp = $target + '.download'
-        $url = 'https://raw.githubusercontent.com/' + $repo + '/' + $sha + '/v2/ttendencias/' + $file
-        Invoke-WebRequest -Uri $url -OutFile $temp -UseBasicParsing -TimeoutSec 30
-        if ((Get-Item -LiteralPath $temp).Length -lt 100) { throw ('Descarga Top30 incompleta: ' + $file) }
-        if ($file.EndsWith('.ps1')) {
-            $tokens = $null
-            $parseErrors = $null
-            [Management.Automation.Language.Parser]::ParseFile($temp,[ref]$tokens,[ref]$parseErrors) | Out-Null
-            if ($parseErrors.Count -gt 0) { throw ('Sintaxis Top30 invalida: ' + $file) }
-        }
-        Move-Item -LiteralPath $temp -Destination $target -Force
-    }
-    Emit 'TT_V2_TOP30_REPAIR_COMMIT' $sha
-    & (Join-Path $root 'Install-V2-Top30-15min.ps1')
-    $installed = Get-ScheduledTask -TaskName $top30TaskName -ErrorAction Stop
-    if ($installed.State -eq 'Disabled') { throw 'Top30 V2 no pudo reactivarse' }
-    # Una captura inmediata; las posteriores quedan programadas cada 15 min.
-    & (Join-Path $root 'Run-V2-Top30-Tick.ps1')
-    Emit 'TT_V2_TOP30_REPAIR' 'TASK_REARMED_AND_TICK_EXECUTED_VERIFY_WORKFLOW'
-}
-if ($SelfTest) {
-    if (-not (Top30Healthy 'Ready' 0 4 6)) { throw 'Top30 sano rechazado' }
-    if (Top30Healthy 'Ready' 0 4 120) { throw 'Historial obsoleto aceptado' }
-    if (Top30Healthy 'Disabled' 0 4 6) { throw 'Tarea deshabilitada aceptada' }
-    if (Top30Healthy 'Ready' 1 4 6) { throw 'Tick fallido aceptado' }
-    if (Top30Healthy 'Ready' 0 31 6) { throw 'Programador obsoleto aceptado' }
-    Write-Host 'TT_V2_TOP30_RECOVERY_SELFTEST=PASS'
-    return
-}
 try {
-    RestoreTop30
     $task = Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue
     $state = if ($task) { [string]$task.State } else { 'MISSING' }
     Emit 'TT_V2_TASK_STATE_BEFORE' $state
@@ -191,8 +104,7 @@ try {
 } finally {
     foreach ($logSpec in @(
         @{ Dir=$logDir; Filter='auto-*.log'; Label='TT_V2_LATEST_EDITORIAL_LOG' },
-        @{ Dir=$logDir; Filter='auto-*.stderr.log'; Label='TT_V2_LATEST_EDITORIAL_ERROR' },
-        @{ Dir=(Join-Path $root 'logs-top30'); Filter='top30-*.err.log'; Label='TT_V2_LATEST_TOP30_ERROR' }
+        @{ Dir=$logDir; Filter='auto-*.stderr.log'; Label='TT_V2_LATEST_EDITORIAL_ERROR' }
     )) {
         if (Test-Path -LiteralPath $logSpec.Dir) {
             $latest = Get-ChildItem -LiteralPath $logSpec.Dir -Filter $logSpec.Filter -File -ErrorAction SilentlyContinue |
