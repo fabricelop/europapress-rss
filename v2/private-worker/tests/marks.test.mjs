@@ -44,23 +44,29 @@ function req(path,cookie,body){
   ...(body?{body:JSON.stringify(body)}:{})
  });
 }
-test("R mark survives ranking/source date changes and is cleared only by R",async()=>{
+test("R mark is shared and survives source-date changes, a Top30 exit and reentry",async()=>{
  const storage=fakeDB(), bound={...env,MARKS_DB:storage};
  const a=await loggedIn(),b=await loggedIn();
  const marked={trend_id:id,entered_top30_at:stamp,marked:true};
  assert.equal((await worker.fetch(req("/api/marks",a,marked),bound)).status,200);
  let res=await worker.fetch(req("/api/marks",b),bound);
  assert.equal((await res.json()).marks[id],stamp);
- // Source no longer contains marked item; server removes row, rather than browser cache.
+ // A temporarily missing trend must not erase the user's stored red mark.
  top30=[{trend_id:"trv2-000000000000000000000001",entered_top30_at:"2026-11-14T01:00:00Z"}];
  res=await worker.fetch(req("/api/marks",a),bound);
  assert.equal((await res.json()).marks[id],stamp);
+ assert.equal(storage.db.has(id),true);
+ // La ficha pudo quedar abierta mientras Top30 se actualizaba.
+ assert.equal((await worker.fetch(req("/api/marks",a,{...marked,marked:false}),bound)).status,200);
+ assert.equal(storage.db.has(id),false);
+ assert.equal((await worker.fetch(req("/api/marks",a,marked),bound)).status,200);
  assert.equal(storage.db.has(id),true);
  top30=[{trend_id:id,entered_top30_at:"2026-11-14T02:00:00Z"}];
  res=await worker.fetch(req("/api/marks",b),bound);
  assert.equal((await res.json()).marks[id],stamp);
  assert.equal((await worker.fetch(req("/api/marks",b,marked),bound)).status,200);
- assert.equal((await worker.fetch(req("/api/marks",b,{trend_id:id,entered_top30_at:stamp,marked:false}),bound)).status,200);
+ const removed=await worker.fetch(req("/api/marks",b,{trend_id:id,entered_top30_at:stamp,marked:false}),bound);
+ assert.equal(removed.status,200);
  assert.equal(storage.db.has(id),false);
 });
 test("R rejects anonymous, cross-origin, and unbound storage; fail closed",async()=>{
