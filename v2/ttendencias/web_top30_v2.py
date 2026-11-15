@@ -67,6 +67,29 @@ def saved_image_for_revision(item):
             and image.get("path") == expected)
 
 
+
+def live_image_progress_for_revision(item, *, now=None):
+    """Only project an unexpired image attempt for this exact editorial revision."""
+    progress = item.get("image_progress") or {}
+    cap = item.get("capture") or {}
+    if (item.get("status") not in ("captured_review", "ready")
+        or progress.get("status") != "in_progress"
+        or progress.get("revision") != item.get("revision")
+        or cap.get("revision") != item.get("revision")
+        or not isinstance(cap.get("sha256"), str)
+        or progress.get("editorial_sha256") != cap.get("sha256")
+        or saved_image_for_revision(item)):
+        return False
+    expiry_text = progress.get("expires_at")
+    if not isinstance(expiry_text, str):
+        return False
+    try:
+        expiry = datetime.fromisoformat(expiry_text.replace("Z", "+00:00"))
+        return expiry.tzinfo is not None and expiry > (now or datetime.now(timezone.utc))
+    except (ValueError, TypeError):
+        return False
+
+
 def build(history, queue):
     if (history.get("step") != "03_movement" or history.get("country") != "ES"
         or queue.get("step") != "04_editorial_queue"
@@ -154,6 +177,8 @@ def build(history, queue):
             "chat_url": chat_url,
             "captured_at": captured_at,
             "image_available": image_available,
+            "image_in_progress": (category == "explicada" and not image_available
+                                  and live_image_progress_for_revision(item)),
             "movement": topic.get("last_change") or "",
             "previous_rank": topic.get("previous_rank") if isinstance(topic.get("previous_rank"), int) else None,
             "positions_changed": topic.get("positions_changed") if isinstance(topic.get("positions_changed"), int) else None,
