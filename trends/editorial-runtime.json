@@ -7,24 +7,51 @@
   "previous_run_id": "tr-20261115T155200-chat-direct",
   "command_id": "tr-20261115T172500-chat-direct",
   "source": "chat_direct",
-  "status": "success",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-15T17:25:00+01:00",
-  "updated_at": "2026-11-15T17:26:50+01:00",
-  "current": 0,
-  "total": 1,
-  "trend_id": "df6038ca94ee",
-  "title": "Bildu",
+  "updated_at": "2026-11-15T17:32:00+01:00",
+  "current": 3,
+  "total": 3,
+  "trend_id": null,
+  "title": null,
   "queue_complete": true,
   "processed_ids": [
-    "df6038ca94ee"
+    "df6038ca94ee",
+    "red-review-4ecad327108e45b69c82",
+    "red-review-6773bd13ec18b9232fdd"
   ],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "Pasada manual TTendencias iniciada; 1 revisión de reentrada en cola.",
-  "outcomes": [],
+  "summary": "Pasada 3/3 completada: Bildu aplicado como episodio distinto; revisión roja Begoña sin cambios; revisión roja Jordi Wild actualizada como continuidad. Cola final=0; sin ImageGen directo ni publicaciones.",
+  "outcomes": [
+    {
+      "id": "df6038ca94ee",
+      "revision": 0,
+      "name": "Bildu",
+      "outcome": "explained_distinct_episode",
+      "applied": true,
+      "apply_commit": "29058cad8c2bec8d683b9e9757aee24fbfebfd8d"
+    },
+    {
+      "id": "red-review-4ecad327108e45b69c82",
+      "revision": 0,
+      "name": "Revisar novedades: Begoña",
+      "outcome": "unchanged",
+      "applied": true,
+      "apply_commit": "e6215945d7fe35bcea315fad538f16dd46732ca7"
+    },
+    {
+      "id": "red-review-6773bd13ec18b9232fdd",
+      "revision": 0,
+      "name": "Revisar novedades: Jordi Wild",
+      "outcome": "continuity",
+      "applied": true,
+      "apply_commit": "08b544e68e3ee3d83a6e5b000e37e3576fbc361d"
+    }
+  ],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -914,10 +941,47 @@
       "revision": 0,
       "name": "Bildu",
       "message": "Ejecución manual iniciada desde ChatGPT; cola autoritativa=1: Bildu r0, revisión de reentrada. Revalidación JIT e investigación de episodio distinto; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-15T17:26:50+01:00",
+      "run_id": "tr-20261115T172500-chat-direct",
+      "status": "RUNNING",
+      "phase": "applying",
+      "trend_id": "df6038ca94ee",
+      "revision": 0,
+      "name": "Bildu",
+      "message": "Reentrada aplicada como episodio material distinto tras revalidación; sin duplicar escritura concurrente."
+    },
+    {
+      "at": "2026-11-15T17:29:10+01:00",
+      "run_id": "tr-20261115T172500-chat-direct",
+      "status": "RUNNING",
+      "phase": "maintenance",
+      "trend_id": "red-review-4ecad327108e45b69c82",
+      "revision": 0,
+      "name": "Revisar novedades: Begoña",
+      "message": "Revisión roja cerrada unchanged; se conserva explicación, fecha e imagen."
+    },
+    {
+      "at": "2026-11-15T17:30:45+01:00",
+      "run_id": "tr-20261115T172500-chat-direct",
+      "status": "RUNNING",
+      "phase": "maintenance",
+      "trend_id": "red-review-6773bd13ec18b9232fdd",
+      "revision": 0,
+      "name": "Revisar novedades: Jordi Wild",
+      "message": "Revisión roja aplicada como continuidad; texto actualizado en el mismo ID/revisión, conservando explained_at e imagen."
+    },
+    {
+      "at": "2026-11-15T17:32:00+01:00",
+      "run_id": "tr-20261115T172500-chat-direct",
+      "status": "DONE",
+      "phase": "closing",
+      "message": "Barrera final superada: editorial-queue=0 tras refresco de las 17:31; 3/3 cerrados, 0 incidentes, sin ImageGen directo ni publicación."
     }
   ],
   "last_started_at": "2026-11-15T17:26:50+01:00",
-  "last_completed_at": "2026-11-15T17:26:50+01:00",
+  "last_completed_at": "2026-11-15T17:32:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-20261115T113700-chat-direct",
@@ -10214,7 +10278,7 @@
   ],
   "processed": [],
   "completed_at": "2026-11-15T13:13:00+01:00",
-  "finished_at": "2026-11-15T14:58:02.757Z",
+  "finished_at": "2026-11-15T17:32:00+01:00",
   "revision": null,
   "name": null
 }
