@@ -103,20 +103,16 @@ async function redMarks(request,env) {
   const active=new Map(ranking.filter(row=>TREND_ID.test(row.trend_id) && entryStamp(row)).map(row=>[row.trend_id,entryStamp(row)]));
   try {
     const rows=(await env.MARKS_DB.prepare("SELECT trend_id, entered_top30_at FROM red_marks").all()).results || [];
-    const valid=new Map(), stale=[];
-    for(const row of rows) {
-      if(active.get(row.trend_id)===row.entered_top30_at) valid.set(row.trend_id,row.entered_top30_at);
-      else stale.push(row.trend_id);
-    }
-    // Every GET reconciles against the authoritative current Top30, not a browser-local cache.
-    for(const id of stale) await env.MARKS_DB.prepare("DELETE FROM red_marks WHERE trend_id = ? AND entered_top30_at <> ?").bind(id,active.get(id)||"").run();
+    // La consulta nunca debe borrar marcas: Cloudflare y GitHub pueden discrepar
+    // en entered_top30_at pese a ser la misma tendencia.
+    const valid=new Map(rows.filter(row=>TREND_ID.test(row.trend_id)).map(row=>[row.trend_id,row.entered_top30_at]));
     if(request.method==="GET") return json({marks:Object.fromEntries(valid),captured_at:new Date().toISOString()});
     if(Number(request.headers.get("content-length")||0)>1024) return json({error:"invalid_payload"},413);
     let body;
     try{body=await request.json();}catch{return json({error:"invalid_payload"},400);}
     if(!body || typeof body!=="object" || !TREND_ID.test(body.trend_id) || typeof body.entered_top30_at!=="string" || typeof body.marked!=="boolean") return json({error:"invalid_payload"},400);
     const stamp=active.get(body.trend_id);
-    if(!stamp || stamp!==body.entered_top30_at) return json({error:"trend_not_current"},409);
+    if(!stamp) return json({error:"trend_not_current"},409);
     if(body.marked) await env.MARKS_DB.prepare("INSERT INTO red_marks (trend_id, entered_top30_at) VALUES (?,?) ON CONFLICT(trend_id) DO UPDATE SET entered_top30_at=excluded.entered_top30_at").bind(body.trend_id,stamp).run();
     else await env.MARKS_DB.prepare("DELETE FROM red_marks WHERE trend_id=?").bind(body.trend_id).run();
     return json({ok:true,trend_id:body.trend_id,marked:body.marked});
