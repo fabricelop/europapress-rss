@@ -3,46 +3,36 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261115T071000-chat-direct",
-  "previous_run_id": "tr-20261115T065500-chat-direct",
-  "command_id": "tr-20261115T071000-chat-direct",
+  "run_id": "tr-20261115T074100-chat-direct",
+  "previous_run_id": "tr-20261115T071000-chat-direct",
+  "command_id": "tr-20261115T074100-chat-direct",
   "source": "chat_direct",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-15T07:10:00+01:00",
-  "updated_at": "2026-11-15T07:18:43+01:00",
-  "current": 6,
-  "total": 6,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-15T07:41:00+01:00",
+  "updated_at": "2026-11-15T07:41:00+01:00",
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": true,
-  "processed_ids": [
-    "4bd437d1d3a9",
-    "fc95d3051d65",
-    "3e6b47750af6",
-    "0b6b06455b21",
-    "red-review-2306eb1d1343790f118f",
-    "red-review-60590e44cbbbb4fdfa51"
-  ],
-  "converged_ids": [
-    "4bd437d1d3a9",
-    "fc95d3051d65"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
+  "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 6,
-    "observed": 6,
-    "closed": 6,
-    "explained": 3,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
-    "updates": 1,
-    "review_completed_no_distinct_event": 1,
-    "maintenance_reviews": 2,
-    "unchanged_reviews": 1,
+    "updates": 0,
+    "review_completed_no_distinct_event": 0,
+    "maintenance_reviews": 0,
+    "unchanged_reviews": 0,
     "continuity_updates": 0,
-    "distinct_updates": 1,
+    "distinct_updates": 0,
     "stale_reviews": 0,
     "unverified_reviews": 0,
     "anticipation_reviews": 0,
@@ -54,51 +44,9 @@
     "image_outbox_created": 0,
     "publications": 0,
     "incidents": 0,
-    "concurrent_convergence": 2,
-    "deleted_after_apply": 2,
-    "active_new_explanations": 2
+    "concurrent_convergence": 0
   },
-  "outcomes": [
-    {
-      "id": "4bd437d1d3a9",
-      "revision": 0,
-      "name": "Hokit",
-      "outcome": "explained_then_deleted_concurrent",
-      "decision_source": "ttactualidad_direct"
-    },
-    {
-      "id": "fc95d3051d65",
-      "revision": 0,
-      "name": "Gane",
-      "outcome": "explained_then_deleted_concurrent",
-      "decision_source": "ttactualidad_direct"
-    },
-    {
-      "id": "3e6b47750af6",
-      "revision": 0,
-      "name": "#LaSextaDebate",
-      "outcome": "review_completed_no_distinct_event"
-    },
-    {
-      "id": "0b6b06455b21",
-      "revision": 0,
-      "name": "Amanda Nunes",
-      "outcome": "explained"
-    },
-    {
-      "id": "red-review-2306eb1d1343790f118f",
-      "revision": 0,
-      "name": "Revisar novedades: #laSextaXplica",
-      "outcome": "distinct_update",
-      "created_id": "trend-update-0b9ee22680d586ee49b5"
-    },
-    {
-      "id": "red-review-60590e44cbbbb4fdfa51",
-      "revision": 0,
-      "name": "Revisar novedades: #LaSextaDebate",
-      "outcome": "unchanged"
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -824,6 +772,13 @@
       "status": "DONE",
       "phase": "closing",
       "message": "Pasada 6/6 cerrada. Cola final=0. Amanda Nunes quedó explicada; #laSextaXplica generó una ficha nueva por episodio distinto; #LaSextaDebate se cerró sin duplicado. Hokit y Gane fueron explicados y después eliminados por decisiones concurrentes TTActualidad direct, respetadas en la barrera final. ImageGen=0; publicaciones=0; incidentes=0."
+    },
+    {
+      "at": "2026-11-15T07:41:00+01:00",
+      "run_id": "tr-20261115T074100-chat-direct",
+      "status": "RUNNING",
+      "phase": "preparing",
+      "message": "Ejecución manual iniciada desde ChatGPT; Top 30 fresco capturado a las 07:40:53 y cola autoritativa 0/0. Revalidación JIT; sin ImageGen ni publicación."
     }
   ],
   "last_started_at": "2026-11-15T07:13:25+01:00",
@@ -9943,5 +9898,5 @@
     "red-review-6b86b17ba53670f185c0"
   ],
   "completed_at": "2026-11-15T06:55:30+01:00",
-  "finished_at": "2026-11-15T07:18:43+01:00"
+  "finished_at": null
 }
