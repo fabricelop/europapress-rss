@@ -5,6 +5,9 @@
 
 $ErrorActionPreference = "Continue"
 $BaseDir = "C:\TTiTTulares"
+# TTENDENCIAS_V1_RETIRE_GUARD: never resume this legacy receiver when disabled.
+$TrendsV1RetiredFlag=Join-Path $BaseDir "TTendencias-V1-Disabled.flag"
+if(Test-Path -LiteralPath $TrendsV1RetiredFlag){ exit 0 }
 $ImagePauseFlag = Join-Path $BaseDir 'V1-ImageGen-Paused.flag'
 $Launcher = Join-Path $BaseDir "LanzarOculto.vbs"
 $Runner = Join-Path $BaseDir "Ejecutar.js"
@@ -1209,6 +1212,7 @@ Write-Log "IMAGE PROBE jobs=$imageCount seen=$(@($state.image_commands).Count) a
 $loopCount = 0
 
 while ($true) {
+  if(Test-Path -LiteralPath $TrendsV1RetiredFlag){ Write-Log "V1 RETIRED; listener exits"; break }
   $loopCount++
   Start-WebImagePublisher
 

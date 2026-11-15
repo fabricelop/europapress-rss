@@ -4,6 +4,9 @@
 param([int]$IntervalSeconds=60)
 $ErrorActionPreference="Continue"
 $BaseDir="C:\TTiTTulares"
+# TTENDENCIAS_V1_RETIRE_GUARD: only the legacy trend pipeline is disabled.
+$TrendsV1RetiredFlag=Join-Path $BaseDir "TTendencias-V1-Disabled.flag"
+function TrendsV1Enabled { return -not (Test-Path -LiteralPath $TrendsV1RetiredFlag) }
 $LogPath=Join-Path $BaseDir "tt-local-watchdog.log"
 $StartupDir=[Environment]::GetFolderPath("Startup")
 
@@ -141,10 +144,9 @@ function Test-ControlNetwork{
   }catch{return $false}
 }
 function Has-PendingImageQueue{
-  foreach($url in @(
-    "https://raw.githubusercontent.com/fabricelop/europapress-rss/control/ttittulares-run-trigger-v2/ttittulares/image-runs/index.json",
-    "https://raw.githubusercontent.com/fabricelop/europapress-rss/control/ttendencias-run-trigger/trends/image-runs/index.json"
-  )){
+  $urls=@("https://raw.githubusercontent.com/fabricelop/europapress-rss/control/ttittulares-run-trigger-v2/ttittulares/image-runs/index.json")
+  if(TrendsV1Enabled){$urls+="https://raw.githubusercontent.com/fabricelop/europapress-rss/control/ttendencias-run-trigger/trends/image-runs/index.json"}
+  foreach($url in $urls){
     try{
       $separator=if($url.Contains("?")){"&"}else{"?"}
       $doc=Invoke-RestMethod -Uri ($url+$separator+"t="+[DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()) -TimeoutSec 7 -Headers @{"Cache-Control"="no-cache"}
@@ -204,10 +206,8 @@ function Recover-ListenersAfterReconnect{
   }
   # Puede existir una orden aceptada pero todavía sin lanzar: limitar la
   # intervención a procesos PowerShell; nunca tocar Chrome, Node ni los locks.
-  $targets=@(
-    @{Name="TTiTTularesDedicatedListener.ps1";Tag="ttittulares-listener"},
-    @{Name="TTendenciasDedicatedListener.ps1";Tag="ttendencias-listener"}
-  )
+  $targets=@(@{Name="TTiTTularesDedicatedListener.ps1";Tag="ttittulares-listener"})
+  if(TrendsV1Enabled){$targets+=@{Name="TTendenciasDedicatedListener.ps1";Tag="ttendencias-listener"}}
   foreach($target in $targets){
     $path=Join-Path $BaseDir $target.Name
     $found=@(PsProcs ("*"+$target.Name+"*"))
@@ -285,6 +285,7 @@ function Get-ChatCdpTabCount{
   }catch{return -1}
 }
 function EnsureOverdueTrendsEditorialRetry($Signal,[string]$Request){
+  if(-not (TrendsV1Enabled)){Log "LEGACY TRENDS RETIRED: no editorial retries";return $true}
   # Only existing local TTendencias scheduled tasks can be started.
   # No commands from GitHub execute on this PC; only IDs are considered.
   $wanted=@($Signal.editorial_retry.ttendencias)
@@ -552,6 +553,7 @@ function EnsureEditorialScheduledWake{
     @{project='ttittulares';task='TTiTTulares Local';queue='ttittulares/editorial-queue.json';states=@('PROCESSING','UPDATE_PROCESSING');time='selected_at';id='event_id'},
     @{project='ttendencias';task='TTendencias Local';queue='trends/editorial-queue.json';states=@('preparing','update');time='requested_at';id='id'}
   )){
+    if($spec.project -eq "ttendencias" -and -not (TrendsV1Enabled)){continue}
     try{
       $url='https://raw.githubusercontent.com/fabricelop/europapress-rss/main/'+$spec.queue+
         '?t='+$now.ToUnixTimeMilliseconds()
@@ -583,10 +585,10 @@ function EnsureEditorialScheduledWake{
 }
 
 function EnsureScheduledTasks{
-  foreach($name in @(
-    "TT Chrome Auto","TTiTTulares Local","TTendencias Local",
-    "SeLoRecordamos-Telegram","SeLoRecordamos-Search","SeLoRecordamos-Published","SeLoRecordamos-Watchdog"
-  )){
+  $taskNames=@("TT Chrome Auto","TTiTTulares Local",
+    "SeLoRecordamos-Telegram","SeLoRecordamos-Search","SeLoRecordamos-Published","SeLoRecordamos-Watchdog")
+  if(TrendsV1Enabled){$taskNames+="TTendencias Local"}
+  foreach($name in $taskNames){
     try{
       $task=Get-ScheduledTask -TaskName $name -ErrorAction SilentlyContinue
       if($task -and $task.State -eq "Disabled"){
@@ -613,14 +615,14 @@ $up=Join-Path $BaseDir "TT-AutoUpdater.ps1"
 $self=Join-Path $BaseDir "TT-LocalWatchdog.ps1"
 EnsureStartup "TT Automation Watchdog.cmd" $self
 EnsureStartup "TTiTTulares Mobile Trigger Listener.cmd" $tt
-EnsureStartup "TTendencias Mobile Trigger Listener.cmd" $tr
+if(TrendsV1Enabled){EnsureStartup "TTendencias Mobile Trigger Listener.cmd" $tr}
 EnsureStartup "TT Auto Updater.cmd" $up
 
 Log "WATCHDOG START pid=$PID interval=$IntervalSeconds"
 try{
   while($true){
     EnsureSingle "*TTiTTularesDedicatedListener.ps1*" $tt "ttittulares-listener"
-    EnsureSingle "*TTendenciasDedicatedListener.ps1*" $tr "ttendencias-listener"
+    if(TrendsV1Enabled){EnsureSingle "*TTendenciasDedicatedListener.ps1*" $tr "ttendencias-listener"}
     EnsureSingle "*TT-AutoUpdater.ps1*" $up "tt-auto-updater"
     EnsureScheduledTasks
     EnsureChrome

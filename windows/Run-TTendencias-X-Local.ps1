@@ -9,6 +9,8 @@ $utf8Console = New-Object System.Text.UTF8Encoding($false)
 [Console]::OutputEncoding = $utf8Console
 $OutputEncoding = $utf8Console
 $root = [IO.Path]::GetFullPath($RepoRoot)
+# TTENDENCIAS_V1_RETIRE_GUARD: the legacy X evidence task is independently retired.
+if(-not $CheckOnly -and (Test-Path -LiteralPath (Join-Path $root 'TTendencias-V1-Disabled.flag'))){Write-Host 'TT_X_WINDOWS RETIRED: no work';exit 0}
 $workDir = Join-Path $root 'TT-XContext'
 $gitRoot = Join-Path $workDir 'git-store'
 $sampler = Join-Path $workDir 'x_context.js'

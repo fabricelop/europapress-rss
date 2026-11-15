@@ -1,0 +1,48 @@
+$ErrorActionPreference='Stop'
+$repo=Resolve-Path (Join-Path $PSScriptRoot '..\..')
+$paths=@(
+  'windows/Disable-TTendencias-V1-Local.ps1',
+  'windows/Prepare-TTendencias-V1-Local.ps1',
+  'windows/TT-LocalWatchdog.ps1',
+  'windows/TT-AutoUpdater.ps1',
+  'windows/TTendenciasDedicatedListener.ps1',
+  'windows/Run-TTendencias-X-Local.ps1'
+)
+foreach($rel in $paths){
+  $path=Join-Path $repo $rel
+  $tokens=$null;$errors=$null
+  [Management.Automation.Language.Parser]::ParseFile($path,[ref]$tokens,[ref]$errors)|Out-Null
+  if($errors.Count -gt 0){throw ('PowerShell invalido en '+$rel+': '+$errors[0].Message)}
+}
+$watch=[IO.File]::ReadAllText((Join-Path $repo 'windows/TT-LocalWatchdog.ps1'))
+$update=[IO.File]::ReadAllText((Join-Path $repo 'windows/TT-AutoUpdater.ps1'))
+$listen=[IO.File]::ReadAllText((Join-Path $repo 'windows/TTendenciasDedicatedListener.ps1'))
+$x=[IO.File]::ReadAllText((Join-Path $repo 'windows/Run-TTendencias-X-Local.ps1'))
+$retire=[IO.File]::ReadAllText((Join-Path $repo 'windows/Disable-TTendencias-V1-Local.ps1'))
+$prepare=[IO.File]::ReadAllText((Join-Path $repo 'windows/Prepare-TTendencias-V1-Local.ps1'))
+$required=@(
+  @($watch,'if(TrendsV1Enabled){EnsureSingle "*TTendenciasDedicatedListener.ps1*"'),
+  @($watch,'if(TrendsV1Enabled){EnsureStartup "TTendencias Mobile Trigger Listener.cmd"'),
+  @($watch,'if(TrendsV1Enabled){$taskNames+="TTendencias Local"}'),
+  @($watch,'if($spec.project -eq "ttendencias" -and -not (TrendsV1Enabled)){continue}'),
+  @($update,'SKIP RETIRED TRENDS RESTART'),
+  @($listen,'V1 RETIRED; listener exits'),
+  @($x,'TT_X_WINDOWS RETIRED: no work'),
+  @($retire,"[ValidateSet('Status','Disable','Restore')]"),
+  @($retire,"TTActualidadV2-Editorial-Auto"),
+  @($retire,"TTendencias-XContext"),
+  @($retire,"function AssertDisabled"),
+  @($retire,"TT_V1_BACKUP_READY=YES"),
+  @($prepare,"TT_V1_SHARED_UPDATER_PREPARED=YES"),
+  @($prepare,"TT-AutoUpdater-before-retirement-")
+)
+foreach($check in $required){
+  if(-not ([string]$check[0]).Contains([string]$check[1])){throw ('Falta proteccion: '+$check[1])}
+}
+if($retire -match '(?i)Stop-Process.*Chrome|Stop-Process.*TTiTTulares|Disable-ScheduledTask.*TTActualidadV2'){
+  throw 'El instalador no puede parar Chrome, TTiTTulares ni V2'
+}
+$output=& powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $repo 'windows/Disable-TTendencias-V1-Local.ps1') -Action Status 2>&1
+if($LASTEXITCODE -ne 0){throw ('El diagnostico solo lectura fallo: '+($output -join ' '))}
+if(-not (($output -join "`n") -match 'TT_V1_WINDOWS_DISABLED=')){throw 'No se recibio estado de retirada'}
+Write-Host 'TT_V1_RETIRE_WINDOWS_TESTS=OK'
