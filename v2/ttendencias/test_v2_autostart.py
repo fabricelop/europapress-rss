@@ -25,6 +25,15 @@ class Top30TaskAutostartTests(unittest.TestCase):
         self.assertIn("-WindowStyle Hidden", runner)
         self.assertNotIn("-NoNewWindow", runner)
 
+    def test_recovers_missing_modules_without_overwriting_existing_installation(self):
+        installer = (ROOT / "Install-V2-Top30-15min.ps1").read_text(encoding="utf-8")
+        self.assertIn("Ensure-V2File 'top30_tick_v2.py'", installer)
+        self.assertIn("Ensure-V2File 'persist_capture_github.py'", installer)
+        self.assertIn("Ensure-V2File 'Run-V2-Top30-Tick.ps1'", installer)
+        self.assertIn("if (Test-Path -LiteralPath $destination) { return }", installer)
+        self.assertIn("Select-String -LiteralPath $download -Pattern $marker", installer)
+        self.assertIn("feature/ttactualidad-v2-clean/v2/ttendencias/", installer)
+
 
 if __name__ == "__main__":
     unittest.main()
