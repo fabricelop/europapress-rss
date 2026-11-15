@@ -44,7 +44,7 @@ function req(path,cookie,body){
   ...(body?{body:JSON.stringify(body)}:{})
  });
 }
-test("R mark is shared by authenticated browser sessions; removed on Top30 exit and new entry",async()=>{
+test("R mark survives ranking/source date changes and is cleared only by R",async()=>{
  const storage=fakeDB(), bound={...env,MARKS_DB:storage};
  const a=await loggedIn(),b=await loggedIn();
  const marked={trend_id:id,entered_top30_at:stamp,marked:true};
@@ -54,12 +54,14 @@ test("R mark is shared by authenticated browser sessions; removed on Top30 exit 
  // Source no longer contains marked item; server removes row, rather than browser cache.
  top30=[{trend_id:"trv2-000000000000000000000001",entered_top30_at:"2026-11-14T01:00:00Z"}];
  res=await worker.fetch(req("/api/marks",a),bound);
- assert.deepEqual((await res.json()).marks,{});
- assert.equal(storage.db.has(id),false);
+ assert.equal((await res.json()).marks[id],stamp);
+ assert.equal(storage.db.has(id),true);
  top30=[{trend_id:id,entered_top30_at:"2026-11-14T02:00:00Z"}];
  res=await worker.fetch(req("/api/marks",b),bound);
- assert.deepEqual((await res.json()).marks,{});
- assert.equal((await worker.fetch(req("/api/marks",b,marked),bound)).status,409);
+ assert.equal((await res.json()).marks[id],stamp);
+ assert.equal((await worker.fetch(req("/api/marks",b,marked),bound)).status,200);
+ assert.equal((await worker.fetch(req("/api/marks",b,{trend_id:id,entered_top30_at:stamp,marked:false}),bound)).status,200);
+ assert.equal(storage.db.has(id),false);
 });
 test("R rejects anonymous, cross-origin, and unbound storage; fail closed",async()=>{
  const cookie=await loggedIn();
