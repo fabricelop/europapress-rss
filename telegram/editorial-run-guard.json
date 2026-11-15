@@ -1,18 +1,19 @@
 {
   "version": 1,
-  "checked_at": "2026-11-15T15:01:35.050987+00:00",
+  "checked_at": "2026-11-15T15:16:06.531356+00:00",
   "projects": {
     "ttittulares": {
       "project": "ttittulares",
-      "checked_at": "2026-11-15T15:01:35.050987+00:00",
-      "pending_count": 6,
+      "checked_at": "2026-11-15T15:16:06.531356+00:00",
+      "pending_count": 7,
       "pending_ids": [
         "ebd4fa436d82",
         "e021d7201b8e",
         "c6617d60bf35",
         "21a1a4e90b8f",
         "e37f3c8ae20f",
-        "0ffff7159abd"
+        "0ffff7159abd",
+        "9487cf45aef3"
       ],
       "oldest_at": "2026-11-15T14:07:05.648304Z",
       "latest_run": {
@@ -25,8 +26,8 @@
       },
       "control_command": "tt-urgent-1794754235726",
       "last_command_at": "2026-11-15T14:50:35.726Z",
-      "status": "dispatch_pending_ack",
-      "should_dispatch": false,
+      "status": "dispatch_requested_awaiting_run",
+      "should_dispatch": true,
       "item_execution": [
         {
           "id": "ebd4fa436d82",
@@ -69,21 +70,35 @@
           "should_start_by": "2026-11-15T14:38:37.655478+00:00",
           "global_run_after_entry": false,
           "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "9487cf45aef3",
+          "entered_at": "2026-11-15T15:04:20.810810Z",
+          "should_start_by": "2026-11-15T15:09:20.810810+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
         }
       ],
-      "backlog_signature": "0c5c2a943d19b6bb",
+      "backlog_signature": "78f136b34a7c4671",
       "expected_start_by": "2026-11-15T14:12:05.648304+00:00",
-      "attempts": 0,
+      "attempts": 1,
       "previous_target_completed_or_superseded": false,
-      "last_request_at": "2026-11-15T13:15:33.156602+00:00"
+      "dispatch": {
+        "requested": true,
+        "command_id": "tt-autoguard-1794755766",
+        "requested_at": "2026-11-15T15:16:06.531356Z"
+      },
+      "last_request_at": "2026-11-15T15:16:06.531356+00:00",
+      "last_requested_command_id": "tt-autoguard-1794755766"
     },
     "ttendencias": {
       "project": "ttendencias",
-      "checked_at": "2026-11-15T15:01:35.050987+00:00",
-      "pending_count": 2,
+      "checked_at": "2026-11-15T15:16:06.531356+00:00",
+      "pending_count": 3,
       "pending_ids": [
         "red-review-3e78ee3a7b1278ce8aca",
-        "red-review-8e106a1113481d0d6ba0"
+        "red-review-8e106a1113481d0d6ba0",
+        "2c401aa17d0b"
       ],
       "oldest_at": "2026-11-15T14:57:57.221868+00:00",
       "latest_run": {
@@ -96,8 +111,8 @@
       },
       "control_command": "tr-1794754681626-manual",
       "last_command_at": "2026-11-15T14:58:01.626Z",
-      "status": "within_start_window",
-      "should_dispatch": false,
+      "status": "dispatch_requested_awaiting_run",
+      "should_dispatch": true,
       "item_execution": [
         {
           "id": "red-review-3e78ee3a7b1278ce8aca",
@@ -112,12 +127,26 @@
           "should_start_by": "2026-11-15T15:02:57.221868+00:00",
           "global_run_after_entry": false,
           "final_telegram_delivery_confirmed": false
+        },
+        {
+          "id": "2c401aa17d0b",
+          "entered_at": "2026-11-15T16:04:47+01:00",
+          "should_start_by": "2026-11-15T15:09:47+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
         }
       ],
-      "backlog_signature": "4b9394e314071978",
+      "backlog_signature": "ed27d0da61f4f5d1",
       "expected_start_by": "2026-11-15T15:02:57.221868+00:00",
-      "attempts": 0,
-      "last_request_at": "2026-11-15T14:48:34.397889+00:00"
+      "attempts": 1,
+      "previous_target_completed_or_superseded": false,
+      "dispatch": {
+        "requested": true,
+        "command_id": "tr-autoguard-1794755766",
+        "requested_at": "2026-11-15T15:16:06.531356Z"
+      },
+      "last_request_at": "2026-11-15T15:16:06.531356+00:00",
+      "last_requested_command_id": "tr-autoguard-1794755766"
     }
   },
   "policy": {
