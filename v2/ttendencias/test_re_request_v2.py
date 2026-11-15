@@ -59,6 +59,18 @@ class ReRequestTest(unittest.TestCase):
         self.assertEqual(updated["items"][ID]["revision"], 2)
         self.assertEqual(updated["items"][ID]["status"], "review_pending")
 
+    def test_re_x_persists_hints_and_search_mode(self):
+        hints = "Buscar hilo y vídeo de hoy, contrastar origen del hashtag."
+        updated, action = self.invoke(mode="x", hints=hints)
+        self.assertEqual(action, "ENQUEUED")
+        self.assertEqual(updated["items"][ID]["review_mode"], "x")
+        self.assertEqual(updated["items"][ID]["review_hints"], hints)
+        self.assertNotIn("review_hints", self.queue["items"][ID])
+
+    def test_re_x_rejects_empty_hints(self):
+        with self.assertRaisesRegex(ValueError, "pistas"):
+            self.invoke(mode="x", hints="corto")
+
     def test_unknown_historical_identity_rejected(self):
         self.history["topics"].clear()
         with self.assertRaisesRegex(ValueError, "historial"):
