@@ -5,6 +5,10 @@ $root = Join-Path $env:LOCALAPPDATA 'TTActualidadV2'
 $runner = Join-Path $root 'Run-V2-Top30-Tick.ps1'
 $python = Join-Path $root 'top30_tick_v2.py'
 $taskName = 'TTActualidadV2-Top30-15m'
+$existing = Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue
+if ($existing -and $existing.State -eq 'Running') {
+    throw 'Top30 V2 activo: esperar a que termine antes de actualizar su tarea'
+}
 if (!(Test-Path -LiteralPath $python)) { throw "Falta $python" }
 if (!(Test-Path -LiteralPath $runner)) { throw "Falta $runner" }
 if (!(Get-Command py.exe -ErrorAction SilentlyContinue)) { throw 'py.exe no disponible' }
@@ -17,11 +21,14 @@ $action = New-ScheduledTaskAction -Execute 'powershell.exe' -Argument $argument
 $now = Get-Date
 $minutes = [Math]::Floor($now.TimeOfDay.TotalMinutes / 15) * 15 + 15
 $next = $now.Date.AddMinutes($minutes)
-$trigger = New-ScheduledTaskTrigger -Once -At $next -RepetitionInterval (New-TimeSpan -Minutes 15) -RepetitionDuration (New-TimeSpan -Days 3650)
-$settings = New-ScheduledTaskSettingsSet -MultipleInstances IgnoreNew -ExecutionTimeLimit (New-TimeSpan -Minutes 5)
 $account = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
+$triggers = @(
+    (New-ScheduledTaskTrigger -AtLogOn -User $account),
+    (New-ScheduledTaskTrigger -Once -At $next -RepetitionInterval (New-TimeSpan -Minutes 15) -RepetitionDuration (New-TimeSpan -Days 3650))
+)
+$settings = New-ScheduledTaskSettingsSet -MultipleInstances IgnoreNew -StartWhenAvailable -ExecutionTimeLimit (New-TimeSpan -Minutes 5)
 $principal = New-ScheduledTaskPrincipal -UserId $account -LogonType Interactive -RunLevel Limited
-Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $trigger -Settings $settings -Principal $principal -Force | Out-Null
+Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $triggers -Settings $settings -Principal $principal -Force | Out-Null
 $task = Get-ScheduledTask -TaskName $taskName
 if ($task.State -eq 'Disabled') { throw 'Tarea registrada pero desactivada' }
 Write-Host 'TT_V2_TOP30_TASK_REGISTERED=YES'
@@ -29,4 +36,5 @@ Write-Host 'TT_V2_TOP30_INTERVAL_MINUTES=15'
 Write-Host ('TT_V2_TOP30_NEXT_LOCAL=' + $next.ToString('yyyy-MM-dd HH:mm:ss'))
 Write-Host ('TT_V2_TOP30_TASK_NAME=' + $taskName)
 Write-Host 'TT_V2_TOP30_TASK_MODE=WINDOWS_SESSION'
+Write-Host 'TT_V2_TOP30_AT_LOGON=YES'
 Write-Host 'TT_V2_PUBLISHED=NO'
