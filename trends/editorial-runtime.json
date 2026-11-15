@@ -7,45 +7,51 @@
   "previous_run_id": "tr-20261114T232800-chat-direct",
   "command_id": "tr-20261115T051000-chat-direct",
   "source": "chat_direct",
-  "status": "RUNNING",
-  "phase": "investigating",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-15T05:10:00+01:00",
-  "updated_at": "2026-11-15T05:16:00+01:00",
-  "current": 4,
+  "updated_at": "2026-11-15T05:19:00+01:00",
+  "current": 6,
   "total": 6,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": false,
+  "queue_complete": true,
   "processed_ids": [
     "cee2e8ebb0fa",
     "126f19ace8a4",
     "003925188bc7",
-    "8d30967e70ee"
+    "8d30967e70ee",
+    "red-review-3d16757ddb9bcc7d9cff",
+    "red-review-c27fa11b2ec913f0a690"
   ],
   "converged_ids": [],
-  "remaining_ids": [
-    "red-review-3d16757ddb9bcc7d9cff",
-    "red-review-c27fa11b2ec913f0a690"
-  ],
-  "remaining_active_ids": [
-    "red-review-3d16757ddb9bcc7d9cff",
-    "red-review-c27fa11b2ec913f0a690"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 4,
-    "observed": 4,
-    "closed": 4,
+    "attempted": 6,
+    "observed": 6,
+    "closed": 6,
     "explained": 4,
     "problematic": 0,
+    "updates": 0,
     "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 0,
+    "maintenance_reviews": 2,
+    "unchanged_reviews": 2,
+    "continuity_updates": 0,
+    "distinct_updates": 1,
+    "stale_reviews": 0,
+    "unverified_reviews": 0,
+    "anticipation_reviews": 0,
+    "anticipation_prepared": 0,
+    "anticipation_unverified": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 0
+    "incidents": 0,
+    "concurrent_convergence": 0
   },
   "outcomes": [
     {
@@ -74,6 +80,20 @@
       "revision": 0,
       "name": "enol",
       "outcome": "explained",
+      "applied": true
+    },
+    {
+      "id": "red-review-3d16757ddb9bcc7d9cff",
+      "revision": 0,
+      "name": "Revisar novedades: Marcial Dorado",
+      "outcome": "unchanged",
+      "applied": true
+    },
+    {
+      "id": "red-review-c27fa11b2ec913f0a690",
+      "revision": 0,
+      "name": "Revisar novedades: Outlook",
+      "outcome": "unchanged",
       "applied": true
     }
   ],
@@ -708,26 +728,27 @@
     }
   ],
   "last_started_at": "2026-11-15T05:14:30+01:00",
-  "last_completed_at": "2026-11-15T05:15:00+01:00",
+  "last_completed_at": "2026-11-15T05:19:00+01:00",
   "api_failover_enabled": false,
   "last_run": {
     "run_id": "tr-20261115T051000-chat-direct",
     "status": "DONE",
     "phase": "closing",
     "started_at": "2026-11-15T05:10:00+01:00",
-    "updated_at": "2026-11-15T05:15:00+01:00",
-    "finished_at": "2026-11-15T05:15:00+01:00",
-    "current": 4,
-    "total": 4,
+    "updated_at": "2026-11-15T05:19:00+01:00",
+    "finished_at": "2026-11-15T05:19:00+01:00",
+    "current": 6,
+    "total": 6,
     "queue_complete": true,
     "processed_ids": [
       "cee2e8ebb0fa",
       "126f19ace8a4",
       "003925188bc7",
-      "8d30967e70ee"
+      "8d30967e70ee",
+      "red-review-3d16757ddb9bcc7d9cff",
+      "red-review-c27fa11b2ec913f0a690"
     ],
     "remaining_ids": [],
-    "remaining_active_ids": [],
     "outcomes": [
       {
         "id": "cee2e8ebb0fa",
@@ -756,28 +777,52 @@
         "name": "enol",
         "outcome": "explained",
         "applied": true
+      },
+      {
+        "id": "red-review-3d16757ddb9bcc7d9cff",
+        "revision": 0,
+        "name": "Revisar novedades: Marcial Dorado",
+        "outcome": "unchanged",
+        "applied": true
+      },
+      {
+        "id": "red-review-c27fa11b2ec913f0a690",
+        "revision": 0,
+        "name": "Revisar novedades: Outlook",
+        "outcome": "unchanged",
+        "applied": true
       }
     ],
     "summary": {
-      "attempted": 4,
-      "observed": 4,
-      "closed": 4,
+      "attempted": 6,
+      "observed": 6,
+      "closed": 6,
       "explained": 4,
       "problematic": 0,
+      "updates": 0,
       "review_completed_no_distinct_event": 0,
-      "maintenance_reviews": 0,
+      "maintenance_reviews": 2,
+      "unchanged_reviews": 2,
+      "continuity_updates": 0,
+      "distinct_updates": 1,
+      "stale_reviews": 0,
+      "unverified_reviews": 0,
+      "anticipation_reviews": 0,
+      "anticipation_prepared": 0,
+      "anticipation_unverified": 0,
       "queue_remaining": 0,
       "rewrite_pending_remaining": 0,
       "imagegen_calls": 0,
       "image_outbox_created": 0,
       "publications": 0,
-      "incidents": 0
+      "incidents": 0,
+      "concurrent_convergence": 0
     },
     "incident_count": 0,
     "incidents": [],
-    "message": "Pasada TTendencias completada 4/4: #UFCHBOMax cerrado como episodio nuevo verificado; #UFC334, Hasan y enol explicados y persistidos. Aplicador oficial success; cola final=0. Sin ImageGen ni publicaciones desde la pasada editorial."
+    "message": "Pasada TTendencias completada 6/6. Cuatro trabajos editoriales cerrados (#UFCHBOMax como episodio nuevo; #UFC334, Hasan y enol explicados) y dos revisiones sobrevenidas (Marcial Dorado y Outlook) cerradas sin novedad material. Cola final=0. Sin ImageGen ni publicaciones desde la pasada editorial."
   },
-  "message": "Revisando novedades: Marcial Dorado y Outlook. Ambos son mantenimientos de continuidad; no se abre una ficha nueva ni se publica.",
+  "message": "Pasada TTendencias completada 6/6. Cuatro trabajos editoriales cerrados (#UFCHBOMax como episodio nuevo; #UFC334, Hasan y enol explicados) y dos revisiones sobrevenidas (Marcial Dorado y Outlook) cerradas sin novedad material. Cola final=0. Sin ImageGen ni publicaciones desde la pasada editorial.",
   "history": [
     {
       "run_id": "tr-1794361941170-manual",
@@ -5692,19 +5737,20 @@
       "status": "DONE",
       "phase": "closing",
       "started_at": "2026-11-15T05:10:00+01:00",
-      "updated_at": "2026-11-15T05:15:00+01:00",
-      "finished_at": "2026-11-15T05:15:00+01:00",
-      "current": 4,
-      "total": 4,
+      "updated_at": "2026-11-15T05:19:00+01:00",
+      "finished_at": "2026-11-15T05:19:00+01:00",
+      "current": 6,
+      "total": 6,
       "queue_complete": true,
       "processed_ids": [
         "cee2e8ebb0fa",
         "126f19ace8a4",
         "003925188bc7",
-        "8d30967e70ee"
+        "8d30967e70ee",
+        "red-review-3d16757ddb9bcc7d9cff",
+        "red-review-c27fa11b2ec913f0a690"
       ],
       "remaining_ids": [],
-      "remaining_active_ids": [],
       "outcomes": [
         {
           "id": "cee2e8ebb0fa",
@@ -5733,29 +5779,53 @@
           "name": "enol",
           "outcome": "explained",
           "applied": true
+        },
+        {
+          "id": "red-review-3d16757ddb9bcc7d9cff",
+          "revision": 0,
+          "name": "Revisar novedades: Marcial Dorado",
+          "outcome": "unchanged",
+          "applied": true
+        },
+        {
+          "id": "red-review-c27fa11b2ec913f0a690",
+          "revision": 0,
+          "name": "Revisar novedades: Outlook",
+          "outcome": "unchanged",
+          "applied": true
         }
       ],
       "summary": {
-        "attempted": 4,
-        "observed": 4,
-        "closed": 4,
+        "attempted": 6,
+        "observed": 6,
+        "closed": 6,
         "explained": 4,
         "problematic": 0,
+        "updates": 0,
         "review_completed_no_distinct_event": 0,
-        "maintenance_reviews": 0,
+        "maintenance_reviews": 2,
+        "unchanged_reviews": 2,
+        "continuity_updates": 0,
+        "distinct_updates": 1,
+        "stale_reviews": 0,
+        "unverified_reviews": 0,
+        "anticipation_reviews": 0,
+        "anticipation_prepared": 0,
+        "anticipation_unverified": 0,
         "queue_remaining": 0,
         "rewrite_pending_remaining": 0,
         "imagegen_calls": 0,
         "image_outbox_created": 0,
         "publications": 0,
-        "incidents": 0
+        "incidents": 0,
+        "concurrent_convergence": 0
       },
       "incident_count": 0,
       "incidents": [],
-      "message": "Pasada TTendencias completada 4/4: #UFCHBOMax cerrado como episodio nuevo verificado; #UFC334, Hasan y enol explicados y persistidos. Aplicador oficial success; cola final=0. Sin ImageGen ni publicaciones desde la pasada editorial."
+      "message": "Pasada TTendencias completada 6/6. Cuatro trabajos editoriales cerrados (#UFCHBOMax como episodio nuevo; #UFC334, Hasan y enol explicados) y dos revisiones sobrevenidas (Marcial Dorado y Outlook) cerradas sin novedad material. Cola final=0. Sin ImageGen ni publicaciones desde la pasada editorial."
     }
   ],
-  "current_item": "Revisar novedades: Marcial Dorado",
+  "current_item": null,
   "withdrawn_ids": [],
   "last_finished_at": "2026-11-14T17:42:00+01:00",
   "last_revalidated_at": "2026-11-14T17:41:15+01:00",
@@ -9770,7 +9840,7 @@
   "maintenance_apply_commit": "074b3f7e87b6260fde12e02ec813bdd56b8cc218",
   "completed_at": "2026-11-14T17:42:00+01:00",
   "input_commit": "d657e81fd73a9f4f14a0bc2ac55d968a79eaf428",
-  "finished_at": "2026-11-15T05:15:00+01:00",
+  "finished_at": "2026-11-15T05:19:00+01:00",
   "apply_commits": [
     "36a6bdedee2ab6b1689dab6eb97f1f5f56e0ba70"
   ]
