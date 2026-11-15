@@ -1,6 +1,83 @@
 {
   "project": "TTendencias",
-  "updated_at": "2026-11-15T11:43:38+01:00",
-  "count": 0,
-  "items": []
+  "updated_at": "2026-11-15T10:44:07.829316+00:00",
+  "count": 2,
+  "items": [
+    {
+      "id": "red-review-63c68e0ff95ff25cae6b",
+      "revision": 0,
+      "name": "Revisar novedades: Feijoo",
+      "rank": 27,
+      "status": "preparing",
+      "requested_at": "2026-11-15T10:44:07.829316+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "trend-update-ec13de99e455af782132",
+        "revision": 0,
+        "name": "Feijoo",
+        "rank": 12,
+        "explanation": "TT#12 Feijoo es tendencia porque la Academia de Televisión ha fijado para el 19 de noviembre su cara a cara con Pedro Sánchez, moderado por María Casado y con cuatro bloques temáticos.\n#Elecciones29N\n🌶️ El calendario ya tiene su duelo a dos.",
+        "explanation_sha256": "36ee1f206676130f90554f518b9d15ccffbdc91a13bcbf20b558dcc03a69f827",
+        "explained_at": "2026-11-14T10:04:11.719634+00:00",
+        "verification_sources": [
+          {
+            "title": "elDiario.es/Vertele: cara a cara Sánchez-Feijóo el 19 de noviembre",
+            "url": "https://www.eldiario.es/vertele/noticias/debate-cara-a-cara-sanchez-feijoo-sera-jueves-19-noviembre-academia-tv_1_13662406.html",
+            "published_at": "2026-11-13"
+          },
+          {
+            "title": "EL PAÍS: fecha y bloques del cara a cara",
+            "url": "https://elpais.com/espana/elecciones-generales/2026-11-13/campana-elecciones-29n-y-actualidad-politica-en-directo.html",
+            "published_at": "2026-11-13"
+          }
+        ],
+        "fingerprint": "863172394a53619236ab6d823b5ecd6d7b0c83e77fe4251ffd36c723db5a1423"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    },
+    {
+      "id": "red-review-59123f3efdd7cf372c0a",
+      "revision": 0,
+      "name": "Revisar novedades: #PazCasaTrabajo29N",
+      "rank": 5,
+      "status": "preparing",
+      "requested_at": "2026-11-15T10:44:07.829316+00:00",
+      "task": "review_red",
+      "red_review_request": true,
+      "review_color": "roja",
+      "review_priority": 0,
+      "review_source": {
+        "id": "c04ca7365d3b",
+        "revision": 0,
+        "name": "#PazCasaTrabajo29N",
+        "rank": 4,
+        "explanation": "TT#8 #PazCasaTrabajo29N sigue siendo tendencia por la campaña de Podemos: Irene Montero ha llevado hoy el lema a Las Palmas, donde propuso prohibir la vivienda vacacional en Canarias.\n#29N #Podemos\n🌶️ El lema ya está de gira.",
+        "explanation_sha256": "dea834eb1857ec4ece55e97c2122e5c5a79ed7616d19b6f67677b30af123ccfb",
+        "explained_at": "2026-11-12T21:01:00+01:00",
+        "verification_sources": [
+          {
+            "title": "Navarra.com: arranque de campaña de Podemos Navarra",
+            "url": "https://navarra.okdiario.com/navarra/politica/podemos-distancia-sanchez-navarra-denuncia-que-gobierno-solo-ofrece-politicas-vacias/20261112193328667465.html",
+            "published_at": "2026-11-12"
+          },
+          {
+            "title": "Cadena SER: Podemos concurre al 29N con «Paz, casa y trabajo»",
+            "url": "https://cadenaser.com/castillayleon/2026/10/26/podemos-concurre-al-29n-en-palencia-con-la-bandera-de-paz-casa-y-trabajo-radio-palencia/",
+            "published_at": "2026-10-26"
+          }
+        ],
+        "fingerprint": "668d7bb789860c7112738984a215dd27d9129689d56a8b1e4c12cccb8bb37b8f"
+      },
+      "with_image": false,
+      "disable_ai_image": true,
+      "auto_queued": false,
+      "rewrite_instruction": "Busca novedades sustanciales verificables. Sin novedades, conserva texto y fecha. Si hay novedades menores, ACTUALIZA la explicación en el mismo ID/revisión, conservando imagen y explained_at, sin volver a Listas. Continuidad: sigue siendo tendencia por; episodio realmente distinto: es tendencia por. No publiques."
+    }
+  ]
 }
