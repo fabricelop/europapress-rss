@@ -51,6 +51,36 @@ class AutomaticEditorialTests(unittest.TestCase):
         self.assertEqual(selected["name"],"Tema02")
         self.assertEqual(blocked,["trv2-test-01"])
 
+    def test_user_re_is_first_even_after_trend_exits_top30(self):
+        q,h=fixtures()
+        old=q["items"]["old"]
+        old.update(status="review_pending",reason="user_reexplanation",revision=2,
+                   attempts=0,requested_at="2026-11-15T13:00:00Z")
+        h["topics"]["historical"]={"trend_id":"old","name":"antiguo",
+                                   "active":False,"rank":None}
+        with tempfile.TemporaryDirectory() as temp:
+            selected,_,_=eligible_plan(q,h,directory=temp,now=NOW)
+        self.assertEqual(selected["trend_id"],"old")
+        self.assertEqual(selected["revision"],2)
+
+    def test_explicit_re_works_with_stale_top30_but_ordinary_does_not(self):
+        q,h=fixtures()
+        q["items"]["old"].update(status="review_pending",reason="user_reexplanation",revision=2)
+        h["topics"]["historical"]={"trend_id":"old","active":False,"rank":None}
+        with tempfile.TemporaryDirectory() as temp:
+            chosen,_,_=eligible_plan(q,h,directory=temp,now=NOW+timedelta(hours=1))
+        self.assertEqual(chosen["trend_id"],"old")
+
+    def test_user_re_is_not_sent_again_when_local_journal_exists(self):
+        q,h=fixtures()
+        q["items"]["old"].update(status="review_pending",reason="user_reexplanation",revision=2)
+        h["topics"]["historical"]={"trend_id":"old","active":False,"rank":None}
+        with tempfile.TemporaryDirectory() as temp:
+            pathlib.Path(temp,"run-old-r2.json").write_text('{"message_sent":true}')
+            chosen,_,blocked=eligible_plan(q,h,directory=temp,now=NOW)
+        self.assertEqual(chosen["name"],"Tema01")
+        self.assertEqual(blocked,["old"])
+
     def test_skips_in_progress_and_captured(self):
         q,h=fixtures()
         q["items"]["trv2-test-01"]["status"]="in_progress"
