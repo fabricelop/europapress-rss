@@ -9,6 +9,7 @@ import base64
 import json
 import os
 import sys
+import time
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -117,7 +118,18 @@ def main():
     errors=[]
     for item in requests:
         try:
-            process_one(gh,url,cf,item)
+            # The V2 branch is written by the 15-minute radar, editorial
+            # workers and image workers concurrently. GitHub may reject an
+            # otherwise safe CAS update with 409: reread the latest state.
+            for attempt in range(6):
+                try:
+                    process_one(gh,url,cf,item)
+                    break
+                except urllib.error.HTTPError as conflict:
+                    if conflict.code != 409 or attempt == 5:
+                        raise
+                    print("TT_V2_RE_CONCURRENT_RETRY=" + str(attempt + 1),flush=True)
+                    time.sleep(min(3, (attempt + 1) * 0.5))
         except (ValueError,RuntimeError,urllib.error.HTTPError,urllib.error.URLError,KeyError,AssertionError) as exc:
             errors.append(str(exc))
             print("TT_V2_RE_NOT_APPLIED=" + item.get("trend_id", "?") + ":" + str(exc), file=sys.stderr)
