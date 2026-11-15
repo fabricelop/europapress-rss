@@ -44,6 +44,29 @@ def cause_status(answer):
     return "no_confirmada" if any(p in answer.lower() for p in patterns) else "sin_clasificar"
 
 
+def saved_image_for_revision(item):
+    """Solo indicar una imagen que el endpoint privado pueda servir íntegra."""
+    cap = item.get("capture") or {}
+    image = cap.get("image") or {}
+    rev = item.get("revision")
+    ident = item.get("trend_id") or ""
+    sha = image.get("sha256") or ""
+    ext = {"image/png": "png", "image/jpeg": "jpg", "image/webp": "webp"}.get(image.get("mime"))
+    expected = (f"v2/ttendencias/generated-images/{ident}-r{rev}-{sha[:24]}.{ext}"
+                if ext else None)
+    return (item.get("status") in ("captured_review", "ready", "published")
+            and isinstance(rev, int) and rev > 0
+            and cap.get("revision") == rev
+            and image.get("status") == "saved"
+            and image.get("revision") == rev
+            and image.get("backend") == "github_v1_style"
+            and bool(re.fullmatch(r"trv2-[a-f0-9]{24}", ident))
+            and bool(re.fullmatch(r"[a-f0-9]{64}", sha))
+            and bool(re.fullmatch(r"v2-img-trv2-[a-f0-9]{24}-r[1-9][0-9]*-a[1-9][0-9]*-[a-zA-Z0-9_-]{8,60}",
+                                  image.get("command_id") or ""))
+            and image.get("path") == expected)
+
+
 def build(history, queue):
     if (history.get("step") != "03_movement" or history.get("country") != "ES"
         or queue.get("step") != "04_editorial_queue"
@@ -120,12 +143,7 @@ def build(history, queue):
             "cause_status": cause_status(answer) if answer else "sin_datos",
             "chat_url": chat_url,
             "captured_at": captured_at,
-            "image_available": bool(
-                (item.get("capture") or {}).get("image", {}).get("status") == "saved"
-                and (item.get("capture") or {}).get("image", {}).get("revision") == item.get("revision")
-                and (item.get("capture") or {}).get("image", {}).get("backend") == "github_v1_style"
-                and isinstance((item.get("capture") or {}).get("image", {}).get("path"), str)
-            ),
+            "image_available": saved_image_for_revision(item),
             "movement": topic.get("last_change") or "",
             "previous_rank": topic.get("previous_rank") if isinstance(topic.get("previous_rank"), int) else None,
             "positions_changed": topic.get("positions_changed") if isinstance(topic.get("positions_changed"), int) else None,
