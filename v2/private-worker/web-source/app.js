@@ -94,7 +94,7 @@ function tweetText(raw,item){
 let redMarks={};
 let refreshing=false;
 function markStamp(item){return typeof item.entered_top30_at==="string"?item.entered_top30_at:""}
-function isMarked(item){return redMarks[item.trend_id]===markStamp(item)&&!!markStamp(item)}
+function isMarked(item){return Object.prototype.hasOwnProperty.call(redMarks,item.trend_id)}
 async function loadSharedMarks() {
  const res=await fetch("/api/marks",{cache:"no-store",credentials:"same-origin"});
  if(!res.ok)throw Error("No se pueden sincronizar las marcas R (HTTP "+res.status+")");
