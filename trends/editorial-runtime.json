@@ -7,57 +7,34 @@
   "previous_run_id": "tr-20261115T113700-chat-direct",
   "command_id": "tr-20261115T130700-chat-direct",
   "source": "chat_direct",
-  "status": "RUNNING",
-  "phase": "preparing",
+  "status": "DONE",
+  "phase": "closing",
   "started_at": "2026-11-15T13:07:00+01:00",
-  "updated_at": "2026-11-15T13:07:00+01:00",
-  "current": 0,
+  "updated_at": "2026-11-15T13:13:00+01:00",
+  "current": 2,
   "total": 2,
   "trend_id": null,
-  "title": "Pasada editorial TTendencias",
-  "queue_complete": false,
-  "processed_ids": [],
+  "title": "Pasada editorial TTendencias completada",
+  "queue_complete": true,
+  "processed_ids": [
+    "e91bfa95d1e6",
+    "b186b88b4160"
+  ],
   "converged_ids": [],
-  "remaining_ids": [
-    "e91bfa95d1e6",
-    "b186b88b4160"
-  ],
-  "remaining_active_ids": [
-    "e91bfa95d1e6",
-    "b186b88b4160"
-  ],
+  "remaining_ids": [],
+  "remaining_active_ids": [],
   "remaining_problematic_ids": [],
-  "summary": "2 explicadas, 1 reentrada cerrada sin episodio distinto, 1 convergencia paralela, 1 mantenimiento actualizado en continuidad y 1 mantenimiento sin cambios; cola final vacía.",
+  "summary": "2/2 explicadas y persistidas; cola final vacía. Sin ImageGen ni publicaciones.",
   "outcomes": [
     {
-      "id": "fbdff5b1d1bf",
-      "name": "#CCubicos442",
+      "id": "e91bfa95d1e6",
+      "name": "Madrid y Ávila",
       "outcome": "explained"
     },
     {
-      "id": "4c6b146e335a",
-      "name": "HA VUELTO AO3",
+      "id": "b186b88b4160",
+      "name": "País Vasco",
       "outcome": "explained"
-    },
-    {
-      "id": "58d1af20a0d3",
-      "name": "MATCH DAY",
-      "outcome": "review_completed_no_distinct_event"
-    },
-    {
-      "id": "30aed7408eba",
-      "name": "AVE Madrid-Sevilla",
-      "outcome": "concurrent_convergence_explained"
-    },
-    {
-      "id": "red-review-63c68e0ff95ff25cae6b",
-      "name": "Revisar novedades: Feijoo",
-      "outcome": "continuity_updated"
-    },
-    {
-      "id": "red-review-59123f3efdd7cf372c0a",
-      "name": "Revisar novedades: #PazCasaTrabajo29N",
-      "outcome": "unchanged"
     }
   ],
   "incident_count": 0,
@@ -909,6 +886,15 @@
       "current": 0,
       "total": 2,
       "message": "Ejecución manual iniciada desde ChatGPT; cola autoritativa inicial=2: Madrid y Ávila y País Vasco. Revalidación JIT; sin ImageGen ni publicación."
+    },
+    {
+      "at": "2026-11-15T13:13:00+01:00",
+      "run_id": "tr-20261115T130700-chat-direct",
+      "status": "DONE",
+      "phase": "closing",
+      "current": 2,
+      "total": 2,
+      "message": "Pasada TTendencias completada 2/2. Aplicador oficial confirmó ambos ID/revisión y la cola final quedó vacía. Sin ImageGen ni publicaciones."
     }
   ],
   "last_started_at": "2026-11-15T12:44:19+01:00",
@@ -10208,8 +10194,8 @@
     }
   ],
   "processed": [],
-  "completed_at": "2026-11-15T10:28:00+01:00",
-  "finished_at": null,
+  "completed_at": "2026-11-15T13:13:00+01:00",
+  "finished_at": "2026-11-15T13:13:00+01:00",
   "revision": null,
   "name": null
 }
