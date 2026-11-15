@@ -24,7 +24,7 @@ test("each private Top 30 rank displays the real previous-snapshot position delt
  assert.equal(down.textContent,"↓ 3");
  assert.match(down.className,/down/);
  const same=move({rank:3,previous_rank:3,movement:"unchanged"});
- assert.equal(same.textContent,"→ 0");
+ assert.equal(same.textContent,"—");
  assert.match(same.className,/same/);
  assert.equal(move({rank:1,previous_rank:null,movement:"entry"}).textContent,"Nueva");
  assert.equal(move({rank:1,previous_rank:null,movement:"baseline"}).textContent,"—");
