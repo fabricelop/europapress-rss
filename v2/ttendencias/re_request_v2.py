@@ -17,11 +17,12 @@ def request_reexplanation(queue, history, *, trend_id, base_revision, entered_to
             or queue.get("source_observed_at") != history.get("observed_at")):
         raise ValueError("Estado V2 sin correspondencia temporal")
     topics = history.get("topics") or {}
+    # A deliberately requested RE remains valid after the trend leaves Top30.
+    # The stable identity must still exist in our historical topic registry.
     matching = [topic for topic in topics.values()
-                if topic.get("trend_id") == trend_id and topic.get("active") is True
-                and isinstance(topic.get("rank"), int) and 1 <= topic["rank"] <= 30]
+                if topic.get("trend_id") == trend_id]
     if len(matching) != 1:
-        raise ValueError("La tendencia ya no está en el Top30")
+        raise ValueError("La tendencia no pertenece al historial V2")
     topic = matching[0]
     # El reloj Cloudflare y el de GitHub atribuyen fechas de entrada distintas.
     # Esta diferencia no puede bloquear una solicitud explícita ni cambiar el ID.
@@ -50,6 +51,9 @@ def request_reexplanation(queue, history, *, trend_id, base_revision, entered_to
     item["revision"] = base_revision + 1
     item["status"] = "review_pending"
     item["reason"] = "user_reexplanation"
+    # New revision gets a fresh retry budget; failures of the old explanation
+    # must not silently make the user-requested revision ineligible.
+    item["attempts"] = 0
     item["requested_at"] = requested_at
     item["updated_at"] = requested_at
     item.pop("capture", None)
