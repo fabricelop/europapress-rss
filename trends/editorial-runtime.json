@@ -3,100 +3,41 @@
   "engine": "chatgpt-automation-outbox",
   "version": 1,
   "canonical": true,
-  "run_id": "tr-20261115T051000-chat-direct",
-  "previous_run_id": "tr-20261114T232800-chat-direct",
-  "command_id": "tr-20261115T051000-chat-direct",
+  "run_id": "tr-20261115T055500-chat-direct",
+  "previous_run_id": "tr-20261115T051000-chat-direct",
+  "command_id": "tr-20261115T055500-chat-direct",
   "source": "chat_direct",
-  "status": "DONE",
-  "phase": "closing",
-  "started_at": "2026-11-15T05:10:00+01:00",
-  "updated_at": "2026-11-15T05:19:00+01:00",
-  "current": 6,
-  "total": 6,
+  "status": "RUNNING",
+  "phase": "preparing",
+  "started_at": "2026-11-15T05:55:00+01:00",
+  "updated_at": "2026-11-15T05:55:00+01:00",
+  "current": 0,
+  "total": 0,
   "trend_id": null,
   "title": "Pasada editorial TTendencias",
-  "queue_complete": true,
-  "processed_ids": [
-    "cee2e8ebb0fa",
-    "126f19ace8a4",
-    "003925188bc7",
-    "8d30967e70ee",
-    "red-review-3d16757ddb9bcc7d9cff",
-    "red-review-c27fa11b2ec913f0a690"
-  ],
+  "queue_complete": false,
+  "processed_ids": [],
   "converged_ids": [],
   "remaining_ids": [],
   "remaining_active_ids": [],
   "remaining_problematic_ids": [],
   "summary": {
-    "attempted": 6,
-    "observed": 6,
-    "closed": 6,
-    "explained": 4,
+    "attempted": 0,
+    "observed": 0,
+    "closed": 0,
+    "explained": 0,
     "problematic": 0,
     "updates": 0,
-    "review_completed_no_distinct_event": 0,
-    "maintenance_reviews": 2,
-    "unchanged_reviews": 2,
-    "continuity_updates": 0,
-    "distinct_updates": 1,
-    "stale_reviews": 0,
-    "unverified_reviews": 0,
-    "anticipation_reviews": 0,
-    "anticipation_prepared": 0,
-    "anticipation_unverified": 0,
+    "maintenance_reviews": 0,
+    "unchanged_reviews": 0,
     "queue_remaining": 0,
     "rewrite_pending_remaining": 0,
     "imagegen_calls": 0,
     "image_outbox_created": 0,
     "publications": 0,
-    "incidents": 0,
-    "concurrent_convergence": 0
+    "incidents": 0
   },
-  "outcomes": [
-    {
-      "id": "cee2e8ebb0fa",
-      "revision": 0,
-      "name": "#UFCHBOMax",
-      "outcome": "explained_new_episode",
-      "applied": true
-    },
-    {
-      "id": "126f19ace8a4",
-      "revision": 0,
-      "name": "#UFC334",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "003925188bc7",
-      "revision": 0,
-      "name": "Hasan",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "8d30967e70ee",
-      "revision": 0,
-      "name": "enol",
-      "outcome": "explained",
-      "applied": true
-    },
-    {
-      "id": "red-review-3d16757ddb9bcc7d9cff",
-      "revision": 0,
-      "name": "Revisar novedades: Marcial Dorado",
-      "outcome": "unchanged",
-      "applied": true
-    },
-    {
-      "id": "red-review-c27fa11b2ec913f0a690",
-      "revision": 0,
-      "name": "Revisar novedades: Outlook",
-      "outcome": "unchanged",
-      "applied": true
-    }
-  ],
+  "outcomes": [],
   "incident_count": 0,
   "incidents": [],
   "error": null,
@@ -725,6 +666,13 @@
       "current": 15,
       "total": 15,
       "message": "Pasada TTendencias completada 15/15: 11 explicaciones persistidas y 4 reentradas cerradas como review_completed/no_distinct_event. Aplicador de chat success, commit 04a978540933893c00a9c8d7856a855526f3dd8a; barrera final editorial-queue=0 y mobile-decisions sin estados activos. ImageGen=0; publicaciones=0; incidentes=0."
+    },
+    {
+      "at": "2026-11-15T05:55:00+01:00",
+      "run_id": "tr-20261115T055500-chat-direct",
+      "status": "RUNNING",
+      "phase": "preparing",
+      "message": "Pasada iniciada desde ChatGPT. Cola autoritativa inicial=0; revalidación JIT en main. Sin ImageGen ni publicaciones."
     }
   ],
   "last_started_at": "2026-11-15T05:14:30+01:00",
@@ -9840,7 +9788,7 @@
   "maintenance_apply_commit": "074b3f7e87b6260fde12e02ec813bdd56b8cc218",
   "completed_at": "2026-11-14T17:42:00+01:00",
   "input_commit": "d657e81fd73a9f4f14a0bc2ac55d968a79eaf428",
-  "finished_at": "2026-11-15T05:19:00+01:00",
+  "finished_at": null,
   "apply_commits": [
     "36a6bdedee2ab6b1689dab6eb97f1f5f56e0ba70"
   ]
