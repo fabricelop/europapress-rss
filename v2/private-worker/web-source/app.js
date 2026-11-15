@@ -31,27 +31,63 @@ function editorial(raw){
  return "Explicación capturada; formato editorial pendiente de adaptar.";
 }
 const WEB_URL="https://fabricelop.github.io/europapress-rss/v2/";
-function tweetText(raw){
+function xLength(value){
+ // URLs count as 23 characters in X; normal JS length is conservative for emoji.
+ return value.replace(/https?:\/\/\S+/gu,"X".repeat(23)).length;
+}
+function completeProse(text,maxLength){
+ const source=text.replace(/\s+/g," ").trim();
+ if(xLength(source)<=maxLength)return source;
+ // Never publish prose cut mid-sentence or with an ellipsis.
+ const sentences=source.match(/[^.!?]+[.!?]+(?:[»”"']|$)?/gu)||[];
+ let full="";
+ for(const sentence of sentences){
+  const candidate=(full+" "+sentence.trim()).trim();
+  if(xLength(candidate)>maxLength)break;
+  full=candidate;
+ }
+ if(full)return full;
+ // Older, long editorial sentences: allow a complete independent first clause.
+ let clause="";
+ for(const match of source.matchAll(/[,;:]\s+|\s+[—–]\s+/gu)){
+  const candidate=source.slice(0,match.index).trim();
+  if(xLength(candidate+".")<=maxLength)clause=candidate;
+ }
+ if(clause&&!/\b(?:y|o|de|del|con|por|para|en|que|a|su|las|los|un|una)$/iu.test(clause))
+  return clause.replace(/[,:;]$/u,"")+".";
+ return "";
+}
+function tweetText(raw,item){
  const source=editorial(raw);
  if(source.startsWith("Explicación pendiente")||source.startsWith("Explicación capturada"))return source;
+ const rank=Number.isInteger(item?.rank)?item.rank:0;
+ const name=String(item?.name||"TENDENCIA").toLocaleUpperCase("es-ES").trim();
+ const prefix="TT#"+rank+" "+name+" es tendencia";
  const lines=source.split("\n").map(x=>x.trim()).filter(Boolean);
  const jokeLine=lines.find(x=>x.includes("🌶"))||"";
  const joke=jokeLine.replace(/^Remate:\s*/i,"").trim();
  const hashLine=lines.filter(x=>!x.includes("🌶")&&(/^(?:Hashtags:\s*)?#\S+/i.test(x)||/^Hashtags:\s*#/i.test(x))).map(x=>x.replace(/^Hashtags:\s*/i,"").trim()).join(" ");
  const hashes=[...new Set((hashLine.match(/#[\p{L}\p{N}_]+/gu)||[]))].join(" ");
- const prose=lines.filter(x=>!x.includes("🌶")&&!/^Hashtags:\s*/i.test(x)&&!/^\s*#[\p{L}\p{N}_]+(?:\s+#[\p{L}\p{N}_]+)*\s*$/u.test(x)).join(" ").replace(/\s+/g," ").trim();
- const suffix=[hashes,joke].filter(Boolean).join("\n");
- // X counts any HTTPS URL as 23 characters, irrespective of its actual length.
- const weightedSuffix=(suffix?suffix.length+1:0)+1+23;
- const limit=280-weightedSuffix;
- if(limit<45)return "Explicación pendiente de edición para X.";
- let summary=prose;
- if(summary.length>limit){
-  const first=summary.slice(0,limit+1);
-  const end=Math.max(first.lastIndexOf(". "),first.lastIndexOf("; "),first.lastIndexOf(", "));
-  summary=(end>Math.floor(limit*.55)?first.slice(0,end+1):first.slice(0,limit-1).replace(/\s+\S*$/,"")+"…").trim();
+ let prose=lines.filter(x=>!x.includes("🌶")&&!/^Hashtags:\s*/i.test(x)&&!/^\s*#[\p{L}\p{N}_]+(?:\s+#[\p{L}\p{N}_]+)*\s*$/u.test(x)).join(" ").replace(/\s+/g," ").trim();
+ // Remove an already written lead only if it is the same trend and prefix.
+ prose=prose.replace(/^TT#\d+\s+/iu,"");
+ const lead=name+" ES TENDENCIA";
+ if(prose.toLocaleUpperCase("es-ES").startsWith(lead))
+  prose=prose.slice(lead.length).replace(/^\s*[:,]?\s*/u,"");
+ // Preserve grammatical meaning when the raw text begins with its own trend name.
+ else if(prose.toLocaleUpperCase("es-ES").startsWith(name+" ")){
+  const rest=prose.slice(name.length).trim();
+  prose=/^(?:por|porque|tras|ante|debido|en |al |a raíz)/iu.test(rest)?rest:"porque "+rest;
  }
- return [summary,suffix,WEB_URL].filter(Boolean).join("\n");
+ if(!prose)return prefix+".";
+ const explanation=completeProse(prose,280-xLength(prefix)-2);
+ if(!explanation)return prefix+". Consulta la explicación íntegra en la ficha.";
+ // Explicit priority: A explanation, B full punchline, C whole tags, D URL.
+ const parts=[prefix+(/^(?:porque |por |tras |ante |debido |en |al |a raíz)/iu.test(explanation)?" ":": ")+explanation];
+ for(const component of [joke,hashes,WEB_URL]){
+  if(component&&xLength(parts.join("\n")+"\n"+component)<=280)parts.push(component);
+ }
+ return parts.join("\n");
 }
 // Server-side marks: same state on every authenticated browser and device.
 let redMarks={};
@@ -165,7 +201,7 @@ function publishNotice(message){
 }
 function makePublishButtons(card,item){
  if(item.status!=="explicada")return;
- const text=tweetText(item.explanation);
+ const text=tweetText(item.explanation,item);
  if(text.startsWith("Explicación pendiente"))return;
  const actions=el("div","publish-actions");
  const x=el("button","publish-action","P-X");
@@ -264,7 +300,7 @@ function render(){
    photo.setAttribute("aria-label",photo.title);
    head.append(photo);
   }
-  const body=el("div","explanation",item.status==="explicada"?tweetText(item.explanation):({en_elaboracion:"En elaboración.",incidencia:"Incidencia en la elaboración.",desestimada:"Desestimada."})[item.status]||"Explicación pendiente.");
+  const body=el("div","explanation",item.status==="explicada"?tweetText(item.explanation,item):({en_elaboracion:"En elaboración.",incidencia:"Incidencia en la elaboración.",desestimada:"Desestimada."})[item.status]||"Explicación pendiente.");
   card.append(body);
   makePublishButtons(card,item);
   attachGeneratedImage(card,item);
