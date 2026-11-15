@@ -4,6 +4,9 @@
 
 $ErrorActionPreference = "Continue"
 $BaseDir = "C:\TTiTTulares"
+# TTENDENCIAS_V1_RETIRE_GUARD: optional mobile receiver cannot reactivate V1.
+$TrendsV1RetiredFlag=Join-Path $BaseDir "TTendencias-V1-Disabled.flag"
+if(Test-Path -LiteralPath $TrendsV1RetiredFlag){exit 0}
 $Launcher = Join-Path $BaseDir "LanzarOculto.vbs"
 $StatePath = Join-Path $BaseDir "ttendencias-mobile-trigger-state.json"
 $LogPath = Join-Path $BaseDir "ttendencias-mobile-trigger.log"
@@ -95,6 +98,7 @@ Ensure-StateFields $state
 Save-State $state
 
 while ($true) {
+  if(Test-Path -LiteralPath $TrendsV1RetiredFlag){Write-Log "V1 RETIRED; mobile receiver exits";break}
   try {
     $doc = Read-Trigger
     if ($doc -and $doc.command_id) {
