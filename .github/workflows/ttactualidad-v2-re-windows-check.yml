@@ -1,0 +1,43 @@
+name: TTActualidad V2 - validacion de activacion RE en Windows
+on:
+  push:
+    branches: [feature/ttactualidad-v2-clean]
+    paths:
+      - 'v2/ttendencias/Activate-V2-RE-Priority.ps1'
+      - 'v2/ttendencias/editorial_daemon_v2.py'
+      - 'v2/ttendencias/auto_editorial_policy_v2.py'
+      - 'v2/ttendencias/sync_private_re_v2.py'
+      - '.github/workflows/ttactualidad-v2-re-windows-check.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  preflight-win:
+    runs-on: windows-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validar sintaxis y contrato no destructivo de activacion
+        shell: powershell
+        run: |
+          $file = 'v2/ttendencias/Activate-V2-RE-Priority.ps1'
+          $tokens = $null
+          $errors = $null
+          [Management.Automation.Language.Parser]::ParseFile($file,[ref]$tokens,[ref]$errors) | Out-Null
+          if ($errors.Count -gt 0) { throw ($errors | Out-String) }
+          $source = Get-Content $file -Raw
+          foreach ($marker in @('TT_V2_RE_STAGE_TESTS=OK','TT_V2_RE_WAITING_FOR_CURRENT_JOB=YES','TT_V2_RE_PRIORITY_INSTALLED=YES','TT_V2_RE_ROLLBACK=OK')) {
+            if (!$source.Contains($marker)) { throw "Contrato ausente: $marker" }
+          }
+          if ($source -match '(?i)\b(Stop-Process|Stop-ScheduledTask|taskkill)\b') {
+            throw 'La activacion no debe detener procesos a la fuerza'
+          }
+          Write-Host 'TT_V2_RE_ACTIVATOR_PS51=VALID'
+      - name: Pruebas de priorizacion RE y sincronizacion idempotente
+        shell: pwsh
+        run: |
+          $env:PYTHONPATH = 'v2/ttendencias'
+          python -m unittest -v test_auto_editorial_v2 test_re_request_v2 test_sync_private_re_v2
