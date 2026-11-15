@@ -278,6 +278,7 @@ function makePublishButtons(card,item){
     if(!response.ok)throw Error("HTTP "+response.status);
     item.public_image_visible=visible;
     publishNotice("Imagen de «"+item.name+"»: "+(visible?"visible":"oculta")+" en V1. En V2 no cambia.");
+    render();
    }catch(error){
     switchInput.checked=!visible;
     publishNotice("No se guardó la visibilidad pública de la imagen: "+error.message);
@@ -408,11 +409,18 @@ function render(){
    void toggleRedMark(item,card,flag);
   });
   head.append(flag);
-  if(!reset&&imageReady(item)){
+  if(!reset&&(imageReady(item)||item.image_suppressed===true)){
    const photo=el("span","image-ready-icon","▣");
-   photo.title="Imagen IA asociada a esta revisión";
+   photo.title=item.image_suppressed===true?"Imagen IA conservada pero retirada de las dos webs":"Imagen IA asociada a esta revisión";
    photo.setAttribute("aria-label",photo.title);
    head.append(photo);
+   if(item.image_suppressed===true||item.public_image_visible===false){
+    const hidden=el("span","image-ready-icon image-public-hidden-icon","▣");
+    hidden.append(el("span","image-hidden-x","×"));
+    hidden.title=item.image_suppressed===true?"Imagen IA retirada de V1 y V2":"Imagen IA oculta en V1; sigue disponible en V2";
+    hidden.setAttribute("aria-label",hidden.title);
+    head.append(hidden);
+   }
   }
   const body=el("div","explanation",reset?"Revisión editorial solicitada. Se ha retirado la explicación anterior y su imagen; esperando una nueva explicación.":item.status==="explicada"?tweetText(item.explanation,item):({en_elaboracion:"En elaboración.",incidencia:"Incidencia en la elaboración.",desestimada:"Desestimada."})[item.status]||"Explicación pendiente.");
   card.append(body);
