@@ -1,0 +1,47 @@
+name: TTActualidad V2 - preflight de despliegue privado RE-X
+on:
+  push:
+    branches: [feature/ttactualidad-v2-clean]
+    paths:
+      - '.github/workflows/ttactualidad-v2-private-preflight.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validar fuentes de RE-X sin tocar Cloudflare
+        run: |
+          node --check v2/ttendencias/private-worker/src/index.js
+          node --check v2/ttendencias/private-worker/web-source/app.js
+          node --test v2/ttendencias/private-worker/tests/re-x.test.mjs v2/ttendencias/private-worker/tests/re-explain.test.mjs v2/ttendencias/private-worker/tests/image-visibility.test.mjs
+      - name: Inspeccionar permisos y conservacion de bindings en privado
+        run: |
+          python3 - <<'PY'
+          import json,os,urllib.request,urllib.error
+          token=os.environ.get("CLOUDFLARE_API_TOKEN","")
+          account=os.environ.get("CLOUDFLARE_ACCOUNT_ID","")
+          if not token or not account: raise SystemExit("CLOUDFLARE_CREDENTIALS_MISSING")
+          u="https://api.cloudflare.com/client/v4/accounts/"+account+"/workers/scripts/ttactualidad-v2-private-test/settings"
+          q=urllib.request.Request(u,headers={"Authorization":"Bearer "+token,"Accept":"application/json"})
+          try:
+              with urllib.request.urlopen(q,timeout=25) as r: out=json.load(r)
+          except urllib.error.HTTPError as e:
+              raise SystemExit("CLOUDFLARE_SETTINGS_HTTP_"+str(e.code))
+          if out.get("success") is not True: raise SystemExit("CLOUDFLARE_SETTINGS_NOT_VERIFIED")
+          settings=out.get("result") or {}
+          bindings=settings.get("bindings") or []
+          print("TT_V2_PRIVATE_EXISTING_BINDINGS="+",".join(sorted(str(b.get("type"))+":"+str(b.get("name")) for b in bindings)))
+          types={b.get("name"):b.get("type") for b in bindings}
+          if types.get("MARKS_DB") not in ("d1", "d1_database"):
+              raise SystemExit("MARKS_DB_BINDING_NOT_VERIFIED")
+          if not {"AUTH_PASSWORD","SESSION_SECRET"} <= set(types):
+              raise SystemExit("PRIVATE_AUTH_SECRETS_NOT_VERIFIED")
+          print("TT_V2_PRIVATE_REX_DEPLOY_PREFLIGHT=PASS")
+          PY
