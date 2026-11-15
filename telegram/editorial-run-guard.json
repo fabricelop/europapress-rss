@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "checked_at": "2026-11-15T15:16:06.531356+00:00",
+  "checked_at": "2026-11-15T15:30:25.030768+00:00",
   "projects": {
     "ttittulares": {
       "project": "ttittulares",
-      "checked_at": "2026-11-15T15:16:06.531356+00:00",
+      "checked_at": "2026-11-15T15:30:25.030768+00:00",
       "pending_count": 7,
       "pending_ids": [
         "ebd4fa436d82",
@@ -24,10 +24,10 @@
         "finished_at": "2026-11-15T13:53:10Z",
         "source": "github_pr_trace"
       },
-      "control_command": "tt-urgent-1794754235726",
-      "last_command_at": "2026-11-15T14:50:35.726Z",
-      "status": "dispatch_requested_awaiting_run",
-      "should_dispatch": true,
+      "control_command": "tt-urgent-1794756090412",
+      "last_command_at": "2026-11-15T15:21:30.412Z",
+      "status": "dispatch_pending_ack",
+      "should_dispatch": false,
       "item_execution": [
         {
           "id": "ebd4fa436d82",
@@ -83,17 +83,11 @@
       "expected_start_by": "2026-11-15T14:12:05.648304+00:00",
       "attempts": 1,
       "previous_target_completed_or_superseded": false,
-      "dispatch": {
-        "requested": true,
-        "command_id": "tt-autoguard-1794755766",
-        "requested_at": "2026-11-15T15:16:06.531356Z"
-      },
-      "last_request_at": "2026-11-15T15:16:06.531356+00:00",
-      "last_requested_command_id": "tt-autoguard-1794755766"
+      "last_request_at": "2026-11-15T15:16:06.531356+00:00"
     },
     "ttendencias": {
       "project": "ttendencias",
-      "checked_at": "2026-11-15T15:16:06.531356+00:00",
+      "checked_at": "2026-11-15T15:30:25.030768+00:00",
       "pending_count": 3,
       "pending_ids": [
         "red-review-3e78ee3a7b1278ce8aca",
@@ -109,10 +103,10 @@
         "finished_at": "2026-11-15T14:58:02.757Z",
         "source": "github_pr_trace"
       },
-      "control_command": "tr-1794754681626-manual",
-      "last_command_at": "2026-11-15T14:58:01.626Z",
-      "status": "dispatch_requested_awaiting_run",
-      "should_dispatch": true,
+      "control_command": "tr-1794756000000-manual",
+      "last_command_at": "2026-11-15T15:20:00.000Z",
+      "status": "dispatch_pending_ack",
+      "should_dispatch": false,
       "item_execution": [
         {
           "id": "red-review-3e78ee3a7b1278ce8aca",
@@ -140,13 +134,7 @@
       "expected_start_by": "2026-11-15T15:02:57.221868+00:00",
       "attempts": 1,
       "previous_target_completed_or_superseded": false,
-      "dispatch": {
-        "requested": true,
-        "command_id": "tr-autoguard-1794755766",
-        "requested_at": "2026-11-15T15:16:06.531356Z"
-      },
-      "last_request_at": "2026-11-15T15:16:06.531356+00:00",
-      "last_requested_command_id": "tr-autoguard-1794755766"
+      "last_request_at": "2026-11-15T15:16:06.531356+00:00"
     }
   },
   "policy": {
