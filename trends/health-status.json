@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-15T17:28:18.726206+00:00",
+  "checked_at": "2026-11-15T17:33:37.513287+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -42,7 +42,7 @@
     "top10": {
       "ok": false,
       "count": 10,
-      "non_stale_sources": 4,
+      "non_stale_sources": 3,
       "verified_fresh_sources": [
         "xtrendsiamrohit"
       ],
@@ -57,9 +57,9 @@
     },
     "refresh": {
       "ok": true,
-      "status": "pending",
+      "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 2.4,
+      "age_minutes": 5.2,
       "run_id": 43741061503,
       "reason": null,
       "repairable": true,
@@ -83,15 +83,39 @@
     "editorial_queue": {
       "ok": false,
       "pending_count": 5,
-      "overdue_count": 1,
-      "oldest_age_minutes": 36.8,
+      "overdue_count": 5,
+      "oldest_age_minutes": 42.1,
       "warning_after_minutes": 30,
       "overdue_items": [
         {
           "id": "red-review-e2b187d5397d4615eb9d",
           "name": "Revisar novedades: #laSextaXplica",
           "status": "preparing",
-          "age_minutes": 36.8
+          "age_minutes": 42.1
+        },
+        {
+          "id": "5e1e30b01ae3",
+          "name": "#SanchezFueraDeControl",
+          "status": "preparing",
+          "age_minutes": 31.1
+        },
+        {
+          "id": "ccb05dc4bbe8",
+          "name": "Caro",
+          "status": "preparing",
+          "age_minutes": 31.1
+        },
+        {
+          "id": "2297cc60ccee",
+          "name": "Weverse",
+          "status": "preparing",
+          "age_minutes": 31.1
+        },
+        {
+          "id": "d9f6589ca44c",
+          "name": "Maye",
+          "status": "preparing",
+          "age_minutes": 31.1
         }
       ],
       "repairable": false
@@ -119,9 +143,9 @@
   "blocking": [
     "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos",
     "cola con 282 estado(s) inválido(s)",
-    "cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 36.8 min"
+    "cola de explicaciones retrasada: 5 pendiente(s) superan 30 min; más antigua 42.1 min"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 282 estado(s) inválido(s) | cola de explicaciones retrasada: 1 pendiente(s) superan 30 min; más antigua 36.8 min"
+  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 282 estado(s) inválido(s) | cola de explicaciones retrasada: 5 pendiente(s) superan 30 min; más antigua 42.1 min"
 }
