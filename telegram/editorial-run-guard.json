@@ -1,17 +1,16 @@
 {
   "version": 1,
-  "checked_at": "2026-11-15T16:39:02.886447+00:00",
+  "checked_at": "2026-11-15T16:44:27.907524+00:00",
   "projects": {
     "ttittulares": {
       "project": "ttittulares",
-      "checked_at": "2026-11-15T16:39:02.886447+00:00",
-      "pending_count": 3,
+      "checked_at": "2026-11-15T16:44:27.907524+00:00",
+      "pending_count": 2,
       "pending_ids": [
-        "42d99409ab97",
         "8b0efe911f3f",
         "75b1bacf1671"
       ],
-      "oldest_at": "2026-11-15T16:13:15.517324Z",
+      "oldest_at": "2026-11-15T16:13:15.633039Z",
       "latest_run": {
         "id": "tt-20261115T1345-chat",
         "status": "DONE",
@@ -25,13 +24,6 @@
       "status": "dispatch_pending_ack",
       "should_dispatch": false,
       "item_execution": [
-        {
-          "id": "42d99409ab97",
-          "entered_at": "2026-11-15T16:13:15.517324Z",
-          "should_start_by": "2026-11-15T16:18:15.517324+00:00",
-          "global_run_after_entry": false,
-          "final_telegram_delivery_confirmed": false
-        },
         {
           "id": "8b0efe911f3f",
           "entered_at": "2026-11-15T16:13:15.633039Z",
@@ -47,18 +39,20 @@
           "final_telegram_delivery_confirmed": false
         }
       ],
-      "backlog_signature": "5b429f20026e0872",
-      "expected_start_by": "2026-11-15T16:18:15.517324+00:00",
+      "backlog_signature": "5c26f960bebbf9e0",
+      "expected_start_by": "2026-11-15T16:18:15.633039+00:00",
       "attempts": 0,
       "previous_target_completed_or_superseded": false,
       "last_request_at": "2026-11-15T15:16:06.531356+00:00"
     },
     "ttendencias": {
       "project": "ttendencias",
-      "checked_at": "2026-11-15T16:39:02.886447+00:00",
-      "pending_count": 0,
-      "pending_ids": [],
-      "oldest_at": null,
+      "checked_at": "2026-11-15T16:44:27.907524+00:00",
+      "pending_count": 1,
+      "pending_ids": [
+        "radar-prepare-fb25908ae651a96a44f2"
+      ],
+      "oldest_at": "2026-11-15T17:40:41.899632+01:00",
       "latest_run": {
         "id": "tr-20261115T172500-chat-direct",
         "status": "DONE",
@@ -69,8 +63,19 @@
       },
       "control_command": "tr-1794760161765-manual",
       "last_command_at": "2026-11-15T16:29:21.765Z",
-      "status": "no_work",
+      "status": "within_start_window",
       "should_dispatch": false,
+      "item_execution": [
+        {
+          "id": "radar-prepare-fb25908ae651a96a44f2",
+          "entered_at": "2026-11-15T17:40:41.899632+01:00",
+          "should_start_by": "2026-11-15T16:45:41.899632+00:00",
+          "global_run_after_entry": false,
+          "final_telegram_delivery_confirmed": false
+        }
+      ],
+      "backlog_signature": "67904e2da283d493",
+      "expected_start_by": "2026-11-15T16:45:41.899632+00:00",
       "attempts": 0,
       "last_request_at": "2026-11-15T16:23:42.110148+00:00"
     }
