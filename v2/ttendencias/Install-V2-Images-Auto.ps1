@@ -30,7 +30,8 @@ $files = @(
     'test_image_github_v2.py',
     'Run-V2-Image-One.ps1',
     'Run-V2-Images-Auto.ps1',
-    'Setup-V2-Image-Chrome-Login.ps1'
+    'Setup-V2-Image-Chrome-Login.ps1',
+    'Launch-V2-Hidden.vbs'
 )
 foreach ($file in $files) {
     $path = Join-Path $root $file
@@ -60,8 +61,8 @@ $value = 'TT_V2_AUTO_IMAGES_ENABLED=NO'
 if ($EnableImages) { $value = 'TT_V2_AUTO_IMAGES_ENABLED=YES' }
 [IO.File]::WriteAllText($flag, $value + [Environment]::NewLine, (New-Object System.Text.UTF8Encoding($false)))
 $runner = Join-Path $root 'Run-V2-Images-Auto.ps1'
-$arguments = '-NoProfile -NonInteractive -WindowStyle Hidden -ExecutionPolicy Bypass -File "' + $runner + '"'
-$action = New-ScheduledTaskAction -Execute 'powershell.exe' -Argument $arguments
+$arguments = '//B //Nologo "' + (Join-Path $root 'Launch-V2-Hidden.vbs') + '" "' + $runner + '"'
+$action = New-ScheduledTaskAction -Execute (Join-Path $env:WINDIR 'System32\wscript.exe') -Argument $arguments
 $account = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
 $triggers = @(
     (New-ScheduledTaskTrigger -AtLogOn -User $account),
