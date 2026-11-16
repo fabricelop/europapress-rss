@@ -97,7 +97,9 @@ function completeProse(text,maxLength){
  return "";
 }
 function tweetText(raw,item){
- const source=editorial(raw);
+ const extracted=editorial(raw);
+ const adapted=publishableText(extracted)?null:dossierSummary(raw,item);
+ const source=adapted?.prose||extracted;
  if(source.startsWith("Explicación pendiente")||source.startsWith("Explicación capturada"))return source;
  const rank=Number.isInteger(item?.rank)?item.rank:0;
  const name=String(item?.name||"TENDENCIA").toLocaleUpperCase("es-ES").trim();
@@ -111,7 +113,7 @@ function tweetText(raw,item){
  // Metadata wins over wording: never present a probable cause as established.
  const startsWithName=prose.toLocaleUpperCase("es-ES").startsWith(name+" ");
  const initial=startsWithName?prose.slice(name.length).trim():prose;
- const uncertain=/^\s*ESTADO_CAUSA\s*:\s*NO_CONFIRMADA\s*$/im.test(String(raw||""))
+ const uncertain=adapted?.uncertain===true||/^\s*ESTADO_CAUSA\s*:\s*NO_CONFIRMADA\s*$/im.test(String(raw||""))
   ||item?.cause_status==="no_confirmada"
   ||/^podr[íi]a ser tendencia\b/iu.test(initial);
  const prefix="TT#"+rank+" "+name+(uncertain?"":" es tendencia");
@@ -131,12 +133,15 @@ function tweetText(raw,item){
   }else prose=/^(?:por|porque|tras|ante|debido|en |al |a raíz)/iu.test(rest)?rest:"porque "+rest;
  }
  if(!prose)return prefix+".";
- const explanation=completeProse(prose,280-xLength(prefix)-2);
+ // Reserve the caveat before shortening adapted dossier copy: it must never
+ // disappear just because the factual context uses up the character budget.
+ const caveat=adapted?.uncertain?" La causa concreta de la tendencia no está confirmada.":"";
+ const explanation=completeProse(prose,280-xLength(prefix)-2-xLength(caveat));
  if(!explanation)return prefix+". Consulta la explicación íntegra en la ficha.";
  // Explicit priority: A explanation, B full punchline, C whole tags, D URL.
  const joinsDirectly=uncertain?/^podr[íi]a ser tendencia\b/iu.test(explanation)
   :/^(?:porque |por |tras |ante |debido |en |al |a raíz)/iu.test(explanation);
- const parts=[prefix+(joinsDirectly?" ":": ")+explanation];
+ const parts=[prefix+(joinsDirectly?" ":": ")+explanation+caveat];
  for(const component of [joke,hashes,WEB_URL]){
   if(component&&xLength(parts.join("\n")+"\n"+component)<=280)parts.push(component);
  }
@@ -145,13 +150,37 @@ function tweetText(raw,item){
 function publishableText(text){
  return !!text&&!/^Explicación (?:pendiente|capturada)/u.test(text);
 }
+function dossierSummary(raw,item){
+ const lines=capturedEditorial(raw).split("\n");
+ // Prefer the dossier's own explicit hypothesis to unrelated schedule facts.
+ // This works for any topic; no trend names or topic-specific prose are used.
+ const hypothesis=lines.map(line=>line.match(/^Hip[oó]tesis (?:principal|predominante)\s*:\s*(.+)$/iu))
+  .find(Boolean)?.[1];
+ if(hypothesis&&hypothesis.length>12&&!/https?:|ESTADO_|Ficha editorial/iu.test(hypothesis)){
+  const text=hypothesis.replace(/[.!?]+$/u,"");
+  return {prose:"Posible relación: "+text+".",uncertain:true};
+ }
+ const confirmed=/^\s*ESTADO_CAUSA\s*:\s*CONFIRMADA\s*$/imu.test(String(raw||""))
+  &&item?.cause_status!=="no_confirmada";
+ for(let i=0;i<lines.length;i++){
+  if(!/^(?:Qu[eé] sabemos|Qu[eé] ha ocurrido|Resumen(?: breve| editorial)?|Explicaci[oó]n period[ií]stica)\s*:?$/iu.test(lines[i]))continue;
+  const paragraph=[];
+  for(let j=i+1;j<lines.length;j++){
+   const line=lines[j].trim();
+   if(!line){if(paragraph.length)break;continue;}
+   if(/^(?:https?:|Fuentes|Comprobaci[oó]n|Enlaces|Verificaci[oó]n|Destino editorial|Valoraci[oó]n)/iu.test(line))break;
+   if(/^\+?\d+$|^\d{1,2} de \p{L}+ de 20\d{2}$/iu.test(line))continue;
+   paragraph.push(line);
+  }
+  const prose=paragraph.join(" ");
+  if(prose.length>60&&/[.!?]/u.test(prose))return {prose,uncertain:!confirmed};
+ }
+ return null;
+}
 function explanationText(raw,item){
- const brief=tweetText(raw,item);
- if(publishableText(brief))return brief;
- // A captured dossier is useful even without a valid X-ready lead. Display
- // it as text (never HTML), retaining uncertainty, context and source links.
- // Do not reinterpret an arbitrary dossier paragraph as publication copy.
- return capturedEditorial(raw)||"Explicación pendiente.";
+ // V2 is the X composer: the displayed copy is exactly what both X actions use.
+ // The full original dossier remains in the source for the long-form V1 flow.
+ return tweetText(raw,item);
 }
 // Server-side marks: same state on every authenticated browser and device.
 let redMarks={};
