@@ -7666,20 +7666,27 @@
     "trv2-81e7d55c5c944b5fbf7ec049": {
       "trend_id": "trv2-81e7d55c5c944b5fbf7ec049",
       "name": "Ruanda",
-      "revision": 1,
-      "status": "in_progress",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "af9e89d572abe093",
-      "requested_at": "2026-11-16T16:02:16.260779+00:00",
-      "updated_at": "2026-11-16T16:02:16.260779+00:00",
+      "requested_at": "2026-11-16T16:57:09.506776+00:00",
+      "updated_at": "2026-11-16T16:57:09.506776+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "lease": {
-        "token": "77ac8f6dc84edc3f6bfd684b3c58aac4b32a64adc3f79325",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-16T16:07:43.260515+00:00",
-        "expires_at": "2026-11-16T16:47:43.260515+00:00"
-      }
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-16T16:07:43.260515+00:00",
+          "send_intent_at": null,
+          "incident_reason": "lease_expired_without_capture",
+          "archived_at": "2026-11-16T16:57:09.506776+00:00"
+        }
+      ],
+      "incident_retries": 1
     },
     "trv2-2bc2de5487a43ff0a0ab71e6": {
       "trend_id": "trv2-2bc2de5487a43ff0a0ab71e6",
@@ -8116,14 +8123,14 @@
     "trv2-2bc2de5487a43ff0a0ab71e6",
     "trv2-6695d2a447014b191d725e91",
     "trv2-7f4231d52e11af099ba5f8cd",
-    "trv2-81e7d55c5c944b5fbf7ec049",
     "trv2-adfb74d5a9ed408fc9c3033e",
     "trv2-b60f1457d9d58c56a5a94ac0",
     "trv2-b7ec68f9300d0a6cc116b07f",
     "trv2-caf9fee60bc753f1704ef805",
     "trv2-f6c9a74aa8177f03ef76174f",
     "trv2-8aef83b3380a9fd170f075b9",
-    "trv2-ec05b8b1a5da1faef50a101f"
+    "trv2-ec05b8b1a5da1faef50a101f",
+    "trv2-81e7d55c5c944b5fbf7ec049"
   ],
   "effects_enabled": false
 }
