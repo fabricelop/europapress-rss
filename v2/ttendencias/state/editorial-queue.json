@@ -8012,13 +8012,13 @@
       "trend_id": "trv2-50f26092203d4ff3ffd9e9d9",
       "name": "El Hierro",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "c7b25feeea33b534",
       "requested_at": "2026-11-16T18:53:39.267546+00:00",
       "updated_at": "2026-11-16T18:53:39.267546+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -8031,7 +8031,13 @@
           "archived_at": "2026-11-16T18:53:39.267546+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "a0b9bf86a8e460e2571fd4ecdf37ddaf9383e934715a5542",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-16T18:53:51.872060+00:00",
+        "expires_at": "2026-11-16T19:33:51.872060+00:00"
+      }
     }
   },
   "pending_count": 323,
