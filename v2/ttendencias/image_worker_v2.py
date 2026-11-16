@@ -39,6 +39,10 @@ COMPOSERS = editorial.COMPOSERS
 SEND_BUTTONS = (
     'button[data-testid="send-button"]',
     'button[data-testid="composer-send-button"]',
+    'button[data-testid="send-message-button"]',
+    'button[aria-label="Send"]',
+    'button[aria-label="Enviar"]',
+    'button[aria-label="Enviar prompt"]',
     'button[aria-label="Send prompt"]',
     'button[aria-label="Send message"]',
     'button[aria-label="Enviar mensaje"]',
@@ -412,11 +416,11 @@ def submit_image_prompt(page, composer, prompt, command_id):
             button = page.locator(selector).first
             if button.count() and button.is_visible():
                 found_send_button = True
-                if button.is_enabled():
+                if button.is_enabled() and button.get_attribute("aria-disabled") != "true":
                     button.click(timeout=10000)
                     return "send_button"
-        if not found_send_button:
-            break
+        # React may mount or enable the send button after filling the editor.
+        # Do not treat its absence on the first poll as definitive.
         time.sleep(0.5)
     if found_send_button:
         raise RuntimeError("V2_IMAGE_SEND_BUTTON_DISABLED")
