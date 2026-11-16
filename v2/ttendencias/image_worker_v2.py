@@ -338,6 +338,16 @@ def next_attempt(row, *, now=None):
     last_number, last = attempts[-1]
     if last.get("status") in ("saved", "bound_by_other"):
         return None
+    if last.get("status") == "pre_send_failed":
+        # No click or Enter occurred. Retry after a cooldown, without counting
+        # this as a transport attempt; preserve the previous journal.
+        try:
+            stamp = datetime.fromisoformat(last["at"])
+            if (now - stamp).total_seconds() < UNVERIFIED_SEND_COOLDOWN_SECONDS:
+                return None
+        except (ValueError, TypeError, KeyError):
+            return None
+        return last_number + 1
     if last.get("status") != "failed":
         return None  # Interrupted/uncertain send: no blind retry.
     observation = last.get("submission_observation") or {}
@@ -396,7 +406,7 @@ def new_image_chat(context, command_id):
     return page, composer
 
 
-def submit_image_prompt(page, composer, prompt, command_id):
+def submit_image_prompt(page, composer, prompt, command_id, *, before_click=None):
     """Send once through ChatGPT's enabled send button if available.
 
     A Playwright click/keypress is only an intent. The tracker must still
@@ -417,6 +427,10 @@ def submit_image_prompt(page, composer, prompt, command_id):
             if button.count() and button.is_visible():
                 found_send_button = True
                 if button.is_enabled() and button.get_attribute("aria-disabled") != "true":
+                    # Persist the send intent only when an enabled control exists.
+                    # If interrupted after this point, the attempt remains ambiguous.
+                    if before_click is not None:
+                        before_click()
                     button.click(timeout=10000)
                     return "send_button"
         # React may mount or enable the send button after filling the editor.
@@ -514,10 +528,13 @@ def run_one(row, attempt, *, api, auth):
                 editorial.store(journal, record)
             # An attempt may be repeated in a NEW chat after a timeout.
             # Do not send this same attempt twice if the process is interrupted.
-            record["status"] = "send_intent_recorded"
-            editorial.store(journal, record)
+            def record_send_intent():
+                record["status"] = "send_intent_recorded"
+                editorial.store(journal, record)
+
             record["send_trigger"] = submit_image_prompt(
-                page, composer, job["prompt"], job["command_id"])
+                page, composer, job["prompt"], job["command_id"],
+                before_click=record_send_intent)
             record["status"] = "sent_waiting_for_image"
             record["immediate_observation"] = tracker.submission_observation(
                 page, job["command_id"])
@@ -578,8 +595,14 @@ def run_one(row, attempt, *, api, auth):
     except Exception as exc:
         # The navigation or the browser itself might have ended after Enter.
         # In that case a new automatic attempt could create a duplicate image.
-        record["status"] = ("send_unverified" if str(exc) ==
-                            "V2_IMAGE_SEND_UNVERIFIED_NO_RESEND" else "failed")
+        if (record.get("status") == "starting"
+                and str(exc) in ("V2_IMAGE_SEND_BUTTON_UNAVAILABLE",
+                                 "V2_IMAGE_SEND_BUTTON_DISABLED",
+                                 "V2_IMAGE_PROMPT_NOT_IN_COMPOSER")):
+            record["status"] = "pre_send_failed"
+        else:
+            record["status"] = ("send_unverified" if str(exc) ==
+                                "V2_IMAGE_SEND_UNVERIFIED_NO_RESEND" else "failed")
         record["error"] = str(exc)[:250]
         editorial.store(journal, record)
         record_image_failure(api, auth, job, exc, journal=journal, record=record)
