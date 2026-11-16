@@ -38,8 +38,10 @@ try{
  await page.getByRole('button',{name:'Pendientes · '+view.counts.pending,exact:true}).click();
  await page.waitForFunction(n=>document.querySelectorAll('.news-card').length===n,Math.min(view.counts.pending,40));
  await page.locator('#news-search').fill(view.items.find(x=>x.group==='pending').title.slice(0,22));
- await page.waitForFunction(()=>document.querySelectorAll('.news-card').length>0&&document.querySelectorAll('.news-card').length<=25);
+ await page.waitForFunction(()=>document.getElementById('news-count').textContent.includes('encontradas'));
+ if(await page.locator('.news-card').count()<1)throw Error('Search lost matching source title');
  await page.locator('#news-search').fill('');
+ await page.waitForFunction(()=>!document.getElementById('news-count').textContent.includes('encontradas'));
  await page.waitForFunction(n=>document.querySelectorAll('.news-card').length===n,Math.min(view.counts.pending,40));
  fail=true;await page.locator('#refresh').click();
  await page.waitForFunction(()=>!document.getElementById('news-error').hidden);
