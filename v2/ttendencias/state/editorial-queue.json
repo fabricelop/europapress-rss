@@ -5306,19 +5306,27 @@
     "trv2-af0b742f05f3d58fde52b41d": {
       "trend_id": "trv2-af0b742f05f3d58fde52b41d",
       "name": "María Jesús",
-      "revision": 1,
-      "status": "capture_recovery",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "a3fd1740fd93b573",
-      "requested_at": "2026-11-16T01:16:14.811220+00:00",
-      "updated_at": "2026-11-16T01:20:21.275179+00:00",
+      "requested_at": "2026-11-16T01:41:32.817865+00:00",
+      "updated_at": "2026-11-16T01:41:32.817865+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "send_intent": {
-        "token": "f0c7876b1a11260eed7ff38a74f58e7d9a41ef71b94d1e78",
-        "at": "2026-11-16T01:18:34.174445+00:00"
-      },
-      "capture_recovery_reason": "chat_target_identity_not_verified"
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "capture_recovery",
+          "attempts": 1,
+          "chat_url": "https://chatgpt.com/c/local-chatgpt%3Ad9e2030d-1e26-480c-98cd-57bacc426f52",
+          "started_at": null,
+          "send_intent_at": "2026-11-16T01:18:34.174445+00:00",
+          "incident_reason": "chat_target_identity_not_verified",
+          "archived_at": "2026-11-16T01:41:32.817865+00:00"
+        }
+      ],
+      "incident_retries": 1
     },
     "trv2-c6dc01776dab17e1aa666ac3": {
       "trend_id": "trv2-c6dc01776dab17e1aa666ac3",
@@ -5643,10 +5651,10 @@
     "trv2-d1e304ac5e99bb429622a4ab",
     "trv2-0dba121c658ec493aaf4bdee",
     "trv2-984259232c463930f3ea3670",
-    "trv2-af0b742f05f3d58fde52b41d",
     "trv2-c6dc01776dab17e1aa666ac3",
     "trv2-c8ace1367df946d2e0d457f8",
-    "trv2-fd1fffcfbcaac39c4616c208"
+    "trv2-fd1fffcfbcaac39c4616c208",
+    "trv2-af0b742f05f3d58fde52b41d"
   ],
   "effects_enabled": false
 }
