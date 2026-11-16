@@ -1,0 +1,71 @@
+name: TTiTTulares V2 - Live source smoke (manual only)
+on:
+  workflow_dispatch:
+    inputs:
+      workers:
+        description: Maximum simultaneous source workers (1–16)
+        required: true
+        default: "8"
+      timeout:
+        description: Per-request timeout in seconds
+        required: true
+        default: "10"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ttittulares-v2-live-source-smoke
+  cancel-in-progress: false
+
+jobs:
+  fetch-live-sources:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/ttactualidad-v2-clean
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Read all configured sources (GET only, no persistence)
+        env:
+          FETCH_WORKERS: ${{ inputs.workers }}
+          FETCH_TIMEOUT: ${{ inputs.timeout }}
+        run: |
+          python -m v2.ttittulares.source_fetch_v2 --live --workers "$FETCH_WORKERS" --timeout "$FETCH_TIMEOUT" > "$RUNNER_TEMP/source-fetch-report.json"
+      - name: Summarise source health without saving radar state
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          report=json.loads(Path(os.environ["RUNNER_TEMP"] + "/source-fetch-report.json").read_text(encoding="utf-8"))
+          metrics=report["metrics"]
+          statuses=report["source_statuses"]
+          assert len(statuses)==27, f"Expected 27 source statuses; got {len(statuses)}"
+          lines=[
+              "# TTiTTulares V2 — live source smoke",
+              "",
+              f"- Sources checked: **{metrics['configured_sources']}**",
+              f"- Successful: **{metrics['successful_sources']}**",
+              f"- Degraded: **{metrics['degraded_sources']}**",
+              f"- Failed: **{metrics['failed_sources']}**",
+              f"- Retrieved rows: **{metrics['retrieved_rows']}**",
+              f"- Sources using fallback: **{metrics['fallback_sources']}**",
+              f"- Worker limit: **{metrics['parallel_workers']}**",
+              "",
+              "| Source | Type | State | Items | Fallback attempts | HTTP | Error |",
+              "|---|---|---:|---:|---:|---:|---|",
+          ]
+          for row in statuses:
+              state="OK" if row.get("ok") else ("DEGRADED" if row.get("degraded") else "FAILED")
+              error=(row.get("error") or "").replace("|","/")[:100]
+              lines.append("| {source} | {type} | {state} | {items} | {attempts} | {http} | {error} |".format(
+                  source=row["source"],type=row["type"],state=state,items=row.get("items",0),
+                  attempts=row.get("attempts",0),http=row.get("http_status") or "—",error=error))
+          lines += ["", "**Read-only smoke test. No candidates, queue jobs, editorials, images, or publication receipts were created.**"]
+          Path(os.environ["GITHUB_STEP_SUMMARY"]).write_text("\n".join(lines)+"\n",encoding="utf-8")
+          print("TTN2_LIVE_SOURCE_SMOKE",json.dumps(metrics,ensure_ascii=False))
+          PY
