@@ -47,7 +47,9 @@
      const link=node("a","news-source-link","Abrir noticia de origen ↗");link.href=target.href;link.target="_blank";link.rel="noopener noreferrer";body.append(link);
     }}catch{}
    }
-   card.append(body);list.append(card);
+   card.append(body);
+   TTImageIncidents.attach({card,head:summary,project:"ttittulares-v2",id:item.event_id,revision:item.revision,available:item.image_incident_available===true});
+   list.append(card);
    let loaded=false;
    const loadRecord=async()=>{
     if(loaded||item.group!=="ready")return;loaded=true;
@@ -100,4 +102,5 @@
  void refreshNews();
  setInterval(()=>{if(!document.hidden&&!state.loading)void refreshNews();},90000);
 })();
+
 

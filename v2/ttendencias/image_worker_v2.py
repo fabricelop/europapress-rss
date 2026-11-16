@@ -45,6 +45,147 @@ SEND_BUTTONS = (
 )
 HEADLESS = os.environ.get("TT_V2_IMAGE_CHROME_HEADLESS", "0").strip().lower() not in ("0", "false", "no")
 
+# Public diagnostics are a closed vocabulary. Raw Playwright/HTTP errors can
+# contain conversation URLs, request headers, cookies or executable paths.
+IMAGE_FAILURE_DETAILS = {
+    "V2_IMAGE_WORKER_FAILED": "No se pudo completar la imagen. Revise el proceso local de imágenes.",
+    "V2_IMAGE_PROFILE_LOGIN_REQUIRED": "El perfil de imágenes necesita una sesión de ChatGPT válida.",
+    "V2_IMAGE_CHROME_NOT_FOUND": "No se encontró el navegador configurado para imágenes.",
+    "V2_IMAGE_CDP_NOT_READY": "El navegador de imágenes no terminó de arrancar.",
+    "V2_IMAGE_OWN_CHROME_NOT_IDENTIFIED": "No se pudo verificar el navegador propio del trabajo.",
+    "V2_IMAGE_OWN_PROFILE_ALREADY_RUNNING": "El perfil de imágenes ya está ocupado por otro proceso.",
+    "V2_IMAGE_HIDDEN_CHROME_FAILED": "No se pudo comprobar el modo oculto del navegador de imágenes.",
+    "V2_IMAGE_V1_PORT_RESERVED": "El navegador no pudo obtener un puerto independiente.",
+    "V2_IMAGE_NEW_CHAT_ID_NOT_VERIFIED": "No se pudo confirmar la conversación nueva de imágenes.",
+    "V2_IMAGE_COMPOSER_UNAVAILABLE": "No se encontró el cuadro para enviar el encargo de imagen.",
+    "V2_IMAGE_PROMPT_NOT_IN_COMPOSER": "No se pudo comprobar el encargo antes de enviarlo.",
+    "V2_IMAGE_PROMPT_NOT_SUBMITTED": "El encargo no llegó a enviarse a ChatGPT.",
+    "V2_IMAGE_SEND_BUTTON_DISABLED": "ChatGPT no permitió enviar el encargo de imagen.",
+    "V2_IMAGE_SEND_UNVERIFIED_NO_RESEND": "El envío quedó sin confirmar. No se repetirá a ciegas.",
+    "V2_IMAGE_SEND_UNCERTAIN_NO_RESEND": "El envío quedó sin confirmar. Debe recuperarse la misma conversación.",
+    "V2_IMAGE_NOT_READY": "No se recuperó una imagen terminada dentro del tiempo de espera.",
+    "V2_IMAGE_CHAT_CHANGED": "La conversación no coincide con la asignada a esta imagen.",
+    "V2_IMAGE_WRONG_CHAT_JOB": "La conversación no contiene el encargo exacto de esta imagen.",
+    "V2_IMAGE_EDITORIAL_CHAT_NOT_VERIFIED": "No se pudo verificar el contexto editorial de la imagen.",
+    "V2_IMAGE_EDITORIAL_TURN_CHANGED": "El contexto editorial cambió durante el trabajo de imagen.",
+    "V2_IMAGE_EDITORIAL_CHANGED": "La revisión editorial cambió antes de asociar la imagen.",
+    "V2_IMAGE_BROWSER_RASTER_MISMATCH": "La imagen recuperada no coincide con el original del navegador.",
+    "V2_IMAGE_ORIGINAL_SIZE_INVALID": "El archivo recuperado no tiene un tamaño de imagen válido.",
+    "V2_IMAGE_ORIGINAL_FORMAT_OR_DIMENSIONS_INVALID": "El original no cumple el formato o las dimensiones requeridas.",
+    "V2_IMAGE_GITHUB_AUTH_MISSING": "Falta la autenticación necesaria para guardar la imagen.",
+    "V2_IMAGE_GITHUB_HTTP_ERROR": "No se pudo completar la comunicación para guardar la imagen.",
+    "V2_IMAGE_GITHUB_COMMIT_MISSING": "El guardado de la imagen no obtuvo confirmación.",
+    "V2_IMAGE_GITHUB_READBACK_FAILED": "No se pudo releer la imagen guardada para verificarla.",
+    "V2_IMAGE_GITHUB_WRITE_UNVERIFIED": "No se pudo verificar el guardado de la imagen.",
+    "V2_IMAGE_GITHUB_EXISTING_RASTER_CONFLICT": "Ya existe otro original para esta identidad editorial.",
+    "V2_IMAGE_GITHUB_CONFLICT_NO_REPLAY": "El guardado coincidió con otro cambio y necesita revisión.",
+    "V2_IMAGE_QUEUE_RECEIPT_NOT_SAVED": "No se confirmó la asociación de la imagen con esta revisión.",
+    "V2_IMAGE_REMOTE_RECEIPT_INVALID": "La confirmación de imagen recibida no es válida.",
+    "V2_IMAGE_RECEIPT_CONFLICT": "La confirmación corresponde a otro trabajo de imagen.",
+    "V2_IMAGE_LOCAL_ORIGINAL_CONFLICT": "La copia local del original tiene una identidad distinta.",
+    "V2_IMAGE_ATTEMPT_ALREADY_RECORDED_NO_RESEND": "Este intento ya está registrado y no se repetirá a ciegas.",
+}
+
+
+def safe_image_failure(exc):
+    """Map only exact known codes; never publish arbitrary exception text."""
+    raw = str(exc)
+    if raw in IMAGE_FAILURE_DETAILS:
+        code = raw
+    elif raw.startswith("V2_IMAGE_NOT_READY:"):
+        code = "V2_IMAGE_NOT_READY"
+    elif re.fullmatch(r"V2_IMAGE_GITHUB_HTTP_[1-5][0-9]{2}", raw):
+        code = "V2_IMAGE_GITHUB_HTTP_ERROR"
+    else:
+        code = "V2_IMAGE_WORKER_FAILED"
+    return {"code": code, "detail_safe": IMAGE_FAILURE_DETAILS[code],
+            "retry_mode": "recover_same_chat" if code in (
+                "V2_IMAGE_SEND_UNVERIFIED_NO_RESEND", "V2_IMAGE_SEND_UNCERTAIN_NO_RESEND",
+                "V2_IMAGE_NEW_CHAT_ID_NOT_VERIFIED", "V2_IMAGE_ATTEMPT_ALREADY_RECORDED_NO_RESEND")
+            else "manual_only"}
+
+
+def persist_image_incident(api, auth, job, exc, *, at=None):
+    """CAS the current revision's failure and verify it without changing text.
+
+    No retry/generation policy is altered. An older failed attempt cannot replace
+    a newer active attempt, a newer incident or a successfully attached original.
+    """
+    tid, rev, command = job["trend_id"], job["revision"], job["command_id"]
+    expected_hash = job["editorial_sha256"]
+    if (not re.fullmatch(r"trv2-[a-f0-9]{24}", str(tid)) or type(rev) is not int or rev < 1
+        or not re.fullmatch(r"[a-f0-9]{64}", str(expected_hash))
+        or not re.fullmatch(r"v2-img-" + re.escape(tid) + r"-r" + str(rev) + r"-a[1-9][0-9]*-[A-Za-z0-9_-]{8,60}", str(command))):
+        raise RuntimeError("V2_IMAGE_INCIDENT_IDENTITY_INVALID")
+    when = at or datetime.now(timezone.utc)
+    if not isinstance(when, datetime) or when.tzinfo is None or when.utcoffset() is None:
+        raise RuntimeError("V2_IMAGE_INCIDENT_TIMESTAMP_INVALID")
+    incident = {"project": "ttendencias-v2", "trend_id": tid, "revision": rev,
+                "editorial_sha256": expected_hash, "command_id": command,
+                "at": when.astimezone(timezone.utc).isoformat(), **safe_image_failure(exc)}
+    for retry in range(6):
+        queue, sha = editorial.queue_read(api, auth)
+        row = (queue.get("items") or {}).get(tid) or {}
+        cap = row.get("capture") or {}
+        if (row.get("status") not in ("captured_review", "ready") or row.get("revision") != rev
+            or cap.get("revision") != rev or cap.get("sha256") != expected_hash
+            or (cap.get("image") or {}).get("status") == "saved"):
+            return False
+        progress = row.get("image_progress") or {}
+        if progress.get("status") == "in_progress" and progress.get("command_id") != command:
+            try:
+                expiry = datetime.fromisoformat(progress.get("expires_at", "").replace("Z", "+00:00"))
+                if expiry.tzinfo and expiry > datetime.now(timezone.utc):
+                    return False
+            except (ValueError, TypeError, AttributeError):
+                return False  # uncertain ownership cannot be overwritten
+        current = row.get("image_incident") or {}
+        if (current.get("command_id") == command and current.get("code") == incident["code"]
+            and current.get("revision") == rev and current.get("editorial_sha256") == expected_hash):
+            # Readback/retry after a lost write response is idempotent.
+            return True
+        if current.get("revision") == rev and current.get("editorial_sha256") == expected_hash:
+            try:
+                previous_at = datetime.fromisoformat(current.get("at", "").replace("Z", "+00:00"))
+                if previous_at.tzinfo and previous_at > when:
+                    return False
+            except (ValueError, TypeError, AttributeError):
+                pass
+        row["image_incident"] = incident
+        try:
+            editorial.queue_write(api, auth, sha, queue, "record image incident " + tid)
+            verified, _ = editorial.queue_read(api, auth)
+            latest = (verified.get("items") or {}).get(tid) or {}
+            saved = (latest.get("capture") or {}).get("image") or {}
+            if saved.get("status") == "saved":
+                return False
+            if (latest.get("revision") == rev and (latest.get("capture") or {}).get("sha256") == expected_hash
+                and latest.get("image_incident") == incident):
+                return True
+            raise RuntimeError("V2_IMAGE_INCIDENT_READBACK_UNVERIFIED")
+        except Exception:
+            # Re-read before any retry: a timeout may already have committed.
+            # The original image failure is reported separately and never resent.
+            if retry == 5:
+                raise RuntimeError("V2_IMAGE_INCIDENT_PERSISTENCE_UNVERIFIED") from None
+            time.sleep(min(retry + 1, 4))
+    return False
+
+
+def record_image_failure(api, auth, job, exc, *, journal=None, record=None):
+    """Best-effort reporting cannot mask the image failure or block READY text."""
+    try:
+        persisted = persist_image_incident(api, auth, job, exc)
+        projection = sync_image_progress(auth) if persisted else "not_current_revision"
+    except Exception:
+        persisted, projection = False, "incident_persistence_unverified"
+    if record is not None:
+        record["image_incident_persisted"] = persisted
+        record["image_incident_projection"] = projection
+        if journal is not None:
+            editorial.store(journal, record)
+    return persisted
+
 
 def image_profile_pids():
     """Only image Chrome children; editorial/V1 may run at the same time."""
@@ -285,18 +426,24 @@ def submit_image_prompt(page, composer, prompt, command_id):
 def run_one(row, attempt, *, api, auth):
     """Isolated lifecycle, safe even while editorial Chrome is running."""
     tid, rev = row["trend_id"], row["revision"]
-    if image_profile_pids():
-        raise RuntimeError("V2_IMAGE_OWN_PROFILE_ALREADY_RUNNING")
-    if not CHROME.exists():
-        raise RuntimeError("V2_IMAGE_CHROME_NOT_FOUND")
-    if not PROFILE.is_dir():
-        raise RuntimeError("V2_IMAGE_PROFILE_LOGIN_REQUIRED")
-    if journal_path(tid, rev, attempt).exists():
-        raise RuntimeError("V2_IMAGE_ATTEMPT_ALREADY_RECORDED_NO_RESEND")
     # The job is immutable for this attempt. Its destination chat URL will be
     # updated only after ChatGPT's new conversation is proven to contain it.
     job = jobs.proposed_job(row, attempt=attempt,
                             nonce=secrets.token_hex(12))
+    try:
+        if image_profile_pids():
+            raise RuntimeError("V2_IMAGE_OWN_PROFILE_ALREADY_RUNNING")
+        if not CHROME.exists():
+            raise RuntimeError("V2_IMAGE_CHROME_NOT_FOUND")
+        if not PROFILE.is_dir():
+            raise RuntimeError("V2_IMAGE_PROFILE_LOGIN_REQUIRED")
+        if journal_path(tid, rev, attempt).exists():
+            raise RuntimeError("V2_IMAGE_ATTEMPT_ALREADY_RECORDED_NO_RESEND")
+    except Exception as exc:
+        # Preserve the preflight/journal retry contract: reporting creates no
+        # journal, no send intent, no Chrome and no additional attempt.
+        record_image_failure(api, auth, job, exc)
+        raise
     github.current_editorial(job, auth)
     JOURNALS.mkdir(parents=True, exist_ok=True)
     journal = journal_path(tid, rev, attempt)
@@ -429,6 +576,7 @@ def run_one(row, attempt, *, api, auth):
                             "V2_IMAGE_SEND_UNVERIFIED_NO_RESEND" else "failed")
         record["error"] = str(exc)[:250]
         editorial.store(journal, record)
+        record_image_failure(api, auth, job, exc, journal=journal, record=record)
         raise
     finally:
         if progress_registered:
@@ -500,3 +648,4 @@ if __name__ == "__main__":
     except Exception as exc:
         print("TT_V2_IMAGE_WORKER_ERROR=" + str(exc)[:250], file=sys.stderr)
         sys.exit(1)
+

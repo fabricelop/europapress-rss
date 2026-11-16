@@ -1,5 +1,6 @@
 // Read-only V2 news projection. No V1 fallback, D1 writes or editorial execution.
 const ID=/^ttn2-[a-f0-9]{24}$/;
+import {projectImageIncident} from "./image-incidents.js";
 const ACTIVE=new Set(["claimed","send_intent","awaiting_response","capture_recovery","captured","validating","persisting"]);
 const GROUPS=new Set(["pending","detected","working","ready","incident","archived"]);
 export const NEWS_SOURCE="https://raw.githubusercontent.com/fabricelop/europapress-rss/feature/ttactualidad-v2-clean/v2/ttittulares/state/";
@@ -47,7 +48,8 @@ export function projectNews(index,queue,clock=Date.now()){
    group,status_label:label,source_families:families,source_family_count:families.length,
    source_url:(item.canonical_urls||[]).map(url).find(Boolean)||null,
    first_seen_at:stamp(item.first_seen_at),last_seen_at:stamp(item.last_seen_at),
-   explanation:null,publication_allowed:false});
+   explanation:null,publication_allowed:false,
+   image_incident_available:/^[a-f0-9]{64}$/.test(item.editorial_sha256||"")&&projectImageIncident(item.image_incident,{project:"ttittulares-v2",id,revision:item.current_revision,editorialHash:item.editorial_sha256})!==null});
  }
  for(const id of jobs.keys())if(!index.items[id])throw Error("NEWS_ORPHAN_QUEUE_ENTRY");
  items.sort((a,b)=>(Date.parse(b.first_seen_at)||0)-(Date.parse(a.first_seen_at)||0)||a.event_id.localeCompare(b.event_id));
@@ -104,4 +106,5 @@ export async function readNewsRecord(id,revision,{fetcher=fetch}={}){
  const text=await response.text();if(text.length>100000)throw Error("NEWS_RECORD_TOO_LARGE");
  return validateNewsRecord(JSON.parse(text),id,revision);
 }
+
 

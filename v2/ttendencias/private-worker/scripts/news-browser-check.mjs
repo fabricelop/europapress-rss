@@ -12,7 +12,9 @@ let fail=false,demoReady=false;
 const example=view.items.find(x=>x.group==='pending');
 const demoTweet="Una explicación breve de prueba, con hechos contrastados y preparada para un tuit. #Prueba #Noticias";
 const demoRecord={event_id:example.event_id,revision:example.revision,tweet_text:demoTweet,x_character_count:demoTweet.length};
-const readyView={...view,items:[{...example,group:'ready',status_label:'Elaborada'}],counts:{...view.counts,ready:1}};
+const readyView={...view,items:[{...example,group:'ready',status_label:'Elaborada',image_incident_available:true}],counts:{...view.counts,ready:1}};
+const demoIncident={project:'ttittulares-v2',target_id:example.event_id,revision:example.revision,available:true,
+ incident:{code:'NEWS_IMAGE_ORIGINAL_MISSING',detail:'No se ha podido recuperar el original de la imagen.',at:new Date().toISOString()}};
 const requests=[];
 const server=http.createServer(async(req,res)=>{
  const u=new URL(req.url,'http://localhost');requests.push(u.pathname);
@@ -22,6 +24,7 @@ const server=http.createServer(async(req,res)=>{
   res.end(JSON.stringify(pageNews(demoReady?readyView:view,u.searchParams)));return;
  }
  if(u.pathname.startsWith('/api/news/')&&demoReady){res.setHeader('Content-Type','application/json');res.end(JSON.stringify(demoRecord));return;}
+ if(u.pathname==='/api/image-incidents'&&demoReady){res.setHeader('Content-Type','application/json');res.end(JSON.stringify(demoIncident));return;}
  if(u.pathname.startsWith('/api/')){res.setHeader('Content-Type','application/json');res.end('{}');return;}
  const file=path.join(root,u.pathname==='/'?'index.html':u.pathname);
  try{const content=await fs.readFile(file);res.setHeader('Content-Type',file.endsWith('.js')?'text/javascript':file.endsWith('.css')?'text/css':'text/html');res.end(content);}catch{res.statusCode=404;res.end();}
@@ -69,7 +72,17 @@ try{
  await page.locator('.news-card summary').first().click();
  await page.waitForFunction(text=>document.querySelector('.news-tweet')?.textContent===text,demoTweet);
  if(!(await page.locator('.news-tweet-count').textContent()).includes('/ 280'))throw Error('Tweet counter missing');
+ if(requests.includes('/api/image-incidents'))throw Error('Image incident was fetched before clicking I');
+ await page.getByRole('button',{name:'Incidencia de imagen',exact:true}).click();
+ await page.getByText(demoIncident.incident.detail,{exact:true}).waitFor({state:'visible'});
+ if(await page.locator('.news-card[open]').count()!==1)throw Error('I did not open the exact card');
+ await page.screenshot({path:path.join(shots,'news-image-incident-mobile.png'),fullPage:false});
+ await page.getByRole('button',{name:'Incidencia de imagen',exact:true}).click();
+ await page.getByRole('button',{name:'Incidencia de imagen',exact:true}).click();
+ if(requests.filter(p=>p==='/api/image-incidents').length!==1)throw Error('Incident detail did not reuse the exact cached revision');
+ await page.setViewportSize({width:1280,height:1000});
+ await page.screenshot({path:path.join(shots,'news-image-incident-desktop.png'),fullPage:false});
  if(errors.length)throw Error(errors.join('; '));
- console.log('NEWS_BROWSER_QA=PASS; default Elaboradas/compact one-line filters/short READY tweet/paging/search/error retention/mobile=OK');
+ console.log('NEWS_BROWSER_QA=PASS; default Elaboradas/compact filters/short READY tweet/paging/search/error retention/mobile/image incident I lazy detail=OK');
 }finally{await browser.close();server.close();}
 

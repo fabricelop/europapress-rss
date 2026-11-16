@@ -90,6 +90,30 @@ def live_image_progress_for_revision(item, *, now=None):
         return False
 
 
+def image_incident_for_revision(item, *, now=None):
+    """Only signal a durable image failure of the exact visible editorial text.
+
+    Public snapshots carry a boolean; private details are fetched only on click.
+    Never project incident strings, commands, journals or conversation URLs here.
+    """
+    incident = item.get("image_incident") or {}
+    cap = item.get("capture") or {}
+    if (item.get("status") not in ("captured_review", "ready")
+        or incident.get("project") != "ttendencias-v2" or incident.get("trend_id") != item.get("trend_id")
+        or type(item.get("revision")) is not int or incident.get("revision") != item.get("revision")
+        or cap.get("revision") != item.get("revision")
+        or not re.fullmatch(r"[a-f0-9]{64}", str(cap.get("sha256")))
+        or incident.get("editorial_sha256") != cap.get("sha256")
+        or not re.fullmatch(r"V2_IMAGE_[A-Z0-9_]{2,90}", str(incident.get("code")))
+        or saved_image_for_revision(item) or live_image_progress_for_revision(item, now=now)):
+        return False
+    try:
+        at = datetime.fromisoformat(incident.get("at", "").replace("Z", "+00:00"))
+        return at.tzinfo is not None and at <= (now or datetime.now(timezone.utc))
+    except (ValueError, TypeError, AttributeError):
+        return False
+
+
 def build(history, queue):
     if (history.get("step") != "03_movement" or history.get("country") != "ES"
         or queue.get("step") != "04_editorial_queue"
@@ -179,6 +203,8 @@ def build(history, queue):
             "image_available": image_available,
             "image_in_progress": (category == "explicada" and not image_available
                                   and live_image_progress_for_revision(item)),
+            "image_incident_available": (category == "explicada" and not image_available
+                                         and image_incident_for_revision(item)),
             "movement": topic.get("last_change") or "",
             "previous_rank": topic.get("previous_rank") if isinstance(topic.get("previous_rank"), int) else None,
             "positions_changed": topic.get("positions_changed") if isinstance(topic.get("positions_changed"), int) else None,
@@ -304,3 +330,4 @@ if __name__ == "__main__":
     except Exception as exc:
         print("TT_V2_WEB_TOP30_ERROR=" + str(exc), file=sys.stderr)
         sys.exit(1)
+
