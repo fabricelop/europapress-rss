@@ -14,6 +14,7 @@ Actualización: 15 de noviembre de 2026.
 - No mencionar «TTActualidad V2», IDs, revisiones ni metadatos del sistema en los párrafos periodísticos finales.
 
 ## Imágenes
+- Las imágenes de revisiones RE/RE-X se generan mediante `image_worker_v2.py` igual que las de una tendencia nueva: `image_job_v2.proposed_job` emplea el `capture.answer` de la **revisión actual**, con un identificador nuevo, sin reutilizar la conversación editorial ni la imagen antigua. A partir del protocolo de envío 2, se prefiere el botón de enviar de ChatGPT sobre Enter, se conserva un diagnóstico sin contenido privado cuando no se crea chat, y cada revisión agotada en el protocolo anterior puede recibir un presupuesto acotado de intentos nuevos sin sobrescribir diarios antiguos. Las pruebas locales no sustituyen una prueba real en el perfil Windows del usuario.
 - V2 privada puede mostrar imágenes sensibles.
 - Interruptor de imagen pública: cuando está desactivado, oculta imagen solo en V1; un tema sensible se oculta por defecto salvo decisión editorial expresa.
 - Botón de supresión total: la referencia queda bloqueada en V1 y V2; no afecta al texto de la tendencia.
