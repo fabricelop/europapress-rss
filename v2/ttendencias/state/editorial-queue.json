@@ -7303,19 +7303,27 @@
     "trv2-53a46836d604666efe3b29ac": {
       "trend_id": "trv2-53a46836d604666efe3b29ac",
       "name": "ATP Finals",
-      "revision": 1,
-      "status": "capture_recovery",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "c067bc198d5808f8",
-      "requested_at": "2026-11-16T15:05:10.615017+00:00",
-      "updated_at": "2026-11-16T15:18:02.698622+00:00",
+      "requested_at": "2026-11-16T15:28:50.950333+00:00",
+      "updated_at": "2026-11-16T15:28:50.950333+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "send_intent": {
-        "token": "71681a717abafc3cce5ed7dbd2ce435dc158fd11740d4ea8",
-        "at": "2026-11-16T15:15:55.863023+00:00"
-      },
-      "capture_recovery_reason": "chat_target_identity_not_verified"
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "capture_recovery",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": null,
+          "send_intent_at": "2026-11-16T15:15:55.863023+00:00",
+          "incident_reason": "chat_target_identity_not_verified",
+          "archived_at": "2026-11-16T15:28:50.950333+00:00"
+        }
+      ],
+      "incident_retries": 1
     },
     "trv2-3b6d176cc1abdee9923907ac": {
       "trend_id": "trv2-3b6d176cc1abdee9923907ac",
@@ -7631,7 +7639,6 @@
     "trv2-3b6d176cc1abdee9923907ac",
     "trv2-40e5f6d6ca4c9f2053e2df2b",
     "trv2-45d469e5a5ae3862d096b0c6",
-    "trv2-53a46836d604666efe3b29ac",
     "trv2-7d15ee05127c6a53771f3398",
     "trv2-b57e1a23cc6ddd97be311e56",
     "trv2-bee016c5447c38d3caf16974",
@@ -7641,7 +7648,8 @@
     "trv2-3c35310ed712f91538d3a54f",
     "trv2-e1cb73b626176b23c8499621",
     "trv2-7d180b40af009acfea255760",
-    "trv2-2b8d9ca61a746b89f1556fde"
+    "trv2-2b8d9ca61a746b89f1556fde",
+    "trv2-53a46836d604666efe3b29ac"
   ],
   "effects_enabled": false
 }
