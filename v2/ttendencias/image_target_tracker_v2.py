@@ -70,6 +70,33 @@ def verify_image_turn(page, command_id):
         return False
 
 
+def submission_observation(page, command_id):
+    """Safe diagnosis when ChatGPT never exposes a new conversation URL.
+
+    No editor text, cookies, or raw prompts are copied into the journal.
+    """
+    result = {"url": canonical(page.url),
+              "user_turn_contains_command": verify_image_turn(page, command_id),
+              "composer_contains_command": False}
+    for selector in (
+        "#prompt-textarea", "[data-testid='prompt-textarea']",
+        "[contenteditable='true'][role='textbox']"
+    ):
+        try:
+            node = page.locator(selector).first
+            if not node.count() or not node.is_visible():
+                continue
+            try:
+                content = node.input_value(timeout=2000)
+            except Exception:
+                content = node.text_content(timeout=2000) or ""
+            result["composer_contains_command"] = command_id in content
+            break
+        except Exception:
+            result["composer_inspection_failed"] = True
+    return result
+
+
 def await_image_conversation(browser, starting_page, command_id, *,
                              seconds=150, baseline_urls=()):
     """Find and verify fresh ChatGPT conversation from all Chrome CDP targets."""
