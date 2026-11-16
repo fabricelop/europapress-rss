@@ -7080,24 +7080,27 @@
     "trv2-fdfbe4dc38a784cd5a45d95f": {
       "trend_id": "trv2-fdfbe4dc38a784cd5a45d95f",
       "name": "Tiafoe",
-      "revision": 1,
-      "status": "in_progress",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "a4a1dda8addf3c4a",
-      "requested_at": "2026-11-16T15:05:10.615017+00:00",
-      "updated_at": "2026-11-16T15:06:17.392307+00:00",
+      "requested_at": "2026-11-16T15:54:08.249328+00:00",
+      "updated_at": "2026-11-16T15:54:08.249328+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "lease": {
-        "token": "35c8db8f54f488463a33235c17a8c8f46420d40a7173747d",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-16T15:05:42.296695+00:00",
-        "expires_at": "2026-11-16T15:45:42.296695+00:00"
-      },
-      "send_intent": {
-        "token": "35c8db8f54f488463a33235c17a8c8f46420d40a7173747d",
-        "at": "2026-11-16T15:06:17.391189+00:00"
-      }
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-16T15:05:42.296695+00:00",
+          "send_intent_at": "2026-11-16T15:06:17.391189+00:00",
+          "incident_reason": "lease_expired_without_capture",
+          "archived_at": "2026-11-16T15:54:08.249328+00:00"
+        }
+      ],
+      "incident_retries": 1
     },
     "trv2-103982d66f094b759feb6e33": {
       "trend_id": "trv2-103982d66f094b759feb6e33",
@@ -7655,14 +7658,14 @@
     "trv2-7d15ee05127c6a53771f3398",
     "trv2-b57e1a23cc6ddd97be311e56",
     "trv2-bee016c5447c38d3caf16974",
-    "trv2-fdfbe4dc38a784cd5a45d95f",
     "trv2-f716b62242c54dba91de19dc",
     "trv2-103982d66f094b759feb6e33",
     "trv2-3c35310ed712f91538d3a54f",
     "trv2-e1cb73b626176b23c8499621",
     "trv2-7d180b40af009acfea255760",
     "trv2-2b8d9ca61a746b89f1556fde",
-    "trv2-53a46836d604666efe3b29ac"
+    "trv2-53a46836d604666efe3b29ac",
+    "trv2-fdfbe4dc38a784cd5a45d95f"
   ],
   "effects_enabled": false
 }
