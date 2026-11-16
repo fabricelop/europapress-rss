@@ -51,7 +51,35 @@ def store(path, data):
 
 def queue_read(api, auth):
     fetched = api.request("GET", auth)
-    q = json.loads(base64.b64decode(fetched["content"]).decode("utf-8"))
+    content = fetched.get("content") or ""
+    if fetched.get("encoding") == "base64" and content:
+        raw = base64.b64decode("".join(content.split()), validate=True)
+    elif fetched.get("encoding") == "none" and not content:
+        import urllib.request
+        sha = fetched.get("sha")
+        if not sha:
+            raise RuntimeError("V2_QUEUE_SHA_MISSING")
+        headers = {"User-Agent": "TTActualidadV2-QueueReader",
+                   "Accept": "application/vnd.github+json"}
+        if auth:
+            headers["Authorization"] = "Bearer " + auth
+        req = urllib.request.Request(
+            "https://api.github.com/repos/fabricelop/europapress-rss/git/blobs/" + sha,
+            headers=headers,
+        )
+        with urllib.request.urlopen(req, timeout=45) as response:
+            blob = json.load(response)
+        if blob.get("encoding") != "base64":
+            raise RuntimeError("V2_QUEUE_BLOB_ENCODING_INVALID")
+        raw = base64.b64decode("".join(blob["content"].split()), validate=True)
+    else:
+        raise RuntimeError("V2_QUEUE_CONTENT_UNAVAILABLE")
+    actual_sha = hashlib.sha1(
+        b"blob " + str(len(raw)).encode("ascii") + bytes([0]) + raw
+    ).hexdigest()
+    if actual_sha != fetched.get("sha"):
+        raise RuntimeError("V2_QUEUE_SHA_MISMATCH_RETRY")
+    q = json.loads(raw.decode("utf-8-sig"))
     if q.get("effects_enabled") is not False or q.get("step") != "04_editorial_queue":
         raise RuntimeError("No es la cola editorial V2 segura")
     return q, fetched["sha"]
