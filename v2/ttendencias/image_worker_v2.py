@@ -31,7 +31,17 @@ PROFILE = pathlib.Path(os.environ.get("TT_V2_IMAGE_PROFILE", str(ROOT / "ChromeP
 JOURNALS = ROOT / "image-only-journals"
 CHROME = editorial.CHROME
 COOLDOWN_SECONDS = 240
+IMAGE_SEND_PROTOCOL = 2
+MAX_PROTOCOL_ATTEMPTS = 3
+UNVERIFIED_SEND_COOLDOWN_SECONDS = 900
 COMPOSERS = editorial.COMPOSERS
+SEND_BUTTONS = (
+    'button[data-testid="send-button"]',
+    'button[data-testid="composer-send-button"]',
+    'button[aria-label="Send prompt"]',
+    'button[aria-label="Send message"]',
+    'button[aria-label="Enviar mensaje"]',
+)
 HEADLESS = os.environ.get("TT_V2_IMAGE_CHROME_HEADLESS", "0").strip().lower() not in ("0", "false", "no")
 
 
@@ -142,19 +152,49 @@ def journal_path(trend_id, revision, attempt):
 
 
 def next_attempt(row, *, now=None):
-    """Retries are allowed; a recent failed attempt only delays its own trend."""
+    """A new transport version gets a small, bounded retry budget.
+
+    Previously exhausted RE/RE-X revisions are handled like fresh revisions
+    without recycling prior command identities. A broken browser cannot
+    silently consume another 99 attempts.
+    """
     now = now or datetime.now(timezone.utc)
     tid, rev = row["trend_id"], row["revision"]
-    previous = sorted(JOURNALS.glob("%s-r%d-attempt-*.json" % (tid, rev)))
-    if len(previous) >= 99:
-        return None  # No reciclar el identificador de comando del intento 99.
-    if previous:
-        last = json.loads(previous[-1].read_text(encoding="utf-8"))
-        if last.get("status") not in ("saved", "bound_by_other"):
+    attempts = []
+    for path in JOURNALS.glob("%s-r%d-attempt-*.json" % (tid, rev)):
+        try:
+            number = int(path.stem.rsplit("-", 1)[1])
+            record = json.loads(path.read_text(encoding="utf-8"))
+            attempts.append((number, record))
+        except (ValueError, KeyError, json.JSONDecodeError):
+            return None  # Ambiguous journal: never risk duplicate submission.
+    attempts.sort(key=lambda item: item[0])
+    if not attempts:
+        return 1
+    last_number, last = attempts[-1]
+    if last.get("status") in ("saved", "bound_by_other"):
+        return None
+    if last.get("status") != "failed":
+        return None  # Interrupted/uncertain send: no blind retry.
+    current = [record for _, record in attempts
+               if record.get("send_protocol") == IMAGE_SEND_PROTOCOL]
+    if len(current) >= MAX_PROTOCOL_ATTEMPTS:
+        return None
+    if current:
+        try:
+            stamp = datetime.fromisoformat(last["at"])
+            if (now - stamp).total_seconds() < UNVERIFIED_SEND_COOLDOWN_SECONDS:
+                return None
+        except (ValueError, TypeError, KeyError):
+            return None
+    elif last_number < 99:
+        try:
             stamp = datetime.fromisoformat(last["at"])
             if (now - stamp).total_seconds() < COOLDOWN_SECONDS:
                 return None
-    return len(previous) + 1
+        except (ValueError, TypeError, KeyError):
+            return None
+    return last_number + 1
 
 
 def pick_next(queue, history, *, now=None):
@@ -185,6 +225,38 @@ def new_image_chat(context, command_id):
     return page, composer
 
 
+def submit_image_prompt(page, composer, prompt, command_id):
+    """Send once through ChatGPT's enabled send button if available.
+
+    A Playwright click/keypress is only an intent. The tracker must still
+    verify the exact user turn before the image is accepted.
+    """
+    composer.fill(prompt)
+    try:
+        entered = composer.input_value(timeout=3000)
+    except Exception:
+        entered = composer.text_content(timeout=3000) or ""
+    if command_id not in entered:
+        raise RuntimeError("V2_IMAGE_PROMPT_NOT_IN_COMPOSER")
+    found_send_button = False
+    deadline = time.monotonic() + 15
+    while time.monotonic() < deadline:
+        for selector in SEND_BUTTONS:
+            button = page.locator(selector).first
+            if button.count() and button.is_visible():
+                found_send_button = True
+                if button.is_enabled():
+                    button.click(timeout=10000)
+                    return "send_button"
+        if not found_send_button:
+            break
+        time.sleep(0.5)
+    if found_send_button:
+        raise RuntimeError("V2_IMAGE_SEND_BUTTON_DISABLED")
+    composer.press("Enter")
+    return "enter"
+
+
 def run_one(row, attempt, *, api, auth):
     """Isolated lifecycle, safe even while editorial Chrome is running."""
     tid, rev = row["trend_id"], row["revision"]
@@ -198,7 +270,7 @@ def run_one(row, attempt, *, api, auth):
         raise RuntimeError("V2_IMAGE_ATTEMPT_ALREADY_RECORDED_NO_RESEND")
     # The job is immutable for this attempt. Its destination chat URL will be
     # updated only after ChatGPT's new conversation is proven to contain it.
-    job = jobs.proposed_job(row, attempt=min(attempt, 99),
+    job = jobs.proposed_job(row, attempt=attempt,
                             nonce=secrets.token_hex(12))
     github.current_editorial(job, auth)
     JOURNALS.mkdir(parents=True, exist_ok=True)
@@ -206,6 +278,7 @@ def run_one(row, attempt, *, api, auth):
     record = {"at": datetime.now(timezone.utc).isoformat(),
               "trend_id": tid, "revision": rev, "attempt": attempt,
               "command_id": job["command_id"], "status": "starting",
+              "send_protocol": IMAGE_SEND_PROTOCOL,
               "publication_allowed": False}
     editorial.store(journal, record)
     process = None
@@ -265,16 +338,21 @@ def run_one(row, attempt, *, api, auth):
             # Do not send this same attempt twice if the process is interrupted.
             record["status"] = "send_intent_recorded"
             editorial.store(journal, record)
-            composer.fill(job["prompt"])
-            composer.press("Enter")
+            record["send_trigger"] = submit_image_prompt(
+                page, composer, job["prompt"], job["command_id"])
             record["status"] = "sent_waiting_for_image"
             editorial.store(journal, record)
+            submitted_page = page
             page, discovery = tracker.await_image_conversation(
                 browser, page, job["command_id"], seconds=150,
                 baseline_urls=baseline)
             record["chat_discovery"] = discovery
+            record["submission_observation"] = tracker.submission_observation(
+                submitted_page, job["command_id"])
             editorial.store(journal, record)
             if page is None:
+                if record["submission_observation"].get("composer_contains_command"):
+                    raise RuntimeError("V2_IMAGE_PROMPT_NOT_SUBMITTED")
                 raise RuntimeError("V2_IMAGE_NEW_CHAT_ID_NOT_VERIFIED")
             url = discovery["url"]
             job["conversation_url"] = url
