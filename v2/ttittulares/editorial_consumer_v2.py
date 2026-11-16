@@ -118,6 +118,8 @@ def run_one(service, config, *, browser_factory=ChromeJob, parse=None, build=Non
         # browser URLs or credentials from a generic exception.
         journal['error_type'] = type(exc).__name__
         journal['error_code'] = error_code(exc)
+        if browser and isinstance(getattr(browser, 'startup_diagnostic', None), dict):
+            journal['startup_diagnostic'] = browser.startup_diagnostic
         if ('AUTH' in journal['error_code'] and 'NEWS_' in journal['error_code']):
             # A missing login affects the whole consumer, not the facts of the
             # next 100 stories. Stop new claims while other slots finish safely.
@@ -142,6 +144,7 @@ def run_one(service, config, *, browser_factory=ChromeJob, parse=None, build=Non
             write_private(journal_path, journal)
         return {'status': 'incident', 'job_id': job_id, 'published': False,
                 'error_type': type(failure).__name__, 'error_code': error_code(failure),
+                **({'startup_diagnostic': journal['startup_diagnostic']} if journal.get('startup_diagnostic') else {}),
                 'cleanup_verified': journal['cleanup_verified']}
     # Text may only become ready after our own browser has closed. complete()
     # verifies the immutable record before updating event/index/job to ready.

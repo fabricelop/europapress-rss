@@ -189,6 +189,8 @@ class ChromeJob:
         self.sent = False
         self.port = None
         self.profile_owned = False
+        self.startup_diagnostic = None
+        self.chrome_log = None
 
     def open(self):
         if os.name != 'nt' or not self.chrome.is_file():
@@ -202,23 +204,32 @@ class ChromeJob:
         args = common('chrome_command_v2').command(self.chrome, self.profile, port,
                                                    headless=False, hidden=True)
         visibility = common('chrome_visibility_v2')
+        self.profile.parent.mkdir(parents=True, exist_ok=True)
+        self.chrome_log = (self.profile.parent / 'chrome.stderr.log').open('ab')
         self.process = subprocess.Popen(args, stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL, startupinfo=visibility.startupinfo_hidden(),
+            stderr=self.chrome_log, startupinfo=visibility.startupinfo_hidden(),
             creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
         self.hider = visibility.V2WindowHider(lambda: self.find(self.profile),
                                              primary_pid=self.process.pid).start()
         endpoint = 'http://127.0.0.1:' + str(port)
-        for attempt in range(45):
+        def probe():
             try:
                 with urlopen(endpoint + '/json/version', timeout=2) as response:
                     json.load(response)
-                break
+                return True
             except Exception:
-                if self.process.poll() is not None:
-                    raise RuntimeError('NEWS_CHROME_EARLY_EXIT') from None
-                time.sleep(1)
-        else:
-            raise RuntimeError('NEWS_CDP_NOT_READY')
+                return False
+        # A short-lived Windows launcher can hand Chrome to another process.
+        # Reuse the proven trends startup boundary rather than treating poll()
+        # alone as browser failure. CDP ownership is still checked below.
+        startup = common('chrome_startup_v2')
+        try:
+            self.startup_diagnostic = startup.wait_for_cdp(self.process, probe,
+                lambda: self.find(self.profile), attempts=45, delay=time.sleep)
+        except startup.ChromeStartupError as exc:
+            self.startup_diagnostic = {'launcher_code': self.process.poll(), 'ready': False,
+                                       'reason': str(exc)}
+            raise RuntimeError('NEWS_CHROME_STARTUP_UNAVAILABLE') from None
         verify_endpoint_owned(port, self.profile, find_pids=self.find)
         from playwright.sync_api import sync_playwright
         self.pw = sync_playwright().start()
@@ -311,7 +322,9 @@ class ChromeJob:
                     # open() rejected before acquiring any profile/process.
                     self.cleanup_verified = True
         if not self.cleanup_verified:
+            if getattr(self, 'chrome_log', None): self.chrome_log.close()
             raise RuntimeError('NEWS_OWN_CHROME_CLEANUP_UNVERIFIED')
+        if getattr(self, 'chrome_log', None): self.chrome_log.close()
         # Never remove a pre-existing profile when open() rejected its reuse.
         if self.profile_owned and self.profile.exists():
             try:

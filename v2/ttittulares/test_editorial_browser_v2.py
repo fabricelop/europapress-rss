@@ -39,6 +39,24 @@ class Page:
 
 
 class BrowserBoundaryTests(unittest.TestCase):
+    def test_windows_launcher_exit_does_not_reject_owned_child_that_becomes_ready(self):
+        from .editorial_browser_v2 import common
+        startup = common('chrome_startup_v2')
+        process = SimpleNamespace(poll=lambda: 0)
+        probes = iter([False, False, True])
+        result = startup.wait_for_cdp(process, lambda: next(probes), lambda: {55},
+                                      attempts=5, delay=lambda _: None)
+        self.assertTrue(result['ready'])
+        self.assertTrue(result['launcher_exited'])
+        self.assertTrue(result['children_seen'])
+
+    def test_windows_launcher_without_any_owned_browser_reports_actual_exit_code(self):
+        from .editorial_browser_v2 import common
+        startup = common('chrome_startup_v2')
+        with self.assertRaisesRegex(startup.ChromeStartupError, 'exit=42'):
+            startup.wait_for_cdp(SimpleNamespace(poll=lambda: 42), lambda: False,
+                                 lambda: set(), attempts=8, absent_limit=2, delay=lambda _: None)
+
     def capture(self, page, clock, heartbeat=lambda: None, timeout=90):
         return capture_reply(page, event_id=EVENT, revision=REVISION,
             command_id=COMMAND, heartbeat=heartbeat, timeout=timeout,
