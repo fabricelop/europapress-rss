@@ -6123,19 +6123,27 @@
     "trv2-cf011150bc27382a31b3a6d8": {
       "trend_id": "trv2-cf011150bc27382a31b3a6d8",
       "name": "Anticorrupción",
-      "revision": 1,
-      "status": "capture_recovery",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "cad05b25b70cc8c5",
-      "requested_at": "2026-11-16T10:01:33.063868+00:00",
-      "updated_at": "2026-11-16T10:07:49.855268+00:00",
+      "requested_at": "2026-11-16T10:16:31.373440+00:00",
+      "updated_at": "2026-11-16T10:16:31.373440+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "send_intent": {
-        "token": "586bfe6f4899606b53ec10e99e3e0c9967ea083d26bc0ad6",
-        "at": "2026-11-16T10:06:05.086740+00:00"
-      },
-      "capture_recovery_reason": "chat_target_identity_not_verified"
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "capture_recovery",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": null,
+          "send_intent_at": "2026-11-16T10:06:05.086740+00:00",
+          "incident_reason": "chat_target_identity_not_verified",
+          "archived_at": "2026-11-16T10:16:31.373440+00:00"
+        }
+      ],
+      "incident_retries": 1
     },
     "trv2-e545387a99044a96ffade442": {
       "trend_id": "trv2-e545387a99044a96ffade442",
@@ -6453,10 +6461,10 @@
     "trv2-84bf7bc5c9dfda42851cd691",
     "trv2-8bac1886bd400cddce9933a9",
     "trv2-c3d7e6af26568ec088dfe63c",
-    "trv2-cf011150bc27382a31b3a6d8",
     "trv2-d48af79b668b9268c624a11e",
     "trv2-e545387a99044a96ffade442",
-    "trv2-84d1cd4e86521e31ac13d920"
+    "trv2-84d1cd4e86521e31ac13d920",
+    "trv2-cf011150bc27382a31b3a6d8"
   ],
   "effects_enabled": false
 }
