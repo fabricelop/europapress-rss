@@ -6170,20 +6170,27 @@
     "trv2-e545387a99044a96ffade442": {
       "trend_id": "trv2-e545387a99044a96ffade442",
       "name": "La OIT",
-      "revision": 1,
-      "status": "in_progress",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "eebf90658896673d",
-      "requested_at": "2026-11-16T10:01:33.063868+00:00",
-      "updated_at": "2026-11-16T10:01:33.063868+00:00",
+      "requested_at": "2026-11-16T10:53:20.208503+00:00",
+      "updated_at": "2026-11-16T10:53:20.208503+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "lease": {
-        "token": "6167ba054f2ff8bbbfa7b32d5c5a67ac14a4295686a53ec0",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-16T10:04:54.748687+00:00",
-        "expires_at": "2026-11-16T10:44:54.748687+00:00"
-      }
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-16T10:04:54.748687+00:00",
+          "send_intent_at": null,
+          "incident_reason": "lease_expired_without_capture",
+          "archived_at": "2026-11-16T10:53:20.208503+00:00"
+        }
+      ],
+      "incident_retries": 1
     },
     "trv2-8bac1886bd400cddce9933a9": {
       "trend_id": "trv2-8bac1886bd400cddce9933a9",
@@ -6483,10 +6490,10 @@
     "trv2-8bac1886bd400cddce9933a9",
     "trv2-c3d7e6af26568ec088dfe63c",
     "trv2-d48af79b668b9268c624a11e",
-    "trv2-e545387a99044a96ffade442",
     "trv2-84d1cd4e86521e31ac13d920",
     "trv2-cf011150bc27382a31b3a6d8",
-    "trv2-84bf7bc5c9dfda42851cd691"
+    "trv2-84bf7bc5c9dfda42851cd691",
+    "trv2-e545387a99044a96ffade442"
   ],
   "effects_enabled": false
 }
