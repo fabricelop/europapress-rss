@@ -8394,12 +8394,12 @@
       "trend_id": "trv2-a4dcb1bfba96fb01f3921fad",
       "name": "La Laguna",
       "revision": 3,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "2730cc0bf1ccbc5e",
       "requested_at": "2026-11-16T23:24:56.851203+00:00",
       "updated_at": "2026-11-16T23:24:56.851203+00:00",
-      "attempts": 0,
+      "attempts": 1,
       "review_mode": "x",
       "review_hints": "Busca en X",
       "previous_attempts": [
@@ -8414,7 +8414,13 @@
           "archived_at": "2026-11-16T23:24:56.851203+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "e71bef3e9514d8e7c60723f8a3615b066d226e8c25214bc2",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-16T23:25:14.944798+00:00",
+        "expires_at": "2026-11-17T00:05:14.944798+00:00"
+      }
     },
     "trv2-9f7910e567a2e50e3340481c": {
       "trend_id": "trv2-9f7910e567a2e50e3340481c",
