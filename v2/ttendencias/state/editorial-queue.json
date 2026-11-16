@@ -3085,14 +3085,13 @@
     "trv2-876beecc59c543665de75939": {
       "trend_id": "trv2-876beecc59c543665de75939",
       "name": "País Vasco",
-      "revision": 2,
-      "status": "captured_review",
-      "reason": "retry_after_incident",
+      "revision": 3,
+      "status": "review_pending",
+      "reason": "user_reexplanation",
       "episode_token": "ef49ebb5aeb88691",
-      "requested_at": "2026-11-15T12:53:11.795395+00:00",
-      "updated_at": "2026-11-15T12:56:00.048201+00:00",
-      "previous_explanation": null,
-      "attempts": 1,
+      "requested_at": "2026-11-16T14:49:09.005800+00:00",
+      "updated_at": "2026-11-16T14:49:09.005800+00:00",
+      "attempts": 0,
       "previous_attempts": [
         {
           "revision": 1,
@@ -3106,25 +3105,8 @@
         }
       ],
       "incident_retries": 1,
-      "capture": {
-        "revision": 2,
-        "chat_url": "https://chatgpt.com/c/6af9ab4f-f12c-83ed-bc14-8e71bbd71df5",
-        "sha256": "c1d0eb2a4655fabbd989b1e92c4d1d6dbe46a0f89b4c76c5235d9f3213dde65d",
-        "answer": "TTActualidad V2 — Ficha editorial\n\nTendencia: País Vasco\nIdentificador: trv2-876beecc59c543665de75939\nRevisión: 2\nFecha: 15 de noviembre de 2026\nDestino: LISTAS · Sin publicación automática\n\nESTADO_CAUSA: CONFIRMADA\nESTADO_X: NO_NECESARIO\n\nExplicación periodística\n\nTT# País Vasco es tendencia tras la victoria de la Euskal Selekzioa por 1-0 ante Venezuela, el 14 de noviembre en San Mamés, con gol de Mikel Jauregizar y 40.041 espectadores. El amistoso, celebrado en el 90.º aniversario del primer Gobierno Vasco, reavivó la reivindicación de oficialidad internacional de la selección vasca. \nkirolakeitb.eus\n+2\n\nHashtags: #EuskalSelekzioa #PaísVasco #Venezuela\n\nRemate:\n\n🌶️ El marcador terminó 1-0; el debate sobre la oficialidad sigue en tiempo añadido.\n\nVerificación editorial\nAcontecimiento contrastado\n\n14/11/2026: Euskadi vence a Venezuela por 1-0 en San Mamés. EITB confirma el resultado y el goleador. \nkirolakeitb.eus\n\n14/11/2026: Mundo Deportivo confirma los 40.041 asistentes y la reivindicación de oficialidad. \nmundodeportivo.com\n\n14/11/2026: El Gobierno Vasco confirma la celebración del encuentro y la asistencia del lehendakari Imanol Pradales. \nVenezuela\n\nPrecisión: El encuentro constituye el motivo predominante razonablemente acreditado por su coincidencia temporal y repercusión informativa. No se dispone de datos internos de X que demuestren qué publicaciones impulsaron específicamente el término «País Vasco» en las tendencias españolas.\n\nNo ha sido necesario consultar X porque el acontecimiento y su contexto están contrastados en fuentes independientes.\n\nFuentes HTTPS\n\n1. EITB — 14/11/2026:\nhttps://kirolakeitb.eus/es/futbol/2026/11/14/gol-jauregizar-da-victoria-euskal-selekzioa-venezuela-1-0/\n\n2. Mundo Deportivo — 14/11/2026:\nhttps://www.mundodeportivo.com/futbol/athletic-bilbao/20261114/1004250953/cronica.html\n\n3. Gobierno Vasco, Irekia — 14/11/2026:\nhttps://www.irekia.euskadi.eus/es/news/114325-lehendakari-asiste-partido-euskal-selekzioa-venezuela\n\n4. Cadena SER — 14/11/2026:\nhttps://cadenaser.com/euskadi/2026/11/14/la-fiesta-de-la-euskal-selekzioa-termina-con-victoria-ante-venezuela-1-0-radio-bilbao/\n\nResultado: Ficha editorial completada para la revisión 2. No se ha publicado contenido ni modificado GitHub.",
-        "verified_complete": true,
-        "editorial_validated": false,
-        "captured_at": "2026-11-15T12:53:26.599027+00:00",
-        "image": {
-          "sha256": "2a6b9385b98cb0a7bae276863ce250e8128ba8d9cdedf359c4ad6e31f72d81bf",
-          "path": "v2/ttendencias/generated-images/trv2-876beecc59c543665de75939-r2-2a6b9385b98cb0a7bae27686.png",
-          "mime": "image/png",
-          "revision": 2,
-          "backend": "github_v1_style",
-          "command_id": "v2-img-trv2-876beecc59c543665de75939-r2-a1-da210fbc541a202da716b62d",
-          "status": "saved",
-          "image_chat_url": "https://chatgpt.com/c/6af9ab95-6bec-83ed-87dc-4f7e662b5757"
-        }
-      }
+      "review_mode": "x",
+      "review_hints": "Feijoo habla de una ley de nietos para el pais vasco"
     },
     "trv2-61c0694b4d5ab42ee2c92000": {
       "trend_id": "trv2-61c0694b4d5ab42ee2c92000",
@@ -7083,7 +7065,6 @@
     "trv2-a6b491f4e05fc2c4e625df3f",
     "trv2-61c0694b4d5ab42ee2c92000",
     "trv2-c4e08c84bcf5c1273c445576",
-    "trv2-876beecc59c543665de75939",
     "trv2-092b9e35d9b091a717a8fbec",
     "trv2-9e50f4faf0789101818ef191",
     "trv2-da25d1159d863693de122c68",
@@ -7214,7 +7195,8 @@
     "trv2-f716b62242c54dba91de19dc",
     "trv2-feb111f306f978a405ca6c09",
     "trv2-2e0f0a5ef50860726adc1490",
-    "trv2-336654461aa5e2b257e908d3"
+    "trv2-336654461aa5e2b257e908d3",
+    "trv2-876beecc59c543665de75939"
   ],
   "effects_enabled": false
 }
