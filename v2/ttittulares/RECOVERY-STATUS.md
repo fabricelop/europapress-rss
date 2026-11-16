@@ -1,3 +1,7 @@
+## Incidencia inspección Playwright — 16/11/2026
+
+El usuario intentó ejecutar la inspección de botones del compositor en Chrome de imágenes. PowerShell devolvió únicamente el inicio de `py : Traceback (most recent call last):` y un `NativeCommandError`, sin excepción Python final. La causa es DESCONOCIDA; no atribuirla aún a Playwright, CDP o al script. Se facilitó diagnóstico mínimo con traceback completo capturado por stdout para verificar importación de Playwright, conexión CDP al puerto previamente observado 61072 y número de páginas, sin enviar prompts ni tocar trabajos. Pendiente resultado. No hay parche de producción aplicado.
+
 ## Seguimiento diagnóstico CDP imágenes — 16/11/2026
 
 El usuario ejecutó el diagnóstico PowerShell sin psutil: `CDP_PORT=61072`, dos páginas ChatGPT (`conversation` y `home_or_other`), ambas con depuración disponible, `CDP_ACCESS=OK`. Queda descartada una indisponibilidad general del CDP en ese instante; NO prueba que el envío del prompt funcione. Siguiente prueba entregada: inspección de solo lectura mediante Playwright existente, conectando al puerto 61072, que devuelve únicamente atributos de botones y compositor (sin texto de mensajes ni clicks). Pendiente respuesta del usuario antes de parchear. No se ha modificado código de producción ni se han reenviado imágenes. Mantener publicación desactivada.
