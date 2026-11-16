@@ -1,3 +1,13 @@
+## Diagnóstico operativo Tendencias V2 — 16/11/2026, imágenes (continuación)
+
+- Editorial: 11 identificadores distintos en diarios locales con `editorial_persisted` (Austria `editorial_persisted_recovered`); envío, captura y persistencia True. El contador `completed=0` del daemon no equivale a ausencia de persistencias.
+- Imágenes: 14 registros de imagen guardada entre los 30 logs examinados; 15 logs con errores. Casino Royale (`trv2-9d0cf136b041584656835139`) intentos 1 y 2: `V2_IMAGE_PROMPT_NOT_SUBMITTED`. `#SánchezEnT5` (`trv2-f9f44f661d62b80aef779f1f`) intentos 1 y 2 iguales; intento 3 observado `sent_waiting_for_image`, sin desenlace confirmado.
+- Observaciones de los fallos: `send_trigger=enter`, URL inicial `https://chatgpt.com/`, `user_turn_contains_command=False`, `composer_contains_command=True`, `composer_inspected=True`, sin chat identificado. Sospecha fundada: Enter no está enviando el prompt; no afirmar causa UI definitiva sin inspección.
+- Código inspeccionado: `v2/ttendencias/image_worker_v2.py` usa Enter como fallback si no reconoce botón de envío; `image_target_tracker_v2.py` espera conversación verificada hasta 150 s. No cambiar reintentos ni reenviar trabajos ambiguos sin verificar.
+- El primer diagnóstico de botones no se ejecutó: `FALTA_PSUTIL`. Se entregó diagnóstico alternativo solo PowerShell/CDP sin dependencia psutil; pendiente salida del usuario. No se ha aplicado parche de envío ni reiniciado procesos.
+- Seguridad: `publication_allowed=false`; conservar 14 imágenes ya guardadas, historial, chats y trabajo editorial. No alterar V1 ni los procesos compartidos.
+- Próximo paso: comprobar Chrome de imágenes con CDP y después inspeccionar controles del compositor con Playwright existente, sin enviar; corregir fallback y añadir regresiones antes de desplegar.
+
 ## Consolas ocultas — corrección validada e integrada
 
 16/11/2026. Prueba en rama aislada d5404de3fe3cef9c90e7ac007cc086bfe68e81d3,
