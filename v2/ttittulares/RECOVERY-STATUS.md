@@ -1,3 +1,9 @@
+## Decisión funcional usuario: visibilidad del presupuesto de imágenes — 17/11/2026
+
+El usuario RECHAZA recuperar casos individualmente de forma manual desde el backend: ya dispone de botones de generación/pegado manual en la ficha. Acepta un mecanismo automático general, pero su requisito principal es que AL ABRIR CADA TENDENCIA se vea de forma inequívoca si la imagen todavía puede generarse automáticamente o si ya no quedan intentos y debe decidir usar el procedimiento manual.
+
+Contrato de interfaz pendiente: estados diferenciados `generando`, `reintento automático pendiente` con intentos restantes, `agotada` sin más intentos, `envío incierto/bloqueado por seguridad`, `imagen guardada`; mostrar `n/3` solo para intentos de envío realmente contabilizados, y limitar separadamente los preenvíos fallidos para no generar bucles ilimitados. No confundir `image_incident.code` con presupuesto de reintentos. El snapshot público `web_top30_v2.py` hoy solo expone bandera de incidencia/progreso; el estado real deberá derivarse del planificador/journals y proyectarse de forma segura sin exponer comandos, chats ni datos privados. No está implementado ni probado. No lanzar recuperación manual por tendencia.
+
 ## Observación usuario web V2 e imágenes históricas — 17/11/2026
 
 - Captura de la web V2 aportada por el usuario: hay numerosas imágenes nuevas y tarjetas con incidencia visible. Ejemplo `#SánchezEnT5` presenta `V2_IMAGE_PROMPT_NOT_SUBMITTED` (registrada 16/11/26 23:37) junto a su texto editorial y controles RE/RE-X/P-X. Esto verifica presentación de la incidencia, NO que el parche más reciente esté instalado localmente.
