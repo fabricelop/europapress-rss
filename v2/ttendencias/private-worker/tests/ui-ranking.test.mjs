@@ -137,9 +137,9 @@ test("incident card permits RE-X hints independently of explained RE-X",()=>{
 
 test("Antonio Recio dossier with character count extracts the X-ready lead",()=>{
  const start=app.indexOf("function withoutInternalProvenance(text)");
- const end=app.indexOf("\\n// Server-side marks",start);
+ const end=app.indexOf("\n// Server-side marks",start);
  assert.ok(start>=0&&end>start,"editorial parser and tweet formatter are present");
- const renderEditorial=new Function(app.slice(start,end)+"\\nreturn {editorial,tweetText};")();
+ const renderEditorial=new Function(app.slice(start,end)+"\nreturn {editorial,tweetText};")();
  const raw=[
   "Antonio Recio",
   "",
@@ -151,7 +151,7 @@ test("Antonio Recio dossier with character count extracts the X-ready lead",()=>
   "",
   "Qué ha ocurrido",
   "La causa está razonablemente acreditada: el lunes 16 de noviembre de 2026 se estrena en España la temporada 17."
- ].join("\\n");
+ ].join("\n");
  assert.equal(renderEditorial.editorial(raw),
   "El estreno hoy de la temporada 17 de 'La que se avecina' en Prime Video devuelve a Antonio Recio al centro de la conversación.");
  const formatted=renderEditorial.tweetText(raw,{rank:8,name:"Antonio Recio",cause_status:"confirmada_declarada"});
