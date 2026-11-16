@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import worker from "../src/index.js";
 import {DatabaseSync} from "node:sqlite";
 import {deflateSync} from "node:zlib";
-import {newsAction,newsControls,newsView,newsManualImage,newsImage} from "../src/news-actions.js";
+import {newsAction,newsControls,newsView,newsManualImage,newsImage,newsWorkerControls} from "../src/news-actions.js";
 import {decorateNews,projectNews} from "../src/news.js";
 const id="ttn2-"+"a".repeat(24),time="2026-11-16T18:13:24Z",hash="c".repeat(64);
 function fixture(){return [
@@ -89,3 +89,21 @@ test("all news mutations and original-image reads retain the private session gat
   assert.equal((await worker.fetch(new Request("https://private.example"+path),env)).status,401);
  }
 });
+
+test("worker controls reject missing credentials and another GitHub identity",()=>scoped(async env=>{
+ const path="https://private.example/api/news-worker-controls";
+ assert.equal((await newsWorkerControls(new Request(path),env,helpers)).status,401);
+ const old=globalThis.fetch;try{
+  globalThis.fetch=async()=>new Response(JSON.stringify({id:123,login:"other"}));
+  const response=await newsWorkerControls(new Request(path,{headers:{authorization:"Bearer "+"x".repeat(40)}}),env,helpers);
+  assert.equal(response.status,403);
+ }finally{globalThis.fetch=old;}
+}));
+test("editorial hints are available only through owner-verified machine authentication",()=>scoped(async env=>{
+ await newsAction(request("rework_x",{hints:"Buscar el comunicado original con estas pistas."}),env,helpers);
+ const old=globalThis.fetch;try{
+  globalThis.fetch=async()=>new Response(JSON.stringify({id:7257052,login:"fabricelop"}));
+  const result=await newsWorkerControls(new Request("https://private.example/api/news-worker-controls",{headers:{authorization:"Bearer "+"y".repeat(40)}}),env,helpers);
+  assert.equal(result.status,200);assert.match((await result.json()).actions[0].hints,/comunicado/);
+ }finally{globalThis.fetch=old;}
+}));

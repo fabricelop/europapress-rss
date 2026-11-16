@@ -12,7 +12,7 @@ from . import editorial_state_v2 as ed
 from .radar_snapshot_v2 import PREFIX, BRANCH, encode, sha256
 from .radar_store_v2 import REPOSITORY, Conflict, UncertainCommit, _oid
 
-CONTROL_URL = "https://ttactualidad-v2-private-test.fabricelop.workers.dev/api/public-news-controls"
+CONTROL_URL = "https://ttactualidad-v2-private-test.fabricelop.workers.dev/api/news-worker-controls"
 AUX = re.compile(r"v2/ttittulares/(?:jobs/images/ttn2-[a-f0-9]{24}-r[1-9][0-9]*-image|images/img2-[a-f0-9]{24}|actions/[a-f0-9]{32})\.json\Z")
 ID = re.compile(r"ttn2-[a-f0-9]{24}\Z")
 ACTION = re.compile(r"[a-f0-9]{32}\Z")
@@ -285,10 +285,11 @@ class NewsService(ed.EditorialService):
                 "started_at":ed._stamp(now),"heartbeat_at":ed._stamp(now),
                 "expires_at":ed._stamp(now+timedelta(minutes=25))}
 
-def read_controls():
-    with urlopen(Request(CONTROL_URL,headers={"Accept":"application/json","User-Agent":"TTNoticiasV2"}),timeout=30) as response:
+def read_controls(token):
+    with urlopen(Request(CONTROL_URL,headers={"Accept":"application/json","User-Agent":"TTNoticiasV2",
+        "Authorization":"Bearer "+token}),timeout=30) as response:
         return json.load(response)
 
 def sync_controls(service):
-    controls=read_controls();service.controls(controls)
+    controls=read_controls(service.store._token);service.controls(controls)
     return controls

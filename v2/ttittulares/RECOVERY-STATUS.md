@@ -98,6 +98,15 @@ del workflow y su dependencia Pillow; no se modifica ni debilita la prueba del
 paquete descargado. El gate Windows del despliegue ya había superado ese paquete
 con el inventario completo. Despliegue en curso run43966001174; todavía no confirmado.
 
+## Privacidad de las instrucciones editoriales
+
+Las pistas RE-X y controles del consumidor se sirven por /api/news-worker-controls,
+autenticando el token GitHub del propietario contra api.github.com/user (ID7257052).
+El token se mantiene solo en memoria y nunca se guarda ni se registra.
+El feed público solo incluye noticias y preferencias visibles; no contiene pistas.
+Se añaden pruebas de rechazo sin credencial/otra identidad y acceso del propietario.
+Esta corrección exige actualizar conjuntamente el Worker y el paquete Windows.
+
 ## Evidencia previa conservada
 
 # News V2: recovery checkpoint after master v312

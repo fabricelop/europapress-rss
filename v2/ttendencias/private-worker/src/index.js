@@ -2,7 +2,7 @@
 // NO V1 changes. Signed sessions; V2 D1 stores red marks and 15-minute radar.
 import {captureRadar,loadRadar,mergeEditorialRadar,radarAgeMinutes} from "./radar.js";
 import {readNews,readNewsRecord} from "./news.js";
-import {newsControls,newsView,newsAction,newsManualImage,newsImage,publicNews} from "./news-actions.js";
+import {newsControls,newsView,newsAction,newsManualImage,newsImage,publicNews,newsWorkerControls} from "./news-actions.js";
 import {readImageIncident} from "./image-incidents.js";
 // All static assets require a session because run_worker_first=true.
 const COOKIE = "__Host-ttv2";
@@ -417,9 +417,10 @@ export default {
     if (url.pathname === "/health") return json({ok:true,service:"ttactualidad-v2-private",configured:configured(env),image_storage:"github",image_flow:"same-chat",build:"v2-re-x-20261115",news_view:"v2-news-inbox-20261116",news_layout:"compact-ready-20261116",news_radar_interval_minutes:15,image_incidents:"v2-image-incidents-20261116",news_actions:"news-workflow-20261116"});
     // Única ruta pública adicional: devuelve identificadores y revisiones,
     // nunca contraseñas, marcas privadas, explicaciones ni imágenes.
+    if(url.pathname==="/api/news-worker-controls")return newsWorkerControls(request,env,{json});
     if(url.pathname==="/api/public-news-controls"){
       if(request.method!=="GET")return json({error:"method_not_allowed"},405);
-      try{return json(await newsControls(env));}catch{return json({error:"news_controls_unavailable"},503);}
+      try{return json({schema_version:1,project:"ttittulares-v2",actions:[]});}catch{return json({error:"news_controls_unavailable"},503);}
     }
     if(url.pathname==="/api/public-news"){
       if(request.method!=="GET")return json({error:"method_not_allowed"},405);

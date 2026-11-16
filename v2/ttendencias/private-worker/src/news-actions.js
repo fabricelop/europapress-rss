@@ -185,3 +185,21 @@ export async function publicNews(env){
  }
  return {schema_version:1,source:"ttittulares-v2",observed_at:view.observed_at,items};
 }
+
+const machineAuthCache=new Map();
+export async function newsWorkerControls(request,env,{json}){
+ if(request.method!=="GET")return json({error:"method_not_allowed"},405);
+ const auth=request.headers.get("authorization")||"";
+ if(!/^Bearer [A-Za-z0-9_.-]{20,512}$/.test(auth))return json({error:"unauthorized"},401);
+ try{
+  const key=await digest(new TextEncoder().encode(auth));let cached=machineAuthCache.get(key);
+  if(!cached||cached<Date.now()){
+   const response=await fetch("https://api.github.com/user",{headers:{Authorization:auth,Accept:"application/vnd.github+json","User-Agent":"TTNoticiasV2-WorkerAuth"}});
+   if(!response.ok)return json({error:"unauthorized"},401);
+   const user=await response.json();if(user.id!==7257052||user.login!=="fabricelop")return json({error:"forbidden"},403);
+   if(machineAuthCache.size>20)machineAuthCache.clear();
+   machineAuthCache.set(key,Date.now()+300000);
+  }
+  return json(await newsControls(env));
+ }catch{return json({error:"news_controls_unavailable"},503);}
+}
