@@ -5,6 +5,8 @@ on:
     paths:
       - windows/Stop-TT-V1-ChatGPT.ps1
       - windows/tests/v1-chatgpt-stop.test.ps1
+      - windows/Inspect-TT-Chrome-Reopen.ps1
+      - windows/tests/chrome-reopen-diagnostic.test.ps1
       - ttittulares/request_pc_editorial.py
       - trends/request_pc_editorial.py
       - .github/workflows/tt-v1-chatgpt-stop-check.yml
@@ -20,6 +22,8 @@ jobs:
           sparse-checkout: |
             windows/Stop-TT-V1-ChatGPT.ps1
             windows/tests/v1-chatgpt-stop.test.ps1
+            windows/Inspect-TT-Chrome-Reopen.ps1
+            windows/tests/chrome-reopen-diagnostic.test.ps1
             ttittulares/request_pc_editorial.py
             trends/request_pc_editorial.py
           sparse-checkout-cone-mode: false
@@ -27,6 +31,9 @@ jobs:
       - name: Parse PowerShell and verify V1-only process matching without stopping anything
         shell: powershell
         run: '& windows/tests/v1-chatgpt-stop.test.ps1'
+      - name: Parse read-only Chrome diagnosis and verify command/profile/port matching
+        shell: powershell
+        run: '& windows/tests/chrome-reopen-diagnostic.test.ps1'
       - name: Verify no V1 trigger can call GitHub even when work is pending
         shell: powershell
         run: |
