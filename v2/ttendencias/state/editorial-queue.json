@@ -7328,13 +7328,13 @@
       "trend_id": "trv2-40e5f6d6ca4c9f2053e2df2b",
       "name": "El Ruso",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "4268f15e82fd19d7",
       "requested_at": "2026-11-16T16:02:06.977608+00:00",
       "updated_at": "2026-11-16T16:02:06.977608+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -7347,7 +7347,13 @@
           "archived_at": "2026-11-16T16:02:06.977608+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "bdf823b739e88f3977e36c9997995b6c6f3854d2489eaaeb",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-16T16:02:20.437129+00:00",
+        "expires_at": "2026-11-16T16:42:20.437129+00:00"
+      }
     },
     "trv2-53a46836d604666efe3b29ac": {
       "trend_id": "trv2-53a46836d604666efe3b29ac",
