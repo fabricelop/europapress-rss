@@ -45,6 +45,127 @@ def fixture():
 
 
 class SplitTest(unittest.TestCase):
+    def test_image_send_uses_enabled_button_once_for_new_and_reexplained(self):
+        events = []
+        class Composer:
+            def __init__(self):
+                self.text = ""
+            def fill(self, text):
+                self.text = text
+                events.append("fill")
+            def input_value(self, timeout=None):
+                return self.text
+            def press(self, key):
+                events.append("press:" + key)
+        class Button:
+            def count(self):
+                return 1
+            def is_visible(self):
+                return True
+            def is_enabled(self):
+                return True
+            def click(self, timeout=None):
+                events.append("click")
+        class Page:
+            def locator(self, selector):
+                return type("Locator", (), {"first": Button() if selector == image.SEND_BUTTONS[0]
+                                            else type("Missing", (), {"count": lambda _: 0})()})()
+        command = "v2-img-trv2-15fbf166ba6a2f83c7a45b75-r2-a100-nonce"
+        self.assertEqual(image.submit_image_prompt(Page(), Composer(), command, command),
+                         "send_button")
+        self.assertEqual(events, ["fill", "click"])
+
+    def test_image_send_falls_back_to_enter_when_button_absent(self):
+        calls = []
+        command = "v2-img-trv2-15fbf166ba6a2f83c7a45b75-r1-a1-nonce"
+        class Composer:
+            def fill(self, value):
+                self.value = value
+            def input_value(self, timeout=None):
+                return self.value
+            def press(self, key):
+                calls.append(key)
+        class Missing:
+            def count(self):
+                return 0
+        class Page:
+            def locator(self, _):
+                return type("Locator", (), {"first": Missing()})()
+        self.assertEqual(image.submit_image_prompt(Page(), Composer(), command, command),
+                         "enter")
+        self.assertEqual(calls, ["Enter"])
+
+    def test_reexplained_image_gets_fresh_job_using_only_latest_capture(self):
+        queue, _ = fixture()
+        original = queue["items"]["trv2-%024x" % 1]
+        old = image_jobs.proposed_job(original, nonce="original123456")
+        revised = copy.deepcopy(original)
+        revised["revision"] = 2
+        revised["review_mode"] = "x"
+        answer = "Nueva explicación RE-X contrastada sin datos de la versión antigua"
+        revised["capture"] = {"revision": 2, "answer": answer,
+                              "sha256": fingerprint(answer), "image": {}}
+        new = image_jobs.proposed_job(revised, attempt=100, nonce="revised123456")
+        self.assertNotEqual(old["command_id"], new["command_id"])
+        self.assertEqual(new["editorial_sha256"], fingerprint(answer))
+        self.assertIn("Este es un CHAT NUEVO e independiente", new["prompt"])
+        self.assertIn(answer, new["prompt"])
+        self.assertNotIn(original["capture"]["answer"], new["prompt"])
+        self.assertNotIn("conversation_url", new)
+
+    def test_exhausted_old_retry_count_has_bounded_new_protocol_budget(self):
+        queue, _ = fixture()
+        row = queue["items"]["trv2-%024x" % 1]
+        with tempfile.TemporaryDirectory() as folder:
+            with patch.object(image, "JOURNALS", pathlib.Path(folder)):
+                for attempt in range(1, 100):
+                    editorial.store(image.journal_path(row["trend_id"], 1, attempt),
+                                    {"at": "2026-11-16T04:00:00+00:00", "status": "failed"})
+                now = datetime.now(timezone.utc)
+                self.assertEqual(image.next_attempt(row, now=now), 100)
+                for attempt in range(100, 103):
+                    editorial.store(image.journal_path(row["trend_id"], 1, attempt),
+                                    {"at": "2026-11-16T04:00:00+00:00", "status": "failed",
+                                     "send_protocol": image.IMAGE_SEND_PROTOCOL})
+                self.assertIsNone(image.next_attempt(row, now=now))
+
+    def test_interrupted_send_is_not_retried_blindly(self):
+        queue, _ = fixture()
+        row = queue["items"]["trv2-%024x" % 1]
+        with tempfile.TemporaryDirectory() as folder:
+            with patch.object(image, "JOURNALS", pathlib.Path(folder)):
+                editorial.store(image.journal_path(row["trend_id"], 1, 1),
+                                {"at": "2026-11-16T04:00:00+00:00",
+                                 "status": "sent_waiting_for_image"})
+                self.assertIsNone(image.next_attempt(row))
+
+    def test_submission_observation_never_copies_full_prompt(self):
+        command = "v2-img-trv2-15fbf166ba6a2f83c7a45b75-r2-a100-nonce"
+        class Node:
+            def count(self):
+                return 1
+            def is_visible(self):
+                return True
+            def input_value(self, timeout=None):
+                return "TT_V2_IMAGE_JOB_V1 " + command + " privado"
+            def all_text_contents(self):
+                return []
+            def inner_text(self, timeout=None):
+                return ""
+            last = None
+        node = Node()
+        node.last = node
+        node.first = node
+        class Page:
+            url = "https://chatgpt.com/"
+            def locator(self, selector):
+                return node
+        receipt = tracker.submission_observation(Page(), command)
+        self.assertTrue(receipt["composer_contains_command"])
+        self.assertFalse(receipt["user_turn_contains_command"])
+        self.assertEqual(receipt["url"], "https://chatgpt.com/")
+        self.assertNotIn("privado", str(receipt))
+
     def test_image_target_accepts_new_separate_chat_and_not_assistant_echo(self):
         command = "v2-img-trv2-15fbf166ba6a2f83c7a45b75-r1-a2-testnonce"
         class Locator:
