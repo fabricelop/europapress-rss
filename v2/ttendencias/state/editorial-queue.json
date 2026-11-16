@@ -6405,13 +6405,13 @@
       "trend_id": "trv2-f716b62242c54dba91de19dc",
       "name": "Taylor",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "d2277d6568456a6a",
       "requested_at": "2026-11-16T15:05:19.325212+00:00",
       "updated_at": "2026-11-16T15:05:19.325212+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -6424,7 +6424,13 @@
           "archived_at": "2026-11-16T15:05:19.325212+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "93b516bcb375585241cab03c878980cfabd57ae2a441625e",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-16T15:05:31.209466+00:00",
+        "expires_at": "2026-11-16T15:45:31.209466+00:00"
+      }
     },
     "trv2-4960b0178c834698e6eac33c": {
       "trend_id": "trv2-4960b0178c834698e6eac33c",
