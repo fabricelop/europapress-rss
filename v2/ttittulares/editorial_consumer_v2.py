@@ -118,6 +118,8 @@ def run_one(service, config, *, browser_factory=ChromeJob, parse=None, build=Non
         # browser URLs or credentials from a generic exception.
         journal['error_type'] = type(exc).__name__
         journal['error_code'] = error_code(exc)
+        if browser and isinstance(getattr(browser, 'recovery_diagnostic', None), dict):
+            journal['private_recovery_diagnostic'] = browser.recovery_diagnostic
         if browser and isinstance(getattr(browser, 'startup_diagnostic', None), dict):
             journal['startup_diagnostic'] = browser.startup_diagnostic
         if ('AUTH' in journal['error_code'] and 'NEWS_' in journal['error_code']):
@@ -128,6 +130,9 @@ def run_one(service, config, *, browser_factory=ChromeJob, parse=None, build=Non
     finally:
         if browser:
             try:
+                if failure is not None and journal['intent_durable']:
+                    # Close processes, but keep this private profile as evidence.
+                    browser.preserve_profile = True
                 browser.close()
                 journal['cleanup_verified'] = browser.cleanup_verified
             except Exception as exc:
@@ -144,6 +149,7 @@ def run_one(service, config, *, browser_factory=ChromeJob, parse=None, build=Non
             write_private(journal_path, journal)
         return {'status': 'incident', 'job_id': job_id, 'published': False,
                 'error_type': type(failure).__name__, 'error_code': error_code(failure),
+                'private_recovery_evidence_saved': bool(journal.get('private_recovery_diagnostic')),
                 **({'startup_diagnostic': journal['startup_diagnostic']} if journal.get('startup_diagnostic') else {}),
                 'cleanup_verified': journal['cleanup_verified']}
     # Text may only become ready after our own browser has closed. complete()

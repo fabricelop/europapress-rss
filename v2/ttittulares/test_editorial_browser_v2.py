@@ -8,7 +8,7 @@ from unittest.mock import patch
 
 from .editorial_browser_v2 import (
     ChromeJob, STOP, authenticated_session, capture_reply, confirm_user_turn, listener_process_ids,
-    verify_endpoint_owned,
+    verify_endpoint_owned, read_news_turns,
 )
 
 EVENT, REVISION, COMMAND = 'ttn2-' + 'a' * 24, 2, 'news-command-1'
@@ -36,6 +36,16 @@ class Page:
             return SimpleNamespace(count=lambda: int(self.busy(self.clock())))
         source = self.users if '="user"' in selector else self.answers
         return SimpleNamespace(all_text_contents=lambda: source(self.clock()))
+
+
+class TranscriptPage(Page):
+    def __init__(self, clock, transcript, **kwargs):
+        super().__init__(clock, users=lambda _: [], answers=lambda _: [], **kwargs)
+        self.transcript = transcript
+    def locator(self, selector):
+        if selector == 'body':
+            return SimpleNamespace(inner_text=lambda **kw: self.transcript)
+        return super().locator(selector)
 
 
 class BrowserBoundaryTests(unittest.TestCase):
@@ -220,6 +230,61 @@ class BrowserBoundaryTests(unittest.TestCase):
             browser.process = browser.browser = browser.pw = browser.hider = None
             browser.close()
             self.assertTrue(profile.exists())
+
+
+    def test_localized_user_transcript_confirms_exact_identity_when_role_dom_is_absent(self):
+        for user_label, assistant_label in [('You said:', 'ChatGPT said:'),
+                                             ('Tú dijiste:', 'ChatGPT dijo:'),
+                                             ('Has dicho:', 'ChatGPT respondió:')]:
+            clock = Clock()
+            page = TranscriptPage(clock, '\n' + user_label + '\n' + USER + '\n' +
+                                  assistant_label + '\n' + ANSWER)
+            self.assertEqual(self.confirm(page, clock), page.url)
+            self.assertEqual(self.capture(page, clock), (ANSWER, page.url))
+
+    def test_assistant_echo_or_multiple_user_turns_cannot_confirm_fallback(self):
+        for body in ['ChatGPT said:\n' + USER,
+                     '\nYou said:\n' + USER + '\nYou said:\n' + USER + '\nChatGPT said:\n' + ANSWER,
+                     '\nYou said:\nwrong command\nChatGPT said:\n' + USER]:
+            clock = Clock()
+            with self.assertRaisesRegex(RuntimeError, 'SUBMISSION_UNCONFIRMED'):
+                self.confirm(TranscriptPage(clock, body), clock, timeout=6)
+
+    def test_confirmation_can_select_another_owned_page_without_sending(self):
+        clock, selected, observed = Clock(), [], []
+        original = Page(clock, users=lambda _: [], url=lambda _: 'https://chatgpt.com/')
+        target = Page(clock)
+        url = confirm_user_turn(original, event_id=EVENT, revision=REVISION,
+            command_id=COMMAND, heartbeat=lambda: None, clock=clock, sleep=clock.sleep,
+            pages=lambda: [original, target], on_match=selected.append, on_observation=observed.append)
+        self.assertEqual(url, target.url)
+        self.assertEqual(selected, [target])
+        self.assertTrue(any(row.get('exact_identity') for row in observed[-1]['targets']))
+
+    def test_two_distinct_matching_conversations_are_quarantined(self):
+        clock = Clock()
+        one = Page(clock, url=lambda _: 'https://chatgpt.com/c/one')
+        two = Page(clock, url=lambda _: 'https://chatgpt.com/c/two')
+        with self.assertRaisesRegex(RuntimeError, 'MULTIPLE_MATCHING_CHATS'):
+            confirm_user_turn(one, event_id=EVENT, revision=REVISION,
+                command_id=COMMAND, heartbeat=lambda: None, clock=clock, sleep=clock.sleep,
+                pages=lambda: [two])
+
+    def test_ambiguous_submission_closes_processes_but_preserves_private_profile(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            profile = Path(tmp) / 'own'; profile.mkdir()
+            (profile / 'private-evidence').write_text('local only', encoding='utf-8')
+            calls = []
+            browser = self.bare(profile, calls)
+            browser.preserve_profile = True
+            with patch('v2.ttittulares.editorial_browser_v2.verify_endpoint_owned', return_value=True), \
+                 patch('v2.ttittulares.editorial_browser_v2.common', return_value=SimpleNamespace(
+                     cleanup_v2_profile=lambda find: {'closed': True})):
+                browser.close()
+            self.assertTrue(browser.cleanup_verified)
+            self.assertTrue((profile / 'private-evidence').exists())
+            self.assertIn('process_wait', calls)
+
 
 
 if __name__ == '__main__': unittest.main()

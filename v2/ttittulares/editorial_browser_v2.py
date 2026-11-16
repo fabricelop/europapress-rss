@@ -83,6 +83,28 @@ def clone_job_profile(seed, destination, *, find_pids):
     return destination
 
 
+def read_news_turns(page):
+    """Prefer role DOM; use bounded localized transcript only if roles are absent."""
+    users = page.locator('[data-message-author-role="user"]').all_text_contents()
+    answers = page.locator('[data-message-author-role="assistant"]').all_text_contents()
+    if users:
+        return users, answers
+    try:
+        body = page.locator('body').inner_text(timeout=4500)
+    except Exception:
+        return [], answers
+    user_markers = list(re.finditer(r'(?m)^\s*(?:You said|Tú dijiste|Has dicho):\s*$', body))
+    if len(user_markers) != 1:
+        return [], answers
+    start = user_markers[0].end()
+    assistant = re.search(r'(?m)^\s*(?:ChatGPT said|ChatGPT dijo|ChatGPT ha dicho|ChatGPT respondió):\s*$', body[start:])
+    if assistant is None:
+        return [], answers
+    end = start + assistant.start()
+    response = body[start + assistant.end():].strip()
+    return [body[start:end].strip()], answers or ([response] if response else [])
+
+
 def fresh_turn(user_turns, event_id, revision, command_id):
     if len(user_turns) != 1:
         return False
@@ -132,16 +154,38 @@ def verify_endpoint_owned(port, profile, *, find_pids, listeners=listener_proces
 
 
 def confirm_user_turn(page, *, event_id, revision, command_id, heartbeat,
-                      timeout=90, clock=time.monotonic, sleep=time.sleep):
-    """Enter is intent; only the exact visible user turn confirms submission."""
+                      timeout=90, clock=time.monotonic, sleep=time.sleep,
+                      pages=None, on_match=None, on_observation=None):
+    """Find the exact sent turn among owned pages; never click or send here."""
     started = last_heartbeat = clock()
     while clock() - started < timeout:
         if clock() - last_heartbeat >= 45:
             heartbeat()
             last_heartbeat = clock()
-        users = page.locator('[data-message-author-role="user"]').all_text_contents()
-        url = page.url.split('?', 1)[0]
-        if fresh_turn(users, event_id, revision, command_id) and CHAT.fullmatch(url):
+        candidates = [page] + (list(pages()) if pages else [])
+        observed, matches, visited = [], {}, set()
+        for candidate in candidates:
+            if id(candidate) in visited:
+                continue
+            visited.add(id(candidate))
+            try:
+                url = candidate.url.split('?', 1)[0].split('#', 1)[0]
+                users, answers = read_news_turns(candidate)
+                identity = fresh_turn(users, event_id, revision, command_id)
+                observed.append({'url': url, 'user_turn_count': len(users),
+                                 'assistant_turn_count': len(answers), 'exact_identity': identity})
+                if identity and CHAT.fullmatch(url):
+                    matches[url] = candidate
+            except Exception:
+                observed.append({'inspection_failed': True})
+        if on_observation:
+            on_observation({'targets': observed[-12:]})
+        if len(matches) > 1:
+            raise RuntimeError('NEWS_MULTIPLE_MATCHING_CHATS_NO_RESEND')
+        if matches:
+            url, target = next(iter(matches.items()))
+            if on_match:
+                on_match(target)
             return url
         sleep(2)
     raise RuntimeError('NEWS_SUBMISSION_UNCONFIRMED_NO_RESEND')
@@ -159,9 +203,8 @@ def capture_reply(page, *, event_id, revision, command_id, heartbeat,
         if now - last_heartbeat >= 45:
             heartbeat()
             last_heartbeat = clock()
-        users = page.locator('[data-message-author-role="user"]').all_text_contents()
+        users, answers = read_news_turns(page)
         if fresh_turn(users, event_id, revision, command_id):
-            answers = page.locator('[data-message-author-role="assistant"]').all_text_contents()
             answer = answers[-1].strip() if answers else ''
             idle = page.locator(STOP).count() == 0
             if answer != previous or not idle or not previous_idle:
@@ -191,6 +234,8 @@ class ChromeJob:
         self.profile_owned = False
         self.startup_diagnostic = None
         self.chrome_log = None
+        self.preserve_profile = False
+        self.recovery_diagnostic = None
 
     def open(self):
         if os.name != 'nt' or not self.chrome.is_file():
@@ -268,8 +313,15 @@ class ChromeJob:
                              command_id=command_id, heartbeat=heartbeat, timeout=self.timeout)
 
     def confirm_submission(self, event_id, revision, command_id, heartbeat=lambda: None):
+        def select(target):
+            self.page = target
+        def observe(diagnostic):
+            # Private local journal only: never include chat URLs in GitHub errors.
+            self.recovery_diagnostic = diagnostic
         return confirm_user_turn(self.page, event_id=event_id, revision=revision,
-            command_id=command_id, heartbeat=heartbeat)
+            command_id=command_id, heartbeat=heartbeat,
+            pages=lambda: [p for context in self.browser.contexts for p in context.pages],
+            on_match=select, on_observation=observe)
 
     def close(self):
         # Layer failures must never skip the exact-profile process cleanup.
@@ -326,7 +378,7 @@ class ChromeJob:
             raise RuntimeError('NEWS_OWN_CHROME_CLEANUP_UNVERIFIED')
         if getattr(self, 'chrome_log', None): self.chrome_log.close()
         # Never remove a pre-existing profile when open() rejected its reuse.
-        if self.profile_owned and self.profile.exists():
+        if self.profile_owned and not getattr(self, 'preserve_profile', False) and self.profile.exists():
             try:
                 shutil.rmtree(self.profile)
             except Exception:

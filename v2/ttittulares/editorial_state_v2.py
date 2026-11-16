@@ -265,6 +265,9 @@ class EditorialService:
                   _time(j["lease"]["expires_at"]) <= now)]
         return {"commit_sha": head, "pending_count": len(pending), "max_workers": MAX_WORKERS,
                 "active_count": sum(j["status"] in ACTIVE for j in jobs.values()),
+                "recovery_incident_count": sum(j["status"] in {"problematic", "capture_recovery"}
+                    and (j.get("problem") or {}).get("retry_mode") == "recover_same_chat"
+                    and not _blocked(news[j["event_id"]], j, docs) for j in jobs.values()),
                 "maintenance_needed": bool(stale), "stale_active_count": len(stale),
                 "next_jobs": copy.deepcopy(pending[:MAX_WORKERS]), "effects_enabled": False}
 

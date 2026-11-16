@@ -115,6 +115,15 @@ class EditorialStateTests(unittest.TestCase):
         payload['verification']['verified_at'] = self.now.isoformat()
         return parse_record(reply(payload),captured['event'],captured['job'],'news-command-1',self.now)
 
+    def test_preview_identifies_uncertain_incident_without_reclaiming_it(self):
+        prepared = self.prepare()
+        self.service.fail(prepared['job']['job_id'], 'worker-1', self.token,
+                          code='NEWS_SUBMISSION_UNCONFIRMED_NO_RESEND', safe_preflight=False)
+        plan = self.service.preview()
+        self.assertEqual(plan['recovery_incident_count'], 1)
+        self.assertEqual(plan['active_count'], 0)
+        self.assertFalse(any(j['job_id'] == prepared['job']['job_id'] for j in plan['next_jobs']))
+
     def test_preview_never_mutates_and_fifo_ignores_insert_order(self):
         preview = self.service.preview()
         self.assertEqual([j['event_id'] for j in preview['next_jobs']], ['ttn2-'+format(n,'024x') for n in (1,2,3)])
