@@ -8953,20 +8953,27 @@
     "trv2-0635fafde4c20c0066ce2ad4": {
       "trend_id": "trv2-0635fafde4c20c0066ce2ad4",
       "name": "Nataly",
-      "revision": 1,
-      "status": "in_progress",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "629e912218e0f70b",
-      "requested_at": "2026-11-16T23:02:48.343117+00:00",
-      "updated_at": "2026-11-16T23:02:48.343117+00:00",
+      "requested_at": "2026-11-16T23:52:24.592979+00:00",
+      "updated_at": "2026-11-16T23:52:24.592979+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "lease": {
-        "token": "3063469133efc48d83faa9325215ebfe52f6ce359f5caa7f",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-16T23:03:39.782321+00:00",
-        "expires_at": "2026-11-16T23:43:39.782321+00:00"
-      }
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-16T23:03:39.782321+00:00",
+          "send_intent_at": null,
+          "incident_reason": "lease_expired_without_capture",
+          "archived_at": "2026-11-16T23:52:24.592979+00:00"
+        }
+      ],
+      "incident_retries": 1
     },
     "trv2-a73b97407e31538914daec76": {
       "trend_id": "trv2-a73b97407e31538914daec76",
@@ -9413,13 +9420,13 @@
     "trv2-115d97fdb6f8e161c7ae8b2a",
     "trv2-2aec944a13d0c06dca4f4ea1",
     "trv2-e1ae19c0da02180a6770f9cd",
-    "trv2-0635fafde4c20c0066ce2ad4",
     "trv2-0985e88f43e0593555bc3cd3",
     "trv2-a73b97407e31538914daec76",
     "trv2-a8830f8644d1b348fc715572",
     "trv2-d84fa6e4e12de45556e40f5a",
     "trv2-dbc2e0961f218518f433ee1e",
-    "trv2-a4dcb1bfba96fb01f3921fad"
+    "trv2-a4dcb1bfba96fb01f3921fad",
+    "trv2-0635fafde4c20c0066ce2ad4"
   ],
   "effects_enabled": false
 }
