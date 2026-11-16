@@ -89,6 +89,15 @@ El despliegue vuelve a probar Windows, Node, Python y navegador antes de Wrangle
 Una comprobación posterior exigirá health.news_actions y feed público real.
 No hay envío automático a X, ni cambios en el Site V1 independiente.
 
+## Ajuste del CI editorial anterior
+
+La batería nueva del commit f8e66e2fd99bddb6293141e1c399edf595948303 pasó
+(run43965885993). El CI editorial anterior detectó que SU checkout disperso no
+incluía los cuatro módulos de imagen añadidos al instalador. Se corrige el inventario
+del workflow y su dependencia Pillow; no se modifica ni debilita la prueba del
+paquete descargado. El gate Windows del despliegue ya había superado ese paquete
+con el inventario completo. Despliegue en curso run43966001174; todavía no confirmado.
+
 ## Evidencia previa conservada
 
 # News V2: recovery checkpoint after master v312
