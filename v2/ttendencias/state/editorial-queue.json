@@ -6625,20 +6625,27 @@
     "trv2-7d180b40af009acfea255760": {
       "trend_id": "trv2-7d180b40af009acfea255760",
       "name": "#SomosLaL",
-      "revision": 1,
-      "status": "in_progress",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "e485367adfcf0c4a",
-      "requested_at": "2026-11-16T14:14:23.387482+00:00",
-      "updated_at": "2026-11-16T14:14:23.387482+00:00",
+      "requested_at": "2026-11-16T15:24:38.828512+00:00",
+      "updated_at": "2026-11-16T15:24:38.828512+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "lease": {
-        "token": "556168d4b97de9397e813e4a1ebb465cb34e2c14f7b738df",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-16T14:26:09.924656+00:00",
-        "expires_at": "2026-11-16T15:06:09.924656+00:00"
-      }
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-16T14:26:09.924656+00:00",
+          "send_intent_at": null,
+          "incident_reason": "lease_expired_without_capture",
+          "archived_at": "2026-11-16T15:24:38.828512+00:00"
+        }
+      ],
+      "incident_retries": 1
     },
     "trv2-6d719e42838a3ad0f60206d7": {
       "trend_id": "trv2-6d719e42838a3ad0f60206d7",
@@ -7564,7 +7571,6 @@
     "trv2-5941ac1757ec1bb06271cc00",
     "trv2-6269608c33a59fa1029efaa3",
     "trv2-6d719e42838a3ad0f60206d7",
-    "trv2-7d180b40af009acfea255760",
     "trv2-8a915a12004c2dc5ac8a9389",
     "trv2-8bba7450358acfb5477b9bc7",
     "trv2-943c7697d27471a9b03ac109",
@@ -7590,7 +7596,8 @@
     "trv2-f716b62242c54dba91de19dc",
     "trv2-103982d66f094b759feb6e33",
     "trv2-3c35310ed712f91538d3a54f",
-    "trv2-e1cb73b626176b23c8499621"
+    "trv2-e1cb73b626176b23c8499621",
+    "trv2-7d180b40af009acfea255760"
   ],
   "effects_enabled": false
 }
