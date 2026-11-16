@@ -8954,13 +8954,13 @@
       "trend_id": "trv2-0635fafde4c20c0066ce2ad4",
       "name": "Nataly",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "629e912218e0f70b",
       "requested_at": "2026-11-16T23:52:24.592979+00:00",
       "updated_at": "2026-11-16T23:52:24.592979+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -8973,7 +8973,13 @@
           "archived_at": "2026-11-16T23:52:24.592979+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "8fca7a0eaf3f42d2188f0f0675252defd2e063ef0982898c",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-16T23:52:42.281428+00:00",
+        "expires_at": "2026-11-17T00:32:42.281428+00:00"
+      }
     },
     "trv2-a73b97407e31538914daec76": {
       "trend_id": "trv2-a73b97407e31538914daec76",
