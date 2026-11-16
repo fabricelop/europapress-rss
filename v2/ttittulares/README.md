@@ -123,3 +123,32 @@ almacén vacío; **no persistió ni ejecutó los 26 jobs** y no creó READY.
 Lectura: 18:41 CET; fetch ~21 s y agrupación/plan ~10 s según el log del runner.
 Estas cifras describen ese barrido; no garantizan disponibilidad futura ni
 validación factual del contenido. La siguiente fase sigue siendo el escritor CAS.
+
+
+
+## Paso 3E — radar periódico y contrato editorial acordado
+
+El workflow de persistencia es reutilizable. Un lanzador mínimo
+`ttittulares-v2-radar-scheduled.yml` en la rama por defecto programa cuatro
+barridos por hora, separados por 15 minutos. Solo llama al código de la rama V2;
+la única autoridad de concurrencia está en el workflow llamado, compartida con
+los lanzamientos manuales. No abre chats ni genera/publica imágenes.
+
+Cada barrido mantiene CAS, readback de todos los hashes, preservación de decisiones
+y jobs previos. El lector obtiene JSON del CDN público **por commit inmutable**,
+sin enviar el token a ese host, y comprueba sus bytes con el hash Git del árbol.
+Esto evita una llamada a la API de GitHub por cada archivo del historial.
+Un replay descarga primero solo el recibo, antes de verificar el commit original.
+Las 102 pruebas previas y tres regresiones adicionales de estos transportes suman
+105 pruebas. Las ejecuciones periódicas verifican cada escritura; el replay extra
+se mantiene en lanzamientos manuales/de activación.
+
+GitHub puede retrasar ticks programados; la cadencia es una programación, no un
+reloj exacto. No declarar actividad por cron sin comprobar el evento del run.
+La web muestra edad real del barrido y demora cuando supera 35 minutos.
+
+El usuario ha fijado tres slots editoriales FIFO y un proceso separado de imágenes.
+Ver [contrato del siguiente módulo](EDITORIAL-WORKER-PLAN.md). Ese consumidor
+**todavía no está ejecutándose**. La presentación se abre en Elaboradas, sin
+cabecera explicativa y con filtros abreviados en una sola línea. Los READY se
+muestran con el texto de tuit validado, nunca con el dossier largo.

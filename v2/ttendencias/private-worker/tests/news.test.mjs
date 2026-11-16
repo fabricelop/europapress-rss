@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {readFileSync} from "node:fs";
 import worker from "../src/index.js";
-import {projectNews,pageNews,readNews,NEWS_SOURCE} from "../src/news.js";
+import {projectNews,pageNews,readNews,readNewsRecord,validateNewsRecord,NEWS_SOURCE} from "../src/news.js";
 
 const id="ttn2-"+"a".repeat(24),time="2026-11-16T18:13:24Z";
 function fixture(){return [
@@ -13,7 +13,7 @@ function fixture(){return [
 test("pending source title is visible without an invented explanation or publication",()=>{
  const view=projectNews(...fixture());assert.equal(view.counts.pending,1);assert.equal(view.items[0].source_family_count,4);
  assert.equal(view.items[0].explanation,null);assert.equal(view.items[0].publication_allowed,false);
- assert.equal(view.read_only,true);assert.equal(view.refresh_mode,"manual_radar");
+ assert.equal(view.read_only,true);assert.equal(view.refresh_mode,"scheduled_radar_15m");assert.equal(view.expected_interval_minutes,15);
 });
 test("monitoring candidates are distinct from pending editorial jobs",()=>{
  const [index,queue]=fixture();index.items[id].status="monitoring";queue.items=[];
@@ -52,7 +52,7 @@ test("paging is bounded and search is case insensitive",()=>{
 });
 test("news read fetches two V2 projections, never one request per article",async()=>{
  const docs=fixture(),calls=[];
- const data=await readNews({fetcher:async(url,options)=>{calls.push([url,options]);return new Response(JSON.stringify(docs[url.endsWith("news-index.json")?0:1]));}});
+ const data=await readNews({params:new URLSearchParams({state:"pending"}),fetcher:async(url,options)=>{calls.push([url,options]);return new Response(JSON.stringify(docs[url.endsWith("news-index.json")?0:1]));}});
  assert.equal(data.total,1);assert.equal(calls.length,2);
  assert.ok(calls.every(([url,options])=>url.startsWith(NEWS_SOURCE)&&options.cf.cacheTtl===30));
 });
@@ -84,5 +84,53 @@ test("news UI uses text nodes, keeps trends and exposes no publish actions",()=>
  assert.match(html,/id="news-panel" hidden/);assert.match(js,/textContent=String/);
  assert.doesNotMatch(js,/innerHTML|P-X|publish_request|raw\.githubusercontent/);
  assert.match(js,/if\(!document.hidden&&!state.loading\)/);
- assert.match(js,/Último barrido/);assert.match(js,/pasadas puntuales/);
+ assert.match(js,/Último barrido/);assert.doesNotMatch(html,/La actualidad que entra|news-eyebrow|id="news-time"/);assert.match(js,/filter:"ready"/);assert.match(js,/const short=/);
 });
+
+test("default is Elaboradas even when only pending candidates exist",()=>{
+ const view=pageNews(projectNews(...fixture()),new URLSearchParams());
+ assert.equal(view.filter,"ready");assert.equal(view.total,0);assert.equal(view.counts.pending,1);
+});
+test("automatic radar exposes real age and a delayed capture without inventing freshness",()=>{
+ const docs=fixture();
+ assert.equal(projectNews(...docs,Date.parse(time)+16*60000).radar_delayed,false);
+ const stale=projectNews(...docs,Date.parse(time)+40*60000);
+ assert.equal(stale.radar_delayed,true);assert.equal(stale.radar_age_minutes,40);
+ assert.equal(stale.observed_at,time);
+});
+function readyRecord(){return {schema_version:1,project:"ttittulares-v2",event_id:id,revision:1,
+ record_status:"ready",editorial_job_id:id+"-r1-editorial",editorial_sha256:"a".repeat(64),
+ verification:{essential_fact_verified:true},tweet:{text:"Una explicación editorial sintética, contrastada y breve para mostrar la noticia en un tuit. #Prueba #Noticias"},
+ explanation:"Un dossier largo que no debe aparecer como tuit."};}
+test("READY detail returns only the short tweet and preserves event/revision/hash identity",()=>{
+ const r=validateNewsRecord(readyRecord(),id,1);
+ assert.equal(r.tweet_text,readyRecord().tweet.text);assert.equal(r.revision,1);assert.equal(r.event_id,id);
+ assert.equal(r.editorial_sha256,"a".repeat(64));assert.equal(r.publication_allowed,false);
+ assert.equal(r.explanation,undefined);assert.ok(r.x_character_count<=280);
+});
+test("invalid, stale, unverified or oversized READY copy is rejected rather than truncated",()=>{
+ for(const mode of ["event","revision","length","verification","missing_tweet"]){const r=readyRecord();
+  if(mode==="event")r.event_id="ttn2-"+"b".repeat(24);
+  if(mode==="revision")r.revision=2;
+  if(mode==="length")r.tweet.text="Texto ".repeat(60);
+  if(mode==="verification")r.verification.essential_fact_verified=false;
+  if(mode==="missing_tweet")delete r.tweet;
+  assert.throws(()=>validateNewsRecord(r,id,1),/NEWS_RECORD_INVALID/);
+ }
+});
+test("opening a ready detail requires the same current revision and reads its own record",async()=>{
+ const [index,queue]=fixture();index.items[id].status="ready";queue.items[0].status="ready";
+ const calls=[];
+ const fetcher=async url=>{calls.push(url);return new Response(JSON.stringify(url.includes("/records/")?readyRecord():url.endsWith("news-index.json")?index:queue));};
+ const r=await readNewsRecord(id,1,{fetcher});assert.equal(r.tweet_text,readyRecord().tweet.text);
+ assert.ok(calls[2].endsWith("/records/"+id+"/r1.json"));
+ await assert.rejects(readNewsRecord(id,2,{fetcher}),/NOT_READY/);
+ index.items[id].status="editorial_pending";queue.items[0].status="pending";
+ await assert.rejects(readNewsRecord(id,1,{fetcher}),/NOT_READY/);
+});
+test("ready detail remains private and rejects malformed identities before an upstream read",async()=>{
+ const env={AUTH_PASSWORD:"test-password-more-than-sixteen",SESSION_SECRET:"test-session-secret-more-than-thirty-two-characters"};
+ assert.equal((await worker.fetch(new Request("https://private.example/api/news/"+id+"?revision=1"),env)).status,401);
+ await assert.rejects(readNewsRecord("wrong",1,{fetcher:async()=>assert.fail("unexpected fetch")}),/ID_INVALID/);
+});
+

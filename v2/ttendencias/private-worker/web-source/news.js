@@ -13,22 +13,22 @@
  $("radar-time").textContent="Noticias · cargando…";
  $("refresh").title="Actualizar noticias";
  $("refresh").setAttribute("aria-label","Actualizar noticias");
- const names={pending:"Pendientes",detected:"Detectadas",working:"En elaboración",ready:"Elaboradas",incident:"Incidencias",archived:"Archivo"};
- const state={data:null,page:1,filter:"pending",query:"",loading:false,controller:null};
+ const names={ready:"Elaboradas",pending:"Pendientes",detected:"Detectadas",working:"En elaboración",incident:"Incidencias",archived:"Archivo"};
+ const short={ready:"Elab.",pending:"Pend.",detected:"Det.",working:"Curso",incident:"Inc.",archived:"Arch."};
+ const state={data:null,page:1,filter:"ready",query:"",loading:false,controller:null,open:null,records:new Map()};
  const node=(tag,cls,text)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(text!==undefined)n.textContent=String(text);return n;};
  function date(value){const d=new Date(value);return value&&Number.isFinite(d.getTime())?new Intl.DateTimeFormat("es-ES",{timeZone:"Europe/Madrid",day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"}).format(d):"Hora no disponible";}
  function render(data){
   state.data=data;
-  $("radar-time").textContent="Último barrido · "+date(data.observed_at);
-  $("news-time").textContent="Los titulares proceden de las fuentes y aún no son una explicación editorial. Radar de entrada: pasadas puntuales.";
+  $("radar-time").textContent="Último barrido · "+date(data.observed_at)+(data.radar_delayed?" · "+data.radar_age_minutes+" min sin actualizar":"");
   const filters=$("news-filters");filters.replaceChildren();
   for(const [key,label] of Object.entries(names)){
-   const b=node("button","news-filter",label+" · "+data.counts[key]);b.type="button";
+   const b=node("button","news-filter",short[key]+" "+data.counts[key]);b.type="button";b.title=label;b.setAttribute("aria-label",label+" · "+data.counts[key]);
    b.setAttribute("aria-pressed",String(state.filter===key));
-   b.addEventListener("click",()=>{state.filter=key;state.page=1;void refreshNews();});filters.append(b);
+   b.addEventListener("click",()=>{state.filter=key;state.page=1;state.open=null;void refreshNews();});filters.append(b);
   }
   const list=$("news-list");list.replaceChildren();
-  $("news-count").textContent=data.total+" "+(data.total===1?"noticia":"noticias")+(state.query?" encontradas":"");
+  $("news-count").textContent=data.total+" "+(data.total===1?"noticia":"noticias")+(state.query?" · coincidencias":"");
   if(!data.items.length)list.append(node("p","news-empty",state.query?"No hay noticias que coincidan con la búsqueda.":"Todavía no hay noticias en este estado."));
   for(const item of data.items){
    const card=node("details","news-card");
@@ -37,10 +37,10 @@
    heading.append(node("span","news-meta","Detectada · "+date(item.first_seen_at)+" · "+item.source_family_count+" familias de fuentes"));
    summary.append(heading,node("span","news-status "+item.group,item.status_label));card.append(summary);
    const body=node("div","news-body");
-   body.append(node("p","",item.group==="detected"?"Esperando cobertura de suficientes familias independientes antes de pasar a elaboración.":
+   const explanation=node("p",item.group==="ready"?"news-tweet":"",item.group==="detected"?"Esperando cobertura de suficientes familias independientes antes de pasar a elaboración.":
     item.group==="pending"?"Pendiente de investigar, contrastar y redactar. Todavía no hay explicación editorial.":
-    item.group==="working"?"La elaboración editorial está en curso.":item.group==="ready"?"La elaboración ha terminado; este apartado muestra por ahora el estado y las fuentes.":
-    item.group==="incident"?"La noticia requiere revisar su estado antes de continuar.":item.status_label+"."));
+    item.group==="working"?"La elaboración editorial está en curso.":item.group==="ready"?"Cargando explicación…":
+    item.group==="incident"?"La noticia requiere revisar su estado antes de continuar.":item.status_label+".");body.append(explanation);
    if(item.source_families.length){const sources=node("ul","news-sources");for(const source of item.source_families)sources.append(node("li","",source));body.append(sources);}
    if(item.source_url){
     try{const target=new URL(item.source_url);if(["https:","http:"].includes(target.protocol)&&!target.username&&!target.password){
@@ -48,6 +48,21 @@
     }}catch{}
    }
    card.append(body);list.append(card);
+   let loaded=false;
+   const loadRecord=async()=>{
+    if(loaded||item.group!=="ready")return;loaded=true;
+    try{
+     const key=item.event_id+":"+item.revision;
+     let record=state.records.get(key);
+     if(!record){const response=await fetch("/api/news/"+encodeURIComponent(item.event_id)+"?revision="+item.revision,{credentials:"same-origin",cache:"no-store",signal:AbortSignal.timeout(20000)});if(!response.ok)throw Error("record_unavailable");record=await response.json();}
+     if(record.event_id!==item.event_id||record.revision!==item.revision||typeof record.tweet_text!=="string"||record.x_character_count>280)throw Error("record_invalid");
+     state.records.set(key,record);explanation.textContent=record.tweet_text;
+     explanation.after(node("p","news-tweet-count",record.x_character_count+" / 280"));
+    }catch{loaded=false;explanation.textContent="No se pudo cargar la explicación de esta revisión. Cierra y vuelve a abrir la noticia para reintentar.";}
+   };
+   card.open=state.open===item.event_id;
+   card.addEventListener("toggle",()=>{if(card.open){state.open=item.event_id;for(const other of list.querySelectorAll("details.news-card"))if(other!==card)other.open=false;void loadRecord();}else if(state.open===item.event_id)state.open=null;});
+   if(card.open)void loadRecord();
   }
   $("news-page").textContent="Página "+data.page+" de "+data.pages;
   $("news-prev").disabled=data.page<=1;$("news-next").disabled=data.page>=data.pages;
@@ -85,3 +100,4 @@
  void refreshNews();
  setInterval(()=>{if(!document.hidden&&!state.loading)void refreshNews();},90000);
 })();
+

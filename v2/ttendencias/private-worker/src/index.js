@@ -1,7 +1,7 @@
 // TTActualidad V2, private single-password frontend.
 // NO V1 changes. Signed sessions; V2 D1 stores red marks and 15-minute radar.
 import {captureRadar,loadRadar,mergeEditorialRadar,radarAgeMinutes} from "./radar.js";
-import {readNews} from "./news.js";
+import {readNews,readNewsRecord} from "./news.js";
 // All static assets require a session because run_worker_first=true.
 const COOKIE = "__Host-ttv2";
 const SESSION_VERSION = "v1";
@@ -412,7 +412,7 @@ export default {
   },
   async fetch(request,env,ctx) {
     const url = new URL(request.url);
-    if (url.pathname === "/health") return json({ok:true,service:"ttactualidad-v2-private",configured:configured(env),image_storage:"github",image_flow:"same-chat",build:"v2-re-x-20261115",news_view:"v2-news-inbox-20261116"});
+    if (url.pathname === "/health") return json({ok:true,service:"ttactualidad-v2-private",configured:configured(env),image_storage:"github",image_flow:"same-chat",build:"v2-re-x-20261115",news_view:"v2-news-inbox-20261116",news_layout:"compact-ready-20261116",news_radar_interval_minutes:15});
     // Única ruta pública adicional: devuelve identificadores y revisiones,
     // nunca contraseñas, marcas privadas, explicaciones ni imágenes.
     if (url.pathname === "/api/public-editorial-overrides") {
@@ -451,6 +451,11 @@ export default {
       return json({error:"unauthorized"},401);
     }
     if (url.pathname === "/api/me") return json({authenticated:true});
+    if (url.pathname.startsWith("/api/news/")) {
+      if(request.method!=="GET")return json({error:"method_not_allowed"},405);
+      try{return json(await readNewsRecord(url.pathname.slice("/api/news/".length),Number(url.searchParams.get("revision"))));}
+      catch(error){const status=error.message==="NEWS_RECORD_ID_INVALID"?400:error.message==="NEWS_RECORD_NOT_READY"?409:503;return json({error:status===409?"news_not_ready":status===400?"invalid_news_identity":"news_record_unavailable"},status);}
+    }
     if (url.pathname === "/api/news") {
       if(request.method!=="GET")return json({error:"method_not_allowed"},405);
       try{return json(await readNews({params:url.searchParams}));}

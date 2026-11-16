@@ -1,9 +1,10 @@
-name: TTiTTulares V2 - Persist one isolated radar snapshot
+name: TTiTTulares V2 - Persist isolated radar snapshot
 on:
   push:
     branches: [feature/ttactualidad-v2-clean]
     paths: ['.github/workflows/ttittulares-v2-radar-persist-once.yml']
   workflow_dispatch:
+  workflow_call:
 
 permissions:
   contents: read
@@ -14,7 +15,11 @@ concurrency:
 
 jobs:
   persist-one:
-    if: github.ref == 'refs/heads/feature/ttactualidad-v2-clean'
+    if: >-
+      github.repository == 'fabricelop/europapress-rss' &&
+      (github.ref == 'refs/heads/feature/ttactualidad-v2-clean' ||
+       (github.ref == 'refs/heads/main' &&
+        (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' || github.event_name == 'push')))
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
@@ -22,7 +27,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.sha }}
+          ref: feature/ttactualidad-v2-clean
           persist-credentials: false
       - uses: actions/setup-python@v5
         with:
@@ -36,19 +41,27 @@ jobs:
       - name: Fetch once, persist with CAS, verify readback and exact replay
         env:
           GITHUB_TOKEN: ${{ github.token }}
-        run: python -m v2.ttittulares.radar_store_v2 --live --persist --verify-replay > "$RUNNER_TEMP/ttn2-persist-report.json"
+        run: |
+          if [ "$GITHUB_EVENT_NAME" = "schedule" ]; then
+            python -m v2.ttittulares.radar_store_v2 --live --persist > "$RUNNER_TEMP/ttn2-persist-report.json"
+          else
+            python -m v2.ttittulares.radar_store_v2 --live --persist --verify-replay > "$RUNNER_TEMP/ttn2-persist-report.json"
+          fi
       - name: Summarise verified transaction
         run: |
           python - <<'PY'
           import json, os
           from pathlib import Path
           report = json.loads(Path(os.environ['RUNNER_TEMP'], 'ttn2-persist-report.json').read_text())
-          assert report['verified'] and report['replay_verified']
+          assert report['verified']
+          if os.environ['GITHUB_EVENT_NAME']!='schedule': assert report['replay_verified']
+          report['trigger_event']=os.environ['GITHUB_EVENT_NAME']
           assert report['editorial_execution_enabled'] is False
           assert report['publication_enabled'] is False
           Path(os.environ['GITHUB_STEP_SUMMARY']).write_text(
               '# TTiTTulares V2 — one persisted snapshot\n\n```json\n' +
               json.dumps(report, ensure_ascii=False, indent=2) + '\n```\n\n' +
-              'No scheduler, ChatGPT, image generation, V1 changes or publication.\n')
+              'Radar only. Scheduler calls this reusable job; no ChatGPT, image generation, V1 state changes or publication.\n')
           print('TTN2_PERSIST_VERIFIED=' + json.dumps(report, ensure_ascii=False))
           PY
+

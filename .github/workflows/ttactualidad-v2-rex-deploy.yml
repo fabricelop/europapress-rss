@@ -49,7 +49,7 @@ jobs:
           import {readNews} from './src/news.js';
           const view=await readNews();
           if(view.project!=="ttittulares-v2"||view.read_only!==true||view.publication_allowed!==false)throw Error("NEWS_PROJECTION_INVALID");
-          console.log("TT_V2_NEWS_REAL_PROJECTION="+JSON.stringify({observed_at:view.observed_at,counts:view.counts,pending_shown:view.items.length}));
+          console.log("TT_V2_NEWS_REAL_PROJECTION="+JSON.stringify({observed_at:view.observed_at,counts:view.counts,default_filter:view.filter,displayed_items:view.items.length}));
           JS
       - name: Conservar configuracion, credenciales, reloj y privacidad actuales
         working-directory: v2/ttendencias/private-worker
@@ -119,7 +119,7 @@ jobs:
               try:
                   health=verify_get("/health")
                   flags=verify_get("/api/public-editorial-overrides")
-                  if health.get("build")=="v2-re-x-20261115" and health.get("configured") is True and health.get("news_view")=="v2-news-inbox-20261116" and flags.get("schema_version")==1:
+                  if health.get("build")=="v2-re-x-20261115" and health.get("configured") is True and health.get("news_view")=="v2-news-inbox-20261116" and health.get("news_layout")=="compact-ready-20261116" and flags.get("schema_version")==1:
                       try:
                           verify_get("/api/news")
                           raise SystemExit("NEWS_PRIVATE_ACCESS_NOT_ENFORCED")
@@ -150,3 +150,6 @@ jobs:
 # V2-news-inbox-20261116: publish read-only Noticias from isolated V2 radar and pending jobs.
 
 # V2-news-browser-search-20261116: wait for the actual debounced query and reset before asserting.
+
+
+# V2-news-auto-compact-20261116: default Elaboradas, compact filters, short record read and scheduled-radar status.

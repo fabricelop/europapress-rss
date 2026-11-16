@@ -273,7 +273,7 @@ class WireTests(unittest.TestCase):
         store = GitHubStore("fixture", request=lambda *args: self.fail("unexpected API call"))
         path = PREFIX + "state/news-index.json"
         store._inventories["b" * 40] = {path: {"fixture": True}}
-        store._blob_json = lambda entry: entry
+        store._blob_json = lambda entry, commit, path: entry
         self.assertEqual(store.read_documents("b" * 40, [path]), {path: {"fixture": True}})
         with self.assertRaisesRegex(StoreError, "PINNED_DOCUMENT_MISSING"):
             store.read_documents("b" * 40, [PREFIX + "news/missing.json"])
@@ -294,6 +294,53 @@ class WireTests(unittest.TestCase):
         self.assertTrue(calls[-1].endswith("d" * 40 + "?recursive=1"))
         self.assertFalse(any("/branches/" in path for path in calls))
 
+    def test_pinned_raw_read_uses_no_blob_api_and_checks_original_git_hash(self):
+        raw = encode({"fixture": True}).encode()
+        digest = hashlib.sha1(b"blob " + str(len(raw)).encode() + b"\0" + raw).hexdigest()
+        path = PREFIX + "state/news-index.json"
+        reads = []
+        def read_bytes(commit, name):
+            reads.append((commit, name))
+            return raw
+        store = GitHubStore("fixture", request=lambda *args: self.fail("unnecessary blob API"), read_bytes=read_bytes)
+        store._inventories["b" * 40] = {path: {"type": "blob", "mode": "100644", "sha": digest}}
+        self.assertEqual(store.read_documents("b" * 40, [path]), {path: {"fixture": True}})
+        self.assertEqual(reads, [("b" * 40, path)])
+        store._read_bytes = lambda *args: b'{"tampered":true}'
+        with self.assertRaisesRegex(StoreError, "BLOB_HASH_MISMATCH"):
+            store.read_documents("b" * 40, [path])
+
+    def test_raw_request_omits_credentials_and_uses_pinned_public_url(self):
+        from io import BytesIO
+        calls = []
+        class Opener:
+            def open(self, req, timeout):
+                calls.append(req)
+                return BytesIO(b'{}')
+        store = GitHubStore("private-fixture-never-export")
+        store._opener = Opener()
+        path = PREFIX + "state/news-index.json"
+        self.assertEqual(store._http_raw("b" * 40, path), b'{}')
+        self.assertEqual(calls[0].get_header("Authorization"), None)
+        self.assertIn("/" + "b" * 40 + "/" + path, calls[0].full_url)
+        with self.assertRaisesRegex(StoreError, "OUTSIDE_SCOPE"):
+            store._http_raw("b" * 40, "ttittulares/prepared.json")
+
+    def test_replay_reads_only_receipt_before_origin_verification(self):
+        store = GitHubStore("fixture")
+        receipt_path = PREFIX + "state/radar/receipts/txn-" + "a" * 24 + ".json"
+        store.head = lambda: "b" * 40
+        store.inventory = lambda commit: {receipt_path: {}, PREFIX + "news/ttn2-" + "a" * 24 + ".json": {}}
+        paths_read = []
+        def read_documents(commit, paths):
+            paths_read.extend(paths)
+            return {receipt_path: {"fixture": True}}
+        store.read_documents = read_documents
+        head, docs = store.read_snapshot(receipt_path)
+        self.assertEqual(paths_read, [receipt_path])
+        self.assertEqual(head, "b" * 40)
+
 
 if __name__ == "__main__":
     unittest.main()
+

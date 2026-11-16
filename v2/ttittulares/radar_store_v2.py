@@ -66,12 +66,13 @@ class NoRedirect(HTTPRedirectHandler):
 class GitHubStore:
     """The repository and branch are intentionally not configurable."""
 
-    def __init__(self, token, *, request=None):
+    def __init__(self, token, *, request=None, read_bytes=None):
         if not token:
             raise StoreError("GITHUB_TOKEN_REQUIRED")
         self._token = token
         self._opener = build_opener(NoRedirect())
         self._request = request or self._http_json
+        self._read_bytes = read_bytes or self._http_raw
         self._inventories = {}
 
     def _http_json(self, method, path, payload=None):
@@ -104,6 +105,23 @@ class GitHubStore:
     def _get(self, suffix):
         return self._request("GET", "/repos/" + REPOSITORY + suffix)
 
+    def _http_raw(self, commit, path):
+        _oid(commit)
+        if not (allowed_write(path) or RECEIPT_PATH.fullmatch(path)):
+            raise StoreError("RAW_READ_PATH_OUTSIDE_SCOPE")
+        # The repository is already public (the private Worker uses the same source).
+        # Never send the GitHub bearer token to this separate public CDN host.
+        req = Request("https://raw.githubusercontent.com/" + REPOSITORY + "/" + commit + "/" + quote(path, safe="/"),
+                      headers={"User-Agent": "TTiTTulares-V2-Radar", "Accept": "application/json"})
+        try:
+            with self._opener.open(req, timeout=60) as response:
+                raw = response.read(16_000_001)
+        except (HTTPError, URLError, TimeoutError, ConnectionError, OSError):
+            raise StoreError("PINNED_RAW_READ_FAILED") from None
+        if len(raw) > 16_000_000:
+            raise StoreError("PINNED_RAW_READ_TOO_LARGE")
+        return raw
+
     def head(self):
         return _oid(self._get("/branches/" + quote(BRANCH, safe=""))["commit"]["sha"])
 
@@ -135,14 +153,20 @@ class GitHubStore:
         self._inventories[commit] = inventory
         return inventory
 
-    def _blob_json(self, entry):
+    def _blob_json(self, entry, commit=None, path=None):
         if entry.get("type") != "blob" or entry.get("mode") != "100644":
             raise StoreError("STATE_IS_NOT_REGULAR_JSON_FILE")
-        blob = self._get("/git/blobs/" + _oid(entry["sha"]))
-        if blob.get("encoding") != "base64":
-            raise StoreError("GITHUB_BLOB_ENCODING_INVALID")
+        if commit is not None:
+            raw = self._read_bytes(_oid(commit), path)
+        else:
+            blob = self._get("/git/blobs/" + _oid(entry["sha"]))
+            if blob.get("encoding") != "base64":
+                raise StoreError("GITHUB_BLOB_ENCODING_INVALID")
+            try:
+                raw = base64.b64decode("".join(blob["content"].split()), validate=True)
+            except (ValueError, KeyError):
+                raise StoreError("GITHUB_BLOB_JSON_INVALID") from None
         try:
-            raw = base64.b64decode("".join(blob["content"].split()), validate=True)
             actual = hashlib.sha1(b"blob " + str(len(raw)).encode() + b"\0" + raw).hexdigest()
             if actual != entry["sha"]:
                 raise StoreError("GITHUB_BLOB_HASH_MISMATCH")
@@ -159,12 +183,15 @@ class GitHubStore:
         if any(path not in inventory for path in paths):
             raise StoreError("PINNED_DOCUMENT_MISSING")
         with concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool:
-            docs = list(pool.map(lambda path: self._blob_json(inventory[path]), paths))
+            docs = list(pool.map(lambda path: self._blob_json(inventory[path], commit, path), paths))
         return dict(zip(paths, docs))
 
     def read_snapshot(self, receipt_path):
         head = self.head()
         inventory = self.inventory(head)
+        # Exact replay/recovery does not need to download the whole working ledger.
+        if receipt_path in inventory:
+            return head, self.read_documents(head, [receipt_path])
         paths = [path for path, entry in inventory.items() if
                  path in FIXED_STATE or path == receipt_path or
                  (entry["type"] != "tree" and path.startswith(
@@ -339,3 +366,4 @@ if __name__ == "__main__":
         main()
     except StoreError as exc:
         raise SystemExit(str(exc)) from None
+
