@@ -1,3 +1,7 @@
+## Seguimiento diagnóstico CDP imágenes — 16/11/2026
+
+El usuario ejecutó el diagnóstico PowerShell sin psutil: `CDP_PORT=61072`, dos páginas ChatGPT (`conversation` y `home_or_other`), ambas con depuración disponible, `CDP_ACCESS=OK`. Queda descartada una indisponibilidad general del CDP en ese instante; NO prueba que el envío del prompt funcione. Siguiente prueba entregada: inspección de solo lectura mediante Playwright existente, conectando al puerto 61072, que devuelve únicamente atributos de botones y compositor (sin texto de mensajes ni clicks). Pendiente respuesta del usuario antes de parchear. No se ha modificado código de producción ni se han reenviado imágenes. Mantener publicación desactivada.
+
 ## Diagnóstico operativo Tendencias V2 — 16/11/2026, imágenes (continuación)
 
 - Editorial: 11 identificadores distintos en diarios locales con `editorial_persisted` (Austria `editorial_persisted_recovered`); envío, captura y persistencia True. El contador `completed=0` del daemon no equivale a ausencia de persistencias.
