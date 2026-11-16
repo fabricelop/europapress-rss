@@ -6542,13 +6542,13 @@
       "trend_id": "trv2-3c35310ed712f91538d3a54f",
       "name": "Phoebe",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "f3bb0dc2bd83876d",
       "requested_at": "2026-11-16T15:19:42.336054+00:00",
       "updated_at": "2026-11-16T15:19:42.336054+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -6561,7 +6561,13 @@
           "archived_at": "2026-11-16T15:19:42.336054+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "a52f8bf563d9dea16d8f85f3b5213e8a8d9c26f2fd86d8b7",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-16T15:20:00.437282+00:00",
+        "expires_at": "2026-11-16T16:00:00.437282+00:00"
+      }
     },
     "trv2-cd38b5eba07e57cbbed6750d": {
       "trend_id": "trv2-cd38b5eba07e57cbbed6750d",
