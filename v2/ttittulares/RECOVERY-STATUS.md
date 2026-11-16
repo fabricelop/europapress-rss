@@ -1,3 +1,18 @@
+## Corrección de consolas — en validación
+
+El usuario está ejecutando Upgrade-News-Workflow-V2.ps1; ha mostrado repetidamente
+TTN2_WAIT_OWN_WORKERS=8. Esto cuenta procesos coincidentes, no ocho chats probados.
+No interrumpir el drenaje ni iniciar una segunda instalación mientras siga activo.
+Causa del destello de consola: tareas Noticias lanzan powershell.exe directamente;
+-WindowStyle Hidden no evita siempre la creación inicial de consola.
+Corrección aislada en fix/news-v2-hidden-launchers-20261116,
+commit d5404de3fe3cef9c90e7ac007cc086bfe68e81d3: WScript (modelo ya probado en
+Tendencias), tarea Hidden y reparador selectivo de acciones futuras.
+El reparador conserva triggers, principal, banderas Enabled y MultipleInstances;
+no reinicia/termina trabajos, Chrome ni otros servicios. Con respaldo XML.
+Se está comprobando en Windows con XML real y ejecución WSH de prueba que
+espera al hijo y devuelve su exit code. Aún no integrada ni aplicada localmente.
+
 # Noticias V2 — entrega y continuación
 
 **Código validado:** 62729b18586c155bb2dde071c4c97a519485d262.
