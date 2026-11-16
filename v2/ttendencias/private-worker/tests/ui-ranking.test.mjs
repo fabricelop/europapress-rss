@@ -133,3 +133,29 @@ test("incident card permits RE-X hints independently of explained RE-X",()=>{
  assert.match(app,/incidentRequested\(item\)/);
  assert.match(app,/if\(item\.status!=="explicada"\)return;/);
 });
+
+
+test("Antonio Recio dossier with character count extracts the X-ready lead",()=>{
+ const start=app.indexOf("function withoutInternalProvenance(text)");
+ const end=app.indexOf("\\n// Server-side marks",start);
+ assert.ok(start>=0&&end>start,"editorial parser and tweet formatter are present");
+ const renderEditorial=new Function(app.slice(start,end)+"\\nreturn {editorial,tweetText};")();
+ const raw=[
+  "Antonio Recio",
+  "",
+  "ESTADO_CAUSA: CONFIRMADA ESTADO_X: NO_NECESARIO",
+  "",
+  "Explicación principal — apta para X (139 caracteres)",
+  "",
+  "El estreno hoy de la temporada 17 de 'La que se avecina' en Prime Video devuelve a Antonio Recio al centro de la conversación.",
+  "",
+  "Qué ha ocurrido",
+  "La causa está razonablemente acreditada: el lunes 16 de noviembre de 2026 se estrena en España la temporada 17."
+ ].join("\\n");
+ assert.equal(renderEditorial.editorial(raw),
+  "El estreno hoy de la temporada 17 de 'La que se avecina' en Prime Video devuelve a Antonio Recio al centro de la conversación.");
+ const formatted=renderEditorial.tweetText(raw,{rank:8,name:"Antonio Recio",cause_status:"confirmada_declarada"});
+ assert.match(formatted,/TT#8 ANTONIO RECIO es tendencia/);
+ assert.match(formatted,/El estreno hoy de la temporada 17/);
+ assert.doesNotMatch(formatted,/Explicación capturada; formato editorial pendiente/);
+});
