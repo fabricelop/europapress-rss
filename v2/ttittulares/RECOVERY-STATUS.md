@@ -19,7 +19,11 @@ lack a local URL. Recover the same conversation from the account history; inspec
 its exact user command and response. Absence from a history search alone is not
 proof that submission never occurred. Do not invent a cause without its DOM/log.
 
-## Patch now under CI
+## Patch validated in CI
+
+Commit78714553e4f621bcb403919348b5546c8a285fc2 passed191 tests on Linux and Windows,
+installer syntax checks and the read-only real FIFO preview. Actions run43956595706
+completed successfully. No live Windows installation of this patch is confirmed.
 
 Confirmation checks the exact ID/revision/command across owned browser pages,
 uses bounded localized user/assistant transcript when role DOM is missing, and
