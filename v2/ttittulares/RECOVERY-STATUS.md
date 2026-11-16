@@ -1,3 +1,10 @@
+## Corrección preventiva del envío de imágenes — 16/11/2026
+
+- Diagnóstico real del usuario: Python 3.14.6 y `PLAYWRIGHT_IMPORT=OK`; `connect_over_cdp` a 127.0.0.1:61072 devolvió `ECONNREFUSED` porque el puerto temporal ya no escuchaba. El CDP sí había respondido en la prueba previa. No confundir esta conexión caducada con fallo de instalación Playwright.
+- Inspección del código de `image_worker_v2.py`: `submit_image_prompt` intentaba botones conocidos y, si no aparecían, ejecutaba `composer.press("Enter")`. En los diarios fallidos Enter dejaba el command_id en compositor sin turno de usuario.
+- Commit `2a27c6db565ccc7124e72c73f9b0022cdc9eb83f` en `feature/ttactualidad-v2-clean`: eliminado el fallback Enter; ahora lanza `V2_IMAGE_SEND_BUTTON_UNAVAILABLE` con descripción pública segura si no encuentra botón verificable. No se añadió selector especulativo, no se envió ningún prompt y no se modificó la publicación.
+- LIMITACIÓN IMPORTANTE: el trabajador todavía registra `send_intent_recorded` antes de llamar a `submit_image_prompt`; por tanto este cambio previene envíos Enter fallidos, pero aún NO corrige por completo el consumo de intentos en casos de botón ausente. Pendiente diseñar preflight/estado retry sin duplicados, pruebas y despliegue local. El código GitHub no implica que el proceso Windows activo haya sido actualizado.
+
 ## Incidencia inspección Playwright — 16/11/2026
 
 El usuario intentó ejecutar la inspección de botones del compositor en Chrome de imágenes. PowerShell devolvió únicamente el inicio de `py : Traceback (most recent call last):` y un `NativeCommandError`, sin excepción Python final. La causa es DESCONOCIDA; no atribuirla aún a Playwright, CDP o al script. Se facilitó diagnóstico mínimo con traceback completo capturado por stdout para verificar importación de Playwright, conexión CDP al puerto previamente observado 61072 y número de páginas, sin enviar prompts ni tocar trabajos. Pendiente resultado. No hay parche de producción aplicado.
