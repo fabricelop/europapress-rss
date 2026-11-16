@@ -304,6 +304,58 @@ class EditorialService:
                         writes[job_path(job["job_id"])] = copy.deepcopy(job)
                 else:
                     job = None
+            elif operation == "recover_capture":
+                job = jobs.get(job_id)
+                if not job:
+                    raise EditorialError("EDITORIAL_JOB_NOT_FOUND")
+                event = news[job["event_id"]]
+                if _blocked(event, job, docs):
+                    raise EditorialError("EDITORIAL_TERMINAL_OR_NEW_REVISION_WINS")
+                if (data.get("cleanup_verified") is not True
+                    or not HASH.fullmatch(str(data.get("answer_sha256", "")))
+                    or not SAFE_ID.fullmatch(str(data.get("local_journal_id", "")))):
+                    raise EditorialError("RECOVERY_CAPTURE_OR_CLEANUP_UNVERIFIED")
+                intent = job.get("send_intent") or {}
+                if (not intent or intent.get("command_id") != data.get("command_id")
+                    or (job.get("session") or {}).get("private_journal_id") != data["local_journal_id"]):
+                    raise EditorialError("RECOVERY_ORIGINAL_ATTEMPT_MISMATCH")
+                capture = job.get("capture")
+                if capture and capture["answer_sha256"] != data["answer_sha256"]:
+                    raise EditorialError("IMMUTABLE_CAPTURE_MISMATCH")
+                if job["status"] == "ready" and capture:
+                    return self._result(head, docs, job, replayed=True)
+                if job["status"] not in {"problematic", "capture_recovery", "captured", "validating", "persisting"}:
+                    raise EditorialError("RECOVERY_JOB_NOT_QUARANTINED")
+                if (job["status"] == "problematic"
+                    and (job.get("problem") or {}).get("retry_mode") != "recover_same_chat"):
+                    raise EditorialError("RECOVERY_REQUIRES_SAME_CHAT_INCIDENT")
+                previous_lease = job.get("lease")
+                same_owner = bool(previous_lease and previous_lease["worker_id"] == worker_id
+                                  and previous_lease["token_sha256"] == token_hash)
+                if previous_lease and _time(previous_lease["expires_at"]) > now and not same_owner:
+                    raise EditorialError("EDITORIAL_LEASE_FENCED")
+                if same_owner and capture and _time(previous_lease["expires_at"]) > now:
+                    return self._result(head, docs, job, replayed=True)
+                if sum(j["status"] in ACTIVE and j["job_id"] != job_id for j in jobs.values()) >= MAX_WORKERS:
+                    raise EditorialError("RECOVERY_NO_WORKER_CAPACITY")
+                job["lease"] = {"worker_id": worker_id, "token_sha256": token_hash, "started_at": _stamp(now),
+                    "heartbeat_at": _stamp(now), "expires_at": _stamp(now + timedelta(seconds=self.lease_seconds))}
+                job["attempts"]["claim_count"] += 1
+                if not capture:
+                    if job["attempts"]["submission_count"] < intent["attempt_no"]:
+                        job["attempts"]["history"].append({"attempt_no": intent["attempt_no"],
+                            "command_id": intent["command_id"], "at": _stamp(now), "outcome": "submitted"})
+                    job["attempts"]["submission_count"] = max(job["attempts"]["submission_count"], intent["attempt_no"])
+                    intent.update(submission_state="confirmed", submitted_at=intent.get("submitted_at") or _stamp(now))
+                    job["capture"] = {"answer_sha256": data["answer_sha256"], "captured_at": _stamp(now),
+                        "complete": True, "local_journal_id": data["local_journal_id"]}
+                    job["attempts"]["history"].append({"attempt_no": intent["attempt_no"],
+                        "command_id": intent["command_id"], "at": _stamp(now), "outcome": "captured"})
+                job.update(status="persisting" if job["status"] == "persisting" else "captured",
+                           phase="verifying", problem=None, updated_at=_stamp(now))
+                event.update(status="editorial_in_progress", updated_at=_stamp(now))
+                writes[job_path(job_id)] = copy.deepcopy(job)
+                writes[PREFIX + "news/" + event["event_id"] + ".json"] = copy.deepcopy(event)
             else:
                 job = jobs.get(job_id)
                 if not job:
@@ -492,6 +544,13 @@ class EditorialService:
     def captured(self, job_id, worker_id, token, answer_sha256, local_journal_id):
         return self._run("captured", job_id=job_id, worker_id=worker_id, token=token,
                          answer_sha256=answer_sha256, local_journal_id=local_journal_id)
+
+    def recover_capture(self, job_id, worker_id, token, command_id, answer_sha256,
+                        local_journal_id, *, cleanup_verified):
+        """Fence an exact user-recovered reply; never open ChatGPT or submit."""
+        return self._run("recover_capture", job_id=job_id, worker_id=worker_id, token=token,
+            command_id=command_id, answer_sha256=answer_sha256, local_journal_id=local_journal_id,
+            cleanup_verified=cleanup_verified)
 
     def complete(self, job_id, worker_id, token, record):
         # Publish nothing until immutable record bytes have a verified original commit.

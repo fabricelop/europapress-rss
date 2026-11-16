@@ -124,6 +124,76 @@ class EditorialStateTests(unittest.TestCase):
         self.assertEqual(plan['active_count'], 0)
         self.assertFalse(any(j['job_id'] == prepared['job']['job_id'] for j in plan['next_jobs']))
 
+    def quarantined(self):
+        sent = self.prepare()
+        jid = sent["job"]["job_id"]
+        self.service.fail(jid, "worker-1", self.token, "NEWS_SUBMISSION_UNCONFIRMED_NO_RESEND")
+        return jid
+
+    def recover(self, jid, **overrides):
+        values = dict(command_id="news-command-1", answer_sha256="d"*64,
+                      local_journal_id="journal-local-1", cleanup_verified=True)
+        values.update(overrides)
+        return self.service.recover_capture(jid, "manual-recovery", "recovery-token-secret-0002", **values)
+
+    def test_user_recovered_capture_confirms_original_send_and_never_creates_another_submission(self):
+        jid = self.quarantined()
+        result = self.recover(jid)
+        job = result["job"]
+        self.assertEqual(job["status"], "captured")
+        self.assertEqual(job["send_intent"]["command_id"], "news-command-1")
+        self.assertEqual(job["send_intent"]["submission_state"], "confirmed")
+        self.assertEqual(job["attempts"]["submission_count"], 1)
+        self.assertEqual(job["capture"]["answer_sha256"], "d"*64)
+        self.assertTrue(job["capture"]["complete"])
+
+    def test_recovery_requires_cleanup_proof_and_exact_original_attempt(self):
+        for changes in ({"cleanup_verified": False}, {"command_id": "other-command"},
+                        {"local_journal_id": "different-journal"}):
+            with self.subTest(changes=changes):
+                self.setUp()
+                jid = self.quarantined()
+                before = len(self.store.writes)
+                with self.assertRaises(EditorialError):
+                    self.recover(jid, **changes)
+                self.assertEqual(len(self.store.writes), before)
+
+    def test_recovery_is_fenced_against_another_active_worker_and_immutable_reply(self):
+        jid = self.quarantined()
+        self.recover(jid)
+        with self.assertRaisesRegex(EditorialError, "LEASE_FENCED"):
+            self.service.recover_capture(jid, "another-worker", "another-token-secret-003",
+                "news-command-1", "d"*64, "journal-local-1", cleanup_verified=True)
+        with self.assertRaisesRegex(EditorialError, "IMMUTABLE_CAPTURE"):
+            self.recover(jid, answer_sha256="e"*64)
+
+    def test_recovery_readback_and_ready_replay_preserve_one_immutable_record(self):
+        jid = self.quarantined()
+        captured = self.recover(jid)
+        record = self.ready_record(captured)
+        done = self.service.complete(jid, "manual-recovery", "recovery-token-secret-0002", record)
+        self.assertEqual(done["job"]["status"], "ready")
+        count = len(self.store.writes)
+        replay = self.recover(jid)
+        self.assertEqual(replay["job"]["status"], "ready")
+        self.assertTrue(replay["replayed"])
+        self.assertEqual(len(self.store.writes), count)
+
+    def test_recovery_reconciles_lost_commit_response_without_second_capture(self):
+        jid = self.quarantined()
+        before = len(self.store.writes)
+        self.store.lose_response = True
+        result = self.recover(jid)
+        self.assertEqual(result["job"]["status"], "captured")
+        self.assertEqual(len(self.store.writes), before + 1)
+
+    def test_recovery_respects_three_global_slots(self):
+        jid = self.quarantined()
+        for index in range(3):
+            self.claim("other-"+str(index), "private-other-token-sufficiently-long-"+str(index))
+        with self.assertRaisesRegex(EditorialError, "NO_WORKER_CAPACITY"):
+            self.recover(jid)
+
     def test_preview_never_mutates_and_fifo_ignores_insert_order(self):
         preview = self.service.preview()
         self.assertEqual([j['event_id'] for j in preview['next_jobs']], ['ttn2-'+format(n,'024x') for n in (1,2,3)])

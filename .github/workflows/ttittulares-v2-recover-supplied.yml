@@ -1,0 +1,43 @@
+name: TTiTTulares V2 - recover supplied Alcaraz reply without resending
+on:
+  push:
+    branches: [feature/ttactualidad-v2-clean]
+    paths:
+      - '.github/workflows/ttittulares-v2-recover-supplied.yml'
+      - 'v2/ttittulares/recoveries/alcaraz-user-capture.json'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ttn2-recover-0e0e7c7ebd494a7a753590d9-r1
+  cancel-in-progress: false
+jobs:
+  recover-one:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /v2/ttittulares/
+            /v2/ttendencias/*.py
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install jsonschema==4.23.0
+      - name: Test existing and recovery fencing before any live write
+        run: |
+          python -m compileall -q v2/ttittulares
+          python -m unittest -v v2.ttittulares.test_contract_examples v2.ttittulares.test_radar_ingest_v2 v2.ttittulares.test_source_fetch_v2 v2.ttittulares.test_radar_snapshot_v2 v2.ttittulares.test_radar_store_v2 v2.ttittulares.test_editorial_state_v2 v2.ttittulares.test_editorial_contract_v2 v2.ttittulares.test_editorial_consumer_v2 v2.ttittulares.test_editorial_browser_v2 v2.ttittulares.test_editorial_setup_v2 v2.ttittulares.test_editorial_install_v2
+      - name: Validate the original supplied reply without mutating data
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python -m v2.ttittulares.recover_supplied_news_v2 --check
+      - name: Recover only the exact response after verified original browser cleanup
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python -m v2.ttittulares.recover_supplied_news_v2
