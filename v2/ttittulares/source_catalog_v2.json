@@ -1,0 +1,350 @@
+{
+  "schema_version": 1,
+  "project": "ttittulares-v2",
+  "source_catalog_version": "v1-audit-108ca043d5a2",
+  "policy": {
+    "minimum_general_families": 4,
+    "waiting_ttl_hours": 24,
+    "minimum_healthy_general_sources": 14,
+    "general_sources": 19,
+    "general_families": 16,
+    "sport_sources": 5,
+    "discovery_sources": 3,
+    "discovery_counts_toward_general_threshold": false
+  },
+  "families": {
+    "Antena 3 Noticias": "Atresmedia",
+    "laSexta Noticias": "Atresmedia",
+    "Onda Cero": "Atresmedia",
+    "Telecinco Noticias": "Mediaset",
+    "Noticias Cuatro": "Mediaset",
+    "Público · Tremending": "Público"
+  },
+  "sources": [
+    {
+      "name": "Europa Press",
+      "type": "general",
+      "family": "Europa Press",
+      "format": "html",
+      "url": "https://www.europapress.es/noticias/",
+      "domain": "europapress.es",
+      "fallback_urls": [
+        "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/recent.json"
+      ]
+    },
+    {
+      "name": "EL PAÍS",
+      "type": "general",
+      "family": "EL PAÍS",
+      "format": "xml",
+      "url": "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/section/ultimas-noticias/portada",
+      "domain": "elpais.com",
+      "fallback_urls": [
+        "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/section/ultimas-noticias/portada",
+        "https://elpais.com/ultimas-noticias/"
+      ]
+    },
+    {
+      "name": "La Vanguardia",
+      "type": "general",
+      "family": "La Vanguardia",
+      "format": "xml",
+      "url": "https://www.lavanguardia.com/rss/home.xml",
+      "domain": "lavanguardia.com",
+      "fallback_urls": [
+        "https://www.lavanguardia.com/rss/home.xml",
+        "https://www.lavanguardia.com/"
+      ]
+    },
+    {
+      "name": "Cadena SER",
+      "type": "general",
+      "family": "Cadena SER",
+      "format": "html",
+      "url": "https://cadenaser.com/",
+      "domain": "cadenaser.com",
+      "fallback_urls": [
+        "https://cadenaser.com/actualidad/",
+        "https://cadenaser.com/cadena-ser/p1/"
+      ],
+      "special_rules": [
+        "dated_article_urls_only",
+        "stale_if_no_publisher_date_within_12h"
+      ]
+    },
+    {
+      "name": "RTVE",
+      "type": "general",
+      "family": "RTVE",
+      "format": "html",
+      "url": "https://www.rtve.es/noticias/",
+      "domain": "rtve.es",
+      "fallback_urls": [
+        "https://www.rtve.es/rss/temas_noticias.xml",
+        "https://www.rtve.es/noticias/"
+      ]
+    },
+    {
+      "name": "El HuffPost",
+      "type": "general",
+      "family": "El HuffPost",
+      "format": "xml",
+      "url": "https://www.huffingtonpost.es/feeds/index.xml",
+      "domain": "huffingtonpost.es",
+      "fallback_urls": [
+        "https://www.huffingtonpost.es/feeds/index.xml",
+        "https://www.huffingtonpost.es/"
+      ]
+    },
+    {
+      "name": "20minutos",
+      "type": "general",
+      "family": "20minutos",
+      "format": "html",
+      "url": "https://www.20minutos.es/ultima-hora/",
+      "domain": "20minutos.es",
+      "fallback_urls": [
+        "https://www.20minutos.es/ultima-hora/",
+        "https://www.20minutos.es/"
+      ]
+    },
+    {
+      "name": "ABC",
+      "type": "general",
+      "family": "ABC",
+      "format": "html",
+      "url": "https://www.abc.es/ultima-hora/",
+      "domain": "abc.es",
+      "fallback_urls": [
+        "https://www.abc.es/ultima-hora/",
+        "https://www.abc.es/"
+      ]
+    },
+    {
+      "name": "COPE",
+      "type": "general",
+      "family": "COPE",
+      "format": "xml",
+      "url": "https://www.cope.es/rss/home.xml",
+      "domain": "cope.es",
+      "fallback_urls": [
+        "https://www.cope.es/rss/home.xml",
+        "https://www.cope.es/"
+      ]
+    },
+    {
+      "name": "EFE",
+      "type": "general",
+      "family": "EFE",
+      "format": "html",
+      "url": "https://efe.com/espana/",
+      "domain": "efe.com",
+      "fallback_urls": [
+        "https://efe.com/espana/feed/",
+        "https://efe.com/espana/",
+        "https://efe.com/"
+      ]
+    },
+    {
+      "name": "Servimedia",
+      "type": "general",
+      "family": "Servimedia",
+      "format": "html",
+      "url": "https://www.servimedia.es/ultima-hora",
+      "domain": "servimedia.es",
+      "fallback_urls": [
+        "https://www.servimedia.es/ultima-hora",
+        "https://www.servimedia.es/"
+      ]
+    },
+    {
+      "name": "elDiario.es",
+      "type": "general",
+      "family": "elDiario.es",
+      "format": "html",
+      "url": "https://www.eldiario.es/ultimas-noticias/",
+      "domain": "eldiario.es",
+      "fallback_urls": [
+        "https://www.eldiario.es/ultimas-noticias/",
+        "https://www.eldiario.es/rss/",
+        "https://www.eldiario.es/"
+      ]
+    },
+    {
+      "name": "Público",
+      "type": "general",
+      "family": "Público",
+      "format": "html",
+      "url": "https://www.publico.es/",
+      "domain": "publico.es",
+      "fallback_urls": [
+        "https://www.publico.es/",
+        "https://www.publico.es/rss"
+      ]
+    },
+    {
+      "name": "El Mundo",
+      "type": "general",
+      "family": "El Mundo",
+      "format": "html",
+      "url": "https://www.elmundo.es/ultimas-noticias.html",
+      "domain": "elmundo.es",
+      "fallback_urls": [
+        "https://www.elmundo.es/ultimas-noticias.html",
+        "https://www.elmundo.es/"
+      ]
+    },
+    {
+      "name": "Antena 3 Noticias",
+      "type": "general",
+      "family": "Atresmedia",
+      "format": "html",
+      "url": "https://www.antena3.com/noticias/ultimas-noticias/",
+      "domain": "antena3.com",
+      "fallback_urls": [
+        "https://www.antena3.com/noticias/ultimas-noticias/",
+        "https://www.antena3.com/noticias/"
+      ]
+    },
+    {
+      "name": "laSexta Noticias",
+      "type": "general",
+      "family": "Atresmedia",
+      "format": "html",
+      "url": "https://www.lasexta.com/noticias/",
+      "domain": "lasexta.com",
+      "fallback_urls": [
+        "https://www.lasexta.com/noticias/",
+        "https://www.lasexta.com/temas/noticias_ultima-hora-1"
+      ]
+    },
+    {
+      "name": "Onda Cero",
+      "type": "general",
+      "family": "Atresmedia",
+      "format": "html",
+      "url": "https://www.ondacero.es/noticias/",
+      "domain": "ondacero.es",
+      "fallback_urls": [
+        "https://www.ondacero.es/noticias/",
+        "https://www.ondacero.es/noticias/espana/"
+      ]
+    },
+    {
+      "name": "Telecinco Noticias",
+      "type": "general",
+      "family": "Mediaset",
+      "format": "html",
+      "url": "https://www.telecinco.es/noticias/",
+      "domain": "telecinco.es",
+      "fallback_urls": [
+        "https://www.telecinco.es/noticias/",
+        "https://www.telecinco.es/ultimas-noticias/"
+      ]
+    },
+    {
+      "name": "Noticias Cuatro",
+      "type": "general",
+      "family": "Mediaset",
+      "format": "html",
+      "url": "https://www.cuatro.com/noticias/",
+      "domain": "cuatro.com",
+      "fallback_urls": [
+        "https://www.cuatro.com/noticias/",
+        "https://www.cuatro.com/"
+      ]
+    },
+    {
+      "name": "AS",
+      "type": "sport",
+      "family": "AS",
+      "format": "html",
+      "url": "https://as.com/ultimas-noticias/",
+      "domain": "as.com",
+      "fallback_urls": [
+        "https://as.com/ultimas-noticias/",
+        "https://as.com/"
+      ]
+    },
+    {
+      "name": "MARCA",
+      "type": "sport",
+      "family": "MARCA",
+      "format": "html",
+      "url": "https://www.marca.com/",
+      "domain": "marca.com",
+      "fallback_urls": [
+        "https://www.marca.com/",
+        "https://www.marca.com/futbol.html"
+      ]
+    },
+    {
+      "name": "Mundo Deportivo",
+      "type": "sport",
+      "family": "Mundo Deportivo",
+      "format": "html",
+      "url": "https://www.mundodeportivo.com/",
+      "domain": "mundodeportivo.com",
+      "fallback_urls": [
+        "https://www.mundodeportivo.com/",
+        "https://www.mundodeportivo.com/futbol"
+      ]
+    },
+    {
+      "name": "SPORT",
+      "type": "sport",
+      "family": "SPORT",
+      "format": "html",
+      "url": "https://www.sport.es/es/",
+      "domain": "sport.es",
+      "fallback_urls": [
+        "https://www.sport.es/es/",
+        "https://www.sport.es/es/futbol/"
+      ]
+    },
+    {
+      "name": "EFE Deportes",
+      "type": "sport",
+      "family": "EFE Deportes",
+      "format": "html",
+      "url": "https://efe.com/deportes/",
+      "domain": "efe.com",
+      "fallback_urls": [
+        "https://efe.com/deportes/feed/",
+        "https://efe.com/deportes/"
+      ]
+    },
+    {
+      "name": "Reuters Radar",
+      "type": "discovery",
+      "family": "Reuters Radar",
+      "format": "xml",
+      "url": "https://news.google.com/rss/search?q=site%3Areuters.com&hl=es&gl=ES&ceid=ES:es",
+      "domain": "reuters.com",
+      "fallback_urls": [],
+      "discovery_only": true
+    },
+    {
+      "name": "AP Radar",
+      "type": "discovery",
+      "family": "AP Radar",
+      "format": "xml",
+      "url": "https://news.google.com/rss/search?q=site%3Aapnews.com&hl=es&gl=ES&ceid=ES:es",
+      "domain": "apnews.com",
+      "fallback_urls": [],
+      "discovery_only": true
+    },
+    {
+      "name": "Público · Tremending",
+      "type": "social",
+      "family": "Público",
+      "format": "html",
+      "url": "https://www.publico.es/tremending/",
+      "domain": "publico.es",
+      "fallback_urls": [
+        "https://www.publico.es/tremending/"
+      ],
+      "discovery_only": true
+    }
+  ]
+}
