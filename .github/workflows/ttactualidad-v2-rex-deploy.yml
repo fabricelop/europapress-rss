@@ -90,15 +90,19 @@ jobs:
           python3 - <<'PY'
           import json,time,urllib.request
           origin="https://ttactualidad-v2-private-test.fabricelop.workers.dev"
+          headers={"User-Agent":"TTActualidadV2-Deploy-Verify/1.0","Accept":"application/json"}
+          def verify_get(path):
+              req=urllib.request.Request(origin+path,headers=headers)
+              with urllib.request.urlopen(req,timeout=15) as response:return json.load(response)
           for attempt in range(6):
               try:
-                  with urllib.request.urlopen(origin+"/health",timeout=15) as r: health=json.load(r)
-                  with urllib.request.urlopen(origin+"/api/public-editorial-overrides",timeout=15) as r: flags=json.load(r)
+                  health=verify_get("/health")
+                  flags=verify_get("/api/public-editorial-overrides")
                   if health.get("build")=="v2-re-x-20261115" and health.get("configured") is True and flags.get("schema_version")==1:
                       print("TT_V2_PRIVATE_RE_X_LIVE=YES")
                       break
-              except Exception:
-                  pass
+              except Exception as exc:
+                  print("TT_V2_PRIVATE_POST_DEPLOY_RETRY="+type(exc).__name__+":"+str(exc)[:120],flush=True)
               if attempt==5:raise SystemExit("RE_X_DEPLOY_NOT_VERIFIED")
               time.sleep(7)
           PY
