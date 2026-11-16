@@ -29,7 +29,9 @@ def proposed_job(row, *, attempt=1, nonce=None):
         (capture.get("sha256") is not None and
          capture["sha256"]!=fingerprint(answer))):
         raise ValueError("V2_IMAGE_SOURCE_CAPTURE_INVALID")
-    if type(attempt) is not int or not 1<=attempt<=99:
+    # A protocol upgrade can safely resume an exhausted journal at attempt
+    # 100+, preserving each prior command ID rather than overwriting it.
+    if type(attempt) is not int or not 1<=attempt<=9999:
         raise ValueError("V2_IMAGE_ATTEMPT_INVALID")
     if nonce is None:nonce=secrets.token_hex(12)
     if not isinstance(nonce,str) or not 8<=len(nonce)<=60 or not all(ch.isalnum() or ch in "_-" for ch in nonce):
