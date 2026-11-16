@@ -8011,20 +8011,27 @@
     "trv2-50f26092203d4ff3ffd9e9d9": {
       "trend_id": "trv2-50f26092203d4ff3ffd9e9d9",
       "name": "El Hierro",
-      "revision": 1,
-      "status": "in_progress",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "c7b25feeea33b534",
-      "requested_at": "2026-11-16T18:01:51.873158+00:00",
-      "updated_at": "2026-11-16T18:01:51.873158+00:00",
+      "requested_at": "2026-11-16T18:53:39.267546+00:00",
+      "updated_at": "2026-11-16T18:53:39.267546+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "lease": {
-        "token": "754c53fc2686608e34524752ea25f548cae56957c6de401b",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-16T18:04:05.491312+00:00",
-        "expires_at": "2026-11-16T18:44:05.491312+00:00"
-      }
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-16T18:04:05.491312+00:00",
+          "send_intent_at": null,
+          "incident_reason": "lease_expired_without_capture",
+          "archived_at": "2026-11-16T18:53:39.267546+00:00"
+        }
+      ],
+      "incident_retries": 1
     }
   },
   "pending_count": 323,
@@ -8348,10 +8355,10 @@
     "trv2-d1ac82ff60f7a4b80d29342d",
     "trv2-d8edca9993fe1037d3de3b9a",
     "trv2-2e974e50489420272e26dc08",
-    "trv2-50f26092203d4ff3ffd9e9d9",
     "trv2-86e703960aeb4930b40bd998",
     "trv2-f716b62242c54dba91de19dc",
-    "trv2-10f7cb38992e566c4f5b42a1"
+    "trv2-10f7cb38992e566c4f5b42a1",
+    "trv2-50f26092203d4ff3ffd9e9d9"
   ],
   "effects_enabled": false
 }
