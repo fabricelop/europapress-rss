@@ -1,0 +1,271 @@
+{
+  "news_event": {
+    "schema_version": 1,
+    "project": "ttittulares-v2",
+    "event_id": "ttn2-0123456789abcdef01234567",
+    "current_revision": 1,
+    "status": "editorial_pending",
+    "identity": {
+      "canonical_fact": "Ejemplo sintético: aprobación de una medida en una sesión parlamentaria concreta.",
+      "canonical_title": "El Parlamento aprueba una medida tras el debate",
+      "aliases": [
+        "El pleno da luz verde a la medida"
+      ],
+      "first_seen_at": "2026-11-16T10:00:00Z",
+      "last_seen_at": "2026-11-16T10:15:00Z",
+      "dedupe_keys": [
+        {
+          "kind": "fact_fingerprint",
+          "value_sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+        }
+      ]
+    },
+    "source_summary": {
+      "general_family_count": 4,
+      "general_family_threshold": 4,
+      "sport_source_count": 0,
+      "discovery_source_count": 1
+    },
+    "revision_refs": [
+      {
+        "revision": 1,
+        "reason": "initial",
+        "status": "pending",
+        "requested_at": "2026-11-16T10:15:00Z",
+        "editorial_job_id": "ttn2-0123456789abcdef01234567-r1-editorial",
+        "record_path": null,
+        "completed_at": null
+      }
+    ],
+    "current_record_path": null,
+    "legacy": {
+      "v1_event_id": ""
+    }
+  },
+  "editorial_job": {
+    "schema_version": 1,
+    "project": "ttittulares-v2",
+    "job_id": "ttn2-0123456789abcdef01234567-r1-editorial",
+    "event_id": "ttn2-0123456789abcdef01234567",
+    "revision": 1,
+    "status": "pending",
+    "phase": "queued",
+    "priority": "automatic",
+    "requested_at": "2026-11-16T10:15:00Z",
+    "updated_at": "2026-11-16T10:15:00Z",
+    "prompt": {
+      "template_version": "news-editorial-v1",
+      "prompt_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    },
+    "attempts": {
+      "claim_count": 0,
+      "safe_preflight_failures": 0,
+      "submission_count": 0,
+      "max_safe_preflight_attempts": 3,
+      "history": []
+    },
+    "lease": null,
+    "send_intent": null,
+    "session": null,
+    "capture": null,
+    "result": null,
+    "problem": null
+  },
+  "editorial_record": {
+    "schema_version": 1,
+    "project": "ttittulares-v2",
+    "event_id": "ttn2-0123456789abcdef01234567",
+    "revision": 1,
+    "record_status": "ready",
+    "title": "El Parlamento aprueba una medida tras el debate",
+    "canonical_url": "https://example.org/noticia/medida",
+    "factual_summary": "El Parlamento aprueba la medida tras un debate y fija su entrada en vigor en el texto definitivo.",
+    "explanation": "Ejemplo sintético para mostrar cómo el registro READY conserva el hecho verificado, las fuentes consultadas y el formato final que se presenta en Listas.",
+    "selection_mode": "automatic",
+    "source_count": 4,
+    "drafted_source_count": 4,
+    "verified_source_count": 4,
+    "source_evidence": [
+      {
+        "source_name": "Medio Alfa",
+        "source_family": "Grupo Alfa",
+        "source_type": "general",
+        "article_url": "https://example.org/alfa/1",
+        "source_title": "El pleno aprueba la medida",
+        "published_at": "2026-11-16T09:50:00Z",
+        "retrieved_at": "2026-11-16T10:10:00Z",
+        "supports": [
+          "La votación aprobó la medida."
+        ],
+        "independent": true
+      },
+      {
+        "source_name": "Medio Beta",
+        "source_family": "Grupo Beta",
+        "source_type": "general",
+        "article_url": "https://example.org/beta/1",
+        "source_title": "La medida sale adelante en el Parlamento",
+        "published_at": "2026-11-16T09:55:00Z",
+        "retrieved_at": "2026-11-16T10:11:00Z",
+        "supports": [
+          "El resultado de la votación fue favorable."
+        ],
+        "independent": true
+      },
+      {
+        "source_name": "Medio Gamma",
+        "source_family": "Grupo Gamma",
+        "source_type": "general",
+        "article_url": "https://example.org/gamma/1",
+        "source_title": "Aprobación parlamentaria de la medida",
+        "published_at": "2026-11-16T10:00:00Z",
+        "retrieved_at": "2026-11-16T10:12:00Z",
+        "supports": [
+          "La sesión terminó con la aprobación."
+        ],
+        "independent": true
+      },
+      {
+        "source_name": "Medio Delta",
+        "source_family": "Grupo Delta",
+        "source_type": "general",
+        "article_url": "https://example.org/delta/1",
+        "source_title": "El Parlamento cierra el debate con una aprobación",
+        "published_at": "2026-11-16T10:02:00Z",
+        "retrieved_at": "2026-11-16T10:13:00Z",
+        "supports": [
+          "La norma figura en el texto aprobado."
+        ],
+        "independent": true
+      }
+    ],
+    "verification": {
+      "essential_fact_verified": true,
+      "verified_at": "2026-11-16T10:14:00Z",
+      "method": "four_family_consensus",
+      "unresolved_issues": []
+    },
+    "tweet": {
+      "text": "El Parlamento aprueba la medida tras el debate y fija su entrada en vigor en el texto definitivo.\n\n#Ejemplo #Parlamento\n🌶️ El debate termina con la medida sobre la mesa.",
+      "remate": "🌶️ El debate termina con la medida sobre la mesa.",
+      "hashtags": [
+        "#Ejemplo",
+        "#Parlamento"
+      ],
+      "character_count": 170
+    },
+    "editorial_job_id": "ttn2-0123456789abcdef01234567-r1-editorial",
+    "editorial_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "radar_scan_id": "scan-20261116-1015",
+    "prepared_at": "2026-11-16T10:14:30Z"
+  },
+  "image_job": {
+    "schema_version": 1,
+    "project": "ttittulares-v2",
+    "job_id": "ttn2-0123456789abcdef01234567-r1-image",
+    "event_id": "ttn2-0123456789abcdef01234567",
+    "revision": 1,
+    "status": "pending",
+    "phase": "queued",
+    "source_record_path": "v2/ttittulares/records/ttn2-0123456789abcdef01234567/r1.json",
+    "editorial_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "prompt_version": "news-image-v1",
+    "prompt_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+    "policy": {
+      "mode": "automatic",
+      "visual_treatment": "editorial_gag",
+      "reason": "Ejemplo sintético; la política definitiva se centralizará antes de activar jobs."
+    },
+    "attempts": {
+      "claim_count": 0,
+      "safe_preflight_failures": 0,
+      "submission_count": 0,
+      "max_safe_preflight_attempts": 3,
+      "history": []
+    },
+    "lease": null,
+    "send_intent": null,
+    "session": null,
+    "capture": null,
+    "result": null,
+    "problem": null,
+    "requested_at": "2026-11-16T10:16:00Z",
+    "updated_at": "2026-11-16T10:16:00Z"
+  },
+  "image_asset": {
+    "schema_version": 1,
+    "project": "ttittulares-v2",
+    "media_id": "img2-abcdef0123456789abcdef01",
+    "event_id": "ttn2-0123456789abcdef01234567",
+    "revision": 1,
+    "editorial_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "image_job_id": "ttn2-0123456789abcdef01234567-r1-image",
+    "command_id": "ttimg-ttn2-0123456789abcdef01234567-r1-a1-0001",
+    "sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+    "mime": "image/png",
+    "width": 1536,
+    "height": 1024,
+    "bytes": 245000,
+    "asset_path": "v2/ttittulares/images/ttn2-0123456789abcdef01234567/r1/dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd.png",
+    "origin": "chatgpt_images",
+    "verified": true,
+    "created_at": "2026-11-16T10:20:00Z",
+    "alt": "Ilustración editorial sintética de la noticia de ejemplo.",
+    "rights_status": "generated"
+  },
+  "decision_event": {
+    "schema_version": 1,
+    "project": "ttittulares-v2",
+    "decision_id": "dcn2-1234567890abcdef12345678",
+    "event_id": "ttn2-0123456789abcdef01234567",
+    "revision": 1,
+    "action": "request_rework",
+    "actor": "editor",
+    "occurred_at": "2026-11-16T11:00:00Z",
+    "idempotency_key": "ui:news-rework:example-0001",
+    "rework": {
+      "scope": "reinvestigate",
+      "instructions": "Vuelve a contrastar el hecho principal con fuentes primarias y actualiza la noticia si aparecen novedades materiales."
+    },
+    "reason": "Ejemplo sintético de solicitud explícita de reelaboración."
+  },
+  "publication_receipt": {
+    "schema_version": 1,
+    "project": "ttittulares-v2",
+    "receipt_id": "rcp2-abcdef0123456789abcdef01",
+    "event_id": "ttn2-0123456789abcdef01234567",
+    "revision": 1,
+    "decision_id": "dcn2-2345678901abcdef23456789",
+    "platform": "x",
+    "status": "requested",
+    "requested_at": "2026-11-16T11:10:00Z",
+    "updated_at": "2026-11-16T11:10:00Z",
+    "attempt_no": 1,
+    "submitted_at": null,
+    "confirmed_at": null,
+    "external_post_id": null,
+    "external_url": null,
+    "error_code": null,
+    "manual_confirmation": false
+  },
+  "queue_index": {
+    "schema_version": 1,
+    "project": "ttittulares-v2",
+    "queue_type": "editorial",
+    "updated_at": "2026-11-16T10:15:00Z",
+    "source_of_truth": "individual_job_files",
+    "pending_count": 1,
+    "active_count": 0,
+    "items": [
+      {
+        "job_id": "ttn2-0123456789abcdef01234567-r1-editorial",
+        "event_id": "ttn2-0123456789abcdef01234567",
+        "revision": 1,
+        "status": "pending",
+        "priority": "automatic",
+        "requested_at": "2026-11-16T10:15:00Z",
+        "job_path": "v2/ttittulares/jobs/editorial/ttn2-0123456789abcdef01234567-r1-editorial.json"
+      }
+    ]
+  }
+}
