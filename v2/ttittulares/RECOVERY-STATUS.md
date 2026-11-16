@@ -79,6 +79,16 @@ en su fuente independiente (este chat no dispone de transporte Git local).
 El despliegue del Worker privado será el siguiente paso después de estas pruebas;
 conservará D1, secretos, bindings y cron existentes.
 
+## Preparación de despliegue
+
+Se mantiene el control de acceso privado de acciones y originales; el feed de lectura
+público está separado. Se limita el feed a30 fichas para respetar subrequests de Worker.
+El latido de imagen se limita a45s para no escribir en GitHub en cada sondeo DOM.
+Se añade comprobación de latido y de rutas privadas.
+El despliegue vuelve a probar Windows, Node, Python y navegador antes de Wrangler.
+Una comprobación posterior exigirá health.news_actions y feed público real.
+No hay envío automático a X, ni cambios en el Site V1 independiente.
+
 ## Evidencia previa conservada
 
 # News V2: recovery checkpoint after master v312

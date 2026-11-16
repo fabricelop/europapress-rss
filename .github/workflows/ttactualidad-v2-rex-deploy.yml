@@ -20,6 +20,23 @@ jobs:
           sparse-checkout-cone-mode: false
           sparse-checkout: |
             /v2/ttendencias/Update-V2-ImageIncidents.ps1
+            /v2/ttittulares/
+            /v2/ttendencias/*.py
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: News automation and original-image regression on Windows
+        run: |
+          python -m pip install jsonschema==4.23.0 Pillow playwright==1.57.0
+          python -m unittest v2.ttittulares.test_news_workflow_v2 v2.ttittulares.test_news_images_v2 v2.ttittulares.test_editorial_install_v2
+      - name: Parse all news installers without launching jobs
+        shell: powershell
+        run: |
+          Get-ChildItem v2/ttittulares/*.ps1 | ForEach-Object {
+            $tokens=$null;$errors=$null
+            [Management.Automation.Language.Parser]::ParseFile($_.FullName,[ref]$tokens,[ref]$errors)|Out-Null
+            if($errors.Count){throw ($errors|Out-String)}
+          }
       - name: Parse scoped local updater without executing it
         shell: powershell
         run: |
@@ -52,8 +69,8 @@ jobs:
           python-version: '3.12'
       - name: Regresiones de persistencia e identidad de las incidencias de imagen
         run: |
-          python -m pip install playwright==1.57.0
-          python -m unittest -v v2.ttendencias.test_image_incident_v2 v2.ttendencias.test_image_worker_v2 v2.ttendencias.test_web_top30_v2
+          python -m pip install playwright==1.57.0 jsonschema==4.23.0 Pillow
+          python -m unittest -v v2.ttendencias.test_image_incident_v2 v2.ttendencias.test_image_worker_v2 v2.ttendencias.test_web_top30_v2 v2.ttittulares.test_news_workflow_v2 v2.ttittulares.test_news_images_v2
       - name: Verificar Noticias en navegador de escritorio y movil
         working-directory: v2/ttendencias/private-worker
         run: |
@@ -143,12 +160,17 @@ jobs:
               try:
                   health=verify_get("/health")
                   flags=verify_get("/api/public-editorial-overrides")
-                  if health.get("build")=="v2-re-x-20261115" and health.get("configured") is True and health.get("news_view")=="v2-news-inbox-20261116" and health.get("news_layout")=="compact-ready-20261116" and health.get("image_incidents")=="v2-image-incidents-20261116" and flags.get("schema_version")==1:
+                  if health.get("build")=="v2-re-x-20261115" and health.get("configured") is True and health.get("news_view")=="v2-news-inbox-20261116" and health.get("news_layout")=="compact-ready-20261116" and health.get("image_incidents")=="v2-image-incidents-20261116" and health.get("news_actions")=="news-workflow-20261116" and flags.get("schema_version")==1:
                       try:
                           verify_get("/api/news")
                           raise SystemExit("NEWS_PRIVATE_ACCESS_NOT_ENFORCED")
                       except urllib.error.HTTPError as blocked:
                           if blocked.code!=401:raise SystemExit("NEWS_PRIVATE_ACCESS_CHECK_FAILED")
+                      controls=verify_get("/api/public-news-controls")
+                      feed=verify_get("/api/public-news")
+                      if controls.get("project")!="ttittulares-v2" or feed.get("source")!="ttittulares-v2" or not isinstance(feed.get("items"),list):
+                          raise SystemExit("NEWS_V2_PUBLIC_FEED_NOT_VERIFIED")
+                      print("TT_V2_NEWS_PUBLIC_FEED_VERIFIED="+str(len(feed["items"])))
                       print("TT_V2_NEWS_PRIVATE_ROUTE_PROTECTED=YES")
                       print("TT_V2_PRIVATE_RE_X_LIVE=YES")
                       break
@@ -180,3 +202,5 @@ jobs:
 # V2-news-auto-compact-20261116: default Elaboradas, compact filters, short record read and scheduled-radar status.
 
 # Recheck compact filters with real four-digit counts after image-incidence integration.
+
+# News V2 workflow: deploy persisted actions PUB/archive and exact-revision image UI after Windows/Node/Python/browser checks.
