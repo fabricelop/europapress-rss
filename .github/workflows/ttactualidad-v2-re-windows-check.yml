@@ -64,6 +64,23 @@ jobs:
           if ($source -match '(?i)\b(Stop-Process|Stop-ScheduledTask|taskkill)\b') {
             throw 'La actualizacion no debe interrumpir chats ni matar Chrome'
           }
+          # Test the exact .NET Framework File.Replace overload used by the
+          # installer; a null backup path failed on the owner's Windows PC.
+          $folder = Join-Path $env:RUNNER_TEMP ('tt-v2-replace-' + [Guid]::NewGuid().ToString('N'))
+          New-Item -ItemType Directory -Path $folder | Out-Null
+          $sourceFile = Join-Path $folder 'incoming.txt'
+          $targetFile = Join-Path $folder 'installed.txt'
+          $backupFile = Join-Path $folder 'backup.txt'
+          [IO.File]::WriteAllText($sourceFile, 'version2')
+          [IO.File]::WriteAllText($targetFile, 'version1')
+          [IO.File]::Replace($sourceFile, $targetFile, $backupFile)
+          if ([IO.File]::ReadAllText($targetFile) -ne 'version2' -or
+              [IO.File]::ReadAllText($backupFile) -ne 'version1') {
+            throw 'La sustitucion atomica con backup ha fallado'
+          }
+          if (!$source.Contains("('replaced-' + `$name)")) {
+            throw 'El instalador no usa el backup valido probado'
+          }
           Write-Host 'TT_V2_IMAGE_SEND_UPGRADE_PS51=VALID'
       - name: Comprobar imagen inicial y reexplicada con el mismo protocolo
         shell: pwsh
