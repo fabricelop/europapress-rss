@@ -68,7 +68,10 @@ try {
         $target = Join-Path $root $name
         $old = Join-Path $backup $name
         Copy-Item -LiteralPath $target -Destination $old -ErrorAction Stop
-        [IO.File]::Replace((Join-Path $stage $name), $target, $null)
+        # .NET Framework (Windows PowerShell 5.1) requires a valid backup path.
+        # Never pass $null: that fails with "The path is not of a legal form".
+        $atomicBackup = Join-Path $backup ('replaced-' + $name)
+        [IO.File]::Replace((Join-Path $stage $name), $target, $atomicBackup)
         $installed += $name
     }
     Write-Host 'TT_V2_IMAGE_SEND_INSTALLED=YES'
