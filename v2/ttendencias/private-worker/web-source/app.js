@@ -13,11 +13,21 @@ function withoutInternalProvenance(text){
   .replace(/\b(?:seg[uú]n|para) TTActualidad\s*V2\b/giu,"según el listado de tendencias")
   .replace(/\bTTActualidad\s*V2\b/giu,"el listado de tendencias");
 }
+function capturedEditorial(raw){
+ if(typeof raw!=="string")return "";
+ return raw.replace(/\r\n?/g,"\n")
+  .replace(/:::writing(?:\s*\{[^}\n]*\})?/giu,"")
+  .replace(/(^|\s):::(?=\s|$)/gmu,"$1")
+  .split("\n").map(line=>line.trim()
+   .replace(/^#{1,6}\s+(?=\S)/u,"")
+   .replace(/\*\*([^*\n]+)\*\*|__([^_\n]+)__/gu,"$1$2"))
+  .filter(line=>!/^ESTADO_(?:CAUSA|X)\s*:/iu.test(line)
+    &&! /^(?:Writing|Standard|Document)$/iu.test(line))
+  .join("\n").replace(/\n{3,}/g,"\n\n").trim();
+}
 function editorial(raw){
  if(typeof raw!=="string"||!raw.trim())return "Explicación pendiente.";
- const s=raw.replace(/\r\n/g,"\n")
-  .replace(/:::writing(?:\s*\{[^}\n]*\})?/giu,"")
-  .replace(/(^|\s):::(?=\s|$)/gmu,"$1"), lines=s.split("\n");
+ const s=capturedEditorial(raw), lines=s.split("\n");
  // ChatGPT sometimes returns an editorial dossier headed by "Explicación
  // principal — apta para X". The main line is inside that section; the
  // dossier title, certainty labels and publication rules are NOT tweet text.
@@ -131,6 +141,17 @@ function tweetText(raw,item){
   if(component&&xLength(parts.join("\n")+"\n"+component)<=280)parts.push(component);
  }
  return parts.join("\n");
+}
+function publishableText(text){
+ return !!text&&!/^Explicación (?:pendiente|capturada)/u.test(text);
+}
+function explanationText(raw,item){
+ const brief=tweetText(raw,item);
+ if(publishableText(brief))return brief;
+ // A captured dossier is useful even without a valid X-ready lead. Display
+ // it as text (never HTML), retaining uncertainty, context and source links.
+ // Do not reinterpret an arbitrary dossier paragraph as publication copy.
+ return capturedEditorial(raw)||"Explicación pendiente.";
 }
 // Server-side marks: same state on every authenticated browser and device.
 let redMarks={};
@@ -580,6 +601,7 @@ function makePublishButtons(card,item){
   actions.append(visibility);
  }
  const x=el("button","publish-action","P-X");
+ x.disabled=!publishableText(text);
  x.type="button";x.title="Preparar la publicación de texto en X";
  x.setAttribute("aria-label","Publicar texto en X para "+item.name);
  x.addEventListener("click",()=>{
@@ -628,6 +650,7 @@ function makePublishButtons(card,item){
  actions.append(pu);
  if(imageReady(item)){
   const withImage=el("button","publish-action publish-with-image","P-IA");
+  withImage.disabled=!publishableText(text);
   withImage.type="button";withImage.title="Compartir en X con la imagen IA original";
   withImage.setAttribute("aria-label","Preparar publicación con imagen IA para "+item.name);
   withImage.addEventListener("click",async()=>{
@@ -733,7 +756,7 @@ function render(){
     head.append(hidden);
    }
   }
-  const body=el("div","explanation",reset?"Revisión editorial solicitada. Se ha retirado la explicación anterior y su imagen; esperando una nueva explicación.":item.status==="explicada"?tweetText(item.explanation,item):({en_elaboracion:"En elaboración.",incidencia:"Incidencia en la elaboración.",desestimada:"Desestimada."})[item.status]||"Explicación pendiente.");
+  const body=el("div","explanation",reset?"Revisión editorial solicitada. Se ha retirado la explicación anterior y su imagen; esperando una nueva explicación.":item.status==="explicada"?explanationText(item.explanation,item):({en_elaboracion:"En elaboración.",incidencia:"Incidencia en la elaboración.",desestimada:"Desestimada."})[item.status]||"Explicación pendiente.");
   card.append(body);
   if(!reset){makePublishButtons(card,item);attachGeneratedImage(card,item);}
   root.append(card);
@@ -776,3 +799,4 @@ $("publication-close").addEventListener("click",()=>$("publication-dialog").clos
 refresh();
 setInterval(()=>{if(!document.hidden)refresh()},90000);
 setInterval(()=>{if(!document.hidden)void loadPublications().catch(()=>{})},60000);
+
