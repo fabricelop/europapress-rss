@@ -225,18 +225,20 @@ Antes de implementar workers, probar:
 
 ## 13. Estado del radar/ingesta V2
 
-El núcleo puro se encuentra en `source_catalog_v2.json`, `source_catalog_v2.py`, `content_filters_v2.py`, `source_publication_v2.py`, `identity_v2.py`, `source_health_v2.py` y `radar_ingest_v2.py`.
+El núcleo puro y los adaptadores están separados deliberadamente:
 
-- Catálogo portado: 19 fuentes generales agrupadas en 16 familias, cinco deportivas y tres suplementarias (Reuters Radar, AP Radar y Público · Tremending).
-- El quorum normal utiliza cuatro familias generales independientes. Las fuentes discovery/social ayudan a localizar o agrupar, pero no cuentan.
-- El núcleo agrupa titulares mediante canónico, variantes y evidencia conectada; filtra horóscopos diarios/sorteos rutinarios y aplica el filtro de prioridad deportiva.
-- Los candidatos sin quorum caducan a las 24 horas desde first_seen_at; repetir el titular no reinicia la ventana.
-- event_id se mantiene en radar/news-index. La subida a elegible produce un editorial_job_id por revisión.
-- Para un READY previo, una actualización solo se prepara si aporta fuente/familia nueva y un token material; la revisión no incrementa hasta que el candidato reúne cuatro familias generales nuevas.
-- El estado de salud separa fuentes generales de deportivas y discovery, y distingue fuentes sanas de familias independientes.
-- Los fixtures son sintéticos; la ejecución no consulta feeds, GitHub, ChatGPT ni Chrome. Los efectos permanecen desactivados.
+- `source_catalog_v2.json` / `source_catalog_v2.py`: 27 endpoints, de los cuales 19 son fuentes generales/16 familias, cinco deportivas y tres suplementarias de descubrimiento/social.
+- `source_fetch_v2.py`: lectura HTTP GET con HTTPS y allowlist de hosts/redirects; máximo ocho fuentes en paralelo por defecto (tope configurable de 16), fallbacks secuenciales y con identidad de fuente conservada, timeout por petición de 10 segundos por defecto y cuerpo máximo de 4 MB.
+- Parsers RSS/Atom, HTML y JSON. Los links HTML se restringen al editor configurado; el JSON requiere URL del editor. Solo se considera fecha de publicación del editor una etiqueta oficial de RSS/Atom, metadatos de artículo o un JSON con procedencia editorial identificada.
+- Cadena SER: solo se considera fresca una portada con fecha de artículo del editor dentro de las últimas 12 horas; si no se encuentra alternativa, puede conservarse como resultado degradado y no cuenta como fuente sana.
+- Google News se utiliza como fallback de una fuente. Sus timestamps de agregación nunca son fechas de publicación y sus filas conservan la familia original; no suman votos.
+- Cada fuente devuelve intentos, URLs probadas, HTTP, bytes, latencia, nivel de fallback, recuento, error y hora. `source_health_v2.py` conserva ese diagnóstico junto con la última consulta correcta y la racha de fallos.
+- `content_filters_v2.py` aplica los filtros de horóscopo diario, sorteos rutinarios y prioridades deportivas; el núcleo de `radar_ingest_v2.py` aplica la agrupación, las cuatro familias independientes, TTL de 24 horas e identidad/novedades materiales.
+- La suite conjunta contiene 44 pruebas offline (28 de ingesta + 16 de adaptadores) y ha pasado en GitHub Actions run 43915856958.
 
-**Límite actual:** todavía no existen adaptadores de fetch/parse para los 27 endpoints, recuperación paralela de cada fuente, scheduler, persistencia de snapshots en GitHub ni creación real de news-event/editorial jobs. No declarar operativo el radar solo por tener el núcleo puro.
+**Frontera de efectos:** el núcleo de ingesta es puro. El descargador solo realiza GET si se invoca explícitamente con `--live`; la CLI no crea jobs editoriales ni publica. El workflow `.github/workflows/ttittulares-v2-live-source-smoke.yml` es manual y solo lectura; lista el estado de las 27 fuentes sin guardar el radar. No se ha ejecutado aún una pasada real en vivo.
+
+**Límite actual:** faltan la prueba live de disponibilidad de los endpoints, la unión fetch→ingest en un único preview de scan, la persistencia versionada de snapshots bajo `v2/ttittulares/state/`, el selector/creador de jobs editoriales y los consumidores de redacción e imágenes. Todavía no existe un radar productivo ni una cola ejecutable.
 
 ## 14. Decisiones aplazadas y siguiente paso
 
@@ -244,6 +246,6 @@ Quedan por fijar al implementar: número de workers y presupuesto global de Chro
 
 **Paso 2 — contrato de datos y arquitectura: diseñado.** El schema y el bundle de ejemplos que acompañan este documento muestran los documentos principales y sus relaciones.
 
-**Paso 3 — núcleo puro de radar/ingesta: implementado y validado en CI.** La suite de 28 pruebas pasó en dos ejecuciones GitHub Actions (runs 43911591749 y 43911695446), incluyendo compilación, catálogo, regresiones del radar y comprobación del aislamiento puro. Los módulos no hacen fetch, no escriben y no activan efectos. El siguiente paso será construir adaptadores de lectura por fuente, recuperación/fallback en paralelo y snapshots persistidos exclusivamente bajo v2/ttittulares/state/.
+**Paso 3A — núcleo puro de radar/ingesta: validado. Paso 3B — adaptadores de descarga y recuperación: implementados y validados con 44 pruebas offline en el run 43915856958.** El siguiente paso es lanzar la prueba manual de las 27 fuentes, conectar el resultado fetch con el ingest en un preview sin efectos y después construir la persistencia versionada de snapshots bajo v2/ttittulares/state/.
 
 Hasta aprobar pruebas y validación E2E, efectos externos y publicación permanecen desactivados.
