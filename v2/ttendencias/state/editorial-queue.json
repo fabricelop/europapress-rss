@@ -7243,19 +7243,27 @@
     "trv2-2b8d9ca61a746b89f1556fde": {
       "trend_id": "trv2-2b8d9ca61a746b89f1556fde",
       "name": "Sabrina",
-      "revision": 1,
-      "status": "capture_recovery",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "02f83c046993096c",
-      "requested_at": "2026-11-16T15:05:10.615017+00:00",
-      "updated_at": "2026-11-16T15:15:28.422636+00:00",
+      "requested_at": "2026-11-16T15:27:00.572861+00:00",
+      "updated_at": "2026-11-16T15:27:00.572861+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "send_intent": {
-        "token": "3515b799e14218f2e0ed61e05793e43ac86dc7c6a4172296",
-        "at": "2026-11-16T15:13:03.829753+00:00"
-      },
-      "capture_recovery_reason": "chat_target_identity_not_verified"
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "capture_recovery",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": null,
+          "send_intent_at": "2026-11-16T15:13:03.829753+00:00",
+          "incident_reason": "chat_target_identity_not_verified",
+          "archived_at": "2026-11-16T15:27:00.572861+00:00"
+        }
+      ],
+      "incident_retries": 1
     },
     "trv2-40e5f6d6ca4c9f2053e2df2b": {
       "trend_id": "trv2-40e5f6d6ca4c9f2053e2df2b",
@@ -7603,7 +7611,6 @@
     "trv2-876beecc59c543665de75939",
     "trv2-851ef27293da6824b44fa251",
     "trv2-7ef4310b52f3d6d99fff2a1d",
-    "trv2-2b8d9ca61a746b89f1556fde",
     "trv2-3b6d176cc1abdee9923907ac",
     "trv2-40e5f6d6ca4c9f2053e2df2b",
     "trv2-45d469e5a5ae3862d096b0c6",
@@ -7616,7 +7623,8 @@
     "trv2-103982d66f094b759feb6e33",
     "trv2-3c35310ed712f91538d3a54f",
     "trv2-e1cb73b626176b23c8499621",
-    "trv2-7d180b40af009acfea255760"
+    "trv2-7d180b40af009acfea255760",
+    "trv2-2b8d9ca61a746b89f1556fde"
   ],
   "effects_enabled": false
 }
