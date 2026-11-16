@@ -1,0 +1,288 @@
+"""News V2 actions and independent image leases. No V1 writes or publication."""
+from __future__ import annotations
+import base64
+import copy
+import hashlib
+import json
+import re
+import secrets
+from datetime import timedelta
+from urllib.request import Request, urlopen
+from . import editorial_state_v2 as ed
+from .radar_snapshot_v2 import PREFIX, BRANCH, encode, sha256
+from .radar_store_v2 import REPOSITORY, Conflict, UncertainCommit, _oid
+
+CONTROL_URL = "https://ttactualidad-v2-private-test.fabricelop.workers.dev/api/public-news-controls"
+AUX = re.compile(r"v2/ttittulares/(?:jobs/images/ttn2-[a-f0-9]{24}-r[1-9][0-9]*-image|images/img2-[a-f0-9]{24}|actions/[a-f0-9]{32})\.json\Z")
+ID = re.compile(r"ttn2-[a-f0-9]{24}\Z")
+ACTION = re.compile(r"[a-f0-9]{32}\Z")
+
+def allowed(path, write=False):
+    return ed.allowed(path) or bool(AUX.fullmatch(path))
+
+class NewsStore(ed.EditorialGitHubStore):
+    def _http_raw(self, commit, path):
+        if not allowed(path):
+            raise ed.EditorialError("NEWS_PATH_OUTSIDE_SCOPE")
+        req = Request("https://raw.githubusercontent.com/"+REPOSITORY+"/"+_oid(commit)+"/"+path,
+                      headers={"User-Agent":"TTNoticiasV2", "Accept":"application/json"})
+        with self._opener.open(req, timeout=60) as response:
+            raw = response.read(16_000_001)
+        if len(raw)>16_000_000:
+            raise ed.EditorialError("NEWS_DOCUMENT_TOO_LARGE")
+        return raw
+
+    def read_editorial_snapshot(self):
+        head = self.head()
+        inventory = self.inventory(head)
+        return head, self.read_documents(head, [p for p,e in inventory.items()
+            if e.get("type")!="tree" and allowed(p)])
+
+    def commit(self, expected_head, writes, message):
+        if not writes or any(not allowed(p, True) for p in writes):
+            raise ed.EditorialError("NEWS_COMMIT_OUTSIDE_SCOPE")
+        additions=[{"path":p,"contents":base64.b64encode(encode(d).encode()).decode()}
+                   for p,d in sorted(writes.items())]
+        result=self._request("POST","/graphql",{
+            "query":"mutation($input:CreateCommitOnBranchInput!){createCommitOnBranch(input:$input){commit{oid}}}",
+            "variables":{"input":{"branch":{"repositoryNameWithOwner":REPOSITORY,"branchName":BRANCH},
+                "expectedHeadOid":expected_head,"message":{"headline":message},
+                "fileChanges":{"additions":additions}}}})
+        if result.get("errors"):
+            if self.head()!=expected_head: raise Conflict("NEWS_HEAD_CHANGED")
+            raise ed.EditorialError("NEWS_COMMIT_REJECTED")
+        try:return _oid(result["data"]["createCommitOnBranch"]["commit"]["oid"])
+        except (KeyError,TypeError):raise UncertainCommit("NEWS_COMMIT_UNCERTAIN") from None
+
+    def save_raster(self, raw, event_id, revision, meta):
+        if not ID.fullmatch(event_id) or type(revision) is not int or revision<1:
+            raise ed.EditorialError("NEWS_RASTER_ID_INVALID")
+        ext={"image/png":"png","image/jpeg":"jpg","image/webp":"webp"}[meta["mime"]]
+        path=PREFIX+"images/"+event_id+"-r"+str(revision)+"-"+meta["sha256"][:24]+"."+ext
+        blob=self._request("POST","/repos/"+REPOSITORY+"/git/blobs",
+            {"content":base64.b64encode(raw).decode(),"encoding":"base64"})
+        expected=hashlib.sha1(b"blob "+str(len(raw)).encode()+b"\0"+raw).hexdigest()
+        if blob.get("sha")!=expected:raise ed.EditorialError("NEWS_RASTER_BLOB_UNVERIFIED")
+        for _ in range(6):
+            head=self.head()
+            inventory=self.inventory(head)
+            if path in inventory:
+                if inventory[path]["sha"]!=expected:raise ed.EditorialError("NEWS_RASTER_CONFLICT")
+                return path,head
+            # Server-side expectedHeadOid through GraphQL prevents overwriting unrelated writes.
+            result=self._request("POST","/graphql",{
+                "query":"mutation($input:CreateCommitOnBranchInput!){createCommitOnBranch(input:$input){commit{oid}}}",
+                "variables":{"input":{"branch":{"repositoryNameWithOwner":REPOSITORY,"branchName":BRANCH},
+                    "expectedHeadOid":head,"message":{"headline":"Store original news image "+event_id},
+                    "fileChanges":{"additions":[{"path":path,"contents":base64.b64encode(raw).decode()}]}}}})
+            if not result.get("errors"):
+                saved=_oid(result["data"]["createCommitOnBranch"]["commit"]["oid"])
+                if self.inventory(saved).get(path,{}).get("sha")!=expected:
+                    raise ed.EditorialError("NEWS_RASTER_READBACK_FAILED")
+                return path,saved
+        raise Conflict("NEWS_RASTER_CAS_EXHAUSTED")
+
+def image_path(event_id, revision):
+    if not ID.fullmatch(event_id) or type(revision) is not int or revision<1:
+        raise ed.EditorialError("NEWS_IMAGE_ID_INVALID")
+    return PREFIX+"jobs/images/"+event_id+"-r"+str(revision)+"-image.json"
+
+def validate(kind, doc):
+    from jsonschema import Draft202012Validator, FormatChecker
+    from pathlib import Path
+    defs=json.loads((Path(__file__).parent/"schemas/contract.schema.json").read_text(encoding="utf-8"))["$defs"]
+    Draft202012Validator({"$ref":"#/$defs/"+kind,"$defs":defs},
+                        format_checker=FormatChecker()).validate(doc)
+
+class NewsService(ed.EditorialService):
+    def controls(self, controls):
+        if not isinstance(controls,dict) or not isinstance(controls.get("actions"),list):
+            raise ed.EditorialError("NEWS_CONTROLS_INVALID")
+        self.image_preferences=controls.get("preferences", [])
+        for action in controls["actions"]:
+            if action.get("action") in ("archive","rework","rework_x"):
+                self.apply_action(action)
+
+    def apply_action(self, action):
+        if not ACTION.fullmatch(str(action.get("action_id",""))) or not ID.fullmatch(str(action.get("event_id",""))):
+            raise ed.EditorialError("NEWS_ACTION_INVALID")
+        if action.get("action") not in ("archive","rework","rework_x"):
+            raise ed.EditorialError("NEWS_ACTION_INVALID")
+        path=PREFIX+"actions/"+action["action_id"]+".json"
+        for _ in range(self.max_attempts):
+            head,docs=self.store.read_editorial_snapshot()
+            if path in docs:return {"verified":True,"replay":True}
+            news,jobs=ed._snapshot(docs);event=news.get(action["event_id"])
+            if not event or event["current_revision"]!=action.get("revision") or event["status"]!="ready":
+                return {"verified":False,"stale":True}
+            now=ed._stamp(self.clock());writes={}
+            decision={"schema_version":1,"project":"ttittulares-v2",
+                "decision_id":"dcn2-"+action["action_id"][:24],"event_id":event["event_id"],
+                "revision":event["current_revision"],"action":"archive" if action["action"]=="archive" else "request_rework",
+                "actor":"private-web","occurred_at":now,"idempotency_key":action["action_id"]}
+            if action["action"]=="archive":
+                event.update(status="archived",updated_at=now)
+            else:
+                hints=str(action.get("hints") or "").strip()
+                if action["action"]=="rework_x" and not 10<=len(hints)<=1200:
+                    raise ed.EditorialError("NEWS_REWORK_HINTS_INVALID")
+                decision["rework"]={"scope":"reinvestigate","instructions":
+                    ("Investiga también X y contrasta estas pistas: "+hints) if hints else
+                    "Investiga de nuevo el hecho y redacta una explicación nueva."}
+                rev=event["current_revision"]+1;jid=event["event_id"]+"-r"+str(rev)+"-editorial"
+                old=jobs[event["event_id"]+"-r"+str(rev-1)+"-editorial"]
+                job=copy.deepcopy(old)
+                job.update(job_id=jid,revision=rev,status="pending",phase="queued",priority="manual_rework",
+                    requested_at=now,updated_at=now,prompt=None,lease=None,send_intent=None,session=None,capture=None,result=None,problem=None,
+                    attempts={"claim_count":0,"submission_count":0,"safe_preflight_failures":0,
+                              "max_safe_preflight_attempts":3,"history":[]})
+                jobs[jid]=job;writes[ed.job_path(jid)]=job
+                event.update(current_revision=rev,status="editorial_pending",current_record_path=None,updated_at=now)
+                event["revision_refs"].append({"revision":rev,"reason":"user_rework","status":"pending",
+                    "requested_at":now,"editorial_job_id":jid})
+                for key in ("image","image_incident","image_progress","editorial_sha256"):
+                    docs[ed.INDEX]["items"][event["event_id"]].pop(key,None)
+            validate("decision_event",decision)
+            writes[PREFIX+"decisions/"+event["event_id"]+"/"+decision["decision_id"]+".json"]=decision
+            writes[PREFIX+"news/"+event["event_id"]+".json"]=event
+            writes[path]=copy.deepcopy(action)
+            ed._projections(docs,news,jobs,writes)
+            try:
+                commit=self.store.commit(head,writes,"News action "+action["action"])
+                if self.store.read_documents(commit,[path])[path]!=action:
+                    raise ed.EditorialError("NEWS_ACTION_READBACK_FAILED")
+                return {"verified":True,"commit_sha":commit}
+            except (Conflict,UncertainCommit):continue
+        raise Conflict("NEWS_ACTION_RETRY_EXHAUSTED")
+
+    def claim(self, worker_id, token):
+        result=super().claim(worker_id,token)
+        if result.get("job"):
+            _,docs=self.store.read_editorial_snapshot()
+            job=result["job"];prior=job["revision"]-1
+            hints=[d.get("rework",{}).get("instructions","") for p,d in docs.items()
+                   if ed.DECISION.fullmatch(p) and d.get("event_id")==job["event_id"]
+                   and d.get("revision")==prior and d.get("action")=="request_rework"]
+            result["hints"]="\n".join(hints)[-4000:]
+        return result
+
+    def image(self, operation, *, worker_id, token, job_id=None, **data):
+        if not ed.SAFE_ID.fullmatch(worker_id):raise ed.EditorialError("NEWS_IMAGE_WORKER_INVALID")
+        token_hash=ed._secret(token)
+        for _ in range(self.max_attempts):
+            now=self.clock();stamp=ed._stamp(now)
+            head,docs=self.store.read_editorial_snapshot();news,jobs=ed._snapshot(docs);writes={}
+            imagejobs={p:d for p,d in docs.items() if p.startswith(PREFIX+"jobs/images/")}
+            if operation=="claim":
+                for p,j in imagejobs.items():
+                    if j["status"] in ("claimed","send_intent","generating","captured","persisting") and ed._time(j["lease"]["expires_at"])<=now:
+                        j.update(status="problematic",phase="blocked",lease=None,
+                            problem={"code":"NEWS_IMAGE_LEASE_EXPIRED","at":stamp,"retry_mode":"recover_same_chat" if j["send_intent"] else "manual_only"})
+                        writes[p]=j
+                active=[j for j in imagejobs.values() if j["lease"]]
+                owned=next((j for j in active if j["lease"]["worker_id"]==worker_id and j["lease"]["token_sha256"]==token_hash),None)
+                if owned:return {"job":copy.deepcopy(owned),"record":docs[owned["source_record_path"]],"replay":True}
+                candidates=sorted([e for e in news.values() if e["status"]=="ready"],
+                                  key=lambda e:(e["created_at"],e["event_id"]))
+                selected=None
+                if len(active)<2:
+                    for event in candidates:
+                        p=image_path(event["event_id"],event["current_revision"])
+                        if p in imagejobs:continue
+                        pref=next((x for x in getattr(self,"image_preferences",[]) if x.get("event_id")==event["event_id"] and x.get("revision")==event["current_revision"]),{})
+                        if pref.get("manual_image") or pref.get("image_suppressed") or pref.get("rework_requested") or pref.get("archived"):continue
+                        record=docs.get(event.get("current_record_path"))
+                        if not record or record["record_status"]!="ready":continue
+                        digest=record["editorial_sha256"]
+                        selected={"schema_version":1,"project":"ttittulares-v2","job_id":event["event_id"]+"-r"+str(event["current_revision"])+"-image",
+                            "event_id":event["event_id"],"revision":event["current_revision"],"status":"claimed","phase":"claiming",
+                            "source_record_path":event["current_record_path"],"editorial_sha256":digest,
+                            "prompt_version":"news-image-v2","prompt_sha256":"0"*64,
+                            "policy":{"mode":"automatic","visual_treatment":"editorial_gag"},
+                            "attempts":{"claim_count":1,"submission_count":0,"safe_preflight_failures":0,"max_safe_preflight_attempts":3,"history":[]},
+                            "lease":{"worker_id":worker_id,"token_sha256":token_hash,"claimed_at":stamp,
+                                     "heartbeat_at":stamp,"expires_at":ed._stamp(now+timedelta(minutes=25))},
+                            "send_intent":None,"session":None,"capture":None,"result":None,"problem":None,
+                            "requested_at":stamp,"updated_at":stamp}
+                        # Schema uses acquired_at rather than claimed_at in leases.
+                        selected["lease"]=self._image_lease(worker_id,token_hash,now)
+                        writes[p]=selected;imagejobs[p]=selected;break
+                if selected is None:
+                    if writes:
+                        try:self.store.commit(head,writes,"Quarantine expired news image jobs")
+                        except (Conflict,UncertainCommit):continue
+                    return {"job":None}
+                job=selected
+            else:
+                p=next((p for p,j in imagejobs.items() if j["job_id"]==job_id),None)
+                if not p:raise ed.EditorialError("NEWS_IMAGE_JOB_MISSING")
+                job=imagejobs[p];event=news[job["event_id"]]
+                if operation=="save" and job["status"]=="saved":
+                    if job["result"]["sha256"]!=data["asset"]["sha256"]:raise ed.EditorialError("NEWS_IMAGE_IMMUTABLE_MISMATCH")
+                    return {"job":job,"verified":True,"replay":True,"commit_sha":head}
+                lease=job.get("lease") or {}
+                if lease.get("worker_id")!=worker_id or lease.get("token_sha256")!=token_hash or ed._time(lease["expires_at"])<=now:
+                    raise ed.EditorialError("NEWS_IMAGE_LEASE_NOT_OWNED")
+                if event["status"]!="ready" or event["current_revision"]!=job["revision"] or docs[job["source_record_path"]]["editorial_sha256"]!=job["editorial_sha256"]:
+                    raise ed.EditorialError("NEWS_IMAGE_SOURCE_CHANGED")
+                if operation=="heartbeat":
+                    job["lease"]["expires_at"]=ed._stamp(now+timedelta(minutes=25));job["lease"]["heartbeat_at"]=stamp
+                elif operation=="prepare":
+                    if job["status"]!="claimed" or job["send_intent"]:
+                        return {"send_authorized":False}
+                    job.update(status="send_intent",phase="sending",prompt_sha256=data["prompt_sha256"],session=data["session"],
+                        send_intent={"command_id":data["command_id"],"attempt_no":1,"prompt_sha256":data["prompt_sha256"],
+                                     "prepared_at":stamp,"submission_state":"prepared","submitted_at":None})
+                elif operation=="submitted":
+                    job.update(status="generating",phase="generating")
+                    job["send_intent"].update(submission_state="confirmed",submitted_at=stamp)
+                    job["attempts"]["submission_count"]=1
+                elif operation=="save":
+                    if data.get("cleanup_verified") is not True:raise ed.EditorialError("NEWS_IMAGE_CLEANUP_REQUIRED")
+                    asset=copy.deepcopy(data["asset"]);validate("image_asset",asset)
+                    if asset["event_id"]!=job["event_id"] or asset["revision"]!=job["revision"] or asset["editorial_sha256"]!=job["editorial_sha256"] or asset["command_id"]!=job["send_intent"]["command_id"]:
+                        raise ed.EditorialError("NEWS_IMAGE_ASSET_IDENTITY_INVALID")
+                    writes[PREFIX+"images/"+asset["media_id"]+".json"]=asset
+                    job.update(status="saved",phase="done",lease=None,capture={"raster_sha256":asset["sha256"],
+                        "captured_at":stamp,"mime":asset["mime"],"width":asset["width"],"height":asset["height"],"bytes":asset["bytes"]},
+                        result={"asset_path":asset["asset_path"],"media_id":asset["media_id"],"sha256":asset["sha256"],"commit_sha":data["raster_commit"]})
+                elif operation=="fail":
+                    code=data["code"]
+                    if not re.fullmatch(r"[A-Z][A-Z0-9_]{2,100}",code):raise ed.EditorialError("NEWS_IMAGE_UNSAFE_ERROR")
+                    job.update(status="problematic",phase="blocked",lease=None,
+                        problem={"code":code,"at":stamp,"retry_mode":"recover_same_chat" if job["send_intent"] else "manual_only"})
+                else:raise ed.EditorialError("NEWS_IMAGE_OPERATION_INVALID")
+                job["updated_at"]=stamp;writes[p]=job
+            validate("image_job",job)
+            index=copy.deepcopy(docs[ed.INDEX]);item=index["items"][job["event_id"]]
+            item["editorial_sha256"]=job["editorial_sha256"]
+            if job["status"]=="saved":
+                item["image"]=copy.deepcopy(data["asset"]);item.pop("image_incident",None);item.pop("image_progress",None)
+            elif job["status"]=="problematic":
+                item["image_incident"]={**job["problem"],"event_id":job["event_id"],"revision":job["revision"],"editorial_sha256":job["editorial_sha256"]}
+                item.pop("image_progress",None)
+            else:item["image_progress"]={"revision":job["revision"],"editorial_sha256":job["editorial_sha256"],"expires_at":job["lease"]["expires_at"]}
+            writes[ed.INDEX]=index
+            try:
+                commit=self.store.commit(head,writes,"News image "+operation)
+                if self.store.read_documents(commit,[p])[p]!=job:raise ed.EditorialError("NEWS_IMAGE_READBACK_FAILED")
+                return {"job":copy.deepcopy(job),"record":docs[job["source_record_path"]],"verified":True,
+                        "commit_sha":commit,"send_authorized":operation=="prepare"}
+            except (Conflict,UncertainCommit):
+                # prepare ambiguity never permits another send; claim ambiguity is fenced.
+                if operation=="prepare":return {"send_authorized":False}
+                continue
+        raise Conflict("NEWS_IMAGE_RETRY_EXHAUSTED")
+
+    def _image_lease(self,worker_id,token_hash,now):
+        return {"worker_id":worker_id,"token_sha256":token_hash,
+                "started_at":ed._stamp(now),"heartbeat_at":ed._stamp(now),
+                "expires_at":ed._stamp(now+timedelta(minutes=25))}
+
+def read_controls():
+    with urlopen(Request(CONTROL_URL,headers={"Accept":"application/json","User-Agent":"TTNoticiasV2"}),timeout=30) as response:
+        return json.load(response)
+
+def sync_controls(service):
+    controls=read_controls();service.controls(controls)
+    return controls

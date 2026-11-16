@@ -1,0 +1,53 @@
+name: Noticias V2 - workflow parity checks
+on:
+  push:
+    branches: [feature/ttactualidad-v2-clean]
+    paths:
+      - 'v2/ttittulares/*.py'
+      - 'v2/ttittulares/*.ps1'
+      - 'v2/ttittulares/schemas/**'
+      - 'v2/ttendencias/private-worker/**'
+      - '.github/workflows/news-v2-workflow-check.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  regression:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /v2/ttittulares/
+            /v2/ttendencias/*.py
+            /v2/ttendencias/private-worker/
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: python -m pip install jsonschema==4.23.0 Pillow playwright==1.57.0
+      - name: News contract concurrency browser and workflow regression
+        run: python -m unittest v2.ttittulares.test_contract_examples v2.ttittulares.test_radar_snapshot_v2 v2.ttittulares.test_radar_ingest_v2 v2.ttittulares.test_radar_store_v2 v2.ttittulares.test_source_fetch_v2 v2.ttittulares.test_editorial_state_v2 v2.ttittulares.test_editorial_contract_v2 v2.ttittulares.test_editorial_browser_v2 v2.ttittulares.test_editorial_consumer_v2 v2.ttittulares.test_editorial_setup_v2 v2.ttittulares.test_editorial_install_v2 v2.ttittulares.test_news_workflow_v2
+      - name: Compile new image lifecycle without opening Chrome
+        run: python -m compileall -q v2/ttittulares
+      - name: Private Worker and trends regression
+        working-directory: v2/ttendencias/private-worker
+        run: |
+          npm install --no-audit --no-fund
+          npm run build
+          npm test
+      - name: Parse news installers
+        if: runner.os == 'Windows'
+        shell: powershell
+        run: |
+          Get-ChildItem v2/ttittulares/*.ps1 | ForEach-Object {
+            $tokens=$null;$errors=$null
+            [Management.Automation.Language.Parser]::ParseFile($_.FullName,[ref]$tokens,[ref]$errors)|Out-Null
+            if($errors.Count){throw ($errors|Out-String)}
+          }

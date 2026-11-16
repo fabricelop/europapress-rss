@@ -2,6 +2,7 @@
 // NO V1 changes. Signed sessions; V2 D1 stores red marks and 15-minute radar.
 import {captureRadar,loadRadar,mergeEditorialRadar,radarAgeMinutes} from "./radar.js";
 import {readNews,readNewsRecord} from "./news.js";
+import {newsControls,newsView,newsAction,newsManualImage,newsImage,publicNews} from "./news-actions.js";
 import {readImageIncident} from "./image-incidents.js";
 // All static assets require a session because run_worker_first=true.
 const COOKIE = "__Host-ttv2";
@@ -413,9 +414,18 @@ export default {
   },
   async fetch(request,env,ctx) {
     const url = new URL(request.url);
-    if (url.pathname === "/health") return json({ok:true,service:"ttactualidad-v2-private",configured:configured(env),image_storage:"github",image_flow:"same-chat",build:"v2-re-x-20261115",news_view:"v2-news-inbox-20261116",news_layout:"compact-ready-20261116",news_radar_interval_minutes:15,image_incidents:"v2-image-incidents-20261116"});
+    if (url.pathname === "/health") return json({ok:true,service:"ttactualidad-v2-private",configured:configured(env),image_storage:"github",image_flow:"same-chat",build:"v2-re-x-20261115",news_view:"v2-news-inbox-20261116",news_layout:"compact-ready-20261116",news_radar_interval_minutes:15,image_incidents:"v2-image-incidents-20261116",news_actions:"news-workflow-20261116"});
     // Única ruta pública adicional: devuelve identificadores y revisiones,
     // nunca contraseñas, marcas privadas, explicaciones ni imágenes.
+    if(url.pathname==="/api/public-news-controls"){
+      if(request.method!=="GET")return json({error:"method_not_allowed"},405);
+      try{return json(await newsControls(env));}catch{return json({error:"news_controls_unavailable"},503);}
+    }
+    if(url.pathname==="/api/public-news"){
+      if(request.method!=="GET")return json({error:"method_not_allowed"},405);
+      try{return json(await publicNews(env),200,{"Access-Control-Allow-Origin":"*"});}catch{return json({error:"news_unavailable"},503);}
+    }
+    if(url.pathname==="/api/public-news-image")return newsImage(request,env,{json,headers},true);
     if (url.pathname === "/api/public-editorial-overrides") {
       if(request.method!=="GET")return json({error:"method_not_allowed"},405);
       try{return json({schema_version:1,...await publicEditorialOverrides(env)});}
@@ -457,6 +467,9 @@ export default {
       try{return json(await readImageIncident({project:url.searchParams.get("project"),id:url.searchParams.get("id"),revision:Number(url.searchParams.get("revision"))}));}
       catch(error){const status=error.message==="IMAGE_INCIDENT_ID_INVALID"?400:error.message==="IMAGE_INCIDENT_REVISION_CHANGED"?409:503;return json({error:status===400?"invalid_image_identity":status===409?"image_revision_changed":"image_incident_unavailable"},status);}
     }
+    if(url.pathname==="/api/news-actions")return newsAction(request,env,{json,sameOrigin});
+    if(url.pathname==="/api/news-manual-image")return newsManualImage(request,env,{json,sameOrigin});
+    if(url.pathname==="/api/news-image")return newsImage(request,env,{json,headers});
     if (url.pathname.startsWith("/api/news/")) {
       if(request.method!=="GET")return json({error:"method_not_allowed"},405);
       try{return json(await readNewsRecord(url.pathname.slice("/api/news/".length),Number(url.searchParams.get("revision"))));}
@@ -464,7 +477,7 @@ export default {
     }
     if (url.pathname === "/api/news") {
       if(request.method!=="GET")return json({error:"method_not_allowed"},405);
-      try{return json(await readNews({params:url.searchParams}));}
+      try{return json(await newsView(env,url.searchParams));}
       catch(error){return json({error:error.message==="NEWS_FILTER_INVALID"?"invalid_news_filter":"news_unavailable"},error.message==="NEWS_FILTER_INVALID"?400:503);}
     }
     if (url.pathname.startsWith("/api/image/")) return imageRead(request,env,url.pathname.slice("/api/image/".length));

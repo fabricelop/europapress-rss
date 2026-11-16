@@ -80,6 +80,8 @@ def run_one(service, config, *, browser_factory=ChromeJob, parse=None, build=Non
         browser = browser_factory(chrome=config['chrome'], seed=config['seed'], profile=profile)
         browser.open()
         prompt = build(event, job, command_id)
+        if claim.get('hints'):
+            prompt += '\nINSTRUCCIONES DE REELABORACIÓN DEL EDITOR:\n' + claim['hints']
         prompt_hash = hashlib.sha256(prompt.encode('utf-8')).hexdigest()
         journal['prompt_sha256'] = prompt_hash
         write_private(journal_path, journal)
@@ -194,6 +196,12 @@ def daemon(service, config, *, poll=30):
                 if child.poll() is not None:
                     del pool[slot]
             if enabled(config['root']):
+                from .news_workflow_v2 import sync_controls
+                try:
+                    sync_controls(service)
+                except Exception:
+                    time.sleep(poll)
+                    continue
                 plan = service.preview()
                 pending = plan.get('pending_count', 0)
                 if plan.get('maintenance_needed') and pending == 0:
@@ -223,9 +231,9 @@ def main():
     group.add_argument('--run-one', action='store_true')
     group.add_argument('--daemon', action='store_true')
     args = parser.parse_args()
-    from .editorial_state_v2 import EditorialService, EditorialGitHubStore
+    from .news_workflow_v2 import NewsService, NewsStore
     config = settings(args.root)
-    service = EditorialService(EditorialGitHubStore(github_token()))
+    service = NewsService(NewsStore(github_token()))
     if args.check:
         print(json.dumps({'project': 'ttittulares-v2', 'preview': service.preview(),
                           'browser_opened': False, 'published': False}))

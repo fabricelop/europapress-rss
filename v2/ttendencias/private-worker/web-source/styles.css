@@ -155,3 +155,5 @@
 
 /* Six compact news filters remain on one row with four-digit counts at 320px. */
 @media(max-width:360px){.news-filters{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:3px;overflow:visible}.news-filter{min-width:0;font-size:9px;padding:7px 2px;overflow:hidden;text-overflow:ellipsis;text-align:center}}
+
+.news-original{display:block;max-width:100%;max-height:520px;object-fit:contain;margin:12px auto}.news-actions{flex-wrap:wrap;gap:6px}.news-card.marked-red{border-color:#d24444;background:#27191d}.news-image-working{color:#e4a55b}.news-paste-dialog{max-width:min(90vw,480px);background:#171d26;color:#f4f4f4;border:1px solid #526176;border-radius:12px;padding:20px}

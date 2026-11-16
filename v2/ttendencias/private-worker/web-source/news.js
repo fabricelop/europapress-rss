@@ -52,13 +52,14 @@
    list.append(card);
    let loaded=false;
    const loadRecord=async()=>{
-    if(loaded||item.group!=="ready")return;loaded=true;
+    if(loaded||!["ready","archived"].includes(item.group))return;loaded=true;
     try{
      const key=item.event_id+":"+item.revision;
      let record=state.records.get(key);
      if(!record){const response=await fetch("/api/news/"+encodeURIComponent(item.event_id)+"?revision="+item.revision,{credentials:"same-origin",cache:"no-store",signal:AbortSignal.timeout(20000)});if(!response.ok)throw Error("record_unavailable");record=await response.json();}
      if(record.event_id!==item.event_id||record.revision!==item.revision||typeof record.tweet_text!=="string"||record.x_character_count>280)throw Error("record_invalid");
      state.records.set(key,record);explanation.textContent=record.tweet_text;
+     TTNewsActions.attach({item,card,head:summary,body,record,onChange:refreshNews});
      explanation.after(node("p","news-tweet-count",record.x_character_count+" / 280"));
     }catch{loaded=false;explanation.textContent="No se pudo cargar la explicación de esta revisión. Cierra y vuelve a abrir la noticia para reintentar.";}
    };

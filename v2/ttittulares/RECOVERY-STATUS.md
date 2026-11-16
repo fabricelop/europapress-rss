@@ -39,6 +39,20 @@ Estado inicial comprobado:
 - Baseline AGENTS.md: conservar tendencias, Chrome compartido, SeLoRecordamos,
   publicaciones y archivos; exigir CI completo antes de recomendar instalación.
 
+## Implementación guardada — validación pendiente
+
+Preparados: news_workflow_v2.py (decisiones CAS, revisión nueva, leases de imágenes),
+news_images_v2.py (chat nuevo, original raster, cierre propio antes de asociar),
+acciones D1 separadas de Tendencias, botones Noticias y feed público de Noticias V2.
+PUB archiva sin envío a X; RE/RE-X preservan el registro previo.
+La automatización editorial existente se integra con las decisiones nuevas.
+Se añade CI Linux/Windows de regresión. Aún no desplegado ni instalado.
+Pendientes inmediatos: revisar resultados CI, completar pruebas de API/concurrencia,
+instalador conjunto y conexión del Site V1. Site V1 identificado: proyecto
+appgprj_6ae4dcf7d7488191a574e5b649e67370, versión97, público.
+Su fuente no es el repositorio europapress-rss: no confundir un feed nuevo con
+el despliegue del Site. El acceso al entorno de edición del Site sigue limitado.
+
 ## Evidencia previa conservada
 
 # News V2: recovery checkpoint after master v312

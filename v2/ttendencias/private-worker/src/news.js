@@ -49,6 +49,9 @@ export function projectNews(index,queue,clock=Date.now()){
    source_url:(item.canonical_urls||[]).map(url).find(Boolean)||null,
    first_seen_at:stamp(item.first_seen_at),last_seen_at:stamp(item.last_seen_at),
    explanation:null,publication_allowed:false,
+   image:item.image?.revision===item.current_revision?item.image:null,
+   image_available:item.image?.revision===item.current_revision&&item.image.verified===true,
+   image_in_progress:item.image_progress?.revision===item.current_revision&&Date.parse(item.image_progress.expires_at)>clock,
    image_incident_available:/^[a-f0-9]{64}$/.test(item.editorial_sha256||"")&&projectImageIncident(item.image_incident,{project:"ttittulares-v2",id,revision:item.current_revision,editorialHash:item.editorial_sha256})!==null});
  }
  for(const id of jobs.keys())if(!index.items[id])throw Error("NEWS_ORPHAN_QUEUE_ENTRY");
@@ -80,8 +83,9 @@ async function sourceDocuments(fetcher){
  }));
 }
 
-export async function readNews({fetcher=fetch,params=new URLSearchParams()}={}){
- return pageNews(projectNews(...await sourceDocuments(fetcher)),params);
+export async function readNews({fetcher=fetch,params=new URLSearchParams(),all=false}={}){
+ const view=projectNews(...await sourceDocuments(fetcher));
+ return all?view:pageNews(view,params);
 }
 
 export function validateNewsRecord(record,id,revision){
@@ -92,14 +96,14 @@ export function validateNewsRecord(record,id,revision){
     record.verification?.essential_fact_verified!==true||!text||Array.from(text).length>256||count>280||
     !/^[a-f0-9]{64}$/.test(record.editorial_sha256||""))throw Error("NEWS_RECORD_INVALID");
  return {project:"ttittulares-v2",event_id:id,revision,tweet_text:text,x_character_count:count,
-         editorial_sha256:record.editorial_sha256,publication_allowed:false};
+         editorial_sha256:record.editorial_sha256,title:record.title,factual_summary:record.factual_summary,source_evidence:record.source_evidence,prepared_at:record.prepared_at,publication_allowed:false};
 }
 
 export async function readNewsRecord(id,revision,{fetcher=fetch}={}){
  if(!ID.test(id)||!Number.isSafeInteger(revision)||revision<1||revision>100000)throw Error("NEWS_RECORD_ID_INVALID");
  const view=projectNews(...await sourceDocuments(fetcher));
  const item=view.items.find(x=>x.event_id===id);
- if(!item||item.revision!==revision||item.group!=="ready")throw Error("NEWS_RECORD_NOT_READY");
+ if(!item||item.revision!==revision||!["ready","archived"].includes(item.group))throw Error("NEWS_RECORD_NOT_READY");
  const root=NEWS_SOURCE.replace(/state\/$/,"");
  const response=await fetcher(root+"records/"+id+"/r"+revision+".json",{headers:{Accept:"application/json"},cf:{cacheTtl:30,cacheEverything:true}});
  if(!response.ok)throw Error("NEWS_RECORD_UNAVAILABLE");
@@ -108,3 +112,22 @@ export async function readNewsRecord(id,revision,{fetcher=fetch}={}){
 }
 
 
+
+export function decorateNews(view,controls={}){
+ const prefs=new Map((controls.preferences||[]).map(x=>[x.event_id+":"+x.revision,x]));
+ const counts={pending:0,detected:0,working:0,ready:0,incident:0,archived:0};
+ const items=view.items.map(item=>{
+  const pref=prefs.get(item.event_id+":"+item.revision)||{};
+  const marked=(controls.preferences||[]).filter(x=>x.event_id===item.event_id&&typeof x.marked==="boolean").sort((a,b)=>b.revision-a.revision)[0]?.marked===true;
+  const sensitive=/fallec|muert|asesinat|suicid|violaci[oó]n|abuso sexual|atentad|tragedia|naufragio/i.test(item.title);
+  const row={...item,marked,image_suppressed:pref.image_suppressed===true,
+   public_image_visible:pref.public_image_visible??!sensitive,
+   rework_requested:pref.rework_requested===true};
+  if(pref.archived){row.group="archived";row.status_label="Archivada";}
+  else if(pref.rework_requested){row.group="working";row.status_label="Reelaboración solicitada";}
+  if(pref.manual_image){row.image_available=true;row.image_incident_available=false;}
+  if(row.image_suppressed)row.image_available=false;
+  counts[row.group]++;return row;
+ });
+ return {...view,items,counts};
+}
