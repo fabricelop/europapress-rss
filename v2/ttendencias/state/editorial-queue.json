@@ -5732,19 +5732,27 @@
     "trv2-6b386a0735c730ae9ab062fc": {
       "trend_id": "trv2-6b386a0735c730ae9ab062fc",
       "name": "Tolón",
-      "revision": 1,
-      "status": "capture_recovery",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "b9b22cd8107ffdc2",
-      "requested_at": "2026-11-16T08:12:49.276199+00:00",
-      "updated_at": "2026-11-16T08:19:47.111886+00:00",
+      "requested_at": "2026-11-16T08:28:48.839240+00:00",
+      "updated_at": "2026-11-16T08:28:48.839240+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "send_intent": {
-        "token": "bd7a3c5cf235f1e2240d4aa588d833c4891bba8c7c713017",
-        "at": "2026-11-16T08:17:54.308345+00:00"
-      },
-      "capture_recovery_reason": "chat_target_identity_not_verified"
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "capture_recovery",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": null,
+          "send_intent_at": "2026-11-16T08:17:54.308345+00:00",
+          "incident_reason": "chat_target_identity_not_verified",
+          "archived_at": "2026-11-16T08:28:48.839240+00:00"
+        }
+      ],
+      "incident_retries": 1
     },
     "trv2-c54b2799e0adc2bea6d5764b": {
       "trend_id": "trv2-c54b2799e0adc2bea6d5764b",
@@ -6077,11 +6085,11 @@
     "trv2-e6abb5cf875f74cd3aed045b",
     "trv2-093f6bc391a804e7f75b4146",
     "trv2-4ef178305a4c1cef561df369",
-    "trv2-6b386a0735c730ae9ab062fc",
     "trv2-95b9592edcb9ebe59c771deb",
     "trv2-abf3e639ba15109779cba1c2",
     "trv2-acb62f2f0f880940c3f56cb9",
-    "trv2-c54b2799e0adc2bea6d5764b"
+    "trv2-c54b2799e0adc2bea6d5764b",
+    "trv2-6b386a0735c730ae9ab062fc"
   ],
   "effects_enabled": false
 }
