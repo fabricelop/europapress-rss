@@ -11,6 +11,7 @@ import copy
 import hashlib
 import json
 import re
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -241,11 +242,15 @@ def main():
     args = parser.parse_args()
     if args.live:
         now = datetime.now(timezone.utc)
+        print("TTN2_LIVE_FETCH_START", file=sys.stderr, flush=True)
         payload = {"fetch": fetch_all_sources(now=now, workers=args.workers, timeout=args.timeout)}
+        print("TTN2_LIVE_FETCH_DONE=" + json.dumps(payload["fetch"]["metrics"]), file=sys.stderr, flush=True)
     else:
         payload = json.loads(Path(args.input).read_text(encoding="utf-8"))
         now = datetime.fromisoformat(payload["now"].replace("Z", "+00:00"))
+    print("TTN2_SNAPSHOT_PLAN_START", file=sys.stderr, flush=True)
     plan = plan_snapshot(payload["fetch"], payload.get("documents", {}), now=now)
+    print("TTN2_SNAPSHOT_PLAN_DONE", file=sys.stderr, flush=True)
     print(encode({"mode": "preview", "scan_id": plan["scan_id"], "metrics": plan["metrics"],
                   "fetch_metrics": payload["fetch"].get("metrics", {}),
                   "source_statuses": payload["fetch"]["source_statuses"],

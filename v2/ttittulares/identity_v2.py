@@ -5,6 +5,7 @@ import hashlib
 import re
 import unicodedata
 from difflib import SequenceMatcher
+from functools import lru_cache
 from itertools import combinations
 from urllib.parse import urlsplit, urlunsplit, parse_qsl, urlencode
 
@@ -63,7 +64,12 @@ rescata rescatado desaparecido encontrado hospitalizado alta cesado cese nombrad
 
 
 def normalize(value):
-    text="".join(c for c in unicodedata.normalize("NFKD",str(value or "").casefold())
+    return _normalize_text(str(value or ""))
+
+
+@lru_cache(maxsize=8192)
+def _normalize_text(value):
+    text="".join(c for c in unicodedata.normalize("NFKD",value.casefold())
                  if not unicodedata.combining(c))
     text=re.sub(r"\b(?:en directo|ultima hora|video|actualizado)\b"," ",text)
     text=re.sub(r"\bf\s*[- ]\s*18\b","f18",text)
@@ -71,16 +77,22 @@ def normalize(value):
 
 
 def tokens(value):
+    # Return a fresh mutable set; cached feature values must never leak to callers.
+    return set(_token_values(str(value or "")))
+
+
+@lru_cache(maxsize=8192)
+def _token_values(value):
     out=[]
     for token in normalize(value).split():
         token=TOKEN_ALIASES.get(token,token)
         if (len(token)>2 or token in {"pp","ue","rj"}) and token not in STOP:
             out.append(token)
-    return set(out)
+    return frozenset(out)
 
 
 def fingerprint(value):
-    return frozenset(tokens(value))
+    return _token_values(str(value or ""))
 
 
 def event_actions(value):
@@ -92,13 +104,18 @@ def event_actions(value):
 
 
 def proper_tokens(value):
+    return set(_proper_token_values(str(value or "")))
+
+
+@lru_cache(maxsize=8192)
+def _proper_token_values(value):
     out=set()
     for raw in re.findall(r"\b[A-ZÁÉÍÓÚÜÑ][A-Za-zÁÉÍÓÚÜÑáéíóúüñ]{1,}\b",str(value or "")):
         token=normalize(raw)
         token=TOKEN_ALIASES.get(token,token)
         if token not in STOP and token not in PROPER_GENERIC and token not in GENERIC_MATCH:
             out.add(token)
-    return out
+    return frozenset(out)
 
 
 def same_event_semantic(a,b):
@@ -139,6 +156,11 @@ def title_score(a,b):
 
 
 def title_match_value(a,b):
+    return _title_match_value(str(a or ""),str(b or ""))
+
+
+@lru_cache(maxsize=16384)
+def _title_match_value(a,b):
     value=title_score(a,b)
     return max(value,0.72) if same_event_semantic(a,b) else value
 
@@ -390,3 +412,4 @@ def is_material_update(title,prior):
     old=set(prior.get("fact_tokens") or tokens(prior.get("canonical_title") or prior.get("title","")))
     new=tokens(title)
     return bool((new-old)&{TOKEN_ALIASES.get(x,x) for x in MATERIAL_TOKENS} | ((new-old)&MATERIAL_TOKENS))
+

@@ -52,7 +52,7 @@ python -m unittest v2.ttittulares.test_contract_examples v2.ttittulares.test_rad
 ```
 
 Requiere `jsonschema==4.23.0` para la validación real de los documentos nuevos.
-Son 71 pruebas (8 de contrato, 28 de núcleo, 16 de descarga y 19 de snapshots).
+Son 73 pruebas (8 de contrato, 28 de núcleo, 16 de descarga y 21 de snapshots).
 La suite de contrato detectó y corrigió un dato de ejemplo: 169 caracteres,
 no 170, sin cambiar el texto ni relajar el test.
 
@@ -65,3 +65,12 @@ Su resumen distingue disponibilidad de fuentes de validez del código.
 completa fijada a commit, revalidación JIT y readback de todos los hashes; luego
 un primer snapshot V2 persistido y verificado. Después se conectará el consumidor
 ChatGPT efímero. No hay aún un radar autónomo ni noticias elaboradas por V2.
+
+
+### Rendimiento de agrupación
+
+La primera validación a escala mostró un coste alto de recalcular normalización,
+tokens y similitudes. `identity_v2.py` conserva las reglas y añade cachés LRU
+acotadas (8.192 entradas de características y 16.384 pares de titulares). Los sets
+públicos siguen siendo copias mutables para que ningún llamador contamine la caché.
+Se prueban equivalencia de puntuaciones y aislamiento de esos valores.

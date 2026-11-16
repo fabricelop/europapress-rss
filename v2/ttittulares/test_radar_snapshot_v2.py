@@ -184,6 +184,33 @@ class SnapshotTests(unittest.TestCase):
         validator = Draft202012Validator({"$ref": "#/$defs/editorial_job", "$defs": schema["$defs"]})
         self.assertFalse(validator.is_valid(invalid))
 
+    def test_cached_identity_preserves_uncached_scores_and_has_bounded_memory(self):
+        from .identity_v2 import (title_match_value, title_score, same_event_semantic,
+                                 _title_match_value, _token_values, _proper_token_values)
+        titles = [row["title"] for row in self.fetch["rows"]] + [
+            "El Supremo mantiene la suspensión del derecho a voto por la ley de nietos",
+            "El Supremo confirma la condena por la ley de nietos",
+            "Un incendio obliga a desalojar un colegio de Ceuta",
+            "Los bomberos rescatan a dos personas en Málaga",
+            "El Gobierno aprueba la medida después del debate parlamentario"]
+        for left in titles:
+            for right in titles:
+                score = title_score(left, right)
+                expected = max(score, 0.72) if same_event_semantic(left, right) else score
+                self.assertEqual(title_match_value(left, right), expected)
+        self.assertEqual(_title_match_value.cache_info().maxsize, 16384)
+        self.assertEqual(_token_values.cache_info().maxsize, 8192)
+        self.assertEqual(_proper_token_values.cache_info().maxsize, 8192)
+
+    def test_mutating_returned_tokens_cannot_poison_cached_identity(self):
+        from .identity_v2 import tokens, proper_tokens, fingerprint
+        title = "El Gobierno de Pedro Sánchez aprueba la medida"
+        before = fingerprint(title)
+        tokens(title).clear()
+        proper_tokens(title).clear()
+        self.assertEqual(fingerprint(title), before)
+        self.assertIn("pedro", proper_tokens(title))
+
 
 if __name__ == "__main__":
     unittest.main()

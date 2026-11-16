@@ -9,7 +9,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: ttittulares-v2-snapshot-preview
+  group: ttittulares-v2-snapshot-preview-${{ github.sha }}
   cancel-in-progress: false
 
 jobs:
