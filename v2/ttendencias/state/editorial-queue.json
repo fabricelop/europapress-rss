@@ -4880,20 +4880,27 @@
     "trv2-b0f61a224406d8e09e43a28a": {
       "trend_id": "trv2-b0f61a224406d8e09e43a28a",
       "name": "De La Fuente",
-      "revision": 1,
-      "status": "in_progress",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "944f16ad4790a7fc",
-      "requested_at": "2026-11-15T22:01:37.851187+00:00",
-      "updated_at": "2026-11-15T22:01:37.851187+00:00",
+      "requested_at": "2026-11-16T00:29:57.273255+00:00",
+      "updated_at": "2026-11-16T00:29:57.273255+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "lease": {
-        "token": "8ac59ebeaf25d200336a09f7fe50a69bae0147a18bdc93cb",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-15T23:37:19.626353+00:00",
-        "expires_at": "2026-11-16T00:17:19.626353+00:00"
-      }
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-15T23:37:19.626353+00:00",
+          "send_intent_at": null,
+          "incident_reason": "lease_expired_without_capture",
+          "archived_at": "2026-11-16T00:29:57.273255+00:00"
+        }
+      ],
+      "incident_retries": 1
     },
     "trv2-f46e7b6c7e713d161e0fd396": {
       "trend_id": "trv2-f46e7b6c7e713d161e0fd396",
@@ -5403,7 +5410,6 @@
     "trv2-4ab1e1d784e3b149e376c363",
     "trv2-4ce6c0cc9a6a30c758d363e6",
     "trv2-7d271aaf8f301a9340f1b2b8",
-    "trv2-b0f61a224406d8e09e43a28a",
     "trv2-d546d35ead4bb93d06ce4ab6",
     "trv2-d8a00f54a106bc21074e1fd9",
     "trv2-d9086065e36b580583ee6803",
@@ -5419,7 +5425,8 @@
     "trv2-a9ab7a1748785624c70ab520",
     "trv2-ad5643d2874cd633b4f7775b",
     "trv2-b30dc618bdf28d5210eda303",
-    "trv2-22a97f3eaadf54f098a30a8f"
+    "trv2-22a97f3eaadf54f098a30a8f",
+    "trv2-b0f61a224406d8e09e43a28a"
   ],
   "effects_enabled": false
 }
