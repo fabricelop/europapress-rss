@@ -7496,13 +7496,13 @@
       "trend_id": "trv2-8aef83b3380a9fd170f075b9",
       "name": "Fernando Gutiérrez",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "90bfbb9bc7d1bf6b",
       "requested_at": "2026-11-16T16:52:15.749892+00:00",
       "updated_at": "2026-11-16T16:52:15.749892+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -7515,7 +7515,13 @@
           "archived_at": "2026-11-16T16:52:15.749892+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "77be0c95e3644011c6c7343730da714b2ff3e8443f442e0e",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-16T16:52:26.286476+00:00",
+        "expires_at": "2026-11-16T17:32:26.286476+00:00"
+      }
     },
     "trv2-f6c9a74aa8177f03ef76174f": {
       "trend_id": "trv2-f6c9a74aa8177f03ef76174f",
