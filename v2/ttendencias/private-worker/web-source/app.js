@@ -787,6 +787,8 @@ function render(){
   }
   const body=el("div","explanation",reset?"Revisión editorial solicitada. Se ha retirado la explicación anterior y su imagen; esperando una nueva explicación.":item.status==="explicada"?explanationText(item.explanation,item):({en_elaboracion:"En elaboración.",incidencia:"Incidencia en la elaboración.",desestimada:"Desestimada."})[item.status]||"Explicación pendiente.");
   card.append(body);
+  if(!reset&&!imageReady(item)&&item.image_suppressed!==true&&item.image_in_progress!==true)
+   TTImageIncidents.attach({card,head,project:"ttendencias-v2",id:item.trend_id,revision:item.revision,available:item.image_incident_available===true});
   if(!reset){makePublishButtons(card,item);attachGeneratedImage(card,item);}
   root.append(card);
  }
@@ -829,4 +831,5 @@ $("publication-close").addEventListener("click",()=>$("publication-dialog").clos
 refresh();
 setInterval(()=>{if(!document.hidden)refresh()},90000);
 setInterval(()=>{if(!document.hidden&&new URLSearchParams(location.search).get("view")!=="noticias")void loadPublications().catch(()=>{})},60000);
+
 

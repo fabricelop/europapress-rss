@@ -2,6 +2,7 @@
 // NO V1 changes. Signed sessions; V2 D1 stores red marks and 15-minute radar.
 import {captureRadar,loadRadar,mergeEditorialRadar,radarAgeMinutes} from "./radar.js";
 import {readNews,readNewsRecord} from "./news.js";
+import {readImageIncident} from "./image-incidents.js";
 // All static assets require a session because run_worker_first=true.
 const COOKIE = "__Host-ttv2";
 const SESSION_VERSION = "v1";
@@ -451,6 +452,11 @@ export default {
       return json({error:"unauthorized"},401);
     }
     if (url.pathname === "/api/me") return json({authenticated:true});
+    if (url.pathname === "/api/image-incidents") {
+      if(request.method!=="GET")return json({error:"method_not_allowed"},405);
+      try{return json(await readImageIncident({project:url.searchParams.get("project"),id:url.searchParams.get("id"),revision:Number(url.searchParams.get("revision"))}));}
+      catch(error){const status=error.message==="IMAGE_INCIDENT_ID_INVALID"?400:error.message==="IMAGE_INCIDENT_REVISION_CHANGED"?409:503;return json({error:status===400?"invalid_image_identity":status===409?"image_revision_changed":"image_incident_unavailable"},status);}
+    }
     if (url.pathname.startsWith("/api/news/")) {
       if(request.method!=="GET")return json({error:"method_not_allowed"},405);
       try{return json(await readNewsRecord(url.pathname.slice("/api/news/".length),Number(url.searchParams.get("revision"))));}
@@ -520,3 +526,4 @@ export default {
     return new Response(response.body,{status:response.status,headers:h});
   }
 };
+
