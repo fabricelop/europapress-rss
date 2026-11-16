@@ -97,6 +97,11 @@ def active_pr_branch(token: str) -> str:
 
 
 def trigger(token: str, root: Path = ROOT) -> str | None:
+    # User retired both V1 ChatGPT pipelines on 2026-11-16. Preserve queues.
+    print("TT_V1_CHATGPT_DISABLED: TTiTTulares; no trigger written")
+    return None
+
+def _retired_trigger_implementation(token: str, root: Path = ROOT) -> str | None:
     ids = pending_ids(root)
     if not ids:
         print("TT_NEWS_URGENT_NO_PENDING: no PROCESSING or rewrite_pending; no trigger")
@@ -186,3 +191,4 @@ if __name__ == "__main__":
         trigger(os.environ.get("GH_TOKEN", ""))
     else:
         raise SystemExit("Use --selftest or --trigger")
+

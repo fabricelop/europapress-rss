@@ -2,8 +2,6 @@ name: Redaccion TTiTTulares programada
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '15,45 * * * *'
 
 concurrency:
   group: ttittulares-redaccion
@@ -15,6 +13,8 @@ permissions:
 
 jobs:
   editorial:
+    # Explicit user retirement: manual dispatch also cannot relaunch V1 ChatGPT.
+    if: ${{ false }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -68,3 +68,4 @@ jobs:
           git reset --hard origin/main
           python3 ttittulares/request_pc_editorial.py --selftest
           python3 ttittulares/request_pc_editorial.py --trigger
+

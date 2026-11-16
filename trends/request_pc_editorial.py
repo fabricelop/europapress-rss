@@ -56,6 +56,11 @@ def api(url,token,document=None,method="GET"):
         return json.load(response) if response.status != 204 else {}
 
 def trigger(token):
+    # User retired V1 ChatGPT; V2 owns independent consumers.
+    print("TT_V1_CHATGPT_DISABLED: TTendencias; no trigger written")
+    return None
+
+def _retired_trigger_implementation(token):
     endpoint=("https://api.github.com/repos/"+REPO+"/contents/"+TARGET+
               "?ref="+urllib.parse.quote(BRANCH,safe=""))
     for attempt in range(5):
@@ -116,3 +121,4 @@ if __name__=="__main__":
         trigger(os.environ["GH_TOKEN"])
     else:
         print("TT_TRENDS_MANUAL_PREPARE_NO_NEW_REQUEST")
+

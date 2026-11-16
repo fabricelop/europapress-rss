@@ -1,0 +1,33 @@
+name: TT V1 ChatGPT retirement checks
+on:
+  push:
+    branches: [main]
+    paths:
+      - windows/Stop-TT-V1-ChatGPT.ps1
+      - windows/tests/v1-chatgpt-stop.test.ps1
+      - ttittulares/request_pc_editorial.py
+      - trends/request_pc_editorial.py
+      - .github/workflows/tt-v1-chatgpt-stop-check.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            windows/Stop-TT-V1-ChatGPT.ps1
+            windows/tests/v1-chatgpt-stop.test.ps1
+            ttittulares/request_pc_editorial.py
+            trends/request_pc_editorial.py
+          sparse-checkout-cone-mode: false
+          persist-credentials: false
+      - name: Parse PowerShell and verify V1-only process matching without stopping anything
+        shell: powershell
+        run: '& windows/tests/v1-chatgpt-stop.test.ps1'
+      - name: Verify no V1 trigger can call GitHub even when work is pending
+        shell: powershell
+        run: |
+          python -c "import runpy; a=runpy.run_path('ttittulares/request_pc_editorial.py'); b=runpy.run_path('trends/request_pc_editorial.py'); assert a['trigger']('DO-NOT-USE') is None; assert b['trigger']('DO-NOT-USE') is None; print('TT_V1_TRIGGER_DISABLED=PASS')"
