@@ -277,3 +277,35 @@ run CI `43920629456` con 73 pruebas OK y preview live `43920629257` con 27 fuent
 recuperadas (siete por fallback), 1.435 entradas y 26 candidatos elegibles para
 jobs simulados, sin persistencia ni consumidores. El resultado no certifica
 independientemente los hechos ni convierte los candidatos en READY.
+
+
+## 16. Paso 3D: transacción de radar y recibo inmutable
+
+- `radar_store_v2.py` lee la rama una vez, recorre el subárbol V2 y lee blobs por
+  SHA del mismo commit. Rechaza árboles truncados, archivos simbólicos, bytes
+  que no coincidan con su blob Git, proyectos incorrectos y autoridades ausentes.
+- Escribe todos los cambios y `state/radar/receipts/txn-<24hex>.json` mediante
+  `createCommitOnBranch` con `expectedHeadOid`, sin force ni borrados. Es CAS
+  del lado del servidor, no una mera lectura antes de PATCH.
+- El recibo congela input_sha256, observed_at, base_commit, scan_id, número de
+  jobs nuevos y hashes de todos los documentos. El SHA del propio commit no se
+  incluye dentro del recibo porque sería autorreferencial: se obtiene de la
+  respuesta o del historial Git de la ruta inmutable del recibo.
+- Readback fijado al commit aceptado: comprobar el propio recibo y cada hash.
+  Ante conflicto: releer noticias/jobs/índices y recalcular. Ante respuesta
+  incierta: buscar primero el recibo y verificar su commit original. Si no se
+  confirma tras cuatro intentos y una reconciliación final, devolver incidencia.
+- Ningún trabajo existente se sustituye, ni se escriben records READY, imágenes,
+  decisiones, receipts de publicación, main o estados V1. Una noticia descartada
+  o un job reclamado durante la carrera se preserva al recalcular.
+- Un input más antiguo que el radar persistido se rechaza. Fallo de todas las
+  fuentes, corrupción o lectura parcial no da lugar a una escritura vacía.
+- Suite conjunta: 102 pruebas, incluidas 29 nuevas de store y protocolo, superadas
+  localmente. El workflow de persistencia puntual ejecuta las mismas pruebas
+  antes de escribir y verifica replay real de la misma operación sin duplicación.
+- No hay cron, ChatGPT/Chrome, generación de imagen, READY ni publicación.
+  Tras verificar primera persistencia, continuar con claim/prompt editorial.
+
+Referencia de la operación atómica y su CAS:
+https://docs.github.com/en/graphql/reference/commits#createcommitonbranch
+https://docs.github.com/en/graphql/reference/git#committablebranch

@@ -2,6 +2,42 @@
 
 Reconstrucción aislada del motor de noticias para la web privada TTActualidad V2.
 
+
+## Estado actual — paso 3D
+
+`radar_store_v2.py` implementa lectura de todo el estado necesario fijada a un
+commit y una transacción atómica GitHub con `createCommitOnBranch` y
+`expectedHeadOid`. Repo y rama están fijados al entorno V2; solo escribe rutas
+de radar, eventos, jobs pendientes y recibos V2. Nunca usa force ni borra archivos.
+
+Cada operación tiene un recibo inmutable derivado del input y la hora del fetch.
+La respuesta solo es éxito tras releer el commit exacto y comprobar todos los
+hashes. Si se pierde la respuesta, localiza el commit del recibo y verifica sus
+bytes, aunque la rama haya avanzado después. Si hay conflicto sin recibo, relee
+todo y recalcula; no reutiliza un plan antiguo. Un barrido más reciente impide
+sobrescribirlo con un input anterior. Un fallo de lectura no equivale a estado vacío.
+
+La suite incluye **102 pruebas**: las 73 anteriores y 29 de persistencia/CAS,
+recuperación y contrato HTTP/GraphQL. Pasaron localmente antes del commit.
+El workflow `ttittulares-v2-radar-persist-once.yml` repite la suite antes de
+realizar una sola lectura live y transacción; verifica también la repetición
+exacta sin segundo commit. Se activa solo al cambiar ese mismo workflow en la
+rama V2 o bajo ejecución manual: **sin cron ni consumidor editorial**.
+La existencia del escritor no demuestra por sí sola que el snapshot real esté
+persistido: comprobar su run, recibo y commit antes de declararlo operativo.
+
+```bash
+# GET solamente, sin persistencia:
+python -m v2.ttittulares.radar_store_v2 --live
+# Una transacción V2 y prueba de replay (requiere GITHUB_TOKEN):
+python -m v2.ttittulares.radar_store_v2 --live --persist --verify-replay
+```
+
+Después de verificar el primer snapshot persistido, el siguiente paso es el
+contrato/claim del worker editorial efímero y su prompt. Los jobs siguen pending,
+con prompt null; ninguna ejecución de ChatGPT, READY, imagen o publicación se
+activa con este paso. Mantener V1 y Windows intactos.
+
 ## Documentación y módulos
 
 - [Auditoría de contratos V1](V1-CONTRACTS-AUDIT.md): qué conservar y qué sustituir.
