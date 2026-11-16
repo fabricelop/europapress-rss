@@ -74,6 +74,14 @@ class NewsWorkflowTests(unittest.TestCase):
  def test_stale_action_cannot_modify_new_revision(self):
   self.action("rework");result=self.action("archive",key="b"*32)
   self.assertTrue(result["stale"])
+ def test_image_dispatch_preview_is_read_only_and_skips_already_claimed_news(self):
+  before=len(self.store.writes)
+  plan=self.service.image_preview();self.assertEqual(plan["pending_count"],1)
+  self.assertEqual(len(self.store.writes),before)
+  self.claim()
+  plan=self.service.image_preview();self.assertEqual(plan["pending_count"],0);self.assertEqual(plan["active_count"],1)
+  self.now+=timedelta(minutes=26)
+  self.assertTrue(self.service.image_preview()["maintenance_needed"])
  def test_no_cleanup_no_image_ready(self):
   job=self.prepare()["job"]
   with self.assertRaises(ed.EditorialError):

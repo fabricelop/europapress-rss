@@ -72,6 +72,15 @@ Tendencias/SeLoRecordamos/Chrome compartido intactos.
 6. Actualizar periódicamente ESTE registro y después conciliar la memoria maestra
    conservando su ID y el control de versión; no crear otra memoria maestra.
 
+## Último ajuste de consumo en reposo
+
+El despachador de imágenes consulta un preview de solo lectura en el proceso
+persistente y NO lanza hijos cuando no hay imágenes elegibles. Evita releer todos
+los registros desde dos procesos nuevos cada30s cuando la cola está vacía.
+Se mantiene la recuperación de leases caducadas y el máximo global de dos puestos.
+Nueva regresión: preview no escribe, excluye imagen ya reservada y detecta lease
+caducada. Repetir CI del paquete antes de recomendar la última instalación.
+
 ## Evidencia y planificación anteriores (histórico de este trabajo)
 
 # Noticias V2 — registro de continuación

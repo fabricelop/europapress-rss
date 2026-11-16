@@ -102,16 +102,22 @@ def daemon(service,config):
             for slot,child in list(pool.items()):
                 if child.poll() is not None:del pool[slot]
             if enabled(root):
-                try:sync_controls(service)
+                try:
+                    sync_controls(service)
+                    plan=service.image_preview()
                 except Exception:
                     time.sleep(30);continue
+                pending=min(plan["pending_count"],max(0,2-plan["active_count"]))
+                if plan["maintenance_needed"] and not pending:pending=1
                 for slot in range(2):
+                    if pending<=0:break
                     if slot in pool:continue
                     logs=root/"image-logs";logs.mkdir(parents=True,exist_ok=True)
                     with (logs/(uuid.uuid4().hex+".log")).open("w",encoding="utf-8") as out:
                         pool[slot]=subprocess.Popen([sys.executable,"-m","v2.ttittulares.news_images_v2",
                             "--root",str(root),"--run-one"],cwd=Path(__file__).resolve().parents[2],
                             stdout=out,stderr=subprocess.STDOUT,creationflags=getattr(subprocess,"CREATE_NO_WINDOW",0))
+                    pending-=1
             time.sleep(30)
 
 def main():

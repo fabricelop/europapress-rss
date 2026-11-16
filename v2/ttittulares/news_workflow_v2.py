@@ -172,6 +172,21 @@ class NewsService(ed.EditorialService):
             result["hints"]="\n".join(hints)[-4000:]
         return result
 
+    def image_preview(self):
+        """Read-only dispatch plan; idle daemons do not launch browser workers."""
+        head,docs=self.store.read_editorial_snapshot()
+        news,_=ed._snapshot(docs);now=self.clock()
+        rows=[j for p,j in docs.items() if p.startswith(PREFIX+"jobs/images/")]
+        active=[j for j in rows if j.get("lease")]
+        pending=0
+        for event in news.values():
+            if event["status"]!="ready" or image_path(event["event_id"],event["current_revision"]) in docs:continue
+            pref=next((x for x in getattr(self,"image_preferences",[]) if x.get("event_id")==event["event_id"] and x.get("revision")==event["current_revision"]),{})
+            if not (pref.get("manual_image") or pref.get("image_suppressed") or pref.get("rework_requested") or pref.get("archived")):pending+=1
+        return {"commit_sha":head,"pending_count":pending,"active_count":len(active),
+                "maintenance_needed":any(ed._time(j["lease"]["expires_at"])<=now for j in active),
+                "publication_allowed":False}
+
     def image(self, operation, *, worker_id, token, job_id=None, **data):
         if not ed.SAFE_ID.fullmatch(worker_id):raise ed.EditorialError("NEWS_IMAGE_WORKER_INVALID")
         token_hash=ed._secret(token)
