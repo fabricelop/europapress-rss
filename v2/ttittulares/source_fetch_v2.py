@@ -253,10 +253,13 @@ def parse_json_rows(body, source, definition, now):
         row = {"source": source, "title": title, "url": url,
                "source_type": definition["type"]}
         published_raw = item.get("published_at") or item.get("published") or item.get("pubDate")
-        date = parse_publication_date(str(published_raw), now) if published_raw else None
+        date_source = str(item.get("publication_date_source") or "")
+        trusted_date_sources = {"publisher_feed", "publisher_article_metadata", "publisher"}
+        date = (parse_publication_date(str(published_raw), now)
+                if published_raw and date_source in trusted_date_sources else None)
         if definition["type"] == "general" and date:
             row["published_at"] = utc_iso(date)
-            row["publication_date_source"] = "publisher_feed"
+            row["publication_date_source"] = date_source
         if definition["type"] == "sport" and not sport_important(title):
             continue
         result.append(row)

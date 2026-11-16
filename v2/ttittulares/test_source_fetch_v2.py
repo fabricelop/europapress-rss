@@ -12,6 +12,7 @@ from v2.ttittulares.source_fetch_v2 import (
     FetchError, _host_allowed, fetch_all_sources, fetch_one_source,
     parse_html_rows, parse_json_rows, parse_response, parse_xml_rows
 )
+from v2.ttittulares.source_health_v2 import project_source_health
 
 CATALOG=load_catalog()
 BY_NAME=source_map(CATALOG)
@@ -67,9 +68,16 @@ class SourceParsingTests(unittest.TestCase):
         body='{"items":[{"title":"El Gobierno aprueba una nueva medida en el Parlamento","url":"https://www.europapress.es/noticias/123","published_at":"2026-11-16T09:00:00Z"}]}'
         rows=parse_json_rows(body,"Europa Press",BY_NAME["Europa Press"],NOW)
         self.assertEqual(len(rows),1)
-        self.assertEqual(rows[0]["publication_date_source"],"publisher_feed")
+        self.assertNotIn("published_at",rows[0],
+                         "A JSON timestamp without explicit publisher provenance is not trusted")
         self.assertEqual(parse_response(body,"Europa Press",BY_NAME["Europa Press"],
                                        "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/recent.json",NOW),rows)
+
+    def test_json_publisher_date_requires_explicit_provenance(self):
+        body='{"items":[{"title":"El Gobierno aprueba una nueva medida en el Parlamento","url":"https://www.europapress.es/noticias/123","published_at":"2026-11-16T09:00:00Z","publication_date_source":"publisher_feed"}]}'
+        rows=parse_json_rows(body,"Europa Press",BY_NAME["Europa Press"],NOW)
+        self.assertEqual(rows[0]["published_at"],"2026-11-16T09:00:00Z")
+        self.assertEqual(rows[0]["publication_date_source"],"publisher_feed")
 
     def test_json_cross_domain_url_is_rejected(self):
         body='{"items":[{"title":"El Gobierno aprueba una nueva medida en el Parlamento","url":"https://example.net/123"}]}'
@@ -183,6 +191,23 @@ class SourceNetworkAdapterTests(unittest.TestCase):
         self.assertGreaterEqual(maximum,2)
         self.assertLessEqual(maximum,3)
         self.assertEqual(result["metrics"]["parallel_workers"],3)
+
+    def test_source_health_retains_fallback_telemetry(self):
+        statuses=[{"source":"Europa Press","ok":True,"degraded":False,"items":4,
+                   "url":"https://raw.githubusercontent.com/fabricelop/europapress-rss/main/recent.json",
+                   "fallback_used":True,"fallback_depth":1,"attempts":2,
+                   "attempted_urls":["https://www.europapress.es/noticias/",
+                                     "https://raw.githubusercontent.com/fabricelop/europapress-rss/main/recent.json"],
+                   "http_status":200,"response_bytes":1024,"latency_ms":350,
+                   "fetched_at":"2026-11-16T10:00:00Z"}]
+        health=project_source_health(statuses,{}, "2026-11-16T10:00:00Z",CATALOG)
+        europa=next(x for x in health["sources"] if x["source"]=="Europa Press")
+        self.assertTrue(europa["ok"])
+        self.assertTrue(europa["fallback_used"])
+        self.assertEqual(europa["fallback_depth"],1)
+        self.assertEqual(europa["attempts"],2)
+        self.assertEqual(len(europa["attempted_urls"]),2)
+        self.assertEqual(europa["response_bytes"],1024)
 
     def test_unknown_source_is_rejected_before_network(self):
         called=[]
