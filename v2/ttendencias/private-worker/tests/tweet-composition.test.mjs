@@ -119,6 +119,31 @@ test("Ontiveros: preserve an unconfirmed causal link, never promote it to a fact
  assert.ok(xLength(post)<=280);
 });
 
+test("Camilo: a probable cause replaces the definite 'es tendencia' wrapper",()=>{
+ const lead="Camilo podría ser tendencia por su próxima actuación en LOS40 Music Awards, el 20 de noviembre en Barcelona. No está confirmado que sea el motivo.";
+ const raw=["ESTADO_CAUSA: NO_CONFIRMADA","Explicación principal — apta para X","Writing",lead].join("\n");
+ const result=tweetText(raw,{rank:7,name:"Camilo",cause_status:"no_confirmada"});
+ assert.match(result,/^TT#7 CAMILO podría ser tendencia por su próxima actuación/);
+ assert.doesNotMatch(result,/es tendencia porque podría ser tendencia/iu);
+ assert.ok(xLength(result)<=280);
+});
+
+test("unconfirmed dossiers with a factual lead receive a neutral heading",()=>{
+ const lead="La actuación anunciada en Barcelona coincide con las conversaciones recientes, pero no se ha confirmado que sea la causa.";
+ const raw=["ESTADO_CAUSA: NO_CONFIRMADA","Explicación principal — apta para X",lead].join("\n");
+ const result=tweetText(raw,{rank:7,name:"Camilo"});
+ assert.match(result,/^TT#7 CAMILO: La actuación anunciada/);
+ assert.doesNotMatch(result,/CAMILO es tendencia/);
+});
+
+test("a mistakenly definite lead is hedged when cause status is unconfirmed",()=>{
+ const lead="Camilo es tendencia porque se acerca su concierto en España, según la información disponible.";
+ const raw=["ESTADO_CAUSA: NO_CONFIRMADA","Explicación principal — apta para X",lead].join("\n");
+ const result=tweetText(raw,{rank:7,name:"Camilo"});
+ assert.match(result,/^TT#7 CAMILO podría ser tendencia porque/);
+ assert.doesNotMatch(result,/CAMILO es tendencia porque/);
+});
+
 test("if a dossier has no usable editorial lead, fail closed instead of publishing boilerplate",()=>{
  const raw=["Maledon — Ficha editorial","Causa identificada y contrastada Solo LISTAS · Sin publicación automática",
   "15 de noviembre de 2026 · España","ESTADO_CAUSA: CONFIRMADA","Explicación principal — apta para X",
