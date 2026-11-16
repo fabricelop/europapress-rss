@@ -1,7 +1,7 @@
 name: Noticias V2 - workflow parity checks
 on:
   push:
-    branches: [feature/ttactualidad-v2-clean]
+    branches: [feature/ttactualidad-v2-clean, fix/news-v2-hidden-launchers-20261116]
     paths:
       - 'v2/ttittulares/*.py'
       - 'v2/ttittulares/*.ps1'
@@ -52,3 +52,8 @@ jobs:
             [Management.Automation.Language.Parser]::ParseFile($_.FullName,[ref]$tokens,[ref]$errors)|Out-Null
             if($errors.Count){throw ($errors|Out-String)}
           }
+
+      - name: Verify hidden launchers and preserve live task definitions
+        if: runner.os == 'Windows'
+        shell: powershell
+        run: .\v2\ttittulares\Test-News-Hidden-Launchers.ps1

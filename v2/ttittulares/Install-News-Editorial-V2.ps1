@@ -42,7 +42,7 @@ $news=@('news_workflow_v2.py','news_images_v2.py','test_news_workflow_v2.py','te
 $shared=@('chrome_command_v2.py','chrome_visibility_v2.py','chrome_profile_process_v2.py',
           'chrome_cleanup_v2.py','chrome_startup_v2.py','process_lock_v2.py','image_intake_v2.py','image_same_chat_v2.py','image_job_v2.py','image_github_v2.py')
 $paths=@($news | ForEach-Object {'v2/ttittulares/'+$_})+@($shared | ForEach-Object {'v2/ttendencias/'+$_})
-$paths+=@('v2/ttittulares/Run-News-Editorial-Auto.ps1','v2/ttittulares/Run-News-Images-Auto.ps1')
+$paths+=@('v2/ttittulares/Run-News-Editorial-Auto.ps1','v2/ttittulares/Run-News-Images-Auto.ps1','v2/ttittulares/Launch-News-Hidden.vbs')
 foreach($path in $paths){
   $entry=@($tree.tree | Where-Object {$_.path -eq $path -and $_.type -eq 'blob'})
   if($entry.Count -ne 1){throw ('Falta archivo en el commit fijado: '+$path)}
@@ -83,6 +83,7 @@ Invoke-NewsPython -arguments @('-m','v2.ttittulares.editorial_consumer_v2','--ro
 $queuePreview=Get-Content -LiteralPath (Join-Path $root 'install.stdout.log') -Raw | ConvertFrom-Json
 Copy-Item -LiteralPath (Join-Path $code 'v2\ttittulares\Run-News-Editorial-Auto.ps1') -Destination (Join-Path $root 'Run-News-Editorial-Auto.ps1') -Force
 [IO.File]::WriteAllText((Join-Path $root 'active-code.txt'),$code,$utf8)
+Copy-Item -LiteralPath (Join-Path $code 'v2\ttittulares\Launch-News-Hidden.vbs') -Destination (Join-Path $root 'Launch-News-Hidden.vbs') -Force
 Write-Host ('TTN2_INSTALLED_COMMIT='+$sha)
 if($PrepareOnly){Write-Host 'TTN2_INSTALLED_NOT_STARTED=YES';return}
 if([int]$queuePreview.preview.recovery_incident_count -gt 0){
@@ -95,14 +96,17 @@ if($pilot.status -notin @('ready','idle')){throw 'Piloto editorial sin resultado
 if($pilot.status -eq 'ready' -and -not $pilot.cleanup_verified){throw 'Cierre Chrome no verificado; no se activa el programador'}
 if($pilot.status -eq 'idle'){Write-Host 'TTN2_PILOT_IDLE_NO_NEWS_ELABORATED=YES'}
 [IO.File]::WriteAllText((Join-Path $root 'editorial.enabled'),'TTN2_EDITORIAL_ENABLED=YES',$utf8)
-$action=New-ScheduledTaskAction -Execute 'powershell.exe' -Argument ('-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File "'+(Join-Path $root 'Run-News-Editorial-Auto.ps1')+'"')
+$hiddenLauncher=Join-Path $root 'Launch-News-Hidden.vbs'
+$wscript=Join-Path $env:WINDIR 'System32\wscript.exe'
+$action=New-ScheduledTaskAction -Execute $wscript -Argument ('//B //Nologo "'+$hiddenLauncher+'" "'+(Join-Path $root 'Run-News-Editorial-Auto.ps1')+'"')
 $trigger=@((New-ScheduledTaskTrigger -AtLogOn -User $user),(New-ScheduledTaskTrigger -Once -At ((Get-Date).AddMinutes(3)) -RepetitionInterval (New-TimeSpan -Minutes 3)))
 $principal=New-ScheduledTaskPrincipal -UserId $user -LogonType Interactive -RunLevel Limited
-$options=New-ScheduledTaskSettingsSet -MultipleInstances IgnoreNew -ExecutionTimeLimit ([TimeSpan]::Zero) -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -RestartCount 3 -RestartInterval (New-TimeSpan -Minutes 5)
+$options=New-ScheduledTaskSettingsSet -Hidden -MultipleInstances IgnoreNew -ExecutionTimeLimit ([TimeSpan]::Zero) -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -RestartCount 3 -RestartInterval (New-TimeSpan -Minutes 5)
 Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $trigger -Principal $principal -Settings $options -Force | Out-Null
 Start-ScheduledTask -TaskName $taskName
 Write-Host 'TTN2_THREE_WORKERS_START_REQUESTED=YES'
 Write-Host ('LOGS='+ (Join-Path $root 'logs'))
+Write-Host 'TTN2_SCHEDULED_LAUNCHER=WSCRIPT_HIDDEN'
 
 if($EnableImages){
   Copy-Item -LiteralPath (Join-Path $code 'v2\ttittulares\Run-News-Images-Auto.ps1') -Destination (Join-Path $root 'Run-News-Images-Auto.ps1') -Force
@@ -113,7 +117,7 @@ if($EnableImages){
     if($imagePilot.status -notin @('saved','idle')){throw 'Imagen piloto sin verificar'}
     if($imagePilot.status -eq 'saved' -and -not $imagePilot.cleanup_verified){throw 'Cierre de imagen sin verificar'}
     [IO.File]::WriteAllText((Join-Path $root 'images.enabled'),'TTN2_IMAGES_ENABLED=YES',$utf8)
-    $imageAction=New-ScheduledTaskAction -Execute 'powershell.exe' -Argument ('-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File "'+(Join-Path $root 'Run-News-Images-Auto.ps1')+'"')
+    $imageAction=New-ScheduledTaskAction -Execute $wscript -Argument ('//B //Nologo "'+$hiddenLauncher+'" "'+(Join-Path $root 'Run-News-Images-Auto.ps1')+'"')
     Register-ScheduledTask -TaskName 'TTActualidadNoticiasV2-Images' -Action $imageAction -Trigger $trigger -Principal $principal -Settings $options -Force | Out-Null
     Start-ScheduledTask -TaskName 'TTActualidadNoticiasV2-Images'
     Write-Host 'TTN2_IMAGE_WORKERS_START_REQUESTED=YES'
