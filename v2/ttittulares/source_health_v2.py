@@ -22,6 +22,12 @@ def project_source_health(statuses, previous, now, catalog):
             url=None
             latency=None
             fetched_at=None
+            fallback_used=False
+            fallback_depth=0
+            attempts=0
+            attempted_urls=[]
+            http_status=None
+            response_bytes=None
         else:
             ok=incoming.get("ok") is True
             state="ok" if ok else ("degraded" if incoming.get("degraded") else "failed")
@@ -30,12 +36,21 @@ def project_source_health(statuses, previous, now, catalog):
             url=incoming.get("url")
             latency=incoming.get("latency_ms")
             fetched_at=incoming.get("fetched_at") or now
+            fallback_used=bool(incoming.get("fallback_used"))
+            fallback_depth=max(0,int(incoming.get("fallback_depth") or 0))
+            attempts=max(0,int(incoming.get("attempts") or 0))
+            attempted_urls=list(incoming.get("attempted_urls") or [])[:8]
+            http_status=incoming.get("http_status")
+            response_bytes=incoming.get("response_bytes")
         last_success=fetched_at if ok else prior.get("last_success_at")
         failure_streak=0 if ok else int(prior.get("failure_streak") or 0)+(1 if incoming else 0)
         record={
             "source":name,"type":source["type"],"family":source["family"],
             "state":state,"ok":ok,"items":items,"url":url,"error":error,
             "latency_ms":latency,"checked_at":fetched_at,
+            "fallback_used":fallback_used,"fallback_depth":fallback_depth,
+            "attempts":attempts,"attempted_urls":attempted_urls,
+            "http_status":http_status,"response_bytes":response_bytes,
             "last_success_at":last_success,"failure_streak":failure_streak
         }
         rows.append(record)

@@ -128,13 +128,11 @@ def _host_allowed(url, source, catalog):
         except ValueError:
             continue
     return (host in configured_hosts or
-            bool(domain and (host == domain or host.endswith("." + domain))) or
-            host == "news.google.com" or
-            host == "raw.githubusercontent.com")
+            bool(domain and (host == domain or host.endswith("." + domain))))
 
 
 def _allowed_hosts(source, catalog):
-    exact = {"news.google.com", "raw.githubusercontent.com"}
+    exact = set()
     roots = set()
     definition = source_map(catalog)[source]
     if definition.get("domain"):
