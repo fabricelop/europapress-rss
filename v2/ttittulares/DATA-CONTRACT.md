@@ -223,12 +223,27 @@ Antes de implementar workers, probar:
 13. Publish request no es receipt confirmado.
 14. CI no escribe en main, no ejecuta ChatGPT/Chrome y no publica.
 
-## 13. Decisiones aplazadas y siguiente paso
+## 13. Estado del radar/ingesta V2
+
+El núcleo puro se encuentra en `source_catalog_v2.json`, `source_catalog_v2.py`, `content_filters_v2.py`, `source_publication_v2.py`, `identity_v2.py`, `source_health_v2.py` y `radar_ingest_v2.py`.
+
+- Catálogo portado: 19 fuentes generales agrupadas en 16 familias, cinco deportivas y tres suplementarias (Reuters Radar, AP Radar y Público · Tremending).
+- El quorum normal utiliza cuatro familias generales independientes. Las fuentes discovery/social ayudan a localizar o agrupar, pero no cuentan.
+- El núcleo agrupa titulares mediante canónico, variantes y evidencia conectada; filtra horóscopos diarios/sorteos rutinarios y aplica el filtro de prioridad deportiva.
+- Los candidatos sin quorum caducan a las 24 horas desde first_seen_at; repetir el titular no reinicia la ventana.
+- event_id se mantiene en radar/news-index. La subida a elegible produce un editorial_job_id por revisión.
+- Para un READY previo, una actualización solo se prepara si aporta fuente/familia nueva y un token material; la revisión no incrementa hasta que el candidato reúne cuatro familias generales nuevas.
+- El estado de salud separa fuentes generales de deportivas y discovery, y distingue fuentes sanas de familias independientes.
+- Los fixtures son sintéticos; la ejecución no consulta feeds, GitHub, ChatGPT ni Chrome. Los efectos permanecen desactivados.
+
+**Límite actual:** todavía no existen adaptadores de fetch/parse para los 27 endpoints, recuperación paralela de cada fuente, scheduler, persistencia de snapshots en GitHub ni creación real de news-event/editorial jobs. No declarar operativo el radar solo por tener el núcleo puro.
+
+## 14. Decisiones aplazadas y siguiente paso
 
 Quedan por fijar al implementar: número de workers y presupuesto global de Chrome al coexistir con TTendencias; cadencia exacta del radar; política de fuentes exclusivamente deportivas; encolado automático/reintentos de imagen; retención de fotos de archivo y procedimiento de migración individual.
 
 **Paso 2 — contrato de datos y arquitectura: diseñado.** El schema y el bundle de ejemplos que acompañan este documento muestran los documentos principales y sus relaciones.
 
-**Siguiente paso: radar/ingesta V2 aislado.** Portar y probar funciones puras de fuentes, familias, filtros, agrupación, TTL, identidad y novedades materiales. El radar debe crear candidatos propios, sin leer ni escribir colas V1.
+**Paso 3 — núcleo puro de radar/ingesta: implementado y pendiente de validación CI.** Los módulos no hacen fetch, no escriben y no activan efectos. Tras aprobar las pruebas, el siguiente paso será construir adaptadores de lectura por fuente, recuperación/fallback en paralelo y snapshots persistidos exclusivamente bajo v2/ttittulares/state/.
 
 Hasta aprobar pruebas y validación E2E, efectos externos y publicación permanecen desactivados.
