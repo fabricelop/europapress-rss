@@ -4891,13 +4891,13 @@
       "trend_id": "trv2-b0f61a224406d8e09e43a28a",
       "name": "De La Fuente",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "944f16ad4790a7fc",
       "requested_at": "2026-11-16T00:29:57.273255+00:00",
       "updated_at": "2026-11-16T00:29:57.273255+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -4910,7 +4910,13 @@
           "archived_at": "2026-11-16T00:29:57.273255+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "98b2de9dccca502a1828b491475240e042be1903c653e626",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-16T00:31:35.323589+00:00",
+        "expires_at": "2026-11-16T01:11:35.323589+00:00"
+      }
     },
     "trv2-f46e7b6c7e713d161e0fd396": {
       "trend_id": "trv2-f46e7b6c7e713d161e0fd396",
