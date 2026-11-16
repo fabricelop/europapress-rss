@@ -6116,13 +6116,13 @@
       "trend_id": "trv2-cf011150bc27382a31b3a6d8",
       "name": "Anticorrupción",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "cad05b25b70cc8c5",
       "requested_at": "2026-11-16T10:16:31.373440+00:00",
       "updated_at": "2026-11-16T10:16:31.373440+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -6135,7 +6135,13 @@
           "archived_at": "2026-11-16T10:16:31.373440+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "cc79f065335a76e0cdc4f0db82ca0f9c5d586a28d534d900",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-16T10:16:44.104911+00:00",
+        "expires_at": "2026-11-16T10:56:44.104911+00:00"
+      }
     },
     "trv2-e545387a99044a96ffade442": {
       "trend_id": "trv2-e545387a99044a96ffade442",
