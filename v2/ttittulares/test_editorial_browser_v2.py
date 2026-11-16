@@ -1,0 +1,207 @@
+"""No browser/Windows mutation: deterministic capture and cleanup fault tests."""
+import json
+from pathlib import Path
+from types import SimpleNamespace
+import tempfile
+import unittest
+from unittest.mock import patch
+
+from .editorial_browser_v2 import (
+    ChromeJob, STOP, authenticated_session, capture_reply, confirm_user_turn, listener_process_ids,
+    verify_endpoint_owned,
+)
+
+EVENT, REVISION, COMMAND = 'ttn2-' + 'a' * 24, 2, 'news-command-1'
+USER = json.dumps({'event_id': EVENT, 'revision': REVISION, 'command_id': COMMAND})
+ANSWER = 'TTN2_EDITORIAL_BEGIN\n{"complete":"synthetic"}\nTTN2_EDITORIAL_END'
+
+
+class Clock:
+    def __init__(self): self.now = 0
+    def __call__(self): return self.now
+    def sleep(self, seconds): self.now += seconds
+
+
+class Page:
+    def __init__(self, clock, *, users=None, answers=None, busy=None, url=None):
+        self.clock = clock
+        self.users = users or (lambda seconds: [USER])
+        self.answers = answers or (lambda seconds: [ANSWER])
+        self.busy = busy or (lambda seconds: False)
+        self.url_at = url or (lambda seconds: 'https://chatgpt.com/c/own-conversation')
+    @property
+    def url(self): return self.url_at(self.clock())
+    def locator(self, selector):
+        if selector == STOP:
+            return SimpleNamespace(count=lambda: int(self.busy(self.clock())))
+        source = self.users if '="user"' in selector else self.answers
+        return SimpleNamespace(all_text_contents=lambda: source(self.clock()))
+
+
+class BrowserBoundaryTests(unittest.TestCase):
+    def capture(self, page, clock, heartbeat=lambda: None, timeout=90):
+        return capture_reply(page, event_id=EVENT, revision=REVISION,
+            command_id=COMMAND, heartbeat=heartbeat, timeout=timeout,
+            clock=clock, sleep=clock.sleep)
+
+    def confirm(self, page, clock, heartbeat=lambda: None, timeout=90):
+        return confirm_user_turn(page, event_id=EVENT, revision=REVISION,
+            command_id=COMMAND, heartbeat=heartbeat, timeout=timeout,
+            clock=clock, sleep=clock.sleep)
+
+    def test_completed_markers_while_streaming_wait_for_six_idle_seconds(self):
+        clock = Clock()
+        page = Page(clock, busy=lambda seconds: seconds < 8)
+        self.assertEqual(self.capture(page, clock), (ANSWER, page.url))
+        self.assertGreaterEqual(clock.now, 14)
+
+    def test_partial_reply_and_wrong_user_identity_never_capture(self):
+        cases = [dict(answers=lambda seconds: ['TTN2_EDITORIAL_BEGIN partial']),
+                 dict(users=lambda seconds: [USER.replace('"revision": 2', '"revision": 20')]),
+                 dict(users=lambda seconds: [USER, USER]),
+                 dict(url=lambda seconds: 'https://chatgpt.com/c/own-conversation/other')]
+        for values in cases:
+            with self.subTest(values=values):
+                clock = Clock()
+                with self.assertRaisesRegex(RuntimeError, 'CAPTURE_TIMEOUT_NO_RESEND'):
+                    self.capture(Page(clock, **values), clock, timeout=12)
+
+    def test_heartbeat_is_ticked_during_slow_response(self):
+        clock, beats = Clock(), []
+        page = Page(clock, busy=lambda seconds: seconds < 100)
+        self.capture(page, clock, heartbeat=lambda: beats.append(clock()), timeout=140)
+        self.assertGreaterEqual(len(beats), 2)
+        self.assertTrue(all(45 <= b-a <= 47 for a, b in zip([0] + beats, beats)))
+
+    def test_heartbeat_failure_aborts_capture_without_retry(self):
+        clock = Clock()
+        def failed(): raise RuntimeError('LEASE_FENCED')
+        with self.assertRaisesRegex(RuntimeError, 'LEASE_FENCED'):
+            self.capture(Page(clock, busy=lambda seconds: True), clock, heartbeat=failed)
+        self.assertLess(clock.now, 90)
+
+    def test_explicit_blocked_result_is_a_stable_incident_without_long_timeout(self):
+        clock = Clock()
+        page = Page(clock, answers=lambda seconds: ['TTN2_EDITORIAL_BLOCKED: no se confirma el hecho'])
+        with self.assertRaisesRegex(RuntimeError, 'EDITORIAL_BLOCKED_NO_RESEND'):
+            self.capture(page, clock)
+        self.assertEqual(clock.now, 6)
+
+    def test_authentication_check_returns_only_true_boolean_and_no_session_data(self):
+        expressions = []
+        page = SimpleNamespace(evaluate=lambda expression: expressions.append(expression) or True)
+        self.assertTrue(authenticated_session(page))
+        self.assertIn("fetch('/api/auth/session'", expressions[0])
+        self.assertIn('Boolean(session && session.user && session.user.id)', expressions[0])
+        for value in [False, None, {}, {'user': {'id': 'not-a-boolean'}}, 'true', 1]:
+            with self.subTest(value=value):
+                self.assertFalse(authenticated_session(SimpleNamespace(evaluate=lambda expression: value)))
+        def unavailable(expression): raise RuntimeError('private details must not escape')
+        with self.assertRaisesRegex(RuntimeError, 'AUTH_CHECK_UNAVAILABLE'):
+            authenticated_session(SimpleNamespace(evaluate=unavailable))
+
+    def test_confirmation_requires_exact_visible_user_turn_and_chat_url(self):
+        clock = Clock()
+        page = Page(clock, users=lambda seconds: [USER] if seconds >= 6 else [],
+                    url=lambda seconds: 'https://chatgpt.com/c/own-conversation' if seconds >= 8 else 'https://chatgpt.com/')
+        self.assertEqual(self.confirm(page, clock), 'https://chatgpt.com/c/own-conversation')
+        self.assertEqual(clock.now, 8)
+
+    def test_unconfirmed_enter_times_out_and_ticks_heartbeat(self):
+        clock, beats = Clock(), []
+        with self.assertRaisesRegex(RuntimeError, 'SUBMISSION_UNCONFIRMED_NO_RESEND'):
+            self.confirm(Page(clock, users=lambda seconds: []), clock,
+                         heartbeat=lambda: beats.append(clock()), timeout=60)
+        self.assertEqual(len(beats), 1)
+
+    def test_endpoint_owner_must_be_an_exact_owned_profile_process(self):
+        self.assertTrue(verify_endpoint_owned(19642, Path('own'), find_pids=lambda p: {9}, listeners=lambda port: {9}))
+        for own, listening in [({9}, {10}), ({9}, {9, 10}), (set(), {9}), ({9}, set())]:
+            with self.subTest(own=own, listening=listening), self.assertRaisesRegex(RuntimeError, 'ENDPOINT_NOT_OWNED'):
+                verify_endpoint_owned(19642, Path('own'), find_pids=lambda p: own, listeners=lambda port: listening)
+
+    def test_listener_inspection_is_bounded_read_only_and_rejects_unsafe_values(self):
+        calls = []
+        def runner(args, **kwargs):
+            calls.append((args, kwargs))
+            return SimpleNamespace(returncode=0, stdout='[9]')
+        self.assertEqual(listener_process_ids(19642, runner=runner), {9})
+        self.assertEqual(calls[0][1]['timeout'], 20)
+        self.assertIn('Get-NetTCPConnection', calls[0][0][-1])
+        self.assertNotIn('Stop-Process', calls[0][0][-1])
+        for port in [9223, 9234, True, '19642; Stop-Process', 0]:
+            with self.subTest(port=port), self.assertRaisesRegex(RuntimeError, 'PORT_INVALID'):
+                listener_process_ids(port, runner=runner)
+        for data in ['{"PID":9}', '[true]', 'not-json']:
+            with self.subTest(data=data), self.assertRaisesRegex(RuntimeError, 'OWNER_INSPECTION_FAILED'):
+                listener_process_ids(19642, runner=lambda *args, **kw: SimpleNamespace(returncode=0, stdout=data))
+
+    def bare(self, profile, calls, *, pw_fail=False, hider_fail=False, process=None, profile_owned=True):
+        browser = object.__new__(ChromeJob)
+        browser.profile = profile
+        browser.port = 19642
+        browser.profile_owned = profile_owned
+        browser.cleanup_verified = False
+        browser.find = lambda path: {9}
+        def cdp_send(command): calls.append(command)
+        browser.browser = SimpleNamespace(new_browser_cdp_session=lambda: SimpleNamespace(send=cdp_send),
+                                           close=lambda: calls.append('browser_close'))
+        def stop_pw():
+            calls.append('pw_stop')
+            if pw_fail: raise RuntimeError('driver fault')
+        def stop_hider():
+            calls.append('hider_stop')
+            if hider_fail: raise RuntimeError('hider fault')
+        browser.pw, browser.hider = SimpleNamespace(stop=stop_pw), SimpleNamespace(stop=stop_hider)
+        browser.process = process or SimpleNamespace(wait=lambda timeout: calls.append('process_wait'))
+        return browser
+
+    def test_driver_or_hider_failure_does_not_skip_owned_process_cleanup(self):
+        for fault in ('pw_fail', 'hider_fail'):
+            with self.subTest(fault=fault), tempfile.TemporaryDirectory() as tmp:
+                profile = Path(tmp) / 'owned'; profile.mkdir()
+                calls = []
+                browser = self.bare(profile, calls, **{fault: True})
+                def cleanup(find): calls.append('exact_cleanup'); return {'closed': True}
+                with patch('v2.ttittulares.editorial_browser_v2.verify_endpoint_owned', return_value=True), \
+                     patch('v2.ttittulares.editorial_browser_v2.common', return_value=SimpleNamespace(cleanup_v2_profile=cleanup)):
+                    with self.assertRaisesRegex(RuntimeError, 'RESOURCE_CLOSE_FAILED'):
+                        browser.close()
+                self.assertIn('exact_cleanup', calls)
+                self.assertTrue(browser.cleanup_verified)
+                self.assertFalse(profile.exists())
+
+    def test_replaced_endpoint_is_never_sent_browser_close(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            calls = []
+            profile = Path(tmp) / 'own'; profile.mkdir()
+            browser = self.bare(profile, calls)
+            def cleanup(find): calls.append('exact_cleanup'); return {'closed': True}
+            with patch('v2.ttittulares.editorial_browser_v2.verify_endpoint_owned', side_effect=RuntimeError('foreign endpoint')), \
+                 patch('v2.ttittulares.editorial_browser_v2.common', return_value=SimpleNamespace(cleanup_v2_profile=cleanup)):
+                browser.close()
+            self.assertNotIn('Browser.close', calls)
+            self.assertNotIn('browser_close', calls)
+            self.assertIn('exact_cleanup', calls)
+
+    def test_cleanup_failure_preserves_profile_credentials_for_recovery(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            calls = []
+            profile = Path(tmp) / 'own'; profile.mkdir()
+            browser = self.bare(profile, calls)
+            with patch('v2.ttittulares.editorial_browser_v2.verify_endpoint_owned', return_value=True), \
+                 patch('v2.ttittulares.editorial_browser_v2.common', return_value=SimpleNamespace(cleanup_v2_profile=lambda find: {'closed': False})):
+                with self.assertRaisesRegex(RuntimeError, 'CLEANUP_UNVERIFIED'):
+                    browser.close()
+            self.assertTrue(profile.exists())
+
+    def test_rejected_existing_profile_is_never_deleted_by_close(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            profile = Path(tmp) / 'preexisting'; profile.mkdir()
+            browser = self.bare(profile, [], profile_owned=False)
+            browser.process = browser.browser = browser.pw = browser.hider = None
+            browser.close()
+            self.assertTrue(profile.exists())
+
+
+if __name__ == '__main__': unittest.main()

@@ -1,0 +1,190 @@
+import copy
+import json
+from pathlib import Path
+import tempfile
+import unittest
+
+from .editorial_browser_v2 import clone_job_profile, fresh_turn, write_private
+from .editorial_consumer_v2 import run_one, enabled, error_code
+
+
+class Service:
+    def __init__(self, *, authorized=True, idle=False):
+        self.calls = []
+        self.authorized, self.idle = authorized, idle
+
+    def claim(self, worker, token):
+        self.calls.append('claim')
+        if self.idle:
+            return {'job': None}
+        return {'job': {'job_id': 'job', 'event_id': 'event', 'revision': 1}, 'event': {}}
+
+    def prepare_send(self, *args, **kwargs):
+        self.calls.append('intent')
+        return {'send_authorized': self.authorized}
+
+    def submitted(self, *args, **kwargs): self.calls.append('submitted')
+    def captured(self, *args, **kwargs): self.calls.append('captured')
+    def heartbeat(self, *args): self.calls.append('heartbeat')
+    def complete(self, *args):
+        self.calls.append('complete')
+        return {'verified': True, 'commit_sha': 'a' * 40}
+    def fail(self, *args, **kwargs):
+        self.calls.append(('fail', kwargs['safe_preflight']))
+
+
+class Browser:
+    def __init__(self, calls, fail=None):
+        self.calls, self.fail, self.cleanup_verified = calls, fail, False
+    def open(self):
+        self.calls.append('open')
+        if self.fail == 'open': raise RuntimeError('AUTH_NOT_READY')
+    def send_once(self, prompt):
+        self.calls.append('send')
+        if self.fail == 'send': raise RuntimeError('ENTER_ACK_UNKNOWN')
+    def capture(self, *args):
+        self.calls.append('capture')
+        if self.fail == 'capture': raise RuntimeError('PARTIAL_RESPONSE')
+        return 'answer', 'https://chatgpt.com/c/private-chat'
+    def confirm_submission(self, *args, **kwargs):
+        self.calls.append('confirm')
+        if self.fail == 'confirm': raise RuntimeError('TURN_NOT_CONFIRMED')
+        return 'https://chatgpt.com/c/private-chat'
+    def close(self):
+        self.calls.append('close')
+        if self.fail == 'close': raise RuntimeError('BROWSER_STILL_ACTIVE')
+        self.cleanup_verified = True
+
+
+class ConsumerTests(unittest.TestCase):
+    def work(self, service=None, fail=None, parse_fail=False):
+        service = service or Service()
+        tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(tmp.cleanup)
+        root = Path(tmp.name)
+        def parse(*args):
+            if parse_fail: raise ValueError('INVALID_EDITORIAL')
+            return {'validated_record': True}
+        result = run_one(service, {'root': root, 'chrome': root / 'chrome', 'seed': root / 'seed'},
+                         browser_factory=lambda **kw: Browser(service.calls, fail),
+                         build=lambda *args: 'prompt', parse=parse)
+        return result, service.calls, root
+
+    def test_one_send_intent_first_close_before_ready(self):
+        result, calls, root = self.work()
+        self.assertEqual(calls, ['claim', 'open', 'intent', 'send', 'confirm', 'submitted', 'capture', 'captured', 'close', 'complete'])
+        self.assertEqual(result['status'], 'ready')
+        self.assertFalse(result['published'])
+        journal = json.loads(next((root / 'journals').glob('*.json')).read_text())
+        self.assertTrue(journal['ready_verified'])
+        self.assertTrue(journal['cleanup_verified'])
+
+    def test_unknown_enter_never_retries_or_becomes_safe_preflight(self):
+        result, calls, _ = self.work(fail='send')
+        self.assertEqual(calls.count('send'), 1)
+        self.assertIn(('fail', False), calls)
+        self.assertNotIn('complete', calls)
+        self.assertEqual(result['status'], 'incident')
+
+    def test_preflight_failure_is_safe_without_send_intent(self):
+        _, calls, root = self.work(fail='open')
+        self.assertIn(('fail', True), calls)
+        self.assertNotIn('send', calls)
+        self.assertNotIn('intent', calls)
+
+    def test_unknown_exception_text_cannot_leak_into_a_public_error_code(self):
+        self.assertEqual(error_code(RuntimeError('NEWS_CHATGPT_AUTH_REQUIRED')), 'NEWS_CHATGPT_AUTH_REQUIRED')
+        self.assertEqual(error_code(RuntimeError('https://private.example/token=secret')), 'RUNTIMEERROR')
+
+    def test_global_auth_failure_pauses_new_claims_without_marking_news_bad(self):
+        class AuthBrowser(Browser):
+            def open(self):
+                raise RuntimeError('NEWS_CHATGPT_AUTHENTICATED_ACCOUNT_REQUIRED')
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / 'editorial.enabled').write_text('TTN2_EDITORIAL_ENABLED=YES')
+            service = Service()
+            report = run_one(service, {'root': root, 'chrome': root / 'c', 'seed': root / 's'},
+                             browser_factory=lambda **kw: AuthBrowser(service.calls),
+                             build=lambda *a: 'prompt', parse=lambda *a: {})
+            self.assertFalse(enabled(root))
+            self.assertIn(('fail', True), service.calls)
+            self.assertEqual(report['error_code'], 'NEWS_CHATGPT_AUTHENTICATED_ACCOUNT_REQUIRED')
+
+    def test_commit_failure_preserves_capture_and_never_reports_ready(self):
+        class FailingService(Service):
+            def complete(self, *args): raise RuntimeError('COMMIT_UNCERTAIN')
+        report, calls, root = self.work(service=FailingService())
+        self.assertEqual(report['status'], 'incident')
+        self.assertEqual(calls.count('send'), 1)
+        saved = json.loads(next((root / 'journals').glob('*.json')).read_text())
+        self.assertEqual(saved['answer'], 'answer')
+        self.assertFalse(saved['ready_verified'])
+
+    def test_enter_without_exact_user_turn_is_never_confirmed_or_resent(self):
+        _, calls, _ = self.work(fail='confirm')
+        self.assertEqual(calls.count('send'), 1)
+        self.assertNotIn('submitted', calls)
+        self.assertIn(('fail', False), calls)
+
+    def test_replayed_intent_never_authorizes_an_enter(self):
+        _, calls, _ = self.work(service=Service(authorized=False))
+        self.assertNotIn('send', calls)
+        self.assertIn(('fail', False), calls)
+
+    def test_partial_invalid_or_unclean_result_cannot_become_ready(self):
+        for stage in ('capture', 'close'):
+            with self.subTest(stage=stage):
+                result, calls, _ = self.work(fail=stage)
+                self.assertEqual(result['status'], 'incident')
+                self.assertNotIn('complete', calls)
+        _, calls, _ = self.work(parse_fail=True)
+        self.assertNotIn('complete', calls)
+        self.assertIn(('fail', False), calls)
+
+    def test_idle_does_not_open_browser(self):
+        result, calls, _ = self.work(service=Service(idle=True))
+        self.assertEqual(result['status'], 'idle')
+        self.assertEqual(calls, ['claim'])
+
+    def test_profile_copies_auth_without_sessions_and_never_reuses_destination(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            seed, dest = Path(tmp) / 'seed', Path(tmp) / 'job'
+            (seed / 'Default' / 'Sessions').mkdir(parents=True)
+            (seed / 'Default' / 'Sessions' / 'old').write_text('not fresh')
+            (seed / 'Local State').write_text('auth')
+            clone_job_profile(seed, dest, find_pids=lambda p: [])
+            self.assertEqual((dest / 'Local State').read_text(), 'auth')
+            self.assertFalse((dest / 'Default' / 'Sessions').exists())
+            with self.assertRaisesRegex(RuntimeError, 'ALREADY_EXISTS'):
+                clone_job_profile(seed, dest, find_pids=lambda p: [])
+            with self.assertRaisesRegex(RuntimeError, 'BROWSER_BUSY'):
+                clone_job_profile(seed, Path(tmp) / 'other', find_pids=lambda p: [99])
+
+    def test_profile_source_that_opens_during_copy_is_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            seed = Path(tmp) / 'seed'; seed.mkdir(); (seed / 'Local State').write_text('auth')
+            pids = iter([[], [88]])
+            with self.assertRaisesRegex(RuntimeError, 'CHANGED_DURING_COPY'):
+                clone_job_profile(seed, Path(tmp) / 'job', find_pids=lambda p: next(pids))
+
+    def test_message_identity_includes_exact_revision_and_single_user(self):
+        good = ['{"event_id":"event", "revision": 1, "command_id":"command"}']
+        self.assertTrue(fresh_turn(good, 'event', 1, 'command'))
+        self.assertFalse(fresh_turn(good, 'event', 11, 'command'))
+        self.assertFalse(fresh_turn(good * 2, 'event', 1, 'command'))
+        self.assertFalse(fresh_turn(good, 'event', 1, 'other-command'))
+
+    def test_flag_is_exact_and_private_journal_is_complete_json(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp)
+            self.assertFalse(enabled(path))
+            (path / 'editorial.enabled').write_text('TTN2_EDITORIAL_ENABLED=YES')
+            self.assertTrue(enabled(path))
+            (path / 'editorial.enabled').write_text('YES')
+            self.assertFalse(enabled(path))
+            write_private(path / 'j.json', {'captured': True})
+            self.assertEqual(json.loads((path / 'j.json').read_text()), {'captured': True})
+
+
+if __name__ == '__main__': unittest.main()

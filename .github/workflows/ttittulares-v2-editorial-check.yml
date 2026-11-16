@@ -1,0 +1,74 @@
+name: TTiTTulares V2 - isolated editorial worker checks
+on:
+  push:
+    branches: [feature/ttactualidad-v2-clean]
+    paths:
+      - 'v2/ttittulares/*.py'
+      - 'v2/ttittulares/*.ps1'
+      - 'v2/ttittulares/schemas/**'
+      - '.github/workflows/ttittulares-v2-editorial-check.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          sparse-checkout: |
+            v2/ttittulares
+            v2/ttendencias/chrome_profile_process_v2.py
+            v2/ttendencias/chrome_command_v2.py
+            v2/ttendencias/chrome_cleanup_v2.py
+            v2/ttendencias/chrome_visibility_v2.py
+            v2/ttendencias/process_lock_v2.py
+          sparse-checkout-cone-mode: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install jsonschema==4.23.0
+      - name: Compile and run baseline plus worker regressions without a browser or writes
+        run: |
+          python -m compileall -q v2/ttittulares
+          python -m unittest -v v2.ttittulares.test_contract_examples v2.ttittulares.test_radar_ingest_v2 v2.ttittulares.test_source_fetch_v2 v2.ttittulares.test_radar_snapshot_v2 v2.ttittulares.test_radar_store_v2 v2.ttittulares.test_editorial_state_v2 v2.ttittulares.test_editorial_contract_v2 v2.ttittulares.test_editorial_consumer_v2 v2.ttittulares.test_editorial_browser_v2 v2.ttittulares.test_editorial_setup_v2 v2.ttittulares.test_editorial_install_v2
+      - name: Parse installer and launcher on Windows PowerShell without executing either
+        if: runner.os == 'Windows'
+        shell: powershell
+        run: |
+          $ErrorActionPreference='Stop'
+          foreach($file in @('Install-News-Editorial-V2.ps1','Run-News-Editorial-Auto.ps1')){
+            $tokens=$null;$parseErrors=$null
+            [Management.Automation.Language.Parser]::ParseFile((Join-Path (Get-Location) ('v2\ttittulares\'+$file)),[ref]$tokens,[ref]$parseErrors) | Out-Null
+            if($parseErrors.Count){throw ($parseErrors | Out-String)}
+          }
+          Write-Host 'TTN2_WINDOWS_INSTALLER_SYNTAX=PASS'
+  real-preview:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install jsonschema==4.23.0
+      - name: Read real FIFO queue with read-only credential; no claims or Chrome
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          python - <<'PY'
+          import json,os
+          from v2.ttittulares.editorial_state_v2 import EditorialService,EditorialGitHubStore
+          plan=EditorialService(EditorialGitHubStore(os.environ['GITHUB_TOKEN'])).preview()
+          assert plan['max_workers']==3 and plan['effects_enabled'] is False
+          keys=[(x['requested_at'],x['job_id']) for x in plan['next_jobs']]
+          assert keys==sorted(keys)
+          print('TTN2_REAL_FIFO_PREVIEW='+json.dumps({key:plan[key] for key in ('commit_sha','pending_count','active_count','max_workers','effects_enabled')}))
+          PY
