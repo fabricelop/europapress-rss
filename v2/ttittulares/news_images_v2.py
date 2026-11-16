@@ -47,10 +47,12 @@ def run_one(service, config, *, browser_factory=ChromeJob, raster_get=original_f
         journal["chat_url"]=url;write_private(local,journal)
         service.image("submitted",worker_id=worker,token=token,job_id=jid)
         class HeartbeatPage:
+            last_heartbeat=time.monotonic()
             @property
             def url(self):return browser.page.url
             def evaluate(self,script):
-                beat()
+                if time.monotonic()-self.last_heartbeat>=45:
+                    beat();self.last_heartbeat=time.monotonic()
                 return browser.page.evaluate(script)
         raw=raster_get(HeartbeatPage(),{"conversation_url":url,"command_id":command},timeout=600)
         meta=raster_metadata(raw)

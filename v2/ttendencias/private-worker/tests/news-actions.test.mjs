@@ -1,5 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import worker from "../src/index.js";
 import {DatabaseSync} from "node:sqlite";
 import {deflateSync} from "node:zlib";
 import {newsAction,newsControls,newsView,newsManualImage,newsImage} from "../src/news-actions.js";
@@ -81,3 +82,10 @@ test("manual original association is exact and hidden public image cannot be fet
  await newsAction(request("public_image",{value:false}),env,helpers);
  assert.equal((await newsImage(imageReq,env,helpers,true)).status,404);
 }));
+
+test("all news mutations and original-image reads retain the private session gate",async()=>{
+ const env={AUTH_PASSWORD:"test-password-more-than-sixteen",SESSION_SECRET:"test-session-secret-more-than-thirty-two-characters"};
+ for(const path of ["/api/news-actions","/api/news-manual-image","/api/news-image"]){
+  assert.equal((await worker.fetch(new Request("https://private.example"+path),env)).status,401);
+ }
+});

@@ -1,7 +1,7 @@
 """Image lifecycle uses the same service contract with a synthetic owned browser."""
 import tempfile, unittest
 from pathlib import Path
-from unittest.mock import Mock
+from unittest.mock import Mock,patch
 from . import test_news_workflow_v2 as workflow_tests
 from .news_images_v2 import run_one,image_prompt
 
@@ -41,6 +41,14 @@ class NewsImageLifecycleTests(unittest.TestCase):
   self.assertEqual(self.instances[0].sent,1);self.assertTrue(result["cleanup_verified"])
   _,docs=self.service.store.read_editorial_snapshot();item=docs["v2/ttittulares/state/news-index.json"]["items"][self.fixture.event]
   self.assertTrue(item["image"]["verified"]);self.assertEqual(item["image"]["revision"],1)
+ def test_image_probe_does_not_write_heartbeat_on_every_poll(self):
+  def probes(page,*args,**kwargs):
+   for _ in range(3):page.evaluate("probe")
+   raise RuntimeError("NEWS_IMAGE_CAPTURE_TIMEOUT")
+  with patch.object(self.service,"image",wraps=self.service.image) as calls:
+   with patch("v2.ttittulares.news_images_v2.time.monotonic",side_effect=[100,101,102,103]):
+    run_one(self.service,self.config,browser_factory=self.browser,raster_get=probes)
+   self.assertNotIn("heartbeat",[c.args[0] for c in calls.call_args_list])
  def test_prompt_is_self_contained_and_exact_revision(self):
   prompt=image_prompt(self.fixture.record,"news-img-fixture")
   self.assertIn(self.fixture.event,prompt);self.assertIn('"revision": 1',prompt)
