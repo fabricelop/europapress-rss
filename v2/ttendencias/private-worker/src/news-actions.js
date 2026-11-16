@@ -73,7 +73,8 @@ export async function newsAction(request,env,{json,sameOrigin}){
   const expected={...row};delete expected.event_id;delete expected.revision;
   if(!await savePreference(env.MARKS_DB,event_id,revision,expected,prefs,entry))
    return json({error:"news_preferences_changed"},409);
-  return json({ok:true,event_id,revision,action,publication_sent:false});
+  const count=action==="publication"?(controls.actions.filter(x=>x.action==="publication"&&Date.parse(x.created_at)>=Date.now()-86400000).length+1):undefined;
+  return json({ok:true,event_id,revision,action,count,publication_sent:false});
  }catch{return json({error:"news_action_unavailable"},503);}
 }
 async function digest(bytes){return [...new Uint8Array(await crypto.subtle.digest("SHA-256",bytes))].map(x=>x.toString(16).padStart(2,"0")).join("");}
@@ -94,6 +95,7 @@ async function raster(bytes,mime){
    if(p!==8||length!==13)return null;
    const width=view.getUint32(p+8),height=view.getUint32(p+12),depth=data[8],color=data[9];
    const channels={0:1,2:3,3:1,4:2,6:4}[color];
+   if((color===3&&depth===16)||([2,4,6].includes(color)&&![8,16].includes(depth)))return null;
    if(width<1024||height<576||width>8192||height>8192||![1,2,4,8,16].includes(depth)||!channels||data[10]||data[11]||data[12])return null;
    meta={width,height,stride:Math.ceil(width*channels*depth/8)+1};
    if(meta.stride*height>67108864)return null;

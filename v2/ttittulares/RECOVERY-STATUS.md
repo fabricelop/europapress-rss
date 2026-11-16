@@ -67,6 +67,18 @@ editorial3 e imágenes2 independientes. Aún NO se ha entregado como validada.
 Site V1 v97 sigue sin modificar: fuente en git.chatgpt-team.site requiere ejecución
 Git local, ausente en este entorno. No volcar credenciales a GitHub ni fingir despliegue.
 
+## Pruebas completas del segundo bloque
+
+Commit 05dc6811849a31d447f472802bebba7a25605843.
+Run43965223064 SUCCESS en Linux y Windows: 210 pruebas Python,105 Node,
+compilación y parseo de todos los instaladores PowerShell.
+No afirmar instalación Windows por estas pruebas en runners.
+Se amplía QA de navegador para comprobar botones y transición PUB a Archivo.
+Se prepara adaptador documentado para Site V1; permanece pendiente aplicarlo
+en su fuente independiente (este chat no dispone de transporte Git local).
+El despliegue del Worker privado será el siguiente paso después de estas pruebas;
+conservará D1, secretos, bindings y cron existentes.
+
 ## Evidencia previa conservada
 
 # News V2: recovery checkpoint after master v312

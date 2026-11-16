@@ -8,10 +8,10 @@ const view=projectNews(index,queue);
 console.log('REAL_NEWS_PROJECTION',JSON.stringify({counts:view.counts,observed_at:view.observed_at}));
 const root=path.resolve('dist');
 const shots=path.resolve(process.env.RUNNER_TEMP||'.','ttv2-news-qa');await fs.mkdir(shots,{recursive:true});
-let fail=false,demoReady=false;
+let fail=false,demoReady=false,archived=false;
 const example=view.items.find(x=>x.group==='pending');
 const demoTweet="Una explicación breve de prueba, con hechos contrastados y preparada para un tuit. #Prueba #Noticias";
-const demoRecord={event_id:example.event_id,revision:example.revision,tweet_text:demoTweet,x_character_count:demoTweet.length};
+const demoRecord={event_id:example.event_id,revision:example.revision,tweet_text:demoTweet,x_character_count:demoTweet.length,title:example.title,factual_summary:'Hecho contrastado de prueba.'};
 const readyView={...view,items:[{...example,group:'ready',status_label:'Elaborada',image_incident_available:true}],counts:{...view.counts,ready:1}};
 const demoIncident={project:'ttittulares-v2',target_id:example.event_id,revision:example.revision,available:true,
  incident:{code:'NEWS_IMAGE_ORIGINAL_MISSING',detail:'No se ha podido recuperar el original de la imagen.',at:new Date().toISOString()}};
@@ -21,7 +21,12 @@ const server=http.createServer(async(req,res)=>{
  if(u.pathname==='/api/news'){
   res.setHeader('Content-Type','application/json');
   if(fail){res.statusCode=503;res.end('{}');return;}
-  res.end(JSON.stringify(pageNews(demoReady?readyView:view,u.searchParams)));return;
+  res.end(JSON.stringify(pageNews(demoReady?(archived?{...readyView,items:readyView.items.map(x=>({...x,group:'archived',status_label:'Archivada'})),counts:{...readyView.counts,ready:0,archived:1}}:readyView):view,u.searchParams)));return;
+ }
+ if(u.pathname==='/api/news-actions'){
+  let raw='';for await(const part of req)raw+=part;const body=JSON.parse(raw);
+  if(body.action==='archive')archived=true;
+  res.setHeader('Content-Type','application/json');res.end(JSON.stringify({ok:true,publication_sent:false}));return;
  }
  if(u.pathname.startsWith('/api/news/')&&demoReady){res.setHeader('Content-Type','application/json');res.end(JSON.stringify(demoRecord));return;}
  if(u.pathname==='/api/image-incidents'&&demoReady){res.setHeader('Content-Type','application/json');res.end(JSON.stringify(demoIncident));return;}
@@ -82,6 +87,16 @@ try{
  if(requests.filter(p=>p==='/api/image-incidents').length!==1)throw Error('Incident detail did not reuse the exact cached revision');
  await page.setViewportSize({width:1280,height:1000});
  await page.screenshot({path:path.join(shots,'news-image-incident-desktop.png'),fullPage:false});
+ for(const label of ['R','RE','RE-X','P-X','PU','PUB','Copiar prompt IA','GPT IMA','Pegar IA']){
+  if(await page.locator('.news-actions').getByText(label,{exact:true}).count()!==1)throw Error('Missing news action: '+label);
+ }
+ await page.getByRole('button',{name:'PUB',exact:true}).click();
+ await page.waitForFunction(()=>document.querySelectorAll('.news-card').length===0);
+ await page.getByRole('button',{name:'Archivo · 1',exact:true}).click();
+ await page.waitForFunction(()=>document.querySelectorAll('.news-card').length===1);
+ await page.locator('.news-card summary').first().click();
+ await page.waitForFunction(text=>document.querySelector('.news-body p')?.textContent===text,demoTweet);
+ await page.screenshot({path:path.join(shots,'news-pub-archive.png'),fullPage:false});
  if(errors.length)throw Error(errors.join('; '));
  console.log('NEWS_BROWSER_QA=PASS; default Elaboradas/compact filters/short READY tweet/paging/search/error retention/mobile/image incident I lazy detail=OK');
 }finally{await browser.close();server.close();}

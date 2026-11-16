@@ -179,6 +179,12 @@ class NewsService(ed.EditorialService):
                         j.update(status="problematic",phase="blocked",lease=None,
                             problem={"code":"NEWS_IMAGE_LEASE_EXPIRED","at":stamp,"retry_mode":"recover_same_chat" if j["send_intent"] else "manual_only"})
                         writes[p]=j
+                        index=writes.setdefault(ed.INDEX,copy.deepcopy(docs[ed.INDEX]))
+                        item=index["items"].get(j["event_id"],{})
+                        if item.get("current_revision")==j["revision"]:
+                            item["editorial_sha256"]=j["editorial_sha256"]
+                            item["image_incident"]={**j["problem"],"revision":j["revision"],"editorial_sha256":j["editorial_sha256"]}
+                            item.pop("image_progress",None)
                 active=[j for j in imagejobs.values() if j["lease"]]
                 owned=next((j for j in active if j["lease"]["worker_id"]==worker_id and j["lease"]["token_sha256"]==token_hash),None)
                 if owned:return {"job":copy.deepcopy(owned),"record":docs[owned["source_record_path"]],"replay":True}
@@ -254,7 +260,7 @@ class NewsService(ed.EditorialService):
                 else:raise ed.EditorialError("NEWS_IMAGE_OPERATION_INVALID")
                 job["updated_at"]=stamp;writes[p]=job
             validate("image_job",job)
-            index=copy.deepcopy(docs[ed.INDEX]);item=index["items"][job["event_id"]]
+            index=copy.deepcopy(writes.get(ed.INDEX,docs[ed.INDEX]));item=index["items"][job["event_id"]]
             item["editorial_sha256"]=job["editorial_sha256"]
             if job["status"]=="saved":
                 item["image"]=copy.deepcopy(data["asset"]);item.pop("image_incident",None);item.pop("image_progress",None)
