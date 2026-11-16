@@ -71,6 +71,9 @@ def request_reexplanation(queue, history, *, trend_id, base_revision, entered_to
     item["requested_at"] = requested_at
     item["updated_at"] = requested_at
     item.pop("capture", None)
+    # The old revision's image progress marker must not block/display as the
+    # newly requested image. The new image job starts with a fresh marker.
+    item.pop("image_progress", None)
     item.pop("text", None)
     item.pop("completed_at", None)
     item.pop("lease", None)
