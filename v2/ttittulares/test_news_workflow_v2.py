@@ -63,6 +63,14 @@ class NewsWorkflowTests(unittest.TestCase):
  def test_preferences_skip_manually_associated_image(self):
   self.service.controls({"actions":[],"preferences":[{"event_id":self.event,"revision":1,"manual_image":{"sha256":"f"*64}}]})
   self.assertIsNone(self.claim()["job"])
+ def test_completed_control_history_is_read_once_without_replaying_each_action(self):
+  from unittest.mock import patch
+  action={"action_id":"a"*32,"event_id":self.event,"revision":1,"action":"archive"}
+  self.service.apply_action(action);before=len(self.store.writes)
+  with patch.object(self.store,"read_editorial_snapshot",wraps=self.store.read_editorial_snapshot) as reads:
+   self.service.controls({"actions":[copy.deepcopy(action) for _ in range(100)],"preferences":[]})
+   self.assertEqual(reads.call_count,1)
+  self.assertEqual(len(self.store.writes),before)
  def test_stale_action_cannot_modify_new_revision(self):
   self.action("rework");result=self.action("archive",key="b"*32)
   self.assertTrue(result["stale"])

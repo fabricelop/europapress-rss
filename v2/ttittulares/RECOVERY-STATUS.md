@@ -119,6 +119,16 @@ La siguiente versión añade controles privados del propietario, aún desplegán
 en run43966604710. El paquete Windows incorpora relanzamiento cada3min con
 IgnoreNew/locks para recuperarse de salidas del daemon, sin duplicar chats.
 
+## Último ajuste del consumidor
+
+Se evita volver a leer y procesar por separado cada decisión histórica ya aplicada:
+un snapshot identifica acciones completadas y revisiones caducadas antes del bucle.
+Prueba de100 recibos ya completados: una sola lectura, cero nuevas escrituras.
+Este ajuste preserva la cola automática y evita aumentar peticiones con el histórico.
+Windows: piloto editorial y piloto de imagen siguen pendientes de ejecución local.
+La versión nueva de controles privados continúa su despliegue antes de entregar
+el comando conjunto. Site V1 v97 sigue pendiente de edición independiente.
+
 ## Evidencia previa conservada
 
 # News V2: recovery checkpoint after master v312

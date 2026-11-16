@@ -99,9 +99,15 @@ class NewsService(ed.EditorialService):
         if not isinstance(controls,dict) or not isinstance(controls.get("actions"),list):
             raise ed.EditorialError("NEWS_CONTROLS_INVALID")
         self.image_preferences=controls.get("preferences", [])
-        for action in controls["actions"]:
-            if action.get("action") in ("archive","rework","rework_x"):
-                self.apply_action(action)
+        pending=[a for a in controls["actions"] if a.get("action") in ("archive","rework","rework_x")]
+        if not pending:return
+        _,docs=self.store.read_editorial_snapshot()
+        news,_=ed._snapshot(docs)
+        for action in pending:
+            if PREFIX+"actions/"+str(action.get("action_id"))+".json" in docs:continue
+            event=news.get(action.get("event_id"))
+            if not event or event["current_revision"]!=action.get("revision") or event["status"]!="ready":continue
+            self.apply_action(action)
 
     def apply_action(self, action):
         if not ACTION.fullmatch(str(action.get("action_id",""))) or not ID.fullmatch(str(action.get("event_id",""))):
