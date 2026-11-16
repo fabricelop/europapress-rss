@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-16T11:03:11.928257+00:00",
+  "checked_at": "2026-11-16T21:01:01.770497+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -42,7 +42,7 @@
     "top10": {
       "ok": false,
       "count": 10,
-      "non_stale_sources": 4,
+      "non_stale_sources": 5,
       "verified_fresh_sources": [
         "xtrendsiamrohit"
       ],
@@ -59,8 +59,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 6.1,
-      "run_id": 43853361779,
+      "age_minutes": 6.3,
+      "run_id": 43954619054,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -82,70 +82,70 @@
     },
     "editorial_queue": {
       "ok": false,
-      "pending_count": 69,
-      "overdue_count": 69,
-      "oldest_age_minutes": 885.6,
+      "pending_count": 129,
+      "overdue_count": 129,
+      "oldest_age_minutes": 1483.5,
       "warning_after_minutes": 30,
       "overdue_items": [
         {
           "id": "red-review-f82aef2544e34c9b9690",
           "name": "Revisar novedades: La Peter",
           "status": "preparing",
-          "age_minutes": 885.6
+          "age_minutes": 1483.5
         },
         {
           "id": "red-review-fec6add765a364b5d614",
           "name": "Revisar novedades: Procida",
           "status": "preparing",
-          "age_minutes": 885.6
+          "age_minutes": 1483.5
         },
         {
           "id": "5be067509b82",
           "name": "Cubarsí",
           "status": "preparing",
-          "age_minutes": 832.5
+          "age_minutes": 1430.4
         },
         {
           "id": "225061d75a71",
           "name": "Zubimendi",
           "status": "preparing",
-          "age_minutes": 832.5
+          "age_minutes": 1430.4
         },
         {
           "id": "16c870ea13f5",
           "name": "Cucurella",
           "status": "preparing",
-          "age_minutes": 832.5
+          "age_minutes": 1430.4
         },
         {
           "id": "29542974bdf6",
           "name": "Pedri",
           "status": "preparing",
-          "age_minutes": 832.5
+          "age_minutes": 1430.4
         },
         {
           "id": "f5d53c5e2fdc",
           "name": "Kane",
           "status": "preparing",
-          "age_minutes": 832.5
+          "age_minutes": 1430.4
         },
         {
           "id": "8a769b0e310c",
           "name": "Fabián",
           "status": "preparing",
-          "age_minutes": 832.5
+          "age_minutes": 1430.4
         },
         {
           "id": "bfb4a8ec2206",
           "name": "Unai Simón",
           "status": "preparing",
-          "age_minutes": 832.5
+          "age_minutes": 1430.4
         },
         {
           "id": "8cd57a90d122",
           "name": "#NationsLeague",
           "status": "preparing",
-          "age_minutes": 832.5
+          "age_minutes": 1430.4
         }
       ],
       "repairable": false
@@ -223,7 +223,67 @@
         "80e69c36bb34",
         "2e1414351a96",
         "557d083a82a7",
-        "1d67886ea59b"
+        "1d67886ea59b",
+        "3a05523dc056",
+        "72b636044cc9",
+        "0742a7158fd2",
+        "d68ba0f5cbf5",
+        "459cf46e78e1",
+        "c2793b826cc9",
+        "a78a4203908a",
+        "3bd4bd7b3d05",
+        "50f248c7ae72",
+        "db16cf8f57cb",
+        "ee5398848187",
+        "94227eed1ac4",
+        "0be426d77b88",
+        "06d74ce50050",
+        "0c37f9c42301",
+        "9f7e38158072",
+        "199e3918a2a0",
+        "b494f9a99bbb",
+        "797554ba5cd2",
+        "1ea93f8211f7",
+        "73afcc787073",
+        "eaeff6ffd56f",
+        "99fa2d986306",
+        "de93fafa2b70",
+        "1e988458eef2",
+        "721acc66a600",
+        "7f6c99df26e1",
+        "78affe644408",
+        "657b87e9f96e",
+        "d6932c1533d2",
+        "ea8bfad0bc73",
+        "34d02957af3b",
+        "a0bf65e58dba",
+        "df8de339493f",
+        "4a64d86e0e07",
+        "80ae44e3fa55",
+        "0b605cd5ae30",
+        "aa6e5fe5de56",
+        "f3ed70aedb56",
+        "1ab553b928c6",
+        "60c30f94813e",
+        "c007078d6ab9",
+        "ce84c0a03c81",
+        "a4aa0c4adbcb",
+        "efa5c429e09c",
+        "01968290fd55",
+        "257bd0e9b33d",
+        "9cc699c4b338",
+        "2b03ad68b6aa",
+        "7586bf4da0b4",
+        "4e6d06a1afde",
+        "d29de47c0ccb",
+        "28ec08405983",
+        "83efa76756f4",
+        "97d1fe141baa",
+        "f984f4bdcde0",
+        "8da8dcc64180",
+        "d591efd23f2c",
+        "7630decd1ac1",
+        "f22d8b1b04c3"
       ],
       "contradictory_success": false
     },
@@ -237,9 +297,9 @@
   "blocking": [
     "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos",
     "cola con 290 estado(s) inválido(s)",
-    "cola de explicaciones retrasada: 69 pendiente(s) superan 30 min; más antigua 885.6 min"
+    "cola de explicaciones retrasada: 129 pendiente(s) superan 30 min; más antigua 1483.5 min"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 290 estado(s) inválido(s) | cola de explicaciones retrasada: 69 pendiente(s) superan 30 min; más antigua 885.6 min"
+  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 290 estado(s) inválido(s) | cola de explicaciones retrasada: 129 pendiente(s) superan 30 min; más antigua 1483.5 min"
 }
