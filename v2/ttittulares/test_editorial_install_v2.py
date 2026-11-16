@@ -12,7 +12,7 @@ import unittest
 class InstallPackageTests(unittest.TestCase):
     def test_download_manifest_contains_every_runtime_and_test_dependency(self):
         news = Path(__file__).parent
-        source = (news / 'Install-News-Editorial-V2.ps1').read_text()
+        source = (news / 'Install-News-Editorial-V2.ps1').read_text(encoding="utf-8")
         blocks = {key: re.search(r'\$' + key + r'=@\((.*?)\)\s*\n', source, re.S).group(1)
                   for key in ('news', 'shared')}
         files = [('ttittulares', x) for x in re.findall(r"'([^']+)'", blocks['news'])]
@@ -33,7 +33,8 @@ class InstallPackageTests(unittest.TestCase):
                                  env=env, capture_output=True, text=True, timeout=60)
             self.assertEqual(run.returncode, 0, run.stderr[-5000:])
             for file in ('Install-News-Editorial-V2.ps1', 'Run-News-Editorial-Auto.ps1'):
-                self.assertNotIn('Stop-Process', (news / file).read_text())
+                self.assertNotIn('Stop-Process', (news / file).read_text(encoding="utf-8"))
 
 
 if __name__ == '__main__': unittest.main()
+

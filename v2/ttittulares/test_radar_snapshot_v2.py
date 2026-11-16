@@ -173,7 +173,7 @@ class SnapshotTests(unittest.TestCase):
 
     def test_new_documents_validate_against_contract(self):
         from jsonschema import Draft202012Validator, FormatChecker
-        schema = json.loads((Path(__file__).parent / "schemas/contract.schema.json").read_text())
+        schema = json.loads((Path(__file__).parent / "schemas/contract.schema.json").read_text(encoding="utf-8"))
         for doc, name in [(self.event, "news_event"), (self.docs[self.job_path], "editorial_job"),
                           (self.plan["queue"], "queue_index")]:
             validator = Draft202012Validator({"$ref": f"#/$defs/{name}", "$defs": schema["$defs"]},
@@ -214,3 +214,4 @@ class SnapshotTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+

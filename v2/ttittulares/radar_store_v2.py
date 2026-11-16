@@ -237,7 +237,7 @@ def validate_plan(plan, documents):
     if set(plan["writes"]) != set(plan["file_sha256"]):
         raise StoreError("PLAN_HASH_SET_MISMATCH")
     from jsonschema import Draft202012Validator, FormatChecker
-    schema = json.loads((Path(__file__).parent / "schemas/contract.schema.json").read_text())
+    schema = json.loads((Path(__file__).parent / "schemas/contract.schema.json").read_text(encoding="utf-8"))
     for path, doc in plan["writes"].items():
         if not allowed_write(path) or sha256(doc) != plan["file_sha256"][path]:
             raise StoreError("PLAN_PATH_OR_HASH_INVALID")
@@ -366,4 +366,5 @@ if __name__ == "__main__":
         main()
     except StoreError as exc:
         raise SystemExit(str(exc)) from None
+
 

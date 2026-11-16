@@ -75,7 +75,7 @@ def record_path(job):
 @lru_cache(maxsize=1)
 def _validators():
     from jsonschema import Draft202012Validator, FormatChecker
-    schema = json.loads((Path(__file__).parent / "schemas/contract.schema.json").read_text())
+    schema = json.loads((Path(__file__).parent / "schemas/contract.schema.json").read_text(encoding="utf-8"))
     return {kind: Draft202012Validator({"$ref": "#/$defs/" + kind, "$defs": schema["$defs"]},
                                       format_checker=FormatChecker()) for kind in
             ("news_event", "editorial_job", "editorial_record", "queue_index", "decision_event")}
@@ -508,3 +508,4 @@ class EditorialService:
     def fail(self, job_id, worker_id, token, code, safe_preflight=False):
         return self._run("fail", job_id=job_id, worker_id=worker_id, token=token,
                          code=code, safe_preflight=safe_preflight)
+
