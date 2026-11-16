@@ -1,6 +1,6 @@
 {
   "attempts": {
-    "claim_count": 2,
+    "claim_count": 3,
     "history": [
       {
         "at": "2026-11-16T20:40:16Z",
@@ -13,23 +13,42 @@
         "attempt_no": 1,
         "command_id": "news-bfc6017515a34ca09d010afdd74a1d96",
         "outcome": "uncertain"
+      },
+      {
+        "at": "2026-11-16T21:27:24Z",
+        "attempt_no": 1,
+        "command_id": "news-bfc6017515a34ca09d010afdd74a1d96",
+        "outcome": "submitted"
+      },
+      {
+        "at": "2026-11-16T21:27:24Z",
+        "attempt_no": 1,
+        "command_id": "news-bfc6017515a34ca09d010afdd74a1d96",
+        "outcome": "captured"
       }
     ],
     "max_safe_preflight_attempts": 3,
     "safe_preflight_failures": 1,
-    "submission_count": 0
+    "submission_count": 1
   },
-  "capture": null,
+  "capture": {
+    "answer_sha256": "0fd804ebb92a51519eed1f61ed4fe160282ccc3a4b59f1ba80dbe099104d244d",
+    "captured_at": "2026-11-16T21:27:24Z",
+    "complete": true,
+    "local_journal_id": "0e90ad3bc3f84f79ab222b762a1a7d70"
+  },
   "event_id": "ttn2-0e0e7c7ebd494a7a753590d9",
   "job_id": "ttn2-0e0e7c7ebd494a7a753590d9-r1-editorial",
-  "lease": null,
-  "phase": "blocked",
-  "priority": "automatic",
-  "problem": {
-    "at": "2026-11-16T20:53:04Z",
-    "code": "NEWS_SUBMISSION_UNCONFIRMED_NO_RESEND",
-    "retry_mode": "recover_same_chat"
+  "lease": {
+    "expires_at": "2026-11-16T21:37:24Z",
+    "heartbeat_at": "2026-11-16T21:27:24Z",
+    "started_at": "2026-11-16T21:27:24Z",
+    "token_sha256": "b62d7d0fad43b845bbae84d53c33210427f058b59e2dedf39117e7ebc955584a",
+    "worker_id": "user-capture-43960209171"
   },
+  "phase": "verifying",
+  "priority": "automatic",
+  "problem": null,
   "project": "ttittulares-v2",
   "prompt": {
     "prompt_sha256": "b86570a2bb620036dec3772fc705798689e192edca8862662621b001c99b243f",
@@ -44,13 +63,14 @@
     "command_id": "news-bfc6017515a34ca09d010afdd74a1d96",
     "prepared_at": "2026-11-16T20:51:18Z",
     "prompt_sha256": "b86570a2bb620036dec3772fc705798689e192edca8862662621b001c99b243f",
-    "submission_state": "uncertain"
+    "submission_state": "confirmed",
+    "submitted_at": "2026-11-16T21:27:24Z"
   },
   "session": {
     "conversation_url_sha256": "5d9354f7cb0eac0c0506ad03735ee6263a1e4ed75aa107e7852a5e26d49ecd3a",
     "private_journal_id": "0e90ad3bc3f84f79ab222b762a1a7d70",
     "session_id": "0e90ad3bc3f84f79ab222b762a1a7d70"
   },
-  "status": "problematic",
-  "updated_at": "2026-11-16T20:53:04Z"
+  "status": "captured",
+  "updated_at": "2026-11-16T21:27:24Z"
 }
