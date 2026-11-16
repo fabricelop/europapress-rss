@@ -594,6 +594,13 @@ function makePublishButtons(card,item){
   prompt.type='button';prompt.title='Copiar el prompt completo para generar un gag en un chat nuevo de ChatGPT';
   prompt.addEventListener('click',()=>{void copyManualImagePrompt(item).catch(error=>publishNotice(error.message))});
   actions.append(prompt);
+  const images=el('a','publish-action image-gpt-action','GPT IMA');
+  images.href='https://chatgpt.com/images/';
+  images.target='_blank';
+  images.rel='noopener noreferrer';
+  images.title='Abrir ChatGPT Images. Copia antes el prompt IA si quieres generar el gag de esta tendencia.';
+  images.setAttribute('aria-label','Abrir ChatGPT Images para '+item.name);
+  actions.append(images);
   const paste=el('button','publish-action image-paste-action','Pegar IA');
   paste.type='button';paste.title='Pegar el original de Mis imágenes o seleccionarlo desde Fotos/Archivos';
   paste.addEventListener('click',()=>openManualPasteDialog(item));

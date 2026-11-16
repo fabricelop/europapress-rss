@@ -113,11 +113,17 @@ test("an explained trend without an image offers separate copy prompt and paste 
  assert.match(result,/No publiques en redes ni modifiques GitHub/);
  assert.throws(()=>generate({trend_id:identity,revision:3,name:"Anticorrupción",explanation:"Corto"}),/explicación completa/);
  assert.match(app,/["']publish-action image-prompt-action["'],["']Copiar prompt IA["']/);
+ assert.match(app,/["']publish-action image-gpt-action["'],["']GPT IMA["']/);
+ assert.match(app,/images\.href='https:\/\/chatgpt\.com\/images\/'/);
+ assert.match(app,/images\.target='_blank'/);
+ assert.match(app,/images\.rel='noopener noreferrer'/);
+ assert.match(app,/if\(!imageReady\(item\)&&item\.image_suppressed!==true\)\{/);
  assert.match(app,/["']publish-action image-paste-action["'],["']Pegar IA["']/);
  assert.match(app,/navigator\.clipboard\.writeText\(prompt\)/);
  assert.match(app,/showManualImagePrompt\(prompt,item\)/);
  assert.match(built,/function manualImagePrompt\(item\)/);
  assert.match(css,/\.image-prompt-action\{/);
+ assert.match(css,/\.image-gpt-action\{/);
 });
 
 test("incident card permits RE-X hints independently of explained RE-X",()=>{
