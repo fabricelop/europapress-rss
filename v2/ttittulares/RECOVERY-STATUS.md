@@ -1,3 +1,55 @@
+# Noticias V2 — entrega y continuación
+
+**Código validado:** 62729b18586c155bb2dde071c4c97a519485d262.
+**CI:** run43967677128 SUCCESS,213 Python +108 Node en Linux y Windows;
+compilación y todos los instaladores PowerShell verificados.
+**Web desplegada:** run43967159798 SUCCESS,
+Worker1d6dfe24-1688-4d84-b1fb-9371766571a7.108 Node +63 Python y navegador PASS.
+PUB→Archivo y todos los botones comprobados en fixtures efímeras; ningún dato
+editorial real fue alterado por QA. Feed público real verificado con1 noticia.
+D1, secretos, bindings y cron de Tendencias conservados.
+
+## Resultado del encargo
+
+1. Editorial automático preparado:3 puestos CAS/FIFO, chat nuevo por noticia,
+   paso a Elaboradas después de registro verificado y cierre propio.
+2. Imágenes independientes preparadas:2 puestos, chat nuevo por imagen, original
+   raster/hash/ID/revisión. En reposo no se lanzan hijos; no se reenvían envíos inciertos.
+3. Botones de Noticias desplegados con acciones persistentes. RE/RE-X conservan
+   historial; pistas privadas; P-X/P-IA preparan compartir, PU solo registra.
+4. PUB→Archivo desplegado y persistente; no envía a X. Reflejo posterior en
+   GitHub al ejecutar el consumidor, además del estado inmediato en D1.
+5. Feed/adapter V2→V1 preparado y probado; **Site V1 aún sin conectar**.
+   Identidad exacta appgprj_6ae4dcf7d7488191a574e5b649e67370, v97, público.
+   Fuente independiente en git.chatgpt-team.site, inaccesible para edición sin
+   ejecutor/Git local. No confundir un commit de europapress-rss con ese despliegue.
+
+## Siguiente acción local
+
+Ejecutar v2/ttittulares/Upgrade-News-Workflow-V2.ps1 del commit validado62729b...
+Drena SOLO Noticias, conserva Tendencias/SeLo/V1/Chrome personal, ejecuta piloto
+editorial y piloto de imagen y después solicita tareas independientes3+2.
+Si falla imagen, la tarea editorial ya verificada continúa; incidencia disponible.
+Solicitar/leer salida final y registros: no afirmar que Windows está activo aún.
+
+Tras ello verificar noticia nueva READY, imagen original asociada en V2 y cierre
+de Chrome por trabajo. Cola observada anteriormente61 pendientes/0 activos/1 lista.
+Radar todavía19:11:32Z: investigar su reloj como tarea separada.
+
+## Siguiente acción sobre Site V1
+
+Abrir su fuente conservando identidad/audiencia y aplicar
+site-patches/news-v2/news-v2-adapter.mjs según README.md.
+Sustituir solo Noticias activas; preservar Inicio, Hemeroteca, relaciones, URLs
+históricas, imágenes y Tendencias. Probar y publicar en SU proyecto; anotar
+versión real nueva. Este chat no modificó ese Site por la limitación del ejecutor.
+
+La memoria maestra conocida es v313 (libfile_c244fcbdb29c8191a1d37f82a7ba3aa5).
+Conciliar este registro en el mismo documento con control de versión cuando
+haya acceso de escritura de archivos; no crear otra memoria maestra.
+
+## Evidencia detallada anterior
+
 # Noticias V2 — registro de continuación
 
 ## Estado vigente — 16/11/2026 (última comprobación)
