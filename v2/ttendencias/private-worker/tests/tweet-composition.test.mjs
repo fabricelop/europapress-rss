@@ -9,8 +9,9 @@ const editorStart=app.indexOf("function withoutInternalProvenance(text)");
 const editorEnd=app.indexOf("const WEB_URL=",editorStart);
 assert.ok(start>0&&end>start&&editorEnd>editorStart);
 const editorial=new Function(app.slice(editorStart,editorEnd)+"\nreturn editorial;")();
-const {tweetText,xLength}=new Function("editorial","WEB_URL",
-  app.slice(start,end)+"\nreturn {tweetText,xLength};")(editorial,"https://ttactualidad.rainyraven22.chatgpt.site/");
+const capturedEditorial=new Function(app.slice(editorStart,editorEnd)+"\nreturn capturedEditorial;")();
+const {tweetText,xLength}=new Function("editorial","WEB_URL","capturedEditorial",
+  app.slice(start,end)+"\nreturn {tweetText,xLength};")(editorial,"https://ttactualidad.rainyraven22.chatgpt.site/",capturedEditorial);
 
 const answer=(prose,tags,joke)=>[
   "ESTADO_CAUSA: CONFIRMADA","Explicación periodística",
@@ -177,3 +178,4 @@ test("inline writing markers are removed without deleting the factual lead",()=>
  assert.equal(editorial(raw),lead);
  assert.match(tweetText(raw,{rank:7,name:"Bellingham"}),/Jude Bellingham destaca/);
 });
+
