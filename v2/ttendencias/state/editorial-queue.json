@@ -6833,13 +6833,13 @@
       "trend_id": "trv2-7ef4310b52f3d6d99fff2a1d",
       "name": "El Frente Amplio",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "6a1fa0d9e4b95096",
       "requested_at": "2026-11-16T14:53:21.977382+00:00",
       "updated_at": "2026-11-16T14:53:21.977382+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -6852,7 +6852,13 @@
           "archived_at": "2026-11-16T14:53:21.977382+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "e85823ee62618b15622f05d03e38f719eef3104d6c5cd924",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-16T14:53:41.943613+00:00",
+        "expires_at": "2026-11-16T15:33:41.943613+00:00"
+      }
     },
     "trv2-0c495c4ddfe941bcf1b465e6": {
       "trend_id": "trv2-0c495c4ddfe941bcf1b465e6",
