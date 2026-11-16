@@ -1,0 +1,49 @@
+name: TTiTTulares V2 - Read-only live snapshot preview
+on:
+  push:
+    branches: [feature/ttactualidad-v2-clean]
+    paths: ['.github/workflows/ttittulares-v2-snapshot-preview.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ttittulares-v2-snapshot-preview
+  cancel-in-progress: false
+
+jobs:
+  live-preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Fetch all sources and preview isolated snapshot
+        run: python -m v2.ttittulares.radar_snapshot_v2 --live > "$RUNNER_TEMP/ttn2-snapshot-preview.json"
+      - name: Summarise actual availability and planned documents
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          report = json.loads(Path(os.environ['RUNNER_TEMP'], 'ttn2-snapshot-preview.json').read_text())
+          assert report['persistence_enabled'] is False
+          assert report['publication_enabled'] is False
+          assert len(report['source_statuses']) == 27
+          lines = ['# TTiTTulares V2 — snapshot preview', '',
+                   'Read-only live GET requests. Empty-store simulation; no jobs or candidates persisted.', '',
+                   '```json', json.dumps({key: report[key] for key in ('scan_id', 'fetch_metrics', 'metrics', 'planned_files', 'new_job_count')}, indent=2), '```', '',
+                   '| Source | Status | Items | Error |', '|---|---|---:|---|']
+          for row in report['source_statuses']:
+              status = 'OK' if row.get('ok') else ('DEGRADED' if row.get('degraded') else 'FAILED')
+              error = str(row.get('error') or '').replace('|', '/').replace('\n', ' ')[:100]
+              lines.append(f"| {row['source']} | {status} | {row.get('items', 0)} | {error} |")
+          Path(os.environ['GITHUB_STEP_SUMMARY']).write_text('\n'.join(lines) + '\n')
+          print('TTN2_LIVE_PREVIEW=' + json.dumps(report, ensure_ascii=False))
+          # Code/contract success and source health are separate; a 27/27 failure is not success.
+          assert report['fetch_metrics']['successful_sources'] > 0, 'NO_LIVE_SOURCE_SUCCEEDED'
+          PY

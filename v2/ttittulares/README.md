@@ -21,6 +21,47 @@ Reconstrucción aislada del motor de noticias para la web privada TTActualidad V
 
 El adaptador puede realizar lecturas HTTPS mediante `python -m v2.ttittulares.source_fetch_v2 --live`. Los fallbacks de una fuente conservan su misma identidad/familia; nunca se convierten en votos adicionales. El descargador limita la concurrencia, el tamaño de respuesta y el tiempo por petición; Cadena SER requiere fechas de artículos del editor dentro de 12 horas para considerarse fresca, y no confía en fechas de agregadores. Un `published_at` JSON solo se conserva cuando su procedencia editorial está identificada explícitamente.
 
-**Aún no se ha ejecutado una pasada live contra las 27 fuentes.** El workflow manual de GitHub Actions permite comprobar disponibilidad real y presentar la telemetría sin crear estado de radar. Tampoco hay scheduler, persistencia automática del radar, creación de jobs editoriales ejecutables, worker de imágenes ni página Noticias operativa en esta carpeta.
+**Disponibilidad live pendiente de comprobar en el run de preview de este paso.** El workflow manual de GitHub Actions permite comprobar disponibilidad real y presentar la telemetría sin crear estado de radar. Tampoco hay scheduler, persistencia automática del radar, creación de jobs editoriales ejecutables, worker de imágenes ni página Noticias operativa en esta carpeta.
 
 Todo se mantiene en la rama feature/ttactualidad-v2-clean. No importar automáticamente el backlog V1. No escribir en main ni en rutas V1. No publicar en X, Instagram o Telegram.
+
+
+## Paso 3C — preview integrado y plan de persistencia
+
+`radar_snapshot_v2.py` une descarga e ingesta y prepara los documentos separados
+para snapshots, salud, índice, eventos elegibles y jobs editoriales pendientes.
+No escribe GitHub ni activa consumidores. La entrada `documents` debe contener
+el estado V2 completo leído en un único commit; un error de lectura nunca se
+puede sustituir por `{}`. El modo `--live` simula deliberadamente un almacén vacío.
+
+- Prima el estado de `news/*` y `jobs/editorial/*` sobre candidatos antiguos.
+- No reabre decisiones terminales ni sobrescribe leases, intentos o resultados.
+- Conserva READY anteriores al abrir una revisión material y prepara un job nuevo.
+- La cola se reconstruye de los jobs individuales y la revisión actual.
+- Cada plan declara hashes por fichero y exige readback íntegro mediante
+  `verify_readback`. Esto es preparación/verificación, **todavía no un escritor CAS**.
+- `prompt:null` identifica un job pendiente sin prompt elaborado. El contrato
+  exige un prompt y su hash reales desde `send_intent`; no se inventa una huella.
+- Snapshots con el mismo tiempo/URLs pero distinto contenido o salud tienen una
+  huella distinta. Las capturas no almacenan artículos completos.
+
+Prueba offline:
+
+```bash
+python -m unittest v2.ttittulares.test_contract_examples v2.ttittulares.test_radar_ingest_v2 v2.ttittulares.test_source_fetch_v2 v2.ttittulares.test_radar_snapshot_v2
+```
+
+Requiere `jsonschema==4.23.0` para la validación real de los documentos nuevos.
+Son 71 pruebas (8 de contrato, 28 de núcleo, 16 de descarga y 19 de snapshots).
+La suite de contrato detectó y corrigió un dato de ejemplo: 169 caracteres,
+no 170, sin cambiar el texto ni relajar el test.
+
+El workflow `ttittulares-v2-snapshot-preview.yml` realiza una prueba de lectura
+real al modificar ese mismo workflow en la rama V2 o bajo petición manual.
+No tiene cron, credenciales de escritura ni persistencia de datos de noticias.
+Su resumen distingue disponibilidad de fuentes de validez del código.
+
+**Siguiente paso:** escritor GitHub de un solo commit atómico con CAS, lectura
+completa fijada a commit, revalidación JIT y readback de todos los hashes; luego
+un primer snapshot V2 persistido y verificado. Después se conectará el consumidor
+ChatGPT efímero. No hay aún un radar autónomo ni noticias elaboradas por V2.

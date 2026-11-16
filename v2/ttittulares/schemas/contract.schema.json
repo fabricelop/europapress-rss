@@ -646,20 +646,27 @@
           "$ref": "#/$defs/date_time"
         },
         "prompt": {
-          "type": "object",
-          "additionalProperties": false,
-          "required": [
-            "template_version",
-            "prompt_sha256"
-          ],
-          "properties": {
-            "template_version": {
-              "type": "string"
+          "oneOf": [
+            {
+              "type": "null"
             },
-            "prompt_sha256": {
-              "$ref": "#/$defs/sha256"
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "template_version",
+                "prompt_sha256"
+              ],
+              "properties": {
+                "template_version": {
+                  "type": "string"
+                },
+                "prompt_sha256": {
+                  "$ref": "#/$defs/sha256"
+                }
+              }
             }
-          }
+          ]
         },
         "attempts": {
           "$ref": "#/$defs/attempts"
@@ -754,6 +761,32 @@
                 "type": "object"
               },
               "result": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "enum": [
+                  "send_intent",
+                  "awaiting_response",
+                  "captured",
+                  "validating",
+                  "persisting",
+                  "ready"
+                ]
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "prompt": {
                 "type": "object"
               }
             }

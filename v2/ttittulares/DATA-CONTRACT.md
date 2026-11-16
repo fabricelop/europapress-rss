@@ -249,3 +249,24 @@ Quedan por fijar al implementar: número de workers y presupuesto global de Chro
 **Paso 3A — núcleo puro de radar/ingesta: validado. Paso 3B — adaptadores de descarga y recuperación: implementados y validados con 44 pruebas offline en el run 43915856958.** El siguiente paso es lanzar la prueba manual de las 27 fuentes, conectar el resultado fetch con el ingest en un preview sin efectos y después construir la persistencia versionada de snapshots bajo v2/ttittulares/state/.
 
 Hasta aprobar pruebas y validación E2E, efectos externos y publicación permanecen desactivados.
+
+
+## 15. Implementación del paso 3C: plan de snapshot sin escritura
+
+`radar_snapshot_v2.plan_snapshot` conecta fetch→ingest con la preparación de
+snapshots, salud, índice, eventos elegibles y jobs pendientes separados. Debe
+recibir los documentos autoritativos completos de un commit fijo. Los eventos
+`news/*` y jobs individuales prevalecen sobre el radar anterior; decisiones
+terminales impiden reapertura, los jobs existentes no se modifican y una revisión
+material conserva su READY previo. La cola se reconstruye por estado real del job.
+
+El job pendiente puede tener `prompt:null`; desde `send_intent` el schema exige
+el objeto con versión y hash real del prompt. El radar no inventa un prompt
+editorial antes de implementar ese consumidor.
+
+El plan contiene ruta/hash de cada documento y `verify_readback` exige su lectura
+íntegra e idéntica. No incluye aún cliente Git ni CAS: **no se ha persistido estado
+real de noticias con esta capa**. El preview live simula un almacén vacío, realiza
+solo GET y no es una cola lista para consumo. El siguiente paso será implementar
+la lectura fijada a commit y transacción CAS con revalidación, probar conflictos
+y verificar una primera escritura aislada antes de activar cualquier scheduler.
