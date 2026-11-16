@@ -948,7 +948,8 @@
               "maxLength": 256
             },
             "remate": {
-              "type": "string"
+              "type": "string",
+              "pattern": "^(?:🌶️ .+)?$"
             },
             "hashtags": {
               "type": "array",
@@ -1533,7 +1534,8 @@
         "status",
         "requested_at",
         "updated_at",
-        "attempt_no"
+        "attempt_no",
+        "manual_confirmation"
       ],
       "properties": {
         "schema_version": {
@@ -1635,6 +1637,9 @@
             ],
             "anyOf": [
               {
+                "required": [
+                  "external_post_id"
+                ],
                 "properties": {
                   "external_post_id": {
                     "type": "string",
@@ -1643,6 +1648,9 @@
                 }
               },
               {
+                "required": [
+                  "manual_confirmation"
+                ],
                 "properties": {
                   "manual_confirmation": {
                     "const": true
