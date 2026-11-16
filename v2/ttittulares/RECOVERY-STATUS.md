@@ -1,3 +1,46 @@
+# Noticias V2 — registro de continuación
+
+## Encargo vigente — 16/11/2026
+
+Memoria maestra leída: versión 313, identidad libfile_c244fcbdb29c8191a1d37f82a7ba3aa5.
+La actualización a v313 se realizó en el otro chat: queda superada la nota antigua
+que decía que la memoria seguía en v312.
+
+Objetivo autorizado:
+1. Automatización editorial FIFO de Pendientes a Elaboradas, tres puestos,
+   una conversación nueva por noticia y cierre propio verificado.
+2. Consumidor independiente de imágenes de Elaboradas, una conversación por imagen,
+   original real, hash y asociación por ID/revisión; fallo visible con I.
+3. Paridad de botones con Tendencias, con acciones reales y persistentes.
+4. PUB traslada de Elaboradas a Archivo; no equivale a enviar automáticamente a X.
+5. El site V1 mostrará Noticias V2 siguiendo la integración existente de Tendencias.
+6. Actualizar este registro al guardar cada bloque y tras sus pruebas/despliegue.
+
+Plan de trabajo:
+- Auditar los contratos actuales, acciones de Tendencias, integración pública y
+  estado de despliegue. Conservar todos los procesos/datos que ya funcionan.
+- Implementar estado y acciones Noticias (Archivo/PUB, revisión, imágenes y marcas)
+  con control de revisión y pruebas de regresión.
+- Reutilizar el transporte y recuperación probados para el consumidor independiente
+  de imágenes; preparar instalador/activación Windows sin interrumpir tareas activas.
+- Conectar interfaz y proyección V1; probar contratos, identidad, concurrencia,
+  original raster y regresión Tendencias antes del despliegue.
+- Separar código/CI/despliegue verificados de instalación/ejecución real en PC.
+  No se dispone de acceso remoto al Windows: requerirá ejecutar el instalador
+  y comprobar su salida; no afirmar tareas habilitadas sin evidencia.
+
+Estado inicial comprobado:
+- Rama feature/ttactualidad-v2-clean: 948a0583878cceb99448722408adc8e2c9c17571.
+- Alcaraz recuperada en READY; último estado verificado 61 pendientes/0 activas/1 lista.
+- Editorial automático ya implementado y probado, instalación de la corrección
+  de confirmación y activación local aún sin confirmar.
+- Consumidor de imágenes Noticias y acciones de ficha todavía pendientes.
+- UI inicial compacta/desplegable y botón I ya desplegados.
+- Baseline AGENTS.md: conservar tendencias, Chrome compartido, SeLoRecordamos,
+  publicaciones y archivos; exigir CI completo antes de recomendar instalación.
+
+## Evidencia previa conservada
+
 # News V2: recovery checkpoint after master v312
 
 Updated 16 November 2026, after confirmed original-response recovery.
