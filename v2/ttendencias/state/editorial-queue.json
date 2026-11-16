@@ -6171,13 +6171,13 @@
       "trend_id": "trv2-e545387a99044a96ffade442",
       "name": "La OIT",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "eebf90658896673d",
       "requested_at": "2026-11-16T10:53:20.208503+00:00",
       "updated_at": "2026-11-16T10:53:20.208503+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -6190,7 +6190,13 @@
           "archived_at": "2026-11-16T10:53:20.208503+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "0ac2fb79b231134c578dfeda43e7702292f0de1eb7a8fdef",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-16T10:53:35.314982+00:00",
+        "expires_at": "2026-11-16T11:33:35.314982+00:00"
+      }
     },
     "trv2-8bac1886bd400cddce9933a9": {
       "trend_id": "trv2-8bac1886bd400cddce9933a9",
