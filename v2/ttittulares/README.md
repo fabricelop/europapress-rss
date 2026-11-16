@@ -14,7 +14,7 @@ Reconstrucción aislada del motor de noticias para la web privada TTActualidad V
 
 ## Estado
 
-**Paso 1: auditoría V1 completada. Paso 2: contrato de datos completado. Paso 3: núcleo puro de radar/ingesta implementado; validación CI en curso.**
+**Pasos 1–2 completados. Paso 3, núcleo puro de radar/ingesta: implementado y validado en CI.** La suite de 28 pruebas pasó en dos ejecuciones de GitHub Actions (runs 43911591749 y 43911695446).
 
 El radar todavía no descarga feeds, no tiene scheduler, no escribe a GitHub y no crea jobs editoriales ejecutables. La siguiente fase debe añadir adaptadores de lectura/fetch y persistencia aislada, después de que estas pruebas pasen. No hay worker editorial, worker de imágenes, página Noticias ni automatización productiva en esta carpeta.
 

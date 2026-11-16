@@ -244,6 +244,6 @@ Quedan por fijar al implementar: número de workers y presupuesto global de Chro
 
 **Paso 2 — contrato de datos y arquitectura: diseñado.** El schema y el bundle de ejemplos que acompañan este documento muestran los documentos principales y sus relaciones.
 
-**Paso 3 — núcleo puro de radar/ingesta: implementado y pendiente de validación CI.** Los módulos no hacen fetch, no escriben y no activan efectos. Tras aprobar las pruebas, el siguiente paso será construir adaptadores de lectura por fuente, recuperación/fallback en paralelo y snapshots persistidos exclusivamente bajo v2/ttittulares/state/.
+**Paso 3 — núcleo puro de radar/ingesta: implementado y validado en CI.** La suite de 28 pruebas pasó en dos ejecuciones GitHub Actions (runs 43911591749 y 43911695446), incluyendo compilación, catálogo, regresiones del radar y comprobación del aislamiento puro. Los módulos no hacen fetch, no escriben y no activan efectos. El siguiente paso será construir adaptadores de lectura por fuente, recuperación/fallback en paralelo y snapshots persistidos exclusivamente bajo v2/ttittulares/state/.
 
 Hasta aprobar pruebas y validación E2E, efectos externos y publicación permanecen desactivados.
