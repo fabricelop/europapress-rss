@@ -69,6 +69,7 @@ jobs:
         shell: pwsh
         run: |
           $env:PYTHONPATH = 'v2/ttendencias'
+          python -m pip install --disable-pip-version-check playwright
           python -m unittest -v test_image_worker_v2 test_parallel_dispatch_v2
       - name: Comprobar botón RE-X, validación de pistas y compatibilidad RE
         shell: pwsh
