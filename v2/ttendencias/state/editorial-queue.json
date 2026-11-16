@@ -5003,20 +5003,27 @@
     "trv2-b30dc618bdf28d5210eda303": {
       "trend_id": "trv2-b30dc618bdf28d5210eda303",
       "name": "Rodri",
-      "revision": 1,
-      "status": "in_progress",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "d92efcfd6f9b30e3",
-      "requested_at": "2026-11-15T23:02:39.663089+00:00",
-      "updated_at": "2026-11-15T23:02:39.663089+00:00",
+      "requested_at": "2026-11-16T00:11:53.589546+00:00",
+      "updated_at": "2026-11-16T00:11:53.589546+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "lease": {
-        "token": "86c619938af2e01a3bc86a6db378a24438bfe3a78a7319f8",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-15T23:22:43.902813+00:00",
-        "expires_at": "2026-11-16T00:02:43.902813+00:00"
-      }
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-15T23:22:43.902813+00:00",
+          "send_intent_at": null,
+          "incident_reason": "lease_expired_without_capture",
+          "archived_at": "2026-11-16T00:11:53.589546+00:00"
+        }
+      ],
+      "incident_retries": 1
     },
     "trv2-d1e304ac5e99bb429622a4ab": {
       "trend_id": "trv2-d1e304ac5e99bb429622a4ab",
@@ -5353,13 +5360,13 @@
     "trv2-70944ec3e819521716244293",
     "trv2-a64d9ecc61a1f3d6e5161ba7",
     "trv2-3be4d81e777334370c3bce3e",
-    "trv2-b30dc618bdf28d5210eda303",
     "trv2-d1e304ac5e99bb429622a4ab",
     "trv2-de56caf995b798a058a05db0",
     "trv2-f46e7b6c7e713d161e0fd396",
     "trv2-7ad95baf65a896078f4fff25",
     "trv2-a9ab7a1748785624c70ab520",
-    "trv2-ad5643d2874cd633b4f7775b"
+    "trv2-ad5643d2874cd633b4f7775b",
+    "trv2-b30dc618bdf28d5210eda303"
   ],
   "effects_enabled": false
 }
