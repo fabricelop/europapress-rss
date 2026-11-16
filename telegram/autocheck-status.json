@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-16T20:53:33.556878+00:00",
+  "checked_at": "2026-11-16T21:03:35.741806+00:00",
   "before": [
     "elaborando_bloqueado_37"
   ],
@@ -7,8 +7,19 @@
   "remaining": [
     "elaborando_bloqueado_37"
   ],
-  "healthy_source_count": 19,
-  "source_failures": [],
-  "events_bytes": 4028116,
+  "healthy_source_count": 17,
+  "source_failures": [
+    {
+      "source": "Europa Press",
+      "type": "general",
+      "error": "HTTP Error 429: Too Many Requests"
+    },
+    {
+      "source": "Noticias Cuatro",
+      "type": "general",
+      "error": "HTTP Error 429: Too Many Requests"
+    }
+  ],
+  "events_bytes": 4046329,
   "ok": false
 }
