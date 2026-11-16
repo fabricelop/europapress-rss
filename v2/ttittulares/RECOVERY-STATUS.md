@@ -1,3 +1,26 @@
+## Consolas ocultas — corrección validada e integrada
+
+16/11/2026. Prueba en rama aislada d5404de3fe3cef9c90e7ac007cc086bfe68e81d3,
+run43969877237 SUCCESS en Linux y Windows:213 Python/108 Node, parseo PowerShell,
+XML real Task Scheduler y WScript real con ruta que contiene espacios.
+PASS: conservación de triggers/principal/Enabled/IgnoreNew, rechazo de acciones
+ajenas, idempotencia, proceso hijo terminado y exit code17 propagado.
+Se incorpora Launch-News-Hidden.vbs al instalador; ambas tareas usan wscript.exe,
+Settings.Hidden=true y sus launchers existentes conservan redirecciones a logs.
+No se modifican trabajadores, Chrome, banderas ni tareas de Tendencias/SeLo.
+
+Para instalaciones que hayan terminado antes de recibir este cambio:
+Repair-News-Hidden-Launchers-V2.ps1 actualiza SOLO las acciones futuras de las dos
+tareas Noticias conocidas. Respalda XML y wrapper, conserva programación/principal/
+estado habilitado. No detiene/reinicia procesos ni tareas en ejecución.
+Ejecutar una sola vez DESPUÉS de que termine la actualización ya en curso.
+Si el instalador nuevo ya usó WScript, el reparador es idempotente.
+
+La salida TTN2_WAIT_OWN_WORKERS=8 del usuario sigue siendo evidencia de drenaje,
+no de ocho chats ni de instalación terminada. Falta su resultado final.
+No ocultar/cerrar remotamente la consola personal donde lanzó manualmente
+el comando; esa ventana permanece hasta que termine o el usuario la minimice.
+
 ## Corrección de consolas — en validación
 
 El usuario está ejecutando Upgrade-News-Workflow-V2.ps1; ha mostrado repetidamente
