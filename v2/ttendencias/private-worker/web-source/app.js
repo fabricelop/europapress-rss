@@ -90,7 +90,6 @@ function tweetText(raw,item){
  if(source.startsWith("Explicación pendiente")||source.startsWith("Explicación capturada"))return source;
  const rank=Number.isInteger(item?.rank)?item.rank:0;
  const name=String(item?.name||"TENDENCIA").toLocaleUpperCase("es-ES").trim();
- const prefix="TT#"+rank+" "+name+" es tendencia";
  const lines=source.split("\n").map(x=>x.trim()).filter(Boolean);
  const jokeLine=lines.find(x=>x.includes("🌶"))||"";
  // Editorial notes are metadata: never send labels such as "Remate suave" to X.
@@ -98,21 +97,35 @@ function tweetText(raw,item){
  const hashLine=lines.filter(x=>!x.includes("🌶")&&(/^(?:Hashtags:\s*)?#\S+/i.test(x)||/^Hashtags:\s*#/i.test(x))).map(x=>x.replace(/^Hashtags:\s*/i,"").trim()).join(" ");
  const hashes=[...new Set((hashLine.match(/#[\p{L}\p{N}_]+/gu)||[]))].join(" ");
  let prose=lines.filter(x=>!x.includes("🌶")&&!/^Hashtags:\s*/i.test(x)&&!/^\s*#[\p{L}\p{N}_]+(?:\s+#[\p{L}\p{N}_]+)*\s*$/u.test(x)).join(" ").replace(/\s+/g," ").trim();
+ // Metadata wins over wording: never present a probable cause as established.
+ const startsWithName=prose.toLocaleUpperCase("es-ES").startsWith(name+" ");
+ const initial=startsWithName?prose.slice(name.length).trim():prose;
+ const uncertain=/^\s*ESTADO_CAUSA\s*:\s*NO_CONFIRMADA\s*$/im.test(String(raw||""))
+  ||item?.cause_status==="no_confirmada"
+  ||/^podr[íi]a ser tendencia\b/iu.test(initial);
+ const prefix="TT#"+rank+" "+name+(uncertain?"":" es tendencia");
  // Remove an already written lead only if it is the same trend and prefix.
  prose=prose.replace(/^TT#\d+\s+/iu,"");
  const lead=name+" ES TENDENCIA";
- if(prose.toLocaleUpperCase("es-ES").startsWith(lead))
-  prose=prose.slice(lead.length).replace(/^\s*[:,]?\s*/u,"");
+ if(prose.toLocaleUpperCase("es-ES").startsWith(lead)){
+  const rest=prose.slice(lead.length).replace(/^\s*[:,]?\s*/u,"");
+  prose=uncertain?"podría ser tendencia"+(rest?" "+rest:""):rest;
+ }
  // Preserve grammatical meaning when the raw text begins with its own trend name.
  else if(prose.toLocaleUpperCase("es-ES").startsWith(name+" ")){
   const rest=prose.slice(name.length).trim();
-  prose=/^(?:por|porque|tras|ante|debido|en |al |a raíz)/iu.test(rest)?rest:"porque "+rest;
+  if(uncertain){
+   prose=/^es tendencia\b/iu.test(rest)?rest.replace(/^es tendencia\b/iu,"podría ser tendencia")
+    :/^(?:por|porque|tras|ante|debido|en |al |a raíz)/iu.test(rest)?"podría ser tendencia "+rest:rest;
+  }else prose=/^(?:por|porque|tras|ante|debido|en |al |a raíz)/iu.test(rest)?rest:"porque "+rest;
  }
  if(!prose)return prefix+".";
  const explanation=completeProse(prose,280-xLength(prefix)-2);
  if(!explanation)return prefix+". Consulta la explicación íntegra en la ficha.";
  // Explicit priority: A explanation, B full punchline, C whole tags, D URL.
- const parts=[prefix+(/^(?:porque |por |tras |ante |debido |en |al |a raíz)/iu.test(explanation)?" ":": ")+explanation];
+ const joinsDirectly=uncertain?/^podr[íi]a ser tendencia\b/iu.test(explanation)
+  :/^(?:porque |por |tras |ante |debido |en |al |a raíz)/iu.test(explanation);
+ const parts=[prefix+(joinsDirectly?" ":": ")+explanation];
  for(const component of [joke,hashes,WEB_URL]){
   if(component&&xLength(parts.join("\n")+"\n"+component)<=280)parts.push(component);
  }
