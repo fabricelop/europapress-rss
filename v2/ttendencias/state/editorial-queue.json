@@ -7165,13 +7165,13 @@
       "trend_id": "trv2-b57e1a23cc6ddd97be311e56",
       "name": "AOTY",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "966ab41816901573",
       "requested_at": "2026-11-16T15:57:21.424471+00:00",
       "updated_at": "2026-11-16T15:57:21.424471+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -7184,7 +7184,13 @@
           "archived_at": "2026-11-16T15:57:21.424471+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "a8f431c1ad1155d0ad32fc5faec4f33d52eb32e3a8b05ff0",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-16T15:57:38.354053+00:00",
+        "expires_at": "2026-11-16T16:37:38.354053+00:00"
+      }
     },
     "trv2-7d15ee05127c6a53771f3398": {
       "trend_id": "trv2-7d15ee05127c6a53771f3398",
