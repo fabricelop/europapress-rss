@@ -13,14 +13,14 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 15
     env:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: feature/ttactualidad-v2-clean
+          ref: ${{ github.sha }}
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -30,6 +30,27 @@ jobs:
           npm install --no-audit --no-fund
           npm run build
           npm test
+      - name: Verificar Noticias en navegador de escritorio y movil
+        working-directory: v2/ttendencias/private-worker
+        run: |
+          npm install --no-save --package-lock=false --no-audit --no-fund playwright@1.62.1
+          npx playwright install --with-deps chromium
+          node scripts/news-browser-check.mjs
+      - name: Conservar capturas de comprobacion de Noticias
+        uses: actions/upload-artifact@v4
+        with:
+          name: ttactualidad-v2-news-visual-qa
+          path: ${{ runner.temp }}/ttv2-news-qa/
+          retention-days: 7
+      - name: Verificar proyeccion Noticias con el estado real de V2
+        working-directory: v2/ttendencias/private-worker
+        run: |
+          node --input-type=module - <<'JS'
+          import {readNews} from './src/news.js';
+          const view=await readNews();
+          if(view.project!=="ttittulares-v2"||view.read_only!==true||view.publication_allowed!==false)throw Error("NEWS_PROJECTION_INVALID");
+          console.log("TT_V2_NEWS_REAL_PROJECTION="+JSON.stringify({observed_at:view.observed_at,counts:view.counts,pending_shown:view.items.length}));
+          JS
       - name: Conservar configuracion, credenciales, reloj y privacidad actuales
         working-directory: v2/ttendencias/private-worker
         run: |
@@ -88,7 +109,7 @@ jobs:
       - name: Verificar version y rutas del Worker publicado
         run: |
           python3 - <<'PY'
-          import json,time,urllib.request
+          import json,time,urllib.request,urllib.error
           origin="https://ttactualidad-v2-private-test.fabricelop.workers.dev"
           headers={"User-Agent":"TTActualidadV2-Deploy-Verify/1.0","Accept":"application/json"}
           def verify_get(path):
@@ -98,7 +119,13 @@ jobs:
               try:
                   health=verify_get("/health")
                   flags=verify_get("/api/public-editorial-overrides")
-                  if health.get("build")=="v2-re-x-20261115" and health.get("configured") is True and flags.get("schema_version")==1:
+                  if health.get("build")=="v2-re-x-20261115" and health.get("configured") is True and health.get("news_view")=="v2-news-inbox-20261116" and flags.get("schema_version")==1:
+                      try:
+                          verify_get("/api/news")
+                          raise SystemExit("NEWS_PRIVATE_ACCESS_NOT_ENFORCED")
+                      except urllib.error.HTTPError as blocked:
+                          if blocked.code!=401:raise SystemExit("NEWS_PRIVATE_ACCESS_CHECK_FAILED")
+                      print("TT_V2_NEWS_PRIVATE_ROUTE_PROTECTED=YES")
                       print("TT_V2_PRIVATE_RE_X_LIVE=YES")
                       break
               except Exception as exc:
@@ -119,3 +146,5 @@ jobs:
 # V2-dossier-display-20261116: show captured explanation safely when a brief cannot be extracted.
 
 # V2-short-dossier-20261116: use the same concise adapted text in V2 and X, never the full dossier.
+
+# V2-news-inbox-20261116: publish read-only Noticias from isolated V2 radar and pending jobs.

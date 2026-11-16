@@ -792,6 +792,7 @@ function render(){
  }
 }
 async function refresh(){
+ if(new URLSearchParams(location.search).get("view")==="noticias")return;
  if(refreshing)return;
  const button=$("refresh");refreshing=true;button.disabled=true;button.classList.add("loading-refresh");
  try{
@@ -827,5 +828,5 @@ $("publication-summary").addEventListener("click",()=>{$("publication-dialog").s
 $("publication-close").addEventListener("click",()=>$("publication-dialog").close());
 refresh();
 setInterval(()=>{if(!document.hidden)refresh()},90000);
-setInterval(()=>{if(!document.hidden)void loadPublications().catch(()=>{})},60000);
+setInterval(()=>{if(!document.hidden&&new URLSearchParams(location.search).get("view")!=="noticias")void loadPublications().catch(()=>{})},60000);
 

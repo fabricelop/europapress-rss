@@ -1,6 +1,7 @@
 // TTActualidad V2, private single-password frontend.
 // NO V1 changes. Signed sessions; V2 D1 stores red marks and 15-minute radar.
 import {captureRadar,loadRadar,mergeEditorialRadar,radarAgeMinutes} from "./radar.js";
+import {readNews} from "./news.js";
 // All static assets require a session because run_worker_first=true.
 const COOKIE = "__Host-ttv2";
 const SESSION_VERSION = "v1";
@@ -411,7 +412,7 @@ export default {
   },
   async fetch(request,env,ctx) {
     const url = new URL(request.url);
-    if (url.pathname === "/health") return json({ok:true,service:"ttactualidad-v2-private",configured:configured(env),image_storage:"github",image_flow:"same-chat",build:"v2-re-x-20261115"});
+    if (url.pathname === "/health") return json({ok:true,service:"ttactualidad-v2-private",configured:configured(env),image_storage:"github",image_flow:"same-chat",build:"v2-re-x-20261115",news_view:"v2-news-inbox-20261116"});
     // Única ruta pública adicional: devuelve identificadores y revisiones,
     // nunca contraseñas, marcas privadas, explicaciones ni imágenes.
     if (url.pathname === "/api/public-editorial-overrides") {
@@ -450,6 +451,11 @@ export default {
       return json({error:"unauthorized"},401);
     }
     if (url.pathname === "/api/me") return json({authenticated:true});
+    if (url.pathname === "/api/news") {
+      if(request.method!=="GET")return json({error:"method_not_allowed"},405);
+      try{return json(await readNews({params:url.searchParams}));}
+      catch(error){return json({error:error.message==="NEWS_FILTER_INVALID"?"invalid_news_filter":"news_unavailable"},error.message==="NEWS_FILTER_INVALID"?400:503);}
+    }
     if (url.pathname.startsWith("/api/image/")) return imageRead(request,env,url.pathname.slice("/api/image/".length));
     if (url.pathname === "/api/image-visibility")return imageVisibility(request,env);
     if (url.pathname === "/api/marks") return redMarks(request,env);
