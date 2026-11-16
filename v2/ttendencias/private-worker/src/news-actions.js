@@ -171,7 +171,7 @@ export async function newsImage(request,env,{json,headers},publicRead=false){
    if(!res.ok)throw Error("IMAGE_MISSING");buffer=await res.arrayBuffer();mime=img.mime;hash=img.sha256;
   }
   if(buffer.byteLength<100000||buffer.byteLength>8388608||await digest(buffer)!==hash)throw Error("IMAGE_INTEGRITY_INVALID");
-  return new Response(buffer,{headers:{...headers({"Content-Type":mime,"ETag":'"'+hash+'"'}),...(publicRead?{"Access-Control-Allow-Origin":"*"}:{})}});
+  return new Response(buffer,{headers:{...headers({"Content-Type":mime,"ETag":'"'+hash+'"'}),...(publicRead?{"Access-Control-Allow-Origin":"*","Cross-Origin-Resource-Policy":"cross-origin"}:{})}});
  }catch{return json({error:"news_image_unavailable"},503);}
 }
 export async function publicNews(env){

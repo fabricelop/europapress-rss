@@ -79,6 +79,7 @@ test("manual original association is exact and hidden public image cannot be fet
  const saved=await newsManualImage(req,env,helpers);assert.equal(saved.status,200);assert.equal((await saved.json()).association_verified,true);
  const imageReq=new Request("https://private.example/api/news-image?id="+id+"&revision=1");
  const original=await newsImage(imageReq,env,helpers);assert.equal(original.status,200);assert.equal((await original.arrayBuffer()).byteLength,bytes.length);
+ const publicImage=await newsImage(imageReq,env,helpers,true);assert.equal(publicImage.status,200);assert.equal(publicImage.headers.get("cross-origin-resource-policy"),"cross-origin");
  await newsAction(request("public_image",{value:false}),env,helpers);
  assert.equal((await newsImage(imageReq,env,helpers,true)).status,404);
 }));
