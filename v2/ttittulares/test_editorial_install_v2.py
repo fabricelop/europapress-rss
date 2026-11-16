@@ -10,6 +10,13 @@ import unittest
 
 
 class InstallPackageTests(unittest.TestCase):
+    def test_installer_only_blocks_uncertain_or_incomplete_recovery(self):
+        source = (Path(__file__).parent / 'Install-News-Editorial-V2.ps1').read_text(encoding="utf-8")
+        self.assertIn("$queuePreview.preview.blocking_recovery_incident_count -gt 0", source)
+        self.assertIn("$null -eq $queuePreview.preview.blocking_recovery_incident_count", source)
+        self.assertIn("TTN2_EDITORIAL_INCIDENTS_QUARANTINED=", source)
+        self.assertNotIn("$queuePreview.preview.recovery_incident_count -gt 0", source)
+
     def test_download_manifest_contains_every_runtime_and_test_dependency(self):
         news = Path(__file__).parent
         source = (news / 'Install-News-Editorial-V2.ps1').read_text(encoding="utf-8")

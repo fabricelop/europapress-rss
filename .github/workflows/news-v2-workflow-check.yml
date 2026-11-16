@@ -1,7 +1,7 @@
 name: Noticias V2 - workflow parity checks
 on:
   push:
-    branches: [feature/ttactualidad-v2-clean, fix/news-v2-hidden-launchers-20261116]
+    branches: [feature/ttactualidad-v2-clean, fix/news-v2-hidden-launchers-20261116, fix/news-v2-quarantined-validation-20261116]
     paths:
       - 'v2/ttittulares/*.py'
       - 'v2/ttittulares/*.ps1'

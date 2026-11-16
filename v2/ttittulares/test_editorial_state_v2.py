@@ -124,6 +124,48 @@ class EditorialStateTests(unittest.TestCase):
         self.assertEqual(plan['active_count'], 0)
         self.assertFalse(any(j['job_id'] == prepared['job']['job_id'] for j in plan['next_jobs']))
 
+    def test_captured_validation_incident_is_quarantined_without_blocking_other_news(self):
+        captured = self.captured()
+        jid = captured["job"]["job_id"]
+        self.service.fail(jid, "worker-1", self.token, code="ESSENTIAL_FACT_NOT_VERIFIED")
+        before = copy.deepcopy(self.store.read_editorial_snapshot()[1][job_path(jid)])
+        plan = self.service.preview()
+        self.assertEqual(plan["recovery_incident_count"], 1)
+        self.assertEqual(plan["blocking_recovery_incident_count"], 0)
+        self.assertEqual(plan["quarantined_incident_count"], 1)
+        self.assertEqual(plan["active_count"], 0)
+        self.assertEqual(plan["pending_count"], 3)
+        self.assertNotIn(jid, [j["job_id"] for j in plan["next_jobs"]])
+        following = self.claim(worker="worker-other", token="private-other-token-1234567890")
+        self.assertNotEqual(following["job"]["job_id"], jid)
+        self.assertEqual(self.store.read_editorial_snapshot()[1][job_path(jid)], before)
+
+    def test_uncertain_submission_still_blocks_an_installation_pilot(self):
+        sent = self.prepare()
+        self.service.fail(sent["job"]["job_id"], "worker-1", self.token, code="NEWS_SUBMISSION_UNCONFIRMED_NO_RESEND")
+        plan = self.service.preview()
+        self.assertEqual(plan["blocking_recovery_incident_count"], 1)
+        self.assertEqual(plan["quarantined_incident_count"], 0)
+
+    def test_confirmed_submission_without_complete_capture_still_needs_recovery(self):
+        sent = self.prepare()
+        jid = sent["job"]["job_id"]
+        self.service.submitted(jid, "worker-1", self.token)
+        self.service.fail(jid, "worker-1", self.token, code="NEWS_CAPTURE_TIMEOUT_NO_RESEND")
+        plan = self.service.preview()
+        self.assertEqual(plan["blocking_recovery_incident_count"], 1)
+        self.assertEqual(plan["quarantined_incident_count"], 0)
+
+    def test_complete_capture_does_not_override_uncertain_submission(self):
+        captured = self.captured()
+        jid = captured["job"]["job_id"]
+        self.service.fail(jid, "worker-1", self.token, code="ESSENTIAL_FACT_NOT_VERIFIED")
+        _, docs = self.store.read_editorial_snapshot()
+        job = docs[job_path(jid)]
+        job["send_intent"]["submission_state"] = "uncertain"
+        self.store.advance({job_path(jid): job})
+        self.assertEqual(self.service.preview()["blocking_recovery_incident_count"], 1)
+
     def quarantined(self):
         sent = self.prepare()
         jid = sent["job"]["job_id"]

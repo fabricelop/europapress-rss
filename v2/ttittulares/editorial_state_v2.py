@@ -263,11 +263,20 @@ class EditorialService:
         stale = [j for j in jobs.values() if j["status"] in ACTIVE and
                  (_blocked(news[j["event_id"]], j, docs) or not j.get("lease") or
                   _time(j["lease"]["expires_at"]) <= now)]
+        recovery = [j for j in jobs.values()
+                    if j["status"] in {"problematic", "capture_recovery"}
+                    and (j.get("problem") or {}).get("retry_mode") == "recover_same_chat"
+                    and not _blocked(news[j["event_id"]], j, docs)]
+        # A captured, confirmed response rejected by editorial validation stays
+        # quarantined. It must never be resent or block different pending news.
+        blocking = [j for j in recovery if not (
+                    (j.get("send_intent") or {}).get("submission_state") == "confirmed"
+                    and (j.get("capture") or {}).get("complete") is True)]
         return {"commit_sha": head, "pending_count": len(pending), "max_workers": MAX_WORKERS,
                 "active_count": sum(j["status"] in ACTIVE for j in jobs.values()),
-                "recovery_incident_count": sum(j["status"] in {"problematic", "capture_recovery"}
-                    and (j.get("problem") or {}).get("retry_mode") == "recover_same_chat"
-                    and not _blocked(news[j["event_id"]], j, docs) for j in jobs.values()),
+                "recovery_incident_count": len(recovery),
+                "blocking_recovery_incident_count": len(blocking),
+                "quarantined_incident_count": len(recovery) - len(blocking),
                 "maintenance_needed": bool(stale), "stale_active_count": len(stale),
                 "next_jobs": copy.deepcopy(pending[:MAX_WORKERS]), "effects_enabled": False}
 

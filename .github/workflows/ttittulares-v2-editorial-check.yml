@@ -1,7 +1,7 @@
 name: TTiTTulares V2 - isolated editorial worker checks
 on:
   push:
-    branches: [feature/ttactualidad-v2-clean]
+    branches: [feature/ttactualidad-v2-clean, fix/news-v2-quarantined-validation-20261116]
     paths:
       - 'v2/ttittulares/*.py'
       - 'v2/ttittulares/*.ps1'
@@ -75,5 +75,5 @@ jobs:
           assert plan['max_workers']==3 and plan['effects_enabled'] is False
           keys=[(x['requested_at'],x['job_id']) for x in plan['next_jobs']]
           assert keys==sorted(keys)
-          print('TTN2_REAL_FIFO_PREVIEW='+json.dumps({key:plan[key] for key in ('commit_sha','pending_count','active_count','max_workers','effects_enabled')}))
+          print('TTN2_REAL_FIFO_PREVIEW='+json.dumps({key:plan[key] for key in ('commit_sha','pending_count','active_count','max_workers','effects_enabled','blocking_recovery_incident_count','quarantined_incident_count')}))
           PY
