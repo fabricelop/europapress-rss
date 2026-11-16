@@ -61,6 +61,7 @@ IMAGE_FAILURE_DETAILS = {
     "V2_IMAGE_PROMPT_NOT_IN_COMPOSER": "No se pudo comprobar el encargo antes de enviarlo.",
     "V2_IMAGE_PROMPT_NOT_SUBMITTED": "El encargo no llegó a enviarse a ChatGPT.",
     "V2_IMAGE_SEND_BUTTON_DISABLED": "ChatGPT no permitió enviar el encargo de imagen.",
+    "V2_IMAGE_SEND_BUTTON_UNAVAILABLE": "No se encontró un botón de envío verificable; no se pulsó Enter.",
     "V2_IMAGE_SEND_UNVERIFIED_NO_RESEND": "El envío quedó sin confirmar. No se repetirá a ciegas.",
     "V2_IMAGE_SEND_UNCERTAIN_NO_RESEND": "El envío quedó sin confirmar. Debe recuperarse la misma conversación.",
     "V2_IMAGE_NOT_READY": "No se recuperó una imagen terminada dentro del tiempo de espera.",
@@ -419,8 +420,9 @@ def submit_image_prompt(page, composer, prompt, command_id):
         time.sleep(0.5)
     if found_send_button:
         raise RuntimeError("V2_IMAGE_SEND_BUTTON_DISABLED")
-    composer.press("Enter")
-    return "enter"
+    # Never use Enter as an unverified fallback: in some ChatGPT composer
+    # states it leaves the command unsent and wastes image attempts.
+    raise RuntimeError("V2_IMAGE_SEND_BUTTON_UNAVAILABLE")
 
 
 def run_one(row, attempt, *, api, auth):
