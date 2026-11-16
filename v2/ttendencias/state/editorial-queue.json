@@ -4391,20 +4391,27 @@
     "trv2-22a97f3eaadf54f098a30a8f": {
       "trend_id": "trv2-22a97f3eaadf54f098a30a8f",
       "name": "Fabián",
-      "revision": 1,
-      "status": "in_progress",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "b643948876fa7495",
-      "requested_at": "2026-11-15T21:04:00.104307+00:00",
-      "updated_at": "2026-11-15T21:04:00.104307+00:00",
+      "requested_at": "2026-11-16T00:24:58.602138+00:00",
+      "updated_at": "2026-11-16T00:24:58.602138+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "lease": {
-        "token": "62f141b35d33f8d4766d1bf33a27455c8a0329bd8a358ba5",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-15T23:24:19.508341+00:00",
-        "expires_at": "2026-11-16T00:04:19.508341+00:00"
-      }
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-15T23:24:19.508341+00:00",
+          "send_intent_at": null,
+          "incident_reason": "lease_expired_without_capture",
+          "archived_at": "2026-11-16T00:24:58.602138+00:00"
+        }
+      ],
+      "incident_retries": 1
     },
     "trv2-20baa61d6f25586a9bd106db": {
       "trend_id": "trv2-20baa61d6f25586a9bd106db",
@@ -5351,7 +5358,6 @@
     "trv2-d0395f9d6748dcfbc240ef92",
     "trv2-044c5ef531d18240dd3404d6",
     "trv2-20baa61d6f25586a9bd106db",
-    "trv2-22a97f3eaadf54f098a30a8f",
     "trv2-407461411af8f58942252103",
     "trv2-619937da92f4c8d156781db6",
     "trv2-8ebe4bf6123b50c53695d08b",
@@ -5385,7 +5391,8 @@
     "trv2-7ad95baf65a896078f4fff25",
     "trv2-a9ab7a1748785624c70ab520",
     "trv2-ad5643d2874cd633b4f7775b",
-    "trv2-b30dc618bdf28d5210eda303"
+    "trv2-b30dc618bdf28d5210eda303",
+    "trv2-22a97f3eaadf54f098a30a8f"
   ],
   "effects_enabled": false
 }
