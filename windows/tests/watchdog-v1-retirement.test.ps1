@@ -5,7 +5,7 @@ $publishedPath=Join-Path $PSScriptRoot '..\TT-LocalWatchdog.ps1'
 function Parse-Source([string]$Source){
   $tokens=$null;$errors=$null
   $ast=[Management.Automation.Language.Parser]::ParseInput($Source,[ref]$tokens,[ref]$errors)
-  if($errors.Count){throw ($errors | Out-String)}
+  if($errors.Count){throw (($errors | ForEach-Object {('line '+$_.Extent.StartLineNumber+': '+$_.Extent.Text+' => '+$_.Message)}) -join "`n")}
   return $ast
 }
 $repairAst=Parse-Source ([IO.File]::ReadAllText($repair))

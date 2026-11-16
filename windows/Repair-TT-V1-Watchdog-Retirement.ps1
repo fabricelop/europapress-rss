@@ -14,7 +14,7 @@ function Add-TTV1WatchdogRetirement([string]$Source){
   }
   $contracts=@{
     StartHiddenPs=@('Script','Tag');EnsureSingle=@('Pattern','Script','Tag');EnsureStartup=@('Name','Script');
-    EnsureScheduledTasks=@();Recover-ListenersAfterReconnect=@();EnsureEditorialScheduledWake=@();
+    EnsureScheduledTasks=@();'Recover-ListenersAfterReconnect'=@();EnsureEditorialScheduledWake=@();
     EnsureTTitRequestedImageRecovery=@();EnsureRemoteTelegramHeal=@();TrendsV1Enabled=@();EnsureChrome=@()
   }
   foreach($name in $contracts.Keys){
@@ -80,9 +80,9 @@ function Test-TTV1TaskRetired([string]$Name){
     $insertions.Add([pscustomobject]@{offset=($functions[$name].Body.Extent.StartOffset+1);text=$entryGuards[$name]})
   }
   foreach($spec in @(
-    @{function='EnsureScheduledTasks';variable='name';marker='TT_V1_RETIRE_TASK';condition='Test-TTV1TaskRetired $name'},
-    @{function='Recover-ListenersAfterReconnect';variable='target';marker='TT_V1_RETIRE_RECONNECT';condition='Test-TTV1ScriptRetired $target.Name'},
-    @{function='EnsureEditorialScheduledWake';variable='spec';marker='TT_V1_RETIRE_WAKE';condition="Test-TTV1ProjectRetired `$spec.project"}
+    @{'function'='EnsureScheduledTasks';variable='name';marker='TT_V1_RETIRE_TASK';condition='Test-TTV1TaskRetired $name'},
+    @{'function'='Recover-ListenersAfterReconnect';variable='target';marker='TT_V1_RETIRE_RECONNECT';condition='Test-TTV1ScriptRetired $target.Name'},
+    @{'function'='EnsureEditorialScheduledWake';variable='spec';marker='TT_V1_RETIRE_WAKE';condition="Test-TTV1ProjectRetired `$spec.project"}
   )){
     $variable=[string]$spec.variable
     $loops=@($functions[$spec.function].Body.FindAll({param($node)
@@ -114,6 +114,7 @@ if($RestartWatchdog -and -not (Test-Path -LiteralPath (Join-Path $BaseDir 'TTiTT
    -not (Test-Path -LiteralPath (Join-Path $BaseDir 'TTendencias-V1-Disabled.flag'))){
   throw 'No hay flags de retirada V1; no se reinicia el supervisor.'
 }
+$originalHash=(Get-FileHash -LiteralPath $watchdog -Algorithm SHA256).Hash
 $original=[IO.File]::ReadAllText($watchdog)
 $patch=Add-TTV1WatchdogRetirement $original
 $backup=$null
@@ -122,7 +123,8 @@ if($patch.changed){
   New-Item -ItemType Directory -Path $backup | Out-Null
   $saved=Join-Path $backup 'TT-LocalWatchdog.ps1'
   Copy-Item -LiteralPath $watchdog -Destination $saved
-  $expected=(Get-FileHash -LiteralPath $saved -Algorithm SHA256).Hash
+  $expected=$originalHash
+  if((Get-FileHash -LiteralPath $saved -Algorithm SHA256).Hash -ne $expected){throw 'Watchdog cambio antes de guardar la copia; no se sobrescribe.'}
   $temporary=Join-Path $BaseDir ('TT-LocalWatchdog.retire-'+[Guid]::NewGuid().ToString('N')+'.ps1')
   try{
     [IO.File]::WriteAllText($temporary,$patch.source,(New-Object Text.UTF8Encoding($false)))

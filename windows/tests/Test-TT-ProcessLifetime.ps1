@@ -43,6 +43,13 @@ Start-Sleep -Seconds 60
   $source = Get-Content (Join-Path $root "windows/TT-LocalWatchdog.ps1") -Raw
   $tokens = $null; $errors = $null
   $ast = [Management.Automation.Language.Parser]::ParseInput($source, [ref]$tokens, [ref]$errors)
+  # EnsureSingle now consults project retirement helpers; load its real dependencies.
+  $BaseDir = $temp
+  foreach ($helperName in @("Test-TTV1ProjectRetired", "Test-TTV1ScriptRetired")) {
+    $helper = $ast.FindAll({param($n) $n -is [Management.Automation.Language.FunctionDefinitionAst] -and $n.Name -eq $helperName}, $true) | Select-Object -First 1
+    if (-not $helper) { throw "Missing retirement helper: $helperName" }
+    Invoke-Expression $helper.Extent.Text
+  }
   $fn = $ast.FindAll({param($n) $n -is [Management.Automation.Language.FunctionDefinitionAst] -and $n.Name -eq "EnsureSingle"}, $true) | Select-Object -First 1
   Invoke-Expression $fn.Extent.Text
   function PsProcs { @([pscustomobject]@{ProcessId=111;CreationDate=[datetime]"2026-10-09T11:00:00"},[pscustomobject]@{ProcessId=222;CreationDate=[datetime]"2026-10-09T11:01:00"}) }
@@ -55,3 +62,4 @@ Start-Sleep -Seconds 60
 } finally {
   Remove-Item -LiteralPath $temp -Recurse -Force -ErrorAction SilentlyContinue
 }
+
