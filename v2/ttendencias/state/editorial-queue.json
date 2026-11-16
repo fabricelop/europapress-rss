@@ -8393,25 +8393,28 @@
     "trv2-a4dcb1bfba96fb01f3921fad": {
       "trend_id": "trv2-a4dcb1bfba96fb01f3921fad",
       "name": "La Laguna",
-      "revision": 2,
-      "status": "in_progress",
-      "reason": "user_reexplanation",
+      "revision": 3,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "2730cc0bf1ccbc5e",
-      "requested_at": "2026-11-16T22:33:15.764100+00:00",
-      "updated_at": "2026-11-16T22:35:43.310615+00:00",
-      "attempts": 1,
+      "requested_at": "2026-11-16T23:24:56.851203+00:00",
+      "updated_at": "2026-11-16T23:24:56.851203+00:00",
+      "attempts": 0,
       "review_mode": "x",
       "review_hints": "Busca en X",
-      "lease": {
-        "token": "795eff0c1f8eeb2b7969d1ae23de44c751605c72e2c125a8",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-16T22:33:39.223903+00:00",
-        "expires_at": "2026-11-16T23:13:39.223903+00:00"
-      },
-      "send_intent": {
-        "token": "795eff0c1f8eeb2b7969d1ae23de44c751605c72e2c125a8",
-        "at": "2026-11-16T22:35:43.310590+00:00"
-      }
+      "previous_attempts": [
+        {
+          "revision": 2,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-16T22:33:39.223903+00:00",
+          "send_intent_at": "2026-11-16T22:35:43.310590+00:00",
+          "incident_reason": "lease_expired_without_capture",
+          "archived_at": "2026-11-16T23:24:56.851203+00:00"
+        }
+      ],
+      "incident_retries": 1
     },
     "trv2-9f7910e567a2e50e3340481c": {
       "trend_id": "trv2-9f7910e567a2e50e3340481c",
@@ -9397,7 +9400,6 @@
     "trv2-e7d7e98148c1a7ed0d7a1399",
     "trv2-f8e8a0f6ff269763a6d1ca00",
     "trv2-115d97fdb6f8e161c7ae8b2a",
-    "trv2-a4dcb1bfba96fb01f3921fad",
     "trv2-2aec944a13d0c06dca4f4ea1",
     "trv2-e1ae19c0da02180a6770f9cd",
     "trv2-0635fafde4c20c0066ce2ad4",
@@ -9405,7 +9407,8 @@
     "trv2-a73b97407e31538914daec76",
     "trv2-a8830f8644d1b348fc715572",
     "trv2-d84fa6e4e12de45556e40f5a",
-    "trv2-dbc2e0961f218518f433ee1e"
+    "trv2-dbc2e0961f218518f433ee1e",
+    "trv2-a4dcb1bfba96fb01f3921fad"
   ],
   "effects_enabled": false
 }
