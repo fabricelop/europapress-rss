@@ -6404,20 +6404,27 @@
     "trv2-f716b62242c54dba91de19dc": {
       "trend_id": "trv2-f716b62242c54dba91de19dc",
       "name": "Taylor",
-      "revision": 1,
-      "status": "in_progress",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "d2277d6568456a6a",
-      "requested_at": "2026-11-16T14:14:23.387482+00:00",
-      "updated_at": "2026-11-16T14:14:23.387482+00:00",
+      "requested_at": "2026-11-16T15:05:19.325212+00:00",
+      "updated_at": "2026-11-16T15:05:19.325212+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "lease": {
-        "token": "1b8e043afdf5f6645a5198d5e527d9fb43b2fd98493800b3",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-16T14:16:00.071400+00:00",
-        "expires_at": "2026-11-16T14:56:00.071400+00:00"
-      }
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-16T14:16:00.071400+00:00",
+          "send_intent_at": null,
+          "incident_reason": "lease_expired_without_capture",
+          "archived_at": "2026-11-16T15:05:19.325212+00:00"
+        }
+      ],
+      "incident_retries": 1
     },
     "trv2-4960b0178c834698e6eac33c": {
       "trend_id": "trv2-4960b0178c834698e6eac33c",
@@ -7373,7 +7380,6 @@
     "trv2-d0b4f8a073bdb914e208c1c0",
     "trv2-d423fd86b7793912399cbc75",
     "trv2-e1cb73b626176b23c8499621",
-    "trv2-f716b62242c54dba91de19dc",
     "trv2-feb111f306f978a405ca6c09",
     "trv2-2e0f0a5ef50860726adc1490",
     "trv2-336654461aa5e2b257e908d3",
@@ -7389,7 +7395,8 @@
     "trv2-7d15ee05127c6a53771f3398",
     "trv2-b57e1a23cc6ddd97be311e56",
     "trv2-bee016c5447c38d3caf16974",
-    "trv2-fdfbe4dc38a784cd5a45d95f"
+    "trv2-fdfbe4dc38a784cd5a45d95f",
+    "trv2-f716b62242c54dba91de19dc"
   ],
   "effects_enabled": false
 }
