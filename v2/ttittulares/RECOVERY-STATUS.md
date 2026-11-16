@@ -1,3 +1,9 @@
+## Observación usuario web V2 e imágenes históricas — 17/11/2026
+
+- Captura de la web V2 aportada por el usuario: hay numerosas imágenes nuevas y tarjetas con incidencia visible. Ejemplo `#SánchezEnT5` presenta `V2_IMAGE_PROMPT_NOT_SUBMITTED` (registrada 16/11/26 23:37) junto a su texto editorial y controles RE/RE-X/P-X. Esto verifica presentación de la incidencia, NO que el parche más reciente esté instalado localmente.
+- Política de `next_attempt` verificada: máximo tres diarios con `send_protocol=2`; los fallos pre-envío de nuevo tipo `pre_send_failed` permiten otro intento tras 900 segundos, sin consumir el cupo de envíos; los fallos antiguos agotados no se reactivan solos. Los envíos ambiguos no deben repetirse sin comprobación.
+- Necesidad funcional: recuperación automática controlada de fallos históricos confirmados sin envío, sin obligar al usuario a RE/RE-X ni alterar el texto editorial; preservar anti-duplicados y permitir que el worker continúe con otros candidatos. Aún NO implementada ni probada. Distinguir el éxito parcial visible (otras imágenes) de recuperación de imágenes fallidas.
+
 ## Corrección de contabilización preenvío y memoria maestra — 17/11/2026
 
 - La memoria maestra es el documento de Biblioteca `libfile_c244fcbdb29c8191a1d37f82a7ba3aa5` (`TTActualidad-Memoria-Completa-2026-10-29.md`); se localizó en Biblioteca, 405188 bytes, versión de archivo 1, revisión documental 16/11/2026. NO es lo mismo que este registro de continuación de GitHub. No se ha sobrescrito todavía la memoria maestra.
