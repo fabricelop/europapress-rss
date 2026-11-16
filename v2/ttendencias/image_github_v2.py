@@ -57,11 +57,33 @@ def git_blob_sha(raw):
 def current_editorial(job,auth,*,send=request):
     intake.validate_job(job)
     ledger=send("GET",LEDGER,auth)
-    if not isinstance(ledger,dict) or ledger.get("encoding")!="base64":
+    if not isinstance(ledger,dict):
         raise RuntimeError("V2_IMAGE_EDITORIAL_LEDGER_UNAVAILABLE")
     try:
-        queue=json.loads(base64.b64decode("".join(ledger["content"].split()),validate=True))
-    except (KeyError,ValueError) as exc:
+        if ledger.get("encoding") == "base64" and ledger.get("content"):
+            raw = base64.b64decode("".join(ledger["content"].split()), validate=True)
+        elif ledger.get("encoding") == "none" and not ledger.get("content"):
+            sha = ledger.get("sha")
+            if not sha:
+                raise RuntimeError("V2_IMAGE_EDITORIAL_LEDGER_SHA_MISSING")
+            url = ("https://api.github.com/repos/" + REPO +
+                   "/git/blobs/" + urllib.parse.quote(sha, safe=""))
+            req = urllib.request.Request(url, headers={
+                "Authorization": "Bearer " + auth,
+                "Accept": "application/vnd.github+json",
+                "User-Agent": "TTActualidadV2-ImageGen-GitHub"
+            })
+            with urllib.request.urlopen(req, timeout=90) as response:
+                blob = json.load(response)
+            if blob.get("encoding") != "base64":
+                raise RuntimeError("V2_IMAGE_EDITORIAL_LEDGER_UNAVAILABLE")
+            raw = base64.b64decode("".join(blob["content"].split()), validate=True)
+        else:
+            raise RuntimeError("V2_IMAGE_EDITORIAL_LEDGER_UNAVAILABLE")
+        if git_blob_sha(raw) != ledger.get("sha"):
+            raise RuntimeError("V2_IMAGE_EDITORIAL_LEDGER_SHA_MISMATCH")
+        queue = json.loads(raw.decode("utf-8-sig"))
+    except (KeyError, ValueError) as exc:
         raise RuntimeError("V2_IMAGE_EDITORIAL_LEDGER_CORRUPT") from exc
     if (queue.get("step")!="04_editorial_queue"
         or queue.get("effects_enabled") is not False):
