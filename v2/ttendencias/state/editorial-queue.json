@@ -6626,13 +6626,13 @@
       "trend_id": "trv2-7d180b40af009acfea255760",
       "name": "#SomosLaL",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "e485367adfcf0c4a",
       "requested_at": "2026-11-16T15:24:38.828512+00:00",
       "updated_at": "2026-11-16T15:24:38.828512+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -6645,7 +6645,13 @@
           "archived_at": "2026-11-16T15:24:38.828512+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "7cc514847e8614063fd232efd3564a74141880176a954a9d",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-16T15:24:53.213551+00:00",
+        "expires_at": "2026-11-16T16:04:53.213551+00:00"
+      }
     },
     "trv2-6d719e42838a3ad0f60206d7": {
       "trend_id": "trv2-6d719e42838a3ad0f60206d7",
