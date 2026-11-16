@@ -7,6 +7,38 @@ $BaseDir="C:\TTiTTulares"
 # TTENDENCIAS_V1_RETIRE_GUARD: only the legacy trend pipeline is disabled.
 $TrendsV1RetiredFlag=Join-Path $BaseDir "TTendencias-V1-Disabled.flag"
 function TrendsV1Enabled { return -not (Test-Path -LiteralPath $TrendsV1RetiredFlag) }
+
+# TT_V1_WATCHDOG_RETIRE_GUARD_V1
+function Test-TTV1ProjectRetired([string]$Project){
+  switch($Project){
+    'ttittulares' {return (Test-Path -LiteralPath (Join-Path $BaseDir 'TTiTTulares-V1-Disabled.flag'))}
+    'ttendencias' {return (Test-Path -LiteralPath (Join-Path $BaseDir 'TTendencias-V1-Disabled.flag'))}
+    default {return $false}
+  }
+}
+function Test-TTV1ScriptRetired([string]$Script){
+  $name=[IO.Path]::GetFileName($Script)
+  if($name -in @('TTiTTularesDedicatedListener.ps1','TTiTTularesMobileChatTriggerListener.ps1','TTiTTularesImageBridge.js')){
+    return (Test-TTV1ProjectRetired 'ttittulares')
+  }
+  if($name -in @('TTendenciasDedicatedListener.ps1','TTendenciasMobileChatTriggerListener.ps1','TTendenciasImageBridge.js')){
+    return (Test-TTV1ProjectRetired 'ttendencias')
+  }
+  if($name -in @('TT-AutoUpdater.ps1','MobileChatTriggerListener.ps1')){
+    return ((Test-TTV1ProjectRetired 'ttittulares') -and (Test-TTV1ProjectRetired 'ttendencias'))
+  }
+  return $false
+}
+function Test-TTV1TaskRetired([string]$Name){
+  if($Name -in @('TTiTTulares Local','TTiTTulares Local Ready','TTiTTulares-XContext')){
+    return (Test-TTV1ProjectRetired 'ttittulares')
+  }
+  if($Name -in @('TTendencias Local','TTendencias Local Ready','TTendencias-XContext')){
+    return (Test-TTV1ProjectRetired 'ttendencias')
+  }
+  return $false
+}
+
 $LogPath=Join-Path $BaseDir "tt-local-watchdog.log"
 $StartupDir=[Environment]::GetFolderPath("Startup")
 
@@ -48,6 +80,9 @@ function PsProcs([string]$Pattern){
   })
 }
 function StartHiddenPs([string]$Script,[string]$Tag){
+  # TT_V1_RETIRE_START
+  if(Test-TTV1ScriptRetired $Script){return $null}
+
   if(-not (Test-Path -LiteralPath $Script)){Log "MISSING $Tag :: $Script";return $null}
   try{
     $out=Join-Path $BaseDir ($Tag+".watchdog.out.log")
@@ -61,6 +96,9 @@ function StartHiddenPs([string]$Script,[string]$Tag){
   }catch{Log "START ERROR $Tag :: $($_.Exception.Message)";return $null}
 }
 function EnsureSingle([string]$Pattern,[string]$Script,[string]$Tag){
+  # TT_V1_RETIRE_SINGLE
+  if(Test-TTV1ScriptRetired $Script){return}
+
   $rows=@(PsProcs $Pattern)
   if($rows.Count -eq 0){[void](StartHiddenPs $Script $Tag);return}
   if($rows.Count -gt 1){
@@ -70,6 +108,9 @@ function EnsureSingle([string]$Pattern,[string]$Script,[string]$Tag){
   }
 }
 function EnsureStartup([string]$Name,[string]$Script){
+  # TT_V1_RETIRE_STARTUP
+  if(Test-TTV1ScriptRetired $Script){return}
+
   try{
     if(-not $StartupDir){return}
     $path=Join-Path $StartupDir $Name
@@ -209,6 +250,9 @@ function Recover-ListenersAfterReconnect{
   $targets=@(@{Name="TTiTTularesDedicatedListener.ps1";Tag="ttittulares-listener"})
   if(TrendsV1Enabled){$targets+=@{Name="TTendenciasDedicatedListener.ps1";Tag="ttendencias-listener"}}
   foreach($target in $targets){
+    # TT_V1_RETIRE_RECONNECT
+    if(Test-TTV1ScriptRetired $target.Name){continue}
+
     $path=Join-Path $BaseDir $target.Name
     $found=@(PsProcs ("*"+$target.Name+"*"))
     foreach($proc in $found){
@@ -331,6 +375,9 @@ function EnsureOverdueTrendsEditorialRetry($Signal,[string]$Request){
 }
 
 function EnsureRemoteTelegramHeal{
+  # TT_V1_RETIRE_REMOTE_HEAL
+  if((Test-TTV1ProjectRetired 'ttittulares') -and (Test-TTV1ProjectRetired 'ttendencias')){return}
+
   $now=[DateTimeOffset]::UtcNow
   if(($now-$script:RemoteHealLastPoll).TotalSeconds -lt 55){return}
   $script:RemoteHealLastPoll=$now
@@ -403,6 +450,9 @@ function EnsureRemoteTelegramHeal{
 # sigue en REQUESTED sin recogida. No se toca Chrome ni TTImages.
 $script:LastTTitImageRescueProbe=[DateTimeOffset]::MinValue
 function EnsureTTitRequestedImageRecovery{
+  # TT_V1_RETIRE_IMAGE
+  if(Test-TTV1ProjectRetired 'ttittulares'){return}
+
   $now=[DateTimeOffset]::UtcNow
   if(($now-$script:LastTTitImageRescueProbe).TotalMinutes -lt 10){return}
   $script:LastTTitImageRescueProbe=$now
@@ -553,6 +603,9 @@ function EnsureEditorialScheduledWake{
     @{project='ttittulares';task='TTiTTulares Local';queue='ttittulares/editorial-queue.json';states=@('PROCESSING','UPDATE_PROCESSING');time='selected_at';id='event_id'},
     @{project='ttendencias';task='TTendencias Local';queue='trends/editorial-queue.json';states=@('preparing','update');time='requested_at';id='id'}
   )){
+    # TT_V1_RETIRE_WAKE
+    if(Test-TTV1ProjectRetired $spec.project){continue}
+
     if($spec.project -eq "ttendencias" -and -not (TrendsV1Enabled)){continue}
     try{
       $url='https://raw.githubusercontent.com/fabricelop/europapress-rss/main/'+$spec.queue+
@@ -589,6 +642,9 @@ function EnsureScheduledTasks{
     "SeLoRecordamos-Telegram","SeLoRecordamos-Search","SeLoRecordamos-Published","SeLoRecordamos-Watchdog")
   if(TrendsV1Enabled){$taskNames+="TTendencias Local"}
   foreach($name in $taskNames){
+    # TT_V1_RETIRE_TASK
+    if(Test-TTV1TaskRetired $name){continue}
+
     try{
       $task=Get-ScheduledTask -TaskName $name -ErrorAction SilentlyContinue
       if($task -and $task.State -eq "Disabled"){
@@ -641,3 +697,4 @@ try{
   try{[void][TTKeepAwake]::SetThreadExecutionState(0x80000000)}catch{}
   try{if($script:InstanceHandle){$script:InstanceHandle.Dispose()}}catch{}
 }
+

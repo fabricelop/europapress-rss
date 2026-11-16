@@ -4,6 +4,10 @@ on:
     branches: [main]
     paths:
       - windows/Stop-TT-V1-ChatGPT.ps1
+      - windows/TT-LocalWatchdog.ps1
+      - windows/Repair-TT-V1-Watchdog-Retirement.ps1
+      - windows/tests/watchdog-v1-retirement.test.ps1
+      - windows/tests/fixtures/TT-LocalWatchdog.pre-retirement.ps1.txt
       - windows/Repair-TT-V1-Stop-SeLoRecordamos.ps1
       - windows/tests/v1-slr-guard-regression.test.ps1
       - windows/tests/v1-chatgpt-stop.test.ps1
@@ -23,6 +27,10 @@ jobs:
         with:
           sparse-checkout: |
             windows/Stop-TT-V1-ChatGPT.ps1
+            windows/TT-LocalWatchdog.ps1
+            windows/Repair-TT-V1-Watchdog-Retirement.ps1
+            windows/tests/watchdog-v1-retirement.test.ps1
+            windows/tests/fixtures/TT-LocalWatchdog.pre-retirement.ps1.txt
             windows/Repair-TT-V1-Stop-SeLoRecordamos.ps1
             windows/tests/v1-slr-guard-regression.test.ps1
             windows/tests/v1-chatgpt-stop.test.ps1
@@ -41,8 +49,12 @@ jobs:
       - name: Verify actual Node SLR exception and exact reversible repair
         shell: powershell
         run: '& windows/tests/v1-slr-guard-regression.test.ps1'
+      - name: Verify surgical watchdog retirement preserves shared Chrome and SLR
+        shell: powershell
+        run: '& windows/tests/watchdog-v1-retirement.test.ps1'
       - name: Verify no V1 trigger can call GitHub even when work is pending
         shell: powershell
         run: |
           python -c "import runpy; a=runpy.run_path('ttittulares/request_pc_editorial.py'); b=runpy.run_path('trends/request_pc_editorial.py'); assert a['trigger']('DO-NOT-USE') is None; assert b['trigger']('DO-NOT-USE') is None; print('TT_V1_TRIGGER_DISABLED=PASS')"
+
 
