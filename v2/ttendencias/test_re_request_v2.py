@@ -27,6 +27,8 @@ class ReRequestTest(unittest.TestCase):
 
     def test_restarts_entire_editorial_without_previous_text_or_image(self):
         self.queue["items"][ID]["attempts"] = 3
+        self.queue["items"][ID]["image_progress"] = {
+            "status": "in_progress", "revision": 1, "command_id": "old-command"}
         updated, status = self.invoke()
         self.assertEqual(status, "ENQUEUED")
         row = updated["items"][ID]
@@ -37,6 +39,7 @@ class ReRequestTest(unittest.TestCase):
         self.assertNotIn("previous_capture", row)
         self.assertNotIn("previous_explanation", row)
         self.assertNotIn("previous_revision", row)
+        self.assertNotIn("image_progress", row)
         self.assertEqual(updated["pending_ids"], [ID])
         self.assertIn("capture", self.queue["items"][ID])
 
