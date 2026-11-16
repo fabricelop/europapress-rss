@@ -6799,13 +6799,13 @@
       "trend_id": "trv2-851ef27293da6824b44fa251",
       "name": "ROBAR",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "81e555987643a657",
       "requested_at": "2026-11-16T14:52:04.108679+00:00",
       "updated_at": "2026-11-16T14:52:04.108679+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -6818,7 +6818,13 @@
           "archived_at": "2026-11-16T14:52:04.108679+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "6b5678565d1dbc2790f88c69c1bcc8e880c8fb8051a5844b",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-16T14:52:14.704844+00:00",
+        "expires_at": "2026-11-16T15:32:14.704844+00:00"
+      }
     },
     "trv2-7ef4310b52f3d6d99fff2a1d": {
       "trend_id": "trv2-7ef4310b52f3d6d99fff2a1d",
