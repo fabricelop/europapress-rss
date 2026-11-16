@@ -1,6 +1,6 @@
 # Installs only the news V2 consumer; no V1, trends tasks or Chrome are stopped.
 [CmdletBinding()]
-param([string]$SeedProfile='', [switch]$PrepareOnly)
+param([string]$SeedProfile='', [switch]$PrepareOnly, [switch]$EnableImages)
 $ErrorActionPreference='Stop'
 $root=Join-Path $env:LOCALAPPDATA 'TTActualidadNoticiasV2'
 $taskName='TTActualidadNoticiasV2-Editorial'
@@ -12,7 +12,7 @@ $existing=Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue
 if($existing -and $existing.State -eq 'Running'){throw 'El consumidor de Noticias V2 sigue activo; dejar que termine antes de actualizar'}
 if($existing){Disable-ScheduledTask -TaskName $taskName | Out-Null}
 $active=@(Get-CimInstance Win32_Process | Where-Object {
-  $_.Name -match '^(python|pythonw|py)\.exe$' -and [string]$_.CommandLine -match 'v2\.ttittulares\.editorial_consumer_v2'
+  $_.Name -match '^(python|pythonw|py)\.exe$' -and [string]$_.CommandLine -match 'v2\.ttittulares\.(editorial_consumer_v2|news_images_v2)'
 })
 if($active.Count){throw 'Hay un consumidor Noticias V2 vivo. No se reemplazan sus archivos ni se termina su Chrome'}
 New-Item -ItemType Directory -Path $root -Force | Out-Null
@@ -32,7 +32,7 @@ $tree=Invoke-RestMethod -Uri ($api+'/git/trees/'+$sha+'?recursive=1') -Headers $
 if($tree.truncated){throw 'Inventario Git incompleto; no instalar'}
 $code=Join-Path $root ('releases\'+$sha)
 New-Item -ItemType Directory -Path $code -Force | Out-Null
-$news=@('editorial_browser_v2.py','editorial_consumer_v2.py','editorial_contract_v2.py',
+$news=@('news_workflow_v2.py','news_images_v2.py','test_news_workflow_v2.py','test_news_images_v2.py','editorial_browser_v2.py','editorial_consumer_v2.py','editorial_contract_v2.py',
   'editorial_state_v2.py','editorial_setup_v2.py','test_editorial_consumer_v2.py',
   'test_editorial_state_v2.py','test_editorial_contract_v2.py','test_contract_examples.py',
   'test_radar_snapshot_v2.py','test_radar_ingest_v2.py','test_editorial_browser_v2.py','test_editorial_setup_v2.py',
@@ -40,9 +40,9 @@ $news=@('editorial_browser_v2.py','editorial_consumer_v2.py','editorial_contract
   'source_fetch_v2.py','source_publication_v2.py','source_catalog_v2.py','source_catalog_v2.json',
   'source_health_v2.py','content_filters_v2.py','schemas/contract.schema.json','examples/sample-bundle.json')
 $shared=@('chrome_command_v2.py','chrome_visibility_v2.py','chrome_profile_process_v2.py',
-          'chrome_cleanup_v2.py','chrome_startup_v2.py','process_lock_v2.py')
+          'chrome_cleanup_v2.py','chrome_startup_v2.py','process_lock_v2.py','image_intake_v2.py','image_same_chat_v2.py','image_job_v2.py','image_github_v2.py')
 $paths=@($news | ForEach-Object {'v2/ttittulares/'+$_})+@($shared | ForEach-Object {'v2/ttendencias/'+$_})
-$paths+=@('v2/ttittulares/Run-News-Editorial-Auto.ps1')
+$paths+=@('v2/ttittulares/Run-News-Editorial-Auto.ps1','v2/ttittulares/Run-News-Images-Auto.ps1')
 foreach($path in $paths){
   $entry=@($tree.tree | Where-Object {$_.path -eq $path -and $_.type -eq 'blob'})
   if($entry.Count -ne 1){throw ('Falta archivo en el commit fijado: '+$path)}
@@ -72,8 +72,9 @@ $dependency=Start-Process -FilePath $py -ArgumentList @('-3','-c','"import jsons
 if($dependency.ExitCode -ne 0){
   Invoke-NewsPython -arguments @('-m','pip','install','--user','jsonschema==4.23.0')
 }
-Invoke-NewsPython -arguments @('-c','"import playwright.sync_api, jsonschema"')
-Invoke-NewsPython -arguments @('-m','unittest','v2.ttittulares.test_contract_examples','v2.ttittulares.test_editorial_contract_v2','v2.ttittulares.test_editorial_state_v2','v2.ttittulares.test_editorial_consumer_v2','v2.ttittulares.test_editorial_browser_v2')
+Invoke-NewsPython -arguments @('-m','pip','install','--user','Pillow')
+Invoke-NewsPython -arguments @('-c','"import playwright.sync_api, jsonschema, PIL"')
+Invoke-NewsPython -arguments @('-m','unittest','v2.ttittulares.test_contract_examples','v2.ttittulares.test_editorial_contract_v2','v2.ttittulares.test_editorial_state_v2','v2.ttittulares.test_editorial_consumer_v2','v2.ttittulares.test_editorial_browser_v2','v2.ttittulares.test_news_workflow_v2','v2.ttittulares.test_news_images_v2')
 $chrome=Join-Path $env:ProgramFiles 'Google\Chrome\Application\chrome.exe'
 $setup=@('-m','v2.ttittulares.editorial_setup_v2','--root',('"'+$root+'"'),'--chrome',('"'+$chrome+'"'))
 if($SeedProfile){$setup+=@('--seed-source',('"'+$SeedProfile+'"'))}
@@ -102,3 +103,24 @@ Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $trigger -Pr
 Start-ScheduledTask -TaskName $taskName
 Write-Host 'TTN2_THREE_WORKERS_START_REQUESTED=YES'
 Write-Host ('LOGS='+ (Join-Path $root 'logs'))
+
+if($EnableImages){
+  Copy-Item -LiteralPath (Join-Path $code 'v2\ttittulares\Run-News-Images-Auto.ps1') -Destination (Join-Path $root 'Run-News-Images-Auto.ps1') -Force
+  try{
+    # Independent pilot: failure never disables the already verified editorial task.
+    Invoke-NewsPython -arguments @('-m','v2.ttittulares.news_images_v2','--root',('"'+$root+'"'),'--run-one')
+    $imagePilot=Get-Content -LiteralPath (Join-Path $root 'install.stdout.log') -Raw | ConvertFrom-Json
+    if($imagePilot.status -notin @('saved','idle')){throw 'Imagen piloto sin verificar'}
+    if($imagePilot.status -eq 'saved' -and -not $imagePilot.cleanup_verified){throw 'Cierre de imagen sin verificar'}
+    [IO.File]::WriteAllText((Join-Path $root 'images.enabled'),'TTN2_IMAGES_ENABLED=YES',$utf8)
+    $imageAction=New-ScheduledTaskAction -Execute 'powershell.exe' -Argument ('-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File "'+(Join-Path $root 'Run-News-Images-Auto.ps1')+'"')
+    Register-ScheduledTask -TaskName 'TTActualidadNoticiasV2-Images' -Action $imageAction -Trigger $trigger -Principal $principal -Settings $options -Force | Out-Null
+    Start-ScheduledTask -TaskName 'TTActualidadNoticiasV2-Images'
+    Write-Host 'TTN2_IMAGE_WORKERS_START_REQUESTED=YES'
+  }catch{
+    [IO.File]::WriteAllText((Join-Path $root 'images.enabled'),'TTN2_IMAGES_ENABLED=NO',$utf8)
+    Write-Host ('TTN2_IMAGES_NOT_ENABLED='+$_.Exception.GetType().Name)
+    Write-Host 'TTN2_EDITORIAL_TASK_CONTINUES=YES'
+    throw
+  }
+}

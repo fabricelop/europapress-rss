@@ -64,9 +64,9 @@ window.TTNewsActions=(()=>{
   if(!item.image_available&&!item.image_suppressed){
    add("Copiar prompt IA","Copiar el encargo de imagen para esta noticia y revisión",()=>navigator.clipboard.writeText(prompt(item,record)));
    const link=el("a","publish-action","GPT IMA");link.href="https://chatgpt.com/images/";link.target="_blank";link.rel="noopener noreferrer";actions.append(link);
-   add("Pegar IA","Pegar o seleccionar el original PNG/JPEG",()=>new Promise(resolve=>{
+   add("Pegar IA","Pegar o seleccionar el original PNG",()=>new Promise(resolve=>{
     const dialog=el("dialog","news-paste-dialog");dialog.append(el("p","","Pega aquí el original de ChatGPT Images o selecciónalo."));
-    const input=el("input");input.type="file";input.accept="image/png,image/jpeg";const status=el("p","","");
+    const input=el("input");input.type="file";input.accept="image/png";const status=el("p","","");
     const close=el("button","","Cerrar");close.type="button";close.onclick=()=>dialog.close();
     const upload=async file=>{
      if(!file)return;status.textContent="Asociando original…";

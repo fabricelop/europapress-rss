@@ -99,9 +99,9 @@ export function validateNewsRecord(record,id,revision){
          editorial_sha256:record.editorial_sha256,title:record.title,factual_summary:record.factual_summary,source_evidence:record.source_evidence,prepared_at:record.prepared_at,publication_allowed:false};
 }
 
-export async function readNewsRecord(id,revision,{fetcher=fetch}={}){
+export async function readNewsRecord(id,revision,{fetcher=fetch,view=null}={}){
  if(!ID.test(id)||!Number.isSafeInteger(revision)||revision<1||revision>100000)throw Error("NEWS_RECORD_ID_INVALID");
- const view=projectNews(...await sourceDocuments(fetcher));
+ view=view||projectNews(...await sourceDocuments(fetcher));
  const item=view.items.find(x=>x.event_id===id);
  if(!item||item.revision!==revision||!["ready","archived"].includes(item.group))throw Error("NEWS_RECORD_NOT_READY");
  const root=NEWS_SOURCE.replace(/state\/$/,"");

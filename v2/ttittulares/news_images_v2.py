@@ -78,7 +78,7 @@ def run_one(service, config, *, browser_factory=ChromeJob, raster_get=original_f
     # Persist only after verified browser cleanup; revalidate the current revision before association.
     beat()
     path,commit=service.store.save_raster(raw,job["event_id"],job["revision"],meta)
-    asset={"schema_version":1,"project":"ttittulares-v2","media_id":"img2-"+meta["sha256"][:24],
+    asset={"schema_version":1,"project":"ttittulares-v2","media_id":"img2-"+hashlib.sha256((job["event_id"]+str(job["revision"])+meta["sha256"]).encode()).hexdigest()[:24],
         "event_id":job["event_id"],"revision":job["revision"],"editorial_sha256":job["editorial_sha256"],
         "image_job_id":jid,"command_id":command,"sha256":meta["sha256"],"mime":meta["mime"],
         "width":meta["width"],"height":meta["height"],"bytes":meta["size"],"asset_path":path,

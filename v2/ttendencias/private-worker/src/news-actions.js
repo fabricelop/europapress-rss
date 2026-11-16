@@ -19,9 +19,23 @@ export async function newsControls(env){
   actions:(actions.results||[]).map(x=>JSON.parse(x.body))};
 }
 export async function newsView(env,params){
+ if(!env.MARKS_DB)return readNews({params});
  const [base,controls]=await Promise.all([readNews({params:new URLSearchParams({state:"ready"}) ,all:true}),newsControls(env)]);
  return pageNews(decorateNews(base,controls),params);
 }
+
+async function savePreference(db,id,revision,expected,next,entry){
+ await db.prepare("INSERT INTO news_preferences(event_id,revision,body) VALUES(?,?,'{}') ON CONFLICT(event_id,revision) DO NOTHING").bind(id,revision).run();
+ const current=await db.prepare("SELECT body FROM news_preferences WHERE event_id=? AND revision=?").bind(id,revision).first();
+ if(current.body!==JSON.stringify(expected))return false;
+ const statements=[db.prepare("UPDATE news_preferences SET body=? WHERE event_id=? AND revision=? AND body=?")
+  .bind(JSON.stringify(next),id,revision,current.body)];
+ if(entry)statements.push(db.prepare("INSERT INTO news_actions(action_id,event_id,revision,body,created_at) SELECT ?,?,?,?,? WHERE changes()=1")
+  .bind(entry.action_id,id,revision,JSON.stringify(entry),entry.created_at));
+ const result=await db.batch(statements);
+ return (result[0]?.meta?.changes??0)===1;
+}
+
 export async function newsAction(request,env,{json,sameOrigin}){
  if(request.method!=="POST"||!sameOrigin(request))return json({error:"method_not_allowed"},405);
  if(Number(request.headers.get("content-length")||0)>6000)return json({error:"invalid_payload"},413);
@@ -56,28 +70,48 @@ export async function newsAction(request,env,{json,sameOrigin}){
   if(action==="suppress_image")prefs.image_suppressed=body.value;
   if(action==="archive")prefs.archived=true;
   if(action==="rework"||action==="rework_x")prefs.rework_requested=true;
-  // A batch is atomic: action receipt and UI preference cannot disagree.
-  await env.MARKS_DB.batch([
-   env.MARKS_DB.prepare("INSERT INTO news_actions(action_id,event_id,revision,body,created_at) VALUES(?,?,?,?,?)")
-    .bind(body.action_id,event_id,revision,JSON.stringify(entry),now),
-   env.MARKS_DB.prepare("INSERT INTO news_preferences(event_id,revision,body) VALUES(?,?,?) ON CONFLICT(event_id,revision) DO UPDATE SET body=excluded.body")
-    .bind(event_id,revision,JSON.stringify(prefs))]);
+  const expected={...row};delete expected.event_id;delete expected.revision;
+  if(!await savePreference(env.MARKS_DB,event_id,revision,expected,prefs,entry))
+   return json({error:"news_preferences_changed"},409);
   return json({ok:true,event_id,revision,action,publication_sent:false});
  }catch{return json({error:"news_action_unavailable"},503);}
 }
 async function digest(bytes){return [...new Uint8Array(await crypto.subtle.digest("SHA-256",bytes))].map(x=>x.toString(16).padStart(2,"0")).join("");}
-function raster(bytes,mime){
- const v=new DataView(bytes.buffer,bytes.byteOffset,bytes.byteLength);
- if(mime==="image/png"&&[137,80,78,71,13,10,26,10].every((x,i)=>bytes[i]===x))
-  return {width:v.getUint32(16),height:v.getUint32(20)};
- if(mime==="image/jpeg"&&bytes[0]===255&&bytes[1]===216){
-  let p=2;
-  while(p+9<bytes.length){if(bytes[p++]!==255)return null;const tag=bytes[p++];if(tag===216||tag===217)continue;
-   const length=v.getUint16(p);if(length<2||p+length>bytes.length)return null;
-   if([192,193,194].includes(tag))return {width:v.getUint16(p+5),height:v.getUint16(p+3)};p+=length;}
+function crc32(bytes){
+ let crc=0xffffffff;
+ for(const byte of bytes){crc^=byte;for(let bit=0;bit<8;bit++)crc=(crc>>>1)^((crc&1)?0xedb88320:0);}
+ return (crc^0xffffffff)>>>0;
+}
+async function raster(bytes,mime){
+ if(mime!=="image/png"||![137,80,78,71,13,10,26,10].every((x,i)=>bytes[i]===x))return null;
+ const view=new DataView(bytes.buffer,bytes.byteOffset,bytes.byteLength);
+ let p=8,meta=null,ended=false;const idat=[];
+ while(p+12<=bytes.length){
+  const length=view.getUint32(p);if(length>8388608||p+12+length>bytes.length)return null;
+  const type=String.fromCharCode(...bytes.subarray(p+4,p+8)),data=bytes.subarray(p+8,p+8+length);
+  if(crc32(bytes.subarray(p+4,p+8+length))!==view.getUint32(p+8+length))return null;
+  if(type==="IHDR"){
+   if(p!==8||length!==13)return null;
+   const width=view.getUint32(p+8),height=view.getUint32(p+12),depth=data[8],color=data[9];
+   const channels={0:1,2:3,3:1,4:2,6:4}[color];
+   if(width<1024||height<576||width>8192||height>8192||![1,2,4,8,16].includes(depth)||!channels||data[10]||data[11]||data[12])return null;
+   meta={width,height,stride:Math.ceil(width*channels*depth/8)+1};
+   if(meta.stride*height>67108864)return null;
+  }else if(!meta)return null;
+  if(type==="IDAT")idat.push(data);
+  p+=length+12;
+  if(type==="IEND"){if(length||p!==bytes.length)return null;ended=true;break;}
  }
- // PNG and JPEG original uploads; automatic WebP is checked by Pillow and hash at ingest.
- return null;
+ if(!meta||!ended||!idat.length)return null;
+ try{
+  const stream=new Blob(idat).stream().pipeThrough(new DecompressionStream("deflate"));
+  const reader=stream.getReader();let total=0;
+  while(true){const {done,value}=await reader.read();if(done)break;
+   for(let i=0;i<value.length;i++)if((total+i)%meta.stride===0&&value[i]>4){await reader.cancel();return null;}
+   total+=value.length;if(total>meta.stride*meta.height){await reader.cancel();return null;}
+  }
+  return total===meta.stride*meta.height?{width:meta.width,height:meta.height}:null;
+ }catch{return null;}
 }
 export async function newsManualImage(request,env,{json,sameOrigin}){
  if(request.method!=="POST"||!sameOrigin(request))return json({error:"method_not_allowed"},405);
@@ -90,7 +124,7 @@ export async function newsManualImage(request,env,{json,sameOrigin}){
   const record=await readNewsRecord(id,rev);
   const buffer=await request.arrayBuffer();if(buffer.byteLength<100000||buffer.byteLength>8388608)return json({error:"invalid_image_size"},413);
   const mime=(request.headers.get("content-type")||"").split(";")[0];
-  const bytes=new Uint8Array(buffer),meta=raster(bytes,mime);
+  const bytes=new Uint8Array(buffer),meta=await raster(bytes,mime);
   if(!meta||meta.width<1024||meta.height<576||meta.width>8192||meta.height>8192)return json({error:"invalid_original_raster"},400);
   const hash=await digest(buffer),key=id+"-r"+rev+"-"+hash;
   let binary="";for(let p=0;p<bytes.length;p+=32768)binary+=String.fromCharCode(...bytes.subarray(p,p+32768));
@@ -100,8 +134,9 @@ export async function newsManualImage(request,env,{json,sameOrigin}){
   const old=controls.preferences.find(x=>x.event_id===id&&x.revision===rev)||{};
   const prefs={...old,manual_image:{key,sha256:hash,mime,bytes:bytes.length,width:meta.width,height:meta.height,editorial_sha256:record.editorial_sha256},
     image_suppressed:false};delete prefs.event_id;delete prefs.revision;
-  writes.push(env.MARKS_DB.prepare("INSERT INTO news_preferences(event_id,revision,body) VALUES(?,?,?) ON CONFLICT(event_id,revision) DO UPDATE SET body=excluded.body").bind(id,rev,JSON.stringify(prefs)));
   await env.MARKS_DB.batch(writes);
+  const expected={...old};delete expected.event_id;delete expected.revision;
+  if(!await savePreference(env.MARKS_DB,id,rev,expected,prefs))return json({error:"news_preferences_changed"},409);
   const saved=(await env.MARKS_DB.prepare("SELECT body FROM news_preferences WHERE event_id=? AND revision=?").bind(id,rev).first());
   if(JSON.parse(saved.body).manual_image.sha256!==hash)throw Error("IMAGE_READBACK_FAILED");
   return json({ok:true,event_id:id,revision:rev,sha256:hash,association_verified:true,publication_sent:false});
@@ -140,8 +175,8 @@ export async function newsImage(request,env,{json,headers},publicRead=false){
 export async function publicNews(env){
  const raw=await readNews({all:true}),controls=await newsControls(env);
  const view=decorateNews(raw,controls),items=[];
- for(const item of view.items.filter(x=>["ready","archived"].includes(x.group)&&!x.rework_requested).slice(0,100)){
-  const record=await readNewsRecord(item.event_id,item.revision);
+ for(const item of view.items.filter(x=>["ready","archived"].includes(x.group)&&!x.rework_requested).slice(0,30)){
+  const record=await readNewsRecord(item.event_id,item.revision,{view:raw});
   items.push({...item,...record,id:item.event_id,headline:record.title,explanation:record.tweet_text,
    image_url:item.image_available&&item.public_image_visible?
     "/api/public-news-image?id="+item.event_id+"&revision="+item.revision:null});

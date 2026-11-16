@@ -53,6 +53,20 @@ appgprj_6ae4dcf7d7488191a574e5b649e67370, versión97, público.
 Su fuente no es el repositorio europapress-rss: no confundir un feed nuevo con
 el despliegue del Site. El acceso al entorno de edición del Site sigue limitado.
 
+## Validación intermedia y paquete Windows
+
+Primer commit de producto 6e2afe3ccf64094a1f519a33da568f868451d839.
+CI 43964533430: 207 pruebas Python PASS en Linux; detectó una regresión de lectura
+en la API cuando no existe D1 configurado. Corregida conservando la lectura anterior;
+las escrituras siguen fallando explícitamente sin almacenamiento.
+Se añadieron pruebas con SQLite real para PUB/RE-X/R/visibilidad/PU/idempotencia,
+validación del PNG completo (CRC, IDAT descomprimido, filtros, tamaño y dimensiones),
+y pruebas del ciclo de imagen con cierre antes de persistir y sin reenvío incierto.
+Actualización conjunta Windows preparada con drenaje cooperativo exclusivo Noticias,
+editorial3 e imágenes2 independientes. Aún NO se ha entregado como validada.
+Site V1 v97 sigue sin modificar: fuente en git.chatgpt-team.site requiere ejecución
+Git local, ausente en este entorno. No volcar credenciales a GitHub ni fingir despliegue.
+
 ## Evidencia previa conservada
 
 # News V2: recovery checkpoint after master v312

@@ -14,6 +14,7 @@ permissions:
 jobs:
   regression:
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
@@ -33,7 +34,7 @@ jobs:
           node-version: '22'
       - run: python -m pip install jsonschema==4.23.0 Pillow playwright==1.57.0
       - name: News contract concurrency browser and workflow regression
-        run: python -m unittest v2.ttittulares.test_contract_examples v2.ttittulares.test_radar_snapshot_v2 v2.ttittulares.test_radar_ingest_v2 v2.ttittulares.test_radar_store_v2 v2.ttittulares.test_source_fetch_v2 v2.ttittulares.test_editorial_state_v2 v2.ttittulares.test_editorial_contract_v2 v2.ttittulares.test_editorial_browser_v2 v2.ttittulares.test_editorial_consumer_v2 v2.ttittulares.test_editorial_setup_v2 v2.ttittulares.test_editorial_install_v2 v2.ttittulares.test_news_workflow_v2
+        run: python -m unittest v2.ttittulares.test_contract_examples v2.ttittulares.test_radar_snapshot_v2 v2.ttittulares.test_radar_ingest_v2 v2.ttittulares.test_radar_store_v2 v2.ttittulares.test_source_fetch_v2 v2.ttittulares.test_editorial_state_v2 v2.ttittulares.test_editorial_contract_v2 v2.ttittulares.test_editorial_browser_v2 v2.ttittulares.test_editorial_consumer_v2 v2.ttittulares.test_editorial_setup_v2 v2.ttittulares.test_editorial_install_v2 v2.ttittulares.test_news_workflow_v2 v2.ttittulares.test_news_images_v2
       - name: Compile new image lifecycle without opening Chrome
         run: python -m compileall -q v2/ttittulares
       - name: Private Worker and trends regression
