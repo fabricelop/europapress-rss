@@ -6832,19 +6832,27 @@
     "trv2-7ef4310b52f3d6d99fff2a1d": {
       "trend_id": "trv2-7ef4310b52f3d6d99fff2a1d",
       "name": "El Frente Amplio",
-      "revision": 1,
-      "status": "capture_recovery",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "6a1fa0d9e4b95096",
-      "requested_at": "2026-11-16T14:14:23.387482+00:00",
-      "updated_at": "2026-11-16T14:43:07.259120+00:00",
+      "requested_at": "2026-11-16T14:53:21.977382+00:00",
+      "updated_at": "2026-11-16T14:53:21.977382+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "send_intent": {
-        "token": "6a8b66f38fa390d7f3fad8b2ea809df9ac26c5e2fb640492",
-        "at": "2026-11-16T14:39:59.911920+00:00"
-      },
-      "capture_recovery_reason": "chat_target_identity_not_verified"
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "capture_recovery",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": null,
+          "send_intent_at": "2026-11-16T14:39:59.911920+00:00",
+          "incident_reason": "chat_target_identity_not_verified",
+          "archived_at": "2026-11-16T14:53:21.977382+00:00"
+        }
+      ],
+      "incident_retries": 1
     },
     "trv2-0c495c4ddfe941bcf1b465e6": {
       "trend_id": "trv2-0c495c4ddfe941bcf1b465e6",
@@ -7208,7 +7216,6 @@
     "trv2-6269608c33a59fa1029efaa3",
     "trv2-6d719e42838a3ad0f60206d7",
     "trv2-7d180b40af009acfea255760",
-    "trv2-7ef4310b52f3d6d99fff2a1d",
     "trv2-8a915a12004c2dc5ac8a9389",
     "trv2-8bba7450358acfb5477b9bc7",
     "trv2-943c7697d27471a9b03ac109",
@@ -7222,7 +7229,8 @@
     "trv2-2e0f0a5ef50860726adc1490",
     "trv2-336654461aa5e2b257e908d3",
     "trv2-876beecc59c543665de75939",
-    "trv2-851ef27293da6824b44fa251"
+    "trv2-851ef27293da6824b44fa251",
+    "trv2-7ef4310b52f3d6d99fff2a1d"
   ],
   "effects_enabled": false
 }
