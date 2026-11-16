@@ -6020,13 +6020,13 @@
       "trend_id": "trv2-84d1cd4e86521e31ac13d920",
       "name": "Dani Mérida",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "2edd4a5d0dcc5844",
       "requested_at": "2026-11-16T10:13:00.913003+00:00",
       "updated_at": "2026-11-16T10:13:00.913003+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -6039,7 +6039,13 @@
           "archived_at": "2026-11-16T10:13:00.913003+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "e6806be8264e8eb437d3f0d2441c3e73fc92499ca4d19ce5",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-16T10:13:12.150840+00:00",
+        "expires_at": "2026-11-16T10:53:12.150840+00:00"
+      }
     },
     "trv2-c3d7e6af26568ec088dfe63c": {
       "trend_id": "trv2-c3d7e6af26568ec088dfe63c",
