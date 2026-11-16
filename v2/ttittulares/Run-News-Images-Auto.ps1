@@ -1,6 +1,8 @@
 # Only News V2 images; separate daemon lock, flag and per-job Chrome profiles.
 $ErrorActionPreference='Stop'
 $root=Join-Path $env:LOCALAPPDATA 'TTActualidadNoticiasV2'
+if(-not (Test-Path -LiteralPath (Join-Path $root 'images.enabled'))){return}
+if((Get-Content -LiteralPath (Join-Path $root 'images.enabled') -Raw).Trim() -ne 'TTN2_IMAGES_ENABLED=YES'){return}
 $code=(Get-Content -LiteralPath (Join-Path $root 'active-code.txt') -Raw).Trim()
 if(-not (Test-Path -LiteralPath (Join-Path $code 'v2\ttittulares\news_images_v2.py'))){throw 'NEWS_IMAGES_CODE_MISSING'}
 $logs=Join-Path $root 'image-logs'

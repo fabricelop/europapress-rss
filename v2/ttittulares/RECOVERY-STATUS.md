@@ -107,6 +107,18 @@ El feed público solo incluye noticias y preferencias visibles; no contiene pist
 Se añaden pruebas de rechazo sin credencial/otra identidad y acceso del propietario.
 Esta corrección exige actualizar conjuntamente el Worker y el paquete Windows.
 
+## Primer despliegue confirmado
+
+Run43966001174 SUCCESS. Worker versión3136e41e-0ef8-4853-aac7-2c289b067246.
+106 pruebas Node,62 Python de imagen/tendencias/noticias y navegador PASS,
+incluida transición PUB a Archivo en fixture efímera, sin tocar noticias reales.
+Bindings, secretos, D1 y cron conservados. Feed público real verificado con1 noticia.
+Cola real:61 pendientes/0 activos/1 elaborada; radar aún19:11:32Z.
+CI editorial anterior corregido: run43966205102 SUCCESS (Windows/Linux/preview real).
+La siguiente versión añade controles privados del propietario, aún desplegándose
+en run43966604710. El paquete Windows incorpora relanzamiento cada3min con
+IgnoreNew/locks para recuperarse de salidas del daemon, sin duplicar chats.
+
 ## Evidencia previa conservada
 
 # News V2: recovery checkpoint after master v312

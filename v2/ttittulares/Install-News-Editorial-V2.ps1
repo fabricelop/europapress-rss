@@ -96,7 +96,7 @@ if($pilot.status -eq 'ready' -and -not $pilot.cleanup_verified){throw 'Cierre Ch
 if($pilot.status -eq 'idle'){Write-Host 'TTN2_PILOT_IDLE_NO_NEWS_ELABORATED=YES'}
 [IO.File]::WriteAllText((Join-Path $root 'editorial.enabled'),'TTN2_EDITORIAL_ENABLED=YES',$utf8)
 $action=New-ScheduledTaskAction -Execute 'powershell.exe' -Argument ('-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File "'+(Join-Path $root 'Run-News-Editorial-Auto.ps1')+'"')
-$trigger=New-ScheduledTaskTrigger -AtLogOn -User $user
+$trigger=@((New-ScheduledTaskTrigger -AtLogOn -User $user),(New-ScheduledTaskTrigger -Once -At ((Get-Date).AddMinutes(3)) -RepetitionInterval (New-TimeSpan -Minutes 3)))
 $principal=New-ScheduledTaskPrincipal -UserId $user -LogonType Interactive -RunLevel Limited
 $options=New-ScheduledTaskSettingsSet -MultipleInstances IgnoreNew -ExecutionTimeLimit ([TimeSpan]::Zero) -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -RestartCount 3 -RestartInterval (New-TimeSpan -Minutes 5)
 Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $trigger -Principal $principal -Settings $options -Force | Out-Null
