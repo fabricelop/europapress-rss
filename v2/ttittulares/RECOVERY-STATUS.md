@@ -1,3 +1,9 @@
+## Ajuste de envío de imágenes — 17/11/2026
+
+- Commit `ecd10f6c1c7025ee9c7300af03e664914c68efa7` en `feature/ttactualidad-v2-clean`: ampliados los selectores de botón de envío (`send-message-button`, etiquetas accesibles Send/Enviar/Enviar prompt); `submit_image_prompt` ya no abandona el sondeo en la primera ausencia, sino que espera hasta 15 s; comprueba `aria-disabled`. Continúa prohibido el fallback Enter.
+- Motivación: diarios mostraron intentos con `send_trigger=enter`, prompt retenido en compositor y ningún turno verificado. La conexión Playwright al puerto CDP temporal 61072 falló después con `ECONNREFUSED`; no demuestra un problema de instalación.
+- Estado honesto: cambio de GitHub SIN despliegue local, SIN validación funcional contra la interfaz real, SIN reenvíos. Pendiente prueba automatizada de selectores, diseño del estado pre-envío para no consumir intentos y despliegue controlado en Windows. Mantener publicación automática desactivada.
+
 ## Corrección preventiva del envío de imágenes — 16/11/2026
 
 - Diagnóstico real del usuario: Python 3.14.6 y `PLAYWRIGHT_IMPORT=OK`; `connect_over_cdp` a 127.0.0.1:61072 devolvió `ECONNREFUSED` porque el puerto temporal ya no escuchaba. El CDP sí había respondido en la prueba previa. No confundir esta conexión caducada con fallo de instalación Playwright.
