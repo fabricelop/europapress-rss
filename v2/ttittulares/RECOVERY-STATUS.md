@@ -1,5 +1,81 @@
 # Noticias V2 — registro de continuación
 
+## Estado vigente — 16/11/2026 (última comprobación)
+
+Memoria maestra leída: v313, libfile_c244fcbdb29c8191a1d37f82a7ba3aa5.
+Encargo: automatizar redacción3 + imágenes2, paridad de botones, PUB→Archivo,
+y Noticias V2 como fuente del Site público V1. Mantener V1 ChatGPT retirada,
+Tendencias/SeLoRecordamos/Chrome compartido intactos.
+
+### Construido y probado
+- Consumidor editorial: tres puestos globales CAS/FIFO, chat nuevo por noticia.
+  Integra decisiones RE/RE-X y conserva registros anteriores por revisión.
+- Consumidor independiente de imágenes: dos puestos globales, chat nuevo por imagen,
+  original raster verificado, SHA/ID/revisión, cierre propio antes de asociación.
+  Envío ambiguo queda en incidencia y nunca se reenvía automáticamente.
+- UI/API: R, RE, RE-X, P-X, PU, PUB, copiar prompt, GPT IMA, Pegar IA (PNG original),
+  Quitar/Restaurar IA, visibilidad en V1 y P-IA cuando hay imagen. I muestra causa real.
+- PUB mueve inmediatamente Elaboradas→Archivo en D1 sin enviar a X. El consumidor
+  refleja después la decisión en GitHub; el original/historial no se borran.
+- RE-X/pistas privadas: /api/news-worker-controls exige credencial GitHub del
+  propietario, validada contra su identidad en api.github.com. No guardar token.
+- Feed público: /api/public-news (hasta30 fichas) y /api/public-news-image con
+  revisión, hash y visibilidad. No incluye pistas del editor.
+- Instalación conjunta: Upgrade-News-Workflow-V2.ps1 drena SOLO Noticias sin matar
+  Chrome. Instala/pilota editorial y luego imágenes de forma independiente.
+  Tareas al inicio de sesión y cada3min, IgnoreNew y locks. Banderas separadas.
+- CI del código c32f538edb545d8f2b65e11cf418c1ffb2491769:
+  run43967030968, Linux/Windows:212 pruebas Python +108 Node PASS,
+  compilación y parseo PowerShell PASS. CI editorial anterior fue corregido para
+  incluir las nuevas dependencias del paquete: run43966205102 SUCCESS.
+
+### Despliegue comprobado
+- run43966604710 SUCCESS, Worker252c5014-4516-4077-af32-455a53a1cc84.
+-108 Node +62 regresiones Python (incluidas Tendencias) +navegador PASS.
+  QA comprueba botones, PUB→Archivo, filtros, búsqueda, errores, móvil y botón I.
+  Fixtures solo efímeras: no se archivó ni fabricó ninguna noticia real.
+- Credenciales, bindings, D1 y cron conservados. Feed real verificado con1 noticia.
+- Última mejora de cabecera para incrustar imágenes autorizadas desde V1:
+  commit68dc439800a53437055d40f3ea0697e8eb62e79e, despliegue43967159798 EN CURSO.
+  Esperar el resultado final antes de declararlo desplegado.
+
+### Operación real todavía por comprobar
+- Windows: no hay evidencia de ejecución del nuevo instalador ni arranque de
+  estos tres editores/dos generadores. NO describirlos como procesos activos.
+- Cola observada:61 pendientes/0 activos/1 lista (Alcaraz recuperada sin reenviar).
+- Radar observado sigue19:11:32Z; cron declarado no demuestra captura nueva.
+- Ninguna imagen real de Noticias ha sido generada por este consumidor todavía.
+- PUB/acciones web sí están desplegados; reconciliación GitHub requiere consumidor.
+
+### Site V1: pendiente por acceso a su fuente independiente
+- Site appgprj_6ae4dcf7d7488191a574e5b649e67370, v97, público,
+  https://ttactualidad.rainyraven22.chatgpt.site
+- NO modificado. Su Git está en git.chatgpt-team.site y no en europapress-rss.
+  Este chat carece de ejecutor/transporte Git; no se puede editar ese origen aquí.
+- Preparados site-patches/news-v2/news-v2-adapter.mjs y README.md: sustituir SOLO
+  el loader de Noticias activas; conservar Hemeroteca, relaciones, URLs antiguas,
+  datos históricos y Tendencias. No confundir este adaptador/feed con despliegue V1.
+
+## Plan inmediato para continuar
+
+1. Consultar run43967159798 y CI editorial43967031078; corregir fallos reales si
+   los hubiera. Guardar versión final del Worker y resultados en ESTE registro.
+2. Entregar Upgrade-News-Workflow-V2.ps1 desde el commit validado al propietario.
+   Esperar salida de los dos pilotos, cierre verificado y arranque de tareas.
+   No reenviar Alcaraz ni reabrir trabajos con envío incierto.
+3. Tras instalación: comprobar noticia real nueva READY, imagen original con
+   ID/revisión/SHA y visible en V2, independencia de los procesos y cierre Chrome.
+4. Con ejecutor disponible, abrir la fuente del Site V1 usando su identidad exacta,
+   integrar el adaptador, probar Inicio/Noticias/detalle/búsqueda/archivo/imagen y
+   Tendencias sin regresiones, publicar y verificar nueva versión del Site.
+5. Investigar reloj de radar retrasado por separado sin reconstruir la captación.
+6. Actualizar periódicamente ESTE registro y después conciliar la memoria maestra
+   conservando su ID y el control de versión; no crear otra memoria maestra.
+
+## Evidencia y planificación anteriores (histórico de este trabajo)
+
+# Noticias V2 — registro de continuación
+
 ## Encargo vigente — 16/11/2026
 
 Memoria maestra leída: versión 313, identidad libfile_c244fcbdb29c8191a1d37f82a7ba3aa5.
