@@ -270,3 +270,10 @@ real de noticias con esta capa**. El preview live simula un almacén vacío, rea
 solo GET y no es una cola lista para consumo. El siguiente paso será implementar
 la lectura fijada a commit y transacción CAS con revalidación, probar conflictos
 y verificar una primera escritura aislada antes de activar cualquier scheduler.
+
+
+**Validación del paso 3C:** revisión `74c4ddd2da3cba6cd82bc8897c81f94c9795601d`,
+run CI `43920629456` con 73 pruebas OK y preview live `43920629257` con 27 fuentes
+recuperadas (siete por fallback), 1.435 entradas y 26 candidatos elegibles para
+jobs simulados, sin persistencia ni consumidores. El resultado no certifica
+independientemente los hechos ni convierte los candidatos en READY.

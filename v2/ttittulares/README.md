@@ -21,7 +21,7 @@ Reconstrucción aislada del motor de noticias para la web privada TTActualidad V
 
 El adaptador puede realizar lecturas HTTPS mediante `python -m v2.ttittulares.source_fetch_v2 --live`. Los fallbacks de una fuente conservan su misma identidad/familia; nunca se convierten en votos adicionales. El descargador limita la concurrencia, el tamaño de respuesta y el tiempo por petición; Cadena SER requiere fechas de artículos del editor dentro de 12 horas para considerarse fresca, y no confía en fechas de agregadores. Un `published_at` JSON solo se conserva cuando su procedencia editorial está identificada explícitamente.
 
-**Disponibilidad live pendiente de comprobar en el run de preview de este paso.** El workflow manual de GitHub Actions permite comprobar disponibilidad real y presentar la telemetría sin crear estado de radar. Tampoco hay scheduler, persistencia automática del radar, creación de jobs editoriales ejecutables, worker de imágenes ni página Noticias operativa en esta carpeta.
+**Pasada live verificada en el run 43920629257: 27/27 fuentes recuperadas, siete mediante fallback.** El workflow manual de GitHub Actions permite comprobar disponibilidad real y presentar la telemetría sin crear estado de radar. Tampoco hay scheduler, persistencia automática del radar, creación de jobs editoriales ejecutables, worker de imágenes ni página Noticias operativa en esta carpeta.
 
 Todo se mantiene en la rama feature/ttactualidad-v2-clean. No importar automáticamente el backlog V1. No escribir en main ni en rutas V1. No publicar en X, Instagram o Telegram.
 
@@ -74,3 +74,16 @@ tokens y similitudes. `identity_v2.py` conserva las reglas y añade cachés LRU
 acotadas (8.192 entradas de características y 16.384 pares de titulares). Los sets
 públicos siguen siendo copias mutables para que ningún llamador contamine la caché.
 Se prueban equivalencia de puntuaciones y aislamiento de esos valores.
+
+
+### Validación final del 16/11/2026
+
+Código validado: `74c4ddd2da3cba6cd82bc8897c81f94c9795601d`.
+CI `43920629456`: 73/73 pruebas y `TTN2_RADAR_PURE_CORE=PASS`.
+Preview real `43920629257`: 27 fuentes recuperadas, cero degradadas/fallidas,
+siete fallbacks, 1.435 entradas recibidas, 1.401 aceptadas tras normalización,
+1.015 candidatos y 26 elegibles. Preparó 57 archivos para una simulación de
+almacén vacío; **no persistió ni ejecutó los 26 jobs** y no creó READY.
+Lectura: 18:41 CET; fetch ~21 s y agrupación/plan ~10 s según el log del runner.
+Estas cifras describen ese barrido; no garantizan disponibilidad futura ni
+validación factual del contenido. La siguiente fase sigue siendo el escritor CAS.
