@@ -3,6 +3,7 @@
 **Código validado:** 62729b18586c155bb2dde071c4c97a519485d262.
 **CI:** run43967677128 SUCCESS,213 Python +108 Node en Linux y Windows;
 compilación y todos los instaladores PowerShell verificados.
+**CI editorial adicional:** run43967676922 SUCCESS (Linux/Windows y preview FIFO real, sin escrituras).
 **Web desplegada:** run43967159798 SUCCESS,
 Worker1d6dfe24-1688-4d84-b1fb-9371766571a7.108 Node +63 Python y navegador PASS.
 PUB→Archivo y todos los botones comprobados en fixtures efímeras; ningún dato
