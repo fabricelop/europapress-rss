@@ -20,7 +20,32 @@ function Is-RetiredCommand([string]$command){
   if($command -notmatch $basePattern){return $false}
   if($command -match '(?i)selorecordamos|[\\/]v2[\\/]|TTActualidadV2'){return $false}
   if($command -match ('(?i)[\\/]'+$namePattern)){return $true}
-  return $command -match '(?i)[\\/](?:Ejecutar\.js|LanzarOculto\.vbs)["\s]+(?:"?(?:titulares|tendencias)"?)(?=\s|$)'
+  # The shared launcher can carry SeLoRecordamos with argument titulares and
+  # TT_CHAT_MESSAGE_B64. CIM cannot read that environment: never kill it by arg.
+  return $false
+}
+function Get-V1ExecutorGuard {
+$guardText=@'
+// TT_V1_EXECUTOR_GUARD_20261116_SLR_SAFE_V2
+{
+  const __ttv1args = process.argv.slice(2);
+  const __ttv1legacy = __ttv1args.some(x => /^(titulares|tendencias)$/i.test(x));
+  let __ttv1slr = false;
+  if (__ttv1args[0] === 'titulares' && !__ttv1args.some(x => /^tendencias$/i.test(x))) {
+    const __ttv1b64 = String(process.env.TT_CHAT_MESSAGE_B64 || '');
+    if (__ttv1b64.length > 0 && __ttv1b64.length <= 65536) {
+      try {
+        const __ttv1bytes = Buffer.from(__ttv1b64, 'base64');
+        const __ttv1message = __ttv1bytes.toString('utf8');
+        __ttv1slr = __ttv1bytes.toString('base64') === __ttv1b64 && Buffer.from(__ttv1message, 'utf8').equals(__ttv1bytes) &&
+          /^SELORECORDAMOS_EDITORIAL_JOB_V1 sr-[0-9]{10,20} \| Ejecuta AHORA la pasada editorial de SeLoRecordamos\./.test(__ttv1message);
+      } catch (_) {}
+    }
+  }
+  if (__ttv1legacy && !__ttv1slr) { console.log('TT_V1_CHATGPT_DISABLED'); process.exit(0); }
+}
+'@
+return $guardText + "`n"
 }
 function Active-V1 {
   @(Get-CimInstance Win32_Process | Where-Object {
@@ -60,9 +85,12 @@ foreach($name in $retired){
 $runner=Join-Path $BaseDir 'Ejecutar.js'
 if(Test-Path -LiteralPath $runner){
   $original=[IO.File]::ReadAllText($runner)
-  if($original -notmatch 'TT_V1_EXECUTOR_GUARD_20261116'){
+  $guard=Get-V1ExecutorGuard
+  if($original.Contains('// TT_V1_EXECUTOR_GUARD_20261116') -and -not $original.Contains($guard)){
+    throw 'Guardia anterior o modificada: ejecute Repair-TT-V1-Stop-SeLoRecordamos.ps1 antes de repetir la parada.'
+  }
+  if(-not $original.Contains($guard)){
     Save-Original $runner
-    $guard="// TT_V1_EXECUTOR_GUARD_20261116`nif (process.argv.slice(2).some(x => /^(titulares|tendencias)$/i.test(x))) { console.log('TT_V1_CHATGPT_DISABLED'); process.exit(0); }`n"
     if($original.StartsWith('#!')){
       $newline=$original.IndexOf("`n")
       if($newline -lt 0){throw 'Ejecutar.js: shebang sin salto de linea'}
@@ -103,7 +131,7 @@ for($pass=0;$pass -lt 3;$pass++){
 $remaining=@(Active-V1)
 $report=[ordered]@{at=(Get-Date).ToString('o');remaining_v1=$remaining.Count;backup=$backup;
   browser_terminated=$false;v2_targeted=$false;selorecordamos_targeted=$false;
-  note='Las conversaciones ya enviadas no se cancelan en el servidor de ChatGPT.'}
+  note='Solicitudes ya enviadas no se cancelan en el servidor. Ejecutar.js/LanzarOculto son transportes compartidos: no se terminan por argumentos ambiguos; las nuevas llamadas V1 quedan bloqueadas por la guardia.'}
 $report | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $backup 'result.json') -Encoding UTF8
 $remaining | Select-Object ProcessId,Name,CommandLine | Format-List
 Write-Host ('COPIA_SEGURIDAD='+$backup)

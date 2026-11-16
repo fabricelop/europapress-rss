@@ -11,12 +11,12 @@ $namePattern='(?:TTiTTularesDedicatedListener\.ps1|TTendenciasDedicatedListener\
 foreach($command in @(
   'powershell.exe -File "C:\TTiTTulares\TTiTTularesDedicatedListener.ps1"',
   'powershell.exe -File C:\TTiTTulares\TTendenciasDedicatedListener.ps1',
-  'node.exe C:\TTiTTulares\TTiTTularesImageBridge.js command event',
-  'node.exe "C:\TTiTTulares\Ejecutar.js" titulares --enviar',
-  'wscript.exe "C:\TTiTTulares\LanzarOculto.vbs" tendencias'
+  'node.exe C:\TTiTTulares\TTiTTularesImageBridge.js command event'
 )){if(-not (Is-RetiredCommand $command)){throw "Missed V1: $command"}}
 foreach($command in @(
   'node.exe C:\TTiTTulares\Ejecutar.js selorecordamos --enviar',
+  'node.exe "C:\TTiTTulares\Ejecutar.js" titulares --enviar',
+  'wscript.exe "C:\TTiTTulares\LanzarOculto.vbs" tendencias',
   'node.exe C:\TTiTTulares\v2\TTiTTularesImageBridge.js',
   'node.exe C:\TTActualidadV2\TTiTTularesImageBridge.js',
   'powershell.exe -File C:\TTiTTulares\TT-LocalWatchdog.ps1',
