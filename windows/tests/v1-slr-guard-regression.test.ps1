@@ -77,6 +77,9 @@ try{
   $rejected=(& powershell.exe -NoProfile -ExecutionPolicy Bypass -File $repair -BaseDir $temp 2>&1 | Out-String)
   $rejectedExit=$LASTEXITCODE;$ErrorActionPreference=$savedPreference
   if($rejectedExit -eq 0 -or [IO.File]::ReadAllText($runner) -cne $unknown){throw 'Unknown guard was overwritten'}
+  # The rejected child is expected to exit 1; do not leak that status to the
+  # GitHub PowerShell wrapper after all assertions have succeeded.
+  $global:LASTEXITCODE=0
   Write-Output 'TT_V1_SLR_GUARD_REAL_NODE_CASES_AND_EXACT_REPAIR=PASS'
 }finally{
   if($null -eq $previous){Remove-Item Env:TT_CHAT_MESSAGE_B64 -ErrorAction SilentlyContinue}else{$env:TT_CHAT_MESSAGE_B64=$previous}
