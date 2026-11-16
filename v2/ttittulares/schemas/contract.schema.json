@@ -735,7 +735,31 @@
         "problem": {
           "$ref": "#/$defs/problem"
         }
-      }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "ready"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "capture": {
+                "type": "object"
+              },
+              "result": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      ]
     },
     "editorial_record": {
       "type": "object",
@@ -932,7 +956,7 @@
               "maxItems": 3,
               "items": {
                 "type": "string",
-                "pattern": "^#[^\\\\s#]+$"
+                "pattern": "^#[^\\s#]+$"
               }
             },
             "character_count": {
@@ -966,7 +990,30 @@
             }
           }
         }
-      }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "tweet": {
+                "properties": {
+                  "remate": {
+                    "const": ""
+                  }
+                }
+              }
+            },
+            "required": [
+              "tweet"
+            ]
+          },
+          "then": {
+            "required": [
+              "no_remate_reason"
+            ]
+          }
+        }
+      ]
     },
     "image_job": {
       "type": "object",
@@ -1181,7 +1228,31 @@
         "updated_at": {
           "$ref": "#/$defs/date_time"
         }
-      }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "saved"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "capture": {
+                "type": "object"
+              },
+              "result": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      ]
     },
     "image_asset": {
       "type": "object",
@@ -1393,7 +1464,60 @@
           "type": "string",
           "maxLength": 1000
         }
-      }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "action": {
+                "const": "request_rework"
+              }
+            },
+            "required": [
+              "action"
+            ]
+          },
+          "then": {
+            "required": [
+              "rework"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "action": {
+                "const": "publish_request"
+              }
+            },
+            "required": [
+              "action"
+            ]
+          },
+          "then": {
+            "required": [
+              "publication"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "action": {
+                "const": "mark_published"
+              }
+            },
+            "required": [
+              "action"
+            ]
+          },
+          "then": {
+            "required": [
+              "manual_publication"
+            ]
+          }
+        }
+      ]
     },
     "publication_receipt": {
       "type": "object",
@@ -1492,7 +1616,43 @@
         "manual_confirmation": {
           "type": "boolean"
         }
-      }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "confirmed"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "required": [
+              "confirmed_at"
+            ],
+            "anyOf": [
+              {
+                "properties": {
+                  "external_post_id": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "manual_confirmation": {
+                    "const": true
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
     }
   }
 }
