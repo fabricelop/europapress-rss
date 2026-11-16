@@ -19,6 +19,8 @@ recover_capture operation and six recovery tests. Exact command, original journa
 cleanup proof, answer hash, global three-slot capacity, immutable READY and
 idempotent replay are enforced. Recovery run 43960209171 passed 197 tests,
 validated the supplied reply, and persisted/read back the real record successfully.
+The full editorial check run 43960209128 also succeeded on Linux and Windows,
+with installer checks and the real read-only FIFO preview.
 Record origin commit: 786dc47f91e0a077d7361703386e0392f760b9b2.
 Final READY transition commit: 15634eef945ab27374c2f9a10858d742645d82d4.
 Record: v2/ttittulares/records/ttn2-0e0e7c7ebd494a7a753590d9/r1.json
