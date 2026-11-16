@@ -87,11 +87,37 @@ test("sticky Radar and PU header includes rolling 24-hour manual click history",
  assert.match(index,/id="radar-time"/);
  assert.match(index,/id="publication-summary"/);
  assert.match(index,/id="publication-history"/);
- assert.match(css,/\.top-bar\{position:sticky;top:0/);
+ assert.match(css,/\.top-bar\{position:sticky;top:env\(safe-area-inset-top\)/);
+ assert.match(css,/body\{min-height:100dvh;padding-top:env\(safe-area-inset-top\)\}/);
+ assert.match(css,/main\{width:100%;padding:0 0 env\(safe-area-inset-bottom\)\}/);
+ assert.doesNotMatch(css,/main\{[^}]*padding:env\(safe-area-inset-top\)/);
  assert.match(built,/function loadPublications\(\)/);
  assert.match(built,/dateStyle:"short",timeStyle:"medium"/);
  assert.match(built,/\/api\/publication-count/);
  assert.match(built,/const pu=el\("button","publish-action publication-mark-action","PU"\)/);
+});
+
+test("an explained trend without an image offers separate copy prompt and paste actions",()=>{
+ const start=app.indexOf("function manualImagePrompt(item){");
+ const end=app.indexOf("\nfunction showManualImagePrompt(",start);
+ assert.ok(start>=0&&end>start,"manual image prompt builder is present");
+ const generate=new Function(app.slice(start,end)+"\nreturn manualImagePrompt;")();
+ const identity="trv2-cf011150bc27382a31b3a6d8";
+ const result=generate({trend_id:identity,name:"Anticorrupción",revision:2,
+  explanation:"Anticorrupción investiga posibles contratos de Defensa. La causa de la tendencia no está confirmada. " .repeat(2)});
+ assert.match(result,/TT_V2_IMAGE_MANUAL_V1 trv2-cf011150bc27382a31b3a6d8-r2/);
+ assert.match(result,/Usa ImageGen AHORA/);
+ assert.match(result,/Tendencia: Anticorrupción/);
+ assert.match(result,/TEXTO EDITORIAL YA EXPLICADO/);
+ assert.match(result,/no representes hipótesis como hechos/);
+ assert.match(result,/No publiques en redes ni modifiques GitHub/);
+ assert.throws(()=>generate({trend_id:identity,revision:3,name:"Anticorrupción",explanation:"Corto"}),/explicación completa/);
+ assert.match(app,/["']publish-action image-prompt-action["'],["']Copiar prompt IA["']/);
+ assert.match(app,/["']publish-action image-paste-action["'],["']Pegar IA["']/);
+ assert.match(app,/navigator\.clipboard\.writeText\(prompt\)/);
+ assert.match(app,/showManualImagePrompt\(prompt,item\)/);
+ assert.match(built,/function manualImagePrompt\(item\)/);
+ assert.match(css,/\.image-prompt-action\{/);
 });
 
 test("incident card permits RE-X hints independently of explained RE-X",()=>{

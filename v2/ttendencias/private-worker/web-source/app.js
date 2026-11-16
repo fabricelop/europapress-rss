@@ -375,6 +375,55 @@ function openManualPasteDialog(item){
 function publishNotice(message){
  const notice=$("notice");notice.textContent=message;notice.hidden=false;
 }
+function manualImagePrompt(item){
+ if(!/^trv2-[a-f0-9]{24}$/.test(item.trend_id)||!Number.isSafeInteger(item.revision)||item.revision<1)
+  throw Error("Identidad editorial no válida. Actualiza la tendencia.");
+ const brief=String(item.explanation||"").replace(/\s+/g," ").trim().slice(0,6000);
+ if(brief.length<60)throw Error("Todavía no hay una explicación completa para generar el gag.");
+ const styles=["cómic europeo editorial con personajes expresivos y dibujo nítido",
+  "grabado moderno con volumen, luces y humor narrativo",
+  "tinta y acuarela con profundidad, textura y una escena viva",
+  "caricatura editorial 3D con iluminación cinematográfica"];
+ let seed=0;
+ for(const ch of item.trend_id)seed=(seed*31+ch.charCodeAt(0))>>>0;
+ const style=styles[seed%styles.length];
+ return "TT_V2_IMAGE_MANUAL_V1 "+item.trend_id+"-r"+item.revision+" | "+
+  "Usa ImageGen AHORA y genera UNA SOLA imagen GAG original. "+
+  "Este es un CHAT NUEVO e independiente: no busques la conversación editorial, no investigues ni reescribas la explicación. "+
+  "Tendencia: "+item.name+". Identificador: "+item.trend_id+". Revisión: "+item.revision+". "+
+  "TEXTO EDITORIAL YA EXPLICADO (fuente del gag; no lo reescribas): "+brief+". "+
+  "DIRECCIÓN VISUAL: "+style+". Aplica el estilo editorial V1: una escena narrativa única, protagonistas, "+
+  "acción reconocible, metáfora o exageración visual relacionada con el hecho, profundidad, expresiones y textura. "+
+  "Una sola idea que se entienda en 1-2 segundos sin leer texto, acabado profesional, mínimo 1024px de ancho. "+
+  "No esquemas, infografías, flechas, conectores, paneles, avatares flotantes, collage ni medallones. "+
+  "Cero titulares, hashtags, rótulos, marcas de agua, texto superpuesto, guindillas o símbolos 🌶️. "+
+  "En sucesos graves no hagas humor a costa de las víctimas. Si la causa no está confirmada, "+
+  "no representes hipótesis como hechos. No publiques en redes ni modifiques GitHub. "+
+  "El usuario copiará manualmente la imagen final en «Pegar IA» de la misma tendencia V2.";
+}
+function showManualImagePrompt(prompt,item){
+ const dialog=el("dialog","re-x-dialog");
+ const heading=el("h3","","Prompt IA · "+item.name);
+ const intro=el("p","","Selecciona y copia este texto. Pégalo en un chat nuevo de ChatGPT y después usa «Pegar IA» en esta ficha.");
+ const textarea=el("textarea","re-x-hints");textarea.readOnly=true;textarea.value=prompt;
+ textarea.setAttribute("aria-label","Prompt completo para generar imagen IA");
+ const actions=el("div","re-x-actions");
+ const close=el("button","","Cerrar");close.type="button";
+ close.addEventListener("click",()=>dialog.close());
+ actions.append(close);dialog.append(heading,intro,textarea,actions);
+ dialog.addEventListener("close",()=>dialog.remove(),{once:true});
+ document.body.append(dialog);dialog.showModal();textarea.focus();textarea.select();
+}
+async function copyManualImagePrompt(item){
+ const prompt=manualImagePrompt(item);
+ try{
+  if(!navigator.clipboard?.writeText)throw Error("Sin acceso al portapapeles");
+  await navigator.clipboard.writeText(prompt);
+  publishNotice("Prompt IA copiado para «"+item.name+"» (r"+item.revision+"). Pégalo en un chat nuevo de ChatGPT y vuelve a «Pegar IA».");
+ }catch{
+  showManualImagePrompt(prompt,item);
+ }
+}
 function openReXDialog(item,onSubmit){
  const dialog=el("dialog","re-x-dialog");
  const heading=el("h3","","RE-X · "+item.name);
@@ -541,6 +590,10 @@ function makePublishButtons(card,item){
  });
  actions.append(x);
  if(!imageReady(item)&&item.image_suppressed!==true){
+  const prompt=el('button','publish-action image-prompt-action','Copiar prompt IA');
+  prompt.type='button';prompt.title='Copiar el prompt completo para generar un gag en un chat nuevo de ChatGPT';
+  prompt.addEventListener('click',()=>{void copyManualImagePrompt(item).catch(error=>publishNotice(error.message))});
+  actions.append(prompt);
   const paste=el('button','publish-action image-paste-action','Pegar IA');
   paste.type='button';paste.title='Pegar el original de Mis imágenes o seleccionarlo desde Fotos/Archivos';
   paste.addEventListener('click',()=>openManualPasteDialog(item));
