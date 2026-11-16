@@ -1,3 +1,9 @@
+## Corrección de contabilización preenvío y memoria maestra — 17/11/2026
+
+- La memoria maestra es el documento de Biblioteca `libfile_c244fcbdb29c8191a1d37f82a7ba3aa5` (`TTActualidad-Memoria-Completa-2026-10-29.md`); se localizó en Biblioteca, 405188 bytes, versión de archivo 1, revisión documental 16/11/2026. NO es lo mismo que este registro de continuación de GitHub. No se ha sobrescrito todavía la memoria maestra.
+- Commit `09439c54374a6e8e00e09ffe4c5ac230de96731d`: `submit_image_prompt` acepta callback `before_click`, que persiste `send_intent_recorded` únicamente cuando existe botón visible/habilitado y justo antes de pulsarlo. Ausencia/deshabilitación del botón o prompt ausente antes del clic se registra como `pre_send_failed`; `next_attempt` permite un número nuevo tras cooldown de 900 segundos, sin consumir cupo de intentos de envío confirmado. Persisten las restricciones anti-duplicado de intentos inciertos.
+- LÍMITES: el código no ha sido desplegado en Windows, no hay prueba de interfaz real ni suite ejecutada todavía. No afirmar que las imágenes pendientes se hayan recuperado. El registro de fallos preenvío puede seguir creciendo si persiste un fallo estructural: revisar política de alertas/bloqueo. No cambiar V1, SeLoRecordamos ni publicación automática.
+
 ## Ajuste de envío de imágenes — 17/11/2026
 
 - Commit `ecd10f6c1c7025ee9c7300af03e664914c68efa7` en `feature/ttactualidad-v2-clean`: ampliados los selectores de botón de envío (`send-message-button`, etiquetas accesibles Send/Enviar/Enviar prompt); `submit_image_prompt` ya no abandona el sondeo en la primera ausencia, sino que espera hasta 15 s; comprueba `aria-disabled`. Continúa prohibido el fallback Enter.
