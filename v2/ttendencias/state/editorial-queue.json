@@ -7667,13 +7667,13 @@
       "trend_id": "trv2-81e7d55c5c944b5fbf7ec049",
       "name": "Ruanda",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "af9e89d572abe093",
       "requested_at": "2026-11-16T16:57:09.506776+00:00",
       "updated_at": "2026-11-16T16:57:09.506776+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -7686,7 +7686,13 @@
           "archived_at": "2026-11-16T16:57:09.506776+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "d13e6b4c86449b616d524502ba2baecc6ff4485b38042048",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-16T16:57:20.220807+00:00",
+        "expires_at": "2026-11-16T17:37:20.220807+00:00"
+      }
     },
     "trv2-2bc2de5487a43ff0a0ab71e6": {
       "trend_id": "trv2-2bc2de5487a43ff0a0ab71e6",
