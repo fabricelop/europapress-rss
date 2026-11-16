@@ -269,7 +269,6 @@ def add_appearance(event,row,now):
     event["last_seen_at"]=now
     if not event.get("canonical_url"):
         event["canonical_url"]=row["canonical_url"]
-    recalc_event_sources(event,{"source_map":{row["source"]:{"family":row["source_family"]}}}|(event.get("_catalog") or {}))
 
 
 def event_variants(event):

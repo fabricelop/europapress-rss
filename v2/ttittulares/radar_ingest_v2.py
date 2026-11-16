@@ -49,9 +49,12 @@ def _parse_time(value):
         return None
 
 
-def _clean_title(value):
+def _clean_title(value, source=""):
     text=clean_feed_value(value)
-    text=re.sub(r"\s+-\s+[^-]{2,80}$","",text) if "news.google.com" in str(value or "") else text
+    # V1 Google News aggregations append the publisher name; trim only for the two
+    # discovery feeds, not arbitrary publisher headlines containing a dash.
+    if source in ("Reuters Radar","AP Radar"):
+        text=re.sub(r"\s+-\s+[^-]{2,80}$","",text)
     return text[:500]
 
 
@@ -88,7 +91,7 @@ def _normalize_rows(rows,catalog,now):
         if not definition:
             filtered.append({"source":source,"title":str(raw.get("title") or "")[:160],"reason":"unknown_source","stage":"input"})
             continue
-        title=clean_feed_value(raw.get("title") or "")
+        title=_clean_title(raw.get("title") or "",source)
         url=str(raw.get("url") or raw.get("link") or "").strip()
         normalized_url=canonical_url(url)
         if not title or not normalized_url:
@@ -102,11 +105,13 @@ def _normalize_rows(rows,catalog,now):
         published=None
         publication_source=None
         # Discovery aggregators never supply the publisher's publication time.
-        if source_type=="general" and raw.get("published_at"):
+        publisher_date_source=str(raw.get("publication_date_source") or "")
+        if (source_type=="general" and raw.get("published_at")
+                and publisher_date_source in ("publisher_feed","publisher_article_metadata","publisher")):
             parsed=parse_publication_date(raw.get("published_at"),now)
             if parsed:
                 published=utc_iso(parsed)
-                publication_source=raw.get("publication_date_source") or "publisher"
+                publication_source=publisher_date_source
         key=(source,normalized_url)
         row={
             "source":source,"source_family":definition["family"],"source_type":source_type,
@@ -139,7 +144,8 @@ def _new_candidate(row,now):
     return event
 
 
-def _merge_candidate_events(events,catalog):
+def _merge_candidate_events(events,catalog,protected_ids=None):
+    protected_ids=set(protected_ids or ())
     ordered=sorted(events.values(),key=lambda x:(x.get("first_seen_at",""),x["event_id"]))
     kept=[]
     remap={}
@@ -150,6 +156,9 @@ def _merge_candidate_events(events,catalog):
         target=None
         for prior in kept:
             if prior.get("status") not in ("monitoring","eligible"):
+                continue
+            # Never rewrite an event_id that already exists in the persisted news index.
+            if event["event_id"] in protected_ids or prior["event_id"] in protected_ids:
                 continue
             if events_match(event,prior):
                 target=prior
@@ -216,6 +225,8 @@ def _update_index_from_event(index,event):
     item["source_families"]=sorted(set(item.get("source_families") or [])|set(event.get("source_families") or []))
     item["fact_tokens"]=sorted(set(item.get("fact_tokens") or [])|set(tokens(event["canonical_title"])))
     item["last_seen_at"]=event.get("last_seen_at")
+    if event.get("status") in ("monitoring","archived","eligible"):
+        item["status"]=event.get("status")
     if event.get("status")=="eligible":
         item["status"]="eligible"
         item["editorial_created"]=True
@@ -298,6 +309,7 @@ def ingest_scan(rows, source_statuses, previous_state=None, news_index=None, *, 
     if isinstance(old_events,list):
         old_events={x["event_id"]:x for x in old_events if x.get("event_id")}
     events=copy.deepcopy(old_events)
+    protected_event_ids=set(events)
     updates=copy.deepcopy(prior.get("material_updates") or {})
     health=project_source_health(source_statuses,prior.get("source_health") or {},stamp,cat)
     new_events=[]
@@ -310,15 +322,21 @@ def ingest_scan(rows, source_statuses, previous_state=None, news_index=None, *, 
         if event.get("status")!="monitoring":
             continue
         first=_parse_time(event.get("first_seen_at"))
-        if first and first<cutoff:
+        if first and first<=cutoff:
             event["status"]="archived"
             event["expired_at"]=stamp
             if event["event_id"] in index:
                 index[event["event_id"]]["status"]="archived"
 
     for row in accepted:
-        match,match_score=best_match(row["title"],[e for e in events.values()
-             if e.get("status") in ("monitoring","eligible")],0.50)
+        # URL identity is stronger than headline similarity within one source item.
+        match=next((e for e in events.values()
+                    if e.get("status") in ("monitoring","eligible") and
+                    (row["canonical_url"]==e.get("canonical_url") or any(
+                        a.get("canonical_url")==row["canonical_url"] for a in e.get("appearances",[])))),None)
+        if match is None:
+            match,match_score=best_match(row["title"],[e for e in events.values()
+                 if e.get("status") in ("monitoring","eligible")],0.50)
         if match is not None:
             _append_appearance(match,row,stamp,cat)
             # Extra outlets do not create another event or a revision.
@@ -356,7 +374,7 @@ def ingest_scan(rows, source_statuses, previous_state=None, news_index=None, *, 
         events[candidate["event_id"]]=candidate
 
     # Consolidate candidates split by paraphrased source titles before quorum.
-    events,remap=_merge_candidate_events(events,cat)
+    events,remap=_merge_candidate_events(events,cat,protected_event_ids)
     for event in events.values():
         if event.get("status")=="monitoring":
             prune_event_outliers(event)
@@ -370,12 +388,12 @@ def ingest_scan(rows, source_statuses, previous_state=None, news_index=None, *, 
                 new_events.append(event)
             else:
                 first=_parse_time(event.get("first_seen_at"))
-                if first and first<cutoff:
+                if first and first<=cutoff:
                     event["status"]="archived"
                     event["expired_at"]=stamp
         if event["event_id"] in index:
             _update_index_from_event(index,event)
-        elif event.get("status")=="eligible":
+        else:
             index[event["event_id"]]=_index_item_from_candidate(event)
 
     # Material updates are separate candidates: four NEW, independent general families are required.
