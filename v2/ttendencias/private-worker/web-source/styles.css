@@ -152,3 +152,6 @@
 .image-incident-button{flex:0 0 auto;align-self:center;width:27px;height:27px;display:inline-grid;place-items:center;margin-left:5px;padding:0;border:1px solid #dd9a55;border-radius:7px;background:#362419;color:#ffdda5;font-size:13px;font-weight:750;cursor:pointer}.image-incident-button:focus-visible{outline:2px solid #ffe2b9;outline-offset:3px}.image-incident-button:disabled{opacity:.65;cursor:wait}
 .image-incident-detail{margin:10px 16px 14px;padding:12px 14px;background:#241d1a;border:1px solid #775239;border-radius:9px;color:#f4dfca;font-size:13px;line-height:1.55;overflow-wrap:anywhere}.image-incident-detail[hidden]{display:none}.image-incident-detail p{margin:7px 0}.image-incident-code{font-size:12px;font-family:ui-monospace,monospace}.image-incident-time{font-size:11px;color:#c5ae98}
 
+
+/* Six compact news filters remain on one row with four-digit counts at 320px. */
+@media(max-width:360px){.news-filters{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:3px;overflow:visible}.news-filter{min-width:0;font-size:9px;padding:7px 2px;overflow:hidden;text-overflow:ellipsis;text-align:center}}

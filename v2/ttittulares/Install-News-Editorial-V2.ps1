@@ -65,6 +65,13 @@ function Invoke-NewsPython([string[]]$arguments){
     throw ('Noticias V2: fase no verificada, exit='+$result.ExitCode+'; no se activa el programador')
   }
 }
+# Resolve the news schema dependency in the SAME py -3 interpreter used below.
+$dependency=Start-Process -FilePath $py -ArgumentList @('-3','-c','"import jsonschema"') -WindowStyle Hidden -Wait -PassThru `
+  -RedirectStandardOutput (Join-Path $root 'dependency-check.stdout.log') `
+  -RedirectStandardError (Join-Path $root 'dependency-check.stderr.log')
+if($dependency.ExitCode -ne 0){
+  Invoke-NewsPython -arguments @('-m','pip','install','--user','jsonschema==4.23.0')
+}
 Invoke-NewsPython -arguments @('-c','"import playwright.sync_api, jsonschema"')
 Invoke-NewsPython -arguments @('-m','unittest','v2.ttittulares.test_contract_examples','v2.ttittulares.test_editorial_contract_v2','v2.ttittulares.test_editorial_state_v2','v2.ttittulares.test_editorial_consumer_v2','v2.ttittulares.test_editorial_browser_v2')
 $chrome=Join-Path $env:ProgramFiles 'Google\Chrome\Application\chrome.exe'
