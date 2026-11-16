@@ -139,6 +139,62 @@ class SplitTest(unittest.TestCase):
                                  "status": "sent_waiting_for_image"})
                 self.assertIsNone(image.next_attempt(row))
 
+    def test_previous_unverified_new_chat_is_not_automatically_resent(self):
+        queue, _ = fixture()
+        row = queue["items"]["trv2-%024x" % 1]
+        with tempfile.TemporaryDirectory() as folder:
+            with patch.object(image, "JOURNALS", pathlib.Path(folder)):
+                editorial.store(image.journal_path(row["trend_id"], 1, 100), {
+                    "at": "2026-11-16T04:00:00+00:00",
+                    "status": "failed", "send_protocol": 2,
+                    "error": "V2_IMAGE_NEW_CHAT_ID_NOT_VERIFIED",
+                    "submission_observation": {
+                        "url": "https://chatgpt.com/",
+                        "composer_contains_command": False,
+                        "composer_inspection_failed": True}})
+                self.assertIsNone(image.next_attempt(row))
+
+    def test_unverified_send_is_recorded_as_not_retriable(self):
+        queue, _ = fixture()
+        row = queue["items"]["trv2-%024x" % 1]
+        with tempfile.TemporaryDirectory() as folder:
+            with patch.object(image, "JOURNALS", pathlib.Path(folder)):
+                editorial.store(image.journal_path(row["trend_id"], 1, 1), {
+                    "at": "2026-11-16T04:00:00+00:00",
+                    "status": "send_unverified", "send_protocol": 2})
+                self.assertIsNone(image.next_attempt(row))
+
+    def test_closed_chat_page_is_not_a_negative_submission_proof(self):
+        class ClosedPage:
+            url = "https://chatgpt.com/"
+            def is_closed(self):
+                return True
+            def locator(self, selector):
+                raise AssertionError("Closed page should never be probed")
+        observation = tracker.submission_observation(ClosedPage(), "command123")
+        self.assertTrue(observation["page_closed"])
+        self.assertIsNone(observation["composer_contains_command"])
+        self.assertFalse(observation["composer_inspected"])
+
+    def test_browser_diagnostics_only_records_route_families(self):
+        class Page:
+            def __init__(self, url):
+                self.url = url
+            def is_closed(self):
+                return False
+        context = type("Context", (), {"pages": [
+            Page("https://chatgpt.com/"),
+            Page("https://chatgpt.com/c/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee")
+        ]})()
+        class Browser:
+            contexts = [context]
+            def is_connected(self):
+                return False
+        data = tracker.browser_diagnostics(Browser(), context.pages[0])
+        self.assertEqual(data["route_families"], ["conversation", "home"])
+        self.assertEqual(data["page_count"], 2)
+        self.assertNotIn("aaaaaaaa-bbbb", str(data))
+
     def test_submission_observation_never_copies_full_prompt(self):
         command = "v2-img-trv2-15fbf166ba6a2f83c7a45b75-r2-a100-nonce"
         class Node:

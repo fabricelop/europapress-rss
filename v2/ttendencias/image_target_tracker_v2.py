@@ -75,9 +75,14 @@ def submission_observation(page, command_id):
 
     No editor text, cookies, or raw prompts are copied into the journal.
     """
+    closed = getattr(page, "is_closed", lambda: False)()
     result = {"url": canonical(page.url),
-              "user_turn_contains_command": verify_image_turn(page, command_id),
-              "composer_contains_command": False}
+              "page_closed": closed,
+              "user_turn_contains_command": False if closed else verify_image_turn(page, command_id),
+              "composer_contains_command": None,
+              "composer_inspected": False}
+    if closed:
+        return result
     for selector in (
         "#prompt-textarea", "[data-testid='prompt-textarea']",
         "[contenteditable='true'][role='textbox']"
@@ -91,10 +96,56 @@ def submission_observation(page, command_id):
             except Exception:
                 content = node.text_content(timeout=2000) or ""
             result["composer_contains_command"] = command_id in content
+            result["composer_inspected"] = True
             break
-        except Exception:
+        except Exception as exc:
             result["composer_inspection_failed"] = True
+            result["composer_error_type"] = type(exc).__name__
     return result
+
+
+def browser_diagnostics(browser, starting_page):
+    """Observe only route families and browser liveness, never chat contents.
+
+    An empty list of /c/ URLs does not mean ChatGPT never received a turn:
+    the browser may have closed or navigated to a route not recognized yet.
+    """
+    details = {"starting_page_closed": starting_page.is_closed(),
+               "browser_connected": browser.is_connected(),
+               "page_count": 0, "route_families": [],
+               "cdp_target_count": None}
+    try:
+        routes = []
+        for context in browser.contexts:
+            for page in context.pages:
+                details["page_count"] += 1
+                url = canonical(page.url)
+                if url.startswith("https://chatgpt.com/"):
+                    path = url.split("chatgpt.com/", 1)[1]
+                    if path.startswith("c/"):
+                        routes.append("conversation")
+                    elif path.startswith("g/"):
+                        routes.append("gpt")
+                    elif not path:
+                        routes.append("home")
+                    else:
+                        routes.append("other_chatgpt_route")
+                else:
+                    routes.append("non_chatgpt")
+        details["route_families"] = sorted(set(routes))
+    except Exception as exc:
+        details["page_listing_error_type"] = type(exc).__name__
+    if browser.is_connected():
+        try:
+            session = browser.new_browser_cdp_session()
+            try:
+                details["cdp_target_count"] = len(
+                    session.send("Target.getTargets").get("targetInfos", []))
+            finally:
+                session.detach()
+        except Exception as exc:
+            details["cdp_error_type"] = type(exc).__name__
+    return details
 
 
 def await_image_conversation(browser, starting_page, command_id, *,

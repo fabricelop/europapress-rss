@@ -19,6 +19,7 @@ import sys
 import time
 from datetime import datetime, timedelta, timezone
 from playwright.sync_api import sync_playwright
+from chrome_profile_process_v2 import exact_chrome_profile_pids
 
 ROOT = pathlib.Path(os.environ["LOCALAPPDATA"]) / "TTActualidadV2"
 PROFILE = pathlib.Path(os.environ.get("TT_V2_EDITORIAL_PROFILE", str(ROOT / "ChromeProfile")))
@@ -77,22 +78,7 @@ def selected(queue, trend_id):
     return item
 
 def profile_pids():
-    ps = (
-        "$p=$env:TT_V2_EDITORIAL_PROFILE;"
-        "if (-not $p) { $p=Join-Path $env:LOCALAPPDATA 'TTActualidadV2\\ChromeProfile' };"
-        "Get-CimInstance Win32_Process -Filter \"Name='chrome.exe'\" | "
-        "Where-Object { $_.CommandLine -and $_.CommandLine.Contains('--user-data-dir=') "
-        "-and $_.CommandLine.Contains($p) } | "
-        "Select-Object -ExpandProperty ProcessId | ConvertTo-Json -Compress"
-    )
-    run = subprocess.run(["powershell.exe", "-NoProfile", "-Command", ps],
-                         capture_output=True, text=True, timeout=20,
-                         creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
-    if run.returncode:
-        raise RuntimeError("No se pudo inspeccionar Chrome V2")
-    raw = run.stdout.strip()
-    value = json.loads(raw) if raw else []
-    return set(map(int, value if isinstance(value, list) else [value]))
+    return exact_chrome_profile_pids(PROFILE)
 
 def prompt_for(item):
     # Alineado con la investigación prudente de V1, pero sin reutilizar su

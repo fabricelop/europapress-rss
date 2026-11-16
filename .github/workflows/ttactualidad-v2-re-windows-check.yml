@@ -12,6 +12,8 @@ on:
       - 'v2/ttendencias/image_worker_v2.py'
       - 'v2/ttendencias/image_job_v2.py'
       - 'v2/ttendencias/image_target_tracker_v2.py'
+      - 'v2/ttendencias/chrome_profile_process_v2.py'
+      - 'v2/ttendencias/test_chrome_profile_process_v2.py'
       - 'v2/ttendencias/test_image_worker_v2.py'
       - 'v2/ttendencias/Upgrade-V2-Image-Send.ps1'
       - 'v2/ttendencias/editorial_run_v2.py'
@@ -58,7 +60,7 @@ jobs:
           [Management.Automation.Language.Parser]::ParseFile($file,[ref]$tokens,[ref]$errors) | Out-Null
           if ($errors.Count -gt 0) { throw ($errors | Out-String) }
           $source = Get-Content $file -Raw
-          foreach ($marker in @('TT_V2_IMAGE_SEND_INSTALLED=YES','TT_V2_EDITORIAL_AND_V1=UNTOUCHED','TT_V2_PUBLICATION=NO')) {
+          foreach ($marker in @('TT_V2_IMAGE_SEND_INSTALLED=YES','TT_V2_CHROME_EXACT_PROFILE=INSTALLED','TT_V2_EDITORIAL_LOGIC_AND_V1=UNTOUCHED','TT_V2_PUBLICATION=NO')) {
             if (!$source.Contains($marker)) { throw "Contrato ausente: $marker" }
           }
           if ($source -match '(?i)\b(Stop-Process|Stop-ScheduledTask|taskkill)\b') {
@@ -87,7 +89,7 @@ jobs:
         run: |
           $env:PYTHONPATH = 'v2/ttendencias'
           python -m pip install --disable-pip-version-check playwright
-          python -m unittest -v test_image_worker_v2 test_parallel_dispatch_v2
+          python -m unittest -v test_chrome_profile_process_v2 test_image_worker_v2 test_parallel_dispatch_v2
       - name: Comprobar botón RE-X, validación de pistas y compatibilidad RE
         shell: pwsh
         run: |

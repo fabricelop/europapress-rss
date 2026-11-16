@@ -20,6 +20,7 @@ import time
 from datetime import datetime, timedelta, timezone
 
 import editorial_run_v2 as editorial
+from chrome_profile_process_v2 import exact_chrome_profile_pids
 import image_github_v2 as github
 import image_intake_v2 as intake
 import image_job_v2 as jobs
@@ -47,22 +48,7 @@ HEADLESS = os.environ.get("TT_V2_IMAGE_CHROME_HEADLESS", "0").strip().lower() no
 
 def image_profile_pids():
     """Only image Chrome children; editorial/V1 may run at the same time."""
-    ps = (
-        "$p=$env:TT_V2_IMAGE_PROFILE;"
-        "if (-not $p) { $p=Join-Path $env:LOCALAPPDATA 'TTActualidadV2\\ChromeProfileImages' };"
-        "Get-CimInstance Win32_Process -Filter \"Name='chrome.exe'\" | "
-        "Where-Object { $_.CommandLine -and $_.CommandLine.Contains('--user-data-dir=') "
-        "-and $_.CommandLine.Contains($p) } | "
-        "Select-Object -ExpandProperty ProcessId | ConvertTo-Json -Compress"
-    )
-    run = subprocess.run(["powershell.exe", "-NoProfile", "-Command", ps],
-                         capture_output=True, text=True, timeout=20,
-                         creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
-    if run.returncode:
-        raise RuntimeError("V2_IMAGE_CHROME_PROCESS_INSPECTION_FAILED")
-    raw = run.stdout.strip()
-    value = json.loads(raw) if raw else []
-    return set(map(int, value if isinstance(value, list) else [value]))
+    return exact_chrome_profile_pids(PROFILE)
 
 
 def eligible(row):
@@ -176,6 +162,13 @@ def next_attempt(row, *, now=None):
         return None
     if last.get("status") != "failed":
         return None  # Interrupted/uncertain send: no blind retry.
+    observation = last.get("submission_observation") or {}
+    if (last.get("error") == "V2_IMAGE_NEW_CHAT_ID_NOT_VERIFIED"
+        and (observation.get("composer_inspection_failed")
+             or observation.get("composer_contains_command") is not True)):
+        # An Enter press followed by an unreadable/empty composer is NOT
+        # proof of failed delivery. Even an older journal must not be resent.
+        return None
     current = [record for _, record in attempts
                if record.get("send_protocol") == IMAGE_SEND_PROTOCOL]
     if len(current) >= MAX_PROTOCOL_ATTEMPTS:
@@ -341,19 +334,23 @@ def run_one(row, attempt, *, api, auth):
             record["send_trigger"] = submit_image_prompt(
                 page, composer, job["prompt"], job["command_id"])
             record["status"] = "sent_waiting_for_image"
+            record["immediate_observation"] = tracker.submission_observation(
+                page, job["command_id"])
             editorial.store(journal, record)
             submitted_page = page
             page, discovery = tracker.await_image_conversation(
                 browser, page, job["command_id"], seconds=150,
                 baseline_urls=baseline)
             record["chat_discovery"] = discovery
+            record["browser_diagnostics"] = tracker.browser_diagnostics(
+                browser, submitted_page)
             record["submission_observation"] = tracker.submission_observation(
                 submitted_page, job["command_id"])
             editorial.store(journal, record)
             if page is None:
-                if record["submission_observation"].get("composer_contains_command"):
+                if record["submission_observation"].get("composer_contains_command") is True:
                     raise RuntimeError("V2_IMAGE_PROMPT_NOT_SUBMITTED")
-                raise RuntimeError("V2_IMAGE_NEW_CHAT_ID_NOT_VERIFIED")
+                raise RuntimeError("V2_IMAGE_SEND_UNVERIFIED_NO_RESEND")
             url = discovery["url"]
             job["conversation_url"] = url
             record["image_chat_url"] = url
@@ -394,7 +391,10 @@ def run_one(row, attempt, *, api, auth):
         print("TT_V2_IMAGE_BOUND=" + record["status"].upper(), flush=True)
         return record
     except Exception as exc:
-        record["status"] = "failed"
+        # The navigation or the browser itself might have ended after Enter.
+        # In that case a new automatic attempt could create a duplicate image.
+        record["status"] = ("send_unverified" if str(exc) ==
+                            "V2_IMAGE_SEND_UNVERIFIED_NO_RESEND" else "failed")
         record["error"] = str(exc)[:250]
         editorial.store(journal, record)
         raise
