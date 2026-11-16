@@ -81,3 +81,23 @@ test("RE requested has visible pending state and hides previous explanation and 
  assert.match(app,/if\(!reset\)\{makePublishButtons\(card,item\);attachGeneratedImage\(card,item\);\}/);
  assert.match(css,/\.review-state/);
 });
+
+test("sticky Radar and PU header includes rolling 24-hour manual click history",()=>{
+ assert.match(index,/id="top-bar"/);
+ assert.match(index,/id="radar-time"/);
+ assert.match(index,/id="publication-summary"/);
+ assert.match(index,/id="publication-history"/);
+ assert.match(css,/\.top-bar\{position:sticky;top:0/);
+ assert.match(built,/function loadPublications\(\)/);
+ assert.match(built,/dateStyle:"short",timeStyle:"medium"/);
+ assert.match(built,/\/api\/publication-count/);
+ assert.match(built,/const pu=el\("button","publish-action publication-mark-action","PU"\)/);
+});
+
+test("incident card permits RE-X hints independently of explained RE-X",()=>{
+ assert.match(app,/if\(item\.status==="incidencia"\)/);
+ assert.match(app,/openReXDialog\(item,async hints/);
+ assert.match(app,/\/api\/incident-rex/);
+ assert.match(app,/incidentRequested\(item\)/);
+ assert.match(app,/if\(item\.status!=="explicada"\)return;/);
+});

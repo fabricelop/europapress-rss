@@ -2,7 +2,8 @@
 // Ranking y marcas R comparten la misma instantánea validada por el Worker.
 const BASE="/api/state/";
 const $=id=>document.getElementById(id);
-const state={items:[],captured:null,open:null,rankingUnchanged:false,rankingChangeAt:null,reRequests:[]};
+const state={items:[],captured:null,open:null,rankingUnchanged:false,rankingChangeAt:null,reRequests:[],incidentRequests:[],publications:{count:0,events:[]},manualImages:[]};
+const PUBLIC_SITE='https://ttactualidad.rainyraven22.chatgpt.site';
 function el(tag,className,content){const n=document.createElement(tag);if(className)n.className=className;if(content!==undefined)n.textContent=String(content);return n}
 function valid(data){if(!data||data.project!=="ttactualidad-v2"||data.country!=="ES"||!Array.isArray(data.items)||data.items.length!==data.count||data.count<1||data.count>40)throw Error("Ranking no disponible");const ranks=new Set(data.items.map(x=>x.rank));if(ranks.size!==data.items.length||data.items.some(x=>!Number.isInteger(x.rank)||x.rank<1||x.rank>40||!x.name))throw Error("Ranking incoherente");return data}
 function withoutInternalProvenance(text){
@@ -150,6 +151,54 @@ async function loadReRequests(){
  if(!Array.isArray(data.requests))throw Error("Respuesta RE no válida");
  state.reRequests=data.requests;
 }
+async function loadIncidentRequests(){
+ const res=await fetch("/api/incident-rex",{cache:"no-store",credentials:"same-origin"});
+ if(!res.ok)throw Error("No se pueden consultar las pistas pendientes (HTTP "+res.status+")");
+ const data=await res.json();
+ if(!Array.isArray(data.requests))throw Error("Solicitudes de incidencias no válidas");
+ state.incidentRequests=data.requests;
+}
+function incidentRequested(item){
+ return state.incidentRequests.some(row=>row.trend_id===item.trend_id&&row.base_revision===item.revision);
+}
+function renderPublications(){
+ const data=state.publications;
+ const summary=$("publication-summary");
+ summary.textContent="PU · "+data.count+" / 24 h";
+ summary.title="Ver "+data.count+" publicaciones registradas en las últimas 24 horas móviles";
+ const list=$("publication-history");list.replaceChildren();
+ for(const event of data.events){
+  const date=new Date(event.pressed_at_ms);
+  if(!Number.isFinite(date.getTime()))continue;
+  const when=new Intl.DateTimeFormat("es-ES",{timeZone:"Europe/Madrid",dateStyle:"short",timeStyle:"medium"}).format(date);
+  const entry=el("li","",when+" · "+String(event.trend_name||"Tendencia"));
+  list.append(entry);
+ }
+ if(!list.children.length)list.append(el("li","","Ninguna pulsación PU en las últimas 24 horas."));
+}
+async function loadPublications(){
+ const res=await fetch("/api/publication-count",{cache:"no-store",credentials:"same-origin"});
+ if(!res.ok)throw Error("Contador PU no disponible (HTTP "+res.status+")");
+ const data=await res.json();
+ if(!Number.isSafeInteger(data.count)||!Array.isArray(data.events))throw Error("Contador PU incoherente");
+ state.publications=data;
+ renderPublications();
+}
+async function loadManualImages(){
+ const res=await fetch(PUBLIC_SITE+'/api/manual-v2-image/catalog',{cache:'no-store',credentials:'omit'});
+ if(!res.ok)throw Error('Catálogo manual HTTP '+res.status);
+ const data=await res.json();
+ if(data.schema_version!==1||!Array.isArray(data.images))throw Error('Catálogo manual inválido');
+ state.manualImages=data.images.filter(x=>/^trv2-[a-f0-9]{24}$/.test(x.trend_id)&&
+   Number.isSafeInteger(x.revision)&&/^[a-f0-9]{64}$/.test(x.sha256)&&
+   x.image_url===PUBLIC_SITE+'/images/v2-manual/'+x.trend_id+'-r'+x.revision+'-'+x.sha256.slice(0,12)+'.'+({'image/png':'png','image/jpeg':'jpg','image/webp':'webp'}[x.mime]||''));
+}
+function applyManualImages(){
+ for(const item of state.items){
+  const saved=state.manualImages.find(x=>x.trend_id===item.trend_id&&x.revision===item.revision);
+  item.manual_image_url=saved?.image_url||null;
+ }
+}
 function reRequested(item){
  return state.reRequests.some(row=>row.trend_id===item.trend_id&&row.base_revision===item.revision);
 }
@@ -244,15 +293,84 @@ function attachGeneratedImage(card,item){
   const openImage=()=>{
    if(requested||!card.open)return;
    requested=true;
-   picture.src="/api/image/"+encodeURIComponent(item.trend_id)+"?revision="+item.revision;
+   picture.src=item.manual_image_url||"/api/image/"+encodeURIComponent(item.trend_id)+"?revision="+item.revision;
   };
   card.addEventListener("toggle",openImage);
   openImage();
 }
 function imageReady(item){
- return item.image_available===true&&item.status==="explicada"&&
+ return (item.image_available===true||!!item.manual_image_url)&&item.image_suppressed!==true&&
+   !reResetPending(item)&&item.status==="explicada"&&
    /^trv2-[a-f0-9]{24}$/.test(item.trend_id)&&
    Number.isSafeInteger(item.revision)&&item.revision>=1;
+}
+function openManualPasteDialog(item){
+ const dialog=el('dialog','manual-image-dialog');
+ const title=el('h3','','Pegar imagen · '+item.name+' (revisión '+item.revision+')');
+ const description=el('p','','Copia el original desde Mis imágenes de ChatGPT. Toca la zona de abajo y usa Pegar. También puedes elegir la imagen desde Fotos o Archivos. Tras confirmar, se asociará a esta tendencia en V2 y en la web pública V1.');
+ const target=el('div','image-paste-zone','Mantén pulsado aquí y elige «Pegar imagen»');
+ target.contentEditable='true';target.setAttribute('role','textbox');target.setAttribute('aria-label','Pegar imagen desde el portapapeles');
+ const fileInput=el('input','image-file-picker');fileInput.type='file';fileInput.accept='image/png,image/jpeg,image/webp';
+ const preview=el('img','manual-image-preview');preview.alt='Previsualización del original pegado';preview.hidden=true;
+ const message=el('p','manual-image-message','');message.setAttribute('role','status');
+ const actions=el('div','re-x-actions');
+ const cancel=el('button','','Cancelar');cancel.type='button';
+ const save=el('button','re-x-submit','Asociar en V2 y V1');save.type='button';save.disabled=true;
+ let chosen=null,localURL=null;
+ function choose(file){
+  if(!file||!['image/png','image/jpeg','image/webp'].includes(file.type)||file.size<10000||file.size>8*1024*1024){
+   message.textContent='Necesito el archivo real PNG, JPG o WebP (máximo 8 MB). Si el portapapeles solo trae un enlace, usa Fotos/Archivos.';return;
+  }
+  chosen=file;save.disabled=false;
+  if(localURL)URL.revokeObjectURL(localURL);
+  localURL=URL.createObjectURL(file);preview.src=localURL;preview.hidden=false;
+  target.textContent='Imagen recibida · '+Math.round(file.size/1024)+' KB';message.textContent='Comprueba la imagen antes de asociarla.';
+ }
+ target.addEventListener('paste',event=>{
+  const files=[...(event.clipboardData?.files||[])];
+  for(const entry of event.clipboardData?.items||[]){const file=entry.type.startsWith('image/')?entry.getAsFile():null;if(file)files.push(file)}
+  if(files.length){event.preventDefault();choose(files[0])}
+ });
+ target.addEventListener('input',async()=>{
+  const pasted=target.querySelector('img');
+  if(!pasted)return;
+  const source=pasted.getAttribute('src')||'';
+  target.textContent='Comprobando imagen pegada…';
+  if(!/^(?:data:image\/(?:png|jpeg|webp);base64,|blob:)/i.test(source)){
+   message.textContent='Se ha pegado un enlace, no los bytes de la imagen. Utiliza «Elegir imagen».';return;
+  }
+  try{const response=await fetch(source);choose(await response.blob())}catch{message.textContent='No se pudieron leer los bytes de la imagen pegada.'}
+ });
+ fileInput.addEventListener('change',()=>choose(fileInput.files?.[0]));
+ cancel.addEventListener('click',()=>dialog.close());
+ save.addEventListener('click',async()=>{
+  if(!chosen)return;
+  if(!window.confirm('¿Asociar la imagen de «'+item.name+'» a su revisión '+item.revision+' y mostrarla también en la web pública V1?'))return;
+  save.disabled=true;cancel.disabled=true;message.textContent='Verificando y asociando el original…';
+  try{
+   const buffer=await chosen.arrayBuffer();
+   const sha=[...new Uint8Array(await crypto.subtle.digest('SHA-256',buffer))].map(x=>x.toString(16).padStart(2,'0')).join('');
+   const claim=await fetch('/api/manual-image-ticket',{method:'POST',credentials:'same-origin',headers:{'content-type':'application/json','x-ttv2-action':'1'},body:JSON.stringify({trend_id:item.trend_id,revision:item.revision,sha256:sha,mime:chosen.type,bytes:buffer.byteLength})});
+   if(!claim.ok)throw Error('La tendencia ha cambiado o no admite imagen (HTTP '+claim.status+'). Actualiza.');
+   const ticket=(await claim.json()).ticket;
+   const form=new FormData();form.set('ticket',ticket);form.set('trend_id',item.trend_id);form.set('revision',String(item.revision));form.set('image',new File([buffer],'imagen.'+({'image/png':'png','image/jpeg':'jpg','image/webp':'webp'}[chosen.type]),{type:chosen.type}));
+   const upload=await fetch(PUBLIC_SITE+'/api/manual-v2-image',{method:'POST',body:form,credentials:'omit'});
+   const done=await upload.json();
+   if(!upload.ok||done.image?.sha256!==sha||done.image?.trend_id!==item.trend_id||done.image?.revision!==item.revision)throw Error(done.error||'No se pudo verificar la asociación en V1');
+   item.manual_image_url=done.image.image_url;
+   state.manualImages=state.manualImages.filter(x=>x.trend_id!==item.trend_id||x.revision!==item.revision);
+   state.manualImages.push(done.image);
+   // An explicit manual attachment is also the owner's public visibility choice.
+   const visibility=await fetch('/api/image-visibility',{method:'POST',credentials:'same-origin',headers:{'content-type':'application/json','x-ttv2-action':'1'},body:JSON.stringify({trend_id:item.trend_id,revision:item.revision,scope:'public',visible:true})});
+   if(!visibility.ok)throw Error('Imagen guardada en V1, pero no se pudo confirmar su visibilidad pública. Usa «Imagen en V1».');
+   item.public_image_visible=true;
+   publishNotice('Imagen real asociada a «'+item.name+'» (r'+item.revision+') en V2 y V1. Ninguna publicación automática.');
+   dialog.close();render();
+  }catch(error){message.textContent='No se completó: '+error.message;save.disabled=false;cancel.disabled=false}
+ });
+ actions.append(cancel,save);dialog.append(title,description,target,fileInput,preview,message,actions);
+ dialog.addEventListener('close',()=>{if(localURL)URL.revokeObjectURL(localURL);dialog.remove()},{once:true});
+ document.body.append(dialog);dialog.showModal();target.focus();
 }
 function publishNotice(message){
  const notice=$("notice");notice.textContent=message;notice.hidden=false;
@@ -282,6 +400,30 @@ function openReXDialog(item,onSubmit){
  document.body.append(dialog);dialog.showModal();textarea.focus();
 }
 function makePublishButtons(card,item){
+ if(item.status==="incidencia"){
+  const actions=el("div","publish-actions");
+  const button=el("button","publish-action re-x-action","RE-X");
+  button.type="button";
+  button.title="Aportar pistas a X para recuperar la elaboración interrumpida";
+  button.setAttribute("aria-label","Aportar pistas RE-X a la incidencia de "+item.name);
+  button.disabled=incidentRequested(item);
+  button.addEventListener("click",()=>{
+   if(button.disabled)return;
+   openReXDialog(item,async hints=>{
+    const response=await fetch("/api/incident-rex",{method:"POST",credentials:"same-origin",
+     headers:{"content-type":"application/json","x-ttv2-action":"1"},
+     body:JSON.stringify({trend_id:item.trend_id,revision:item.revision,hints})});
+    if(!response.ok)throw Error("HTTP "+response.status);
+    state.incidentRequests.push({trend_id:item.trend_id,base_revision:item.revision});
+    publishNotice("Pistas RE-X guardadas para «"+item.name+"». Se usarán en el próximo reintento seguro, tras comprobar si el chat anterior se puede recuperar.");
+    render();
+   });
+  });
+  actions.append(button);
+  if(button.disabled)actions.append(el("span","review-state","Pistas RE-X recibidas · esperando recuperación"));
+  card.append(actions);
+  return;
+ }
  if(item.status!=="explicada")return;
  const text=tweetText(item.explanation,item);
  if(text.startsWith("Explicación pendiente"))return;
@@ -398,6 +540,32 @@ function makePublishButtons(card,item){
   if(!opened)publishNotice("El navegador bloqueó la ventana de X. Permite abrir ventanas emergentes para publicar.");
  });
  actions.append(x);
+ if(!imageReady(item)&&item.image_suppressed!==true){
+  const paste=el('button','publish-action image-paste-action','Pegar IA');
+  paste.type='button';paste.title='Pegar el original de Mis imágenes o seleccionarlo desde Fotos/Archivos';
+  paste.addEventListener('click',()=>openManualPasteDialog(item));
+  actions.append(paste);
+ }
+ const pu=el("button","publish-action publication-mark-action","PU");
+ pu.type="button";pu.title="Registrar una publicación realizada (contador móvil de 24 h)";
+ pu.setAttribute("aria-label","Sumar una publicación de "+item.name+" al contador PU");
+ pu.addEventListener("click",async()=>{
+  if(pu.disabled)return;
+  pu.disabled=true;
+  try{
+   const event_id=crypto.randomUUID();
+   const response=await fetch("/api/publication-count",{method:"POST",credentials:"same-origin",
+     headers:{"content-type":"application/json","x-ttv2-action":"1"},
+     body:JSON.stringify({event_id,trend_id:item.trend_id,revision:item.revision})});
+   if(!response.ok)throw Error("HTTP "+response.status);
+   const data=await response.json();
+   if(!Number.isSafeInteger(data.count)||!Array.isArray(data.events))throw Error("Respuesta de PU no válida");
+   state.publications=data;renderPublications();
+   publishNotice("PU registrada para «"+item.name+"». Últimas 24 h: "+data.count+".");
+  }catch(error){publishNotice("No se pudo registrar PU para «"+item.name+"»: "+error.message)}
+  finally{pu.disabled=false;}
+ });
+ actions.append(pu);
  if(imageReady(item)){
   const withImage=el("button","publish-action publish-with-image","P-IA");
   withImage.type="button";withImage.title="Compartir en X con la imagen IA original";
@@ -409,7 +577,7 @@ function makePublishButtons(card,item){
    const composer=typeof navigator.share!=="function"?window.open("about:blank","_blank"):null;
    if(composer)composer.opener=null;
    try{
-    const endpoint="/api/image/"+encodeURIComponent(item.trend_id)+"?revision="+item.revision;
+    const endpoint=item.manual_image_url||"/api/image/"+encodeURIComponent(item.trend_id)+"?revision="+item.revision;
     const res=await fetch(endpoint,{credentials:"same-origin",cache:"no-store"});
     if(!res.ok)throw Error("Imagen no disponible (HTTP "+res.status+")");
     const blob=await res.blob();
@@ -529,6 +697,10 @@ async function refresh(){
   if(state.open&&!state.items.some(item=>item.trend_id===state.open))state.open=null;
   await loadSharedMarks();
   try{await loadReRequests()}catch{state.reRequests=[]}
+  try{await loadIncidentRequests()}catch{state.incidentRequests=[]}
+  try{await loadPublications()}catch{$("publication-summary").textContent="PU · — / 24 h"}
+  try{await loadManualImages()}catch{}
+  applyManualImages();
   render();
   $("notice").hidden=true;
   button.title="Actualizar tendencias · última consulta "+new Intl.DateTimeFormat("es-ES",{hour:"2-digit",minute:"2-digit",timeZone:"Europe/Madrid"}).format(new Date());
@@ -539,5 +711,8 @@ async function refresh(){
  }finally{refreshing=false;button.disabled=false;button.classList.remove("loading-refresh")}
 }
 $("refresh").addEventListener("click",refresh);
+$("publication-summary").addEventListener("click",()=>{$("publication-dialog").showModal();void loadPublications().catch(()=>{})});
+$("publication-close").addEventListener("click",()=>$("publication-dialog").close());
 refresh();
 setInterval(()=>{if(!document.hidden)refresh()},90000);
+setInterval(()=>{if(!document.hidden)void loadPublications().catch(()=>{})},60000);

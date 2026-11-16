@@ -46,5 +46,38 @@ class PrivateRePlannerTest(unittest.TestCase):
         self.assertEqual(updated, self.queue)
 
 
+    def test_incident_hints_do_not_interrupt_active_or_expired_editorial_run(self):
+        original = self.queue["items"][ID]
+        original.update(status="in_progress", lease={"expires_at": "2026-11-15T17:00:00Z"},
+                        send_intent={"token": "recorded", "at": "2026-11-15T16:40:00Z"})
+        request = {"trend_id": ID, "base_revision": 1, "purpose": "incident_hints",
+                   "hints": "Contrastar en X la conversación reciente sobre esta noticia."}
+        updated, applied, ignored = plan_requested_reviews(self.queue, self.history, [request])
+        self.assertEqual((applied, ignored), ([ID], 0))
+        self.assertEqual(updated["items"][ID]["revision"], 1)
+        self.assertEqual(updated["items"][ID]["status"], "in_progress")
+        self.assertEqual(updated["items"][ID]["send_intent"], original["send_intent"])
+        self.assertEqual(updated["items"][ID]["lease"], original["lease"])
+        self.assertNotIn("incident_review_hints_pending", original)
+        again, applied, ignored = plan_requested_reviews(updated, self.history, [request])
+        self.assertEqual((applied, ignored), ([], 0))
+        self.assertEqual(again, updated)
+
+    def test_terminal_cancelled_incident_is_enqueued_once_with_hints(self):
+        self.queue["items"][ID]["status"] = "cancelled"
+        req = {"trend_id": ID, "base_revision": 1, "purpose": "incident_hints",
+               "hints": "Revisar el hashtag de ayer y contrastar los datos con prensa."}
+        updated, applied, ignored = plan_requested_reviews(self.queue, self.history, [req])
+        self.assertEqual((applied, ignored), ([ID], 0))
+        self.assertEqual(updated["items"][ID]["status"], "review_pending")
+        self.assertEqual(updated["items"][ID]["review_mode"], "x")
+        self.assertEqual(updated["items"][ID]["review_hints"], req["hints"])
+        self.assertNotIn("capture", updated["items"][ID])
+        again, changed, ignored = plan_requested_reviews(updated, self.history, [req])
+        self.assertEqual(changed, [])
+        self.assertEqual(ignored, 0)
+        self.assertEqual(again, updated)
+
+
 if __name__ == "__main__":
     unittest.main()

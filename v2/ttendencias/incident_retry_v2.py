@@ -95,8 +95,15 @@ def restart_as_new_revision(queue, trend_id, *, now=None, chrome_clear=False,
     row["previous_attempts"] = archive[-MAX_INCIDENT_RETRIES:]
     row["revision"] = int(row["revision"]) + 1
     row["incident_retries"] = int(row.get("incident_retries", 0)) + 1
-    row["status"] = "pending"
-    row["reason"] = "retry_after_incident"
+    hints = row.pop("incident_review_hints_pending", None)
+    with_hints = isinstance(hints, str) and 10 <= len(hints.strip()) <= 1200
+    row["status"] = "review_pending" if with_hints else "pending"
+    row["reason"] = "retry_after_incident_with_hints" if with_hints else "retry_after_incident"
+    if with_hints:
+        row["review_mode"] = "x"
+        row["review_hints"] = hints.strip()
+    # Without new hints, preserve an existing RE-X review_mode/review_hints
+    # from the interrupted attempt; retrying must not erase user context.
     row["requested_at"] = iso
     row["updated_at"] = iso
     row["attempts"] = 0

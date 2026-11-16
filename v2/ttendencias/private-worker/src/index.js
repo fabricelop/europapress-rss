@@ -102,15 +102,23 @@ function sensitiveEditorial(item) {
 async function reXTable(db) {
   await db.prepare("CREATE TABLE IF NOT EXISTS re_x_context (trend_id TEXT NOT NULL, base_revision INTEGER NOT NULL, hints TEXT NOT NULL, PRIMARY KEY(trend_id,base_revision))").run();
 }
+async function incidentReXTable(db) {
+  await db.prepare("CREATE TABLE IF NOT EXISTS incident_rex_requests (trend_id TEXT NOT NULL, base_revision INTEGER NOT NULL, hints TEXT NOT NULL, requested_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ','now')), PRIMARY KEY(trend_id,base_revision))").run();
+}
+async function manualImageTicketsTable(db) {
+  await db.prepare("CREATE TABLE IF NOT EXISTS manual_image_tickets (token_hash TEXT PRIMARY KEY, trend_id TEXT NOT NULL, revision INTEGER NOT NULL, sha256 TEXT NOT NULL, mime TEXT NOT NULL, bytes INTEGER NOT NULL, expires_at_ms INTEGER NOT NULL, redeemed_at_ms INTEGER)").run();
+}
 async function publicEditorialOverrides(env) {
   if (!env.MARKS_DB) throw Error("OVERRIDES_STORAGE_UNAVAILABLE");
   await imageSuppressionsTable(env.MARKS_DB);
   await reXTable(env.MARKS_DB);
-  const [pending,images,preferences,contexts]=await Promise.all([
+  await incidentReXTable(env.MARKS_DB);
+  const [pending,images,preferences,contexts,incidents]=await Promise.all([
     env.MARKS_DB.prepare("SELECT trend_id,base_revision FROM re_requests WHERE status IN ('requested','applied') ORDER BY requested_at DESC LIMIT 200").all(),
     env.MARKS_DB.prepare("SELECT trend_id,revision FROM image_suppressions ORDER BY suppressed_at DESC LIMIT 200").all(),
     env.MARKS_DB.prepare("SELECT trend_id,revision,visible FROM public_image_prefs ORDER BY updated_at DESC LIMIT 200").all(),
-    env.MARKS_DB.prepare("SELECT trend_id,base_revision,hints FROM re_x_context LIMIT 200").all()
+    env.MARKS_DB.prepare("SELECT trend_id,base_revision,hints FROM re_x_context LIMIT 200").all(),
+    env.MARKS_DB.prepare("SELECT trend_id,base_revision,hints FROM incident_rex_requests ORDER BY requested_at DESC LIMIT 200").all()
   ]);
   const notes=new Map((contexts.results||[]).filter(x=>TREND_ID.test(x.trend_id)&&Number.isSafeInteger(x.base_revision)&&typeof x.hints==="string"&&x.hints.length<=1200).map(x=>[x.trend_id+":"+x.base_revision,x.hints]));
   const re=(pending.results||[]).filter(x=>TREND_ID.test(x.trend_id)&&Number.isSafeInteger(x.base_revision)&&x.base_revision>0).map(x=>{
@@ -119,7 +127,8 @@ async function publicEditorialOverrides(env) {
   });
   const suppressed=(images.results||[]).filter(x=>TREND_ID.test(x.trend_id)&&Number.isSafeInteger(x.revision)&&x.revision>0);
   const visibility=(preferences.results||[]).filter(x=>TREND_ID.test(x.trend_id)&&Number.isSafeInteger(x.revision)&&x.revision>0&&(x.visible===0||x.visible===1));
-  return {re,suppressed,visibility};
+  const incident_rex=(incidents.results||[]).filter(x=>TREND_ID.test(x.trend_id)&&Number.isSafeInteger(x.base_revision)&&x.base_revision>0&&typeof x.hints==="string"&&x.hints.trim().length>=10&&x.hints.length<=1200);
+  return {re,incident_rex,suppressed,visibility};
 }
 async function imageVisibility(request,env) {
   if (!env.MARKS_DB)return json({error:"image_storage_not_configured"},503);
@@ -224,6 +233,111 @@ async function reRequests(request,env) {
   }catch{return json({error:"re_storage_unavailable"},503);}
 }
 
+async function incidentReX(request,env) {
+  if(!env.MARKS_DB)return json({error:"incident_storage_not_configured"},503);
+  if(request.method!=="GET"&&(request.method!=="POST"||!sameOrigin(request)))
+    return json({error:"method_not_allowed"},405);
+  try {
+    await incidentReXTable(env.MARKS_DB);
+    if(request.method==="GET"){
+      const data=await env.MARKS_DB.prepare("SELECT trend_id,base_revision FROM incident_rex_requests ORDER BY requested_at DESC LIMIT 200").all();
+      return json({requests:data.results||[]});
+    }
+    if(Number(request.headers.get("content-length")||0)>4096)return json({error:"invalid_payload"},413);
+    let body;
+    try{body=await request.json();}catch{return json({error:"invalid_payload"},400);}
+    const {trend_id,revision}=body||{};
+    const hints=typeof body?.hints==="string"?body.hints.trim():"";
+    if(!TREND_ID.test(trend_id)||!Number.isSafeInteger(revision)||revision<1||revision>100000||
+       hints.length<10||hints.length>1200)return json({error:"invalid_payload"},400);
+    let ranking;
+    try{ranking=await currentRanking(env);}catch{return json({error:"ranking_unavailable"},503);}
+    const current=ranking.find(x=>x.trend_id===trend_id);
+    if(!current||current.revision!==revision||current.status!=="incidencia"||
+       current.re_in_progress===true||!
+       ["in_progress","capture_recovery","cancelled","captured_review","ready","published"].includes(current.editorial_status))
+      return json({error:"incident_not_current"},409);
+    // This is only a hint request. The poller must NEVER reset an in-flight
+    // chat; it annotates the revision and the incident recovery worker decides.
+    await env.MARKS_DB.prepare("INSERT INTO incident_rex_requests(trend_id,base_revision,hints) VALUES(?,?,?) ON CONFLICT(trend_id,base_revision) DO NOTHING").bind(trend_id,revision,hints).run();
+    return json({ok:true,queued:true,trend_id,base_revision:revision},202);
+  }catch{return json({error:"incident_rex_unavailable"},503);}
+}
+
+const UUID_V4=/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+const MANUAL_MAX_BYTES=8*1024*1024;
+async function manualImageTicket(request,env){
+  if(!env.MARKS_DB)return json({error:"manual_image_storage_not_configured"},503);
+  if(request.method!=="POST"||!sameOrigin(request))return json({error:"method_not_allowed"},405);
+  if(Number(request.headers.get("content-length")||0)>1024)return json({error:"invalid_payload"},413);
+  let body;
+  try{body=await request.json();}catch{return json({error:"invalid_payload"},400);}
+  const {trend_id,revision,sha256:contentHash,mime,bytes}=body||{};
+  if(!TREND_ID.test(trend_id)||!Number.isSafeInteger(revision)||revision<1||revision>100000||
+     !/^[a-f0-9]{64}$/.test(contentHash||"")||!Object.hasOwn(IMAGE_TYPES,mime)||
+     !Number.isSafeInteger(bytes)||bytes<10000||bytes>MANUAL_MAX_BYTES)
+    return json({error:"invalid_payload"},400);
+  let ranking;
+  try{ranking=await currentRanking(env);}catch{return json({error:"ranking_unavailable"},503);}
+  const row=ranking.find(x=>x.trend_id===trend_id);
+  if(!row||row.revision!==revision||row.status!=="explicada"||row.image_available===true||
+     row.re_in_progress===true)return json({error:"manual_image_not_current"},409);
+  try{
+    await manualImageTicketsTable(env.MARKS_DB);
+    const ticket=b64(crypto.getRandomValues(new Uint8Array(32)));
+    const expires=Date.now()+5*60000;
+    await env.MARKS_DB.prepare("INSERT INTO manual_image_tickets(token_hash,trend_id,revision,sha256,mime,bytes,expires_at_ms) VALUES(?,?,?,?,?,?,?)")
+      .bind(await sha256(ticket),trend_id,revision,contentHash,mime,bytes,expires).run();
+    return json({ok:true,ticket,expires_at_ms:expires,trend_id,revision});
+  }catch(error){console.error('MANUAL_IMAGE_TICKET',String(error?.message||error).slice(0,160));return json({error:"manual_image_ticket_unavailable"},503);}
+}
+// The public Site redeems an unguessable 256-bit capability after verifying
+// the actual raster and SHA. One redemption binds one exact revision only.
+async function redeemManualImageTicket(request,env){
+  if(!env.MARKS_DB)return json({error:"ticket_storage_unavailable"},503);
+  if(request.method!=="POST")return json({error:"method_not_allowed"},405);
+  if(Number(request.headers.get("content-length")||0)>1024)return json({error:"invalid_payload"},413);
+  let body;
+  try{body=await request.json();}catch{return json({error:"invalid_payload"},400);}
+  if(typeof body?.ticket!=="string"||!/^[A-Za-z0-9_-]{43}$/.test(body.ticket))return json({error:"invalid_ticket"},400);
+  try{
+    await manualImageTicketsTable(env.MARKS_DB);
+    const key=await sha256(body.ticket);
+    const row=await env.MARKS_DB.prepare("UPDATE manual_image_tickets SET redeemed_at_ms=? WHERE token_hash=? AND redeemed_at_ms IS NULL AND expires_at_ms>? RETURNING trend_id,revision,sha256,mime,bytes")
+      .bind(Date.now(),key,Date.now()).first();
+    return row?json({...row,ok:true}):json({error:"ticket_expired_or_redeemed"},409);
+  }catch{return json({error:"ticket_redemption_unavailable"},503);}
+}
+async function publicationCount(request,env) {
+  if(!env.MARKS_DB)return json({error:"publication_storage_not_configured"},503);
+  if(request.method!=="GET"&&(request.method!=="POST"||!sameOrigin(request)))
+    return json({error:"method_not_allowed"},405);
+  try {
+    const db=env.MARKS_DB;
+    await db.prepare("CREATE TABLE IF NOT EXISTS publication_clicks (event_id TEXT PRIMARY KEY, trend_id TEXT NOT NULL, revision INTEGER NOT NULL, trend_name TEXT NOT NULL, pressed_at_ms INTEGER NOT NULL)").run();
+    if(request.method==="POST"){
+      if(Number(request.headers.get("content-length")||0)>1024)return json({error:"invalid_payload"},413);
+      let body;
+      try{body=await request.json();}catch{return json({error:"invalid_payload"},400);}
+      const {event_id,trend_id,revision}=body||{};
+      if(typeof event_id!=="string"||!UUID_V4.test(event_id)||
+         !TREND_ID.test(trend_id)||!Number.isSafeInteger(revision)||revision<1||revision>100000)
+        return json({error:"invalid_payload"},400);
+      let ranking;
+      try{ranking=await currentRanking(env);}catch{return json({error:"ranking_unavailable"},503);}
+      const item=ranking.find(x=>x.trend_id===trend_id&&x.revision===revision);
+      if(!item||item.status!=="explicada"||item.re_in_progress===true)
+        return json({error:"trend_not_current"},409);
+      await db.prepare("INSERT INTO publication_clicks(event_id,trend_id,revision,trend_name,pressed_at_ms) VALUES(?,?,?,?,?) ON CONFLICT(event_id) DO NOTHING")
+        .bind(event_id,trend_id,revision,String(item.name).slice(0,150),Date.now()).run();
+    }
+    const threshold=Date.now()-24*HOUR;
+    const data=await db.prepare("SELECT event_id,trend_id,revision,trend_name,pressed_at_ms FROM publication_clicks WHERE pressed_at_ms > ? AND pressed_at_ms <= ? ORDER BY pressed_at_ms ASC,event_id ASC LIMIT 500").bind(threshold,Date.now()).all();
+    const events=(data.results||[]).filter(x=>Number.isSafeInteger(x.pressed_at_ms));
+    return json({count:events.length,window_hours:24,events});
+  }catch{return json({error:"publication_counter_unavailable"},503);}
+}
+
 
 const HEX64=/^[a-f0-9]{64}$/;
 const IMAGE_COMMAND=/^v2-img-trv2-[a-f0-9]{24}-r[1-9][0-9]*-a[1-9][0-9]*-[a-zA-Z0-9_-]{8,60}$/;
@@ -307,6 +421,7 @@ export default {
     }
     if (!configured(env)) return result("Acceso privado no configurado",503);
     if (url.pathname === "/api/image-ingest-ready" || url.pathname === "/api/image-ingest") return json({error:"image_backend_migrated_to_github"},410);
+    if (url.pathname === "/api/manual-image-ticket/redeem") return redeemManualImageTicket(request,env);
     if (url.pathname === "/api/login") {
       if (request.method !== "POST" || !sameOrigin(request)) return json({ok:false},403);
       // Five approximate login attempts per minute per network origin, no KV writes.
@@ -339,6 +454,9 @@ export default {
     if (url.pathname === "/api/image-visibility")return imageVisibility(request,env);
     if (url.pathname === "/api/marks") return redMarks(request,env);
     if (url.pathname === "/api/re-explain") return reRequests(request,env);
+    if (url.pathname === "/api/incident-rex") return incidentReX(request,env);
+    if (url.pathname === "/api/manual-image-ticket") return manualImageTicket(request,env);
+    if (url.pathname === "/api/publication-count") return publicationCount(request,env);
     if (url.pathname.startsWith("/api/state/")) {
       if (request.method !== "GET") return json({error:"method_not_allowed"},405);
       const name = url.pathname.slice("/api/state/".length);
@@ -387,7 +505,7 @@ export default {
     const response=await env.ASSETS.fetch(request);
     const h=new Headers(response.headers);
     Object.entries(headers()).forEach(([key,value])=>h.set(key,value));
-    h.set("Content-Security-Policy","default-src 'self'; img-src 'self' data:; connect-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'self'");
+    h.set("Content-Security-Policy","default-src 'self'; img-src 'self' data: blob: https://ttactualidad.rainyraven22.chatgpt.site; connect-src 'self' blob: https://ttactualidad.rainyraven22.chatgpt.site; script-src 'self' 'unsafe-inline'; style-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'self'");
     return new Response(response.body,{status:response.status,headers:h});
   }
 };

@@ -131,6 +131,39 @@ class IncidentRetryTests(unittest.TestCase):
             restart_as_new_revision(q, ident, now=NOW,
                                     chrome_clear=True, recovery_checked=True)
 
+    def test_incident_rex_hints_are_used_only_after_safe_recovery_check(self):
+        q, _ = sample()
+        ident = "trv2-%024x" % 1
+        hints = "Revisar los mensajes de X y contrastar fechas y personas."
+        q["items"][ident].update(status="capture_recovery", revision=2,
+                                  updated_at=(NOW-timedelta(hours=1)).isoformat(),
+                                  incident_review_hints_pending=hints)
+        with self.assertRaises(ValueError):
+            restart_as_new_revision(q, ident, now=NOW, chrome_clear=True,
+                                    recovery_checked=False)
+        newer = restart_as_new_revision(q, ident, now=NOW,
+            chrome_clear=True, recovery_checked=True)
+        item = newer["items"][ident]
+        self.assertEqual(item["revision"], 3)
+        self.assertEqual(item["status"], "review_pending")
+        self.assertEqual(item["review_mode"], "x")
+        self.assertEqual(item["review_hints"], hints.strip())
+        self.assertNotIn("incident_review_hints_pending", item)
+        self.assertEqual(q["items"][ident]["revision"], 2)
+
+    def test_incident_retry_preserves_existing_rex_context_without_new_hints(self):
+        q, _ = sample()
+        ident = "trv2-%024x" % 1
+        q["items"][ident].update(status="capture_recovery", revision=2,
+            review_mode="x", review_hints="Investigar tema con contexto verificado.",
+            updated_at=(NOW-timedelta(hours=1)).isoformat())
+        newer = restart_as_new_revision(q, ident, now=NOW,
+            chrome_clear=True, recovery_checked=True)
+        item = newer["items"][ident]
+        self.assertEqual(item["status"], "pending")
+        self.assertEqual(item["review_mode"], "x")
+        self.assertEqual(item["review_hints"], "Investigar tema con contexto verificado.")
+
     def test_verified_capture_never_reset(self):
         q, _ = sample()
         ident = "trv2-%024x" % 1

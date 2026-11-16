@@ -16,6 +16,7 @@ on:
       - 'v2/ttendencias/test_chrome_profile_process_v2.py'
       - 'v2/ttendencias/test_image_worker_v2.py'
       - 'v2/ttendencias/Upgrade-V2-Image-Send.ps1'
+      - 'v2/ttendencias/Upgrade-V2-Incident-Images.ps1'
       - 'v2/ttendencias/editorial_run_v2.py'
       - '.github/workflows/ttactualidad-v2-re-windows-check.yml'
   workflow_dispatch:
@@ -50,7 +51,7 @@ jobs:
         shell: pwsh
         run: |
           $env:PYTHONPATH = 'v2/ttendencias'
-          python -m unittest -v test_auto_editorial_v2 test_re_request_v2 test_sync_private_re_v2
+          python -m unittest -v test_auto_editorial_v2 test_re_request_v2 test_sync_private_re_v2 test_incident_retry_v2
       - name: Validar actualizacion y contrato general de imagenes RE y RE-X
         shell: powershell
         run: |
@@ -90,9 +91,24 @@ jobs:
           $env:PYTHONPATH = 'v2/ttendencias'
           python -m pip install --disable-pip-version-check playwright
           python -m unittest -v test_chrome_profile_process_v2 test_image_worker_v2 test_parallel_dispatch_v2
+      - name: Validar instalador seguro de incidencias e imagenes
+        shell: powershell
+        run: |
+          $file = 'v2/ttendencias/Upgrade-V2-Incident-Images.ps1'
+          $tokens = $null
+          $errors = $null
+          [Management.Automation.Language.Parser]::ParseFile($file,[ref]$tokens,[ref]$errors) | Out-Null
+          if ($errors.Count -gt 0) { throw ($errors | Out-String) }
+          $source = Get-Content $file -Raw
+          foreach ($marker in @('TT_V2_INCIDENT_REX_PC_INSTALLED=YES','TT_V2_RE_IMAGES_OUTSIDE_TOP30=INSTALLED','TT_V2_V1_AND_PUBLICATION=UNTOUCHED')) {
+            if (!$source.Contains($marker)) { throw "Contrato ausente: $marker" }
+          }
+          if ($source -match '(?i)\b(Stop-Process|Stop-ScheduledTask|taskkill)\b') {
+            throw 'El instalador no debe matar Chrome ni interrumpir chats'
+          }
       - name: Comprobar botón RE-X, validación de pistas y compatibilidad RE
         shell: pwsh
         run: |
-          node --test v2/ttendencias/private-worker/tests/re-x.test.mjs v2/ttendencias/private-worker/tests/re-explain.test.mjs v2/ttendencias/private-worker/tests/image-visibility.test.mjs
+          node --test v2/ttendencias/private-worker/tests/re-x.test.mjs v2/ttendencias/private-worker/tests/incident-rex.test.mjs v2/ttendencias/private-worker/tests/publication-count.test.mjs v2/ttendencias/private-worker/tests/re-explain.test.mjs v2/ttendencias/private-worker/tests/image-visibility.test.mjs
           node --check v2/ttendencias/private-worker/web-source/app.js
           node --check v2/ttendencias/private-worker/src/index.js

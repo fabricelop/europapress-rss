@@ -6,6 +6,7 @@ still the authoritative queue: every pair is validated again before mutation.
 This operates independently of V1, the Top30 schedule, and GitHub cron.
 """
 import json
+import copy
 import urllib.request
 from datetime import datetime, timezone
 
@@ -21,11 +22,13 @@ def fetch_requests(url=PUBLIC_RE):
         "Accept": "application/json", "User-Agent": "TTActualidadV2-RE-Poll"})
     with urllib.request.urlopen(request, timeout=12) as response:
         data = json.load(response)
-    if data.get("schema_version") != 1 or not isinstance(data.get("re"), list):
+    if (data.get("schema_version") != 1 or not isinstance(data.get("re"), list)
+            or not isinstance(data.get("incident_rex", []), list)):
         raise ValueError("V2 RE public response has unexpected schema")
-    if len(data["re"]) > 100:
+    if len(data["re"]) > 200 or len(data.get("incident_rex", [])) > 200:
         raise ValueError("V2 RE public response unexpectedly large")
-    return data["re"]
+    return data["re"] + [{**row, "purpose": "incident_hints"}
+                          for row in data.get("incident_rex", [])]
 
 
 def plan_requested_reviews(queue, history, requests, *, now=None):
@@ -44,6 +47,45 @@ def plan_requested_reviews(queue, history, requests, *, now=None):
             continue
         existing = (updated.get("items") or {}).get(trend_id)
         if not existing or existing.get("revision", 0) > base:
+            continue
+        if req.get("purpose") == "incident_hints":
+            hints = req.get("hints")
+            if not isinstance(hints, str) or not 10 <= len(hints.strip()) <= 1200:
+                ignored += 1
+                continue
+            if existing.get("revision") != base:
+                ignored += 1
+                continue
+            if existing.get("status") in ("in_progress", "capture_recovery"):
+                # No reset, no lease change, no duplicate prompt. The existing
+                # run may still finish and must remain recoverable.
+                if existing.get("incident_review_hints_pending") != hints.strip():
+                    if updated is queue:
+                        updated = copy.deepcopy(queue)
+                    updated["items"][trend_id]["incident_review_hints_pending"] = hints.strip()
+                    applied.append(trend_id)
+                continue
+            if existing.get("status") not in ("cancelled", "captured_review", "ready", "published"):
+                ignored += 1
+                continue
+            # A finished/terminal incident has no running lease to interrupt.
+            # A cancelled attempt is reset only by an explicit RE-X request.
+            incident = existing.get("status") == "cancelled"
+            try:
+                result, action = request_reexplanation(updated, history,
+                    trend_id=trend_id, base_revision=base,
+                    entered_top30_at=history.get("observed_at"),
+                    requested_at=timestamp, mode="x", hints=hints,
+                    allow_cancelled_incident=incident)
+            except ValueError:
+                ignored += 1
+                continue
+            if action == "ENQUEUED":
+                updated = result
+                applied.append(trend_id)
+            continue
+        if req.get("purpose") is not None:
+            ignored += 1
             continue
         try:
             result, action = request_reexplanation(updated, history,

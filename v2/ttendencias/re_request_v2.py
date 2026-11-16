@@ -9,7 +9,7 @@ from copy import deepcopy
 DISPLAYED = {"captured_review", "ready", "published"}
 
 
-def request_reexplanation(queue, history, *, trend_id, base_revision, entered_top30_at, requested_at, mode="standard", hints=""):
+def request_reexplanation(queue, history, *, trend_id, base_revision, entered_top30_at, requested_at, mode="standard", hints="", allow_cancelled_incident=False):
     """RE or RE-X; hints are user-supplied search leads, not verified facts."""
     if mode not in {"standard", "x"}:
         raise ValueError("Modalidad RE incorrecta")
@@ -46,7 +46,8 @@ def request_reexplanation(queue, history, *, trend_id, base_revision, entered_to
     if revision > base_revision:
         # El mismo RE fue procesado ya: evitar cualquier duplicación.
         return deepcopy(queue), "ALREADY_APPLIED"
-    if revision != base_revision or old.get("status") not in DISPLAYED:
+    allowed = DISPLAYED | ({"cancelled"} if allow_cancelled_incident and mode == "x" else set())
+    if revision != base_revision or old.get("status") not in allowed:
         raise ValueError("La revisión editorial ha cambiado o no está explicada")
     if not isinstance(requested_at, str) or not requested_at:
         raise ValueError("Fecha de solicitud no válida")
@@ -77,6 +78,8 @@ def request_reexplanation(queue, history, *, trend_id, base_revision, entered_to
     item.pop("text", None)
     item.pop("completed_at", None)
     item.pop("lease", None)
+    item.pop("send_intent", None)
+    item.pop("incident_review_hints_pending", None)
     pending = sorted((x for x in copy["items"].values() if x.get("status")
                      in {"pending", "review_pending", "in_progress", "captured_review", "capture_recovery"}),
                      key=lambda x: (x.get("requested_at", ""), x["trend_id"]))

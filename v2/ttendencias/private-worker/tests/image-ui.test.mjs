@@ -7,7 +7,7 @@ test("private Top30 displays revision-bound original only after opening card",()
  const css=readFileSync(new URL("../web-source/styles.css",import.meta.url),"utf8");
  assert.match(src,/function attachGeneratedImage\(card,item\)/);
  assert.match(src,/if\(!imageReady\(item\)\)return/);
- assert.match(src,/picture.src="\/api\/image\/"\+encodeURIComponent\(item.trend_id\)\+"\?revision="\+item.revision/);
+ assert.match(src,/picture.src=item.manual_image_url\|\|"\/api\/image\/"\+encodeURIComponent\(item.trend_id\)\+"\?revision="\+item.revision/);
  assert.match(src,/card.addEventListener\("toggle",openImage\)/);
  assert.match(src,/picture.loading="eager"/);
  assert.match(src,/"image-load-status","Cargando imagen IA…"/);

@@ -61,7 +61,12 @@ def eligible(row):
 
 
 def ranked_candidates(queue, history, *, now=None):
-    """Top30 in positional order, independent from editorial pending statuses."""
+    """Current Top30 plus recent RE/RE-X revisions that left the ranking.
+
+    Historical first revisions are not an unlimited image backlog. A recent,
+    explicitly reworked revision remains entitled to its own new image even
+    after the radar changes. Delivery/journal anti-duplicate guards still apply.
+    """
     # Reuse authoritative rank, freshness, completeness and revision checks.
     select_current_top30(queue, history, 30, now=now)
     by_rank = {}
@@ -69,8 +74,35 @@ def ranked_candidates(queue, history, *, now=None):
         if topic.get("active") is True and isinstance(topic.get("rank"), int):
             if 1 <= topic["rank"] <= 30:
                 by_rank[topic["rank"]] = topic["trend_id"]
-    return [queue["items"][by_rank[rank]] for rank in range(1, 31)
-            if eligible(queue["items"].get(by_rank[rank]) or {})]
+    active = [queue["items"][by_rank[rank]] for rank in range(1, 31)
+              if eligible(queue["items"].get(by_rank[rank]) or {})]
+    active_ids = {row["trend_id"] for row in active}
+    now = now or datetime.now(timezone.utc)
+    recovered = []
+    for row in queue["items"].values():
+        if row.get("trend_id") in active_ids or not eligible(row):
+            continue
+        if row.get("revision", 0) <= 1 or row.get("reason") not in (
+            "user_reexplanation", "retry_after_incident",
+            "retry_after_incident_with_hints"):
+            continue
+        cap = row.get("capture") or {}
+        try:
+            captured_at = datetime.fromisoformat(str(cap["captured_at"]).replace("Z", "+00:00"))
+            if captured_at.tzinfo is None or not timedelta(0) <= now-captured_at <= timedelta(hours=72):
+                continue
+        except (KeyError, TypeError, ValueError):
+            continue
+        recovered.append(row)
+    recovered.sort(key=lambda row: row["capture"]["captured_at"], reverse=True)
+    # Alternate new Top30 images and recent RE images. No category starves.
+    result = []
+    for index in range(max(len(active), min(len(recovered), 20))):
+        if index < len(active):
+            result.append(active[index])
+        if index < min(len(recovered), 20):
+            result.append(recovered[index])
+    return result
 
 
 def update_image_progress(api, auth, job, *, active):

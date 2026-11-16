@@ -45,6 +45,31 @@ def fixture():
 
 
 class SplitTest(unittest.TestCase):
+    def test_recent_rex_outside_top30_is_still_image_eligible(self):
+        queue, history = fixture()
+        outside = "trv2-" + "f" * 24
+        now = datetime.now(timezone.utc)
+        answer = "Nueva explicación contrastada de la revisión RE-X con datos verificados"
+        queue["items"][outside] = {"trend_id": outside, "name": "Fuera del Top30",
+            "revision": 2, "reason": "user_reexplanation", "status": "captured_review",
+            "capture": {"revision": 2, "answer": answer,
+                "sha256": fingerprint(answer), "captured_at": now.isoformat()}}
+        candidates = image.ranked_candidates(queue, history, now=now)
+        self.assertIn(outside, [x["trend_id"] for x in candidates])
+        self.assertEqual(candidates[1]["trend_id"], outside)
+        queue["items"][outside]["capture"]["captured_at"] = (now-timedelta(days=5)).isoformat()
+        self.assertNotIn(outside, [x["trend_id"] for x in image.ranked_candidates(queue, history, now=now)])
+
+    def test_old_non_top30_first_revision_does_not_create_infinite_image_backlog(self):
+        queue, history = fixture()
+        outside = "trv2-" + "e" * 24
+        answer = "Explicación antigua no RE ni RE-X"
+        queue["items"][outside] = {"trend_id": outside, "name": "Antigua",
+            "revision": 1, "status": "captured_review",
+            "capture": {"revision": 1, "answer": answer,
+                "sha256": fingerprint(answer), "captured_at": datetime.now(timezone.utc).isoformat()}}
+        self.assertNotIn(outside, [x["trend_id"] for x in image.ranked_candidates(queue, history)])
+
     def test_image_send_uses_enabled_button_once_for_new_and_reexplained(self):
         events = []
         class Composer:
