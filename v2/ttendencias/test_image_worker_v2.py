@@ -210,7 +210,7 @@ class SplitTest(unittest.TestCase):
                             generator.assert_not_called()
                         writer.assert_not_called()
 
-    def test_interrupted_send_is_not_retried_blindly(self):
+    def test_interrupted_send_retries_as_a_new_chat_after_cooldown(self):
         queue, _ = fixture()
         row = queue["items"]["trv2-%024x" % 1]
         with tempfile.TemporaryDirectory() as folder:
@@ -218,9 +218,9 @@ class SplitTest(unittest.TestCase):
                 editorial.store(image.journal_path(row["trend_id"], 1, 1),
                                 {"at": "2026-11-16T04:00:00+00:00",
                                  "status": "sent_waiting_for_image"})
-                self.assertIsNone(image.next_attempt(row))
+                self.assertEqual(image.next_attempt(row), 2)
 
-    def test_previous_unverified_new_chat_is_not_automatically_resent(self):
+    def test_previous_unverified_chat_allows_a_fresh_command(self):
         queue, _ = fixture()
         row = queue["items"]["trv2-%024x" % 1]
         with tempfile.TemporaryDirectory() as folder:
@@ -233,9 +233,9 @@ class SplitTest(unittest.TestCase):
                         "url": "https://chatgpt.com/",
                         "composer_contains_command": False,
                         "composer_inspection_failed": True}})
-                self.assertIsNone(image.next_attempt(row))
+                self.assertEqual(image.next_attempt(row), 101)
 
-    def test_unverified_send_is_recorded_as_not_retriable(self):
+    def test_unverified_send_gets_a_new_chat_attempt(self):
         queue, _ = fixture()
         row = queue["items"]["trv2-%024x" % 1]
         with tempfile.TemporaryDirectory() as folder:
@@ -243,7 +243,7 @@ class SplitTest(unittest.TestCase):
                 editorial.store(image.journal_path(row["trend_id"], 1, 1), {
                     "at": "2026-11-16T04:00:00+00:00",
                     "status": "send_unverified", "send_protocol": 2})
-                self.assertIsNone(image.next_attempt(row))
+                self.assertEqual(image.next_attempt(row), 2)
 
     def test_closed_chat_page_is_not_a_negative_submission_proof(self):
         class ClosedPage:
@@ -487,21 +487,22 @@ class SplitTest(unittest.TestCase):
                 retry_row, retry_attempt = image.pick_next(queue, history, now=later)
                 self.assertEqual((retry_row["name"], retry_attempt), ("#FelizDomingo", 2))
 
-    def test_first_saved_receipt_is_immutable(self):
+    def test_latest_saved_receipt_replaces_the_previous_one(self):
         queue, _ = fixture()
         tid = "trv2-%024x" % 1
         row = queue["items"][tid]
-        row["capture"]["image"] = {"status": "saved", "path": "original"}
+        row["capture"]["image"] = {"status": "saved", "revision": 1,
+                                   "attempt": 1, "path": "previous"}
         latest = copy.deepcopy(queue)
-        class Api:
-            def request(self, *args, **kwargs):
-                raise AssertionError("Should not contact GitHub when simulated")
+        replacement = {"status": "saved", "revision": 1, "attempt": 2,
+                       "path": "latest", "command_id": "v2-img-" + tid +
+                       "-r1-a2-0123456789abcdef"}
         with patch.object(editorial, "queue_read", return_value=(latest, "blob")):
             with patch.object(editorial, "queue_write") as writer:
-                editorial.update_image_receipt(Api(), "authtoken", tid, 1,
-                                               row["capture"]["sha256"],
-                                               {"status": "saved", "path": "duplicate"})
-                writer.assert_not_called()
+                editorial.update_image_receipt(None, "authtoken", tid, 1,
+                                               row["capture"]["sha256"], replacement)
+                writer.assert_called_once()
+        self.assertEqual(latest["items"][tid]["capture"]["image"], replacement)
 
     def test_image_generation_progress_is_revision_safe_and_cleared(self):
         queue, _ = fixture()
