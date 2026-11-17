@@ -72,6 +72,41 @@ test('V2 and the actual X intent use the same adapted copy with enabled P-X',()=
  assert.equal(new URL(opened).searchParams.get('text'),explanationText(tem.explanation,tem));
  assert.match(app,/item.status==="explicada"\?explanationText\(item.explanation,item\)/);
 });
+
+test('Fnatic: recognize “Explicación principal para X (155 caracteres máximo)”',()=>{
+ const lead='Fnatic podría ser tendencia por su partido de Counter-Strike 2 contra 100 Thieves en la fase clasificatoria del PGL Cluj-Napoca 2027. #CS2 #Fnatic';
+ const raw=[
+  'Fnatic — ficha informativa','',
+  'Causa no confirmada','',
+  'Explicación principal para X (155 caracteres máximo):','',
+  lead,'',
+  'Investigación y contraste','Causa confirmada',
+  'El motivo informativo está acreditado por varias fuentes independientes.'
+ ].join('\n');
+ const item={rank:13,name:'Fnatic',cause_status:'confirmada_declarada'};
+ assert.equal(editorial(raw),lead);
+ const shown=explanationText(raw,item);
+ assert.equal(shown,tweetText(raw,item));
+ assert.doesNotMatch(shown,/Explicación capturada|formato editorial pendiente|ficha informativa|Investigación y contraste/i);
+ assert.match(shown,/Fnatic podría ser tendencia por su partido de Counter-Strike 2/);
+ assert.ok(xLength(shown)<=280);
+ assert.equal(publishableText(shown),true);
+});
+test('alternate X lead headings with “texto apto para X” are also recognized',()=>{
+ const samples=[
+  ['Apple','Explicación principal — texto apto para X','Apple presenta una nueva función de privacidad para sus dispositivos y actualiza sus sistemas operativos.'],
+  ['Albania','Explicación principal — texto apto para X (máximo 155 caracteres)','Albania se clasifica para la fase final tras ganar el encuentro decisivo de la eliminatoria europea.'],
+  ['Miguel Ángel Blanco','Explicación principal — texto apto para X (155 caracteres máximo)','El aniversario del secuestro y asesinato de Miguel Ángel Blanco vuelve a centrar actos de recuerdo y homenajes.']
+ ];
+ for(const [name,heading,lead] of samples){
+  const raw=[name+' — ficha informativa','',heading+':','',lead,'','Investigación y contraste','Fuentes consultadas'].join('\n');
+  assert.equal(editorial(raw),lead,name);
+  const shown=explanationText(raw,{rank:9,name,cause_status:'confirmada_declarada'});
+  assert.doesNotMatch(shown,/formato editorial pendiente|Investigación y contraste/i,name);
+  assert.ok(xLength(shown)<=280,name);
+ }
+});
+
 test('empty or unusable captures never expose the long dossier as an X draft',()=>{
  assert.equal(explanationText('',{}),'Explicación pendiente.');
  assert.equal(publishableText(tweetText('',{})),false);
