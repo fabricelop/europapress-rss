@@ -10228,13 +10228,13 @@
       "trend_id": "trv2-2837ec6b6a439fa32ea2233b",
       "name": "Renfe",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "208d31dcaa89cf3e",
       "requested_at": "2026-11-17T10:08:43.783148+00:00",
       "updated_at": "2026-11-17T10:08:43.783148+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -10247,7 +10247,13 @@
           "archived_at": "2026-11-17T10:08:43.783148+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "569d58ddeb3aa78cf9638be49244e003b748128f48a89878",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-17T10:09:01.542065+00:00",
+        "expires_at": "2026-11-17T10:49:01.542065+00:00"
+      }
     }
   },
   "pending_count": 389,
