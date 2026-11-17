@@ -1,3 +1,11 @@
+## Reanudación 17/11/2026 — límite preenvío y clasificador de estados
+
+- `9501e93ff7ed636b650bfc9bdbd3834fa358389d`: `image_worker_v2.py` limita a 3 los fallos `pre_send_failed` por revisión, con cooldown 900 s; siguen separados de los tres intentos de envío. Evita ciclos infinitos del navegador ante un compositor roto.
+- `80c4b910355f525929c2543550c5903dfa391056`: nuevo módulo puro `image_retry_status_v2.py` para clasificar, conservadoramente, `pending`, `retry_pending`, `exhausted`, `unverified`, `saved` a partir de diarios de una revisión; devuelve presupuestos de envío y preenvío. Los casos ambiguos no se consideran reenviables.
+- `c4695d003adaba80c265fd1228737700bb135788`: pruebas unitarias de estos estados añadidas; todavía NO ejecutadas/validadas en CI.
+- MUY IMPORTANTE: el clasificador aún no está conectado al snapshot público ni al Site V2. Los diarios son locales y no deben exponerse íntegros. La interfaz aún NO muestra intentos restantes/agotados; no dar por terminada esta petición. No se ha desplegado nada en Windows ni se han reenviado imágenes.
+- Objetivo vigente del usuario: al abrir cada tendencia ver si aún habrá generación automática o si agotó intentos; sin recuperación manual backend por tendencia, con opción manual existente. Se debe alinear clasificador y planificador, proyectar solo estado seguro y validarlo en web.
+
 ## Decisión funcional usuario: visibilidad del presupuesto de imágenes — 17/11/2026
 
 El usuario RECHAZA recuperar casos individualmente de forma manual desde el backend: ya dispone de botones de generación/pegado manual en la ficha. Acepta un mecanismo automático general, pero su requisito principal es que AL ABRIR CADA TENDENCIA se vea de forma inequívoca si la imagen todavía puede generarse automáticamente o si ya no quedan intentos y debe decidir usar el procedimiento manual.
