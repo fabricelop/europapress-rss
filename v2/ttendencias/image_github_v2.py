@@ -94,7 +94,23 @@ def current_editorial(job,auth,*,send=request):
     row=(queue.get("items") or {}).get(job["trend_id"])
     if not row:raise RuntimeError("V2_IMAGE_TREND_NOT_FOUND")
     intake.validate_editorial(job,row)
+    existing=(row.get("capture") or {}).get("image") or {}
+    if (existing.get("status")=="saved" and existing.get("revision")==job["revision"]
+            and _attempt_number(existing)>int(job.get("attempt",1))):
+        raise RuntimeError("V2_IMAGE_STALE_ATTEMPT_NO_REPLACE")
     return row
+
+
+def _attempt_number(image):
+    if not isinstance(image,dict):
+        return 0
+    value=image.get("attempt")
+    if type(value) is int and value>=1:
+        return value
+    parts=str(image.get("command_id") or "").split("-")
+    if len(parts)>=2 and parts[-2].startswith("a") and parts[-2][1:].isdigit():
+        return int(parts[-2][1:])
+    return 0
 
 
 def stable_image_path(trend_id):
