@@ -44,6 +44,15 @@ class FakePool:
 
 
 class OneShotPilotTests(unittest.TestCase):
+    def test_pilot_installation_avoids_recovering_legacy_chats(self):
+        installer = (pathlib.Path(__file__).resolve().parent /
+                     "Install-V2-Editorial-Auto.ps1").read_text(encoding="utf-8")
+        self.assertLess(installer.index("if ($PilotOnly) {"),
+                        installer.index("$recover = Join-Path"))
+        self.assertLess(installer.index("if ($PilotOnly) {"),
+                        installer.index("$headless = Join-Path"))
+        self.assertIn("TT_V2_PILOT_INSTALL_OPENED_CHROME=NO", installer)
+
     def _run(self, eligible):
         pool = FakePool()
         api = Mock()
