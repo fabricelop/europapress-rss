@@ -34,6 +34,7 @@ CHROME = editorial.CHROME
 COOLDOWN_SECONDS = 240
 IMAGE_SEND_PROTOCOL = 2
 MAX_PROTOCOL_ATTEMPTS = 3
+MAX_PRE_SEND_FAILURES = 3
 UNVERIFIED_SEND_COOLDOWN_SECONDS = 900
 COMPOSERS = editorial.COMPOSERS
 SEND_BUTTONS = (
@@ -339,8 +340,12 @@ def next_attempt(row, *, now=None):
     if last.get("status") in ("saved", "bound_by_other"):
         return None
     if last.get("status") == "pre_send_failed":
-        # No click or Enter occurred. Retry after a cooldown, without counting
-        # this as a transport attempt; preserve the previous journal.
+        # A pre-send failure does not consume the transport budget, but must
+        # not cause endless Chrome launches for a broken composer.
+        pre_send_count = sum(record.get("status") == "pre_send_failed"
+                             for _, record in attempts)
+        if pre_send_count >= MAX_PRE_SEND_FAILURES:
+            return None
         try:
             stamp = datetime.fromisoformat(last["at"])
             if (now - stamp).total_seconds() < UNVERIFIED_SEND_COOLDOWN_SECONDS:
