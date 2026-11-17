@@ -9,6 +9,7 @@ import base64
 import json
 import re
 import sys
+import time
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -26,6 +27,11 @@ UNCERTAIN_PATTERNS = (
     r"\bno\s+se\s+puede\s+identificar\s+con\s+seguridad\b",
 )
 POST_URL = re.compile(r"https://(?:www\.)?x\.com/[A-Za-z0-9_]{1,15}/status/\d+\b")
+MAX_SYNC_ATTEMPTS = 5
+
+
+class ListasConflict(RuntimeError):
+    """A competing writer changed the branch while Listas was being saved."""
 
 
 def classify_cause(answer):
@@ -117,6 +123,8 @@ def _request(method, auth, payload=None):
     except urllib.error.HTTPError as exc:
         if method == "GET" and exc.code == 404:
             return None
+        if method == "PUT" and exc.code == 409:
+            raise ListasConflict("GitHub Listas HTTP 409; se requiere recarga") from None
         raise RuntimeError("GitHub Listas HTTP %d; no afirmar éxito" % exc.code) from None
 
 
@@ -161,33 +169,53 @@ def _decode_contents_json(item, auth):
         raise RuntimeError("LISTAS_CONTENT_JSON_INVALID") from None
 
 
-def sync_to_github(api, auth, queue, queue_sha):
+def _reload_authoritative_queue(api, auth):
+    import editorial_run_v2 as core
+    return core.queue_read(api, auth)
+
+
+def sync_to_github(api, auth, queue, queue_sha, *, reload_queue=None):
     """Guardar proyección en rama V2 y exigir readback íntegro.
 
-    GitHub acepta el SHA del blob actual; nunca sobreescribir un cambio
-    concurrente a ciegas ni publicar. Se puede volver a sincronizar sin enviar
-    otra vez ninguna tendencia.
+    En un 409, recargar tanto el SHA de Listas como la cola autoritativa:
+    reintentar con la proyección anterior perdería capturas concurrentes.
+    Nunca abre ChatGPT, publica ni reenvía una tendencia.
     """
-    expected = build_listas(queue, queue_sha)
-    current = _request("GET", auth)
-    old = _decode_contents_json(current, auth)
-    if old != expected:
-        payload = {
-            "branch": BRANCH,
-            "message": "v2: update preview Listas from captured editorial queue",
-            "content": base64.b64encode(
-                (json.dumps(expected, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
-            ).decode("ascii"),
-        }
-        if current is not None:
-            payload["sha"] = current["sha"]
-        response = _request("PUT", auth, payload)
-        if not response or not response.get("commit", {}).get("sha"):
-            raise RuntimeError("No se confirmó escritura de Listas")
-    verified = _request("GET", auth)
-    if not verified or _decode_contents_json(verified, auth) != expected:
-        raise RuntimeError("Listas V2 no coincide con cola y revisión")
-    return expected
+    refresh = reload_queue or (lambda: _reload_authoritative_queue(api, auth))
+    for attempt in range(MAX_SYNC_ATTEMPTS):
+        expected = build_listas(queue, queue_sha)
+        current = _request("GET", auth)
+        old = _decode_contents_json(current, auth)
+        if old != expected:
+            payload = {
+                "branch": BRANCH,
+                "message": "v2: update preview Listas from captured editorial queue",
+                "content": base64.b64encode(
+                    (json.dumps(expected, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
+                ).decode("ascii"),
+            }
+            if current is not None:
+                payload["sha"] = current["sha"]
+            try:
+                response = _request("PUT", auth, payload)
+            except ListasConflict:
+                if attempt == MAX_SYNC_ATTEMPTS - 1:
+                    raise RuntimeError("LISTAS_CONFLICT_RETRIES_EXHAUSTED") from None
+                print("TT_V2_LISTAS_CONFLICT_RETRY=" + str(attempt + 1), flush=True)
+                time.sleep(min(0.5 * (attempt + 1), 2))
+                queue, queue_sha = refresh()
+                continue
+            if not response or not response.get("commit", {}).get("sha"):
+                raise RuntimeError("No se confirmó escritura de Listas")
+        verified = _request("GET", auth)
+        if verified and _decode_contents_json(verified, auth) == expected:
+            return expected
+        if attempt == MAX_SYNC_ATTEMPTS - 1:
+            raise RuntimeError("LISTAS_READBACK_RETRIES_EXHAUSTED")
+        print("TT_V2_LISTAS_READBACK_RETRY=" + str(attempt + 1), flush=True)
+        time.sleep(min(0.5 * (attempt + 1), 2))
+        queue, queue_sha = refresh()
+    raise RuntimeError("LISTAS_SYNC_ATTEMPTS_EXHAUSTED")
 
 
 def main():
