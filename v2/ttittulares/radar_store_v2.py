@@ -14,6 +14,8 @@ import hashlib
 import json
 import os
 import re
+import threading
+from collections import OrderedDict
 from datetime import datetime, timezone
 from pathlib import Path
 from urllib.error import HTTPError, URLError
@@ -36,6 +38,7 @@ WRITE_PATH = re.compile(r"v2/ttittulares/(?:news/ttn2-[a-f0-9]{24}|"
 RECEIPT_PATH = re.compile(r"v2/ttittulares/state/radar/receipts/txn-[a-f0-9]{24}\.json\Z")
 LIVE_RETRY_BUDGET = 8  # Concurrent editorial and image commits can move the branch during reads.
 SNAPSHOT_READ_WORKERS = 24  # Bounded parallel reads shorten the vulnerable CAS window.
+SNAPSHOT_BLOB_CACHE_LIMIT = 512  # Git blobs are immutable; unchanged documents need one download per pass.
 
 
 class StoreError(RuntimeError):
@@ -76,6 +79,8 @@ class GitHubStore:
         self._request = request or self._http_json
         self._read_bytes = read_bytes or self._http_raw
         self._inventories = {}
+        self._document_cache = OrderedDict()
+        self._document_cache_lock = threading.Lock()
 
     def _http_json(self, method, path, payload=None):
         if not (path.startswith("/repos/" + REPOSITORY + "/") or path == "/graphql"):
@@ -158,10 +163,18 @@ class GitHubStore:
     def _blob_json(self, entry, commit=None, path=None):
         if entry.get("type") != "blob" or entry.get("mode") != "100644":
             raise StoreError("STATE_IS_NOT_REGULAR_JSON_FILE")
+        oid = _oid(entry["sha"])
+        with self._document_cache_lock:
+            cached = self._document_cache.get(oid)
+            if cached is not None:
+                self._document_cache.move_to_end(oid)
+        if cached is not None:
+            # Plans may mutate their input dictionaries; never expose cache-owned state.
+            return copy.deepcopy(cached)
         if commit is not None:
             raw = self._read_bytes(_oid(commit), path)
         else:
-            blob = self._get("/git/blobs/" + _oid(entry["sha"]))
+            blob = self._get("/git/blobs/" + oid)
             if blob.get("encoding") != "base64":
                 raise StoreError("GITHUB_BLOB_ENCODING_INVALID")
             try:
@@ -170,14 +183,19 @@ class GitHubStore:
                 raise StoreError("GITHUB_BLOB_JSON_INVALID") from None
         try:
             actual = hashlib.sha1(b"blob " + str(len(raw)).encode() + b"\0" + raw).hexdigest()
-            if actual != entry["sha"]:
+            if actual != oid:
                 raise StoreError("GITHUB_BLOB_HASH_MISMATCH")
             doc = json.loads(raw.decode("utf-8"))
         except (ValueError, UnicodeError, KeyError):
             raise StoreError("GITHUB_BLOB_JSON_INVALID") from None
         if not isinstance(doc, dict):
             raise StoreError("STATE_DOCUMENT_MUST_BE_OBJECT")
-        return doc
+        with self._document_cache_lock:
+            self._document_cache[oid] = doc
+            self._document_cache.move_to_end(oid)
+            if len(self._document_cache) > SNAPSHOT_BLOB_CACHE_LIMIT:
+                self._document_cache.popitem(last=False)
+        return copy.deepcopy(doc)
 
     def read_documents(self, commit, paths):
         inventory = self.inventory(commit)
