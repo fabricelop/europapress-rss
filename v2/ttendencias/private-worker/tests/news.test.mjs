@@ -105,7 +105,7 @@ test("unsafe article URLs never become active links",()=>{
 });
 test("paging is bounded and search is case insensitive",()=>{
  const [i,q]=fixture();for(let n=0;n<100;n++){const key="ttn2-"+n.toString(16).padStart(24,"0");i.items[key]={...i.items[id],event_id:key,status:"monitoring",canonical_title:"Noticia ABC "+n};}
- const view=projectNews(i,q),params=new URLSearchParams({state:"detected",q:"abc",page:"2"});
+ const view=projectNews(i,q,Date.parse(time)+60_000),params=new URLSearchParams({state:"detected",q:"abc",page:"2"});
  const page=pageNews(view,params);assert.equal(page.total,100);assert.equal(page.items.length,40);assert.equal(page.pages,3);
  assert.equal(pageNews(view,new URLSearchParams({state:"detected",page:"999"})).items.length,20);
  assert.throws(()=>pageNews(view,new URLSearchParams({state:"bad"})),/FILTER_INVALID/);
