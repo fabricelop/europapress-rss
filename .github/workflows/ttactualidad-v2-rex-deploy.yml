@@ -6,6 +6,9 @@ on:
       - '.github/workflows/ttactualidad-v2-rex-deploy.yml'
       - 'v2/ttendencias/private-worker/src/**'
       - 'v2/ttendencias/private-worker/web-source/**'
+      - 'v2/ttendencias/private-worker/scripts/news-browser-check.mjs'
+      - 'v2/ttittulares/Repair-News-Editorial-V2.ps1'
+      - 'v2/ttittulares/news_workflow_v2.py'
   workflow_dispatch:
 permissions:
   contents: read
