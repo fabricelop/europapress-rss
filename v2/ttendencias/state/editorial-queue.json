@@ -10086,13 +10086,13 @@
       "trend_id": "trv2-38348ef993071d36d63504ce",
       "name": "Aritz",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "965116d50aa00ce9",
       "requested_at": "2026-11-17T08:59:29.959437+00:00",
       "updated_at": "2026-11-17T08:59:29.959437+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -10105,7 +10105,13 @@
           "archived_at": "2026-11-17T08:59:29.959437+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "57f43545602ab8a2cf9f338eb1f9402a58ee9ae48d1d21ac",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-17T08:59:50.101108+00:00",
+        "expires_at": "2026-11-17T09:39:50.101108+00:00"
+      }
     }
   },
   "pending_count": 385,
