@@ -147,6 +147,28 @@ class Top30WebTests(unittest.TestCase):
         row["status"] = "in_progress"
         self.assertFalse(build(h, q)["items"][0]["image_in_progress"])
 
+    def test_image_retry_counters_are_revision_bound_and_fail_closed(self):
+        h, q = fixtures()
+        item = q["items"]["trv2-id-01"]
+        item.update(status="captured_review", capture={"revision": 1,
+            "verified_complete": True, "answer": "Texto verificado " * 10,
+            "sha256": "d" * 64})
+        item["image_retry_summary"] = {"revision": 1, "editorial_sha256": "d" * 64,
+            "state": "retry_pending", "send_attempts": 0, "send_limit": 3,
+            "pre_send_failures": 2, "pre_send_limit": 3}
+        row = build(h, q)["items"][0]
+        self.assertEqual(row["image_retry"]["remaining"], 3)
+        self.assertEqual(row["image_retry"]["pre_send_failures"], 2)
+        item["image_retry_summary"]["state"] = "blocked"
+        self.assertEqual(build(h, q)["items"][0]["image_retry"]["remaining"], 0)
+        item["image_retry_summary"]["state"] = "exhausted"
+        self.assertEqual(build(h, q)["items"][0]["image_retry"]["remaining"], 0)
+        item["image_retry_summary"]["editorial_sha256"] = "e" * 64
+        self.assertEqual(build(h, q)["items"][0]["image_retry"]["state"], "unknown")
+        item["image_retry_summary"]["editorial_sha256"] = "d" * 64
+        item["image_retry_summary"]["revision"] = 2
+        self.assertEqual(build(h, q)["items"][0]["image_retry"]["state"], "unknown")
+
     def test_capture_recovery_shows_incident(self):
         h, q=fixtures()
         q["items"]["trv2-id-01"]["status"]="capture_recovery"

@@ -39,7 +39,20 @@ class ImageRetryStatusTests(unittest.TestCase):
     def test_in_flight_is_not_exhausted(self):
         rows = [{"attempt": 1, "status": "failed"},
                 {"attempt": 2, "status": "sent_waiting_for_image"}]
-        self.assertEqual(retry_status(rows)["state"], "unverified")
+        self.assertEqual(retry_status(rows)["state"], "blocked")
+
+    def test_unknown_and_failed_attempts_cannot_auto_retry(self):
+        for status in ("failed", "send_unverified", "unexpected", "starting"):
+            with self.subTest(status=status):
+                self.assertEqual(retry_status([{"attempt": 1, "status": status}])["state"],
+                                 "blocked")
+
+    def test_older_attempt_must_not_be_hidden_by_pre_send_failure(self):
+        rows = [{"attempt": 1, "status": "send_intent_recorded"},
+                {"attempt": 2, "status": "pre_send_failed"}]
+        result = retry_status(rows)
+        self.assertEqual(result["state"], "blocked")
+        self.assertEqual(result["send_attempts"], 1)
 
     def test_saved(self):
         self.assertEqual(retry_status([{"attempt": 1, "status": "saved"}])["state"], "saved")

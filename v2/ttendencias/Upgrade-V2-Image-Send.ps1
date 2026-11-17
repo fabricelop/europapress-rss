@@ -22,8 +22,10 @@ $editorialFlagWasEnabled = (Get-Content -LiteralPath $editorialFlag -Raw -Encodi
 $stage = Join-Path $root ('image-send-stage-' + [Guid]::NewGuid().ToString('N'))
 $backup = Join-Path $root ('image-send-backup-' + (Get-Date).ToString('yyyyMMdd-HHmmss'))
 $files = @('image_job_v2.py','image_target_tracker_v2.py','image_worker_v2.py',
+           'image_retry_status_v2.py','web_top30_v2.py',
            'editorial_run_v2.py','chrome_profile_process_v2.py',
-           'test_image_worker_v2.py','test_chrome_profile_process_v2.py')
+           'test_image_worker_v2.py','test_image_retry_status_v2.py',
+           'test_chrome_profile_process_v2.py')
 $installed = @()
 try {
     if ($taskWasEnabled) { Disable-ScheduledTask -TaskName $taskName | Out-Null }
@@ -60,6 +62,8 @@ try {
         $target = Join-Path $root $name
         if ($name -ne 'chrome_profile_process_v2.py' -and
             $name -ne 'test_chrome_profile_process_v2.py' -and
+            $name -ne 'image_retry_status_v2.py' -and
+            $name -ne 'test_image_retry_status_v2.py' -and
             !(Test-Path -LiteralPath $target -PathType Leaf)) {
             throw ('TT_V2_IMAGE_SEND_MODULE_MISSING=' + $name)
         }
@@ -72,6 +76,10 @@ try {
     if (!$worker.Contains('IMAGE_SEND_PROTOCOL = 2') -or !$worker.Contains('def submit_image_prompt(')) {
         throw 'TT_V2_IMAGE_SEND_EXPECTED_PROTOCOL_MISSING'
     }
+    if (!$worker.Contains('def publish_image_retry_summary(') -or
+        !([IO.File]::ReadAllText((Join-Path $stage 'web_top30_v2.py'))).Contains('def image_retry_public_status(')) {
+        throw 'TT_V2_IMAGE_RETRY_SUMMARY_CONTRACT_MISSING'
+    }
     $editorial = [IO.File]::ReadAllText((Join-Path $stage 'editorial_run_v2.py'))
     $ownership = [IO.File]::ReadAllText((Join-Path $stage 'chrome_profile_process_v2.py'))
     if (!$worker.Contains('return exact_chrome_profile_pids(PROFILE)') -or
@@ -83,7 +91,7 @@ try {
     $oldPythonPath = $env:PYTHONPATH
     try {
         $env:PYTHONPATH = $stage + ';' + $root
-        $test = Start-Process -FilePath $python -ArgumentList @('-3','-m','unittest','-q','test_image_worker_v2','test_chrome_profile_process_v2') -WorkingDirectory $stage -PassThru -Wait -WindowStyle Hidden -RedirectStandardOutput (Join-Path $stage 'tests.stdout.log') -RedirectStandardError (Join-Path $stage 'tests.stderr.log')
+        $test = Start-Process -FilePath $python -ArgumentList @('-3','-m','unittest','-q','test_image_worker_v2','test_image_retry_status_v2','test_chrome_profile_process_v2') -WorkingDirectory $stage -PassThru -Wait -WindowStyle Hidden -RedirectStandardOutput (Join-Path $stage 'tests.stdout.log') -RedirectStandardError (Join-Path $stage 'tests.stderr.log')
         if ($test.ExitCode -ne 0) { throw 'TT_V2_IMAGE_SEND_TESTS_FAILED' }
     } finally {
         $env:PYTHONPATH = $oldPythonPath
@@ -102,6 +110,8 @@ try {
         $installed += $name
     }
     Write-Host 'TT_V2_IMAGE_SEND_INSTALLED=YES'
+    Write-Host 'TT_V2_IMAGE_RETRY_SUMMARY=INSTALLED'
+    Write-Host 'TT_V2_IMAGE_BACKFILL_AVAILABLE=YES'
     Write-Host 'TT_V2_CHROME_EXACT_PROFILE=INSTALLED'
     Write-Host ('TT_V2_IMAGE_SEND_PINNED_COMMIT=' + $sha)
     Write-Host 'TT_V2_EDITORIAL_LOGIC_AND_V1=UNTOUCHED'

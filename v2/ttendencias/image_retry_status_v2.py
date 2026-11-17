@@ -29,16 +29,12 @@ def retry_status(records, *, now=None):
             ambiguous_earlier = any(r.get("status") != "pre_send_failed" for r in ordered[:-1])
             state = "blocked" if ambiguous_earlier else ("exhausted" if presends >= MAX_PRE_SEND else "retry_pending")
         elif status == "failed":
-            obs = last.get("submission_observation") or {}
-            if (last.get("error") == "V2_IMAGE_PROMPT_NOT_SUBMITTED"
-                and obs.get("composer_inspected") is True
-                and obs.get("composer_contains_command") is True
-                and obs.get("user_turn_contains_command") is False):
-                state = "blocked"
-            else:
-                state = "unverified"
+            # Historical failures may have clicked Send despite their error
+            # label. The scheduler permits ONLY verified pre_send_failed rows.
+            # The public status must never promise retries it cannot perform.
+            state = "blocked"
         else:
-            state = "unverified"
+            state = "blocked"
     return {"state": state, "send_attempts": sends,
             "send_limit": MAX_SENDS, "pre_send_failures": presends,
             "pre_send_limit": MAX_PRE_SEND}

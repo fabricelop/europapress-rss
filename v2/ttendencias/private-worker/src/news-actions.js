@@ -18,6 +18,28 @@ export async function newsControls(env){
   preferences:(prefs.results||[]).map(x=>({event_id:x.event_id,revision:x.revision,...JSON.parse(x.body)})),
   actions:(actions.results||[]).map(x=>JSON.parse(x.body))};
 }
+// Independent of Tendencias: only explicit news PU registrations, never PUB
+// archival actions or opening an X compose window. Window is rolling, not a
+// calendar day; count stays exact even if the history list is bounded.
+export async function newsPublicationCount(request,env,{json}){
+ if(request.method!=="GET")return json({error:"method_not_allowed"},405);
+ try{
+  await newsTables(env.MARKS_DB);
+  const now=Date.now(),start=new Date(now-86400000).toISOString(),end=new Date(now).toISOString();
+  const where="FROM news_actions WHERE created_at > ? AND created_at <= ? AND json_extract(body,'$.action')='publication'";
+  const [total,history]=await Promise.all([
+   env.MARKS_DB.prepare("SELECT COUNT(*) AS total "+where).bind(start,end).first(),
+   env.MARKS_DB.prepare("SELECT body "+where+" ORDER BY created_at ASC,action_id ASC LIMIT 500").bind(start,end).all()
+  ]);
+  const events=(history.results||[]).map(x=>JSON.parse(x.body)).filter(x=>
+   ID.test(x.event_id||"")&&Number.isSafeInteger(x.revision)&&
+   Number.isFinite(Date.parse(x.created_at))).map(x=>({
+    event_id:x.event_id,revision:x.revision,pressed_at_ms:Date.parse(x.created_at),
+    news_title:typeof x.news_title==="string"?x.news_title.slice(0,180):"Noticia registrada"
+   }));
+  return json({count:Number(total?.total||0),window_hours:24,events});
+ }catch{return json({error:"news_publication_counter_unavailable"},503);}
+}
 export async function newsView(env,params){
  if(!env.MARKS_DB)return readNews({params});
  const [base,controls]=await Promise.all([readNews({params:new URLSearchParams({state:"ready"}) ,all:true}),newsControls(env)]);
@@ -63,6 +85,7 @@ export async function newsAction(request,env,{json,sameOrigin}){
   const prefs={...row};delete prefs.event_id;delete prefs.revision;
   const now=new Date().toISOString();
   const entry={action_id:body.action_id,event_id,revision,action,created_at:now,
+     ...(action==="publication"?{news_title:String(current.title||"Noticia").slice(0,180)}:{}),
      ...(action==="rework_x"?{hints:body.hints.trim()}:{}),
      ...(typeof body.value==="boolean"?{value:body.value}:{})};
   if(action==="mark")prefs.marked=body.value;

@@ -3,6 +3,7 @@
 const BASE="/api/state/";
 const $=id=>document.getElementById(id);
 const state={items:[],captured:null,open:null,rankingUnchanged:false,rankingChangeAt:null,reRequests:[],incidentRequests:[],publications:{count:0,events:[]},manualImages:[]};
+const newsViewMode=new URLSearchParams(location.search).get("view")==="noticias";
 const PUBLIC_SITE='https://ttactualidad.rainyraven22.chatgpt.site';
 function el(tag,className,content){const n=document.createElement(tag);if(className)n.className=className;if(content!==undefined)n.textContent=String(content);return n}
 function valid(data){if(!data||data.project!=="ttactualidad-v2"||data.country!=="ES"||!Array.isArray(data.items)||data.items.length!==data.count||data.count<1||data.count>40)throw Error("Ranking no disponible");const ranks=new Set(data.items.map(x=>x.rank));if(ranks.size!==data.items.length||data.items.some(x=>!Number.isInteger(x.rank)||x.rank<1||x.rank>40||!x.name))throw Error("Ranking incoherente");return data}
@@ -133,15 +134,14 @@ function tweetText(raw,item){
   }else prose=/^(?:por|porque|tras|ante|debido|en |al |a raíz)/iu.test(rest)?rest:"porque "+rest;
  }
  if(!prose)return prefix+".";
- // Reserve the caveat before shortening adapted dossier copy: it must never
- // disappear just because the factual context uses up the character budget.
- const caveat=adapted?.uncertain?" La causa concreta de la tendencia no está confirmada.":"";
- const explanation=completeProse(prose,280-xLength(prefix)-2-xLength(caveat));
+ // The conditional/neutral heading conveys uncertainty. Do not append a
+ // repetitive disclaimer that swallows useful X copy or ends each explanation.
+ const explanation=completeProse(prose,280-xLength(prefix)-2);
  if(!explanation)return prefix+". Consulta la explicación íntegra en la ficha.";
  // Explicit priority: A explanation, B full punchline, C whole tags, D URL.
  const joinsDirectly=uncertain?/^podr[íi]a ser tendencia\b/iu.test(explanation)
   :/^(?:porque |por |tras |ante |debido |en |al |a raíz)/iu.test(explanation);
- const parts=[prefix+(joinsDirectly?" ":": ")+explanation+caveat];
+ const parts=[prefix+(joinsDirectly?" ":": ")+explanation];
  for(const component of [joke,hashes,WEB_URL]){
   if(component&&xLength(parts.join("\n")+"\n"+component)<=280)parts.push(component);
  }
@@ -215,19 +215,20 @@ function renderPublications(){
  const data=state.publications;
  const summary=$("publication-summary");
  summary.textContent="PU · "+data.count+" / 24 h";
- summary.title="Ver "+data.count+" publicaciones registradas en las últimas 24 horas móviles";
+ summary.title="Ver "+data.count+" publicaciones de "+(newsViewMode?"Noticias":"Tendencias")+" registradas en las últimas 24 horas móviles";
+ $("publication-heading").textContent="Publicaciones de "+(newsViewMode?"Noticias":"Tendencias")+" · últimas 24 horas";
  const list=$("publication-history");list.replaceChildren();
  for(const event of data.events){
   const date=new Date(event.pressed_at_ms);
   if(!Number.isFinite(date.getTime()))continue;
   const when=new Intl.DateTimeFormat("es-ES",{timeZone:"Europe/Madrid",dateStyle:"short",timeStyle:"medium"}).format(date);
-  const entry=el("li","",when+" · "+String(event.trend_name||"Tendencia"));
+  const entry=el("li","",when+" · "+String(newsViewMode?(event.news_title||"Noticia"):(event.trend_name||"Tendencia")));
   list.append(entry);
  }
  if(!list.children.length)list.append(el("li","","Ninguna pulsación PU en las últimas 24 horas."));
 }
 async function loadPublications(){
- const res=await fetch("/api/publication-count",{cache:"no-store",credentials:"same-origin"});
+ const res=await fetch(newsViewMode?"/api/news-publication-count":"/api/publication-count",{cache:"no-store",credentials:"same-origin"});
  if(!res.ok)throw Error("Contador PU no disponible (HTTP "+res.status+")");
  const data=await res.json();
  if(!Number.isSafeInteger(data.count)||!Array.isArray(data.events))throw Error("Contador PU incoherente");
@@ -353,6 +354,26 @@ function imageReady(item){
    !reResetPending(item)&&item.status==="explicada"&&
    /^trv2-[a-f0-9]{24}$/.test(item.trend_id)&&
    Number.isSafeInteger(item.revision)&&item.revision>=1;
+}
+function imageRetryHint(item){
+ if(item.status!=="explicada"||imageReady(item)||item.image_suppressed===true)return null;
+ const retry=item.image_retry||{};
+ let message;
+ switch(retry.state){
+  case "generating":message="Imagen IA: generándose automáticamente.";break;
+  case "retry_pending":
+   message="Imagen IA: reintento automático pendiente · "+retry.remaining+" envíos disponibles de 3";
+   if(Number.isInteger(retry.pre_send_failures)&&retry.pre_send_failures>0)
+    message+=" · fallos previos al envío "+retry.pre_send_failures+"/3";
+   message+=".";break;
+  case "exhausted":message="Imagen IA: intentos automáticos agotados. Puedes generar y pegar la imagen manualmente.";break;
+  case "blocked":message="Imagen IA: estado de envío incierto; no habrá más intentos automáticos para evitar duplicados. Puedes generar y pegar la imagen manualmente.";break;
+  case "pending":message="Imagen IA: pendiente de generación automática.";break;
+  default:message="Imagen IA: todavía no hay un registro verificable de intentos. No se puede confirmar si quedan reintentos.";
+ }
+ const label=el("p","image-retry-status",message);
+ label.setAttribute("role","status");
+ return label;
 }
 function openManualPasteDialog(item){
  const dialog=el('dialog','manual-image-dialog');
@@ -787,6 +808,7 @@ function render(){
   }
   const body=el("div","explanation",reset?"Revisión editorial solicitada. Se ha retirado la explicación anterior y su imagen; esperando una nueva explicación.":item.status==="explicada"?explanationText(item.explanation,item):({en_elaboracion:"En elaboración.",incidencia:"Incidencia en la elaboración.",desestimada:"Desestimada."})[item.status]||"Explicación pendiente.");
   card.append(body);
+  if(!reset){const hint=imageRetryHint(item);if(hint)card.append(hint);}
   if(!reset&&!imageReady(item)&&item.image_suppressed!==true&&item.image_in_progress!==true)
    TTImageIncidents.attach({card,head,project:"ttendencias-v2",id:item.trend_id,revision:item.revision,available:item.image_incident_available===true});
   if(!reset){makePublishButtons(card,item);attachGeneratedImage(card,item);}
@@ -827,9 +849,11 @@ async function refresh(){
 }
 $("refresh").addEventListener("click",refresh);
 $("publication-summary").addEventListener("click",()=>{$("publication-dialog").showModal();void loadPublications().catch(()=>{})});
+addEventListener("ttv2:publication-recorded",()=>void loadPublications().catch(()=>{}));
 $("publication-close").addEventListener("click",()=>$("publication-dialog").close());
 refresh();
+if(newsViewMode)void loadPublications().catch(()=>{$("publication-summary").textContent="PU · — / 24 h"});
 setInterval(()=>{if(!document.hidden)refresh()},90000);
-setInterval(()=>{if(!document.hidden&&new URLSearchParams(location.search).get("view")!=="noticias")void loadPublications().catch(()=>{})},60000);
+setInterval(()=>{if(!document.hidden)void loadPublications().catch(()=>{})},60000);
 
 

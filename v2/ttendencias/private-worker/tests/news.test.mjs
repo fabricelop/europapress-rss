@@ -80,11 +80,16 @@ test("authorized news API returns only the read-only projection",async()=>{
 test("news UI uses text nodes, keeps trends and exposes no publish actions",()=>{
  const root=new URL("../web-source/",import.meta.url);
  const html=readFileSync(new URL("index.html",root),"utf8"),js=readFileSync(new URL("news.js",root),"utf8");
+ const app=readFileSync(new URL("app.js",root),"utf8");
  assert.match(html,/id="nav-news"/);assert.match(html,/id="nav-trends"/);assert.match(html,/id="results"/);
  assert.match(html,/id="news-panel" hidden/);assert.match(js,/textContent=String/);
  assert.doesNotMatch(js,/innerHTML|P-X|publish_request|raw\.githubusercontent/);
  assert.match(js,/if\(!document.hidden&&!state.loading\)/);
  assert.match(js,/Último barrido/);assert.doesNotMatch(html,/La actualidad que entra|news-eyebrow|id="news-time"/);assert.match(js,/filter:"ready"/);assert.match(js,/const short=/);
+ assert.match(js,/\$\("publication-summary"\)\.hidden=false/);
+ assert.match(app,/newsViewMode\?"\/api\/news-publication-count":"\/api\/publication-count"/);
+ assert.match(app,/event\.news_title/);
+ assert.match(app,/"ttv2:publication-recorded"/);
 });
 
 test("default is Elaboradas even when only pending candidates exist",()=>{
