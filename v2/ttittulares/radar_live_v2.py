@@ -20,6 +20,7 @@ from .source_fetch_v2 import fetch_all_sources
 
 RADAR_PATH = PREFIX + "state/radar/current.json"
 HEALTH_PATH = PREFIX + "state/radar/source-health.json"
+SUMMARY_PATH = PREFIX + "state/radar/live-summary.json"
 INDEX_PATH = PREFIX + "state/news-index.json"
 
 
@@ -60,7 +61,15 @@ def persist_live(fetch_result, radar_store, editorial_store, *, now, max_attempt
         plan = ingest_scan(fetch_result["rows"], fetch_result["source_statuses"],
                            copy.deepcopy(previous), copy.deepcopy(editorial_index), now=now)
         radar = plan["radar_state"]
-        writes = {RADAR_PATH: radar, HEALTH_PATH: radar["source_health"]}
+        # The full radar is ~5 MB after several hours of monitoring. Serve this
+        # compact, verified clock to the private UI; only the ingest engine
+        # downloads the large historical state on the next pass.
+        summary = {"schema_version": 1, "project": "ttittulares-v2",
+                   "kind": "independent_radar_summary", "observed_at": radar["observed_at"],
+                   "radar_sha256": sha256(radar), "source_health_sha256": sha256(radar["source_health"]),
+                   "metrics": radar["metrics"],
+                   "editorial_index_read_at": editorial_index.get("updated_at")}
+        writes = {RADAR_PATH: radar, HEALTH_PATH: radar["source_health"], SUMMARY_PATH: summary}
         try:
             commit = radar_store.commit(head, writes,
                                         "TTiTTulares V2: barrido de radar independiente")

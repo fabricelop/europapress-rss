@@ -1,9 +1,10 @@
 """The radar clock is independent of editorial/image HEAD contention."""
 import copy
+import json
 import unittest
 from datetime import timedelta
 
-from .radar_live_v2 import HEALTH_PATH, INDEX_PATH, RADAR_PATH, persist_live
+from .radar_live_v2 import HEALTH_PATH, INDEX_PATH, RADAR_PATH, SUMMARY_PATH, persist_live
 from .radar_snapshot_v2 import BRANCH, plan_snapshot
 from .radar_store_v2 import RADAR_LIVE_BRANCH, GitHubStore, StoreError
 from .test_radar_snapshot_v2 import fixture
@@ -37,8 +38,13 @@ class LiveRadarTests(unittest.TestCase):
         self.assertEqual(result["branch"], RADAR_LIVE_BRANCH)
         self.assertEqual(self.radar.write_count, 1)
         self.assertEqual(self.editorial.write_count, 0)
-        self.assertEqual(set(self.radar.commits[self.radar.current]), {RADAR_PATH, HEALTH_PATH})
+        self.assertEqual(set(self.radar.commits[self.radar.current]), {RADAR_PATH, HEALTH_PATH, SUMMARY_PATH})
         self.assertEqual(self.radar.commits[self.radar.current][RADAR_PATH]["observed_at"], result["observed_at"])
+        self.assertEqual(self.radar.commits[self.radar.current][SUMMARY_PATH]["kind"], "independent_radar_summary")
+        summary = self.radar.commits[self.radar.current][SUMMARY_PATH]
+        self.assertLess(len(json.dumps(summary).encode("utf-8")), 4096)
+        self.assertNotIn("items", summary)
+        self.assertEqual(summary["observed_at"], result["observed_at"])
 
     def test_older_scan_does_not_overwrite_newer_radar(self):
         first = persist_live(self.fetched, self.radar, self.editorial, now=BASE + timedelta(minutes=20))

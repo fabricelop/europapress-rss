@@ -32,7 +32,7 @@ OID = re.compile(r"[a-f0-9]{40}\Z")
 HASH = re.compile(r"[a-f0-9]{64}\Z")
 FIXED_STATE = {PREFIX + path for path in (
     "state/radar/current.json", "state/radar/source-health.json",
-    "state/news-index.json", "state/editorial-queue.json")}
+    "state/radar/live-summary.json", "state/news-index.json", "state/editorial-queue.json")}
 WRITE_PATH = re.compile(r"v2/ttittulares/(?:news/ttn2-[a-f0-9]{24}|"
                         r"jobs/editorial/ttn2-[a-f0-9]{24}-r[1-9][0-9]*-editorial|"
                         r"state/radar/scans/scan-[a-f0-9]{24})\.json\Z")

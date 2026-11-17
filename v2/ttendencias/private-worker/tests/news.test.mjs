@@ -17,7 +17,7 @@ test("pending source title is visible without an invented explanation or publica
 });
 test("independent radar time stays fresh when feature editorial commits are blocked",()=>{
  const [index,queue]=fixture();
- const live={schema_version:1,project:"ttittulares-v2",observed_at:"2026-11-17T12:40:00Z",items:{},metrics:{accepted:12}};
+ const live={schema_version:1,project:"ttittulares-v2",kind:"independent_radar_summary",observed_at:"2026-11-17T12:40:00Z",radar_sha256:"a".repeat(64),metrics:{accepted:12}};
  const view=projectNews(index,queue,Date.parse("2026-11-17T12:45:00Z"),live);
  assert.equal(view.radar_independent,true);
  assert.equal(view.radar_delayed,false);
