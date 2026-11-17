@@ -41,6 +41,23 @@ test("working, recovery, incident and exact ready statuses are distinct",()=>{
  }
  const [i,q]=fixture();i.items[id].status="ready";q.items=[];assert.equal(projectNews(i,q).items[0].group,"incident");
 });
+test("only verified image for the current revision is signalled on the closed news card",()=>{
+ const [index,queue]=fixture();index.items[id].status="ready";queue.items[0].status="ready";
+ index.items[id].image={revision:1,verified:true,asset_path:"v2/ttittulares/images/example.png"};
+ const saved=projectNews(index,queue);assert.equal(saved.items[0].image_available,true);
+ index.items[id].image.revision=2;
+ assert.equal(projectNews(index,queue).items[0].image_available,false);
+ delete index.items[id].image;
+ index.items[id].image_progress={revision:1,expires_at:new Date(Date.now()+60000).toISOString()};
+ assert.equal(projectNews(index,queue).items[0].image_in_progress,true);
+ const js=readFileSync(new URL("../web-source/news.js",import.meta.url),"utf8");
+ assert.match(js,/news-image-head-icon.*🖼️/u);
+ assert.match(js,/news-image-head-progress.*🎨/u);
+ assert.match(js,/Imagen generada y asociada a esta noticia/);
+ const actions=readFileSync(new URL("../web-source/news-actions.js",import.meta.url),"utf8");
+ assert.match(actions,/if\(item\.image_available\)\{\s*const image=el\("img","news-original"\)/);
+ assert.match(actions,/Imagen visible aquí en V2; oculta en la web V1/);
+});
 test("inconsistent snapshots, wrong revisions and foreign projects fail visibly",()=>{
  for(const mode of ["timestamp","revision","project","duplicate"]){const [i,q]=fixture();
   if(mode==="timestamp")q.updated_at="2026-11-16T18:20:00Z";

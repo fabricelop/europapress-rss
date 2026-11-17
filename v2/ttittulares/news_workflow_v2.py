@@ -279,6 +279,10 @@ class NewsService(ed.EditorialService):
         pending=0
         for event in news.values():
             if event["status"]!="ready":continue
+            indexed=docs[ed.INDEX]["items"].get(event["event_id"],{})
+            image=indexed.get("image") or {}
+            if image.get("revision")==event["current_revision"] and image.get("verified") is True:
+                continue
             previous=docs.get(image_path(event["event_id"],event["current_revision"]))
             if previous and not self._fresh_image_retry_eligible(previous):continue
             pref=next((x for x in getattr(self,"image_preferences",[]) if x.get("event_id")==event["event_id"] and x.get("revision")==event["current_revision"]),{})
@@ -336,6 +340,10 @@ class NewsService(ed.EditorialService):
                 selected=None
                 if len(active)<2:
                     for event in candidates:
+                        indexed=docs[ed.INDEX]["items"].get(event["event_id"],{})
+                        image=indexed.get("image") or {}
+                        if image.get("revision")==event["current_revision"] and image.get("verified") is True:
+                            continue
                         p=image_path(event["event_id"],event["current_revision"])
                         prior=imagejobs.get(p)
                         if prior and not self._fresh_image_retry_eligible(prior):continue
@@ -379,7 +387,10 @@ class NewsService(ed.EditorialService):
                 lease=job.get("lease") or {}
                 if lease.get("worker_id")!=worker_id or lease.get("token_sha256")!=token_hash or ed._time(lease["expires_at"])<=now:
                     raise ed.EditorialError("NEWS_IMAGE_LEASE_NOT_OWNED")
-                if event["status"]!="ready" or event["current_revision"]!=job["revision"] or docs[job["source_record_path"]]["editorial_sha256"]!=job["editorial_sha256"]:
+                # A job started in ELAB may finish after the user moves that
+                # unchanged revision to Archivo. Never attach after a rework,
+                # deletion or any change to the immutable editorial identity.
+                if event["status"] not in ("ready","archived") or event["current_revision"]!=job["revision"] or docs[job["source_record_path"]]["editorial_sha256"]!=job["editorial_sha256"]:
                     raise ed.EditorialError("NEWS_IMAGE_SOURCE_CHANGED")
                 if operation=="heartbeat":
                     job["lease"]["expires_at"]=ed._stamp(now+timedelta(minutes=25));job["lease"]["heartbeat_at"]=stamp

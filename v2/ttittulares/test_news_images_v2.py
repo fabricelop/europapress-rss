@@ -1,9 +1,9 @@
 """Image lifecycle uses the same service contract with a synthetic owned browser."""
-import tempfile, unittest
+import json, tempfile, unittest
 from pathlib import Path
 from unittest.mock import Mock,patch
 from . import test_news_workflow_v2 as workflow_tests
-from .news_images_v2 import run_one,image_prompt
+from .news_images_v2 import run_one,image_prompt,image_health,check
 
 class NewsImageLifecycleTests(unittest.TestCase):
  def setUp(self):
@@ -63,6 +63,26 @@ class NewsImageLifecycleTests(unittest.TestCase):
   self.assertEqual(self.instances[0].sent,1);self.assertTrue(result["cleanup_verified"])
   _,docs=self.service.store.read_editorial_snapshot();item=docs["v2/ttittulares/state/news-index.json"]["items"][self.fixture.event]
   self.assertTrue(item["image"]["verified"]);self.assertEqual(item["image"]["revision"],1)
+ def test_image_started_in_elab_completes_after_move_to_archive(self):
+  data=b"\x00"*12001  # Synthetic bytes; metadata and storage are both mocked.
+  sha="e"*64
+  meta={"sha256":sha,"mime":"image/png","width":1024,"height":640,"size":len(data)}
+  self.service.store.save_raster=lambda *args:("v2/ttittulares/images/archived-original.png","a"*40)
+  def after_archive(*args,**kwargs):
+   action={"action_id":"e"*32,"event_id":self.fixture.event,"revision":1,"action":"archive"}
+   self.assertTrue(self.service.apply_action(action)["verified"])
+   return data
+  with patch("v2.ttittulares.news_images_v2.raster_metadata",return_value=meta):
+   result=run_one(self.service,self.config,browser_factory=self.browser,raster_get=after_archive)
+  self.assertEqual(result["status"],"saved")
+  _,docs=self.service.store.read_editorial_snapshot()
+  self.assertEqual(docs["v2/ttittulares/news/"+self.fixture.event+".json"]["status"],"archived")
+  self.assertTrue(docs["v2/ttittulares/state/news-index.json"]["items"][self.fixture.event]["image"]["verified"])
+  self.assertEqual(run_one(self.service,self.config,browser_factory=self.browser)["status"],"idle")
+ def test_no_new_image_job_is_started_for_an_already_archived_news(self):
+  self.service.apply_action({"action_id":"f"*32,"event_id":self.fixture.event,"revision":1,"action":"archive"})
+  self.assertEqual(self.service.image_preview()["pending_count"],0)
+  self.assertEqual(run_one(self.service,self.config,browser_factory=self.browser)["status"],"idle")
  def test_image_probe_does_not_write_heartbeat_on_every_poll(self):
   def probes(page,*args,**kwargs):
    for _ in range(3):page.evaluate("probe")
@@ -76,4 +96,23 @@ class NewsImageLifecycleTests(unittest.TestCase):
   self.assertIn(self.fixture.event,prompt);self.assertIn('"revision": 1',prompt)
   self.assertIn("news-img-fixture",prompt);self.assertIn(self.fixture.record["tweet"]["text"],prompt)
   self.assertIn("chat nuevo",prompt);self.assertIn("víctimas",prompt)
+ def test_daemon_health_is_private_and_contains_no_job_secrets(self):
+  image_health(self.config["root"],{"pending_count":3,"active_count":0,
+                                     "error_stage":"controls_or_preview","error_code":"HTTPERROR"})
+  output=self.config["root"]/"image-daemon-status.json"
+  data=json.loads(output.read_text(encoding="utf-8"))
+  self.assertEqual(data["kind"],"image_daemon_health")
+  self.assertEqual(data["pending_count"],3)
+  self.assertEqual(data["error_code"],"HTTPERROR")
+  self.assertNotIn("token",output.read_text(encoding="utf-8"))
+ def test_check_reads_preferences_without_writing_actions_or_opening_chat(self):
+  self.service.store._token="fake-test-only-token"
+  with patch("v2.ttittulares.news_images_v2.read_controls",
+             return_value={"preferences":[],"actions":[{"action":"archive"}]}) as control:
+   with patch.object(self.service,"controls",side_effect=AssertionError("check must be read only")):
+    result=check(self.service)
+  control.assert_called_once()
+  self.assertTrue(result["controls_ok"])
+  self.assertEqual(result["image_preview"]["pending_count"],1)
+  self.assertEqual(result["published"],False)
 if __name__=="__main__":unittest.main()

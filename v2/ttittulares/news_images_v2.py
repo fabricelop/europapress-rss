@@ -5,7 +5,7 @@ from pathlib import Path
 from datetime import datetime, timezone
 from .editorial_browser_v2 import ChromeJob, write_private, common
 from .editorial_consumer_v2 import github_token, settings, error_code
-from .news_workflow_v2 import NewsService, NewsStore, sync_controls
+from .news_workflow_v2 import NewsService, NewsStore, sync_controls, read_controls
 from v2.ttendencias.image_same_chat_v2 import original_from_same_page
 from v2.ttendencias.image_intake_v2 import raster_metadata
 
@@ -97,17 +97,43 @@ def enabled(root):
     try:return (root/"images.enabled").read_text(encoding="utf-8").strip()=="TTN2_IMAGES_ENABLED=YES"
     except FileNotFoundError:return False
 
+def image_health(root, status):
+    """Replace one private diagnostics snapshot; never log tokens or chat contents."""
+    safe={"project":"ttittulares-v2","kind":"image_daemon_health",
+          "checked_at":datetime.now(timezone.utc).isoformat(),**status}
+    try:write_private(root/"image-daemon-status.json",safe)
+    except OSError:pass  # An unwritable diagnostic must not abort an owned image job.
+
+def check(service):
+    """A read-only probe of image dispatch and the private control endpoint."""
+    controls=read_controls(service.store._token)
+    service.image_preferences=controls.get("preferences",[])
+    return {"project":"ttittulares-v2","status":"ok",
+            "image_preview":service.image_preview(),"controls_ok":True,"published":False}
+
 def daemon(service,config):
     root=config["root"];pool={}
+    health={"enabled":True,"pending_count":None,"active_count":None,
+            "workers_running":0,"error_stage":None,"error_code":None,
+            "last_worker_exit_code":None,"last_worker_completed_at":None,"last_spawned_at":None}
     with common("process_lock_v2").exclusive_v2_lock(root/"images.lock"):
         while enabled(root) or pool:
             for slot,child in list(pool.items()):
-                if child.poll() is not None:del pool[slot]
+                exit_code=child.poll()
+                if exit_code is not None:
+                    del pool[slot]
+                    health["last_worker_exit_code"]=exit_code
+                    health["last_worker_completed_at"]=datetime.now(timezone.utc).isoformat()
             if enabled(root):
                 try:
                     sync_controls(service)
                     plan=service.image_preview()
-                except Exception:
+                    health.update(pending_count=plan["pending_count"],active_count=plan["active_count"],
+                                  error_code=None,error_stage=None)
+                except Exception as exc:
+                    health.update(enabled=True,workers_running=len(pool),
+                                  error_stage="controls_or_preview",error_code=error_code(exc))
+                    image_health(root,health)
                     time.sleep(30);continue
                 pending=min(plan["pending_count"],max(0,2-plan["active_count"]))
                 if plan["maintenance_needed"] and not pending:pending=1
@@ -119,14 +145,21 @@ def daemon(service,config):
                         pool[slot]=subprocess.Popen([sys.executable,"-m","v2.ttittulares.news_images_v2",
                             "--root",str(root),"--run-one"],cwd=Path(__file__).resolve().parents[2],
                             stdout=out,stderr=subprocess.STDOUT,creationflags=getattr(subprocess,"CREATE_NO_WINDOW",0))
+                    health["last_spawned_at"]=datetime.now(timezone.utc).isoformat()
                     pending-=1
+            health.update(enabled=enabled(root),workers_running=len(pool))
+            image_health(root,health)
             time.sleep(30)
+        health.update(enabled=False,workers_running=0)
+        image_health(root,health)
 
 def main():
     parser=argparse.ArgumentParser();parser.add_argument("--root",type=Path,required=True)
     parser.add_argument("--run-one",action="store_true");parser.add_argument("--daemon",action="store_true")
+    parser.add_argument("--check",action="store_true")
     args=parser.parse_args();config=settings(args.root);service=NewsService(NewsStore(github_token()))
-    if args.daemon:daemon(service,config)
+    if args.check:print(json.dumps(check(service)))
+    elif args.daemon:daemon(service,config)
     elif args.run_one:
         sync_controls(service);report=run_one(service,config);print(json.dumps(report))
         if report["status"]=="incident":raise SystemExit(1)
