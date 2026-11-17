@@ -47,7 +47,10 @@ class OneShotPilotTests(unittest.TestCase):
     def test_pilot_installation_avoids_recovering_legacy_chats(self):
         installer = (pathlib.Path(__file__).resolve().parent /
                      "Install-V2-Editorial-Auto.ps1").read_text(encoding="utf-8")
-        self.assertIn("'image_daemon_v2.py'", installer)
+        self.assertTrue("'Install-V2-Editorial-Auto.ps1'" in installer,
+                        "installer must update its local copy before tests")
+        self.assertTrue("'image_daemon_v2.py'" in installer,
+                        "installer must update the image daemon before tests")
         self.assertLess(installer.index("if ($PilotOnly) {"),
                         installer.index("$recover = Join-Path"))
         self.assertLess(installer.index("if ($PilotOnly) {"),
