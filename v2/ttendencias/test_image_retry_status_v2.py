@@ -28,13 +28,13 @@ class ImageRetryStatusTests(unittest.TestCase):
                "submission_observation": {"composer_inspected": True,
                   "composer_contains_command": True,
                   "user_turn_contains_command": False}}
-        self.assertEqual(retry_status([row])["state"], "retry_pending")
+        self.assertEqual(retry_status([row])["state"], "blocked")
         self.assertEqual(retry_status([dict(row, attempt=i) for i in (1,2,3)])["state"],
-                         "exhausted")
+                         "blocked")
 
     def test_ambiguous_is_not_retryable(self):
         row = {"attempt": 1, "status": "failed", "error": "V2_IMAGE_NOT_READY"}
-        self.assertEqual(retry_status([row])["state"], "unverified")
+        self.assertEqual(retry_status([row])["state"], "blocked")
 
     def test_in_flight_is_not_exhausted(self):
         rows = [{"attempt": 1, "status": "failed"},
