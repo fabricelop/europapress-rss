@@ -114,6 +114,22 @@ def image_incident_for_revision(item, *, now=None):
         return False
 
 
+def image_retry_public_status(item, *, now=None):
+    """Conservative public state: never invent a remaining-attempt count.
+
+    A verified revision-bound summary may be projected in a later release.
+    Until then the local worker journals are not remotely available, so
+    the only honest budget is unknown.
+    """
+    if saved_image_for_revision(item):
+        return {"state": "saved", "remaining": None, "attempts": None}
+    if live_image_progress_for_revision(item, now=now):
+        return {"state": "generating", "remaining": None, "attempts": None}
+    if image_incident_for_revision(item, now=now):
+        return {"state": "unknown", "remaining": None, "attempts": None}
+    return {"state": "unknown", "remaining": None, "attempts": None}
+
+
 def build(history, queue):
     if (history.get("step") != "03_movement" or history.get("country") != "ES"
         or queue.get("step") != "04_editorial_queue"
@@ -201,6 +217,7 @@ def build(history, queue):
             "chat_url": chat_url,
             "captured_at": captured_at,
             "image_available": image_available,
+            "image_retry": image_retry_public_status(item),
             "image_in_progress": (category == "explicada" and not image_available
                                   and live_image_progress_for_revision(item)),
             "image_incident_available": (category == "explicada" and not image_available
