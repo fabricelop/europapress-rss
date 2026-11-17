@@ -3,6 +3,8 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
+from types import SimpleNamespace
 
 from .editorial_browser_v2 import clone_job_profile, fresh_turn, write_private
 from .editorial_consumer_v2 import run_one, enabled, error_code
@@ -86,11 +88,31 @@ class ConsumerTests(unittest.TestCase):
         self.assertTrue(journal['cleanup_verified'])
 
     def test_unknown_enter_never_retries_or_becomes_safe_preflight(self):
-        result, calls, _ = self.work(fail='send')
+        result, calls, root = self.work(fail='send')
         self.assertEqual(calls.count('send'), 1)
         self.assertIn(('fail', False), calls)
         self.assertNotIn('complete', calls)
         self.assertEqual(result['status'], 'incident')
+        journal = json.loads(next((root / 'journals').glob('*.json')).read_text())
+        self.assertTrue(journal['intent_durable'])
+        self.assertTrue(journal['cleanup_verified'])
+        self.assertFalse(journal['sent'])
+
+    def test_uncertain_send_does_not_request_to_keep_disposable_profile(self):
+        service = Service()
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            class BrowserWithGuard(Browser):
+                def close(self):
+                    self.calls.append(('preserved_at_close', getattr(self, 'preserve_profile', False)))
+                    super().close()
+            report = run_one(service, {'root': root, 'chrome': root / 'chrome', 'seed': root / 'seed'},
+                browser_factory=lambda **kw: BrowserWithGuard(service.calls, fail='confirm'),
+                build=lambda *a: 'prompt', parse=lambda *a: {})
+            self.assertEqual(report['status'], 'incident')
+            self.assertIn(('preserved_at_close', False), service.calls)
+            self.assertEqual(service.calls.count('send'), 1)
+            self.assertIn(('fail', False), service.calls)
 
     def test_preflight_failure_is_safe_without_send_intent(self):
         _, calls, root = self.work(fail='open')
@@ -215,9 +237,34 @@ class ConsumerTests(unittest.TestCase):
     def test_profile_source_that_opens_during_copy_is_rejected(self):
         with tempfile.TemporaryDirectory() as tmp:
             seed = Path(tmp) / 'seed'; seed.mkdir(); (seed / 'Local State').write_text('auth')
-            pids = iter([[], [88]])
+            destination = Path(tmp) / 'job'
+            pids = iter([[], [88], []])
             with self.assertRaisesRegex(RuntimeError, 'CHANGED_DURING_COPY'):
-                clone_job_profile(seed, Path(tmp) / 'job', find_pids=lambda p: next(pids))
+                clone_job_profile(seed, destination, find_pids=lambda p: next(pids))
+            self.assertFalse(destination.exists())
+
+    def test_failed_profile_copy_cleans_own_partial_directory(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            seed, destination = Path(tmp) / 'seed', Path(tmp) / 'job'
+            seed.mkdir(); (seed / 'Local State').write_text('auth')
+            def broken_copy(source, target, **kwargs):
+                (target / 'incomplete').write_text('partial')
+                raise OSError('DISK_FULL')
+            with patch('v2.ttittulares.editorial_browser_v2.shutil.copytree', side_effect=broken_copy):
+                with self.assertRaisesRegex(OSError, 'DISK_FULL'):
+                    clone_job_profile(seed, destination, find_pids=lambda p: [])
+            self.assertFalse(destination.exists())
+            self.assertTrue((seed / 'Local State').exists())
+
+    def test_low_disk_space_never_creates_a_new_profile(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            seed, destination = Path(tmp) / 'seed', Path(tmp) / 'job'
+            seed.mkdir(); (seed / 'Local State').write_text('auth')
+            with patch('v2.ttittulares.editorial_browser_v2.shutil.disk_usage',
+                       return_value=SimpleNamespace(free=1024)):
+                with self.assertRaisesRegex(RuntimeError, 'DISK_SPACE_LOW'):
+                    clone_job_profile(seed, destination, find_pids=lambda p: [])
+            self.assertFalse(destination.exists())
 
     def test_message_identity_includes_exact_revision_and_single_user(self):
         good = ['{"event_id":"event", "revision": 1, "command_id":"command"}']

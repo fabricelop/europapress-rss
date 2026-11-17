@@ -721,3 +721,34 @@ Actions. The native master document cannot currently be replaced because its
 replacement API requires a real local file. Do not claim a new master version.
 Reconcile this checkpoint into the same master with version checking when file
 execution becomes available.
+# 17 November 2026 — News V2 disk emergency and disposable profiles
+
+User's Windows C: drive reached **0 GiB available** (475.74 GiB total).
+Read-only inspection identified `TTActualidadNoticiasV2` using 29.07 GiB:
+23.39 GiB in `sessions`, 5.13 GiB in `image-sessions`, and 0.84 GiB in
+`AuthSeed`. `TTActualidadV2` used another 6.05 GiB.
+
+The user explicitly rejected recovering historical ChatGPT sessions. Their
+new policy is to redo an editorial/image attempt **from the beginning in a
+new chat**, with bounded attempts and no blind replay of an uncertain send.
+Small durable journals and server-side state must still block duplicate
+submissions. The authenticated seed, completed raster files, and active
+Chrome processes are never disposable.
+
+After checking journal `cleanup_verified` and exact Chrome process ownership,
+the user ran a targeted Windows cleanup: **31 closed news job profiles
+removed, 0 skipped, 23.53 GiB free**. This cleanup did not change the
+installed worker logic; recurrence prevention requires a tested installer
+update when both running news tasks are idle.
+
+Code correction pending installation: `editorial_consumer_v2.py` and
+`news_images_v2.py` no longer request retention of an uncertain job's Chrome
+profile. `ChromeJob.close()` removes each owned profile only after verified
+Chrome shutdown. Failed seed clones remove their own partial copy; the
+consumer refuses a new clone below 3 GiB free. Original journals and no-resend
+contracts remain intact; automatic duplicate sends are not authorized.
+
+The Trend V2 parallel profiles are a separate **bounded persistent worker
+pool** and were not modified in this disk incident. A disposable-per-job
+redesign for Trends requires an independent tested Windows migration, not
+deletion of live `ChromeProfile` or `ChromeProfileImages` directories.
