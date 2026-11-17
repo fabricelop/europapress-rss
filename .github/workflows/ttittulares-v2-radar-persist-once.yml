@@ -37,31 +37,47 @@ jobs:
       - name: Validate source and all isolated regressions before writing
         run: |
           python -m compileall -q v2/ttittulares
-          python -m unittest -v v2.ttittulares.test_contract_examples v2.ttittulares.test_radar_ingest_v2 v2.ttittulares.test_source_fetch_v2 v2.ttittulares.test_radar_snapshot_v2 v2.ttittulares.test_radar_store_v2
-      - name: Fetch once, persist with CAS, verify readback and exact replay
+          python -m unittest -v v2.ttittulares.test_contract_examples v2.ttittulares.test_radar_ingest_v2 v2.ttittulares.test_source_fetch_v2 v2.ttittulares.test_radar_snapshot_v2 v2.ttittulares.test_radar_store_v2 v2.ttittulares.test_radar_live_v2
+      - name: Persist independent source radar and verify readback
         env:
           GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          python -m v2.ttittulares.radar_live_v2 --live --persist > "$RUNNER_TEMP/ttn2-live-radar-report.json"
+      - name: Materialize editorial jobs separately (never blocks radar freshness)
+        continue-on-error: true
+        timeout-minutes: 8
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TTN2_LIVE_RETRY_BUDGET: '2'
         run: |
           if [ "$GITHUB_EVENT_NAME" = "schedule" ]; then
             python -m v2.ttittulares.radar_store_v2 --live --persist > "$RUNNER_TEMP/ttn2-persist-report.json"
           else
             python -m v2.ttittulares.radar_store_v2 --live --persist --verify-replay > "$RUNNER_TEMP/ttn2-persist-report.json"
           fi
-      - name: Summarise verified transaction
+      - name: Summarise radar and separate editorial materialization
         run: |
           python - <<'PY'
           import json, os
           from pathlib import Path
-          report = json.loads(Path(os.environ['RUNNER_TEMP'], 'ttn2-persist-report.json').read_text())
-          assert report['verified']
-          if os.environ['GITHUB_EVENT_NAME']!='schedule': assert report['replay_verified']
+          root=Path(os.environ['RUNNER_TEMP'])
+          report=json.loads((root/'ttn2-live-radar-report.json').read_text())
+          assert report['verified'] and report['branch']=='ttactualidad-v2-radar-live'
+          materialized=root/'ttn2-persist-report.json'
+          report['editorial_materialization_verified']=False
+          if materialized.exists() and materialized.stat().st_size:
+              try:
+                  job=json.loads(materialized.read_text())
+                  report['editorial_materialization_verified']=bool(job.get('verified'))
+                  report['editorial_new_job_count']=job.get('new_job_count')
+              except (OSError,ValueError):
+                  pass
           report['trigger_event']=os.environ['GITHUB_EVENT_NAME']
-          assert report['editorial_execution_enabled'] is False
-          assert report['publication_enabled'] is False
+          assert report['editorial_execution_enabled'] is False and report['publication_enabled'] is False
           Path(os.environ['GITHUB_STEP_SUMMARY']).write_text(
-              '# TTiTTulares V2 — one persisted snapshot\n\n```json\n' +
+              '# TTiTTulares V2 — independent radar persisted\n\n```json\n' +
               json.dumps(report, ensure_ascii=False, indent=2) + '\n```\n\n' +
-              'Radar only. Scheduler calls this reusable job; no ChatGPT, image generation, V1 state changes or publication.\n')
+              'Radar freshness cannot be blocked by concurrent editorial/image commits.\n')
           print('TTN2_PERSIST_VERIFIED=' + json.dumps(report, ensure_ascii=False))
           PY
 

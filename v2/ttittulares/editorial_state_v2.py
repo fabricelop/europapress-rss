@@ -272,13 +272,19 @@ class EditorialService:
         blocking = [j for j in recovery if not (
                     (j.get("send_intent") or {}).get("submission_state") == "confirmed"
                     and (j.get("capture") or {}).get("complete") is True)]
-        return {"commit_sha": head, "pending_count": len(pending), "max_workers": MAX_WORKERS,
+        plan = {"commit_sha": head, "pending_count": len(pending), "max_workers": MAX_WORKERS,
                 "active_count": sum(j["status"] in ACTIVE for j in jobs.values()),
                 "recovery_incident_count": len(recovery),
                 "blocking_recovery_incident_count": len(blocking),
                 "quarantined_incident_count": len(recovery) - len(blocking),
                 "maintenance_needed": bool(stale), "stale_active_count": len(stale),
                 "next_jobs": copy.deepcopy(pending[:MAX_WORKERS]), "effects_enabled": False}
+        # A subclass may inspect this *already pinned* snapshot without making
+        # hundreds of additional GitHub reads on every idle Windows poll.
+        extension = getattr(self, "_preview_more", None)
+        if extension is not None:
+            plan.update(extension(docs, news, jobs, plan))
+        return plan
 
     def _run(self, operation, *, worker_id, token, job_id=None, **data):
         if not SAFE_ID.fullmatch(str(worker_id)):

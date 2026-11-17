@@ -4,13 +4,14 @@ import {projectImageIncident} from "./image-incidents.js";
 const ACTIVE=new Set(["claimed","send_intent","awaiting_response","capture_recovery","captured","validating","persisting"]);
 const GROUPS=new Set(["pending","detected","working","ready","incident","archived"]);
 export const NEWS_SOURCE="https://raw.githubusercontent.com/fabricelop/europapress-rss/feature/ttactualidad-v2-clean/v2/ttittulares/state/";
+export const NEWS_RADAR_SOURCE="https://raw.githubusercontent.com/fabricelop/europapress-rss/ttactualidad-v2-radar-live/v2/ttittulares/state/radar/current.json";
 
 function url(value){
  try{const parsed=new URL(value);return /^(https?:)$/.test(parsed.protocol)&&!parsed.username&&!parsed.password?parsed.href:null;}catch{return null;}
 }
 function stamp(value){return typeof value==="string"&&Number.isFinite(Date.parse(value))?value:null;}
 
-export function projectNews(index,queue,clock=Date.now()){
+export function projectNews(index,queue,clock=Date.now(),liveRadar=null){
  if(index?.project!=="ttittulares-v2"||index.schema_version!==1||!index.items||Array.isArray(index.items)||typeof index.items!=="object"||
     queue?.project!=="ttittulares-v2"||queue.schema_version!==1||queue.queue_type!=="editorial"||!Array.isArray(queue.items)||
     !stamp(index.updated_at)||index.updated_at!==queue.updated_at)throw Error("NEWS_SNAPSHOT_INCONSISTENT");
@@ -56,9 +57,19 @@ export function projectNews(index,queue,clock=Date.now()){
  }
  for(const id of jobs.keys())if(!index.items[id])throw Error("NEWS_ORPHAN_QUEUE_ENTRY");
  items.sort((a,b)=>(Date.parse(b.first_seen_at)||0)-(Date.parse(a.first_seen_at)||0)||a.event_id.localeCompare(b.event_id));
- const age=Math.max(0,Math.floor((clock-Date.parse(index.updated_at))/60000));
- return {schema_version:1,project:"ttittulares-v2",observed_at:index.updated_at,counts,items,
-         refresh_mode:"scheduled_radar_15m",expected_interval_minutes:15,radar_age_minutes:age,radar_delayed:age>35,
+ // Radar scans are persisted on an isolated branch. A blocked editorial commit
+ // must never make the front end report the older editorial index as a fresh scan.
+ const liveStamp=liveRadar?.project==="ttittulares-v2"&&stamp(liveRadar.observed_at)&&
+                 liveRadar.items&&typeof liveRadar.items==="object"&&!Array.isArray(liveRadar.items)
+                 ?liveRadar.observed_at:null;
+ const observedAt=liveStamp||index.updated_at;
+ const age=Math.max(0,Math.floor((clock-Date.parse(observedAt))/60000));
+ const editorialAge=Math.max(0,Math.floor((clock-Date.parse(index.updated_at))/60000));
+ return {schema_version:1,project:"ttittulares-v2",observed_at:observedAt,editorial_updated_at:index.updated_at,counts,items,
+         refresh_mode:liveStamp?"independent_radar_15m":"scheduled_radar_15m",expected_interval_minutes:15,
+         radar_age_minutes:age,radar_delayed:age>35,editorial_age_minutes:editorialAge,
+         editorial_delayed:editorialAge>35,radar_independent:Boolean(liveStamp),
+         radar_metrics:liveStamp?liveRadar.metrics:null,
          read_only:true,publication_allowed:false};
 }
 
@@ -74,17 +85,24 @@ export function pageNews(view,params){
 }
 
 async function sourceDocuments(fetcher){
- return Promise.all(["news-index.json","editorial-queue.json"].map(async name=>{
+ const editorial=await Promise.all(["news-index.json","editorial-queue.json"].map(async name=>{
   const response=await fetcher(NEWS_SOURCE+name,{headers:{Accept:"application/json"},cf:{cacheTtl:30,cacheEverything:true}});
   if(!response.ok)throw Error("NEWS_SOURCE_UNAVAILABLE");
   const text=await response.text();
   if(text.length>6000000)throw Error("NEWS_SOURCE_TOO_LARGE");
   return JSON.parse(text);
  }));
+ let live=null;
+ try{
+  const response=await fetcher(NEWS_RADAR_SOURCE,{headers:{Accept:"application/json"},cf:{cacheTtl:30,cacheEverything:true}});
+  if(response.ok){const body=await response.text();if(body.length<=6000000)live=JSON.parse(body);}
+ }catch{/* A missing independent scan cannot prevent viewing already prepared news. */}
+ return [...editorial,live];
 }
 
 export async function readNews({fetcher=fetch,params=new URLSearchParams(),all=false}={}){
- const view=projectNews(...await sourceDocuments(fetcher));
+ const [index,queue,live]=await sourceDocuments(fetcher);
+ const view=projectNews(index,queue,Date.now(),live);
  return all?view:pageNews(view,params);
 }
 
@@ -101,7 +119,7 @@ export function validateNewsRecord(record,id,revision){
 
 export async function readNewsRecord(id,revision,{fetcher=fetch,view=null}={}){
  if(!ID.test(id)||!Number.isSafeInteger(revision)||revision<1||revision>100000)throw Error("NEWS_RECORD_ID_INVALID");
- view=view||projectNews(...await sourceDocuments(fetcher));
+ if(!view){const [index,queue,live]=await sourceDocuments(fetcher);view=projectNews(index,queue,Date.now(),live);}
  const item=view.items.find(x=>x.event_id===id);
  if(!item||item.revision!==revision||!["ready","archived"].includes(item.group))throw Error("NEWS_RECORD_NOT_READY");
  const root=NEWS_SOURCE.replace(/state\/$/,"");
