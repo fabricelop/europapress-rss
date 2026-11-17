@@ -67,12 +67,18 @@ foreach($name in @('editorial-reclaim-status.json','image-daemon-status.json')){
     }catch{Write-Output ('NEWS_HEALTH_FILE_UNREADABLE='+$name)}
   }
 }
-$trends=@()
-if(Test-Path -LiteralPath $trendRoot -PathType Container){
-  $trends=@(Get-ChildItem -LiteralPath $trendRoot -Directory -Force | Where-Object {
-    $_.Name -like 'ChromeProfile*-Job-*' -and
-    (Test-Path -LiteralPath (Join-Path $_.FullName 'tt-v2-ephemeral-owned.marker') -PathType Leaf)
-  })
+foreach($kind in @('EDITORIAL','IMAGE')){
+  $prefix=if($kind -eq 'EDITORIAL'){'ChromeProfile-Job-*'}else{'ChromeProfileImages-Job-*'}
+  $trends=@()
+  if(Test-Path -LiteralPath $trendRoot -PathType Container){
+    $trends=@(Get-ChildItem -LiteralPath $trendRoot -Directory -Force | Where-Object {
+      $_.Name -like $prefix -and
+      (Test-Path -LiteralPath (Join-Path $_.FullName 'tt-v2-ephemeral-owned.marker') -PathType Leaf)
+    })
+  }
+  $bytes=[long]0
+  foreach($folder in $trends){$bytes+=(Folder-Bytes $folder.FullName)}
+  Write-Output ('TENDENCIAS_'+$kind+'_DISPOSABLE_PROFILES='+$trends.Count+' MiB='+[Math]::Round($bytes/1MB,1))
 }
-Write-Output ('TENDENCIAS_DISPOSABLE_PROFILES='+$trends.Count)
+Write-Output ('TENDENCIAS_IMAGE_ORIGINALS_MIB='+[Math]::Round((Folder-Bytes (Join-Path $trendRoot 'image-originals'))/1MB,1))
 Write-Output 'TTN2_HEALTH_COMPLETED=YES'
