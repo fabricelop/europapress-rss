@@ -493,19 +493,32 @@ def run_one(api, state, transcript, auth, item):
         raise RuntimeError("Listas V2 no refleja la captura; no avanzar lote")
     print("TT_V2_LISTAS_VERIFIED=YES", flush=True)
     print("TT_V2_LISTAS_CAUSE_STATUS=" + card["cause_status"], flush=True)
-    # Reflejar la explicación capturada en Top30 web sin esperar al cron.
-    web = module("web_top30_v2.py", "ttv2_web_top30")
-    snapshot = web.sync_to_github(auth)
-    current_top30 = next((entry for entry in snapshot["items"]
-                          if entry["trend_id"] == trend_id), None)
-    if current_top30 is not None:
-        if (current_top30["revision"] != revision
-            or current_top30["status"] != "explicada"
-            or current_top30["explanation"] != cap["answer"]):
-            raise RuntimeError("Top30 web V2 no refleja la explicación capturada")
-    # Si salió del ranking, permanece capturada en GitHub y Listas V2.
-    print("TT_V2_WEB_TOP30_VERIFIED=YES", flush=True)
+    # La proyección web NO es una segunda fase de confirmación editorial.
+    # La captura y Listas ya están verificadas: una respuesta web vacía o
+    # un fallo temporal de GitHub se recuperarán sin abrir otro chat.
+    refresh_web_after_persist(auth, trend_id, revision, cap["answer"])
     print("TT_V2_PUBLISHED=NO", flush=True)
+
+
+def refresh_web_after_persist(auth, trend_id, revision, answer):
+    """Best effort: never invalidate a committed editorial job for web lag."""
+    try:
+        web = module("web_top30_v2.py", "ttv2_web_top30")
+        snapshot = web.sync_to_github(auth)
+        current_top30 = next((entry for entry in snapshot["items"]
+                              if entry["trend_id"] == trend_id), None)
+        if current_top30 is not None and (
+            current_top30["revision"] != revision
+            or current_top30["status"] != "explicada"
+            or current_top30["explanation"] != answer
+        ):
+            raise RuntimeError("Top30 web V2 no refleja la captura vigente")
+    except Exception as exc:
+        print("TT_V2_WEB_TOP30_DEFERRED=" + type(exc).__name__, flush=True)
+        return False
+    # Una tendencia fuera del Top30 sigue íntegra en GitHub y Listas V2.
+    print("TT_V2_WEB_TOP30_VERIFIED=YES", flush=True)
+    return True
 
 def main():
     parser = argparse.ArgumentParser()

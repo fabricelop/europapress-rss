@@ -1,16 +1,19 @@
 """One-shot editorial pilots cannot silently open a second ChatGPT chat."""
 
 import contextlib
+import io
 import os
 import pathlib
 import sys
 import tempfile
 import unittest
-from unittest.mock import Mock, patch
+from unittest.mock import MagicMock, Mock, patch
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 os.environ.setdefault("LOCALAPPDATA", tempfile.gettempdir())
 import editorial_daemon_v2 as daemon
+import editorial_run_v2 as editorial
+import web_top30_v2 as web_top30
 
 
 class FakePool:
@@ -83,6 +86,47 @@ class OneShotPilotTests(unittest.TestCase):
         self.assertEqual(pool.spawned, [])
         self.assertEqual(check.call_count, 1)
         self.assertEqual(module.call_count, 1)
+
+
+class PostPersistProjectionTests(unittest.TestCase):
+    def test_json_error_defers_web_sync_without_invalidating_capture(self):
+        sync = Mock()
+        sync.sync_to_github.side_effect = RuntimeError(
+            'Top30 web no sincronizado: Expecting value: line 1 column 1 (char 0)')
+        output = io.StringIO()
+        with (patch.object(editorial, 'module', return_value=sync),
+              contextlib.redirect_stdout(output)):
+            self.assertFalse(editorial.refresh_web_after_persist('auth', 'id', 1, 'answer'))
+        self.assertIn('TT_V2_WEB_TOP30_DEFERRED=RuntimeError', output.getvalue())
+        sync.sync_to_github.assert_called_once_with('auth')
+
+    def test_verified_web_snapshot_remains_checked(self):
+        sync = Mock()
+        sync.sync_to_github.return_value = {'items': [
+            {'trend_id': 'id', 'revision': 1, 'status': 'explicada',
+             'explanation': 'answer'}]}
+        with patch.object(editorial, 'module', return_value=sync):
+            self.assertTrue(editorial.refresh_web_after_persist('auth', 'id', 1, 'answer'))
+            self.assertFalse(editorial.refresh_web_after_persist('auth', 'id', 2, 'answer'))
+
+    def test_idle_web_retry_never_opens_editorial_chat(self):
+        sync = Mock()
+        sync.sync_to_github.side_effect = [RuntimeError('GitHub transient'), {'items': []}]
+        with patch.object(daemon.core, 'module', return_value=sync):
+            self.assertFalse(daemon.retry_web_projection('auth'))
+            self.assertTrue(daemon.retry_web_projection('auth'))
+        self.assertEqual(sync.sync_to_github.call_count, 2)
+
+    def test_non_json_github_api_response_reports_metadata_only(self):
+        response = Mock()
+        response.read.return_value = b'<html>not-json</html>'
+        response.headers.get.return_value = 'text/html'
+        response.status = 200
+        context = MagicMock()
+        context.__enter__.return_value = response
+        with patch.object(web_top30.urllib.request, 'urlopen', return_value=context):
+            with self.assertRaisesRegex(RuntimeError, 'invalid_json.*bytes=21'):
+                web_top30.gh('GET', 'fake-auth', 'web-top30.json')
 
 
 if __name__ == "__main__":

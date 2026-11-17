@@ -25,6 +25,7 @@ LOCK = ROOT / "editorial_batch_v2.lock"
 ENABLED = ROOT / "auto-editorial-v2.enabled"
 STATUS = ROOT / "daemon-status.json"
 SENTINEL = "TT_V2_AUTO_EDITORIAL_ENABLED=YES"
+WEB_RETRY_SECONDS = 300
 
 
 def flag_is_enabled(path=ENABLED):
@@ -53,6 +54,18 @@ def check(api, auth, *, directory=core.DIAG_DIR, now=None, active_keys=()):
     history = read_history(auth)
     return eligible_plan(queue, history, directory=directory, now=now,
                          active_keys=active_keys)
+
+
+def retry_web_projection(auth):
+    """Retry only the public projection, never the ChatGPT editorial job."""
+    try:
+        web = core.module("web_top30_v2.py", "ttv2_idle_web_retry")
+        web.sync_to_github(auth)
+    except Exception as exc:
+        print("TT_V2_AUTO_WEB_TOP30_DEFERRED=" + type(exc).__name__, flush=True)
+        return False
+    print("TT_V2_AUTO_WEB_TOP30_SYNCED=YES", flush=True)
+    return True
 
 
 def release_timed_out_job(api, auth, trend_id, revision, *, cleanup_verified):
@@ -115,6 +128,7 @@ def run_forever(poll_seconds=90, max_jobs=0, workers=3):
         print("TT_V2_AUTO_START=YES", flush=True)
         print("TT_V2_AUTO_PUBLICATION=NO", flush=True)
         last_sync = 0.0
+        last_web_sync = time.monotonic()
         try:
             while flag_is_enabled():
                 for done in pool.reap():
@@ -146,6 +160,12 @@ def run_forever(poll_seconds=90, max_jobs=0, workers=3):
                                completed=completed, active_workers=len(pool.active),
                                last_error=str(exc)[:180])
                         print("TT_V2_AUTO_JOB_NO_RESEND=%s:r%d" % (tid, rev), flush=True)
+                # El cron de proyección no necesita Chrome. Si no hay trabajos,
+                # reparar el Top30 cada cinco minutos, sin relanzar ningún chat.
+                if (not max_jobs and not pool.active and
+                        time.monotonic() - last_web_sync >= WEB_RETRY_SECONDS):
+                    last_web_sync = time.monotonic()
+                    retry_web_projection(auth)
                 # A bounded pilot limits launched chats, not only successful
                 # completions. An interrupted/failed attempt must not trigger
                 # another chat merely because completed stayed at zero.

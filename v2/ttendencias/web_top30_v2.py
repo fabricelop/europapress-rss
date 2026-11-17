@@ -269,7 +269,14 @@ def gh(method, auth, path, payload=None):
     request = urllib.request.Request(url, headers=headers, data=body, method=method)
     try:
         with urllib.request.urlopen(request, timeout=30) as response:
-            return json.load(response)
+            raw = response.read()
+            try:
+                return json.loads(raw)
+            except (ValueError, UnicodeDecodeError):
+                mime = str(response.headers.get("Content-Type", "unknown"))[:60]
+                raise RuntimeError("GitHub Top30 web HTTP %s invalid_json "
+                                   "(type=%s, bytes=%d)" %
+                                   (response.status, mime, len(raw))) from None
     except urllib.error.HTTPError as exc:
         if exc.code == 404 and method == "GET":
             return None
