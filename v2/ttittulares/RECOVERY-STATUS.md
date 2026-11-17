@@ -1,3 +1,10 @@
+## Reanudación 17/11/2026 — estilo editorial y estado de imágenes
+
+- Petición editorial explícita del usuario: reducir la repetición de 'no hay acontecimiento concreto', 'no se confirma que sea la tendencia', 'no está confirmada' y cierres equivalentes. Preferir arranques breves 'Podría ser tendencia por...' o 'Apunta a...' cuando existan indicios, sin inventar causalidad ni ocultar incertidumbres importantes.
+- Commit `c8d829e6d4e59e30fe6e5ff307ddfdcc99b28db5`: modificado `editorial_run_v2.py` en `prompt_for` para empezar por hecho/hipótesis concreta, expresar duda una sola vez en condicional, dejar detalle de fuentes fuera del texto principal para X (máximo 155 caracteres), y no cerrar con muletillas repetitivas. Sigue exigiendo investigación y etiquetas técnicas de confirmación. Solo afecta a nuevos prompts después del despliegue local; no reescribe fichas existentes.
+- Commit `410a91953147b3e03d48308135a30647695a92a0`: clasificador `image_retry_status_v2.py` no trunca los intentos históricos al mostrar el contador. IMPORTANTE: clasificador aún no conectado al Site ni alimentado por diarios locales; no presentar el contador como operativo.
+- Pendiente imprescindible: pruebas del clasificador y del prompt, sincronización de estado de reintentos al backend seguro y visualización al abrir tendencia; despliegue controlado en Windows. No se ha desplegado ni publicado ni relanzado una tendencia.
+
 ## Noticias: corrección integrada y CI completo — 17/11/2026
 
 Commit de código validado: 1af7ad669e022a3638e175477994753f12d1982a.
