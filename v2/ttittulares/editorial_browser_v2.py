@@ -20,7 +20,9 @@ from urllib.request import urlopen
 COMPOSERS = ('#prompt-textarea', '[data-testid="prompt-textarea"]',
              '[contenteditable="true"][role="textbox"]')
 STOP = '[data-testid="stop-button"],button[aria-label*="Stop"],button[aria-label*="Detener"]'
-CHAT = re.compile(r'https://chatgpt\.com/c/[A-Za-z0-9-]+\Z')
+# The same account can open a fresh conversation under a custom GPT route.
+# Its identity still has to be proven from exactly one USER turn below.
+CHAT = re.compile(r'https://chatgpt\.com/(?:c/[A-Za-z0-9-]+|g/[A-Za-z0-9_-]+/c/[A-Za-z0-9-]+)/?\Z')
 AUTHENTICATED_SESSION = '''async () => {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 10000);
@@ -105,6 +107,14 @@ def read_news_turns(page):
     answers = page.locator('[data-message-author-role="assistant"]').all_text_contents()
     if users:
         return users, answers
+    # Some ChatGPT layouts expose user bubbles without the role attribute.
+    # Never inspect assistant prose for submission identity: an echo is not a send.
+    try:
+        bubbles = page.locator('[data-user-message-bubble="true"]').all_text_contents()
+        if bubbles:
+            return bubbles, answers
+    except Exception:
+        pass
     try:
         body = page.locator('body').inner_text(timeout=4500)
     except Exception:
