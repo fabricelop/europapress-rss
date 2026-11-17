@@ -360,6 +360,50 @@ def next_attempt(row, *, now=None):
     return last_number + 1
 
 
+
+def publish_image_retry_summary(api, auth, job):
+    """Publish only bounded, revision-verified counters, never local journal data."""
+    import image_retry_status_v2 as status_module
+    tid, rev = job["trend_id"], job["revision"]
+    records = []
+    for path in JOURNALS.glob("%s-r%d-attempt-*.json" % (tid, rev)):
+        try:
+            data = json.loads(path.read_text(encoding="utf-8"))
+            if data.get("trend_id") != tid or data.get("revision") != rev:
+                return False
+            data["attempt"] = int(path.stem.rsplit("-", 1)[1])
+            records.append(data)
+        except (ValueError, KeyError, json.JSONDecodeError, OSError):
+            return False
+    if not records:
+        return False
+    summary = status_module.retry_status(records)
+    public = {"revision": rev, "editorial_sha256": job["editorial_sha256"],
+              "state": summary["state"],
+              "send_attempts": summary["send_attempts"],
+              "send_limit": summary["send_limit"],
+              "pre_send_failures": summary["pre_send_failures"],
+              "pre_send_limit": summary["pre_send_limit"]}
+    for retry in range(4):
+        queue, sha = editorial.queue_read(api, auth)
+        row = (queue.get("items") or {}).get(tid) or {}
+        cap = row.get("capture") or {}
+        if (row.get("revision") != rev or cap.get("revision") != rev
+            or cap.get("sha256") != job["editorial_sha256"]):
+            return False
+        if row.get("image_retry_summary") == public:
+            return True
+        row["image_retry_summary"] = public
+        try:
+            editorial.queue_write(api, auth, sha, queue, "image retry summary " + tid)
+            return True
+        except RuntimeError as exc:
+            if "GitHub conflict/changed revision" not in str(exc) or retry == 3:
+                raise
+            time.sleep(retry + 1)
+    return False
+
+
 def pick_next(queue, history, *, now=None):
     for row in ranked_candidates(queue, history, now=now):
         attempt = next_attempt(row, now=now)
@@ -616,6 +660,11 @@ def run_one(row, attempt, *, api, auth):
         cleanup = editorial.module("chrome_cleanup_v2.py", "ttv2_image_cleanup")
         result = cleanup.cleanup_v2_profile(image_profile_pids)
         print("TT_V2_IMAGE_CHROME_CLOSED=" + ("YES" if result["closed"] else "NO"), flush=True)
+        try:
+            if publish_image_retry_summary(api, auth, job):
+                sync_image_progress(auth)
+        except Exception as exc:
+            print("TT_V2_IMAGE_RETRY_SUMMARY=DEGRADED:" + type(exc).__name__, flush=True)
 
 
 def main():
