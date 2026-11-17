@@ -120,6 +120,47 @@ def _request(method, auth, payload=None):
         raise RuntimeError("GitHub Listas HTTP %d; no afirmar éxito" % exc.code) from None
 
 
+def _decode_contents_json(item, auth):
+    """Read small Contents API files and 1-100 MiB `encoding:none` blobs.
+
+    GitHub's object response omits `content` for files over 1 MiB. Never
+    interpret that omission as an empty JSON document or a missing Listas.
+    """
+    if item is None:
+        return None
+    content = item.get("content") or ""
+    encoding = item.get("encoding")
+    if encoding == "base64" and content:
+        raw = base64.b64decode("".join(content.split()), validate=True)
+    elif encoding == "none" and not content:
+        sha = item.get("sha") or ""
+        if not re.fullmatch(r"[a-f0-9]{40}", sha):
+            raise RuntimeError("LISTAS_BLOB_SHA_MISSING")
+        url = ("https://api.github.com/repos/fabricelop/europapress-rss/"
+               "git/blobs/" + sha)
+        req = urllib.request.Request(url, headers={
+            "Accept": "application/vnd.github+json",
+            "Authorization": "Bearer " + auth,
+            "X-GitHub-Api-Version": "2022-11-28",
+            "User-Agent": "TTActualidadV2-Listas-BlobReader",
+        })
+        try:
+            with urllib.request.urlopen(req, timeout=30) as response:
+                blob = json.load(response)
+        except urllib.error.HTTPError as exc:
+            raise RuntimeError("GitHub Listas blob HTTP %d" % exc.code) from None
+        if (blob.get("sha") != sha or blob.get("encoding") != "base64"
+                or not blob.get("content")):
+            raise RuntimeError("LISTAS_BLOB_RESPONSE_UNVERIFIED")
+        raw = base64.b64decode("".join(blob["content"].split()), validate=True)
+    else:
+        raise RuntimeError("LISTAS_CONTENT_ENCODING_UNSUPPORTED")
+    try:
+        return json.loads(raw.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError):
+        raise RuntimeError("LISTAS_CONTENT_JSON_INVALID") from None
+
+
 def sync_to_github(api, auth, queue, queue_sha):
     """Guardar proyección en rama V2 y exigir readback íntegro.
 
@@ -129,7 +170,7 @@ def sync_to_github(api, auth, queue, queue_sha):
     """
     expected = build_listas(queue, queue_sha)
     current = _request("GET", auth)
-    old = json.loads(base64.b64decode(current["content"])) if current else None
+    old = _decode_contents_json(current, auth)
     if old != expected:
         payload = {
             "branch": BRANCH,
@@ -144,7 +185,7 @@ def sync_to_github(api, auth, queue, queue_sha):
         if not response or not response.get("commit", {}).get("sha"):
             raise RuntimeError("No se confirmó escritura de Listas")
     verified = _request("GET", auth)
-    if not verified or json.loads(base64.b64decode(verified["content"])) != expected:
+    if not verified or _decode_contents_json(verified, auth) != expected:
         raise RuntimeError("Listas V2 no coincide con cola y revisión")
     return expected
 
