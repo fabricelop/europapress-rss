@@ -117,6 +117,53 @@ class NewsWorkflowTests(unittest.TestCase):
    bad={"status":"problematic","lease":None,"problem":{"code":code,"retry_mode":"recover_same_chat"},
         "attempts":{"claim_count":1,"max_safe_preflight_attempts":3}}
    self.assertFalse(self.service._fresh_image_retry_eligible(bad))
+ def test_manual_image_retry_ignores_auto_ceiling_but_starts_fresh_job(self):
+  for attempt in range(3):
+   worker="image-retry-"+str(attempt)
+   job=self.claim(worker)["job"]
+   self.assertEqual(job["attempts"]["claim_count"],attempt+1)
+   self.service.image("fail",worker_id=worker,token=self.token,job_id=job["job_id"],
+                      code="NEWS_IMAGE_CAPTURE_TIMEOUT",cleanup_verified=True)
+   self.now+=timedelta(minutes=1)
+  path=image_path(self.event,1)
+  _,docs=self.store.read_editorial_snapshot();failed=docs[path]
+  self.assertEqual(failed["problem"]["retry_mode"],"manual_only")
+  self.assertFalse(self.service._fresh_image_retry_eligible(failed))
+  self.assertEqual(self.service.image_preview()["pending_count"],0)
+  request={"action_id":"b"*32,"event_id":self.event,"revision":1,"action":"retry_image",
+           "incident_at":failed["problem"]["at"]}
+  self.service.controls({"preferences":[],"actions":[request]})
+  self.assertEqual(self.service.image_preview()["pending_count"],1)
+  next_job=self.claim("image-manual")["job"]
+  self.assertEqual(next_job["policy"]["mode"],"manual_request")
+  self.assertEqual(next_job["policy"]["reason"],"retry_image:"+request["action_id"])
+  self.assertEqual(next_job["attempts"]["claim_count"],4)
+  self.assertEqual(len(next_job["attempts"]["history"]),3)
+  self.assertIsNone(next_job["send_intent"])
+  self.assertIsNone(next_job["session"])
+  self.service.image("fail",worker_id="image-manual",token=self.token,job_id=next_job["job_id"],
+                     code="NEWS_IMAGE_CAPTURE_TIMEOUT",cleanup_verified=True)
+  self.assertEqual(self.service.image_preview()["pending_count"],0)
+  self.assertIsNone(self.claim("image-other")["job"])
+  self.now+=timedelta(minutes=1)
+  _,docs=self.store.read_editorial_snapshot()
+  second={**request,"action_id":"c"*32,"incident_at":docs[path]["problem"]["at"]}
+  self.service.controls({"preferences":[],"actions":[request,second]})
+  self.assertEqual(self.claim("image-new-manual")["job"]["attempts"]["claim_count"],5)
+ def test_manual_image_retry_rejects_stale_incident_and_unsafe_cleanup(self):
+  first=self.claim()["job"]
+  self.service.image("fail",worker_id="image-one",token=self.token,job_id=first["job_id"],
+                     code="NEWS_IMAGE_CAPTURE_TIMEOUT",cleanup_verified=False)
+  _,docs=self.store.read_editorial_snapshot();problem=docs[image_path(self.event,1)]["problem"]
+  self.assertEqual(problem["retry_mode"],"none")
+  request={"action_id":"d"*32,"event_id":self.event,"revision":1,
+           "action":"retry_image","incident_at":problem["at"]}
+  self.service.controls({"preferences":[],"actions":[request]})
+  self.assertEqual(self.service.image_preview()["pending_count"],0)
+  self.assertIsNone(self.claim("image-two")["job"])
+  self.store.commits[self.store.current][image_path(self.event,1)]["problem"]["retry_mode"]="manual_only"
+  self.service.controls({"preferences":[],"actions":[{**request,"incident_at":"2020-01-01T00:00:00Z"}]})
+  self.assertIsNone(self.claim("image-three")["job"])
  def test_archived_news_allows_inflight_image_for_the_same_revision(self):
   job=self.prepare()["job"];self.action("archive")
   alive=self.service.image("heartbeat",worker_id="image-one",token=self.token,job_id=job["job_id"])

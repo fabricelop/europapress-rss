@@ -1,8 +1,9 @@
 // Persistent news controls. Namespaced tables preserve all trend state.
 import {readNews,readNewsRecord,decorateNews,pageNews,NEWS_SOURCE} from "./news.js";
+import {readImageIncident} from "./image-incidents.js";
 const ID=/^ttn2-[a-f0-9]{24}$/;
 const HEX=/^[a-f0-9]{64}$/;
-const ACTIONS=new Set(["archive","publish","rework","rework_x","mark","public_image","suppress_image"]);
+const ACTIONS=new Set(["archive","publish","rework","rework_x","mark","public_image","suppress_image","retry_image"]);
 export async function newsTables(db){
  if(!db)throw Error("NEWS_STORAGE_UNAVAILABLE");
  await db.prepare("CREATE TABLE IF NOT EXISTS news_preferences(event_id TEXT NOT NULL,revision INTEGER NOT NULL,body TEXT NOT NULL,PRIMARY KEY(event_id,revision))").run();
@@ -84,9 +85,23 @@ export async function newsAction(request,env,{json,sameOrigin}){
   const row=controls.preferences.find(x=>x.event_id===event_id&&x.revision===revision)||{};
   const prefs={...row};delete prefs.event_id;delete prefs.revision;
   const now=new Date().toISOString();
+  let incident;
+  if(action==="retry_image"){
+   if(current.image_available||current.image_in_progress||!current.image_incident_available||
+      current.image_suppressed||current.rework_requested||prefs.manual_image)
+    return json({error:"image_retry_not_available"},409);
+   const result=await readImageIncident({project:"ttittulares-v2",id:event_id,revision});
+   incident=result.incident;
+   if(!result.available||!incident||incident.at!==current.image_incident_at||incident.retry_mode==="none"||
+      /(AUTH|LOGIN|CREDENTIAL|DISK|CLEANUP|CAPTCHA|LEASE_EXPIRED)/.test(incident.code))
+    return json({error:"image_retry_unsafe_or_stale"},409);
+   if(prefs.image_retry_incident_at===incident.at)
+    return json({error:"image_retry_already_requested"},409);
+  }
   const entry={action_id:body.action_id,event_id,revision,action,created_at:now,
      ...(action==="publish"?{news_title:String(current.title||"Noticia").slice(0,180)}:{}),
      ...(action==="rework_x"?{hints:body.hints.trim()}:{}),
+     ...(action==="retry_image"?{incident_at:incident.at}:{}),
      ...(typeof body.value==="boolean"?{value:body.value}:{})};
   if(action==="mark")prefs.marked=body.value;
   if(action==="public_image")prefs.public_image_visible=body.value;
@@ -94,6 +109,10 @@ export async function newsAction(request,env,{json,sameOrigin}){
   if(action==="archive")prefs.archived=true;
   if(action==="publish"){prefs.archived=true;prefs.published=true;}
   if(action==="rework"||action==="rework_x")prefs.rework_requested=true;
+  if(action==="retry_image"){
+   prefs.image_retry_incident_at=incident.at;
+   prefs.image_retry_request_id=body.action_id;
+  }
   const expected={...row};delete expected.event_id;delete expected.revision;
   if(!await savePreference(env.MARKS_DB,event_id,revision,expected,prefs,entry))
    return json({error:"news_preferences_changed"},409);

@@ -104,6 +104,58 @@ test("actions enforce same origin, revision and idempotency identity",()=>scoped
  await newsAction(request("mark",{value:true}),env,helpers);
  assert.equal((await newsAction(request("publish"),env,helpers)).status,409);
 }));
+test("manual image retry is a private one-shot action bound to the exact failed image incident",()=>scoped(async(env,docs)=>{
+ const incidentAt="2026-11-17T15:00:00Z";
+ const event={project:"ttittulares-v2",schema_version:1,event_id:id,current_revision:1};
+ const job={project:"ttittulares-v2",schema_version:1,event_id:id,revision:1,
+  job_id:id+"-r1-image",source_record_path:"v2/ttittulares/records/"+id+"/r1.json",
+  editorial_sha256:hash,status:"problematic",problem:{code:"NEWS_IMAGE_CAPTURE_TIMEOUT",at:incidentAt,retry_mode:"manual_only"}};
+ docs[0].items[id].editorial_sha256=hash;
+ docs[0].items[id].image_incident={...job.problem,event_id:id,revision:1,editorial_sha256:hash};
+ globalThis.fetch=async url=>{
+  const target=String(url);
+  return Response.json(target.includes("/jobs/images/")?job:target.includes("/news/"+id)?event:
+   target.includes("/records/")?docs[2]:target.endsWith("news-index.json")?docs[0]:docs[1]);
+ };
+ const actionId="f".repeat(32);
+ const send=(key=actionId)=>newsAction(request("retry_image",{action_id:key}),env,helpers);
+ const result=await send();assert.equal(result.status,200);
+ const controls=await newsControls(env);
+ assert.equal(controls.actions[0].action,"retry_image");
+ assert.equal(controls.actions[0].incident_at,incidentAt);
+ assert.equal(controls.preferences[0].image_retry_request_id,actionId);
+ assert.equal((await send()).status,200); // exact replay, no second action
+ assert.equal((await send("e".repeat(32))).status,409); // same incident, different click
+ assert.equal((await newsControls(env)).actions.length,1);
+ const displayed=await newsView(env,new URLSearchParams({state:"ready"}));
+ assert.equal(displayed.items[0].image_retry_requested,true);
+ assert.equal(displayed.items[0].image_incident_available,true);
+ assert.equal(displayed.items[0].has_image,false);
+ assert.equal(docs[2].editorial_sha256,hash);
+ job.problem.at="2026-11-17T15:05:00Z";
+ docs[0].items[id].image_incident.at=job.problem.at;
+ assert.equal((await send("d".repeat(32))).status,200);
+ assert.equal((await newsControls(env)).actions.length,2);
+ assert.equal((await send("c".repeat(32))).status,409);
+}));
+test("manual image retry cannot override an unsafe incident or an active image",()=>scoped(async(env,docs)=>{
+ const at="2026-11-17T15:00:00Z";
+ docs[0].items[id].editorial_sha256=hash;
+ docs[0].items[id].image_incident={event_id:id,revision:1,editorial_sha256:hash,code:"NEWS_IMAGE_CLEANUP_UNVERIFIED",at,retry_mode:"manual_only"};
+ const job={project:"ttittulares-v2",schema_version:1,event_id:id,revision:1,
+  job_id:id+"-r1-image",source_record_path:"v2/ttittulares/records/"+id+"/r1.json",
+  editorial_sha256:hash,status:"problematic",problem:{code:"NEWS_IMAGE_CLEANUP_UNVERIFIED",at,retry_mode:"manual_only"}};
+ globalThis.fetch=async url=>{
+  const target=String(url);
+  return Response.json(target.includes("/jobs/images/")?job:target.includes("/news/"+id)?
+   {project:"ttittulares-v2",schema_version:1,event_id:id,current_revision:1}:
+   target.includes("/records/")?docs[2]:target.endsWith("news-index.json")?docs[0]:docs[1]);
+ };
+ const rejected=await newsAction(request("retry_image"),env,helpers);
+ assert.equal(rejected.status,409);assert.equal((await newsControls(env)).actions.length,0);
+ docs[0].items[id].image_progress={revision:1,editorial_sha256:hash,expires_at:"2090-01-01T00:00:00Z"};
+ assert.equal((await newsAction(request("retry_image"),env,helpers)).status,409);
+}));
 test("stale revision preferences never archive or suppress a new record",()=>{
  const [index,queue]=fixture();index.items[id].current_revision=2;queue.items[0].revision=2;queue.items[0].job_id=id+"-r2-editorial";
  const view=decorateNews(projectNews(index,queue),{preferences:[{event_id:id,revision:1,archived:true,image_suppressed:true,marked:true}]});

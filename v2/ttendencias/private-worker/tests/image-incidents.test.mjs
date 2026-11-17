@@ -134,3 +134,35 @@ test("I never displays a stale identity's cause and a read failure can be retrie
  await button.events.click(event);assert.match(panel.textContent,/No se pudo consultar/);assert.doesNotMatch(panel.textContent,/CAUSE/);
  await button.events.click(event);await button.events.click(event);assert.equal(calls,2);
 });
+test("news incident offers a single manual fresh-chat image retry without affecting trends",async()=>{
+ const {Node,document}=dom(),calls=[];let refreshed=0;
+ const context={document,URLSearchParams,AbortSignal,Intl,Date,
+  crypto:{randomUUID:()=>"12345678-1234-1234-1234-123456789abc"},
+  fetch:async(url,options)=>{
+   calls.push({url:String(url),options});
+   return String(url).includes("/api/news-actions")?Response.json({ok:true}):
+    Response.json({project:"ttittulares-v2",target_id:nid,revision:1,available:true,
+     incident:{code:"NEWS_IMAGE_CAPTURE_TIMEOUT",at,retry_mode:"manual_only"}});
+  }};
+ vm.createContext(context);vm.runInContext(readFileSync(new URL("../web-source/image-incidents.js",import.meta.url),"utf8"),context);
+ const card=new Node("details"),head=new Node("summary");
+ context.TTImageIncidents.attach({card,head,project:"ttittulares-v2",id:nid,revision:1,available:true,
+  manualRetry:true,onChange:async()=>{refreshed++;}});
+ const event={preventDefault(){},stopPropagation(){}};
+ await head.children[0].events.click(event);
+ const panel=card.children[0],button=panel.children.find(x=>x.textContent==="↻ Reintentar imagen");
+ assert.ok(button);assert.equal(calls.length,1);
+ await button.events.click(event);
+ assert.equal(calls.length,2);assert.equal(refreshed,1);assert.equal(button.disabled,true);
+ assert.equal(JSON.parse(calls[1].options.body).action,"retry_image");
+ assert.equal(JSON.parse(calls[1].options.body).event_id,nid);
+ assert.equal(calls[1].options.credentials,"same-origin");
+ await button.events.click(event);assert.equal(calls.length,2);
+ const trend=new Node("details"),trendHead=new Node("summary");
+ context.TTImageIncidents.attach({card:trend,head:trendHead,project:"ttendencias-v2",id:tid,revision:2,
+  available:true,manualRetry:true});
+ context.fetch=async()=>Response.json({project:"ttendencias-v2",target_id:tid,revision:2,available:true,
+  incident:{code:problem.code,at,retry_mode:"manual_only"}});
+ await trendHead.children[0].events.click(event);
+ assert.equal(trend.children[0].children.some(x=>x.textContent==="↻ Reintentar imagen"),false);
+});
