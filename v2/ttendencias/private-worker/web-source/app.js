@@ -388,7 +388,7 @@ function imageRetryHint(item){
     message+=" · fallos previos al envío "+retry.pre_send_failures+"/3";
    message+=".";break;
   case "exhausted":message="Imagen IA: intentos automáticos agotados. Puedes generar y pegar la imagen manualmente.";break;
-  case "blocked":message="Imagen IA: estado de envío incierto; no habrá más intentos automáticos para evitar duplicados. Puedes generar y pegar la imagen manualmente.";break;
+  case "blocked":message="Imagen IA: registro del intento no verificable. Requiere revisión manual antes de continuar.";break;
   case "pending":message="Imagen IA: pendiente de generación automática.";break;
   default:message="Imagen IA: todavía no hay un registro verificable de intentos. No se puede confirmar si quedan reintentos.";
  }
