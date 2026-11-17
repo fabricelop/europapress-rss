@@ -29,7 +29,7 @@ test("independent radar time stays fresh when feature editorial commits are bloc
 });
 test("monitoring candidates are distinct from pending editorial jobs",()=>{
  const [index,queue]=fixture();index.items[id].status="monitoring";queue.items=[];
- const view=projectNews(index,queue);assert.equal(view.counts.detected,1);assert.equal(view.counts.pending,0);
+ const view=projectNews(index,queue,Date.parse(time)+60_000);assert.equal(view.counts.detected,1);assert.equal(view.counts.pending,0);
 });
 test("DET expires exactly 24h after the first observation, even if materialization is late",()=>{
  const [index,queue]=fixture();index.items[id].status="monitoring";queue.items=[];
