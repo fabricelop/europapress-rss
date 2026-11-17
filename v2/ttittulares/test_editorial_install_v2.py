@@ -10,6 +10,24 @@ import unittest
 
 
 class InstallPackageTests(unittest.TestCase):
+    def test_image_repair_isolated_from_live_editorial_consumer(self):
+        directory=Path(__file__).parent
+        repair=(directory/'Repair-News-Images-V2.ps1').read_text(encoding='utf-8')
+        runner=(directory/'Run-News-Images-Auto.ps1').read_text(encoding='utf-8')
+        self.assertIn("'TTActualidadNoticiasV2-Images'",repair)
+        self.assertIn("'TTN2_IMAGES_ENABLED=NO'",repair)
+        self.assertIn("'TTN2_IMAGES_ENABLED=YES'",repair)
+        self.assertIn("'image-active-code.txt'",repair)
+        self.assertIn("'image-daemon-status.json'",repair)
+        self.assertIn("'--check'",repair)
+        self.assertIn("$imageCode=Join-Path $root 'image-active-code.txt'",runner)
+        self.assertNotIn("'TTActualidadNoticiasV2-Editorial'",repair)
+        self.assertNotIn("'editorial.enabled'",repair)
+        self.assertNotIn("Stop-Process",repair)
+        self.assertNotIn("Stop-ScheduledTask",repair)
+        self.assertNotIn("Remove-Item",repair)
+        self.assertNotIn("Kill",repair)
+
     def test_installer_isolates_old_uncertain_jobs_and_still_verifies_new_pilot(self):
         source = (Path(__file__).parent / 'Install-News-Editorial-V2.ps1').read_text(encoding="utf-8")
         self.assertIn("$queuePreview.preview.blocking_recovery_incident_count -gt 0", source)

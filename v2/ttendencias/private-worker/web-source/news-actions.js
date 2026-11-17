@@ -18,10 +18,10 @@ window.TTNewsActions=(()=>{
   record.title+"\n"+record.factual_summary+"\n"+record.tweet_text;}
  function attach({item,card,head,body,record,onChange}){
   if(body.querySelector(".news-actions"))return;
-  if(item.image_available&&item.public_image_visible===true){
+  // The V1/public switch must never hide an authorized image in private V2.
+  if(item.image_available){
    const image=el("img","news-original");image.src=endpoint(item);image.alt="Ilustración editorial de "+item.title;image.loading="lazy";body.prepend(image);
-  }else if(item.image_available&&item.public_image_visible===false){
-   body.prepend(el("p","news-image-working","▧ Imagen oculta en V1. Activa «Imagen en V1» para mostrarla."));
+   if(item.public_image_visible===false)image.after(el("p","news-image-working","Imagen visible aquí en V2; oculta en la web V1."));
   }else if(item.image_in_progress){body.append(el("p","news-image-working","▧ Imagen IA en elaboración"));}
   if(item.group!=="ready")return;
   card.classList.toggle("marked-red",item.marked===true);

@@ -150,10 +150,10 @@ test("sensitive news image starts hidden only in V1, can be shown manually",()=>
  row=decorateNews(projectNews(index,queue),{preferences:[{event_id:id,revision:1,public_image_visible:true}]}).items[0];
  assert.equal(row.public_image_visible,true);
 });
-test("V1 displays images only when its switch is enabled",()=>{
+test("V1 image switch does not hide a verified original inside private V2",()=>{
  const source=fs.readFileSync(new URL('../web-source/news-actions.js',import.meta.url),'utf8');
- assert.match(source,/if\(item\.image_available&&item\.public_image_visible===true\)/);
- assert.match(source,/item\.image_available&&item\.public_image_visible===false/);
+ assert.match(source,/if\(item\.image_available\)\{\s*const image=el\("img","news-original"\)/);
+ assert.match(source,/if\(item\.public_image_visible===false\)image\.after/);
  assert.match(source,/aria-label","Mostrar imagen en V1"/);
 });
 

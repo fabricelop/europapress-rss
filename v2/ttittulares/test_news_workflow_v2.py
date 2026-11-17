@@ -117,10 +117,11 @@ class NewsWorkflowTests(unittest.TestCase):
    bad={"status":"problematic","lease":None,"problem":{"code":code,"retry_mode":"recover_same_chat"},
         "attempts":{"claim_count":1,"max_safe_preflight_attempts":3}}
    self.assertFalse(self.service._fresh_image_retry_eligible(bad))
- def test_archived_news_fences_inflight_image_binding(self):
+ def test_archived_news_allows_inflight_image_for_the_same_revision(self):
   job=self.prepare()["job"];self.action("archive")
-  with self.assertRaises(ed.EditorialError):
-   self.service.image("heartbeat",worker_id="image-one",token=self.token,job_id=job["job_id"])
+  alive=self.service.image("heartbeat",worker_id="image-one",token=self.token,job_id=job["job_id"])
+  self.assertEqual(alive["job"]["event_id"],self.event)
+  self.assertEqual(self.service.image_preview()["pending_count"],0)
  def test_preferences_skip_manually_associated_image(self):
   self.service.controls({"actions":[],"preferences":[{"event_id":self.event,"revision":1,"manual_image":{"sha256":"f"*64}}]})
   self.assertIsNone(self.claim()["job"])
@@ -143,6 +144,14 @@ class NewsWorkflowTests(unittest.TestCase):
   plan=self.service.image_preview();self.assertEqual(plan["pending_count"],0);self.assertEqual(plan["active_count"],1)
   self.now+=timedelta(minutes=26)
   self.assertTrue(self.service.image_preview()["maintenance_needed"])
+ def test_sweep_skips_saved_image_even_without_prior_image_job(self):
+  indexed=self.store.commits[self.store.current][ed.INDEX]["items"][self.event]
+  indexed["image"]={"revision":1,"verified":True,"asset_path":"v2/ttittulares/images/original.png"}
+  self.assertEqual(self.service.image_preview()["pending_count"],0)
+  self.assertIsNone(self.claim()["job"])
+  indexed["image"]["revision"]=2
+  self.assertEqual(self.service.image_preview()["pending_count"],1)
+  self.assertEqual(self.claim()["job"]["event_id"],self.event)
  def test_no_cleanup_no_image_ready(self):
   job=self.prepare()["job"]
   with self.assertRaises(ed.EditorialError):
