@@ -10048,13 +10048,13 @@
       "trend_id": "trv2-1b1f435aa8db200810a77657",
       "name": "The Economist",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "14a5e7c42e6b4019",
       "requested_at": "2026-11-17T08:57:44.227720+00:00",
       "updated_at": "2026-11-17T08:57:44.227720+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -10067,7 +10067,13 @@
           "archived_at": "2026-11-17T08:57:44.227720+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "3fc4799789740d05ccd27867e972fb94f445791fea0e9a88",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-17T08:58:05.474588+00:00",
+        "expires_at": "2026-11-17T09:38:05.474588+00:00"
+      }
     },
     "trv2-38348ef993071d36d63504ce": {
       "trend_id": "trv2-38348ef993071d36d63504ce",
