@@ -1,3 +1,15 @@
+## Noticias: consumidor ya activo — 17/11/2026
+
+El usuario recibió la guardia «El consumidor de Noticias V2 sigue activo» al
+repetir el instalador. Abortó en línea12 antes de cambiar archivos.
+Lecturas07:13Z confirman tres trabajos con leases vigentes; uno pasó de
+awaiting_response a captured (07:13:16Z), envío confirmado y captura completa.
+Los otros dos están en send_intent; no confundir esa fase con envío confirmado.
+Cola observada:77 pendientes/3 activos/2 problematic/1 ready (excluye archivadas).
+No parar ni reinstalar a ciegas. Pedir SOLO lectura de active-code.txt y estado
+de TTActualidadNoticiasV2-Editorial/TTActualidadNoticiasV2-Images para confirmar
+versión local y activación de imágenes. No declarar imágenes operativas todavía.
+
 ## 17/11/2026 — resumen seguro de intentos de imagen
 
 - `d6f94fff4cf614f759c5837ea426ba5ab29ccf20`: al terminar un intento, `image_worker_v2.py` recopila diarios locales de la misma tendencia/revisión, calcula resumen sin secretos y lo guarda por CAS en `image_retry_summary` de la cola, condicionado a `capture.sha256` y revisión. La publicación es best effort y no reenvía imágenes.
