@@ -35,7 +35,7 @@ function editorial(raw){
  // ChatGPT sometimes returns an editorial dossier headed by "Explicación
  // principal — apta para X". The main line is inside that section; the
  // dossier title, certainty labels and publication rules are NOT tweet text.
- const primary=/^\s*Explicaci[oó]n principal(?:\s*[—–:-]\s*apta\s+para\s+X)?(?:\s*\([^\n)]*\))?\s*:?\s*$/i;
+ const primary=/^\s*Explicaci[oó]n principal(?:\s*(?:[—–:-]\s*(?:apta|apto|texto\s+apto)\s+para\s+X|para\s+X))?(?:\s*\([^\n)]*\))?\s*:?\s*$/i;
  const secondary=/^\s*(?:Texto(?: editorial| propuesto)? para LISTAS|Explicaci[oó]n para LISTAS|Explicaci[oó]n editorial|Explicaci[oó]n period[ií]stica(?: para LISTAS)?|Texto para LISTAS)\s*:?\s*$/i;
  const primaryIndices=[],secondaryIndices=[];
  for(let i=0;i<lines.length;i++){
