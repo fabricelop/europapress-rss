@@ -12808,20 +12808,27 @@
     "trv2-d7b14c53e3deb41a861bc201": {
       "trend_id": "trv2-d7b14c53e3deb41a861bc201",
       "name": "Breton",
-      "revision": 1,
-      "status": "in_progress",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "8d0e9ed6b0f57151",
-      "requested_at": "2026-11-17T22:01:42.709748+00:00",
-      "updated_at": "2026-11-17T22:01:42.709748+00:00",
+      "requested_at": "2026-11-17T22:56:31.992067+00:00",
+      "updated_at": "2026-11-17T22:56:31.992067+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "lease": {
-        "token": "08e2917e8b20901872ed1e1fd84603017e3f843ea3332042",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-17T22:07:53.640037+00:00",
-        "expires_at": "2026-11-17T22:47:53.640037+00:00"
-      }
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-17T22:07:53.640037+00:00",
+          "send_intent_at": null,
+          "incident_reason": "lease_expired_without_capture",
+          "archived_at": "2026-11-17T22:56:31.992067+00:00"
+        }
+      ],
+      "incident_retries": 1
     },
     "trv2-27436148c950da5f0f4d2269": {
       "trend_id": "trv2-27436148c950da5f0f4d2269",
@@ -13461,14 +13468,14 @@
     "trv2-08db7b433fc8d86e89e92b5e",
     "trv2-302faf897570783cec7a8875",
     "trv2-5e9ff4d6f092811caa26eb65",
-    "trv2-d7b14c53e3deb41a861bc201",
     "trv2-da4f18766607b8191c52c2c0",
     "trv2-a0a7a09de14f408822b9e0f3",
     "trv2-d47132c9e5f0d6f049c2d099",
     "trv2-0162e753d73df3f05d21fc5d",
     "trv2-27436148c950da5f0f4d2269",
     "trv2-3ddee90748bace27f4ce0bf9",
-    "trv2-d8103ada43d8a9ab78d27b6a"
+    "trv2-d8103ada43d8a9ab78d27b6a",
+    "trv2-d7b14c53e3deb41a861bc201"
   ],
   "effects_enabled": false
 }
