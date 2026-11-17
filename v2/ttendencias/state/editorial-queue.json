@@ -11162,13 +11162,13 @@
       "trend_id": "trv2-cb0e9c541c50fd742680ab18",
       "name": "Fils",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "85406f774aed6477",
       "requested_at": "2026-11-17T17:07:38.270304+00:00",
       "updated_at": "2026-11-17T17:07:38.270304+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -11181,7 +11181,13 @@
           "archived_at": "2026-11-17T17:07:38.270304+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "7e334b9ac6be05595b1097980ee735beaa54674e724309b8",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-17T17:07:55.951855+00:00",
+        "expires_at": "2026-11-17T17:47:55.951855+00:00"
+      }
     },
     "trv2-03d80db7f88fc904e211f435": {
       "trend_id": "trv2-03d80db7f88fc904e211f435",
