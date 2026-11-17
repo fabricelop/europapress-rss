@@ -11428,20 +11428,27 @@
     "trv2-34ca0c923169a13704deea45": {
       "trend_id": "trv2-34ca0c923169a13704deea45",
       "name": "Lecturas",
-      "revision": 1,
-      "status": "in_progress",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "f5c62b01d9fb7bf9",
-      "requested_at": "2026-11-17T17:12:40.279222+00:00",
-      "updated_at": "2026-11-17T17:12:40.279222+00:00",
+      "requested_at": "2026-11-17T18:01:58.163816+00:00",
+      "updated_at": "2026-11-17T18:01:58.163816+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "lease": {
-        "token": "08a49930557ba3ad7a8e192afdeca35171ec5774e9f6082f",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-17T17:13:02.762373+00:00",
-        "expires_at": "2026-11-17T17:53:02.762373+00:00"
-      }
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-17T17:13:02.762373+00:00",
+          "send_intent_at": null,
+          "incident_reason": "lease_expired_without_capture",
+          "archived_at": "2026-11-17T18:01:58.163816+00:00"
+        }
+      ],
+      "incident_retries": 1
     },
     "trv2-9cbd3b28a6565b5069fdbda5": {
       "trend_id": "trv2-9cbd3b28a6565b5069fdbda5",
@@ -11881,9 +11888,9 @@
     "trv2-cb0e9c541c50fd742680ab18",
     "trv2-03d80db7f88fc904e211f435",
     "trv2-40877c3e499384f1b2790011",
-    "trv2-34ca0c923169a13704deea45",
     "trv2-9cbd3b28a6565b5069fdbda5",
-    "trv2-46dc469d8f5c8129ece07fb8"
+    "trv2-46dc469d8f5c8129ece07fb8",
+    "trv2-34ca0c923169a13704deea45"
   ],
   "effects_enabled": false
 }
