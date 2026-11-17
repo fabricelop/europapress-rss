@@ -97,6 +97,13 @@ function completeProse(text,maxLength){
   return clause.replace(/[,:;]$/u,"")+".";
  return "";
 }
+function trimTrendBoilerplate(text){
+ // Only remove caveats about why a term is trending, never uncertainty about
+ // the underlying facts. The stored editorial dossier stays unchanged.
+ const trailing=/(?:\s+|^)(?:No se confirma que [^.]{0,70}(?:impuls[ae]|explique|provoque|motive) (?:la|esta) tendencia|No (?:se confirma|est[aá] confirmado) (?:el motivo|la causa) de (?:la|esta) tendencia|La causa concreta de (?:la|esta) tendencia no est[aá] confirmada)\.?\s*$/iu;
+ const shortened=String(text||"").replace(trailing,"").trim();
+ return shortened.length>=25?shortened:text;
+}
 function tweetText(raw,item){
  const extracted=editorial(raw);
  const adapted=publishableText(extracted)?null:dossierSummary(raw,item);
@@ -111,6 +118,7 @@ function tweetText(raw,item){
  const hashLine=lines.filter(x=>!x.includes("🌶")&&(/^(?:Hashtags:\s*)?#\S+/i.test(x)||/^Hashtags:\s*#/i.test(x))).map(x=>x.replace(/^Hashtags:\s*/i,"").trim()).join(" ");
  const hashes=[...new Set((hashLine.match(/#[\p{L}\p{N}_]+/gu)||[]))].join(" ");
  let prose=lines.filter(x=>!x.includes("🌶")&&!/^Hashtags:\s*/i.test(x)&&!/^\s*#[\p{L}\p{N}_]+(?:\s+#[\p{L}\p{N}_]+)*\s*$/u.test(x)).join(" ").replace(/\s+/g," ").trim();
+ prose=trimTrendBoilerplate(prose);
  // Metadata wins over wording: never present a probable cause as established.
  const startsWithName=prose.toLocaleUpperCase("es-ES").startsWith(name+" ");
  const initial=startsWithName?prose.slice(name.length).trim():prose;
@@ -214,7 +222,7 @@ function incidentRequested(item){
 function renderPublications(){
  const data=state.publications;
  const summary=$("publication-summary");
- summary.textContent="PU · "+data.count+" / 24 h";
+ summary.textContent=(newsViewMode?"PUB":"PU")+" · "+data.count+" / 24 h";
  summary.title="Ver "+data.count+" publicaciones de "+(newsViewMode?"Noticias":"Tendencias")+" registradas en las últimas 24 horas móviles";
  $("publication-heading").textContent="Publicaciones de "+(newsViewMode?"Noticias":"Tendencias")+" · últimas 24 horas";
  const list=$("publication-history");list.replaceChildren();
@@ -225,13 +233,13 @@ function renderPublications(){
   const entry=el("li","",when+" · "+String(newsViewMode?(event.news_title||"Noticia"):(event.trend_name||"Tendencia")));
   list.append(entry);
  }
- if(!list.children.length)list.append(el("li","","Ninguna pulsación PU en las últimas 24 horas."));
+ if(!list.children.length)list.append(el("li","","Ninguna publicación registrada en las últimas 24 horas."));
 }
 async function loadPublications(){
  const res=await fetch(newsViewMode?"/api/news-publication-count":"/api/publication-count",{cache:"no-store",credentials:"same-origin"});
- if(!res.ok)throw Error("Contador PU no disponible (HTTP "+res.status+")");
+ if(!res.ok)throw Error("Contador de publicaciones no disponible (HTTP "+res.status+")");
  const data=await res.json();
- if(!Number.isSafeInteger(data.count)||!Array.isArray(data.events))throw Error("Contador PU incoherente");
+ if(!Number.isSafeInteger(data.count)||!Array.isArray(data.events))throw Error("Contador de publicaciones incoherente");
  state.publications=data;
  renderPublications();
 }
@@ -852,7 +860,12 @@ $("publication-summary").addEventListener("click",()=>{$("publication-dialog").s
 addEventListener("ttv2:publication-recorded",()=>void loadPublications().catch(()=>{}));
 $("publication-close").addEventListener("click",()=>$("publication-dialog").close());
 refresh();
-if(newsViewMode)void loadPublications().catch(()=>{$("publication-summary").textContent="PU · — / 24 h"});
+if(newsViewMode){
+ $("publication-summary").textContent="PUB · — / 24 h";
+ const note=$("publication-dialog").querySelector("p");
+ if(note)note.textContent="Solo cuenta PUB (publicación manual confirmada). Quitar pasa a Archivo sin contar. Los PU anteriores se conservan durante 24 horas. Ninguna acción publica automáticamente.";
+ void loadPublications().catch(()=>{$("publication-summary").textContent="PUB · — / 24 h"});
+}
 setInterval(()=>{if(!document.hidden)refresh()},90000);
 setInterval(()=>{if(!document.hidden)void loadPublications().catch(()=>{})},60000);
 

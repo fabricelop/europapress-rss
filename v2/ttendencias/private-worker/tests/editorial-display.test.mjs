@@ -37,6 +37,19 @@ test('long adapted context keeps verified facts without a repetitive uncertainty
  assert.ok(xLength(shown)<=280);
  assert.doesNotMatch(shown,/…|\.\.\./);
 });
+test('Piqué: remove the repetitive no se confirma que impulsa la tendencia suffix only',()=>{
+ const item={rank:12,name:'Piqué',cause_status:'no_confirmada'};
+ const raw='ESTADO_CAUSA: NO_CONFIRMADA\nExplicación principal — apta para X\n'+
+  'Piqué reaparece en la conversación por sus declaraciones sobre el fútbol español. No se confirma que impulsa la tendencia.\n'+
+  '\nFuentes consultadas\nhttps://example.org/';
+ const result=explanationText(raw,item);
+ assert.match(result,/PIQUÉ: reaparece en la conversación/);
+ assert.doesNotMatch(result,/No se confirma que impulsa la tendencia/);
+ assert.doesNotMatch(result,/es tendencia:/);
+ assert.ok(xLength(result)<=280);
+ const legitimate='Piqué reaparece en la conversación. No se confirma la identidad del denunciante.';
+ assert.match(explanationText('ESTADO_CAUSA: NO_CONFIRMADA\nExplicación principal — apta para X\n'+legitimate+'\n\nFuentes',item),/No se confirma la identidad del denunciante/);
+});
 test('Markdown headings and writing blocks preserve the recognised lead',()=>{
  const lead='El estreno de la nueva temporada devuelve al personaje al centro de la conversación pública.';
  const raw='ESTADO_CAUSA: CONFIRMADA\n### **Explicación principal — apta para X (100 caracteres)**\n:::writing{variant="social_post"}\n'+lead+'\n:::\n\n## Qué sabemos\nOtro contexto.';

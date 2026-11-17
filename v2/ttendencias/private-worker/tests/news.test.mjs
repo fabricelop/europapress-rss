@@ -90,6 +90,25 @@ test("news UI uses text nodes, keeps trends and exposes no publish actions",()=>
  assert.match(app,/newsViewMode\?"\/api\/news-publication-count":"\/api\/publication-count"/);
  assert.match(app,/event\.news_title/);
  assert.match(app,/"ttv2:publication-recorded"/);
+ assert.match(js,/if\(item\.has_image===true\)/);
+ assert.match(js,/news-image-head-icon/);
+ assert.match(app,/newsViewMode\?"PUB":"PU"/);
+});
+test("Noticias groups clear PUB and Quitar actions, keeps R and RE-X, and marks image headers",()=>{
+ const root=new URL("../web-source/",import.meta.url);
+ const controls=readFileSync(new URL("news-actions.js",root),"utf8");
+ const styles=readFileSync(new URL("styles.css",root),"utf8");
+ const news=readFileSync(new URL("news.js",root),"utf8");
+ for(const label of ["Publicación","Gestión y reelaboración","Imagen"])
+  assert.ok(controls.includes(label));
+ assert.match(controls,/add\("PUB",[\s\S]{0,350}?action\(item,"publish"\)/);
+ assert.match(controls,/add\("Quitar",[\s\S]{0,330}?action\(item,"archive"\)/);
+ assert.doesNotMatch(controls,/add\("PU",/);
+ assert.match(controls,/add\("R · Rojo",/);
+ assert.match(controls,/add\("RE-X",/);
+ assert.match(news,/news-image-head-icon/);
+ assert.match(styles,/\.news-action-group\{display:flex;flex-wrap:wrap/);
+ assert.match(styles,/@media\(max-width:450px\).*\.news-action-group/);
 });
 
 test("default is Elaboradas even when only pending candidates exist",()=>{

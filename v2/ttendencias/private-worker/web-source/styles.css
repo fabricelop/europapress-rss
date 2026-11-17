@@ -157,4 +157,17 @@
 /* Six compact news filters remain on one row with four-digit counts at 320px. */
 @media(max-width:360px){.news-filters{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:3px;overflow:visible}.news-filter{min-width:0;font-size:9px;padding:7px 2px;overflow:hidden;text-overflow:ellipsis;text-align:center}}
 
-.news-original{display:block;max-width:100%;max-height:520px;object-fit:contain;margin:12px auto}.news-actions{flex-wrap:wrap;gap:6px}.news-card.marked-red{border-color:#d24444;background:#27191d}.news-image-working{color:#e4a55b}.news-paste-dialog{max-width:min(90vw,480px);background:#171d26;color:#f4f4f4;border:1px solid #526176;border-radius:12px;padding:20px}
+.news-original{display:block;max-width:100%;max-height:520px;object-fit:contain;margin:12px auto}
+.news-image-head-icon{flex:none;align-self:center;color:#a2ddff;background:#153246;border:1px solid #477b9e;border-radius:7px;padding:3px 7px;font-size:16px;font-weight:700;line-height:1.1}
+.news-image-head-hidden{color:#ffbbaf;background:#432b31;border-color:#97636b;text-decoration:line-through}
+.news-actions{display:grid;grid-template-columns:1fr;gap:10px;margin-top:16px}
+.news-action-group{display:flex;flex-wrap:wrap;align-items:center;gap:7px;padding:10px;border:1px solid #334458;border-radius:10px;background:#131e2b}
+.news-action-caption{flex-basis:100%;font-size:11px;text-transform:uppercase;letter-spacing:.055em;font-weight:700;color:#9db1ce;line-height:1.2}
+.news-action-publishing{background:#15291f;border-color:#35664d}
+.news-action-publishing .publish-action{background:#214737;border-color:#558c6d;color:#d6ffeb}
+.news-action-editing .publish-action:first-of-type{background:#37302c;border-color:#8b6555}
+.news-action-artwork{background:#25212b;border-color:#584b69}
+.news-action-group .publish-action{min-height:39px;padding:6px 12px;min-width:58px}
+.news-action-group a.publish-action{display:inline-flex;align-items:center;text-decoration:none}
+@media(max-width:450px){.news-action-group{padding:9px;gap:6px}.news-action-group .publish-action{flex:1 0 auto;min-width:0;padding:7px 9px;font-size:12px}.news-action-caption{font-size:10px}.news-image-head-icon{padding:3px 6px;font-size:14px}}
+.news-card.marked-red{border-color:#d24444;background:#27191d}.news-image-working{color:#e4a55b}.news-paste-dialog{max-width:min(90vw,480px);background:#171d26;color:#f4f4f4;border:1px solid #526176;border-radius:12px;padding:20px}
