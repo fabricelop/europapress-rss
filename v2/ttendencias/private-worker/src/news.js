@@ -119,10 +119,13 @@ export function decorateNews(view,controls={}){
  const items=view.items.map(item=>{
   const pref=prefs.get(item.event_id+":"+item.revision)||{};
   const marked=(controls.preferences||[]).filter(x=>x.event_id===item.event_id&&typeof x.marked==="boolean").sort((a,b)=>b.revision-a.revision)[0]?.marked===true;
-  const sensitive=/fallec|muert|asesinat|suicid|violaci[oó]n|abuso sexual|atentad|tragedia|naufragio/i.test(item.title);
+  // Same conservative default as trends, scoped to the private V1 card only.
+  const words=String(item.title||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+  const sensitive=/\b(?:asesinat\w*|fallec\w*|muert\w*|suicid\w*|violacion\w*|abuso\s+sexual|agresion\s+sexual|menores?\s+de\s+edad|ninos?\s+(?:herid\w*|fallecid\w*|victim\w*)|atentad\w*|bombarde\w*|secuestro\w*|tortur\w*|cadaver\w*|victimas?\s+mortal\w*|catastrofe\w*|tragedia\w*|naufragio\w*|sangre|herid\w*\s+grave\w*)\b/u.test(words);
   const row={...item,marked,image_suppressed:pref.image_suppressed===true,
    has_image:item.image_available===true||Boolean(pref.manual_image),
-   public_image_visible:pref.public_image_visible??!sensitive,
+   public_image_visible:pref.public_image_visible??!sensitive, // V1-only switch; independent of V2.
+   image_sensitivity_default:sensitive,
    rework_requested:pref.rework_requested===true};
   if(pref.archived){row.group="archived";row.status_label=pref.published===true?"Publicada":"Archivada";}
   else if(pref.rework_requested){row.group="working";row.status_label="Reelaboración solicitada";}

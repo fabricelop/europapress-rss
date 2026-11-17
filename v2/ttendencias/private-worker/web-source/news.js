@@ -38,8 +38,9 @@
    heading.append(node("span","news-meta","Detectada · "+date(item.first_seen_at)+" · "+item.source_family_count+" familias de fuentes"));
    summary.append(heading,node("span","news-status "+item.group,item.status_label));
    if(item.has_image===true){
-    const imageIcon=node("span","news-image-head-icon"+(item.image_suppressed?" news-image-head-hidden":""),"▧");
-    imageIcon.title=item.image_suppressed?"Imagen asociada, oculta":"Imagen original asociada";
+    const hidden=item.image_suppressed||item.public_image_visible===false;
+    const imageIcon=node("span","news-image-head-icon"+(hidden?" news-image-head-hidden":""),"▧");
+    imageIcon.title=item.image_suppressed?"Imagen retirada":hidden?"Imagen oculta en V1":"Imagen original asociada";
     imageIcon.setAttribute("aria-label",imageIcon.title);summary.append(imageIcon);
    }
    card.append(summary);
