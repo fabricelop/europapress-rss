@@ -1,0 +1,15 @@
+{
+  "action": "request_rework",
+  "actor": "private-web",
+  "decision_id": "dcn2-1766ef484d264649bb618e22",
+  "event_id": "ttn2-09988a98d1566fe4ac8238db",
+  "idempotency_key": "1766ef484d264649bb618e228e122ddd",
+  "occurred_at": "2026-11-17T15:37:01Z",
+  "project": "ttittulares-v2",
+  "revision": 1,
+  "rework": {
+    "instructions": "Reintento manual tras incidencia INVALID_UTC_TIMESTAMP. Abre un chat editorial nuevo, investiga desde cero, no reutilices respuestas previas. Usa fechas UTC ISO 8601 estrictas, verificando cada marca antes de responder.",
+    "scope": "reinvestigate"
+  },
+  "schema_version": 1
+}
