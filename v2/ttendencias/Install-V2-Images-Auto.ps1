@@ -22,6 +22,7 @@ $files = @(
     'image_worker_v2.py',
     'image_retry_status_v2.py',
     'image_daemon_v2.py',
+    'chrome_profile_process_v2.py',
     'parallel_dispatch_v2.py',
     'test_parallel_dispatch_v2.py',
     'auto_editorial_policy_v2.py',

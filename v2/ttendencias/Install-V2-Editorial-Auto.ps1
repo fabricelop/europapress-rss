@@ -50,6 +50,7 @@ $files = @(
     'batch_contract_v2.py',
     'editorial_batch_v2.py',
     'editorial_run_v2.py',
+    'chrome_profile_process_v2.py',
     'chrome_command_v2.py',
     'chrome_visibility_v2.py',
     'test_chrome_windows_v2.py',

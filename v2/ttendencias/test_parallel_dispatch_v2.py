@@ -8,7 +8,9 @@ from datetime import datetime, timezone
 from types import SimpleNamespace
 from unittest.mock import patch
 
-from parallel_dispatch_v2 import WorkerPool, prepare_profiles
+from parallel_dispatch_v2 import (
+    DisposableWorkerPool, EPHEMERAL_MARKER, WorkerPool, prepare_profiles,
+)
 from auto_editorial_policy_v2 import eligible_plan
 from chrome_visibility_v2 import V2WindowHider
 
@@ -22,6 +24,116 @@ class FakeProcess:
 
 
 class ParallelDispatchTests(unittest.TestCase):
+    def make_disposable_pool(self, root, *, count=2):
+        seed = pathlib.Path(root) / "ChromeProfile"
+        seed.mkdir()
+        (seed / "Local State").write_text("authenticated", encoding="utf-8")
+        return DisposableWorkerPool(seed, count, source_running=lambda: set(),
+                                    env_key="TT_V2_EDITORIAL_PROFILE",
+                                    logs_dir=pathlib.Path(root) / "logs")
+
+    def test_both_automatic_consumers_use_disposable_profiles(self):
+        directory = pathlib.Path(__file__).parent
+        for script in ("editorial_daemon_v2.py", "image_daemon_v2.py"):
+            content = (directory / script).read_text(encoding="utf-8")
+            self.assertIn("pool = DisposableWorkerPool(", content)
+            self.assertNotIn("pool = WorkerPool(", content)
+
+    def test_disposable_jobs_clone_seed_then_delete_after_worker_exits(self):
+        with tempfile.TemporaryDirectory() as root:
+            pool = self.make_disposable_pool(root)
+            self.assertTrue(all(not path.exists() for path in pool.profiles))
+            procs, launched = [], []
+
+            def start(*args, **kwargs):
+                proc = FakeProcess()
+                procs.append(proc)
+                launched.append(kwargs["env"]["TT_V2_EDITORIAL_PROFILE"])
+                return proc
+
+            with (patch("parallel_dispatch_v2.exact_chrome_profile_pids", return_value=set()),
+                  patch("parallel_dispatch_v2.subprocess.Popen", side_effect=start)):
+                self.assertTrue(pool.spawn(__file__, [], trend_id="one", revision=1))
+                first = pool.profiles[0]
+                self.assertTrue((first / EPHEMERAL_MARKER).is_file())
+                self.assertEqual((first / "Local State").read_text(), "authenticated")
+                (first / "browser-cache").write_text("throwaway")
+                self.assertTrue(pool.spawn(__file__, [], trend_id="two", revision=1))
+                self.assertNotEqual(launched[0], launched[1])
+                procs[0].returncode = 1  # Failed chat must be disposable too.
+                done = pool.reap()
+                self.assertEqual(done[0]["profile_deleted"], True)
+                self.assertFalse(first.exists())
+                self.assertTrue(pool.spawn(__file__, [], trend_id="three", revision=2))
+                self.assertFalse((first / "browser-cache").exists())
+                procs[1].returncode = 0
+                procs[2].returncode = 0
+                self.assertTrue(all(job["profile_deleted"] for job in pool.reap()))
+                self.assertTrue(all(not profile.exists() for profile in pool.profiles))
+                self.assertTrue(pool.seed.is_dir())
+
+    def test_disposable_profile_in_use_is_preserved_and_blocks_next_job(self):
+        with tempfile.TemporaryDirectory() as root:
+            pool = self.make_disposable_pool(root, count=1)
+            proc = FakeProcess()
+            with (patch("parallel_dispatch_v2.exact_chrome_profile_pids", return_value=set()),
+                  patch("parallel_dispatch_v2.subprocess.Popen", return_value=proc)):
+                self.assertTrue(pool.spawn(__file__, [], trend_id="one", revision=1))
+            proc.returncode = 0
+            with patch("parallel_dispatch_v2.exact_chrome_profile_pids", return_value={7456}):
+                done = pool.reap()
+                self.assertFalse(done[0]["profile_deleted"])
+                self.assertIn("CHROME_STILL_RUNNING", done[0]["profile_cleanup_error"])
+                with self.assertRaisesRegex(RuntimeError, "CHROME_STILL_RUNNING"):
+                    pool.spawn(__file__, [], trend_id="two", revision=1)
+            self.assertTrue(pool.profiles[0].exists())
+            with (patch("parallel_dispatch_v2.exact_chrome_profile_pids", return_value=set()),
+                  patch("parallel_dispatch_v2.subprocess.Popen", return_value=FakeProcess())):
+                self.assertTrue(pool.spawn(__file__, [], trend_id="two", revision=1))
+            self.assertTrue(pool.seed.exists())
+
+    def test_disposable_refuses_unmarked_profile_and_low_disk(self):
+        with tempfile.TemporaryDirectory() as root:
+            pool = self.make_disposable_pool(root, count=1)
+            slot = pool.profiles[0]
+            slot.mkdir()
+            (slot / "possibly-user-data").write_text("keep")
+            with self.assertRaisesRegex(RuntimeError, "OWNERSHIP_UNVERIFIED"):
+                pool.spawn(__file__, [], trend_id="one", revision=1)
+            self.assertTrue((slot / "possibly-user-data").exists())
+            # Only test the free-space guard after removing our test fixture.
+            (slot / "possibly-user-data").unlink()
+            slot.rmdir()
+            with patch("parallel_dispatch_v2.shutil.disk_usage",
+                       return_value=SimpleNamespace(free=2 * 1024 ** 3)):
+                with self.assertRaisesRegex(RuntimeError, "DISK_SPACE_LOW"):
+                    pool.spawn(__file__, [], trend_id="one", revision=1)
+            self.assertFalse(slot.exists())
+
+    def test_disposable_cleans_partial_copy_and_failed_worker_launch(self):
+        with tempfile.TemporaryDirectory() as root:
+            pool = self.make_disposable_pool(root, count=1)
+            with (patch("parallel_dispatch_v2.exact_chrome_profile_pids", return_value=set()),
+                  patch("parallel_dispatch_v2.shutil.copytree", side_effect=OSError("disk full"))):
+                with self.assertRaisesRegex(OSError, "disk full"):
+                    pool.spawn(__file__, [], trend_id="one", revision=1)
+            self.assertFalse(pool.profiles[0].exists())
+            with (patch("parallel_dispatch_v2.exact_chrome_profile_pids", return_value=set()),
+                  patch("parallel_dispatch_v2.subprocess.Popen", side_effect=OSError("no process"))):
+                with self.assertRaisesRegex(OSError, "no process"):
+                    pool.spawn(__file__, [], trend_id="two", revision=1)
+            self.assertFalse(pool.profiles[0].exists())
+
+    def test_disposable_cleans_owned_empty_slot_when_marker_write_fails(self):
+        with tempfile.TemporaryDirectory() as root:
+            pool = self.make_disposable_pool(root, count=1)
+            with (patch("parallel_dispatch_v2.exact_chrome_profile_pids", return_value=set()),
+                  patch("parallel_dispatch_v2.pathlib.Path.write_text",
+                        side_effect=OSError("disk full"))):
+                with self.assertRaisesRegex(OSError, "disk full"):
+                    pool.spawn(__file__, [], trend_id="one", revision=1)
+            self.assertFalse(pool.profiles[0].exists())
+
     def test_profiles_are_separate_and_not_overwritten(self):
         with tempfile.TemporaryDirectory() as root:
             base = pathlib.Path(root) / "ChromeProfile"

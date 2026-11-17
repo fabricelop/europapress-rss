@@ -18,10 +18,12 @@ class Top30TaskAutostartTests(unittest.TestCase):
         self.assertIn("TTActualidadV2-Top30-15m", script)
         self.assertNotIn("TTendencias Local", script)
 
-    def test_uses_hidden_powershell_and_hidden_python(self):
+    def test_uses_hidden_wscript_launcher_and_hidden_python(self):
         installer = (ROOT / "Install-V2-Top30-15min.ps1").read_text(encoding="utf-8")
         runner = (ROOT / "Run-V2-Top30-Tick.ps1").read_text(encoding="utf-8")
-        self.assertIn("-WindowStyle Hidden -File", installer)
+        self.assertIn("Ensure-V2File 'Launch-V2-Hidden.vbs'", installer)
+        self.assertIn("New-ScheduledTaskAction -Execute (Join-Path $env:WINDIR 'System32\\wscript.exe')", installer)
+        self.assertIn("//B //Nologo", installer)
         self.assertIn("-WindowStyle Hidden", runner)
         self.assertNotIn("-NoNewWindow", runner)
 

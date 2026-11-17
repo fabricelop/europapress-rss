@@ -15,6 +15,12 @@ import subprocess
 import sys
 from datetime import datetime, timezone
 
+from chrome_profile_process_v2 import exact_chrome_profile_pids
+
+
+MIN_JOB_FREE_BYTES = 3 * 1024 ** 3
+EPHEMERAL_MARKER = "tt-v2-ephemeral-owned.marker"
+
 
 def _ignore_chrome_cache(directory, contents):
     # Cookies, Local State and actual authentication MUST remain in the copy.
@@ -137,3 +143,90 @@ class WorkerPool:
             for task in self.active.values():
                 task["process"].wait(timeout=None)
             self.reap()
+
+
+class DisposableWorkerPool(WorkerPool):
+    """Clone the authenticated seed per job; discard its exact Chrome profile.
+
+    Profiles occupy a bounded number of named slots, not one directory per
+    trend. A marker proves that a slot belongs to this pool. A profile that
+    Chrome still uses, or whose ownership cannot be verified, is never erased.
+    """
+
+    def __init__(self, seed, count, *, source_running, env_key, logs_dir):
+        self.seed = pathlib.Path(seed)
+        self.source_running = source_running
+        if not 1 <= count <= 6:
+            raise ValueError("V2_PARALLEL_WORKERS_OUT_OF_BOUNDS")
+        if not self.seed.is_dir():
+            raise RuntimeError("V2_PARALLEL_AUTHENTICATED_BASE_PROFILE_MISSING")
+        if source_running():
+            raise RuntimeError("V2_PARALLEL_BASE_CHROME_BUSY")
+        profiles = [self.seed.with_name(self.seed.name + "-Job-%02d" % index)
+                    for index in range(count)]
+        super().__init__(profiles, env_key=env_key, logs_dir=logs_dir)
+
+    def _remove_owned(self, slot):
+        profile = self.profiles[slot]
+        if not profile.exists() and not profile.is_symlink():
+            return
+        if (profile.is_symlink() or
+                (hasattr(profile, "is_junction") and profile.is_junction()) or
+                not profile.is_dir() or
+                not (profile / EPHEMERAL_MARKER).is_file()):
+            raise RuntimeError("V2_JOB_PROFILE_OWNERSHIP_UNVERIFIED")
+        if exact_chrome_profile_pids(profile):
+            raise RuntimeError("V2_JOB_PROFILE_CHROME_STILL_RUNNING")
+        shutil.rmtree(profile)
+
+    def _prepare(self, slot):
+        if self.source_running():
+            raise RuntimeError("V2_PARALLEL_BASE_CHROME_BUSY")
+        self._remove_owned(slot)
+        if shutil.disk_usage(self.seed).free < MIN_JOB_FREE_BYTES:
+            raise RuntimeError("V2_JOB_DISK_SPACE_LOW_NO_NEW_CHROME")
+        profile = self.profiles[slot]
+        profile.mkdir(exist_ok=False)
+        try:
+            (profile / EPHEMERAL_MARKER).write_text("TT_V2_EPHEMERAL_JOB\n", encoding="utf-8")
+            shutil.copytree(self.seed, profile, dirs_exist_ok=True,
+                            ignore=_ignore_chrome_cache)
+        except Exception:
+            # The newly owned slot was never launched. A failed seed copy is
+            # not allowed to accumulate another browser-sized partial clone.
+            if (profile / EPHEMERAL_MARKER).is_file():
+                self._remove_owned(slot)
+            elif (profile.is_dir() and not profile.is_symlink() and
+                  not (hasattr(profile, "is_junction") and profile.is_junction()) and
+                  not exact_chrome_profile_pids(profile)):
+                # Marker creation itself can fail when the disk is truly full.
+                # The directory was created exclusively by this invocation.
+                shutil.rmtree(profile)
+            raise
+
+    def spawn(self, script, args, *, trend_id, revision, attempt=None):
+        slot = self.available_slot()
+        if slot is None or (trend_id, revision) in self.busy_keys:
+            return False
+        self._prepare(slot)
+        try:
+            return super().spawn(script, args, trend_id=trend_id,
+                                 revision=revision, attempt=attempt)
+        except Exception:
+            # Popen may fail before the worker has created a Chrome process.
+            # Only discard the exact marked slot after a fresh PID check.
+            self._remove_owned(slot)
+            raise
+
+    def reap(self):
+        finished = super().reap()
+        for job in finished:
+            try:
+                self._remove_owned(job["slot"])
+                job["profile_deleted"] = True
+            except (OSError, RuntimeError) as exc:
+                # Preserve all evidence and the in-use profile; do not hide a
+                # cleanup failure behind an otherwise successful editor job.
+                job["profile_cleanup_error"] = str(exc)[:180]
+                job["profile_deleted"] = False
+        return finished

@@ -18,7 +18,7 @@ from batch_contract_v2 import verify_persisted
 from process_lock_v2 import AlreadyRunning, exclusive_v2_lock
 from select_current_top30_v2 import read_history
 from auto_editorial_policy_v2 import eligible_plan, enabled_text
-from parallel_dispatch_v2 import WorkerPool, prepare_profiles
+from parallel_dispatch_v2 import DisposableWorkerPool
 
 ROOT = core.ROOT
 LOCK = ROOT / "editorial_batch_v2.lock"
@@ -62,11 +62,12 @@ def run_forever(poll_seconds=90, max_jobs=0, workers=3):
     auth = api.token()
     completed = 0
     with exclusive_v2_lock(LOCK):
-        # Las copias de autenticación se preparan ANTES de abrir ningún Chrome.
-        profiles = prepare_profiles(core.PROFILE, workers,
-                                    source_running=core.profile_pids)
-        pool = WorkerPool(profiles, env_key="TT_V2_EDITORIAL_PROFILE",
-                          logs_dir=ROOT / "editorial-parallel-logs")
+        # El perfil autenticado solo sirve de semilla: cada chat obtiene una
+        # copia propia que se elimina tras cerrar su Chrome, incluso al fallar.
+        pool = DisposableWorkerPool(
+            core.PROFILE, workers, source_running=core.profile_pids,
+            env_key="TT_V2_EDITORIAL_PROFILE",
+            logs_dir=ROOT / "editorial-parallel-logs")
         report("STARTED", completed=completed, workers=workers)
         print("TT_V2_AUTO_START=YES", flush=True)
         print("TT_V2_AUTO_PUBLICATION=NO", flush=True)
@@ -76,6 +77,8 @@ def run_forever(poll_seconds=90, max_jobs=0, workers=3):
                 for done in pool.reap():
                     tid, rev = done["trend_id"], done["revision"]
                     try:
+                        if done.get("profile_cleanup_error"):
+                            raise RuntimeError("profile_cleanup=" + done["profile_cleanup_error"])
                         if done["exit_code"]:
                             raise RuntimeError("worker_exit_%d log=%s" %
                                                (done["exit_code"], done["log"]))

@@ -10,7 +10,7 @@ from datetime import datetime, timezone
 import editorial_run_v2 as editorial
 import image_worker_v2 as worker
 from process_lock_v2 import exclusive_v2_lock, AlreadyRunning
-from parallel_dispatch_v2 import WorkerPool, prepare_profiles
+from parallel_dispatch_v2 import DisposableWorkerPool
 
 FLAG = editorial.ROOT / "auto-images-v2.enabled"
 LOCK = editorial.ROOT / "image_batch_v2.lock"
@@ -38,20 +38,22 @@ def run_forever(*, poll_seconds=90, max_jobs=0, workers=2):
     auth = api.token()
     completed = 0
     with exclusive_v2_lock(LOCK):
-        profiles = prepare_profiles(worker.PROFILE, workers,
-                                    source_running=worker.image_profile_pids)
-        pool = WorkerPool(profiles, env_key="TT_V2_IMAGE_PROFILE",
-                          logs_dir=editorial.ROOT / "image-parallel-logs")
+        pool = DisposableWorkerPool(
+            worker.PROFILE, workers, source_running=worker.image_profile_pids,
+            env_key="TT_V2_IMAGE_PROFILE",
+            logs_dir=editorial.ROOT / "image-parallel-logs")
         report("STARTED", completed=completed, workers=workers)
         try:
             while enabled():
                 for done in pool.reap():
                     tid = done["trend_id"]
-                    if done["exit_code"]:
+                    if done["exit_code"] or done.get("profile_cleanup_error"):
                         report("IMAGE_RETRY_LATER", completed=completed, trend_id=tid,
                                revision=done["revision"], attempt=done["attempt"],
                                active_workers=len(pool.active),
-                               reason="worker_exit_%d log=%s" % (done["exit_code"], done["log"]))
+                               reason=("profile_cleanup=" + done["profile_cleanup_error"]
+                                       if done.get("profile_cleanup_error") else
+                                       "worker_exit_%d log=%s" % (done["exit_code"], done["log"])))
                     else:
                         completed += 1
                         report("COMPLETED", completed=completed, trend_id=tid,
