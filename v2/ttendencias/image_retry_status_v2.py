@@ -24,16 +24,17 @@ def retry_status(records, *, now=None):
             state = "saved"
         elif status in ("starting", "send_intent_recorded",
                         "sent_waiting_for_image", "send_unverified"):
-            state = "unverified"
+            state = "blocked"
         elif status == "pre_send_failed":
-            state = "exhausted" if presends >= MAX_PRE_SEND else "retry_pending"
+            ambiguous_earlier = any(r.get("status") != "pre_send_failed" for r in ordered[:-1])
+            state = "blocked" if ambiguous_earlier else ("exhausted" if presends >= MAX_PRE_SEND else "retry_pending")
         elif status == "failed":
             obs = last.get("submission_observation") or {}
             if (last.get("error") == "V2_IMAGE_PROMPT_NOT_SUBMITTED"
                 and obs.get("composer_inspected") is True
                 and obs.get("composer_contains_command") is True
                 and obs.get("user_turn_contains_command") is False):
-                state = "exhausted" if sends >= MAX_SENDS else "retry_pending"
+                state = "blocked"
             else:
                 state = "unverified"
         else:
