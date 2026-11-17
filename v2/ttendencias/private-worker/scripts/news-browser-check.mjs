@@ -4,8 +4,16 @@ import path from 'node:path';
 import {projectNews,pageNews,NEWS_SOURCE} from '../src/news.js';
 import {chromium} from 'playwright';
 const [index,queue]=await Promise.all(['news-index.json','editorial-queue.json'].map(async name=>{const r=await fetch(NEWS_SOURCE+name);if(!r.ok)throw Error('NEWS_SOURCE_UNAVAILABLE');return r.json();}));
-const view=projectNews(index,queue);
+let view=projectNews(index,queue);
 console.log('REAL_NEWS_PROJECTION',JSON.stringify({counts:view.counts,observed_at:view.observed_at}));
+// UI QA needs one pending card even when the real Windows consumer has just
+// drained that queue. Add a synthetic *in-memory* test row; never persist it.
+if(!view.items.some(x=>x.group==='pending')){
+ const existing=view.items.find(x=>x.group==='ready')||view.items.find(x=>x.group==='incident')||view.items[0];
+ if(!existing)throw Error('NEWS_BROWSER_QA_NO_BASELINE_NEWS');
+ view={...view,items:[...view.items,{...existing,group:'pending',status_label:'Pendiente de elaboración'}],
+  counts:{...view.counts,pending:1}};
+}
 const root=path.resolve('dist');
 const shots=path.resolve(process.env.RUNNER_TEMP||'.','ttv2-news-qa');await fs.mkdir(shots,{recursive:true});
 let fail=false,demoReady=false,archived=false;
@@ -56,6 +64,13 @@ try{
  await page.waitForFunction(()=>document.querySelectorAll('.news-card').length===40);
  await page.getByRole('button',{name:'Siguiente →',exact:true}).click();
  await page.waitForFunction(()=>document.getElementById('news-page').textContent.includes('Página 2'));
+ if(view.counts.incident){
+  await page.getByRole('button',{name:'Incidencias · '+view.counts.incident,exact:true}).click();
+  await page.locator('.news-card summary').first().click();
+  if(await page.getByRole('button',{name:'↻ Reintentar',exact:true}).count()!==1||
+     await page.getByRole('button',{name:'Suprimir',exact:true}).count()!==1)
+   throw Error('INC manual retry and suppression buttons missing');
+ }
  await page.getByRole('button',{name:'Pendientes · '+view.counts.pending,exact:true}).click();
  await page.waitForFunction(n=>document.querySelectorAll('.news-card').length===n,Math.min(view.counts.pending,40));
  await page.locator('#news-search').fill(view.items.find(x=>x.group==='pending').title.slice(0,22));

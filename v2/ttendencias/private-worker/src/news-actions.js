@@ -3,7 +3,17 @@ import {readNews,readNewsRecord,decorateNews,pageNews,NEWS_SOURCE} from "./news.
 import {readImageIncident} from "./image-incidents.js";
 const ID=/^ttn2-[a-f0-9]{24}$/;
 const HEX=/^[a-f0-9]{64}$/;
-const ACTIONS=new Set(["archive","publish","rework","rework_x","mark","public_image","suppress_image","retry_image"]);
+const ACTIONS=new Set(["archive","publish","rework","rework_x","mark","public_image","suppress_image","retry_image","retry_editorial","dismiss"]);
+async function failedEditorialJob(event_id,revision){
+ const path=NEWS_SOURCE.replace(/state\/$/,"")+"jobs/editorial/"+event_id+"-r"+revision+"-editorial.json";
+ const response=await fetch(path,{headers:{Accept:"application/json"},cf:{cacheTtl:0,cacheEverything:false}});
+ if(!response.ok)throw Error("NEWS_INCIDENT_SOURCE_UNAVAILABLE");
+ const job=await response.json();
+ if(job.project!=="ttittulares-v2"||job.schema_version!==1||job.event_id!==event_id||job.revision!==revision||
+    job.job_id!==event_id+"-r"+revision+"-editorial"||job.status!=="problematic"||job.lease||
+    !/^[A-Z][A-Z0-9_]{2,100}$/.test(job.problem?.code||""))throw Error("NEWS_INCIDENT_NOT_CURRENT");
+ return job;
+}
 export async function newsTables(db){
  if(!db)throw Error("NEWS_STORAGE_UNAVAILABLE");
  await db.prepare("CREATE TABLE IF NOT EXISTS news_preferences(event_id TEXT NOT NULL,revision INTEGER NOT NULL,body TEXT NOT NULL,PRIMARY KEY(event_id,revision))").run();
@@ -80,8 +90,16 @@ export async function newsAction(request,env,{json,sameOrigin}){
    if(previous.event_id!==event_id||previous.revision!==revision||previous.action!==action)return json({error:"idempotency_conflict"},409);
    return json({ok:true,replay:true,event_id,revision});
   }
-  if(!current||current.revision!==revision||current.group!=="ready")return json({error:"news_not_current"},409);
+  const incidentAction=action==="retry_editorial"||action==="dismiss";
+  if(!current||current.revision!==revision||current.group!==(incidentAction?"incident":"ready")||
+     (incidentAction&&current.status_label!=="Incidencia de elaboración"))return json({error:"news_not_current"},409);
   if((action==="archive"||action==="publish"||action.startsWith("rework"))&&current.rework_requested)return json({error:"news_already_processing"},409);
+  if(incidentAction){
+   let job;
+   try{job=await failedEditorialJob(event_id,revision);}catch{return json({error:"news_incident_unavailable_or_stale"},409);}
+   if(action==="retry_editorial"&&/(AUTH|LOGIN|CREDENTIAL|DISK|CLEANUP|CAPTCHA|LEASE_EXPIRED)/.test(job.problem.code))
+    return json({error:"news_retry_requires_environment_repair"},409);
+  }
   const row=controls.preferences.find(x=>x.event_id===event_id&&x.revision===revision)||{};
   const prefs={...row};delete prefs.event_id;delete prefs.revision;
   const now=new Date().toISOString();
@@ -107,8 +125,9 @@ export async function newsAction(request,env,{json,sameOrigin}){
   if(action==="public_image")prefs.public_image_visible=body.value;
   if(action==="suppress_image")prefs.image_suppressed=body.value;
   if(action==="archive")prefs.archived=true;
+  if(action==="dismiss"){prefs.archived=true;prefs.dismissed=true;}
   if(action==="publish"){prefs.archived=true;prefs.published=true;}
-  if(action==="rework"||action==="rework_x")prefs.rework_requested=true;
+  if(action==="rework"||action==="rework_x"||action==="retry_editorial")prefs.rework_requested=true;
   if(action==="retry_image"){
    prefs.image_retry_incident_at=incident.at;
    prefs.image_retry_request_id=body.action_id;
