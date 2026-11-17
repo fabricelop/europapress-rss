@@ -156,6 +156,38 @@ test("manual image retry cannot override an unsafe incident or an active image",
  docs[0].items[id].image_progress={revision:1,editorial_sha256:hash,expires_at:"2090-01-01T00:00:00Z"};
  assert.equal((await newsAction(request("retry_image"),env,helpers)).status,409);
 }));
+test("INC manual retry is revision-bound, enters working and cannot duplicate its request",()=>scoped(async(env,docs)=>{
+ docs[0].items[id].status="editorial_in_progress";docs[1].items[0].status="problematic";
+ const job={schema_version:1,project:"ttittulares-v2",event_id:id,revision:1,
+  job_id:id+"-r1-editorial",status:"problematic",lease:null,
+  problem:{code:"INVALID_EDITORIAL_JSON",at:time,retry_mode:"manual_only"}};
+ const original=globalThis.fetch;globalThis.fetch=async url=>String(url).includes("/jobs/editorial/")?Response.json(job):original(url);
+ const initial=await newsView(env,new URLSearchParams({state:"incident"}));
+ assert.equal(initial.total,1);assert.equal(initial.items[0].status_label,"Incidencia de elaboración");
+ const first=await newsAction(request("retry_editorial"),env,helpers);assert.equal(first.status,200);
+ const controls=await newsControls(env);
+ assert.equal(controls.actions[0].action,"retry_editorial");
+ assert.equal(controls.preferences[0].rework_requested,true);
+ assert.equal((await newsView(env,new URLSearchParams({state:"incident"}))).total,0);
+ assert.equal((await newsView(env,new URLSearchParams({state:"working"}))).total,1);
+ assert.equal((await newsAction(request("retry_editorial",{action_id:"2".repeat(32)}),env,helpers)).status,409);
+ assert.equal((await newsControls(env)).actions.length,1);
+}));
+test("INC suppression goes to archive without publication and unsafe retry is refused",()=>scoped(async(env,docs)=>{
+ docs[0].items[id].status="editorial_in_progress";docs[1].items[0].status="problematic";
+ const job={schema_version:1,project:"ttittulares-v2",event_id:id,revision:1,
+  job_id:id+"-r1-editorial",status:"problematic",lease:null,
+  problem:{code:"NEWS_OWN_CHROME_CLEANUP_UNVERIFIED",at:time,retry_mode:"manual_only"}};
+ const original=globalThis.fetch;globalThis.fetch=async url=>String(url).includes("/jobs/editorial/")?Response.json(job):original(url);
+ const unsafe=await newsAction(request("retry_editorial"),env,helpers);
+ assert.equal(unsafe.status,409);assert.equal((await unsafe.json()).error,"news_retry_requires_environment_repair");
+ const response=await newsAction(request("dismiss"),env,helpers);
+ assert.equal(response.status,200);assert.equal((await response.json()).publication_sent,false);
+ const archive=await newsView(env,new URLSearchParams({state:"archived"}));
+ assert.equal(archive.total,1);assert.equal(archive.items[0].status_label,"Suprimida");
+ assert.equal((await newsControls(env)).actions[0].action,"dismiss");
+ assert.equal((await(await newsPublicationCount(new Request("https://private.example/api/news-publication-count"),env,helpers)).json()).count,0);
+}));
 test("stale revision preferences never archive or suppress a new record",()=>{
  const [index,queue]=fixture();index.items[id].current_revision=2;queue.items[0].revision=2;queue.items[0].job_id=id+"-r2-editorial";
  const view=decorateNews(projectNews(index,queue),{preferences:[{event_id:id,revision:1,archived:true,image_suppressed:true,marked:true}]});

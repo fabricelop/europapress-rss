@@ -184,41 +184,67 @@ class NewsService(ed.EditorialService):
             raise ed.EditorialError("NEWS_CONTROLS_INVALID")
         self.image_preferences=controls.get("preferences", [])
         self.image_retry_requests=[a for a in controls["actions"] if isinstance(a,dict) and a.get("action")=="retry_image"]
-        pending=[a for a in controls["actions"] if a.get("action") in ("archive","rework","rework_x")]
+        pending=[a for a in controls["actions"] if a.get("action") in ("archive","rework","rework_x","retry_editorial","dismiss")]
         if not pending:return
         _,docs=self.store.read_editorial_snapshot()
         news,_=ed._snapshot(docs)
         for action in pending:
             if PREFIX+"actions/"+str(action.get("action_id"))+".json" in docs:continue
             event=news.get(action.get("event_id"))
-            if not event or event["current_revision"]!=action.get("revision") or event["status"]!="ready":continue
+            if not event or event["current_revision"]!=action.get("revision"):continue
             self.apply_action(action)
 
     def apply_action(self, action):
         if not ACTION.fullmatch(str(action.get("action_id",""))) or not ID.fullmatch(str(action.get("event_id",""))):
             raise ed.EditorialError("NEWS_ACTION_INVALID")
-        if action.get("action") not in ("archive","rework","rework_x"):
+        if action.get("action") not in ("archive","rework","rework_x","retry_editorial","dismiss"):
             raise ed.EditorialError("NEWS_ACTION_INVALID")
         path=PREFIX+"actions/"+action["action_id"]+".json"
         for _ in range(self.max_attempts):
             head,docs=self.store.read_editorial_snapshot()
             if path in docs:return {"verified":True,"replay":True}
             news,jobs=ed._snapshot(docs);event=news.get(action["event_id"])
-            if not event or event["current_revision"]!=action.get("revision") or event["status"]!="ready":
+            if not event or event["current_revision"]!=action.get("revision"):
+                return {"verified":False,"stale":True}
+            incident_action=action["action"] in ("retry_editorial","dismiss")
+            previous=jobs.get(event["event_id"]+"-r"+str(event["current_revision"])+"-editorial")
+            if incident_action:
+                if (event["status"] in ed.TERMINAL or not previous or
+                        previous["status"]!="problematic" or previous.get("lease") or
+                        ed.record_path(previous) in docs):
+                    return {"verified":False,"stale":True}
+                code=str((previous.get("problem") or {}).get("code", ""))
+                if (action["action"]=="retry_editorial" and
+                        any(x in code for x in ("AUTH","LOGIN","CREDENTIAL","DISK","CLEANUP","CAPTCHA","LEASE_EXPIRED"))):
+                    return {"verified":False,"unsafe":True}
+            elif event["status"]!="ready":
                 return {"verified":False,"stale":True}
             now=ed._stamp(self.clock());writes={}
             decision={"schema_version":1,"project":"ttittulares-v2",
                 "decision_id":"dcn2-"+action["action_id"][:24],"event_id":event["event_id"],
-                "revision":event["current_revision"],"action":"archive" if action["action"]=="archive" else "request_rework",
+                "revision":event["current_revision"],
+                "action":"dismiss" if action["action"]=="dismiss" else "archive" if action["action"]=="archive" else "request_rework",
                 "actor":"private-web","occurred_at":now,"idempotency_key":action["action_id"]}
-            if action["action"]=="archive":
-                event.update(status="archived",updated_at=now)
+            if action["action"] in ("archive","dismiss"):
+                event.update(status="dismissed" if action["action"]=="dismiss" else "archived",updated_at=now)
+                if action["action"]=="dismiss":
+                    for ref in event["revision_refs"]:
+                        if ref["revision"]==event["current_revision"]:ref["status"]="dismissed"
             else:
                 hints=str(action.get("hints") or "").strip()
                 if action["action"]=="rework_x" and not 10<=len(hints)<=1200:
                     raise ed.EditorialError("NEWS_REWORK_HINTS_INVALID")
+                if action["action"]=="retry_editorial":
+                    code=str((previous.get("problem") or {}).get("code",""))
+                    instructions={
+                        "INVALID_EDITORIAL_JSON":"Respeta el contrato exacto TTN2_EDITORIAL_READY o TTN2_EDITORIAL_BLOCKED, sin Markdown ni contenido extra.",
+                        "INVALID_UTC_TIMESTAMP":"Usa fechas UTC ISO 8601 estrictas, verificando cada marca antes de responder.",
+                        "ESSENTIAL_FACT_NOT_VERIFIED":"Busca fuentes verdaderamente independientes; si el hecho esencial no se acredita, responde BLOCKED.",
+                    }
+                    hints="Reintento manual tras incidencia "+code+". Abre un chat editorial nuevo, investiga desde cero, no reutilices respuestas previas. "+instructions.get(code,"Contrasta los hechos de nuevo con al menos dos fuentes independientes.")
                 decision["rework"]={"scope":"reinvestigate","instructions":
-                    ("Investiga también X y contrasta estas pistas: "+hints) if hints else
+                    ("Investiga también X y contrasta estas pistas: "+hints) if action["action"]=="rework_x" else
+                    hints if action["action"]=="retry_editorial" else
                     "Investiga de nuevo el hecho y redacta una explicación nueva."}
                 rev=event["current_revision"]+1;jid=event["event_id"]+"-r"+str(rev)+"-editorial"
                 old=jobs[event["event_id"]+"-r"+str(rev-1)+"-editorial"]

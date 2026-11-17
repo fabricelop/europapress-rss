@@ -10,12 +10,36 @@ window.TTNewsActions=(()=>{
    headers:{"content-type":"application/json","x-ttv2-action":"1"},
    body:JSON.stringify({action_id:crypto.randomUUID().replaceAll("-",""),event_id:item.event_id,
     revision:item.revision,action:type,...(value!==undefined?{value}:{}),...(hints?{hints}:{})})});
-  if(!response.ok)throw Error(response.status===409?"La noticia ha cambiado. Actualiza la lista.":"No se pudo guardar la acción.");
+  if(!response.ok){
+   const result=await response.json().catch(()=>({}));
+   if(result.error==="news_retry_requires_environment_repair")throw Error("El reintento está bloqueado por un problema de acceso o del navegador. Revisa la incidencia antes de reintentarlo.");
+   throw Error(response.status===409?"La noticia ha cambiado o ya se está procesando. Actualiza la lista.":"No se pudo guardar la acción.");
+  }
   return response.json();
  }
  function prompt(item,record){return 'TTN2_IMAGE_JOB_V1 '+JSON.stringify({event_id:item.event_id,revision:item.revision})+
   "\nGenera UNA imagen original con ImageGen de mínimo 1024px. Cómic editorial europeo con una escena narrativa, protagonistas, acción clara, profundidad, luz y textura. Sin texto, titulares, hashtags, logos, diagramas ni collage. Una metáfora visual del hecho contrastado. En sucesos graves, escena contextual seria y respetuosa sin humor contra víctimas. Chat nuevo e independiente; no abras el chat editorial.\n"+
   record.title+"\n"+record.factual_summary+"\n"+record.tweet_text;}
+ function attachIncident({item,body,onChange}){
+  if(item.group!=="incident"||item.status_label!=="Incidencia de elaboración"||body.querySelector(".news-incident-actions"))return;
+  const actions=el("div","news-actions news-incident-actions");
+  actions.setAttribute("role","group");actions.setAttribute("aria-label","Acciones sobre la noticia con incidencia");
+  const retry=el("button","publish-action news-incident-retry","↻ Reintentar");
+  const dismiss=el("button","publish-action news-incident-dismiss","Suprimir");
+  for(const button of [retry,dismiss])button.type="button";
+  retry.title="Nueva revisión y nuevo chat editorial desde cero; los intentos anteriores se conservan";
+  dismiss.title="Retirar la noticia de Incidencias sin borrar el historial";
+  const wire=(button,type,confirmText)=>button.addEventListener("click",async event=>{
+   event.preventDefault();event.stopPropagation();if(button.disabled)return;
+   if(confirmText&&!confirm(confirmText))return;
+   retry.disabled=dismiss.disabled=true;
+   try{await action(item,type);await onChange();}
+   catch(error){notice(error.message);retry.disabled=dismiss.disabled=false;}
+  });
+  wire(retry,"retry_editorial");
+  wire(dismiss,"dismiss","¿Suprimir esta noticia de INC? Se trasladará a Archivo como «Suprimida», conservando el historial. No se elaborará de nuevo automáticamente.");
+  actions.append(retry,dismiss);body.append(actions);
+ }
  function attach({item,card,head,body,record,onChange}){
   if(body.querySelector(".news-actions"))return;
   // The V1/public switch must never hide an authorized image in private V2.
@@ -113,5 +137,5 @@ window.TTNewsActions=(()=>{
   }
   body.append(actions);
  }
- return {attach,prompt};
+ return {attach,attachIncident,prompt};
 })();

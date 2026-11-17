@@ -151,7 +151,7 @@ export function decorateNews(view,controls={}){
    rework_requested:pref.rework_requested===true,
    image_retry_requested:item.image_incident_available===true&&Boolean(item.image_incident_at)&&
       pref.image_retry_incident_at===item.image_incident_at};
-  if(pref.archived){row.group="archived";row.status_label=pref.published===true?"Publicada":"Archivada";}
+  if(pref.archived){row.group="archived";row.status_label=pref.dismissed===true?"Suprimida":pref.published===true?"Publicada":"Archivada";}
   else if(pref.rework_requested){row.group="working";row.status_label="Reelaboración solicitada";}
   if(pref.manual_image){row.image_available=true;row.image_incident_available=false;}
   if(row.image_suppressed)row.image_available=false;

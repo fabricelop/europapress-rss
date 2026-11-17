@@ -50,6 +50,45 @@ class NewsEditorialAutoRetryTests(unittest.TestCase):
    job=self.service.claim("worker-"+str(revision),"retry-token-%s-123456789012345678"%revision)["job"]
    self.service.fail(job["job_id"],"worker-"+str(revision),"retry-token-%s-123456789012345678"%revision,"NEWS_CAPTURE_TIMEOUT")
   self.assertFalse(self.service.retry_problematic())
+ def test_incident_manual_retry_creates_new_revision_and_problem_specific_fresh_chat_hint(self):
+  old=self.fail_first("INVALID_EDITORIAL_JSON")
+  action={"action_id":"b"*32,"event_id":old["event_id"],"revision":1,"action":"retry_editorial"}
+  self.assertTrue(self.service.apply_action(action)["verified"])
+  self.assertTrue(self.service.apply_action(action)["replay"])
+  _,docs=self.store.read_editorial_snapshot()
+  event=docs[ed.PREFIX+"news/"+old["event_id"]+".json"]
+  self.assertEqual(event["current_revision"],2)
+  self.assertEqual(event["revision_refs"][-1]["reason"],"user_rework")
+  self.assertEqual(docs[ed.job_path(old["job_id"])]["status"],"problematic")
+  new=docs[ed.job_path(old["event_id"]+"-r2-editorial")]
+  self.assertEqual(new["status"],"pending")
+  self.assertIsNone(new["session"])
+  self.assertIsNone(new["send_intent"])
+  self.assertEqual(new["attempts"]["claim_count"],0)
+  claimed=self.service.claim("manual-fresh-worker","fresh-private-token-123456789012345")
+  self.assertEqual(claimed["job"]["revision"],2)
+  self.assertIn("chat editorial nuevo",claimed["hints"])
+  self.assertIn("TTN2_EDITORIAL_READY",claimed["hints"])
+  self.assertNotIn("Investiga también X",claimed["hints"])
+ def test_incident_suppression_is_terminal_without_erasing_the_failed_job(self):
+  old=self.fail_first("ESSENTIAL_FACT_NOT_VERIFIED")
+  action={"action_id":"c"*32,"event_id":old["event_id"],"revision":1,"action":"dismiss"}
+  self.service.controls({"actions":[action],"preferences":[]})
+  _,docs=self.store.read_editorial_snapshot()
+  event=docs[ed.PREFIX+"news/"+old["event_id"]+".json"]
+  self.assertEqual(event["status"],"dismissed")
+  self.assertEqual(event["revision_refs"][-1]["status"],"dismissed")
+  self.assertEqual(docs[ed.job_path(old["job_id"])]["status"],"problematic")
+  self.assertEqual(docs[ed.INDEX]["items"][old["event_id"]]["terminal_status"],"dismissed")
+  self.assertNotIn(old["event_id"],[row["event_id"] for row in docs[ed.QUEUE]["items"]])
+  self.assertFalse(self.service.preview().get("automatic_retry_pending"))
+  self.assertTrue(self.service.apply_action(action)["replay"])
+ def test_incident_retry_refuses_unsafe_environment_and_stale_revision(self):
+  old=self.fail_first("NEWS_OWN_CHROME_CLEANUP_UNVERIFIED")
+  action={"action_id":"d"*32,"event_id":old["event_id"],"revision":1,"action":"retry_editorial"}
+  self.assertTrue(self.service.apply_action(action)["unsafe"])
+  self.assertTrue(self.service.apply_action({**action,"action":"dismiss"})["verified"])
+  self.assertTrue(self.service.apply_action({**action,"action_id":"e"*32})["stale"])
 
 class NewsWorkflowTests(unittest.TestCase):
  def setUp(self):

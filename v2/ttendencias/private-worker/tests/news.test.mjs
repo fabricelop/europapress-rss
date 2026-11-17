@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {readFileSync} from "node:fs";
 import worker from "../src/index.js";
-import {projectNews,pageNews,readNews,readNewsRecord,validateNewsRecord,NEWS_SOURCE,NEWS_RADAR_SOURCE} from "../src/news.js";
+import {projectNews,decorateNews,pageNews,readNews,readNewsRecord,validateNewsRecord,NEWS_SOURCE,NEWS_RADAR_SOURCE} from "../src/news.js";
 
 const id="ttn2-"+"a".repeat(24),time="2026-11-16T18:13:24Z";
 function fixture(){return [
@@ -40,6 +40,23 @@ test("working, recovery, incident and exact ready statuses are distinct",()=>{
   assert.equal(projectNews(i,q).items[0].group,group);
  }
  const [i,q]=fixture();i.items[id].status="ready";q.items=[];assert.equal(projectNews(i,q).items[0].group,"incident");
+});
+test("INC controls are separate from READY publication and preserve confirmed suppression",()=>{
+ const actions=readFileSync(new URL("../web-source/news-actions.js",import.meta.url),"utf8");
+ const page=readFileSync(new URL("../web-source/news.js",import.meta.url),"utf8");
+ assert.match(actions,/function attachIncident\(/);
+ assert.match(actions,/wire\(retry,"retry_editorial"\)/);
+ assert.match(actions,/wire\(dismiss,"dismiss"/);
+ assert.match(page,/TTNewsActions\.attachIncident\(/);
+ const [index,queue]=fixture();queue.items[0].status="problematic";
+ const projected=projectNews(index,queue);
+ const controls={preferences:[{event_id:id,revision:1,archived:true,dismissed:true}]};
+ // The source projection stays immutable; only the private per-user view hides the incident.
+ assert.equal(projected.items[0].group,"incident");
+ assert.equal(decorateNews(projected,controls).items[0].status_label,"Suprimida");
+ // Source already supports dismissed as a terminal state, so ingestion cannot resurrect it.
+ index.items[id].terminal_status="dismissed";
+ assert.equal(projectNews(index,queue).items[0].group,"archived");
 });
 test("only verified image for the current revision is signalled on the closed news card",()=>{
  const [index,queue]=fixture();index.items[id].status="ready";queue.items[0].status="ready";

@@ -61,6 +61,7 @@
      const link=node("a","news-source-link","Abrir noticia de origen ↗");link.href=target.href;link.target="_blank";link.rel="noopener noreferrer";body.append(link);
     }}catch{}
    }
+   TTNewsActions.attachIncident({item,body,onChange:refreshNews});
    card.append(body);
    TTImageIncidents.attach({card,head:summary,project:"ttittulares-v2",id:item.event_id,revision:item.revision,
     available:item.image_incident_available===true,
