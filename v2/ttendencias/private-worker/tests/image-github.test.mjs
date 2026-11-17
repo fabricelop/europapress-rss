@@ -9,7 +9,8 @@ const REV=1;
 const raw=Buffer.alloc(175000,93);
 Buffer.from([137,80,78,71,13,10,26,10]).copy(raw,0);
 const sha=createHash("sha256").update(raw).digest("hex");
-const path="v2/ttendencias/generated-images/"+ID+"-r1-"+sha.slice(0,24)+".png";
+const path="v2/ttendencias/generated-images/"+ID+".image";
+const legacyPath="v2/ttendencias/generated-images/"+ID+"-r1-"+sha.slice(0,24)+".png";
 const cmd="v2-img-"+ID+"-r1-a1-0123456789abcdef";
 const AUTH_PASSWORD="sample-v2-password-long-enough";
 const env={
@@ -48,8 +49,23 @@ test("original image from GitHub is only served via authenticated V2 session",as
     {headers:{"cookie":cookie}}),env);
   assert.equal(response.status,200);
   assert.equal(response.headers.get("content-type"),"image/png");
+  assert.match(response.headers.get("cache-control")||"",/no-store/);
   assert.equal(Buffer.compare(Buffer.from(await response.arrayBuffer()),raw),0);
   assert.ok(requests.some(x=>x.includes("/feature/ttactualidad-v2-clean/")&&x.endsWith(path)));
+ }finally{globalThis.fetch=fetchBefore;}
+});
+test("legacy content-addressed image paths remain readable during migration",async()=>{
+ const fetchBefore=globalThis.fetch, cookie=await authorized();
+ try{
+  globalThis.fetch=async url=>{
+   if(String(url).endsWith("editorial-queue.json"))return Response.json(ledger({path:legacyPath}));
+   if(String(url).endsWith(legacyPath))return new Response(raw,{status:200});
+   return new Response("not found",{status:404});
+  };
+  const response=await worker.fetch(new Request(origin+"/api/image/"+ID+"?revision=1",
+    {headers:{"cookie":cookie}}),env);
+  assert.equal(response.status,200);
+  assert.equal(response.headers.get("content-type"),"image/png");
  }finally{globalThis.fetch=fetchBefore;}
 });
 test("V2 never serves image attached to wrong editorial revision or wrong SHA",async()=>{
