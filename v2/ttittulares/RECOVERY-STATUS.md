@@ -1,3 +1,59 @@
+## Site público conectado a Noticias V2 — 17/11/2026, verificado en producción
+
+Encargo completado sobre la fuente REAL del Site, independiente de este repositorio.
+Proyecto appgprj_6ae4dcf7d7488191a574e5b649e67370.
+https://ttactualidad.rainyraven22.chatgpt.site
+Versión inicial comprobada97; versión98 PUBLICADA y audiencia public conservada.
+Fuente Site: commit ff9d4b5793a8ae6c47422153ecb5204df2f18c29.
+Saved version: appgprj_6ae4dcf7d7488191a574e5b649e67370~appgver_fdfa9e5494fc81918002b570472a5cd3.
+Deployment appgdep_6afbfa4c567881919c6b1c22f5bfa7cb: succeeded; get_site confirma98/public.
+
+Implementación en el Site:
+- lib/news-v2-adapter.mjs y lib/v2-news.ts consumen /api/public-news del Worker V2.
+  Validan contrato, ttn2/revisión/hash editorial, texto exacto y URL de imagen por ID/revisión.
+  Fuentes: article_url/source_name reales del feed, sin perder enlaces.
+- Noticias actuales e Inicio usan V2; archivo y búsqueda combinan el histórico V1
+  conservado con las filas V2 autorizadas. URLs antiguas mantienen su resolución V1;
+  ttn2 resuelve la revisión actual del feed. No se reescriben textos editoriales.
+- Imágenes solo cuando image_available/public_image_visible lo permiten,
+  sin image_suppressed ni rework_requested. RE/RE-X retiradas del feed no reaparecen
+  desde historias/relaciones antiguas. El endpoint V2 de imagen revalida preferencias.
+- Snapshot válido persistente en metadata D1, caché8s y snapshot real de respaldo
+  de3 noticias. Fallo del feed conserva la última lista válida, marca fetch_error
+  y muestra fecha/antigüedad de comprobación y captura de origen sin inventar fechas.
+- Conservadas presentación, fichas desplegables, Inicio, Tendencias y relaciones.
+  Relaciones reciben los registros V2 actuales sin reutilizar imágenes aprobadas V1.
+  Corregido literal SQL ESCAPE para búsqueda compatible con SQLite estricto.
+
+Pruebas/verificación:
+- npm test:147/147 PASS; build de producción PASS; diff --check PASS.
+- Nuevas pruebas: identidad/texto/fuentes/imagen, visibilidad/supresión/RE,
+  contrato inválido/duplicado, fallo/caché/recuperación/revisión.
+  SQLite real ejecuta queryNews/getStory: actuales V2, archivo/búsqueda V1,
+  cambio de revisión y retirada sin resurrección desde SQL.
+- Producción: /api/news coincide EXACTAMENTE con el feed por los3 IDs,
+  revisión1, tweet_text y editorial_sha256:
+  ttn2-1845e430b27ed694e17e391e (Frente Amplio),
+  ttn2-1218d049e8d55af935ec862f (plaza Catalunya),
+  ttn2-0e0e7c7ebd494a7a753590d9 (Alcaraz).
+- Descargados los2 PNG reales desde /api/public-news-image: SHA256 coincide con
+  el feed,2567574 y3416337bytes. Navegador muestra ambas miniaturas cargadas,
+  naturalWidth1536, desde URLs del Worker V2, ficha desplegada y permalink ttn2.
+- Hemeroteca producción:975 noticias; búsqueda Rusia18 resultados.
+  URL V1 /noticias/ba06db6c0e83 devuelve200.
+  Navegador confirma Inicio, hemeroteca, búsqueda y30 fichas de Tendencias.
+- Vista previa local NO disponible: ReferenceError module is not defined en
+  runner-worker, incluso tras configurar el perfil managed-linux. No se alteró
+  código funcional para eludirlo; QA de escritorio hecha en producción tras publicar.
+  No se ha hecho QA móvil adicional ni simulado una caída real del feed productivo;
+  fallback/supresión/RE probados mediante fixtures locales, sin tocar decisiones reales.
+
+Pendientes separados conservados: instalación/activación Windows y cuarentenas
+editoriales descritas debajo; estado/reintentos de imágenes de Tendencias.
+Esta publicación NO instala consumidores en el PC, no relanza trabajos ni publica en X.
+La conexión del Site V1 a Noticias V2 ya no está pendiente. No volver a desplegar
+europapress-rss suponiendo que cambia la fuente independiente del Site.
+
 ## Noticias: piloto corregido listo para instalación — 17/11/2026
 
 Commit validado de integración: aed5d7cb127c6344138b38894c2b674624036859.
