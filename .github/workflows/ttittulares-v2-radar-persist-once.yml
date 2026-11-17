@@ -2,7 +2,10 @@ name: TTiTTulares V2 - Persist isolated radar snapshot
 on:
   push:
     branches: [feature/ttactualidad-v2-clean]
-    paths: ['.github/workflows/ttittulares-v2-radar-persist-once.yml']
+    paths:
+      - '.github/workflows/ttittulares-v2-radar-persist-once.yml'
+      - 'v2/ttittulares/radar_ingest_v2.py'
+      - 'v2/ttittulares/test_radar_ingest_v2.py'
   workflow_dispatch:
   workflow_call:
 

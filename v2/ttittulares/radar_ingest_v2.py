@@ -5,6 +5,7 @@ import copy
 import hashlib
 import json
 import re
+from collections import Counter, defaultdict
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from urllib.parse import urlsplit
@@ -15,7 +16,7 @@ try:
     from .source_publication_v2 import clean_feed_value, parse_publication_date, utc_iso
     from .identity_v2 import (normalize, tokens, fingerprint, best_match, titles_match,
         has_independent_evidence_consensus, add_appearance, recalc_event_sources, title_match_value,
-        prune_event_outliers, events_match, same_fact, is_material_update)
+        prune_event_outliers, events_match, same_fact, is_material_update, comparable_url)
     from .source_health_v2 import project_source_health
 except ImportError:
     from source_catalog_v2 import load_catalog, source_map, source_family
@@ -23,7 +24,7 @@ except ImportError:
     from source_publication_v2 import clean_feed_value, parse_publication_date, utc_iso
     from identity_v2 import (normalize, tokens, fingerprint, best_match, titles_match,
         has_independent_evidence_consensus, add_appearance, recalc_event_sources,
-        prune_event_outliers, events_match, same_fact, is_material_update)
+        prune_event_outliers, events_match, same_fact, is_material_update, comparable_url)
     from source_health_v2 import project_source_health
 
 ROOT=Path(__file__).resolve().parent
@@ -144,17 +145,62 @@ def _new_candidate(row,now):
     return event
 
 
+class _TokenLookup:
+    """Conservative inverted lookup: NEVER discards a possible semantic match.
+
+    Every non-URL title match needs at least two common fingerprint tokens;
+    `same_fact` needs at least three. Index unioned title variants and verify
+    the original identity predicates on the reduced, insertion-ordered set.
+    """
+
+    def __init__(self, rows=()):
+        self.positions = {}
+        self.rows = {}
+        self.by_token = defaultdict(set)
+        self.by_url = defaultdict(set)
+        for row in rows:
+            self.add(row)
+
+    def add(self, row, *, variants=None, urls=()):
+        key = row["event_id"]
+        if key not in self.positions:
+            self.positions[key] = len(self.positions)
+        self.rows[key] = row
+        if variants is None:
+            variants = [row.get("canonical_title", "")] + [
+                x.get("title", "") for x in row.get("appearances", [])]
+        for title in variants:
+            for token in tokens(title):
+                self.by_token[token].add(key)
+        for url in urls:
+            if url:
+                self.by_url[url].add(key)
+
+    def candidates(self, title, *, min_common=2, url=""):
+        counts = Counter(key for token in tokens(title) for key in self.by_token.get(token, ()))
+        ids = {key for key, count in counts.items() if count >= min_common}
+        if url:
+            ids.update(self.by_url.get(url, ()))
+        return [self.rows[key] for key in sorted(ids, key=self.positions.__getitem__)]
+
+
 def _merge_candidate_events(events,catalog,protected_ids=None):
     protected_ids=set(protected_ids or ())
     ordered=sorted(events.values(),key=lambda x:(x.get("first_seen_at",""),x["event_id"]))
     kept=[]
     remap={}
+    lookup=_TokenLookup()
     for event in ordered:
         if event.get("status") not in ("monitoring","eligible"):
             kept.append(event)
             continue
         target=None
-        for prior in kept:
+        matching=set()
+        for title in [event.get("canonical_title", "")] + [
+                a.get("title", "") for a in event.get("appearances", [])]:
+            matching.update(x["event_id"] for x in lookup.candidates(title))
+        for prior in sorted((lookup.rows[key] for key in matching),
+                            key=lambda x: lookup.positions[x["event_id"]]):
             if prior.get("status") not in ("monitoring","eligible"):
                 continue
             # Never rewrite an event_id that already exists in the persisted news index.
@@ -165,6 +211,8 @@ def _merge_candidate_events(events,catalog,protected_ids=None):
                 break
         if target is None:
             kept.append(event)
+            if event["event_id"] not in protected_ids:
+                lookup.add(event)
             continue
         by_source={a.get("source"):dict(a) for a in target.get("appearances",[]) if a.get("source")}
         for appearance in event.get("appearances",[]):
@@ -189,6 +237,7 @@ def _merge_candidate_events(events,catalog,protected_ids=None):
             target["editorial_job_id"]=event.get("editorial_job_id") or target.get("editorial_job_id")
         if len(event.get("canonical_title",""))>len(target.get("canonical_title","")):
             target["canonical_title"]=event["canonical_title"]
+        lookup.add(target)
         remap[event["event_id"]]=target["event_id"]
     return {x["event_id"]:x for x in kept},remap
 
@@ -240,9 +289,12 @@ def _update_index_from_event(index,event):
     return item
 
 
-def _index_match(row,index_items):
+def _index_match(row,index_items,lookup=None):
     candidates=[]
-    for item in index_items.values():
+    possible=(lookup.candidates(row["title"],min_common=3,
+                                url=comparable_url(row["canonical_url"]))
+              if lookup is not None else index_items.values())
+    for item in possible:
         if same_fact(row,item):
             candidates.append(item)
     if not candidates:
@@ -328,21 +380,44 @@ def ingest_scan(rows, source_statuses, previous_state=None, news_index=None, *, 
             if event["event_id"] in index:
                 index[event["event_id"]]["status"]="archived"
 
+    # Each comparison still uses the original identity rules. The inverted
+    # indices only avoid impossible all-pairs comparisons in ~2,500 candidates
+    # and the growing historical news index. The shorter GitHub CAS window is
+    # essential when live editorial consumers update the same branch.
+    event_lookup=_TokenLookup()
+    for event in events.values():
+        if event.get("status") in ("monitoring","eligible"):
+            event_lookup.add(event,urls=[event.get("canonical_url","")] + [
+                a.get("canonical_url","") for a in event.get("appearances",[])])
+    index_lookup=_TokenLookup()
+    for item in index.values():
+        if not item.get("event_id"):
+            continue
+        index_lookup.add(item,variants=[item.get("canonical_title","")] +
+                         list(item.get("aliases") or [])[:11],
+                         urls=[comparable_url(url) for url in
+                               ([item.get("url"),item.get("canonical_url"),item.get("source_url")]
+                                + list(item.get("source_urls") or [])
+                                + list(item.get("canonical_urls") or []))])
+
     for row in accepted:
         # URL identity is stronger than headline similarity within one source item.
-        match=next((e for e in events.values()
+        match=next((e for e in event_lookup.candidates(row["title"],
+                                                     url=row["canonical_url"])
                     if e.get("status") in ("monitoring","eligible") and
                     (row["canonical_url"]==e.get("canonical_url") or any(
                         a.get("canonical_url")==row["canonical_url"] for a in e.get("appearances",[])))),None)
         if match is None:
-            match,match_score=best_match(row["title"],[e for e in events.values()
+            match,match_score=best_match(row["title"],[e for e in
+                 event_lookup.candidates(row["title"])
                  if e.get("status") in ("monitoring","eligible")],0.50)
         if match is not None:
             _append_appearance(match,row,stamp,cat)
+            event_lookup.add(match,urls=[row["canonical_url"]])
             # Extra outlets do not create another event or a revision.
             continue
 
-        prior_item=_index_match(row,index)
+        prior_item=_index_match(row,index,index_lookup)
         if prior_item is not None:
             status=str(prior_item.get("terminal_status") or prior_item.get("status") or "").lower()
             if status in {"published","dismissed","deleted","treated"}:
@@ -372,6 +447,7 @@ def ingest_scan(rows, source_statuses, previous_state=None, news_index=None, *, 
             candidate["event_id"]=stable_event_id(row["source_family"]+"|"+row["canonical_url"]+"|"+normalize(row["title"])+"|"+stamp)
         _append_appearance(candidate,row,stamp,cat)
         events[candidate["event_id"]]=candidate
+        event_lookup.add(candidate,urls=[row["canonical_url"]])
 
     # Consolidate candidates split by paraphrased source titles before quorum.
     events,remap=_merge_candidate_events(events,cat,protected_event_ids)
