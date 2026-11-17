@@ -10574,13 +10574,13 @@
       "trend_id": "trv2-265753bdae3ce83e08f8e38f",
       "name": "Blas Ziarreta",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "1803af6b1376bf9f",
       "requested_at": "2026-11-17T12:05:49.944505+00:00",
       "updated_at": "2026-11-17T12:05:49.944505+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -10593,7 +10593,13 @@
           "archived_at": "2026-11-17T12:05:49.944505+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "ddd45e48a0df725deb2808ad378b5013403a752b97df47fe",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-17T12:06:15.975755+00:00",
+        "expires_at": "2026-11-17T12:46:15.975755+00:00"
+      }
     },
     "trv2-e3e8985d7691de709329f955": {
       "trend_id": "trv2-e3e8985d7691de709329f955",
