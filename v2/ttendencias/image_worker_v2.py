@@ -3,7 +3,7 @@
 
 Never edits editorial text, never publishes, never touches V1, never uses the
 editorial Chrome profile. A failed image can be tried again in a NEW chat.
-Only the first successful original is bound to the trend/revision.
+The latest successful image replaces the previous raster for that trend.
 """
 from __future__ import annotations
 
@@ -35,7 +35,7 @@ COOLDOWN_SECONDS = 240
 IMAGE_SEND_PROTOCOL = 2
 MAX_PROTOCOL_ATTEMPTS = 3
 MAX_PRE_SEND_FAILURES = 3
-UNVERIFIED_SEND_COOLDOWN_SECONDS = 900
+UNVERIFIED_SEND_COOLDOWN_SECONDS = COOLDOWN_SECONDS
 COMPOSERS = editorial.COMPOSERS
 SEND_BUTTONS = (
     'button[data-testid="send-button"]',
@@ -105,10 +105,11 @@ def safe_image_failure(exc):
     else:
         code = "V2_IMAGE_WORKER_FAILED"
     return {"code": code, "detail_safe": IMAGE_FAILURE_DETAILS[code],
-            "retry_mode": "recover_same_chat" if code in (
+            "retry_mode": "new_chat_replace_previous" if code in (
                 "V2_IMAGE_SEND_UNVERIFIED_NO_RESEND", "V2_IMAGE_SEND_UNCERTAIN_NO_RESEND",
-                "V2_IMAGE_NEW_CHAT_ID_NOT_VERIFIED", "V2_IMAGE_ATTEMPT_ALREADY_RECORDED_NO_RESEND")
-            else "manual_only"}
+                "V2_IMAGE_NEW_CHAT_ID_NOT_VERIFIED", "V2_IMAGE_ATTEMPT_ALREADY_RECORDED_NO_RESEND",
+                "V2_IMAGE_PROMPT_NOT_SUBMITTED", "V2_IMAGE_NOT_READY")
+            else "manual_only"
 
 
 def persist_image_incident(api, auth, job, exc, *, at=None):
@@ -317,11 +318,11 @@ def journal_path(trend_id, revision, attempt):
 
 
 def next_attempt(row, *, now=None):
-    """A new transport version gets a small, bounded retry budget.
+    """Retry in a NEW chat; a later successful image replaces the prior raster.
 
-    Previously exhausted RE/RE-X revisions are handled like fresh revisions
-    without recycling prior command identities. A broken browser cannot
-    silently consume another 99 attempts.
+    A possibly-sent prompt is never replayed with the same command. A new
+    command/chat is allowed after cleanup and cooldown, with separate bounded
+    budgets for actual sends and failures proven to happen before sending.
     """
     now = now or datetime.now(timezone.utc)
     tid, rev = row["trend_id"], row["revision"]
@@ -332,28 +333,30 @@ def next_attempt(row, *, now=None):
             record = json.loads(path.read_text(encoding="utf-8"))
             attempts.append((number, record))
         except (ValueError, KeyError, json.JSONDecodeError):
-            return None  # Ambiguous journal: never risk duplicate submission.
+            return None  # Corrupt/ambiguous journal identity: fail closed.
     attempts.sort(key=lambda item: item[0])
     if not attempts:
         return 1
     last_number, last = attempts[-1]
-    if last.get("status") in ("saved", "bound_by_other"):
+    statuses = [record.get("status") for _, record in attempts]
+    if statuses[-1] in ("saved", "bound_by_other"):
         return None
-    # A journal that might have submitted a prompt must NEVER be replayed.
-    # Only explicitly verified pre-send failures are safe to retry.
-    if last.get("status") != "pre_send_failed":
+    allowed = {"starting", "pre_send_failed", "send_intent_recorded",
+               "sent_waiting_for_image", "send_unverified", "failed"}
+    if any(status not in allowed and status not in ("saved", "bound_by_other")
+           for status in statuses):
         return None
-    pre_send_count = sum(record.get("status") == "pre_send_failed"
-                         for _, record in attempts)
-    # A previous attempted send cannot be undone by a later pre-send failure.
-    if any(record.get("status") not in ("pre_send_failed",)
-           for _, record in attempts[:-1]):
+    if any(status in ("saved", "bound_by_other") for status in statuses):
         return None
-    if pre_send_count >= MAX_PRE_SEND_FAILURES:
+    pre_send_count = sum(status == "pre_send_failed" for status in statuses)
+    send_count = sum(status != "pre_send_failed" for status in statuses)
+    if pre_send_count >= MAX_PRE_SEND_FAILURES and last.get("status") == "pre_send_failed":
+        return None
+    if send_count >= MAX_PROTOCOL_ATTEMPTS:
         return None
     try:
         stamp = datetime.fromisoformat(last["at"])
-        if stamp.tzinfo is None or (now - stamp).total_seconds() < UNVERIFIED_SEND_COOLDOWN_SECONDS:
+        if stamp.tzinfo is None or (now - stamp).total_seconds() < COOLDOWN_SECONDS:
             return None
     except (ValueError, TypeError, KeyError):
         return None
@@ -594,7 +597,7 @@ def run_one(row, attempt, *, api, auth):
                     return record
                 raise
             receipt = {key: saved[key] for key in
-                       ("sha256", "path", "mime", "revision", "backend", "command_id")}
+                       ("sha256", "path", "mime", "revision", "backend", "command_id", "attempt")}
             receipt["status"] = "saved"
             receipt["image_chat_url"] = url
             editorial.update_image_receipt(api, auth, tid, rev, job["editorial_sha256"], receipt)
@@ -602,8 +605,17 @@ def run_one(row, attempt, *, api, auth):
             bound = ((verified["items"].get(tid) or {}).get("capture") or {}).get("image") or {}
             if bound.get("status") != "saved":
                 raise RuntimeError("V2_IMAGE_QUEUE_RECEIPT_NOT_SAVED")
-            record["status"] = ("saved" if bound.get("sha256") == saved["sha256"]
+            record["status"] = ("saved" if (bound.get("sha256") == saved["sha256"]
+                                                  and bound.get("path") == saved["path"])
                                 else "bound_by_other")
+            if record["status"] == "saved":
+                try:
+                    record["superseded_images_deleted"] = github.cleanup_superseded_images(
+                        tid, saved["path"], auth)
+                except Exception as exc:
+                    # The new image is already verified; cleanup can be retried
+                    # without invalidating the current image receipt.
+                    record["legacy_image_cleanup"] = "pending:" + type(exc).__name__
             editorial.store(journal, record)
             try:
                 web = editorial.module("web_top30_v2.py", "ttv2_image_web")
@@ -619,8 +631,8 @@ def run_one(row, attempt, *, api, auth):
         print("TT_V2_IMAGE_BOUND=" + record["status"].upper(), flush=True)
         return record
     except Exception as exc:
-        # The navigation or the browser itself might have ended after Enter.
-        # In that case a new automatic attempt could create a duplicate image.
+        # If submission or capture was uncertain, the next bounded attempt
+        # uses a new chat and command; the latest successful raster replaces the old one.
         if (record.get("status") == "starting"
                 and str(exc) in ("V2_IMAGE_SEND_BUTTON_UNAVAILABLE",
                                  "V2_IMAGE_SEND_BUTTON_DISABLED",
