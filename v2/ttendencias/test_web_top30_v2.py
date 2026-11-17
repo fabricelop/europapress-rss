@@ -112,6 +112,8 @@ class Top30WebTests(unittest.TestCase):
                  "path": "v2/ttendencias/generated-images/" + ident + "-r1-" + sha[:24] + ".png"}
         item["capture"] = {"revision": 1, "image": image}
         self.assertTrue(build(h, q)["items"][0]["image_available"])
+        image["path"] = "v2/ttendencias/generated-images/" + ident + ".image"
+        self.assertTrue(build(h, q)["items"][0]["image_available"])
         image["revision"] = 2
         self.assertFalse(build(h, q)["items"][0]["image_available"])
         image["revision"] = 1
