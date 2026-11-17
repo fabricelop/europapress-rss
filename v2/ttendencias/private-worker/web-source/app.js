@@ -532,7 +532,10 @@ function openReXDialog(item,onSubmit){
 }
 function makePublishButtons(card,item){
  if(item.status==="incidencia"){
-  const actions=el("div","publish-actions");
+  const actions=el("div","publish-actions trend-actions");
+  const review=el("div","news-action-group news-action-editing");
+  review.setAttribute("role","group");review.setAttribute("aria-label","Gestión y reelaboración");
+  review.append(el("span","news-action-caption","Gestión y reelaboración"));
   const button=el("button","publish-action re-x-action","RE-X");
   button.type="button";
   button.title="Aportar pistas a X para recuperar la elaboración interrumpida";
@@ -550,15 +553,24 @@ function makePublishButtons(card,item){
     render();
    });
   });
-  actions.append(button);
-  if(button.disabled)actions.append(el("span","review-state","Pistas RE-X recibidas · esperando recuperación"));
+  review.append(button);
+  if(button.disabled)review.append(el("span","review-state","Pistas RE-X recibidas · esperando recuperación"));
+  actions.append(review);
   card.append(actions);
   return;
  }
  if(item.status!=="explicada")return;
  const text=tweetText(item.explanation,item);
  if(text.startsWith("Explicación pendiente"))return;
- const actions=el("div","publish-actions");
+ const actions=el("div","publish-actions trend-actions");
+ const group=(name,label)=>{
+  const wrap=el("div","news-action-group news-action-"+name);
+  wrap.setAttribute("role","group");wrap.setAttribute("aria-label",label);
+  wrap.append(el("span","news-action-caption",label));actions.append(wrap);return wrap;
+ };
+ const publishing=group("publishing","Publicación");
+ const editing=group("editing","Gestión y reelaboración");
+ const artwork=group("artwork","Imagen");
  const re=el("button","publish-action re-explain-action","RE");
  re.type="button";
  re.title=item.re_in_progress?"Nueva explicación en elaboración":"Reiniciar explicación editorial e imagen";
@@ -598,7 +610,7 @@ function makePublishButtons(card,item){
      render();
    });
  });
- actions.append(re,reX);
+ editing.append(re,reX);
  if(imageReady(item)||item.image_suppressed===true){
   const publicToggle=el("label","image-public-toggle");
   const switchInput=el("input");
@@ -632,7 +644,7 @@ function makePublishButtons(card,item){
     publishNotice("No se guardó la visibilidad pública de la imagen: "+error.message);
    }finally{switchInput.disabled=false;}
   });
-  actions.append(publicToggle);
+  artwork.append(publicToggle);
   const hidden=item.image_suppressed===true;
   const visibility=el("button","publish-action image-visibility-action",hidden?"Restaurar IA":"Quitar IA");
   visibility.type="button";
@@ -659,7 +671,7 @@ function makePublishButtons(card,item){
     publishNotice("No se pudo cambiar la imagen: "+error.message);
    }
   });
-  actions.append(visibility);
+  artwork.append(visibility);
  }
  const x=el("button","publish-action","P-X");
  x.disabled=!publishableText(text);
@@ -671,23 +683,23 @@ function makePublishButtons(card,item){
   if(opened)opened.opener=null;
   if(!opened)publishNotice("El navegador bloqueó la ventana de X. Permite abrir ventanas emergentes para publicar.");
  });
- actions.append(x);
+ publishing.append(x);
  if(!imageReady(item)&&item.image_suppressed!==true){
   const prompt=el('button','publish-action image-prompt-action','Copiar prompt IA');
   prompt.type='button';prompt.title='Copiar el prompt completo para generar un gag en un chat nuevo de ChatGPT';
   prompt.addEventListener('click',()=>{void copyManualImagePrompt(item).catch(error=>publishNotice(error.message))});
-  actions.append(prompt);
+  artwork.append(prompt);
   const images=el('a','publish-action image-gpt-action','GPT IMA');
   images.href='https://chatgpt.com/images/';
   images.target='_blank';
   images.rel='noopener noreferrer';
   images.title='Abrir ChatGPT Images. Copia antes el prompt IA si quieres generar el gag de esta tendencia.';
   images.setAttribute('aria-label','Abrir ChatGPT Images para '+item.name);
-  actions.append(images);
+  artwork.append(images);
   const paste=el('button','publish-action image-paste-action','Pegar IA');
   paste.type='button';paste.title='Pegar el original de Mis imágenes o seleccionarlo desde Fotos/Archivos';
   paste.addEventListener('click',()=>openManualPasteDialog(item));
-  actions.append(paste);
+  artwork.append(paste);
  }
  const pu=el("button","publish-action publication-mark-action","PU");
  pu.type="button";pu.title="Registrar una publicación realizada (contador móvil de 24 h)";
@@ -708,7 +720,7 @@ function makePublishButtons(card,item){
   }catch(error){publishNotice("No se pudo registrar PU para «"+item.name+"»: "+error.message)}
   finally{pu.disabled=false;}
  });
- actions.append(pu);
+ publishing.append(pu);
  if(imageReady(item)){
   const withImage=el("button","publish-action publish-with-image","P-IA");
   withImage.disabled=!publishableText(text);
@@ -749,7 +761,7 @@ function makePublishButtons(card,item){
     if(error.name!=="AbortError")publishNotice("P-IA: "+error.message);
    }finally{withImage.disabled=false}
   });
-  actions.append(withImage);
+  publishing.append(withImage);
  }
  card.append(actions);
 }
