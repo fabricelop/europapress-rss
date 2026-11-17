@@ -40,9 +40,11 @@ class GitHubFake:
                 "capture":{"answer":ANSWER,"revision":revision}}}}
     def __call__(self,method,path,auth,payload=None):
         if path==github.LEDGER:
-            encoded=base64.b64encode(json.dumps(self.ledger).encode()).decode()
+            raw=json.dumps(self.ledger).encode()
+            encoded=base64.b64encode(raw).decode()
             wrapped=chr(10).join(encoded[i:i+60] for i in range(0,len(encoded),60))
-            return {"encoding":"base64","content":wrapped}
+            return {"encoding":"base64","content":wrapped,
+                    "sha":github.git_blob_sha(raw)}
         if method=="GET":
             return self.items.get(path)
         if method=="PUT":
