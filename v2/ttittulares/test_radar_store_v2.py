@@ -75,6 +75,20 @@ class PersistenceTests(unittest.TestCase):
         self.assertFalse(result["publication_enabled"])
         self.assertTrue(all(p.startswith(PREFIX) for p in self.store.commits[self.store.current]))
 
+    def test_materialization_commit_omits_large_radar_and_scan_blobs(self):
+        existing_radar = plan_snapshot(self.fetch, {}, now=BASE)["writes"][PREFIX + "state/radar/current.json"]
+        existing_radar["items"] = {}
+        self.store = MemoryStore({PREFIX + "state/radar/current.json":existing_radar})
+        result = persist_snapshot(self.store, self.fetch, now=BASE + timedelta(minutes=5), materialize_only=True)
+        self.assertTrue(result["verified"])
+        self.assertEqual(result["new_job_count"], 1)
+        docs = self.store.commits[self.store.current]
+        self.assertEqual(docs[PREFIX + "state/radar/current.json"], existing_radar)
+        receipt = docs[result["receipt_path"]]
+        self.assertFalse(any(p.startswith(PREFIX + "state/radar/") for p in receipt["file_sha256"]))
+        self.assertIn(PREFIX + "state/editorial-queue.json", receipt["file_sha256"])
+        self.assertTrue(any(p.startswith(PREFIX + "jobs/editorial/") for p in receipt["file_sha256"]))
+
     def test_same_input_replay_verifies_original_commit_without_second_write(self):
         first = persist_snapshot(self.store, self.fetch, now=BASE)
         self.store.advance({"v2/ttendencias/state/fixture.json": {"unrelated": True}})

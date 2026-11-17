@@ -45,15 +45,15 @@ jobs:
           python -m v2.ttittulares.radar_live_v2 --live --persist > "$RUNNER_TEMP/ttn2-live-radar-report.json"
       - name: Materialize editorial jobs separately (never blocks radar freshness)
         continue-on-error: true
-        timeout-minutes: 8
+        timeout-minutes: 12
         env:
           GITHUB_TOKEN: ${{ github.token }}
-          TTN2_LIVE_RETRY_BUDGET: '2'
+          TTN2_LIVE_RETRY_BUDGET: '8'
         run: |
           if [ "$GITHUB_EVENT_NAME" = "schedule" ]; then
-            python -m v2.ttittulares.radar_store_v2 --live --persist > "$RUNNER_TEMP/ttn2-persist-report.json"
+            python -m v2.ttittulares.radar_store_v2 --live --persist --materialize-only > "$RUNNER_TEMP/ttn2-persist-report.json"
           else
-            python -m v2.ttittulares.radar_store_v2 --live --persist --verify-replay > "$RUNNER_TEMP/ttn2-persist-report.json"
+            python -m v2.ttittulares.radar_store_v2 --live --persist --materialize-only --verify-replay > "$RUNNER_TEMP/ttn2-persist-report.json"
           fi
       - name: Summarise radar and separate editorial materialization
         run: |
