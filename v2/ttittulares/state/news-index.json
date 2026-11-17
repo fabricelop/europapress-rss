@@ -78808,7 +78808,7 @@
         "https://www.rtve.es/noticias/20261116/gobierno-aprueba-subida-salario-minimo/17316122.shtml",
         "https://www.publico.es/economia/gobierno-aprobara-martes-subida-salario-minimo-5-3-2027.html"
       ],
-      "current_revision": 1,
+      "current_revision": 2,
       "editorial_created": true,
       "event_id": "ttn2-eca8ba78bd77ce7a43044505",
       "fact_tokens": [
@@ -78830,7 +78830,14 @@
           "reason": "initial",
           "requested_at": "2026-11-16T18:13:24Z",
           "revision": 1,
-          "status": "in_progress"
+          "status": "problematic"
+        },
+        {
+          "editorial_job_id": "ttn2-eca8ba78bd77ce7a43044505-r2-editorial",
+          "reason": "automatic_retry",
+          "requested_at": "2026-11-17T17:20:01Z",
+          "revision": 2,
+          "status": "pending"
         }
       ],
       "source_families": [
@@ -78839,7 +78846,7 @@
         "Público",
         "RTVE"
       ],
-      "status": "editorial_in_progress",
+      "status": "editorial_pending",
       "terminal_status": null
     },
     "ttn2-ecb0886f9c21841228d76757": {
