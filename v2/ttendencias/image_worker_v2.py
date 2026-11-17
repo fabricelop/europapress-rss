@@ -339,47 +339,24 @@ def next_attempt(row, *, now=None):
     last_number, last = attempts[-1]
     if last.get("status") in ("saved", "bound_by_other"):
         return None
-    if last.get("status") == "pre_send_failed":
-        # A pre-send failure does not consume the transport budget, but must
-        # not cause endless Chrome launches for a broken composer.
-        pre_send_count = sum(record.get("status") == "pre_send_failed"
-                             for _, record in attempts)
-        if pre_send_count >= MAX_PRE_SEND_FAILURES:
-            return None
-        try:
-            stamp = datetime.fromisoformat(last["at"])
-            if (now - stamp).total_seconds() < UNVERIFIED_SEND_COOLDOWN_SECONDS:
-                return None
-        except (ValueError, TypeError, KeyError):
-            return None
-        return last_number + 1
-    if last.get("status") != "failed":
-        return None  # Interrupted/uncertain send: no blind retry.
-    observation = last.get("submission_observation") or {}
-    if (last.get("error") == "V2_IMAGE_NEW_CHAT_ID_NOT_VERIFIED"
-        and (observation.get("composer_inspection_failed")
-             or observation.get("composer_contains_command") is not True)):
-        # An Enter press followed by an unreadable/empty composer is NOT
-        # proof of failed delivery. Even an older journal must not be resent.
+    # A journal that might have submitted a prompt must NEVER be replayed.
+    # Only explicitly verified pre-send failures are safe to retry.
+    if last.get("status") != "pre_send_failed":
         return None
-    current = [record for _, record in attempts
-               if record.get("send_protocol") == IMAGE_SEND_PROTOCOL]
-    if len(current) >= MAX_PROTOCOL_ATTEMPTS:
+    pre_send_count = sum(record.get("status") == "pre_send_failed"
+                         for _, record in attempts)
+    # A previous attempted send cannot be undone by a later pre-send failure.
+    if any(record.get("status") not in ("pre_send_failed",)
+           for _, record in attempts[:-1]):
         return None
-    if current:
-        try:
-            stamp = datetime.fromisoformat(last["at"])
-            if (now - stamp).total_seconds() < UNVERIFIED_SEND_COOLDOWN_SECONDS:
-                return None
-        except (ValueError, TypeError, KeyError):
+    if pre_send_count >= MAX_PRE_SEND_FAILURES:
+        return None
+    try:
+        stamp = datetime.fromisoformat(last["at"])
+        if stamp.tzinfo is None or (now - stamp).total_seconds() < UNVERIFIED_SEND_COOLDOWN_SECONDS:
             return None
-    elif last_number < 99:
-        try:
-            stamp = datetime.fromisoformat(last["at"])
-            if (now - stamp).total_seconds() < COOLDOWN_SECONDS:
-                return None
-        except (ValueError, TypeError, KeyError):
-            return None
+    except (ValueError, TypeError, KeyError):
+        return None
     return last_number + 1
 
 
