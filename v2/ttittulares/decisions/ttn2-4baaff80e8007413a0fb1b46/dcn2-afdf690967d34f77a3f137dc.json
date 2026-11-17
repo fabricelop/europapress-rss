@@ -1,0 +1,15 @@
+{
+  "action": "request_rework",
+  "actor": "private-web",
+  "decision_id": "dcn2-afdf690967d34f77a3f137dc",
+  "event_id": "ttn2-4baaff80e8007413a0fb1b46",
+  "idempotency_key": "afdf690967d34f77a3f137dc433cdda4",
+  "occurred_at": "2026-11-17T15:39:06Z",
+  "project": "ttittulares-v2",
+  "revision": 1,
+  "rework": {
+    "instructions": "Reintento manual tras incidencia ESSENTIAL_FACT_NOT_VERIFIED. Abre un chat editorial nuevo, investiga desde cero, no reutilices respuestas previas. Busca fuentes verdaderamente independientes; si el hecho esencial no se acredita, responde BLOCKED.",
+    "scope": "reinvestigate"
+  },
+  "schema_version": 1
+}
