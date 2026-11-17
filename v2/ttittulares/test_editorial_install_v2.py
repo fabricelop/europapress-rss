@@ -10,6 +10,27 @@ import unittest
 
 
 class InstallPackageTests(unittest.TestCase):
+    def test_editorial_repair_updates_only_its_consumer_and_rolls_back_on_failure(self):
+        directory=Path(__file__).parent
+        repair=(directory/'Repair-News-Editorial-V2.ps1').read_text(encoding='utf-8')
+        self.assertIn("'TTActualidadNoticiasV2-Editorial'", repair)
+        self.assertIn("'TTN2_EDITORIAL_ENABLED=NO'", repair)
+        self.assertIn("'TTN2_EDITORIAL_ENABLED=YES'", repair)
+        self.assertIn("'active-code.txt'", repair)
+        self.assertIn("'--check'", repair)
+        self.assertIn("$switched=$true", repair)
+        self.assertIn('if($switched)', repair)
+        self.assertIn('TTN2_IMAGE_WINDOWS_TASK_UNCHANGED=YES', repair)
+        self.assertIn('NEWS_EDITORIAL_GIT_HASH_MISMATCH=', repair)
+        self.assertIn('TTN2_EDITORIAL_DRAIN_WAIT=', repair)
+        self.assertNotIn("'TTActualidadNoticiasV2-Images'", repair)
+        self.assertNotIn("'images.enabled'", repair)
+        self.assertNotIn("'image-active-code.txt'", repair)
+        self.assertNotIn('Stop-Process', repair)
+        self.assertNotIn('Stop-ScheduledTask', repair)
+        self.assertNotIn('Remove-Item', repair)
+        self.assertNotIn('Kill', repair)
+
     def test_image_repair_isolated_from_live_editorial_consumer(self):
         directory=Path(__file__).parent
         repair=(directory/'Repair-News-Images-V2.ps1').read_text(encoding='utf-8')

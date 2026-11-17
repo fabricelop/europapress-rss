@@ -20,7 +20,10 @@ let fail=false,demoReady=false,archived=false;
 const example=view.items.find(x=>x.group==='pending');
 const demoTweet="Una explicación breve de prueba, con hechos contrastados y preparada para un tuit. #Prueba #Noticias";
 const demoRecord={event_id:example.event_id,revision:example.revision,tweet_text:demoTweet,x_character_count:demoTweet.length,title:example.title,factual_summary:'Hecho contrastado de prueba.'};
-const readyView={...view,items:[{...example,group:'ready',status_label:'Elaborada',image_incident_available:true}],counts:{...view.counts,ready:1}};
+// The real READY row used as a seed may already have an authorized image.
+// Exercise the *no-image* controls deterministically without mutating data.
+const readyView={...view,items:[{...example,group:'ready',status_label:'Elaborada',image_available:false,
+ image_suppressed:false,image_in_progress:false,image_incident_available:true}],counts:{...view.counts,ready:1}};
 const demoIncident={project:'ttittulares-v2',target_id:example.event_id,revision:example.revision,available:true,
  incident:{code:'NEWS_IMAGE_ORIGINAL_MISSING',detail:'No se ha podido recuperar el original de la imagen.',at:new Date().toISOString()}};
 const requests=[];
