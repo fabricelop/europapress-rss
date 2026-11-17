@@ -10739,13 +10739,13 @@
       "trend_id": "trv2-359b24760fe2aeae16f9d230",
       "name": "Ceballos",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "ef9b3e5016e2dd06",
       "requested_at": "2026-11-17T13:01:54.182096+00:00",
       "updated_at": "2026-11-17T13:01:54.182096+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -10758,7 +10758,13 @@
           "archived_at": "2026-11-17T13:01:54.182096+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "a61de6ebd0c0e261eeb8b8a52b8d248465c1d29dc1e89243",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-17T13:02:17.902729+00:00",
+        "expires_at": "2026-11-17T13:42:17.902729+00:00"
+      }
     }
   },
   "pending_count": 402,
