@@ -30,6 +30,7 @@ const server=http.createServer(async(req,res)=>{
  }
  if(u.pathname.startsWith('/api/news/')&&demoReady){res.setHeader('Content-Type','application/json');res.end(JSON.stringify(demoRecord));return;}
  if(u.pathname==='/api/image-incidents'&&demoReady){res.setHeader('Content-Type','application/json');res.end(JSON.stringify(demoIncident));return;}
+ if(u.pathname==='/api/news-publication-count'){res.setHeader('Content-Type','application/json');res.end(JSON.stringify({count:3,events:[]}));return;}
  if(u.pathname.startsWith('/api/')){res.setHeader('Content-Type','application/json');res.end('{}');return;}
  const file=path.join(root,u.pathname==='/'?'index.html':u.pathname);
  try{const content=await fs.readFile(file);res.setHeader('Content-Type',file.endsWith('.js')?'text/javascript':file.endsWith('.css')?'text/css':'text/html');res.end(content);}catch{res.statusCode=404;res.end();}
@@ -46,7 +47,9 @@ try{
  await page.screenshot({path:path.join(shots,'news-default.png'),fullPage:false});
  await page.getByRole('button',{name:'Pendientes · '+view.counts.pending,exact:true}).click();
  await page.waitForFunction(n=>document.querySelectorAll('.news-card').length===n,Math.min(view.counts.pending,40));
- if(await page.locator('#publication-summary').isVisible())throw Error('PU shown on news view');
+ await page.waitForFunction(()=>document.getElementById('publication-summary')?.textContent==='PUB · 3 / 24 h');
+ if(!(await page.locator('#publication-summary').isVisible()))throw Error('News PUB counter hidden');
+ if(requests.includes('/api/publication-count'))throw Error('Trend PU count requested on news view');
  if(requests.includes('/api/state/web-top30.json'))throw Error('News starts hidden trends requests');
  await page.screenshot({path:path.join(shots,'news-desktop.png'),fullPage:false});
  await page.getByRole('button',{name:'Detectadas · '+view.counts.detected,exact:true}).click();
