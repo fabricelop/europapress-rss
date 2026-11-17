@@ -22,8 +22,22 @@ class FakeProcess:
     def poll(self):
         return self.returncode
 
+    def terminate(self):
+        self.returncode = -15
+
+    def wait(self, timeout=None):
+        return self.returncode
+
 
 class ParallelDispatchTests(unittest.TestCase):
+    def setUp(self):
+        # CI runners may have <8 GiB free. Test the policy with a controlled
+        # disk budget; the low-space case overrides this fixture explicitly.
+        disk = patch("parallel_dispatch_v2.shutil.disk_usage",
+                     return_value=SimpleNamespace(free=20 * 1024 ** 3))
+        disk.start()
+        self.addCleanup(disk.stop)
+
     def make_disposable_pool(self, root, *, count=2):
         seed = pathlib.Path(root) / "ChromeProfile"
         seed.mkdir()
@@ -105,10 +119,33 @@ class ParallelDispatchTests(unittest.TestCase):
             (slot / "possibly-user-data").unlink()
             slot.rmdir()
             with patch("parallel_dispatch_v2.shutil.disk_usage",
-                       return_value=SimpleNamespace(free=2 * 1024 ** 3)):
+                       return_value=SimpleNamespace(free=5 * 1024 ** 3)):
                 with self.assertRaisesRegex(RuntimeError, "DISK_SPACE_LOW"):
                     pool.spawn(__file__, [], trend_id="one", revision=1)
             self.assertFalse(slot.exists())
+
+    def test_session_watchdog_closes_only_owned_slot_after_eight_minutes(self):
+        with tempfile.TemporaryDirectory() as root:
+            pool = self.make_disposable_pool(root, count=1)
+            now = [100.0]
+            pool.clock = lambda: now[0]
+            proc = FakeProcess()
+            with (patch("parallel_dispatch_v2.exact_chrome_profile_pids", return_value=set()),
+                  patch("parallel_dispatch_v2.subprocess.Popen", return_value=proc),
+                  patch("parallel_dispatch_v2.cleanup_v2_profile", return_value={"closed": True}) as cleanup):
+                self.assertTrue(pool.spawn(__file__, [], trend_id="slow", revision=1))
+                now[0] = 579.0
+                self.assertEqual(pool.reap(), [])
+                self.assertIsNone(proc.returncode)
+                now[0] = 580.0
+                finished = pool.reap()
+                self.assertEqual(len(finished), 1)
+                self.assertTrue(finished[0]["timed_out"])
+                self.assertEqual(finished[0]["exit_code"], 124)
+                self.assertTrue(finished[0]["profile_deleted"])
+                cleanup.assert_called_once()
+                self.assertTrue(pool.seed.exists())
+                self.assertFalse(pool.profiles[0].exists())
 
     def test_disposable_cleans_partial_copy_and_failed_worker_launch(self):
         with tempfile.TemporaryDirectory() as root:
