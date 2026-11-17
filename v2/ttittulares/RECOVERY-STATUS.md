@@ -1,3 +1,32 @@
+## Noticias: rechazo del NUEVO piloto — corrección en validación (17/11/2026)
+
+El usuario instaló efd5f6538c9e0243c38d0a0ac912960fc08fa6a8 y confirmó
+blocking_recovery_incident_count=0/quarantined_incident_count=1.
+El guardado previo dejó de bloquear correctamente; sin embargo el nuevo piloto
+ttn2-1319f0613d6020652dd0dfa4-r1-editorial también devolvió ESSENTIAL_FACT_NOT_VERIFIED.
+Arranque Chrome: ready=true, hijos propios detectados, launcher_code0.
+cleanup_verified=true. GitHub confirma envío confirmado y captura completa,
+SHA45cb60325d234df96a8f47ce2607db8037db91e9b043e3da922043ad73927f23.
+El instalador antiguo sigue abortando ante CUALQUIER exit1 del nuevo piloto,
+de modo que una segunda validación de contenido vuelve a impedir la activación.
+No es el mismo fallo del contador previo y no debe pedirse otro reintento aún.
+
+Corrección aislada en fix/news-v2-pilot-quarantine-20261117,
+commit e7842df0808db067b64a0a7a2f8e0b4df00a9d9c:
+- Resultado quarantined solo para ContractError tras envío/captura/guardado
+  de incidencia/cierre realmente verificados; no produce READY ni publicación.
+- El CLI e instalador admiten ese ciclo de transporte completo, dejando el caso
+  aislado y permitiendo continuar las demás noticias e imágenes.
+- Fallos de auth/envío/captura/persistencia/cierre o excepciones no previstas
+  conservan incident/exit1. No se elimina ninguna barrera de seguridad.
+- Seis regresiones Python y evaluación real en PowerShell de las guardias AST
+  del instalador, sin ejecutar instalación, tareas ni Chrome.
+- CI44034435792 EN CURSO. No integrada ni entregada como validada aún.
+
+Estado real leído:81 pendientes,0 activos,3 READY,2 problematic.
+Conservar ambas noticias rechazadas sin reenviar. Windows sigue sin activación
+confirmada de esta corrección. WScript oculto se mantiene.
+
 ## Reanudación 17/11/2026 — estilo editorial y estado de imágenes
 
 - Petición editorial explícita del usuario: reducir la repetición de 'no hay acontecimiento concreto', 'no se confirma que sea la tendencia', 'no está confirmada' y cierres equivalentes. Preferir arranques breves 'Podría ser tendencia por...' o 'Apunta a...' cuando existan indicios, sin inventar causalidad ni ocultar incertidumbres importantes.
