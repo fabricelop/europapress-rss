@@ -1,23 +1,31 @@
 {
   "attempts": {
     "claim_count": 1,
-    "history": [],
+    "history": [
+      {
+        "at": "2026-11-17T15:17:02Z",
+        "attempt_no": 1,
+        "command_id": "news-img-aa3c4ac97752424ba20ecccb4cec3820",
+        "outcome": "captured"
+      }
+    ],
     "max_safe_preflight_attempts": 3,
     "safe_preflight_failures": 0,
     "submission_count": 1
   },
-  "capture": null,
+  "capture": {
+    "bytes": 3202217,
+    "captured_at": "2026-11-17T15:17:02Z",
+    "height": 941,
+    "mime": "image/png",
+    "raster_sha256": "6c4ff120303a7734288082f5929c5d3edf9edb198cedadba7243b6a4cd715b3b",
+    "width": 1672
+  },
   "editorial_sha256": "c5689145b9dccd53eb144312330fb040ae0d5c111b52a74dc850d6c54206b7df",
   "event_id": "ttn2-e64663f3f107ed37305522d8",
   "job_id": "ttn2-e64663f3f107ed37305522d8-r1-image",
-  "lease": {
-    "expires_at": "2026-11-17T15:41:43Z",
-    "heartbeat_at": "2026-11-17T15:16:43Z",
-    "started_at": "2026-11-17T15:14:39Z",
-    "token_sha256": "c1ac67b69ff77b2f5764d47e23bd26444d5af5f9d2e662bf9cc86c3e292139da",
-    "worker_id": "news-image-aa3c4ac97752424ba20ecccb4cec3820"
-  },
-  "phase": "generating",
+  "lease": null,
+  "phase": "done",
   "policy": {
     "mode": "automatic",
     "visual_treatment": "editorial_gag"
@@ -27,7 +35,12 @@
   "prompt_sha256": "1d260ae511f8db857075d3e01511904ea63d2f061f988a27666d5d146c9ea9c5",
   "prompt_version": "news-image-v2",
   "requested_at": "2026-11-17T15:14:39Z",
-  "result": null,
+  "result": {
+    "asset_path": "v2/ttittulares/images/ttn2-e64663f3f107ed37305522d8-r1-6c4ff120303a7734288082f5.png",
+    "commit_sha": "120d5aff2b2c93628fdb8e3669936c21d832e723",
+    "media_id": "img2-fdd1eadb6f5281a7f7b2233f",
+    "sha256": "6c4ff120303a7734288082f5929c5d3edf9edb198cedadba7243b6a4cd715b3b"
+  },
   "revision": 1,
   "schema_version": 1,
   "send_intent": {
@@ -44,6 +57,6 @@
     "session_id": "aa3c4ac97752424ba20ecccb4cec3820"
   },
   "source_record_path": "v2/ttittulares/records/ttn2-e64663f3f107ed37305522d8/r1.json",
-  "status": "generating",
-  "updated_at": "2026-11-17T15:16:43Z"
+  "status": "saved",
+  "updated_at": "2026-11-17T15:17:02Z"
 }
