@@ -1,14 +1,20 @@
 {
-  "checked_at": "2026-11-17T02:34:26.355252+00:00",
+  "checked_at": "2026-11-17T02:43:41.818259+00:00",
   "before": [
-    "elaborando_bloqueado_49"
+    "elaborando_bloqueado_50"
   ],
   "repair_actions": [],
   "remaining": [
-    "elaborando_bloqueado_49"
+    "elaborando_bloqueado_50"
   ],
-  "healthy_source_count": 19,
-  "source_failures": [],
-  "events_bytes": 4041116,
+  "healthy_source_count": 18,
+  "source_failures": [
+    {
+      "source": "EFE",
+      "type": "general",
+      "error": "HTTP Error 429: Too Many Requests"
+    }
+  ],
+  "events_bytes": 4035713,
   "ok": false
 }
