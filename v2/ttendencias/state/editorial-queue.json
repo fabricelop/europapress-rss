@@ -10813,24 +10813,27 @@
     "trv2-26c48c1d43b6c10c40395189": {
       "trend_id": "trv2-26c48c1d43b6c10c40395189",
       "name": "#Mañaneros17N",
-      "revision": 1,
-      "status": "in_progress",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "a894ba59d3467bc9",
-      "requested_at": "2026-11-17T13:02:43.737269+00:00",
-      "updated_at": "2026-11-17T13:04:21.422539+00:00",
+      "requested_at": "2026-11-17T13:51:18.568504+00:00",
+      "updated_at": "2026-11-17T13:51:18.568504+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "lease": {
-        "token": "6b5f48b81547018421d5caef4ed8d0fc7bb633781c36dc34",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-17T13:02:57.732793+00:00",
-        "expires_at": "2026-11-17T13:42:57.732793+00:00"
-      },
-      "send_intent": {
-        "token": "6b5f48b81547018421d5caef4ed8d0fc7bb633781c36dc34",
-        "at": "2026-11-17T13:04:21.422445+00:00"
-      }
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-17T13:02:57.732793+00:00",
+          "send_intent_at": "2026-11-17T13:04:21.422445+00:00",
+          "incident_reason": "lease_expired_without_capture",
+          "archived_at": "2026-11-17T13:51:18.568504+00:00"
+        }
+      ],
+      "incident_retries": 1
     },
     "trv2-2e45d6af4e14f858b5bf9508": {
       "trend_id": "trv2-2e45d6af4e14f858b5bf9508",
@@ -11304,10 +11307,10 @@
     "trv2-81f0871a08c79149d7569736",
     "trv2-359b24760fe2aeae16f9d230",
     "trv2-132e8775a2672452bf68cb64",
-    "trv2-26c48c1d43b6c10c40395189",
     "trv2-2e45d6af4e14f858b5bf9508",
     "trv2-c1602f28a0d2c9a36dd10d49",
-    "trv2-42777490afa9abaa2401700f"
+    "trv2-42777490afa9abaa2401700f",
+    "trv2-26c48c1d43b6c10c40395189"
   ],
   "effects_enabled": false
 }
