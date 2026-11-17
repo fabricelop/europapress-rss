@@ -161,7 +161,7 @@ def cleanup_superseded_images(trend_id,keep_path,auth,*,send=request):
     expected=stable_image_path(trend_id)
     if keep_path!=expected:
         raise ValueError("V2_IMAGE_KEEP_PATH_INVALID")
-    listing=send("GET",PREFIX,auth)
+    listing=send("GET",PREFIX.rstrip("/"),auth)
     if listing is None:
         return 0
     if not isinstance(listing,list):
