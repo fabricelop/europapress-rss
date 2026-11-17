@@ -14,7 +14,9 @@ import hashlib
 import json
 import os
 import re
+import sys
 import threading
+import time
 from collections import OrderedDict
 from datetime import datetime, timezone
 from pathlib import Path
@@ -328,7 +330,10 @@ def persist_snapshot(store, fetch_result, *, now, max_attempts=4, materialize_on
     input_sha = sha256({"observed_at": stamp, "fetch": fetched})
     receipt_path = PREFIX + "state/radar/receipts/txn-" + input_sha[:24] + ".json"
     for attempt in range(1, max_attempts + 1):
+        started = time.monotonic()
         head, documents = store.read_snapshot(receipt_path)
+        if materialize_only and os.environ.get("TTN2_DIAGNOSTICS") == "1":
+            print(f"TTN2_MATERIALIZE_READ attempt={attempt} seconds={time.monotonic()-started:.2f} documents={len(documents)}", file=sys.stderr, flush=True)
         _oid(head)
         receipt = documents.get(receipt_path)
         if receipt is not None:
@@ -353,6 +358,8 @@ def persist_snapshot(store, fetch_result, *, now, max_attempts=4, materialize_on
                               and not p.startswith(PREFIX + "state/radar/scans/")}
             plan["file_sha256"] = {p: sha256(doc) for p, doc in plan["writes"].items()}
         validate_plan(plan, documents)
+        if materialize_only and os.environ.get("TTN2_DIAGNOSTICS") == "1":
+            print(f"TTN2_MATERIALIZE_PLAN attempt={attempt} seconds={time.monotonic()-started:.2f} files={len(plan['writes'])} new_jobs={plan['new_job_count']}", file=sys.stderr, flush=True)
         receipt = {"schema_version": 1, "project": "ttittulares-v2", "kind": "radar_transaction",
                    "input_sha256": input_sha, "observed_at": stamp, "base_commit": head,
                    "scan_id": plan["scan_id"], "file_sha256": plan["file_sha256"],
@@ -360,7 +367,9 @@ def persist_snapshot(store, fetch_result, *, now, max_attempts=4, materialize_on
         writes = {**plan["writes"], receipt_path: receipt}
         try:
             commit = store.commit(head, writes, "TTiTTulares V2: persistir radar " + receipt_path.rsplit("/", 1)[1][:-5])
-        except (Conflict, UncertainCommit):
+        except (Conflict, UncertainCommit) as exc:
+            if materialize_only and os.environ.get("TTN2_DIAGNOSTICS") == "1":
+                print(f"TTN2_MATERIALIZE_RETRY attempt={attempt} seconds={time.monotonic()-started:.2f} reason={type(exc).__name__}", file=sys.stderr, flush=True)
             continue
         result = _verify_receipt(store, commit, receipt_path, receipt, input_sha)
         return {**result, "replayed": False, "attempts": attempt}

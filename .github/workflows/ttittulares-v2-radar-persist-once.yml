@@ -49,6 +49,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
           TTN2_LIVE_RETRY_BUDGET: '8'
+          TTN2_DIAGNOSTICS: '1'
         run: |
           if [ "$GITHUB_EVENT_NAME" = "schedule" ]; then
             python -m v2.ttittulares.radar_store_v2 --live --persist --materialize-only > "$RUNNER_TEMP/ttn2-persist-report.json"
