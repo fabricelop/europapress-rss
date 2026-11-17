@@ -10012,20 +10012,27 @@
     "trv2-6c39d8f5b35232c2337a514d": {
       "trend_id": "trv2-6c39d8f5b35232c2337a514d",
       "name": "El Hijo",
-      "revision": 1,
-      "status": "in_progress",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "5e64c57af1e3e537",
-      "requested_at": "2026-11-17T08:02:41.174442+00:00",
-      "updated_at": "2026-11-17T08:02:41.174442+00:00",
+      "requested_at": "2026-11-17T08:56:26.434937+00:00",
+      "updated_at": "2026-11-17T08:56:26.434937+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "lease": {
-        "token": "8f87e80653091db785af4351b4622e560165c3745320d1d9",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-17T08:03:46.094549+00:00",
-        "expires_at": "2026-11-17T08:43:46.094549+00:00"
-      }
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-17T08:03:46.094549+00:00",
+          "send_intent_at": null,
+          "incident_reason": "lease_expired_without_capture",
+          "archived_at": "2026-11-17T08:56:26.434937+00:00"
+        }
+      ],
+      "incident_retries": 1
     },
     "trv2-1b1f435aa8db200810a77657": {
       "trend_id": "trv2-1b1f435aa8db200810a77657",
@@ -10455,10 +10462,10 @@
     "trv2-876beecc59c543665de75939",
     "trv2-1b1f435aa8db200810a77657",
     "trv2-38348ef993071d36d63504ce",
-    "trv2-6c39d8f5b35232c2337a514d",
     "trv2-aa95c3b3492d3c8d8b44eceb",
     "trv2-7eb4076b8caa411c45539050",
-    "trv2-b2c4441e7096e92ea22fde80"
+    "trv2-b2c4441e7096e92ea22fde80",
+    "trv2-6c39d8f5b35232c2337a514d"
   ],
   "effects_enabled": false
 }
