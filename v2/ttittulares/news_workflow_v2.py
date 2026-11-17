@@ -184,7 +184,7 @@ class NewsService(ed.EditorialService):
             raise ed.EditorialError("NEWS_CONTROLS_INVALID")
         self.image_preferences=controls.get("preferences", [])
         self.image_retry_requests=[a for a in controls["actions"] if isinstance(a,dict) and a.get("action")=="retry_image"]
-        pending=[a for a in controls["actions"] if a.get("action") in ("archive","rework","rework_x","retry_editorial","dismiss")]
+        pending=[a for a in controls["actions"] if a.get("action") in ("archive","rework","rework_x","retry_editorial","dismiss","urgent")]
         if not pending:return
         _,docs=self.store.read_editorial_snapshot()
         news,_=ed._snapshot(docs)
@@ -197,7 +197,7 @@ class NewsService(ed.EditorialService):
     def apply_action(self, action):
         if not ACTION.fullmatch(str(action.get("action_id",""))) or not ID.fullmatch(str(action.get("event_id",""))):
             raise ed.EditorialError("NEWS_ACTION_INVALID")
-        if action.get("action") not in ("archive","rework","rework_x","retry_editorial","dismiss"):
+        if action.get("action") not in ("archive","rework","rework_x","retry_editorial","dismiss","urgent"):
             raise ed.EditorialError("NEWS_ACTION_INVALID")
         path=PREFIX+"actions/"+action["action_id"]+".json"
         for _ in range(self.max_attempts):
@@ -206,9 +206,16 @@ class NewsService(ed.EditorialService):
             news,jobs=ed._snapshot(docs);event=news.get(action["event_id"])
             if not event or event["current_revision"]!=action.get("revision"):
                 return {"verified":False,"stale":True}
-            incident_action=action["action"] in ("retry_editorial","dismiss")
             previous=jobs.get(event["event_id"]+"-r"+str(event["current_revision"])+"-editorial")
-            if incident_action:
+            pending_action=(action["action"]=="urgent" or
+                            action["action"]=="dismiss" and previous and previous["status"]=="pending")
+            if pending_action:
+                if (event["status"] in ed.TERMINAL or not previous or
+                        previous["status"]!="pending" or previous.get("lease") or
+                        ed.record_path(previous) in docs or
+                        (action["action"]=="urgent" and previous["priority"]=="urgent")):
+                    return {"verified":False,"stale":True}
+            elif action["action"] in ("retry_editorial","dismiss"):
                 if (event["status"] in ed.TERMINAL or not previous or
                         previous["status"]!="problematic" or previous.get("lease") or
                         ed.record_path(previous) in docs):
@@ -223,14 +230,21 @@ class NewsService(ed.EditorialService):
             decision={"schema_version":1,"project":"ttittulares-v2",
                 "decision_id":"dcn2-"+action["action_id"][:24],"event_id":event["event_id"],
                 "revision":event["current_revision"],
-                "action":"dismiss" if action["action"]=="dismiss" else "archive" if action["action"]=="archive" else "request_rework",
+                "action":"prioritize" if action["action"]=="urgent" else "dismiss" if action["action"]=="dismiss" else "archive" if action["action"]=="archive" else "request_rework",
                 "actor":"private-web","occurred_at":now,"idempotency_key":action["action_id"]}
+            if action["action"]=="urgent":
+                previous["priority"]="urgent"
+                previous["updated_at"]=now
+                writes[ed.job_path(previous["job_id"])]=copy.deepcopy(previous)
             if action["action"] in ("archive","dismiss"):
                 event.update(status="dismissed" if action["action"]=="dismiss" else "archived",updated_at=now)
                 if action["action"]=="dismiss":
                     for ref in event["revision_refs"]:
                         if ref["revision"]==event["current_revision"]:ref["status"]="dismissed"
-            else:
+                    if pending_action:
+                        previous.update(status="cancelled",phase="done",lease=None,updated_at=now)
+                        writes[ed.job_path(previous["job_id"])]=copy.deepcopy(previous)
+            elif action["action"]!="urgent":
                 hints=str(action.get("hints") or "").strip()
                 if action["action"]=="rework_x" and not 10<=len(hints)<=1200:
                     raise ed.EditorialError("NEWS_REWORK_HINTS_INVALID")

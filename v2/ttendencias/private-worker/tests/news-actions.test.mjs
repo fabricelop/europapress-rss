@@ -156,7 +156,7 @@ test("manual image retry cannot override an unsafe incident or an active image",
  docs[0].items[id].image_progress={revision:1,editorial_sha256:hash,expires_at:"2090-01-01T00:00:00Z"};
  assert.equal((await newsAction(request("retry_image"),env,helpers)).status,409);
 }));
-test("INC manual retry is revision-bound, enters working and cannot duplicate its request",()=>scoped(async(env,docs)=>{
+test("INC manual retry enters Pending until a fresh Windows editorial revision starts and cannot duplicate",()=>scoped(async(env,docs)=>{
  docs[0].items[id].status="editorial_in_progress";docs[1].items[0].status="problematic";
  const job={schema_version:1,project:"ttittulares-v2",event_id:id,revision:1,
   job_id:id+"-r1-editorial",status:"problematic",lease:null,
@@ -168,11 +168,24 @@ test("INC manual retry is revision-bound, enters working and cannot duplicate it
  const controls=await newsControls(env);
  assert.equal(controls.actions[0].action,"retry_editorial");
  assert.equal(controls.preferences[0].rework_requested,true);
+ assert.equal(controls.preferences[0].editorial_retry_requested,true);
  assert.equal((await newsView(env,new URLSearchParams({state:"incident"}))).total,0);
- assert.equal((await newsView(env,new URLSearchParams({state:"working"}))).total,1);
+ assert.equal((await newsView(env,new URLSearchParams({state:"working"}))).total,0);
+ const pending=await newsView(env,new URLSearchParams({state:"pending"}));
+ assert.equal(pending.total,1);assert.equal(pending.items[0].status_label,"Reintento solicitado");
  assert.equal((await newsAction(request("retry_editorial",{action_id:"2".repeat(32)}),env,helpers)).status,409);
  assert.equal((await newsControls(env)).actions.length,1);
 }));
+test("an earlier INC retry already in controls stays visible in Pending before Windows consumes it",()=>{
+ const [index,queue]=fixture();
+ queue.items[0].status="problematic";
+ const view=decorateNews(projectNews(index,queue),{preferences:[{
+  event_id:id,revision:1,rework_requested:true}],actions:[{
+  action:"retry_editorial",event_id:id,revision:1}]});
+ assert.equal(view.counts.pending,1);
+ assert.equal(view.counts.incident,0);
+ assert.equal(view.items[0].status_label,"Reintento solicitado");
+});
 test("INC suppression goes to archive without publication and unsafe retry is refused",()=>scoped(async(env,docs)=>{
  docs[0].items[id].status="editorial_in_progress";docs[1].items[0].status="problematic";
  const job={schema_version:1,project:"ttittulares-v2",event_id:id,revision:1,
@@ -186,6 +199,21 @@ test("INC suppression goes to archive without publication and unsafe retry is re
  const archive=await newsView(env,new URLSearchParams({state:"archived"}));
  assert.equal(archive.total,1);assert.equal(archive.items[0].status_label,"Suprimida");
  assert.equal((await newsControls(env)).actions[0].action,"dismiss");
+ assert.equal((await(await newsPublicationCount(new Request("https://private.example/api/news-publication-count"),env,helpers)).json()).count,0);
+}));
+test("Pending exposes independent suppress and URGENTE actions with durable one-shot controls",()=>scoped(async(env,docs)=>{
+ docs[0].items[id].status="editorial_pending";docs[1].items[0].status="pending";
+ const receipt=await newsAction(request("urgent"),env,helpers);
+ assert.equal(receipt.status,200);
+ const view=await newsView(env,new URLSearchParams({state:"pending"}));
+ assert.equal(view.total,1);assert.equal(view.items[0].urgent_requested,true);
+ assert.match(view.items[0].status_label,/URGENTE/);
+ assert.equal((await newsAction(request("urgent",{action_id:"2".repeat(32)}),env,helpers)).status,409);
+ assert.equal((await newsAction(request("dismiss",{action_id:"3".repeat(32)}),env,helpers)).status,200);
+ const archive=await newsView(env,new URLSearchParams({state:"archived"}));
+ assert.equal(archive.items[0].status_label,"Suprimida");
+ assert.equal((await newsView(env,new URLSearchParams({state:"pending"}))).total,0);
+ const controls=await newsControls(env);assert.deepEqual(controls.actions.map(x=>x.action),["urgent","dismiss"]);
  assert.equal((await(await newsPublicationCount(new Request("https://private.example/api/news-publication-count"),env,helpers)).json()).count,0);
 }));
 test("stale revision preferences never archive or suppress a new record",()=>{

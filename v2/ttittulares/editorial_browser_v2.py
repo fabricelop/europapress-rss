@@ -218,7 +218,7 @@ def confirm_user_turn(page, *, event_id, revision, command_id, heartbeat,
 
 
 def capture_reply(page, *, event_id, revision, command_id, heartbeat,
-                  timeout=1200, clock=time.monotonic, sleep=time.sleep):
+                  timeout=300, clock=time.monotonic, sleep=time.sleep):
     started = clock()
     last_heartbeat = started
     previous = ''
@@ -248,7 +248,7 @@ def capture_reply(page, *, event_id, revision, command_id, heartbeat,
 
 
 class ChromeJob:
-    def __init__(self, *, chrome, seed, profile, timeout=1200):
+    def __init__(self, *, chrome, seed, profile, timeout=300):
         self.chrome, self.seed, self.profile = map(Path, (chrome, seed, profile))
         self.timeout = timeout
         self.process = self.browser = self.pw = self.hider = self.page = None

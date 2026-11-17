@@ -3,7 +3,7 @@ import {readNews,readNewsRecord,decorateNews,pageNews,NEWS_SOURCE} from "./news.
 import {readImageIncident} from "./image-incidents.js";
 const ID=/^ttn2-[a-f0-9]{24}$/;
 const HEX=/^[a-f0-9]{64}$/;
-const ACTIONS=new Set(["archive","publish","rework","rework_x","mark","public_image","suppress_image","retry_image","retry_editorial","dismiss"]);
+const ACTIONS=new Set(["archive","publish","rework","rework_x","mark","public_image","suppress_image","retry_image","retry_editorial","dismiss","urgent"]);
 async function failedEditorialJob(event_id,revision){
  const path=NEWS_SOURCE.replace(/state\/$/,"")+"jobs/editorial/"+event_id+"-r"+revision+"-editorial.json";
  const response=await fetch(path,{headers:{Accept:"application/json"},cf:{cacheTtl:0,cacheEverything:false}});
@@ -90,11 +90,16 @@ export async function newsAction(request,env,{json,sameOrigin}){
    if(previous.event_id!==event_id||previous.revision!==revision||previous.action!==action)return json({error:"idempotency_conflict"},409);
    return json({ok:true,replay:true,event_id,revision});
   }
-  const incidentAction=action==="retry_editorial"||action==="dismiss";
-  if(!current||current.revision!==revision||current.group!==(incidentAction?"incident":"ready")||
-     (incidentAction&&current.status_label!=="Incidencia de elaboración"))return json({error:"news_not_current"},409);
+  const incidentRetry=action==="retry_editorial";
+  const incidentDismiss=action==="dismiss"&&current?.group==="incident";
+  const pendingAction=action==="urgent"||(action==="dismiss"&&current?.group==="pending");
+  const sourceItem=raw.items.find(x=>x.event_id===event_id);
+  if(!current||current.revision!==revision||
+     (incidentRetry||incidentDismiss?current.group!=="incident"||current.status_label!=="Incidencia de elaboración":
+      pendingAction?current.group!=="pending"||sourceItem?.group!=="pending":current.group!=="ready"))return json({error:"news_not_current"},409);
+  if(action==="urgent"&&current.urgent_requested===true)return json({error:"news_already_urgent"},409);
   if((action==="archive"||action==="publish"||action.startsWith("rework"))&&current.rework_requested)return json({error:"news_already_processing"},409);
-  if(incidentAction){
+  if(incidentRetry||incidentDismiss){
    let job;
    try{job=await failedEditorialJob(event_id,revision);}catch{return json({error:"news_incident_unavailable_or_stale"},409);}
    if(action==="retry_editorial"&&/(AUTH|LOGIN|CREDENTIAL|DISK|CLEANUP|CAPTCHA|LEASE_EXPIRED)/.test(job.problem.code))
@@ -126,8 +131,10 @@ export async function newsAction(request,env,{json,sameOrigin}){
   if(action==="suppress_image")prefs.image_suppressed=body.value;
   if(action==="archive")prefs.archived=true;
   if(action==="dismiss"){prefs.archived=true;prefs.dismissed=true;}
+  if(action==="urgent")prefs.urgent_requested=true;
   if(action==="publish"){prefs.archived=true;prefs.published=true;}
   if(action==="rework"||action==="rework_x"||action==="retry_editorial")prefs.rework_requested=true;
+  if(action==="retry_editorial")prefs.editorial_retry_requested=true;
   if(action==="retry_image"){
    prefs.image_retry_incident_at=incident.at;
    prefs.image_retry_request_id=body.action_id;
