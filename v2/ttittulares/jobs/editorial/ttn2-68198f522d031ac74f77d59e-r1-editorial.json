@@ -1,6 +1,6 @@
 {
   "attempts": {
-    "claim_count": 0,
+    "claim_count": 1,
     "history": [],
     "max_safe_preflight_attempts": 3,
     "safe_preflight_failures": 0,
@@ -9,8 +9,14 @@
   "capture": null,
   "event_id": "ttn2-68198f522d031ac74f77d59e",
   "job_id": "ttn2-68198f522d031ac74f77d59e-r1-editorial",
-  "lease": null,
-  "phase": "queued",
+  "lease": {
+    "expires_at": "2026-11-17T11:32:27Z",
+    "heartbeat_at": "2026-11-17T11:22:27Z",
+    "started_at": "2026-11-17T11:22:27Z",
+    "token_sha256": "de69d2052699e9ea1b9ceab798bc59f8b784ee1e082543f0c1e0edd567fb56f9",
+    "worker_id": "news-037142c1e6904fbeb4c1038fcfb54d11"
+  },
+  "phase": "browser_starting",
   "priority": "automatic",
   "problem": null,
   "project": "ttittulares-v2",
@@ -21,6 +27,6 @@
   "schema_version": 1,
   "send_intent": null,
   "session": null,
-  "status": "pending",
-  "updated_at": "2026-11-17T02:31:36Z"
+  "status": "claimed",
+  "updated_at": "2026-11-17T11:22:27Z"
 }
