@@ -206,12 +206,21 @@ def enabled(root):
 def daemon(service, config, *, poll=30):
     pool = {}
     watchers = {}
-    from .session_watchdog_v2 import OwnedSessionWatchdog, enough_space
+    from .session_watchdog_v2 import (OwnedSessionWatchdog, enough_space,
+        reclaim_disposable_sessions, ORPHAN_SWEEP_INTERVAL_SECONDS)
     logs = config['root'] / 'logs'
     logs.mkdir(parents=True, exist_ok=True)
+    next_sweep = 0
     # The OS lock protects this PC; the GitHub CAS service protects all PCs.
     with common('process_lock_v2').exclusive_v2_lock(config['root'] / 'consumer.lock'):
         while enabled(config['root']) or pool:
+            if time.monotonic() >= next_sweep:
+                report = reclaim_disposable_sessions(config['root'])
+                try:
+                    write_private(config['root'] / 'editorial-reclaim-status.json', report)
+                except OSError:
+                    pass  # Disk diagnostics cannot interrupt editorial work.
+                next_sweep = time.monotonic() + ORPHAN_SWEEP_INTERVAL_SECONDS
             for slot, child in list(pool.items()):
                 if child.poll() is not None:
                     watch = watchers.pop(slot)

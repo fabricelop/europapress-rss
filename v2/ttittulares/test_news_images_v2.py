@@ -60,6 +60,8 @@ class NewsImageLifecycleTests(unittest.TestCase):
   self.service.store.save_raster=save_raster
   result=run_one(self.service,self.config,browser_factory=self.browser,raster_get=lambda *a,**k:raw)
   self.assertEqual(result["status"],"saved");self.assertTrue(result["verified"])
+  self.assertTrue(result["local_original_reclaimed"])
+  self.assertEqual(list((self.config["root"]/"image-originals").glob("*.bin")),[])
   self.assertEqual(self.instances[0].sent,1);self.assertTrue(result["cleanup_verified"])
   _,docs=self.service.store.read_editorial_snapshot();item=docs["v2/ttittulares/state/news-index.json"]["items"][self.fixture.event]
   self.assertTrue(item["image"]["verified"]);self.assertEqual(item["image"]["revision"],1)

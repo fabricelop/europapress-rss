@@ -85,6 +85,10 @@ def clone_job_profile(seed, destination, *, find_pids):
     destination.parent.mkdir(parents=True, exist_ok=True)
     destination.mkdir(exist_ok=False)
     try:
+        # A later supervisor restart can reclaim this exact disposable copy
+        # after a crash. Persistent AuthSeed and preflight are never marked.
+        from .session_watchdog_v2 import mark_disposable_profile
+        mark_disposable_profile(destination)
         shutil.copytree(seed, destination, ignore=ignore_cache, dirs_exist_ok=True)
         # Detect a concurrent launch during copying. Never use an uncertain copy.
         if find_pids(seed):

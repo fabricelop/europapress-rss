@@ -30,9 +30,13 @@ $candidates = [Collections.Generic.List[object]]::new()
 $excluded = [Collections.Generic.List[object]]::new()
 function Inspect-Folder([IO.DirectoryInfo]$folder, [string]$type, [string]$journalPath) {
   $reason = ''
+  $profile = Join-Path $folder.FullName 'Profile'
   if (($folder.Attributes -band [IO.FileAttributes]::ReparsePoint) -ne 0) { $reason = 'REPARSE_POINT' }
   elseif ($folder.LastWriteTime -gt $cutoff) { $reason = 'TOO_RECENT' }
+  elseif ((Test-Path -LiteralPath $profile) -and
+          (((Get-Item -LiteralPath $profile -Force).Attributes -band [IO.FileAttributes]::ReparsePoint) -ne 0)) { $reason = 'PROFILE_REPARSE_POINT' }
   elseif (Test-ProcessMentions $folder.FullName) { $reason = 'ACTIVE_CHROME_OR_WORKER' }
+  elseif ($type -like 'news-*' -and (Test-ProcessMentions $folder.Name)) { $reason = 'ACTIVE_NEWS_WORKER_ID' }
   elseif ($type -eq 'news-editorial' -and (Test-OldWorkerWithoutRunId 'v2\.ttittulares\.editorial_consumer_v2')) { $reason = 'LEGACY_WORKER_ACTIVE' }
   elseif ($type -eq 'news-image' -and (Test-OldWorkerWithoutRunId 'v2\.ttittulares\.news_images_v2')) { $reason = 'LEGACY_WORKER_ACTIVE' }
   elseif ($type -eq 'trend-editorial' -and (Test-ProcessMentions 'editorial_run_v2.py')) { $reason = 'TREND_EDITORIAL_ACTIVE' }
@@ -80,6 +84,9 @@ Write-Output ('TT_V2_SWEEP_EXCLUDED=' + $excluded.Count)
 foreach ($item in $candidates) {
   Write-Output ('CANDIDATE ' + $item.Type + ' ' + [Math]::Round($item.Bytes / 1GB, 2) + ' GiB ' + $item.Folder)
 }
+foreach ($item in $excluded) {
+  Write-Output ('EXCLUDED ' + $item.Type + ' ' + $item.Reason + ' ' + $item.Folder)
+}
 if ($Apply) {
   $deleted = 0
   foreach ($item in $candidates) {
@@ -88,6 +95,7 @@ if ($Apply) {
       $_.Name -match '^(chrome|python|pythonw|py)\.exe$'
     })
     if (Test-ProcessMentions $item.Folder) { continue }
+    if ($item.Type -like 'news-*' -and (Test-ProcessMentions (Split-Path -Leaf $item.Folder))) { continue }
     if ($item.Type -eq 'news-editorial' -and (Test-OldWorkerWithoutRunId 'v2\.ttittulares\.editorial_consumer_v2')) { continue }
     if ($item.Type -eq 'news-image' -and (Test-OldWorkerWithoutRunId 'v2\.ttittulares\.news_images_v2')) { continue }
     if ($item.Type -eq 'trend-editorial' -and (Test-ProcessMentions 'editorial_run_v2.py')) { continue }
@@ -95,6 +103,9 @@ if ($Apply) {
     $folder = Get-Item -LiteralPath $item.Folder -Force
     if ($folder.LastWriteTime -gt $cutoff -or
         ($folder.Attributes -band [IO.FileAttributes]::ReparsePoint) -ne 0) { continue }
+    $profile = Join-Path $folder.FullName 'Profile'
+    if ((Test-Path -LiteralPath $profile) -and
+        (((Get-Item -LiteralPath $profile -Force).Attributes -band [IO.FileAttributes]::ReparsePoint) -ne 0)) { continue }
     Remove-Item -LiteralPath $item.Folder -Recurse -Force -ErrorAction Stop
     $deleted++
   }

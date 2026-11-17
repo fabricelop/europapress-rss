@@ -42,7 +42,8 @@ $news=@('news_workflow_v2.py','news_images_v2.py','test_news_workflow_v2.py','te
 $shared=@('chrome_command_v2.py','chrome_visibility_v2.py','chrome_profile_process_v2.py',
           'chrome_cleanup_v2.py','chrome_startup_v2.py','process_lock_v2.py','image_intake_v2.py','image_same_chat_v2.py','image_job_v2.py','image_github_v2.py')
 $paths=@($news | ForEach-Object {'v2/ttittulares/'+$_})+@($shared | ForEach-Object {'v2/ttendencias/'+$_})
-$paths+=@('v2/ttittulares/Run-News-Editorial-Auto.ps1','v2/ttittulares/Run-News-Images-Auto.ps1','v2/ttittulares/Launch-News-Hidden.vbs')
+$paths+=@('v2/ttittulares/Run-News-Editorial-Auto.ps1','v2/ttittulares/Run-News-Images-Auto.ps1','v2/ttittulares/Launch-News-Hidden.vbs',
+  'v2/ttittulares/Check-News-V2-Health.ps1','v2/ttittulares/Sweep-V2-Disposable-Sessions.ps1')
 foreach($path in $paths){
   $entry=@($tree.tree | Where-Object {$_.path -eq $path -and $_.type -eq 'blob'})
   if($entry.Count -ne 1){throw ('Falta archivo en el commit fijado: '+$path)}
@@ -74,7 +75,7 @@ if($dependency.ExitCode -ne 0){
 }
 Invoke-NewsPython -arguments @('-m','pip','install','--user','Pillow')
 Invoke-NewsPython -arguments @('-c','"import playwright.sync_api, jsonschema, PIL"')
-Invoke-NewsPython -arguments @('-m','unittest','v2.ttittulares.test_contract_examples','v2.ttittulares.test_editorial_contract_v2','v2.ttittulares.test_editorial_state_v2','v2.ttittulares.test_editorial_consumer_v2','v2.ttittulares.test_editorial_browser_v2','v2.ttittulares.test_news_workflow_v2','v2.ttittulares.test_news_images_v2')
+Invoke-NewsPython -arguments @('-m','unittest','v2.ttittulares.test_contract_examples','v2.ttittulares.test_editorial_contract_v2','v2.ttittulares.test_editorial_state_v2','v2.ttittulares.test_editorial_consumer_v2','v2.ttittulares.test_editorial_browser_v2','v2.ttittulares.test_news_workflow_v2','v2.ttittulares.test_news_images_v2','v2.ttittulares.test_session_watchdog_v2')
 $chrome=Join-Path $env:ProgramFiles 'Google\Chrome\Application\chrome.exe'
 $setup=@('-m','v2.ttittulares.editorial_setup_v2','--root',('"'+$root+'"'),'--chrome',('"'+$chrome+'"'))
 if($SeedProfile){$setup+=@('--seed-source',('"'+$SeedProfile+'"'))}
@@ -82,6 +83,8 @@ Invoke-NewsPython -arguments $setup
 Invoke-NewsPython -arguments @('-m','v2.ttittulares.editorial_consumer_v2','--root',('"'+$root+'"'),'--check')
 $queuePreview=Get-Content -LiteralPath (Join-Path $root 'install.stdout.log') -Raw | ConvertFrom-Json
 Copy-Item -LiteralPath (Join-Path $code 'v2\ttittulares\Run-News-Editorial-Auto.ps1') -Destination (Join-Path $root 'Run-News-Editorial-Auto.ps1') -Force
+Copy-Item -LiteralPath (Join-Path $code 'v2\ttittulares\Check-News-V2-Health.ps1') -Destination (Join-Path $root 'Check-News-V2-Health.ps1') -Force
+Copy-Item -LiteralPath (Join-Path $code 'v2\ttittulares\Sweep-V2-Disposable-Sessions.ps1') -Destination (Join-Path $root 'Sweep-V2-Disposable-Sessions.ps1') -Force
 [IO.File]::WriteAllText((Join-Path $root 'active-code.txt'),$code,$utf8)
 Copy-Item -LiteralPath (Join-Path $code 'v2\ttittulares\Launch-News-Hidden.vbs') -Destination (Join-Path $root 'Launch-News-Hidden.vbs') -Force
 Write-Host ('TTN2_INSTALLED_COMMIT='+$sha)
@@ -133,7 +136,15 @@ if($EnableImages){
     Invoke-NewsPython -arguments @('-m','v2.ttittulares.news_images_v2','--root',('"'+$root+'"'),'--run-one')
     $imagePilot=Get-Content -LiteralPath (Join-Path $root 'install.stdout.log') -Raw | ConvertFrom-Json
     if($imagePilot.status -notin @('saved','idle')){throw 'Imagen piloto sin verificar'}
-    if($imagePilot.status -eq 'saved' -and -not $imagePilot.cleanup_verified){throw 'Cierre de imagen sin verificar'}
+    if($imagePilot.status -eq 'saved' -and (-not $imagePilot.cleanup_verified -or -not $imagePilot.verified)){
+      throw 'Imagen no confirmada en GitHub y en el estado editorial, o cierre Chrome no verificado'
+    }
+    if($imagePilot.status -eq 'saved'){
+      Write-Host 'TTN2_IMAGE_E2E_VERIFIED=YES'
+      Write-Host ('TTN2_IMAGE_LOCAL_ORIGINAL_RECLAIMED='+$imagePilot.local_original_reclaimed)
+    }else{
+      Write-Host 'TTN2_IMAGE_E2E_VERIFIED=NO_PENDING_IMAGE; NO_AFIRMAR_PRUEBA_REAL'
+    }
     [IO.File]::WriteAllText((Join-Path $root 'images.enabled'),'TTN2_IMAGES_ENABLED=YES',$utf8)
     $imageAction=New-ScheduledTaskAction -Execute $wscript -Argument ('//B //Nologo "'+$hiddenLauncher+'" "'+(Join-Path $root 'Run-News-Images-Auto.ps1')+'"')
     Register-ScheduledTask -TaskName 'TTActualidadNoticiasV2-Images' -Action $imageAction -Trigger $trigger -Principal $principal -Settings $options -Force | Out-Null

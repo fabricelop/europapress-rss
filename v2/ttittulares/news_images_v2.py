@@ -6,7 +6,8 @@ from datetime import datetime, timezone
 from .editorial_browser_v2 import ChromeJob, write_private, common
 from .editorial_consumer_v2 import github_token, settings, error_code
 from .news_workflow_v2 import NewsService, NewsStore, sync_controls, read_controls
-from .session_watchdog_v2 import OwnedSessionWatchdog, enough_space
+from .session_watchdog_v2 import (OwnedSessionWatchdog, enough_space,
+    reclaim_disposable_sessions, ORPHAN_SWEEP_INTERVAL_SECONDS, SESSION_LIMIT_SECONDS)
 from v2.ttendencias.image_same_chat_v2 import original_from_same_page
 from v2.ttendencias.image_intake_v2 import raster_metadata
 
@@ -56,7 +57,10 @@ def run_one(service, config, *, browser_factory=ChromeJob, raster_get=original_f
                 if time.monotonic()-self.last_heartbeat>=45:
                     beat();self.last_heartbeat=time.monotonic()
                 return browser.page.evaluate(script)
-        raw=raster_get(HeartbeatPage(),{"conversation_url":url,"command_id":command},timeout=600)
+        # The parent hard-stops a session after 480 s. Never wait 600 s for
+        # ImageGen here: leave room to close Chrome and persist the incident.
+        raw=raster_get(HeartbeatPage(),{"conversation_url":url,"command_id":command},
+                       timeout=min(300, SESSION_LIMIT_SECONDS - 120))
         meta=raster_metadata(raw)
         original=config["root"]/"image-originals"/(run+".bin")
         original.parent.mkdir(parents=True,exist_ok=True);original.write_bytes(raw)
@@ -93,7 +97,21 @@ def run_one(service, config, *, browser_factory=ChromeJob, raster_get=original_f
     saved=service.image("save",worker_id=worker,token=token,job_id=jid,asset=asset,
         raster_commit=commit,cleanup_verified=True)
     journal.update(saved=True,commit_sha=saved["commit_sha"]);write_private(local,journal)
-    return {"status":"saved","job_id":jid,"verified":True,"cleanup_verified":True,"published":False}
+    # The verified raster is now in GitHub and associated with this revision.
+    # The private local checkpoint is no longer needed; do not accumulate
+    # permanent duplicates in image-originals. On any error, retain it.
+    reclaimed=False
+    try:
+        if (not original.is_symlink() and original.is_file()
+                and original.stat().st_size==meta["size"]
+                and hashlib.sha256(original.read_bytes()).hexdigest()==meta["sha256"]):
+            original.unlink();reclaimed=True
+    except OSError:
+        pass  # A failed local deletion never rolls back a verified remote asset.
+    journal["local_original_reclaimed"]=reclaimed
+    write_private(local,journal)
+    return {"status":"saved","job_id":jid,"verified":True,"cleanup_verified":True,
+            "local_original_reclaimed":reclaimed,"published":False}
 
 def enabled(root):
     try:return (root/"images.enabled").read_text(encoding="utf-8").strip()=="TTN2_IMAGES_ENABLED=YES"
@@ -116,11 +134,15 @@ def check(service):
 
 def daemon(service,config):
     root=config["root"];pool={};watchers={}
+    next_sweep=0
     health={"enabled":True,"pending_count":None,"active_count":None,
             "workers_running":0,"error_stage":None,"error_code":None,
             "last_worker_exit_code":None,"last_worker_completed_at":None,"last_spawned_at":None}
     with common("process_lock_v2").exclusive_v2_lock(root/"images.lock"):
         while enabled(root) or pool:
+            if time.monotonic()>=next_sweep:
+                health["profile_reclaim"]=reclaim_disposable_sessions(root,image=True)
+                next_sweep=time.monotonic()+ORPHAN_SWEEP_INTERVAL_SECONDS
             for slot,child in list(pool.items()):
                 exit_code=child.poll()
                 if exit_code is not None:
