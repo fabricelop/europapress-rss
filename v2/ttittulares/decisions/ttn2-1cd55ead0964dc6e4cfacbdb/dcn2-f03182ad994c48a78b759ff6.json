@@ -1,0 +1,15 @@
+{
+  "action": "request_rework",
+  "actor": "private-web",
+  "decision_id": "dcn2-f03182ad994c48a78b759ff6",
+  "event_id": "ttn2-1cd55ead0964dc6e4cfacbdb",
+  "idempotency_key": "f03182ad994c48a78b759ff68f8e39df",
+  "occurred_at": "2026-11-17T15:38:36Z",
+  "project": "ttittulares-v2",
+  "revision": 1,
+  "rework": {
+    "instructions": "Reintento manual tras incidencia INVALID_EDITORIAL_JSON. Abre un chat editorial nuevo, investiga desde cero, no reutilices respuestas previas. Respeta el contrato exacto TTN2_EDITORIAL_READY o TTN2_EDITORIAL_BLOCKED, sin Markdown ni contenido extra.",
+    "scope": "reinvestigate"
+  },
+  "schema_version": 1
+}
