@@ -3,7 +3,11 @@ on:
   push:
     branches: [feature/ttactualidad-v2-clean]
     paths:
-      - 'v2/ttittulares/**'
+      # Runtime radar, queue, news, image and action receipts are written often.
+      # Pure CI only needs to run when code/contracts change, not per state commit.
+      - 'v2/ttittulares/*.py'
+      - 'v2/ttittulares/schemas/**'
+      - 'v2/ttittulares/examples/**'
       - '.github/workflows/ttittulares-v2-radar-ci.yml'
   workflow_dispatch:
 
