@@ -10,6 +10,7 @@
  $("results").hidden=true;
  $("news-panel").hidden=false;
  $("publication-summary").hidden=false;
+ $("publication-summary").textContent="PUB · — / 24 h";
  $("radar-time").textContent="Noticias · cargando…";
  $("refresh").title="Actualizar noticias";
  $("refresh").setAttribute("aria-label","Actualizar noticias");
@@ -35,7 +36,13 @@
    const summary=node("summary","news-card-head");
    const heading=node("span","news-title-wrap");heading.append(node("strong","news-title",item.title));
    heading.append(node("span","news-meta","Detectada · "+date(item.first_seen_at)+" · "+item.source_family_count+" familias de fuentes"));
-   summary.append(heading,node("span","news-status "+item.group,item.status_label));card.append(summary);
+   summary.append(heading,node("span","news-status "+item.group,item.status_label));
+   if(item.has_image===true){
+    const imageIcon=node("span","news-image-head-icon"+(item.image_suppressed?" news-image-head-hidden":""),"▧");
+    imageIcon.title=item.image_suppressed?"Imagen asociada, oculta":"Imagen original asociada";
+    imageIcon.setAttribute("aria-label",imageIcon.title);summary.append(imageIcon);
+   }
+   card.append(summary);
    const body=node("div","news-body");
    const explanation=node("p",item.group==="ready"?"news-tweet":"",item.group==="detected"?"Esperando cobertura de suficientes familias independientes antes de pasar a elaboración.":
     item.group==="pending"?"Pendiente de investigar, contrastar y redactar. Todavía no hay explicación editorial.":

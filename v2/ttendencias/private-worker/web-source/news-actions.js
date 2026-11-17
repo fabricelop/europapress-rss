@@ -23,49 +23,60 @@ window.TTNewsActions=(()=>{
   }else if(item.image_in_progress){body.append(el("p","news-image-working","▧ Imagen IA en elaboración"));}
   if(item.group!=="ready")return;
   card.classList.toggle("marked-red",item.marked===true);
-  const actions=el("div","publish-actions news-actions");
-  const add=(label,title,handler)=>{
+  const actions=el("div","news-actions");
+  const group=(name,label)=>{
+   const wrap=el("div","news-action-group news-action-"+name);
+   wrap.setAttribute("role","group");wrap.setAttribute("aria-label",label);
+   wrap.append(el("span","news-action-caption",label));actions.append(wrap);return wrap;
+  };
+  const publishing=group("publishing","Publicación");
+  const editing=group("editing","Gestión y reelaboración");
+  const artwork=group("artwork","Imagen");
+  const add=(label,title,handler,target=editing)=>{
    const b=el("button","publish-action",label);b.type="button";b.title=title;
    b.addEventListener("click",async event=>{event.preventDefault();event.stopPropagation();if(b.disabled)return;b.disabled=true;
     try{await handler();}catch(error){if(error.name!=="AbortError")notice(error.message);}finally{b.disabled=false;}});
-   actions.append(b);return b;
+   target.append(b);return b;
   };
-  const r=add("R","Marcar o desmarcar en rojo",async()=>{await action(item,"mark",!item.marked);await onChange();});
+  add("P-X","Abrir el editor de X con el texto; no publica automáticamente",()=>{
+   const opened=window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(tweet(record)),"_blank");
+   if(opened)opened.opener=null;else throw Error("El navegador bloqueó la ventana de X.");
+  },publishing);
+  add("PUB","Ya publicada: registrar una publicación y mover a Archivo",async()=>{
+   if(!confirm("¿Confirmas que YA has publicado esta noticia? PUB la moverá a Archivo y sumará 1 al contador de las últimas 24 horas. No se enviará nada automáticamente a X."))return;
+   await action(item,"publish");
+   globalThis.dispatchEvent(new Event("ttv2:publication-recorded"));
+   await onChange();
+  },publishing);
+  add("Quitar","Mover a Archivo SIN publicar y SIN aumentar el contador",async()=>{
+   if(!confirm("¿Quitar esta noticia de Elaboradas y pasarla a Archivo sin sumar publicaciones?"))return;
+   await action(item,"archive");await onChange();
+  });
+  const r=add("R · Rojo","Marcar o desmarcar en rojo; no archiva ni publica",async()=>{await action(item,"mark",!item.marked);await onChange();});
   r.setAttribute("aria-pressed",String(item.marked===true));
   add("RE","Investigar y elaborar de nuevo, con imagen nueva",async()=>{
    if(!confirm("¿Reelaborar esta noticia? Se conservan el texto y la imagen anteriores en el historial."))return;
    await action(item,"rework");await onChange();
   });
-  add("RE-X","Investigar de nuevo en X con tus pistas",async()=>{
-   const hints=window.prompt("Pistas para investigar en X y contrastar (mínimo 10 caracteres):");
+  add("RE-X","Solicitar una reelaboración con búsqueda en X y contrastación",async()=>{
+   const hints=window.prompt("Pistas para intentar consultar X y contrastar con otras fuentes (mínimo 10 caracteres). Se solicitará la búsqueda en el nuevo chat, pero no se garantiza el acceso a publicaciones de X:");
    if(hints===null)return;if(hints.trim().length<10||hints.length>1200)throw Error("Introduce entre 10 y 1200 caracteres.");
    await action(item,"rework_x",undefined,hints.trim());await onChange();
-  });
-  add("P-X","Preparar el texto en X",()=>{
-   const opened=window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(tweet(record)),"_blank");
-   if(opened)opened.opener=null;else throw Error("El navegador bloqueó la ventana de X.");
-  });
-  add("PU","Registrar una publicación realizada; no envía a X",async()=>{
-   await action(item,"publication");
-   globalThis.dispatchEvent(new Event("ttv2:publication-recorded"));
-   notice("PU registrada. El contador de noticias se ha actualizado; no se ha enviado nada a X.");
-  });
-  add("PUB","Mover de Elaboradas a Archivo",async()=>{
-   await action(item,"archive");await onChange();
   });
   if(item.image_available||item.image_suppressed){
    add(item.image_suppressed?"Restaurar IA":"Quitar IA","Cambiar la visibilidad en V2 y V1 conservando el original",async()=>{
     await action(item,"suppress_image",!item.image_suppressed);await onChange();
-   });
+   },artwork);
    const label=el("label","image-public-toggle");const toggle=el("input");toggle.type="checkbox";toggle.checked=item.public_image_visible===true;
    toggle.disabled=item.image_suppressed===true;toggle.setAttribute("role","switch");toggle.setAttribute("aria-label","Mostrar imagen en V1");
    toggle.addEventListener("change",async()=>{toggle.disabled=true;try{await action(item,"public_image",toggle.checked);await onChange();}
     catch(error){toggle.checked=!toggle.checked;notice(error.message);}finally{toggle.disabled=false;}});
-   label.append(toggle,el("span","image-public-label","Imagen en V1"));actions.append(label);
+   label.append(toggle,el("span","image-public-label","Imagen en V1"));artwork.append(label);
   }
   if(!item.image_available&&!item.image_suppressed){
-   add("Copiar prompt IA","Copiar el encargo de imagen para esta noticia y revisión",()=>navigator.clipboard.writeText(prompt(item,record)));
-   const link=el("a","publish-action","GPT IMA");link.href="https://chatgpt.com/images/";link.target="_blank";link.rel="noopener noreferrer";actions.append(link);
+   add("Copiar prompt IA","Copiar el encargo de imagen para esta noticia y revisión",()=>navigator.clipboard.writeText(prompt(item,record)),artwork);
+   const link=el("a","publish-action","GPT IMA");link.href="https://chatgpt.com/images/";link.target="_blank";link.rel="noopener noreferrer";
+   artwork.append(link);
    add("Pegar IA","Pegar o seleccionar el original PNG",()=>new Promise(resolve=>{
     const dialog=el("dialog","news-paste-dialog");dialog.append(el("p","","Pega aquí el original de ChatGPT Images o selecciónalo."));
     const input=el("input");input.type="file";input.accept="image/png";const status=el("p","","");
@@ -84,7 +95,7 @@ window.TTNewsActions=(()=>{
     dialog.addEventListener("paste",event=>{const file=[...(event.clipboardData?.files||[])].find(x=>/^image\//.test(x.type));if(file){event.preventDefault();void upload(file);}});
     dialog.append(input,status,close);document.body.append(dialog);
     dialog.addEventListener("close",()=>{dialog.remove();resolve();},{once:true});dialog.showModal();
-   }));
+   }),artwork);
   }
   if(item.image_available){
    add("P-IA","Compartir con el original IA",async()=>{
@@ -96,7 +107,7 @@ window.TTNewsActions=(()=>{
      const url=URL.createObjectURL(blob),a=el("a");a.href=url;a.download=file.name;a.click();setTimeout(()=>URL.revokeObjectURL(url),60000);
      await navigator.clipboard.writeText(tweet(record));notice("Original descargado y texto copiado. Adjunta la imagen al publicar en X.");
     }
-   });
+   },publishing);
   }
   body.append(actions);
  }

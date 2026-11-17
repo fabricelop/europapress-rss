@@ -28,13 +28,28 @@ async function scoped(fn){const old=globalThis.fetch,docs=fixture();globalThis.f
  try{await fn({MARKS_DB:db()},docs);}finally{globalThis.fetch=old;}}
 function request(action,extra={}){return new Request("https://private.example/api/news-actions",{method:"POST",headers:{"content-type":"application/json"},
  body:JSON.stringify({event_id:id,revision:1,action,action_id:"1".repeat(32),...extra})});}
-test("PUB persistently moves READY to Archive without changing the stored record or publishing",()=>scoped(async(env,docs)=>{
+test("Quitar persistently moves READY to Archive without incrementing publications",()=>scoped(async(env,docs)=>{
  const original=JSON.stringify(docs[2]);const result=await newsAction(request("archive"),env,helpers);
  assert.equal(result.status,200);assert.equal((await result.json()).publication_sent,false);
  const controls=await newsControls(env);assert.equal(controls.actions[0].action,"archive");
  const view=await newsView(env,new URLSearchParams({state:"archived"}));assert.equal(view.total,1);assert.equal(view.counts.ready,0);
+ assert.equal(view.items[0].status_label,"Archivada");
+ assert.equal((await(await newsPublicationCount(new Request("https://private.example/api/news-publication-count"),env,helpers)).json()).count,0);
  assert.equal(JSON.stringify(docs[2]),original);
  const replay=await newsAction(request("archive"),env,helpers);assert.equal((await replay.json()).replay,true);
+}));
+test("PUB confirms a manual publication, archives, counts once and cannot be repeated",()=>scoped(async(env,docs)=>{
+ const original=JSON.stringify(docs[2]);
+ const receipt=await newsAction(request("publish"),env,helpers);
+ assert.equal(receipt.status,200);assert.equal((await receipt.json()).publication_sent,false);
+ const archived=await newsView(env,new URLSearchParams({state:"archived"}));
+ assert.equal(archived.total,1);assert.equal(archived.items[0].status_label,"Publicada");
+ const count=async()=> (await(await newsPublicationCount(new Request("https://private.example/api/news-publication-count"),env,helpers)).json()).count;
+ assert.equal(await count(),1);
+ assert.equal((await(await newsAction(request("publish"),env,helpers)).json()).replay,true);
+ assert.equal(await count(),1);
+ assert.equal((await newsAction(request("publish",{action_id:"2".repeat(32)}),env,helpers)).status,409);
+ assert.equal(JSON.stringify(docs[2]),original);
 }));
 test("RE-X requires useful hints, persists them, hides READY and rejects another current mutation",()=>scoped(async env=>{
  assert.equal((await newsAction(request("rework_x",{hints:"corto"}),env,helpers)).status,400);
@@ -43,36 +58,41 @@ test("RE-X requires useful hints, persists them, hides READY and rejects another
  const controls=await newsControls(env);assert.match(controls.actions[0].hints,/comunicado/);
  assert.equal((await newsAction(request("archive",{action_id:"2".repeat(32)}),env,helpers)).status,409);
 }));
-test("R, image preferences and PU have distinct semantics and never archive or publish",()=>scoped(async env=>{
- for(const [n,action,value] of [[1,"mark",true],[2,"public_image",false],[3,"suppress_image",true],[4,"publication",undefined]]){
+test("R and image preferences are distinct from PUB and Quitar; old PU is closed",()=>scoped(async env=>{
+ for(const [n,action,value] of [[1,"mark",true],[2,"public_image",false],[3,"suppress_image",true]]){
   assert.equal((await newsAction(request(action,{action_id:String(n).repeat(32),value}),env,helpers)).status,200);
  }
  const view=await newsView(env,new URLSearchParams({state:"ready"}));assert.equal(view.total,1);
  assert.equal(view.items[0].marked,true);assert.equal(view.items[0].image_suppressed,true);
  assert.equal(view.items[0].public_image_visible,false);
- assert.equal((await newsControls(env)).actions.filter(x=>x.action==="publication").length,1);
+ assert.equal((await newsControls(env)).actions.filter(x=>x.action==="publication").length,0);
+ assert.equal((await newsAction(request("publication",{action_id:"4".repeat(32)}),env,helpers)).status,400);
 }));
-test("news PU counter is a separate exact rolling 24-hour register; PUB only archives",()=>scoped(async env=>{
+test("news PUB counter is a separate exact rolling 24-hour register; legacy PU remains counted until expiry",()=>scoped(async env=>{
  const count=async()=>{
   const response=await newsPublicationCount(new Request("https://private.example/api/news-publication-count"),env,helpers);
   assert.equal(response.status,200);
   return response.json();
  };
  assert.equal((await count()).count,0);
- for(const [n,action,value] of [[1,"publication",undefined],[2,"mark",true],[3,"publication",undefined],[4,"archive",undefined]]){
-  const receipt=await newsAction(request(action,{action_id:String(n).repeat(32),value}),env,helpers);
-  assert.equal(receipt.status,200);
- }
+ // Existing PU records are kept for their remaining 24-hour window, without accepting new PU clicks.
+ await newsControls(env);
+ const oldPU={action_id:"1".repeat(32),event_id:id,revision:1,action:"publication",created_at:new Date().toISOString(),news_title:"Noticia histórica"};
+ await env.MARKS_DB.prepare("INSERT INTO news_actions(action_id,event_id,revision,body,created_at) VALUES(?,?,?,?,?)")
+  .bind(oldPU.action_id,id,1,JSON.stringify(oldPU),oldPU.created_at).run();
+ assert.equal((await newsAction(request("mark",{action_id:"2".repeat(32),value:true}),env,helpers)).status,200);
+ const receipt=await newsAction(request("publish",{action_id:"3".repeat(32)}),env,helpers);
+ assert.equal(receipt.status,200);
  let result=await count();assert.equal(result.count,2);
  assert.equal(result.events.length,2);
- assert.equal(result.events[0].news_title,"Un hecho contrastado entre fuentes diferentes");
+ assert.equal(result.events[0].news_title,"Noticia histórica");
  assert.ok(result.events.every(x=>x.event_id===id&&x.pressed_at_ms>0));
- // A 25-hour-old PU leaves the window, independently of the archived state.
+ // A 25-hour-old PU leaves the window; the current PUB remains counted.
  const old=new Date(Date.now()-25*3600000).toISOString();
  env.MARKS_DB.sql.prepare("UPDATE news_actions SET created_at=?,body=json_set(body,'$.created_at',?) WHERE action_id=?")
   .run(old,old,"1".repeat(32));
  result=await count();assert.equal(result.count,1);assert.equal(result.events.length,1);
- const replay=await newsAction(request("publication",{action_id:"3".repeat(32)}),env,helpers);
+ const replay=await newsAction(request("publish",{action_id:"3".repeat(32)}),env,helpers);
  assert.equal((await replay.json()).replay,true);assert.equal((await count()).count,1);
  const method=await newsPublicationCount(new Request("https://private.example/api/news-publication-count",{method:"POST"}),env,helpers);
  assert.equal(method.status,405);
@@ -81,12 +101,20 @@ test("actions enforce same origin, revision and idempotency identity",()=>scoped
  assert.equal((await newsAction(request("mark",{value:true}),env,{...helpers,sameOrigin:()=>false})).status,405);
  assert.equal((await newsAction(request("archive",{revision:2}),env,helpers)).status,409);
  await newsAction(request("mark",{value:true}),env,helpers);
- assert.equal((await newsAction(request("publication"),env,helpers)).status,409);
+ assert.equal((await newsAction(request("publish"),env,helpers)).status,409);
 }));
 test("stale revision preferences never archive or suppress a new record",()=>{
  const [index,queue]=fixture();index.items[id].current_revision=2;queue.items[0].revision=2;queue.items[0].job_id=id+"-r2-editorial";
  const view=decorateNews(projectNews(index,queue),{preferences:[{event_id:id,revision:1,archived:true,image_suppressed:true,marked:true}]});
  assert.equal(view.items[0].group,"ready");assert.equal(view.items[0].image_suppressed,false);assert.equal(view.items[0].marked,true);
+});
+test("image header presence survives intentional image suppression and manual association",()=>{
+ const [index,queue]=fixture();index.items[id].image={revision:1,verified:true};
+ const controls={preferences:[{event_id:id,revision:1,image_suppressed:true,manual_image:{sha256:hash}}]};
+ const view=decorateNews(projectNews(index,queue),controls).items[0];
+ assert.equal(view.has_image,true);assert.equal(view.image_available,false);assert.equal(view.image_suppressed,true);
+ const clean=decorateNews(projectNews(...fixture()),{preferences:[]}).items[0];
+ assert.equal(clean.has_image,false);
 });
 test("manual image rejects thumbnails and never creates a successful association",()=>scoped(async env=>{
  const req=new Request("https://private.example/api/news-manual-image?id="+id+"&revision=1",{method:"POST",headers:{"content-type":"image/png"},body:new Uint8Array(1024)});

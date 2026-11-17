@@ -2,7 +2,7 @@
 import {readNews,readNewsRecord,decorateNews,pageNews,NEWS_SOURCE} from "./news.js";
 const ID=/^ttn2-[a-f0-9]{24}$/;
 const HEX=/^[a-f0-9]{64}$/;
-const ACTIONS=new Set(["archive","rework","rework_x","mark","public_image","suppress_image","publication"]);
+const ACTIONS=new Set(["archive","publish","rework","rework_x","mark","public_image","suppress_image"]);
 export async function newsTables(db){
  if(!db)throw Error("NEWS_STORAGE_UNAVAILABLE");
  await db.prepare("CREATE TABLE IF NOT EXISTS news_preferences(event_id TEXT NOT NULL,revision INTEGER NOT NULL,body TEXT NOT NULL,PRIMARY KEY(event_id,revision))").run();
@@ -18,15 +18,15 @@ export async function newsControls(env){
   preferences:(prefs.results||[]).map(x=>({event_id:x.event_id,revision:x.revision,...JSON.parse(x.body)})),
   actions:(actions.results||[]).map(x=>JSON.parse(x.body))};
 }
-// Independent of Tendencias: only explicit news PU registrations, never PUB
-// archival actions or opening an X compose window. Window is rolling, not a
-// calendar day; count stays exact even if the history list is bounded.
+// Independent of Tendencias. PUB confirms a manual publication and archives
+// atomically; Quitar only archives. Historical PU events remain in the rolling
+// window during the migration; the obsolete PU action accepts no new writes.
 export async function newsPublicationCount(request,env,{json}){
  if(request.method!=="GET")return json({error:"method_not_allowed"},405);
  try{
   await newsTables(env.MARKS_DB);
   const now=Date.now(),start=new Date(now-86400000).toISOString(),end=new Date(now).toISOString();
-  const where="FROM news_actions WHERE created_at > ? AND created_at <= ? AND json_extract(body,'$.action')='publication'";
+  const where="FROM news_actions WHERE created_at > ? AND created_at <= ? AND json_extract(body,'$.action') IN ('publish','publication')";
   const [total,history]=await Promise.all([
    env.MARKS_DB.prepare("SELECT COUNT(*) AS total "+where).bind(start,end).first(),
    env.MARKS_DB.prepare("SELECT body "+where+" ORDER BY created_at ASC,action_id ASC LIMIT 500").bind(start,end).all()
@@ -80,23 +80,24 @@ export async function newsAction(request,env,{json,sameOrigin}){
    return json({ok:true,replay:true,event_id,revision});
   }
   if(!current||current.revision!==revision||current.group!=="ready")return json({error:"news_not_current"},409);
-  if((action==="archive"||action.startsWith("rework"))&&current.rework_requested)return json({error:"news_already_processing"},409);
+  if((action==="archive"||action==="publish"||action.startsWith("rework"))&&current.rework_requested)return json({error:"news_already_processing"},409);
   const row=controls.preferences.find(x=>x.event_id===event_id&&x.revision===revision)||{};
   const prefs={...row};delete prefs.event_id;delete prefs.revision;
   const now=new Date().toISOString();
   const entry={action_id:body.action_id,event_id,revision,action,created_at:now,
-     ...(action==="publication"?{news_title:String(current.title||"Noticia").slice(0,180)}:{}),
+     ...(action==="publish"?{news_title:String(current.title||"Noticia").slice(0,180)}:{}),
      ...(action==="rework_x"?{hints:body.hints.trim()}:{}),
      ...(typeof body.value==="boolean"?{value:body.value}:{})};
   if(action==="mark")prefs.marked=body.value;
   if(action==="public_image")prefs.public_image_visible=body.value;
   if(action==="suppress_image")prefs.image_suppressed=body.value;
   if(action==="archive")prefs.archived=true;
+  if(action==="publish"){prefs.archived=true;prefs.published=true;}
   if(action==="rework"||action==="rework_x")prefs.rework_requested=true;
   const expected={...row};delete expected.event_id;delete expected.revision;
   if(!await savePreference(env.MARKS_DB,event_id,revision,expected,prefs,entry))
    return json({error:"news_preferences_changed"},409);
-  const count=action==="publication"?(controls.actions.filter(x=>x.action==="publication"&&Date.parse(x.created_at)>=Date.now()-86400000).length+1):undefined;
+  const count=action==="publish"?(controls.actions.filter(x=>["publish","publication"].includes(x.action)&&Date.parse(x.created_at)>Date.now()-86400000).length+1):undefined;
   return json({ok:true,event_id,revision,action,count,publication_sent:false});
  }catch{return json({error:"news_action_unavailable"},503);}
 }

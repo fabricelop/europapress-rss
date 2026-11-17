@@ -121,9 +121,10 @@ export function decorateNews(view,controls={}){
   const marked=(controls.preferences||[]).filter(x=>x.event_id===item.event_id&&typeof x.marked==="boolean").sort((a,b)=>b.revision-a.revision)[0]?.marked===true;
   const sensitive=/fallec|muert|asesinat|suicid|violaci[oó]n|abuso sexual|atentad|tragedia|naufragio/i.test(item.title);
   const row={...item,marked,image_suppressed:pref.image_suppressed===true,
+   has_image:item.image_available===true||Boolean(pref.manual_image),
    public_image_visible:pref.public_image_visible??!sensitive,
    rework_requested:pref.rework_requested===true};
-  if(pref.archived){row.group="archived";row.status_label="Archivada";}
+  if(pref.archived){row.group="archived";row.status_label=pref.published===true?"Publicada":"Archivada";}
   else if(pref.rework_requested){row.group="working";row.status_label="Reelaboración solicitada";}
   if(pref.manual_image){row.image_available=true;row.image_incident_available=false;}
   if(row.image_suppressed)row.image_available=false;
