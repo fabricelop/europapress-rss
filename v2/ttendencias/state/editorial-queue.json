@@ -10825,14 +10825,14 @@
     "trv2-26c48c1d43b6c10c40395189": {
       "trend_id": "trv2-26c48c1d43b6c10c40395189",
       "name": "#Mañaneros17N",
-      "revision": 2,
-      "status": "in_progress",
+      "revision": 3,
+      "status": "pending",
       "reason": "retry_after_incident",
       "episode_token": "a894ba59d3467bc9",
-      "requested_at": "2026-11-17T13:51:18.568504+00:00",
-      "updated_at": "2026-11-17T13:52:05.578628+00:00",
+      "requested_at": "2026-11-17T16:32:12.633255+00:00",
+      "updated_at": "2026-11-17T16:32:12.633255+00:00",
       "previous_explanation": null,
-      "attempts": 1,
+      "attempts": 0,
       "previous_attempts": [
         {
           "revision": 1,
@@ -10843,19 +10843,19 @@
           "send_intent_at": "2026-11-17T13:04:21.422445+00:00",
           "incident_reason": "lease_expired_without_capture",
           "archived_at": "2026-11-17T13:51:18.568504+00:00"
+        },
+        {
+          "revision": 2,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-17T13:51:37.250350+00:00",
+          "send_intent_at": "2026-11-17T13:52:05.578603+00:00",
+          "incident_reason": "lease_expired_without_capture",
+          "archived_at": "2026-11-17T16:32:12.633255+00:00"
         }
       ],
-      "incident_retries": 1,
-      "lease": {
-        "token": "ad52687d170b3a05250d81a341ee5bcfee37e7241bff0652",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-17T13:51:37.250350+00:00",
-        "expires_at": "2026-11-17T14:31:37.250350+00:00"
-      },
-      "send_intent": {
-        "token": "ad52687d170b3a05250d81a341ee5bcfee37e7241bff0652",
-        "at": "2026-11-17T13:52:05.578603+00:00"
-      }
+      "incident_retries": 2
     },
     "trv2-2e45d6af4e14f858b5bf9508": {
       "trend_id": "trv2-2e45d6af4e14f858b5bf9508",
@@ -11692,7 +11692,6 @@
     "trv2-359b24760fe2aeae16f9d230",
     "trv2-c1602f28a0d2c9a36dd10d49",
     "trv2-42777490afa9abaa2401700f",
-    "trv2-26c48c1d43b6c10c40395189",
     "trv2-132e8775a2672452bf68cb64",
     "trv2-cb3cd83c00b9d2008ef99b59",
     "trv2-920e0786b03dbd906112ac17",
@@ -11708,7 +11707,8 @@
     "trv2-90cab3c1a2084c8ce980de56",
     "trv2-b7865cf93e25bcb8cced7982",
     "trv2-cb0e9c541c50fd742680ab18",
-    "trv2-46dc469d8f5c8129ece07fb8"
+    "trv2-46dc469d8f5c8129ece07fb8",
+    "trv2-26c48c1d43b6c10c40395189"
   ],
   "effects_enabled": false
 }
