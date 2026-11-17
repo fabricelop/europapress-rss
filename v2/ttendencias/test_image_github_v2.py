@@ -30,10 +30,9 @@ def job(revision=1,attempt=1):
 
 
 def raster(fill=None):
-    if fill is None:
-        pic=Image.frombytes("RGB",(1024,576),os.urandom(1024*576*3))
-    else:
-        pic=Image.new("RGB",(1024,576),fill)
+    # High-entropy PNGs satisfy the production minimum-size validation.
+    # Different calls intentionally produce different original rasters.
+    pic=Image.frombytes("RGB",(1024,576),os.urandom(1024*576*3))
     stream=io.BytesIO()
     pic.save(stream,format="PNG")
     return stream.getvalue()
@@ -139,7 +138,9 @@ class GitHubImages(unittest.TestCase):
         self.assertEqual(fake.puts,1)
 
     def test_legacy_revision_hash_files_are_removed_after_new_receipt(self):
-        fake=GitHubFake()
+        fake=GitHubFake(revision=2)
+        fake.ledger["items"][ID]["revision"]=2
+        fake.ledger["items"][ID]["capture"]["revision"]=2
         legacy=github.PREFIX+ID+"-r1-"+"a"*24+".png"
         fake.items[legacy]={"sha":"b"*40}
         stable=github.stable_image_path(ID)
