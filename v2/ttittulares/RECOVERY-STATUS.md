@@ -1,3 +1,24 @@
+## Piloto editorial: corrección validada e integrada (17/11/2026)
+
+CI aislado44034435792 SUCCESS en Linux y Windows:
+224 Python,108 Node, compilación/parseo PowerShell, TaskScheduler/WSH oculto
+y nueva prueba REAL PowerShell de las guardias del piloto extraídas por AST.
+PASS: TTN2_PILOT_VERIFIED_QUARANTINE_GUARDS=PASS.
+Se integra el parche e7842df0808db067b64a0a7a2f8e0b4df00a9d9c.
+
+El nuevo run-one devuelve quarantined/exit0 solo ante ContractError con envío
+confirmado, captura completa y persistida, incidencia persistida y cierre verificado.
+El instalador verifica todas esas condiciones y permite activar la automatización.
+No produce READY de una noticia rechazada. Sin esos recibos mantiene incident/exit1.
+Esto evita que otro ESSENTIAL_FACT_NOT_VERIFIED del piloto vuelva a bloquear
+toda la cola, sin rebajar investigación ni verificación.
+
+Estado último:81 pendientes/0 activos/3 READY/2 incidencias. Las dos rechazadas
+permanecen intactas; no se reenvían. WScript/Hidden y proceso de imagen independiente
+conservados. Falta CI de integración y ejecución del instalador corregido en el PC.
+No repetir el actualizador con drenaje25min; usar Install-News-Editorial-V2.ps1
+-EnableImages cuando se entregue el commit de integración validado.
+
 ## Noticias: rechazo del NUEVO piloto — corrección en validación (17/11/2026)
 
 El usuario instaló efd5f6538c9e0243c38d0a0ac912960fc08fa6a8 y confirmó

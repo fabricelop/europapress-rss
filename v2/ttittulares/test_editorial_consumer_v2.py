@@ -23,14 +23,19 @@ class Service:
         self.calls.append('intent')
         return {'send_authorized': self.authorized}
 
-    def submitted(self, *args, **kwargs): self.calls.append('submitted')
-    def captured(self, *args, **kwargs): self.calls.append('captured')
+    def submitted(self, *args, **kwargs):
+        self.calls.append('submitted')
+        return {'verified': True}
+    def captured(self, *args, **kwargs):
+        self.calls.append('captured')
+        return {'verified': True}
     def heartbeat(self, *args): self.calls.append('heartbeat')
     def complete(self, *args):
         self.calls.append('complete')
         return {'verified': True, 'commit_sha': 'a' * 40}
     def fail(self, *args, **kwargs):
         self.calls.append(('fail', kwargs['safe_preflight']))
+        return {'verified': True}
 
 
 class Browser:
@@ -63,6 +68,7 @@ class ConsumerTests(unittest.TestCase):
         self.addCleanup(tmp.cleanup)
         root = Path(tmp.name)
         def parse(*args):
+            if isinstance(parse_fail, Exception): raise parse_fail
             if parse_fail: raise ValueError('INVALID_EDITORIAL')
             return {'validated_record': True}
         result = run_one(service, {'root': root, 'chrome': root / 'chrome', 'seed': root / 'seed'},
@@ -141,6 +147,51 @@ class ConsumerTests(unittest.TestCase):
         _, calls, _ = self.work(parse_fail=True)
         self.assertNotIn('complete', calls)
         self.assertIn(('fail', False), calls)
+
+    def test_verified_validation_failure_is_quarantined_without_ready_or_another_send(self):
+        from .editorial_contract_v2 import ContractError
+        report, calls, root = self.work(parse_fail=ContractError('ESSENTIAL_FACT_NOT_VERIFIED'))
+        self.assertEqual(report['status'], 'quarantined')
+        for key in ('submission_confirmed', 'capture_complete', 'capture_persisted',
+                    'failure_persisted', 'cleanup_verified'):
+            self.assertTrue(report[key])
+        self.assertFalse(report['published'])
+        self.assertEqual(calls.count('send'), 1)
+        self.assertNotIn('complete', calls)
+        journal = json.loads(next((root / 'journals').glob('*.json')).read_text())
+        self.assertEqual(journal['answer'], 'answer')
+
+    def test_validation_rejection_does_not_pass_with_unverified_failure_persistence(self):
+        from .editorial_contract_v2 import ContractError
+        class FailingService(Service):
+            def fail(self, *args, **kwargs): raise RuntimeError('COMMIT_UNCERTAIN')
+        report, _, _ = self.work(service=FailingService(), parse_fail=ContractError('ESSENTIAL_FACT_NOT_VERIFIED'))
+        self.assertEqual(report['status'], 'incident')
+        self.assertFalse(report['failure_persisted'])
+
+    def test_validation_rejection_requires_verified_capture_persistence(self):
+        from .editorial_contract_v2 import ContractError
+        class UnverifiedService(Service):
+            def captured(self, *args, **kwargs): return {'verified': False}
+        report, _, _ = self.work(service=UnverifiedService(), parse_fail=ContractError('ESSENTIAL_FACT_NOT_VERIFIED'))
+        self.assertEqual(report['status'], 'incident')
+
+    def test_validation_rejection_requires_confirmed_submission(self):
+        from .editorial_contract_v2 import ContractError
+        class UnverifiedService(Service):
+            def submitted(self, *args, **kwargs): return {'verified': False}
+        report, _, _ = self.work(service=UnverifiedService(), parse_fail=ContractError('ESSENTIAL_FACT_NOT_VERIFIED'))
+        self.assertEqual(report['status'], 'incident')
+
+    def test_validation_rejection_requires_verified_cleanup(self):
+        from .editorial_contract_v2 import ContractError
+        report, calls, _ = self.work(fail='close', parse_fail=ContractError('ESSENTIAL_FACT_NOT_VERIFIED'))
+        self.assertEqual(report['status'], 'incident')
+        self.assertNotIn('complete', calls)
+
+    def test_unexpected_parser_failure_is_not_a_successful_quarantine_pilot(self):
+        report, _, _ = self.work(parse_fail=True)
+        self.assertEqual(report['status'], 'incident')
 
     def test_idle_does_not_open_browser(self):
         result, calls, _ = self.work(service=Service(idle=True))

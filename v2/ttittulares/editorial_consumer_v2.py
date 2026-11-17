@@ -55,7 +55,7 @@ def settings(root):
 
 
 def run_one(service, config, *, browser_factory=ChromeJob, parse=None, build=None):
-    from .editorial_contract_v2 import build_prompt, parse_record
+    from .editorial_contract_v2 import build_prompt, parse_record, ContractError
     build, parse = build or build_prompt, parse or parse_record
     run_id = uuid.uuid4().hex
     worker_id = 'news-' + run_id
@@ -71,7 +71,8 @@ def run_one(service, config, *, browser_factory=ChromeJob, parse=None, build=Non
     journal = {'run_id': run_id, 'worker_id': worker_id, 'lease_token': token,
                'command_id': command_id, 'event_id': event_id, 'revision': revision,
                'job_id': job_id, 'sent': False, 'intent_durable': False,
-               'captured': False, 'cleanup_verified': False, 'published': False}
+               'captured': False, 'cleanup_verified': False, 'published': False,
+               'submission_confirmed': False, 'capture_persisted': False}
     browser = None
     failure = None
     record = None
@@ -102,16 +103,20 @@ def run_one(service, config, *, browser_factory=ChromeJob, parse=None, build=Non
             heartbeat=lambda: service.heartbeat(job_id, worker_id, token))
         journal['chat_url'] = chat_url
         write_private(journal_path, journal)
-        service.submitted(job_id, worker_id, token,
+        submitted = service.submitted(job_id, worker_id, token,
                           conversation_url_sha256=hashlib.sha256(chat_url.encode()).hexdigest())
+        journal['submission_confirmed'] = isinstance(submitted, dict) and submitted.get('verified') is True
+        write_private(journal_path, journal)
         answer, chat_url = browser.capture(event_id, revision, command_id,
             lambda: service.heartbeat(job_id, worker_id, token))
         # This is private local recovery material, never a public ChatGPT URL.
         journal.update(answer=answer, chat_url=chat_url, captured=True)
         write_private(journal_path, journal)
-        service.captured(job_id, worker_id, token,
+        captured = service.captured(job_id, worker_id, token,
             answer_sha256=hashlib.sha256(answer.encode('utf-8')).hexdigest(),
             local_journal_id=run_id)
+        journal['capture_persisted'] = isinstance(captured, dict) and captured.get('verified') is True
+        write_private(journal_path, journal)
         from datetime import datetime, timezone
         record = parse(answer, event, job, command_id, datetime.now(timezone.utc))
     except Exception as exc:
@@ -142,14 +147,26 @@ def run_one(service, config, *, browser_factory=ChromeJob, parse=None, build=Non
                 failure = failure or exc
         write_private(journal_path, journal)
     if failure is not None:
+        failure_persisted = False
         try:
-            service.fail(job_id, worker_id, token, code=error_code(failure),
+            failed = service.fail(job_id, worker_id, token, code=error_code(failure),
                          safe_preflight=not journal['intent_durable'])
+            failure_persisted = isinstance(failed, dict) and failed.get('verified') is True
         except Exception:
             # Local journal + durable intent/lease are still the recovery truth.
             journal['failure_persistence_unverified'] = True
             write_private(journal_path, journal)
-        return {'status': 'incident', 'job_id': job_id, 'published': False,
+        # A verified rejected editorial answer is an isolated content incident.
+        # It proves the transport/capture/cleanup cycle, never a publishable READY.
+        quarantined = (isinstance(failure, ContractError)
+            and journal['captured'] is True and journal['submission_confirmed'] is True
+            and journal['capture_persisted'] is True and journal['cleanup_verified'] is True
+            and failure_persisted)
+        return {'status': 'quarantined' if quarantined else 'incident',
+                'job_id': job_id, 'published': False,
+                'submission_confirmed': journal['submission_confirmed'],
+                'capture_complete': journal['captured'], 'capture_persisted': journal['capture_persisted'],
+                'failure_persisted': failure_persisted,
                 'error_type': type(failure).__name__, 'error_code': error_code(failure),
                 'private_recovery_evidence_saved': bool(journal.get('private_recovery_diagnostic')),
                 **({'startup_diagnostic': journal['startup_diagnostic']} if journal.get('startup_diagnostic') else {}),

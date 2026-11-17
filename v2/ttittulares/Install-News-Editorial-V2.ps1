@@ -95,11 +95,20 @@ if([int]$queuePreview.preview.blocking_recovery_incident_count -gt 0){
 if([int]$queuePreview.preview.quarantined_incident_count -gt 0){
   Write-Host ('TTN2_EDITORIAL_INCIDENTS_QUARANTINED='+$queuePreview.preview.quarantined_incident_count)
 }
-# One complete real story must verify text and browser cleanup before enabling 3 slots.
+# Verify one complete transport/capture/cleanup cycle before enabling 3 slots.
+# A durably quarantined validation rejection never becomes READY or gets resent.
 Invoke-NewsPython -arguments @('-m','v2.ttittulares.editorial_consumer_v2','--root',('"'+$root+'"'),'--run-one')
 $pilot=Get-Content -LiteralPath (Join-Path $root 'install.stdout.log') -Raw | ConvertFrom-Json
-if($pilot.status -notin @('ready','idle')){throw 'Piloto editorial sin resultado confirmado; no se activa el programador'}
-if($pilot.status -eq 'ready' -and -not $pilot.cleanup_verified){throw 'Cierre Chrome no verificado; no se activa el programador'}
+if($pilot.status -notin @('ready','idle','quarantined')){throw 'Piloto editorial sin resultado confirmado; no se activa el programador'}
+if($pilot.status -in @('ready','quarantined') -and -not $pilot.cleanup_verified){throw 'Cierre Chrome no verificado; no se activa el programador'}
+if($pilot.status -eq 'quarantined'){
+  if($pilot.error_type -ne 'ContractError' -or $pilot.submission_confirmed -ne $true -or
+     $pilot.capture_complete -ne $true -or $pilot.capture_persisted -ne $true -or
+     $pilot.failure_persisted -ne $true -or $pilot.cleanup_verified -ne $true){
+    throw 'Incidencia del piloto sin captura, persistencia y cierre confirmados; no se activa.'
+  }
+  Write-Host 'TTN2_PILOT=QUARANTINED_AND_VERIFIED_NO_RESEND'
+}
 if($pilot.status -eq 'idle'){Write-Host 'TTN2_PILOT_IDLE_NO_NEWS_ELABORATED=YES'}
 [IO.File]::WriteAllText((Join-Path $root 'editorial.enabled'),'TTN2_EDITORIAL_ENABLED=YES',$utf8)
 $hiddenLauncher=Join-Path $root 'Launch-News-Hidden.vbs'
