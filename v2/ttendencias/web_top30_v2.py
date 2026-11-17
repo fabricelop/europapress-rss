@@ -52,8 +52,9 @@ def saved_image_for_revision(item):
     ident = item.get("trend_id") or ""
     sha = image.get("sha256") or ""
     ext = {"image/png": "png", "image/jpeg": "jpg", "image/webp": "webp"}.get(image.get("mime"))
-    expected = (f"v2/ttendencias/generated-images/{ident}-r{rev}-{sha[:24]}.{ext}"
-                if ext else None)
+    legacy_expected = (f"v2/ttendencias/generated-images/{ident}-r{rev}-{sha[:24]}.{ext}"
+                       if ext else None)
+    latest_expected = f"v2/ttendencias/generated-images/{ident}.image"
     return (item.get("status") in ("captured_review", "ready", "published")
             and isinstance(rev, int) and rev > 0
             and cap.get("revision") == rev
@@ -64,7 +65,7 @@ def saved_image_for_revision(item):
             and bool(re.fullmatch(r"[a-f0-9]{64}", sha))
             and bool(re.fullmatch(r"v2-img-trv2-[a-f0-9]{24}-r[1-9][0-9]*-a[1-9][0-9]*-[a-zA-Z0-9_-]{8,60}",
                                   image.get("command_id") or ""))
-            and image.get("path") == expected)
+            and image.get("path") in (legacy_expected, latest_expected))
 
 
 
