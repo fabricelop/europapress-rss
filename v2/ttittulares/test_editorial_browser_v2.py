@@ -34,7 +34,7 @@ class Page:
     def locator(self, selector):
         if selector == STOP:
             return SimpleNamespace(count=lambda: int(self.busy(self.clock())))
-        source = self.users if '="user"' in selector else self.answers
+        source = self.users if '="user"' in selector or 'data-user-message-bubble' in selector else self.answers
         return SimpleNamespace(all_text_contents=lambda: source(self.clock()))
 
 
@@ -134,6 +134,35 @@ class BrowserBoundaryTests(unittest.TestCase):
                     url=lambda seconds: 'https://chatgpt.com/c/own-conversation' if seconds >= 8 else 'https://chatgpt.com/')
         self.assertEqual(self.confirm(page, clock), 'https://chatgpt.com/c/own-conversation')
         self.assertEqual(clock.now, 8)
+
+    def test_custom_gpt_conversation_is_accepted_only_with_exact_user_identity(self):
+        url = 'https://chatgpt.com/g/g-p-news-v2/c/12345678-1234-1234-1234-123456789012'
+        clock = Clock()
+        page = Page(clock, url=lambda _: url)
+        self.assertEqual(self.confirm(page, clock), url)
+        self.assertEqual(self.capture(page, clock), (ANSWER, url))
+        clock = Clock()
+        with self.assertRaisesRegex(RuntimeError, 'SUBMISSION_UNCONFIRMED_NO_RESEND'):
+            self.confirm(Page(clock, url=lambda _: url, users=lambda _: [USER.replace(COMMAND, 'other-command')]),
+                         clock, timeout=6)
+
+    def test_user_bubble_without_role_confirms_but_assistant_echo_never_does(self):
+        class BubblePage(Page):
+            def __init__(self, clock, *, bubbles):
+                super().__init__(clock, users=lambda _: [], answers=lambda _: [USER])
+                self.bubbles = bubbles
+            def locator(self, selector):
+                if selector == '[data-user-message-bubble="true"]':
+                    return SimpleNamespace(all_text_contents=lambda: self.bubbles)
+                if selector == 'body':
+                    return SimpleNamespace(inner_text=lambda **kw: 'ChatGPT said:\n' + USER)
+                return super().locator(selector)
+        clock = Clock()
+        self.assertEqual(self.confirm(BubblePage(clock, bubbles=[USER]), clock),
+                         'https://chatgpt.com/c/own-conversation')
+        clock = Clock()
+        with self.assertRaisesRegex(RuntimeError, 'SUBMISSION_UNCONFIRMED_NO_RESEND'):
+            self.confirm(BubblePage(clock, bubbles=[]), clock, timeout=6)
 
     def test_unconfirmed_enter_times_out_and_ticks_heartbeat(self):
         clock, beats = Clock(), []
