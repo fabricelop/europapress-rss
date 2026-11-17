@@ -4,7 +4,7 @@ import {projectImageIncident} from "./image-incidents.js";
 const ACTIVE=new Set(["claimed","send_intent","awaiting_response","capture_recovery","captured","validating","persisting"]);
 const GROUPS=new Set(["pending","detected","working","ready","incident","archived"]);
 export const NEWS_SOURCE="https://raw.githubusercontent.com/fabricelop/europapress-rss/feature/ttactualidad-v2-clean/v2/ttittulares/state/";
-export const NEWS_RADAR_SOURCE="https://raw.githubusercontent.com/fabricelop/europapress-rss/ttactualidad-v2-radar-live/v2/ttittulares/state/radar/current.json";
+export const NEWS_RADAR_SOURCE="https://raw.githubusercontent.com/fabricelop/europapress-rss/ttactualidad-v2-radar-live/v2/ttittulares/state/radar/live-summary.json";
 
 function url(value){
  try{const parsed=new URL(value);return /^(https?:)$/.test(parsed.protocol)&&!parsed.username&&!parsed.password?parsed.href:null;}catch{return null;}
@@ -59,8 +59,10 @@ export function projectNews(index,queue,clock=Date.now(),liveRadar=null){
  items.sort((a,b)=>(Date.parse(b.first_seen_at)||0)-(Date.parse(a.first_seen_at)||0)||a.event_id.localeCompare(b.event_id));
  // Radar scans are persisted on an isolated branch. A blocked editorial commit
  // must never make the front end report the older editorial index as a fresh scan.
- const liveStamp=liveRadar?.project==="ttittulares-v2"&&stamp(liveRadar.observed_at)&&
-                 liveRadar.items&&typeof liveRadar.items==="object"&&!Array.isArray(liveRadar.items)
+ const liveStamp=liveRadar?.project==="ttittulares-v2"&&liveRadar?.schema_version===1&&
+                 liveRadar?.kind==="independent_radar_summary"&&
+                 /^[a-f0-9]{64}$/.test(liveRadar.radar_sha256||"")&&
+                 stamp(liveRadar.observed_at)&&liveRadar.metrics&&typeof liveRadar.metrics==="object"
                  ?liveRadar.observed_at:null;
  const observedAt=liveStamp||index.updated_at;
  const age=Math.max(0,Math.floor((clock-Date.parse(observedAt))/60000));
