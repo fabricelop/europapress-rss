@@ -10120,24 +10120,27 @@
     "trv2-9d44c0bc5d99ea47e80bee8d": {
       "trend_id": "trv2-9d44c0bc5d99ea47e80bee8d",
       "name": "Crimea",
-      "revision": 1,
-      "status": "in_progress",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "faa16844005b18f8",
-      "requested_at": "2026-11-17T09:16:08.790207+00:00",
-      "updated_at": "2026-11-17T09:18:07.477889+00:00",
+      "requested_at": "2026-11-17T10:06:41.979434+00:00",
+      "updated_at": "2026-11-17T10:06:41.979434+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "lease": {
-        "token": "4e18c04e3a80a6e19fd7ba1ad17e56f97d0185155e36c727",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-17T09:17:14.251709+00:00",
-        "expires_at": "2026-11-17T09:57:14.251709+00:00"
-      },
-      "send_intent": {
-        "token": "4e18c04e3a80a6e19fd7ba1ad17e56f97d0185155e36c727",
-        "at": "2026-11-17T09:18:07.477825+00:00"
-      }
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-17T09:17:14.251709+00:00",
+          "send_intent_at": "2026-11-17T09:18:07.477825+00:00",
+          "incident_reason": "lease_expired_without_capture",
+          "archived_at": "2026-11-17T10:06:41.979434+00:00"
+        }
+      ],
+      "incident_retries": 1
     },
     "trv2-3b0076dcafa5d4126cffc95c": {
       "trend_id": "trv2-3b0076dcafa5d4126cffc95c",
