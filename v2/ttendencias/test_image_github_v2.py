@@ -12,6 +12,7 @@ import unittest
 from unittest.mock import patch
 from PIL import Image
 
+os.environ.setdefault("LOCALAPPDATA", tempfile.gettempdir())
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 import image_github_v2 as github
 import image_intake_v2 as intake
