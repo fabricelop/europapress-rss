@@ -10121,13 +10121,13 @@
       "trend_id": "trv2-9d44c0bc5d99ea47e80bee8d",
       "name": "Crimea",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "faa16844005b18f8",
       "requested_at": "2026-11-17T10:06:41.979434+00:00",
       "updated_at": "2026-11-17T10:06:41.979434+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -10140,7 +10140,13 @@
           "archived_at": "2026-11-17T10:06:41.979434+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "369a8934ff8da5641a4fdabbd419945580b32808bc9e0e0e",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-17T10:07:05.880844+00:00",
+        "expires_at": "2026-11-17T10:47:05.880844+00:00"
+      }
     },
     "trv2-3b0076dcafa5d4126cffc95c": {
       "trend_id": "trv2-3b0076dcafa5d4126cffc95c",
