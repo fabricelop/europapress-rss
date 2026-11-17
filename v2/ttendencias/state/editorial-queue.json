@@ -10583,13 +10583,13 @@
       "trend_id": "trv2-42777490afa9abaa2401700f",
       "name": "Singapur",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "b3f57fa551c96c69",
       "requested_at": "2026-11-17T12:16:24.336710+00:00",
       "updated_at": "2026-11-17T12:16:24.336710+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -10602,7 +10602,13 @@
           "archived_at": "2026-11-17T12:16:24.336710+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "4debe5dc60ef573555a7cb57718d80d0ad7cefe52e0ee337",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-17T12:16:46.915429+00:00",
+        "expires_at": "2026-11-17T12:56:46.915429+00:00"
+      }
     },
     "trv2-265753bdae3ce83e08f8e38f": {
       "trend_id": "trv2-265753bdae3ce83e08f8e38f",
