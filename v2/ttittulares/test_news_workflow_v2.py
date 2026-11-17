@@ -33,6 +33,12 @@ class NewsEditorialAutoRetryTests(unittest.TestCase):
   self.assertEqual(event["revision_refs"][-1]["reason"],"automatic_retry")
   with self.assertRaises(ed.EditorialError):
    self.service.heartbeat(old["job_id"],"worker-first",self.token)
+ def test_fresh_editorial_retry_gets_reason_specific_instructions(self):
+  self.fail_first("INVALID_UTC_TIMESTAMP")
+  claim=self.service.claim("worker-second","retry-second-token-123456789012345")
+  self.assertEqual(claim["job"]["revision"],2)
+  self.assertIn("ISO 8601",claim["hints"])
+  self.assertIn("Nuevo chat independiente",claim["hints"])
  def test_auth_failure_is_not_repeated_indefinitely(self):
   self.fail_first("NEWS_AUTH_REQUIRED")
   self.assertFalse(self.service.preview().get("automatic_retry_pending",False))
@@ -95,6 +101,22 @@ class NewsWorkflowTests(unittest.TestCase):
   self.assertEqual(docs[ed.INDEX]["items"][self.event]["image_incident"]["code"],"NEWS_IMAGE_CAPTURE_TIMEOUT")
   self.assertEqual(docs[ed.PREFIX+"news/"+self.event+".json"]["status"],"ready")
   self.assertGreater(self.service.preview()["pending_count"],0)
+ def test_legacy_image_recovery_starts_fresh_chat_instead_of_waiting_forever(self):
+  job=self.prepare()["job"]
+  self.service.image("fail",worker_id="image-one",token=self.token,job_id=job["job_id"],
+                     code="NEWS_SUBMISSION_UNCONFIRMED_NO_RESEND")
+  path=image_path(self.event,1)
+  self.store.commits[self.store.current][path]["problem"]["retry_mode"]="recover_same_chat"
+  self.assertEqual(self.service.image_preview()["pending_count"],1)
+  retry=self.service.image("claim",worker_id="image-two",token="new-private-image-token-123456789012345")
+  self.assertEqual(retry["job"]["attempts"]["claim_count"],2)
+  self.assertIsNone(retry["job"]["send_intent"])
+  self.assertIsNone(retry["job"]["session"])
+ def test_image_cleanup_and_disk_problems_cannot_auto_retry(self):
+  for code in ("NEWS_IMAGE_CLEANUP_UNVERIFIED","NEWS_DISK_SPACE_LOW_NO_NEW_CHROME"):
+   bad={"status":"problematic","lease":None,"problem":{"code":code,"retry_mode":"recover_same_chat"},
+        "attempts":{"claim_count":1,"max_safe_preflight_attempts":3}}
+   self.assertFalse(self.service._fresh_image_retry_eligible(bad))
  def test_archived_news_fences_inflight_image_binding(self):
   job=self.prepare()["job"];self.action("archive")
   with self.assertRaises(ed.EditorialError):

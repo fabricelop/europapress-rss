@@ -4,6 +4,7 @@ on:
     branches: [feature/ttactualidad-v2-clean]
     paths:
       - '.github/workflows/ttactualidad-v2-rex-deploy.yml'
+      - 'v2/ttendencias/private-worker/src/news.js'
   workflow_dispatch:
 permissions:
   contents: read
