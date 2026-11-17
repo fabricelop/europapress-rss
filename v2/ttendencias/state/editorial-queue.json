@@ -11603,20 +11603,27 @@
     "trv2-215d8dccc87c77fb1d90f95d": {
       "trend_id": "trv2-215d8dccc87c77fb1d90f95d",
       "name": "Onimusha",
-      "revision": 1,
-      "status": "in_progress",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "60964db67b249f8c",
-      "requested_at": "2026-11-17T18:06:59.546385+00:00",
-      "updated_at": "2026-11-17T18:06:59.546385+00:00",
+      "requested_at": "2026-11-17T20:47:15.220646+00:00",
+      "updated_at": "2026-11-17T20:47:15.220646+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "lease": {
-        "token": "f5548a874e190b40195678a0e0e410c4e55c11e5e0ed8025",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-17T18:11:33.498445+00:00",
-        "expires_at": "2026-11-17T18:51:33.498445+00:00"
-      }
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-17T18:11:33.498445+00:00",
+          "send_intent_at": null,
+          "incident_reason": "lease_expired_without_capture",
+          "archived_at": "2026-11-17T20:47:15.220646+00:00"
+        }
+      ],
+      "incident_retries": 1
     },
     "trv2-72a170e5d797bfa0c5a6ad70": {
       "trend_id": "trv2-72a170e5d797bfa0c5a6ad70",
@@ -12502,7 +12509,6 @@
     "trv2-46dc469d8f5c8129ece07fb8",
     "trv2-34ca0c923169a13704deea45",
     "trv2-9cbd3b28a6565b5069fdbda5",
-    "trv2-215d8dccc87c77fb1d90f95d",
     "trv2-3c58fb6982066ad9a047a2cc",
     "trv2-883b26773797a4e04e85bec5",
     "trv2-8c272e7867c21c4a14bc5db6",
@@ -12528,7 +12534,8 @@
     "trv2-cdaa4637b6387178fb0ae9dc",
     "trv2-314fcb2d3209bd923e70db1f",
     "trv2-91f61a7f92b9c38b60f46622",
-    "trv2-72a170e5d797bfa0c5a6ad70"
+    "trv2-72a170e5d797bfa0c5a6ad70",
+    "trv2-215d8dccc87c77fb1d90f95d"
   ],
   "effects_enabled": false
 }
