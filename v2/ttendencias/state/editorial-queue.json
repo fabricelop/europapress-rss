@@ -10694,11 +10694,11 @@
       "trend_id": "trv2-81f0871a08c79149d7569736",
       "name": "Kerch",
       "revision": 2,
-      "status": "in_progress",
+      "status": "capture_recovery",
       "reason": "retry_after_incident",
       "episode_token": "5e08de21d9e825d7",
       "requested_at": "2026-11-17T12:19:48.726530+00:00",
-      "updated_at": "2026-11-17T12:21:04.664545+00:00",
+      "updated_at": "2026-11-17T12:25:05.951891+00:00",
       "previous_explanation": null,
       "attempts": 1,
       "previous_attempts": [
@@ -10714,16 +10714,11 @@
         }
       ],
       "incident_retries": 1,
-      "lease": {
-        "token": "cedeb06cc05580143d0b965dc767ea81c1d7f36beb78884d",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-17T12:20:11.609763+00:00",
-        "expires_at": "2026-11-17T13:00:11.609763+00:00"
-      },
       "send_intent": {
         "token": "cedeb06cc05580143d0b965dc767ea81c1d7f36beb78884d",
         "at": "2026-11-17T12:21:04.664520+00:00"
-      }
+      },
+      "capture_recovery_reason": "chat_target_identity_not_verified"
     },
     "trv2-359b24760fe2aeae16f9d230": {
       "trend_id": "trv2-359b24760fe2aeae16f9d230",
