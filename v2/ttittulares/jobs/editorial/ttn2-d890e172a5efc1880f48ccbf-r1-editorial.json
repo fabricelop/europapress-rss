@@ -13,25 +13,29 @@
         "attempt_no": 2,
         "command_id": "",
         "outcome": "preflight_failed"
+      },
+      {
+        "at": "2026-11-17T18:36:46Z",
+        "attempt_no": 3,
+        "command_id": "",
+        "outcome": "preflight_failed"
       }
     ],
     "max_safe_preflight_attempts": 3,
-    "safe_preflight_failures": 2,
+    "safe_preflight_failures": 3,
     "submission_count": 0
   },
   "capture": null,
   "event_id": "ttn2-d890e172a5efc1880f48ccbf",
   "job_id": "ttn2-d890e172a5efc1880f48ccbf-r1-editorial",
-  "lease": {
-    "expires_at": "2026-11-17T18:46:21Z",
-    "heartbeat_at": "2026-11-17T18:36:21Z",
-    "started_at": "2026-11-17T18:36:21Z",
-    "token_sha256": "0f7f094d2c29beb9d5feb93976bf28379fe5fcba26482c14b66671f13e9fb841",
-    "worker_id": "news-cf7baebb18b143699e192e22ea28308c"
-  },
-  "phase": "browser_starting",
+  "lease": null,
+  "phase": "blocked",
   "priority": "automatic",
-  "problem": null,
+  "problem": {
+    "at": "2026-11-17T18:36:46Z",
+    "code": "NEWS_DISK_SPACE_LOW_NO_NEW_CHROME",
+    "retry_mode": "manual_only"
+  },
   "project": "ttittulares-v2",
   "prompt": null,
   "requested_at": "2026-11-17T15:59:09Z",
@@ -40,6 +44,6 @@
   "schema_version": 1,
   "send_intent": null,
   "session": null,
-  "status": "claimed",
-  "updated_at": "2026-11-17T18:36:21Z"
+  "status": "problematic",
+  "updated_at": "2026-11-17T18:36:46Z"
 }
