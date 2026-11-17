@@ -13,6 +13,10 @@ foreach ($name in @('TTActualidadNoticiasV2-Editorial','TTActualidadNoticiasV2-I
 foreach ($pointer in @('active-code.txt','image-active-code.txt')) {
   $file = Join-Path $root $pointer
   $kind = if($pointer -eq 'active-code.txt'){'EDITORIAL'}else{'IMAGE'}
+  if($kind -eq 'IMAGE' -and -not (Test-Path -LiteralPath $file -PathType Leaf)){
+    # Images runner uses the editorial pointer when no separate one exists.
+    $file = Join-Path $root 'active-code.txt'
+  }
   $code = if(Test-Path -LiteralPath $file -PathType Leaf){
     [string](Get-Content -LiteralPath $file -Raw).Trim()
   }else{''}

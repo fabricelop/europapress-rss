@@ -145,6 +145,10 @@ if($EnableImages){
     }else{
       Write-Host 'TTN2_IMAGE_E2E_VERIFIED=NO_PENDING_IMAGE; NO_AFIRMAR_PRUEBA_REAL'
     }
+    # The images runner prefers this pointer over active-code.txt. Always
+    # switch it to the exact release just piloted; a stale pointer can silently
+    # execute an old worker after an otherwise successful installation.
+    [IO.File]::WriteAllText((Join-Path $root 'image-active-code.txt'),$code,$utf8)
     [IO.File]::WriteAllText((Join-Path $root 'images.enabled'),'TTN2_IMAGES_ENABLED=YES',$utf8)
     $imageAction=New-ScheduledTaskAction -Execute $wscript -Argument ('//B //Nologo "'+$hiddenLauncher+'" "'+(Join-Path $root 'Run-News-Images-Auto.ps1')+'"')
     Register-ScheduledTask -TaskName 'TTActualidadNoticiasV2-Images' -Action $imageAction -Trigger $trigger -Principal $principal -Settings $options -Force | Out-Null
