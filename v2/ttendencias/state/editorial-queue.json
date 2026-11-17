@@ -9970,13 +9970,13 @@
       "trend_id": "trv2-b2c4441e7096e92ea22fde80",
       "name": "Lc 19",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "220b01cdf47d3873",
       "requested_at": "2026-11-17T08:54:09.738630+00:00",
       "updated_at": "2026-11-17T08:54:09.738630+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -9989,7 +9989,13 @@
           "archived_at": "2026-11-17T08:54:09.738630+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "1e9d30a33af22ad74a0f3c29d96eeb0e20c7ba1aaff456f3",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-17T08:54:27.383275+00:00",
+        "expires_at": "2026-11-17T09:34:27.383275+00:00"
+      }
     },
     "trv2-6c39d8f5b35232c2337a514d": {
       "trend_id": "trv2-6c39d8f5b35232c2337a514d",
