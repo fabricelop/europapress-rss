@@ -10227,20 +10227,27 @@
     "trv2-2837ec6b6a439fa32ea2233b": {
       "trend_id": "trv2-2837ec6b6a439fa32ea2233b",
       "name": "Renfe",
-      "revision": 1,
-      "status": "in_progress",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "208d31dcaa89cf3e",
-      "requested_at": "2026-11-17T09:16:08.790207+00:00",
-      "updated_at": "2026-11-17T09:16:08.790207+00:00",
+      "requested_at": "2026-11-17T10:08:43.783148+00:00",
+      "updated_at": "2026-11-17T10:08:43.783148+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "lease": {
-        "token": "362459825c2af3479dea80451d631d98036f82dce092a134",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-17T09:19:13.108073+00:00",
-        "expires_at": "2026-11-17T09:59:13.108073+00:00"
-      }
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-17T09:19:13.108073+00:00",
+          "send_intent_at": null,
+          "incident_reason": "lease_expired_without_capture",
+          "archived_at": "2026-11-17T10:08:43.783148+00:00"
+        }
+      ],
+      "incident_retries": 1
     }
   },
   "pending_count": 389,
@@ -10630,10 +10637,10 @@
     "trv2-6c39d8f5b35232c2337a514d",
     "trv2-1b1f435aa8db200810a77657",
     "trv2-38348ef993071d36d63504ce",
-    "trv2-2837ec6b6a439fa32ea2233b",
     "trv2-3b0076dcafa5d4126cffc95c",
     "trv2-78da2bc0a169185fe3c972d5",
-    "trv2-9d44c0bc5d99ea47e80bee8d"
+    "trv2-9d44c0bc5d99ea47e80bee8d",
+    "trv2-2837ec6b6a439fa32ea2233b"
   ],
   "effects_enabled": false
 }
