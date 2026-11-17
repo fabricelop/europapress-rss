@@ -128,6 +128,17 @@ $profile = Join-Path $root 'ChromeProfile'
 if (!(Test-Path -LiteralPath $profile -PathType Container)) {
     throw 'No hay perfil Chrome V2. Probar primero la elaboración individual autenticada.'
 }
+if ($PilotOnly) {
+    # El instalador de un piloto NO recupera chats viejos ni abre Chrome.
+    # La prueba aislada se autoriza por separado, con watchdog de 8 minutos.
+    Write-Host 'TT_V2_PILOT_ONLY=YES'
+    Write-Host 'TT_V2_PILOT_INSTALL_OPENED_CHROME=NO'
+    Write-Host 'TT_V2_PILOT_INSTALL_RECOVERY=NOT_RUN'
+    Write-Host 'TT_V2_IMAGE_AUTOMATION=INDEPENDENT_UNCHANGED'
+    Write-Host 'TT_V2_AUTO_TASK_ENABLED=NO'
+    Write-Host 'TT_V2_PILOT_NEXT=RUN_ONE_EDITORIAL_WITH_8MIN_GUARD'
+    return
+}
 
 # Primero recuperar el chat V2 que ya se envió si Windows cortó el
 # consumidor. No reenviar Jordi Wild, no cerrar un Chrome V2 sin captura.
@@ -157,13 +168,6 @@ if ($headlessResult.ExitCode -ne 0) {
     throw 'Chrome V2 normal oculto no validado: consumidor seguirá desactivado, sin reenvíos'
 }
 Write-Host 'TT_V2_HEADED_HIDDEN_VALIDATED=YES'
-if ($PilotOnly) {
-    Write-Host 'TT_V2_PILOT_ONLY=YES'
-    Write-Host 'TT_V2_IMAGE_AUTOMATION=INDEPENDENT_UNCHANGED'
-    Write-Host 'TT_V2_AUTO_TASK_ENABLED=NO'
-    Write-Host 'TT_V2_PILOT_NEXT=RUN_ONE_TEXT_ONLY'
-    return
-}
 # La bandera exacta es autorización para abrir chats. Guardarla solo
 # tras descargar/validar los módulos y justo antes de registrar la tarea.
 $flag = Join-Path $root 'auto-editorial-v2.enabled'
