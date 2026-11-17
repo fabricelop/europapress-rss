@@ -112,6 +112,15 @@ def prompt_for(item):
     # Alineado con la investigación prudente de V1, pero sin reutilizar su
     # navegador, caché, sesión, tokens ni colas de producción.
     rex = ""
+    fresh = ""
+    if item.get("reason", "").startswith("retry_after_incident") or item.get("reason") == "user_reexplanation":
+        fresh = ("INTENTO NUEVO E INDEPENDIENTE: investiga desde cero y no abras "
+                 "ni reutilices el chat de revisiones anteriores. Corrige la "
+                 "causa del fallo anterior, contrasta de nuevo y entrega una "
+                 "respuesta completa correspondiente únicamente a esta revisión. ")
+    manual = item.get("manual_retry_instructions")
+    if isinstance(manual, str) and 10 <= len(manual.strip()) <= 1200:
+        fresh += "INSTRUCCIONES ADICIONALES DEL EDITOR, NO HECHOS: «" + manual.strip() + "». "
     if item.get("review_mode") == "x":
         hints = item.get("review_hints")
         if not isinstance(hints, str) or not 10 <= len(hints.strip()) <= 1200:
@@ -156,7 +165,7 @@ def prompt_for(item):
         "El texto periodístico final no debe mencionar TTActualidad, V1, V2, "
         "el proceso de investigación, IDs internos, ni la revisión editorial. "
         "Identificador: " + item["trend_id"] + ". Revisión: " + str(item["revision"]) + ". "
-        + rex
+        + fresh + rex
     )
 
 def persist_capture_live(api, state, auth, record, trend_id, revision, token):
@@ -380,7 +389,7 @@ def run_one(api, state, transcript, auth, item):
                            "observations": ["target_discovery_failed"]}
             else:
                 capture = transcript.capture_existing_page(
-                    page, trend_id=trend_id, revision=revision, seconds=900)
+                    page, trend_id=trend_id, revision=revision, seconds=480)
             record["capture_diagnostic"] = {
                 "status": capture["status"],
                 "reason": capture["reason"],

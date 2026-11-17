@@ -29,6 +29,7 @@ function db(){
     if(sql.includes("FROM re_requests"))return {results:[]};
     if(sql.includes("FROM re_x_context"))return {results:[]};
     if(sql.includes("FROM incident_rex_requests"))return {results:[]};
+    if(sql.includes("FROM incident_retry_requests"))return {results:[]};
     if(sql.includes("FROM image_suppressions"))return {results:hidden.slice()};
     if(sql.includes("FROM public_image_prefs"))return {results:prefs.slice()};
     throw Error("no radar in fake DB");

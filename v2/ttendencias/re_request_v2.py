@@ -46,7 +46,7 @@ def request_reexplanation(queue, history, *, trend_id, base_revision, entered_to
     if revision > base_revision:
         # El mismo RE fue procesado ya: evitar cualquier duplicación.
         return deepcopy(queue), "ALREADY_APPLIED"
-    allowed = DISPLAYED | ({"cancelled"} if allow_cancelled_incident and mode == "x" else set())
+    allowed = DISPLAYED | ({"cancelled"} if allow_cancelled_incident else set())
     if revision != base_revision or old.get("status") not in allowed:
         raise ValueError("La revisión editorial ha cambiado o no está explicada")
     if not isinstance(requested_at, str) or not requested_at:
@@ -69,6 +69,7 @@ def request_reexplanation(queue, history, *, trend_id, base_revision, entered_to
     # New revision gets a fresh retry budget; failures of the old explanation
     # must not silently make the user-requested revision ineligible.
     item["attempts"] = 0
+    item["incident_retries"] = 0
     item["requested_at"] = requested_at
     item["updated_at"] = requested_at
     item.pop("capture", None)

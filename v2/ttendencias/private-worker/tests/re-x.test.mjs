@@ -25,6 +25,7 @@ function database(){
        if(sql.includes("FROM re_requests"))return {results:requests};
        if(sql.includes("FROM re_x_context"))return {results:hints};
        if(sql.includes("FROM incident_rex_requests"))return {results:[]};
+       if(sql.includes("FROM incident_retry_requests"))return {results:[]};
        if(sql.includes("FROM image_suppressions")||sql.includes("FROM public_image_prefs"))return {results:[]};
        throw Error("Unexpected select: "+sql);
      }

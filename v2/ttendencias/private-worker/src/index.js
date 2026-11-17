@@ -108,6 +108,9 @@ async function reXTable(db) {
 async function incidentReXTable(db) {
   await db.prepare("CREATE TABLE IF NOT EXISTS incident_rex_requests (trend_id TEXT NOT NULL, base_revision INTEGER NOT NULL, hints TEXT NOT NULL, requested_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ','now')), PRIMARY KEY(trend_id,base_revision))").run();
 }
+async function incidentRetryTable(db) {
+  await db.prepare("CREATE TABLE IF NOT EXISTS incident_retry_requests (trend_id TEXT NOT NULL, base_revision INTEGER NOT NULL, instructions TEXT NOT NULL DEFAULT '', requested_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ','now')), PRIMARY KEY(trend_id,base_revision))").run();
+}
 async function manualImageTicketsTable(db) {
   await db.prepare("CREATE TABLE IF NOT EXISTS manual_image_tickets (token_hash TEXT PRIMARY KEY, trend_id TEXT NOT NULL, revision INTEGER NOT NULL, sha256 TEXT NOT NULL, mime TEXT NOT NULL, bytes INTEGER NOT NULL, expires_at_ms INTEGER NOT NULL, redeemed_at_ms INTEGER)").run();
 }
@@ -116,12 +119,14 @@ async function publicEditorialOverrides(env) {
   await imageSuppressionsTable(env.MARKS_DB);
   await reXTable(env.MARKS_DB);
   await incidentReXTable(env.MARKS_DB);
-  const [pending,images,preferences,contexts,incidents]=await Promise.all([
+  await incidentRetryTable(env.MARKS_DB);
+  const [pending,images,preferences,contexts,incidents,retries]=await Promise.all([
     env.MARKS_DB.prepare("SELECT trend_id,base_revision FROM re_requests WHERE status IN ('requested','applied') ORDER BY requested_at DESC LIMIT 200").all(),
     env.MARKS_DB.prepare("SELECT trend_id,revision FROM image_suppressions ORDER BY suppressed_at DESC LIMIT 200").all(),
     env.MARKS_DB.prepare("SELECT trend_id,revision,visible FROM public_image_prefs ORDER BY updated_at DESC LIMIT 200").all(),
     env.MARKS_DB.prepare("SELECT trend_id,base_revision,hints FROM re_x_context LIMIT 200").all(),
-    env.MARKS_DB.prepare("SELECT trend_id,base_revision,hints FROM incident_rex_requests ORDER BY requested_at DESC LIMIT 200").all()
+    env.MARKS_DB.prepare("SELECT trend_id,base_revision,hints FROM incident_rex_requests ORDER BY requested_at DESC LIMIT 200").all(),
+    env.MARKS_DB.prepare("SELECT trend_id,base_revision,instructions FROM incident_retry_requests ORDER BY requested_at DESC LIMIT 200").all()
   ]);
   const notes=new Map((contexts.results||[]).filter(x=>TREND_ID.test(x.trend_id)&&Number.isSafeInteger(x.base_revision)&&typeof x.hints==="string"&&x.hints.length<=1200).map(x=>[x.trend_id+":"+x.base_revision,x.hints]));
   const re=(pending.results||[]).filter(x=>TREND_ID.test(x.trend_id)&&Number.isSafeInteger(x.base_revision)&&x.base_revision>0).map(x=>{
@@ -131,7 +136,8 @@ async function publicEditorialOverrides(env) {
   const suppressed=(images.results||[]).filter(x=>TREND_ID.test(x.trend_id)&&Number.isSafeInteger(x.revision)&&x.revision>0);
   const visibility=(preferences.results||[]).filter(x=>TREND_ID.test(x.trend_id)&&Number.isSafeInteger(x.revision)&&x.revision>0&&(x.visible===0||x.visible===1));
   const incident_rex=(incidents.results||[]).filter(x=>TREND_ID.test(x.trend_id)&&Number.isSafeInteger(x.base_revision)&&x.base_revision>0&&typeof x.hints==="string"&&x.hints.trim().length>=10&&x.hints.length<=1200);
-  return {re,incident_rex,suppressed,visibility};
+  const incident_retry=(retries.results||[]).filter(x=>TREND_ID.test(x.trend_id)&&Number.isSafeInteger(x.base_revision)&&x.base_revision>0&&typeof x.instructions==="string"&&x.instructions.length<=1200);
+  return {re,incident_rex,incident_retry,suppressed,visibility};
 }
 async function imageVisibility(request,env) {
   if (!env.MARKS_DB)return json({error:"image_storage_not_configured"},503);
@@ -265,6 +271,36 @@ async function incidentReX(request,env) {
     await env.MARKS_DB.prepare("INSERT INTO incident_rex_requests(trend_id,base_revision,hints) VALUES(?,?,?) ON CONFLICT(trend_id,base_revision) DO NOTHING").bind(trend_id,revision,hints).run();
     return json({ok:true,queued:true,trend_id,base_revision:revision},202);
   }catch{return json({error:"incident_rex_unavailable"},503);}
+}
+
+async function incidentRetry(request,env) {
+  if(!env.MARKS_DB)return json({error:"incident_storage_not_configured"},503);
+  if(request.method!=="GET"&&(request.method!=="POST"||!sameOrigin(request)))
+    return json({error:"method_not_allowed"},405);
+  try {
+    await incidentRetryTable(env.MARKS_DB);
+    if(request.method==="GET"){
+      const rows=await env.MARKS_DB.prepare("SELECT trend_id,base_revision FROM incident_retry_requests ORDER BY requested_at DESC LIMIT 200").all();
+      return json({requests:rows.results||[]});
+    }
+    if(Number(request.headers.get("content-length")||0)>4096)return json({error:"invalid_payload"},413);
+    let body;
+    try{body=await request.json();}catch{return json({error:"invalid_payload"},400);}
+    const {trend_id,revision}=body||{};
+    const instructions=typeof body?.instructions==="string"?body.instructions.trim():"";
+    if(!TREND_ID.test(trend_id)||!Number.isSafeInteger(revision)||revision<1||revision>100000||
+       (instructions.length>0&&instructions.length<10)||instructions.length>1200)
+      return json({error:"invalid_payload"},400);
+    let ranking;
+    try{ranking=await currentRanking(env);}catch{return json({error:"ranking_unavailable"},503);}
+    const current=ranking.find(x=>x.trend_id===trend_id);
+    if(!current||current.revision!==revision||current.status!=="incidencia"||
+       current.re_in_progress===true)return json({error:"incident_not_current"},409);
+    // Only record explicit user intent. The local worker must verify the
+    // previous lease, journal and exact Chrome shutdown before a new revision.
+    await env.MARKS_DB.prepare("INSERT INTO incident_retry_requests(trend_id,base_revision,instructions) VALUES(?,?,?) ON CONFLICT(trend_id,base_revision) DO NOTHING").bind(trend_id,revision,instructions).run();
+    return json({ok:true,queued:true,trend_id,base_revision:revision},202);
+  }catch{return json({error:"incident_retry_unavailable"},503);}
 }
 
 const UUID_V4=/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -487,6 +523,7 @@ export default {
     if (url.pathname === "/api/marks") return redMarks(request,env);
     if (url.pathname === "/api/re-explain") return reRequests(request,env);
     if (url.pathname === "/api/incident-rex") return incidentReX(request,env);
+    if (url.pathname === "/api/incident-retry") return incidentRetry(request,env);
     if (url.pathname === "/api/manual-image-ticket") return manualImageTicket(request,env);
     if (url.pathname === "/api/publication-count") return publicationCount(request,env);
     if (url.pathname.startsWith("/api/state/")) {
