@@ -76,10 +76,26 @@ def clone_job_profile(seed, destination, *, find_pids):
         raise RuntimeError('NEWS_AUTH_SEED_BROWSER_BUSY')
     if destination.exists():
         raise RuntimeError('NEWS_JOB_PROFILE_ALREADY_EXISTS')
-    shutil.copytree(seed, destination, ignore=ignore_cache)
-    # Detect a concurrent launch during copying. Never use an uncertain copy.
-    if find_pids(seed):
-        raise RuntimeError('NEWS_AUTH_SEED_CHANGED_DURING_COPY')
+    # Refuse new browser allocations before Windows reaches zero free space.
+    # This is only a guard; profiles must still be removed after every job.
+    if shutil.disk_usage(seed).free < 3 * 1024**3:
+        raise RuntimeError('NEWS_DISK_SPACE_LOW_NO_NEW_CHROME')
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    destination.mkdir(exist_ok=False)
+    try:
+        shutil.copytree(seed, destination, ignore=ignore_cache, dirs_exist_ok=True)
+        # Detect a concurrent launch during copying. Never use an uncertain copy.
+        if find_pids(seed):
+            raise RuntimeError('NEWS_AUTH_SEED_CHANGED_DURING_COPY')
+    except Exception:
+        # The old code left gigabyte-sized half-copies after a failed clone.
+        # Only remove the directory created above, and never an active profile.
+        try:
+            if not find_pids(destination):
+                shutil.rmtree(destination)
+        except Exception:
+            pass
+        raise
     return destination
 
 
@@ -234,7 +250,6 @@ class ChromeJob:
         self.profile_owned = False
         self.startup_diagnostic = None
         self.chrome_log = None
-        self.preserve_profile = False
         self.recovery_diagnostic = None
 
     def open(self):
@@ -378,7 +393,7 @@ class ChromeJob:
             raise RuntimeError('NEWS_OWN_CHROME_CLEANUP_UNVERIFIED')
         if getattr(self, 'chrome_log', None): self.chrome_log.close()
         # Never remove a pre-existing profile when open() rejected its reuse.
-        if self.profile_owned and not getattr(self, 'preserve_profile', False) and self.profile.exists():
+        if self.profile_owned and self.profile.exists():
             try:
                 shutil.rmtree(self.profile)
             except Exception:

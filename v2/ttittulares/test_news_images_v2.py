@@ -17,13 +17,14 @@ class NewsImageLifecycleTests(unittest.TestCase):
    def open(self):pass
    def send_once(self,prompt):self.sent+=1;self.prompt=prompt
    def confirm_submission(self,*args):return "https://chatgpt.com/c/12345678-1234-1234-1234-123456789012"
-   def close(self):self.cleanup_verified=True
+   def close(self):self.preserved_at_close=getattr(self,'preserve_profile',False);self.cleanup_verified=True
   self.browser=Browser
  def test_failure_keeps_ready_and_never_requeues_same_image(self):
   def fail(*args,**kwargs):raise RuntimeError("NEWS_IMAGE_CAPTURE_TIMEOUT")
   result=run_one(self.service,self.config,browser_factory=self.browser,raster_get=fail)
   self.assertEqual(result["status"],"incident");self.assertTrue(result["cleanup_verified"])
   self.assertEqual(self.instances[0].sent,1)
+  self.assertFalse(self.instances[0].preserved_at_close)
   self.assertEqual(self.service.preview()["pending_count"],3)
   second=run_one(self.service,self.config,browser_factory=self.browser,raster_get=fail)
   self.assertEqual(second["status"],"idle");self.assertEqual(len(self.instances),1)

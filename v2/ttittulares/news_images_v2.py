@@ -68,7 +68,8 @@ def run_one(service, config, *, browser_factory=ChromeJob, raster_get=original_f
     finally:
         if browser:
             try:
-                browser.preserve_profile=failure is not None and journal["intent_durable"]
+                # Keep the journal for deduplication, not this disposable
+                # browser profile. ChromeJob removes it only after safe close.
                 browser.close();journal["cleanup_verified"]=browser.cleanup_verified
             except Exception as exc:failure=failure or exc
         write_private(local,journal)

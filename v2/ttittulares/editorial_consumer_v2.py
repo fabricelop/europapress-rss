@@ -137,9 +137,9 @@ def run_one(service, config, *, browser_factory=ChromeJob, parse=None, build=Non
     finally:
         if browser:
             try:
-                if failure is not None and journal['intent_durable']:
-                    # Close processes, but keep this private profile as evidence.
-                    browser.preserve_profile = True
+                # A durable journal (not a reusable Chrome profile) is the
+                # evidence for an uncertain send.  Never resend blindly, but
+                # discard the one-job profile after verified Chrome cleanup.
                 browser.close()
                 journal['cleanup_verified'] = browser.cleanup_verified
             except Exception as exc:

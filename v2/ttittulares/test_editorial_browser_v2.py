@@ -270,19 +270,18 @@ class BrowserBoundaryTests(unittest.TestCase):
                 command_id=COMMAND, heartbeat=lambda: None, clock=clock, sleep=clock.sleep,
                 pages=lambda: [two])
 
-    def test_ambiguous_submission_closes_processes_but_preserves_private_profile(self):
+    def test_ambiguous_submission_discards_owned_profile_after_verified_shutdown(self):
         with tempfile.TemporaryDirectory() as tmp:
             profile = Path(tmp) / 'own'; profile.mkdir()
             (profile / 'private-evidence').write_text('local only', encoding='utf-8')
             calls = []
             browser = self.bare(profile, calls)
-            browser.preserve_profile = True
             with patch('v2.ttittulares.editorial_browser_v2.verify_endpoint_owned', return_value=True), \
                  patch('v2.ttittulares.editorial_browser_v2.common', return_value=SimpleNamespace(
                      cleanup_v2_profile=lambda find: {'closed': True})):
                 browser.close()
             self.assertTrue(browser.cleanup_verified)
-            self.assertTrue((profile / 'private-evidence').exists())
+            self.assertFalse(profile.exists())
             self.assertIn('process_wait', calls)
 
 
