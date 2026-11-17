@@ -11014,13 +11014,13 @@
       "trend_id": "trv2-920e0786b03dbd906112ac17",
       "name": "IRPF",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "b95e4f1e1f61a2fe",
       "requested_at": "2026-11-17T14:58:24.806072+00:00",
       "updated_at": "2026-11-17T14:58:24.806072+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -11033,7 +11033,13 @@
           "archived_at": "2026-11-17T14:58:24.806072+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "4c1b0ec32ecd89c20010ee01c7471ba5f8c17bb1bb035fdc",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-17T14:58:54.277664+00:00",
+        "expires_at": "2026-11-17T15:38:54.277664+00:00"
+      }
     }
   },
   "pending_count": 408,
