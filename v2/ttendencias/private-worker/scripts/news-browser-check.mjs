@@ -25,7 +25,7 @@ const server=http.createServer(async(req,res)=>{
  }
  if(u.pathname==='/api/news-actions'){
   let raw='';for await(const part of req)raw+=part;const body=JSON.parse(raw);
-  if(body.action==='archive')archived=true;
+  if(body.action==='archive'||body.action==='publish')archived=true;
   res.setHeader('Content-Type','application/json');res.end(JSON.stringify({ok:true,publication_sent:false}));return;
  }
  if(u.pathname.startsWith('/api/news/')&&demoReady){res.setHeader('Content-Type','application/json');res.end(JSON.stringify(demoRecord));return;}
@@ -90,9 +90,10 @@ try{
  if(requests.filter(p=>p==='/api/image-incidents').length!==1)throw Error('Incident detail did not reuse the exact cached revision');
  await page.setViewportSize({width:1280,height:1000});
  await page.screenshot({path:path.join(shots,'news-image-incident-desktop.png'),fullPage:false});
- for(const label of ['R','RE','RE-X','P-X','PU','PUB','Copiar prompt IA','GPT IMA','Pegar IA']){
+ for(const label of ['R · Rojo','RE','RE-X','P-X','PUB','Quitar','Copiar prompt IA','GPT IMA','Pegar IA']){
   if(await page.locator('.news-actions').getByText(label,{exact:true}).count()!==1)throw Error('Missing news action: '+label);
  }
+ page.on('dialog',dialog=>dialog.accept());
  await page.getByRole('button',{name:'PUB',exact:true}).click();
  await page.waitForFunction(()=>document.querySelectorAll('.news-card').length===0);
  await page.getByRole('button',{name:'Archivo · 1',exact:true}).click();
