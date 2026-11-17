@@ -97,6 +97,22 @@ test("sticky Radar and PU header includes rolling 24-hour manual click history",
  assert.match(built,/const pu=el\("button","publish-action publication-mark-action","PU"\)/);
 });
 
+test("trend detail says whether automatic image retries remain or are blocked",()=>{
+ const from=app.indexOf("function imageRetryHint(item){"),to=app.indexOf("\nfunction ",from+10);
+ assert.ok(from>=0&&to>from);
+ const el=(tag,className,message)=>({tag,className,textContent:message,setAttribute(){}});
+ const hint=new Function("imageReady","el",app.slice(from,to)+";return imageRetryHint;")(()=>false,el);
+ const row={status:"explicada",image_retry:{state:"retry_pending",remaining:2,pre_send_failures:1}};
+ assert.match(hint(row).textContent,/reintento automático pendiente · 2 envíos disponibles/);
+ assert.match(hint(row).textContent,/fallos previos al envío 1\/3/);
+ assert.match(hint({...row,image_retry:{state:"exhausted"}}).textContent,/agotados/);
+ assert.match(hint({...row,image_retry:{state:"blocked"}}).textContent,/no habrá más intentos automáticos/);
+ assert.match(hint({...row,image_retry:{state:"unknown"}}).textContent,/No se puede confirmar/);
+ assert.equal(hint({...row,status:"pendiente"}),null);
+ assert.match(css,/\.image-retry-status\{/);
+ assert.match(built,/const hint=imageRetryHint\(item\)/);
+});
+
 test("an explained trend without an image offers separate copy prompt and paste actions",()=>{
  const start=app.indexOf("function manualImagePrompt(item){");
  const end=app.indexOf("\nfunction showManualImagePrompt(",start);

@@ -9,7 +9,7 @@
  document.body.classList.add("news-view");
  $("results").hidden=true;
  $("news-panel").hidden=false;
- $("publication-summary").hidden=true;
+ $("publication-summary").hidden=false;
  $("radar-time").textContent="Noticias · cargando…";
  $("refresh").title="Actualizar noticias";
  $("refresh").setAttribute("aria-label","Actualizar noticias");

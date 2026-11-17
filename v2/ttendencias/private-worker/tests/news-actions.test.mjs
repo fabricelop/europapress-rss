@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import worker from "../src/index.js";
 import {DatabaseSync} from "node:sqlite";
 import {deflateSync} from "node:zlib";
-import {newsAction,newsControls,newsView,newsManualImage,newsImage,newsWorkerControls} from "../src/news-actions.js";
+import {newsAction,newsControls,newsView,newsPublicationCount,newsManualImage,newsImage,newsWorkerControls} from "../src/news-actions.js";
 import {decorateNews,projectNews} from "../src/news.js";
 const id="ttn2-"+"a".repeat(24),time="2026-11-16T18:13:24Z",hash="c".repeat(64);
 function fixture(){return [
@@ -52,6 +52,31 @@ test("R, image preferences and PU have distinct semantics and never archive or p
  assert.equal(view.items[0].public_image_visible,false);
  assert.equal((await newsControls(env)).actions.filter(x=>x.action==="publication").length,1);
 }));
+test("news PU counter is a separate exact rolling 24-hour register; PUB only archives",()=>scoped(async env=>{
+ const count=async()=>{
+  const response=await newsPublicationCount(new Request("https://private.example/api/news-publication-count"),env,helpers);
+  assert.equal(response.status,200);
+  return response.json();
+ };
+ assert.equal((await count()).count,0);
+ for(const [n,action,value] of [[1,"publication",undefined],[2,"mark",true],[3,"publication",undefined],[4,"archive",undefined]]){
+  const receipt=await newsAction(request(action,{action_id:String(n).repeat(32),value}),env,helpers);
+  assert.equal(receipt.status,200);
+ }
+ let result=await count();assert.equal(result.count,2);
+ assert.equal(result.events.length,2);
+ assert.equal(result.events[0].news_title,"Un hecho contrastado entre fuentes diferentes");
+ assert.ok(result.events.every(x=>x.event_id===id&&x.pressed_at_ms>0));
+ // A 25-hour-old PU leaves the window, independently of the archived state.
+ const old=new Date(Date.now()-25*3600000).toISOString();
+ env.MARKS_DB.sql.prepare("UPDATE news_actions SET created_at=?,body=json_set(body,'$.created_at',?) WHERE action_id=?")
+  .run(old,old,"1".repeat(32));
+ result=await count();assert.equal(result.count,1);assert.equal(result.events.length,1);
+ const replay=await newsAction(request("publication",{action_id:"3".repeat(32)}),env,helpers);
+ assert.equal((await replay.json()).replay,true);assert.equal((await count()).count,1);
+ const method=await newsPublicationCount(new Request("https://private.example/api/news-publication-count",{method:"POST"}),env,helpers);
+ assert.equal(method.status,405);
+}));
 test("actions enforce same origin, revision and idempotency identity",()=>scoped(async env=>{
  assert.equal((await newsAction(request("mark",{value:true}),env,{...helpers,sameOrigin:()=>false})).status,405);
  assert.equal((await newsAction(request("archive",{revision:2}),env,helpers)).status,409);
@@ -86,7 +111,7 @@ test("manual original association is exact and hidden public image cannot be fet
 
 test("all news mutations and original-image reads retain the private session gate",async()=>{
  const env={AUTH_PASSWORD:"test-password-more-than-sixteen",SESSION_SECRET:"test-session-secret-more-than-thirty-two-characters"};
- for(const path of ["/api/news-actions","/api/news-manual-image","/api/news-image"]){
+ for(const path of ["/api/news-actions","/api/news-manual-image","/api/news-image","/api/news-publication-count"]){
   assert.equal((await worker.fetch(new Request("https://private.example"+path),env)).status,401);
  }
 });

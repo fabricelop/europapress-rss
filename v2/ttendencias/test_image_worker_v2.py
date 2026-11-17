@@ -89,6 +89,8 @@ class SplitTest(unittest.TestCase):
                 return True
             def is_enabled(self):
                 return True
+            def get_attribute(self, name):
+                return None
             def click(self, timeout=None):
                 events.append("click")
         class Page:
@@ -96,11 +98,12 @@ class SplitTest(unittest.TestCase):
                 return type("Locator", (), {"first": Button() if selector == image.SEND_BUTTONS[0]
                                             else type("Missing", (), {"count": lambda _: 0})()})()
         command = "v2-img-trv2-15fbf166ba6a2f83c7a45b75-r2-a100-nonce"
-        self.assertEqual(image.submit_image_prompt(Page(), Composer(), command, command),
+        self.assertEqual(image.submit_image_prompt(Page(), Composer(), command, command,
+                                                   before_click=lambda: events.append("intent")),
                          "send_button")
-        self.assertEqual(events, ["fill", "click"])
+        self.assertEqual(events, ["fill", "intent", "click"])
 
-    def test_image_send_falls_back_to_enter_when_button_absent(self):
+    def test_missing_send_button_never_falls_back_to_enter(self):
         calls = []
         command = "v2-img-trv2-15fbf166ba6a2f83c7a45b75-r1-a1-nonce"
         class Composer:
@@ -116,9 +119,10 @@ class SplitTest(unittest.TestCase):
         class Page:
             def locator(self, _):
                 return type("Locator", (), {"first": Missing()})()
-        self.assertEqual(image.submit_image_prompt(Page(), Composer(), command, command),
-                         "enter")
-        self.assertEqual(calls, ["Enter"])
+        with patch.object(image.time, "monotonic", side_effect=[0, 100]):
+            with self.assertRaisesRegex(RuntimeError, "V2_IMAGE_SEND_BUTTON_UNAVAILABLE"):
+                image.submit_image_prompt(Page(), Composer(), command, command)
+        self.assertEqual(calls, [])
 
     def test_reexplained_image_gets_fresh_job_using_only_latest_capture(self):
         queue, _ = fixture()
@@ -138,7 +142,7 @@ class SplitTest(unittest.TestCase):
         self.assertNotIn(original["capture"]["answer"], new["prompt"])
         self.assertNotIn("conversation_url", new)
 
-    def test_exhausted_old_retry_count_has_bounded_new_protocol_budget(self):
+    def test_old_failed_attempts_do_not_gain_a_new_send_budget(self):
         queue, _ = fixture()
         row = queue["items"]["trv2-%024x" % 1]
         with tempfile.TemporaryDirectory() as folder:
@@ -147,12 +151,64 @@ class SplitTest(unittest.TestCase):
                     editorial.store(image.journal_path(row["trend_id"], 1, attempt),
                                     {"at": "2026-11-16T04:00:00+00:00", "status": "failed"})
                 now = datetime.now(timezone.utc)
-                self.assertEqual(image.next_attempt(row, now=now), 100)
-                for attempt in range(100, 103):
-                    editorial.store(image.journal_path(row["trend_id"], 1, attempt),
-                                    {"at": "2026-11-16T04:00:00+00:00", "status": "failed",
-                                     "send_protocol": image.IMAGE_SEND_PROTOCOL})
                 self.assertIsNone(image.next_attempt(row, now=now))
+
+    def test_only_verified_pre_send_errors_have_a_bounded_retry_budget(self):
+        queue, _ = fixture()
+        row = queue["items"]["trv2-%024x" % 1]
+        now = datetime.now(timezone.utc)
+        with tempfile.TemporaryDirectory() as folder:
+            with patch.object(image, "JOURNALS", pathlib.Path(folder)):
+                for attempt in range(1, 4):
+                    editorial.store(image.journal_path(row["trend_id"], 1, attempt),
+                                   {"at": (now-timedelta(minutes=20)).isoformat(),
+                                    "status": "pre_send_failed", "send_protocol": 2})
+                    expected = attempt + 1 if attempt < 3 else None
+                    self.assertEqual(image.next_attempt(row, now=now), expected)
+
+    def test_retry_summary_publishes_only_safe_fields_for_exact_editorial_revision(self):
+        queue, _ = fixture()
+        row = queue["items"]["trv2-%024x" % 1]
+        job = {"trend_id": row["trend_id"], "revision": 1,
+               "editorial_sha256": row["capture"]["sha256"]}
+        with tempfile.TemporaryDirectory() as folder:
+            with patch.object(image, "JOURNALS", pathlib.Path(folder)):
+                editorial.store(image.journal_path(row["trend_id"], 1, 1), {
+                    "trend_id": row["trend_id"], "revision": 1,
+                    "status": "pre_send_failed", "prompt": "DO_NOT_PUBLISH_PRIVATE_PROMPT"})
+                with patch.object(editorial, "queue_read", return_value=(queue, "old-sha")):
+                    with patch.object(editorial, "queue_write") as writer:
+                        self.assertTrue(image.publish_image_retry_summary(None, "private-auth", job))
+                        writer.assert_called_once()
+                summary=row["image_retry_summary"]
+                self.assertEqual(summary["state"], "retry_pending")
+                self.assertEqual(summary["pre_send_failures"], 1)
+                self.assertEqual(summary["send_attempts"], 0)
+                self.assertNotIn("PRIVATE", str(summary))
+                # A new editorial revision cannot inherit older retry evidence.
+                row["revision"] = 2
+                with patch.object(editorial, "queue_read", return_value=(queue, "new-sha")):
+                    with patch.object(editorial, "queue_write") as writer:
+                        self.assertFalse(image.publish_image_retry_summary(None, "private-auth", job))
+                        writer.assert_not_called()
+
+    def test_backfill_dry_run_never_writes_or_generates_images(self):
+        queue, _ = fixture()
+        row = queue["items"]["trv2-%024x" % 1]
+        with tempfile.TemporaryDirectory() as folder:
+            with patch.object(image, "JOURNALS", pathlib.Path(folder)):
+                editorial.store(image.journal_path(row["trend_id"], 1, 1), {
+                    "trend_id": row["trend_id"], "revision": 1,
+                    "status": "failed", "error": "V2_IMAGE_NOT_READY"})
+                with patch.object(editorial, "queue_read", return_value=(queue, "sha")):
+                    with patch.object(editorial, "queue_write") as writer:
+                        with patch.object(image, "run_one") as generator:
+                            with patch("builtins.print") as message:
+                                image.backfill_retry_summaries(None, None, dry_run=True)
+                                self.assertTrue(any("TT_V2_IMAGE_BACKFILL_CANDIDATES=1" in str(c)
+                                                    for c in message.call_args_list))
+                            generator.assert_not_called()
+                        writer.assert_not_called()
 
     def test_interrupted_send_is_not_retried_blindly(self):
         queue, _ = fixture()
@@ -424,10 +480,10 @@ class SplitTest(unittest.TestCase):
                 image.JOURNALS.mkdir(exist_ok=True)
                 editorial.store(image.journal_path(row["trend_id"], 1, attempt),
                                 {"at": datetime.now(timezone.utc).isoformat(),
-                                 "status": "failed"})
+                                 "status": "pre_send_failed"})
                 next_row, next_attempt = image.pick_next(queue, history)
                 self.assertEqual((next_row["name"], next_attempt), ("Explicada 02", 1))
-                later = datetime.now(timezone.utc) + timedelta(minutes=5)
+                later = datetime.now(timezone.utc) + timedelta(minutes=16)
                 retry_row, retry_attempt = image.pick_next(queue, history, now=later)
                 self.assertEqual((retry_row["name"], retry_attempt), ("#FelizDomingo", 2))
 

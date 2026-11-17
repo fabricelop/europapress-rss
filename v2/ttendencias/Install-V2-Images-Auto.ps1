@@ -20,6 +20,7 @@ $base = 'https://raw.githubusercontent.com/' + $repo + '/' + $sha + '/v2/ttenden
 $files = @(
     'image_target_tracker_v2.py',
     'image_worker_v2.py',
+    'image_retry_status_v2.py',
     'image_daemon_v2.py',
     'parallel_dispatch_v2.py',
     'test_parallel_dispatch_v2.py',
@@ -29,6 +30,7 @@ $files = @(
     'image_same_chat_v2.py',
     'image_github_v2.py',
     'test_image_worker_v2.py',
+    'test_image_retry_status_v2.py',
     'test_image_same_chat_v2.py',
     'test_image_github_v2.py',
     'Run-V2-Image-One.ps1',
@@ -46,7 +48,7 @@ foreach ($file in $files) {
 $py = (Get-Command py.exe -ErrorAction Stop).Source
 $stdout = Join-Path $root 'install-image-tests.stdout.log'
 $stderr = Join-Path $root 'install-image-tests.stderr.log'
-foreach ($name in @('test_parallel_dispatch_v2.py','test_image_worker_v2.py','test_image_same_chat_v2.py','test_image_github_v2.py')) {
+foreach ($name in @('test_parallel_dispatch_v2.py','test_image_worker_v2.py','test_image_retry_status_v2.py','test_image_same_chat_v2.py','test_image_github_v2.py')) {
     $script = Join-Path $root $name
     $p = Start-Process -FilePath $py -ArgumentList @('-3', ('"' + $script + '"')) -PassThru -Wait -WindowStyle Hidden -RedirectStandardOutput $stdout -RedirectStandardError $stderr
     if ($p.ExitCode -ne 0) {

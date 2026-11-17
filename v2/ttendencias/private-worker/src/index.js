@@ -2,7 +2,7 @@
 // NO V1 changes. Signed sessions; V2 D1 stores red marks and 15-minute radar.
 import {captureRadar,loadRadar,mergeEditorialRadar,radarAgeMinutes} from "./radar.js";
 import {readNews,readNewsRecord} from "./news.js";
-import {newsControls,newsView,newsAction,newsManualImage,newsImage,publicNews,newsWorkerControls} from "./news-actions.js";
+import {newsControls,newsView,newsAction,newsPublicationCount,newsManualImage,newsImage,publicNews,newsWorkerControls} from "./news-actions.js";
 import {readImageIncident} from "./image-incidents.js";
 // All static assets require a session because run_worker_first=true.
 const COOKIE = "__Host-ttv2";
@@ -469,6 +469,7 @@ export default {
       catch(error){const status=error.message==="IMAGE_INCIDENT_ID_INVALID"?400:error.message==="IMAGE_INCIDENT_REVISION_CHANGED"?409:503;return json({error:status===400?"invalid_image_identity":status===409?"image_revision_changed":"image_incident_unavailable"},status);}
     }
     if(url.pathname==="/api/news-actions")return newsAction(request,env,{json,sameOrigin});
+    if(url.pathname==="/api/news-publication-count")return newsPublicationCount(request,env,{json});
     if(url.pathname==="/api/news-manual-image")return newsManualImage(request,env,{json,sameOrigin});
     if(url.pathname==="/api/news-image")return newsImage(request,env,{json,headers});
     if (url.pathname.startsWith("/api/news/")) {

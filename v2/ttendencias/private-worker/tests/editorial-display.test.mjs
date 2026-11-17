@@ -10,7 +10,7 @@ test('TEM16N real capture becomes short publishable X copy, identical in V2',()=
  assert.equal(shown,tweetText(tem.explanation,tem));
  assert.match(shown,/^TT#7 #TEM16N:/);
  assert.match(shown,/conversación televisiva sobre «Todo es mentira»/);
- assert.match(shown,/La causa concreta de la tendencia no está confirmada\./);
+ assert.doesNotMatch(shown,/La causa concreta de la tendencia no está confirmada\./);
  assert.ok(xLength(shown)<=280);
  assert.equal(publishableText(shown),true);
  assert.doesNotMatch(shown,/formato editorial pendiente|ESTADO_|Ficha editorial|Qué sabemos|Fuentes|403|15:30|19:00/);
@@ -22,17 +22,18 @@ test('other dossier topics adapt from their own text without leaking the full fi
  const shown=explanationText(raw,item);
  assert.equal(shown,tweetText(raw,item));
  assert.match(shown,/El festival anuncia su nueva edición/);
- assert.match(shown,/no está confirmada/);
+ assert.doesNotMatch(shown,/no está confirmada/);
  assert.doesNotMatch(shown,/es tendencia|Ficha editorial|Fuentes consultadas|example.org/);
  assert.ok(xLength(shown)<=280);
  assert.equal(publishableText(shown),true);
 });
-test('long adapted context cannot crowd out the uncertainty sentence',()=>{
+test('long adapted context keeps verified facts without a repetitive uncertainty ending',()=>{
  const raw='ESTADO_CAUSA: NO_CONFIRMADA\nQué sabemos\nEl festival anuncia hoy su nueva edición en Barcelona. '+
   'La programación ofrece numerosos conciertos y actividades con invitados de diferentes países. '.repeat(5);
  const shown=explanationText(raw,{rank:14,name:'Festival Internacional de Barcelona'});
  assert.match(shown,/El festival anuncia hoy su nueva edición en Barcelona\./);
- assert.match(shown,/La causa concreta de la tendencia no está confirmada\./);
+ assert.doesNotMatch(shown,/La causa concreta de la tendencia no está confirmada\./);
+ assert.doesNotMatch(shown,/es tendencia:/);
  assert.ok(xLength(shown)<=280);
  assert.doesNotMatch(shown,/…|\.\.\./);
 });

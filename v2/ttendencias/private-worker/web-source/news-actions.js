@@ -46,7 +46,9 @@ window.TTNewsActions=(()=>{
    if(opened)opened.opener=null;else throw Error("El navegador bloqueó la ventana de X.");
   });
   add("PU","Registrar una publicación realizada; no envía a X",async()=>{
-   const receipt=await action(item,"publication");notice("PU registrada. Últimas 24 h: "+receipt.count+". No se ha enviado nada a X.");
+   await action(item,"publication");
+   globalThis.dispatchEvent(new Event("ttv2:publication-recorded"));
+   notice("PU registrada. El contador de noticias se ha actualizado; no se ha enviado nada a X.");
   });
   add("PUB","Mover de Elaboradas a Archivo",async()=>{
    await action(item,"archive");await onChange();
