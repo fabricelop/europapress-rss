@@ -505,6 +505,7 @@ def run_one(row, attempt, *, api, auth):
     process = None
     browser = None
     hider = None
+    local_original = None
     progress_registered = False
     try:
         with socket.socket() as sock:
@@ -587,7 +588,7 @@ def run_one(row, attempt, *, api, auth):
             record["image_chat_url"] = url
             editorial.store(journal, record)
             raw = image_page.original_from_same_page(page, job, timeout=480)
-            intake.persist_original(ROOT / "image-originals", job, raw)
+            local_original = intake.persist_original(ROOT / "image-originals", job, raw)
             try:
                 saved = github.save_original(job, raw, auth)
             except RuntimeError as exc:
@@ -608,14 +609,20 @@ def run_one(row, attempt, *, api, auth):
             record["status"] = ("saved" if (bound.get("sha256") == saved["sha256"]
                                                   and bound.get("path") == saved["path"])
                                 else "bound_by_other")
-            if record["status"] == "saved":
+            if bound.get("status") == "saved" and bound.get("path") == saved["path"]:
                 try:
                     record["superseded_images_deleted"] = github.cleanup_superseded_images(
                         tid, saved["path"], auth)
                 except Exception as exc:
-                    # The new image is already verified; cleanup can be retried
-                    # without invalidating the current image receipt.
+                    # The latest image is already verified; old GitHub assets
+                    # can be cleaned independently without losing the new raster.
                     record["legacy_image_cleanup"] = "pending:" + type(exc).__name__
+                if local_original is not None:
+                    try:
+                        local_original.unlink(missing_ok=True)
+                        record["local_original_deleted"] = not local_original.exists()
+                    except OSError:
+                        record["local_original_cleanup"] = "pending"
             editorial.store(journal, record)
             try:
                 web = editorial.module("web_top30_v2.py", "ttv2_image_web")
