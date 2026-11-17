@@ -180,12 +180,27 @@ class NewsService(ed.EditorialService):
         active=[j for j in rows if j.get("lease")]
         pending=0
         for event in news.values():
-            if event["status"]!="ready" or image_path(event["event_id"],event["current_revision"]) in docs:continue
+            if event["status"]!="ready":continue
+            previous=docs.get(image_path(event["event_id"],event["current_revision"]))
+            if previous and not self._fresh_image_retry_eligible(previous):continue
             pref=next((x for x in getattr(self,"image_preferences",[]) if x.get("event_id")==event["event_id"] and x.get("revision")==event["current_revision"]),{})
             if not (pref.get("manual_image") or pref.get("image_suppressed") or pref.get("rework_requested") or pref.get("archived")):pending+=1
         return {"commit_sha":head,"pending_count":pending,"active_count":len(active),
                 "maintenance_needed":any(ed._time(j["lease"]["expires_at"])<=now for j in active),
                 "publication_allowed":False}
+
+    @staticmethod
+    def _fresh_image_retry_eligible(job):
+        """Retry only a *closed* failed image attempt in a new owned chat.
+
+        The discarded image is never associated with the news. Editorial jobs
+        retain their stricter no-resend policy, and uncertain active Chrome
+        cleanup must be investigated rather than launching another process.
+        """
+        attempts=job.get("attempts") or {}
+        return (job.get("status")=="problematic" and not job.get("lease")
+                and (job.get("problem") or {}).get("retry_mode")=="new_chat"
+                and attempts.get("claim_count",0)<attempts.get("max_safe_preflight_attempts",3))
 
     def image(self, operation, *, worker_id, token, job_id=None, **data):
         if not ed.SAFE_ID.fullmatch(worker_id):raise ed.EditorialError("NEWS_IMAGE_WORKER_INVALID")
@@ -215,7 +230,8 @@ class NewsService(ed.EditorialService):
                 if len(active)<2:
                     for event in candidates:
                         p=image_path(event["event_id"],event["current_revision"])
-                        if p in imagejobs:continue
+                        prior=imagejobs.get(p)
+                        if prior and not self._fresh_image_retry_eligible(prior):continue
                         pref=next((x for x in getattr(self,"image_preferences",[]) if x.get("event_id")==event["event_id"] and x.get("revision")==event["current_revision"]),{})
                         if pref.get("manual_image") or pref.get("image_suppressed") or pref.get("rework_requested") or pref.get("archived"):continue
                         record=docs.get(event.get("current_record_path"))
@@ -233,6 +249,12 @@ class NewsService(ed.EditorialService):
                             "requested_at":stamp,"updated_at":stamp}
                         # Schema uses acquired_at rather than claimed_at in leases.
                         selected["lease"]=self._image_lease(worker_id,token_hash,now)
+                        if prior:
+                            # Preserve previous command IDs, outcomes and attempt
+                            # counts. A fresh run gets its own browser and UUID.
+                            selected["attempts"]=copy.deepcopy(prior["attempts"])
+                            selected["attempts"]["claim_count"]+=1
+                            selected["requested_at"]=prior["requested_at"]
                         writes[p]=selected;imagejobs[p]=selected;break
                 if selected is None:
                     if writes:
@@ -258,12 +280,12 @@ class NewsService(ed.EditorialService):
                     if job["status"]!="claimed" or job["send_intent"]:
                         return {"send_authorized":False}
                     job.update(status="send_intent",phase="sending",prompt_sha256=data["prompt_sha256"],session=data["session"],
-                        send_intent={"command_id":data["command_id"],"attempt_no":1,"prompt_sha256":data["prompt_sha256"],
+                        send_intent={"command_id":data["command_id"],"attempt_no":job["attempts"]["claim_count"],"prompt_sha256":data["prompt_sha256"],
                                      "prepared_at":stamp,"submission_state":"prepared","submitted_at":None})
                 elif operation=="submitted":
                     job.update(status="generating",phase="generating")
                     job["send_intent"].update(submission_state="confirmed",submitted_at=stamp)
-                    job["attempts"]["submission_count"]=1
+                    job["attempts"]["submission_count"]+=1
                 elif operation=="save":
                     if data.get("cleanup_verified") is not True:raise ed.EditorialError("NEWS_IMAGE_CLEANUP_REQUIRED")
                     asset=copy.deepcopy(data["asset"]);validate("image_asset",asset)
@@ -273,11 +295,24 @@ class NewsService(ed.EditorialService):
                     job.update(status="saved",phase="done",lease=None,capture={"raster_sha256":asset["sha256"],
                         "captured_at":stamp,"mime":asset["mime"],"width":asset["width"],"height":asset["height"],"bytes":asset["bytes"]},
                         result={"asset_path":asset["asset_path"],"media_id":asset["media_id"],"sha256":asset["sha256"],"commit_sha":data["raster_commit"]})
+                    job["attempts"]["history"].append({"attempt_no":job["attempts"]["claim_count"],
+                        "command_id":job["send_intent"]["command_id"],"at":stamp,"outcome":"captured"})
                 elif operation=="fail":
                     code=data["code"]
                     if not re.fullmatch(r"[A-Z][A-Z0-9_]{2,100}",code):raise ed.EditorialError("NEWS_IMAGE_UNSAFE_ERROR")
+                    sent=job.get("send_intent")
+                    if not sent:job["attempts"]["safe_preflight_failures"]+=1
+                    job["attempts"]["history"].append({"attempt_no":job["attempts"]["claim_count"],
+                        "command_id":sent["command_id"] if sent else "no-send-"+str(job["attempts"]["claim_count"]),
+                        "at":stamp,"outcome":("failed_after_submit" if sent and sent["submission_state"]=="confirmed"
+                                             else "uncertain" if sent else "preflight_failed")})
+                    # A new image may be generated even if the old send was
+                    # uncertain; never reuse its chat, command ID or raster.
+                    safe_closed=(data.get("cleanup_verified") is True and "AUTH" not in code
+                                 and code not in ("NEWS_DISK_SPACE_LOW_NO_NEW_CHROME",))
+                    retry_mode="new_chat" if safe_closed and job["attempts"]["claim_count"]<job["attempts"]["max_safe_preflight_attempts"] else "manual_only"
                     job.update(status="problematic",phase="blocked",lease=None,
-                        problem={"code":code,"at":stamp,"retry_mode":"recover_same_chat" if job["send_intent"] else "manual_only"})
+                        problem={"code":code,"at":stamp,"retry_mode":retry_mode})
                 else:raise ed.EditorialError("NEWS_IMAGE_OPERATION_INVALID")
                 job["updated_at"]=stamp;writes[p]=job
             validate("image_job",job)
@@ -288,7 +323,9 @@ class NewsService(ed.EditorialService):
             elif job["status"]=="problematic":
                 item["image_incident"]={**job["problem"],"event_id":job["event_id"],"revision":job["revision"],"editorial_sha256":job["editorial_sha256"]}
                 item.pop("image_progress",None)
-            else:item["image_progress"]={"revision":job["revision"],"editorial_sha256":job["editorial_sha256"],"expires_at":job["lease"]["expires_at"]}
+            else:
+                item.pop("image_incident",None)
+                item["image_progress"]={"revision":job["revision"],"editorial_sha256":job["editorial_sha256"],"expires_at":job["lease"]["expires_at"]}
             writes[ed.INDEX]=index
             try:
                 commit=self.store.commit(head,writes,"News image "+operation)
