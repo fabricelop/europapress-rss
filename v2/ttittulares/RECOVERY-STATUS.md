@@ -1,3 +1,9 @@
+## 17/11/2026 — primera proyección web del estado de imágenes
+
+- Commit `c953cb4537b9d8d4fdb0d724267f8269b0314c8c`: `web_top30_v2.py` añade `image_retry` por tendencia con estado conservador `saved`, `generating` o `unknown`, y `remaining`/`attempts` nulos. No deduce cuotas de un simple incidente ni filtra diarios locales.
+- Importante: esto prepara el contrato de datos, pero todavía NO muestra 'agotada' o 'quedan N' en el Site. Falta un resumen de diario local ligado a `trend_id`, `revision` y `capture.sha256`, persistencia segura en cola, coherencia con `next_attempt`, pruebas y despliegue en Windows y Site.
+- No se ha ejecutado ninguna imagen ni se ha tocado V1.
+
 ## 17/11/2026 — seguridad del planificador de imágenes
 
 - `ad82193c6292fb267d89158b91dd899cea7c7350`: `next_attempt` deja de reintentar diarios `failed` con entrega incierta; solo reintenta `pre_send_failed` explícito y sin diarios previos ambiguos, con límite 3 y cooldown. Previene duplicados a costa de bloquear casos históricos que requieren verificación, nunca reenvío a ciegas.
