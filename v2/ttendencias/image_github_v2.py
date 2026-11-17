@@ -1,13 +1,10 @@
 #!/usr/bin/env python3
-"""Persist original V2 ImageGen raster in GitHub exactly as V1 does.
-
-The only source of truth for editorial identity is the isolated V2 queue.
-No Cloudflare R2, D1, payments, V1 paths or publishing side effects.
-"""
+"""Persist one replaceable latest ImageGen raster per V2 trend in GitHub."""
 from __future__ import annotations
 import base64
 import hashlib
 import json
+import re
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -24,6 +21,9 @@ LEDGER=ROOT+"/state/editorial-queue.json"
 PREFIX=ROOT+"/generated-images/"
 API="https://api.github.com/repos/"+REPO+"/contents/"
 EXTENSIONS={"image/png":"png","image/jpeg":"jpg","image/webp":"webp"}
+TREND_ID=re.compile(r"^trv2-[a-f0-9]{24}$")
+BLOB_SHA=re.compile(r"^[a-f0-9]{40}$")
+
 
 def request(method,path,auth,payload=None,*,opener=None):
     if not isinstance(auth,str) or len(auth)<10:
@@ -51,10 +51,13 @@ def request(method,path,auth,payload=None,*,opener=None):
             raise RuntimeError("V2_IMAGE_GITHUB_CONFLICT_NO_REPLAY") from None
         raise RuntimeError("V2_IMAGE_GITHUB_HTTP_"+str(err.code)) from None
 
+
 def git_blob_sha(raw):
     return hashlib.sha1(b"blob "+str(len(raw)).encode("ascii")+bytes([0])+raw).hexdigest()
 
+
 def current_editorial(job,auth,*,send=request):
+    """Validate the exact current text/revision; a saved image is replaceable."""
     intake.validate_job(job)
     ledger=send("GET",LEDGER,auth)
     if not isinstance(ledger,dict):
@@ -91,39 +94,72 @@ def current_editorial(job,auth,*,send=request):
     row=(queue.get("items") or {}).get(job["trend_id"])
     if not row:raise RuntimeError("V2_IMAGE_TREND_NOT_FOUND")
     intake.validate_editorial(job,row)
-    existing=(row.get("capture") or {}).get("image") or {}
-    if existing.get("status")=="saved" and existing.get("command_id")!=job["command_id"]:
-        raise RuntimeError("V2_IMAGE_REVISION_ALREADY_BOUND")
     return row
 
+
+def stable_image_path(trend_id):
+    if not isinstance(trend_id,str) or not TREND_ID.fullmatch(trend_id):
+        raise ValueError("V2_IMAGE_TREND_ID_INVALID")
+    # One mutable file per trend. A new revision or retry replaces this raster.
+    return PREFIX+trend_id+".image"
+
+
 def save_original(job,raw,auth,*,send=request):
-    """GitHub contents PUT with exact git-blob verification and idempotent replay."""
+    """Replace the single latest raster for this trend and verify its bytes."""
     current_editorial(job,auth,send=send)
     meta=intake.raster_metadata(raw)
-    ext=EXTENSIONS[meta["mime"]]
-    path=PREFIX+job["trend_id"]+"-r"+str(job["revision"])+"-"+meta["sha256"][:24]+"."+ext
+    path=stable_image_path(job["trend_id"])
     expected_blob=git_blob_sha(raw)
     previous=send("GET",path,auth)
-    if previous:
-        if previous.get("sha")!=expected_blob:
-            raise RuntimeError("V2_IMAGE_GITHUB_EXISTING_RASTER_CONFLICT")
+    if previous and previous.get("sha")==expected_blob:
         status="already_saved"
     else:
-        # Guard once. If it races with another writer, fail instead of replacing.
-        payload={"branch":BRANCH,"message":"v2: original ImageGen "+
+        payload={"branch":BRANCH,"message":"v2: replace latest ImageGen "+
                  job["trend_id"]+" r"+str(job["revision"]),
                  "content":base64.b64encode(raw).decode("ascii")}
+        if previous:
+            old_sha=previous.get("sha")
+            if not isinstance(old_sha,str) or not BLOB_SHA.fullmatch(old_sha):
+                raise RuntimeError("V2_IMAGE_GITHUB_EXISTING_RASTER_CONFLICT")
+            payload["sha"]=old_sha
         uploaded=send("PUT",path,auth,payload)
         if ((uploaded or {}).get("content") or {}).get("sha")!=expected_blob:
             raise RuntimeError("V2_IMAGE_GITHUB_WRITE_UNVERIFIED")
         if not (uploaded or {}).get("commit",{}).get("sha"):
             raise RuntimeError("V2_IMAGE_GITHUB_COMMIT_MISSING")
-        status="saved"
+        status="replaced" if previous else "saved"
     confirmed=send("GET",path,auth)
     if not confirmed or confirmed.get("sha")!=expected_blob:
         raise RuntimeError("V2_IMAGE_GITHUB_READBACK_FAILED")
     return {"status":status,"trend_id":job["trend_id"],
-            "revision":job["revision"],"sha256":meta["sha256"],
-            "path":path,"mime":meta["mime"],"width":meta["width"],
-            "height":meta["height"],"command_id":job["command_id"],
-            "backend":"github_v1_style"}
+            "revision":job["revision"],"attempt":job.get("attempt",1),
+            "sha256":meta["sha256"],"path":path,"mime":meta["mime"],
+            "width":meta["width"],"height":meta["height"],
+            "command_id":job["command_id"],"backend":"github_v1_style"}
+
+
+def cleanup_superseded_images(trend_id,keep_path,auth,*,send=request):
+    """Delete legacy revision/hash-named rasters after the latest receipt is verified."""
+    if not isinstance(trend_id,str) or not TREND_ID.fullmatch(trend_id):
+        raise ValueError("V2_IMAGE_TREND_ID_INVALID")
+    expected=stable_image_path(trend_id)
+    if keep_path!=expected:
+        raise ValueError("V2_IMAGE_KEEP_PATH_INVALID")
+    listing=send("GET",PREFIX,auth)
+    if listing is None:
+        return 0
+    if not isinstance(listing,list):
+        raise RuntimeError("V2_IMAGE_LEGACY_LISTING_INVALID")
+    deleted=0
+    legacy_prefix=PREFIX+trend_id+"-r"
+    for entry in listing:
+        path=entry.get("path") if isinstance(entry,dict) else None
+        if not isinstance(path,str) or path==keep_path or not path.startswith(legacy_prefix):
+            continue
+        sha=entry.get("sha")
+        if not isinstance(sha,str) or not BLOB_SHA.fullmatch(sha):
+            raise RuntimeError("V2_IMAGE_LEGACY_BLOB_SHA_INVALID")
+        send("DELETE",path,auth,{"message":"v2: remove superseded image for "+trend_id,
+                                 "sha":sha,"branch":BRANCH})
+        deleted+=1
+    return deleted
