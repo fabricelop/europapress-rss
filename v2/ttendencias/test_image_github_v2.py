@@ -53,7 +53,7 @@ class GitHubFake:
             wrapped=chr(10).join(encoded[i:i+60] for i in range(0,len(encoded),60))
             return {"encoding":"base64","content":wrapped,
                     "sha":github.git_blob_sha(raw)}
-        if method=="GET" and path==github.PREFIX:
+        if method=="GET" and path.rstrip("/")==github.PREFIX.rstrip("/"):
             return [{"path":name,"sha":value["sha"]} for name,value in self.items.items()]
         if method=="GET":
             return self.items.get(path)
