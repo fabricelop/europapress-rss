@@ -93,8 +93,10 @@ class GitHubImages(unittest.TestCase):
         self.assertEqual(len(fake.items),1)
 
     def test_latest_image_replaces_previous_at_same_stable_path(self):
-        fake=GitHubFake()
+        fake=GitHubFake(revision=1)
         first=github.save_original(job(revision=1,attempt=1),raster("red"),"x"*48,send=fake)
+        fake.ledger["items"][ID]["revision"]=2
+        fake.ledger["items"][ID]["capture"]["revision"]=2
         second_blob=raster("blue")
         second=github.save_original(job(revision=2,attempt=1),second_blob,"x"*48,send=fake)
         self.assertEqual(first["path"],second["path"])
@@ -114,6 +116,10 @@ class GitHubImages(unittest.TestCase):
     def test_previous_image_is_replaceable_not_a_conflict(self):
         fake=GitHubFake()
         first=github.save_original(job(attempt=1),raster("red"),"x"*48,send=fake)
+        fake.ledger["items"][ID]["capture"]["image"]={
+            "status":"saved","revision":1,"attempt":1,
+            "command_id":job(attempt=1)["command_id"],"path":first["path"],
+            "sha256":first["sha256"]}
         second_blob=raster("blue")
         second=github.save_original(job(attempt=2),second_blob,"x"*48,send=fake)
         self.assertEqual(first["path"],second["path"])
