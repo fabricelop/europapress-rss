@@ -412,13 +412,15 @@ async function imageRead(request,env,trendId) {
        !HEX64.test(img.sha256||"")||!IMAGE_COMMAND.test(img.command_id||""))
        return json({error:"image_not_ready"},404);
     const ext=IMAGE_TYPES[img.mime];
-    const expected="v2/ttendencias/generated-images/"+trendId+"-r"+revision+
-                   "-"+img.sha256.slice(0,24)+"."+ext;
-    if(!ext||img.path!==expected)
+    const legacyExpected="v2/ttendencias/generated-images/"+trendId+"-r"+revision+
+                         "-"+img.sha256.slice(0,24)+"."+ext;
+    const latestExpected="v2/ttendencias/generated-images/"+trendId+".image";
+    if(!ext||![legacyExpected,latestExpected].includes(img.path))
       return json({error:"image_identity_invalid"},409);
     const raw="https://raw.githubusercontent.com/fabricelop/europapress-rss/"+
-      "feature/ttactualidad-v2-clean/"+expected;
-    const original=await fetch(raw,{headers:{"Accept":img.mime},cf:{cacheTtl:30,cacheEverything:true}});
+      "feature/ttactualidad-v2-clean/"+img.path;
+    // Stable latest-image URLs must never serve a cached previous raster.
+    const original=await fetch(raw,{headers:{"Accept":img.mime},cf:{cacheTtl:0,cacheEverything:false}});
     if(!original.ok)return json({error:"image_missing"},404);
     const buffer=await original.arrayBuffer();
     if(buffer.byteLength<100000||buffer.byteLength>8388608||
@@ -433,6 +435,7 @@ async function imageRead(request,env,trendId) {
       return json({error:"image_format_invalid"},502);
     return new Response(buffer,{headers:headers({
       "Content-Type":img.mime,"ETag":'"'+img.sha256+'"',
+      "Cache-Control":"no-store, max-age=0",
       "Content-Disposition":"inline"})});
   } catch {
     return json({error:"image_read_unavailable"},503);
