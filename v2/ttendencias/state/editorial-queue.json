@@ -11429,13 +11429,13 @@
       "trend_id": "trv2-34ca0c923169a13704deea45",
       "name": "Lecturas",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "f5c62b01d9fb7bf9",
       "requested_at": "2026-11-17T18:01:58.163816+00:00",
       "updated_at": "2026-11-17T18:01:58.163816+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -11448,7 +11448,13 @@
           "archived_at": "2026-11-17T18:01:58.163816+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "fab1d5c963a84fcef0d4822af02f8bf249fcf7fe1c8e84f5",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-17T18:02:19.512361+00:00",
+        "expires_at": "2026-11-17T18:42:19.512361+00:00"
+      }
     },
     "trv2-9cbd3b28a6565b5069fdbda5": {
       "trend_id": "trv2-9cbd3b28a6565b5069fdbda5",
