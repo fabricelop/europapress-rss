@@ -50,6 +50,24 @@ test("P-X and P-IA are manual, revision-bound and never mark a V2 trend publishe
  assert.doesNotMatch(src,/state\.items\[.*\]\.published/);
 });
 
+test("trend controls use the same three clearly labeled groups as news without changing actions",()=>{
+ const src=readFileSync(new URL("../web-source/app.js",import.meta.url),"utf8");
+ const css=readFileSync(new URL("../web-source/styles.css",import.meta.url),"utf8");
+ const controls=src.slice(src.indexOf("function makePublishButtons(card,item)"),src.indexOf("\nfunction render()"));
+ assert.match(controls,/const publishing=group\("publishing","Publicación"\)/);
+ assert.match(controls,/const editing=group\("editing","Gestión y reelaboración"\)/);
+ assert.match(controls,/const artwork=group\("artwork","Imagen"\)/);
+ assert.match(controls,/editing\.append\(re,reX\)/);
+ assert.match(controls,/publishing\.append\(x\)/);
+ assert.match(controls,/publishing\.append\(pu\)/);
+ assert.match(controls,/publishing\.append\(withImage\)/);
+ for(const control of ["publicToggle","visibility","prompt","images","paste"])
+  assert.ok(controls.includes("artwork.append("+control+")"),control+" belongs to Imagen");
+ assert.match(controls,/actions\.append\(review\)/);
+ assert.match(css,/\.trend-actions\{display:grid/);
+ assert.match(css,/\.trend-actions \.news-action-group/);
+});
+
 
 test("generating image has its own amber icon, independent of editorial blue dot",()=>{
  const src=readFileSync(new URL("../web-source/app.js",import.meta.url),"utf8");
