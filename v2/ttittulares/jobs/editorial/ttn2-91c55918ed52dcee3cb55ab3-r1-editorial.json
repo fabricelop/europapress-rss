@@ -1,27 +1,33 @@
 {
   "attempts": {
-    "claim_count": 2,
+    "claim_count": 3,
     "history": [
       {
         "at": "2026-11-17T08:44:58Z",
         "attempt_no": 1,
         "command_id": "",
         "outcome": "preflight_failed"
+      },
+      {
+        "at": "2026-11-17T08:55:08Z",
+        "attempt_no": 2,
+        "command_id": "",
+        "outcome": "preflight_failed"
       }
     ],
     "max_safe_preflight_attempts": 3,
-    "safe_preflight_failures": 1,
+    "safe_preflight_failures": 2,
     "submission_count": 0
   },
   "capture": null,
   "event_id": "ttn2-91c55918ed52dcee3cb55ab3",
   "job_id": "ttn2-91c55918ed52dcee3cb55ab3-r1-editorial",
   "lease": {
-    "expires_at": "2026-11-17T08:54:58Z",
-    "heartbeat_at": "2026-11-17T08:44:58Z",
-    "started_at": "2026-11-17T08:44:58Z",
-    "token_sha256": "f7cff36771a31d10a09b0f1d442334e4770cf276bc1c83e9e1c1eca1153c8a03",
-    "worker_id": "news-63abc44594c241c3b85f716912af9f67"
+    "expires_at": "2026-11-17T09:05:08Z",
+    "heartbeat_at": "2026-11-17T08:55:08Z",
+    "started_at": "2026-11-17T08:55:08Z",
+    "token_sha256": "8ab278f6cd20986fbd5c55a4dc7749e0f1ba92f5b09c9145eef38743be0292fb",
+    "worker_id": "news-51a57cc623864aa4bb2153c1dfd95314"
   },
   "phase": "browser_starting",
   "priority": "automatic",
@@ -35,5 +41,5 @@
   "send_intent": null,
   "session": null,
   "status": "claimed",
-  "updated_at": "2026-11-17T08:44:58Z"
+  "updated_at": "2026-11-17T08:55:08Z"
 }
