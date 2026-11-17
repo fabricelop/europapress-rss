@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-17T07:23:36.776663+00:00",
+  "checked_at": "2026-11-17T07:33:42.242894+00:00",
   "before": [
     "elaborando_bloqueado_55"
   ],
@@ -8,7 +8,13 @@
     "elaborando_bloqueado_55"
   ],
   "healthy_source_count": 19,
-  "source_failures": [],
-  "events_bytes": 4028790,
+  "source_failures": [
+    {
+      "source": "EFE Deportes",
+      "type": "sport",
+      "error": "HTTP Error 429: Too Many Requests"
+    }
+  ],
+  "events_bytes": 4033303,
   "ok": false
 }
