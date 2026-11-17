@@ -11231,20 +11231,27 @@
     "trv2-40877c3e499384f1b2790011": {
       "trend_id": "trv2-40877c3e499384f1b2790011",
       "name": "carmona",
-      "revision": 1,
-      "status": "in_progress",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "9bba00ae9f0c4dea",
-      "requested_at": "2026-11-17T16:16:26.772583+00:00",
-      "updated_at": "2026-11-17T16:16:26.772583+00:00",
+      "requested_at": "2026-11-17T17:11:45.762157+00:00",
+      "updated_at": "2026-11-17T17:11:45.762157+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "lease": {
-        "token": "44d167c23db9d701d28af872ecc52951438c9b04b8f10095",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-17T16:21:24.007047+00:00",
-        "expires_at": "2026-11-17T17:01:24.007047+00:00"
-      }
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-17T16:21:24.007047+00:00",
+          "send_intent_at": null,
+          "incident_reason": "lease_expired_without_capture",
+          "archived_at": "2026-11-17T17:11:45.762157+00:00"
+        }
+      ],
+      "incident_retries": 1
     },
     "trv2-24232a6150eb9478fddc4572": {
       "trend_id": "trv2-24232a6150eb9478fddc4572",
@@ -11763,14 +11770,14 @@
     "trv2-81e7d55c5c944b5fbf7ec049",
     "trv2-03226d9b1b11eb3e85feb051",
     "trv2-24232a6150eb9478fddc4572",
-    "trv2-40877c3e499384f1b2790011",
     "trv2-6d46e65822bbef3ea1cf20c5",
     "trv2-90cab3c1a2084c8ce980de56",
     "trv2-b7865cf93e25bcb8cced7982",
     "trv2-46dc469d8f5c8129ece07fb8",
     "trv2-26c48c1d43b6c10c40395189",
     "trv2-cb0e9c541c50fd742680ab18",
-    "trv2-03d80db7f88fc904e211f435"
+    "trv2-03d80db7f88fc904e211f435",
+    "trv2-40877c3e499384f1b2790011"
   ],
   "effects_enabled": false
 }
