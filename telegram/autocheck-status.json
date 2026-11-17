@@ -1,14 +1,20 @@
 {
-  "checked_at": "2026-11-17T08:53:30.738876+00:00",
+  "checked_at": "2026-11-17T09:04:50.068228+00:00",
   "before": [
-    "elaborando_bloqueado_58"
+    "elaborando_bloqueado_59"
   ],
   "repair_actions": [],
   "remaining": [
-    "elaborando_bloqueado_58"
+    "elaborando_bloqueado_59"
   ],
-  "healthy_source_count": 19,
-  "source_failures": [],
-  "events_bytes": 4028457,
+  "healthy_source_count": 18,
+  "source_failures": [
+    {
+      "source": "Telecinco Noticias",
+      "type": "general",
+      "error": "HTTP Error 429: Too Many Requests"
+    }
+  ],
+  "events_bytes": 4034418,
   "ok": false
 }
