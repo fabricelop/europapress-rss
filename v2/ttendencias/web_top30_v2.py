@@ -136,7 +136,8 @@ def image_retry_public_status(item, *, now=None):
         and summary.get("pre_send_limit") == 3):
         return {"state": summary["state"],
                 "attempts": summary["send_attempts"],
-                "remaining": max(0, 3 - summary["send_attempts"]),
+                "remaining": (max(0, 3 - summary["send_attempts"])
+                              if summary["state"] == "retry_pending" else 0),
                 "pre_send_failures": summary["pre_send_failures"]}
     return {"state": "unknown", "remaining": None, "attempts": None}
 
