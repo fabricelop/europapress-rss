@@ -109,7 +109,7 @@ def safe_image_failure(exc):
                 "V2_IMAGE_SEND_UNVERIFIED_NO_RESEND", "V2_IMAGE_SEND_UNCERTAIN_NO_RESEND",
                 "V2_IMAGE_NEW_CHAT_ID_NOT_VERIFIED", "V2_IMAGE_ATTEMPT_ALREADY_RECORDED_NO_RESEND",
                 "V2_IMAGE_PROMPT_NOT_SUBMITTED", "V2_IMAGE_NOT_READY")
-            else "manual_only"
+            else "manual_only"}
 
 
 def persist_image_incident(api, auth, job, exc, *, at=None):
