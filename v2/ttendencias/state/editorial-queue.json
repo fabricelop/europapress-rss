@@ -10892,21 +10892,29 @@
     "trv2-132e8775a2672452bf68cb64": {
       "trend_id": "trv2-132e8775a2672452bf68cb64",
       "name": "Vinicius",
-      "revision": 1,
-      "status": "in_progress",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "review_pending",
+      "reason": "retry_after_incident_with_hints",
       "episode_token": "7aa46f5b06476b53",
-      "requested_at": "2026-11-17T13:02:43.737269+00:00",
-      "updated_at": "2026-11-17T13:02:43.737269+00:00",
+      "requested_at": "2026-11-17T14:00:03.845033+00:00",
+      "updated_at": "2026-11-17T14:00:03.845033+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "lease": {
-        "token": "be9358649a258636d6a183e1cb8851a0b6f9fae7904dcd26",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-17T13:05:59.350022+00:00",
-        "expires_at": "2026-11-17T13:45:59.350022+00:00"
-      },
-      "incident_review_hints_pending": "Es pir sus declaraciones de no haber entrenado lo sufuciente."
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-17T13:05:59.350022+00:00",
+          "send_intent_at": null,
+          "incident_reason": "lease_expired_without_capture",
+          "archived_at": "2026-11-17T14:00:03.845033+00:00"
+        }
+      ],
+      "incident_retries": 1,
+      "review_mode": "x",
+      "review_hints": "Es pir sus declaraciones de no haber entrenado lo sufuciente."
     },
     "trv2-c1602f28a0d2c9a36dd10d49": {
       "trend_id": "trv2-c1602f28a0d2c9a36dd10d49",
@@ -11343,11 +11351,11 @@
     "trv2-5af9c7d76013a4601b23923a",
     "trv2-81f0871a08c79149d7569736",
     "trv2-359b24760fe2aeae16f9d230",
-    "trv2-132e8775a2672452bf68cb64",
     "trv2-c1602f28a0d2c9a36dd10d49",
     "trv2-42777490afa9abaa2401700f",
     "trv2-26c48c1d43b6c10c40395189",
-    "trv2-2e45d6af4e14f858b5bf9508"
+    "trv2-2e45d6af4e14f858b5bf9508",
+    "trv2-132e8775a2672452bf68cb64"
   ],
   "effects_enabled": false
 }
