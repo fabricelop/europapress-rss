@@ -1,3 +1,24 @@
+## Noticias: corrección integrada y CI completo — 17/11/2026
+
+Commit de código validado: 1af7ad669e022a3638e175477994753f12d1982a.
+Run44032975102 SUCCESS:218 Python +108 Node en Windows/Linux, parser PowerShell,
+XML Task Scheduler y ejecución WSH real para lanzadores sin consola.
+Run44032975167 SUCCESS: regresiones editoriales en ambos SO y preview real
+del commit21a5291f4ccff3c1dcaf82d4125cc13b08b0c27e:82 pendientes,0 activos,max3.
+No se realizaron claims/envíos/READY durante estas comprobaciones.
+
+Siguiente acción de PC: descargar Install-News-Editorial-V2.ps1 del commit
+1af7ad669e022a3638e175477994753f12d1982a y ejecutarlo con -EnableImages
+en la consola existente. No hace falta repetir Upgrade/drenaje25min para
+el bloqueo ya terminado. El instalador abortará si detecta un consumidor vivo.
+Debe informar TTN2_EDITORIAL_INCIDENTS_QUARANTINED=1 (Lindsay Clancy se conserva
+sin reenviar), verificar el nuevo piloto y solicitar los tres puestos editoriales
+y los dos de imagen con WScript oculto. Falta comprobar su salida local real.
+
+Mantener la distinción: código/CI completados; instalación y tareas locales de
+esta corrección aún no confirmadas. Registro actualizado sin sustituir los
+cambios nocturnos de Tendencias ni el requisito separado de presupuestos de imágenes.
+
 ## Noticias: desbloqueo de validación capturada — 17/11/2026
 
 Retomado ESTE chat tras leer memoria maestra v315 y el registro de la noche.
