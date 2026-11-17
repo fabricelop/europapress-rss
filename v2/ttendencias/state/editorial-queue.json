@@ -10582,20 +10582,27 @@
     "trv2-42777490afa9abaa2401700f": {
       "trend_id": "trv2-42777490afa9abaa2401700f",
       "name": "Singapur",
-      "revision": 1,
-      "status": "in_progress",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "b3f57fa551c96c69",
-      "requested_at": "2026-11-17T11:17:21.592740+00:00",
-      "updated_at": "2026-11-17T11:17:21.592740+00:00",
+      "requested_at": "2026-11-17T12:16:24.336710+00:00",
+      "updated_at": "2026-11-17T12:16:24.336710+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "lease": {
-        "token": "058f46a71f1dcc7fb49255537cd0e48a9bb596aec9fafb15",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-17T11:17:47.303425+00:00",
-        "expires_at": "2026-11-17T11:57:47.303425+00:00"
-      }
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-17T11:17:47.303425+00:00",
+          "send_intent_at": null,
+          "incident_reason": "lease_expired_without_capture",
+          "archived_at": "2026-11-17T12:16:24.336710+00:00"
+        }
+      ],
+      "incident_retries": 1
     },
     "trv2-265753bdae3ce83e08f8e38f": {
       "trend_id": "trv2-265753bdae3ce83e08f8e38f",
@@ -11112,12 +11119,12 @@
     "trv2-f58d0704dc00bff71cb8ae5b",
     "trv2-9d44c0bc5d99ea47e80bee8d",
     "trv2-fe742fffe835622df7a9a1a7",
-    "trv2-42777490afa9abaa2401700f",
     "trv2-81f0871a08c79149d7569736",
     "trv2-e3e8985d7691de709329f955",
     "trv2-265753bdae3ce83e08f8e38f",
     "trv2-5af9c7d76013a4601b23923a",
-    "trv2-359b24760fe2aeae16f9d230"
+    "trv2-359b24760fe2aeae16f9d230",
+    "trv2-42777490afa9abaa2401700f"
   ],
   "effects_enabled": false
 }
