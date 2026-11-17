@@ -10983,13 +10983,13 @@
       "trend_id": "trv2-cb3cd83c00b9d2008ef99b59",
       "name": "José Ángel Carmona",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "b7b6ddfab24aa34f",
       "requested_at": "2026-11-17T14:51:12.848682+00:00",
       "updated_at": "2026-11-17T14:51:12.848682+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -11002,7 +11002,13 @@
           "archived_at": "2026-11-17T14:51:12.848682+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "2984780758a023aa6e9a72a194ecc93185558b47c976fbc8",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-17T14:51:36.073880+00:00",
+        "expires_at": "2026-11-17T15:31:36.073880+00:00"
+      }
     },
     "trv2-920e0786b03dbd906112ac17": {
       "trend_id": "trv2-920e0786b03dbd906112ac17",
