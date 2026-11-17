@@ -10,9 +10,11 @@ from v2.ttittulares.content_filters_v2 import content_filter_reason, routine_lot
 from v2.ttittulares.source_publication_v2 import parse_publication_date, feed_publication
 from v2.ttittulares.identity_v2 import (
     evidence_title_eligible, has_independent_evidence_consensus, same_fact,
-    fingerprint, tokens
+    fingerprint, tokens, events_match, best_match
 )
-from v2.ttittulares.radar_ingest_v2 import ingest_scan, canonical_url
+from v2.ttittulares.radar_ingest_v2 import (
+    ingest_scan, canonical_url, _TokenLookup, _index_match
+)
 
 BASE = datetime(2026, 11, 16, 10, 0, tzinfo=timezone.utc)
 TITLE = "El Gobierno aprueba una nueva medida tras el debate en el Parlamento"
@@ -59,6 +61,64 @@ def ready_index(title, event_id="ttn2-0123456789abcdef01234567", families=None):
                                "editorial_job_id": event_id + "-r1-editorial"}]
         }
     }}
+
+
+class IndexedMatchingParityTests(unittest.TestCase):
+    def test_lookup_never_excludes_possible_title_or_variant_match(self):
+        titles = [
+            "El Ejecutivo anuncia una nueva reforma del transporte ferroviario",
+            "El Gobierno aprueba una nueva medida tras el debate en el Parlamento",
+            "La selección española vence a Italia en el partido amistoso",
+            "Una tormenta provoca grandes inundaciones en el sur de Francia",
+            "Los trabajadores negocian un aumento salarial en el sector público",
+            "El tribunal investiga una trama de corrupción en el ministerio",
+            "La justicia confirma la sanción al club deportivo de Sevilla",
+            "El Congreso debate una ley de protección de los trabajadores",
+        ]
+        events = [{"event_id": f"ttn2-{i:024x}", "canonical_title": title,
+                   "appearances": [{"title": title.replace("El ", "Un ")}]}
+                  for i, title in enumerate(titles)]
+        lookup = _TokenLookup(events)
+        for title in titles + [
+            "El Gobierno anuncia una reforma del transporte ferroviario",
+            "Tribunal confirma una sanción al club deportivo sevillano",
+            "Gobierno y trabajadores negocian una reforma salarial",
+        ]:
+            probable = {x["event_id"] for x in lookup.candidates(title)}
+            for event in events:
+                direct = best_match(title, [event])[0] is not None
+                self.assertFalse(direct and event["event_id"] not in probable,
+                                 (title, event["canonical_title"]))
+            for event in events:
+                if events_match({"canonical_title": title, "appearances": []}, event):
+                    self.assertIn(event["event_id"], probable)
+
+    def test_index_lookup_matches_full_scan_for_urls_and_text(self):
+        titles = [
+            "El Gobierno aprueba la reforma del sector ferroviario",
+            "El tribunal investiga una trama de corrupción ministerial",
+            "La selección española vence a Italia en partido amistoso",
+        ]
+        items = {}
+        for i, title in enumerate(titles):
+            key = f"ttn2-{i:024x}"
+            items[key] = ready_index(title, event_id=key)["items"][key]
+        lookup = _TokenLookup()
+        from v2.ttittulares.identity_v2 import comparable_url
+        for item in items.values():
+            lookup.add(item, variants=[item["canonical_title"]] + item["aliases"],
+                       urls=[comparable_url(url) for url in item["canonical_urls"]])
+        for row in [
+            {"title": "El Congreso aprueba una reforma del sector ferroviario",
+             "canonical_url": "https://other.example/a"},
+            {"title": "Partido de fútbol en el estadio de Madrid",
+             "canonical_url": "https://example.org/original"},
+            {"title": "La selección gana un partido amistoso frente a Italia",
+             "canonical_url": "https://other.example/b"},
+            {"title": "Nueva noticia distinta sobre transporte marítimo",
+             "canonical_url": "https://other.example/c"},
+        ]:
+            self.assertEqual(_index_match(row, items, lookup), _index_match(row, items))
 
 
 class SourceCatalogTests(unittest.TestCase):
