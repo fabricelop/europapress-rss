@@ -11130,25 +11130,28 @@
     "trv2-46dc469d8f5c8129ece07fb8": {
       "trend_id": "trv2-46dc469d8f5c8129ece07fb8",
       "name": "#TEM17N",
-      "revision": 2,
-      "status": "in_progress",
-      "reason": "user_reexplanation",
+      "revision": 3,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "c1e3e672a2373252",
-      "requested_at": "2026-11-17T16:27:24.805275+00:00",
-      "updated_at": "2026-11-17T16:28:48.050018+00:00",
-      "attempts": 1,
+      "requested_at": "2026-11-17T17:16:04.767210+00:00",
+      "updated_at": "2026-11-17T17:16:04.767210+00:00",
+      "attempts": 0,
       "review_mode": "x",
       "review_hints": "Es del programa Todo es Mentira de hoy.",
-      "lease": {
-        "token": "d73a2d4aa0f8046e54bd2faae7e8e07770af6f24a5f078c5",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-17T16:27:55.486821+00:00",
-        "expires_at": "2026-11-17T17:07:55.486821+00:00"
-      },
-      "send_intent": {
-        "token": "d73a2d4aa0f8046e54bd2faae7e8e07770af6f24a5f078c5",
-        "at": "2026-11-17T16:28:48.049987+00:00"
-      }
+      "previous_attempts": [
+        {
+          "revision": 2,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-17T16:27:55.486821+00:00",
+          "send_intent_at": "2026-11-17T16:28:48.049987+00:00",
+          "incident_reason": "lease_expired_without_capture",
+          "archived_at": "2026-11-17T17:16:04.767210+00:00"
+        }
+      ],
+      "incident_retries": 1
     },
     "trv2-cb0e9c541c50fd742680ab18": {
       "trend_id": "trv2-cb0e9c541c50fd742680ab18",
@@ -11834,13 +11837,13 @@
     "trv2-6d46e65822bbef3ea1cf20c5",
     "trv2-90cab3c1a2084c8ce980de56",
     "trv2-b7865cf93e25bcb8cced7982",
-    "trv2-46dc469d8f5c8129ece07fb8",
     "trv2-26c48c1d43b6c10c40395189",
     "trv2-cb0e9c541c50fd742680ab18",
     "trv2-03d80db7f88fc904e211f435",
     "trv2-40877c3e499384f1b2790011",
     "trv2-34ca0c923169a13704deea45",
-    "trv2-9cbd3b28a6565b5069fdbda5"
+    "trv2-9cbd3b28a6565b5069fdbda5",
+    "trv2-46dc469d8f5c8129ece07fb8"
   ],
   "effects_enabled": false
 }
