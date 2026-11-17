@@ -10417,21 +10417,29 @@
     "trv2-fe742fffe835622df7a9a1a7": {
       "trend_id": "trv2-fe742fffe835622df7a9a1a7",
       "name": "Loeb",
-      "revision": 1,
-      "status": "in_progress",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "review_pending",
+      "reason": "retry_after_incident_with_hints",
       "episode_token": "8605cd8fecd316f5",
-      "requested_at": "2026-11-17T10:13:10.139520+00:00",
-      "updated_at": "2026-11-17T10:13:10.139520+00:00",
+      "requested_at": "2026-11-17T11:05:54.978402+00:00",
+      "updated_at": "2026-11-17T11:05:54.978402+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "lease": {
-        "token": "44337d2dc6ba24cd45966aadb68f59178d42899eaef829b7",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-17T10:16:41.950590+00:00",
-        "expires_at": "2026-11-17T10:56:41.950590+00:00"
-      },
-      "incident_review_hints_pending": "Creo que es por el dakar"
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-17T10:16:41.950590+00:00",
+          "send_intent_at": null,
+          "incident_reason": "lease_expired_without_capture",
+          "archived_at": "2026-11-17T11:05:54.978402+00:00"
+        }
+      ],
+      "incident_retries": 1,
+      "review_mode": "x",
+      "review_hints": "Creo que es por el dakar"
     },
     "trv2-f58d0704dc00bff71cb8ae5b": {
       "trend_id": "trv2-f58d0704dc00bff71cb8ae5b",
@@ -10903,8 +10911,8 @@
     "trv2-4fbcf70b4a8a60ddb4398a07",
     "trv2-5402ef0b1558c313dae9a266",
     "trv2-f58d0704dc00bff71cb8ae5b",
-    "trv2-fe742fffe835622df7a9a1a7",
-    "trv2-9d44c0bc5d99ea47e80bee8d"
+    "trv2-9d44c0bc5d99ea47e80bee8d",
+    "trv2-fe742fffe835622df7a9a1a7"
   ],
   "effects_enabled": false
 }
