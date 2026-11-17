@@ -11622,13 +11622,13 @@
       "trend_id": "trv2-72a170e5d797bfa0c5a6ad70",
       "name": "GTA 6",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "d391ff1f6a25091b",
       "requested_at": "2026-11-17T20:44:36.749064+00:00",
       "updated_at": "2026-11-17T20:44:36.749064+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -11641,7 +11641,13 @@
           "archived_at": "2026-11-17T20:44:36.749064+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "d32d60a6dd63ffe3ef74c5203747d6c72506c879a07e01af",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-17T20:45:12.892752+00:00",
+        "expires_at": "2026-11-17T21:25:12.892752+00:00"
+      }
     },
     "trv2-fc0d9d7e06c95703ecf51331": {
       "trend_id": "trv2-fc0d9d7e06c95703ecf51331",
