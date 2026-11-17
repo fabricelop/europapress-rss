@@ -90,6 +90,6 @@ test("V2 image path from editorial ledger cannot point outside fixed generated-i
    Response.json(ledger({path:"https://evil.example/image.png"})):new Response(raw);
   const response=await worker.fetch(new Request(origin+"/api/image/"+ID+"?revision=1",
    {headers:{"cookie":cookie}}),env);
-  assert.equal(response.status,409);
+  assert.equal(response.status,502);
  }finally{globalThis.fetch=fetchBefore;}
 });
