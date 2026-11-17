@@ -4,10 +4,12 @@ import base64
 import io
 import json
 import unittest
+import urllib.error
 from unittest.mock import patch
 
 from listas_v2 import (build_listas, classify_cause, classify_x,
-                       _decode_contents_json, sync_to_github)
+                       _decode_contents_json, _request, ListasConflict,
+                       sync_to_github)
 
 ID = "trv2-38fe784e35097e53eb5a1b13"
 SHA = "a" * 64
@@ -31,6 +33,21 @@ def q(text=TEXT_UNCERTAIN, status="captured_review"):
             }}
 
 class TestListas(unittest.TestCase):
+    @staticmethod
+    def contents_response(sha, value):
+        return {"sha": sha, "encoding": "base64", "content": base64.b64encode(
+            json.dumps(value, ensure_ascii=False).encode("utf-8")
+        ).decode("ascii")}
+
+    @staticmethod
+    def with_concurrent_capture():
+        newer = q()
+        other = dict(newer["items"][ID])
+        other["trend_id"] = "trv2-concurrent-capture"
+        other["name"] = "Otra tendencia"
+        newer["items"][other["trend_id"]] = other
+        return newer
+
     @staticmethod
     def blob_response(sha, value):
         raw = json.dumps(value, ensure_ascii=False).encode("utf-8")
@@ -74,6 +91,74 @@ class TestListas(unittest.TestCase):
         self.assertEqual([call.args[0] for call in request.call_args_list],
                          ["GET", "PUT", "GET"])
         self.assertEqual(request.call_args_list[1].args[2]["sha"], old_sha)
+
+    def test_http_409_is_distinct_from_fatal_http_errors(self):
+        failure = urllib.error.HTTPError("https://api.github.com", 409,
+                                         "conflict", {}, None)
+        with patch("listas_v2.urllib.request.urlopen", side_effect=failure):
+            with self.assertRaisesRegex(ListasConflict, "409"):
+                _request("PUT", "test-token", {"branch": "test"})
+
+    def test_conflict_refetches_queue_and_preserves_new_capture(self):
+        newer = self.with_concurrent_capture()
+        projected = build_listas(newer, "fresh-queue-sha")
+        responses = [
+            self.contents_response("a" * 40, {}),
+            ListasConflict("simulated 409"),
+            self.contents_response("b" * 40, {}),
+            {"commit": {"sha": "updated"}},
+            self.contents_response("c" * 40, projected),
+        ]
+        with (patch("listas_v2._request", side_effect=responses) as request,
+              patch("listas_v2.time.sleep") as sleep):
+            actual = sync_to_github(None, "test-token", q(), "stale-queue-sha",
+                                    reload_queue=lambda: (newer, "fresh-queue-sha"))
+        self.assertEqual(actual["count"], 2)
+        self.assertIn("trv2-concurrent-capture", actual["items"])
+        self.assertEqual(actual["source_queue_sha"], "fresh-queue-sha")
+        self.assertEqual([call.args[0] for call in request.call_args_list],
+                         ["GET", "PUT", "GET", "PUT", "GET"])
+        self.assertEqual(request.call_args_list[3].args[2]["sha"], "b" * 40)
+        encoded = request.call_args_list[3].args[2]["content"]
+        self.assertIn("trv2-concurrent-capture", base64.b64decode(encoded).decode("utf-8"))
+        sleep.assert_called_once()
+
+    def test_repeated_conflicts_stop_without_claiming_success(self):
+        responses = []
+        for index in range(5):
+            responses.extend([
+                self.contents_response(str(index) * 40, {}),
+                ListasConflict("simulated 409"),
+            ])
+        reloads = []
+        def refresh():
+            reloads.append(True)
+            return q(), "new-queue-sha"
+        with (patch("listas_v2._request", side_effect=responses) as request,
+              patch("listas_v2.time.sleep")):
+            with self.assertRaisesRegex(RuntimeError, "LISTAS_CONFLICT_RETRIES_EXHAUSTED"):
+                sync_to_github(None, "test-token", q(), "stale-queue-sha",
+                               reload_queue=refresh)
+        self.assertEqual(len(reloads), 4)
+        self.assertEqual(len(request.call_args_list), 10)
+
+    def test_concurrent_readback_refetches_before_deciding_complete(self):
+        newer = self.with_concurrent_capture()
+        projected = build_listas(newer, "fresh-queue-sha")
+        responses = [
+            self.contents_response("a" * 40, {}),
+            {"commit": {"sha": "first-write"}},
+            self.contents_response("b" * 40, {"different": True}),
+            self.contents_response("c" * 40, projected),
+            self.contents_response("c" * 40, projected),
+        ]
+        with (patch("listas_v2._request", side_effect=responses) as request,
+              patch("listas_v2.time.sleep")):
+            result = sync_to_github(None, "test-token", q(), "stale-queue-sha",
+                                    reload_queue=lambda: (newer, "fresh-queue-sha"))
+        self.assertEqual(result, projected)
+        self.assertEqual([call.args[0] for call in request.call_args_list],
+                         ["GET", "PUT", "GET", "GET", "GET"])
 
     def test_uncertain_enters_listas(self):
         projection = build_listas(q(), "queue-sha")
