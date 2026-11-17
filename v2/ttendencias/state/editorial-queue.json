@@ -12655,12 +12655,12 @@
       "trend_id": "trv2-d47132c9e5f0d6f049c2d099",
       "name": "HiFi",
       "revision": 2,
-      "status": "review_pending",
+      "status": "in_progress",
       "reason": "user_reexplanation",
       "episode_token": "582265fdfdb10e0d",
       "requested_at": "2026-11-17T22:17:55.291827+00:00",
       "updated_at": "2026-11-17T22:17:55.291827+00:00",
-      "attempts": 0,
+      "attempts": 1,
       "image_retry_summary": {
         "revision": 1,
         "editorial_sha256": "10acc3f447296a79c633bc391b980c3a3ca261cba383f82c829dcd9a1c4e8196",
@@ -12672,7 +12672,13 @@
       },
       "review_mode": "x",
       "review_hints": "Busca en x",
-      "incident_retries": 0
+      "incident_retries": 0,
+      "lease": {
+        "token": "24235d758f16be031b81d1bad9246511a024c296e851123f",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-17T22:19:58.666568+00:00",
+        "expires_at": "2026-11-17T22:59:58.666568+00:00"
+      }
     },
     "trv2-5e9ff4d6f092811caa26eb65": {
       "trend_id": "trv2-5e9ff4d6f092811caa26eb65",
