@@ -11176,13 +11176,13 @@
     "trv2-cb0e9c541c50fd742680ab18": {
       "trend_id": "trv2-cb0e9c541c50fd742680ab18",
       "name": "Fils",
-      "revision": 3,
-      "status": "in_progress",
-      "reason": "user_reexplanation",
+      "revision": 4,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "85406f774aed6477",
-      "requested_at": "2026-11-17T18:23:50.297431+00:00",
-      "updated_at": "2026-11-17T18:23:50.297431+00:00",
-      "attempts": 1,
+      "requested_at": "2026-11-17T20:54:15.432090+00:00",
+      "updated_at": "2026-11-17T20:54:15.432090+00:00",
+      "attempts": 0,
       "previous_attempts": [
         {
           "revision": 1,
@@ -11193,17 +11193,21 @@
           "send_intent_at": null,
           "incident_reason": "lease_expired_without_capture",
           "archived_at": "2026-11-17T17:07:38.270304+00:00"
+        },
+        {
+          "revision": 3,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-17T18:26:58.019614+00:00",
+          "send_intent_at": null,
+          "incident_reason": "lease_expired_without_capture",
+          "archived_at": "2026-11-17T20:54:15.432090+00:00"
         }
       ],
-      "incident_retries": 1,
+      "incident_retries": 2,
       "review_mode": "x",
-      "review_hints": "El partido ya acabo",
-      "lease": {
-        "token": "819f18209dcd2f58fc77ccd0d5d7009bb8833ca2b2a9bad2",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-17T18:26:58.019614+00:00",
-        "expires_at": "2026-11-17T19:06:58.019614+00:00"
-      }
+      "review_hints": "El partido ya acabo"
     },
     "trv2-03d80db7f88fc904e211f435": {
       "trend_id": "trv2-03d80db7f88fc904e211f435",
@@ -12556,7 +12560,6 @@
     "trv2-e273d59785bd9f62894ac412",
     "trv2-fa01f1afd0502f4f41a3c0de",
     "trv2-fc0d9d7e06c95703ecf51331",
-    "trv2-cb0e9c541c50fd742680ab18",
     "trv2-90cab3c1a2084c8ce980de56",
     "trv2-03cf9ab311a017dcdc492e03",
     "trv2-12857f03ed66a37f99c42d66",
@@ -12576,7 +12579,8 @@
     "trv2-72a170e5d797bfa0c5a6ad70",
     "trv2-215d8dccc87c77fb1d90f95d",
     "trv2-883b26773797a4e04e85bec5",
-    "trv2-bfddd97429ea4faa8ef3c545"
+    "trv2-bfddd97429ea4faa8ef3c545",
+    "trv2-cb0e9c541c50fd742680ab18"
   ],
   "effects_enabled": false
 }
