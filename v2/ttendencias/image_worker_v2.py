@@ -115,8 +115,8 @@ def safe_image_failure(exc):
 def persist_image_incident(api, auth, job, exc, *, at=None):
     """CAS the current revision's failure and verify it without changing text.
 
-    No retry/generation policy is altered. An older failed attempt cannot replace
-    a newer active attempt, a newer incident or a successfully attached original.
+    Incident persistence is independent from bounded fresh-chat retries. An older
+    failed attempt cannot replace a newer incident or a successfully attached image.
     """
     tid, rev, command = job["trend_id"], job["revision"], job["command_id"]
     expected_hash = job["editorial_sha256"]
@@ -213,7 +213,8 @@ def ranked_candidates(queue, history, *, now=None):
 
     Historical first revisions are not an unlimited image backlog. A recent,
     explicitly reworked revision remains entitled to its own new image even
-    after the radar changes. Delivery/journal anti-duplicate guards still apply.
+    after the radar changes. Each retry uses a fresh command/chat; the latest
+    successful raster replaces the previous image for that trend.
     """
     # Reuse authoritative rank, freshness, completeness and revision checks.
     select_current_top30(queue, history, 30, now=now)
