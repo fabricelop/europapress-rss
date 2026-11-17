@@ -1,9 +1,10 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import fs from "node:fs";
 import worker from "../src/index.js";
 import {DatabaseSync} from "node:sqlite";
 import {deflateSync} from "node:zlib";
-import {newsAction,newsControls,newsView,newsPublicationCount,newsManualImage,newsImage,newsWorkerControls} from "../src/news-actions.js";
+import {newsAction,newsControls,newsView,newsPublicationCount,newsManualImage,newsImage,newsWorkerControls,publicNews} from "../src/news-actions.js";
 import {decorateNews,projectNews} from "../src/news.js";
 const id="ttn2-"+"a".repeat(24),time="2026-11-16T18:13:24Z",hash="c".repeat(64);
 function fixture(){return [
@@ -121,7 +122,7 @@ test("manual image rejects thumbnails and never creates a successful association
  assert.equal((await newsManualImage(req,env,helpers)).status,413);
  assert.equal((await newsControls(env)).preferences.length,0);
 }));
-test("manual original association is exact and hidden public image cannot be fetched",()=>scoped(async env=>{
+test("manual original association is exact and V1 switch never hides an authorized V2 image",()=>scoped(async env=>{
  const crc32=bytes=>{let crc=0xffffffff;for(const byte of bytes){crc^=byte;for(let bit=0;bit<8;bit++)crc=(crc>>>1)^((crc&1)?0xedb88320:0);}return (crc^0xffffffff)>>>0;};
  const chunk=(type,data)=>{const tag=Buffer.from(type),out=Buffer.alloc(12+data.length);out.writeUInt32BE(data.length);tag.copy(out,4);data.copy(out,8);out.writeUInt32BE(crc32(Buffer.concat([tag,data])),8+data.length);return out;};
  const ihdr=Buffer.alloc(13);ihdr.writeUInt32BE(1024);ihdr.writeUInt32BE(576,4);ihdr[8]=8;ihdr[9]=2;
@@ -134,8 +135,27 @@ test("manual original association is exact and hidden public image cannot be fet
  const original=await newsImage(imageReq,env,helpers);assert.equal(original.status,200);assert.equal((await original.arrayBuffer()).byteLength,bytes.length);
  const publicImage=await newsImage(imageReq,env,helpers,true);assert.equal(publicImage.status,200);assert.equal(publicImage.headers.get("cross-origin-resource-policy"),"cross-origin");
  await newsAction(request("public_image",{value:false}),env,helpers);
- assert.equal((await newsImage(imageReq,env,helpers,true)).status,404);
+ assert.equal((await newsImage(imageReq,env,helpers,true)).status,200);
+ const publicFeed=(await publicNews(env)).items;
+ assert.equal(publicFeed[0].public_image_visible,false);
+ assert.match(publicFeed[0].image_url,/^\/api\/public-news-image\?/);
 }));
+test("sensitive news image starts hidden only in V1, can be shown manually",()=>{
+ const [index,queue]=fixture();index.items[id].canonical_title="Hallan víctimas mortales tras un naufragio";
+ index.items[id].image={revision:1,verified:true};
+ let row=decorateNews(projectNews(index,queue),{preferences:[]}).items[0];
+ assert.equal(row.image_sensitivity_default,true);
+ assert.equal(row.image_available,true);
+ assert.equal(row.public_image_visible,false);
+ row=decorateNews(projectNews(index,queue),{preferences:[{event_id:id,revision:1,public_image_visible:true}]}).items[0];
+ assert.equal(row.public_image_visible,true);
+});
+test("V1 displays images only when its switch is enabled",()=>{
+ const source=fs.readFileSync(new URL('../web-source/news-actions.js',import.meta.url),'utf8');
+ assert.match(source,/if\(item\.image_available&&item\.public_image_visible===true\)/);
+ assert.match(source,/item\.image_available&&item\.public_image_visible===false/);
+ assert.match(source,/aria-label","Mostrar imagen en V1"/);
+});
 
 test("all news mutations and original-image reads retain the private session gate",async()=>{
  const env={AUTH_PASSWORD:"test-password-more-than-sixteen",SESSION_SECRET:"test-session-secret-more-than-thirty-two-characters"};

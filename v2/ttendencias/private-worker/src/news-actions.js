@@ -175,7 +175,7 @@ export async function newsImage(request,env,{json,headers},publicRead=false){
   const raw=await readNews({all:true});const controls=await newsControls(env);
   const item=decorateNews(raw,controls).items.find(x=>x.event_id===id);
   if(!item||item.revision!==revision||!["ready","archived"].includes(item.group)||item.rework_requested||
-    item.image_suppressed||(publicRead&&!item.public_image_visible))return json({error:"image_hidden"},404);
+    item.image_suppressed)return json({error:"image_hidden"},404);
   const record=await readNewsRecord(id,revision);
   const pref=controls.preferences.find(x=>x.event_id===id&&x.revision===revision);
   let buffer,mime,hash;
@@ -204,7 +204,7 @@ export async function publicNews(env){
  for(const item of view.items.filter(x=>["ready","archived"].includes(x.group)&&!x.rework_requested).slice(0,30)){
   const record=await readNewsRecord(item.event_id,item.revision,{view:raw});
   items.push({...item,...record,id:item.event_id,headline:record.title,explanation:record.tweet_text,
-   image_url:item.image_available&&item.public_image_visible?
+   image_url:item.image_available?
     "/api/public-news-image?id="+item.event_id+"&revision="+item.revision:null});
  }
  return {schema_version:1,source:"ttittulares-v2",observed_at:view.observed_at,items};
