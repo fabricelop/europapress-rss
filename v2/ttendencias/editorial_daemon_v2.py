@@ -103,6 +103,7 @@ def run_forever(poll_seconds=90, max_jobs=0, workers=3):
     api = core.module("persist_capture_github.py", "ttv2_auto_github")
     auth = api.token()
     completed = 0
+    attempts_started = 0
     with exclusive_v2_lock(LOCK):
         # El perfil autenticado solo sirve de semilla: cada chat obtiene una
         # copia propia que se elimina tras cerrar su Chrome, incluso al fallar.
@@ -145,9 +146,12 @@ def run_forever(poll_seconds=90, max_jobs=0, workers=3):
                                completed=completed, active_workers=len(pool.active),
                                last_error=str(exc)[:180])
                         print("TT_V2_AUTO_JOB_NO_RESEND=%s:r%d" % (tid, rev), flush=True)
-                if max_jobs and completed >= max_jobs:
+                # A bounded pilot limits launched chats, not only successful
+                # completions. An interrupted/failed attempt must not trigger
+                # another chat merely because completed stayed at zero.
+                if max_jobs and attempts_started >= max_jobs and not pool.active:
                     break
-                if time.monotonic() - last_sync >= poll_seconds:
+                if not max_jobs and time.monotonic() - last_sync >= poll_seconds:
                     last_sync = time.monotonic()
                     try:
                         re_sync = core.module("sync_private_re_v2.py", "ttv2_direct_re")
@@ -158,7 +162,7 @@ def run_forever(poll_seconds=90, max_jobs=0, workers=3):
                         print("TT_V2_AUTO_RE_SYNC_DELAYED=" + type(exc).__name__, flush=True)
                 started = 0
                 while pool.available_slot() is not None and (
-                    not max_jobs or completed + len(pool.active) < max_jobs
+                    not max_jobs or attempts_started < max_jobs
                 ):
                     try:
                         item, age, blocked = check(api, auth, active_keys=pool.busy_keys)
@@ -167,7 +171,7 @@ def run_forever(poll_seconds=90, max_jobs=0, workers=3):
                                active_workers=len(pool.active), last_error=str(exc)[:180])
                         break
                     if item is None:
-                        if not pool.active and not started:
+                        if not max_jobs and not pool.active and not started:
                             # La recuperación puede abrir el perfil base: solo
                             # ejecutar cuando ningún chat independiente sigue vivo.
                             try:
@@ -194,9 +198,15 @@ def run_forever(poll_seconds=90, max_jobs=0, workers=3):
                         break
                     if launched:
                         started += 1
+                        attempts_started += 1
                         report("WORKING", trend_id=tid, revision=rev, completed=completed,
                                active_workers=len(pool.active), workers=workers)
                         print("TT_V2_AUTO_START_JOB=%s:r%d" % (tid, rev), flush=True)
+                # A manual pilot with no eligible work should finish instead
+                # of keeping a daemon alive indefinitely.
+                if max_jobs and not pool.active and not started:
+                    report("PILOT_NO_ELIGIBLE", completed=completed)
+                    break
                 time.sleep(12 if pool.active else poll_seconds)
         finally:
             if pool.active:
@@ -213,7 +223,7 @@ def main():
                         help="Inicio real continuo; requiere bandera local de instalación")
     parser.add_argument("--poll-seconds", type=int, default=90)
     parser.add_argument("--max-jobs", type=int, default=0,
-                        help="0 = ilimitado, otros valores para pruebas controladas")
+                        help="0 = ilimitado; en pilotos, máximo de chats lanzados")
     parser.add_argument("--workers", type=int, default=3,
                         help="Chats editoriales simultáneos, entre 1 y 6")
     args = parser.parse_args()
