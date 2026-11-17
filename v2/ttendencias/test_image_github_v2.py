@@ -129,7 +129,8 @@ class GitHubImages(unittest.TestCase):
 
     def test_stale_older_attempt_cannot_replace_a_newer_success(self):
         fake=GitHubFake()
-        github.save_original(job(attempt=2),raster("blue"),"x"*48,send=fake)
+        saved=github.save_original(job(attempt=2),raster("blue"),"x"*48,send=fake)
+        fake.ledger["items"][ID]["capture"]["image"]=saved
         before=fake.items[github.PREFIX+ID+".image"]["sha"]
         with self.assertRaisesRegex(RuntimeError,"STALE_ATTEMPT"):
             github.save_original(job(attempt=1),raster("red"),"x"*48,send=fake)
