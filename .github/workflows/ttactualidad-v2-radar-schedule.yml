@@ -1,0 +1,28 @@
+name: Noticias V2 - radar autonomo cada 15 minutos
+
+# Schedules only execute from the repository's default branch. The actual
+# isolated radar implementation remains on feature/ttactualidad-v2-clean.
+on:
+  schedule:
+    # Offset from the legacy V1 watchdog's 5/15/... cron minutes.
+    - cron: '3,18,33,48 * * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      # Trigger a verified first run immediately when this file is installed.
+      - '.github/workflows/ttactualidad-v2-radar-schedule.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ttactualidad-v2-radar-schedule-main
+  cancel-in-progress: false
+
+jobs:
+  persist-v2:
+    if: github.repository == 'fabricelop/europapress-rss'
+    uses: fabricelop/europapress-rss/.github/workflows/ttittulares-v2-radar-persist-once.yml@feature/ttactualidad-v2-clean
+    permissions:
+      contents: write
