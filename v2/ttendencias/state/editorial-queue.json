@@ -11013,20 +11013,27 @@
     "trv2-920e0786b03dbd906112ac17": {
       "trend_id": "trv2-920e0786b03dbd906112ac17",
       "name": "IRPF",
-      "revision": 1,
-      "status": "in_progress",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "b95e4f1e1f61a2fe",
-      "requested_at": "2026-11-17T14:01:51.602322+00:00",
-      "updated_at": "2026-11-17T14:01:51.602322+00:00",
+      "requested_at": "2026-11-17T14:58:24.806072+00:00",
+      "updated_at": "2026-11-17T14:58:24.806072+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "lease": {
-        "token": "291e2dd76398f435717a2e75590986b4b7c619970bc992ed",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-17T14:02:31.325600+00:00",
-        "expires_at": "2026-11-17T14:42:31.325600+00:00"
-      }
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-17T14:02:31.325600+00:00",
+          "send_intent_at": null,
+          "incident_reason": "lease_expired_without_capture",
+          "archived_at": "2026-11-17T14:58:24.806072+00:00"
+        }
+      ],
+      "incident_retries": 1
     }
   },
   "pending_count": 408,
@@ -11437,8 +11444,8 @@
     "trv2-26c48c1d43b6c10c40395189",
     "trv2-2e45d6af4e14f858b5bf9508",
     "trv2-132e8775a2672452bf68cb64",
-    "trv2-920e0786b03dbd906112ac17",
-    "trv2-cb3cd83c00b9d2008ef99b59"
+    "trv2-cb3cd83c00b9d2008ef99b59",
+    "trv2-920e0786b03dbd906112ac17"
   ],
   "effects_enabled": false
 }
