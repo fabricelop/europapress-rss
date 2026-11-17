@@ -55,6 +55,48 @@ def check(api, auth, *, directory=core.DIAG_DIR, now=None, active_keys=()):
                          active_keys=active_keys)
 
 
+def release_timed_out_job(api, auth, trend_id, revision, *, cleanup_verified):
+    """Fence an interrupted attempt by its exact local lease, never resend it.
+
+    If a send was attempted, the interrupted chat moves to capture recovery;
+    only a proved pre-send failure can return to Pending.
+    """
+    if not cleanup_verified:
+        return False
+    journal = core.DIAG_DIR / ("run-" + trend_id + "-r" + str(revision) + ".json")
+    try:
+        evidence = json.loads(journal.read_text(encoding="utf-8-sig"))
+        token = evidence["lease_token"]
+    except (OSError, ValueError, KeyError):
+        return False
+    for attempt in range(4):
+        queue, sha = core.queue_read(api, auth)
+        row = (queue.get("items") or {}).get(trend_id) or {}
+        if (row.get("status") != "in_progress" or row.get("revision") != revision
+                or (row.get("lease") or {}).get("token") != token):
+            return False
+        sent = bool(row.get("send_intent") or evidence.get("message_sent")
+                    or evidence.get("status") == "send_intent_recorded")
+        row["status"] = "capture_recovery" if sent else "pending"
+        if sent:
+            row["capture_recovery_reason"] = "session_8min_timeout_no_resend"
+        row.pop("lease", None)
+        row["updated_at"] = core.utcnow()
+        queue["pending_ids"] = [item["trend_id"] for item in sorted(
+            queue["items"].values(), key=lambda x: (x.get("requested_at", ""), x["trend_id"]))
+            if item["status"] in ("pending", "review_pending", "in_progress",
+                                  "capture_recovery", "captured_review")]
+        queue["pending_count"] = len(queue["pending_ids"])
+        try:
+            core.queue_write(api, auth, sha, queue, "bound V2 chat timeout " + trend_id)
+            return True
+        except RuntimeError as exc:
+            if "GitHub conflict/changed revision" not in str(exc) or attempt == 3:
+                raise
+            time.sleep(min(attempt + 1, 3))
+    return False
+
+
 def run_forever(poll_seconds=90, max_jobs=0, workers=3):
     if not flag_is_enabled():
         raise RuntimeError("AUTORUN BLOQUEADO: instalar y habilitar primero V2")
@@ -77,6 +119,14 @@ def run_forever(poll_seconds=90, max_jobs=0, workers=3):
                 for done in pool.reap():
                     tid, rev = done["trend_id"], done["revision"]
                     try:
+                        if done.get("timed_out"):
+                            staged = release_timed_out_job(api, auth, tid, rev,
+                                cleanup_verified=done.get("profile_deleted") is True
+                                and not done.get("profile_cleanup_error"))
+                            report("SESSION_TIMEOUT_8MIN", trend_id=tid, revision=rev,
+                                   completed=completed, active_workers=len(pool.active),
+                                   last_error="recovery_staged" if staged else "recovery_pending")
+                            continue
                         if done.get("profile_cleanup_error"):
                             raise RuntimeError("profile_cleanup=" + done["profile_cleanup_error"])
                         if done["exit_code"]:
