@@ -1,3 +1,21 @@
+## Noticias: editorial Running, imágenes Disabled — 17/11/2026
+
+Salida LOCAL del usuario: TTActualidadNoticiasV2-Editorial Running;
+TTActualidadNoticiasV2-Images Disabled. Falta active-code.txt en la respuesta.
+No reinstalar ni detener editorial que ya progresa.
+GitHub confirma dos jobs de imagen previos saved/done, sin lease/problem:
+Alcaraz ttn2-0e0e7c7ebd494a7a753590d9 r1 (22:20:19Z) y plaza Catalunya
+ttn2-1218d049e8d55af935ec862f r1 (22:23:32Z), ambos del16/11.
+Son recibos previos, no prueba de consumidor de imágenes activo ahora.
+
+Acción propuesta: comprobar que no haya proceso news_images_v2 manual vivo,
+usar reparador validado5309c3e... para arranques WScript ocultos conservando tareas/
+trabajos, poner SOLO images.enabled=TTN2_IMAGES_ENABLED=YES y habilitar/iniciar
+TTActualidadNoticiasV2-Images. No reinstalar paquete ni repetir piloto/encargos
+ya guardados. La propia cola CAS evita volver a generar imágenes saved.
+Si hay proceso de imagen vivo, el bloque aborta antes de tocar nada.
+Esperar nuevo estado local y recibos de trabajos nuevos antes de declarar activación.
+
 ## 17/11/2026 — backfill general de contadores
 
 - `347b83c89a2859d27c9cff6cfa68ed3f3b52d277`: `image_worker_v2.py` admite `--backfill-retry-status` para recorrer todas las tendencias de la cola que tengan diarios locales de su revisión vigente, sin abrir navegador ni enviar imágenes. Por defecto solo informa número de candidatas; `--backfill-retry-status --apply` publica resúmenes seguros y sincroniza snapshot. No requiere recuperación individual por tendencia. Valida SHA editorial y revisión al escribir.
