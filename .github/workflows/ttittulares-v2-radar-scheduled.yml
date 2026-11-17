@@ -3,7 +3,7 @@ name: TTiTTulares V2 - Radar automatico cada 15 minutos
 # Only the default branch owns the clock. Code and every data write remain in V2.
 # 2026-11-17: resynchronization tick after scheduled events stopped firing for hours.
 # This push triggers one isolated radar pass without restarting Windows or editorial jobs.
-# 2026-11-17: resync independent radar and deploy the verified V2 private UI.
+# 2026-11-17: publish compact radar freshness summary and redeploy the verified V2 UI.
 on:
   schedule:
     - cron: '7,22,37,52 * * * *'
