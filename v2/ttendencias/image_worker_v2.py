@@ -667,8 +667,41 @@ def run_one(row, attempt, *, api, auth):
             print("TT_V2_IMAGE_RETRY_SUMMARY=DEGRADED:" + type(exc).__name__, flush=True)
 
 
+
+def backfill_retry_summaries(api, auth, *, dry_run=True):
+    """Bulk backfill from existing local journals; never opens Chrome or sends."""
+    queue, _ = editorial.queue_read(api, auth)
+    candidates = []
+    for tid, row in (queue.get("items") or {}).items():
+        cap = row.get("capture") or {}
+        rev = row.get("revision")
+        if (not isinstance(rev, int) or rev < 1
+            or row.get("status") not in ("captured_review", "ready")
+            or cap.get("revision") != rev
+            or not re.fullmatch(r"[a-f0-9]{64}", str(cap.get("sha256", "")))
+            or not re.fullmatch(r"trv2-[a-f0-9]{24}", str(tid))
+            or not any(JOURNALS.glob("%s-r%d-attempt-*.json" % (tid, rev)))):
+            continue
+        candidates.append({"trend_id": tid, "revision": rev,
+                           "editorial_sha256": cap["sha256"]})
+    print("TT_V2_IMAGE_BACKFILL_CANDIDATES=" + str(len(candidates)), flush=True)
+    if dry_run:
+        print("TT_V2_IMAGE_BACKFILL_DRY_RUN=YES", flush=True)
+        return
+    updated = 0
+    for job in candidates:
+        if publish_image_retry_summary(api, auth, job):
+            updated += 1
+    print("TT_V2_IMAGE_BACKFILL_UPDATED=" + str(updated), flush=True)
+    print("TT_V2_IMAGE_BACKFILL_WEB=" + sync_image_progress(auth), flush=True)
+
+
 def main():
     parser = argparse.ArgumentParser()
+    parser.add_argument("--backfill-retry-status", action="store_true",
+                        help="Bulk sync safe retry summaries from local journals; no images")
+    parser.add_argument("--apply", action="store_true",
+                        help="Write bulk retry summaries; without this flag, dry-run")
     parser.add_argument("--run-one", action="store_true",
                         help="Generate one image on a separate ChatGPT conversation")
     parser.add_argument("--trend-id", help="ID reservado por el despachador paralelo")
@@ -677,6 +710,13 @@ def main():
     args = parser.parse_args()
     api = editorial.module("persist_capture_github.py", "ttv2_image_github_api")
     auth = api.token()
+    if args.backfill_retry_status:
+        if args.run_one or args.trend_id or args.revision or args.attempt:
+            raise RuntimeError("V2_IMAGE_BACKFILL_FLAGS_CONFLICT")
+        backfill_retry_summaries(api, auth, dry_run=not args.apply)
+        return
+    if args.apply:
+        raise RuntimeError("V2_IMAGE_APPLY_ONLY_WITH_BACKFILL")
     queue, _ = editorial.queue_read(api, auth)
     history = read_history(auth)
     if args.trend_id:
