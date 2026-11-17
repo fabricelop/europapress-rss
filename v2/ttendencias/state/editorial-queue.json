@@ -10814,13 +10814,13 @@
       "trend_id": "trv2-26c48c1d43b6c10c40395189",
       "name": "#Mañaneros17N",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "a894ba59d3467bc9",
       "requested_at": "2026-11-17T13:51:18.568504+00:00",
       "updated_at": "2026-11-17T13:51:18.568504+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -10833,7 +10833,13 @@
           "archived_at": "2026-11-17T13:51:18.568504+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "ad52687d170b3a05250d81a341ee5bcfee37e7241bff0652",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-17T13:51:37.250350+00:00",
+        "expires_at": "2026-11-17T14:31:37.250350+00:00"
+      }
     },
     "trv2-2e45d6af4e14f858b5bf9508": {
       "trend_id": "trv2-2e45d6af4e14f858b5bf9508",
