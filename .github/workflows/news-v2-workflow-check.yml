@@ -1,7 +1,7 @@
 name: Noticias V2 - workflow parity checks
 on:
   push:
-    branches: [feature/ttactualidad-v2-clean, fix/news-v2-hidden-launchers-20261116]
+    branches: [feature/ttactualidad-v2-clean, fix/news-v2-hidden-launchers-20261116, fix/news-v2-pilot-quarantine-20261117]
     paths:
       - 'v2/ttittulares/*.py'
       - 'v2/ttittulares/*.ps1'
@@ -57,3 +57,8 @@ jobs:
         if: runner.os == 'Windows'
         shell: powershell
         run: .\v2\ttittulares\Test-News-Hidden-Launchers.ps1
+
+      - name: Verify captured editorial rejection cannot globally block the pilot
+        if: runner.os == 'Windows'
+        shell: powershell
+        run: .\v2\ttittulares\Test-News-Pilot-Guard.ps1
