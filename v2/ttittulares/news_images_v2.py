@@ -75,7 +75,8 @@ def run_one(service, config, *, browser_factory=ChromeJob, raster_get=original_f
         write_private(local,journal)
     if failure or not journal["cleanup_verified"]:
         code=error_code(failure) if failure else "NEWS_IMAGE_CLEANUP_UNVERIFIED"
-        try:service.image("fail",worker_id=worker,token=token,job_id=jid,code=code)
+        try:service.image("fail",worker_id=worker,token=token,job_id=jid,code=code,
+            cleanup_verified=journal["cleanup_verified"])
         except Exception:journal["failure_persistence_unverified"]=True;write_private(local,journal)
         return {"status":"incident","job_id":jid,"code":code,"cleanup_verified":journal["cleanup_verified"],"published":False}
     # Persist only after verified browser cleanup; revalidate the current revision before association.

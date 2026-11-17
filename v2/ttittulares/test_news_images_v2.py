@@ -19,15 +19,36 @@ class NewsImageLifecycleTests(unittest.TestCase):
    def confirm_submission(self,*args):return "https://chatgpt.com/c/12345678-1234-1234-1234-123456789012"
    def close(self):self.preserved_at_close=getattr(self,'preserve_profile',False);self.cleanup_verified=True
   self.browser=Browser
- def test_failure_keeps_ready_and_never_requeues_same_image(self):
+ def test_failure_retries_new_image_in_fresh_chats_and_stops_after_three(self):
   def fail(*args,**kwargs):raise RuntimeError("NEWS_IMAGE_CAPTURE_TIMEOUT")
   result=run_one(self.service,self.config,browser_factory=self.browser,raster_get=fail)
   self.assertEqual(result["status"],"incident");self.assertTrue(result["cleanup_verified"])
   self.assertEqual(self.instances[0].sent,1)
   self.assertFalse(self.instances[0].preserved_at_close)
   self.assertEqual(self.service.preview()["pending_count"],3)
-  second=run_one(self.service,self.config,browser_factory=self.browser,raster_get=fail)
-  self.assertEqual(second["status"],"idle");self.assertEqual(len(self.instances),1)
+  self.assertEqual(self.service.image_preview()["pending_count"],1)
+  for attempt in (2,3):
+   again=run_one(self.service,self.config,browser_factory=self.browser,raster_get=fail)
+   self.assertEqual(again["status"],"incident")
+   self.assertEqual(len(self.instances),attempt)
+   self.assertEqual(self.instances[-1].sent,1)
+   self.assertNotEqual(self.instances[-1].kwargs["profile"],self.instances[-2].kwargs["profile"])
+  self.assertEqual(run_one(self.service,self.config,browser_factory=self.browser,raster_get=fail)["status"],"idle")
+  self.assertEqual(len(self.instances),3)
+  _,docs=self.service.store.read_editorial_snapshot()
+  job=docs["v2/ttittulares/jobs/images/"+self.fixture.event+"-r1-image.json"]
+  self.assertEqual(job["attempts"]["claim_count"],3)
+  self.assertEqual(job["attempts"]["submission_count"],3)
+  self.assertEqual([x["outcome"] for x in job["attempts"]["history"]],["failed_after_submit"]*3)
+  self.assertEqual(len({x["command_id"] for x in job["attempts"]["history"]}),3)
+  self.assertEqual(job["problem"]["retry_mode"],"manual_only")
+ def test_unverified_cleanup_blocks_retry_and_keeps_incident(self):
+  class UnsafeBrowser(self.browser):
+   def close(self):self.cleanup_verified=False
+  run_one(self.service,self.config,browser_factory=UnsafeBrowser,
+   raster_get=lambda *args,**kwargs: (_ for _ in ()).throw(RuntimeError("NEWS_IMAGE_CAPTURE_TIMEOUT")))
+  self.assertEqual(self.service.image_preview()["pending_count"],0)
+  self.assertEqual(run_one(self.service,self.config,browser_factory=self.browser)["status"],"idle")
  def test_success_binds_original_only_after_owned_cleanup(self):
   from PIL import Image
   import io,random
