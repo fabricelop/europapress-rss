@@ -1,3 +1,11 @@
+## 17/11/2026 — seguridad del planificador de imágenes
+
+- `ad82193c6292fb267d89158b91dd899cea7c7350`: `next_attempt` deja de reintentar diarios `failed` con entrega incierta; solo reintenta `pre_send_failed` explícito y sin diarios previos ambiguos, con límite 3 y cooldown. Previene duplicados a costa de bloquear casos históricos que requieren verificación, nunca reenvío a ciegas.
+- `fef5b4b85ef42829e9a016bbba14ac177f9e1b37`: el clasificador distingue `blocked` de `exhausted`, y ya no anuncia reintentos para diarios ambiguos.
+- `797e7bb7b7af1076fb61c5c8189b81c24f2ee454`: expectativas de pruebas ajustadas a bloqueo seguro.
+- Las pruebas no se han ejecutado: el entorno de contenedor no puede resolver raw.githubusercontent.com. No se ha desplegado en Windows ni conectado al Site; NO afirmar que el contador está visible. Hay modificaciones concurrentes en la rama: una escritura recibió conflicto 409 y se rehízo leyendo la versión actual.
+- Próximo paso: producir resumen público revision-bound desde diarios locales sin filtrar datos privados, integrarlo con snapshot web y Site, ejecutar pruebas y desplegar de manera controlada.
+
 ## Site público conectado a Noticias V2 — 17/11/2026, verificado en producción
 
 Encargo completado sobre la fuente REAL del Site, independiente de este repositorio.
