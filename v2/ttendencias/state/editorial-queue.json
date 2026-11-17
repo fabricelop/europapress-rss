@@ -11349,12 +11349,12 @@
       "trend_id": "trv2-90cab3c1a2084c8ce980de56",
       "name": "Joker",
       "revision": 2,
-      "status": "review_pending",
+      "status": "in_progress",
       "reason": "user_reexplanation",
       "episode_token": "5ac8beacd13d886c",
       "requested_at": "2026-11-17T18:27:11.308436+00:00",
       "updated_at": "2026-11-17T18:27:11.308436+00:00",
-      "attempts": 0,
+      "attempts": 1,
       "image_incident": {
         "project": "ttendencias-v2",
         "trend_id": "trv2-90cab3c1a2084c8ce980de56",
@@ -11366,7 +11366,13 @@
         "detail_safe": "El encargo no llegó a enviarse a ChatGPT.",
         "retry_mode": "manual_only"
       },
-      "review_mode": "standard"
+      "review_mode": "standard",
+      "lease": {
+        "token": "f7cd33819dd8cb9476b2e54c7ce02a9010740d81e8c7a703",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-17T18:28:29.688745+00:00",
+        "expires_at": "2026-11-17T19:08:29.688745+00:00"
+      }
     },
     "trv2-03226d9b1b11eb3e85feb051": {
       "trend_id": "trv2-03226d9b1b11eb3e85feb051",
