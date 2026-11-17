@@ -89,6 +89,33 @@ class NewsEditorialAutoRetryTests(unittest.TestCase):
   self.assertTrue(self.service.apply_action(action)["unsafe"])
   self.assertTrue(self.service.apply_action({**action,"action":"dismiss"})["verified"])
   self.assertTrue(self.service.apply_action({**action,"action_id":"e"*32})["stale"])
+ def test_pending_suppression_removes_job_from_queue_and_preserves_audit(self):
+  _,docs=self.store.read_editorial_snapshot()
+  event=next(iter(x for x in docs.values() if isinstance(x,dict) and x.get("status")=="editorial_pending"))
+  action={"action_id":"f"*32,"event_id":event["event_id"],"revision":1,"action":"dismiss"}
+  self.assertTrue(self.service.apply_action(action)["verified"])
+  _,after=self.store.read_editorial_snapshot()
+  self.assertEqual(after[ed.PREFIX+"news/"+event["event_id"]+".json"]["status"],"dismissed")
+  self.assertEqual(after[ed.INDEX]["items"][event["event_id"]]["terminal_status"],"dismissed")
+  self.assertNotIn(event["event_id"],[j["event_id"] for j in after[ed.QUEUE]["items"]])
+  self.assertEqual(after[ed.job_path(event["event_id"]+"-r1-editorial")]["status"],"cancelled")
+  self.assertIsNone(self.service.claim("next-worker","another-worker-token-123456789012345")["job"])
+  self.assertTrue(self.service.apply_action(action)["replay"])
+ def test_pending_urgent_claims_next_free_slot_without_preempting(self):
+  store=fixtures.MemoryEditorialStore(fixtures.documents(count=2))
+  service=NewsService(store,clock=lambda:self.now,lease_seconds=120)
+  before=service.preview()["next_jobs"]
+  self.assertEqual(len(before),2)
+  event=before[1]["event_id"]
+  action={"action_id":"e"*32,"event_id":event,"revision":1,"action":"urgent"}
+  self.assertTrue(service.apply_action(action)["verified"])
+  self.assertTrue(service.apply_action(action)["replay"])
+  self.assertEqual(service.preview()["next_jobs"][0]["event_id"],event)
+  first=service.claim("urgent-worker","private-token-urgent-123456789012345")["job"]
+  self.assertEqual(first["event_id"],event)
+  self.assertEqual(first["priority"],"urgent")
+  self.assertTrue(service.apply_action({**action,"action_id":"a"*32})["stale"])
+  self.assertTrue(service.apply_action({**action,"action_id":"b"*32,"action":"dismiss"})["stale"])
 
 class NewsWorkflowTests(unittest.TestCase):
  def setUp(self):

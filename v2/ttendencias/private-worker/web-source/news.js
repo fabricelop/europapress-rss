@@ -54,14 +54,27 @@
    const explanation=node("p",item.group==="ready"?"news-tweet":"",item.group==="detected"?"Esperando cobertura de suficientes familias independientes antes de pasar a elaboración.":
     item.group==="pending"?"Pendiente de investigar, contrastar y redactar. Todavía no hay explicación editorial.":
     item.group==="working"?"La elaboración editorial está en curso.":item.group==="ready"?"Cargando explicación…":
-    item.group==="incident"?"La noticia requiere revisar su estado antes de continuar.":item.status_label+".");body.append(explanation);
+    item.group==="incident"?"La noticia requiere revisar su estado antes de continuar.":
+    item.group==="archived"&&item.status_label==="Suprimida"?"Noticia suprimida de incidencias. Se conserva el historial y no se publicará.":item.status_label+".");body.append(explanation);
    if(item.source_families.length){const sources=node("ul","news-sources");for(const source of item.source_families)sources.append(node("li","",source));body.append(sources);}
    if(item.source_url){
     try{const target=new URL(item.source_url);if(["https:","http:"].includes(target.protocol)&&!target.username&&!target.password){
      const link=node("a","news-source-link","Abrir noticia de origen ↗");link.href=target.href;link.target="_blank";link.rel="noopener noreferrer";body.append(link);
     }}catch{}
    }
-   TTNewsActions.attachIncident({item,body,onChange:refreshNews});
+   TTNewsActions.attachIncident({item,body,onChange:async(group,moved)=>{
+    // Show the destination and exact card after the confirmed private action.
+    state.filter=group;state.page=1;state.open=moved.event_id;
+    state.query=moved.title.slice(0,100);$("news-search").value=state.query;
+    await refreshNews();
+   }});
+   TTNewsActions.attachPending({item,body,onChange:async(group,moved)=>{
+    state.filter=group;state.page=1;
+    state.open=group==="archived"?null:moved.event_id;
+    state.query=group==="archived"?"":moved.title.slice(0,100);
+    $("news-search").value=state.query;
+    await refreshNews();
+   }});
    card.append(body);
    TTImageIncidents.attach({card,head:summary,project:"ttittulares-v2",id:item.event_id,revision:item.revision,
     available:item.image_incident_available===true,
@@ -70,7 +83,7 @@
    list.append(card);
    let loaded=false;
    const loadRecord=async()=>{
-    if(loaded||!["ready","archived"].includes(item.group))return;loaded=true;
+    if(loaded||!["ready","archived"].includes(item.group)||item.status_label==="Suprimida")return;loaded=true;
     try{
      const key=item.event_id+":"+item.revision;
      let record=state.records.get(key);

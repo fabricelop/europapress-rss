@@ -30,6 +30,11 @@ JOB = re.compile(r"(ttn2-[a-f0-9]{24})-r([1-9][0-9]*)-editorial\Z")
 SAFE_ID = re.compile(r"[A-Za-z0-9_.-]{1,128}\Z")
 MAX_WORKERS = 3
 
+def _pending_order(job):
+    # A requested URGENTE runs in the next free slot; existing leases are
+    # never preempted and FIFO remains stable within the priority band.
+    return (0 if job["priority"] == "urgent" else 1, _time(job["requested_at"]), job["job_id"])
+
 
 class EditorialError(StoreError):
     pass
@@ -259,7 +264,7 @@ class EditorialService:
         now = self.clock()
         _stamp(now)
         pending = [j for j in jobs.values() if j["status"] == "pending" and not _blocked(news[j["event_id"]], j, docs)]
-        pending.sort(key=lambda x: (_time(x["requested_at"]), x["job_id"]))
+        pending.sort(key=_pending_order)
         stale = [j for j in jobs.values() if j["status"] in ACTIVE and
                  (_blocked(news[j["event_id"]], j, docs) or not j.get("lease") or
                   _time(j["lease"]["expires_at"]) <= now)]
@@ -308,7 +313,7 @@ class EditorialService:
                 elif sum(j["status"] in ACTIVE for j in jobs.values()) < MAX_WORKERS:
                     candidates = [j for j in jobs.values() if j["status"] == "pending" and
                                   not _blocked(news[j["event_id"]], j, docs)]
-                    candidates.sort(key=lambda x: (_time(x["requested_at"]), x["job_id"]))
+                    candidates.sort(key=_pending_order)
                     job = candidates[0] if candidates else None
                     if job:
                         job.update(status="claimed", phase="browser_starting", updated_at=_stamp(now),

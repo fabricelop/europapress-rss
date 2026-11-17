@@ -31,6 +31,17 @@ test("monitoring candidates are distinct from pending editorial jobs",()=>{
  const [index,queue]=fixture();index.items[id].status="monitoring";queue.items=[];
  const view=projectNews(index,queue);assert.equal(view.counts.detected,1);assert.equal(view.counts.pending,0);
 });
+test("DET expires exactly 24h after the first observation, even if materialization is late",()=>{
+ const [index,queue]=fixture();index.items[id].status="monitoring";queue.items=[];
+ const first=Date.parse(time);
+ assert.equal(projectNews(index,queue,first+24*3600000-1).counts.detected,1);
+ const expired=projectNews(index,queue,first+24*3600000);
+ assert.equal(expired.counts.detected,0);
+ assert.equal(expired.items.length,0);
+ assert.equal(expired.counts.archived,0);
+ index.items[id].status="archived";
+ assert.equal(projectNews(index,queue,first+24*3600000).items.length,0);
+});
 test("human terminal decisions override a stale pending queue",()=>{
  for(const status of ["published","dismissed","deleted","archived"]){const [i,q]=fixture();i.items[id].terminal_status=status;assert.equal(projectNews(i,q).items[0].group,"archived");}
 });
@@ -47,7 +58,10 @@ test("INC controls are separate from READY publication and preserve confirmed su
  assert.match(actions,/function attachIncident\(/);
  assert.match(actions,/wire\(retry,"retry_editorial"\)/);
  assert.match(actions,/wire\(dismiss,"dismiss"/);
+ assert.match(actions,/onChange\(type==="retry_editorial"\?"pending":"archived",item\)/);
  assert.match(page,/TTNewsActions\.attachIncident\(/);
+ assert.match(page,/state\.filter=group;state\.page=1;state\.open=moved\.event_id/);
+ assert.match(page,/item\.status_label==="Suprimida"\)return;loaded=true/);
  const [index,queue]=fixture();queue.items[0].status="problematic";
  const projected=projectNews(index,queue);
  const controls={preferences:[{event_id:id,revision:1,archived:true,dismissed:true}]};
@@ -103,6 +117,17 @@ test("news read fetches two editorial projections and one isolated radar, never 
  assert.equal(calls.filter(([url])=>url.startsWith(NEWS_SOURCE)).length,2);
  assert.ok(calls.every(([,options])=>options.cf.cacheTtl===30));
 });
+test("a mixed GitHub cache snapshot retries one time uncached instead of showing a transient error",async()=>{
+ const [index,queue]=fixture();let requests=0;
+ const data=await readNews({params:new URLSearchParams({state:"pending"}),fetcher:async(url,options)=>{
+  requests++;
+  if(url===NEWS_RADAR_SOURCE)return new Response("Unavailable",{status:503});
+  if(url.includes("editorial-queue.json"))return Response.json(requests<=3?{...queue,updated_at:"2026-11-16T18:20:00Z"}:queue);
+  return Response.json(index);
+ }});
+ assert.equal(data.total,1);
+ assert.equal(requests,6);
+});
 test("upstream failure never becomes an empty successful list",async()=>{
  await assert.rejects(readNews({fetcher:async()=>new Response("Unavailable",{status:503})}),/SOURCE_UNAVAILABLE/);
 });
@@ -156,6 +181,9 @@ test("Noticias groups clear PUB and Quitar actions, keeps R and RE-X, and marks 
  assert.match(news,/news-image-head-icon/);
  assert.match(styles,/\.news-action-group\{display:flex;flex-wrap:wrap/);
  assert.match(styles,/@media\(max-width:450px\).*\.news-action-group/);
+ assert.match(controls,/function attachPending\(/);
+ assert.match(controls,/wire\(urgent,"urgent"\)/);
+ assert.match(controls,/wire\(dismiss,"dismiss"\)/);
 });
 
 test("default is Elaboradas even when only pending candidates exist",()=>{

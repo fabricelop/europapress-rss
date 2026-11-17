@@ -3,6 +3,7 @@ const ID=/^ttn2-[a-f0-9]{24}$/;
 import {projectImageIncident} from "./image-incidents.js";
 const ACTIVE=new Set(["claimed","send_intent","awaiting_response","capture_recovery","captured","validating","persisting"]);
 const GROUPS=new Set(["pending","detected","working","ready","incident","archived"]);
+const DETECTED_LIFETIME_MS=24*60*60*1000;
 export const NEWS_SOURCE="https://raw.githubusercontent.com/fabricelop/europapress-rss/feature/ttactualidad-v2-clean/v2/ttittulares/state/";
 export const NEWS_RADAR_SOURCE="https://raw.githubusercontent.com/fabricelop/europapress-rss/ttactualidad-v2-radar-live/v2/ttittulares/state/radar/live-summary.json";
 
@@ -28,6 +29,15 @@ export function projectNews(index,queue,clock=Date.now(),liveRadar=null){
      !Number.isSafeInteger(item.current_revision)||item.current_revision<1)throw Error("NEWS_INDEX_INVALID");
   const job=jobs.get(id);
   if(job&&job.revision!==item.current_revision)throw Error("NEWS_QUEUE_REVISION_MISMATCH");
+  // Radar-only candidates that expired were never editorial news. Keep their
+  // historical source data but do not populate the editor's Archive.
+  if(item.status==="archived"&&item.editorial_created!==true&&
+     !job&&!(item.revision_refs||[]).length)continue;
+  // DET is a temporary observation window, not a permanent news archive.
+  // The ingest pipeline also expires candidates after 24h, but the UI must
+  // respect the deadline if editorial materialization is temporarily delayed.
+  if(item.status==="monitoring"&&stamp(item.first_seen_at)&&
+     clock-Date.parse(item.first_seen_at)>=DETECTED_LIFETIME_MS)continue;
   let group="incident",label="Estado por revisar";
   const terminal=item.terminal_status||item.status;
   if(["published","dismissed","deleted","archived","treated"].includes(terminal)){
@@ -88,9 +98,10 @@ export function pageNews(view,params){
  return {...view,items:matching.slice((page-1)*40,page*40),total:matching.length,page,pages,filter:group};
 }
 
-async function sourceDocuments(fetcher){
+async function sourceDocuments(fetcher,{fresh=false}={}){
  const editorial=await Promise.all(["news-index.json","editorial-queue.json"].map(async name=>{
-  const response=await fetcher(NEWS_SOURCE+name,{headers:{Accept:"application/json"},cf:{cacheTtl:30,cacheEverything:true}});
+  const response=await fetcher(NEWS_SOURCE+name+(fresh?"?refresh="+Date.now():""),
+   {headers:{Accept:"application/json"},cf:{cacheTtl:fresh?0:30,cacheEverything:!fresh}});
   if(!response.ok)throw Error("NEWS_SOURCE_UNAVAILABLE");
   const text=await response.text();
   if(text.length>6000000)throw Error("NEWS_SOURCE_TOO_LARGE");
@@ -105,9 +116,18 @@ async function sourceDocuments(fetcher){
 }
 
 export async function readNews({fetcher=fetch,params=new URLSearchParams(),all=false}={}){
- const [index,queue,live]=await sourceDocuments(fetcher);
- const view=projectNews(index,queue,Date.now(),live);
- return all?view:pageNews(view,params);
+ let lastError;
+ for(let attempt=0;attempt<2;attempt++){
+  try{
+   const [index,queue,live]=await sourceDocuments(fetcher,{fresh:attempt>0});
+   const view=projectNews(index,queue,Date.now(),live);
+   return all?view:pageNews(view,params);
+  }catch(error){
+   lastError=error;
+   if(attempt||!["NEWS_SNAPSHOT_INCONSISTENT","NEWS_SOURCE_UNAVAILABLE"].includes(error.message))throw error;
+  }
+ }
+ throw lastError;
 }
 
 export function validateNewsRecord(record,id,revision){
@@ -137,6 +157,10 @@ export async function readNewsRecord(id,revision,{fetcher=fetch,view=null}={}){
 
 export function decorateNews(view,controls={}){
  const prefs=new Map((controls.preferences||[]).map(x=>[x.event_id+":"+x.revision,x]));
+ // Distinguish a fresh manual INC retry awaiting the Windows consumer from
+ // an already-running editorial job. Also covers requests saved by older UI.
+ const editorialRetries=new Set((controls.actions||[]).filter(x=>x.action==="retry_editorial")
+  .map(x=>x.event_id+":"+x.revision));
  const counts={pending:0,detected:0,working:0,ready:0,incident:0,archived:0};
  const items=view.items.map(item=>{
   const pref=prefs.get(item.event_id+":"+item.revision)||{};
@@ -152,7 +176,12 @@ export function decorateNews(view,controls={}){
    image_retry_requested:item.image_incident_available===true&&Boolean(item.image_incident_at)&&
       pref.image_retry_incident_at===item.image_incident_at};
   if(pref.archived){row.group="archived";row.status_label=pref.dismissed===true?"Suprimida":pref.published===true?"Publicada":"Archivada";}
-  else if(pref.rework_requested){row.group="working";row.status_label="Reelaboración solicitada";}
+  else if(pref.rework_requested){
+   if(pref.editorial_retry_requested===true||editorialRetries.has(item.event_id+":"+item.revision)){
+    row.group="pending";row.status_label="Reintento solicitado";
+   }else{row.group="working";row.status_label="Reelaboración solicitada";}
+  }
+  if(row.group==="pending"&&pref.urgent_requested===true){row.status_label="URGENTE · pendiente de hueco";row.urgent_requested=true;}
   if(pref.manual_image){row.image_available=true;row.image_incident_available=false;}
   if(row.image_suppressed)row.image_available=false;
   counts[row.group]++;return row;

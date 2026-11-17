@@ -17,6 +17,26 @@ window.TTNewsActions=(()=>{
   }
   return response.json();
  }
+ function attachPending({item,body,onChange}){
+  if(item.group!=="pending"||body.querySelector(".news-pending-actions"))return;
+  const actions=el("div","news-actions news-pending-actions");
+  actions.setAttribute("role","group");actions.setAttribute("aria-label","Acciones sobre noticia pendiente");
+  const dismiss=el("button","publish-action news-pending-dismiss","Suprimir");
+  const urgent=el("button","publish-action news-pending-urgent",item.urgent_requested?"URGENTE ✓":"URGENTE");
+  dismiss.type=urgent.type="button";
+  dismiss.title="Archivar esta noticia sin elaborar ni publicar";
+  urgent.title="Prioridad para el próximo hueco disponible; no interrumpe chats abiertos";
+  urgent.disabled=item.urgent_requested===true;
+  const wire=(button,type)=>button.addEventListener("click",async event=>{
+   event.preventDefault();event.stopPropagation();
+   if(button.disabled)return;
+   if(type==="dismiss"&&!confirm("¿Suprimir esta noticia pendiente? Pasará a Archivo como «Suprimida», sin elaborar ni publicar."))return;
+   dismiss.disabled=urgent.disabled=true;
+   try{await action(item,type);await onChange(type==="dismiss"?"archived":"pending",item);}
+   catch(error){notice(error.message);dismiss.disabled=false;urgent.disabled=item.urgent_requested===true;}
+  });
+  wire(dismiss,"dismiss");wire(urgent,"urgent");actions.append(dismiss,urgent);body.append(actions);
+ }
  function prompt(item,record){return 'TTN2_IMAGE_JOB_V1 '+JSON.stringify({event_id:item.event_id,revision:item.revision})+
   "\nGenera UNA imagen original con ImageGen de mínimo 1024px. Cómic editorial europeo con una escena narrativa, protagonistas, acción clara, profundidad, luz y textura. Sin texto, titulares, hashtags, logos, diagramas ni collage. Una metáfora visual del hecho contrastado. En sucesos graves, escena contextual seria y respetuosa sin humor contra víctimas. Chat nuevo e independiente; no abras el chat editorial.\n"+
   record.title+"\n"+record.factual_summary+"\n"+record.tweet_text;}
@@ -33,7 +53,7 @@ window.TTNewsActions=(()=>{
    event.preventDefault();event.stopPropagation();if(button.disabled)return;
    if(confirmText&&!confirm(confirmText))return;
    retry.disabled=dismiss.disabled=true;
-   try{await action(item,type);await onChange();}
+   try{await action(item,type);await onChange(type==="retry_editorial"?"pending":"archived",item);}
    catch(error){notice(error.message);retry.disabled=dismiss.disabled=false;}
   });
   wire(retry,"retry_editorial");
@@ -137,5 +157,5 @@ window.TTNewsActions=(()=>{
   }
   body.append(actions);
  }
- return {attach,attachIncident,prompt};
+ return {attach,attachIncident,attachPending,prompt};
 })();
