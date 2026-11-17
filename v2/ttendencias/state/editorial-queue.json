@@ -11703,13 +11703,13 @@
       "trend_id": "trv2-bfddd97429ea4faa8ef3c545",
       "name": "007 First Light",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "17cb2920eecba3c4",
       "requested_at": "2026-11-17T20:52:00.730083+00:00",
       "updated_at": "2026-11-17T20:52:00.730083+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -11722,7 +11722,13 @@
           "archived_at": "2026-11-17T20:52:00.730083+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "b38f7dce1ec06b4e4d3fa8ec9f6c31cf7fdf9e8b9d594928",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-17T20:52:25.782576+00:00",
+        "expires_at": "2026-11-17T21:32:25.782576+00:00"
+      }
     },
     "trv2-8c272e7867c21c4a14bc5db6": {
       "trend_id": "trv2-8c272e7867c21c4a14bc5db6",
