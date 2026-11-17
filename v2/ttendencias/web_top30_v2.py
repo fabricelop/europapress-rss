@@ -115,18 +115,29 @@ def image_incident_for_revision(item, *, now=None):
 
 
 def image_retry_public_status(item, *, now=None):
-    """Conservative public state: never invent a remaining-attempt count.
-
-    A verified revision-bound summary may be projected in a later release.
-    Until then the local worker journals are not remotely available, so
-    the only honest budget is unknown.
-    """
+    """Expose only verified revision-bound counters, never worker journals."""
     if saved_image_for_revision(item):
-        return {"state": "saved", "remaining": None, "attempts": None}
+        return {"state": "saved", "remaining": 0, "attempts": None}
     if live_image_progress_for_revision(item, now=now):
         return {"state": "generating", "remaining": None, "attempts": None}
-    if image_incident_for_revision(item, now=now):
-        return {"state": "unknown", "remaining": None, "attempts": None}
+    summary = item.get("image_retry_summary") or {}
+    cap = item.get("capture") or {}
+    if (item.get("status") in ("captured_review", "ready")
+        and summary.get("revision") == item.get("revision")
+        and cap.get("revision") == item.get("revision")
+        and re.fullmatch(r"[a-f0-9]{64}", str(cap.get("sha256")))
+        and summary.get("editorial_sha256") == cap.get("sha256")
+        and summary.get("state") in ("pending", "retry_pending", "exhausted", "blocked", "saved")
+        and type(summary.get("send_attempts")) is int
+        and 0 <= summary["send_attempts"] <= 100
+        and summary.get("send_limit") == 3
+        and type(summary.get("pre_send_failures")) is int
+        and 0 <= summary["pre_send_failures"] <= 100
+        and summary.get("pre_send_limit") == 3):
+        return {"state": summary["state"],
+                "attempts": summary["send_attempts"],
+                "remaining": max(0, 3 - summary["send_attempts"]),
+                "pre_send_failures": summary["pre_send_failures"]}
     return {"state": "unknown", "remaining": None, "attempts": None}
 
 
