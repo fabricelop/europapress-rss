@@ -1,7 +1,7 @@
 {
   "created_at": "2026-11-16T19:11:32Z",
   "current_record_path": null,
-  "current_revision": 1,
+  "current_revision": 2,
   "event_id": "ttn2-07a191992590a4dbf2ff09c6",
   "identity": {
     "aliases": [],
@@ -23,7 +23,14 @@
       "reason": "initial",
       "requested_at": "2026-11-16T19:11:32Z",
       "revision": 1,
-      "status": "in_progress"
+      "status": "problematic"
+    },
+    {
+      "editorial_job_id": "ttn2-07a191992590a4dbf2ff09c6-r2-editorial",
+      "reason": "automatic_retry",
+      "requested_at": "2026-11-17T17:22:37Z",
+      "revision": 2,
+      "status": "pending"
     }
   ],
   "schema_version": 1,
@@ -33,6 +40,6 @@
     "general_family_threshold": 4,
     "sport_source_count": 0
   },
-  "status": "editorial_in_progress",
-  "updated_at": "2026-11-16T19:11:32Z"
+  "status": "editorial_pending",
+  "updated_at": "2026-11-17T17:22:37Z"
 }
