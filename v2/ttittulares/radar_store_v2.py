@@ -315,7 +315,7 @@ def _verify_receipt(store, commit, path, receipt, input_sha):
             "editorial_execution_enabled": False, "publication_enabled": False}
 
 
-def persist_snapshot(store, fetch_result, *, now, max_attempts=4):
+def persist_snapshot(store, fetch_result, *, now, max_attempts=4, materialize_only=False):
     """Recompute after every conflict; reuse the fetched input, never an old write plan."""
     if now.tzinfo is None or now.utcoffset() is None:
         raise StoreError("NOW_MUST_BE_TIMEZONE_AWARE")
@@ -340,6 +340,18 @@ def persist_snapshot(store, fetch_result, *, now, max_attempts=4):
         if previous_stamp and datetime.fromisoformat(previous_stamp.replace("Z", "+00:00")) > now:
             raise StoreError("NEWER_RADAR_ALREADY_PERSISTED")
         plan = plan_snapshot(fetched, documents, now=now)
+        if materialize_only:
+            # A separate branch already contains the full verified radar and
+            # source health. Re-sending its multi-megabyte current state AND
+            # the full scan through GitHub GraphQL made editorial CAS commits
+            # routinely time out while Windows workers advanced feature HEAD.
+            # Publish only the authoritative news, jobs and projections here.
+            # The receipt still binds this exact source input and readback.
+            plan["writes"] = {p: doc for p, doc in plan["writes"].items()
+                              if p not in (PREFIX + "state/radar/current.json",
+                                           PREFIX + "state/radar/source-health.json")
+                              and not p.startswith(PREFIX + "state/radar/scans/")}
+            plan["file_sha256"] = {p: sha256(doc) for p, doc in plan["writes"].items()}
         validate_plan(plan, documents)
         receipt = {"schema_version": 1, "project": "ttittulares-v2", "kind": "radar_transaction",
                    "input_sha256": input_sha, "observed_at": stamp, "base_commit": head,
@@ -366,6 +378,8 @@ def main():
     parser.add_argument("--live", action="store_true", required=True)
     parser.add_argument("--persist", action="store_true", help="Explicitly allow one V2 GitHub state transaction")
     parser.add_argument("--verify-replay", action="store_true", help="Repeat the exact transaction input and verify no second commit")
+    parser.add_argument("--materialize-only", action="store_true",
+                        help="Commit only editorial news/jobs/projections; independent radar already persists the full scan")
     args = parser.parse_args()
     if args.verify_replay and not args.persist:
         parser.error("--verify-replay requires --persist")
@@ -377,9 +391,11 @@ def main():
         return
     store = GitHubStore(os.environ.get("GITHUB_TOKEN"))
     retry_budget = int(os.environ.get("TTN2_LIVE_RETRY_BUDGET", LIVE_RETRY_BUDGET))
-    result = persist_snapshot(store, fetched, now=now, max_attempts=retry_budget)
+    result = persist_snapshot(store, fetched, now=now, max_attempts=retry_budget,
+                              materialize_only=args.materialize_only)
     if args.verify_replay:
-        replay = persist_snapshot(store, fetched, now=now, max_attempts=retry_budget)
+        replay = persist_snapshot(store, fetched, now=now, max_attempts=retry_budget,
+                                  materialize_only=args.materialize_only)
         if not replay["replayed"] or replay["commit_sha"] != result["commit_sha"]:
             raise StoreError("LIVE_REPLAY_VERIFICATION_FAILED")
         result["replay_verified"] = True
