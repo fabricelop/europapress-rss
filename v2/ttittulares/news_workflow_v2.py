@@ -255,6 +255,18 @@ class NewsService(ed.EditorialService):
             hints=[d.get("rework",{}).get("instructions","") for p,d in docs.items()
                    if ed.DECISION.fullmatch(p) and d.get("event_id")==job["event_id"]
                    and d.get("revision")==prior and d.get("action")=="request_rework"]
+            if prior > 0 and any(ref.get("revision")==job["revision"] and
+                                  ref.get("reason")=="automatic_retry"
+                                  for ref in docs.get(PREFIX+"news/"+job["event_id"]+".json",{}).get("revision_refs",[])):
+                previous=docs.get(ed.job_path(job["event_id"]+"-r"+str(prior)+"-editorial"),{})
+                reason=(previous.get("problem") or {}).get("code","")
+                corrective={
+                    "INVALID_EDITORIAL_JSON":"Respeta exactamente el contrato estructurado TTN2_EDITORIAL_READY o TTN2_EDITORIAL_BLOCKED. Sin texto adicional ni bloques Markdown.",
+                    "INVALID_UTC_TIMESTAMP":"Escribe las fechas UTC en formato ISO 8601 estricto con zona Z; comprueba cada timestamp antes de responder.",
+                    "ESSENTIAL_FACT_NOT_VERIFIED":"Contrasta de nuevo el hecho esencial con dos fuentes realmente independientes; si no se acredita, responde BLOCKED con el motivo concreto.",
+                }
+                hints.append("Nuevo chat independiente después de incidencia anterior "+reason+". " +
+                             corrective.get(reason,"Investiga de nuevo el acontecimiento completo; no reutilices respuestas previas."))
             result["hints"]="\n".join(hints)[-4000:]
         return result
 
@@ -284,8 +296,17 @@ class NewsService(ed.EditorialService):
         cleanup must be investigated rather than launching another process.
         """
         attempts=job.get("attempts") or {}
+        problem=job.get("problem") or {}
+        code=str(problem.get("code") or "")
+        # Pre-migration image failures often said "recover_same_chat", which
+        # left otherwise READY news without images forever. The editor has
+        # explicitly chosen a NEW disposable chat after each such failure.
+        # Never override an auth, disk, cleanup or active-lease safety stop.
+        retry_mode=problem.get("retry_mode")
+        fresh=retry_mode in ("new_chat", "recover_same_chat")
+        safe=not any(part in code for part in ("AUTH", "LOGIN", "CREDENTIAL", "DISK", "CLEANUP", "CAPTCHA"))
         return (job.get("status")=="problematic" and not job.get("lease")
-                and (job.get("problem") or {}).get("retry_mode")=="new_chat"
+                and fresh and safe
                 and attempts.get("claim_count",0)<attempts.get("max_safe_preflight_attempts",3))
 
     def image(self, operation, *, worker_id, token, job_id=None, **data):
