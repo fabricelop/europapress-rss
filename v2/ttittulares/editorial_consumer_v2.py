@@ -54,10 +54,11 @@ def settings(root):
     return {'root': root, 'seed': seed, 'chrome': chrome}
 
 
-def run_one(service, config, *, browser_factory=ChromeJob, parse=None, build=None):
+def run_one(service, config, *, browser_factory=ChromeJob, parse=None, build=None,
+            run_id=None):
     from .editorial_contract_v2 import build_prompt, parse_record, ContractError
     build, parse = build or build_prompt, parse or parse_record
-    run_id = uuid.uuid4().hex
+    run_id = run_id or uuid.uuid4().hex
     worker_id = 'news-' + run_id
     token = secrets.token_hex(32)
     claim = service.claim(worker_id, token)
@@ -204,6 +205,8 @@ def enabled(root):
 
 def daemon(service, config, *, poll=30):
     pool = {}
+    watchers = {}
+    from .session_watchdog_v2 import OwnedSessionWatchdog, enough_space
     logs = config['root'] / 'logs'
     logs.mkdir(parents=True, exist_ok=True)
     # The OS lock protects this PC; the GitHub CAS service protects all PCs.
@@ -211,6 +214,23 @@ def daemon(service, config, *, poll=30):
         while enabled(config['root']) or pool:
             for slot, child in list(pool.items()):
                 if child.poll() is not None:
+                    watch = watchers.pop(slot)
+                    outcome = watch.finalize()
+                    if outcome['timed_out']:
+                        path = config['root'] / 'journals' / (watch.run_id + '.json')
+                        try:
+                            journal = json.loads(path.read_text(encoding='utf-8'))
+                            journal['session_deadline_exceeded'] = True
+                            journal['supervisor_cleanup_verified'] = outcome['cleanup_verified']
+                            write_private(path, journal)
+                            service.fail(journal['job_id'], journal['worker_id'],
+                                journal['lease_token'], code='NEWS_SESSION_DEADLINE_EXCEEDED',
+                                safe_preflight=(not journal['intent_durable'] and
+                                                outcome['cleanup_verified']))
+                        except (OSError, ValueError, KeyError, RuntimeError):
+                            # The original lease and journal remain fenced. No
+                            # guessed resend is permitted on an uncertain send.
+                            pass
                     del pool[slot]
             if enabled(config['root']):
                 from .news_workflow_v2 import sync_controls
@@ -228,12 +248,19 @@ def daemon(service, config, *, poll=30):
                         break
                     if slot in pool:
                         continue
+                    if not enough_space(config['root']):
+                        # Do not claim work while a new profile copy could
+                        # exhaust C:. Existing children still drain normally.
+                        break
+                    run_id = uuid.uuid4().hex
                     logfile = logs / ('worker-' + uuid.uuid4().hex + '.log')
                     with logfile.open('w', encoding='utf-8') as output:
                         pool[slot] = subprocess.Popen([sys.executable, '-m',
-                            'v2.ttittulares.editorial_consumer_v2', '--root', str(config['root']), '--run-one'],
+                            'v2.ttittulares.editorial_consumer_v2', '--root', str(config['root']),
+                            '--run-one', '--run-id', run_id],
                             cwd=str(Path(__file__).resolve().parents[2]), stdout=output,
                             stderr=subprocess.STDOUT, creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
+                    watchers[slot] = OwnedSessionWatchdog(config['root'], run_id, pool[slot]).start()
                     pending -= 1
             # An operator disabling the flag stops new claims. Already sent
             # jobs finish/capture/close; the parent never kills their browser.
@@ -247,6 +274,7 @@ def main():
     group.add_argument('--check', action='store_true')
     group.add_argument('--run-one', action='store_true')
     group.add_argument('--daemon', action='store_true')
+    parser.add_argument('--run-id', help='Internal one-job UUID from the supervising daemon')
     args = parser.parse_args()
     from .news_workflow_v2 import NewsService, NewsStore
     config = settings(args.root)
@@ -264,7 +292,9 @@ def main():
             check.close()
         daemon(service, config)
     else:
-        report = run_one(service, config)
+        if args.run_id and (not re.fullmatch(r'[a-f0-9]{32}', args.run_id) or not args.run_one):
+            parser.error('--run-id only accepts a supervised run-one UUID')
+        report = run_one(service, config, run_id=args.run_id)
         print(json.dumps(report))
         if report['status'] == 'incident':
             raise SystemExit(1)
