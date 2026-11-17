@@ -11505,13 +11505,13 @@
       "trend_id": "trv2-314fcb2d3209bd923e70db1f",
       "name": "goty",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "d0530c66d3ea32e1",
       "requested_at": "2026-11-17T20:39:25.016958+00:00",
       "updated_at": "2026-11-17T20:39:25.016958+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -11524,7 +11524,13 @@
           "archived_at": "2026-11-17T20:39:25.016958+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "2c1834d01acab4156a1bceef34e93d95e94affec350d588b",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-17T20:39:53.924942+00:00",
+        "expires_at": "2026-11-17T21:19:53.924942+00:00"
+      }
     },
     "trv2-91f61a7f92b9c38b60f46622": {
       "trend_id": "trv2-91f61a7f92b9c38b60f46622",
