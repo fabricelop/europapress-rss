@@ -10418,13 +10418,13 @@
       "trend_id": "trv2-fe742fffe835622df7a9a1a7",
       "name": "Loeb",
       "revision": 2,
-      "status": "review_pending",
+      "status": "in_progress",
       "reason": "retry_after_incident_with_hints",
       "episode_token": "8605cd8fecd316f5",
       "requested_at": "2026-11-17T11:05:54.978402+00:00",
       "updated_at": "2026-11-17T11:05:54.978402+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -10439,7 +10439,13 @@
       ],
       "incident_retries": 1,
       "review_mode": "x",
-      "review_hints": "Creo que es por el dakar"
+      "review_hints": "Creo que es por el dakar",
+      "lease": {
+        "token": "089ada694f1ce6dc5d2408b216d485636743bf0972f1a98f",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-17T11:06:12.781898+00:00",
+        "expires_at": "2026-11-17T11:46:12.781898+00:00"
+      }
     },
     "trv2-f58d0704dc00bff71cb8ae5b": {
       "trend_id": "trv2-f58d0704dc00bff71cb8ae5b",
