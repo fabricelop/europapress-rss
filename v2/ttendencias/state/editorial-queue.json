@@ -12521,12 +12521,12 @@
       "trend_id": "trv2-08db7b433fc8d86e89e92b5e",
       "name": "Apple",
       "revision": 2,
-      "status": "review_pending",
+      "status": "in_progress",
       "reason": "user_reexplanation",
       "episode_token": "06f612ee5f8443ba",
       "requested_at": "2026-11-17T21:57:12.630164+00:00",
       "updated_at": "2026-11-17T21:57:12.630164+00:00",
-      "attempts": 0,
+      "attempts": 1,
       "image_retry_summary": {
         "revision": 1,
         "editorial_sha256": "784a5bc6ad74d00a289d297cbac4629a893d33bff965420061f5a906a0da98b6",
@@ -12538,7 +12538,13 @@
       },
       "review_mode": "x",
       "review_hints": "El texto de la explixacion es tecnico en lugar de explicacion de la tendencia. Repite",
-      "incident_retries": 0
+      "incident_retries": 0,
+      "lease": {
+        "token": "eb6ef41ffd8df5ae3ba521f49a2b1415dccd3bf551ae487d",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-17T21:57:45.249389+00:00",
+        "expires_at": "2026-11-17T22:37:45.249389+00:00"
+      }
     },
     "trv2-a0a7a09de14f408822b9e0f3": {
       "trend_id": "trv2-a0a7a09de14f408822b9e0f3",
