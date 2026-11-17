@@ -1,14 +1,30 @@
 {
-  "checked_at": "2026-11-17T01:53:37.965929+00:00",
+  "checked_at": "2026-11-17T02:03:36.522711+00:00",
   "before": [
-    "elaborando_bloqueado_47"
+    "elaborando_bloqueado_49"
   ],
   "repair_actions": [],
   "remaining": [
-    "elaborando_bloqueado_47"
+    "elaborando_bloqueado_49"
   ],
-  "healthy_source_count": 19,
-  "source_failures": [],
-  "events_bytes": 4042573,
+  "healthy_source_count": 16,
+  "source_failures": [
+    {
+      "source": "Europa Press",
+      "type": "general",
+      "error": "HTTP Error 503: Service Unavailable"
+    },
+    {
+      "source": "Telecinco Noticias",
+      "type": "general",
+      "error": "HTTP Error 503: Service Unavailable"
+    },
+    {
+      "source": "Noticias Cuatro",
+      "type": "general",
+      "error": "HTTP Error 503: Service Unavailable"
+    }
+  ],
+  "events_bytes": 4042082,
   "ok": false
 }
