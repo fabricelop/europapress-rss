@@ -11756,20 +11756,27 @@
     "trv2-883b26773797a4e04e85bec5": {
       "trend_id": "trv2-883b26773797a4e04e85bec5",
       "name": "Vascongadas",
-      "revision": 1,
-      "status": "in_progress",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "5d9ca41f2d434205",
-      "requested_at": "2026-11-17T18:06:59.546385+00:00",
-      "updated_at": "2026-11-17T18:06:59.546385+00:00",
+      "requested_at": "2026-11-17T20:49:43.805772+00:00",
+      "updated_at": "2026-11-17T20:49:43.805772+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "lease": {
-        "token": "a266f6539846cd8d61cfe2d29abdb0b8c6e5f74ec1364498",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-17T18:23:54.992433+00:00",
-        "expires_at": "2026-11-17T19:03:54.992433+00:00"
-      }
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-17T18:23:54.992433+00:00",
+          "send_intent_at": null,
+          "incident_reason": "lease_expired_without_capture",
+          "archived_at": "2026-11-17T20:49:43.805772+00:00"
+        }
+      ],
+      "incident_retries": 1
     },
     "trv2-e273d59785bd9f62894ac412": {
       "trend_id": "trv2-e273d59785bd9f62894ac412",
@@ -12519,7 +12526,6 @@
     "trv2-34ca0c923169a13704deea45",
     "trv2-9cbd3b28a6565b5069fdbda5",
     "trv2-3c58fb6982066ad9a047a2cc",
-    "trv2-883b26773797a4e04e85bec5",
     "trv2-8c272e7867c21c4a14bc5db6",
     "trv2-bfddd97429ea4faa8ef3c545",
     "trv2-cf575ae3471ee4c286b91133",
@@ -12544,7 +12550,8 @@
     "trv2-314fcb2d3209bd923e70db1f",
     "trv2-91f61a7f92b9c38b60f46622",
     "trv2-72a170e5d797bfa0c5a6ad70",
-    "trv2-215d8dccc87c77fb1d90f95d"
+    "trv2-215d8dccc87c77fb1d90f95d",
+    "trv2-883b26773797a4e04e85bec5"
   ],
   "effects_enabled": false
 }
