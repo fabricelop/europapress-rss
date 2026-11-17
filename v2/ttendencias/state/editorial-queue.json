@@ -11131,12 +11131,12 @@
       "trend_id": "trv2-46dc469d8f5c8129ece07fb8",
       "name": "#TEM17N",
       "revision": 3,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "c1e3e672a2373252",
       "requested_at": "2026-11-17T17:16:04.767210+00:00",
       "updated_at": "2026-11-17T17:16:04.767210+00:00",
-      "attempts": 0,
+      "attempts": 1,
       "review_mode": "x",
       "review_hints": "Es del programa Todo es Mentira de hoy.",
       "previous_attempts": [
@@ -11151,7 +11151,13 @@
           "archived_at": "2026-11-17T17:16:04.767210+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "314f8111d2134df397eff3744a1f679add7e638628a38fca",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-17T17:16:23.997973+00:00",
+        "expires_at": "2026-11-17T17:56:23.997973+00:00"
+      }
     },
     "trv2-cb0e9c541c50fd742680ab18": {
       "trend_id": "trv2-cb0e9c541c50fd742680ab18",
