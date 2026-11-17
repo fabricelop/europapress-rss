@@ -12894,12 +12894,12 @@
       "trend_id": "trv2-0162e753d73df3f05d21fc5d",
       "name": "$NVDA",
       "revision": 2,
-      "status": "review_pending",
+      "status": "in_progress",
       "reason": "user_reexplanation",
       "episode_token": "93faa0c02f71fb33",
       "requested_at": "2026-11-17T22:23:27.122277+00:00",
       "updated_at": "2026-11-17T22:23:27.122277+00:00",
-      "attempts": 0,
+      "attempts": 1,
       "image_incident": {
         "project": "ttendencias-v2",
         "trend_id": "trv2-0162e753d73df3f05d21fc5d",
@@ -12921,7 +12921,13 @@
         "pre_send_limit": 3
       },
       "review_mode": "standard",
-      "incident_retries": 0
+      "incident_retries": 0,
+      "lease": {
+        "token": "3e7115bca4284071b41fd6c19c34217f49dde533bdee15d5",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-17T22:23:54.704883+00:00",
+        "expires_at": "2026-11-17T23:03:54.704883+00:00"
+      }
     }
   },
   "pending_count": 458,
