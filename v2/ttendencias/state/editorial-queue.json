@@ -10120,14 +10120,13 @@
     "trv2-9d44c0bc5d99ea47e80bee8d": {
       "trend_id": "trv2-9d44c0bc5d99ea47e80bee8d",
       "name": "Crimea",
-      "revision": 2,
-      "status": "captured_review",
-      "reason": "retry_after_incident",
+      "revision": 3,
+      "status": "review_pending",
+      "reason": "user_reexplanation",
       "episode_token": "faa16844005b18f8",
-      "requested_at": "2026-11-17T10:06:41.979434+00:00",
-      "updated_at": "2026-11-17T10:26:29.215125+00:00",
-      "previous_explanation": null,
-      "attempts": 1,
+      "requested_at": "2026-11-17T10:34:26.200668+00:00",
+      "updated_at": "2026-11-17T10:34:26.200668+00:00",
+      "attempts": 0,
       "previous_attempts": [
         {
           "revision": 1,
@@ -10141,25 +10140,6 @@
         }
       ],
       "incident_retries": 1,
-      "capture": {
-        "revision": 2,
-        "chat_url": "https://chatgpt.com/c/6afc2767-5e4c-83eb-929f-be4a02d0b684",
-        "sha256": "de618e239aa35f244433fbb307b5773409ed86bf4933ad0401001147489f5684",
-        "answer": "Crimea — Tendencia en España\n\nCausa confirmada 17 de noviembre de 2026\n\nESTADO_CAUSA: CONFIRMADA\nESTADO_X: NO_NECESARIO\n\nTexto principal para X\nWriting\n\nUcrania vuelve a atacar el puente de Crimea por segunda noche consecutiva. La ofensiva obliga a cortar el tráfico mientras se evalúan los daños.\n\n146 caracteres · Sin hashtags\n\nHashtags: #Crimea #Ucrania #Rusia\n\n¿Por qué es tendencia?\n\nLa explicación predominante es la nueva ofensiva ucraniana contra el puente de Kerch, que conecta Rusia con la península de Crimea, ocupada y anexionada ilegalmente por Moscú en 2014.\n\nLos ataques se produjeron durante dos noches consecutivas, el 16 y el 17 de noviembre de 2026.\n\nSegún las autoridades instaladas por Rusia:\n\nEl puente fue alcanzado nuevamente y se suspendió el tráfico.\n\nSe registraron daños estructurales, cuya magnitud sigue pendiente de confirmación independiente.\n\nDos personas murieron en otro ataque con drones en la península.\n\nMoscú anunció una evaluación extraordinaria para determinar las reparaciones necesarias.\n\nLa ofensiva coincide con nuevos bombardeos rusos contra infraestructuras de Kiev. \nefe.com\n+2\n\nFuentes y contraste\n\nFuente\n\n\t\n\nInformación verificada\n\n\n\n\nAgencia EFE\n\n\t\n\nSegundo ataque y cierre del puente, 17/11\n\n\n\n\nAFP\n\n\t\n\nConfirma la nueva ofensiva y advierte de daños todavía no verificados\n\n\n\n\nABC News\n\n\t\n\nDeclaraciones de autoridades rusas y alcance todavía incierto\n\n\n\n\nRTVE\n\n\t\n\nCobertura española de los ataques y sus consecuencias\n\nConclusión editorial: El ataque reiterado contra el puente de Crimea es una explicación sólida de la actualidad del término. No se ha verificado directamente el volumen de conversaciones en X ni el algoritmo que lo sitúa entre las tendencias españolas. Por tanto, la causa informativa está confirmada, pero su peso exacto en la clasificación de X no puede demostrarse.\n\nX: No fue necesario consultar publicaciones individuales, al existir una noticia predominante ampliamente contrastada mediante fuentes independientes.\n\nLa ficha queda preparada para LISTAS, sin autorizar publicación automática.",
-        "verified_complete": true,
-        "editorial_validated": false,
-        "captured_at": "2026-11-17T10:07:18.550690+00:00",
-        "image": {
-          "sha256": "6bca71bcccfb9079a47cc198bfe38436efd44a3aee44cb22d3d14ff3f1f6e7cf",
-          "path": "v2/ttendencias/generated-images/trv2-9d44c0bc5d99ea47e80bee8d-r2-6bca71bcccfb9079a47cc198.png",
-          "mime": "image/png",
-          "revision": 2,
-          "backend": "github_v1_style",
-          "command_id": "v2-img-trv2-9d44c0bc5d99ea47e80bee8d-r2-a2-0062f82d466fb6e646783554",
-          "status": "saved",
-          "image_chat_url": "https://chatgpt.com/c/6afc2b9a-3128-83ed-ac41-4873261086bf"
-        }
-      },
       "image_incident": {
         "project": "ttendencias-v2",
         "trend_id": "trv2-9d44c0bc5d99ea47e80bee8d",
@@ -10170,7 +10150,9 @@
         "code": "V2_IMAGE_GITHUB_CONFLICT_NO_REPLAY",
         "detail_safe": "El guardado coincidió con otro cambio y necesita revisión.",
         "retry_mode": "manual_only"
-      }
+      },
+      "review_mode": "x",
+      "review_hints": "No pongas lo de los caracteres y hashtag"
     },
     "trv2-3b0076dcafa5d4126cffc95c": {
       "trend_id": "trv2-3b0076dcafa5d4126cffc95c",
@@ -10884,7 +10866,6 @@
     "trv2-38348ef993071d36d63504ce",
     "trv2-3b0076dcafa5d4126cffc95c",
     "trv2-78da2bc0a169185fe3c972d5",
-    "trv2-9d44c0bc5d99ea47e80bee8d",
     "trv2-2837ec6b6a439fa32ea2233b",
     "trv2-0b957550831b6e5111811c62",
     "trv2-31fcf73aef4d5c5aac22e816",
@@ -10892,7 +10873,8 @@
     "trv2-4fbcf70b4a8a60ddb4398a07",
     "trv2-5402ef0b1558c313dae9a266",
     "trv2-f58d0704dc00bff71cb8ae5b",
-    "trv2-fe742fffe835622df7a9a1a7"
+    "trv2-fe742fffe835622df7a9a1a7",
+    "trv2-9d44c0bc5d99ea47e80bee8d"
   ],
   "effects_enabled": false
 }
