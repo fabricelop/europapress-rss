@@ -1,6 +1,6 @@
 {
   "attempts": {
-    "claim_count": 1,
+    "claim_count": 2,
     "history": [
       {
         "at": "2026-11-17T16:05:55Z",
@@ -16,8 +16,14 @@
   "capture": null,
   "event_id": "ttn2-ffb4b9b96962dd7126aebe18",
   "job_id": "ttn2-ffb4b9b96962dd7126aebe18-r2-editorial",
-  "lease": null,
-  "phase": "queued",
+  "lease": {
+    "expires_at": "2026-11-17T16:16:46Z",
+    "heartbeat_at": "2026-11-17T16:06:46Z",
+    "started_at": "2026-11-17T16:06:46Z",
+    "token_sha256": "676283f29577b6a4e500da0f3b48c67c293216f28890dea340c713ac27d4cadd",
+    "worker_id": "news-2e64d1ec85db4bf7854e010026ec3443"
+  },
+  "phase": "browser_starting",
   "priority": "manual_rework",
   "problem": null,
   "project": "ttittulares-v2",
@@ -28,6 +34,6 @@
   "schema_version": 1,
   "send_intent": null,
   "session": null,
-  "status": "pending",
-  "updated_at": "2026-11-17T16:05:55Z"
+  "status": "claimed",
+  "updated_at": "2026-11-17T16:06:46Z"
 }
