@@ -11177,12 +11177,12 @@
       "trend_id": "trv2-cb0e9c541c50fd742680ab18",
       "name": "Fils",
       "revision": 4,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "85406f774aed6477",
       "requested_at": "2026-11-17T20:54:15.432090+00:00",
       "updated_at": "2026-11-17T20:54:15.432090+00:00",
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -11207,7 +11207,13 @@
       ],
       "incident_retries": 2,
       "review_mode": "x",
-      "review_hints": "El partido ya acabo"
+      "review_hints": "El partido ya acabo",
+      "lease": {
+        "token": "7d0506e581d35a79aa352fa240de8cd1b4c6328fb912b58e",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-17T20:54:47.095801+00:00",
+        "expires_at": "2026-11-17T21:34:47.095801+00:00"
+      }
     },
     "trv2-03d80db7f88fc904e211f435": {
       "trend_id": "trv2-03d80db7f88fc904e211f435",
