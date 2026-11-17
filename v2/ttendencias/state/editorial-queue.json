@@ -11604,13 +11604,13 @@
       "trend_id": "trv2-215d8dccc87c77fb1d90f95d",
       "name": "Onimusha",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "60964db67b249f8c",
       "requested_at": "2026-11-17T20:47:15.220646+00:00",
       "updated_at": "2026-11-17T20:47:15.220646+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -11623,7 +11623,13 @@
           "archived_at": "2026-11-17T20:47:15.220646+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "e2f736b98eccd3bcf8786e8b90fcdbde8a6cf559a7afaea5",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-17T20:47:40.102652+00:00",
+        "expires_at": "2026-11-17T21:27:40.102652+00:00"
+      }
     },
     "trv2-72a170e5d797bfa0c5a6ad70": {
       "trend_id": "trv2-72a170e5d797bfa0c5a6ad70",
