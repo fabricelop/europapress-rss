@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Regression tests for image retry state; no browser or network needed."""
+"""Regression tests for bounded fresh-chat retries and latest-image replacement."""
 import pathlib
 import sys
 import unittest
@@ -22,40 +22,55 @@ class ImageRetryStatusTests(unittest.TestCase):
         rows = [{"attempt": i, "status": "pre_send_failed"} for i in (1, 2, 3)]
         self.assertEqual(retry_status(rows)["state"], "exhausted")
 
-    def test_confirmed_unsent_old_attempt(self):
+    def test_confirmed_unsent_can_retry_in_a_new_chat(self):
         row = {"attempt": 1, "status": "failed",
                "error": "V2_IMAGE_PROMPT_NOT_SUBMITTED",
                "submission_observation": {"composer_inspected": True,
                   "composer_contains_command": True,
                   "user_turn_contains_command": False}}
-        self.assertEqual(retry_status([row])["state"], "blocked")
-        self.assertEqual(retry_status([dict(row, attempt=i) for i in (1,2,3)])["state"],
-                         "blocked")
+        result = retry_status([row])
+        self.assertEqual(result["state"], "retry_pending")
+        self.assertEqual(result["send_attempts"], 1)
 
-    def test_ambiguous_is_not_retryable(self):
+    def test_ambiguous_send_can_retry_in_a_new_chat(self):
         row = {"attempt": 1, "status": "failed", "error": "V2_IMAGE_NOT_READY"}
-        self.assertEqual(retry_status([row])["state"], "blocked")
+        self.assertEqual(retry_status([row])["state"], "retry_pending")
 
-    def test_in_flight_is_not_exhausted(self):
+    def test_in_flight_attempt_is_not_exhausted(self):
         rows = [{"attempt": 1, "status": "failed"},
                 {"attempt": 2, "status": "sent_waiting_for_image"}]
-        self.assertEqual(retry_status(rows)["state"], "blocked")
+        result = retry_status(rows)
+        self.assertEqual(result["state"], "retry_pending")
+        self.assertEqual(result["send_attempts"], 2)
 
-    def test_unknown_and_failed_attempts_cannot_auto_retry(self):
-        for status in ("failed", "send_unverified", "unexpected", "starting"):
+    def test_failed_known_states_retry_but_unknown_state_blocks(self):
+        for status in ("failed", "send_unverified", "starting",
+                       "send_intent_recorded", "sent_waiting_for_image"):
             with self.subTest(status=status):
                 self.assertEqual(retry_status([{"attempt": 1, "status": status}])["state"],
-                                 "blocked")
+                                 "retry_pending")
+        self.assertEqual(retry_status([{"attempt": 1, "status": "unexpected"}])["state"],
+                         "blocked")
 
-    def test_older_attempt_must_not_be_hidden_by_pre_send_failure(self):
+    def test_older_send_then_pre_send_failure_can_retry(self):
         rows = [{"attempt": 1, "status": "send_intent_recorded"},
                 {"attempt": 2, "status": "pre_send_failed"}]
         result = retry_status(rows)
-        self.assertEqual(result["state"], "blocked")
+        self.assertEqual(result["state"], "retry_pending")
         self.assertEqual(result["send_attempts"], 1)
+
+    def test_three_send_attempts_are_exhausted(self):
+        rows = [{"attempt": i, "status": "failed"} for i in (1, 2, 3)]
+        self.assertEqual(retry_status(rows)["state"], "exhausted")
+        self.assertEqual(retry_status(rows)["send_attempts"], 3)
 
     def test_saved(self):
         self.assertEqual(retry_status([{"attempt": 1, "status": "saved"}])["state"], "saved")
+
+    def test_a_saved_attempt_remains_final_for_that_revision(self):
+        rows = [{"attempt": 1, "status": "saved"},
+                {"attempt": 2, "status": "failed"}]
+        self.assertEqual(retry_status(rows)["state"], "saved")
 
 
 if __name__ == "__main__":
