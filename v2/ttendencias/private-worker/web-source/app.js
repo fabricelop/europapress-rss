@@ -19,6 +19,9 @@ function capturedEditorial(raw){
  return raw.replace(/\r\n?/g,"\n")
   .replace(/:::writing(?:\s*\{[^}\n]*\})?/giu,"")
   .replace(/(^|\s):::(?=\s|$)/gmu,"$1")
+  // Remove ChatGPT editorial counters/hashtag diagnostics, not publishable prose.
+  .replace(/(?:\s*[·|—–-]\s*)?\b\d{1,4}\s+caracteres\s*(?:[·|—–-]\s*)?sin\s+hashtags?\b\.?\s*$/gimu,"")
+  .replace(/^\s*\d{1,4}\s+caracteres\s*$/gimu,"")
   .split("\n").map(line=>line.trim()
    .replace(/^#{1,6}\s+(?=\S)/u,"")
    .replace(/\*\*([^*\n]+)\*\*|__([^_\n]+)__/gu,"$1$2"))
