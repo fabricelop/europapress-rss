@@ -10085,24 +10085,27 @@
     "trv2-38348ef993071d36d63504ce": {
       "trend_id": "trv2-38348ef993071d36d63504ce",
       "name": "Aritz",
-      "revision": 1,
-      "status": "in_progress",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "965116d50aa00ce9",
-      "requested_at": "2026-11-17T08:02:41.174442+00:00",
-      "updated_at": "2026-11-17T08:07:17.421886+00:00",
+      "requested_at": "2026-11-17T08:59:29.959437+00:00",
+      "updated_at": "2026-11-17T08:59:29.959437+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "lease": {
-        "token": "dc215c5f76c549acfddef8e78c293cc43a8312f9bc8f3550",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-17T08:06:42.902883+00:00",
-        "expires_at": "2026-11-17T08:46:42.902883+00:00"
-      },
-      "send_intent": {
-        "token": "dc215c5f76c549acfddef8e78c293cc43a8312f9bc8f3550",
-        "at": "2026-11-17T08:07:17.421850+00:00"
-      }
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-17T08:06:42.902883+00:00",
+          "send_intent_at": "2026-11-17T08:07:17.421850+00:00",
+          "incident_reason": "lease_expired_without_capture",
+          "archived_at": "2026-11-17T08:59:29.959437+00:00"
+        }
+      ],
+      "incident_retries": 1
     }
   },
   "pending_count": 385,
@@ -10486,12 +10489,12 @@
     "trv2-b2d379485fbaea7d4163359b",
     "trv2-e4ff0e4f46a58ccc610395b4",
     "trv2-876beecc59c543665de75939",
-    "trv2-38348ef993071d36d63504ce",
     "trv2-aa95c3b3492d3c8d8b44eceb",
     "trv2-7eb4076b8caa411c45539050",
     "trv2-b2c4441e7096e92ea22fde80",
     "trv2-6c39d8f5b35232c2337a514d",
-    "trv2-1b1f435aa8db200810a77657"
+    "trv2-1b1f435aa8db200810a77657",
+    "trv2-38348ef993071d36d63504ce"
   ],
   "effects_enabled": false
 }
