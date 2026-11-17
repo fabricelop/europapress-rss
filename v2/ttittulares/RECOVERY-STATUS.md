@@ -1,3 +1,41 @@
+## Noticias: desbloqueo de validación capturada — 17/11/2026
+
+Retomado ESTE chat tras leer memoria maestra v315 y el registro de la noche.
+La corrección validada d72784e9a58a4822e0a624187dda1b6e792cd36a estaba solo en
+fix/news-v2-quarantined-validation-20261116, aún sin integrar. Se integra ahora
+únicamente en cuatro archivos de Noticias, conservando los cambios recientes
+de reintentos de imágenes de Tendencias y su planificación independiente.
+
+Evidencia local aportada por el usuario:
+Upgrade terminó el drenaje8→0, instaló dfaf4fd0f2e726395aef2196bfb825242817a578
+y abortó antes de activar tareas con CODIGO_SALIDA=1, recovery_incident_count=1.
+No fue un fallo de dependencias ni de Chrome en esa ejecución.
+La noticia ttn2-2618ba0b211ec516822f0794 (Lindsay Clancy) tiene envío CONFIRMADO,
+captura completa SHA68cb2d3851e3ea2b7f289a6d1d7d20bb8b87edcb600665531eb2c44804e8e7b0,
+pero falló con ESSENTIAL_FACT_NOT_VERIFIED. El mensaje anterior del instalador
+que hablaba de envío sin confirmar era incorrecto para este caso.
+No crear READY ni reenviar esa noticia: conservarla en incidencia para revisión.
+
+Cambio:
+- preview distingue blocking_recovery_incident_count (envío incierto/captura
+  incompleta) y quarantined_incident_count (envío confirmado y captura completa).
+- El instalador solo bloquea ante la primera categoría; registra la segunda
+  sin reenviar ni impedir que se elaboren otras noticias o sus imágenes.
+- Conserva WScript/Hidden y el proceso independiente de imágenes existente.
+- CI aislado43971508835 SUCCESS:218 Python/108 Node en Linux y Windows, parseo,
+  XML TaskScheduler/WSH reales. CI43971508712 SUCCESS con preview real:
+  blocking=0, quarantined=1, sin escrituras ni navegador.
+- La prueba garantiza que la noticia fallida queda idéntica al reservar otra.
+
+Estado real al retomar: 82 pendientes/0 activas/3 listas/1 incidencia;
+radar actualizado 2026-11-17T02:31:36Z (supera la observación antigua19:11:32Z).
+Instalación de esta corrección y activación local de3+2 puestos AÚN PENDIENTES.
+Siguiente: CI de integración y entregar Install-News-Editorial-V2.ps1 -EnableImages
+desde commit validado. No repetir el drenaje completo si no hay procesos activos.
+El propio instalador comprobará esto y abortará ante un consumidor vivo.
+No iniciar recuperaciones manuales de imágenes por tendencia: el requisito nuevo
+de presupuestos/reintentos de Tendencias de la memoria v315 sigue independiente.
+
 ## Reanudación 17/11/2026 — límite preenvío y clasificador de estados
 
 - `9501e93ff7ed636b650bfc9bdbd3834fa358389d`: `image_worker_v2.py` limita a 3 los fallos `pre_send_failed` por revisión, con cooldown 900 s; siguen separados de los tres intentos de envío. Evita ciclos infinitos del navegador ante un compositor roto.

@@ -86,8 +86,14 @@ Copy-Item -LiteralPath (Join-Path $code 'v2\ttittulares\Run-News-Editorial-Auto.
 Copy-Item -LiteralPath (Join-Path $code 'v2\ttittulares\Launch-News-Hidden.vbs') -Destination (Join-Path $root 'Launch-News-Hidden.vbs') -Force
 Write-Host ('TTN2_INSTALLED_COMMIT='+$sha)
 if($PrepareOnly){Write-Host 'TTN2_INSTALLED_NOT_STARTED=YES';return}
-if([int]$queuePreview.preview.recovery_incident_count -gt 0){
-  throw 'Hay un envio anterior sin confirmar. Recuperar esa conversacion antes de ejecutar otro piloto; no se envia nada.'
+if($null -eq $queuePreview.preview.blocking_recovery_incident_count -or $null -eq $queuePreview.preview.quarantined_incident_count){
+  throw 'Noticias V2: falta clasificacion verificada de incidencias; no se activa el programador.'
+}
+if([int]$queuePreview.preview.blocking_recovery_incident_count -gt 0){
+  throw 'Hay un envio incierto o una respuesta pendiente de recuperar. Resolver ese intento antes de otro piloto; no se reenvia nada.'
+}
+if([int]$queuePreview.preview.quarantined_incident_count -gt 0){
+  Write-Host ('TTN2_EDITORIAL_INCIDENTS_QUARANTINED='+$queuePreview.preview.quarantined_incident_count)
 }
 # One complete real story must verify text and browser cleanup before enabling 3 slots.
 Invoke-NewsPython -arguments @('-m','v2.ttittulares.editorial_consumer_v2','--root',('"'+$root+'"'),'--run-one')
