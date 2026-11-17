@@ -2,7 +2,7 @@
 // Ranking y marcas R comparten la misma instantánea validada por el Worker.
 const BASE="/api/state/";
 const $=id=>document.getElementById(id);
-const state={items:[],captured:null,open:null,rankingUnchanged:false,rankingChangeAt:null,reRequests:[],incidentRequests:[],publications:{count:0,events:[]},manualImages:[]};
+const state={items:[],captured:null,open:null,rankingUnchanged:false,rankingChangeAt:null,reRequests:[],incidentRequests:[],incidentRetryRequests:[],publications:{count:0,events:[]},manualImages:[]};
 const newsViewMode=new URLSearchParams(location.search).get("view")==="noticias";
 const PUBLIC_SITE='https://ttactualidad.rainyraven22.chatgpt.site';
 function el(tag,className,content){const n=document.createElement(tag);if(className)n.className=className;if(content!==undefined)n.textContent=String(content);return n}
@@ -219,8 +219,18 @@ async function loadIncidentRequests(){
  if(!Array.isArray(data.requests))throw Error("Solicitudes de incidencias no válidas");
  state.incidentRequests=data.requests;
 }
+async function loadIncidentRetryRequests(){
+ const res=await fetch("/api/incident-retry",{cache:"no-store",credentials:"same-origin"});
+ if(!res.ok)throw Error("No se pueden consultar los reintentos manuales (HTTP "+res.status+")");
+ const data=await res.json();
+ if(!Array.isArray(data.requests))throw Error("Respuesta de reintentos no válida");
+ state.incidentRetryRequests=data.requests;
+}
 function incidentRequested(item){
  return state.incidentRequests.some(row=>row.trend_id===item.trend_id&&row.base_revision===item.revision);
+}
+function incidentRetryRequested(item){
+ return state.incidentRetryRequests.some(row=>row.trend_id===item.trend_id&&row.base_revision===item.revision);
 }
 function renderPublications(){
  const data=state.publications;
@@ -549,12 +559,32 @@ function makePublishButtons(card,item){
      body:JSON.stringify({trend_id:item.trend_id,revision:item.revision,hints})});
     if(!response.ok)throw Error("HTTP "+response.status);
     state.incidentRequests.push({trend_id:item.trend_id,base_revision:item.revision});
-    publishNotice("Pistas RE-X guardadas para «"+item.name+"». Se usarán en el próximo reintento seguro, tras comprobar si el chat anterior se puede recuperar.");
+    publishNotice("Pistas RE-X guardadas para «"+item.name+"». Se usarán al abrir otro chat, sin recuperar la conversación anterior.");
     render();
    });
   });
   review.append(button);
-  if(button.disabled)review.append(el("span","review-state","Pistas RE-X recibidas · esperando recuperación"));
+  if(button.disabled)review.append(el("span","review-state","Pistas RE-X recibidas · esperando otro intento"));
+  const retry=el("button","publish-action re-explain-action","Reintentar elaboración");
+  retry.type="button";
+  retry.title="Solicitar un nuevo intento desde cero y con un chat distinto";
+  retry.setAttribute("aria-label","Reintentar la elaboración de "+item.name+" desde cero");
+  retry.disabled=incidentRetryRequested(item);
+  retry.addEventListener("click",async()=>{
+   if(retry.disabled)return;
+   retry.disabled=true;
+   try{
+    const response=await fetch("/api/incident-retry",{method:"POST",credentials:"same-origin",
+     headers:{"content-type":"application/json","x-ttv2-action":"1"},
+     body:JSON.stringify({trend_id:item.trend_id,revision:item.revision})});
+    if(!response.ok)throw Error("HTTP "+response.status);
+    state.incidentRetryRequests.push({trend_id:item.trend_id,base_revision:item.revision});
+    publishNotice("Reintento solicitado para «"+item.name+"». Se abrirá otro chat después de comprobar el cierre seguro del intento anterior.");
+    render();
+   }catch(e){retry.disabled=false;publishNotice("No se pudo solicitar el reintento: "+e.message);}
+  });
+  review.append(retry);
+  if(retry.disabled)review.append(el("span","review-state","Reintento solicitado"));
   actions.append(review);
   card.append(actions);
   return;
@@ -858,6 +888,7 @@ async function refresh(){
   await loadSharedMarks();
   try{await loadReRequests()}catch{state.reRequests=[]}
   try{await loadIncidentRequests()}catch{state.incidentRequests=[]}
+  try{await loadIncidentRetryRequests()}catch{state.incidentRetryRequests=[]}
   try{await loadPublications()}catch{$("publication-summary").textContent="PU · — / 24 h"}
   try{await loadManualImages()}catch{}
   applyManualImages();

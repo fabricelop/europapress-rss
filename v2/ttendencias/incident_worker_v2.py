@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Retry one stale incident, after reading any prior ChatGPT response if possible.
+"""Retry one stale incident in a NEW revision and disposable Chrome session.
 
 Called only from the single locked V2 daemon after confirming ChromeProfile
 has zero processes. Repo writes require SHA compare-and-swap.
@@ -9,12 +9,23 @@ import pathlib
 from datetime import datetime, timezone
 
 import editorial_run_v2 as core
+from chrome_profile_process_v2 import exact_chrome_profile_pids
 from incident_retry_v2 import ranked_incident, restart_as_new_revision
 
 
-def process_one(api, auth):
+def ensure_no_owned_chrome():
     if core.profile_pids():
-        raise RuntimeError("No resolver incidencia con Chrome V2 activo")
+        raise RuntimeError("V2_BASE_CHROME_ACTIVE")
+    # A detached worker can outlive its Python parent. Never assign a fresh
+    # revision or delete its profile while its exact owned Chrome is running.
+    for pattern in (core.PROFILE.name + "-Job-*", core.PROFILE.name + "-Parallel-*"):
+        for profile in core.PROFILE.parent.glob(pattern):
+            if exact_chrome_profile_pids(profile):
+                raise RuntimeError("V2_ORPHANED_WORKER_CHROME_ACTIVE")
+
+
+def process_one(api, auth):
+    ensure_no_owned_chrome()
     queue, _ = core.queue_read(api, auth)
     history = core.module("select_current_top30_v2.py", "ttv2_retry_history").read_history(auth)
     incident, age = ranked_incident(queue, history)
@@ -30,8 +41,7 @@ def process_one(api, auth):
             raise RuntimeError("Diario de incidencia no coincide; detener")
     if journal and journal.get("reply_captured") and journal.get("answer"):
         # Already captured answer might only be missing GitHub commit.
-        if core.profile_pids():
-            raise RuntimeError("Chrome V2 activo durante la recuperación")
+        ensure_no_owned_chrome()
         if journal.get("cleanup_verified") is not True:
             journal["cleanup_verified"] = True
             core.store(journal_path, journal)
@@ -45,26 +55,13 @@ def process_one(api, auth):
             # message merely because GitHub/Listas were temporarily unavailable.
             print("TT_V2_INCIDENT_CAPTURE_PERSIST_BLOCKED=" + type(exc).__name__, flush=True)
             return False
-    if (journal and journal.get("message_sent") is True
-        and isinstance(journal.get("chat_url"), str)
-        and journal["chat_url"].startswith("https://chatgpt.com/c/")
-        and not journal.get("url_recovery_attempted_at")):
-        recovery = core.module("recover_existing_chat_v2.py", "ttv2_incident_url")
-        try:
-            recovery.recover_closed_chat(trend_id, revision, lock_held=True)
-            print("TT_V2_INCIDENT_ORIGINAL_RECOVERED=YES", flush=True)
-            return True
-        except Exception as exc:
-            if core.profile_pids():
-                # Do not reset while an orphaned browser may still be running.
-                raise RuntimeError("Recuperación fallida con Chrome V2 vivo") from exc
-            journal["url_recovery_attempted_at"] = datetime.now(timezone.utc).isoformat()
-            journal["url_recovery_result"] = type(exc).__name__
-            # Never remove the original sent evidence/chat URL/answer.
-            core.store(journal_path, journal)
-            print("TT_V2_INCIDENT_URL_RECOVERY_FAILED=" + type(exc).__name__, flush=True)
-    if core.profile_pids():
-        raise RuntimeError("Chrome V2 reapareció durante incidencia")
+    # The user explicitly rejected reopening previous ChatGPT conversations.
+    # Keep the one-way send evidence, fence the old revision and launch a new
+    # chat. A captured answer above is merely persisted, not regenerated.
+    if journal and journal.get("message_sent") is True:
+        journal["fresh_chat_requested_at"] = datetime.now(timezone.utc).isoformat()
+        core.store(journal_path, journal)
+    ensure_no_owned_chrome()
     # Revalidate against the latest GitHub revision before transition.
     for attempt in range(4):
         current, sha = core.queue_read(api, auth)

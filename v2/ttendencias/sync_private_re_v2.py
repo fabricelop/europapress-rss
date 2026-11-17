@@ -23,12 +23,14 @@ def fetch_requests(url=PUBLIC_RE):
     with urllib.request.urlopen(request, timeout=12) as response:
         data = json.load(response)
     if (data.get("schema_version") != 1 or not isinstance(data.get("re"), list)
-            or not isinstance(data.get("incident_rex", []), list)):
+            or not isinstance(data.get("incident_rex", []), list)
+            or not isinstance(data.get("incident_retry", []), list)):
         raise ValueError("V2 RE public response has unexpected schema")
-    if len(data["re"]) > 200 or len(data.get("incident_rex", [])) > 200:
+    if any(len(data.get(k, [])) > 200 for k in ("re", "incident_rex", "incident_retry")):
         raise ValueError("V2 RE public response unexpectedly large")
     return data["re"] + [{**row, "purpose": "incident_hints"}
-                          for row in data.get("incident_rex", [])]
+                          for row in data.get("incident_rex", [])] + [
+        {**row, "purpose": "incident_manual_retry"} for row in data.get("incident_retry", [])]
 
 
 def plan_requested_reviews(queue, history, requests, *, now=None):
@@ -47,6 +49,44 @@ def plan_requested_reviews(queue, history, requests, *, now=None):
             continue
         existing = (updated.get("items") or {}).get(trend_id)
         if not existing or existing.get("revision", 0) > base:
+            continue
+        if req.get("purpose") == "incident_manual_retry":
+            instructions = req.get("instructions", "")
+            if (not isinstance(instructions, str) or len(instructions) > 1200 or
+                    (instructions and len(instructions.strip()) < 10) or
+                    existing.get("revision") != base):
+                ignored += 1
+                continue
+            if existing.get("status") in ("in_progress", "capture_recovery"):
+                # D1 cannot authorize an in-flight resend. Stage only a
+                # one-shot user request; the incident worker fences the old
+                # lease and checks exact Chrome/journal state before resetting.
+                if not existing.get("manual_retry_requested_at"):
+                    if updated is queue:
+                        updated = copy.deepcopy(queue)
+                    row = updated["items"][trend_id]
+                    row["manual_retry_requested_at"] = timestamp
+                    if instructions:
+                        row["manual_retry_instructions_pending"] = instructions.strip()
+                    applied.append(trend_id)
+                continue
+            if existing.get("status") not in ("cancelled", "captured_review", "ready", "published"):
+                ignored += 1
+                continue
+            try:
+                result, action = request_reexplanation(updated, history,
+                    trend_id=trend_id, base_revision=base,
+                    entered_top30_at=history.get("observed_at"),
+                    requested_at=timestamp, mode="standard",
+                    allow_cancelled_incident=True)
+            except ValueError:
+                ignored += 1
+                continue
+            if action == "ENQUEUED":
+                updated = result
+                if instructions:
+                    updated["items"][trend_id]["manual_retry_instructions"] = instructions.strip()
+                applied.append(trend_id)
             continue
         if req.get("purpose") == "incident_hints":
             hints = req.get("hints")

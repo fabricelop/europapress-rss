@@ -26,7 +26,8 @@ def eligible_incident(item, *, now=None):
     """Incident has aged out and is not a currently leased/active response."""
     if item.get("status") not in INCIDENT_STATUSES:
         return False
-    if int(item.get("incident_retries", 0)) >= MAX_INCIDENT_RETRIES:
+    manual = bool(item.get("manual_retry_requested_at"))
+    if int(item.get("incident_retries", 0)) >= MAX_INCIDENT_RETRIES and not manual:
         return False
     if (item.get("capture") or {}).get("verified_complete") is True:
         return False
@@ -47,7 +48,7 @@ def eligible_incident(item, *, now=None):
 
 
 def ranked_incident(queue, history, *, now=None):
-    """Pick the highest-ranked eligible incident ONLY in current fresh Top30."""
+    """Prefer current Top30; honor an explicit manual retry from historical Listas."""
     from select_current_top30_v2 import select_current_top30
     # Validation also rejects stale/mismatched history, before any change.
     _ranked, age = select_current_top30(queue, history, 30, now=now)
@@ -60,6 +61,13 @@ def ranked_incident(queue, history, *, now=None):
         item = queue["items"].get(topic["trend_id"])
         if item and eligible_incident(item, now=now):
             return item, age
+    known = {t.get("trend_id") for t in history.get("topics", {}).values()}
+    requested = [item for item in queue.get("items", {}).values()
+                 if item.get("trend_id") in known and item.get("manual_retry_requested_at")
+                 and eligible_incident(item, now=now)]
+    requested.sort(key=lambda item: (item["manual_retry_requested_at"], item["trend_id"]))
+    if requested:
+        return requested[0], age
     return None, age
 
 
@@ -92,9 +100,13 @@ def restart_as_new_revision(queue, trend_id, *, now=None, chrome_clear=False,
         "incident_reason": row.get("capture_recovery_reason") or "lease_expired_without_capture",
         "archived_at": iso,
     })
-    row["previous_attempts"] = archive[-MAX_INCIDENT_RETRIES:]
+    row["previous_attempts"] = archive[-10:]
     row["revision"] = int(row["revision"]) + 1
-    row["incident_retries"] = int(row.get("incident_retries", 0)) + 1
+    manual = bool(row.pop("manual_retry_requested_at", None))
+    row["incident_retries"] = 0 if manual else int(row.get("incident_retries", 0)) + 1
+    instructions = row.pop("manual_retry_instructions_pending", "")
+    if instructions:
+        row["manual_retry_instructions"] = instructions
     hints = row.pop("incident_review_hints_pending", None)
     with_hints = isinstance(hints, str) and 10 <= len(hints.strip()) <= 1200
     row["status"] = "review_pending" if with_hints else "pending"

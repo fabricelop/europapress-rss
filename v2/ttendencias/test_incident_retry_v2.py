@@ -131,6 +131,35 @@ class IncidentRetryTests(unittest.TestCase):
             restart_as_new_revision(q, ident, now=NOW,
                                     chrome_clear=True, recovery_checked=True)
 
+    def test_explicit_user_retry_after_exhaustion_starts_fresh_cycle(self):
+        q, _ = sample()
+        ident = "trv2-%024x" % 1
+        q["items"][ident].update(status="capture_recovery", revision=3,
+            incident_retries=2, updated_at=(NOW-timedelta(hours=1)).isoformat(),
+            manual_retry_requested_at=STAMP,
+            manual_retry_instructions_pending="Contrasta de nuevo el resultado antes de redactar.")
+        self.assertTrue(eligible_incident(q["items"][ident], now=NOW))
+        newer = restart_as_new_revision(q, ident, now=NOW,
+                                        chrome_clear=True, recovery_checked=True)
+        item = newer["items"][ident]
+        self.assertEqual(item["revision"], 4)
+        self.assertEqual(item["incident_retries"], 0)
+        self.assertEqual(item["status"], "pending")
+        self.assertIn("Contrasta", item["manual_retry_instructions"])
+        self.assertNotIn("manual_retry_requested_at", item)
+        self.assertFalse(eligible_incident(item, now=NOW))
+
+    def test_historical_manual_retry_is_selected_after_current_top30(self):
+        q, h = sample()
+        ident = "trv2-%024x" % 31
+        h["topics"]["Fuera"] = {"name":"Fuera","active":False,"rank":None,"trend_id":ident}
+        q["items"][ident] = {"trend_id": ident, "name": "Fuera", "revision": 2,
+            "status":"capture_recovery", "incident_retries": 2,
+            "manual_retry_requested_at": STAMP,
+            "updated_at": (NOW-timedelta(hours=1)).isoformat()}
+        match, _ = ranked_incident(q, h, now=NOW)
+        self.assertEqual(match["trend_id"], ident)
+
     def test_incident_rex_hints_are_used_only_after_safe_recovery_check(self):
         q, _ = sample()
         ident = "trv2-%024x" % 1
