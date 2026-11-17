@@ -10538,13 +10538,13 @@
       "trend_id": "trv2-5af9c7d76013a4601b23923a",
       "name": "#simyoConMotorolaMola",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "31a371419a74ec26",
       "requested_at": "2026-11-17T12:08:32.340802+00:00",
       "updated_at": "2026-11-17T12:08:32.340802+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -10557,7 +10557,13 @@
           "archived_at": "2026-11-17T12:08:32.340802+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "af8828dec11455edc4fb30699322fccf29dba856091d5d6e",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-17T12:09:02.322080+00:00",
+        "expires_at": "2026-11-17T12:49:02.322080+00:00"
+      }
     },
     "trv2-42777490afa9abaa2401700f": {
       "trend_id": "trv2-42777490afa9abaa2401700f",
