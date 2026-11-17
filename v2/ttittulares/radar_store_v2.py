@@ -27,6 +27,7 @@ from .source_fetch_v2 import fetch_all_sources
 from .source_publication_v2 import utc_iso
 
 REPOSITORY = "fabricelop/europapress-rss"
+RADAR_LIVE_BRANCH = "ttactualidad-v2-radar-live"
 OID = re.compile(r"[a-f0-9]{40}\Z")
 HASH = re.compile(r"[a-f0-9]{64}\Z")
 FIXED_STATE = {PREFIX + path for path in (
@@ -69,11 +70,14 @@ class NoRedirect(HTTPRedirectHandler):
 
 
 class GitHubStore:
-    """The repository and branch are intentionally not configurable."""
+    """Constrained V2 storage. Radar-only writes use an isolated branch."""
 
-    def __init__(self, token, *, request=None, read_bytes=None):
+    def __init__(self, token, *, branch=BRANCH, request=None, read_bytes=None):
         if not token:
             raise StoreError("GITHUB_TOKEN_REQUIRED")
+        if branch not in (BRANCH, RADAR_LIVE_BRANCH):
+            raise StoreError("BRANCH_OUTSIDE_V2_SCOPE")
+        self.branch = branch
         self._token = token
         self._opener = build_opener(NoRedirect())
         self._request = request or self._http_json
@@ -130,7 +134,7 @@ class GitHubStore:
         return raw
 
     def head(self):
-        return _oid(self._get("/branches/" + quote(BRANCH, safe=""))["commit"]["sha"])
+        return _oid(self._get("/branches/" + quote(self.branch, safe=""))["commit"]["sha"])
 
     def _tree(self, oid, recursive=False):
         result = self._get("/git/trees/" + _oid(oid) + ("?recursive=1" if recursive else ""))
@@ -237,7 +241,7 @@ class GitHubStore:
         result = self._request("POST", "/graphql", {
             "query": "mutation($input:CreateCommitOnBranchInput!){createCommitOnBranch(input:$input){commit{oid}}}",
             "variables": {"input": {
-                "branch": {"repositoryNameWithOwner": REPOSITORY, "branchName": BRANCH},
+                "branch": {"repositoryNameWithOwner": REPOSITORY, "branchName": self.branch},
                 "expectedHeadOid": expected_head, "message": {"headline": message},
                 "fileChanges": {"additions": additions}}}})
         if result.get("errors"):
@@ -372,9 +376,10 @@ def main():
                       "publication_enabled": False}))
         return
     store = GitHubStore(os.environ.get("GITHUB_TOKEN"))
-    result = persist_snapshot(store, fetched, now=now, max_attempts=LIVE_RETRY_BUDGET)
+    retry_budget = int(os.environ.get("TTN2_LIVE_RETRY_BUDGET", LIVE_RETRY_BUDGET))
+    result = persist_snapshot(store, fetched, now=now, max_attempts=retry_budget)
     if args.verify_replay:
-        replay = persist_snapshot(store, fetched, now=now, max_attempts=LIVE_RETRY_BUDGET)
+        replay = persist_snapshot(store, fetched, now=now, max_attempts=retry_budget)
         if not replay["replayed"] or replay["commit_sha"] != result["commit_sha"]:
             raise StoreError("LIVE_REPLAY_VERIFICATION_FAILED")
         result["replay_verified"] = True

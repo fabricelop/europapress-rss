@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {readFileSync} from "node:fs";
 import worker from "../src/index.js";
-import {projectNews,pageNews,readNews,readNewsRecord,validateNewsRecord,NEWS_SOURCE} from "../src/news.js";
+import {projectNews,pageNews,readNews,readNewsRecord,validateNewsRecord,NEWS_SOURCE,NEWS_RADAR_SOURCE} from "../src/news.js";
 
 const id="ttn2-"+"a".repeat(24),time="2026-11-16T18:13:24Z";
 function fixture(){return [
@@ -14,6 +14,18 @@ test("pending source title is visible without an invented explanation or publica
  const view=projectNews(...fixture());assert.equal(view.counts.pending,1);assert.equal(view.items[0].source_family_count,4);
  assert.equal(view.items[0].explanation,null);assert.equal(view.items[0].publication_allowed,false);
  assert.equal(view.read_only,true);assert.equal(view.refresh_mode,"scheduled_radar_15m");assert.equal(view.expected_interval_minutes,15);
+});
+test("independent radar time stays fresh when feature editorial commits are blocked",()=>{
+ const [index,queue]=fixture();
+ const live={schema_version:1,project:"ttittulares-v2",observed_at:"2026-11-17T12:40:00Z",items:{},metrics:{accepted:12}};
+ const view=projectNews(index,queue,Date.parse("2026-11-17T12:45:00Z"),live);
+ assert.equal(view.radar_independent,true);
+ assert.equal(view.radar_delayed,false);
+ assert.equal(view.editorial_delayed,true);
+ assert.equal(view.editorial_updated_at,time);
+ assert.equal(view.observed_at,live.observed_at);
+ assert.equal(view.refresh_mode,"independent_radar_15m");
+ assert.match(NEWS_RADAR_SOURCE,/ttactualidad-v2-radar-live/);
 });
 test("monitoring candidates are distinct from pending editorial jobs",()=>{
  const [index,queue]=fixture();index.items[id].status="monitoring";queue.items=[];
@@ -50,11 +62,12 @@ test("paging is bounded and search is case insensitive",()=>{
  assert.equal(pageNews(view,new URLSearchParams({state:"detected",page:"999"})).items.length,20);
  assert.throws(()=>pageNews(view,new URLSearchParams({state:"bad"})),/FILTER_INVALID/);
 });
-test("news read fetches two V2 projections, never one request per article",async()=>{
+test("news read fetches two editorial projections and one isolated radar, never one per article",async()=>{
  const docs=fixture(),calls=[];
- const data=await readNews({params:new URLSearchParams({state:"pending"}),fetcher:async(url,options)=>{calls.push([url,options]);return new Response(JSON.stringify(docs[url.endsWith("news-index.json")?0:1]));}});
- assert.equal(data.total,1);assert.equal(calls.length,2);
- assert.ok(calls.every(([url,options])=>url.startsWith(NEWS_SOURCE)&&options.cf.cacheTtl===30));
+ const data=await readNews({params:new URLSearchParams({state:"pending"}),fetcher:async(url,options)=>{calls.push([url,options]);return url===NEWS_RADAR_SOURCE?new Response("Unavailable",{status:503}):new Response(JSON.stringify(docs[url.endsWith("news-index.json")?0:1]));}});
+ assert.equal(data.total,1);assert.equal(calls.length,3);
+ assert.equal(calls.filter(([url])=>url.startsWith(NEWS_SOURCE)).length,2);
+ assert.ok(calls.every(([,options])=>options.cf.cacheTtl===30));
 });
 test("upstream failure never becomes an empty successful list",async()=>{
  await assert.rejects(readNews({fetcher:async()=>new Response("Unavailable",{status:503})}),/SOURCE_UNAVAILABLE/);
@@ -147,7 +160,7 @@ test("opening a ready detail requires the same current revision and reads its ow
  const calls=[];
  const fetcher=async url=>{calls.push(url);return new Response(JSON.stringify(url.includes("/records/")?readyRecord():url.endsWith("news-index.json")?index:queue));};
  const r=await readNewsRecord(id,1,{fetcher});assert.equal(r.tweet_text,readyRecord().tweet.text);
- assert.ok(calls[2].endsWith("/records/"+id+"/r1.json"));
+ assert.ok(calls[3].endsWith("/records/"+id+"/r1.json"));
  await assert.rejects(readNewsRecord(id,2,{fetcher}),/NOT_READY/);
  index.items[id].status="editorial_pending";queue.items[0].status="pending";
  await assert.rejects(readNewsRecord(id,1,{fetcher}),/NOT_READY/);

@@ -95,6 +95,90 @@ def validate(kind, doc):
                         format_checker=FormatChecker()).validate(doc)
 
 class NewsService(ed.EditorialService):
+    @staticmethod
+    def _auto_retryable(job, event):
+        """A failed/expired *revision* may be fenced and replaced once or twice.
+
+        Old attempts stay immutable for auditing. No prior ChatGPT conversation
+        is reopened or resent, and AUTH/disk outages do not spawn chat storms.
+        """
+        if (job.get("status") != "problematic" or job.get("lease") or
+                event.get("current_revision") != job.get("revision") or
+                event.get("status") in ed.TERMINAL):
+            return False
+        code = str((job.get("problem") or {}).get("code", ""))
+        if any(x in code for x in ("AUTH", "LOGIN", "CREDENTIAL", "DISK", "CAPTCHA", "SESSION_CLEANUP")):
+            return False
+        # Limit retries across revisions, not just attempts of one job.
+        return sum(r.get("reason") == "automatic_retry" for r in event.get("revision_refs", [])) < 2
+
+    def _preview_more(self, docs, news, jobs, plan):
+        eligible = any(self._auto_retryable(j, news[j["event_id"]])
+                       and not ed._blocked(news[j["event_id"]], j, docs)
+                       and ed.record_path(j) not in docs for j in jobs.values())
+        return {"automatic_retry_pending": eligible,
+                "maintenance_needed": plan["maintenance_needed"] or
+                                      (eligible and plan["pending_count"] == 0)}
+
+    def retry_problematic(self):
+        """Durably schedule a new exact revision after a quarantined failure.
+
+        CAS fencing of the old revision prevents a late result from becoming
+        READY; a new consumer claim creates a fresh browser/chat and command ID.
+        """
+        for _ in range(self.max_attempts):
+            head, docs = self.store.read_editorial_snapshot()
+            news, jobs = ed._snapshot(docs)
+            candidates = [j for j in jobs.values()
+                          if self._auto_retryable(j, news[j["event_id"]])
+                          and not ed._blocked(news[j["event_id"]], j, docs)
+                          and ed.record_path(j) not in docs]
+            candidates.sort(key=lambda j: (j["requested_at"], j["job_id"]))
+            if not candidates:
+                return False
+            old = candidates[0]
+            event = news[old["event_id"]]
+            # Never requeue an event with a verified record, including cases
+            # where completing its last status commit was interrupted.
+            stamp = ed._stamp(self.clock())
+            revision = old["revision"] + 1
+            jid = f"{event['event_id']}-r{revision}-editorial"
+            if ed.job_path(jid) in docs:
+                raise ed.EditorialError("AUTO_RETRY_JOB_ALREADY_EXISTS")
+            new = copy.deepcopy(old)
+            new.update(job_id=jid, revision=revision, status="pending", phase="queued",
+                       priority="automatic", requested_at=stamp, updated_at=stamp,
+                       prompt=None, lease=None, send_intent=None, session=None,
+                       capture=None, result=None, problem=None,
+                       attempts={"claim_count":0,"submission_count":0,"safe_preflight_failures":0,
+                                 "max_safe_preflight_attempts":3,"history":[]})
+            event.update(current_revision=revision, status="editorial_pending",
+                         current_record_path=None, updated_at=stamp)
+            for ref in event["revision_refs"]:
+                if ref["revision"] == old["revision"]:
+                    ref["status"] = "problematic"
+            event["revision_refs"].append({"revision":revision,"reason":"automatic_retry",
+                "status":"pending","requested_at":stamp,"editorial_job_id":jid})
+            jobs[jid] = new
+            index_item = docs[ed.INDEX]["items"][event["event_id"]]
+            for key in ("image", "image_incident", "image_progress", "editorial_sha256"):
+                index_item.pop(key, None)
+            writes = {ed.job_path(jid):new,
+                      PREFIX+"news/"+event["event_id"]+".json":event}
+            ed._projections(docs, news, jobs, writes)
+            validate("editorial_job", new)
+            validate("news_event", event)
+            validate("queue_index", writes[ed.QUEUE])
+            try:
+                commit = self.store.commit(head, writes, "News V2: fresh editorial chat after incident")
+            except (Conflict, UncertainCommit):
+                continue
+            verified = self.store.read_documents(commit, list(writes))
+            if verified != writes:
+                raise ed.EditorialError("AUTO_RETRY_READBACK_MISMATCH")
+            return True
+        raise Conflict("NEWS_AUTO_RETRY_CAS_EXHAUSTED")
+
     def controls(self, controls):
         if not isinstance(controls,dict) or not isinstance(controls.get("actions"),list):
             raise ed.EditorialError("NEWS_CONTROLS_INVALID")
@@ -163,6 +247,8 @@ class NewsService(ed.EditorialService):
 
     def claim(self, worker_id, token):
         result=super().claim(worker_id,token)
+        if not result.get("job") and self.retry_problematic():
+            result=super().claim(worker_id,token)
         if result.get("job"):
             _,docs=self.store.read_editorial_snapshot()
             job=result["job"];prior=job["revision"]-1

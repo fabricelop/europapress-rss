@@ -21,7 +21,9 @@
  function date(value){const d=new Date(value);return value&&Number.isFinite(d.getTime())?new Intl.DateTimeFormat("es-ES",{timeZone:"Europe/Madrid",day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"}).format(d):"Hora no disponible";}
  function render(data){
   state.data=data;
-  $("radar-time").textContent="Último barrido · "+date(data.observed_at)+(data.radar_delayed?" · "+data.radar_age_minutes+" min sin actualizar":"");
+  $("radar-time").textContent="Último barrido · "+date(data.observed_at)+
+   (data.radar_delayed?" · "+data.radar_age_minutes+" min sin actualizar":"")+
+   (data.radar_independent&&data.editorial_delayed?" · Elaboraciones pendientes de sincronizar ("+data.editorial_age_minutes+" min)":"");
   const filters=$("news-filters");filters.replaceChildren();
   for(const [key,label] of Object.entries(names)){
    const b=node("button","news-filter",short[key]+" "+data.counts[key]);b.type="button";b.title=label;b.setAttribute("aria-label",label+" · "+data.counts[key]);

@@ -6,6 +6,45 @@ from .news_workflow_v2 import NewsService,image_path
 from . import editorial_state_v2 as ed
 from .test_radar_ingest_v2 import BASE
 
+class NewsEditorialAutoRetryTests(unittest.TestCase):
+ def setUp(self):
+  self.now=BASE+timedelta(minutes=1)
+  self.store=fixtures.MemoryEditorialStore(fixtures.documents(count=1))
+  self.service=NewsService(self.store,clock=lambda:self.now,lease_seconds=120)
+  self.token="retry-test-private-token-123456789012345"
+ def fail_first(self,code="NEWS_CAPTURE_TIMEOUT"):
+  claim=self.service.claim("worker-first",self.token);job=claim["job"]
+  self.service.prepare_send(job["job_id"],"worker-first",self.token,"b"*64,"command-original",
+   {"session_id":"session-original","private_journal_id":"journal-original","conversation_url_sha256":"c"*64})
+  self.service.submitted(job["job_id"],"worker-first",self.token)
+  self.service.fail(job["job_id"],"worker-first",self.token,code)
+  return job
+ def test_failed_elaboration_creates_new_revision_and_new_chat_slot(self):
+  old=self.fail_first()
+  plan=self.service.preview();self.assertTrue(plan["automatic_retry_pending"])
+  next_job=self.service.claim("worker-second","retry-second-token-123456789012345")["job"]
+  self.assertEqual(next_job["revision"],2)
+  self.assertIsNone(next_job["session"]);self.assertIsNone(next_job["send_intent"])
+  self.assertEqual(next_job["attempts"]["submission_count"],0)
+  _,docs=self.store.read_editorial_snapshot()
+  self.assertEqual(docs[ed.job_path(old["job_id"])]["status"],"problematic")
+  event=docs[ed.PREFIX+"news/"+old["event_id"]+".json"]
+  self.assertEqual(event["current_revision"],2)
+  self.assertEqual(event["revision_refs"][-1]["reason"],"automatic_retry")
+  with self.assertRaises(ed.EditorialError):
+   self.service.heartbeat(old["job_id"],"worker-first",self.token)
+ def test_auth_failure_is_not_repeated_indefinitely(self):
+  self.fail_first("NEWS_AUTH_REQUIRED")
+  self.assertFalse(self.service.preview().get("automatic_retry_pending",False))
+  self.assertIsNone(self.service.claim("worker-second","retry-second-token-123456789012345")["job"])
+ def test_only_two_fresh_retries_are_scheduled(self):
+  self.fail_first()
+  for revision in (2,3):
+   self.assertTrue(self.service.retry_problematic())
+   job=self.service.claim("worker-"+str(revision),"retry-token-%s-123456789012345678"%revision)["job"]
+   self.service.fail(job["job_id"],"worker-"+str(revision),"retry-token-%s-123456789012345678"%revision,"NEWS_CAPTURE_TIMEOUT")
+  self.assertFalse(self.service.retry_problematic())
+
 class NewsWorkflowTests(unittest.TestCase):
  def setUp(self):
   fixture=fixtures.EditorialStateTests();fixture.setUp()
