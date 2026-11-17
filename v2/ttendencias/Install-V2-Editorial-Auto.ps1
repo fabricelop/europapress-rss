@@ -39,6 +39,7 @@ if ($sha -notmatch '^[a-f0-9]{40}$') { throw 'No se pudo fijar commit V2' }
 $base = 'https://raw.githubusercontent.com/' + $repo + '/' + $sha + '/v2/ttendencias'
 $files = @(
     'editorial_daemon_v2.py',
+    'image_daemon_v2.py',
     'parallel_dispatch_v2.py',
     'test_parallel_dispatch_v2.py',
     'test_editorial_daemon_pilot_v2.py',
