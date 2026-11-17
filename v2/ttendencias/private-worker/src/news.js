@@ -45,6 +45,8 @@ export function projectNews(index,queue,clock=Date.now(),liveRadar=null){
   }
   const families=[...new Set((item.source_families||[]).filter(x=>typeof x==="string"&&x.trim()))];
   counts[group]++;
+  const incident=/^[a-f0-9]{64}$/.test(item.editorial_sha256||"")?
+   projectImageIncident(item.image_incident,{project:"ttittulares-v2",id,revision:item.current_revision,editorialHash:item.editorial_sha256}):null;
   items.push({event_id:id,revision:item.current_revision,title:item.canonical_title.slice(0,500),
    group,status_label:label,source_families:families,source_family_count:families.length,
    source_url:(item.canonical_urls||[]).map(url).find(Boolean)||null,
@@ -53,7 +55,7 @@ export function projectNews(index,queue,clock=Date.now(),liveRadar=null){
    image:item.image?.revision===item.current_revision?item.image:null,
    image_available:item.image?.revision===item.current_revision&&item.image.verified===true,
    image_in_progress:item.image_progress?.revision===item.current_revision&&Date.parse(item.image_progress.expires_at)>clock,
-   image_incident_available:/^[a-f0-9]{64}$/.test(item.editorial_sha256||"")&&projectImageIncident(item.image_incident,{project:"ttittulares-v2",id,revision:item.current_revision,editorialHash:item.editorial_sha256})!==null});
+   image_incident_available:incident!==null,image_incident_at:incident?.at||null});
  }
  for(const id of jobs.keys())if(!index.items[id])throw Error("NEWS_ORPHAN_QUEUE_ENTRY");
  items.sort((a,b)=>(Date.parse(b.first_seen_at)||0)-(Date.parse(a.first_seen_at)||0)||a.event_id.localeCompare(b.event_id));
@@ -146,7 +148,9 @@ export function decorateNews(view,controls={}){
    has_image:item.image_available===true||Boolean(pref.manual_image),
    public_image_visible:pref.public_image_visible??!sensitive, // V1-only switch; independent of V2.
    image_sensitivity_default:sensitive,
-   rework_requested:pref.rework_requested===true};
+   rework_requested:pref.rework_requested===true,
+   image_retry_requested:item.image_incident_available===true&&Boolean(item.image_incident_at)&&
+      pref.image_retry_incident_at===item.image_incident_at};
   if(pref.archived){row.group="archived";row.status_label=pref.published===true?"Publicada":"Archivada";}
   else if(pref.rework_requested){row.group="working";row.status_label="Reelaboración solicitada";}
   if(pref.manual_image){row.image_available=true;row.image_incident_available=false;}

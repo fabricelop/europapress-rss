@@ -1,7 +1,7 @@
 "use strict";
 // Shared by Tendencias and Noticias. The button reads a recorded problem only.
 globalThis.TTImageIncidents={
- attach({card,head,project,id,revision,available}){
+ attach({card,head,project,id,revision,available,manualRetry=false,retryPending=false,onChange}){
   if(available!==true)return;
   const make=(tag,cls,text)=>{const node=document.createElement(tag);node.className=cls;if(text!==undefined)node.textContent=text;return node;};
   const button=make("button","image-incident-button","I");button.type="button";
@@ -32,6 +32,33 @@ globalThis.TTImageIncidents={
      if(typeof problem.detail==="string"&&problem.detail.trim())panel.append(make("p","",problem.detail));
      const at=new Date(problem.at);
      if(Number.isFinite(at.getTime()))panel.append(make("p","image-incident-time","Registrada · "+new Intl.DateTimeFormat("es-ES",{timeZone:"Europe/Madrid",dateStyle:"short",timeStyle:"short"}).format(at)));
+     if(project==="ttittulares-v2"){
+      if(retryPending)panel.append(make("p","image-retry-status","↻ Reintento solicitado. Se abrirá un chat nuevo cuando haya capacidad."));
+      else if(manualRetry&&problem.retry_mode!=="none"&&!/(AUTH|LOGIN|CREDENTIAL|DISK|CLEANUP|CAPTCHA|LEASE_EXPIRED)/.test(problem.code)){
+       const retry=make("button","image-retry-button","↻ Reintentar imagen");retry.type="button";
+       retry.title="Generar desde cero en un chat nuevo, independientemente de los intentos anteriores";
+       const status=make("p","image-retry-status","");
+       retry.addEventListener("click",async click=>{
+        click.preventDefault();click.stopPropagation();if(retry.disabled)return;
+        retry.disabled=true;status.textContent="Registrando reintento manual…";
+        try{
+         const response=await fetch("/api/news-actions",{method:"POST",credentials:"same-origin",
+          headers:{"content-type":"application/json","x-ttv2-action":"1"},
+          body:JSON.stringify({action_id:crypto.randomUUID().replaceAll("-",""),event_id:id,revision,action:"retry_image"})});
+         if(!response.ok){
+          const result=await response.json().catch(()=>({}));
+          if(result.error==="image_retry_already_requested")throw Error("El reintento ya está solicitado.");
+          if(response.status===409)throw Error("La incidencia ha cambiado o el reintento no es seguro. Actualiza la ficha.");
+          throw Error("No se pudo registrar el reintento.");
+         }
+         status.textContent="Reintento solicitado. La próxima imagen se generará en un chat nuevo.";
+         retry.textContent="✓ Reintento solicitado";
+         if(typeof onChange==="function")await onChange();
+        }catch(error){status.textContent=error.message;retry.disabled=false;}
+       });
+       panel.append(retry,status);
+      }
+     }
     }else panel.append(make("p","","Esta revisión no tiene ninguna incidencia de imagen registrada."));
     loaded=true;
    }catch{

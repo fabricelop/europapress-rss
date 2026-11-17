@@ -183,6 +183,7 @@ class NewsService(ed.EditorialService):
         if not isinstance(controls,dict) or not isinstance(controls.get("actions"),list):
             raise ed.EditorialError("NEWS_CONTROLS_INVALID")
         self.image_preferences=controls.get("preferences", [])
+        self.image_retry_requests=[a for a in controls["actions"] if isinstance(a,dict) and a.get("action")=="retry_image"]
         pending=[a for a in controls["actions"] if a.get("action") in ("archive","rework","rework_x")]
         if not pending:return
         _,docs=self.store.read_editorial_snapshot()
@@ -284,7 +285,7 @@ class NewsService(ed.EditorialService):
             if image.get("revision")==event["current_revision"] and image.get("verified") is True:
                 continue
             previous=docs.get(image_path(event["event_id"],event["current_revision"]))
-            if previous and not self._fresh_image_retry_eligible(previous):continue
+            if previous and not (self._fresh_image_retry_eligible(previous) or self._manual_image_retry_action(event,previous)):continue
             pref=next((x for x in getattr(self,"image_preferences",[]) if x.get("event_id")==event["event_id"] and x.get("revision")==event["current_revision"]),{})
             if not (pref.get("manual_image") or pref.get("image_suppressed") or pref.get("rework_requested") or pref.get("archived")):pending+=1
         return {"commit_sha":head,"pending_count":pending,"active_count":len(active),
@@ -313,6 +314,28 @@ class NewsService(ed.EditorialService):
                 and fresh and safe
                 and attempts.get("claim_count",0)<attempts.get("max_safe_preflight_attempts",3))
 
+    def _manual_image_retry_action(self, event, job):
+        """An explicit private-web action authorizes ONE fresh attempt at this exact incident.
+
+        The manual request is independent of the automatic three-attempt ceiling,
+        but it never overrides an active lease, unsafe cleanup or a newer incident.
+        """
+        if not job or job.get("status")!="problematic" or job.get("lease"):
+            return None
+        problem=job.get("problem") or {}
+        code=str(problem.get("code") or "")
+        if (problem.get("retry_mode")=="none" or
+                any(part in code for part in ("AUTH","LOGIN","CREDENTIAL","DISK","CLEANUP","CAPTCHA","LEASE_EXPIRED"))):
+            return None
+        for action in reversed(getattr(self,"image_retry_requests",[])):
+            if (action.get("event_id")==event["event_id"] and
+                    action.get("revision")==event["current_revision"] and
+                    action.get("incident_at")==problem.get("at") and
+                    ACTION.fullmatch(str(action.get("action_id",""))) and
+                    (job.get("policy") or {}).get("reason")!="retry_image:"+action["action_id"]):
+                return action
+        return None
+
     def image(self, operation, *, worker_id, token, job_id=None, **data):
         if not ed.SAFE_ID.fullmatch(worker_id):raise ed.EditorialError("NEWS_IMAGE_WORKER_INVALID")
         token_hash=ed._secret(token)
@@ -336,7 +359,8 @@ class NewsService(ed.EditorialService):
                 owned=next((j for j in active if j["lease"]["worker_id"]==worker_id and j["lease"]["token_sha256"]==token_hash),None)
                 if owned:return {"job":copy.deepcopy(owned),"record":docs[owned["source_record_path"]],"replay":True}
                 candidates=sorted([e for e in news.values() if e["status"]=="ready"],
-                                  key=lambda e:(e["created_at"],e["event_id"]))
+                    key=lambda e:(0 if self._manual_image_retry_action(e,imagejobs.get(image_path(e["event_id"],e["current_revision"]))) else 1,
+                                  e["created_at"],e["event_id"]))
                 selected=None
                 if len(active)<2:
                     for event in candidates:
@@ -346,7 +370,8 @@ class NewsService(ed.EditorialService):
                             continue
                         p=image_path(event["event_id"],event["current_revision"])
                         prior=imagejobs.get(p)
-                        if prior and not self._fresh_image_retry_eligible(prior):continue
+                        manual=self._manual_image_retry_action(event,prior)
+                        if prior and not (manual or self._fresh_image_retry_eligible(prior)):continue
                         pref=next((x for x in getattr(self,"image_preferences",[]) if x.get("event_id")==event["event_id"] and x.get("revision")==event["current_revision"]),{})
                         if pref.get("manual_image") or pref.get("image_suppressed") or pref.get("rework_requested") or pref.get("archived"):continue
                         record=docs.get(event.get("current_record_path"))
@@ -370,6 +395,9 @@ class NewsService(ed.EditorialService):
                             selected["attempts"]=copy.deepcopy(prior["attempts"])
                             selected["attempts"]["claim_count"]+=1
                             selected["requested_at"]=prior["requested_at"]
+                        if manual:
+                            selected["policy"]={"mode":"manual_request","visual_treatment":"editorial_gag",
+                                "reason":"retry_image:"+manual["action_id"]}
                         writes[p]=selected;imagejobs[p]=selected;break
                 if selected is None:
                     if writes:
@@ -428,7 +456,8 @@ class NewsService(ed.EditorialService):
                     # uncertain; never reuse its chat, command ID or raster.
                     safe_closed=(data.get("cleanup_verified") is True and "AUTH" not in code
                                  and code not in ("NEWS_DISK_SPACE_LOW_NO_NEW_CHROME",))
-                    retry_mode="new_chat" if safe_closed and job["attempts"]["claim_count"]<job["attempts"]["max_safe_preflight_attempts"] else "manual_only"
+                    retry_mode=("none" if not data.get("cleanup_verified") else
+                                "new_chat" if safe_closed and job["attempts"]["claim_count"]<job["attempts"]["max_safe_preflight_attempts"] else "manual_only")
                     job.update(status="problematic",phase="blocked",lease=None,
                         problem={"code":code,"at":stamp,"retry_mode":retry_mode})
                 else:raise ed.EditorialError("NEWS_IMAGE_OPERATION_INVALID")

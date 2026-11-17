@@ -62,7 +62,10 @@
     }}catch{}
    }
    card.append(body);
-   TTImageIncidents.attach({card,head:summary,project:"ttittulares-v2",id:item.event_id,revision:item.revision,available:item.image_incident_available===true});
+   TTImageIncidents.attach({card,head:summary,project:"ttittulares-v2",id:item.event_id,revision:item.revision,
+    available:item.image_incident_available===true,
+    manualRetry:item.group==="ready"&&!item.image_available&&!item.image_in_progress&&!item.image_suppressed,
+    retryPending:item.image_retry_requested===true,onChange:refreshNews});
    list.append(card);
    let loaded=false;
    const loadRecord=async()=>{

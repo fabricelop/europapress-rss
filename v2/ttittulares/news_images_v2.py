@@ -108,6 +108,7 @@ def check(service):
     """A read-only probe of image dispatch and the private control endpoint."""
     controls=read_controls(service.store._token)
     service.image_preferences=controls.get("preferences",[])
+    service.image_retry_requests=[a for a in controls.get("actions",[]) if isinstance(a,dict) and a.get("action")=="retry_image"]
     return {"project":"ttittulares-v2","status":"ok",
             "image_preview":service.image_preview(),"controls_ok":True,"published":False}
 
