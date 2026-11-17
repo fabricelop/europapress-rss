@@ -195,8 +195,22 @@ def persist_capture_live(api, state, auth, record, trend_id, revision, token):
     return verify, queue_blob_sha, cap
 
 
+def _image_attempt_number(image):
+    """Order independent image chats so an older worker cannot overwrite a newer one."""
+    if not isinstance(image, dict):
+        return 0
+    value = image.get("attempt")
+    if type(value) is int and value >= 1:
+        return value
+    command = image.get("command_id") or ""
+    parts = command.split("-")
+    if len(parts) >= 2 and parts[-2].startswith("a") and parts[-2][1:].isdigit():
+        return int(parts[-2][1:])
+    return 0
+
+
 def update_image_receipt(api, auth, trend_id, revision, expected_hash, image):
-    """Best-effort immutable image status in the exact editorial revision."""
+    """Associate the latest successful image for the exact editorial revision."""
     for attempt in range(4):
         q, sha = queue_read(api, auth)
         row = q["items"].get(trend_id) or {}
@@ -206,21 +220,35 @@ def update_image_receipt(api, auth, trend_id, revision, expected_hash, image):
         if row.get("status") not in ("captured_review", "ready"):
             raise RuntimeError("V2_IMAGE_EDITORIAL_NOT_CURRENT")
         existing = cap.get("image") or {}
-        # First successfully associated raster wins. Later duplicate attempts
-        # must never replace it, even if their upload completed independently.
-        if existing.get("status") == "saved":
-            return
         if existing == image:
+            return
+        if (existing.get("status") == "saved"
+                and existing.get("revision") == revision
+                and _image_attempt_number(existing) > _image_attempt_number(image)):
+            # A slower, older worker must not replace a later successful image.
             return
         cap["image"] = image
         row["updated_at"] = utcnow()
         try:
-            queue_write(api, auth, sha, q, "image receipt " + trend_id)
-            return
+            queue_write(api, auth, sha, q, "replace latest image receipt " + trend_id)
         except RuntimeError as exc:
             if "GitHub conflict/changed revision" not in str(exc) or attempt == 3:
                 raise
             time.sleep(1 + attempt)
+            continue
+        verified, _ = queue_read(api, auth)
+        latest_row = verified["items"].get(trend_id) or {}
+        latest_cap = latest_row.get("capture") or {}
+        if latest_row.get("revision") != revision or latest_cap.get("sha256") != expected_hash:
+            raise RuntimeError("V2_IMAGE_QUEUE_IDENTITY_CHANGED")
+        latest = latest_cap.get("image") or {}
+        if latest == image:
+            return
+        if (latest.get("status") == "saved"
+                and latest.get("revision") == revision
+                and _image_attempt_number(latest) > _image_attempt_number(image)):
+            return
+        raise RuntimeError("V2_IMAGE_RECEIPT_READBACK_NOT_VERIFIED")
 
 
 def run_one(api, state, transcript, auth, item):
