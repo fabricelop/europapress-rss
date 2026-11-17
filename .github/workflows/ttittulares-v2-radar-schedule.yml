@@ -1,0 +1,26 @@
+name: TTiTTulares V2 - Radar every 15 minutes
+
+# Scheduled workflows are only evaluated on the repository's default branch.
+# The V2 implementation lives in feature/ttactualidad-v2-clean, so this
+# default-branch dispatcher calls its isolated reusable radar workflow.
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '2,17,32,47 * * * *'
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/ttittulares-v2-radar-schedule.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ttittulares-v2-radar-schedule
+  cancel-in-progress: false
+
+jobs:
+  update-independent-v2-radar:
+    uses: fabricelop/europapress-rss/.github/workflows/ttittulares-v2-radar-persist-once.yml@feature/ttactualidad-v2-clean
+    permissions:
+      contents: write
