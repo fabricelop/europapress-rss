@@ -1,3 +1,8 @@
+## 17/11/2026 — backfill general de contadores
+
+- `347b83c89a2859d27c9cff6cfa68ed3f3b52d277`: `image_worker_v2.py` admite `--backfill-retry-status` para recorrer todas las tendencias de la cola que tengan diarios locales de su revisión vigente, sin abrir navegador ni enviar imágenes. Por defecto solo informa número de candidatas; `--backfill-retry-status --apply` publica resúmenes seguros y sincroniza snapshot. No requiere recuperación individual por tendencia. Valida SHA editorial y revisión al escribir.
+- Sigue pendiente desplegar/ejecutar el backfill en el Windows real, ejecutar pruebas y modificar el detalle del Site para mostrar el nuevo campo `image_retry`. No se ha ejecutado este backfill ni actualizado la web real. No anunciar función completada.
+
 ## Noticias: consumidor ya activo — 17/11/2026
 
 El usuario recibió la guardia «El consumidor de Noticias V2 sigue activo» al
