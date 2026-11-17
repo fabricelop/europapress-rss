@@ -10013,13 +10013,13 @@
       "trend_id": "trv2-6c39d8f5b35232c2337a514d",
       "name": "El Hijo",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "5e64c57af1e3e537",
       "requested_at": "2026-11-17T08:56:26.434937+00:00",
       "updated_at": "2026-11-17T08:56:26.434937+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -10032,7 +10032,13 @@
           "archived_at": "2026-11-17T08:56:26.434937+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "eaf203a1b287af6fcbf188972e3d52afaab122ec78842eb1",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-17T08:56:44.299651+00:00",
+        "expires_at": "2026-11-17T09:36:44.299651+00:00"
+      }
     },
     "trv2-1b1f435aa8db200810a77657": {
       "trend_id": "trv2-1b1f435aa8db200810a77657",
