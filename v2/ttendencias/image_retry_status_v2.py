@@ -38,6 +38,6 @@ def retry_status(records, *, now=None):
                 state = "unverified"
         else:
             state = "unverified"
-    return {"state": state, "send_attempts": min(sends, MAX_SENDS),
+    return {"state": state, "send_attempts": sends,
             "send_limit": MAX_SENDS, "pre_send_failures": presends,
             "pre_send_limit": MAX_PRE_SEND}
