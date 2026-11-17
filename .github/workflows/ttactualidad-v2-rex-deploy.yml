@@ -75,7 +75,7 @@ jobs:
       - name: Regresiones de persistencia e identidad de las incidencias de imagen
         run: |
           python -m pip install playwright==1.57.0 jsonschema==4.23.0 Pillow
-          python -m unittest -v v2.ttendencias.test_image_incident_v2 v2.ttendencias.test_image_worker_v2 v2.ttendencias.test_web_top30_v2 v2.ttittulares.test_news_workflow_v2 v2.ttittulares.test_news_images_v2
+          python -m unittest -v v2.ttendencias.test_image_incident_v2 v2.ttendencias.test_image_worker_v2 v2.ttendencias.test_image_retry_status_v2 v2.ttendencias.test_web_top30_v2 v2.ttittulares.test_news_workflow_v2 v2.ttittulares.test_news_images_v2
       - name: Verificar Noticias en navegador de escritorio y movil
         working-directory: v2/ttendencias/private-worker
         run: |
