@@ -13,24 +13,31 @@
         "attempt_no": 2,
         "command_id": "no-send-2",
         "outcome": "preflight_failed"
+      },
+      {
+        "at": "2026-11-17T15:20:09Z",
+        "attempt_no": 3,
+        "command_id": "news-img-814fdfd8c7ea4afa954000d50f0b5db8",
+        "outcome": "captured"
       }
     ],
     "max_safe_preflight_attempts": 3,
     "safe_preflight_failures": 2,
     "submission_count": 1
   },
-  "capture": null,
+  "capture": {
+    "bytes": 2507123,
+    "captured_at": "2026-11-17T15:20:09Z",
+    "height": 941,
+    "mime": "image/png",
+    "raster_sha256": "2c39ab86ef3cf5139e5be537a8de4e4f1ab4670a2782bfbe2c4b4df98a329472",
+    "width": 1672
+  },
   "editorial_sha256": "4dd0ceb47335757b6921a88204065094bf54b9b7f21c6a4c3cb85099bb202be5",
   "event_id": "ttn2-55dc0bf5e713a3ae8e575ecd",
   "job_id": "ttn2-55dc0bf5e713a3ae8e575ecd-r1-image",
-  "lease": {
-    "expires_at": "2026-11-17T15:44:49Z",
-    "heartbeat_at": "2026-11-17T15:19:49Z",
-    "started_at": "2026-11-17T15:17:56Z",
-    "token_sha256": "c2a253e512ce9d509397bb3ae0c1422953971469fe7840e649f09ae24f81aa1b",
-    "worker_id": "news-image-814fdfd8c7ea4afa954000d50f0b5db8"
-  },
-  "phase": "generating",
+  "lease": null,
+  "phase": "done",
   "policy": {
     "mode": "automatic",
     "visual_treatment": "editorial_gag"
@@ -40,7 +47,12 @@
   "prompt_sha256": "5dc957de000f50ce5ab4e3e82b812285cec3d78527c427c308559bdf90ff1d52",
   "prompt_version": "news-image-v2",
   "requested_at": "2026-11-17T15:14:00Z",
-  "result": null,
+  "result": {
+    "asset_path": "v2/ttittulares/images/ttn2-55dc0bf5e713a3ae8e575ecd-r1-2c39ab86ef3cf5139e5be537.png",
+    "commit_sha": "164c3537c406763267c26899041df7fee5131bc8",
+    "media_id": "img2-11863483aa7d311272b7361c",
+    "sha256": "2c39ab86ef3cf5139e5be537a8de4e4f1ab4670a2782bfbe2c4b4df98a329472"
+  },
   "revision": 1,
   "schema_version": 1,
   "send_intent": {
@@ -57,6 +69,6 @@
     "session_id": "814fdfd8c7ea4afa954000d50f0b5db8"
   },
   "source_record_path": "v2/ttittulares/records/ttn2-55dc0bf5e713a3ae8e575ecd/r1.json",
-  "status": "generating",
-  "updated_at": "2026-11-17T15:19:49Z"
+  "status": "saved",
+  "updated_at": "2026-11-17T15:20:09Z"
 }
