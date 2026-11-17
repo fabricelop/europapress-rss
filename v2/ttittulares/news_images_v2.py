@@ -1,11 +1,12 @@
 """Independent news image consumer; one fresh owned chat per image, never a text chat."""
 from __future__ import annotations
-import argparse, hashlib, json, os, secrets, subprocess, sys, time, uuid
+import argparse, hashlib, json, os, re, secrets, subprocess, sys, time, uuid
 from pathlib import Path
 from datetime import datetime, timezone
 from .editorial_browser_v2 import ChromeJob, write_private, common
 from .editorial_consumer_v2 import github_token, settings, error_code
 from .news_workflow_v2 import NewsService, NewsStore, sync_controls, read_controls
+from .session_watchdog_v2 import OwnedSessionWatchdog, enough_space
 from v2.ttendencias.image_same_chat_v2 import original_from_same_page
 from v2.ttendencias.image_intake_v2 import raster_metadata
 
@@ -20,8 +21,9 @@ def image_prompt(record, command):
         "ni modifiques GitHub.\nNOTICIA CONTRASTADA:\n"+record["title"]+"\n"+record["factual_summary"]+
         "\n"+record["tweet"]["text"])
 
-def run_one(service, config, *, browser_factory=ChromeJob, raster_get=original_from_same_page):
-    run=uuid.uuid4().hex;worker="news-image-"+run;token=secrets.token_hex(32)
+def run_one(service, config, *, browser_factory=ChromeJob, raster_get=original_from_same_page,
+            run_id=None):
+    run=run_id or uuid.uuid4().hex;worker="news-image-"+run;token=secrets.token_hex(32)
     claim=service.image("claim",worker_id=worker,token=token)
     if not claim.get("job"):return {"status":"idle","published":False}
     job,record=claim["job"],claim["record"]
@@ -113,7 +115,7 @@ def check(service):
             "image_preview":service.image_preview(),"controls_ok":True,"published":False}
 
 def daemon(service,config):
-    root=config["root"];pool={}
+    root=config["root"];pool={};watchers={}
     health={"enabled":True,"pending_count":None,"active_count":None,
             "workers_running":0,"error_stage":None,"error_code":None,
             "last_worker_exit_code":None,"last_worker_completed_at":None,"last_spawned_at":None}
@@ -122,6 +124,22 @@ def daemon(service,config):
             for slot,child in list(pool.items()):
                 exit_code=child.poll()
                 if exit_code is not None:
+                    watch=watchers.pop(slot)
+                    outcome=watch.finalize()
+                    if outcome["timed_out"]:
+                        path=root/"image-journals"/(watch.run_id+".json")
+                        try:
+                            journal=json.loads(path.read_text(encoding="utf-8"))
+                            journal["session_deadline_exceeded"]=True
+                            journal["supervisor_cleanup_verified"]=outcome["cleanup_verified"]
+                            write_private(path,journal)
+                            service.image("fail",worker_id=journal["worker_id"],
+                                token=journal["lease_token"],job_id=journal["job_id"],
+                                code="NEWS_IMAGE_SESSION_DEADLINE_EXCEEDED",
+                                cleanup_verified=outcome["cleanup_verified"])
+                        except Exception:
+                            health["error_stage"]="timeout_reconciliation"
+                            health["error_code"]="NEWS_IMAGE_TIMEOUT_RECONCILIATION_UNVERIFIED"
                     del pool[slot]
                     health["last_worker_exit_code"]=exit_code
                     health["last_worker_completed_at"]=datetime.now(timezone.utc).isoformat()
@@ -141,11 +159,17 @@ def daemon(service,config):
                 for slot in range(2):
                     if pending<=0:break
                     if slot in pool:continue
+                    if not enough_space(root):
+                        health["error_stage"]="disk_guard"
+                        health["error_code"]="NEWS_DISK_SPACE_LOW_NO_NEW_CHROME"
+                        break
+                    run_id=uuid.uuid4().hex
                     logs=root/"image-logs";logs.mkdir(parents=True,exist_ok=True)
                     with (logs/(uuid.uuid4().hex+".log")).open("w",encoding="utf-8") as out:
                         pool[slot]=subprocess.Popen([sys.executable,"-m","v2.ttittulares.news_images_v2",
-                            "--root",str(root),"--run-one"],cwd=Path(__file__).resolve().parents[2],
+                            "--root",str(root),"--run-one","--run-id",run_id],cwd=Path(__file__).resolve().parents[2],
                             stdout=out,stderr=subprocess.STDOUT,creationflags=getattr(subprocess,"CREATE_NO_WINDOW",0))
+                    watchers[slot]=OwnedSessionWatchdog(root,run_id,pool[slot],image=True).start()
                     health["last_spawned_at"]=datetime.now(timezone.utc).isoformat()
                     pending-=1
             health.update(enabled=enabled(root),workers_running=len(pool))
@@ -158,11 +182,14 @@ def main():
     parser=argparse.ArgumentParser();parser.add_argument("--root",type=Path,required=True)
     parser.add_argument("--run-one",action="store_true");parser.add_argument("--daemon",action="store_true")
     parser.add_argument("--check",action="store_true")
+    parser.add_argument("--run-id")
     args=parser.parse_args();config=settings(args.root);service=NewsService(NewsStore(github_token()))
     if args.check:print(json.dumps(check(service)))
     elif args.daemon:daemon(service,config)
     elif args.run_one:
-        sync_controls(service);report=run_one(service,config);print(json.dumps(report))
+        if args.run_id and not re.fullmatch(r"[a-f0-9]{32}",args.run_id):
+            parser.error("--run-id requires an internal UUID")
+        sync_controls(service);report=run_one(service,config,run_id=args.run_id);print(json.dumps(report))
         if report["status"]=="incident":raise SystemExit(1)
     else:print(json.dumps({"project":"ttittulares-v2","browser_opened":False,"publication_allowed":False}))
 if __name__=="__main__":main()

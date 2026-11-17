@@ -13,12 +13,16 @@ import re
 import shutil
 import subprocess
 import sys
+import threading
+import time
 from datetime import datetime, timezone
 
 from chrome_profile_process_v2 import exact_chrome_profile_pids
+from chrome_cleanup_v2 import cleanup_v2_profile
 
 
-MIN_JOB_FREE_BYTES = 3 * 1024 ** 3
+MIN_JOB_FREE_BYTES = 8 * 1024 ** 3
+MAX_JOB_SESSION_SECONDS = 480
 EPHEMERAL_MARKER = "tt-v2-ephemeral-owned.marker"
 
 
@@ -153,7 +157,8 @@ class DisposableWorkerPool(WorkerPool):
     Chrome still uses, or whose ownership cannot be verified, is never erased.
     """
 
-    def __init__(self, seed, count, *, source_running, env_key, logs_dir):
+    def __init__(self, seed, count, *, source_running, env_key, logs_dir,
+                 max_session_seconds=MAX_JOB_SESSION_SECONDS, clock=time.monotonic):
         self.seed = pathlib.Path(seed)
         self.source_running = source_running
         if not 1 <= count <= 6:
@@ -162,6 +167,10 @@ class DisposableWorkerPool(WorkerPool):
             raise RuntimeError("V2_PARALLEL_AUTHENTICATED_BASE_PROFILE_MISSING")
         if source_running():
             raise RuntimeError("V2_PARALLEL_BASE_CHROME_BUSY")
+        if not 1 <= max_session_seconds <= MAX_JOB_SESSION_SECONDS:
+            raise ValueError("V2_SESSION_TIMEOUT_OUT_OF_BOUNDS")
+        self.max_session_seconds = max_session_seconds
+        self.clock = clock
         profiles = [self.seed.with_name(self.seed.name + "-Job-%02d" % index)
                     for index in range(count)]
         super().__init__(profiles, env_key=env_key, logs_dir=logs_dir)
@@ -210,17 +219,65 @@ class DisposableWorkerPool(WorkerPool):
             return False
         self._prepare(slot)
         try:
-            return super().spawn(script, args, trend_id=trend_id,
-                                 revision=revision, attempt=attempt)
+            result = super().spawn(script, args, trend_id=trend_id,
+                                   revision=revision, attempt=attempt)
+            if result:
+                self.active[slot]["started_monotonic"] = self.clock()
+                watch = threading.Timer(self.max_session_seconds, self._expire_slot,
+                                        args=(slot, self.active[slot]["process"]))
+                watch.daemon = True
+                self.active[slot]["watchdog"] = watch
+                watch.start()
+            return result
         except Exception:
             # Popen may fail before the worker has created a Chrome process.
             # Only discard the exact marked slot after a fresh PID check.
             self._remove_owned(slot)
             raise
 
+    def _expire_slot(self, slot, proc):
+        task = self.active.get(slot)
+        if not task or task["process"] is not proc or proc.poll() is not None:
+            return
+        # An independent timer runs even while the dispatcher is waiting for
+        # a remote queue read: no chat can pin a worker indefinitely.
+        task["timed_out"] = True
+        try:
+            proc.terminate()
+            try:
+                proc.wait(timeout=3)
+            except subprocess.TimeoutExpired:
+                proc.kill()
+                proc.wait(timeout=3)
+        except (OSError, subprocess.TimeoutExpired):
+            pass
+        if proc.poll() is None:
+            task["timeout_cleanup_error"] = "V2_SESSION_PYTHON_STILL_RUNNING"
+            return
+        profile = self.profiles[slot]
+        if profile.is_dir() and (profile / EPHEMERAL_MARKER).is_file():
+            try:
+                closed = cleanup_v2_profile(lambda: exact_chrome_profile_pids(profile))
+                if not closed["closed"]:
+                    task["timeout_cleanup_error"] = "V2_SESSION_CHROME_STILL_RUNNING"
+            except (OSError, RuntimeError):
+                task["timeout_cleanup_error"] = "V2_SESSION_CHROME_CLEANUP_UNVERIFIED"
+
     def reap(self):
+        for slot, task in list(self.active.items()):
+            if (task["process"].poll() is None and
+                    self.clock() - task.get("started_monotonic", self.clock()) >=
+                    self.max_session_seconds):
+                self._expire_slot(slot, task["process"])
         finished = super().reap()
         for job in finished:
+            watch = job.pop("watchdog", None)
+            if watch:
+                watch.cancel()
+            if job.get("timed_out"):
+                job["exit_code"] = 124
+            if job.get("timeout_cleanup_error"):
+                job["profile_cleanup_error"] = job["timeout_cleanup_error"]
             try:
                 self._remove_owned(job["slot"])
                 job["profile_deleted"] = True
@@ -230,3 +287,10 @@ class DisposableWorkerPool(WorkerPool):
                 job["profile_cleanup_error"] = str(exc)[:180]
                 job["profile_deleted"] = False
         return finished
+
+    def wait_for_completion(self):
+        """Shutdown observes the same deadline as the normal polling loop."""
+        while self.active:
+            self.reap()
+            if self.active:
+                time.sleep(1)

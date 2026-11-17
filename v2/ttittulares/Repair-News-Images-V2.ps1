@@ -44,7 +44,7 @@ New-Item -ItemType Directory -Path $code -Force | Out-Null
 
 # Keep the same complete dependency set as the verified editorial installer.
 # This second release pointer is used only by the image task.
-$news=@('news_workflow_v2.py','news_images_v2.py','test_news_workflow_v2.py','test_news_images_v2.py','editorial_browser_v2.py','editorial_consumer_v2.py','editorial_contract_v2.py',
+$news=@('news_workflow_v2.py','news_images_v2.py','test_news_workflow_v2.py','test_news_images_v2.py','editorial_browser_v2.py','editorial_consumer_v2.py','editorial_contract_v2.py','session_watchdog_v2.py','test_session_watchdog_v2.py',
   'editorial_state_v2.py','editorial_setup_v2.py','test_editorial_consumer_v2.py',
   'test_editorial_state_v2.py','test_editorial_contract_v2.py','test_contract_examples.py',
   'test_radar_snapshot_v2.py','test_radar_ingest_v2.py','test_editorial_browser_v2.py','test_editorial_setup_v2.py',
