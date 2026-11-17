@@ -1,3 +1,10 @@
+## 17/11/2026 — resumen seguro de intentos de imagen
+
+- `d6f94fff4cf614f759c5837ea426ba5ab29ccf20`: al terminar un intento, `image_worker_v2.py` recopila diarios locales de la misma tendencia/revisión, calcula resumen sin secretos y lo guarda por CAS en `image_retry_summary` de la cola, condicionado a `capture.sha256` y revisión. La publicación es best effort y no reenvía imágenes.
+- `15636e7ab1168bd5754f23e7bf02859508f17768`: `web_top30_v2.py` consume resumen verificado, proyecta `image_retry` con `state`, `attempts`, `remaining` y fallos preenvío; si no hay resumen válido, estado desconocido.
+- `7507385a071c239e10b8261ecb5893f4979728fc`: un trabajo bloqueado no anuncia intentos disponibles.
+- LIMITACIONES ABIERTAS: no hay backfill para diarios de intentos antiguos sin nuevas ejecuciones; falta ejecutar tests, revisar política exacta de contadores y tiempos de cooldown, desplegar en Windows y actualizar UI del Site para mostrar los campos. No declarar la funcionalidad visible ni validada. No se han lanzado trabajos ni tocado V1.
+
 ## 17/11/2026 — primera proyección web del estado de imágenes
 
 - Commit `c953cb4537b9d8d4fdb0d724267f8269b0314c8c`: `web_top30_v2.py` añade `image_retry` por tendencia con estado conservador `saved`, `generating` o `unknown`, y `remaining`/`attempts` nulos. No deduce cuotas de un simple incidente ni filtra diarios locales.
