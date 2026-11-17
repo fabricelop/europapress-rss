@@ -1,3 +1,32 @@
+## Noticias: ambos consumidores Running, nuevos encargos reservados — 17/11/2026
+
+El usuario confirmó aplicación local del reparador:
+TTN2_HIDDEN_TASK=TTActualidadNoticiasV2-Editorial y TTActualidadNoticiasV2-Images,
+TTN2_FUTURE_LAUNCHES=WSCRIPT_HIDDEN,
+TTN2_RUNNING_JOBS_CHROME_FLAGS_TRIGGERS=UNCHANGED.
+Backup local C:\Users\I052279\AppData\Local\TTActualidadNoticiasV2\Backup-Hidden-Launchers-20261117-083039-401.
+La salida final LOCAL muestra ambas tareas Running. Esta evidencia supera
+los checkpoints que mantenían imágenes Disabled y reparación local pendiente.
+
+Verificación remota07:32Z:
+- Nuevos jobs de imagen ttn2-3c94ea964473acc05c7d61a8-r1-image y
+  ttn2-4cf867421d2ed018eca81e56-r1-image en claimed, leases07:31:34/07:31:44Z,
+  vigentes hasta07:56Z. Confirma dos encargos reservados, NO dos imágenes
+  nuevas ya generadas/guardadas ni dos envíos confirmados aún.
+- Cola editorial:57 pending,2 activos,11 ready,13 problematic en esa muestra.
+  Otras noticias terminales/archivadas se excluyen de la cola.
+- Dos originales antiguos (Alcaraz/plaza Catalunya) siguen saved/done.
+- Incidencia previa ttn2-2a5ca2fe2aeb5706920d27fc-r1-image:
+  NEWS_IMAGE_UNCERTAIN_NO_RESEND/manual_only a07:11:20Z; send_intent=null,
+  submission_count0, prompt_sha256 ceros. El código agrupa Conflict y
+  UncertainCommit al preparar imágenes; revisar esa clasificación en próxima
+  mejora para no confundir conflicto CAS seguro con respuesta incierta.
+  No reencolar ni recuperar este caso individual a ciegas.
+
+No reinstalar ni reiniciar los procesos actuales. Mantener observación de un
+nuevo original guardado y visible por ID/revisión/SHA antes de afirmar E2E de
+las imágenes NUEVAS tras esta activación. Guardias/validación editorial intactas.
+
 ## Noticias: editorial Running, imágenes Disabled — 17/11/2026
 
 Salida LOCAL del usuario: TTActualidadNoticiasV2-Editorial Running;
