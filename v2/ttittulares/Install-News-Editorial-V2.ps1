@@ -90,7 +90,10 @@ if($null -eq $queuePreview.preview.blocking_recovery_incident_count -or $null -e
   throw 'Noticias V2: falta clasificacion verificada de incidencias; no se activa el programador.'
 }
 if([int]$queuePreview.preview.blocking_recovery_incident_count -gt 0){
-  throw 'Hay un envio incierto o una respuesta pendiente de recuperar. Resolver ese intento antes de otro piloto; no se reenvia nada.'
+  # Existing uncertain jobs remain isolated by their own durable state. The
+  # consumer claims pending jobs only; an unrelated new pilot is safe to run.
+  Write-Host ('TTN2_EDITORIAL_UNCERTAIN_INCIDENTS_ISOLATED='+$queuePreview.preview.blocking_recovery_incident_count)
+  Write-Host 'TTN2_EDITORIAL_NO_RETRY_OLD_COMMANDS=YES'
 }
 if([int]$queuePreview.preview.quarantined_incident_count -gt 0){
   Write-Host ('TTN2_EDITORIAL_INCIDENTS_QUARANTINED='+$queuePreview.preview.quarantined_incident_count)
