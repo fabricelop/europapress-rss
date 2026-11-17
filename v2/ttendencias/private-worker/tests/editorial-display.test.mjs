@@ -88,7 +88,7 @@ test('Fnatic: recognize “Explicación principal para X (155 caracteres máximo
  const shown=explanationText(raw,item);
  assert.equal(shown,tweetText(raw,item));
  assert.doesNotMatch(shown,/Explicación capturada|formato editorial pendiente|ficha informativa|Investigación y contraste/i);
- assert.match(shown,/Fnatic podría ser tendencia por su partido de Counter-Strike 2/);
+ assert.match(shown,/FNATIC podría ser tendencia por su partido de Counter-Strike 2/);
  assert.ok(xLength(shown)<=280);
  assert.equal(publishableText(shown),true);
 });
