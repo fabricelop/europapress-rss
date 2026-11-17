@@ -1,3 +1,19 @@
+## Noticias: piloto corregido listo para instalación — 17/11/2026
+
+Commit validado de integración: aed5d7cb127c6344138b38894c2b674624036859.
+CI44034777888 SUCCESS:224 Python/108 Node en Linux y Windows, parseo PowerShell,
+TaskScheduler/WSH y prueba de guardias del piloto.
+CI44034777875 SUCCESS: regresión editorial ambos SO y preview real de solo lectura.
+No se ha ejecutado el instalador en el PC ni iniciado nuevos chats desde este chat.
+
+Acción local entregada: descargar Install-News-Editorial-V2.ps1 del commit
+aed5d7cb127c6344138b38894c2b674624036859 y ejecutar & $p -EnableImages
+en la misma consola. No repetir Upgrade ni el drenaje25min.
+Si el siguiente piloto vuelve a rechazar el contenido, SOLO si envío/captura/
+persistencias/cierre están verificados devolverá quarantined/exit0 y continuará.
+No se acepta un texto no verificado como READY ni se reenvían los dos casos previos.
+Esperar salida local antes de afirmar activación real de3 editores y2 imágenes.
+
 ## Piloto editorial: corrección validada e integrada (17/11/2026)
 
 CI aislado44034435792 SUCCESS en Linux y Windows:
