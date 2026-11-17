@@ -5,9 +5,11 @@ import hashlib
 import json
 import unittest
 from datetime import timedelta
+from pathlib import Path
 
 from .radar_store_v2 import (GitHubStore, StoreError, Conflict, UncertainCommit,
-                             REPOSITORY, BRANCH, PREFIX, persist_snapshot, validate_plan)
+                             REPOSITORY, BRANCH, PREFIX, persist_snapshot, validate_plan,
+                             LIVE_RETRY_BUDGET, SNAPSHOT_READ_WORKERS)
 from .radar_snapshot_v2 import encode, plan_snapshot, sha256
 from .test_radar_snapshot_v2 import fixture
 from .test_radar_ingest_v2 import BASE
@@ -100,6 +102,30 @@ class PersistenceTests(unittest.TestCase):
         self.assertEqual(result["attempts"], 2)
         self.assertEqual(self.store.commits[self.store.current]["v2/ttendencias/state/fixture.json"], {"keep": True})
         self.assertEqual(self.store.write_count, 1)
+
+    def test_live_budget_recovers_after_five_unrelated_writes_without_losing_any(self):
+        store = self.store
+        original_commit = store.commit
+        collision_count = 0
+        def with_bursts(expected, writes, message):
+            nonlocal collision_count
+            if collision_count < 5:
+                collision_count += 1
+                store.advance({"v2/ttendencias/state/fixture.json": {"burst": collision_count}})
+            return original_commit(expected, writes, message)
+        store.commit = with_bursts
+        self.assertEqual(LIVE_RETRY_BUDGET, 8)
+        self.assertEqual(SNAPSHOT_READ_WORKERS, 24)
+        result = persist_snapshot(store, self.fetch, now=BASE, max_attempts=LIVE_RETRY_BUDGET)
+        self.assertEqual(result["attempts"], 6)
+        self.assertEqual(store.write_count, 1)
+        self.assertEqual(store.commits[store.current]["v2/ttendencias/state/fixture.json"], {"burst": 5})
+
+    def test_pure_radar_ci_ignores_runtime_state_writes(self):
+        workflow=(Path(__file__).resolve().parents[2] / ".github/workflows/ttittulares-v2-radar-ci.yml").read_text(encoding="utf-8")
+        self.assertNotIn("'v2/ttittulares/**'", workflow)
+        self.assertIn("'v2/ttittulares/*.py'", workflow)
+        self.assertIn("'v2/ttittulares/schemas/**'", workflow)
 
     def test_human_dismissal_winning_race_is_not_overwritten(self):
         persist_snapshot(self.store, self.fetch, now=BASE)

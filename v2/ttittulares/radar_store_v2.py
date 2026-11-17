@@ -34,6 +34,8 @@ WRITE_PATH = re.compile(r"v2/ttittulares/(?:news/ttn2-[a-f0-9]{24}|"
                         r"jobs/editorial/ttn2-[a-f0-9]{24}-r[1-9][0-9]*-editorial|"
                         r"state/radar/scans/scan-[a-f0-9]{24})\.json\Z")
 RECEIPT_PATH = re.compile(r"v2/ttittulares/state/radar/receipts/txn-[a-f0-9]{24}\.json\Z")
+LIVE_RETRY_BUDGET = 8  # Concurrent editorial and image commits can move the branch during reads.
+SNAPSHOT_READ_WORKERS = 24  # Bounded parallel reads shorten the vulnerable CAS window.
 
 
 class StoreError(RuntimeError):
@@ -182,7 +184,7 @@ class GitHubStore:
         paths = list(paths)
         if any(path not in inventory for path in paths):
             raise StoreError("PINNED_DOCUMENT_MISSING")
-        with concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=min(SNAPSHOT_READ_WORKERS, max(1, len(paths)))) as pool:
             docs = list(pool.map(lambda path: self._blob_json(inventory[path], commit, path), paths))
         return dict(zip(paths, docs))
 
@@ -352,9 +354,9 @@ def main():
                       "publication_enabled": False}))
         return
     store = GitHubStore(os.environ.get("GITHUB_TOKEN"))
-    result = persist_snapshot(store, fetched, now=now)
+    result = persist_snapshot(store, fetched, now=now, max_attempts=LIVE_RETRY_BUDGET)
     if args.verify_replay:
-        replay = persist_snapshot(store, fetched, now=now)
+        replay = persist_snapshot(store, fetched, now=now, max_attempts=LIVE_RETRY_BUDGET)
         if not replay["replayed"] or replay["commit_sha"] != result["commit_sha"]:
             raise StoreError("LIVE_REPLAY_VERIFICATION_FAILED")
         result["replay_verified"] = True
