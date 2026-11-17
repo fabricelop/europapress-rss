@@ -9,9 +9,104 @@ if (!(Test-Path -LiteralPath (Join-Path $root 'editorial_run_v2.py'))) {
     throw 'Instala primero V2 editorial (aislamiento de perfiles)'
 }
 $old = Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue
-if ($old -and $old.State -eq 'Running') {
-    throw 'Consumidor de imágenes V2 activo: esperar a que termine antes de reemplazar su código'
+$flag = Join-Path $root 'auto-images-v2.enabled'
+New-Item -ItemType Directory -Path $root -Force | Out-Null
+
+# Drain only the image daemon. Turning the flag off stops new claims; active
+# ImageGen chats finish and close their own disposable Chrome before update.
+# Never force-stop a worker or touch the editorial task/profile.
+if ($old) { Disable-ScheduledTask -TaskName $taskName | Out-Null }
+[IO.File]::WriteAllText($flag,'TT_V2_AUTO_IMAGES_ENABLED=NO'+[Environment]::NewLine,(New-Object System.Text.UTF8Encoding($false)))
+$until=(Get-Date).AddMinutes(25)
+do {
+    $active=@(Get-CimInstance Win32_Process -ErrorAction Stop | Where-Object {
+        $_.Name -match '^(python|pythonw|py)\.exe$commitUrl = 'https://api.github.com/repos/' + $repo + '/commits/' + [Uri]::EscapeDataString($branch)
+$sha = [string](Invoke-RestMethod -Uri $commitUrl -Headers $headers -UseBasicParsing).sha
+if ($sha -notmatch '^[a-f0-9]{40}$') { throw 'No se pudo fijar revisión V2' }
+$base = 'https://raw.githubusercontent.com/' + $repo + '/' + $sha + '/v2/ttendencias/'
+$files = @(
+    'image_target_tracker_v2.py',
+    'image_worker_v2.py',
+    'image_retry_status_v2.py',
+    'image_daemon_v2.py',
+    'chrome_profile_process_v2.py',
+    'parallel_dispatch_v2.py',
+    'test_parallel_dispatch_v2.py',
+    'auto_editorial_policy_v2.py',
+    'image_intake_v2.py',
+    'image_job_v2.py',
+    'image_same_chat_v2.py',
+    'image_github_v2.py',
+    'test_image_worker_v2.py',
+    'test_image_retry_status_v2.py',
+    'test_image_same_chat_v2.py',
+    'test_image_github_v2.py',
+    'Run-V2-Image-One.ps1',
+    'Run-V2-Images-Auto.ps1',
+    'Setup-V2-Image-Chrome-Login.ps1',
+    'Launch-V2-Hidden.vbs'
+)
+foreach ($file in $files) {
+    $path = Join-Path $root $file
+    Invoke-WebRequest -Uri ($base + $file) -UseBasicParsing -Headers $headers -OutFile $path
+    if (!(Test-Path -LiteralPath $path) -or (Get-Item -LiteralPath $path).Length -lt 50) {
+        throw ('Módulo V2 de imágenes no descargado: ' + $file)
+    }
 }
+$py = (Get-Command py.exe -ErrorAction Stop).Source
+$stdout = Join-Path $root 'install-image-tests.stdout.log'
+$stderr = Join-Path $root 'install-image-tests.stderr.log'
+foreach ($name in @('test_parallel_dispatch_v2.py','test_image_worker_v2.py','test_image_retry_status_v2.py','test_image_same_chat_v2.py','test_image_github_v2.py')) {
+    $script = Join-Path $root $name
+    $p = Start-Process -FilePath $py -ArgumentList @('-3', ('"' + $script + '"')) -PassThru -Wait -WindowStyle Hidden -RedirectStandardOutput $stdout -RedirectStandardError $stderr
+    if ($p.ExitCode -ne 0) {
+        if (Test-Path $stderr) { Get-Content -LiteralPath $stderr -Tail 30 }
+        throw ('Image tests failed: ' + $name)
+    }
+    Write-Host ('TT_V2_IMAGES_TEST=OK:' + $name)
+}
+$profile = Join-Path $root 'ChromeProfileImages'
+if ($EnableImages -and !(Test-Path -LiteralPath $profile -PathType Container)) {
+    throw 'Primero ejecutar Setup-V2-Image-Chrome-Login.ps1 (perfil distinto al editorial)'
+}
+$value = 'TT_V2_AUTO_IMAGES_ENABLED=NO'
+if ($EnableImages) { $value = 'TT_V2_AUTO_IMAGES_ENABLED=YES' }
+[IO.File]::WriteAllText($flag, $value + [Environment]::NewLine, (New-Object System.Text.UTF8Encoding($false)))
+$runner = Join-Path $root 'Run-V2-Images-Auto.ps1'
+$arguments = '//B //Nologo "' + (Join-Path $root 'Launch-V2-Hidden.vbs') + '" "' + $runner + '"'
+$action = New-ScheduledTaskAction -Execute (Join-Path $env:WINDIR 'System32\wscript.exe') -Argument $arguments
+$account = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
+$triggers = @(
+    (New-ScheduledTaskTrigger -AtLogOn -User $account),
+    (New-ScheduledTaskTrigger -Once -At (Get-Date).AddMinutes(3) -RepetitionInterval (New-TimeSpan -Minutes 3) -RepetitionDuration (New-TimeSpan -Days 3650))
+)
+$principal = New-ScheduledTaskPrincipal -UserId $account -LogonType Interactive -RunLevel Limited
+$settings = New-ScheduledTaskSettingsSet -MultipleInstances IgnoreNew -StartWhenAvailable -ExecutionTimeLimit ([TimeSpan]::Zero)
+Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $triggers -Principal $principal -Settings $settings -Force | Out-Null
+if ($EnableImages) {
+    Start-ScheduledTask -TaskName $taskName
+    Write-Host 'TT_V2_IMAGES_AUTO=ENABLED'
+} else {
+    Disable-ScheduledTask -TaskName $taskName | Out-Null
+    Write-Host 'TT_V2_IMAGES_AUTO=DISABLED_PILOT_ONLY'
+}
+Write-Host ('TT_V2_IMAGE_INSTALL_COMMIT=' + $sha)
+Write-Host 'TT_V2_EDITORIAL_AUTO=UNTOUCHED'
+Write-Host 'TT_V2_IMAGE_CHROME_PROFILE=INDEPENDENT'
+Write-Host 'TT_V2_IMAGE_PUBLICATION=NO'
+ -and $_.CommandLine -and
+        ($_.CommandLine -match 'image_daemon_v2\.py' -or
+         $_.CommandLine -match 'v2\.ttendencias\.image_worker_v2')
+    })
+    if (-not $active.Count) { break }
+    if ((Get-Date) -ge $until) {
+        throw 'TT_V2_IMAGES_DRAIN_TIMEOUT: chats siguen activos; no se reemplazó ningún módulo'
+    }
+    Write-Host ('TT_V2_IMAGES_DRAIN_WAIT='+$active.Count)
+    Start-Sleep -Seconds 10
+} while ($true)
+Write-Host 'TT_V2_IMAGES_DRAINED=YES'
+
 $headers = @{ 'User-Agent'='TTActualidadV2-images-installer'; 'Accept'='application/vnd.github+json' }
 $commitUrl = 'https://api.github.com/repos/' + $repo + '/commits/' + [Uri]::EscapeDataString($branch)
 $sha = [string](Invoke-RestMethod -Uri $commitUrl -Headers $headers -UseBasicParsing).sha
