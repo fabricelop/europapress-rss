@@ -13215,20 +13215,27 @@
     "trv2-5038163b849d501501eecb3e": {
       "trend_id": "trv2-5038163b849d501501eecb3e",
       "name": "#EstopaEH",
-      "revision": 1,
-      "status": "in_progress",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "c0d4753c8e8544af",
-      "requested_at": "2026-11-17T23:01:34.392837+00:00",
-      "updated_at": "2026-11-17T23:01:34.392837+00:00",
+      "requested_at": "2026-11-17T23:54:28.804084+00:00",
+      "updated_at": "2026-11-17T23:54:28.804084+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "lease": {
-        "token": "981cb586745585a94417e6112667d11214d36d4ed2c701be",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-17T23:05:08.371622+00:00",
-        "expires_at": "2026-11-17T23:45:08.371622+00:00"
-      }
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-17T23:05:08.371622+00:00",
+          "send_intent_at": null,
+          "incident_reason": "lease_expired_without_capture",
+          "archived_at": "2026-11-17T23:54:28.804084+00:00"
+        }
+      ],
+      "incident_retries": 1
     },
     "trv2-18a3188106d70e3e36c3e33e": {
       "trend_id": "trv2-18a3188106d70e3e36c3e33e",
@@ -13816,10 +13823,10 @@
     "trv2-130e12cbd78276ddec807786",
     "trv2-18a3188106d70e3e36c3e33e",
     "trv2-1910850fb1705c4cca833ab4",
-    "trv2-5038163b849d501501eecb3e",
     "trv2-9e9e7d2e340e0bf8fa75f257",
     "trv2-ba2dbaa70c1fe31a8d5c46d6",
-    "trv2-f4b98765dc2b03b6172e4f69"
+    "trv2-f4b98765dc2b03b6172e4f69",
+    "trv2-5038163b849d501501eecb3e"
   ],
   "effects_enabled": false
 }
