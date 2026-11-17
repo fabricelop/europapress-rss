@@ -140,12 +140,19 @@ class EditorialStateTests(unittest.TestCase):
         self.assertNotEqual(following["job"]["job_id"], jid)
         self.assertEqual(self.store.read_editorial_snapshot()[1][job_path(jid)], before)
 
-    def test_uncertain_submission_still_blocks_an_installation_pilot(self):
+    def test_uncertain_submission_isolated_without_blocking_independent_pending_job(self):
         sent = self.prepare()
-        self.service.fail(sent["job"]["job_id"], "worker-1", self.token, code="NEWS_SUBMISSION_UNCONFIRMED_NO_RESEND")
+        jid = sent["job"]["job_id"]
+        self.service.fail(jid, "worker-1", self.token, code="NEWS_SUBMISSION_UNCONFIRMED_NO_RESEND")
+        before = copy.deepcopy(self.store.read_editorial_snapshot()[1][job_path(jid)])
         plan = self.service.preview()
         self.assertEqual(plan["blocking_recovery_incident_count"], 1)
         self.assertEqual(plan["quarantined_incident_count"], 0)
+        self.assertEqual(plan["pending_count"], 3)
+        self.assertNotIn(jid, [job["job_id"] for job in plan["next_jobs"]])
+        following = self.claim(worker="worker-other", token="private-other-token-1234567890")
+        self.assertNotEqual(following["job"]["job_id"], jid)
+        self.assertEqual(self.store.read_editorial_snapshot()[1][job_path(jid)], before)
 
     def test_confirmed_submission_without_complete_capture_still_needs_recovery(self):
         sent = self.prepare()

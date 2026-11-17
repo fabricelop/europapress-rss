@@ -10,12 +10,17 @@ import unittest
 
 
 class InstallPackageTests(unittest.TestCase):
-    def test_installer_only_blocks_uncertain_or_incomplete_recovery(self):
+    def test_installer_isolates_old_uncertain_jobs_and_still_verifies_new_pilot(self):
         source = (Path(__file__).parent / 'Install-News-Editorial-V2.ps1').read_text(encoding="utf-8")
         self.assertIn("$queuePreview.preview.blocking_recovery_incident_count -gt 0", source)
         self.assertIn("$null -eq $queuePreview.preview.blocking_recovery_incident_count", source)
+        self.assertIn("TTN2_EDITORIAL_UNCERTAIN_INCIDENTS_ISOLATED=", source)
+        self.assertIn("TTN2_EDITORIAL_NO_RETRY_OLD_COMMANDS=YES", source)
         self.assertIn("TTN2_EDITORIAL_INCIDENTS_QUARANTINED=", source)
+        self.assertNotIn("throw 'Hay un envio incierto", source)
         self.assertNotIn("$queuePreview.preview.recovery_incident_count -gt 0", source)
+        self.assertIn("'--run-one'", source)
+        self.assertIn("$pilot.cleanup_verified", source)
 
     def test_download_manifest_contains_every_runtime_and_test_dependency(self):
         news = Path(__file__).parent

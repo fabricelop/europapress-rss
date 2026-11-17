@@ -752,3 +752,23 @@ The Trend V2 parallel profiles are a separate **bounded persistent worker
 pool** and were not modified in this disk incident. A disposable-per-job
 redesign for Trends requires an independent tested Windows migration, not
 deletion of live `ChromeProfile` or `ChromeProfileImages` directories.
+
+### 2026-11-17 — Noticias V2 installed; legacy incidents blocked activation
+
+The Windows upgrade installed News V2 commit `2bc008b2d11930881dd5cf3093385accdc515b05`
+after draining the existing workers, but activation stopped on an overly
+broad installer guard. Its read-only preview reported 44 independent pending
+news, 0 active workers, 38 historical recovery incidents (17 uncertain or
+incomplete, 21 quarantined), and no maintenance required. The installer
+refused the new independent pilot merely because older job identities still
+have uncertain sends or incomplete captures. No pilot was run and no task
+reactivation was verified by that command.
+
+The corrected installer continues to **report and isolate** historical
+incidents, while permitting the usual independent `--run-one` pilot. News V2
+claims only `pending` jobs; it does not reclaim an old problematic or
+capture-recovery identity. Verified browser cleanup and pilot persistence
+remain prerequisites before editorial/imagery tasks may be enabled. The
+uncertain incidents and their journals are **not** deleted, resolved, or
+resent. Re-running the corrected Windows upgrade is required; do not infer
+that a source change alone reactivated the Windows tasks.
