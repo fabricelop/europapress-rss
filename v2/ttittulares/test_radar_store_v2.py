@@ -291,6 +291,29 @@ class WireTests(unittest.TestCase):
         with self.assertRaisesRegex(StoreError, "BLOB_HASH_MISMATCH"):
             store._blob_json({"type": "blob", "mode": "100644", "sha": "a" * 40})
 
+    def test_unchanged_blob_is_not_downloaded_again_after_branch_advances(self):
+        path = PREFIX + "state/news-index.json"
+        old_raw = encode({"items": {"first": 1}}).encode()
+        new_raw = encode({"items": {"second": 2}}).encode()
+        oid = lambda raw: hashlib.sha1(b"blob " + str(len(raw)).encode() + b"\0" + raw).hexdigest()
+        old_sha, new_sha = oid(old_raw), oid(new_raw)
+        reads = []
+        def read(commit, file_path):
+            reads.append((commit, file_path))
+            return old_raw if commit == "a" * 40 else new_raw
+        store = GitHubStore("fixture", request=lambda *args: self.fail("unexpected API call"), read_bytes=read)
+        store._inventories["a" * 40] = {path: {"type": "blob", "mode": "100644", "sha": old_sha}}
+        store._inventories["b" * 40] = {path: {"type": "blob", "mode": "100644", "sha": old_sha}}
+        first = store.read_documents("a" * 40, [path])
+        first[path]["items"]["first"] = 999
+        self.assertEqual(store.read_documents("b" * 40, [path])[path]["items"], {"first": 1})
+        self.assertEqual(len(reads), 1)
+        store._inventories["c" * 40] = {path: {"type": "blob", "mode": "100644", "sha": new_sha}}
+        # This fixture retrieves the new object only after its SHA changes.
+        store._read_bytes = lambda commit, file_path: reads.append((commit, file_path)) or new_raw
+        self.assertEqual(store.read_documents("c" * 40, [path])[path]["items"], {"second": 2})
+        self.assertEqual(len(reads), 2)
+
     def test_state_symlinks_are_rejected(self):
         with self.assertRaisesRegex(StoreError, "NOT_REGULAR"):
             GitHubStore("fixture")._blob_json({"type": "blob", "mode": "120000", "sha": "a" * 40})
@@ -332,7 +355,11 @@ class WireTests(unittest.TestCase):
         store._inventories["b" * 40] = {path: {"type": "blob", "mode": "100644", "sha": digest}}
         self.assertEqual(store.read_documents("b" * 40, [path]), {path: {"fixture": True}})
         self.assertEqual(reads, [("b" * 40, path)])
-        store._read_bytes = lambda *args: b'{"tampered":true}'
+        # The cache intentionally trusts an already hash-verified immutable blob.
+        # A first-time tampered download must still fail closed.
+        store = GitHubStore("fixture", request=lambda *args: self.fail("unnecessary blob API"),
+                            read_bytes=lambda *args: b'{"tampered":true}')
+        store._inventories["b" * 40] = {path: {"type": "blob", "mode": "100644", "sha": digest}}
         with self.assertRaisesRegex(StoreError, "BLOB_HASH_MISMATCH"):
             store.read_documents("b" * 40, [path])
 
