@@ -15635,13 +15635,13 @@
       "trend_id": "trv2-8b4d939eeabf58c6db52dc30",
       "name": "Quirón",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "7e57aea5c884b27c",
       "requested_at": "2026-11-18T18:23:46.168817+00:00",
       "updated_at": "2026-11-18T18:23:46.168817+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -15654,7 +15654,13 @@
           "archived_at": "2026-11-18T18:23:46.168817+00:00"
         }
       ],
-      "incident_retries": 0
+      "incident_retries": 0,
+      "lease": {
+        "token": "039b5d368e8dcc6479b2dccbe1c2cf93aec6be741baea027",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-18T18:25:47.785857+00:00",
+        "expires_at": "2026-11-18T19:05:47.785857+00:00"
+      }
     },
     "trv2-fc6626eb70aa20a0c77f022f": {
       "trend_id": "trv2-fc6626eb70aa20a0c77f022f",
