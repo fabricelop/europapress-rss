@@ -13995,21 +13995,29 @@
     "trv2-37dea6499ac7b686cf527b79": {
       "trend_id": "trv2-37dea6499ac7b686cf527b79",
       "name": "Owen Wilson",
-      "revision": 1,
-      "status": "in_progress",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "review_pending",
+      "reason": "retry_after_incident_with_hints",
       "episode_token": "c31d2099bd09b0dd",
-      "requested_at": "2026-11-18T09:02:09.306583+00:00",
-      "updated_at": "2026-11-18T09:02:09.306583+00:00",
+      "requested_at": "2026-11-18T09:57:21.853689+00:00",
+      "updated_at": "2026-11-18T09:57:21.853689+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "lease": {
-        "token": "d116189b84530cd61ec9c959ca95d6a5827a4ea82df1600b",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-18T09:07:43.819725+00:00",
-        "expires_at": "2026-11-18T09:47:43.819725+00:00"
-      },
-      "incident_review_hints_pending": "Busca en x"
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-18T09:07:43.819725+00:00",
+          "send_intent_at": null,
+          "incident_reason": "lease_expired_without_capture",
+          "archived_at": "2026-11-18T09:57:21.853689+00:00"
+        }
+      ],
+      "incident_retries": 1,
+      "review_mode": "x",
+      "review_hints": "Busca en x"
     },
     "trv2-f5ced2ebe75d9bcfb305315f": {
       "trend_id": "trv2-f5ced2ebe75d9bcfb305315f",
@@ -14530,11 +14538,11 @@
     "trv2-b2c4441e7096e92ea22fde80",
     "trv2-4aa092fee005799f53c4f32b",
     "trv2-153eb9cb71a0f8d71dfa62ee",
-    "trv2-37dea6499ac7b686cf527b79",
     "trv2-3ff41099e2773496bfaf392f",
     "trv2-f5ced2ebe75d9bcfb305315f",
     "trv2-7fe46afe4cd2a552d7a4c032",
-    "trv2-56226f29adf85dfa1328a73f"
+    "trv2-56226f29adf85dfa1328a73f",
+    "trv2-37dea6499ac7b686cf527b79"
   ],
   "effects_enabled": false
 }
