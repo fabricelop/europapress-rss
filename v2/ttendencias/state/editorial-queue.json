@@ -15833,21 +15833,29 @@
     "trv2-5b7051c8422d660fbe4ae4ce": {
       "trend_id": "trv2-5b7051c8422d660fbe4ae4ce",
       "name": "Cala",
-      "revision": 1,
-      "status": "in_progress",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "review_pending",
+      "reason": "retry_after_incident_with_hints",
       "episode_token": "f7991b41e45dee7d",
-      "requested_at": "2026-11-18T18:03:13.729386+00:00",
-      "updated_at": "2026-11-18T18:03:13.729386+00:00",
+      "requested_at": "2026-11-18T18:57:39.666805+00:00",
+      "updated_at": "2026-11-18T18:57:39.666805+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "lease": {
-        "token": "465e08242883173d002c20ecf890975fc407f43987014d90",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-18T18:04:19.058829+00:00",
-        "expires_at": "2026-11-18T18:44:19.058829+00:00"
-      },
-      "incident_review_hints_pending": "Alex calatrava"
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-18T18:04:19.058829+00:00",
+          "send_intent_at": null,
+          "incident_reason": "lease_expired_without_capture",
+          "archived_at": "2026-11-18T18:57:39.666805+00:00"
+        }
+      ],
+      "incident_retries": 1,
+      "review_mode": "x",
+      "review_hints": "Alex calatrava"
     },
     "trv2-8fa1938df0df261762ec3afd": {
       "trend_id": "trv2-8fa1938df0df261762ec3afd",
@@ -16384,14 +16392,14 @@
     "trv2-9e27a49aae3cc93691e16142",
     "trv2-b1fadb851a72e2da5402ad95",
     "trv2-c85fec339b9830c0ed4d7c66",
-    "trv2-5b7051c8422d660fbe4ae4ce",
     "trv2-8fa1938df0df261762ec3afd",
     "trv2-b2c265ef4773b9ee77944b92",
     "trv2-8b4d939eeabf58c6db52dc30",
     "trv2-e317efa7bdfdfad78bfda10a",
     "trv2-fc6626eb70aa20a0c77f022f",
     "trv2-0abb9ccd4b2ff9ae655695ca",
-    "trv2-9277d214693b0af3bd93f2fb"
+    "trv2-9277d214693b0af3bd93f2fb",
+    "trv2-5b7051c8422d660fbe4ae4ce"
   ],
   "effects_enabled": false
 }
