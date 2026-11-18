@@ -15808,13 +15808,13 @@
       "trend_id": "trv2-9277d214693b0af3bd93f2fb",
       "name": "#ElSótano18N",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "6f06360ba4d20b2f",
       "requested_at": "2026-11-18T18:54:39.343460+00:00",
       "updated_at": "2026-11-18T18:54:39.343460+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -15827,7 +15827,13 @@
           "archived_at": "2026-11-18T18:54:39.343460+00:00"
         }
       ],
-      "incident_retries": 0
+      "incident_retries": 0,
+      "lease": {
+        "token": "271c6e961f2ae3b46c82c3f9007493156713532539338fae",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-18T18:55:14.958618+00:00",
+        "expires_at": "2026-11-18T19:35:14.958618+00:00"
+      }
     },
     "trv2-5b7051c8422d660fbe4ae4ce": {
       "trend_id": "trv2-5b7051c8422d660fbe4ae4ce",
