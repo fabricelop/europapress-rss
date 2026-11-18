@@ -15314,13 +15314,13 @@
     "trv2-0abb9ccd4b2ff9ae655695ca": {
       "trend_id": "trv2-0abb9ccd4b2ff9ae655695ca",
       "name": "Losada",
-      "revision": 4,
-      "status": "in_progress",
+      "revision": 5,
+      "status": "pending",
       "reason": "retry_after_incident",
       "episode_token": "563146a60b965a5f",
-      "requested_at": "2026-11-18T17:59:04.043985+00:00",
-      "updated_at": "2026-11-18T17:59:04.043985+00:00",
-      "attempts": 1,
+      "requested_at": "2026-11-18T18:49:38.596863+00:00",
+      "updated_at": "2026-11-18T18:49:38.596863+00:00",
+      "attempts": 0,
       "previous_attempts": [
         {
           "revision": 1,
@@ -15341,9 +15341,19 @@
           "send_intent_at": "2026-11-18T17:10:56.217988+00:00",
           "incident_reason": "lease_expired_without_capture",
           "archived_at": "2026-11-18T17:59:04.043985+00:00"
+        },
+        {
+          "revision": 4,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-18T18:01:16.593872+00:00",
+          "send_intent_at": null,
+          "incident_reason": "lease_expired_without_capture",
+          "archived_at": "2026-11-18T18:49:38.596863+00:00"
         }
       ],
-      "incident_retries": 1,
+      "incident_retries": 2,
       "image_retry_summary": {
         "revision": 2,
         "editorial_sha256": "427119e799d9aea2d4fd12d5d8a26a25a5dc2e8b68bf3ca94a016b06defa4b95",
@@ -15354,13 +15364,7 @@
         "pre_send_limit": 3
       },
       "review_mode": "x",
-      "review_hints": "Parece ser por Anton Losada",
-      "lease": {
-        "token": "6d609543f1be80cf7e410898a352530314a27ca0f4da5d9b",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-18T18:01:16.593872+00:00",
-        "expires_at": "2026-11-18T18:41:16.593872+00:00"
-      }
+      "review_hints": "Parece ser por Anton Losada"
     },
     "trv2-6819bee37da521086bedaba1": {
       "trend_id": "trv2-6819bee37da521086bedaba1",
@@ -16347,14 +16351,14 @@
     "trv2-9e27a49aae3cc93691e16142",
     "trv2-b1fadb851a72e2da5402ad95",
     "trv2-c85fec339b9830c0ed4d7c66",
-    "trv2-0abb9ccd4b2ff9ae655695ca",
     "trv2-5b7051c8422d660fbe4ae4ce",
     "trv2-8fa1938df0df261762ec3afd",
     "trv2-9277d214693b0af3bd93f2fb",
     "trv2-b2c265ef4773b9ee77944b92",
     "trv2-8b4d939eeabf58c6db52dc30",
     "trv2-e317efa7bdfdfad78bfda10a",
-    "trv2-fc6626eb70aa20a0c77f022f"
+    "trv2-fc6626eb70aa20a0c77f022f",
+    "trv2-0abb9ccd4b2ff9ae655695ca"
   ],
   "effects_enabled": false
 }
