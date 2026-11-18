@@ -128,6 +128,8 @@ def run_one(service, config, *, browser_factory=ChromeJob, parse=None, build=Non
         journal['error_code'] = error_code(exc)
         if browser and isinstance(getattr(browser, 'recovery_diagnostic', None), dict):
             journal['private_recovery_diagnostic'] = browser.recovery_diagnostic
+        if browser and isinstance(getattr(browser, 'capture_diagnostic', None), dict):
+            journal['private_capture_diagnostic'] = browser.capture_diagnostic
         if browser and isinstance(getattr(browser, 'startup_diagnostic', None), dict):
             journal['startup_diagnostic'] = browser.startup_diagnostic
         if ('AUTH' in journal['error_code'] and 'NEWS_' in journal['error_code']):
