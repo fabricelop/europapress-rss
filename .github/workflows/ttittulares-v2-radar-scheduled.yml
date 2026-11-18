@@ -4,6 +4,7 @@ name: TTiTTulares V2 - Radar automatico cada 15 minutos
 # 2026-11-17: resynchronization tick after scheduled events stopped firing for hours.
 # This push triggers one isolated radar pass without restarting Windows or editorial jobs.
 # 2026-11-17: publish compact radar freshness summary and redeploy the verified V2 UI.
+# 2026-11-18: isolated wake-up tick after scheduled clock stopped; no worker, image or publication side effects.
 on:
   schedule:
     - cron: '7,22,37,52 * * * *'
