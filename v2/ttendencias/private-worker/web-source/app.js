@@ -36,7 +36,7 @@ function editorial(raw){
  // principal — apta para X". The main line is inside that section; the
  // dossier title, certainty labels and publication rules are NOT tweet text.
  const primary=/^\s*Explicaci[oó]n principal(?:\s*(?:[—–:-]\s*(?:apta|apto|texto\s+apto)\s+para\s+X|para\s+X))?(?:\s*\([^\n)]*\))?\s*:?\s*$/i;
- const secondary=/^\s*(?:Texto(?: editorial| propuesto)? para LISTAS|Explicaci[oó]n para LISTAS|Explicaci[oó]n editorial|Explicaci[oó]n period[ií]stica(?: para LISTAS)?|Texto para LISTAS)\s*:?\s*$/i;
+ const secondary=/^\s*(?:Texto(?: editorial| propuesto)?(?: para LISTAS)?|Explicaci[oó]n para LISTAS|Explicaci[oó]n editorial|Explicaci[oó]n period[ií]stica(?:\s*(?:[—–:-]\s*)?LISTAS| para LISTAS)?|Texto para LISTAS)\s*:?\s*$/i;
  const primaryIndices=[],secondaryIndices=[];
  for(let i=0;i<lines.length;i++){
   if(primary.test(lines[i]))primaryIndices.push(i);
@@ -58,7 +58,7 @@ function editorial(raw){
     continue;
    }
    if(/^(?:Writing|Standard|Document|Texto editorial|Causa confirmada|Causa predominante acreditada)$/i.test(line))continue;
-   if(/^(?:\s*¿?Por qu[eé] es tendencia\??|(?:¿?Qu[eé] ha ocurrido\??)|Qu[eé] sabemos|Lo que se sabe|Lo que no sabemos|Causa de la tendencia|Explicaci[oó]n principal|Explicaci[oó]n period[ií]stica|Contraste cronol[oó]gico|Fuentes verificadas|Fuentes consultadas|Fuentes y contraste|Control editorial|Conclusi[oó]n|Resultado(?: editorial| de la prueba)?|Presencia de la tendencia|L[ií]mite:|La causa est[aá]|La coincidencia temporal|Verificaci[oó]n|Referencias|Notas de cautela|Contexto y fuentes|Cronolog[ií]a|Justificaci[oó]n|Contexto adicional)/i.test(line))break;
+   if(/^(?:\s*¿?Por qu[eé] es tendencia\??|(?:¿?Qu[eé] ha ocurrido\??)|Qu[eé] sabemos|Lo que se sabe|Lo que no sabemos|Causa de la tendencia|Explicaci[oó]n principal|Explicaci[oó]n period[ií]stica|Contraste cronol[oó]gico|Fuentes verificadas|Fuentes consultadas|Fuentes HTTPS|Fuentes verificables|Fuentes y contraste|Control editorial|Conclusi[oó]n|Resultado(?: editorial| de la prueba)?|Presencia de la tendencia|L[ií]mite:|La causa est[aá]|La coincidencia temporal|Verificaci[oó]n|Referencias|Notas de cautela|Contexto y fuentes|Cronolog[ií]a|Justificaci[oó]n|Contexto adicional)/i.test(line))break;
    if(/^https?:\/\//i.test(line)||/^www\./i.test(line))break;
    if(/^(?:Tendencia:|Identificador:|Revisi[oó]n:|ESTADO_|ID:|Fecha:|Ficha editorial|Solo LISTAS|Sin publicaci[oó]n autom[aá]tica|Causa (?:identificada|probable|confirmada|no confirmada)|\d{1,2} de \p{L}+ de 20\d{2}\b)/iu.test(line))continue;
    if(/^[^\n]{1,100}\s+[—–]\s+Ficha editorial\s*$/iu.test(line))continue;
