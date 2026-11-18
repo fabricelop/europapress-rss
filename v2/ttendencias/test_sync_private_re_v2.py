@@ -107,5 +107,41 @@ class PrivateRePlannerTest(unittest.TestCase):
         self.assertEqual(updated["items"][ID]["incident_retries"],0)
 
 
+    def test_re_x_on_pending_is_prioritized_with_exact_hints(self):
+        self.queue["items"][ID].update(status="pending")
+        self.queue["items"][ID].pop("capture")
+        hints="Investiga el hilo original y contrasta la fecha y el contexto."
+        req={"trend_id":ID, "base_revision":1, "mode":"x", "hints":hints}
+        updated,applied,ignored=plan_requested_reviews(self.queue,self.history,[req])
+        self.assertEqual((applied,ignored),([ID],0))
+        self.assertEqual(updated["items"][ID]["status"],"review_pending")
+        self.assertEqual(updated["items"][ID]["revision"],2)
+        self.assertEqual(updated["items"][ID]["review_hints"],hints)
+        again,applied,ignored=plan_requested_reviews(updated,self.history,[req])
+        self.assertEqual((applied,ignored),([],0))
+        self.assertEqual(again,updated)
+
+    def test_re_x_on_active_waits_for_completion_and_never_replays_current_chat(self):
+        old=self.queue["items"][ID]
+        old.update(status="in_progress",lease={"token":"live"},send_intent={"token":"live"})
+        old.pop("capture")
+        hints="Busca el vídeo original publicado hoy y comprueba quién lo difundió."
+        req={"trend_id":ID,"base_revision":1,"mode":"x","hints":hints}
+        updated,applied,ignored=plan_requested_reviews(self.queue,self.history,[req])
+        self.assertEqual((applied,ignored),([ID],0))
+        self.assertEqual((updated["items"][ID]["status"],updated["items"][ID]["revision"]),("in_progress",1))
+        self.assertEqual(updated["items"][ID]["lease"],{"token":"live"})
+        self.assertEqual(updated["items"][ID]["send_intent"],{"token":"live"})
+        again,applied,ignored=plan_requested_reviews(updated,self.history,[req])
+        self.assertEqual((applied,ignored),([],0))
+        self.assertEqual(again,updated)
+        updated["items"][ID]["status"]="captured_review"
+        updated["items"][ID]["capture"]={"answer":"Resultado original"}
+        fresh,applied,ignored=plan_requested_reviews(updated,self.history,[req])
+        self.assertEqual((applied,ignored),([ID],0))
+        self.assertEqual(fresh["items"][ID]["revision"],2)
+        self.assertEqual(fresh["items"][ID]["review_hints"],hints)
+
+
 if __name__ == "__main__":
     unittest.main()
