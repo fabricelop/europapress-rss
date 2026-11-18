@@ -214,5 +214,36 @@ class IncidentRetryTests(unittest.TestCase):
         candidate, _ = ranked_incident(q, h, now=NOW)
         self.assertIsNone(candidate)
 
+    def test_deferred_owner_re_x_survives_only_after_safe_incident_restart(self):
+        q,_=sample()
+        ident="trv2-%024x" % 1
+        hints="Contrastar el vídeo y su fecha en X antes de redactar."
+        q["items"][ident].update(status="capture_recovery",
+            updated_at=(NOW-timedelta(hours=1)).isoformat(),
+            review_mode="standard",
+            deferred_re_request={"base_revision":1,"mode":"x","hints":hints},
+            manual_retry_requested_at=STAMP)
+        with self.assertRaises(ValueError):
+            restart_as_new_revision(q,ident,now=NOW,chrome_clear=False,recovery_checked=True)
+        nxt=restart_as_new_revision(q,ident,now=NOW,chrome_clear=True,recovery_checked=True)
+        row=nxt["items"][ident]
+        self.assertEqual(row["status"],"review_pending")
+        self.assertEqual(row["review_hints"],hints)
+        self.assertNotIn("deferred_re_request",row)
+
+    def test_deferred_standard_re_clears_previous_x_hints(self):
+        q,_=sample()
+        ident="trv2-%024x" % 1
+        q["items"][ident].update(status="capture_recovery",
+            updated_at=(NOW-timedelta(hours=1)).isoformat(),
+            review_mode="x",review_hints="Anterior pista para la investigación.",
+            deferred_re_request={"base_revision":1,"mode":"standard","hints":""},
+            manual_retry_requested_at=STAMP)
+        nxt=restart_as_new_revision(q,ident,now=NOW,chrome_clear=True,recovery_checked=True)
+        row=nxt["items"][ident]
+        self.assertNotIn("review_mode",row)
+        self.assertNotIn("review_hints",row)
+
+
 if __name__ == "__main__":
     unittest.main()
