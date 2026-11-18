@@ -105,7 +105,8 @@ async function sourceDocuments(fetcher,{fresh=false}={}){
    {headers:{Accept:"application/json"},cf:{cacheTtl:fresh?0:30,cacheEverything:!fresh}});
   if(!response.ok)throw Error("NEWS_SOURCE_UNAVAILABLE");
   const text=await response.text();
-  if(text.length>6000000)throw Error("NEWS_SOURCE_TOO_LARGE");
+  // The index already exceeds 5.7 MB; keep a finite 16 MB guard in line with the Windows store.
+   if(text.length>16000000)throw Error("NEWS_SOURCE_TOO_LARGE");
   return JSON.parse(text);
  }));
  let live=null;
