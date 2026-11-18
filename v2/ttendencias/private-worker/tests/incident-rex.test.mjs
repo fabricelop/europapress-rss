@@ -45,6 +45,7 @@ test("incident RE-X records user hints without resetting or sending any editoria
  assert.equal((await worker.fetch(post(cookie),bound)).status,202);
  assert.equal((await worker.fetch(post(cookie),bound)).status,202);
  assert.equal(db.incidents.length,1);
+ assert.deepEqual(db.retries,[{trend_id:id,base_revision:2,instructions:""}]);
  const publicData=await (await worker.fetch(new Request(origin+"/api/public-editorial-overrides"),bound)).json();
  assert.deepEqual(publicData.incident_rex,db.incidents);
  assert.deepEqual(publicData.re,[]);

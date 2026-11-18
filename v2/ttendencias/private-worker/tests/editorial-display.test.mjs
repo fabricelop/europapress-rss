@@ -60,7 +60,7 @@ test('Markdown headings and writing blocks preserve the recognised lead',()=>{
 test('V2 and the actual X intent use the same adapted copy with enabled P-X',()=>{
  const buttons=[];
  const el=(tag,className,text)=>{const n={tag,className,text,children:[],disabled:false,handlers:{},setAttribute(){},append(...nodes){this.children.push(...nodes);},addEventListener(type,fn){this.handlers[type]=fn;}};buttons.push(n);return n;};
- const start=app.indexOf('function makePublishButtons(card,item){');
+ const start=app.indexOf('function appendEditorialReButtons(editing,item){');
  const end=app.indexOf('\nfunction render(){',start);
  let opened;
  const make=new Function('el','imageReady','reRequested','tweetText','publishableText','window',

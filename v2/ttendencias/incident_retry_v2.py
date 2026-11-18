@@ -108,6 +108,16 @@ def restart_as_new_revision(queue, trend_id, *, now=None, chrome_clear=False,
     if instructions:
         row["manual_retry_instructions"] = instructions
     hints = row.pop("incident_review_hints_pending", None)
+    deferred = row.pop("deferred_re_request", None)
+    if isinstance(deferred, dict):
+        # The owner may have requested RE/RE-X while the previous chat ran.
+        # Apply those exact instructions only to the newly fenced revision.
+        if deferred.get("mode") == "x":
+            hints = deferred.get("hints")
+        else:
+            hints = None
+            row.pop("review_mode", None)
+            row.pop("review_hints", None)
     with_hints = isinstance(hints, str) and 10 <= len(hints.strip()) <= 1200
     row["status"] = "review_pending" if with_hints else "pending"
     row["reason"] = "retry_after_incident_with_hints" if with_hints else "retry_after_incident"

@@ -24,7 +24,8 @@ test("collapsed card shows image indicator only when exact revision is bound",()
  assert.match(src,/item\.image_available===true/);
  assert.match(src,/Number\.isSafeInteger\(item\.revision\)/);
  assert.match(src,/if\(!reset&&\(imageReady\(item\)\|\|item\.image_suppressed===true\)\)\{\s*const photo=el\("span","image-ready-icon"/);
- assert.match(src,/if\(!reset\)\{makePublishButtons\(card,item\);attachGeneratedImage\(card,item\);\}/);
+ assert.match(src,/if\(!reset\|\|item\.status!==\"explicada\"\)makePublishButtons\(card,item\)/);
+ assert.match(src,/if\(!reset\)attachGeneratedImage\(card,item\)/);
 });
 
 test("a red crossed image icon marks images hidden in V1 and reacts to public switch changes",()=>{
@@ -57,7 +58,8 @@ test("trend controls use the same three clearly labeled groups as news without c
  assert.match(controls,/const publishing=group\("publishing","Publicación"\)/);
  assert.match(controls,/const editing=group\("editing","Gestión y reelaboración"\)/);
  assert.match(controls,/const artwork=group\("artwork","Imagen"\)/);
- assert.match(controls,/editing\.append\(re,reX\)/);
+ assert.match(src,/function appendEditorialReButtons\(editing,item\)/);
+ assert.match(controls,/appendEditorialReButtons\(editing,item\)/);
  assert.match(controls,/publishing\.append\(x\)/);
  assert.match(controls,/publishing\.append\(pu\)/);
  assert.match(controls,/publishing\.append\(withImage\)/);

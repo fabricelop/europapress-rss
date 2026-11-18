@@ -556,6 +556,53 @@ function openReXDialog(item,onSubmit){
  dialog.addEventListener("close",()=>dialog.remove(),{once:true});
  document.body.append(dialog);dialog.showModal();textarea.focus();
 }
+function appendEditorialReButtons(editing,item){
+ const re=el("button","publish-action re-explain-action","RE");
+ re.type="button";
+ re.title=item.status==="en_elaboracion"?"Programar una nueva investigación tras el chat actual":"Reiniciar investigación editorial";
+ re.setAttribute("aria-label","Volver a investigar y explicar "+item.name);
+ re.disabled=item.re_in_progress===true||reRequested(item);
+ re.addEventListener("click",async()=>{
+  if(re.disabled)return;
+  const confirmText=item.status==="en_elaboracion"?
+    "«"+item.name+"» ya tiene un chat trabajando. ¿Pedir otra revisión cuando termine, sin interrumpirlo?":
+    item.status==="pendiente"?
+    "¿Priorizar una investigación nueva de «"+item.name+"»? Aún no tiene explicación guardada.":
+    "¿Reiniciar por completo la explicación de «"+item.name+"»? Se retirarán temporalmente el texto y la imagen actuales.";
+  if(!window.confirm(confirmText))return;
+  re.disabled=true;
+  try{
+   const response=await fetch("/api/re-explain",{method:"POST",credentials:"same-origin",headers:{"content-type":"application/json","x-ttv2-action":"1"},body:JSON.stringify({trend_id:item.trend_id,revision:item.revision,entered_top30_at:markStamp(item)})});
+   if(!response.ok)throw Error("HTTP "+response.status);
+   state.reRequests.push({trend_id:item.trend_id,base_revision:item.revision,status:"requested"});
+   re.title="Nueva explicación solicitada; esperando procesamiento";
+   publishNotice("RE solicitada para «"+item.name+"». "+(item.status==="en_elaboracion"?"Se programará después del chat actual, sin interrumpirlo.":item.status==="pendiente"?"Se priorizará una investigación nueva.":"Se prepararán una explicación y una imagen nuevas."));
+   render();
+  }catch(error){
+   re.disabled=false;
+   publishNotice("No se pudo solicitar RE para «"+item.name+"»: "+error.message);
+  }
+ });
+ const reX=el("button","publish-action re-x-action","RE-X");
+ reX.type="button";reX.title="Reevaluar buscando en X con tus pistas";
+ reX.setAttribute("aria-label","Investigar de nuevo "+item.name+" en X con pistas");
+ reX.disabled=item.re_in_progress===true||reRequested(item);
+ reX.addEventListener("click",()=>{
+   if(reX.disabled)return;
+   openReXDialog(item,async hints=>{
+     const response=await fetch("/api/re-explain",{method:"POST",credentials:"same-origin",
+       headers:{"content-type":"application/json","x-ttv2-action":"1"},
+       body:JSON.stringify({trend_id:item.trend_id,revision:item.revision,
+         entered_top30_at:markStamp(item),mode:"x",hints})});
+     if(!response.ok)throw Error("HTTP "+response.status);
+     state.reRequests.push({trend_id:item.trend_id,base_revision:item.revision,
+       status:"requested",mode:"x"});
+     publishNotice("RE-X solicitada para «"+item.name+"». Tus pistas se incorporarán al "+(item.status==="en_elaboracion"?"próximo chat, cuando finalice el actual.":"nuevo chat de investigación."));
+     render();
+   });
+ });
+ editing.append(re,reX);
+}
 function makePublishButtons(card,item){
  if(item.status==="incidencia"){
   const actions=el("div","publish-actions trend-actions");
@@ -575,13 +622,14 @@ function makePublishButtons(card,item){
      body:JSON.stringify({trend_id:item.trend_id,revision:item.revision,hints})});
     if(!response.ok)throw Error("HTTP "+response.status);
     state.incidentRequests.push({trend_id:item.trend_id,base_revision:item.revision});
-    publishNotice("Pistas RE-X guardadas para «"+item.name+"». Se usarán al abrir otro chat, sin recuperar la conversación anterior.");
+    state.incidentRetryRequests.push({trend_id:item.trend_id,base_revision:item.revision});
+     publishNotice("RE-X solicitada para «"+item.name+"». Tus pistas se aplicarán al nuevo intento tras verificar el cierre seguro del anterior.");
     render();
    });
   });
   review.append(button);
   if(button.disabled)review.append(el("span","review-state","Pistas RE-X recibidas · esperando otro intento"));
-  const retry=el("button","publish-action re-explain-action","Reintentar elaboración");
+  const retry=el("button","publish-action re-explain-action","RE");
   retry.type="button";
   retry.title="Solicitar un nuevo intento desde cero y con un chat distinto";
   retry.setAttribute("aria-label","Reintentar la elaboración de "+item.name+" desde cero");
@@ -605,6 +653,17 @@ function makePublishButtons(card,item){
   card.append(actions);
   return;
  }
+ if(item.status==="pendiente"||item.status==="en_elaboracion"){
+  const actions=el("div","publish-actions trend-actions");
+  const editing=el("div","news-action-group news-action-editing");
+  editing.setAttribute("role","group");
+  editing.setAttribute("aria-label","Gestión y reelaboración");
+  editing.append(el("span","news-action-caption","Gestión y reelaboración"));
+  appendEditorialReButtons(editing,item);
+  actions.append(editing);
+  card.append(actions);
+  return;
+ }
  if(item.status!=="explicada")return;
  const text=tweetText(item.explanation,item);
  if(text.startsWith("Explicación pendiente"))return;
@@ -617,46 +676,7 @@ function makePublishButtons(card,item){
  const publishing=group("publishing","Publicación");
  const editing=group("editing","Gestión y reelaboración");
  const artwork=group("artwork","Imagen");
- const re=el("button","publish-action re-explain-action","RE");
- re.type="button";
- re.title=item.re_in_progress?"Nueva explicación en elaboración":"Reiniciar explicación editorial e imagen";
- re.setAttribute("aria-label","Volver a investigar y explicar "+item.name);
- re.disabled=item.re_in_progress===true||reRequested(item);
- re.addEventListener("click",async()=>{
-  if(re.disabled)return;
-  if(!window.confirm("¿Reiniciar por completo la explicación de «"+item.name+"»? Se retirarán de la ficha el texto y la imagen actuales mientras se elaboran otros nuevos."))return;
-  re.disabled=true;
-  try{
-   const response=await fetch("/api/re-explain",{method:"POST",credentials:"same-origin",headers:{"content-type":"application/json","x-ttv2-action":"1"},body:JSON.stringify({trend_id:item.trend_id,revision:item.revision,entered_top30_at:markStamp(item)})});
-   if(!response.ok)throw Error("HTTP "+response.status);
-   state.reRequests.push({trend_id:item.trend_id,base_revision:item.revision,status:"requested"});
-   re.title="Nueva explicación solicitada; esperando procesamiento";
-   publishNotice("RE solicitada para «"+item.name+"». Explicación e imagen anteriores retiradas de esta ficha. En espera de una nueva elaboración.");
-   render();
-  }catch(error){
-   re.disabled=false;
-   publishNotice("No se pudo solicitar RE para «"+item.name+"»: "+error.message);
-  }
- });
- const reX=el("button","publish-action re-x-action","RE-X");
- reX.type="button";reX.title="Reevaluar buscando en X con tus pistas";
- reX.setAttribute("aria-label","Investigar de nuevo "+item.name+" en X con pistas");
- reX.disabled=item.re_in_progress===true||reRequested(item);
- reX.addEventListener("click",()=>{
-   if(reX.disabled)return;
-   openReXDialog(item,async hints=>{
-     const response=await fetch("/api/re-explain",{method:"POST",credentials:"same-origin",
-       headers:{"content-type":"application/json","x-ttv2-action":"1"},
-       body:JSON.stringify({trend_id:item.trend_id,revision:item.revision,
-         entered_top30_at:markStamp(item),mode:"x",hints})});
-     if(!response.ok)throw Error("HTTP "+response.status);
-     state.reRequests.push({trend_id:item.trend_id,base_revision:item.revision,
-       status:"requested",mode:"x"});
-     publishNotice("RE-X solicitada para «"+item.name+"». Se investigará X con tus pistas antes de redactar la nueva explicación.");
-     render();
-   });
- });
- editing.append(re,reX);
+ appendEditorialReButtons(editing,item);
  if(imageReady(item)||item.image_suppressed===true){
   const publicToggle=el("label","image-public-toggle");
   const switchInput=el("input");
@@ -854,6 +874,15 @@ function render(){
    void toggleRedMark(item,card,flag);
   });
   head.append(flag);
+  // Acción independiente del estado editorial: no envía ni publica nada.
+  const busX=el("a","bus-x-link","BUS-X");
+  busX.href="https://x.com/search?q="+encodeURIComponent(item.name)+"&f=live";
+  busX.target="_blank";
+  busX.rel="noopener noreferrer";
+  busX.title="Buscar «"+item.name+"» en X (publicaciones recientes)";
+  busX.setAttribute("aria-label",busX.title);
+  busX.addEventListener("click",event=>event.stopPropagation());
+  head.append(busX);
   if(!reset&&item.status==="explicada"&&item.image_in_progress===true
      &&!imageReady(item)&&item.image_suppressed!==true){
    const generating=el("span","image-working-icon","▧");
@@ -875,12 +904,13 @@ function render(){
     head.append(hidden);
    }
   }
-  const body=el("div","explanation",reset?"Revisión editorial solicitada. Se ha retirado la explicación anterior y su imagen; esperando una nueva explicación.":item.status==="explicada"?explanationText(item.explanation,item):({en_elaboracion:"En elaboración.",incidencia:"Incidencia en la elaboración.",desestimada:"Desestimada."})[item.status]||"Explicación pendiente.");
+  const body=el("div","explanation",reset?(item.status==="explicada"?"Revisión editorial solicitada. Se preparará una nueva explicación e imagen.":item.status==="en_elaboracion"?"RE solicitada. El chat actual continúa; el próximo usará la nueva solicitud.":"RE solicitada. La nueva investigación está pendiente."):item.status==="explicada"?explanationText(item.explanation,item):({en_elaboracion:"En elaboración.",incidencia:"Incidencia en la elaboración.",desestimada:"Desestimada."})[item.status]||"Explicación pendiente.");
   card.append(body);
   if(!reset){const hint=imageRetryHint(item);if(hint)card.append(hint);}
   if(!reset&&!imageReady(item)&&item.image_suppressed!==true&&item.image_in_progress!==true)
    TTImageIncidents.attach({card,head,project:"ttendencias-v2",id:item.trend_id,revision:item.revision,available:item.image_incident_available===true});
-  if(!reset){makePublishButtons(card,item);attachGeneratedImage(card,item);}
+  if(!reset||item.status!=="explicada")makePublishButtons(card,item);
+  if(!reset)attachGeneratedImage(card,item);
   root.append(card);
  }
 }
