@@ -16160,14 +16160,14 @@
     "trv2-e742640b54e64716d2b4bd9e": {
       "trend_id": "trv2-e742640b54e64716d2b4bd9e",
       "name": "#GHVIP9",
-      "revision": 2,
-      "status": "in_progress",
-      "reason": "retry_after_incident",
+      "revision": 3,
+      "status": "review_pending",
+      "reason": "retry_after_incident_with_hints",
       "episode_token": "de7851bdf9a0814c",
-      "requested_at": "2026-11-18T20:01:06.099559+00:00",
-      "updated_at": "2026-11-18T20:01:06.099559+00:00",
+      "requested_at": "2026-11-18T20:51:34.280789+00:00",
+      "updated_at": "2026-11-18T20:51:34.280789+00:00",
       "previous_explanation": null,
-      "attempts": 1,
+      "attempts": 0,
       "previous_attempts": [
         {
           "revision": 1,
@@ -16178,17 +16178,21 @@
           "send_intent_at": "2026-11-18T19:12:12.381872+00:00",
           "incident_reason": "lease_expired_without_capture",
           "archived_at": "2026-11-18T20:01:06.099559+00:00"
+        },
+        {
+          "revision": 2,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-18T20:02:17.304923+00:00",
+          "send_intent_at": null,
+          "incident_reason": "lease_expired_without_capture",
+          "archived_at": "2026-11-18T20:51:34.280789+00:00"
         }
       ],
       "incident_retries": 0,
-      "lease": {
-        "token": "1b0542a265e6f0fb53c7bef08dcf97855e461a5354922dc5",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-18T20:02:17.304923+00:00",
-        "expires_at": "2026-11-18T20:42:17.304923+00:00"
-      },
-      "incident_review_hints_pending": "Gran hermano",
-      "manual_retry_requested_at": "2026-11-18T20:51:07.950693+00:00"
+      "review_mode": "x",
+      "review_hints": "Gran hermano"
     },
     "trv2-6bb79cff587b2bc1947326a5": {
       "trend_id": "trv2-6bb79cff587b2bc1947326a5",
@@ -17096,7 +17100,6 @@
     "trv2-9de1ecb7c72954843e617c4b",
     "trv2-5b7051c8422d660fbe4ae4ce",
     "trv2-8fa1938df0df261762ec3afd",
-    "trv2-e742640b54e64716d2b4bd9e",
     "trv2-12796958244bbafdd09db101",
     "trv2-484fb5f63b877d46cc31b8ba",
     "trv2-4bb93a62128c86bfb2948b95",
@@ -17106,7 +17109,8 @@
     "trv2-eef024b17153ee10cc852b79",
     "trv2-6bb79cff587b2bc1947326a5",
     "trv2-45e87c57cb77e28a8814928c",
-    "trv2-207f7b65de9103be691c9699"
+    "trv2-207f7b65de9103be691c9699",
+    "trv2-e742640b54e64716d2b4bd9e"
   ],
   "effects_enabled": false
 }
