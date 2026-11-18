@@ -263,6 +263,52 @@ test("INC suppression hides the candidate from every list while retaining its pr
  assert.ok(docs[0].items[id],"Immutable news evidence must remain available");
  assert.equal((await(await newsPublicationCount(new Request("https://private.example/api/news-publication-count"),env,helpers)).json()).count,0);
 }));
+test("INC retry validates the exact small queue and job without downloading the 5.7 MB index",()=>scoped(async(env,docs)=>{
+ docs[0].items[id].status="editorial_in_progress";
+ docs[1].items[0].status="problematic";
+ const job={schema_version:1,project:"ttittulares-v2",event_id:id,revision:1,
+  job_id:id+"-r1-editorial",status:"problematic",lease:null,
+  problem:{code:"NEWS_SESSION_DEADLINE_EXCEEDED",at:time,retry_mode:"recover_same_chat"}};
+ let indexFetches=0,jobFetches=0;
+ globalThis.fetch=async url=>{
+  const source=String(url);
+  if(source.endsWith("/news-index.json")){indexFetches++;throw Error("News index must not be fetched for INC action");}
+  if(source.includes("/jobs/editorial/")){jobFetches++;return Response.json(job);}
+  if(source.endsWith("/editorial-queue.json"))return Response.json(docs[1]);
+  throw Error("Unexpected URL "+source);
+ };
+ const response=await newsAction(request("retry_editorial"),env,helpers);
+ assert.equal(response.status,200,JSON.stringify(await response.clone().json()));
+ assert.equal(indexFetches,0);
+ assert.equal(jobFetches,1);
+ const controls=await newsControls(env);
+ assert.deepEqual(controls.actions.map(x=>x.action),["retry_editorial"]);
+ const replay=await newsAction(request("retry_editorial"),env,helpers);
+ assert.equal((await replay.json()).replay,true);
+ assert.equal((await newsControls(env)).actions.length,1);
+}));
+
+test("INC dismiss uses the same fast path, but never suppresses an unverified or newer incident",()=>scoped(async(env,docs)=>{
+ docs[0].items[id].status="editorial_in_progress";docs[1].items[0].status="problematic";
+ const job={schema_version:1,project:"ttittulares-v2",event_id:id,revision:1,
+  job_id:id+"-r1-editorial",status:"problematic",lease:null,
+  problem:{code:"NEWS_CAPTURE_TIMEOUT_NO_RESEND",at:time,retry_mode:"recover_same_chat"}};
+ globalThis.fetch=async url=>{
+  if(String(url).includes("/jobs/editorial/"))return Response.json(job);
+  if(String(url).endsWith("/editorial-queue.json"))return Response.json(docs[1]);
+  if(String(url).endsWith("/news-index.json"))throw Error("Large index should not be fetched");
+  throw Error("Unexpected source");
+ };
+ const accepted=await newsAction(request("dismiss"),env,helpers);
+ assert.equal(accepted.status,200);
+ const controls=await newsControls(env);
+ assert.equal(controls.preferences[0].incident_hidden,true);
+ assert.equal(controls.preferences[0].dismissed,true);
+ const blocked=await newsAction(request("dismiss",{action_id:"2".repeat(32)}),env,helpers);
+ assert.equal(blocked.status,409);
+ assert.equal((await newsControls(env)).actions.length,1);
+}));
+
 test("legacy INC dismissal is hidden without affecting Pending suppression",()=>{
  const [index,queue]=fixture();index.items[id].status="editorial_in_progress";queue.items[0].status="problematic";
  const view=decorateNews(projectNews(index,queue),{preferences:[{event_id:id,revision:1,dismissed:true,archived:true}]});
