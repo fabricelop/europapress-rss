@@ -14848,13 +14848,13 @@
       "trend_id": "trv2-e317efa7bdfdfad78bfda10a",
       "name": "Jason",
       "revision": 2,
-      "status": "review_pending",
+      "status": "in_progress",
       "reason": "retry_after_incident_with_hints",
       "episode_token": "f1231c5a45877fc1",
       "requested_at": "2026-11-18T17:28:42.136924+00:00",
       "updated_at": "2026-11-18T17:28:42.136924+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -14869,7 +14869,13 @@
       ],
       "incident_retries": 0,
       "review_mode": "x",
-      "review_hints": "Busca en x"
+      "review_hints": "Busca en x",
+      "lease": {
+        "token": "fd31fa9c09f44386223157c4c3d50240ef9d504286ffae12",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-18T17:29:54.470414+00:00",
+        "expires_at": "2026-11-18T18:09:54.470414+00:00"
+      }
     },
     "trv2-fca968ab5996fec3f3615447": {
       "trend_id": "trv2-fca968ab5996fec3f3615447",
