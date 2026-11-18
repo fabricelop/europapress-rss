@@ -58,19 +58,22 @@ test("INC controls are separate from READY publication and preserve confirmed su
  assert.match(actions,/function attachIncident\(/);
  assert.match(actions,/wire\(retry,"retry_editorial"\)/);
  assert.match(actions,/wire\(dismiss,"dismiss"/);
- assert.match(actions,/onChange\(type==="retry_editorial"\?"pending":"archived",item\)/);
+ assert.match(actions,/onChange\(item\)/);
  assert.match(page,/TTNewsActions\.attachIncident\(/);
- assert.match(page,/state\.filter=group;state\.page=1;state\.open=moved\.event_id/);
+ assert.match(page,/if\(state\.open===item\.event_id\)state\.open=null/);
  assert.match(page,/item\.status_label==="Suprimida"\)return;loaded=true/);
  const [index,queue]=fixture();queue.items[0].status="problematic";
  const projected=projectNews(index,queue);
  const controls={preferences:[{event_id:id,revision:1,archived:true,dismissed:true}]};
  // The source projection stays immutable; only the private per-user view hides the incident.
  assert.equal(projected.items[0].group,"incident");
- assert.equal(decorateNews(projected,controls).items[0].status_label,"Suprimida");
+ assert.equal(decorateNews(projected,controls).items.length,0);
+  assert.equal(decorateNews(projected,controls).counts.archived,0);
  // Source already supports dismissed as a terminal state, so ingestion cannot resurrect it.
  index.items[id].terminal_status="dismissed";
  assert.equal(projectNews(index,queue).items[0].group,"archived");
+  controls.preferences[0].incident_hidden=true;
+  assert.equal(decorateNews(projectNews(index,queue),controls).items.length,0);
 });
 test("only verified image for the current revision is signalled on the closed news card",()=>{
  const [index,queue]=fixture();index.items[id].status="ready";queue.items[0].status="ready";
