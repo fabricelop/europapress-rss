@@ -106,17 +106,19 @@ def clone_job_profile(seed, destination, *, find_pids):
 
 
 def read_news_turns(page):
-    """Prefer role DOM; use bounded localized transcript only if roles are absent."""
+    """Read role DOM, then recover a visible answer when assistant roles are absent."""
     users = page.locator('[data-message-author-role="user"]').all_text_contents()
     answers = page.locator('[data-message-author-role="assistant"]').all_text_contents()
-    if users:
+    if users and answers:
         return users, answers
     # Some ChatGPT layouts expose user bubbles without the role attribute.
     # Never inspect assistant prose for submission identity: an echo is not a send.
     try:
         bubbles = page.locator('[data-user-message-bubble="true"]').all_text_contents()
-        if bubbles:
+        if bubbles and answers:
             return bubbles, answers
+        if bubbles and not users:
+            users = bubbles
     except Exception:
         pass
     try:
@@ -125,14 +127,17 @@ def read_news_turns(page):
         return [], answers
     user_markers = list(re.finditer(r'(?m)^\s*(?:You said|Tú dijiste|Has dicho):\s*$', body))
     if len(user_markers) != 1:
-        return [], answers
+        return users, answers
     start = user_markers[0].end()
     assistant = re.search(r'(?m)^\s*(?:ChatGPT said|ChatGPT dijo|ChatGPT ha dicho|ChatGPT respondió):\s*$', body[start:])
     if assistant is None:
-        return [], answers
+        return users, answers
     end = start + assistant.start()
     response = body[start + assistant.end():].strip()
-    return [body[start:end].strip()], answers or ([response] if response else [])
+    visible_user = body[start:end].strip()
+    if users and not any(visible_user in user or user in visible_user for user in users):
+        return users, answers
+    return users or [visible_user], answers or ([response] if response else [])
 
 
 def fresh_turn(user_turns, event_id, revision, command_id):
