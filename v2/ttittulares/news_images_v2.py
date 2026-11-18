@@ -13,14 +13,28 @@ from v2.ttendencias.image_intake_v2 import raster_metadata
 
 def image_prompt(record, command):
     identity=json.dumps({"event_id":record["event_id"],"revision":record["revision"],"command_id":command},ensure_ascii=False)
-    return ("TTN2_IMAGE_JOB_V1 "+identity+"\nUsa ImageGen AHORA para generar UNA SOLA imagen original "
-        "de mínimo 1024px de anchura, en este chat nuevo independiente. No abras el chat editorial ni "
-        "reescribas la noticia. Estilo: cómic europeo editorial, escena narrativa única con protagonistas "
-        "expresivos, acción reconocible, profundidad, luz y textura; una metáfora visual clara del hecho. "
-        "Sin titulares, hashtags, logos, texto superpuesto, diagramas ni collage. En sucesos graves usa "
-        "una escena contextual seria y respetuosa; nunca humor a costa de las víctimas. No publiques "
-        "ni modifiques GitHub.\nNOTICIA CONTRASTADA:\n"+record["title"]+"\n"+record["factual_summary"]+
-        "\n"+record["tweet"]["text"])
+    styles=("cómic europeo editorial con personajes expresivos y dibujo nítido",
+            "grabado moderno con volumen, luces y humor narrativo",
+            "tinta y acuarela con profundidad, textura y una escena viva",
+            "caricatura editorial 3D con iluminación cinematográfica")
+    style=styles[int.from_bytes(hashlib.sha256(record["event_id"].encode()).digest()[:2],"big")%len(styles)]
+    # As in Tendencias, the image uses the *full verified editorial account*,
+    # never the old text chat or a truncated tweet as its primary source.
+    brief=" ".join((record["title"]+". "+record["factual_summary"]+". "+record["explanation"]).split())[:6000]
+    return ("TTN2_IMAGE_JOB_V1 "+identity+" | Usa ImageGen AHORA y genera UNA SOLA imagen GAG original. "
+        "Este es un CHAT NUEVO e independiente: no busques ni abras la conversación donde se "
+        "redactó la noticia; no investigues ni reescribas el texto. "
+        "NOTICIA CONTRASTADA (fuente del gag; no la reescribas): "+brief+". "
+        "DIRECCIÓN VISUAL: "+style+". Sigue el estilo editorial de Tendencias V1: "
+        "una escena narrativa con protagonistas, acción reconocible, una metáfora o exageración "
+        "visual del hecho, expresiones, profundidad, iluminación y textura. Una sola idea que "
+        "se entienda sin leer texto en 1-2 segundos; más gag y menos barroquismo. "
+        "Acabado profesional, mínimo 1024px de anchura. Sin esquemas, infografías, flechas, "
+        "conectores, medallones, avatares flotantes, paneles, dashboards ni collage. "
+        "Cero titulares, hashtags, rótulos, logotipos, marcas de agua o texto superpuesto; "
+        "no dibujes guindillas, chiles ni símbolos 🌶️. En sucesos graves nunca hagas "
+        "humor a costa de las víctimas ni presentes hipótesis como hechos. "
+        "No publiques ni modifiques GitHub.")
 
 def run_one(service, config, *, browser_factory=ChromeJob, raster_get=original_from_same_page,
             run_id=None):
@@ -43,8 +57,9 @@ def run_one(service, config, *, browser_factory=ChromeJob, raster_get=original_f
         result=service.image("prepare",worker_id=worker,token=token,job_id=jid,
             command_id=command,prompt_sha256=digest,session={"session_id":run,"private_journal_id":run,
             "conversation_url_sha256":hashlib.sha256(b"https://chatgpt.com/").hexdigest()})
+        if result.get("send_authorized") is not True:
+            raise RuntimeError(result.get("reason") or "NEWS_IMAGE_UNCERTAIN_NO_RESEND")
         journal["intent_durable"]=True;write_private(local,journal)
-        if result.get("send_authorized") is not True:raise RuntimeError("NEWS_IMAGE_UNCERTAIN_NO_RESEND")
         browser.send_once(prompt);journal["sent"]=True;write_private(local,journal)
         url=browser.confirm_submission(job["event_id"],job["revision"],command,beat)
         journal["chat_url"]=url;write_private(local,journal)

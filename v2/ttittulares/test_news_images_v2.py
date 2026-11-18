@@ -96,8 +96,21 @@ class NewsImageLifecycleTests(unittest.TestCase):
  def test_prompt_is_self_contained_and_exact_revision(self):
   prompt=image_prompt(self.fixture.record,"news-img-fixture")
   self.assertIn(self.fixture.event,prompt);self.assertIn('"revision": 1',prompt)
-  self.assertIn("news-img-fixture",prompt);self.assertIn(self.fixture.record["tweet"]["text"],prompt)
-  self.assertIn("chat nuevo",prompt);self.assertIn("víctimas",prompt)
+  self.assertIn("news-img-fixture",prompt);self.assertIn(self.fixture.record["explanation"],prompt)
+  self.assertIn("CHAT NUEVO",prompt);self.assertIn("UNA SOLA imagen GAG",prompt)
+  self.assertIn("víctimas",prompt);self.assertIn("no dibujes guindillas",prompt)
+ def test_unconfirmed_prepare_never_sends_and_keeps_journal_honest(self):
+  original=self.service.image
+  def unconfirmed(operation,**kwargs):
+   if operation=="prepare":return {"send_authorized":False,"reason":"NEWS_IMAGE_PREPARE_UNVERIFIED"}
+   return original(operation,**kwargs)
+  with patch.object(self.service,"image",side_effect=unconfirmed):
+   result=run_one(self.service,self.config,browser_factory=self.browser)
+  self.assertEqual(result["status"],"incident")
+  self.assertEqual(result["code"],"NEWS_IMAGE_PREPARE_UNVERIFIED")
+  self.assertEqual(self.instances[0].sent,0)
+  journal=json.loads(next((self.config["root"]/"image-journals").glob("*.json")).read_text())
+  self.assertFalse(journal["sent"]);self.assertFalse(journal["intent_durable"])
  def test_daemon_health_is_private_and_contains_no_job_secrets(self):
   image_health(self.config["root"],{"pending_count":3,"active_count":0,
                                      "error_stage":"controls_or_preview","error_code":"HTTPERROR"})

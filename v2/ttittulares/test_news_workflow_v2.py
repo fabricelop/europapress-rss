@@ -6,7 +6,7 @@ from urllib.error import URLError
 from . import test_editorial_state_v2 as fixtures
 from .news_workflow_v2 import NewsService,NewsStore,image_path
 from . import editorial_state_v2 as ed
-from .radar_store_v2 import StoreError
+from .radar_store_v2 import StoreError, Conflict, UncertainCommit
 from .test_radar_ingest_v2 import BASE
 
 
@@ -224,11 +224,42 @@ class NewsWorkflowTests(unittest.TestCase):
   one=self.claim();self.assertEqual(one["job"]["event_id"],self.event)
   self.assertIsNone(self.claim("image-two")["job"])
   self.assertTrue(self.claim()["replay"])
- def test_uncertain_prepare_never_authorizes_resend(self):
+ def test_image_prepare_retries_safe_concurrent_head_change_before_send(self):
+  self.claim()
+  self.store.before_commit=lambda store:store.advance({})
+  prepared=self.prepare()
+  self.assertTrue(prepared["send_authorized"])
+  self.assertEqual(prepared["job"]["status"],"send_intent")
+  self.assertEqual(prepared["job"]["attempts"]["submission_count"],0)
+  self.assertEqual(len([w for w in self.store.writes if image_path(self.event,1) in w
+                        and w[image_path(self.event,1)]["status"]=="send_intent"]),1)
+ def test_uncertain_prepare_authorizes_only_a_proven_durable_intent(self):
   self.claim();self.store.lose_response=True
-  self.assertFalse(self.prepare()["send_authorized"])
+  confirmed=self.prepare()
+  self.assertTrue(confirmed["send_authorized"])
+  self.assertTrue(confirmed["reconciled"])
+  self.assertEqual(confirmed["job"]["attempts"]["submission_count"],0)
+  # A second call must never authorize a duplicate submission.
   self.assertFalse(self.service.image("prepare",worker_id="image-one",token=self.token,
    job_id=self.event+"-r1-image",command_id="changed",prompt_sha256="d"*64,session={})["send_authorized"])
+ def test_uncertain_prepare_without_readback_proof_never_authorizes_send(self):
+  job=self.claim()["job"]
+  with patch.object(self.store,"commit",side_effect=UncertainCommit("test-no-commit")):
+   denied=self.service.image("prepare",worker_id="image-one",token=self.token,
+    job_id=job["job_id"],command_id="unique-image-command",prompt_sha256="d"*64,
+    session={"session_id":"new","private_journal_id":"new","conversation_url_sha256":"c"*64})
+  self.assertFalse(denied["send_authorized"])
+  self.assertEqual(denied["reason"],"NEWS_IMAGE_PREPARE_UNVERIFIED")
+  self.assertEqual(self.store.read_editorial_snapshot()[1][image_path(self.event,1)]["status"],"claimed")
+ def test_exhausted_prepare_conflicts_never_submit_or_write_send_intent(self):
+  job=self.claim()["job"]
+  self.service.max_attempts=2
+  with patch.object(self.store,"commit",side_effect=Conflict("concurrent-editorial-write")):
+   with self.assertRaises(Conflict):
+    self.service.image("prepare",worker_id="image-one",token=self.token,
+     job_id=job["job_id"],command_id="unique-image-command",prompt_sha256="d"*64,
+     session={"session_id":"new","private_journal_id":"new","conversation_url_sha256":"c"*64})
+  self.assertEqual(self.store.read_editorial_snapshot()[1][image_path(self.event,1)]["status"],"claimed")
  def test_wrong_owner_cannot_heartbeat(self):
   self.claim()
   with self.assertRaises(ed.EditorialError):
@@ -289,6 +320,27 @@ class NewsWorkflowTests(unittest.TestCase):
   second={**request,"action_id":"c"*32,"incident_at":docs[path]["problem"]["at"]}
   self.service.controls({"preferences":[],"actions":[request,second]})
   self.assertEqual(self.claim("image-new-manual")["job"]["attempts"]["claim_count"],5)
+ def test_todays_legacy_no_send_failures_get_one_automatic_repair_attempt(self):
+  for attempt in range(3):
+   worker="legacy-img-"+str(attempt)
+   job=self.claim(worker)["job"]
+   self.service.image("fail",worker_id=worker,token=self.token,job_id=job["job_id"],
+                      code="NEWS_IMAGE_UNCERTAIN_NO_RESEND",cleanup_verified=True)
+   self.now+=timedelta(minutes=1)
+  path=image_path(self.event,1)
+  old=self.store.commits[self.store.current][path]
+  self.assertEqual(old["attempts"]["submission_count"],0)
+  self.assertEqual(old["problem"]["retry_mode"],"manual_only")
+  self.assertEqual(self.service.image_preview()["pending_count"],0)
+  old["requested_at"]="2026-11-18T15:41:01Z"
+  self.assertEqual(self.service.image_preview()["pending_count"],1)
+  fresh=self.claim("repaired-img")["job"]
+  self.assertEqual(fresh["attempts"]["claim_count"],4)
+  self.assertEqual(fresh["attempts"]["max_safe_preflight_attempts"],4)
+  self.assertIsNone(fresh["send_intent"])
+  self.service.image("fail",worker_id="repaired-img",token=self.token,job_id=fresh["job_id"],
+                     code="NEWS_IMAGE_PREPARE_UNVERIFIED",cleanup_verified=True)
+  self.assertEqual(self.service.image_preview()["pending_count"],0)
  def test_manual_image_retry_rejects_stale_incident_and_unsafe_cleanup(self):
   first=self.claim()["job"]
   self.service.image("fail",worker_id="image-one",token=self.token,job_id=first["job_id"],

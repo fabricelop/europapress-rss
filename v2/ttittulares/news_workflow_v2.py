@@ -390,11 +390,33 @@ class NewsService(ed.EditorialService):
         # explicitly chosen a NEW disposable chat after each such failure.
         # Never override an auth, disk, cleanup or active-lease safety stop.
         retry_mode=problem.get("retry_mode")
-        fresh=retry_mode in ("new_chat", "recover_same_chat")
+        fresh=retry_mode in ("new_chat", "recover_same_chat") or NewsService._legacy_preflight_image_repair(job)
         safe=not any(part in code for part in ("AUTH", "LOGIN", "CREDENTIAL", "DISK", "CLEANUP", "CAPTCHA"))
+        remaining=attempts.get("claim_count",0)<attempts.get("max_safe_preflight_attempts",3)
         return (job.get("status")=="problematic" and not job.get("lease")
-                and fresh and safe
-                and attempts.get("claim_count",0)<attempts.get("max_safe_preflight_attempts",3))
+                and fresh and safe and (remaining or NewsService._legacy_preflight_image_repair(job)))
+
+    @staticmethod
+    def _legacy_preflight_image_repair(job):
+        """One extra fresh chat for today's pre-send failures under the old CAS bug.
+
+        All three prior attempts must have demonstrably sent *nothing*. This
+        narrowly-scoped migration never retries an uncertain actual ImageGen
+        submission, historic jobs, or a job failing again after this repair.
+        """
+        attempts=job.get("attempts") or {};problem=job.get("problem") or {}
+        history=attempts.get("history") or []
+        return (job.get("status")=="problematic" and job.get("lease") is None
+                and job.get("send_intent") is None
+                and problem.get("code")=="NEWS_IMAGE_UNCERTAIN_NO_RESEND"
+                and problem.get("retry_mode")=="manual_only"
+                and attempts.get("claim_count")==3
+                and attempts.get("max_safe_preflight_attempts")==3
+                and attempts.get("submission_count")==0
+                and attempts.get("safe_preflight_failures")==3
+                and len(history)==3
+                and all(item.get("outcome")=="preflight_failed" for item in history)
+                and str(job.get("requested_at") or "")>="2026-11-17T23:00:00Z")
 
     def _manual_image_retry_action(self, event, job):
         """An explicit private-web action authorizes ONE fresh attempt at this exact incident.
@@ -476,6 +498,8 @@ class NewsService(ed.EditorialService):
                             # counts. A fresh run gets its own browser and UUID.
                             selected["attempts"]=copy.deepcopy(prior["attempts"])
                             selected["attempts"]["claim_count"]+=1
+                            if self._legacy_preflight_image_repair(prior):
+                                selected["attempts"]["max_safe_preflight_attempts"]=4
                             selected["requested_at"]=prior["requested_at"]
                         if manual:
                             selected["policy"]={"mode":"manual_request","visual_treatment":"editorial_gag",
@@ -506,7 +530,7 @@ class NewsService(ed.EditorialService):
                     job["lease"]["expires_at"]=ed._stamp(now+timedelta(minutes=25));job["lease"]["heartbeat_at"]=stamp
                 elif operation=="prepare":
                     if job["status"]!="claimed" or job["send_intent"]:
-                        return {"send_authorized":False}
+                        return {"send_authorized":False,"reason":"NEWS_IMAGE_INTENT_ALREADY_EXISTS"}
                     job.update(status="send_intent",phase="sending",prompt_sha256=data["prompt_sha256"],session=data["session"],
                         send_intent={"command_id":data["command_id"],"attempt_no":job["attempts"]["claim_count"],"prompt_sha256":data["prompt_sha256"],
                                      "prepared_at":stamp,"submission_state":"prepared","submitted_at":None})
@@ -561,9 +585,49 @@ class NewsService(ed.EditorialService):
                 if self.store.read_documents(commit,[p])[p]!=job:raise ed.EditorialError("NEWS_IMAGE_READBACK_FAILED")
                 return {"job":copy.deepcopy(job),"record":docs[job["source_record_path"]],"verified":True,
                         "commit_sha":commit,"send_authorized":operation=="prepare"}
-            except (Conflict,UncertainCommit):
-                # prepare ambiguity never permits another send; claim ambiguity is fenced.
-                if operation=="prepare":return {"send_authorized":False}
+            except Conflict:
+                # GitHub rejected this optimistic write: nothing was committed
+                # and no image prompt has been sent. Refresh the snapshot and
+                # retry safely, even for prepare, just as the trend worker
+                # tolerates unrelated concurrent state changes.
+                continue
+            except UncertainCommit:
+                if operation=="prepare":
+                    # A lost POST response is different from a rejected CAS.
+                    # Never write a second intent, but a *read-only* fresh
+                    # snapshot can prove that this exact first intent landed.
+                    # Browser.send_once has not been reached at this point.
+                    try:
+                        confirmed_head,confirmed_docs=self.store.read_editorial_snapshot()
+                        confirmed=confirmed_docs.get(p) or {}
+                        intent=confirmed.get("send_intent") or {}
+                        owner=confirmed.get("lease") or {}
+                        event_now=confirmed_docs.get(PREFIX+"news/"+job["event_id"]+".json") or {}
+                        record_now=confirmed_docs.get(job["source_record_path"]) or {}
+                        if (confirmed.get("status")=="send_intent"
+                            and confirmed.get("job_id")==job_id
+                            and confirmed.get("attempts",{}).get("submission_count")==job["attempts"]["submission_count"]
+                            and confirmed.get("session")==data["session"]
+                            and confirmed.get("prompt_sha256")==data["prompt_sha256"]
+                            and intent.get("command_id")==data["command_id"]
+                            and intent.get("attempt_no")==job["attempts"]["claim_count"]
+                            and intent.get("prompt_sha256")==data["prompt_sha256"]
+                            and intent.get("submission_state")=="prepared"
+                            and intent.get("submitted_at") is None
+                            and owner.get("worker_id")==worker_id
+                            and owner.get("token_sha256")==token_hash
+                            and ed._time(owner["expires_at"])>self.clock()
+                            and event_now.get("status") in ("ready","archived")
+                            and event_now.get("current_revision")==job["revision"]
+                            and record_now.get("editorial_sha256")==job["editorial_sha256"]):
+                            return {"job":copy.deepcopy(confirmed),"record":record_now,
+                                "verified":True,"commit_sha":confirmed_head,
+                                "send_authorized":True,"reconciled":True}
+                    except Exception:
+                        # Incomplete or unavailable readback must never be
+                        # converted into permission to submit an image.
+                        pass
+                    return {"send_authorized":False,"reason":"NEWS_IMAGE_PREPARE_UNVERIFIED"}
                 continue
         raise Conflict("NEWS_IMAGE_RETRY_EXHAUSTED")
 

@@ -1,7 +1,7 @@
 # Update/restart only the Windows News V2 image consumer. The editorial
 # consumer, V1, Trends, SeLoRecordamos and personal Chrome stay untouched.
 [CmdletBinding()]
-param()
+param([ValidatePattern('^[a-f0-9]{40}$')][string]$ReleaseSha='')
 $ErrorActionPreference='Stop'
 $root=Join-Path $env:LOCALAPPDATA 'TTActualidadNoticiasV2'
 $taskName='TTActualidadNoticiasV2-Images'
@@ -34,8 +34,11 @@ do{
 $api='https://api.github.com/repos/fabricelop/europapress-rss'
 $branch='feature/ttactualidad-v2-clean'
 $headers=@{'User-Agent'='TTNoticiasV2-images-installer';'Accept'='application/vnd.github+json'}
-$commit=Invoke-RestMethod -Uri ($api+'/commits/'+[Uri]::EscapeDataString($branch)) -Headers $headers
-$sha=[string]$commit.sha
+$sha=$ReleaseSha
+if(-not $sha){
+  $commit=Invoke-RestMethod -Uri ($api+'/commits/'+[Uri]::EscapeDataString($branch)) -Headers $headers
+  $sha=[string]$commit.sha
+}
 if($sha -notmatch '^[a-f0-9]{40}$'){throw 'NEWS_IMAGES_COMMIT_NOT_PINNED'}
 $tree=Invoke-RestMethod -Uri ($api+'/git/trees/'+$sha+'?recursive=1') -Headers $headers
 if($tree.truncated){throw 'NEWS_IMAGES_GIT_TREE_TRUNCATED'}
