@@ -13879,12 +13879,12 @@
       "trend_id": "trv2-7fe46afe4cd2a552d7a4c032",
       "name": "Susana Griso",
       "revision": 2,
-      "status": "review_pending",
+      "status": "in_progress",
       "reason": "user_reexplanation",
       "episode_token": "8ceadb02ab4596bb",
       "requested_at": "2026-11-18T09:15:24.394204+00:00",
       "updated_at": "2026-11-18T09:15:24.394204+00:00",
-      "attempts": 0,
+      "attempts": 1,
       "image_incident": {
         "project": "ttendencias-v2",
         "trend_id": "trv2-7fe46afe4cd2a552d7a4c032",
@@ -13906,7 +13906,13 @@
         "pre_send_limit": 3
       },
       "review_mode": "standard",
-      "incident_retries": 0
+      "incident_retries": 0,
+      "lease": {
+        "token": "b9d4be543efb0550f789a642b0b6eb98e61c5816319308d3",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-18T09:15:49.845890+00:00",
+        "expires_at": "2026-11-18T09:55:49.845890+00:00"
+      }
     },
     "trv2-56226f29adf85dfa1328a73f": {
       "trend_id": "trv2-56226f29adf85dfa1328a73f",
