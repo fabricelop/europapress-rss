@@ -29,6 +29,24 @@ export async function newsControls(env){
   preferences:(prefs.results||[]).map(x=>({event_id:x.event_id,revision:x.revision,...JSON.parse(x.body)})),
   actions:(actions.results||[]).map(x=>JSON.parse(x.body))};
 }
+// Public V1 only needs the current decision for one exact news revision.
+// Never load the complete editorial index or return private action history.
+export async function publicNewsImageVisibility(request,env,{json}){
+ if(request.method!=="GET")return json({error:"method_not_allowed"},405);
+ const url=new URL(request.url),event_id=url.searchParams.get("id"),revision=Number(url.searchParams.get("revision"));
+ if(!ID.test(event_id)||!Number.isSafeInteger(revision)||revision<1||revision>100000)
+  return json({error:"invalid_identity"},400);
+ try{
+  const row=await env.MARKS_DB.prepare("SELECT body FROM news_preferences WHERE event_id=? AND revision=?")
+   .bind(event_id,revision).first();
+  const preference=row?JSON.parse(row.body):{};
+  return json({schema_version:1,project:"ttittulares-v2",event_id,revision,
+   public_image_visible:preference.public_image_visible===true,
+   image_suppressed:preference.image_suppressed===true,
+   rework_requested:preference.rework_requested===true},200,
+   {"Cache-Control":"no-store","Access-Control-Allow-Origin":"*"});
+ }catch{return json({error:"news_image_visibility_unavailable"},503);}
+}
 // Independent of Tendencias. PUB confirms a manual publication and archives
 // atomically; Quitar only archives. Historical PU events remain in the rolling
 // window during the migration; the obsolete PU action accepts no new writes.

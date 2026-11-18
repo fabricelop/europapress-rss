@@ -4,7 +4,7 @@ import fs from "node:fs";
 import worker from "../src/index.js";
 import {DatabaseSync} from "node:sqlite";
 import {deflateSync} from "node:zlib";
-import {newsAction,newsControls,newsView,newsPublicationCount,newsManualImage,newsImage,newsWorkerControls,publicNews} from "../src/news-actions.js";
+import {newsAction,newsControls,newsView,newsPublicationCount,newsManualImage,newsImage,newsWorkerControls,publicNews,publicNewsImageVisibility} from "../src/news-actions.js";
 import {decorateNews,projectNews} from "../src/news.js";
 const id="ttn2-"+"a".repeat(24),time="2026-11-16T18:13:24Z",hash="c".repeat(64);
 function fixture(){return [
@@ -68,6 +68,19 @@ test("R and image preferences are distinct from PUB and Quitar; old PU is closed
  assert.equal(view.items[0].public_image_visible,false);
  assert.equal((await newsControls(env)).actions.filter(x=>x.action==="publication").length,0);
  assert.equal((await newsAction(request("publication",{action_id:"4".repeat(32)}),env,helpers)).status,400);
+}));
+test("public V1 visibility reads one exact revision and follows both sides of the switch",()=>scoped(async env=>{
+ await newsControls(env);
+ const url="https://private.example/api/public-news-image-visibility?id="+id+"&revision=1";
+ const visible=async()=>publicNewsImageVisibility(new Request(url),env,helpers);
+ assert.equal((await(await visible()).json()).public_image_visible,false);
+ assert.equal((await newsAction(request("public_image",{value:true}),env,helpers)).status,200);
+ let result=await visible();assert.equal(result.status,200);
+ assert.deepEqual(await result.json(),{schema_version:1,project:"ttittulares-v2",event_id:id,revision:1,
+  public_image_visible:true,image_suppressed:false,rework_requested:false});
+ assert.equal((await(await publicNewsImageVisibility(new Request(url.replace("revision=1","revision=2")),env,helpers)).json()).public_image_visible,false);
+ assert.equal((await publicNewsImageVisibility(new Request(url.replace(id,"bad")),env,helpers)).status,400);
+ assert.equal((await publicNewsImageVisibility(new Request(url,{method:"POST"}),env,helpers)).status,405);
 }));
 test("news PUB counter is a separate exact rolling 24-hour register; legacy PU remains counted until expiry",()=>scoped(async env=>{
  const count=async()=>{
