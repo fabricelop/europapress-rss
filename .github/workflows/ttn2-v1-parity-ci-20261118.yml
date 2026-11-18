@@ -1,0 +1,26 @@
+name: Noticias V2 parity V1 safe CI
+on:
+  push:
+    branches: [fix/ttn2-v1-selection-radar-clock-20261118]
+permissions:
+  contents: read
+jobs:
+  parity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - name: Python V1 selection, radar and editorial contract regression
+        run: |
+          python -m pip install --quiet jsonschema==4.23.0
+          python -m unittest -v v2.ttittulares.test_selection_v1_parity_v2 v2.ttittulares.test_radar_snapshot_v2 v2.ttittulares.test_radar_ingest_v2 v2.ttittulares.test_editorial_state_v2 v2.ttittulares.test_news_workflow_v2
+      - name: Worker production build and UI/API regressions
+        working-directory: v2/ttendencias/private-worker
+        run: |
+          npm install --no-audit --no-fund
+          npm run build
+          npm test
