@@ -18,6 +18,7 @@ from pathlib import Path
 from .radar_ingest_v2 import ingest_scan
 from .source_catalog_v2 import load_catalog
 from .source_fetch_v2 import fetch_all_sources
+from .selection_v1_parity_v2 import existing_story
 
 PREFIX = "v2/ttittulares/"
 BRANCH = "feature/ttactualidad-v2-clean"
@@ -162,14 +163,27 @@ def plan_snapshot(fetch_result, documents, *, now, catalog=None):
     news, jobs = _authorities(documents)
     previous, index = _synchronise(documents.get(PREFIX + "state/radar/current.json"),
                                    documents.get(PREFIX + "state/news-index.json"), news)
+    # V1 parity: check against previously selected/treated identities.
+    known_editorial = copy.deepcopy(index["items"])
     result = ingest_scan(fetch_result["rows"], fetch_result["source_statuses"],
                          previous, index, now=now, catalog=catalog)
     radar, index = result["radar_state"], result["news_index"]
     stamp = radar["observed_at"]
     candidates = result["newly_eligible"] + result["material_updates_eligible"]
     writes = {}
+    selected = []
     for candidate in candidates:
         event_id, revision = candidate["event_id"], candidate["revision"]
+        duplicate_of = existing_story(candidate, known_editorial, now=now)
+        if duplicate_of:
+            # Preserve all original documents. Do not create a second job
+            # for the same already selected or treated factual event.
+            item = index["items"][event_id]
+            item.update(status="archived", editorial_created=False,
+                        revision_refs=[], duplicate_of=duplicate_of)
+            if event_id in radar.get("items", {}):
+                radar["items"][event_id]["status"] = "archived"
+            continue
         existing = news.get(event_id)
         if existing and (existing["status"] in TERMINAL or revision <= existing["current_revision"]):
             raise ValueError("EVENT_REVISION_REGRESSION")
@@ -182,6 +196,8 @@ def plan_snapshot(fetch_result, documents, *, now, catalog=None):
         news[event_id] = event
         writes[job_path] = job
         writes[_event_path(event_id)] = event
+        selected.append(candidate)
+        known_editorial[event_id] = index["items"][event_id]
     # Reflect authority in reconstructible projections, including terminal human decisions.
     for event_id, event in news.items():
         item = index["items"][event_id]
@@ -220,7 +236,7 @@ def plan_snapshot(fetch_result, documents, *, now, catalog=None):
     changed = {path: doc for path, doc in writes.items() if documents.get(path) != doc}
     return {"branch": BRANCH, "scan_id": scan_id, "observed_at": stamp,
             "writes": changed, "file_sha256": {path: sha256(doc) for path, doc in changed.items()},
-            "new_job_count": len(candidates), "queue": queue, "metrics": radar["metrics"],
+            "new_job_count": len(selected), "queue": queue, "metrics": radar["metrics"],
             "effects_enabled": False, "publication_enabled": False}
 
 
