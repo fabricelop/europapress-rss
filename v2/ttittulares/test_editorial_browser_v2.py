@@ -59,9 +59,34 @@ class BrowserBoundaryTests(unittest.TestCase):
                       answers=lambda _: ['TTN2_PROBE_OK'])
         browser = SimpleNamespace(browser=SimpleNamespace(contexts=[
             SimpleNamespace(pages=[home, unrelated, actual])]))
-        self.assertEqual(observe_probe(browser), {
-            'submission_confirmed': True, 'assistant_turns': 1,
-            'response_seen': True, 'probe_ok': True, 'stop_visible': False})
+        observed = observe_probe(browser)
+        for key, expected in {'submission_confirmed': True, 'assistant_turns': 1,
+                              'response_seen': True, 'probe_ok': True,
+                              'stop_visible': False, 'owned_pages_seen': 3,
+                              'chat_pages_seen': 2, 'probe_user_pages': 1}.items():
+            self.assertEqual(observed[key], expected)
+
+    def test_short_probe_accepts_whitespace_and_short_ui_label_in_user_turn(self):
+        clock = Clock()
+        edited = PROBE.replace(' Noticias ', '\nNoticias ') + '\nEdit'
+        page = Page(clock, users=lambda _: [edited], answers=lambda _: ['TTN2_PROBE_OK'])
+        browser = SimpleNamespace(browser=SimpleNamespace(contexts=[
+            SimpleNamespace(pages=[page])]))
+        observed = observe_probe(browser)
+        self.assertTrue(observed['submission_confirmed'])
+        self.assertTrue(observed['probe_ok'])
+
+    def test_short_probe_reports_reply_without_permanent_chat_route(self):
+        clock = Clock()
+        page = Page(clock, users=lambda _: [PROBE], answers=lambda _: ['TTN2_PROBE_OK'],
+                    url=lambda _: 'https://chatgpt.com/')
+        browser = SimpleNamespace(browser=SimpleNamespace(contexts=[
+            SimpleNamespace(pages=[page])]))
+        observed = observe_probe(browser)
+        self.assertFalse(observed['submission_confirmed'])
+        self.assertEqual(observed['assistant_pages_seen'], 1)
+        self.assertEqual(observed['probe_user_pages'], 1)
+        self.assertTrue(observed['probe_reply_without_chat_url'])
 
     def test_short_probe_does_not_guess_between_two_matching_chats(self):
         clock = Clock()
