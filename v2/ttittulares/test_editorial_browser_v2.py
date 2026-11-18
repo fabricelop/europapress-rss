@@ -8,7 +8,7 @@ from unittest.mock import patch
 
 from .editorial_browser_v2 import (
     ChromeJob, STOP, authenticated_session, capture_reply, confirm_user_turn, listener_process_ids,
-    verify_endpoint_owned, read_news_turns,
+    verify_endpoint_owned, read_news_turns, fresh_home_page,
 )
 
 EVENT, REVISION, COMMAND = 'ttn2-' + 'a' * 24, 2, 'news-command-1'
@@ -76,6 +76,19 @@ class BrowserBoundaryTests(unittest.TestCase):
         return confirm_user_turn(page, event_id=EVENT, revision=REVISION,
             command_id=COMMAND, heartbeat=heartbeat, timeout=timeout,
             clock=clock, sleep=clock.sleep)
+
+    def test_reuses_only_empty_home_tab_and_skips_broken_tabs(self):
+        def tab(url, count=0):
+            return SimpleNamespace(url=url, locator=lambda selector:
+                                   SimpleNamespace(count=lambda: count))
+        broken = SimpleNamespace(url='https://chatgpt.com/',
+                                 locator=lambda selector: 1 / 0)
+        old_chat = tab('https://chatgpt.com/c/old')
+        occupied_home = tab('https://chatgpt.com/', 1)
+        empty_home = tab('https://chatgpt.com/')
+        context = SimpleNamespace(pages=[broken, old_chat, occupied_home, empty_home])
+        self.assertIs(fresh_home_page(context), empty_home)
+        self.assertIsNone(fresh_home_page(SimpleNamespace(pages=[old_chat, occupied_home])))
 
     def test_visible_assistant_reply_with_role_user_is_captured(self):
         clock = Clock()
