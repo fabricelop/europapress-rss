@@ -15282,12 +15282,12 @@
       "trend_id": "trv2-0abb9ccd4b2ff9ae655695ca",
       "name": "Losada",
       "revision": 4,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "563146a60b965a5f",
       "requested_at": "2026-11-18T17:59:04.043985+00:00",
       "updated_at": "2026-11-18T17:59:04.043985+00:00",
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -15321,7 +15321,13 @@
         "pre_send_limit": 3
       },
       "review_mode": "x",
-      "review_hints": "Parece ser por Anton Losada"
+      "review_hints": "Parece ser por Anton Losada",
+      "lease": {
+        "token": "6d609543f1be80cf7e410898a352530314a27ca0f4da5d9b",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-18T18:01:16.593872+00:00",
+        "expires_at": "2026-11-18T18:41:16.593872+00:00"
+      }
     },
     "trv2-6819bee37da521086bedaba1": {
       "trend_id": "trv2-6819bee37da521086bedaba1",
