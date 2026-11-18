@@ -75,7 +75,15 @@ def run_one(service, config, *, browser_factory=ChromeJob, parse=None, build=Non
     run_id = run_id or uuid.uuid4().hex
     worker_id = 'news-' + run_id
     token = secrets.token_hex(32)
-    claim = service.claim(worker_id, token)
+    try:
+        claim = service.claim(worker_id, token)
+    except Exception as exc:
+        # A network failure before a claim can be durably acknowledged must
+        # never be mistaken for a failed ChatGPT generation. In particular,
+        # no browser, prompt or send intent has been created here.
+        return {'status': 'incident', 'published': False,
+                'error_code': error_code(exc), 'error_type': type(exc).__name__,
+                'pre_chat_failure': True, 'cleanup_verified': False}
     if not claim or not claim.get('job'):
         return {'status': 'idle', 'published': False}
     job, event = claim['job'], claim['event']

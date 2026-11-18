@@ -1,10 +1,76 @@
 """Actions, immutable image association and lease regressions; no live browser."""
-import copy, unittest
+import base64, copy, hashlib, io, unittest
 from datetime import timedelta
+from unittest.mock import Mock, patch
+from urllib.error import URLError
 from . import test_editorial_state_v2 as fixtures
-from .news_workflow_v2 import NewsService,image_path
+from .news_workflow_v2 import NewsService,NewsStore,image_path
 from . import editorial_state_v2 as ed
+from .radar_store_v2 import StoreError
 from .test_radar_ingest_v2 import BASE
+
+
+class NewsPinnedReadResilienceTests(unittest.TestCase):
+ def setUp(self):
+  self.commit='a'*40
+  self.path='v2/ttittulares/state/editorial-queue.json'
+  self.raw=b'{"schema_version":1,"items":[]}'
+  self.sha=hashlib.sha1(b'blob '+str(len(self.raw)).encode()+b'\0'+self.raw).hexdigest()
+  self.calls=[]
+  def request(method,path,payload=None):
+   self.calls.append((method,path))
+   if path.endswith(self.sha):
+    return {'encoding':'base64','content':base64.b64encode(self.raw).decode()}
+   raise AssertionError('Unexpected GitHub API route')
+  self.store=NewsStore('fake-test-token',request=request)
+  self.store._inventories[self.commit]={self.path:{'sha':self.sha,'type':'blob','mode':'100644'}}
+
+ def test_windows_raw_connection_reset_is_retried_without_extra_api_or_send(self):
+  opener=Mock()
+  opener.open.side_effect=[URLError(OSError(10054,'connection reset')),io.BytesIO(self.raw)]
+  self.store._opener=opener
+  with patch('v2.ttittulares.news_workflow_v2.time.sleep') as pause:
+   actual=self.store._http_raw(self.commit,self.path)
+  self.assertEqual(actual,self.raw)
+  self.assertEqual(opener.open.call_count,2)
+  self.assertEqual(pause.call_count,1)
+  self.assertEqual(self.calls,[])
+  for item in opener.open.call_args_list:
+   self.assertNotIn('Authorization',item.args[0].headers)
+
+ def test_after_three_reset_errors_fallback_to_pinned_authenticated_blob(self):
+  opener=Mock()
+  opener.open.side_effect=URLError(OSError(10054,'connection reset'))
+  self.store._opener=opener
+  with patch('v2.ttittulares.news_workflow_v2.time.sleep'):
+   record=self.store._blob_json(self.store._inventories[self.commit][self.path],self.commit,self.path)
+  self.assertEqual(record,{'schema_version':1,'items':[]})
+  self.assertEqual(opener.open.call_count,3)
+  self.assertEqual(self.calls,[('GET','/repos/fabricelop/europapress-rss/git/blobs/'+self.sha)])
+
+ def test_unavailable_both_read_paths_fail_with_stable_code_not_raw_url(self):
+  self.store._opener=Mock()
+  self.store._opener.open.side_effect=URLError(OSError(10054,'private transport details'))
+  self.store._request=lambda *_: (_ for _ in ()).throw(StoreError('GITHUB_READ_FAILED'))
+  with patch('v2.ttittulares.news_workflow_v2.time.sleep'):
+   with self.assertRaisesRegex(ed.EditorialError,'NEWS_PINNED_BLOB_READ_UNAVAILABLE'):
+    self.store._http_raw(self.commit,self.path)
+
+ def test_safe_authenticated_get_retries_only_transient_network_errors(self):
+  responses=[StoreError('GITHUB_READ_FAILED'),StoreError('GITHUB_HTTP_503'),{'ok':True}]
+  def request(method,path,payload=None):
+   result=responses.pop(0)
+   if isinstance(result,Exception):raise result
+   return result
+  self.store._request=request
+  with patch('v2.ttittulares.news_workflow_v2.time.sleep') as pause:
+   self.assertEqual(self.store._get('/git/blobs/'+self.sha),{'ok':True})
+  self.assertEqual(pause.call_count,2)
+  self.store._request=lambda *_: (_ for _ in ()).throw(StoreError('GITHUB_HTTP_403'))
+  with patch('v2.ttittulares.news_workflow_v2.time.sleep') as pause:
+   with self.assertRaisesRegex(StoreError,'GITHUB_HTTP_403'):
+    self.store._get('/git/blobs/'+self.sha)
+  pause.assert_not_called()
 
 class NewsEditorialAutoRetryTests(unittest.TestCase):
  def setUp(self):

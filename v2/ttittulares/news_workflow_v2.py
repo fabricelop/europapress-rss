@@ -6,11 +6,14 @@ import hashlib
 import json
 import re
 import secrets
+import time
 from datetime import timedelta
+from http.client import IncompleteRead, RemoteDisconnected
+from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 from . import editorial_state_v2 as ed
 from .radar_snapshot_v2 import PREFIX, BRANCH, encode, sha256
-from .radar_store_v2 import REPOSITORY, Conflict, UncertainCommit, _oid
+from .radar_store_v2 import REPOSITORY, Conflict, StoreError, UncertainCommit, _oid
 
 CONTROL_URL = "https://ttactualidad-v2-private-test.fabricelop.workers.dev/api/news-worker-controls"
 AUX = re.compile(r"v2/ttittulares/(?:jobs/images/ttn2-[a-f0-9]{24}-r[1-9][0-9]*-image|images/img2-[a-f0-9]{24}|actions/[a-f0-9]{32})\.json\Z")
@@ -21,15 +24,54 @@ def allowed(path, write=False):
     return ed.allowed(path) or bool(AUX.fullmatch(path))
 
 class NewsStore(ed.EditorialGitHubStore):
+    # Only read-only GETs are retried. A POST with an uncertain response must
+    # remain fenced by CAS; it is never replayed as if it had not committed.
+    def _get(self, suffix):
+        transient = {'GITHUB_READ_FAILED', 'GITHUB_HTTP_500', 'GITHUB_HTTP_502',
+                     'GITHUB_HTTP_503', 'GITHUB_HTTP_504'}
+        for attempt in range(3):
+            try:
+                return super()._get(suffix)
+            except StoreError as exc:
+                if str(exc) not in transient or attempt == 2:
+                    raise
+                time.sleep(.35 * (2 ** attempt))
+
     def _http_raw(self, commit, path):
+        commit = _oid(commit)
         if not allowed(path):
             raise ed.EditorialError("NEWS_PATH_OUTSIDE_SCOPE")
-        req = Request("https://raw.githubusercontent.com/"+REPOSITORY+"/"+_oid(commit)+"/"+path,
+        req = Request("https://raw.githubusercontent.com/"+REPOSITORY+"/"+commit+"/"+path,
                       headers={"User-Agent":"TTNoticiasV2", "Accept":"application/json"})
-        with self._opener.open(req, timeout=60) as response:
-            raw = response.read(16_000_001)
-        if len(raw)>16_000_000:
-            raise ed.EditorialError("NEWS_DOCUMENT_TOO_LARGE")
+        for attempt in range(3):
+            try:
+                # A reset on Windows' public raw CDN is not editorial failure.
+                with self._opener.open(req, timeout=20) as response:
+                    raw = response.read(16_000_001)
+                if len(raw) > 16_000_000:
+                    raise ed.EditorialError("NEWS_DOCUMENT_TOO_LARGE")
+                return raw
+            except HTTPError:
+                break  # Pinned file may be delayed on the CDN: use Git's blob.
+            except (URLError, TimeoutError, ConnectionError, OSError,
+                    IncompleteRead, RemoteDisconnected):
+                if attempt < 2:
+                    time.sleep(.35 * (2 ** attempt))
+        # The authenticated Git blob endpoint is an independent read path.
+        # The inventory is already pinned to this commit and _blob_json
+        # verifies the SHA1 of the exact bytes returned below.
+        entry = self.inventory(commit).get(path)
+        if not entry or entry.get('type') != 'blob':
+            raise ed.EditorialError('NEWS_PINNED_BLOB_NOT_FOUND')
+        try:
+            blob = self._get('/git/blobs/' + _oid(entry['sha']))
+            if blob.get('encoding') != 'base64' or not isinstance(blob.get('content'), str):
+                raise StoreError('NEWS_PINNED_BLOB_ENCODING_INVALID')
+            raw = base64.b64decode(''.join(blob['content'].split()), validate=True)
+        except (StoreError, ValueError, KeyError, TypeError):
+            raise ed.EditorialError('NEWS_PINNED_BLOB_READ_UNAVAILABLE') from None
+        if len(raw) > 16_000_000:
+            raise ed.EditorialError('NEWS_DOCUMENT_TOO_LARGE')
         return raw
 
     def read_editorial_snapshot(self):

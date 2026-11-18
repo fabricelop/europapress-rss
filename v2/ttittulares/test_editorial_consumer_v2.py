@@ -124,6 +124,18 @@ class ConsumerTests(unittest.TestCase):
         self.assertEqual(error_code(RuntimeError('NEWS_CHATGPT_AUTH_REQUIRED')), 'NEWS_CHATGPT_AUTH_REQUIRED')
         self.assertEqual(error_code(RuntimeError('https://private.example/token=secret')), 'RUNTIMEERROR')
 
+    def test_transient_github_failure_before_claim_reports_prechat_incident_without_browser(self):
+        class BrokenReadService(Service):
+            def claim(self, worker, token):
+                self.calls.append('claim')
+                raise RuntimeError('NEWS_PINNED_BLOB_READ_UNAVAILABLE')
+        report, calls, root = self.work(service=BrokenReadService())
+        self.assertEqual(report['status'], 'incident')
+        self.assertEqual(report['error_code'], 'NEWS_PINNED_BLOB_READ_UNAVAILABLE')
+        self.assertTrue(report['pre_chat_failure'])
+        self.assertEqual(calls, ['claim'])
+        self.assertFalse((root / 'journals').exists())
+
     def test_global_auth_failure_pauses_new_claims_without_marking_news_bad(self):
         class AuthBrowser(Browser):
             def open(self):
