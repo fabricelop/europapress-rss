@@ -228,6 +228,26 @@ def enabled(root):
         return False
 
 
+def preflight_once(config, *, browser_factory=ChromeJob):
+    """Prove a fresh authenticated tab without claiming a job or sending."""
+    browser = browser_factory(chrome=config['chrome'], seed=config['seed'],
+        profile=config['root'] / 'sessions' / ('preflight-' + uuid.uuid4().hex) / 'Profile')
+    failed = None
+    stage = None
+    try:
+        browser.open()
+    except Exception as exc:
+        failed = error_code(exc)
+        stage = getattr(browser, 'fresh_chat_diagnostic', None)
+    try:
+        browser.close()
+    except Exception:
+        return {'ok': False, 'error_code': 'NEWS_OWN_CHROME_CLEANUP_UNVERIFIED',
+                'cleanup_verified': False, 'stage': stage}
+    return {'ok': failed is None, 'error_code': failed,
+            'cleanup_verified': True, 'stage': stage}
+
+
 def daemon(service, config, *, poll=30):
     pool = {}
     watchers = {}
@@ -236,6 +256,12 @@ def daemon(service, config, *, poll=30):
     logs = config['root'] / 'logs'
     logs.mkdir(parents=True, exist_ok=True)
     next_sweep = 0
+    preflight_verified = False
+    next_preflight = 0
+    preflight_failures = 0
+    unsafe_preflight_cleanup = False
+    preflight_code = None
+    preflight_stage = None
     # The OS lock protects this PC; the GitHub CAS service protects all PCs.
     with common('process_lock_v2').exclusive_v2_lock(config['root'] / 'consumer.lock'):
         while enabled(config['root']) or pool:
@@ -266,6 +292,48 @@ def daemon(service, config, *, poll=30):
                             # guessed resend is permitted on an uncertain send.
                             pass
                     del pool[slot]
+            if enabled(config['root']) and not preflight_verified:
+                now = time.monotonic()
+                if unsafe_preflight_cleanup:
+                    state = 'WAIT_BROWSER_CLEANUP'
+                elif now < next_preflight:
+                    state = 'WAIT_FRESH_CHAT_RETRY'
+                else:
+                    try:
+                        write_private(config['root'] / 'editorial-daemon-health.json', {
+                            'at': datetime.now(timezone.utc).isoformat(),
+                            'state': 'CHECKING_FRESH_CHAT', 'workers': len(pool),
+                            'claims_authorized': False, 'error_code': None,
+                        })
+                    except OSError:
+                        pass
+                    check = preflight_once(config)
+                    if check['ok']:
+                        preflight_verified = True
+                        preflight_code = None
+                        preflight_stage = 'FRESH_CHAT_VERIFIED'
+                        state = 'FRESH_CHAT_VERIFIED'
+                    else:
+                        preflight_failures += 1
+                        preflight_code = check['error_code']
+                        preflight_stage = check.get('stage')
+                        unsafe_preflight_cleanup = not check['cleanup_verified']
+                        next_preflight = time.monotonic() + min(300, 30 * (2 ** min(preflight_failures-1, 4)))
+                        state = 'WAIT_BROWSER_CLEANUP' if unsafe_preflight_cleanup else 'WAIT_FRESH_CHAT_RETRY'
+                try:
+                    write_private(config['root'] / 'editorial-daemon-health.json', {
+                        'at': datetime.now(timezone.utc).isoformat(),
+                        'state': state, 'workers': len(pool),
+                        'claims_authorized': preflight_verified,
+                        'preflight_failures': preflight_failures,
+                        'error_code': preflight_code,
+                        'fresh_chat_stage': preflight_stage,
+                    })
+                except OSError:
+                    pass
+                if not preflight_verified:
+                    time.sleep(poll)
+                    continue
             if enabled(config['root']):
                 from .news_workflow_v2 import sync_controls
                 try:
@@ -339,13 +407,9 @@ def main():
         print(json.dumps({'project': 'ttittulares-v2', 'preview': service.preview(),
                           'browser_opened': False, 'published': False}))
     elif args.daemon:
-        # Authenticate once before claiming any pending story.
-        check = ChromeJob(chrome=config['chrome'], seed=config['seed'],
-                          profile=config['root'] / 'sessions' / ('preflight-' + uuid.uuid4().hex) / 'Profile')
-        try:
-            check.open()
-        finally:
-            check.close()
+        # Keep the supervisor alive during a transient ChatGPT fresh-tab
+        # failure. The daemon refuses all claims until the authenticated
+        # disposable preflight has passed and its Chrome has been cleaned.
         daemon(service, config)
     else:
         if args.run_id and (not re.fullmatch(r'[a-f0-9]{32}', args.run_id) or not args.run_one):
