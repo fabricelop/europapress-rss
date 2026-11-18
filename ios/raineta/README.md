@@ -1,3 +1,25 @@
+# RainETA iPhone 0.13.2 — Inicio simplificado y gráficos compactos
+
+**Rama de prueba; no se modifica la instalación anterior ni la PWA.**
+
+Inspirado en las capturas de Drizzo proporcionadas por el usuario, pero con gráficos SwiftUI originales y centrados exclusivamente en lluvia:
+
+- **Ahora:** una sola conclusión y la cuenta atrás del motor actual de RainETA; indica radar/modelo, confianza y frescura, sin repetir métricas de otros módulos.
+- **Próximas 3 horas:** reemplaza las tarjetas «Antes de salir», «Ventanas secas», «Pulso» y «3 horas» en Inicio. Doce bloques de 15 min, selección táctil y el tramo previsto con menos lluvia cuando hay al menos 30 min continuos con datos. Mantiene la precisión real de radar/modelo y no crea ETA paralela.
+- **24 horas:** total de precipitación, probabilidad máxima, hora del pico y barras horarias con línea de probabilidad separada.
+- **Hasta 10 días:** petición Open-Meteo de 10 días; filas con mini barras por cada hora disponible, acumulado diario en mm y probabilidad máxima. Si faltan horas, no se dibujan como secas. Tocar un día abre su detalle.
+- **Radar compacto:** mini mapa de lluvia observada y botón para abrir el radar con controles completos, histórico y nowcast.
+- **Detalles, Pulso y modelos:** desplegable cerrado de forma predeterminada con las vistas técnicas existentes, incluidas la gráfica minuto a minuto, tres horas y la comparación de modelos.
+- **Organizar:** las cuatro tarjetas principales se pueden reordenar u ocultar. Se usa una clave v2 para que el inicio simplificado tenga la distribución correcta tras actualizar desde 0.13.1.
+
+No se ha integrado un widget nuevo de pantalla de inicio de iOS, ni se añade un motor de radar nuevo, ni se afirma que los gráficos tengan una resolución meteorológica más precisa. El historial de 30 días queda pendiente de obtener y validar observaciones reales; no se simula con datos pronosticados.
+
+Fuente de referencia: capturas facilitadas por el usuario (18/11/2026) y estudio anterior [DRIZZO-RAIN-CARDS.md](DRIZZO-RAIN-CARDS.md).
+
+**Puertas de entrega:** compilar app y extensión, ejecutar XCTest en simulador, verificar IPA. La IPA distribuida por GitHub está sin firmar y debe firmarse e instalarse con PlumeImpactor (u otra herramienta equivalente); se mantiene el bundle ID para intentar conservar favoritos y permisos. No fusionar ni desplegar sin pruebas ni validación visual iPhone.
+
+---
+
 # RainETA para iPhone — candidata 0.13.1 · tarjetas de lluvia personalizables
 
 Nueva rama de prueba inspirada en la organización de Drizzo: conserva el contador y la observación actual en primer lugar; introduce tarjetas «Antes de salir» y «Ventanas con poca lluvia», y permite ordenar/ocultar las restantes. No altera el cálculo meteorológico, radar, ubicación, Live Activity ni las ondas gráficas de 0.13.0. La IPA se genera SIN FIRMA y necesita Sideloadly/Apple para instalarse; la firma gratuita puede caducar a los siete días.
