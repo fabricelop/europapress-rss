@@ -71,19 +71,30 @@ struct RainHomeView: View {
     @ObservedObject var store: RainStore
     @Environment(\.scenePhase) private var phase
     @State private var fullRadar = false
+    @State private var organizingCards = false
+    @AppStorage("raineta.home.cardOrder.v1") private var cardOrder = RainHomeWidget.defaultOrder
+    @AppStorage("raineta.home.hiddenCards.v1") private var hiddenCards = ""
 
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 18) {
                     RainHeroCard(store:store)
-                    MinuteRainGraph(store:store)
-                    ThreeHourRainView(store:store)
-                    radarSection
-                    RainTwentyFourHourView(weather:store.snapshot)
-                    RainWeekForecast(weather:store.snapshot,
-                                     radarAvailable:store.radarLocal?.isFresh(at:Date()) == true)
-                    RainMultiModelView(coordinate:store.coordinate.latitude,longitude:store.coordinate.longitude,primary:store.snapshot)
+                    HStack {
+                        Label("Tus tarjetas de lluvia", systemImage: "square.grid.2x2")
+                            .font(.subheadline.bold())
+                            .foregroundStyle(.secondary)
+                        Spacer()
+                        Button {
+                            organizingCards = true
+                        } label: {
+                            Label("Organizar", systemImage: "slider.horizontal.3")
+                                .font(.subheadline)
+                        }
+                    }
+                    ForEach(RainHomeWidget.visible(order: cardOrder, hidden: hiddenCards)) { widget in
+                        cardView(widget)
+                    }
                 }
                 .padding(16)
             }
@@ -117,6 +128,28 @@ struct RainHomeView: View {
                 }
                 .preferredColorScheme(.dark)
             }
+            .sheet(isPresented: $organizingCards) {
+                RainHomeCustomizeView(order: $cardOrder, hidden: $hiddenCards)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func cardView(_ widget: RainHomeWidget) -> some View {
+        switch widget {
+        case .beforeLeaving: RainBeforeLeavingCard(store: store)
+        case .dryWindows: RainDryWindowsCard(weather: store.snapshot)
+        case .pulse: MinuteRainGraph(store: store)
+        case .threeHours: ThreeHourRainView(store: store)
+        case .radar: radarSection
+        case .day: RainTwentyFourHourView(weather: store.snapshot)
+        case .week:
+            RainWeekForecast(weather: store.snapshot,
+                             radarAvailable: store.radarLocal?.isFresh(at: Date()) == true)
+        case .models:
+            RainMultiModelView(coordinate: store.coordinate.latitude,
+                               longitude: store.coordinate.longitude,
+                               primary: store.snapshot)
         }
     }
 
