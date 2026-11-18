@@ -15842,13 +15842,13 @@
       "trend_id": "trv2-5b7051c8422d660fbe4ae4ce",
       "name": "Cala",
       "revision": 2,
-      "status": "review_pending",
+      "status": "in_progress",
       "reason": "retry_after_incident_with_hints",
       "episode_token": "f7991b41e45dee7d",
       "requested_at": "2026-11-18T18:57:39.666805+00:00",
       "updated_at": "2026-11-18T18:57:39.666805+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -15863,7 +15863,13 @@
       ],
       "incident_retries": 1,
       "review_mode": "x",
-      "review_hints": "Alex calatrava"
+      "review_hints": "Alex calatrava",
+      "lease": {
+        "token": "41f84ca2911b2fad245f06625f5d34f0a999dcd67e5cc644",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-18T18:58:46.928404+00:00",
+        "expires_at": "2026-11-18T19:38:46.928404+00:00"
+      }
     },
     "trv2-8fa1938df0df261762ec3afd": {
       "trend_id": "trv2-8fa1938df0df261762ec3afd",
