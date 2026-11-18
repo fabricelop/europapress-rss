@@ -60,16 +60,16 @@ window.TTNewsActions=(()=>{
   const dismiss=el("button","publish-action news-incident-dismiss","Suprimir");
   for(const button of [retry,dismiss])button.type="button";
   retry.title="Nueva revisión y nuevo chat editorial desde cero; los intentos anteriores se conservan";
-  dismiss.title="Retirar la noticia de Incidencias sin borrar el historial";
+  dismiss.title="Retirar la noticia de todas las listas visibles, conservando el historial interno";
   const wire=(button,type,confirmText)=>button.addEventListener("click",async event=>{
    event.preventDefault();event.stopPropagation();if(button.disabled)return;
    if(confirmText&&!confirm(confirmText))return;
    retry.disabled=dismiss.disabled=true;
-   try{await action(item,type);await onChange(type==="retry_editorial"?"pending":"archived",item);}
+   try{await action(item,type);await onChange(item);}
    catch(error){notice(error.message);retry.disabled=dismiss.disabled=false;}
   });
   wire(retry,"retry_editorial");
-  wire(dismiss,"dismiss","¿Suprimir esta noticia de INC? Se trasladará a Archivo como «Suprimida», conservando el historial. No se elaborará de nuevo automáticamente.");
+  wire(dismiss,"dismiss","¿Suprimir esta noticia de INC? Desaparecerá de las listas, incluido Archivo. Se conservará el historial interno y no volverá a elaborarse automáticamente.");
   actions.append(retry,dismiss);body.append(actions);
  }
  function attach({item,card,head,body,record,onChange}){

@@ -16,11 +16,13 @@ if(!view.items.some(x=>x.group==='pending')){
 }
 const root=path.resolve('dist');
 const shots=path.resolve(process.env.RUNNER_TEMP||'.','ttv2-news-qa');await fs.mkdir(shots,{recursive:true});
-let fail=false,demoReady=false,archived=false,publicImageVisible=true,qaSecondReady=false;
+let fail=false,demoReady=false,archived=false,publicImageVisible=true,qaSecondReady=false,qaIncMode=false,qaIncDismissed=false;
 const imageToggleActions=[];
 const example=view.items.find(x=>x.group==='pending');
 const demoTweet="Una explicación breve de prueba, con hechos contrastados y preparada para un tuit. #Prueba #Noticias";
 const demoRecord={event_id:example.event_id,revision:example.revision,tweet_text:demoTweet,x_character_count:demoTweet.length,title:example.title,factual_summary:'Hecho contrastado de prueba.'};
+const qaIncA={...example,event_id:'ttn2-'+'b'.repeat(24),title:'Incidencia ficticia A para comprobar Suprimir',group:'incident',status_label:'Incidencia de elaboración'};
+const qaIncB={...example,event_id:'ttn2-'+'c'.repeat(24),title:'Incidencia ficticia B que permanece',group:'incident',status_label:'Incidencia de elaboración'};
 // The real READY row used as a seed may already have an authorized image.
 // Exercise the *no-image* controls deterministically without mutating data.
 const readyView={...view,items:[{...example,group:'ready',status_label:'Elaborada',image_available:false,
@@ -34,12 +36,18 @@ const server=http.createServer(async(req,res)=>{
  if(u.pathname==='/api/news'){
   res.setHeader('Content-Type','application/json');
   if(fail){res.statusCode=503;res.end('{}');return;}
+  if(qaIncMode){
+   const items=qaIncDismissed?[qaIncB]:[qaIncA,qaIncB];
+   const counts={pending:0,detected:0,working:0,ready:0,incident:items.length,archived:0};
+   res.end(JSON.stringify(pageNews({...view,items,counts},u.searchParams)));return;
+  }
   const news=demoReady?(archived?{...readyView,items:readyView.items.map(x=>({...x,group:'archived',status_label:'Archivada',image_available:true,has_image:true,public_image_visible:publicImageVisible})),counts:{...readyView.counts,ready:0,archived:1}}:readyView):view;
   res.end(JSON.stringify(pageNews(qaSecondReady?{...news,items:[...news.items,secondReady],counts:{...news.counts,ready:news.counts.ready+1}}:news,u.searchParams)));return;
  }
  if(u.pathname==='/api/news-actions'){
   let raw='';for await(const part of req)raw+=part;const body=JSON.parse(raw);
   if(body.action==='archive'||body.action==='publish')archived=true;
+  if(body.action==='dismiss'&&body.event_id===qaIncA.event_id)qaIncDismissed=true;
   if(body.action==='public_image'){
    publicImageVisible=body.value;
    imageToggleActions.push(body.value);
@@ -138,6 +146,27 @@ try{
   await qaPage.waitForFunction(title=>document.querySelector('.news-card .news-title')?.textContent===title,secondReady.title);
   if(await qaPage.locator('#news-search').inputValue()!=='')throw Error('ELAB still has stale archive search');
  }finally{await qaPage.close();archived=false;qaSecondReady=false;}
+ // INC regression: Suprimir removes only its card, keeps INC selected and
+ // does not make the suppressed story appear in ARCH or poison other lists.
+ qaIncMode=true;qaIncDismissed=false;
+ const incPage=await browser.newPage({viewport:{width:1280,height:1000}});
+ try{
+  incPage.on('dialog',dialog=>dialog.accept());
+  await incPage.goto('http://127.0.0.1:'+server.address().port+'/?view=noticias&state=incident');
+  await incPage.waitForFunction(()=>document.querySelectorAll('.news-card').length===2);
+  await incPage.locator('.news-card summary').first().click();
+  await incPage.getByRole('button',{name:'Suprimir',exact:true}).click();
+  await incPage.waitForFunction(title=>document.querySelectorAll('.news-card').length===1&&
+   document.querySelector('.news-card .news-title')?.textContent===title,qaIncB.title);
+  if(!await incPage.locator('.news-filter[aria-pressed="true"]').textContent().then(t=>t.startsWith('Inc.')))
+   throw Error('Suprimir INC moved the selected filter to ARCH');
+  if(await incPage.locator('#news-search').inputValue()!=='')throw Error('Suprimir INC injected a stale search');
+  await incPage.locator('.news-filter').filter({hasText:'Arch.'}).click();
+  await incPage.waitForFunction(()=>document.querySelectorAll('.news-card').length===0);
+  await incPage.locator('.news-filter').filter({hasText:'Inc.'}).click();
+  await incPage.waitForFunction(title=>document.querySelector('.news-card .news-title')?.textContent===title,qaIncB.title);
+  if(await incPage.locator('#news-search').inputValue()!=='')throw Error('INC retained a hidden filter after navigation');
+ }finally{await incPage.close();qaIncMode=false;qaIncDismissed=false;}
  page.on('dialog',dialog=>dialog.accept());
  await page.getByRole('button',{name:'PUB',exact:true}).click();
  // PUB also leaves ELAB selected. ARCH remains reachable manually and retains

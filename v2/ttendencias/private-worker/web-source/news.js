@@ -68,10 +68,9 @@
      const link=node("a","news-source-link","Abrir noticia de origen ↗");link.href=target.href;link.target="_blank";link.rel="noopener noreferrer";body.append(link);
     }}catch{}
    }
-   TTNewsActions.attachIncident({item,body,onChange:async(group,moved)=>{
-    // Show the destination and exact card after the confirmed private action.
-    state.filter=group;state.page=1;state.open=moved.event_id;
-    state.query=moved.title.slice(0,100);$("news-search").value=state.query;
+   TTNewsActions.attachIncident({item,body,onChange:async()=>{
+    // INC actions update this list without navigating or changing user search.
+    if(state.open===item.event_id)state.open=null;
     await refreshNews();
    }});
    TTNewsActions.attachPending({item,body,onChange:async(group,moved)=>{
