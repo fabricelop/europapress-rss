@@ -15218,13 +15218,13 @@
       "trend_id": "trv2-c9ddf5e89620f49cc97f8a27",
       "name": "Ruvens",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "58b31c30b52a0927",
       "requested_at": "2026-11-18T16:52:41.543437+00:00",
       "updated_at": "2026-11-18T16:52:41.543437+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -15237,7 +15237,13 @@
           "archived_at": "2026-11-18T16:52:41.543437+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "26d4bdfd6edc19f35ff7f935b02af92948e58a16d6146b53",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-18T16:53:19.555213+00:00",
+        "expires_at": "2026-11-18T17:33:19.555213+00:00"
+      }
     },
     "trv2-0abb9ccd4b2ff9ae655695ca": {
       "trend_id": "trv2-0abb9ccd4b2ff9ae655695ca",
