@@ -15458,14 +15458,14 @@
     "trv2-b2c265ef4773b9ee77944b92": {
       "trend_id": "trv2-b2c265ef4773b9ee77944b92",
       "name": "El Supremo",
-      "revision": 2,
-      "status": "in_progress",
-      "reason": "retry_after_incident_with_hints",
+      "revision": 3,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "2f3709359c386160",
-      "requested_at": "2026-11-18T17:17:15.345628+00:00",
-      "updated_at": "2026-11-18T17:17:15.345628+00:00",
+      "requested_at": "2026-11-18T18:16:19.478341+00:00",
+      "updated_at": "2026-11-18T18:16:19.478341+00:00",
       "previous_explanation": null,
-      "attempts": 1,
+      "attempts": 0,
       "previous_attempts": [
         {
           "revision": 1,
@@ -15476,17 +15476,21 @@
           "send_intent_at": null,
           "incident_reason": "lease_expired_without_capture",
           "archived_at": "2026-11-18T17:17:15.345628+00:00"
+        },
+        {
+          "revision": 2,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-18T17:18:33.427922+00:00",
+          "send_intent_at": null,
+          "incident_reason": "lease_expired_without_capture",
+          "archived_at": "2026-11-18T18:16:19.478341+00:00"
         }
       ],
-      "incident_retries": 1,
+      "incident_retries": 2,
       "review_mode": "x",
-      "review_hints": "Busca en x",
-      "lease": {
-        "token": "aa1f0323fad254908476924937a91b000e003da31780d221",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-18T17:18:33.427922+00:00",
-        "expires_at": "2026-11-18T17:58:33.427922+00:00"
-      }
+      "review_hints": "Busca en x"
     },
     "trv2-b7d5b46270e3ee5a0bfa002d": {
       "trend_id": "trv2-b7d5b46270e3ee5a0bfa002d",
@@ -16237,14 +16241,14 @@
     "trv2-9e27a49aae3cc93691e16142",
     "trv2-8b4d939eeabf58c6db52dc30",
     "trv2-fc6626eb70aa20a0c77f022f",
-    "trv2-b2c265ef4773b9ee77944b92",
     "trv2-b1fadb851a72e2da5402ad95",
     "trv2-e317efa7bdfdfad78bfda10a",
     "trv2-c85fec339b9830c0ed4d7c66",
     "trv2-0abb9ccd4b2ff9ae655695ca",
     "trv2-5b7051c8422d660fbe4ae4ce",
     "trv2-8fa1938df0df261762ec3afd",
-    "trv2-9277d214693b0af3bd93f2fb"
+    "trv2-9277d214693b0af3bd93f2fb",
+    "trv2-b2c265ef4773b9ee77944b92"
   ],
   "effects_enabled": false
 }
