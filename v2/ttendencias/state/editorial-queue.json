@@ -13931,13 +13931,13 @@
       "trend_id": "trv2-56226f29adf85dfa1328a73f",
       "name": "Quentin Grimes",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "c44b3eb6290e586e",
       "requested_at": "2026-11-18T09:52:43.551607+00:00",
       "updated_at": "2026-11-18T09:52:43.551607+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -13950,7 +13950,13 @@
           "archived_at": "2026-11-18T09:52:43.551607+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "e7ad4d79d5e9c923f48b5cb5821947094446893345a02228",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-18T09:53:13.661418+00:00",
+        "expires_at": "2026-11-18T10:33:13.661418+00:00"
+      }
     },
     "trv2-3ff41099e2773496bfaf392f": {
       "trend_id": "trv2-3ff41099e2773496bfaf392f",
