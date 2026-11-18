@@ -42,6 +42,7 @@ $news=@('news_workflow_v2.py','news_images_v2.py','test_news_workflow_v2.py','te
   'test_editorial_state_v2.py','test_editorial_contract_v2.py','test_contract_examples.py',
   'test_radar_snapshot_v2.py','test_radar_ingest_v2.py','test_editorial_browser_v2.py','test_editorial_setup_v2.py',
   'radar_snapshot_v2.py','radar_store_v2.py','radar_ingest_v2.py','identity_v2.py',
+  'selection_v1_parity_v2.py','test_selection_v1_parity_v2.py',
   'source_fetch_v2.py','source_publication_v2.py','source_catalog_v2.py','source_catalog_v2.json',
   'source_health_v2.py','content_filters_v2.py','schemas/contract.schema.json','examples/sample-bundle.json',
   'probe_news_chat_response_v2.py','probe_news_editorial_shape_v2.py',
