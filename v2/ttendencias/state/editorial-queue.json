@@ -15710,13 +15710,13 @@
       "trend_id": "trv2-fc6626eb70aa20a0c77f022f",
       "name": "LGTBI",
       "revision": 2,
-      "status": "review_pending",
+      "status": "in_progress",
       "reason": "retry_after_incident_with_hints",
       "episode_token": "9fa42a5e8be03164",
       "requested_at": "2026-11-18T18:34:41.930034+00:00",
       "updated_at": "2026-11-18T18:34:41.930034+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -15731,7 +15731,13 @@
       ],
       "incident_retries": 1,
       "review_mode": "x",
-      "review_hints": "Busca en x"
+      "review_hints": "Busca en x",
+      "lease": {
+        "token": "8852995909e3e252b8d32b866ca08ee139acf4dc64b6b6e7",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-18T18:35:39.070612+00:00",
+        "expires_at": "2026-11-18T19:15:39.070612+00:00"
+      }
     },
     "trv2-9277d214693b0af3bd93f2fb": {
       "trend_id": "trv2-9277d214693b0af3bd93f2fb",
