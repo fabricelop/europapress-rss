@@ -227,7 +227,8 @@ def confirm_user_turn(page, *, event_id, revision, command_id, heartbeat,
 
 
 def capture_reply(page, *, event_id, revision, command_id, heartbeat,
-                  timeout=300, clock=time.monotonic, sleep=time.sleep):
+                  timeout=300, clock=time.monotonic, sleep=time.sleep,
+                  on_observation=None):
     started = clock()
     last_heartbeat = started
     previous = ''
@@ -239,6 +240,11 @@ def capture_reply(page, *, event_id, revision, command_id, heartbeat,
             heartbeat()
             last_heartbeat = clock()
         users, answers = read_news_turns(page)
+        if on_observation:
+            on_observation({'user_turn_count': len(users),
+                            'assistant_turn_count': len(answers),
+                            'exact_identity': fresh_turn(users, event_id, revision, command_id),
+                            'stop_visible': page.locator(STOP).count() > 0})
         if fresh_turn(users, event_id, revision, command_id):
             answer = answers[-1].strip() if answers else ''
             idle = page.locator(STOP).count() == 0
@@ -270,6 +276,7 @@ class ChromeJob:
         self.startup_diagnostic = None
         self.chrome_log = None
         self.recovery_diagnostic = None
+        self.capture_diagnostic = None
 
     def open(self):
         if os.name != 'nt' or not self.chrome.is_file():
@@ -351,8 +358,10 @@ class ChromeJob:
         self.composer.press('Enter')
 
     def capture(self, event_id, revision, command_id, heartbeat):
+        self.capture_diagnostic = None
         return capture_reply(self.page, event_id=event_id, revision=revision,
-                             command_id=command_id, heartbeat=heartbeat, timeout=self.timeout)
+                             command_id=command_id, heartbeat=heartbeat, timeout=self.timeout,
+                             on_observation=lambda observation: setattr(self, 'capture_diagnostic', observation))
 
     def confirm_submission(self, event_id, revision, command_id, heartbeat=lambda: None):
         def select(target):
