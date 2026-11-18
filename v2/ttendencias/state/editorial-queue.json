@@ -16912,13 +16912,13 @@
       "trend_id": "trv2-e2686d18eabfbf4314e3430c",
       "name": "Jorge Javier",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "46e412526bfa3b9e",
       "requested_at": "2026-11-18T22:54:44.115404+00:00",
       "updated_at": "2026-11-18T22:54:44.115404+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -16931,7 +16931,13 @@
           "archived_at": "2026-11-18T22:54:44.115404+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "5b1170c6af93e91f50b3118070f9984bca143c950d98a62b",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-18T22:55:11.646184+00:00",
+        "expires_at": "2026-11-18T23:35:11.646184+00:00"
+      }
     },
     "trv2-1542f4712e897fa721934714": {
       "trend_id": "trv2-1542f4712e897fa721934714",
