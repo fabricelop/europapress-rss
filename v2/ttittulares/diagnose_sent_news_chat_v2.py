@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import argparse
 import json as json_parser
+import re
 import json
 from pathlib import Path
 import time
@@ -64,6 +65,11 @@ def inspect(root: Path, run_id: str) -> dict:
                 result["last_begin_json_command_matches"] = False
                 result["last_begin_trailing_chars"] = None
             result["last_begin_tail_chars"] = len(tail)
+            # A short local preview distinguishes a partial model reply from UI error text.
+            # Remove URLs and opaque command IDs before printing; no full prompt is emitted.
+            preview = re.sub(r"https?://\\S+", "[URL]", tail[:300])
+            preview = re.sub(r"news-[a-f0-9]{32}", "[COMMAND]", preview)
+            result["last_begin_tail_preview"] = preview
             if result["assistant_turns"] and not result["stop_visible"]:
                 break
             time.sleep(3)
