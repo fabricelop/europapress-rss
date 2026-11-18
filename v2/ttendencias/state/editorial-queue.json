@@ -15115,12 +15115,12 @@
       "trend_id": "trv2-58a162529baff02f23ca541f",
       "name": "Medvedev",
       "revision": 2,
-      "status": "review_pending",
+      "status": "in_progress",
       "reason": "user_reexplanation",
       "episode_token": "761550ad84b47340",
       "requested_at": "2026-11-18T15:19:11.263279+00:00",
       "updated_at": "2026-11-18T15:19:11.263279+00:00",
-      "attempts": 0,
+      "attempts": 1,
       "image_retry_summary": {
         "revision": 1,
         "editorial_sha256": "60e38cd6625360db68386403d35b5764fd60794eb04e7b749f628687536009e3",
@@ -15132,7 +15132,13 @@
       },
       "review_mode": "x",
       "review_hints": "No pongas contexto de la noticia en el texto. Ponlo en memoria para que ni vuelva a pasar",
-      "incident_retries": 0
+      "incident_retries": 0,
+      "lease": {
+        "token": "83a2f25f43c63dfcff13a94cab88a5581a247297e003bfc2",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-18T15:19:54.192199+00:00",
+        "expires_at": "2026-11-18T15:59:54.192199+00:00"
+      }
     },
     "trv2-c85d5bbb68caeb377d39efcc": {
       "trend_id": "trv2-c85d5bbb68caeb377d39efcc",
