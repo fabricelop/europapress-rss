@@ -15364,13 +15364,13 @@
       "trend_id": "trv2-9e27a49aae3cc93691e16142",
       "name": "#7Gianmarco18N",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "e778eb09bbd8ee08",
       "requested_at": "2026-11-18T17:00:17.451258+00:00",
       "updated_at": "2026-11-18T17:00:17.451258+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -15383,7 +15383,13 @@
           "archived_at": "2026-11-18T17:00:17.451258+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "bb483ddd078a9a6929d8c8064165f6f43bd03f00e0189239",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-18T17:01:59.138113+00:00",
+        "expires_at": "2026-11-18T17:41:59.138113+00:00"
+      }
     },
     "trv2-b1fadb851a72e2da5402ad95": {
       "trend_id": "trv2-b1fadb851a72e2da5402ad95",
