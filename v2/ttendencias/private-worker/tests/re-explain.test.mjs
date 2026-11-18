@@ -9,11 +9,17 @@ const env={AUTH_PASSWORD:pass,SESSION_SECRET:"an-example-super-secret-longer-tha
 let item={trend_id:id,revision:1,entered_top30_at:stamp,status:"explicada",re_in_progress:false};
 globalThis.fetch=async()=>new Response(JSON.stringify({project:"ttactualidad-v2",count:1,items:[item]}));
 function fakeDB(){
- const saved=[];
- return {saved,prepare(sql){let params=[];return {
+ const saved=[],contexts=[];
+ return {saved,contexts,prepare(sql){let params=[];return {
   bind(...args){params=args;return this;},
   async all(){assert.match(sql,/SELECT trend_id, base_revision/);return {results:saved.map(x=>({trend_id:x[0],base_revision:x[1],status:"requested"}))};},
-  async run(){assert.match(sql,/INSERT INTO re_requests/);if(!saved.some(x=>x[0]===params[0]&&x[1]===params[1]))saved.push(params);return {success:true};}
+  async run(){
+   if(sql.includes("CREATE TABLE IF NOT EXISTS re_x_context"))return {success:true};
+   if(sql.includes("INSERT INTO re_x_context")){contexts.push({trend_id:params[0],base_revision:params[1],hints:params[2]});return {success:true};}
+   assert.match(sql,/INSERT INTO re_requests/);
+   if(!saved.some(x=>x[0]===params[0]&&x[1]===params[1]))saved.push(params);
+   return {success:true};
+  }
  };}};
 }
 async function login(){
@@ -51,5 +57,8 @@ test("RE and RE-X accept pending and in-progress trends without changing an acti
  const active={...payload,revision:2,mode:"x",hints:"Comprueba los mensajes del hilo de hoy en X y su fuente original."};
  assert.equal((await worker.fetch(req(cookie,active),bound)).status,202);
  assert.equal(db.saved.length,2);
+ assert.equal(db.contexts.length,2);
+ assert.equal(db.contexts[0].hints,"Investiga este término en X y contrasta la fecha de hoy.");
+ assert.equal(db.contexts[1].hints,active.hints);
  assert.equal((await worker.fetch(req(cookie,{...active,revision:3}),bound)).status,409);
 });
