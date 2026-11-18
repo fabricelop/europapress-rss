@@ -1,0 +1,23 @@
+name: Noticias V2 fresh chat preflight recovery CI
+on:
+  push:
+    branches: [fix/ttn2-preflight-not-ready-daemon-20261118]
+permissions:
+  contents: read
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 14
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Dependencies
+        run: python -m pip install --quiet jsonschema==4.23.0
+      - name: No-duplicate-send, fresh chat preflight and editorial regressions
+        run: python -m unittest -v v2.ttittulares.test_editorial_consumer_v2 v2.ttittulares.test_editorial_browser_v2 v2.ttittulares.test_news_workflow_v2
