@@ -16034,13 +16034,13 @@
       "trend_id": "trv2-9de1ecb7c72954843e617c4b",
       "name": "Besiktas",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "25e6fe12ef8393c6",
       "requested_at": "2026-11-18T19:30:12.792684+00:00",
       "updated_at": "2026-11-18T19:30:12.792684+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -16053,7 +16053,13 @@
           "archived_at": "2026-11-18T19:30:12.792684+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "5a3ac71ae03ed662a423e41ec7e91388498308c96926920e",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-18T19:32:14.339002+00:00",
+        "expires_at": "2026-11-18T20:12:14.339002+00:00"
+      }
     },
     "trv2-e742640b54e64716d2b4bd9e": {
       "trend_id": "trv2-e742640b54e64716d2b4bd9e",
