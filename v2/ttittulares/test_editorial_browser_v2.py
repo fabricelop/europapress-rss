@@ -10,6 +10,7 @@ from .editorial_browser_v2 import (
     ChromeJob, STOP, authenticated_session, capture_reply, confirm_user_turn, listener_process_ids,
     verify_endpoint_owned, read_news_turns, fresh_home_page,
 )
+from .probe_news_chat_response_v2 import PROBE, observe_probe
 
 EVENT, REVISION, COMMAND = 'ttn2-' + 'a' * 24, 2, 'news-command-1'
 USER = json.dumps({'event_id': EVENT, 'revision': REVISION, 'command_id': COMMAND})
@@ -49,6 +50,29 @@ class TranscriptPage(Page):
 
 
 class BrowserBoundaryTests(unittest.TestCase):
+    def test_short_probe_follows_exact_chat_on_another_owned_tab(self):
+        clock = Clock()
+        home = Page(clock, url=lambda _: 'https://chatgpt.com/')
+        unrelated = Page(clock, users=lambda _: ['Another question'],
+                         answers=lambda _: ['TTN2_PROBE_OK'])
+        actual = Page(clock, users=lambda _: [PROBE],
+                      answers=lambda _: ['TTN2_PROBE_OK'])
+        browser = SimpleNamespace(browser=SimpleNamespace(contexts=[
+            SimpleNamespace(pages=[home, unrelated, actual])]))
+        self.assertEqual(observe_probe(browser), {
+            'submission_confirmed': True, 'assistant_turns': 1,
+            'response_seen': True, 'probe_ok': True, 'stop_visible': False})
+
+    def test_short_probe_does_not_guess_between_two_matching_chats(self):
+        clock = Clock()
+        first = Page(clock, users=lambda _: [PROBE], answers=lambda _: ['TTN2_PROBE_OK'])
+        other = Page(clock, users=lambda _: [PROBE], answers=lambda _: ['TTN2_PROBE_OK'],
+                     url=lambda _: 'https://chatgpt.com/c/second-conversation')
+        browser = SimpleNamespace(browser=SimpleNamespace(contexts=[
+            SimpleNamespace(pages=[first, other])]))
+        self.assertFalse(observe_probe(browser)['submission_confirmed'])
+        self.assertFalse(observe_probe(browser)['probe_ok'])
+
     def test_windows_launcher_exit_does_not_reject_owned_child_that_becomes_ready(self):
         from .editorial_browser_v2 import common
         startup = common('chrome_startup_v2')
