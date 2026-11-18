@@ -14744,13 +14744,13 @@
       "trend_id": "trv2-553fe7019d24882f3722fa81",
       "name": "Stray Kids",
       "revision": 3,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "a88417809d3699e8",
       "requested_at": "2026-11-18T14:14:37.861277+00:00",
       "updated_at": "2026-11-18T14:14:37.861277+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -14773,7 +14773,13 @@
           "archived_at": "2026-11-18T14:14:37.861277+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "bb36d6da87d58fa9eec6058d3492d94cd2f3bf4ae544d735",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-18T14:15:09.178336+00:00",
+        "expires_at": "2026-11-18T14:55:09.178336+00:00"
+      }
     },
     "trv2-458aa2b1d9b22fa29b570cd0": {
       "trend_id": "trv2-458aa2b1d9b22fa29b570cd0",
