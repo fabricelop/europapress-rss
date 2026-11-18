@@ -453,11 +453,18 @@ class ChromeJob:
             time.sleep(2)
         if not authenticated_session(self.page):
             raise RuntimeError('NEWS_CHATGPT_AUTHENTICATED_ACCOUNT_REQUIRED')
-        if (self.composer is None or
-            (not image_fresh_chat_ready(self.page) if image_mode else
-             (self.page.url.split('?', 1)[0].rstrip('/') != 'https://chatgpt.com'
-              or self.page.locator('[data-message-author-role="user"]').count()))):
+        # A logged-in ChatGPT session may redirect a fresh editorial tab to
+        # the GPT home route (https://chatgpt.com/g/<id>) without starting a
+        # conversation. Older News V2 required an *exact* "/" URL even when
+        # the composer was ready. Use the already tested fresh-tab rule from
+        # News images: same origin, no /c/ conversation, zero user turns.
+        if self.composer is None:
+            self.fresh_chat_diagnostic = 'COMPOSER_MISSING'
             raise RuntimeError('NEWS_FRESH_CHAT_NOT_READY')
+        if not image_fresh_chat_ready(self.page):
+            self.fresh_chat_diagnostic = 'NONEMPTY_OR_UNSAFE_FRESH_TAB'
+            raise RuntimeError('NEWS_FRESH_CHAT_NOT_READY')
+        self.fresh_chat_diagnostic = 'FRESH_CHAT_VERIFIED'
         self.hider.ensure_hidden()
 
     def send_once(self, prompt):
