@@ -15260,13 +15260,13 @@
       "trend_id": "trv2-0abb9ccd4b2ff9ae655695ca",
       "name": "Losada",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "563146a60b965a5f",
       "requested_at": "2026-11-18T16:55:55.266788+00:00",
       "updated_at": "2026-11-18T16:55:55.266788+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -15279,7 +15279,13 @@
           "archived_at": "2026-11-18T16:55:55.266788+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "5478d143c9efbe835ea547f902b1013c7b1c66ae8f1df533",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-18T16:56:44.966561+00:00",
+        "expires_at": "2026-11-18T17:36:44.966561+00:00"
+      }
     },
     "trv2-6819bee37da521086bedaba1": {
       "trend_id": "trv2-6819bee37da521086bedaba1",
