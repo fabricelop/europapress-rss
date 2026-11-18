@@ -163,8 +163,11 @@ export function decorateNews(view,controls={}){
  const editorialRetries=new Set((controls.actions||[]).filter(x=>x.action==="retry_editorial")
   .map(x=>x.event_id+":"+x.revision));
  const counts={pending:0,detected:0,working:0,ready:0,incident:0,archived:0};
- const items=view.items.map(item=>{
+ const items=view.items.flatMap(item=>{
   const pref=prefs.get(item.event_id+":"+item.revision)||{};
+   // INC suppression is invisible in every list while its audit remains intact.
+   // Legacy INC dismissals are hidden without changing Pending suppression.
+   if(pref.incident_hidden===true||(pref.dismissed===true&&item.group==="incident"))return [];
   const marked=(controls.preferences||[]).filter(x=>x.event_id===item.event_id&&typeof x.marked==="boolean").sort((a,b)=>b.revision-a.revision)[0]?.marked===true;
   // Same conservative default as trends, scoped to the private V1 card only.
   const words=String(item.title||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
@@ -185,7 +188,7 @@ export function decorateNews(view,controls={}){
   if(row.group==="pending"&&pref.urgent_requested===true){row.status_label="URGENTE · pendiente de hueco";row.urgent_requested=true;}
   if(pref.manual_image){row.image_available=true;row.image_incident_available=false;}
   if(row.image_suppressed)row.image_available=false;
-  counts[row.group]++;return row;
+  counts[row.group]++;return [row];
  });
  return {...view,items,counts};
 }

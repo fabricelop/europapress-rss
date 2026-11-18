@@ -238,7 +238,7 @@ test("an earlier INC retry already in controls stays visible in Pending before W
  assert.equal(view.counts.incident,0);
  assert.equal(view.items[0].status_label,"Reintento solicitado");
 });
-test("INC suppression goes to archive without publication and unsafe retry is refused",()=>scoped(async(env,docs)=>{
+test("INC suppression hides the candidate from every list while retaining its private audit",()=>scoped(async(env,docs)=>{
  docs[0].items[id].status="editorial_in_progress";docs[1].items[0].status="problematic";
  const job={schema_version:1,project:"ttittulares-v2",event_id:id,revision:1,
   job_id:id+"-r1-editorial",status:"problematic",lease:null,
@@ -248,11 +248,26 @@ test("INC suppression goes to archive without publication and unsafe retry is re
  assert.equal(unsafe.status,409);assert.equal((await unsafe.json()).error,"news_retry_requires_environment_repair");
  const response=await newsAction(request("dismiss"),env,helpers);
  assert.equal(response.status,200);assert.equal((await response.json()).publication_sent,false);
- const archive=await newsView(env,new URLSearchParams({state:"archived"}));
- assert.equal(archive.total,1);assert.equal(archive.items[0].status_label,"Suprimida");
- assert.equal((await newsControls(env)).actions[0].action,"dismiss");
+ for(const state of ["incident","archived","pending","ready","working","detected"]){
+  const view=await newsView(env,new URLSearchParams({state}));
+  assert.equal(view.total,0,`INC suppression appeared in ${state}`);
+  assert.equal(view.counts[state],0,`INC suppression count remained in ${state}`);
+ }
+ const controls=await newsControls(env);
+ assert.equal(controls.actions[0].action,"dismiss");
+ assert.equal(controls.preferences[0].incident_hidden,true);
+ assert.equal(controls.preferences[0].dismissed,true);
+ assert.equal(controls.preferences[0].archived,true);
+ assert.equal((await newsAction(request("dismiss"),env,helpers)).status,200);
+ assert.equal((await newsAction(request("dismiss",{action_id:"2".repeat(32)}),env,helpers)).status,409);
+ assert.ok(docs[0].items[id],"Immutable news evidence must remain available");
  assert.equal((await(await newsPublicationCount(new Request("https://private.example/api/news-publication-count"),env,helpers)).json()).count,0);
 }));
+test("legacy INC dismissal is hidden without affecting Pending suppression",()=>{
+ const [index,queue]=fixture();index.items[id].status="editorial_in_progress";queue.items[0].status="problematic";
+ const view=decorateNews(projectNews(index,queue),{preferences:[{event_id:id,revision:1,dismissed:true,archived:true}]});
+ assert.deepEqual(view.items,[]);assert.equal(view.counts.incident,0);assert.equal(view.counts.archived,0);
+});
 test("Pending exposes independent suppress and URGENTE actions with durable one-shot controls",()=>scoped(async(env,docs)=>{
  docs[0].items[id].status="editorial_pending";docs[1].items[0].status="pending";
  const receipt=await newsAction(request("urgent"),env,helpers);

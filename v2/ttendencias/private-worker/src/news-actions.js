@@ -179,7 +179,7 @@ export async function newsAction(request,env,{json,sameOrigin}){
   if(action==="public_image")prefs.public_image_visible=body.value;
   if(action==="suppress_image")prefs.image_suppressed=body.value;
   if(action==="archive")prefs.archived=true;
-  if(action==="dismiss"){prefs.archived=true;prefs.dismissed=true;}
+  if(action==="dismiss"){prefs.archived=true;prefs.dismissed=true;if(incidentDismiss)prefs.incident_hidden=true;}
   if(action==="urgent")prefs.urgent_requested=true;
   if(action==="publish"){prefs.archived=true;prefs.published=true;}
   if(action==="rework"||action==="rework_x"||action==="retry_editorial")prefs.rework_requested=true;
