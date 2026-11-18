@@ -114,3 +114,24 @@ test('empty or unusable captures never expose the long dossier as an X draft',()
  assert.doesNotMatch(explanationText(raw,{}),/Ficha editorial|example.org/);
  assert.equal(publishableText(tweetText(raw,{})),false);
 });
+
+test('LISTAS dossier headings yield X copy for EEUU and Estados Unidos',()=>{
+ for(const [name,lead] of [
+  ['EEUU','EEUU concentra actualidad internacional por las consecuencias de las elecciones legislativas estadounidenses.'],
+  ['Estados Unidos','Estados Unidos vuelve a concentrar atención informativa en España, con noticias sobre Ucrania y relaciones internacionales.']
+ ]){
+  const raw=`TTActualidad V2 — Ficha editorial\nESTADO_CAUSA: NO_CONFIRMADA\nExplicación periodística — LISTAS\n\n${lead}\n\nFuentes HTTPS\nhttps://example.org/`;
+  const shown=explanationText(raw,{rank:9,name,cause_status:'no_confirmada'});
+  assert.match(shown,/^TT#9 /);
+  assert.doesNotMatch(shown,/formato editorial pendiente|Ficha editorial|Fuentes HTTPS|example.org/);
+  assert.ok(xLength(shown)<=280);
+ }
+});
+test('texto editorial propuesto yields X copy without changing source dossier',()=>{
+ const raw='Ficha editorial\nESTADO_CAUSA: NO_CONFIRMADA\nExplicación periodística — LISTAS\nContexto corto.\n\nTexto editorial propuesto\nWriting\n«Día de partido» aparece en España durante una jornada con encuentros de Segunda División, Liga F y Nations League.\n\nVerificación de X\nNo comprobada.';
+ const shown=explanationText(raw,{rank:9,name:'día de partido',cause_status:'no_confirmada'});
+ assert.match(shown,/TT#9 DÍA DE PARTIDO/);
+ assert.doesNotMatch(shown,/formato editorial pendiente|Verificación de X|Writing/);
+ assert.ok(xLength(shown)<=280);
+ assert.match(raw,/Texto editorial propuesto/);
+});
