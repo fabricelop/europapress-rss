@@ -1,6 +1,6 @@
 {
   "attempts": {
-    "claim_count": 1,
+    "claim_count": 2,
     "history": [],
     "max_safe_preflight_attempts": 3,
     "safe_preflight_failures": 0,
@@ -11,39 +11,28 @@
   "event_id": "ttn2-ee899f70614daf81195e4dbe",
   "job_id": "ttn2-ee899f70614daf81195e4dbe-r1-image",
   "lease": {
-    "expires_at": "2026-11-18T19:12:13Z",
-    "heartbeat_at": "2026-11-18T18:47:13Z",
-    "started_at": "2026-11-18T18:47:13Z",
-    "token_sha256": "c3d908d1d798da81982988cb4566db033dcf7e838c5e1213dcb8f91252366990",
-    "worker_id": "news-image-0930565463a147cd954042f9e0c9f622"
+    "expires_at": "2026-11-18T19:39:05Z",
+    "heartbeat_at": "2026-11-18T19:14:05Z",
+    "started_at": "2026-11-18T19:14:05Z",
+    "token_sha256": "0f6d9d0d25da95fd466ac7f9cff0ba8eeb8f34e9eefb0c2999ef2c023bf8928b",
+    "worker_id": "news-image-3f696c2680be4f81b1c6ffc217096d70"
   },
-  "phase": "generating",
+  "phase": "claiming",
   "policy": {
     "mode": "automatic",
     "visual_treatment": "editorial_gag"
   },
   "problem": null,
   "project": "ttittulares-v2",
-  "prompt_sha256": "a71fbc0af7d9652650e4870ff1f151f8b4dc5ecd14d37c5c2cd689ff90a96b9a",
+  "prompt_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
   "prompt_version": "news-image-v2",
   "requested_at": "2026-11-18T18:47:13Z",
   "result": null,
   "revision": 1,
   "schema_version": 1,
-  "send_intent": {
-    "attempt_no": 1,
-    "command_id": "news-img-0930565463a147cd954042f9e0c9f622",
-    "prepared_at": "2026-11-18T18:48:18Z",
-    "prompt_sha256": "a71fbc0af7d9652650e4870ff1f151f8b4dc5ecd14d37c5c2cd689ff90a96b9a",
-    "submission_state": "confirmed",
-    "submitted_at": "2026-11-18T18:48:54Z"
-  },
-  "session": {
-    "conversation_url_sha256": "5d9354f7cb0eac0c0506ad03735ee6263a1e4ed75aa107e7852a5e26d49ecd3a",
-    "private_journal_id": "0930565463a147cd954042f9e0c9f622",
-    "session_id": "0930565463a147cd954042f9e0c9f622"
-  },
+  "send_intent": null,
+  "session": null,
   "source_record_path": "v2/ttittulares/records/ttn2-ee899f70614daf81195e4dbe/r1.json",
-  "status": "generating",
-  "updated_at": "2026-11-18T18:48:54Z"
+  "status": "claimed",
+  "updated_at": "2026-11-18T19:14:05Z"
 }
