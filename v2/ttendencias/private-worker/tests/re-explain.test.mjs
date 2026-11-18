@@ -42,3 +42,14 @@ test("RE queues exactly one request, and rejects obsolete revision",async()=>{
  item={...item,re_in_progress:true};
  assert.equal((await worker.fetch(req(cookie,payload),bound)).status,409);
 });
+
+test("RE and RE-X accept pending and in-progress trends without changing an active chat",async()=>{
+ const db=fakeDB(),bound={...env,MARKS_DB:db},cookie=await login();
+ item={...item,status:"pendiente",re_in_progress:false};
+ assert.equal((await worker.fetch(req(cookie,{...payload,mode:"x",hints:"Investiga este término en X y contrasta la fecha de hoy."}),bound)).status,202);
+ item={...item,status:"en_elaboracion",revision:2};
+ const active={...payload,revision:2,mode:"x",hints:"Comprueba los mensajes del hilo de hoy en X y su fuente original."};
+ assert.equal((await worker.fetch(req(cookie,active),bound)).status,202);
+ assert.equal(db.saved.length,2);
+ assert.equal((await worker.fetch(req(cookie,{...active,revision:3}),bound)).status,409);
+});
