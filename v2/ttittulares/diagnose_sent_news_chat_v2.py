@@ -5,6 +5,7 @@ Prints counts and marker flags only. It never sends or persists a news result.
 from __future__ import annotations
 
 import argparse
+import json as json_parser
 import json
 from pathlib import Path
 import time
@@ -46,6 +47,23 @@ def inspect(root: Path, run_id: str) -> dict:
                 stop_visible=browser.page.locator(STOP).count() > 0,
                 same_chat=browser.page.url.split("?", 1)[0].rstrip("/") == chat_url.rstrip("/"),
             )
+            last_begin = body.rfind("TTN2_EDITORIAL_BEGIN")
+            tail = body[last_begin + len("TTN2_EDITORIAL_BEGIN"):].strip() if last_begin >= 0 else ""
+            decoder = json_parser.JSONDecoder()
+            try:
+                payload, consumed = decoder.raw_decode(tail)
+                result["last_begin_json_complete"] = isinstance(payload, dict)
+                result["last_begin_json_event_id_matches"] = isinstance(payload, dict) and payload.get("event_id") == journal["event_id"]
+                result["last_begin_json_revision_matches"] = isinstance(payload, dict) and payload.get("revision") == journal["revision"]
+                result["last_begin_json_command_matches"] = isinstance(payload, dict) and payload.get("command_id") == journal["command_id"]
+                result["last_begin_trailing_chars"] = len(tail[consumed:].strip())
+            except (ValueError, TypeError):
+                result["last_begin_json_complete"] = False
+                result["last_begin_json_event_id_matches"] = False
+                result["last_begin_json_revision_matches"] = False
+                result["last_begin_json_command_matches"] = False
+                result["last_begin_trailing_chars"] = None
+            result["last_begin_tail_chars"] = len(tail)
             if result["assistant_turns"] and not result["stop_visible"]:
                 break
             time.sleep(3)
