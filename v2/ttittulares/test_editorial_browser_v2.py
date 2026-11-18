@@ -8,7 +8,7 @@ from unittest.mock import patch
 
 from .editorial_browser_v2 import (
     ChromeJob, STOP, authenticated_session, capture_reply, confirm_user_turn, listener_process_ids,
-    verify_endpoint_owned, read_news_turns, fresh_home_page,
+    verify_endpoint_owned, read_news_turns, fresh_home_page, image_fresh_chat_ready,
 )
 from .probe_news_chat_response_v2 import PROBE, observe_probe
 from .probe_news_existing_chat_v2 import inspect_chat, validated_chat_url
@@ -170,6 +170,19 @@ class BrowserBoundaryTests(unittest.TestCase):
         context = SimpleNamespace(pages=[broken, old_chat, occupied_home, empty_home])
         self.assertIs(fresh_home_page(context), empty_home)
         self.assertIsNone(fresh_home_page(SimpleNamespace(pages=[old_chat, occupied_home])))
+
+    def test_image_fresh_tab_accepts_gpt_home_but_never_an_existing_chat(self):
+        def tab(url, user_turns=0):
+            return SimpleNamespace(url=url, locator=lambda selector:
+                                   SimpleNamespace(count=lambda: user_turns))
+        self.assertTrue(image_fresh_chat_ready(tab('https://chatgpt.com/')))
+        self.assertTrue(image_fresh_chat_ready(tab('https://chatgpt.com/g/g-news-image')))
+        self.assertTrue(image_fresh_chat_ready(tab('https://chatgpt.com/?model=custom')))
+        self.assertFalse(image_fresh_chat_ready(tab('https://chatgpt.com/c/old-chat')))
+        self.assertFalse(image_fresh_chat_ready(tab('https://chatgpt.com/g/g-image/c/old-chat')))
+        self.assertFalse(image_fresh_chat_ready(tab('https://chatgpt.com/',1)))
+        self.assertFalse(image_fresh_chat_ready(tab('https://evil.test/')))
+        self.assertFalse(image_fresh_chat_ready(tab('http://chatgpt.com/')))
 
     def test_visible_assistant_reply_with_role_user_is_captured(self):
         clock = Clock()

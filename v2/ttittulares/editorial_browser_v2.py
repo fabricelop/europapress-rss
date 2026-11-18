@@ -10,6 +10,7 @@ import importlib.util
 import json
 import os
 from pathlib import Path
+from urllib.parse import urlsplit
 import re
 import shutil
 import socket
@@ -213,6 +214,23 @@ def fresh_home_page(context):
     return None
 
 
+def image_fresh_chat_ready(page):
+    """A new image tab can land on a GPT home route, never an old chat.
+
+    Trends creates a new page instead of reusing a restored tab. Keep that
+    behavior for News images while refusing another origin or any /c/ route.
+    """
+    try:
+        location = urlsplit(page.url)
+        if location.scheme != 'https' or location.netloc != 'chatgpt.com':
+            return False
+        if re.search(r'(^|/)c/', location.path):
+            return False
+        return page.locator('[data-message-author-role="user"]').count() == 0
+    except Exception:
+        return False
+
+
 def authenticated_session(page):
     """Return only a boolean: never transfer session objects/tokens to Python."""
     try:
@@ -413,7 +431,10 @@ class ChromeJob:
         # Match the working Trends V2 flow: use Chrome's existing home tab
         # when it is fresh. Never reuse a restored /c/ conversation.
         context = self.browser.contexts[0]
-        self.page = fresh_home_page(context)
+        # ImageGen follows Trends V2: always create an independent NEW tab.
+        # Editorial keeps its existing validated empty-home reuse contract.
+        image_mode = getattr(self, 'image_mode', False)
+        self.page = None if image_mode else fresh_home_page(context)
         if self.page is None:
             self.page = context.new_page()
             self.page.goto('https://chatgpt.com/', wait_until='domcontentloaded', timeout=60000)
@@ -432,8 +453,10 @@ class ChromeJob:
             time.sleep(2)
         if not authenticated_session(self.page):
             raise RuntimeError('NEWS_CHATGPT_AUTHENTICATED_ACCOUNT_REQUIRED')
-        if (self.composer is None or self.page.url.split('?', 1)[0].rstrip('/') != 'https://chatgpt.com'
-            or self.page.locator('[data-message-author-role="user"]').count()):
+        if (self.composer is None or
+            (not image_fresh_chat_ready(self.page) if image_mode else
+             (self.page.url.split('?', 1)[0].rstrip('/') != 'https://chatgpt.com'
+              or self.page.locator('[data-message-author-role="user"]').count()))):
             raise RuntimeError('NEWS_FRESH_CHAT_NOT_READY')
         self.hider.ensure_hidden()
 

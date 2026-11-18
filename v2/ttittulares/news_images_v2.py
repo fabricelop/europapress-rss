@@ -26,6 +26,7 @@ IMAGE_SEND_BUTTONS = (
 )
 
 class ImageChromeJob(ChromeJob):
+    image_mode = True
     def send_once(self, prompt):
         if self.sent or self.composer is None:
             raise RuntimeError("NEWS_IMAGE_SEND_NOT_AUTHORIZED")
@@ -87,7 +88,8 @@ def run_one(service, config, *, browser_factory=ImageChromeJob, raster_get=origi
     job,record=claim["job"],claim["record"]
     jid=job["job_id"];command="news-img-"+run
     journal={"job_id":jid,"command_id":command,"worker_id":worker,"lease_token":token,
-             "sent":False,"intent_durable":False,"cleanup_verified":False}
+             "sent":False,"intent_durable":False,"cleanup_verified":False,
+             "stage":"browser_open"}
     local=config["root"]/"image-journals"/(run+".json")
     browser=None;failure=None;raw=meta=None
     beat=lambda:service.image("heartbeat",worker_id=worker,token=token,job_id=jid)
@@ -96,6 +98,7 @@ def run_one(service, config, *, browser_factory=ImageChromeJob, raster_get=origi
         browser=browser_factory(chrome=config["chrome"],seed=config["seed"],
             profile=config["root"]/"image-sessions"/run/"Profile")
         browser.open()
+        journal["stage"]="remote_prepare";write_private(local,journal)
         prompt=image_prompt(record,command);digest=hashlib.sha256(prompt.encode()).hexdigest()
         result=service.image("prepare",worker_id=worker,token=token,job_id=jid,
             command_id=command,prompt_sha256=digest,session={"session_id":run,"private_journal_id":run,
@@ -103,10 +106,13 @@ def run_one(service, config, *, browser_factory=ImageChromeJob, raster_get=origi
         if result.get("send_authorized") is not True:
             raise RuntimeError(result.get("reason") or "NEWS_IMAGE_UNCERTAIN_NO_RESEND")
         journal["intent_durable"]=True;write_private(local,journal)
+        journal["stage"]="send";write_private(local,journal)
         browser.send_once(prompt);journal["sent"]=True;write_private(local,journal)
+        journal["stage"]="confirm_submission";write_private(local,journal)
         url=browser.confirm_submission(job["event_id"],job["revision"],command,beat)
         journal["chat_url"]=url;write_private(local,journal)
         service.image("submitted",worker_id=worker,token=token,job_id=jid)
+        journal["stage"]="wait_image_original";write_private(local,journal)
         class HeartbeatPage:
             last_heartbeat=time.monotonic()
             @property
@@ -132,6 +138,8 @@ def run_one(service, config, *, browser_factory=ImageChromeJob, raster_get=origi
     finally:
         if browser:
             try:
+                journal["failed_stage"]=journal["stage"] if failure else None
+                journal["stage"]="browser_close";write_private(local,journal)
                 # Keep the journal for deduplication, not this disposable
                 # browser profile. ChromeJob removes it only after safe close.
                 browser.close();journal["cleanup_verified"]=browser.cleanup_verified
@@ -144,6 +152,7 @@ def run_one(service, config, *, browser_factory=ImageChromeJob, raster_get=origi
         except Exception:journal["failure_persistence_unverified"]=True;write_private(local,journal)
         return {"status":"incident","job_id":jid,"code":code,"cleanup_verified":journal["cleanup_verified"],"published":False}
     # Persist only after verified browser cleanup; revalidate the current revision before association.
+    journal["stage"]="save_original";write_private(local,journal)
     beat()
     path,commit=service.store.save_raster(raw,job["event_id"],job["revision"],meta)
     asset={"schema_version":1,"project":"ttittulares-v2","media_id":"img2-"+hashlib.sha256((job["event_id"]+str(job["revision"])+meta["sha256"]).encode()).hexdigest()[:24],

@@ -105,6 +105,13 @@ class NewsImageLifecycleTests(unittest.TestCase):
   job=docs["v2/ttittulares/jobs/images/"+self.fixture.event+"-r1-image.json"]
   self.assertEqual(job["problem"]["retry_mode"],"new_chat")
   self.assertEqual(job["attempts"]["submission_count"],0)
+  journal=json.loads(next((self.config["root"]/"image-journals").glob("*.json")).read_text())
+  self.assertEqual(journal["failed_stage"],"browser_open")
+  self.assertEqual(journal["stage"],"browser_close")
+ def test_image_browser_uses_new_page_strategy_without_touching_editorial(self):
+  self.assertTrue(ImageChromeJob.image_mode)
+  from .editorial_browser_v2 import ChromeJob
+  self.assertFalse(getattr(ChromeJob,"image_mode",False))
  def test_confirmed_missing_chatgpt_account_still_pauses_image_daemon(self):
   (self.config["root"]/"images.enabled").write_text("TTN2_IMAGES_ENABLED=YES")
   class LoggedOut(self.browser):
