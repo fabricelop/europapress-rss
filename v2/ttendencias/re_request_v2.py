@@ -7,6 +7,8 @@ from copy import deepcopy
 
 
 DISPLAYED = {"captured_review", "ready", "published"}
+NOT_STARTED = {"pending", "review_pending"}
+IN_FLIGHT = {"in_progress", "capture_recovery"}
 
 
 def request_reexplanation(queue, history, *, trend_id, base_revision, entered_top30_at, requested_at, mode="standard", hints="", allow_cancelled_incident=False):
@@ -46,11 +48,35 @@ def request_reexplanation(queue, history, *, trend_id, base_revision, entered_to
     if revision > base_revision:
         # El mismo RE fue procesado ya: evitar cualquier duplicación.
         return deepcopy(queue), "ALREADY_APPLIED"
-    allowed = DISPLAYED | ({"cancelled"} if allow_cancelled_incident else set())
-    if revision != base_revision or old.get("status") not in allowed:
-        raise ValueError("La revisión editorial ha cambiado o no está explicada")
+    if revision != base_revision:
+        raise ValueError("La revisión editorial ha cambiado")
     if not isinstance(requested_at, str) or not requested_at:
         raise ValueError("Fecha de solicitud no válida")
+    if old.get("status") in IN_FLIGHT:
+        # A live/sent chat is immutable. Stage the owner's request for a NEW
+        # revision after normal completion or verified incident recovery.
+        existing = old.get("deferred_re_request") or {}
+        if existing.get("base_revision") == base_revision:
+            return deepcopy(queue), "ALREADY_STAGED"
+        copy = deepcopy(queue)
+        row = copy["items"][trend_id]
+        row["deferred_re_request"] = {
+            "base_revision": base_revision, "mode": mode, "hints": hints,
+            "requested_at": requested_at,
+        }
+        # The incident worker must still fence the lease and confirm Chrome
+        # cleanup. This flag is NEVER permission to resend in the current chat.
+        row["manual_retry_requested_at"] = requested_at
+        if mode == "x":
+            row["incident_review_hints_pending"] = hints
+        else:
+            row.pop("incident_review_hints_pending", None)
+        return copy, "STAGED"
+    allowed = DISPLAYED | NOT_STARTED | ({"cancelled"} if allow_cancelled_incident else set())
+    if old.get("status") not in allowed:
+        raise ValueError("La revisión editorial no admite RE todavía")
+    if old.get("status") in NOT_STARTED and any(old.get(k) for k in ("lease", "send_intent", "capture")):
+        raise ValueError("La revisión ya tiene evidencia de envío; no reiniciar")
     copy = deepcopy(queue)
     item = copy["items"][trend_id]
     # La revisión previa sigue en el historial de Git, pero no en la cola activa:
@@ -81,6 +107,8 @@ def request_reexplanation(queue, history, *, trend_id, base_revision, entered_to
     item.pop("lease", None)
     item.pop("send_intent", None)
     item.pop("incident_review_hints_pending", None)
+    item.pop("deferred_re_request", None)
+    item.pop("manual_retry_requested_at", None)
     pending = sorted((x for x in copy["items"].values() if x.get("status")
                      in {"pending", "review_pending", "in_progress", "captured_review", "capture_recovery"}),
                      key=lambda x: (x.get("requested_at", ""), x["trend_id"]))
