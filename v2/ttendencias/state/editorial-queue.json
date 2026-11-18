@@ -13996,13 +13996,13 @@
       "trend_id": "trv2-37dea6499ac7b686cf527b79",
       "name": "Owen Wilson",
       "revision": 2,
-      "status": "review_pending",
+      "status": "in_progress",
       "reason": "retry_after_incident_with_hints",
       "episode_token": "c31d2099bd09b0dd",
       "requested_at": "2026-11-18T09:57:21.853689+00:00",
       "updated_at": "2026-11-18T09:57:21.853689+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -14017,7 +14017,13 @@
       ],
       "incident_retries": 1,
       "review_mode": "x",
-      "review_hints": "Busca en x"
+      "review_hints": "Busca en x",
+      "lease": {
+        "token": "01cdba92c5c7c5114dfc514c9ca502b2b7b37dd76151c1bd",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-18T09:57:48.606993+00:00",
+        "expires_at": "2026-11-18T10:37:48.606993+00:00"
+      }
     },
     "trv2-f5ced2ebe75d9bcfb305315f": {
       "trend_id": "trv2-f5ced2ebe75d9bcfb305315f",
