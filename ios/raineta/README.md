@@ -1,3 +1,12 @@
+# RainETA para iPhone — candidata 0.13.1 · tarjetas de lluvia personalizables
+
+Nueva rama de prueba inspirada en la organización de Drizzo: conserva el contador y la observación actual en primer lugar; introduce tarjetas «Antes de salir» y «Ventanas con poca lluvia», y permite ordenar/ocultar las restantes. No altera el cálculo meteorológico, radar, ubicación, Live Activity ni las ondas gráficas de 0.13.0. La IPA se genera SIN FIRMA y necesita Sideloadly/Apple para instalarse; la firma gratuita puede caducar a los siete días.
+
+Documento detallado de funcionalidades, límites y siguientes fases: [DRIZZO-RAIN-CARDS.md](DRIZZO-RAIN-CARDS.md).
+
+**Pendiente:** build, pruebas en simulador y validación visual en iPhone. No se ha desplegado.
+
+
 # RainETA para iPhone — v0.13.0
 
 ## v0.13.0 — Ondas de lluvia y ventanas secas nativas (SwiftUI)
