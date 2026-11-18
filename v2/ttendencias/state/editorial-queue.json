@@ -13667,12 +13667,12 @@
       "trend_id": "trv2-7906c285782eedb6be13eb5b",
       "name": "Grimes",
       "revision": 2,
-      "status": "review_pending",
+      "status": "in_progress",
       "reason": "user_reexplanation",
       "episode_token": "8c86cf4acc790586",
       "requested_at": "2026-11-18T07:19:58.879800+00:00",
       "updated_at": "2026-11-18T07:19:58.879800+00:00",
-      "attempts": 0,
+      "attempts": 1,
       "image_incident": {
         "project": "ttendencias-v2",
         "trend_id": "trv2-7906c285782eedb6be13eb5b",
@@ -13694,7 +13694,13 @@
         "pre_send_limit": 3
       },
       "review_mode": "standard",
-      "incident_retries": 0
+      "incident_retries": 0,
+      "lease": {
+        "token": "bb907789dfdfff103d86abf997c5723ee033b9e985ac735a",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-18T07:20:43.004544+00:00",
+        "expires_at": "2026-11-18T08:00:43.004544+00:00"
+      }
     }
   },
   "pending_count": 473,
