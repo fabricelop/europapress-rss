@@ -16694,13 +16694,13 @@
       "trend_id": "trv2-945d4277ffa6c42b80ce8ab4",
       "name": "#GHVIPEstreno",
       "revision": 2,
-      "status": "review_pending",
+      "status": "in_progress",
       "reason": "retry_after_incident_with_hints",
       "episode_token": "cb699ff501cee0cb",
       "requested_at": "2026-11-18T21:55:15.951376+00:00",
       "updated_at": "2026-11-18T21:55:15.951376+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -16715,7 +16715,13 @@
       ],
       "incident_retries": 0,
       "review_mode": "x",
-      "review_hints": "Estreno de gran hermano"
+      "review_hints": "Estreno de gran hermano",
+      "lease": {
+        "token": "1e9522e224396761f67166f875405d5847fcd2ca7e955ee8",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-18T21:55:44.062300+00:00",
+        "expires_at": "2026-11-18T22:35:44.062300+00:00"
+      }
     },
     "trv2-7222657fa6e8c08856e9a10e": {
       "trend_id": "trv2-7222657fa6e8c08856e9a10e",
