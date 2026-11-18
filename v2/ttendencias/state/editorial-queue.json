@@ -15885,21 +15885,27 @@
     "trv2-8fa1938df0df261762ec3afd": {
       "trend_id": "trv2-8fa1938df0df261762ec3afd",
       "name": "El Congreso",
-      "revision": 1,
-      "status": "in_progress",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "b6108bead8a4a557",
-      "requested_at": "2026-11-18T18:03:13.729386+00:00",
-      "updated_at": "2026-11-18T18:03:13.729386+00:00",
+      "requested_at": "2026-11-18T19:01:18.653642+00:00",
+      "updated_at": "2026-11-18T19:01:18.653642+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "lease": {
-        "token": "87325eb1a977c61a51f417ecc5fec65885f94e5822503c19",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-18T18:05:23.222584+00:00",
-        "expires_at": "2026-11-18T18:45:23.222584+00:00"
-      },
-      "manual_retry_requested_at": "2026-11-18T18:52:29.128534+00:00"
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-18T18:05:23.222584+00:00",
+          "send_intent_at": null,
+          "incident_reason": "lease_expired_without_capture",
+          "archived_at": "2026-11-18T19:01:18.653642+00:00"
+        }
+      ],
+      "incident_retries": 0
     }
   },
   "pending_count": 521,
@@ -16417,14 +16423,14 @@
     "trv2-9e27a49aae3cc93691e16142",
     "trv2-b1fadb851a72e2da5402ad95",
     "trv2-c85fec339b9830c0ed4d7c66",
-    "trv2-8fa1938df0df261762ec3afd",
     "trv2-b2c265ef4773b9ee77944b92",
     "trv2-8b4d939eeabf58c6db52dc30",
     "trv2-e317efa7bdfdfad78bfda10a",
     "trv2-fc6626eb70aa20a0c77f022f",
     "trv2-0abb9ccd4b2ff9ae655695ca",
     "trv2-9277d214693b0af3bd93f2fb",
-    "trv2-5b7051c8422d660fbe4ae4ce"
+    "trv2-5b7051c8422d660fbe4ae4ce",
+    "trv2-8fa1938df0df261762ec3afd"
   ],
   "effects_enabled": false
 }
