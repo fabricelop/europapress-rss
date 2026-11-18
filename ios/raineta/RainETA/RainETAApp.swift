@@ -72,29 +72,48 @@ struct RainHomeView: View {
     @Environment(\.scenePhase) private var phase
     @State private var fullRadar = false
     @State private var organizingCards = false
-    @AppStorage("raineta.home.cardOrder.v1") private var cardOrder = RainHomeWidget.defaultOrder
-    @AppStorage("raineta.home.hiddenCards.v1") private var hiddenCards = ""
+    @AppStorage("raineta.home.cardOrder.v2") private var cardOrder = RainCompactSection.defaultOrder
+    @AppStorage("raineta.home.hiddenCards.v2") private var hiddenCards = ""
+    @State private var showDetails = false
 
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 18) {
-                    RainHeroCard(store:store)
+                    RainCompactNowCard(store: store)
                     HStack {
-                        Label("Tus tarjetas de lluvia", systemImage: "square.grid.2x2")
-                            .font(.subheadline.bold())
+                        Text("LLUVIOMETRÍA")
+                            .font(.system(size: 10, weight: .heavy))
+                            .tracking(1.3)
                             .foregroundStyle(.secondary)
                         Spacer()
                         Button {
                             organizingCards = true
                         } label: {
                             Label("Organizar", systemImage: "slider.horizontal.3")
-                                .font(.subheadline)
+                                .font(.caption)
                         }
                     }
-                    ForEach(RainHomeWidget.visible(order: cardOrder, hidden: hiddenCards)) { widget in
-                        cardView(widget)
+                    ForEach(RainCompactSection.visible(order: cardOrder, hidden: hiddenCards)) { section in
+                        compactCard(section)
                     }
+                    DisclosureGroup(isExpanded: $showDetails) {
+                        VStack(alignment: .leading, spacing: 13) {
+                            MinuteRainGraph(store: store)
+                            ThreeHourRainView(store: store)
+                            RainDryWindowsCard(weather: store.snapshot)
+                            RainTwentyFourHourView(weather: store.snapshot)
+                            RainMultiModelView(coordinate: store.coordinate.latitude,
+                                               longitude: store.coordinate.longitude,
+                                               primary: store.snapshot)
+                        }
+                        .padding(.top, 12)
+                    } label: {
+                        Label("Detalles, Pulso y modelos",systemImage:"slider.horizontal.3")
+                            .font(.subheadline.bold())
+                    }
+                    .padding(14)
+                    .background(Color.white.opacity(0.045),in:RoundedRectangle(cornerRadius:17))
                 }
                 .padding(16)
             }
@@ -129,59 +148,20 @@ struct RainHomeView: View {
                 .preferredColorScheme(.dark)
             }
             .sheet(isPresented: $organizingCards) {
-                RainHomeCustomizeView(order: $cardOrder, hidden: $hiddenCards)
+                RainCompactCustomizeView(order: $cardOrder, hidden: $hiddenCards)
             }
         }
     }
 
     @ViewBuilder
-    private func cardView(_ widget: RainHomeWidget) -> some View {
-        switch widget {
-        case .beforeLeaving: RainBeforeLeavingCard(store: store)
-        case .dryWindows: RainDryWindowsCard(weather: store.snapshot)
-        case .pulse: MinuteRainGraph(store: store)
-        case .threeHours: ThreeHourRainView(store: store)
-        case .radar: radarSection
-        case .day: RainTwentyFourHourView(weather: store.snapshot)
-        case .week:
-            RainWeekForecast(weather: store.snapshot,
-                             radarAvailable: store.radarLocal?.isFresh(at: Date()) == true)
-        case .models:
-            RainMultiModelView(coordinate: store.coordinate.latitude,
-                               longitude: store.coordinate.longitude,
-                               primary: store.snapshot)
+    private func compactCard(_ section: RainCompactSection) -> some View {
+        switch section {
+        case .hours: RainCompactHoursCard(store: store)
+        case .day: RainCompactDayCard(weather: store.snapshot)
+        case .days: RainCompactTenDaysCard(weather: store.snapshot)
+        case .radar:
+            RainCompactRadarCard(store: store, open: { fullRadar = true })
         }
-    }
-
-    private var radarSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack {
-                Label("Radar y previsión", systemImage: "dot.radiowaves.left.and.right")
-                    .font(.headline)
-                Spacer()
-                Button { fullRadar = true } label: {
-                    Label("Ampliar", systemImage: "arrow.up.left.and.arrow.down.right")
-                        .font(.caption)
-                }
-            }
-            RadarSection(store: store, expanded: false)
-        }
-    }
-
-    private func headline(_ wx: RainSnapshot, now: Date) -> String {
-        guard let target = wx.nextChange else {
-            return wx.isRaining ? "Está lloviendo" : "Sin lluvia próxima"
-        }
-        let minutes = max(0, Int(ceil(target.timeIntervalSince(now) / 60)))
-        if minutes == 0 { return wx.isRaining ? "Dejará de llover pronto" : "Lluvia inminente" }
-        return wx.isRaining ? "Termina en \(minutes) min" : "Lluvia en \(minutes) min"
-    }
-
-    private func barColor(_ mm: Double) -> Color {
-        if mm < 0.08 { return .gray.opacity(0.2) }
-        if mm < 0.5 { return .cyan }
-        if mm < 1.6 { return .blue }
-        return .purple
     }
 }
 

@@ -95,6 +95,8 @@ struct RadarFeed {
 }
 
 enum RainAPI {
+    static let forecastDays = 10
+
     static func fetchForecast(latitude: Double, longitude: Double, name: String) async throws -> RainSnapshot {
         var parts = URLComponents(string: "https://api.open-meteo.com/v1/forecast")!
         parts.queryItems = [
@@ -105,7 +107,7 @@ enum RainAPI {
             URLQueryItem(name: "hourly", value: "precipitation_probability,precipitation,temperature_2m,snowfall"),
             URLQueryItem(name: "daily", value: "precipitation_sum,precipitation_probability_max,temperature_2m_max,temperature_2m_min"),
             URLQueryItem(name: "timezone", value: "auto"),
-            URLQueryItem(name: "forecast_days", value: "7")
+            URLQueryItem(name: "forecast_days", value: String(forecastDays))
         ]
         let (data, response) = try await URLSession.shared.data(from: parts.url!)
         guard (response as? HTTPURLResponse)?.statusCode == 200,
