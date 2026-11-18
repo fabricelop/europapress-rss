@@ -15281,13 +15281,13 @@
     "trv2-0abb9ccd4b2ff9ae655695ca": {
       "trend_id": "trv2-0abb9ccd4b2ff9ae655695ca",
       "name": "Losada",
-      "revision": 3,
-      "status": "in_progress",
-      "reason": "user_reexplanation",
+      "revision": 4,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "563146a60b965a5f",
-      "requested_at": "2026-11-18T17:06:09.325990+00:00",
-      "updated_at": "2026-11-18T17:10:56.218018+00:00",
-      "attempts": 1,
+      "requested_at": "2026-11-18T17:59:04.043985+00:00",
+      "updated_at": "2026-11-18T17:59:04.043985+00:00",
+      "attempts": 0,
       "previous_attempts": [
         {
           "revision": 1,
@@ -15298,9 +15298,19 @@
           "send_intent_at": null,
           "incident_reason": "lease_expired_without_capture",
           "archived_at": "2026-11-18T16:55:55.266788+00:00"
+        },
+        {
+          "revision": 3,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-18T17:08:25.001130+00:00",
+          "send_intent_at": "2026-11-18T17:10:56.217988+00:00",
+          "incident_reason": "lease_expired_without_capture",
+          "archived_at": "2026-11-18T17:59:04.043985+00:00"
         }
       ],
-      "incident_retries": 0,
+      "incident_retries": 1,
       "image_retry_summary": {
         "revision": 2,
         "editorial_sha256": "427119e799d9aea2d4fd12d5d8a26a25a5dc2e8b68bf3ca94a016b06defa4b95",
@@ -15311,17 +15321,7 @@
         "pre_send_limit": 3
       },
       "review_mode": "x",
-      "review_hints": "Parece ser por Anton Losada",
-      "lease": {
-        "token": "b1e2e9ed06a215fd1816d969e7136e2164053842d5bedd53",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-18T17:08:25.001130+00:00",
-        "expires_at": "2026-11-18T17:48:25.001130+00:00"
-      },
-      "send_intent": {
-        "token": "b1e2e9ed06a215fd1816d969e7136e2164053842d5bedd53",
-        "at": "2026-11-18T17:10:56.217988+00:00"
-      }
+      "review_hints": "Parece ser por Anton Losada"
     },
     "trv2-6819bee37da521086bedaba1": {
       "trend_id": "trv2-6819bee37da521086bedaba1",
@@ -16152,11 +16152,11 @@
     "trv2-9e27a49aae3cc93691e16142",
     "trv2-8b4d939eeabf58c6db52dc30",
     "trv2-fc6626eb70aa20a0c77f022f",
-    "trv2-0abb9ccd4b2ff9ae655695ca",
     "trv2-b2c265ef4773b9ee77944b92",
     "trv2-b1fadb851a72e2da5402ad95",
     "trv2-e317efa7bdfdfad78bfda10a",
-    "trv2-c85fec339b9830c0ed4d7c66"
+    "trv2-c85fec339b9830c0ed4d7c66",
+    "trv2-0abb9ccd4b2ff9ae655695ca"
   ],
   "effects_enabled": false
 }
