@@ -16161,13 +16161,13 @@
       "trend_id": "trv2-e742640b54e64716d2b4bd9e",
       "name": "#GHVIP9",
       "revision": 3,
-      "status": "review_pending",
+      "status": "in_progress",
       "reason": "retry_after_incident_with_hints",
       "episode_token": "de7851bdf9a0814c",
       "requested_at": "2026-11-18T20:51:34.280789+00:00",
       "updated_at": "2026-11-18T20:51:34.280789+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -16192,7 +16192,13 @@
       ],
       "incident_retries": 0,
       "review_mode": "x",
-      "review_hints": "Gran hermano"
+      "review_hints": "Gran hermano",
+      "lease": {
+        "token": "bd90f62dc1d265ddcaec426dc5c14952fe6626e75a164171",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-18T20:52:05.750212+00:00",
+        "expires_at": "2026-11-18T21:32:05.750212+00:00"
+      }
     },
     "trv2-6bb79cff587b2bc1947326a5": {
       "trend_id": "trv2-6bb79cff587b2bc1947326a5",
