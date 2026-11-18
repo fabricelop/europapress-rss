@@ -1,0 +1,86 @@
+name: TTActualidad Noticias V2 - Reloj radar independiente
+
+on:
+  # GitHub executes scheduled events only from its default branch (main).
+  # V1's watchdog runs at minutes 5,15,...; keep the V2 radar staggered.
+  schedule:
+    - cron: '0,10,20,30,40,50 * * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/ttittulares-v2-radar-clock.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  radar:
+    if: github.repository == 'fabricelop/europapress-rss' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    concurrency:
+      group: ttactualidad-noticias-v2-radar-clock
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/ttactualidad-v2-clean
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Instalar validador de contratos
+        run: python -m pip install --quiet jsonschema==4.23.0
+      - name: Barrido independiente de fuentes y comprobacion de persistencia
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          python -m v2.ttittulares.radar_live_v2 --live --persist > "$RUNNER_TEMP/ttn2-radar-live.json"
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          result=json.loads((Path(os.environ['RUNNER_TEMP'])/'ttn2-radar-live.json').read_text())
+          assert result['verified'] is True
+          assert result['branch']=='ttactualidad-v2-radar-live'
+          assert result['publication_enabled'] is False
+          assert result['editorial_execution_enabled'] is False
+          print('TTN2_RADAR_FRESH='+result['observed_at'])
+          PY
+
+  materialize:
+    # This is NOT the radar clock. Failure to deliver new jobs must never
+    # roll back or block the independently verified source scan.
+    needs: radar
+    if: needs.radar.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    concurrency:
+      group: ttactualidad-noticias-v2-materialize-clock
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/ttactualidad-v2-clean
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Instalar validador de contratos
+        run: python -m pip install --quiet jsonschema==4.23.0
+      - name: Entregar nuevas noticias a Pendientes con reintentos CAS
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TTN2_LIVE_RETRY_BUDGET: '8'
+          TTN2_DIAGNOSTICS: '1'
+        run: |
+          python -m v2.ttittulares.radar_store_v2 --live --persist --materialize-only > "$RUNNER_TEMP/ttn2-materialize.json"
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          result=json.loads((Path(os.environ['RUNNER_TEMP'])/'ttn2-materialize.json').read_text())
+          assert result['verified'] is True
+          assert result['editorial_execution_enabled'] is False
+          assert result['publication_enabled'] is False
+          print('TTN2_PENDING_SYNC_VERIFIED='+str(result['new_job_count']))
+          PY
