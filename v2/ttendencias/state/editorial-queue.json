@@ -13930,24 +13930,27 @@
     "trv2-56226f29adf85dfa1328a73f": {
       "trend_id": "trv2-56226f29adf85dfa1328a73f",
       "name": "Quentin Grimes",
-      "revision": 1,
-      "status": "in_progress",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "c44b3eb6290e586e",
-      "requested_at": "2026-11-18T09:02:09.306583+00:00",
-      "updated_at": "2026-11-18T09:05:13.107228+00:00",
+      "requested_at": "2026-11-18T09:52:43.551607+00:00",
+      "updated_at": "2026-11-18T09:52:43.551607+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "lease": {
-        "token": "793c2c9a6eec7856c1e96c8abce407cbbfb21225225965fa",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-18T09:04:25.830709+00:00",
-        "expires_at": "2026-11-18T09:44:25.830709+00:00"
-      },
-      "send_intent": {
-        "token": "793c2c9a6eec7856c1e96c8abce407cbbfb21225225965fa",
-        "at": "2026-11-18T09:05:13.107189+00:00"
-      }
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-18T09:04:25.830709+00:00",
+          "send_intent_at": "2026-11-18T09:05:13.107189+00:00",
+          "incident_reason": "lease_expired_without_capture",
+          "archived_at": "2026-11-18T09:52:43.551607+00:00"
+        }
+      ],
+      "incident_retries": 1
     },
     "trv2-3ff41099e2773496bfaf392f": {
       "trend_id": "trv2-3ff41099e2773496bfaf392f",
@@ -14500,9 +14503,9 @@
     "trv2-153eb9cb71a0f8d71dfa62ee",
     "trv2-37dea6499ac7b686cf527b79",
     "trv2-3ff41099e2773496bfaf392f",
-    "trv2-56226f29adf85dfa1328a73f",
     "trv2-f5ced2ebe75d9bcfb305315f",
-    "trv2-7fe46afe4cd2a552d7a4c032"
+    "trv2-7fe46afe4cd2a552d7a4c032",
+    "trv2-56226f29adf85dfa1328a73f"
   ],
   "effects_enabled": false
 }
