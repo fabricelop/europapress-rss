@@ -15144,12 +15144,12 @@
       "trend_id": "trv2-c85d5bbb68caeb377d39efcc",
       "name": "Indecente",
       "revision": 2,
-      "status": "review_pending",
+      "status": "in_progress",
       "reason": "user_reexplanation",
       "episode_token": "d7b3fb475640cd0b",
       "requested_at": "2026-11-18T15:19:11.263279+00:00",
       "updated_at": "2026-11-18T15:19:11.263279+00:00",
-      "attempts": 0,
+      "attempts": 1,
       "image_retry_summary": {
         "revision": 1,
         "editorial_sha256": "9c013a3397cdac57df8d3d8043a0c7659866a83c1cab2454c4fb420ae879204e",
@@ -15161,7 +15161,13 @@
       },
       "review_mode": "x",
       "review_hints": "Busca en x",
-      "incident_retries": 0
+      "incident_retries": 0,
+      "lease": {
+        "token": "afbe68eab37752aa4b29624ad79ad8d6ccfa66eb4548b6fb",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-18T15:20:04.236469+00:00",
+        "expires_at": "2026-11-18T16:00:04.236469+00:00"
+      }
     }
   },
   "pending_count": 507,
