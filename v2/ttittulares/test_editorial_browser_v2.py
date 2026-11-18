@@ -11,6 +11,7 @@ from .editorial_browser_v2 import (
     verify_endpoint_owned, read_news_turns, fresh_home_page,
 )
 from .probe_news_chat_response_v2 import PROBE, observe_probe
+from .probe_news_existing_chat_v2 import inspect_chat, validated_chat_url
 
 EVENT, REVISION, COMMAND = 'ttn2-' + 'a' * 24, 2, 'news-command-1'
 USER = json.dumps({'event_id': EVENT, 'revision': REVISION, 'command_id': COMMAND})
@@ -50,6 +51,37 @@ class TranscriptPage(Page):
 
 
 class BrowserBoundaryTests(unittest.TestCase):
+    def test_existing_chat_probe_refuses_arbitrary_navigation(self):
+        accepted = 'https://chatgpt.com/g/g-p-project/c/chat-123'
+        self.assertEqual(validated_chat_url(accepted + '?model=foo'), accepted)
+        for unsafe in ('http://chatgpt.com/c/chat-123',
+                       'https://evil.example/c/chat-123',
+                       'https://chatgpt.com/share/chat-123',
+                       'https://user:pass@chatgpt.com/c/chat-123'):
+            with self.subTest(url=unsafe), self.assertRaisesRegex(RuntimeError, 'CHAT_URL_INVALID'):
+                validated_chat_url(unsafe)
+
+    def test_existing_chat_probe_returns_only_content_free_dom_evidence(self):
+        class DiagnosticPage:
+            url = 'https://chatgpt.com/c/owned-chat'
+            def locator(self, selector):
+                values = {
+                    '[data-message-author-role="user"]': ['private original prompt'],
+                    '[data-message-author-role="assistant"]': ['TTN2_EDITORIAL_BLOCKED: no news'],
+                    '[data-message-author-role="assistant"] .markdown': ['TTN2_EDITORIAL_BLOCKED: no news'],
+                }.get(selector, [])
+                return SimpleNamespace(
+                    count=lambda: len(values),
+                    all_text_contents=lambda **kwargs: values,
+                    inner_text=lambda **kwargs: 'private original prompt\nTTN2_EDITORIAL_BLOCKED: no news',
+                )
+        result = inspect_chat(DiagnosticPage())
+        self.assertEqual(result['assistant_role_nonempty'], 1)
+        self.assertEqual(result['assistant_markdown_nonempty'], 1)
+        self.assertEqual(result['extracted_assistant_turns'], 1)
+        self.assertNotIn('private', json.dumps(result))
+        self.assertNotIn('owned-chat', json.dumps(result))
+
     def test_short_probe_follows_exact_chat_on_another_owned_tab(self):
         clock = Clock()
         home = Page(clock, url=lambda _: 'https://chatgpt.com/')
