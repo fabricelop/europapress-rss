@@ -15565,24 +15565,27 @@
     "trv2-c85fec339b9830c0ed4d7c66": {
       "trend_id": "trv2-c85fec339b9830c0ed4d7c66",
       "name": "Emilio Delgado",
-      "revision": 1,
-      "status": "in_progress",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "e0f5515911dba006",
-      "requested_at": "2026-11-18T17:03:03.299631+00:00",
-      "updated_at": "2026-11-18T17:06:49.489674+00:00",
+      "requested_at": "2026-11-18T17:52:06.277614+00:00",
+      "updated_at": "2026-11-18T17:52:06.277614+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "lease": {
-        "token": "f3e48d4b330cabd75ad0be37eb4a8d0fdcb94579aeb88818",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-18T17:03:45.172805+00:00",
-        "expires_at": "2026-11-18T17:43:45.172805+00:00"
-      },
-      "send_intent": {
-        "token": "f3e48d4b330cabd75ad0be37eb4a8d0fdcb94579aeb88818",
-        "at": "2026-11-18T17:06:49.489637+00:00"
-      }
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-18T17:03:45.172805+00:00",
+          "send_intent_at": "2026-11-18T17:06:49.489637+00:00",
+          "incident_reason": "lease_expired_without_capture",
+          "archived_at": "2026-11-18T17:52:06.277614+00:00"
+        }
+      ],
+      "incident_retries": 1
     },
     "trv2-8b4d939eeabf58c6db52dc30": {
       "trend_id": "trv2-8b4d939eeabf58c6db52dc30",
@@ -16139,12 +16142,12 @@
     "trv2-c9ddf5e89620f49cc97f8a27",
     "trv2-9e27a49aae3cc93691e16142",
     "trv2-8b4d939eeabf58c6db52dc30",
-    "trv2-c85fec339b9830c0ed4d7c66",
     "trv2-fc6626eb70aa20a0c77f022f",
     "trv2-0abb9ccd4b2ff9ae655695ca",
     "trv2-b2c265ef4773b9ee77944b92",
     "trv2-b1fadb851a72e2da5402ad95",
-    "trv2-e317efa7bdfdfad78bfda10a"
+    "trv2-e317efa7bdfdfad78bfda10a",
+    "trv2-c85fec339b9830c0ed4d7c66"
   ],
   "effects_enabled": false
 }
