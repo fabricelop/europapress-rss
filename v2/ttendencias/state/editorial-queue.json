@@ -15634,21 +15634,27 @@
     "trv2-8b4d939eeabf58c6db52dc30": {
       "trend_id": "trv2-8b4d939eeabf58c6db52dc30",
       "name": "Quirón",
-      "revision": 1,
-      "status": "in_progress",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "7e57aea5c884b27c",
-      "requested_at": "2026-11-18T17:03:03.299631+00:00",
-      "updated_at": "2026-11-18T17:03:03.299631+00:00",
+      "requested_at": "2026-11-18T18:23:46.168817+00:00",
+      "updated_at": "2026-11-18T18:23:46.168817+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "lease": {
-        "token": "45be41dd6f63828f53045b1c37d01f395fcc204c87fda94b",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-18T17:04:23.352948+00:00",
-        "expires_at": "2026-11-18T17:44:23.352948+00:00"
-      },
-      "manual_retry_requested_at": "2026-11-18T18:05:14.757392+00:00"
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-18T17:04:23.352948+00:00",
+          "send_intent_at": null,
+          "incident_reason": "lease_expired_without_capture",
+          "archived_at": "2026-11-18T18:23:46.168817+00:00"
+        }
+      ],
+      "incident_retries": 0
     },
     "trv2-fc6626eb70aa20a0c77f022f": {
       "trend_id": "trv2-fc6626eb70aa20a0c77f022f",
@@ -16245,7 +16251,6 @@
     "trv2-b7d5b46270e3ee5a0bfa002d",
     "trv2-c9ddf5e89620f49cc97f8a27",
     "trv2-9e27a49aae3cc93691e16142",
-    "trv2-8b4d939eeabf58c6db52dc30",
     "trv2-fc6626eb70aa20a0c77f022f",
     "trv2-b1fadb851a72e2da5402ad95",
     "trv2-e317efa7bdfdfad78bfda10a",
@@ -16254,7 +16259,8 @@
     "trv2-5b7051c8422d660fbe4ae4ce",
     "trv2-8fa1938df0df261762ec3afd",
     "trv2-9277d214693b0af3bd93f2fb",
-    "trv2-b2c265ef4773b9ee77944b92"
+    "trv2-b2c265ef4773b9ee77944b92",
+    "trv2-8b4d939eeabf58c6db52dc30"
   ],
   "effects_enabled": false
 }
