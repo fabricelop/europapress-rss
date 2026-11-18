@@ -13747,12 +13747,12 @@
       "trend_id": "trv2-4aa092fee005799f53c4f32b",
       "name": "Hornets",
       "revision": 2,
-      "status": "review_pending",
+      "status": "in_progress",
       "reason": "user_reexplanation",
       "episode_token": "26ff2be1903297b2",
       "requested_at": "2026-11-18T08:18:52.222644+00:00",
       "updated_at": "2026-11-18T08:18:52.222644+00:00",
-      "attempts": 0,
+      "attempts": 1,
       "image_incident": {
         "project": "ttendencias-v2",
         "trend_id": "trv2-4aa092fee005799f53c4f32b",
@@ -13774,7 +13774,13 @@
         "pre_send_limit": 3
       },
       "review_mode": "standard",
-      "incident_retries": 0
+      "incident_retries": 0,
+      "lease": {
+        "token": "b48c5d5c5a40bd9f652eb9292d5545fc91c737d885c5597d",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-18T08:19:18.149936+00:00",
+        "expires_at": "2026-11-18T08:59:18.149936+00:00"
+      }
     },
     "trv2-a23c911ea90013053c8a7f51": {
       "trend_id": "trv2-a23c911ea90013053c8a7f51",
