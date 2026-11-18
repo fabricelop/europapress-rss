@@ -3,7 +3,7 @@ import json, tempfile, unittest
 from pathlib import Path
 from unittest.mock import Mock,patch
 from . import test_news_workflow_v2 as workflow_tests
-from .news_images_v2 import run_one,image_prompt,image_health,check
+from .news_images_v2 import run_one,image_prompt,image_health,check,ImageChromeJob
 
 class NewsImageLifecycleTests(unittest.TestCase):
  def setUp(self):
@@ -93,6 +93,46 @@ class NewsImageLifecycleTests(unittest.TestCase):
    with patch("v2.ttittulares.news_images_v2.time.monotonic",side_effect=[100,101,102,103]):
     run_one(self.service,self.config,browser_factory=self.browser,raster_get=probes)
    self.assertNotIn("heartbeat",[c.args[0] for c in calls.call_args_list])
+ def test_unavailable_auth_probe_does_not_switch_off_all_images(self):
+  (self.config["root"]/"images.enabled").write_text("TTN2_IMAGES_ENABLED=YES")
+  class Transient(self.browser):
+   def open(self):raise RuntimeError("NEWS_CHATGPT_AUTH_CHECK_UNAVAILABLE")
+  result=run_one(self.service,self.config,browser_factory=Transient)
+  self.assertEqual(result["code"],"NEWS_CHATGPT_AUTH_CHECK_UNAVAILABLE")
+  self.assertEqual((self.config["root"]/"images.enabled").read_text(),"TTN2_IMAGES_ENABLED=YES")
+  self.assertTrue(result["cleanup_verified"])
+  _,docs=self.service.store.read_editorial_snapshot()
+  job=docs["v2/ttittulares/jobs/images/"+self.fixture.event+"-r1-image.json"]
+  self.assertEqual(job["problem"]["retry_mode"],"new_chat")
+  self.assertEqual(job["attempts"]["submission_count"],0)
+ def test_confirmed_missing_chatgpt_account_still_pauses_image_daemon(self):
+  (self.config["root"]/"images.enabled").write_text("TTN2_IMAGES_ENABLED=YES")
+  class LoggedOut(self.browser):
+   def open(self):raise RuntimeError("NEWS_CHATGPT_AUTHENTICATED_ACCOUNT_REQUIRED")
+  result=run_one(self.service,self.config,browser_factory=LoggedOut)
+  self.assertEqual(result["code"],"NEWS_CHATGPT_AUTHENTICATED_ACCOUNT_REQUIRED")
+  self.assertEqual((self.config["root"]/"images.enabled").read_text(),"TTN2_IMAGES_ENABLED=NO")
+ def test_image_send_uses_verified_button_not_enter(self):
+  browser=ImageChromeJob.__new__(ImageChromeJob)
+  browser.sent=False;browser.composer=Mock();browser.page=Mock()
+  browser.composer.input_value.return_value="TTN2_IMAGE_JOB_V1 checked prompt"
+  button=browser.page.locator.return_value.first
+  button.count.return_value=1;button.is_visible.return_value=True
+  button.is_enabled.return_value=True;button.get_attribute.return_value=None
+  browser.send_once("TTN2_IMAGE_JOB_V1 checked prompt")
+  self.assertTrue(browser.sent)
+  button.click.assert_called_once_with(timeout=10000)
+  browser.composer.press.assert_not_called()
+ def test_image_send_does_not_fallback_to_enter_if_button_missing(self):
+  browser=ImageChromeJob.__new__(ImageChromeJob)
+  browser.sent=False;browser.composer=Mock();browser.page=Mock()
+  browser.composer.input_value.return_value="TTN2_IMAGE_JOB_V1 checked prompt"
+  browser.page.locator.return_value.first.count.return_value=0
+  with patch("v2.ttittulares.news_images_v2.time.monotonic",side_effect=[0,16]):
+   with self.assertRaisesRegex(RuntimeError,"NEWS_IMAGE_SEND_BUTTON_UNAVAILABLE"):
+    browser.send_once("TTN2_IMAGE_JOB_V1 checked prompt")
+  self.assertFalse(browser.sent)
+  browser.composer.press.assert_not_called()
  def test_prompt_is_self_contained_and_exact_revision(self):
   prompt=image_prompt(self.fixture.record,"news-img-fixture")
   self.assertIn(self.fixture.event,prompt);self.assertIn('"revision": 1',prompt)

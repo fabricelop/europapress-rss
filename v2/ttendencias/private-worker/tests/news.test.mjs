@@ -187,7 +187,9 @@ test("Noticias groups clear PUB and Quitar actions, keeps R and RE-X, and marks 
  assert.match(controls,/item\.group==="archived"&&item\.status_label!=="Suprimida"/);
  assert.match(controls,/attachPublicImageToggle\(item,artwork,onChange\)/);
  assert.match(controls,/await onChange\("archived",item\)/);
- assert.match(news,/state\.filter="archived"/);
+ // The private action changes the news status, never the selected UI list.
+ assert.match(news,/if\(group==="archived"&&moved\?\.event_id===state\.open\)state\.open=null/);
+ assert.doesNotMatch(news,/state\.filter="archived";state\.page=1/);
  assert.match(news,/const filter=Object\.hasOwn\(names,selected\)\?selected:"ready"/);
 });
 

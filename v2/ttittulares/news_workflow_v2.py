@@ -20,6 +20,19 @@ AUX = re.compile(r"v2/ttittulares/(?:jobs/images/ttn2-[a-f0-9]{24}-r[1-9][0-9]*-
 ID = re.compile(r"ttn2-[a-f0-9]{24}\Z")
 ACTION = re.compile(r"[a-f0-9]{32}\Z")
 
+# A failed /api/auth/session *probe* is not evidence that the account is
+# logged out. The composer may already be authenticated while that request is
+# temporarily unavailable. All other auth/login/credential errors retain the
+# conservative no-retry policy.
+TRANSIENT_IMAGE_AUTH_CODES = frozenset({"NEWS_CHATGPT_AUTH_CHECK_UNAVAILABLE"})
+
+def image_auth_blocked(code):
+    return "AUTH" in code and code not in TRANSIENT_IMAGE_AUTH_CODES
+
+def image_safety_blocked(code):
+    return image_auth_blocked(code) or any(
+        part in code for part in ("LOGIN", "CREDENTIAL", "DISK", "CLEANUP", "CAPTCHA"))
+
 def allowed(path, write=False):
     return ed.allowed(path) or bool(AUX.fullmatch(path))
 
@@ -374,8 +387,7 @@ class NewsService(ed.EditorialService):
                 "maintenance_needed":any(ed._time(j["lease"]["expires_at"])<=now for j in active),
                 "publication_allowed":False}
 
-    @staticmethod
-    def _fresh_image_retry_eligible(job):
+    def _fresh_image_retry_eligible(self, job):
         """Retry only a *closed* failed image attempt in a new owned chat.
 
         The discarded image is never associated with the news. Editorial jobs
@@ -390,9 +402,27 @@ class NewsService(ed.EditorialService):
         # explicitly chosen a NEW disposable chat after each such failure.
         # Never override an auth, disk, cleanup or active-lease safety stop.
         retry_mode=problem.get("retry_mode")
-        fresh=retry_mode in ("new_chat", "recover_same_chat") or NewsService._legacy_preflight_image_repair(job)
-        safe=not any(part in code for part in ("AUTH", "LOGIN", "CREDENTIAL", "DISK", "CLEANUP", "CAPTCHA"))
+        # Old workers wrongly labelled a failed session probe as manual-only,
+        # even after verified cleanup and with zero sends. Recover those jobs
+        # only while their exact immutable job history proves no prompt sent.
+        transient_probe=(code in TRANSIENT_IMAGE_AUTH_CODES
+            and retry_mode=="manual_only" and job.get("send_intent") is None
+            and attempts.get("submission_count")==0
+            and attempts.get("claim_count",0)<attempts.get("max_safe_preflight_attempts",3)
+            and bool(attempts.get("history"))
+            and attempts["history"][-1].get("outcome")=="preflight_failed")
+        fresh=(retry_mode in ("new_chat", "recover_same_chat") or transient_probe
+               or NewsService._legacy_preflight_image_repair(job))
+        safe=not image_safety_blocked(code)
         remaining=attempts.get("claim_count",0)<attempts.get("max_safe_preflight_attempts",3)
+        # Tendencias spaces out retries on transient setup failures. Do not
+        # exhaust every News image attempt within a minute of an outage.
+        if code in TRANSIENT_IMAGE_AUTH_CODES:
+            try:
+                if self.clock()-ed._time(problem["at"])<timedelta(minutes=4):
+                    return False
+            except (KeyError, TypeError, ValueError):
+                return False
         return (job.get("status")=="problematic" and not job.get("lease")
                 and fresh and safe and (remaining or NewsService._legacy_preflight_image_repair(job)))
 
@@ -429,7 +459,7 @@ class NewsService(ed.EditorialService):
         problem=job.get("problem") or {}
         code=str(problem.get("code") or "")
         if (problem.get("retry_mode")=="none" or
-                any(part in code for part in ("AUTH","LOGIN","CREDENTIAL","DISK","CLEANUP","CAPTCHA","LEASE_EXPIRED"))):
+                image_safety_blocked(code) or "LEASE_EXPIRED" in code):
             return None
         for action in reversed(getattr(self,"image_retry_requests",[])):
             if (action.get("event_id")==event["event_id"] and
@@ -560,7 +590,7 @@ class NewsService(ed.EditorialService):
                                              else "uncertain" if sent else "preflight_failed")})
                     # A new image may be generated even if the old send was
                     # uncertain; never reuse its chat, command ID or raster.
-                    safe_closed=(data.get("cleanup_verified") is True and "AUTH" not in code
+                    safe_closed=(data.get("cleanup_verified") is True and not image_safety_blocked(code)
                                  and code not in ("NEWS_DISK_SPACE_LOW_NO_NEW_CHROME",))
                     retry_mode=("none" if not data.get("cleanup_verified") else
                                 "new_chat" if safe_closed and job["attempts"]["claim_count"]<job["attempts"]["max_safe_preflight_attempts"] else "manual_only")

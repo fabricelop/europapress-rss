@@ -287,6 +287,48 @@ class NewsWorkflowTests(unittest.TestCase):
    bad={"status":"problematic","lease":None,"problem":{"code":code,"retry_mode":"recover_same_chat"},
         "attempts":{"claim_count":1,"max_safe_preflight_attempts":3}}
    self.assertFalse(self.service._fresh_image_retry_eligible(bad))
+ def test_transient_auth_probe_retries_only_after_cooldown_with_fresh_image_job(self):
+  first=self.claim()["job"]
+  self.service.image("fail",worker_id="image-one",token=self.token,job_id=first["job_id"],
+                     code="NEWS_CHATGPT_AUTH_CHECK_UNAVAILABLE",cleanup_verified=True)
+  path=image_path(self.event,1)
+  _,docs=self.store.read_editorial_snapshot();failed=docs[path]
+  self.assertEqual(failed["problem"]["retry_mode"],"new_chat")
+  self.assertIsNone(failed["send_intent"])
+  self.assertEqual(failed["attempts"]["submission_count"],0)
+  self.assertEqual(self.service.image_preview()["pending_count"],0)
+  self.now+=timedelta(minutes=3)
+  self.assertIsNone(self.claim("image-too-early")["job"])
+  self.now+=timedelta(minutes=1)
+  self.assertEqual(self.service.image_preview()["pending_count"],1)
+  second=self.claim("image-after-cooldown")["job"]
+  self.assertEqual(second["attempts"]["claim_count"],2)
+  self.assertIsNone(second["send_intent"])
+  self.assertIsNone(second["session"])
+ def test_old_manual_only_probe_failure_recovers_only_if_never_sent_and_cleaned(self):
+  first=self.claim()["job"]
+  self.service.image("fail",worker_id="image-one",token=self.token,job_id=first["job_id"],
+                     code="NEWS_CHATGPT_AUTH_CHECK_UNAVAILABLE",cleanup_verified=True)
+  path=image_path(self.event,1)
+  # Legacy image workers mislabelled a verified, never-sent probe as manual-only.
+  old=self.store.commits[self.store.current][path]
+  old["problem"]["retry_mode"]="manual_only"
+  self.now+=timedelta(minutes=4)
+  self.assertEqual(self.service.image_preview()["pending_count"],1)
+  fresh=self.claim("image-recovered")["job"]
+  self.assertEqual(fresh["attempts"]["claim_count"],2)
+  self.assertIsNone(fresh["send_intent"])
+  # Cleanup unverified is NEVER promoted by the migration.
+  self.service.image("fail",worker_id="image-recovered",token=self.token,
+                     job_id=fresh["job_id"],code="NEWS_CHATGPT_AUTH_CHECK_UNAVAILABLE",cleanup_verified=False)
+  self.now+=timedelta(minutes=10)
+  self.assertFalse(self.service._fresh_image_retry_eligible(self.store.commits[self.store.current][path]))
+ def test_actual_missing_account_still_blocks_automatic_image_retries(self):
+  first=self.claim()["job"]
+  self.service.image("fail",worker_id="image-one",token=self.token,job_id=first["job_id"],
+                     code="NEWS_CHATGPT_AUTHENTICATED_ACCOUNT_REQUIRED",cleanup_verified=True)
+  self.now+=timedelta(minutes=10)
+  self.assertEqual(self.service.image_preview()["pending_count"],0)
  def test_manual_image_retry_ignores_auto_ceiling_but_starts_fresh_job(self):
   for attempt in range(3):
    worker="image-retry-"+str(attempt)

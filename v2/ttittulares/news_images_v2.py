@@ -5,11 +5,54 @@ from pathlib import Path
 from datetime import datetime, timezone
 from .editorial_browser_v2 import ChromeJob, write_private, common
 from .editorial_consumer_v2 import github_token, settings, error_code
-from .news_workflow_v2 import NewsService, NewsStore, sync_controls, read_controls
+from .news_workflow_v2 import NewsService, NewsStore, sync_controls, read_controls, image_auth_blocked
 from .session_watchdog_v2 import (OwnedSessionWatchdog, enough_space,
     reclaim_disposable_sessions, ORPHAN_SWEEP_INTERVAL_SECONDS, SESSION_LIMIT_SECONDS)
 from v2.ttendencias.image_same_chat_v2 import original_from_same_page
 from v2.ttendencias.image_intake_v2 import raster_metadata
+
+# Same verified-button protocol as Tendencias V2, restricted to NEWS IMAGES.
+# The editorial ChromeJob retains its independent, already running send path.
+IMAGE_SEND_BUTTONS = (
+    'button[data-testid="send-button"]',
+    'button[data-testid="composer-send-button"]',
+    'button[data-testid="send-message-button"]',
+    'button[aria-label="Send"]',
+    'button[aria-label="Enviar"]',
+    'button[aria-label="Enviar prompt"]',
+    'button[aria-label="Send prompt"]',
+    'button[aria-label="Send message"]',
+    'button[aria-label="Enviar mensaje"]',
+)
+
+class ImageChromeJob(ChromeJob):
+    def send_once(self, prompt):
+        if self.sent or self.composer is None:
+            raise RuntimeError("NEWS_IMAGE_SEND_NOT_AUTHORIZED")
+        self.page.bring_to_front()
+        self.composer.fill(prompt)
+        try:
+            entered=self.composer.input_value(timeout=3000)
+        except Exception:
+            entered=self.composer.text_content(timeout=3000) or ""
+        if "TTN2_IMAGE_JOB_V1" not in entered:
+            raise RuntimeError("NEWS_IMAGE_PROMPT_NOT_IN_COMPOSER")
+        button_seen=False
+        until=time.monotonic()+15
+        while time.monotonic()<until:
+            for selector in IMAGE_SEND_BUTTONS:
+                button=self.page.locator(selector).first
+                if button.count() and button.is_visible():
+                    button_seen=True
+                    if button.is_enabled() and button.get_attribute("aria-disabled")!="true":
+                        # The durable remote prepare was recorded by run_one
+                        # BEFORE arriving here. Any click ambiguity is fenced.
+                        self.sent=True
+                        button.click(timeout=10000)
+                        return
+            time.sleep(.5)
+        raise RuntimeError("NEWS_IMAGE_SEND_BUTTON_DISABLED" if button_seen
+                           else "NEWS_IMAGE_SEND_BUTTON_UNAVAILABLE")
 
 def image_prompt(record, command):
     identity=json.dumps({"event_id":record["event_id"],"revision":record["revision"],"command_id":command},ensure_ascii=False)
@@ -36,7 +79,7 @@ def image_prompt(record, command):
         "humor a costa de las víctimas ni presentes hipótesis como hechos. "
         "No publiques ni modifiques GitHub.")
 
-def run_one(service, config, *, browser_factory=ChromeJob, raster_get=original_from_same_page,
+def run_one(service, config, *, browser_factory=ImageChromeJob, raster_get=original_from_same_page,
             run_id=None):
     run=run_id or uuid.uuid4().hex;worker="news-image-"+run;token=secrets.token_hex(32)
     claim=service.image("claim",worker_id=worker,token=token)
@@ -84,7 +127,7 @@ def run_one(service, config, *, browser_factory=ChromeJob, raster_get=original_f
     except Exception as exc:
         failure=exc;journal["error_code"]=error_code(exc)
         if browser:journal["private_recovery_diagnostic"]=getattr(browser,"recovery_diagnostic",None)
-        if "AUTH" in journal["error_code"]:
+        if image_auth_blocked(journal["error_code"]):
             (config["root"]/"images.enabled").write_text("TTN2_IMAGES_ENABLED=NO",encoding="utf-8")
     finally:
         if browser:

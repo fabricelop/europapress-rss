@@ -97,10 +97,10 @@
      if(record.event_id!==item.event_id||record.revision!==item.revision||typeof record.tweet_text!=="string"||record.x_character_count>280)throw Error("record_invalid");
      state.records.set(key,record);explanation.textContent=record.tweet_text;
      TTNewsActions.attach({item,card,head:summary,body,record,onChange:async(group,moved)=>{
-      if(group==="archived"&&moved?.event_id){
-       state.filter="archived";state.page=1;state.open=moved.event_id;
-       state.query=moved.title.slice(0,100);$("news-search").value=state.query;
-      }
+      // PUB/Quitar move only the CARD to ARCH; the user's active ELAB view,
+      // page and explicit search remain untouched. Never inject the removed
+      // headline into the search box (it made ELAB appear permanently empty).
+      if(group==="archived"&&moved?.event_id===state.open)state.open=null;
       await refreshNews();
      }});
      explanation.after(node("p","news-tweet-count",record.x_character_count+" / 280"));

@@ -16,7 +16,7 @@ if(!view.items.some(x=>x.group==='pending')){
 }
 const root=path.resolve('dist');
 const shots=path.resolve(process.env.RUNNER_TEMP||'.','ttv2-news-qa');await fs.mkdir(shots,{recursive:true});
-let fail=false,demoReady=false,archived=false,publicImageVisible=true;
+let fail=false,demoReady=false,archived=false,publicImageVisible=true,qaSecondReady=false;
 const imageToggleActions=[];
 const example=view.items.find(x=>x.group==='pending');
 const demoTweet="Una explicación breve de prueba, con hechos contrastados y preparada para un tuit. #Prueba #Noticias";
@@ -25,6 +25,7 @@ const demoRecord={event_id:example.event_id,revision:example.revision,tweet_text
 // Exercise the *no-image* controls deterministically without mutating data.
 const readyView={...view,items:[{...example,group:'ready',status_label:'Elaborada',image_available:false,
  image_suppressed:false,image_in_progress:false,image_incident_available:true}],counts:{...view.counts,ready:1}};
+const secondReady={...readyView.items[0],event_id:'ttn2-'+'f'.repeat(24),title:'Otra noticia elaborada que debe seguir visible'};
 const demoIncident={project:'ttittulares-v2',target_id:example.event_id,revision:example.revision,available:true,
  incident:{code:'NEWS_IMAGE_ORIGINAL_MISSING',detail:'No se ha podido recuperar el original de la imagen.',at:new Date().toISOString()}};
 const requests=[];
@@ -33,7 +34,8 @@ const server=http.createServer(async(req,res)=>{
  if(u.pathname==='/api/news'){
   res.setHeader('Content-Type','application/json');
   if(fail){res.statusCode=503;res.end('{}');return;}
-  res.end(JSON.stringify(pageNews(demoReady?(archived?{...readyView,items:readyView.items.map(x=>({...x,group:'archived',status_label:'Archivada',image_available:true,has_image:true,public_image_visible:publicImageVisible})),counts:{...readyView.counts,ready:0,archived:1}}:readyView):view,u.searchParams)));return;
+  const news=demoReady?(archived?{...readyView,items:readyView.items.map(x=>({...x,group:'archived',status_label:'Archivada',image_available:true,has_image:true,public_image_visible:publicImageVisible})),counts:{...readyView.counts,ready:0,archived:1}}:readyView):view;
+  res.end(JSON.stringify(pageNews(qaSecondReady?{...news,items:[...news.items,secondReady],counts:{...news.counts,ready:news.counts.ready+1}}:news,u.searchParams)));return;
  }
  if(u.pathname==='/api/news-actions'){
   let raw='';for await(const part of req)raw+=part;const body=JSON.parse(raw);
@@ -116,12 +118,35 @@ try{
  for(const label of ['R · Rojo','RE','RE-X','P-X','PUB','Quitar','Copiar prompt IA','GPT IMA','Pegar IA']){
   if(await page.locator('.news-actions').getByText(label,{exact:true}).count()!==1)throw Error('Missing news action: '+label);
  }
+ // Reproduce the real regression with TWO Elaboradas: Quitar must remove only
+ // one card, never switch to ARCH or silently search its now-missing title.
+ qaSecondReady=true;
+ const qaPage=await browser.newPage({viewport:{width:1280,height:1000}});
+ try{
+  qaPage.on('dialog',dialog=>dialog.accept());
+  await qaPage.goto('http://127.0.0.1:'+server.address().port+'/?view=noticias');
+  await qaPage.waitForFunction(()=>document.querySelectorAll('.news-card').length===2);
+  await qaPage.locator('.news-card summary').first().click();
+  await qaPage.getByRole('button',{name:'Quitar',exact:true}).click();
+  await qaPage.waitForFunction(title=>document.querySelectorAll('.news-card').length===1&&
+   document.querySelector('.news-card .news-title')?.textContent===title,secondReady.title);
+  if(!await qaPage.locator('.news-filter[aria-pressed="true"]').textContent().then(x=>x.startsWith('Elab.')))
+   throw Error('Quitar changed focus from ELAB to ARCH');
+  if(await qaPage.locator('#news-search').inputValue()!=='')throw Error('Quitar injected archived title in search');
+  await qaPage.locator('.news-filter').filter({hasText:'Arch.'}).click();
+  await qaPage.locator('.news-filter').filter({hasText:'Elab.'}).click();
+  await qaPage.waitForFunction(title=>document.querySelector('.news-card .news-title')?.textContent===title,secondReady.title);
+  if(await qaPage.locator('#news-search').inputValue()!=='')throw Error('ELAB still has stale archive search');
+ }finally{await qaPage.close();archived=false;qaSecondReady=false;}
  page.on('dialog',dialog=>dialog.accept());
  await page.getByRole('button',{name:'PUB',exact:true}).click();
- // PUB now leads directly to the same archived card, which must retain the
- // independently reversible V1 image switch; no second publication button.
- await page.waitForFunction(()=>document.querySelector('.news-filter[aria-pressed="true"]')?.textContent.startsWith('Arch.'));
+ // PUB also leaves ELAB selected. ARCH remains reachable manually and retains
+ // the independently reversible V1 image switch; no second publication.
+ await page.waitForFunction(()=>document.querySelector('.news-filter[aria-pressed="true"]')?.textContent.startsWith('Elab.')&&document.querySelectorAll('.news-card').length===0);
+ if(await page.locator('#news-search').inputValue()!=='')throw Error('PUB left a stale archived-title search');
+ await page.locator('.news-filter').filter({hasText:'Arch.'}).click();
  await page.waitForFunction(()=>document.querySelectorAll('.news-card').length===1);
+ await page.locator('.news-card summary').first().click();
  await page.waitForFunction(text=>document.querySelector('.news-body p')?.textContent===text,demoTweet);
  const toggle=page.getByRole('switch',{name:'Mostrar imagen en V1'});
  await toggle.waitFor({state:'visible'});
