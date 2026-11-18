@@ -16270,13 +16270,13 @@
       "trend_id": "trv2-4bb93a62128c86bfb2948b95",
       "name": "#MárchateFelipeVI",
       "revision": 2,
-      "status": "review_pending",
+      "status": "in_progress",
       "reason": "retry_after_incident_with_hints",
       "episode_token": "2d3f88793911fab2",
       "requested_at": "2026-11-18T20:55:18.436299+00:00",
       "updated_at": "2026-11-18T20:55:18.436299+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -16291,7 +16291,13 @@
       ],
       "incident_retries": 0,
       "review_mode": "x",
-      "review_hints": "El hashtag de este miércoles que cada semana va contra la monarquia."
+      "review_hints": "El hashtag de este miércoles que cada semana va contra la monarquia.",
+      "lease": {
+        "token": "1a438acbce4618e4fccfe5fba1bbbb8d498e33d5cadb96b7",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-18T20:55:50.177578+00:00",
+        "expires_at": "2026-11-18T21:35:50.177578+00:00"
+      }
     },
     "trv2-c0efe7e6fb44b284d08e84d2": {
       "trend_id": "trv2-c0efe7e6fb44b284d08e84d2",
