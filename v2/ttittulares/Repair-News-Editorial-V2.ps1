@@ -37,6 +37,7 @@ if($tree.truncated){throw 'NEWS_EDITORIAL_GIT_TREE_TRUNCATED'}
 $code=Join-Path $root ('releases\'+$sha)
 New-Item -ItemType Directory -Path $code -Force | Out-Null
 $news=@('news_workflow_v2.py','news_images_v2.py','test_news_workflow_v2.py','test_news_images_v2.py','editorial_browser_v2.py','editorial_consumer_v2.py','editorial_contract_v2.py','session_watchdog_v2.py','test_session_watchdog_v2.py',
+  'pilot_one_v2.py',
   'editorial_state_v2.py','editorial_setup_v2.py','test_editorial_consumer_v2.py',
   'test_editorial_state_v2.py','test_editorial_contract_v2.py','test_contract_examples.py',
   'test_radar_snapshot_v2.py','test_radar_ingest_v2.py','test_editorial_browser_v2.py','test_editorial_setup_v2.py',

@@ -30,6 +30,7 @@ class InstallPackageTests(unittest.TestCase):
         self.assertIn("'probe_news_chat_response_v2.py'", repair)
         self.assertIn("'probe_news_editorial_shape_v2.py'", repair)
         self.assertIn("'probe_news_existing_chat_v2.py'", repair)
+        self.assertIn("'pilot_one_v2.py'", repair)
         self.assertNotIn("'TTActualidadNoticiasV2-Images'", repair)
         self.assertNotIn("'images.enabled'", repair)
         self.assertNotIn("'image-active-code.txt'", repair)

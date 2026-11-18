@@ -139,6 +139,21 @@ class ConsumerTests(unittest.TestCase):
             self.assertIn(('fail', True), service.calls)
             self.assertEqual(report['error_code'], 'NEWS_CHATGPT_AUTHENTICATED_ACCOUNT_REQUIRED')
 
+    def test_v1_style_pilot_accepts_only_never_attempted_fresh_jobs(self):
+        from .pilot_one_v2 import safe_first_job
+        fresh = {'status': 'pending', 'revision': 2,
+                 'job_id': 'ttn2-' + 'a' * 24 + '-r2-editorial',
+                 'attempts': {'claim_count': 0, 'submission_count': 0, 'history': []},
+                 'lease': None, 'send_intent': None, 'session': None,
+                 'capture': None, 'result': None, 'problem': None}
+        self.assertTrue(safe_first_job(fresh))
+        for change in ({'revision': 0}, {'status': 'problematic'},
+                       {'send_intent': {'command_id': 'previous'}},
+                       {'attempts': {'claim_count': 1}},
+                       {'attempts': {'history': [{'sent': True}]}}):
+            with self.subTest(change=change):
+                self.assertFalse(safe_first_job({**fresh, **change}))
+
     def test_fresh_chat_preflight_failure_does_not_disable_entire_consumer(self):
         for code in ('NEWS_CHATGPT_AUTH_OR_FRESH_CHAT_REQUIRED',
                      'NEWS_FRESH_CHAT_NOT_READY', 'NEWS_CHATGPT_AUTH_CHECK_UNAVAILABLE'):

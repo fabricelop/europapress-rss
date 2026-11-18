@@ -324,6 +324,22 @@ def capture_reply(page, *, event_id, revision, command_id, heartbeat,
                     raise RuntimeError('NEWS_EDITORIAL_BLOCKED_NO_RESEND')
                 if stable_for >= 6 and 'TTN2_EDITORIAL_BEGIN' in answer and 'TTN2_EDITORIAL_END' in answer:
                     return answer, page.url.split('?', 1)[0]
+                if stable_for >= 6 and answer and 'TTN2_EDITORIAL_BEGIN' not in answer:
+                    # V1-style result: the assistant researches and writes a
+                    # small, complete editorial object without the old markers.
+                    # Final identity/source/fact validation remains downstream.
+                    from .editorial_contract_v2 import _json_reply, ContractError
+                    try:
+                        payload = _json_reply(answer)
+                    except ContractError:
+                        payload = None
+                    if (isinstance(payload, dict) and
+                            payload.get('event_id') == event_id and
+                            payload.get('revision') == revision and
+                            payload.get('command_id') == command_id and
+                            all(key in payload for key in
+                                ('title', 'factual_summary', 'explanation', 'source_evidence', 'tweet'))):
+                        return answer, page.url.split('?', 1)[0]
                 # An idle partial answer used to hold a slot until the 8-min
                 # watchdog killed Chrome. After a conservative stable period,
                 # report an explicit incident; never accept or resend it.

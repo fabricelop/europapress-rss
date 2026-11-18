@@ -302,6 +302,17 @@ class BrowserBoundaryTests(unittest.TestCase):
             busy=lambda seconds: seconds < 101)
         self.assertEqual(self.capture(page, clock, timeout=140), (ANSWER, page.url))
 
+    def test_v1_style_complete_editorial_json_captured_without_markers(self):
+        clock = Clock()
+        answer = json.dumps({
+            "event_id": EVENT, "revision": REVISION, "command_id": COMMAND,
+            "title": "Una noticia verificada", "factual_summary": "Hecho probado por dos fuentes",
+            "explanation": "Contexto editorial", "source_evidence": [], "tweet": {}},
+            ensure_ascii=False)
+        page = Page(clock, answers=lambda _: [answer])
+        self.assertEqual(self.capture(page, clock), (answer, page.url))
+        self.assertLess(clock.now, 20)
+
     def test_transient_auth_check_failure_is_not_reported_as_expired_login(self):
         page = SimpleNamespace(evaluate=lambda _: None)
         with self.assertRaisesRegex(RuntimeError, 'NEWS_CHATGPT_AUTH_CHECK_UNAVAILABLE'):
