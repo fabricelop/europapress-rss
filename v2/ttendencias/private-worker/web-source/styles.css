@@ -177,3 +177,10 @@
 .trend-actions .news-action-group .publish-action{flex:0 1 auto}
 @media(max-width:450px){.news-action-group{padding:9px;gap:6px}.news-action-group .publish-action{flex:1 0 auto;min-width:0;padding:7px 9px;font-size:12px}.news-action-caption{font-size:10px}.news-image-head-icon{padding:3px 6px;font-size:14px}}
 .news-card.marked-red{border-color:#d24444;background:#27191d}.news-image-working{color:#e4a55b}.news-paste-dialog{max-width:min(90vw,480px);background:#171d26;color:#f4f4f4;border:1px solid #526176;border-radius:12px;padding:20px}
+
+
+/* BUS-X: atajo siempre visible, separado del desplegable y de la marca R. */
+.bus-x-link{display:inline-flex;flex:none;align-items:center;justify-content:center;padding:7px 9px;min-height:31px;border-radius:8px;border:1px solid #718cae;color:#d6eaff;background:#1b2b40;font-size:11px;font-weight:800;text-decoration:none;white-space:nowrap}
+.bus-x-link:hover,.bus-x-link:focus-visible{background:#2b4766;border-color:#a8caef;outline-offset:2px}
+.title-details{min-width:0;flex:1}
+@media(max-width:450px){.bus-x-link{font-size:10px;padding:5px 6px;min-height:28px}.trend-head{gap:6px}}
