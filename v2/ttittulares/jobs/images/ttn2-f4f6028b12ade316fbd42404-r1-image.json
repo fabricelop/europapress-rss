@@ -1,6 +1,6 @@
 {
   "attempts": {
-    "claim_count": 1,
+    "claim_count": 2,
     "history": [
       {
         "at": "2026-11-18T17:20:45Z",
@@ -17,38 +17,29 @@
   "editorial_sha256": "58b90739a0ae8f81edf87cd3fa86732e50514ed1bad274f9505c7012af270e2b",
   "event_id": "ttn2-f4f6028b12ade316fbd42404",
   "job_id": "ttn2-f4f6028b12ade316fbd42404-r1-image",
-  "lease": null,
-  "phase": "blocked",
+  "lease": {
+    "expires_at": "2026-11-18T17:51:07Z",
+    "heartbeat_at": "2026-11-18T17:26:07Z",
+    "started_at": "2026-11-18T17:26:07Z",
+    "token_sha256": "f11647d0d1b3c73c3659c8ee243805c0cf615bf8e5fa4c19bfb83c2f85b46281",
+    "worker_id": "news-image-7d989724ecc144308fc68724bc18e17f"
+  },
+  "phase": "claiming",
   "policy": {
     "mode": "automatic",
     "visual_treatment": "editorial_gag"
   },
-  "problem": {
-    "at": "2026-11-18T17:20:45Z",
-    "code": "NEWS_IMAGE_SESSION_DEADLINE_EXCEEDED",
-    "retry_mode": "new_chat"
-  },
+  "problem": null,
   "project": "ttittulares-v2",
-  "prompt_sha256": "6c373cb3e6fde21d6ecd252f75f43ba58574228d05269ba9783d251bb32de35f",
+  "prompt_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
   "prompt_version": "news-image-v2",
   "requested_at": "2026-11-18T17:12:17Z",
   "result": null,
   "revision": 1,
   "schema_version": 1,
-  "send_intent": {
-    "attempt_no": 1,
-    "command_id": "news-img-45fe1e72cfd346efaa5ecada628a11d0",
-    "prepared_at": "2026-11-18T17:18:17Z",
-    "prompt_sha256": "6c373cb3e6fde21d6ecd252f75f43ba58574228d05269ba9783d251bb32de35f",
-    "submission_state": "prepared",
-    "submitted_at": null
-  },
-  "session": {
-    "conversation_url_sha256": "5d9354f7cb0eac0c0506ad03735ee6263a1e4ed75aa107e7852a5e26d49ecd3a",
-    "private_journal_id": "45fe1e72cfd346efaa5ecada628a11d0",
-    "session_id": "45fe1e72cfd346efaa5ecada628a11d0"
-  },
+  "send_intent": null,
+  "session": null,
   "source_record_path": "v2/ttittulares/records/ttn2-f4f6028b12ade316fbd42404/r1.json",
-  "status": "problematic",
-  "updated_at": "2026-11-18T17:20:45Z"
+  "status": "claimed",
+  "updated_at": "2026-11-18T17:26:07Z"
 }
