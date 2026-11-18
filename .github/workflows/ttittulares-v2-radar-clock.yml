@@ -1,10 +1,11 @@
 name: TTActualidad Noticias V2 - Reloj radar independiente
 
 on:
-  # GitHub executes scheduled events only from its default branch (main).
-  # V1's watchdog runs at minutes 5,15,...; keep the V2 radar staggered.
+  # One 10-minute scheduler on the default branch. V1's scheduled
+  # watchdog and the three redundant V2 15-minute clocks are retired.
+  # GitHub cron is best effort; verify observed_at instead of assuming arrival.
   schedule:
-    - cron: '0,10,20,30,40,50 * * * *'
+    - cron: '2,12,22,32,42,52 * * * *'
   workflow_dispatch:
   push:
     branches: [main]
