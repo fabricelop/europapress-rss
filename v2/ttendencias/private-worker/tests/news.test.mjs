@@ -13,7 +13,7 @@ function fixture(){return [
 test("pending source title is visible without an invented explanation or publication",()=>{
  const view=projectNews(...fixture());assert.equal(view.counts.pending,1);assert.equal(view.items[0].source_family_count,4);
  assert.equal(view.items[0].explanation,null);assert.equal(view.items[0].publication_allowed,false);
- assert.equal(view.read_only,true);assert.equal(view.refresh_mode,"scheduled_radar_15m");assert.equal(view.expected_interval_minutes,15);
+ assert.equal(view.read_only,true);assert.equal(view.refresh_mode,"scheduled_radar_10m");assert.equal(view.expected_interval_minutes,10);
 });
 test("independent radar time stays fresh when feature editorial commits are blocked",()=>{
  const [index,queue]=fixture();
@@ -24,7 +24,7 @@ test("independent radar time stays fresh when feature editorial commits are bloc
  assert.equal(view.editorial_delayed,true);
  assert.equal(view.editorial_updated_at,time);
  assert.equal(view.observed_at,live.observed_at);
- assert.equal(view.refresh_mode,"independent_radar_15m");
+ assert.equal(view.refresh_mode,"independent_radar_10m");
  assert.match(NEWS_RADAR_SOURCE,/ttactualidad-v2-radar-live/);
 });
 test("monitoring candidates are distinct from pending editorial jobs",()=>{
