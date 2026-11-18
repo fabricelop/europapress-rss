@@ -15886,13 +15886,13 @@
       "trend_id": "trv2-8fa1938df0df261762ec3afd",
       "name": "El Congreso",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "b6108bead8a4a557",
       "requested_at": "2026-11-18T19:01:18.653642+00:00",
       "updated_at": "2026-11-18T19:01:18.653642+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -15905,7 +15905,13 @@
           "archived_at": "2026-11-18T19:01:18.653642+00:00"
         }
       ],
-      "incident_retries": 0
+      "incident_retries": 0,
+      "lease": {
+        "token": "8203df2e7cc5902bd3529852cb02a771ecc24a932b8df84f",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-18T19:01:56.956968+00:00",
+        "expires_at": "2026-11-18T19:41:56.956968+00:00"
+      }
     },
     "trv2-fbfd7ab9984765c5b2cf65ee": {
       "trend_id": "trv2-fbfd7ab9984765c5b2cf65ee",
