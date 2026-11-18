@@ -15459,13 +15459,13 @@
       "trend_id": "trv2-b2c265ef4773b9ee77944b92",
       "name": "El Supremo",
       "revision": 3,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "2f3709359c386160",
       "requested_at": "2026-11-18T18:16:19.478341+00:00",
       "updated_at": "2026-11-18T18:16:19.478341+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -15490,7 +15490,13 @@
       ],
       "incident_retries": 2,
       "review_mode": "x",
-      "review_hints": "Busca en x"
+      "review_hints": "Busca en x",
+      "lease": {
+        "token": "193deceb94766b019e2440210481271ab1c776ffc5b52358",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-18T18:17:32.684331+00:00",
+        "expires_at": "2026-11-18T18:57:32.684331+00:00"
+      }
     },
     "trv2-b7d5b46270e3ee5a0bfa002d": {
       "trend_id": "trv2-b7d5b46270e3ee5a0bfa002d",
