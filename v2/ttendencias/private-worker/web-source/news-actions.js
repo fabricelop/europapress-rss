@@ -18,14 +18,31 @@ window.TTNewsActions=(()=>{
   label.append(toggle,el("span","image-public-label","Imagen en V1"));artwork.append(label);
  }
  async function action(item,type,value,hints){
-  const response=await fetch("/api/news-actions",{method:"POST",credentials:"same-origin",
-   headers:{"content-type":"application/json","x-ttv2-action":"1"},
-   body:JSON.stringify({action_id:crypto.randomUUID().replaceAll("-",""),event_id:item.event_id,
-    revision:item.revision,action:type,...(value!==undefined?{value}:{}),...(hints?{hints}:{})})});
+  let response;
+  try{
+   response=await fetch("/api/news-actions",{method:"POST",credentials:"same-origin",
+    headers:{"content-type":"application/json","x-ttv2-action":"1"},
+    signal:AbortSignal.timeout(18000),
+    body:JSON.stringify({action_id:crypto.randomUUID().replaceAll("-",""),event_id:item.event_id,
+     revision:item.revision,action:type,...(value!==undefined?{value}:{}),...(hints?{hints}:{})})});
+  }catch(error){
+   if(error.name==="AbortError"||error.name==="TimeoutError")
+    throw Error("La solicitud tardó demasiado. Actualiza la lista para comprobar si se guardó antes de pulsar otra vez.");
+   throw error;
+  }
   if(!response.ok){
    const result=await response.json().catch(()=>({}));
-   if(result.error==="news_retry_requires_environment_repair")throw Error("El reintento está bloqueado por un problema de acceso o del navegador. Revisa la incidencia antes de reintentarlo.");
-   throw Error(response.status===409?"La noticia ha cambiado o ya se está procesando. Actualiza la lista.":"No se pudo guardar la acción.");
+   const explanations={
+    news_retry_requires_environment_repair:"El reintento está bloqueado por un problema del navegador, credenciales o disco.",
+    news_incident_unavailable_or_stale:"La incidencia ha cambiado o su registro aún no está sincronizado. Actualiza la lista.",
+    news_incident_queue_unavailable:"No se pudo comprobar la cola de incidencias. Reintenta tras actualizar.",
+    news_incident_already_dismissed:"Esta noticia ya fue suprimida. Actualiza la lista.",
+    news_retry_already_requested:"El reintento ya está registrado. Actualiza la lista.",
+    news_preferences_changed:"La noticia se ha modificado mientras pulsabas. Actualiza la lista.",
+    news_action_unavailable:"El servidor no ha podido completar la acción. Vuelve a consultar el estado."
+   };
+   throw Error(explanations[result.error]||
+    (response.status===409?"La noticia ha cambiado o ya se está procesando. Actualiza la lista.":"No se pudo guardar la acción (HTTP "+response.status+")."));
   }
   return response.json();
  }
@@ -65,8 +82,18 @@ window.TTNewsActions=(()=>{
    event.preventDefault();event.stopPropagation();if(button.disabled)return;
    if(confirmText&&!confirm(confirmText))return;
    retry.disabled=dismiss.disabled=true;
-   try{await action(item,type);await onChange(item);}
-   catch(error){notice(error.message);retry.disabled=dismiss.disabled=false;}
+   const previousLabel=button.textContent;
+   button.textContent=type==="dismiss"?"Suprimiendo…":"Solicitando…";
+   let accepted=false;
+   try{
+    await action(item,type);
+    accepted=true;
+    button.textContent=type==="dismiss"?"Suprimida ✓":"Reintento solicitado ✓";
+    await onChange(item);
+   }catch(error){
+    if(accepted)notice("La orden se ha guardado, pero la lista no se ha podido actualizar. Pulsa Actualizar.");
+    else{notice(error.message);retry.disabled=dismiss.disabled=false;button.textContent=previousLabel;}
+   }
   });
   wire(retry,"retry_editorial");
   wire(dismiss,"dismiss","¿Suprimir esta noticia de INC? Desaparecerá de las listas, incluido Archivo. Se conservará el historial interno y no volverá a elaborarse automáticamente.");
