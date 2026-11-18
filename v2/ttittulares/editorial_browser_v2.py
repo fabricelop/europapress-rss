@@ -106,14 +106,16 @@ def clone_job_profile(seed, destination, *, find_pids):
 
 
 def read_news_turns(page):
-    """Read role DOM, then bind a visible reply to the exact user bubble.
+    """Read role DOM, then a single visible user/assistant pair like Trends.
 
-    The working Trends V2 reader selects the relevant last turn instead of
-    requiring the whole page to contain one literal "You said" marker. The
-    extra labels can occur in surrounding UI and must not hide a real answer.
+    ChatGPT sometimes renders no role nodes at all but exposes the localized
+    transcript markers. In that layout, [data-user-message-bubble] may contain
+    only a truncated/rendered version of the prompt. It is a hint, not an
+    authoritative replacement for the full visible "You said" turn.
     """
-    users = [text.strip() for text in page.locator(
+    role_users = [text.strip() for text in page.locator(
         '[data-message-author-role="user"]').all_text_contents() if text.strip()]
+    users = role_users[:]
     answers = [text.strip() for text in page.locator(
         '[data-message-author-role="assistant"]').all_text_contents() if text.strip()]
     if users and answers:
@@ -133,28 +135,60 @@ def read_news_turns(page):
     except Exception:
         return [], answers
     user_markers = list(re.finditer(r'(?m)^\s*(?:You said|Tú dijiste|Has dicho):\s*$', body))
-    if not user_markers or (not users and len(user_markers) != 1):
+    # Without role-verified user nodes, only one *complete* visible chat pair
+    # can establish provenance. Do not guess among sidebar/echoed turn labels.
+    if not user_markers or (not role_users and len(user_markers) != 1):
         return users, answers
+    if not role_users and re.search(
+            r'(?m)^\s*(?:ChatGPT said|ChatGPT dijo|ChatGPT ha dicho|ChatGPT respondió):\s*$',
+            body[:user_markers[0].start()]):
+        # An assistant can quote a forged "You said" label. It must never
+        # establish submission identity from a marker inside assistant prose.
+        return users, answers
+    footers = ('ChatGPT can make mistakes.', 'ChatGPT puede cometer errores.',
+               'Latest response', 'Última respuesta')
+
+    def without_footer(value):
+        for footer in footers:
+            if footer in value:
+                value = value.split(footer, 1)[0]
+        return value.strip()
+
     # A role-verified user turn is authoritative. Search from newest to oldest,
     # requiring one complete matching user/assistant pair inside its bounds.
     for index in reversed(range(len(user_markers))):
         start = user_markers[index].end()
         limit = user_markers[index + 1].start() if index + 1 < len(user_markers) else len(body)
         section = body[start:limit]
-        assistant = re.search(r'(?m)^\s*(?:ChatGPT said|ChatGPT dijo|ChatGPT ha dicho|ChatGPT respondió):\s*$', section)
-        if assistant is None:
+        assistants = list(re.finditer(
+            r'(?m)^\s*(?:ChatGPT said|ChatGPT dijo|ChatGPT ha dicho|ChatGPT respondió):\s*$',
+            section))
+        # Research may run longer than submission confirmation. The lone
+        # visible user turn is enough to bind the *send* before any assistant
+        # bubble exists; it is never evidence of a completed reply.
+        if not assistants and not role_users and len(user_markers) == 1 and len(users) <= 1:
+            visible_user = without_footer(section)
+            if len(visible_user) >= 30:
+                return [visible_user], answers
+        if len(assistants) != 1:
             continue
+        assistant = assistants[0]
         visible_user = section[:assistant.start()].strip()
-        if users and not (len(users) == 1 and len(visible_user) >= 30 and
-                          any(visible_user in user or user in visible_user for user in users)):
+        if len(visible_user) < 30:
             continue
-        response = section[assistant.end():].strip()
-        for footer in ('ChatGPT can make mistakes.', 'ChatGPT puede cometer errores.',
-                       'Latest response', 'Última respuesta'):
-            if footer in response:
-                response = response.split(footer, 1)[0].strip()
+        # A true role-user is authoritative and a mismatch must fail closed.
+        # A non-role bubble may be truncated and is not allowed to veto the
+        # identity-bearing visible prompt. Multiple bubbles remain ambiguous.
+        if role_users and not (len(role_users) == 1 and
+                               any(visible_user in user or user in visible_user
+                                   for user in role_users)):
+            continue
+        if not role_users and len(users) > 1:
+            continue
+        response = without_footer(section[assistant.end():])
         if response:
-            return users or [visible_user], answers or [response]
+            return [visible_user], answers or [response]
+        return [visible_user], answers
     return users, answers
 
 

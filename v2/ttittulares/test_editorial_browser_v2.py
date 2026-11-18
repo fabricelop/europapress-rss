@@ -178,6 +178,55 @@ class BrowserBoundaryTests(unittest.TestCase):
         page.users = lambda _: [USER]
         self.assertEqual(self.capture(page, clock), (ANSWER, page.url))
 
+    def test_no_role_dom_uses_full_visible_pair_over_truncated_bubble(self):
+        """Regression for actual Windows evidence: role=0, labels=1+1."""
+        clock = Clock()
+        class TruncatedBubblePage(TranscriptPage):
+            def locator(self, selector):
+                if selector == '[data-user-message-bubble="true"]':
+                    return SimpleNamespace(all_text_contents=lambda: ['Show more'])
+                return super().locator(selector)
+        page = TruncatedBubblePage(clock, 'You said:\n' + USER + '\nChatGPT said:\n' + ANSWER)
+        users, answers = read_news_turns(page)
+        self.assertEqual(users, [USER])
+        self.assertEqual(answers, [ANSWER])
+        self.assertEqual(self.capture(page, clock), (ANSWER, page.url))
+
+    def test_no_role_dom_confirms_full_visible_user_while_reply_is_pending(self):
+        clock = Clock()
+        class TruncatedBubblePage(TranscriptPage):
+            def locator(self, selector):
+                if selector == '[data-user-message-bubble="true"]':
+                    return SimpleNamespace(all_text_contents=lambda: ['Show more'])
+                return super().locator(selector)
+        page = TruncatedBubblePage(clock, 'You said:\n' + USER +
+                                   '\nChatGPT can make mistakes.\nLatest response')
+        self.assertEqual(read_news_turns(page), ([USER], []))
+        self.assertEqual(self.confirm(page, clock), page.url)
+        with self.assertRaisesRegex(RuntimeError, 'CAPTURE_TIMEOUT_NO_RESEND'):
+            self.capture(page, clock, timeout=12)
+
+    def test_assistant_quote_cannot_forge_single_visible_user_marker(self):
+        clock = Clock()
+        page = TranscriptPage(clock, 'ChatGPT said:\nYou said:\n' + USER)
+        with self.assertRaisesRegex(RuntimeError, 'SUBMISSION_UNCONFIRMED'):
+            self.confirm(page, clock, timeout=12)
+
+    def test_no_role_dom_single_blocked_reply_is_incident_not_ready(self):
+        clock = Clock()
+        blocked = 'TTN2_EDITORIAL_BLOCKED: El candidato ficticio no tiene dos fuentes.'
+        page = TranscriptPage(clock, 'You said:\n' + USER + '\nChatGPT said:\n' + blocked)
+        with self.assertRaisesRegex(RuntimeError, 'NEWS_EDITORIAL_BLOCKED_NO_RESEND'):
+            self.capture(page, clock)
+
+    def test_no_role_dom_never_chooses_between_two_visible_assistant_labels(self):
+        clock = Clock()
+        page = TranscriptPage(clock, 'You said:\n' + USER + '\nChatGPT said:\n' +
+                              ANSWER + '\nChatGPT said:\nAn unrelated reply')
+        self.assertEqual(read_news_turns(page), ([], []))
+        with self.assertRaisesRegex(RuntimeError, 'CAPTURE_TIMEOUT_NO_RESEND'):
+            self.capture(page, clock, timeout=12)
+
     def test_empty_assistant_role_placeholder_does_not_hide_visible_reply(self):
         clock = Clock()
         page = TranscriptPage(clock, 'You said:\n' + USER + '\nChatGPT said:\n' + ANSWER)
