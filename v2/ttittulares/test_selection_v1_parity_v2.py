@@ -79,6 +79,10 @@ class V1SelectionParity(unittest.TestCase):
         item["event_id"] = duplicate_id
         item["canonical_title"] = title
         result["news_index"]["items"][duplicate_id] = item
+        # Mocked ingest must preserve the prior authoritative news item,
+        # exactly as a real scan against a populated index does.
+        result["news_index"]["items"].update(
+            copy.deepcopy(docs[PREFIX + "state/news-index.json"]["items"]))
         radar_item = result["radar_state"]["items"].pop(prior_id)
         radar_item["event_id"] = duplicate_id
         result["radar_state"]["items"][duplicate_id] = radar_item
