@@ -288,6 +288,27 @@ class BrowserBoundaryTests(unittest.TestCase):
                 with self.assertRaisesRegex(RuntimeError, 'CAPTURE_TIMEOUT_NO_RESEND'):
                     self.capture(Page(clock, **values), clock, timeout=12)
 
+    def test_idle_partial_reply_fails_explicitly_without_eight_minute_watchdog(self):
+        clock = Clock()
+        page = Page(clock, answers=lambda _: ['TTN2_EDITORIAL_BEGIN'])
+        with self.assertRaisesRegex(RuntimeError, 'NEWS_EDITORIAL_INCOMPLETE_NO_RESEND'):
+            self.capture(page, clock, timeout=300)
+        self.assertLess(clock.now, 70)
+
+    def test_actively_streaming_reply_can_finish_after_partial_marker(self):
+        clock = Clock()
+        page = Page(clock,
+            answers=lambda seconds: ['TTN2_EDITORIAL_BEGIN'] if seconds < 100 else [ANSWER],
+            busy=lambda seconds: seconds < 101)
+        self.assertEqual(self.capture(page, clock, timeout=140), (ANSWER, page.url))
+
+    def test_transient_auth_check_failure_is_not_reported_as_expired_login(self):
+        page = SimpleNamespace(evaluate=lambda _: None)
+        with self.assertRaisesRegex(RuntimeError, 'NEWS_CHATGPT_AUTH_CHECK_UNAVAILABLE'):
+            authenticated_session(page)
+        self.assertFalse(authenticated_session(SimpleNamespace(evaluate=lambda _: False)))
+        self.assertTrue(authenticated_session(SimpleNamespace(evaluate=lambda _: True)))
+
     def test_heartbeat_is_ticked_during_slow_response(self):
         clock, beats = Clock(), []
         page = Page(clock, busy=lambda seconds: seconds < 100)
@@ -315,9 +336,11 @@ class BrowserBoundaryTests(unittest.TestCase):
         self.assertTrue(authenticated_session(page))
         self.assertIn("fetch('/api/auth/session'", expressions[0])
         self.assertIn('Boolean(session && session.user && session.user.id)', expressions[0])
-        for value in [False, None, {}, {'user': {'id': 'not-a-boolean'}}, 'true', 1]:
+        for value in [False, {}, {'user': {'id': 'not-a-boolean'}}, 'true', 1]:
             with self.subTest(value=value):
                 self.assertFalse(authenticated_session(SimpleNamespace(evaluate=lambda expression: value)))
+        with self.assertRaisesRegex(RuntimeError, 'AUTH_CHECK_UNAVAILABLE'):
+            authenticated_session(SimpleNamespace(evaluate=lambda expression: None))
         def unavailable(expression): raise RuntimeError('private details must not escape')
         with self.assertRaisesRegex(RuntimeError, 'AUTH_CHECK_UNAVAILABLE'):
             authenticated_session(SimpleNamespace(evaluate=unavailable))

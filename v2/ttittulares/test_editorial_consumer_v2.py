@@ -139,6 +139,23 @@ class ConsumerTests(unittest.TestCase):
             self.assertIn(('fail', True), service.calls)
             self.assertEqual(report['error_code'], 'NEWS_CHATGPT_AUTHENTICATED_ACCOUNT_REQUIRED')
 
+    def test_fresh_chat_preflight_failure_does_not_disable_entire_consumer(self):
+        for code in ('NEWS_CHATGPT_AUTH_OR_FRESH_CHAT_REQUIRED',
+                     'NEWS_FRESH_CHAT_NOT_READY', 'NEWS_CHATGPT_AUTH_CHECK_UNAVAILABLE'):
+            with self.subTest(code=code), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp)
+                (root / 'editorial.enabled').write_text('TTN2_EDITORIAL_ENABLED=YES')
+                service = Service()
+                class FreshTabBrowser(Browser):
+                    def open(self): raise RuntimeError(code)
+                result = run_one(service, {'root': root, 'chrome': root / 'c', 'seed': root / 's'},
+                    browser_factory=lambda **kw: FreshTabBrowser(service.calls),
+                    build=lambda *a: 'prompt', parse=lambda *a: {})
+                self.assertTrue(enabled(root))
+                self.assertEqual(result['error_code'], code)
+                self.assertIn(('fail', True), service.calls)
+                self.assertNotIn('intent', service.calls)
+
     def test_commit_failure_preserves_capture_and_never_reports_ready(self):
         class FailingService(Service):
             def complete(self, *args): raise RuntimeError('COMMIT_UNCERTAIN')

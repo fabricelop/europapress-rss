@@ -30,10 +30,11 @@ AUTHENTICATED_SESSION = '''async () => {
         const response = await fetch('/api/auth/session', {
             credentials: 'include', signal: controller.signal, cache: 'no-store'
         });
-        if (!response.ok) return false;
+        if (response.status === 401 || response.status === 403) return false;
+        if (!response.ok) return null;
         const session = await response.json();
         return Boolean(session && session.user && session.user.id);
-    } catch (_) { return false; }
+    } catch (_) { return null; }
     finally { clearTimeout(timer); }
 }'''
 
@@ -215,9 +216,12 @@ def fresh_home_page(context):
 def authenticated_session(page):
     """Return only a boolean: never transfer session objects/tokens to Python."""
     try:
-        return page.evaluate(AUTHENTICATED_SESSION) is True
+        status = page.evaluate(AUTHENTICATED_SESSION)
     except Exception:
         raise RuntimeError('NEWS_CHATGPT_AUTH_CHECK_UNAVAILABLE') from None
+    if status is None:
+        raise RuntimeError('NEWS_CHATGPT_AUTH_CHECK_UNAVAILABLE')
+    return status is True
 
 
 def listener_process_ids(port, *, runner=subprocess.run):
@@ -314,11 +318,17 @@ def capture_reply(page, *, event_id, revision, command_id, heartbeat,
             idle = page.locator(STOP).count() == 0
             if answer != previous or not idle or not previous_idle:
                 previous, stable_since = answer, now
-            elif now - stable_since >= 6 and CHAT.fullmatch(page.url.split('?', 1)[0]):
-                if re.match(r'^\s*TTN2_EDITORIAL_BLOCKED\b', answer):
+            elif CHAT.fullmatch(page.url.split('?', 1)[0]):
+                stable_for = now - stable_since
+                if stable_for >= 6 and re.match(r'^\s*TTN2_EDITORIAL_BLOCKED\b', answer):
                     raise RuntimeError('NEWS_EDITORIAL_BLOCKED_NO_RESEND')
-                if 'TTN2_EDITORIAL_BEGIN' in answer and 'TTN2_EDITORIAL_END' in answer:
+                if stable_for >= 6 and 'TTN2_EDITORIAL_BEGIN' in answer and 'TTN2_EDITORIAL_END' in answer:
                     return answer, page.url.split('?', 1)[0]
+                # An idle partial answer used to hold a slot until the 8-min
+                # watchdog killed Chrome. After a conservative stable period,
+                # report an explicit incident; never accept or resend it.
+                if stable_for >= 45 and answer and 'TTN2_EDITORIAL_END' not in answer:
+                    raise RuntimeError('NEWS_EDITORIAL_INCOMPLETE_NO_RESEND')
             previous_idle = idle
         else:
             previous, previous_idle, stable_since = '', False, now
@@ -404,11 +414,11 @@ class ChromeJob:
             if self.composer is not None:
                 break
             time.sleep(2)
-        if (self.composer is None or self.page.url.split('?', 1)[0].rstrip('/') != 'https://chatgpt.com'
-            or self.page.locator('[data-message-author-role="user"]').count()):
-            raise RuntimeError('NEWS_CHATGPT_AUTH_OR_FRESH_CHAT_REQUIRED')
         if not authenticated_session(self.page):
             raise RuntimeError('NEWS_CHATGPT_AUTHENTICATED_ACCOUNT_REQUIRED')
+        if (self.composer is None or self.page.url.split('?', 1)[0].rstrip('/') != 'https://chatgpt.com'
+            or self.page.locator('[data-message-author-role="user"]').count()):
+            raise RuntimeError('NEWS_FRESH_CHAT_NOT_READY')
         self.hider.ensure_hidden()
 
     def send_once(self, prompt):

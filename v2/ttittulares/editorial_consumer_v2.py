@@ -40,6 +40,16 @@ def error_code(exc):
     return message if re.fullmatch(r'[A-Z][A-Z0-9_]{2,100}', message) else type(exc).__name__.upper()
 
 
+# Only positive evidence of a missing authenticated account or dedicated seed
+# may pause the entire pipeline. A fresh-tab/composer failure is preflight
+# trouble on ONE disposable profile, not proof that the login has expired.
+FATAL_AUTH_CODES = frozenset({
+    'NEWS_CHATGPT_AUTHENTICATED_ACCOUNT_REQUIRED',
+    'NEWS_DEDICATED_AUTH_SEED_REQUIRED',
+    'NEWS_AUTH_SEED_MISSING',
+})
+
+
 def settings(root):
     root = Path(root).resolve()
     config = json.loads((root / 'settings.json').read_text(encoding='utf-8-sig'))
@@ -136,7 +146,7 @@ def run_one(service, config, *, browser_factory=ChromeJob, parse=None, build=Non
             journal['private_capture_diagnostic'] = browser.capture_diagnostic
         if browser and isinstance(getattr(browser, 'startup_diagnostic', None), dict):
             journal['startup_diagnostic'] = browser.startup_diagnostic
-        if ('AUTH' in journal['error_code'] and 'NEWS_' in journal['error_code']):
+        if journal['error_code'] in FATAL_AUTH_CODES:
             # A missing login affects the whole consumer, not the facts of the
             # next 100 stories. Stop new claims while other slots finish safely.
             (config['root'] / 'editorial.enabled').write_text('TTN2_EDITORIAL_ENABLED=NO', encoding='utf-8')
