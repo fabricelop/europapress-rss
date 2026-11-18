@@ -16192,13 +16192,13 @@
       "trend_id": "trv2-6bb79cff587b2bc1947326a5",
       "name": "Cayetana",
       "revision": 2,
-      "status": "review_pending",
+      "status": "in_progress",
       "reason": "retry_after_incident_with_hints",
       "episode_token": "a49923a7e31dd9e6",
       "requested_at": "2026-11-18T20:21:52.514514+00:00",
       "updated_at": "2026-11-18T20:21:52.514514+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -16213,7 +16213,13 @@
       ],
       "incident_retries": 0,
       "review_mode": "x",
-      "review_hints": "Por Cayetana Alvarez de toledo"
+      "review_hints": "Por Cayetana Alvarez de toledo",
+      "lease": {
+        "token": "b9f0df093f49f440c9ff23c9ffa4c8a337eefe8d3db66de7",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-18T20:22:23.219329+00:00",
+        "expires_at": "2026-11-18T21:02:23.219329+00:00"
+      }
     },
     "trv2-4bb93a62128c86bfb2948b95": {
       "trend_id": "trv2-4bb93a62128c86bfb2948b95",
