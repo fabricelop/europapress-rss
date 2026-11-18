@@ -313,9 +313,16 @@ class ChromeJob:
         from playwright.sync_api import sync_playwright
         self.pw = sync_playwright().start()
         self.browser = self.pw.chromium.connect_over_cdp(endpoint)
-        # Always a new page at home, never a restored /c/ conversation.
-        self.page = self.browser.contexts[0].new_page()
-        self.page.goto('https://chatgpt.com/', wait_until='domcontentloaded', timeout=60000)
+        # Match the working Trends V2 flow: use Chrome's existing home tab
+        # when it is fresh. Never reuse a restored /c/ conversation.
+        context = self.browser.contexts[0]
+        self.page = next((p for p in context.pages
+                          if p.url.split('?', 1)[0].rstrip('/') == 'https://chatgpt.com'
+                          and p.locator('[data-message-author-role="user"]').count() == 0), None)
+        if self.page is None:
+            self.page = context.new_page()
+            self.page.goto('https://chatgpt.com/', wait_until='domcontentloaded', timeout=60000)
+        self.page.bring_to_front()
         until = time.monotonic() + 90
         while time.monotonic() < until:
             if self.hider.last_error:
@@ -339,6 +346,7 @@ class ChromeJob:
         if self.sent or self.composer is None:
             raise RuntimeError('NEWS_SEND_NOT_AUTHORIZED')
         self.sent = True  # Enter is never retried even if the transport raises.
+        self.page.bring_to_front()
         self.composer.fill(prompt)
         self.composer.press('Enter')
 
