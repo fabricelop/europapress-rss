@@ -9992,14 +9992,14 @@
     "trv2-b2c4441e7096e92ea22fde80": {
       "trend_id": "trv2-b2c4441e7096e92ea22fde80",
       "name": "Lc 19",
-      "revision": 2,
-      "status": "in_progress",
+      "revision": 3,
+      "status": "pending",
       "reason": "retry_after_incident",
       "episode_token": "220b01cdf47d3873",
-      "requested_at": "2026-11-17T08:54:09.738630+00:00",
-      "updated_at": "2026-11-17T08:55:54.144703+00:00",
+      "requested_at": "2026-11-18T08:05:31.746197+00:00",
+      "updated_at": "2026-11-18T08:05:31.746197+00:00",
       "previous_explanation": null,
-      "attempts": 1,
+      "attempts": 0,
       "previous_attempts": [
         {
           "revision": 1,
@@ -10010,19 +10010,19 @@
           "send_intent_at": null,
           "incident_reason": "lease_expired_without_capture",
           "archived_at": "2026-11-17T08:54:09.738630+00:00"
+        },
+        {
+          "revision": 2,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-17T08:54:27.383275+00:00",
+          "send_intent_at": "2026-11-17T08:55:54.144678+00:00",
+          "incident_reason": "lease_expired_without_capture",
+          "archived_at": "2026-11-18T08:05:31.746197+00:00"
         }
       ],
-      "incident_retries": 1,
-      "lease": {
-        "token": "1e9d30a33af22ad74a0f3c29d96eeb0e20c7ba1aaff456f3",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-17T08:54:27.383275+00:00",
-        "expires_at": "2026-11-17T09:34:27.383275+00:00"
-      },
-      "send_intent": {
-        "token": "1e9d30a33af22ad74a0f3c29d96eeb0e20c7ba1aaff456f3",
-        "at": "2026-11-17T08:55:54.144678+00:00"
-      }
+      "incident_retries": 2
     },
     "trv2-6c39d8f5b35232c2337a514d": {
       "trend_id": "trv2-6c39d8f5b35232c2337a514d",
@@ -14139,7 +14139,6 @@
     "trv2-876beecc59c543665de75939",
     "trv2-aa95c3b3492d3c8d8b44eceb",
     "trv2-7eb4076b8caa411c45539050",
-    "trv2-b2c4441e7096e92ea22fde80",
     "trv2-6c39d8f5b35232c2337a514d",
     "trv2-1b1f435aa8db200810a77657",
     "trv2-38348ef993071d36d63504ce",
@@ -14234,7 +14233,8 @@
     "trv2-2243711878495b6674c113ae",
     "trv2-7906c285782eedb6be13eb5b",
     "trv2-4aa092fee005799f53c4f32b",
-    "trv2-a23c911ea90013053c8a7f51"
+    "trv2-a23c911ea90013053c8a7f51",
+    "trv2-b2c4441e7096e92ea22fde80"
   ],
   "effects_enabled": false
 }
