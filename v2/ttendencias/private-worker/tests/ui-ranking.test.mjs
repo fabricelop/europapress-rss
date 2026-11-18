@@ -78,7 +78,8 @@ test("RE requested has visible pending state and hides previous explanation and 
  assert.match(app,/En revisión · nueva explicación en preparación/);
  assert.match(app,/const time=reset\?null:explanationTime\(item\)/);
  assert.match(app,/if\(!reset&&\(imageReady\(item\)\|\|item\.image_suppressed===true\)\)/);
- assert.match(app,/if\(!reset\)\{makePublishButtons\(card,item\);attachGeneratedImage\(card,item\);\}/);
+ assert.match(app,/if\(!reset\|\|item\.status!==\"explicada\"\)makePublishButtons\(card,item\)/);
+ assert.match(app,/if\(!reset\)attachGeneratedImage\(card,item\)/);
  assert.match(css,/\.review-state/);
 });
 
@@ -174,4 +175,20 @@ test("Antonio Recio dossier with character count extracts the X-ready lead",()=>
  assert.match(formatted,/TT#8 ANTONIO RECIO es tendencia/);
  assert.match(formatted,/El estreno hoy de la temporada 17/);
  assert.doesNotMatch(formatted,/Explicación capturada; formato editorial pendiente/);
+});
+
+test("BUS-X is visible in the summary for all statuses and searches the literal trend name",()=>{
+ assert.match(app,/const busX=el\("a","bus-x-link","BUS-X"\)/);
+ assert.match(app,/encodeURIComponent\(item.name\)/);
+ assert.match(app,/busX\.target="_blank"/);
+ assert.match(app,/busX\.rel="noopener noreferrer"/);
+ assert.match(app,/head\.append\(busX\)/);
+ assert.match(css,/\.bus-x-link\{/);
+});
+test("pending and active trends offer RE and RE-X without exposing publishing controls",()=>{
+ const code=app.slice(app.indexOf('function makePublishButtons(card,item){'),app.indexOf('\nfunction render()'));
+ assert.match(code,/item\.status==="pendiente"\|\|item\.status==="en_elaboracion"/);
+ assert.match(code,/appendEditorialReButtons\(editing,item\)/);
+ assert.match(app,/function appendEditorialReButtons\(editing,item\)/);
+ assert.match(app,/mode:"x",hints/);
 });
