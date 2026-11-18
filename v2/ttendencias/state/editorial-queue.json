@@ -15217,20 +15217,27 @@
     "trv2-c9ddf5e89620f49cc97f8a27": {
       "trend_id": "trv2-c9ddf5e89620f49cc97f8a27",
       "name": "Ruvens",
-      "revision": 1,
-      "status": "in_progress",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "58b31c30b52a0927",
-      "requested_at": "2026-11-18T16:02:17.136099+00:00",
-      "updated_at": "2026-11-18T16:02:17.136099+00:00",
+      "requested_at": "2026-11-18T16:52:41.543437+00:00",
+      "updated_at": "2026-11-18T16:52:41.543437+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "lease": {
-        "token": "541c516856c16a43ddff38c41f3d423ef20598fc4255abbf",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-18T16:03:17.569461+00:00",
-        "expires_at": "2026-11-18T16:43:17.569461+00:00"
-      }
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-18T16:03:17.569461+00:00",
+          "send_intent_at": null,
+          "incident_reason": "lease_expired_without_capture",
+          "archived_at": "2026-11-18T16:52:41.543437+00:00"
+        }
+      ],
+      "incident_retries": 1
     },
     "trv2-0abb9ccd4b2ff9ae655695ca": {
       "trend_id": "trv2-0abb9ccd4b2ff9ae655695ca",
