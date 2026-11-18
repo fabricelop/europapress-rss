@@ -228,7 +228,8 @@ async function reRequests(request,env) {
     try{ranking=await currentRanking(env);}catch{return json({error:"ranking_unavailable"},503);}
     const current=ranking.find(x=>x.trend_id===trend_id);
     if(!current||current.revision!==revision||
-       current.status!=="explicada")return json({error:"trend_not_current"},409);
+       !["explicada","pendiente","en_elaboracion"].includes(current.status))
+      return json({error:"trend_not_current"},409);
     if(current.re_in_progress===true)return json({error:"re_already_processing"},409);
     if(mode==="x"){
       await reXTable(env.MARKS_DB);
@@ -269,6 +270,11 @@ async function incidentReX(request,env) {
     // This is only a hint request. The poller must NEVER reset an in-flight
     // chat; it annotates the revision and the incident recovery worker decides.
     await env.MARKS_DB.prepare("INSERT INTO incident_rex_requests(trend_id,base_revision,hints) VALUES(?,?,?) ON CONFLICT(trend_id,base_revision) DO NOTHING").bind(trend_id,revision,hints).run();
+    // RE-X on an incident also requests the guarded retry: the user should
+    // not need to click a second button. The Windows incident worker remains
+    // responsible for checking lease, journal and exact Chrome cleanup.
+    await incidentRetryTable(env.MARKS_DB);
+    await env.MARKS_DB.prepare("INSERT INTO incident_retry_requests(trend_id,base_revision,instructions) VALUES(?,?,?) ON CONFLICT(trend_id,base_revision) DO NOTHING").bind(trend_id,revision,"").run();
     return json({ok:true,queued:true,trend_id,base_revision:revision},202);
   }catch{return json({error:"incident_rex_unavailable"},503);}
 }
