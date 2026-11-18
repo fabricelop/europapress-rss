@@ -16,7 +16,8 @@ if(!view.items.some(x=>x.group==='pending')){
 }
 const root=path.resolve('dist');
 const shots=path.resolve(process.env.RUNNER_TEMP||'.','ttv2-news-qa');await fs.mkdir(shots,{recursive:true});
-let fail=false,demoReady=false,archived=false;
+let fail=false,demoReady=false,archived=false,publicImageVisible=true;
+const imageToggleActions=[];
 const example=view.items.find(x=>x.group==='pending');
 const demoTweet="Una explicación breve de prueba, con hechos contrastados y preparada para un tuit. #Prueba #Noticias";
 const demoRecord={event_id:example.event_id,revision:example.revision,tweet_text:demoTweet,x_character_count:demoTweet.length,title:example.title,factual_summary:'Hecho contrastado de prueba.'};
@@ -32,11 +33,15 @@ const server=http.createServer(async(req,res)=>{
  if(u.pathname==='/api/news'){
   res.setHeader('Content-Type','application/json');
   if(fail){res.statusCode=503;res.end('{}');return;}
-  res.end(JSON.stringify(pageNews(demoReady?(archived?{...readyView,items:readyView.items.map(x=>({...x,group:'archived',status_label:'Archivada'})),counts:{...readyView.counts,ready:0,archived:1}}:readyView):view,u.searchParams)));return;
+  res.end(JSON.stringify(pageNews(demoReady?(archived?{...readyView,items:readyView.items.map(x=>({...x,group:'archived',status_label:'Archivada',image_available:true,has_image:true,public_image_visible:publicImageVisible})),counts:{...readyView.counts,ready:0,archived:1}}:readyView):view,u.searchParams)));return;
  }
  if(u.pathname==='/api/news-actions'){
   let raw='';for await(const part of req)raw+=part;const body=JSON.parse(raw);
   if(body.action==='archive'||body.action==='publish')archived=true;
+  if(body.action==='public_image'){
+   publicImageVisible=body.value;
+   imageToggleActions.push(body.value);
+  }
   res.setHeader('Content-Type','application/json');res.end(JSON.stringify({ok:true,publication_sent:false}));return;
  }
  if(u.pathname.startsWith('/api/news/')&&demoReady){res.setHeader('Content-Type','application/json');res.end(JSON.stringify(demoRecord));return;}
@@ -113,13 +118,20 @@ try{
  }
  page.on('dialog',dialog=>dialog.accept());
  await page.getByRole('button',{name:'PUB',exact:true}).click();
- await page.waitForFunction(()=>document.querySelectorAll('.news-card').length===0);
- await page.getByRole('button',{name:'Archivo · 1',exact:true}).click();
+ // PUB now leads directly to the same archived card, which must retain the
+ // independently reversible V1 image switch; no second publication button.
+ await page.waitForFunction(()=>document.querySelector('.news-filter[aria-pressed="true"]')?.textContent.startsWith('Arch.'));
  await page.waitForFunction(()=>document.querySelectorAll('.news-card').length===1);
- await page.locator('.news-card summary').first().click();
  await page.waitForFunction(text=>document.querySelector('.news-body p')?.textContent===text,demoTweet);
+ const toggle=page.getByRole('switch',{name:'Mostrar imagen en V1'});
+ await toggle.waitFor({state:'visible'});
+ if(await page.getByRole('button',{name:'PUB',exact:true}).count())throw Error('ARCH must not republish a finished news item');
+ await toggle.uncheck();
+ await page.waitForFunction(()=>document.querySelector('[role="switch"]')?.checked===false);
+ await page.getByRole('switch',{name:'Mostrar imagen en V1'}).check();
+ await page.waitForFunction(()=>document.querySelector('[role="switch"]')?.checked===true);
+ if(JSON.stringify(imageToggleActions)!=='[false,true]')throw Error('ARCH image switch must persist both V1 visibility decisions');
  await page.screenshot({path:path.join(shots,'news-pub-archive.png'),fullPage:false});
  if(errors.length)throw Error(errors.join('; '));
  console.log('NEWS_BROWSER_QA=PASS; default Elaboradas/compact filters/short READY tweet/paging/search/error retention/mobile/image incident I lazy detail=OK');
 }finally{await browser.close();server.close();}
-
