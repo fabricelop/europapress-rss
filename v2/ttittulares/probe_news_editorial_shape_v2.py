@@ -25,13 +25,19 @@ def main():
     prompt = build_prompt(news, job, "news-probe-no-queue")
     profile = config["root"] / "sessions" / uuid.uuid4().hex / "Profile"
     browser = ChromeJob(chrome=config["chrome"], seed=config["seed"], profile=profile)
-    report = {"prompt_chars": len(prompt), "probe_sent": False, "assistant_turns": 0,
+    report = {"prompt_chars": len(prompt), "probe_sent": False,
+              "submission_confirmed": False, "assistant_turns": 0,
               "response_seen": False, "stop_visible": False, "cleanup_verified": False}
     try:
         browser.open()
         browser.send_once(prompt)
         report["probe_sent"] = True
-        until = time.monotonic() + 120
+        # Just like the production consumer, bind the exact submitted user
+        # turn first: ChatGPT can move the conversation to another owned tab.
+        # Inspecting only the original home tab yields a false "no reply".
+        browser.confirm_submission(ident, 1, "news-probe-no-queue")
+        report["submission_confirmed"] = True
+        until = time.monotonic() + 300
         while time.monotonic() < until:
             users, answers = read_news_turns(browser.page)
             report["assistant_turns"] = len(answers)

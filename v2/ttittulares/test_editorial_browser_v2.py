@@ -97,6 +97,42 @@ class BrowserBoundaryTests(unittest.TestCase):
         page.users = lambda _: [USER]
         self.assertEqual(self.capture(page, clock), (ANSWER, page.url))
 
+    def test_empty_assistant_role_placeholder_does_not_hide_visible_reply(self):
+        clock = Clock()
+        page = TranscriptPage(clock, 'You said:\n' + USER + '\nChatGPT said:\n' + ANSWER)
+        page.users = lambda _: [USER]
+        page.answers = lambda _: ['  ']
+        self.assertEqual(self.capture(page, clock), (ANSWER, page.url))
+
+    def test_empty_visible_user_never_binds_unrelated_assistant(self):
+        clock = Clock()
+        page = TranscriptPage(clock, 'You said:\nChatGPT said:\n' + ANSWER)
+        page.users = lambda _: [USER]
+        self.assertEqual(read_news_turns(page), ([USER], []))
+        with self.assertRaisesRegex(RuntimeError, 'CAPTURE_TIMEOUT_NO_RESEND'):
+            self.capture(page, clock, timeout=12)
+
+    def test_trends_style_last_matching_visible_pair_ignores_other_ui_markers(self):
+        clock = Clock()
+        transcript = ('You said:\nA sidebar example\nChatGPT said:\nNot this story.\n'
+                      'You said:\n' + USER + '\nChatGPT said:\n' + ANSWER +
+                      '\nChatGPT can make mistakes.\nLatest response')
+        page = TranscriptPage(clock, transcript)
+        page.users = lambda _: [USER]
+        users, answers = read_news_turns(page)
+        self.assertEqual(users, [USER])
+        self.assertEqual(answers, [ANSWER])
+        self.assertEqual(self.capture(page, clock), (ANSWER, page.url))
+
+    def test_multiple_unattributed_visible_turns_never_guess_sent_identity(self):
+        clock = Clock()
+        transcript = ('You said:\n' + USER + '\nChatGPT said:\n' + ANSWER +
+                      '\nYou said:\nOther prompt\nChatGPT said:\nOther answer')
+        page = TranscriptPage(clock, transcript)
+        self.assertEqual(read_news_turns(page), ([], []))
+        with self.assertRaisesRegex(RuntimeError, 'CAPTURE_TIMEOUT_NO_RESEND'):
+            self.capture(page, clock, timeout=12)
+
     def test_visible_reply_cannot_override_different_role_user(self):
         clock = Clock()
         transcript = 'You said:\n' + USER + '\nChatGPT said:\n' + ANSWER

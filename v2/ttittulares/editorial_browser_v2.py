@@ -106,9 +106,16 @@ def clone_job_profile(seed, destination, *, find_pids):
 
 
 def read_news_turns(page):
-    """Read role DOM, then recover a visible answer when assistant roles are absent."""
-    users = page.locator('[data-message-author-role="user"]').all_text_contents()
-    answers = page.locator('[data-message-author-role="assistant"]').all_text_contents()
+    """Read role DOM, then bind a visible reply to the exact user bubble.
+
+    The working Trends V2 reader selects the relevant last turn instead of
+    requiring the whole page to contain one literal "You said" marker. The
+    extra labels can occur in surrounding UI and must not hide a real answer.
+    """
+    users = [text.strip() for text in page.locator(
+        '[data-message-author-role="user"]').all_text_contents() if text.strip()]
+    answers = [text.strip() for text in page.locator(
+        '[data-message-author-role="assistant"]').all_text_contents() if text.strip()]
     if users and answers:
         return users, answers
     # Some ChatGPT layouts expose user bubbles without the role attribute.
@@ -126,18 +133,29 @@ def read_news_turns(page):
     except Exception:
         return [], answers
     user_markers = list(re.finditer(r'(?m)^\s*(?:You said|Tú dijiste|Has dicho):\s*$', body))
-    if len(user_markers) != 1:
+    if not user_markers or (not users and len(user_markers) != 1):
         return users, answers
-    start = user_markers[0].end()
-    assistant = re.search(r'(?m)^\s*(?:ChatGPT said|ChatGPT dijo|ChatGPT ha dicho|ChatGPT respondió):\s*$', body[start:])
-    if assistant is None:
-        return users, answers
-    end = start + assistant.start()
-    response = body[start + assistant.end():].strip()
-    visible_user = body[start:end].strip()
-    if users and not any(visible_user in user or user in visible_user for user in users):
-        return users, answers
-    return users or [visible_user], answers or ([response] if response else [])
+    # A role-verified user turn is authoritative. Search from newest to oldest,
+    # requiring one complete matching user/assistant pair inside its bounds.
+    for index in reversed(range(len(user_markers))):
+        start = user_markers[index].end()
+        limit = user_markers[index + 1].start() if index + 1 < len(user_markers) else len(body)
+        section = body[start:limit]
+        assistant = re.search(r'(?m)^\s*(?:ChatGPT said|ChatGPT dijo|ChatGPT ha dicho|ChatGPT respondió):\s*$', section)
+        if assistant is None:
+            continue
+        visible_user = section[:assistant.start()].strip()
+        if users and not (len(users) == 1 and len(visible_user) >= 30 and
+                          any(visible_user in user or user in visible_user for user in users)):
+            continue
+        response = section[assistant.end():].strip()
+        for footer in ('ChatGPT can make mistakes.', 'ChatGPT puede cometer errores.',
+                       'Latest response', 'Última respuesta'):
+            if footer in response:
+                response = response.split(footer, 1)[0].strip()
+        if response:
+            return users or [visible_user], answers or [response]
+    return users, answers
 
 
 def fresh_turn(user_turns, event_id, revision, command_id):
