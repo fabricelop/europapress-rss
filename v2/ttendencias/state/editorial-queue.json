@@ -16325,13 +16325,13 @@
       "trend_id": "trv2-c0efe7e6fb44b284d08e84d2",
       "name": "Pradilla",
       "revision": 2,
-      "status": "review_pending",
+      "status": "in_progress",
       "reason": "retry_after_incident_with_hints",
       "episode_token": "69ae2bd6a2496ff2",
       "requested_at": "2026-11-18T20:58:41.412629+00:00",
       "updated_at": "2026-11-18T20:58:41.412629+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -16346,7 +16346,13 @@
       ],
       "incident_retries": 0,
       "review_mode": "x",
-      "review_hints": "Jugador de baloncesto"
+      "review_hints": "Jugador de baloncesto",
+      "lease": {
+        "token": "6b842faee92f20c83b9baa9c6f769878e26cae4dcb4a5f3e",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-18T20:59:11.776196+00:00",
+        "expires_at": "2026-11-18T21:39:11.776196+00:00"
+      }
     },
     "trv2-c2ae394d30eb8a3c4136f77d": {
       "trend_id": "trv2-c2ae394d30eb8a3c4136f77d",
