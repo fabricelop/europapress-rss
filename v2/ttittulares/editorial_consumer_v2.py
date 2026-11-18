@@ -51,7 +51,11 @@ def settings(root):
     chrome = Path(config['chrome'])
     if not seed.is_dir() or not chrome.is_file():
         raise RuntimeError('NEWS_CHROME_OR_AUTH_SEED_MISSING')
-    return {'root': root, 'seed': seed, 'chrome': chrome}
+    boundary = root / 'editorial-from.txt'
+    # Set once by the scoped launcher; leave pre-existing installations
+    # unchanged until an operator explicitly enables this new date boundary.
+    return {'root': root, 'seed': seed, 'chrome': chrome,
+            'min_requested_at': boundary.read_text(encoding='utf-8-sig').strip() if boundary.exists() else None}
 
 
 def run_one(service, config, *, browser_factory=ChromeJob, parse=None, build=None,
@@ -289,7 +293,7 @@ def main():
     args = parser.parse_args()
     from .news_workflow_v2 import NewsService, NewsStore
     config = settings(args.root)
-    service = NewsService(NewsStore(github_token()))
+    service = NewsService(NewsStore(github_token()), min_requested_at=config['min_requested_at'])
     if args.check:
         print(json.dumps({'project': 'ttittulares-v2', 'preview': service.preview(),
                           'browser_opened': False, 'published': False}))

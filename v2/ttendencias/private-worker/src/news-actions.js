@@ -41,9 +41,13 @@ export async function publicNewsImageVisibility(request,env,{json}){
    .bind(event_id,revision).first();
   const preference=row?JSON.parse(row.body):{};
   return json({schema_version:1,project:"ttittulares-v2",event_id,revision,
-   public_image_visible:preference.public_image_visible===true,
+   // null means untouched: the V2 UI applies its headline-sensitive default.
+   // The trusted V1 ledger can apply that same default to the verified title.
+   public_image_visible:typeof preference.public_image_visible==="boolean"?preference.public_image_visible:null,
    image_suppressed:preference.image_suppressed===true,
-   rework_requested:preference.rework_requested===true},200,
+   rework_requested:preference.rework_requested===true,
+   archived:preference.archived===true,
+   dismissed:preference.dismissed===true},200,
    {"Cache-Control":"no-store","Access-Control-Allow-Origin":"*"});
  }catch{return json({error:"news_image_visibility_unavailable"},503);}
 }
@@ -72,7 +76,15 @@ export async function newsPublicationCount(request,env,{json}){
 export async function newsView(env,params){
  if(!env.MARKS_DB)return readNews({params});
  const [base,controls]=await Promise.all([readNews({params:new URLSearchParams({state:"ready"}) ,all:true}),newsControls(env)]);
- return pageNews(decorateNews(base,controls),params);
+ const view=decorateNews(base,controls);
+ // 18 Nov (Madrid): retire old PEND and INC from the working screen, while
+ // keeping immutable evidence in GitHub for an audited, recoverable rollback.
+ const cutoff=Date.parse("2026-11-17T23:00:00Z");
+ const items=view.items.filter(item=>!["pending","incident"].includes(item.group)||
+  Date.parse(item.requested_at||item.first_seen_at)>=cutoff);
+ const counts={...view.counts,pending:items.filter(x=>x.group==="pending").length,
+  incident:items.filter(x=>x.group==="incident").length};
+ return pageNews({...view,items,counts},params);
 }
 
 async function savePreference(db,id,revision,expected,next,entry){
@@ -264,7 +276,7 @@ export async function newsImage(request,env,{json,headers},publicRead=false){
 export async function publicNews(env){
  const raw=await readNews({all:true}),controls=await newsControls(env);
  const view=decorateNews(raw,controls),items=[];
- for(const item of view.items.filter(x=>["ready","archived"].includes(x.group)&&!x.rework_requested).slice(0,30)){
+ for(const item of view.items.filter(x=>["ready","archived"].includes(x.group)&&!x.rework_requested&&!x.dismissed).slice(0,30)){
   const record=await readNewsRecord(item.event_id,item.revision,{view:raw});
   items.push({...item,...record,id:item.event_id,headline:record.title,explanation:record.tweet_text,
    image_url:item.image_available?

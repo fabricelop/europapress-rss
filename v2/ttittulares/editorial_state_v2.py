@@ -252,18 +252,25 @@ class EditorialService:
     Capture/READY may be safely retried with identical hashes; never send again.
     """
 
-    def __init__(self, store, *, clock=utcnow, lease_seconds=600, max_attempts=5):
+    def __init__(self, store, *, clock=utcnow, lease_seconds=600, max_attempts=5, min_requested_at=None):
         if not 60 <= lease_seconds <= 1800 or not 1 <= max_attempts <= 8:
             raise EditorialError("INVALID_EDITORIAL_SERVICE_LIMIT")
         self.store, self.clock = store, clock
         self.lease_seconds, self.max_attempts = lease_seconds, max_attempts
+        # A locally configured launch boundary excludes historical backlog from
+        # new claims without deleting immutable events or modifying their audit.
+        self.min_requested_at = _time(min_requested_at) if min_requested_at else None
+
+    def _in_scope(self, job):
+        return self.min_requested_at is None or _time(job["requested_at"]) >= self.min_requested_at
 
     def preview(self):
         head, docs = self.store.read_editorial_snapshot()
         news, jobs = _snapshot(docs)
         now = self.clock()
         _stamp(now)
-        pending = [j for j in jobs.values() if j["status"] == "pending" and not _blocked(news[j["event_id"]], j, docs)]
+        pending = [j for j in jobs.values() if j["status"] == "pending" and self._in_scope(j)
+                   and not _blocked(news[j["event_id"]], j, docs)]
         pending.sort(key=_pending_order)
         stale = [j for j in jobs.values() if j["status"] in ACTIVE and
                  (_blocked(news[j["event_id"]], j, docs) or not j.get("lease") or
@@ -278,6 +285,7 @@ class EditorialService:
                     (j.get("send_intent") or {}).get("submission_state") == "confirmed"
                     and (j.get("capture") or {}).get("complete") is True)]
         plan = {"commit_sha": head, "pending_count": len(pending), "max_workers": MAX_WORKERS,
+                "min_requested_at": _stamp(self.min_requested_at) if self.min_requested_at else None,
                 "active_count": sum(j["status"] in ACTIVE for j in jobs.values()),
                 "recovery_incident_count": len(recovery),
                 "blocking_recovery_incident_count": len(blocking),
@@ -311,7 +319,7 @@ class EditorialService:
                 if owned:
                     job = owned[0]
                 elif sum(j["status"] in ACTIVE for j in jobs.values()) < MAX_WORKERS:
-                    candidates = [j for j in jobs.values() if j["status"] == "pending" and
+                    candidates = [j for j in jobs.values() if j["status"] == "pending" and self._in_scope(j) and
                                   not _blocked(news[j["event_id"]], j, docs)]
                     candidates.sort(key=_pending_order)
                     job = candidates[0] if candidates else None

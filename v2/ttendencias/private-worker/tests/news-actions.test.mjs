@@ -6,7 +6,7 @@ import {DatabaseSync} from "node:sqlite";
 import {deflateSync} from "node:zlib";
 import {newsAction,newsControls,newsView,newsPublicationCount,newsManualImage,newsImage,newsWorkerControls,publicNews,publicNewsImageVisibility} from "../src/news-actions.js";
 import {decorateNews,projectNews} from "../src/news.js";
-const id="ttn2-"+"a".repeat(24),time="2026-11-16T18:13:24Z",hash="c".repeat(64);
+const id="ttn2-"+"a".repeat(24),time="2026-11-18T08:13:24Z",hash="c".repeat(64);
 function fixture(){return [
  {schema_version:1,project:"ttittulares-v2",updated_at:time,items:{[id]:{event_id:id,current_revision:1,status:"ready",
  canonical_title:"Un hecho contrastado entre fuentes diferentes",source_families:["RTVE","EFE"],canonical_urls:["https://example.com/news"],first_seen_at:time,last_seen_at:time}}},
@@ -73,14 +73,24 @@ test("public V1 visibility reads one exact revision and follows both sides of th
  await newsControls(env);
  const url="https://private.example/api/public-news-image-visibility?id="+id+"&revision=1";
  const visible=async()=>publicNewsImageVisibility(new Request(url),env,helpers);
- assert.equal((await(await visible()).json()).public_image_visible,false);
+ assert.equal((await(await visible()).json()).public_image_visible,null);
  assert.equal((await newsAction(request("public_image",{value:true}),env,helpers)).status,200);
  let result=await visible();assert.equal(result.status,200);
  assert.deepEqual(await result.json(),{schema_version:1,project:"ttittulares-v2",event_id:id,revision:1,
-  public_image_visible:true,image_suppressed:false,rework_requested:false});
- assert.equal((await(await publicNewsImageVisibility(new Request(url.replace("revision=1","revision=2")),env,helpers)).json()).public_image_visible,false);
+  public_image_visible:true,image_suppressed:false,rework_requested:false,archived:false,dismissed:false});
+ assert.equal((await(await publicNewsImageVisibility(new Request(url.replace("revision=1","revision=2")),env,helpers)).json()).public_image_visible,null);
  assert.equal((await publicNewsImageVisibility(new Request(url.replace(id,"bad")),env,helpers)).status,400);
  assert.equal((await publicNewsImageVisibility(new Request(url,{method:"POST"}),env,helpers)).status,405);
+}));
+test("old PEND and INC leave the active lists but audit-ready stories remain",()=>scoped(async(env,docs)=>{
+ docs[0].items[id].first_seen_at="2026-11-17T12:00:00Z";
+ docs[1].items[0].requested_at="2026-11-17T12:00:00Z";
+ docs[0].items[id].status="editorial_pending";docs[1].items[0].status="pending";
+ let view=await newsView(env,new URLSearchParams({state:"pending"}));assert.equal(view.total,0);assert.equal(view.counts.pending,0);
+ docs[1].items[0].status="problematic";
+ view=await newsView(env,new URLSearchParams({state:"incident"}));assert.equal(view.total,0);assert.equal(view.counts.incident,0);
+ docs[0].items[id].status="ready";docs[1].items[0].status="ready";
+ view=await newsView(env,new URLSearchParams({state:"ready"}));assert.equal(view.total,1);
 }));
 test("news PUB counter is a separate exact rolling 24-hour register; legacy PU remains counted until expiry",()=>scoped(async env=>{
  const count=async()=>{

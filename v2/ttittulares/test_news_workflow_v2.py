@@ -19,6 +19,13 @@ class NewsEditorialAutoRetryTests(unittest.TestCase):
   self.service.submitted(job["job_id"],"worker-first",self.token)
   self.service.fail(job["job_id"],"worker-first",self.token,code)
   return job
+ def test_scope_prevents_automatic_retry_of_historical_incident(self):
+  old=self.fail_first()
+  self.service=NewsService(self.store,clock=lambda:self.now,lease_seconds=120,
+   min_requested_at=(BASE+timedelta(days=1)).isoformat())
+  self.assertFalse(self.service.preview().get('automatic_retry_pending'))
+  self.assertFalse(self.service.retry_problematic())
+  self.assertIsNone(self.service.claim('worker-fresh','scope-private-token-123456789012345')['job'])
  def test_failed_elaboration_creates_new_revision_and_new_chat_slot(self):
   old=self.fail_first()
   plan=self.service.preview();self.assertTrue(plan["automatic_retry_pending"])

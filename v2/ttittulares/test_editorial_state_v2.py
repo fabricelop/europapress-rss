@@ -94,6 +94,20 @@ class EditorialStateTests(unittest.TestCase):
     def claim(self, worker='worker-1', token=None):
         return self.service.claim(worker, token or self.token)
 
+    def test_launch_boundary_skips_yesterday_without_erasing_pending_jobs(self):
+        from .test_radar_ingest_v2 import BASE
+        cutoff=(BASE+timedelta(seconds=2)).isoformat().replace('+00:00','Z')
+        service=EditorialService(self.store,clock=lambda:self.now,lease_seconds=120,min_requested_at=cutoff)
+        plan=service.preview()
+        self.assertEqual(plan['pending_count'],2)
+        self.assertEqual(plan['min_requested_at'],cutoff)
+        claimed=service.claim('worker-today','today-only-private-token-123456789')
+        self.assertEqual(claimed['job']['requested_at'],cutoff)
+        _,after=self.store.read_editorial_snapshot()
+        self.assertEqual(sum(j['status']=='pending' for p,j in after.items() if '/jobs/editorial/' in p),3)
+        with self.assertRaises(EditorialError):
+            EditorialService(self.store,min_requested_at='not-a-timestamp')
+
     def prepare(self, claim=None):
         claim = claim or self.claim()
         return self.service.prepare_send(claim['job']['job_id'], 'worker-1', self.token, 'b'*64, 'news-command-1',

@@ -113,7 +113,7 @@ class NewsService(ed.EditorialService):
         return sum(r.get("reason") == "automatic_retry" for r in event.get("revision_refs", [])) < 2
 
     def _preview_more(self, docs, news, jobs, plan):
-        eligible = any(self._auto_retryable(j, news[j["event_id"]])
+        eligible = any(self._in_scope(j) and self._auto_retryable(j, news[j["event_id"]])
                        and not ed._blocked(news[j["event_id"]], j, docs)
                        and ed.record_path(j) not in docs for j in jobs.values())
         return {"automatic_retry_pending": eligible,
@@ -130,7 +130,7 @@ class NewsService(ed.EditorialService):
             head, docs = self.store.read_editorial_snapshot()
             news, jobs = ed._snapshot(docs)
             candidates = [j for j in jobs.values()
-                          if self._auto_retryable(j, news[j["event_id"]])
+                          if self._in_scope(j) and self._auto_retryable(j, news[j["event_id"]])
                           and not ed._blocked(news[j["event_id"]], j, docs)
                           and ed.record_path(j) not in docs]
             candidates.sort(key=lambda j: (j["requested_at"], j["job_id"]))

@@ -59,6 +59,7 @@ export function projectNews(index,queue,clock=Date.now(),liveRadar=null){
    projectImageIncident(item.image_incident,{project:"ttittulares-v2",id,revision:item.current_revision,editorialHash:item.editorial_sha256}):null;
   items.push({event_id:id,revision:item.current_revision,title:item.canonical_title.slice(0,500),
    group,status_label:label,source_families:families,source_family_count:families.length,
+   requested_at:stamp(job?.requested_at),
    source_url:(item.canonical_urls||[]).map(url).find(Boolean)||null,
    first_seen_at:stamp(item.first_seen_at),last_seen_at:stamp(item.last_seen_at),
    explanation:null,publication_allowed:false,
@@ -168,7 +169,7 @@ export function decorateNews(view,controls={}){
   // Same conservative default as trends, scoped to the private V1 card only.
   const words=String(item.title||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
   const sensitive=/\b(?:asesinat\w*|fallec\w*|muert\w*|suicid\w*|violacion\w*|abuso\s+sexual|agresion\s+sexual|menores?\s+de\s+edad|ninos?\s+(?:herid\w*|fallecid\w*|victim\w*)|atentad\w*|bombarde\w*|secuestro\w*|tortur\w*|cadaver\w*|victimas?\s+mortal\w*|catastrofe\w*|tragedia\w*|naufragio\w*|sangre|herid\w*\s+grave\w*)\b/u.test(words);
-  const row={...item,marked,image_suppressed:pref.image_suppressed===true,
+  const row={...item,marked,dismissed:pref.dismissed===true,image_suppressed:pref.image_suppressed===true,
    has_image:item.image_available===true||Boolean(pref.manual_image),
    public_image_visible:pref.public_image_visible??!sensitive, // V1-only switch; independent of V2.
    image_sensitivity_default:sensitive,
