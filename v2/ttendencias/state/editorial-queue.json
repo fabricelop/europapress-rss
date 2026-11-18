@@ -16946,13 +16946,13 @@
       "trend_id": "trv2-1542f4712e897fa721934714",
       "name": "Cristina",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "dd618330ddf21a2f",
       "requested_at": "2026-11-18T22:56:59.974934+00:00",
       "updated_at": "2026-11-18T22:56:59.974934+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -16965,7 +16965,13 @@
           "archived_at": "2026-11-18T22:56:59.974934+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "93dc5fa00730b5a26096cf67d076b8580ce980aecccea832",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-18T22:57:25.542226+00:00",
+        "expires_at": "2026-11-18T23:37:25.542226+00:00"
+      }
     },
     "trv2-7523783ed08049a82b31874b": {
       "trend_id": "trv2-7523783ed08049a82b31874b",
