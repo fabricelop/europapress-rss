@@ -11431,13 +11431,13 @@
       "trend_id": "trv2-6d46e65822bbef3ea1cf20c5",
       "name": "Mohamed",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "80db97d9eed62e9d",
       "requested_at": "2026-11-18T00:06:21.945118+00:00",
       "updated_at": "2026-11-18T00:06:21.945118+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -11450,7 +11450,13 @@
           "archived_at": "2026-11-18T00:06:21.945118+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "34f732a4c3a3c75123cc3bbcfc0fc5104ef763019dcbafdf",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-18T00:07:08.642160+00:00",
+        "expires_at": "2026-11-18T00:47:08.642160+00:00"
+      }
     },
     "trv2-34ca0c923169a13704deea45": {
       "trend_id": "trv2-34ca0c923169a13704deea45",
