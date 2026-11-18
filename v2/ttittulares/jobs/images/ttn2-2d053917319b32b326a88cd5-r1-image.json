@@ -1,23 +1,31 @@
 {
   "attempts": {
     "claim_count": 1,
-    "history": [],
+    "history": [
+      {
+        "at": "2026-11-18T20:41:13Z",
+        "attempt_no": 1,
+        "command_id": "news-img-a48ed9f454a749b4ac9a61af15d9f3a8",
+        "outcome": "captured"
+      }
+    ],
     "max_safe_preflight_attempts": 3,
     "safe_preflight_failures": 0,
     "submission_count": 1
   },
-  "capture": null,
+  "capture": {
+    "bytes": 3237580,
+    "captured_at": "2026-11-18T20:41:13Z",
+    "height": 1024,
+    "mime": "image/png",
+    "raster_sha256": "c7f7b16042196912398d90933c94cbf5e41b9c0b45b8fbe2553d38196f893a8c",
+    "width": 1536
+  },
   "editorial_sha256": "8a33ae123fd009eb4b7ba08a3b572cbdfcdbf3de9fa1f1ef611da03a3d6d317e",
   "event_id": "ttn2-2d053917319b32b326a88cd5",
   "job_id": "ttn2-2d053917319b32b326a88cd5-r1-image",
-  "lease": {
-    "expires_at": "2026-11-18T21:05:43Z",
-    "heartbeat_at": "2026-11-18T20:40:43Z",
-    "started_at": "2026-11-18T20:38:40Z",
-    "token_sha256": "ec92ef6dfbf048dcb3acc54f5855388c5faaba7f3f971f102c1572278d53d987",
-    "worker_id": "news-image-a48ed9f454a749b4ac9a61af15d9f3a8"
-  },
-  "phase": "generating",
+  "lease": null,
+  "phase": "done",
   "policy": {
     "mode": "automatic",
     "visual_treatment": "editorial_gag"
@@ -27,7 +35,12 @@
   "prompt_sha256": "277bb8148a28bf8dbc9f0a935bdd2e81e3bda53b430778bf7ec00552a961c9be",
   "prompt_version": "news-image-v2",
   "requested_at": "2026-11-18T20:38:40Z",
-  "result": null,
+  "result": {
+    "asset_path": "v2/ttittulares/images/ttn2-2d053917319b32b326a88cd5-r1-c7f7b16042196912398d9093.png",
+    "commit_sha": "cd04b23ee89f7f1581e26ef3ad4198590f1b8a3f",
+    "media_id": "img2-098729f286a74bf9020d5b8f",
+    "sha256": "c7f7b16042196912398d90933c94cbf5e41b9c0b45b8fbe2553d38196f893a8c"
+  },
   "revision": 1,
   "schema_version": 1,
   "send_intent": {
@@ -44,6 +57,6 @@
     "session_id": "a48ed9f454a749b4ac9a61af15d9f3a8"
   },
   "source_record_path": "v2/ttittulares/records/ttn2-2d053917319b32b326a88cd5/r1.json",
-  "status": "generating",
-  "updated_at": "2026-11-18T20:40:43Z"
+  "status": "saved",
+  "updated_at": "2026-11-18T20:41:13Z"
 }
