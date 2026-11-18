@@ -15566,13 +15566,13 @@
       "trend_id": "trv2-c85fec339b9830c0ed4d7c66",
       "name": "Emilio Delgado",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "e0f5515911dba006",
       "requested_at": "2026-11-18T17:52:06.277614+00:00",
       "updated_at": "2026-11-18T17:52:06.277614+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -15585,7 +15585,13 @@
           "archived_at": "2026-11-18T17:52:06.277614+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "15d897e3813725d5e703a6eaf75221c55ba63d8590e03813",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-18T17:54:48.518085+00:00",
+        "expires_at": "2026-11-18T18:34:48.518085+00:00"
+      }
     },
     "trv2-8b4d939eeabf58c6db52dc30": {
       "trend_id": "trv2-8b4d939eeabf58c6db52dc30",
