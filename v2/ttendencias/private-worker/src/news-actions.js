@@ -112,6 +112,68 @@ async function savePreference(db,id,revision,expected,next,entry){
  return (result[0]?.meta?.changes??0)===1;
 }
 
+// INC actions must not fetch and parse the multi-megabyte news index on
+// every click. The exact live editorial queue, immutable job and D1 revision
+// preference are sufficient to validate an incident safely.
+async function incidentQueueRow(event_id,revision){
+ const response=await fetch(NEWS_SOURCE+"editorial-queue.json",{
+  headers:{Accept:"application/json"},cf:{cacheTtl:0,cacheEverything:false}});
+ if(!response.ok)throw Error("NEWS_INC_QUEUE_UNAVAILABLE");
+ const queue=await response.json();
+ if(queue.project!=="ttittulares-v2"||queue.schema_version!==1||
+    queue.queue_type!=="editorial"||!Array.isArray(queue.items))
+  throw Error("NEWS_INC_QUEUE_INVALID");
+ const match=queue.items.filter(x=>x.event_id===event_id);
+ if(match.length!==1)return null;
+ const job=match[0];
+ if(job.revision!==revision||job.job_id!==event_id+"-r"+revision+"-editorial"||
+    job.status!=="problematic")return null;
+ return job;
+}
+async function fastIncidentAction(body,env,{json}){
+ const {event_id,revision,action,action_id}=body;
+ try{
+  await newsTables(env.MARKS_DB);
+  const prior=await env.MARKS_DB.prepare("SELECT body FROM news_actions WHERE action_id=?").bind(action_id).first();
+  if(prior){
+   const entry=JSON.parse(prior.body);
+   return entry.event_id===event_id&&entry.revision===revision&&entry.action===action?
+    json({ok:true,replay:true,event_id,revision}):
+    json({error:"idempotency_conflict"},409);
+  }
+  const selected=await incidentQueueRow(event_id,revision);
+  if(!selected){
+   if(action==="dismiss")return null; // Keep PEND's existing Suprimir path.
+   return json({error:"news_incident_unavailable_or_stale"},409);
+  }
+  let job;
+  try{job=await failedEditorialJob(event_id,revision);}
+  catch{return json({error:"news_incident_unavailable_or_stale"},409);}
+  if(action==="retry_editorial"&&
+    /(AUTH|LOGIN|CREDENTIAL|DISK|CLEANUP|CAPTCHA|LEASE_EXPIRED)/.test(job.problem.code))
+   return json({error:"news_retry_requires_environment_repair"},409);
+  const result=await env.MARKS_DB.prepare(
+   "SELECT body FROM news_preferences WHERE event_id=? AND revision=?").bind(event_id,revision).first();
+  const prefs=result?JSON.parse(result.body):{};
+  if(prefs.dismissed===true||prefs.incident_hidden===true||prefs.archived===true)
+   return json({error:"news_incident_already_dismissed"},409);
+  if(prefs.rework_requested===true||prefs.editorial_retry_requested===true)
+   return json({error:"news_retry_already_requested"},409);
+  const now=new Date().toISOString();
+  const next={...prefs};
+  if(action==="dismiss"){next.archived=true;next.dismissed=true;next.incident_hidden=true;}
+  else{next.rework_requested=true;next.editorial_retry_requested=true;}
+  const entry={action_id,event_id,revision,action,created_at:now};
+  if(!await savePreference(env.MARKS_DB,event_id,revision,prefs,next,entry))
+   return json({error:"news_preferences_changed"},409);
+  return json({ok:true,event_id,revision,action,publication_sent:false});
+ }catch(error){
+  if(error?.message==="NEWS_INC_QUEUE_UNAVAILABLE"||
+     error?.message==="NEWS_INC_QUEUE_INVALID")
+   return json({error:"news_incident_queue_unavailable"},503);
+  return json({error:"news_action_unavailable"},503);
+ }
+}
 export async function newsAction(request,env,{json,sameOrigin}){
  if(request.method!=="POST"||!sameOrigin(request))return json({error:"method_not_allowed"},405);
  if(Number(request.headers.get("content-length")||0)>6000)return json({error:"invalid_payload"},413);
@@ -123,6 +185,10 @@ export async function newsAction(request,env,{json,sameOrigin}){
   return json({error:"invalid_hints"},400);
  if(["mark","public_image","suppress_image"].includes(action)&&typeof body.value!=="boolean")
   return json({error:"invalid_payload"},400);
+ if(action==="retry_editorial"||action==="dismiss"){
+  const fast=await fastIncidentAction(body,env,{json});
+  if(fast)return fast;
+ }
  try{
   // all rows are needed for actions outside the first page.
   const raw=await readNews({all:true});const controls=await newsControls(env);
