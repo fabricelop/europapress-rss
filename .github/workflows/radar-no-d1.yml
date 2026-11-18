@@ -3,20 +3,6 @@ name: Watchdog radar TTiTTulares
 # manual-trigger: 2026-11-16T01:30:00+01:00
 on:
   workflow_dispatch:
-  schedule:
-    # Desfasado 5 minutos respecto al reloj principal. Comprueba siempre el
-    # radar: last_run por sí solo no demuestra que la ingestión esté sana.
-    - cron: '5,15,25,35,45,55 * * * *'
-  push:
-    branches: [main]
-    paths:
-      - ".github/workflows/radar-no-d1.yml"
-      - "telegram/radar_no_d1.py"
-      - "telegram/content_filters.py"
-      - "ttittulares/auto_queue.py"
-      - "ttittulares/repair_processing_metadata.py"
-      - "ttittulares/apply_editorial_outbox.py"
-      - "ttittulares/editorial-outbox/**"
 
 permissions:
   contents: write
