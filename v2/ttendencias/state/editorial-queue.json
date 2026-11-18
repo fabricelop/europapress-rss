@@ -14743,14 +14743,14 @@
     "trv2-553fe7019d24882f3722fa81": {
       "trend_id": "trv2-553fe7019d24882f3722fa81",
       "name": "Stray Kids",
-      "revision": 2,
-      "status": "capture_recovery",
+      "revision": 3,
+      "status": "pending",
       "reason": "retry_after_incident",
       "episode_token": "a88417809d3699e8",
-      "requested_at": "2026-11-18T14:01:36.550981+00:00",
-      "updated_at": "2026-11-18T14:06:08.888803+00:00",
+      "requested_at": "2026-11-18T14:14:37.861277+00:00",
+      "updated_at": "2026-11-18T14:14:37.861277+00:00",
       "previous_explanation": null,
-      "attempts": 1,
+      "attempts": 0,
       "previous_attempts": [
         {
           "revision": 1,
@@ -14761,14 +14761,19 @@
           "send_intent_at": null,
           "incident_reason": "lease_expired_without_capture",
           "archived_at": "2026-11-18T14:01:36.550981+00:00"
+        },
+        {
+          "revision": 2,
+          "status": "capture_recovery",
+          "attempts": 1,
+          "chat_url": "https://chatgpt.com/c/local-chatgpt%3A3f325076-5d79-4095-ad17-24d81a6afe7b",
+          "started_at": null,
+          "send_intent_at": "2026-11-18T14:03:53.052565+00:00",
+          "incident_reason": "chat_target_identity_not_verified",
+          "archived_at": "2026-11-18T14:14:37.861277+00:00"
         }
       ],
-      "incident_retries": 0,
-      "send_intent": {
-        "token": "5eb6b2e9b660cf6d9a098672875c895bdde090c6dfec4abf",
-        "at": "2026-11-18T14:03:53.052565+00:00"
-      },
-      "capture_recovery_reason": "chat_target_identity_not_verified"
+      "incident_retries": 1
     },
     "trv2-458aa2b1d9b22fa29b570cd0": {
       "trend_id": "trv2-458aa2b1d9b22fa29b570cd0",
@@ -15559,10 +15564,10 @@
     "trv2-fca968ab5996fec3f3615447",
     "trv2-113641e581eb4e7f3c4e33ce",
     "trv2-84a849b4a4a269afea5383f7",
-    "trv2-553fe7019d24882f3722fa81",
     "trv2-8f130f5014e34d4bdb525302",
     "trv2-a7618bbdf1929da8185c7d13",
-    "trv2-bf8f76ce3a56592ad99bae4b"
+    "trv2-bf8f76ce3a56592ad99bae4b",
+    "trv2-553fe7019d24882f3722fa81"
   ],
   "effects_enabled": false
 }
