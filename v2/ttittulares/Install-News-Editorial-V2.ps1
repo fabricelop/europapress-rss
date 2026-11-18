@@ -39,6 +39,7 @@ $news=@('news_workflow_v2.py','news_images_v2.py','test_news_workflow_v2.py','te
   'test_editorial_state_v2.py','test_editorial_contract_v2.py','test_contract_examples.py',
   'test_radar_snapshot_v2.py','test_radar_ingest_v2.py','test_editorial_browser_v2.py','test_editorial_setup_v2.py',
   'radar_snapshot_v2.py','radar_store_v2.py','radar_ingest_v2.py','identity_v2.py',
+  'selection_v1_parity_v2.py','test_selection_v1_parity_v2.py',
   'source_fetch_v2.py','source_publication_v2.py','source_catalog_v2.py','source_catalog_v2.json',
   'source_health_v2.py','content_filters_v2.py','schemas/contract.schema.json','examples/sample-bundle.json')
 $shared=@('chrome_command_v2.py','chrome_visibility_v2.py','chrome_profile_process_v2.py',
@@ -77,7 +78,7 @@ if($dependency.ExitCode -ne 0){
 }
 Invoke-NewsPython -arguments @('-m','pip','install','--user','Pillow')
 Invoke-NewsPython -arguments @('-c','"import playwright.sync_api, jsonschema, PIL"')
-Invoke-NewsPython -arguments @('-m','unittest','v2.ttittulares.test_contract_examples','v2.ttittulares.test_editorial_contract_v2','v2.ttittulares.test_editorial_state_v2','v2.ttittulares.test_editorial_consumer_v2','v2.ttittulares.test_editorial_browser_v2','v2.ttittulares.test_news_workflow_v2','v2.ttittulares.test_news_images_v2','v2.ttittulares.test_session_watchdog_v2')
+Invoke-NewsPython -arguments @('-m','unittest','v2.ttittulares.test_contract_examples','v2.ttittulares.test_editorial_contract_v2','v2.ttittulares.test_editorial_state_v2','v2.ttittulares.test_editorial_consumer_v2','v2.ttittulares.test_editorial_browser_v2','v2.ttittulares.test_news_workflow_v2','v2.ttittulares.test_selection_v1_parity_v2','v2.ttittulares.test_news_images_v2','v2.ttittulares.test_session_watchdog_v2')
 $chrome=Join-Path $env:ProgramFiles 'Google\Chrome\Application\chrome.exe'
 $setup=@('-m','v2.ttittulares.editorial_setup_v2','--root',('"'+$root+'"'),'--chrome',('"'+$chrome+'"'))
 if($SeedProfile){$setup+=@('--seed-source',('"'+$SeedProfile+'"'))}

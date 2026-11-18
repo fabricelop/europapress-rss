@@ -1,6 +1,7 @@
 // Read-only V2 news projection. No V1 fallback, D1 writes or editorial execution.
 const ID=/^ttn2-[a-f0-9]{24}$/;
 import {projectImageIncident} from "./image-incidents.js";
+import {dedupeNewsRows} from "./news-dedupe.js";
 const ACTIVE=new Set(["claimed","send_intent","awaiting_response","capture_recovery","captured","validating","persisting"]);
 const GROUPS=new Set(["pending","detected","working","ready","incident","archived"]);
 const DETECTED_LIFETIME_MS=24*60*60*1000;
@@ -81,8 +82,8 @@ export function projectNews(index,queue,clock=Date.now(),liveRadar=null){
  const age=Math.max(0,Math.floor((clock-Date.parse(observedAt))/60000));
  const editorialAge=Math.max(0,Math.floor((clock-Date.parse(index.updated_at))/60000));
  return {schema_version:1,project:"ttittulares-v2",observed_at:observedAt,editorial_updated_at:index.updated_at,counts,items,
-         refresh_mode:liveStamp?"independent_radar_15m":"scheduled_radar_15m",expected_interval_minutes:15,
-         radar_age_minutes:age,radar_delayed:age>35,editorial_age_minutes:editorialAge,
+         refresh_mode:liveStamp?"independent_radar_10m":"scheduled_radar_10m",expected_interval_minutes:10,
+         radar_age_minutes:age,radar_delayed:age>25,editorial_age_minutes:editorialAge,
          editorial_delayed:editorialAge>35,radar_independent:Boolean(liveStamp),
          radar_metrics:liveStamp?liveRadar.metrics:null,
          read_only:true,publication_allowed:false};
@@ -163,7 +164,6 @@ export function decorateNews(view,controls={}){
  // an already-running editorial job. Also covers requests saved by older UI.
  const editorialRetries=new Set((controls.actions||[]).filter(x=>x.action==="retry_editorial")
   .map(x=>x.event_id+":"+x.revision));
- const counts={pending:0,detected:0,working:0,ready:0,incident:0,archived:0};
  const items=view.items.flatMap(item=>{
   const pref=prefs.get(item.event_id+":"+item.revision)||{};
    // INC suppression is invisible in every list while its audit remains intact.
@@ -189,7 +189,10 @@ export function decorateNews(view,controls={}){
   if(row.group==="pending"&&pref.urgent_requested===true){row.status_label="URGENTE · pendiente de hueco";row.urgent_requested=true;}
   if(pref.manual_image){row.image_available=true;row.image_incident_available=false;}
   if(row.image_suppressed)row.image_available=false;
-  counts[row.group]++;return [row];
+  return [row];
  });
- return {...view,items,counts};
+ const unique=dedupeNewsRows(items,view.items,controls);
+ const counts={pending:0,detected:0,working:0,ready:0,incident:0,archived:0};
+ for(const item of unique)counts[item.group]++;
+ return {...view,items:unique,counts};
 }

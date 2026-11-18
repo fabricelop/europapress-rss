@@ -85,4 +85,24 @@ foreach($kind in @('EDITORIAL','IMAGE')){
   Write-Output ('TENDENCIAS_'+$kind+'_DISPOSABLE_PROFILES='+$trends.Count+' MiB='+[Math]::Round($bytes/1MB,1))
 }
 Write-Output ('TENDENCIAS_IMAGE_ORIGINALS_MIB='+[Math]::Round((Folder-Bytes (Join-Path $trendRoot 'image-originals'))/1MB,1))
+# The editorial scheduler may be idle even with a full remote queue when
+# controls/GitHub preflight fail, the date boundary excludes jobs, or disk is low.
+$editorialFlag = Join-Path $root 'editorial.enabled'
+$flagValue = if(Test-Path -LiteralPath $editorialFlag){(Get-Content -LiteralPath $editorialFlag -Raw).Trim()}else{'MISSING'}
+Write-Output ('NEWS_EDITORIAL_ENABLED_FLAG='+$flagValue)
+$boundary = Join-Path $root 'editorial-from.txt'
+if(Test-Path -LiteralPath $boundary){
+  Write-Output ('NEWS_EDITORIAL_FROM_UTC='+(Get-Content -LiteralPath $boundary -Raw).Trim())
+}else{Write-Output 'NEWS_EDITORIAL_FROM_UTC=NOT_SET'}
+$heartbeat = Join-Path $root 'editorial-daemon-health.json'
+if(Test-Path -LiteralPath $heartbeat){
+  try{
+    $h=Get-Content -LiteralPath $heartbeat -Raw | ConvertFrom-Json
+    Write-Output ('NEWS_EDITORIAL_HEARTBEAT_AT='+$h.at)
+    Write-Output ('NEWS_EDITORIAL_HEARTBEAT_STATE='+$h.state)
+    Write-Output ('NEWS_EDITORIAL_HEARTBEAT_PENDING_ELIGIBLE='+$h.pending_eligible)
+    Write-Output ('NEWS_EDITORIAL_HEARTBEAT_WORKERS='+$h.workers)
+    Write-Output ('NEWS_EDITORIAL_HEARTBEAT_ERROR='+$h.error_code)
+  }catch{Write-Output 'NEWS_EDITORIAL_HEARTBEAT_UNREADABLE=YES'}
+}else{Write-Output 'NEWS_EDITORIAL_HEARTBEAT=NOT_YET_AVAILABLE'}
 Write-Output 'TTN2_HEALTH_COMPLETED=YES'
