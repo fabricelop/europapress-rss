@@ -135,3 +135,39 @@ test('texto editorial propuesto yields X copy without changing source dossier',(
  assert.ok(xLength(shown)<=280);
  assert.match(raw,/Texto editorial propuesto/);
 });
+
+test('#codigo10: flattened research dossier shows only its X-ready explanation',()=>{
+ const raw='#codigo10 — ficha de investigación Hipótesis informativa principal — apta para X Writing '+
+  '#codigo10 podría ser tendencia por la emisión de una nueva entrega del programa de sucesos de Cuatro, presentado por Nacho Abad y David Aleman. '+
+  '#codigo10 #Código10 Qué ha ocurrido El programa ha tratado distintos sucesos esta semana. Fuentes consultadas https://example.org/';
+ const item={rank:12,name:'#codigo10',cause_status:'no_confirmada'};
+ const lead='#codigo10 podría ser tendencia por la emisión de una nueva entrega del programa de sucesos de Cuatro, presentado por Nacho Abad y David Aleman.';
+ assert.equal(editorial(raw),lead+' #codigo10 #Código10');
+ const shown=explanationText(raw,item);
+ assert.equal(shown,tweetText(raw,item));
+ assert.match(shown,/^TT#12 #CODIGO10 podría ser tendencia por la emisión/);
+ assert.doesNotMatch(shown,/ficha de investigaci[oó]n|Hip[oó]tesis informativa|apta para X|Writing|Qu[eé] ha ocurrido|Fuentes|example\.org/iu);
+ assert.ok(xLength(shown)<=280);
+ assert.equal(publishableText(shown),true);
+});
+
+test('inline X heading works for other trends and does not expose research metadata',()=>{
+ for(const heading of ['Explicación principal — apta para X','Hipótesis informativa principal — apta para X']){
+  const raw=`Otro tema — ficha de investigación ${heading} Writing El festival anuncia su regreso a Madrid con una nueva edición y conciertos durante todo el fin de semana.`;
+  const result=explanationText(raw,{rank:5,name:'Festival',cause_status:'no_confirmada'});
+  assert.match(result,/El festival anuncia su regreso a Madrid/,heading);
+  assert.doesNotMatch(result,/ficha de investigaci[oó]n|Hip[oó]tesis informativa|Explicaci[oó]n principal|Writing/iu,heading);
+  assert.ok(xLength(result)<=280,heading);
+ }
+});
+
+test('unsafe or unrecognised dossier metadata never becomes display or P-X copy',()=>{
+ const unsafe='— ficha de investigación Hipótesis informativa principal sobre este asunto: '+
+  'El debate suscita nuevas reacciones en España durante toda la jornada y continúa en diferentes programas.';
+ const result=explanationText(unsafe,{rank:3,name:'Debate'});
+ assert.equal(result,'Explicación capturada; formato editorial pendiente de adaptar.');
+ assert.equal(publishableText(result),false);
+ assert.doesNotMatch(result,/ficha de investigaci[oó]n|Hip[oó]tesis informativa/i);
+ const ordinary='El festival reúne a miles de aficionados durante una semana de conciertos. #Festival #Música';
+ assert.match(explanationText(ordinary,{rank:7,name:'Festival'}),/#Festival #Música/);
+});

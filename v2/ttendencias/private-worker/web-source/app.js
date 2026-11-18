@@ -29,9 +29,21 @@ function capturedEditorial(raw){
     &&! /^(?:Writing|Standard|Document)$/iu.test(line))
   .join("\n").replace(/\n{3,}/g,"\n\n").trim();
 }
+function isolateInlineEditorialSections(text){
+ // Some captured chats flatten a whole dossier into one line. Restore a
+ // boundary at an explicitly X-ready heading, even after a dossier title.
+ return text.replace(/(?:Explicaci[oó]n principal|Hip[oó]tesis informativa principal)\s*(?:[—–:-]\s*)?(?:(?:texto\s+)?apt[ao]\s+para\s+X|para\s+X)(?:\s*\([^\n)]{0,100}\))?\s*:?\s*/giu,
+  "\nExplicación principal — apta para X\n")
+  // Long-form sections may also be flattened immediately after the X lead.
+  .replace(/([^\n])\s+(?=(?:Qu[eé] ha ocurrido|Qu[eé] sabemos|Fuentes consultadas|Fuentes verificadas|Fuentes HTTPS|Lo que se sabe|Contexto y fuentes)\s+(?:[A-ZÁÉÍÓÚÑ#]|https?:\/\/))/gu,"$1\n\n");
+}
+function hasEditorialMetadata(text){
+ // This is a final fail-closed guard, shared by the visible text and P-X.
+ return /\bficha (?:de investigaci[oó]n|editorial|informativa)\b|\bhip[oó]tesis informativa (?:principal|predominante)\b|\bexplicaci[oó]n principal\s*(?:[—–:-]\s*)?(?:(?:texto\s+)?apt[ao]\s+para\s+X|para\s+X)\b|\bESTADO_(?:CAUSA|X)\s*:/iu.test(text);
+}
 function editorial(raw){
  if(typeof raw!=="string"||!raw.trim())return "Explicación pendiente.";
- const s=capturedEditorial(raw), lines=s.split("\n");
+ const s=isolateInlineEditorialSections(capturedEditorial(raw)), lines=s.split("\n");
  // ChatGPT sometimes returns an editorial dossier headed by "Explicación
  // principal — apta para X". The main line is inside that section; the
  // dossier title, certainty labels and publication rules are NOT tweet text.
@@ -49,7 +61,7 @@ function editorial(raw){
  for(const from of candidates){
   let out=[],started=false,hasProse=false;
   for(let i=from+1;i<Math.min(lines.length,from+24);i++){
-   const line=lines[i].trim();
+   const line=lines[i].trim().replace(/^(?:(?:Writing|Standard|Document)\s+)+(?=\S)/iu,"");
    if(!line){
     // The X-ready lead is a standalone paragraph. Subsequent paragraphs and
     // their headings are context for LISTAS, never the P-X publication text.
@@ -69,7 +81,8 @@ function editorial(raw){
    if(line.includes("🌶"))break;
   }
   const value=out.join("\n").trim();
-  if(hasProse&&value.length>60&&/[.!?]/u.test(value))return withoutInternalProvenance(value);
+  if(hasProse&&value.length>60&&/[.!?]/u.test(value)&&!hasEditorialMetadata(value))
+   return withoutInternalProvenance(value);
  }
  return "Explicación capturada; formato editorial pendiente de adaptar.";
 }
@@ -110,7 +123,10 @@ function trimTrendBoilerplate(text){
 function tweetText(raw,item){
  const extracted=editorial(raw);
  const adapted=publishableText(extracted)?null:dossierSummary(raw,item);
- const source=adapted?.prose||extracted;
+ // Never fall back to an unsafe raw capture when the dossier adapter fails.
+ const source=publishableText(extracted)?extracted:
+  publishableText(adapted?.prose)?adapted.prose:extracted.startsWith("Explicación pendiente")?extracted:
+  "Explicación capturada; formato editorial pendiente de adaptar.";
  if(source.startsWith("Explicación pendiente")||source.startsWith("Explicación capturada"))return source;
  const rank=Number.isInteger(item?.rank)?item.rank:0;
  const name=String(item?.name||"TENDENCIA").toLocaleUpperCase("es-ES").trim();
@@ -159,7 +175,7 @@ function tweetText(raw,item){
  return parts.join("\n");
 }
 function publishableText(text){
- return !!text&&!/^Explicación (?:pendiente|capturada)/u.test(text);
+ return !!text&&!/^Explicación (?:pendiente|capturada)/u.test(text)&&!hasEditorialMetadata(text);
 }
 function dossierSummary(raw,item){
  const lines=capturedEditorial(raw).split("\n");
@@ -167,7 +183,7 @@ function dossierSummary(raw,item){
  // This works for any topic; no trend names or topic-specific prose are used.
  const hypothesis=lines.map(line=>line.match(/^Hip[oó]tesis (?:principal|predominante)\s*:\s*(.+)$/iu))
   .find(Boolean)?.[1];
- if(hypothesis&&hypothesis.length>12&&!/https?:|ESTADO_|Ficha editorial/iu.test(hypothesis)){
+ if(hypothesis&&hypothesis.length>12&&!/https?:|ESTADO_|Ficha editorial/iu.test(hypothesis)&&!hasEditorialMetadata(hypothesis)){
   const text=hypothesis.replace(/[.!?]+$/u,"");
   return {prose:"Posible relación: "+text+".",uncertain:true};
  }
@@ -184,7 +200,7 @@ function dossierSummary(raw,item){
    paragraph.push(line);
   }
   const prose=paragraph.join(" ");
-  if(prose.length>60&&/[.!?]/u.test(prose))return {prose,uncertain:!confirmed};
+  if(prose.length>60&&/[.!?]/u.test(prose)&&!hasEditorialMetadata(prose))return {prose,uncertain:!confirmed};
  }
  return null;
 }

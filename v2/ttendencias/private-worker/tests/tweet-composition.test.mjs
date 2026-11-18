@@ -8,10 +8,10 @@ const end=app.indexOf("// Server-side marks:",start);
 const editorStart=app.indexOf("function withoutInternalProvenance(text)");
 const editorEnd=app.indexOf("const WEB_URL=",editorStart);
 assert.ok(start>0&&end>start&&editorEnd>editorStart);
-const editorial=new Function(app.slice(editorStart,editorEnd)+"\nreturn editorial;")();
-const capturedEditorial=new Function(app.slice(editorStart,editorEnd)+"\nreturn capturedEditorial;")();
-const {tweetText,xLength}=new Function("editorial","WEB_URL","capturedEditorial",
-  app.slice(start,end)+"\nreturn {tweetText,xLength};")(editorial,"https://ttactualidad.rainyraven22.chatgpt.site/",capturedEditorial);
+const {editorial,capturedEditorial,hasEditorialMetadata}=new Function(app.slice(editorStart,editorEnd)+
+  "\nreturn {editorial,capturedEditorial,hasEditorialMetadata};")();
+const {tweetText,xLength}=new Function("editorial","WEB_URL","capturedEditorial","hasEditorialMetadata",
+  app.slice(start,end)+"\nreturn {tweetText,xLength};")(editorial,"https://ttactualidad.rainyraven22.chatgpt.site/",capturedEditorial,hasEditorialMetadata);
 
 const answer=(prose,tags,joke)=>[
   "ESTADO_CAUSA: CONFIRMADA","Explicación periodística",
