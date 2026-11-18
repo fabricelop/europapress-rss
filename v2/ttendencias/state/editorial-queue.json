@@ -14638,13 +14638,13 @@
       "trend_id": "trv2-113641e581eb4e7f3c4e33ce",
       "name": "Amaia Montero",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "8d5de7ce8fd3f39b",
       "requested_at": "2026-11-18T13:22:01.516233+00:00",
       "updated_at": "2026-11-18T13:22:01.516233+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -14657,7 +14657,13 @@
           "archived_at": "2026-11-18T13:22:01.516233+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "ecc852385ab22f6eae8eb013859b7fae6e3d853a04deb4d8",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-18T13:22:51.297766+00:00",
+        "expires_at": "2026-11-18T14:02:51.297766+00:00"
+      }
     },
     "trv2-84a849b4a4a269afea5383f7": {
       "trend_id": "trv2-84a849b4a4a269afea5383f7",
