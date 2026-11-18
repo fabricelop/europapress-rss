@@ -14637,19 +14637,27 @@
     "trv2-113641e581eb4e7f3c4e33ce": {
       "trend_id": "trv2-113641e581eb4e7f3c4e33ce",
       "name": "Amaia Montero",
-      "revision": 1,
-      "status": "capture_recovery",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "8d5de7ce8fd3f39b",
-      "requested_at": "2026-11-18T13:02:05.264111+00:00",
-      "updated_at": "2026-11-18T13:11:14.326015+00:00",
+      "requested_at": "2026-11-18T13:22:01.516233+00:00",
+      "updated_at": "2026-11-18T13:22:01.516233+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "send_intent": {
-        "token": "6616c7419f7a6a72eae6b745788df049b6d8312c339b7ee4",
-        "at": "2026-11-18T13:07:22.985502+00:00"
-      },
-      "capture_recovery_reason": "chat_target_identity_not_verified"
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "capture_recovery",
+          "attempts": 1,
+          "chat_url": "https://chatgpt.com/c/6afda32a-44f0-83eb-8787-751479c279dd",
+          "started_at": null,
+          "send_intent_at": "2026-11-18T13:07:22.985502+00:00",
+          "incident_reason": "chat_target_identity_not_verified",
+          "archived_at": "2026-11-18T13:22:01.516233+00:00"
+        }
+      ],
+      "incident_retries": 1
     },
     "trv2-84a849b4a4a269afea5383f7": {
       "trend_id": "trv2-84a849b4a4a269afea5383f7",
@@ -15314,7 +15322,6 @@
     "trv2-720d72f7c2aa70c9b339b855",
     "trv2-b63c32a37caf80dbeb8c0f06",
     "trv2-ebe2a9441ca54e966da1f451",
-    "trv2-113641e581eb4e7f3c4e33ce",
     "trv2-2215e45808b1225d29c0f844",
     "trv2-458aa2b1d9b22fa29b570cd0",
     "trv2-4b354fa7b371a76d0d941df0",
@@ -15324,7 +15331,8 @@
     "trv2-a6dfa02125fec81e0252edd8",
     "trv2-c8d98fc7c23c7856aeea66dc",
     "trv2-e317efa7bdfdfad78bfda10a",
-    "trv2-fca968ab5996fec3f3615447"
+    "trv2-fca968ab5996fec3f3615447",
+    "trv2-113641e581eb4e7f3c4e33ce"
   ],
   "effects_enabled": false
 }
