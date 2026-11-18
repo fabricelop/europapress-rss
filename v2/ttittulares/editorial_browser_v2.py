@@ -148,6 +148,18 @@ def fresh_turn(user_turns, event_id, revision, command_id):
     return event_id in text and command_id in text and bool(revision_match)
 
 
+def fresh_home_page(context):
+    """Reuse only an empty ChatGPT home tab, as Trends V2 does."""
+    for page in context.pages:
+        try:
+            if (page.url.split('?', 1)[0].rstrip('/') == 'https://chatgpt.com'
+                    and page.locator('[data-message-author-role="user"]').count() == 0):
+                return page
+        except Exception:
+            continue
+    return None
+
+
 def authenticated_session(page):
     """Return only a boolean: never transfer session objects/tokens to Python."""
     try:
@@ -323,9 +335,7 @@ class ChromeJob:
         # Match the working Trends V2 flow: use Chrome's existing home tab
         # when it is fresh. Never reuse a restored /c/ conversation.
         context = self.browser.contexts[0]
-        self.page = next((p for p in context.pages
-                          if p.url.split('?', 1)[0].rstrip('/') == 'https://chatgpt.com'
-                          and p.locator('[data-message-author-role="user"]').count() == 0), None)
+        self.page = fresh_home_page(context)
         if self.page is None:
             self.page = context.new_page()
             self.page.goto('https://chatgpt.com/', wait_until='domcontentloaded', timeout=60000)
