@@ -1,7 +1,7 @@
 # Update only the News V2 editorial consumer. Allow existing chats to finish;
 # do not stop the News V2 image daemon, any Chrome, Trends or V1 service.
 [CmdletBinding()]
-param()
+param([ValidatePattern('^[a-f0-9]{40}$')][string]$ReleaseSha)
 $ErrorActionPreference='Stop'
 $root=Join-Path $env:LOCALAPPDATA 'TTActualidadNoticiasV2'
 $taskName='TTActualidadNoticiasV2-Editorial'
@@ -26,10 +26,12 @@ if(-not $env:GH_TOKEN -and -not $env:GITHUB_TOKEN -and -not (Get-Command gh.exe 
 # Download a pinned, hash-verified release before pausing new editorial work.
 $api='https://api.github.com/repos/fabricelop/europapress-rss'
 $branch='feature/ttactualidad-v2-clean'
+$ref=if($ReleaseSha){$ReleaseSha}else{$branch}
 $headers=@{'User-Agent'='TTNoticiasV2-editorial-repair';'Accept'='application/vnd.github+json'}
-$commit=Invoke-RestMethod -Uri ($api+'/commits/'+[Uri]::EscapeDataString($branch)) -Headers $headers
+$commit=Invoke-RestMethod -Uri ($api+'/commits/'+[Uri]::EscapeDataString($ref)) -Headers $headers
 $sha=[string]$commit.sha
 if($sha -notmatch '^[a-f0-9]{40}$'){throw 'NEWS_EDITORIAL_COMMIT_NOT_PINNED'}
+if($ReleaseSha -and $sha -ne $ReleaseSha){throw 'NEWS_EDITORIAL_REQUESTED_RELEASE_MISMATCH'}
 $tree=Invoke-RestMethod -Uri ($api+'/git/trees/'+$sha+'?recursive=1') -Headers $headers
 if($tree.truncated){throw 'NEWS_EDITORIAL_GIT_TREE_TRUNCATED'}
 $code=Join-Path $root ('releases\'+$sha)

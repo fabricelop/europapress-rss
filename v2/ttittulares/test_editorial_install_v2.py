@@ -22,6 +22,8 @@ class InstallPackageTests(unittest.TestCase):
         self.assertIn('if($switched)', repair)
         self.assertIn('TTN2_IMAGE_WINDOWS_TASK_UNCHANGED=YES', repair)
         self.assertIn('NEWS_EDITORIAL_GIT_HASH_MISMATCH=', repair)
+        self.assertIn('[string]$ReleaseSha', repair)
+        self.assertIn('NEWS_EDITORIAL_REQUESTED_RELEASE_MISMATCH', repair)
         self.assertIn('TTN2_EDITORIAL_DRAIN_WAIT=', repair)
         # The no-queue checks must ship with the repaired editorial release.
         # Otherwise a local probe may silently run old code, or not exist.
