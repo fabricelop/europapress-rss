@@ -82,8 +82,8 @@ export function projectNews(index,queue,clock=Date.now(),liveRadar=null){
  const age=Math.max(0,Math.floor((clock-Date.parse(observedAt))/60000));
  const editorialAge=Math.max(0,Math.floor((clock-Date.parse(index.updated_at))/60000));
  return {schema_version:1,project:"ttittulares-v2",observed_at:observedAt,editorial_updated_at:index.updated_at,counts,items,
-         refresh_mode:liveStamp?"independent_radar_15m":"scheduled_radar_15m",expected_interval_minutes:15,
-         radar_age_minutes:age,radar_delayed:age>35,editorial_age_minutes:editorialAge,
+         refresh_mode:liveStamp?"independent_radar_10m":"scheduled_radar_10m",expected_interval_minutes:10,
+         radar_age_minutes:age,radar_delayed:age>25,editorial_age_minutes:editorialAge,
          editorial_delayed:editorialAge>35,radar_independent:Boolean(liveStamp),
          radar_metrics:liveStamp?liveRadar.metrics:null,
          read_only:true,publication_allowed:false};
