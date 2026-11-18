@@ -1,5 +1,6 @@
 import copy
 import json
+from contextlib import nullcontext
 from pathlib import Path
 import tempfile
 import unittest
@@ -7,7 +8,7 @@ from unittest.mock import patch
 from types import SimpleNamespace
 
 from .editorial_browser_v2 import clone_job_profile, fresh_turn, write_private
-from .editorial_consumer_v2 import run_one, enabled, error_code
+from .editorial_consumer_v2 import run_one, enabled, error_code, preflight_once
 
 
 class Service:
@@ -113,6 +114,83 @@ class ConsumerTests(unittest.TestCase):
             self.assertIn(('preserved_at_close', False), service.calls)
             self.assertEqual(service.calls.count('send'), 1)
             self.assertIn(('fail', False), service.calls)
+
+    def test_daemon_does_not_claim_or_preview_if_startup_preflight_fails(self):
+        from .editorial_consumer_v2 import daemon
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            flag = root / "editorial.enabled"
+            flag.write_text("TTN2_EDITORIAL_ENABLED=YES")
+            service = Service()
+            class Lock:
+                def exclusive_v2_lock(self, path):
+                    return nullcontext()
+            with patch("v2.ttittulares.editorial_consumer_v2.common", return_value=Lock()), \
+                 patch("v2.ttittulares.editorial_consumer_v2.preflight_once",
+                       return_value={"ok": False, "error_code": "NEWS_FRESH_CHAT_NOT_READY",
+                                     "cleanup_verified": True, "stage": "COMPOSER_MISSING"}), \
+                 patch("v2.ttittulares.session_watchdog_v2.reclaim_disposable_sessions",
+                       return_value={"reclaimed": 0}), \
+                 patch("v2.ttittulares.editorial_consumer_v2.time.sleep",
+                       side_effect=lambda seconds: flag.write_text("TTN2_EDITORIAL_ENABLED=NO")):
+                daemon(service, {"root": root, "chrome": root / "c",
+                                 "seed": root / "s"}, poll=1)
+            self.assertEqual(service.calls, [])
+            health = json.loads((root / "editorial-daemon-health.json").read_text())
+            self.assertEqual(health["state"], "WAIT_FRESH_CHAT_RETRY")
+            self.assertEqual(health["error_code"], "NEWS_FRESH_CHAT_NOT_READY")
+            self.assertFalse(health["claims_authorized"])
+
+    def test_preflight_fresh_chat_failure_is_closed_and_does_not_claim(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            calls = []
+            class FreshBrowser(Browser):
+                def open(self):
+                    self.calls.append("open")
+                    raise RuntimeError("NEWS_FRESH_CHAT_NOT_READY")
+            check = preflight_once({"root": root, "chrome": root / "c", "seed": root / "s"},
+                browser_factory=lambda **kwargs: FreshBrowser(calls))
+            self.assertEqual(check["error_code"], "NEWS_FRESH_CHAT_NOT_READY")
+            self.assertFalse(check["ok"])
+            self.assertTrue(check["cleanup_verified"])
+            self.assertEqual(calls, ["open", "close"])
+            self.assertFalse((root / "journals").exists())
+
+    def test_preflight_recovery_can_pass_next_attempt_with_new_empty_profile(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            profiles = []
+            outcomes = iter([False, True])
+            class FreshBrowser(Browser):
+                def open(self):
+                    self.calls.append("open")
+                    if not next(outcomes):
+                        raise RuntimeError("NEWS_FRESH_CHAT_NOT_READY")
+            def factory(**kwargs):
+                profiles.append(kwargs["profile"])
+                return FreshBrowser([])
+            a = preflight_once({"root": root, "chrome": root / "c", "seed": root / "s"},
+                               browser_factory=factory)
+            b = preflight_once({"root": root, "chrome": root / "c", "seed": root / "s"},
+                               browser_factory=factory)
+            self.assertEqual((a["ok"], b["ok"]), (False, True))
+            self.assertNotEqual(profiles[0], profiles[1])
+            self.assertIsNone(b["error_code"])
+
+    def test_preflight_unclean_browser_fails_closed(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            class UncleanBrowser(Browser):
+                def open(self):
+                    raise RuntimeError("NEWS_FRESH_CHAT_NOT_READY")
+                def close(self):
+                    raise RuntimeError("NEWS_OWN_CHROME_CLEANUP_UNVERIFIED")
+            check = preflight_once({"root": root, "chrome": root / "c", "seed": root / "s"},
+                browser_factory=lambda **kwargs: UncleanBrowser([]))
+            self.assertFalse(check["ok"])
+            self.assertFalse(check["cleanup_verified"])
+            self.assertEqual(check["error_code"], "NEWS_OWN_CHROME_CLEANUP_UNVERIFIED")
 
     def test_preflight_failure_is_safe_without_send_intent(self):
         _, calls, root = self.work(fail='open')
