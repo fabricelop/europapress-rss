@@ -82,6 +82,23 @@ test("public V1 visibility reads one exact revision and follows both sides of th
  assert.equal((await publicNewsImageVisibility(new Request(url.replace(id,"bad")),env,helpers)).status,400);
  assert.equal((await publicNewsImageVisibility(new Request(url,{method:"POST"}),env,helpers)).status,405);
 }));
+test("ARCH retains the per-revision image switch without unarchiving or touching the V2 original",()=>scoped(async(env,docs)=>{
+ docs[0].items[id].image={revision:1,verified:true,editorial_sha256:hash};
+ await newsControls(env);
+ assert.equal((await newsAction(request("archive"),env,helpers)).status,200);
+ let archived=await newsView(env,new URLSearchParams({state:"archived"}));
+ assert.equal(archived.total,1);assert.equal(archived.items[0].has_image,true);
+ assert.equal((await newsAction(request("public_image",{action_id:"2".repeat(32),value:false}),env,helpers)).status,200);
+ let visibility=await(await publicNewsImageVisibility(new Request("https://private.example/api/public-news-image-visibility?id="+id+"&revision=1"),env,helpers)).json();
+ assert.equal(visibility.public_image_visible,false);assert.equal(visibility.archived,true);
+ assert.equal((await newsAction(request("public_image",{action_id:"3".repeat(32),value:true}),env,helpers)).status,200);
+ visibility=await(await publicNewsImageVisibility(new Request("https://private.example/api/public-news-image-visibility?id="+id+"&revision=1"),env,helpers)).json();
+ assert.equal(visibility.public_image_visible,true);assert.equal(visibility.archived,true);
+ archived=await newsView(env,new URLSearchParams({state:"archived"}));
+ assert.equal(archived.items[0].image_available,true);assert.equal(archived.items[0].public_image_visible,true);
+ assert.equal((await newsControls(env)).actions.filter(x=>x.action==="publish").length,0);
+ assert.equal((await newsAction(request("rework",{action_id:"4".repeat(32)}),env,helpers)).status,409);
+}));
 test("old PEND and INC leave the active lists but audit-ready stories remain",()=>scoped(async(env,docs)=>{
  docs[0].items[id].first_seen_at="2026-11-17T12:00:00Z";
  docs[1].items[0].requested_at="2026-11-17T12:00:00Z";

@@ -5,6 +5,18 @@ window.TTNewsActions=(()=>{
  const endpoint=item=>"/api/news-image?id="+item.event_id+"&revision="+item.revision;
  const weighted=text=>text.replace(/https?:\/\/\S+/gu,"X".repeat(23)).length;
  function tweet(record){const text=record.tweet_text.trim(),url="https://ttactualidad.rainyraven22.chatgpt.site/";return weighted(text+"\n"+url)<=280?text+"\n"+url:text;}
+ function attachPublicImageToggle(item,artwork,onChange){
+  const label=el("label","image-public-toggle"),toggle=el("input");toggle.type="checkbox";
+  toggle.checked=item.public_image_visible===true;
+  toggle.disabled=item.image_suppressed===true;toggle.setAttribute("role","switch");
+  toggle.setAttribute("aria-label","Mostrar imagen en V1");
+  toggle.addEventListener("change",async()=>{toggle.disabled=true;
+   try{await action(item,"public_image",toggle.checked);await onChange();}
+   catch(error){toggle.checked=!toggle.checked;notice(error.message);}
+   finally{toggle.disabled=item.image_suppressed===true;}
+  });
+  label.append(toggle,el("span","image-public-label","Imagen en V1"));artwork.append(label);
+ }
  async function action(item,type,value,hints){
   const response=await fetch("/api/news-actions",{method:"POST",credentials:"same-origin",
    headers:{"content-type":"application/json","x-ttv2-action":"1"},
@@ -67,6 +79,17 @@ window.TTNewsActions=(()=>{
    const image=el("img","news-original");image.src=endpoint(item);image.alt="Ilustración editorial de "+item.title;image.loading="lazy";body.prepend(image);
    if(item.public_image_visible===false)image.after(el("p","news-image-working","Imagen visible aquí en V2; oculta en la web V1."));
   }else if(item.image_in_progress){body.append(el("p","news-image-working","▧ Imagen IA en elaboración"));}
+  if(item.group==="archived"&&item.status_label!=="Suprimida"){
+   // ARCH keeps the same V1-only switch as ELAB, without offering a second
+   // publication or rework action on a finished record.
+   if(item.has_image===true){
+    const actions=el("div","news-actions"),artwork=el("div","news-action-group news-action-artwork");
+    artwork.setAttribute("role","group");artwork.setAttribute("aria-label","Imagen");
+    artwork.append(el("span","news-action-caption","Imagen"));
+    attachPublicImageToggle(item,artwork,onChange);actions.append(artwork);body.append(actions);
+   }
+   return;
+  }
   if(item.group!=="ready")return;
   card.classList.toggle("marked-red",item.marked===true);
   const actions=el("div","news-actions");
@@ -92,11 +115,11 @@ window.TTNewsActions=(()=>{
    if(!confirm("¿Confirmas que YA has publicado esta noticia? PUB la moverá a Archivo y sumará 1 al contador de las últimas 24 horas. No se enviará nada automáticamente a X."))return;
    await action(item,"publish");
    globalThis.dispatchEvent(new Event("ttv2:publication-recorded"));
-   await onChange();
+   await onChange("archived",item);
   },publishing);
   add("Quitar","Mover a Archivo SIN publicar y SIN aumentar el contador",async()=>{
    if(!confirm("¿Quitar esta noticia de Elaboradas y pasarla a Archivo sin sumar publicaciones?"))return;
-   await action(item,"archive");await onChange();
+   await action(item,"archive");await onChange("archived",item);
   });
   const r=add("R · Rojo","Marcar o desmarcar en rojo; no archiva ni publica",async()=>{await action(item,"mark",!item.marked);await onChange();});
   r.setAttribute("aria-pressed",String(item.marked===true));
@@ -113,11 +136,7 @@ window.TTNewsActions=(()=>{
    add(item.image_suppressed?"Restaurar IA":"Quitar IA","Cambiar la visibilidad en V2 y V1 conservando el original",async()=>{
     await action(item,"suppress_image",!item.image_suppressed);await onChange();
    },artwork);
-   const label=el("label","image-public-toggle");const toggle=el("input");toggle.type="checkbox";toggle.checked=item.public_image_visible===true;
-   toggle.disabled=item.image_suppressed===true;toggle.setAttribute("role","switch");toggle.setAttribute("aria-label","Mostrar imagen en V1");
-   toggle.addEventListener("change",async()=>{toggle.disabled=true;try{await action(item,"public_image",toggle.checked);await onChange();}
-    catch(error){toggle.checked=!toggle.checked;notice(error.message);}finally{toggle.disabled=false;}});
-   label.append(toggle,el("span","image-public-label","Imagen en V1"));artwork.append(label);
+   attachPublicImageToggle(item,artwork,onChange);
   }
   if(!item.image_available&&!item.image_suppressed){
    add("Copiar prompt IA","Copiar el encargo de imagen para esta noticia y revisión",()=>navigator.clipboard.writeText(prompt(item,record)),artwork);

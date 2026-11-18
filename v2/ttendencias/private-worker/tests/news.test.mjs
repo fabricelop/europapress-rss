@@ -157,7 +157,7 @@ test("news UI uses text nodes, keeps trends and exposes no publish actions",()=>
  assert.match(html,/id="news-panel" hidden/);assert.match(js,/textContent=String/);
  assert.doesNotMatch(js,/innerHTML|P-X|publish_request|raw\.githubusercontent/);
  assert.match(js,/if\(!document.hidden&&!state.loading\)/);
- assert.match(js,/Último barrido/);assert.doesNotMatch(html,/La actualidad que entra|news-eyebrow|id="news-time"/);assert.match(js,/filter:"ready"/);assert.match(js,/const short=/);
+ assert.match(js,/Último barrido/);assert.doesNotMatch(html,/La actualidad que entra|news-eyebrow|id="news-time"/);assert.match(js,/\?selected:"ready"/);assert.match(js,/const short=/);
  assert.match(js,/\$\("publication-summary"\)\.hidden=false/);
  assert.match(app,/newsViewMode\?"\/api\/news-publication-count":"\/api\/publication-count"/);
  assert.match(app,/event\.news_title/);
@@ -184,6 +184,11 @@ test("Noticias groups clear PUB and Quitar actions, keeps R and RE-X, and marks 
  assert.match(controls,/function attachPending\(/);
  assert.match(controls,/wire\(urgent,"urgent"\)/);
  assert.match(controls,/wire\(dismiss,"dismiss"\)/);
+ assert.match(controls,/item\.group==="archived"&&item\.status_label!=="Suprimida"/);
+ assert.match(controls,/attachPublicImageToggle\(item,artwork,onChange\)/);
+ assert.match(controls,/await onChange\("archived",item\)/);
+ assert.match(news,/state\.filter="archived"/);
+ assert.match(news,/const filter=Object\.hasOwn\(names,selected\)\?selected:"ready"/);
 });
 
 test("default is Elaboradas even when only pending candidates exist",()=>{

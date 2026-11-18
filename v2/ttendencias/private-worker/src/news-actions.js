@@ -124,9 +124,15 @@ export async function newsAction(request,env,{json,sameOrigin}){
   const incidentDismiss=action==="dismiss"&&current?.group==="incident";
   const pendingAction=action==="urgent"||(action==="dismiss"&&current?.group==="pending");
   const sourceItem=raw.items.find(x=>x.event_id===event_id);
+  // Quitar/PUB move a verified READY record to ARCH without changing its
+  // identity. Keep the same V1-only image switch available in that archive.
+  const archivedImageAction=action==="public_image"&&current?.group==="archived"&&
+   current.status_label!=="Suprimida"&&current.rework_requested!==true&&
+   current.has_image===true&&["ready","archived"].includes(sourceItem?.group);
   if(!current||current.revision!==revision||
      (incidentRetry||incidentDismiss?current.group!=="incident"||current.status_label!=="Incidencia de elaboración":
-      pendingAction?current.group!=="pending"||sourceItem?.group!=="pending":current.group!=="ready"))return json({error:"news_not_current"},409);
+      pendingAction?current.group!=="pending"||sourceItem?.group!=="pending":
+      !archivedImageAction&&current.group!=="ready"))return json({error:"news_not_current"},409);
   if(action==="urgent"&&current.urgent_requested===true)return json({error:"news_already_urgent"},409);
   if((action==="archive"||action==="publish"||action.startsWith("rework"))&&current.rework_requested)return json({error:"news_already_processing"},409);
   if(incidentRetry||incidentDismiss){

@@ -16,7 +16,13 @@
  $("refresh").setAttribute("aria-label","Actualizar noticias");
  const names={ready:"Elaboradas",pending:"Pendientes",detected:"Detectadas",working:"En elaboración",incident:"Incidencias",archived:"Archivo"};
  const short={ready:"Elab.",pending:"Pend.",detected:"Det.",working:"Curso",incident:"Inc.",archived:"Arch."};
- const state={data:null,page:1,filter:"ready",query:"",loading:false,controller:null,open:null,records:new Map()};
+ const initial=new URLSearchParams(location.search);
+ const selected=initial.get("state");
+ const filter=Object.hasOwn(names,selected)?selected:"ready";
+ const initialQuery=(initial.get("q")||"").slice(0,100);
+ const initialOpen=/^ttn2-[a-f0-9]{24}$/.test(initial.get("id")||"")?initial.get("id"):null;
+ const state={data:null,page:1,filter,query:initialQuery,loading:false,controller:null,open:initialOpen,records:new Map()};
+ $("news-search").value=initialQuery;
  const node=(tag,cls,text)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(text!==undefined)n.textContent=String(text);return n;};
  function date(value){const d=new Date(value);return value&&Number.isFinite(d.getTime())?new Intl.DateTimeFormat("es-ES",{timeZone:"Europe/Madrid",day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"}).format(d):"Hora no disponible";}
  function render(data){
@@ -90,7 +96,13 @@
      if(!record){const response=await fetch("/api/news/"+encodeURIComponent(item.event_id)+"?revision="+item.revision,{credentials:"same-origin",cache:"no-store",signal:AbortSignal.timeout(20000)});if(!response.ok)throw Error("record_unavailable");record=await response.json();}
      if(record.event_id!==item.event_id||record.revision!==item.revision||typeof record.tweet_text!=="string"||record.x_character_count>280)throw Error("record_invalid");
      state.records.set(key,record);explanation.textContent=record.tweet_text;
-     TTNewsActions.attach({item,card,head:summary,body,record,onChange:refreshNews});
+     TTNewsActions.attach({item,card,head:summary,body,record,onChange:async(group,moved)=>{
+      if(group==="archived"&&moved?.event_id){
+       state.filter="archived";state.page=1;state.open=moved.event_id;
+       state.query=moved.title.slice(0,100);$("news-search").value=state.query;
+      }
+      await refreshNews();
+     }});
      explanation.after(node("p","news-tweet-count",record.x_character_count+" / 280"));
     }catch{loaded=false;explanation.textContent="No se pudo cargar la explicación de esta revisión. Cierra y vuelve a abrir la noticia para reintentar.";}
    };
