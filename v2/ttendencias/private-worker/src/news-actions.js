@@ -51,6 +51,19 @@ export async function publicNewsImageVisibility(request,env,{json}){
    {"Cache-Control":"no-store","Access-Control-Allow-Origin":"*"});
  }catch{return json({error:"news_image_visibility_unavailable"},503);}
 }
+// A terminal ARCH record leaves the active GitHub queue, but V1 must keep
+// displaying the verified story. Only disclose the exact archival identities;
+// the public site fetches and validates their immutable signed editorial rows.
+export async function publicNewsArchivedIndex(request,env,{json}){
+ if(request.method!=="GET")return json({error:"method_not_allowed"},405);
+ try{
+  const rows=await env.MARKS_DB.prepare("SELECT event_id,revision FROM news_preferences WHERE json_extract(body,'$.archived')=1 AND COALESCE(json_extract(body,'$.dismissed'),0)<>1 ORDER BY event_id,revision DESC LIMIT 500").all();
+  const items=(rows.results||[]).filter(x=>ID.test(x.event_id)&&Number.isSafeInteger(x.revision)&&x.revision>0)
+   .map(x=>({event_id:x.event_id,revision:x.revision}));
+  return json({schema_version:1,project:"ttittulares-v2",items},200,
+   {"Cache-Control":"no-store","Access-Control-Allow-Origin":"*"});
+ }catch{return json({error:"news_archive_index_unavailable"},503);}
+}
 // Independent of Tendencias. PUB confirms a manual publication and archives
 // atomically; Quitar only archives. Historical PU events remain in the rolling
 // window during the migration; the obsolete PU action accepts no new writes.

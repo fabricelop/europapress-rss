@@ -4,7 +4,7 @@ import fs from "node:fs";
 import worker from "../src/index.js";
 import {DatabaseSync} from "node:sqlite";
 import {deflateSync} from "node:zlib";
-import {newsAction,newsControls,newsView,newsPublicationCount,newsManualImage,newsImage,newsWorkerControls,publicNews,publicNewsImageVisibility} from "../src/news-actions.js";
+import {newsAction,newsControls,newsView,newsPublicationCount,newsManualImage,newsImage,newsWorkerControls,publicNews,publicNewsImageVisibility,publicNewsArchivedIndex} from "../src/news-actions.js";
 import {decorateNews,projectNews} from "../src/news.js";
 const id="ttn2-"+"a".repeat(24),time="2026-11-18T08:13:24Z",hash="c".repeat(64);
 function fixture(){return [
@@ -98,6 +98,18 @@ test("ARCH retains the per-revision image switch without unarchiving or touching
  assert.equal(archived.items[0].image_available,true);assert.equal(archived.items[0].public_image_visible,true);
  assert.equal((await newsControls(env)).actions.filter(x=>x.action==="publish").length,0);
  assert.equal((await newsAction(request("rework",{action_id:"4".repeat(32)}),env,helpers)).status,409);
+}));
+test("public ARCH index retains a queue-removed story but never discloses suppressed incidents",()=>scoped(async env=>{
+ await newsControls(env);
+ const url=new Request("https://private.example/api/public-news-archived-index");
+ assert.deepEqual((await(await publicNewsArchivedIndex(url,env,helpers)).json()).items,[]);
+ assert.equal((await newsAction(request("archive"),env,helpers)).status,200);
+ assert.deepEqual((await(await publicNewsArchivedIndex(url,env,helpers)).json()).items,[{event_id:id,revision:1}]);
+ const another="ttn2-"+"b".repeat(24);
+ await env.MARKS_DB.prepare("INSERT INTO news_preferences(event_id,revision,body) VALUES(?,?,?)")
+  .bind(another,1,JSON.stringify({archived:true,dismissed:true})).run();
+ assert.deepEqual((await(await publicNewsArchivedIndex(url,env,helpers)).json()).items,[{event_id:id,revision:1}]);
+ assert.equal((await publicNewsArchivedIndex(new Request(url.url,{method:"POST"}),env,helpers)).status,405);
 }));
 test("old PEND and INC leave the active lists but audit-ready stories remain",()=>scoped(async(env,docs)=>{
  docs[0].items[id].first_seen_at="2026-11-17T12:00:00Z";

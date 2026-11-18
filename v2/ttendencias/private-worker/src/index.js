@@ -2,7 +2,7 @@
 // NO V1 changes. Signed sessions; V2 D1 stores red marks and 15-minute radar.
 import {captureRadar,loadRadar,mergeEditorialRadar,radarAgeMinutes} from "./radar.js";
 import {readNews,readNewsRecord} from "./news.js";
-import {newsControls,newsView,newsAction,newsPublicationCount,newsManualImage,newsImage,publicNews,publicNewsImageVisibility,newsWorkerControls} from "./news-actions.js";
+import {newsControls,newsView,newsAction,newsPublicationCount,newsManualImage,newsImage,publicNews,publicNewsImageVisibility,publicNewsArchivedIndex,newsWorkerControls} from "./news-actions.js";
 import {readImageIncident} from "./image-incidents.js";
 // All static assets require a session because run_worker_first=true.
 const COOKIE = "__Host-ttv2";
@@ -463,6 +463,8 @@ export default {
     }
     if(url.pathname==="/api/public-news-image-visibility")
       return publicNewsImageVisibility(request,env,{json});
+    if(url.pathname==="/api/public-news-archived-index")
+      return publicNewsArchivedIndex(request,env,{json});
     if(url.pathname==="/api/public-news"){
       if(request.method!=="GET")return json({error:"method_not_allowed"},405);
       try{return json(await publicNews(env),200,{"Access-Control-Allow-Origin":"*"});}catch{return json({error:"news_unavailable"},503);}
