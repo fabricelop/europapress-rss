@@ -15259,20 +15259,27 @@
     "trv2-0abb9ccd4b2ff9ae655695ca": {
       "trend_id": "trv2-0abb9ccd4b2ff9ae655695ca",
       "name": "Losada",
-      "revision": 1,
-      "status": "in_progress",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "563146a60b965a5f",
-      "requested_at": "2026-11-18T16:02:17.136099+00:00",
-      "updated_at": "2026-11-18T16:02:17.136099+00:00",
+      "requested_at": "2026-11-18T16:55:55.266788+00:00",
+      "updated_at": "2026-11-18T16:55:55.266788+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "lease": {
-        "token": "8ead80512381eb63b664f8cc8de34e42125e70da97a40087",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-18T16:04:03.609150+00:00",
-        "expires_at": "2026-11-18T16:44:03.609150+00:00"
-      }
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-18T16:04:03.609150+00:00",
+          "send_intent_at": null,
+          "incident_reason": "lease_expired_without_capture",
+          "archived_at": "2026-11-18T16:55:55.266788+00:00"
+        }
+      ],
+      "incident_retries": 1
     },
     "trv2-6819bee37da521086bedaba1": {
       "trend_id": "trv2-6819bee37da521086bedaba1",
@@ -15962,14 +15969,14 @@
     "trv2-58a162529baff02f23ca541f",
     "trv2-c85d5bbb68caeb377d39efcc",
     "trv2-d7b14c53e3deb41a861bc201",
-    "trv2-0abb9ccd4b2ff9ae655695ca",
     "trv2-129d22291a1806bba318f43d",
     "trv2-6819bee37da521086bedaba1",
     "trv2-9e27a49aae3cc93691e16142",
     "trv2-b1fadb851a72e2da5402ad95",
     "trv2-b2c265ef4773b9ee77944b92",
     "trv2-b7d5b46270e3ee5a0bfa002d",
-    "trv2-c9ddf5e89620f49cc97f8a27"
+    "trv2-c9ddf5e89620f49cc97f8a27",
+    "trv2-0abb9ccd4b2ff9ae655695ca"
   ],
   "effects_enabled": false
 }
