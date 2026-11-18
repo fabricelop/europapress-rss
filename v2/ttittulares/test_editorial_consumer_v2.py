@@ -1,5 +1,6 @@
 import copy
 import json
+from contextlib import nullcontext
 from pathlib import Path
 import tempfile
 import unittest
@@ -113,6 +114,32 @@ class ConsumerTests(unittest.TestCase):
             self.assertIn(('preserved_at_close', False), service.calls)
             self.assertEqual(service.calls.count('send'), 1)
             self.assertIn(('fail', False), service.calls)
+
+    def test_daemon_does_not_claim_or_preview_if_startup_preflight_fails(self):
+        from .editorial_consumer_v2 import daemon
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            flag = root / "editorial.enabled"
+            flag.write_text("TTN2_EDITORIAL_ENABLED=YES")
+            service = Service()
+            class Lock:
+                def exclusive_v2_lock(self, path):
+                    return nullcontext()
+            with patch("v2.ttittulares.editorial_consumer_v2.common", return_value=Lock()), \
+                 patch("v2.ttittulares.editorial_consumer_v2.preflight_once",
+                       return_value={"ok": False, "error_code": "NEWS_FRESH_CHAT_NOT_READY",
+                                     "cleanup_verified": True, "stage": "COMPOSER_MISSING"}), \
+                 patch("v2.ttittulares.session_watchdog_v2.reclaim_disposable_sessions",
+                       return_value={"reclaimed": 0}), \
+                 patch("v2.ttittulares.editorial_consumer_v2.time.sleep",
+                       side_effect=lambda seconds: flag.write_text("TTN2_EDITORIAL_ENABLED=NO")):
+                daemon(service, {"root": root, "chrome": root / "c",
+                                 "seed": root / "s"}, poll=1)
+            self.assertEqual(service.calls, [])
+            health = json.loads((root / "editorial-daemon-health.json").read_text())
+            self.assertEqual(health["state"], "WAIT_FRESH_CHAT_RETRY")
+            self.assertEqual(health["error_code"], "NEWS_FRESH_CHAT_NOT_READY")
+            self.assertFalse(health["claims_authorized"])
 
     def test_preflight_fresh_chat_failure_is_closed_and_does_not_claim(self):
         with tempfile.TemporaryDirectory() as tmp:
