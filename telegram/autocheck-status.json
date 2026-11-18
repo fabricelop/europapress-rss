@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-18T09:13:44.003472+00:00",
+  "checked_at": "2026-11-18T09:23:38.475756+00:00",
   "before": [
     "elaborando_bloqueado_138"
   ],
@@ -7,8 +7,14 @@
   "remaining": [
     "elaborando_bloqueado_138"
   ],
-  "healthy_source_count": 19,
-  "source_failures": [],
-  "events_bytes": 4115671,
+  "healthy_source_count": 18,
+  "source_failures": [
+    {
+      "source": "Europa Press",
+      "type": "general",
+      "error": "HTTP Error 429: Too Many Requests"
+    }
+  ],
+  "events_bytes": 4101552,
   "ok": false
 }
