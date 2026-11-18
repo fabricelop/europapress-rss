@@ -23,6 +23,10 @@ class InstallPackageTests(unittest.TestCase):
         self.assertIn('TTN2_IMAGE_WINDOWS_TASK_UNCHANGED=YES', repair)
         self.assertIn('NEWS_EDITORIAL_GIT_HASH_MISMATCH=', repair)
         self.assertIn('TTN2_EDITORIAL_DRAIN_WAIT=', repair)
+        # The no-queue checks must ship with the repaired editorial release.
+        # Otherwise a local probe may silently run old code, or not exist.
+        self.assertIn("'probe_news_chat_response_v2.py'", repair)
+        self.assertIn("'probe_news_editorial_shape_v2.py'", repair)
         self.assertNotIn("'TTActualidadNoticiasV2-Images'", repair)
         self.assertNotIn("'images.enabled'", repair)
         self.assertNotIn("'image-active-code.txt'", repair)

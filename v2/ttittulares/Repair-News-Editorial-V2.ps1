@@ -40,7 +40,8 @@ $news=@('news_workflow_v2.py','news_images_v2.py','test_news_workflow_v2.py','te
   'test_radar_snapshot_v2.py','test_radar_ingest_v2.py','test_editorial_browser_v2.py','test_editorial_setup_v2.py',
   'radar_snapshot_v2.py','radar_store_v2.py','radar_ingest_v2.py','identity_v2.py',
   'source_fetch_v2.py','source_publication_v2.py','source_catalog_v2.py','source_catalog_v2.json',
-  'source_health_v2.py','content_filters_v2.py','schemas/contract.schema.json','examples/sample-bundle.json')
+  'source_health_v2.py','content_filters_v2.py','schemas/contract.schema.json','examples/sample-bundle.json',
+  'probe_news_chat_response_v2.py','probe_news_editorial_shape_v2.py')
 $shared=@('chrome_command_v2.py','chrome_visibility_v2.py','chrome_profile_process_v2.py',
           'chrome_cleanup_v2.py','chrome_startup_v2.py','process_lock_v2.py','image_intake_v2.py','image_same_chat_v2.py','image_job_v2.py','image_github_v2.py')
 $paths=@($news | ForEach-Object {'v2/ttittulares/'+$_})+@($shared | ForEach-Object {'v2/ttendencias/'+$_})
