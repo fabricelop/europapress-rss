@@ -139,7 +139,7 @@ def plan_requested_reviews(queue, history, requests, *, now=None):
         except ValueError:
             ignored += 1
             continue
-        if action == "ENQUEUED":
+        if action in ("ENQUEUED", "STAGED"):
             updated = result
             applied.append(trend_id)
     return updated, applied, ignored
