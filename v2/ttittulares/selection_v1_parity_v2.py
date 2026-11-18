@@ -8,6 +8,7 @@ grouping and four independent families remain the responsibility of radar.
 from __future__ import annotations
 
 from datetime import datetime, timedelta, timezone
+import unicodedata
 from .identity_v2 import normalize, same_fact, title_match_value, tokens
 
 BLOCK_WINDOW = timedelta(hours=48)
@@ -27,7 +28,11 @@ def _when(value):
 def same_editorial_fact(new_title, old_title):
     """High-confidence V1-like second barrier, avoiding loosely related news."""
     a, b = normalize(new_title), normalize(old_title)
-    if not a or not b or any(a.startswith(x) or b.startswith(x) for x in GENERIC):
+    raw_a = "".join(c for c in unicodedata.normalize("NFKD", str(new_title).casefold())
+                    if not unicodedata.combining(c))
+    raw_b = "".join(c for c in unicodedata.normalize("NFKD", str(old_title).casefold())
+                    if not unicodedata.combining(c))
+    if not a or not b or any(raw_a.startswith(x) or raw_b.startswith(x) for x in GENERIC):
         return False
     if a == b:
         return True
@@ -42,7 +47,7 @@ def same_editorial_fact(new_title, old_title):
     # The underlying V2 same_fact has already ported V1's semantic and
     # action-stage checks. Require a high overlap for blocking a NEW identity.
     return same_fact({"canonical_title": new_title}, {"canonical_title": old_title}) and (
-        title_match_value(new_title, old_title) >= 0.88
+        title_match_value(new_title, old_title) >= 0.78
     )
 
 
