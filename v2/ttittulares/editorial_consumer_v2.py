@@ -16,6 +16,7 @@ import subprocess
 import sys
 import time
 import uuid
+from datetime import datetime, timezone
 
 from .editorial_browser_v2 import ChromeJob, common, write_private
 
@@ -269,11 +270,33 @@ def daemon(service, config, *, poll=30):
                 from .news_workflow_v2 import sync_controls
                 try:
                     sync_controls(service)
-                except Exception:
+                    plan = service.preview()
+                except Exception as exc:
+                    # The old daemon exited on a single failed preview, leaving
+                    # Pendientes full with zero active workers. Never silently
+                    # claim without verified D1 controls or a current snapshot.
+                    try:
+                        write_private(config['root'] / 'editorial-daemon-health.json', {
+                            'at': datetime.now(timezone.utc).isoformat(),
+                            'state': 'WAIT_BACKEND', 'error_code': error_code(exc),
+                            'workers': len(pool), 'claims_authorized': False,
+                        })
+                    except OSError:
+                        pass
                     time.sleep(poll)
                     continue
-                plan = service.preview()
                 pending = plan.get('pending_count', 0)
+                try:
+                    write_private(config['root'] / 'editorial-daemon-health.json', {
+                        'at': datetime.now(timezone.utc).isoformat(),
+                        'state': 'RUNNING' if pending else 'WAIT_NO_ELIGIBLE_JOB',
+                        'pending_eligible': pending, 'workers': len(pool),
+                        'min_requested_at': plan.get('min_requested_at'),
+                        'maintenance_needed': bool(plan.get('maintenance_needed')),
+                        'error_code': None,
+                    })
+                except OSError:
+                    pass
                 if plan.get('maintenance_needed') and pending == 0:
                     pending = 1  # claim() safely releases/quarantines expired leases.
                 for slot in range(3):
