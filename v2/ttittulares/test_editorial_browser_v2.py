@@ -77,6 +77,21 @@ class BrowserBoundaryTests(unittest.TestCase):
             command_id=COMMAND, heartbeat=heartbeat, timeout=timeout,
             clock=clock, sleep=clock.sleep)
 
+    def test_visible_assistant_reply_with_role_user_is_captured(self):
+        clock = Clock()
+        transcript = 'You said:\n' + USER + '\nChatGPT said:\n' + ANSWER
+        page = TranscriptPage(clock, transcript)
+        page.users = lambda _: [USER]
+        self.assertEqual(self.capture(page, clock), (ANSWER, page.url))
+
+    def test_visible_reply_cannot_override_different_role_user(self):
+        clock = Clock()
+        transcript = 'You said:\n' + USER + '\nChatGPT said:\n' + ANSWER
+        page = TranscriptPage(clock, transcript)
+        page.users = lambda _: [USER.replace('"revision": 2', '"revision": 3')]
+        with self.assertRaisesRegex(RuntimeError, 'CAPTURE_TIMEOUT_NO_RESEND'):
+            self.capture(page, clock, timeout=12)
+
     def test_completed_markers_while_streaming_wait_for_six_idle_seconds(self):
         clock = Clock()
         page = Page(clock, busy=lambda seconds: seconds < 8)
