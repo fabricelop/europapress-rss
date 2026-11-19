@@ -228,9 +228,10 @@ async function reRequests(request,env) {
     try{ranking=await currentRanking(env);}catch{return json({error:"ranking_unavailable"},503);}
     const current=ranking.find(x=>x.trend_id===trend_id);
     if(!current||current.revision!==revision||
-       !["explicada","pendiente","en_elaboracion"].includes(current.status))
+        !["explicada","pendiente","en_elaboracion","incidencia"].includes(current.status))
       return json({error:"trend_not_current"},409);
-    if(current.re_in_progress===true)return json({error:"re_already_processing"},409);
+    if(mode==="x"&&current.re_in_progress===true)
+      return json({error:"re_already_processing"},409);
     if(mode==="x"){
       await reXTable(env.MARKS_DB);
       await env.MARKS_DB.prepare("INSERT INTO re_x_context(trend_id,base_revision,hints) VALUES(?,?,?) ON CONFLICT(trend_id,base_revision) DO UPDATE SET hints=excluded.hints").bind(trend_id,revision,hints).run();
