@@ -113,7 +113,8 @@ def prompt_for(item):
     # navegador, caché, sesión, tokens ni colas de producción.
     rex = ""
     fresh = ""
-    if item.get("reason", "").startswith("retry_after_incident") or item.get("reason") == "user_reexplanation":
+    if (item.get("reason", "").startswith("retry_after_incident")
+            or item.get("reason") in ("user_reexplanation", "user_reset")):
         fresh = ("INTENTO NUEVO E INDEPENDIENTE: investiga desde cero y no abras "
                  "ni reutilices el chat de revisiones anteriores. Corrige la "
                  "causa del fallo anterior, contrasta de nuevo y entrega una "
