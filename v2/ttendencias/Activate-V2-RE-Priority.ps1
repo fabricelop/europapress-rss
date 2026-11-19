@@ -13,7 +13,7 @@ $branch = 'feature/ttactualidad-v2-clean'
 $headers = @{ 'Accept'='application/vnd.github+json'; 'User-Agent'='TTActualidadV2-RE-Upgrade' }
 $utf8 = New-Object System.Text.UTF8Encoding($false)
 $files = @('editorial_daemon_v2.py','editorial_run_v2.py','auto_editorial_policy_v2.py',
-           're_request_v2.py','sync_private_re_v2.py',
+           're_request_v2.py','sync_private_re_v2.py','web_top30_v2.py',
            'test_auto_editorial_v2.py','test_re_request_v2.py',
            'test_sync_private_re_v2.py')
 
@@ -24,7 +24,7 @@ function V2ActiveProcesses {
     $all = @(Get-CimInstance Win32_Process -ErrorAction Stop)
     return @($all | Where-Object {
         $line = [string]$_.CommandLine
-        ($line -match '(?i)(editorial_daemon_v2|Run-V2-Editorial-Auto|recover_existing_chat_v2|incident_worker_v2)\.(py|ps1)') -or
+        ($line -match '(?i)(editorial_daemon_v2|editorial_run_v2|Run-V2-Editorial-Auto|recover_existing_chat_v2|incident_worker_v2)\.(py|ps1)') -or
         ($_.Name -ieq 'chrome.exe' -and $line.Contains($profile))
     })
 }
@@ -62,6 +62,11 @@ $newDaemon = Get-Content -LiteralPath (Join-Path $stage 'editorial_daemon_v2.py'
 if (-not $newDaemon.Contains('sync_private_re_v2.py')) {
     throw 'La revisión descargada aún no contiene el consumidor RE directo.'
 }
+$newReset = Get-Content -LiteralPath (Join-Path $stage 're_request_v2.py') -Raw
+$newWeb = Get-Content -LiteralPath (Join-Path $stage 'web_top30_v2.py') -Raw
+if (-not $newReset.Contains('user_reset') -or -not $newWeb.Contains('decode_remote_content')) {
+    throw 'La revisión descargada no incluye RE como RESET y lectura de cola grande.'
+}
 $python = (Get-Command py.exe -ErrorAction Stop).Source
 $savedPythonPath = $env:PYTHONPATH
 $env:PYTHONPATH = $stage + ';' + $root
@@ -78,7 +83,8 @@ try {
 } finally { $env:PYTHONPATH = $savedPythonPath }
 Write-Host ('TT_V2_RE_STAGE_TESTS=OK sha=' + $sha.Substring(0,12))
 $syntax = Start-Process -FilePath $python -ArgumentList @('-3','-m','py_compile',
-    ('"' + (Join-Path $stage 'editorial_run_v2.py') + '"')) `
+    ('"' + (Join-Path $stage 'editorial_run_v2.py') + '"'),
+    ('"' + (Join-Path $stage 'web_top30_v2.py') + '"')) `
     -Wait -PassThru -WindowStyle Hidden -RedirectStandardOutput $stdOut -RedirectStandardError $stdErr
 if ($syntax.ExitCode -ne 0) {
     Get-Content -LiteralPath $stdErr -Tail 20 | ForEach-Object { Write-Host $_ }
@@ -126,6 +132,8 @@ try {
     $startedAt = [DateTime]::UtcNow
     Start-ScheduledTask -TaskName $taskName -ErrorAction Stop
     Write-Host 'TT_V2_RE_PRIORITY_INSTALLED=YES'
+    Write-Host 'TT_V2_RE_RESET_INSTALLED=YES'
+    Write-Host 'TT_V2_WEB_TOP30_LARGE_QUEUE_INSTALLED=YES'
     Write-Host 'TT_V2_RE_PRIORITY_START_REQUESTED=YES'
     Write-Host ('TT_V2_RE_PRIORITY_BACKUP=' + $backup)
     $statusPath = Join-Path $root 'daemon-status.json'
