@@ -96,6 +96,7 @@ class GithubAccessTests(unittest.TestCase):
         self.assertIn("if ($CommitSha)", text)
         self.assertIn("'Activate-V2-Editorial-Cycle.ps1')", text)
         self.assertIn("'editorial_github_access_v2.py'", text)
+        self.assertIn("'chrome_visibility_v2.py'", text)
         self.assertIn("'test_editorial_orphan_recovery_v2.py'", text)
         self.assertNotIn("'persist_capture_github.py',", text)
         self.assertIn("$newDaemon.Contains('recover_orphaned_attempt')", text)
