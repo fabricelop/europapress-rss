@@ -17600,12 +17600,19 @@
       "trend_id": "trv2-a50c6553f3ce2663544fc359",
       "name": "Robert",
       "revision": 1,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "first_explanation",
       "episode_token": "507869f000e27c01",
       "requested_at": "2026-11-19T01:32:07.515276+00:00",
       "updated_at": "2026-11-19T01:32:07.515276+00:00",
-      "previous_explanation": null
+      "previous_explanation": null,
+      "attempts": 1,
+      "lease": {
+        "token": "28b5bd0c892c4fffdd5056b1177962a23756cb15176d756d",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-19T01:37:56.973945+00:00",
+        "expires_at": "2026-11-19T02:17:56.973945+00:00"
+      }
     }
   },
   "pending_count": 562,
