@@ -12,7 +12,7 @@ import unittest
 class InstallPackageTests(unittest.TestCase):
     def test_audited_pinned_repair_uses_complete_hash_manifest_without_rest_api(self):
         source=(Path(__file__).parent/'Repair-News-Editorial-V2.ps1').read_text(encoding='utf-8')
-        self.assertIn("$auditedSha='ce47640143fff901249a1450c658d26d6ba5a8f1'", source)
+        self.assertIn("$auditedSha='01530a271a75f07a1e3f4060546d8df041ef784c'", source)
         self.assertIn('$audited=($ReleaseSha -eq $auditedSha)', source)
         self.assertIn('TTN2_EDITORIAL_PINNED_MANIFEST=YES', source)
         self.assertIn('if($audited){', source)
@@ -28,7 +28,11 @@ class InstallPackageTests(unittest.TestCase):
         expected.update('v2/ttendencias/'+name for name in re.findall(r"'([^']+)'", parts['shared']))
         expected.add('v2/ttittulares/Run-News-Editorial-Auto.ps1')
         self.assertEqual(set(hashes), expected)
-        self.assertEqual(len(hashes), 50)
+        self.assertEqual(len(hashes), 51)
+        self.assertEqual(hashes['v2/ttittulares/editorial_consumer_v2.py'],
+                         'b75798b30e6ff5bf893d104c5936ca93824fee3e')
+        self.assertEqual(hashes['v2/ttittulares/test_editorial_quota_v2.py'],
+                         'dc33576086a7df0371be8cacc1bde0803cdb6b15')
 
     def test_editorial_repair_updates_only_its_consumer_and_rolls_back_on_failure(self):
         directory=Path(__file__).parent
@@ -54,6 +58,7 @@ class InstallPackageTests(unittest.TestCase):
         self.assertIn("'probe_news_editorial_shape_v2.py'", repair)
         self.assertIn("'probe_news_existing_chat_v2.py'", repair)
         self.assertIn("'pilot_one_v2.py'", repair)
+        self.assertIn("'v2.ttittulares.test_editorial_quota_v2'", repair)
         self.assertNotIn("'TTActualidadNoticiasV2-Images'", repair)
         self.assertNotIn("'images.enabled'", repair)
         self.assertNotIn("'image-active-code.txt'", repair)
