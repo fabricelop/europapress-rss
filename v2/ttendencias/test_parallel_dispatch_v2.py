@@ -98,13 +98,32 @@ class ParallelDispatchTests(unittest.TestCase):
                 done = pool.reap()
                 self.assertFalse(done[0]["profile_deleted"])
                 self.assertIn("CHROME_STILL_RUNNING", done[0]["profile_cleanup_error"])
-                with self.assertRaisesRegex(RuntimeError, "CHROME_STILL_RUNNING"):
-                    pool.spawn(__file__, [], trend_id="two", revision=1)
+                self.assertIsNone(pool.available_slot())
+                self.assertFalse(pool.spawn(__file__, [], trend_id="two", revision=1))
             self.assertTrue(pool.profiles[0].exists())
             with (patch("parallel_dispatch_v2.exact_chrome_profile_pids", return_value=set()),
                   patch("parallel_dispatch_v2.subprocess.Popen", return_value=FakeProcess())):
                 self.assertTrue(pool.spawn(__file__, [], trend_id="two", revision=1))
             self.assertTrue(pool.seed.exists())
+
+    def test_orphaned_slot_does_not_block_another_free_slot(self):
+        with tempfile.TemporaryDirectory() as root:
+            pool = self.make_disposable_pool(root, count=2)
+            first_process = FakeProcess()
+            with (patch("parallel_dispatch_v2.exact_chrome_profile_pids", return_value=set()),
+                  patch("parallel_dispatch_v2.subprocess.Popen", return_value=first_process)):
+                self.assertTrue(pool.spawn(__file__, [], trend_id="one", revision=1))
+            first_process.returncode = 1
+            def pids(profile):
+                return {7456} if pathlib.Path(profile) == pool.profiles[0] else set()
+            with patch("parallel_dispatch_v2.exact_chrome_profile_pids", side_effect=pids):
+                done = pool.reap()
+                self.assertFalse(done[0]["profile_deleted"])
+                self.assertEqual(pool.available_slot(), 1)
+                with patch("parallel_dispatch_v2.subprocess.Popen", return_value=FakeProcess()):
+                    self.assertTrue(pool.spawn(__file__, [], trend_id="two", revision=1))
+                self.assertIn(1, pool.active)
+                self.assertEqual(pool.active[1]["trend_id"], "two")
 
     def test_disposable_refuses_unmarked_profile_and_low_disk(self):
         with tempfile.TemporaryDirectory() as root:

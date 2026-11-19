@@ -72,7 +72,8 @@ def ranked_incident(queue, history, *, now=None):
 
 
 def restart_as_new_revision(queue, trend_id, *, now=None, chrome_clear=False,
-                            recovery_checked=False, previous_chat_url=""):
+                            recovery_checked=False, previous_chat_url="",
+                            finished_lease_token=None):
     """Return a fresh PENDING revision, preserving evidence of every attempt.
 
     Explicit guard from the caller: no current V2 browser; attempted to recover
@@ -83,7 +84,16 @@ def restart_as_new_revision(queue, trend_id, *, now=None, chrome_clear=False,
     if not chrome_clear or not recovery_checked:
         raise ValueError("No reiniciar: falta cierre de Chrome o comprobación de rescate")
     original = (queue.get("items") or {}).get(trend_id)
-    if not original or not eligible_incident(original, now=now):
+    # The watchdog has already stopped this exact child and verified its
+    # Chrome profile was removed. No need to wait for the 40-minute remote
+    # lease plus the incident grace period before offering a fresh revision.
+    finished = bool(finished_lease_token and original
+                    and original.get("status") == "in_progress"
+                    and (original.get("lease") or {}).get("token") == finished_lease_token
+                    and not (original.get("capture") or {}).get("verified_complete")
+                    and (int(original.get("incident_retries", 0)) < MAX_INCIDENT_RETRIES
+                         or original.get("manual_retry_requested_at")))
+    if not original or not (finished or eligible_incident(original, now=now)):
         raise ValueError("Incidencia no recuperable todavía o agotó reintentos")
     now = now or datetime.now(timezone.utc)
     iso = now.astimezone(timezone.utc).isoformat()
