@@ -38,14 +38,14 @@
     "trv2-828ab70560e35dcdd7a3a075": {
       "trend_id": "trv2-828ab70560e35dcdd7a3a075",
       "name": "#Horizonte",
-      "revision": 2,
-      "status": "in_progress",
+      "revision": 3,
+      "status": "pending",
       "reason": "retry_after_incident",
       "episode_token": "739bf6e20d988bc0",
-      "requested_at": "2026-11-19T22:11:59.615376+00:00",
-      "updated_at": "2026-11-19T22:14:03.662230+00:00",
+      "requested_at": "2026-11-19T22:21:49.079478+00:00",
+      "updated_at": "2026-11-19T22:21:49.079478+00:00",
       "previous_explanation": null,
-      "attempts": 1,
+      "attempts": 0,
       "previous_attempts": [
         {
           "revision": 1,
@@ -56,19 +56,19 @@
           "send_intent_at": "2026-11-19T22:04:23.845992+00:00",
           "incident_reason": "session_8min_timeout",
           "archived_at": "2026-11-19T22:11:59.615376+00:00"
+        },
+        {
+          "revision": 2,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-19T22:13:39.283603+00:00",
+          "send_intent_at": "2026-11-19T22:14:03.660988+00:00",
+          "incident_reason": "session_8min_timeout",
+          "archived_at": "2026-11-19T22:21:49.079478+00:00"
         }
       ],
-      "incident_retries": 1,
-      "lease": {
-        "token": "fe0161a28f24aa129aa7d20d62d2e5a5cf55cf9b13581254",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-19T22:13:39.283603+00:00",
-        "expires_at": "2026-11-19T22:53:39.283603+00:00"
-      },
-      "send_intent": {
-        "token": "fe0161a28f24aa129aa7d20d62d2e5a5cf55cf9b13581254",
-        "at": "2026-11-19T22:14:03.660988+00:00"
-      }
+      "incident_retries": 2
     },
     "trv2-58fbbdf335068bc6bec6a883": {
       "trend_id": "trv2-58fbbdf335068bc6bec6a883",
@@ -20813,9 +20813,9 @@
     "trv2-e4758054ef86fe4d4540023f",
     "trv2-f3747df76de9cd3489c6d77a",
     "trv2-fa95ef6dc5e74f73b9981b9c",
-    "trv2-828ab70560e35dcdd7a3a075",
     "trv2-935bb3c66d4ac2626b07000b",
-    "trv2-e4d21d26294410f65eda4aa7"
+    "trv2-e4d21d26294410f65eda4aa7",
+    "trv2-828ab70560e35dcdd7a3a075"
   ],
   "effects_enabled": false
 }
