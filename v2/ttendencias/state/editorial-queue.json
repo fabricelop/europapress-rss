@@ -1630,12 +1630,12 @@
       "trend_id": "trv2-b19a47df873cb1b14bf65663",
       "name": "Ayuso",
       "revision": 2,
-      "status": "review_pending",
+      "status": "in_progress",
       "reason": "user_reexplanation",
       "episode_token": "7fce44889b68c709",
       "requested_at": "2026-11-19T06:28:37.802223+00:00",
       "updated_at": "2026-11-19T06:28:37.802223+00:00",
-      "attempts": 0,
+      "attempts": 1,
       "image_retry_summary": {
         "revision": 1,
         "editorial_sha256": "3efd7653fd5413153ea2ef5e5239a3e11cd51ae1e096d1a24b69c7e883c8cee0",
@@ -1647,7 +1647,13 @@
       },
       "review_mode": "x",
       "review_hints": "No pongas onformafoon tecnica. Si. Por el atico",
-      "incident_retries": 0
+      "incident_retries": 0,
+      "lease": {
+        "token": "f36fb53d4707bc12cf1c5df532d3865b7e7c92415a69d339",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-19T06:29:12.104305+00:00",
+        "expires_at": "2026-11-19T07:09:12.104305+00:00"
+      }
     },
     "trv2-d38fc799c442941efc098692": {
       "trend_id": "trv2-d38fc799c442941efc098692",
