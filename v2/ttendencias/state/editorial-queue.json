@@ -20371,24 +20371,27 @@
     "trv2-65904552069b2710dc708a5f": {
       "trend_id": "trv2-65904552069b2710dc708a5f",
       "name": "Rebeca Torró",
-      "revision": 1,
-      "status": "in_progress",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "dbef271dcf5df15d",
-      "requested_at": "2026-11-19T23:04:43.347354+00:00",
-      "updated_at": "2026-11-19T23:12:47.347352+00:00",
+      "requested_at": "2026-11-19T23:16:43.723242+00:00",
+      "updated_at": "2026-11-19T23:16:43.723242+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "lease": {
-        "token": "bee188adbe78fadfc9c3049cc446caf6ff1dc81b3dad79b4",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-19T23:12:15.348544+00:00",
-        "expires_at": "2026-11-19T23:52:15.348544+00:00"
-      },
-      "send_intent": {
-        "token": "bee188adbe78fadfc9c3049cc446caf6ff1dc81b3dad79b4",
-        "at": "2026-11-19T23:12:47.347327+00:00"
-      }
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": "https://chatgpt.com/c/6aff8276-d48c-83ed-86f5-2393a9a8ca70",
+          "started_at": "2026-11-19T23:12:15.348544+00:00",
+          "send_intent_at": "2026-11-19T23:12:47.347327+00:00",
+          "incident_reason": "worker_or_capture_failed",
+          "archived_at": "2026-11-19T23:16:43.723242+00:00"
+        }
+      ],
+      "incident_retries": 1
     },
     "trv2-6521745076760c92f03a50e8": {
       "trend_id": "trv2-6521745076760c92f03a50e8",
@@ -21183,7 +21186,6 @@
     "trv2-576333afb8818f77944f4ab4",
     "trv2-5acc06085e98c6b2957e89f0",
     "trv2-6521745076760c92f03a50e8",
-    "trv2-65904552069b2710dc708a5f",
     "trv2-6defe4885b0a3c38ab97d9f2",
     "trv2-8750108d6413f41a72eec0c3",
     "trv2-ae1bdc4aedba625172c967a7",
@@ -21194,7 +21196,8 @@
     "trv2-828ab70560e35dcdd7a3a075",
     "trv2-935bb3c66d4ac2626b07000b",
     "trv2-e4d21d26294410f65eda4aa7",
-    "trv2-9bc290564fa13fe252ac73f9"
+    "trv2-9bc290564fa13fe252ac73f9",
+    "trv2-65904552069b2710dc708a5f"
   ],
   "effects_enabled": false
 }
