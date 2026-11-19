@@ -10,6 +10,26 @@ import unittest
 
 
 class InstallPackageTests(unittest.TestCase):
+    def test_audited_pinned_repair_uses_complete_hash_manifest_without_rest_api(self):
+        source=(Path(__file__).parent/'Repair-News-Editorial-V2.ps1').read_text(encoding='utf-8')
+        self.assertIn("$auditedSha='ce47640143fff901249a1450c658d26d6ba5a8f1'", source)
+        self.assertIn('$audited=($ReleaseSha -eq $auditedSha)', source)
+        self.assertIn('TTN2_EDITORIAL_PINNED_MANIFEST=YES', source)
+        self.assertIn('if($audited){', source)
+        self.assertIn('$expectedBlob=[string]$auditedBlobs[$path]', source)
+        self.assertIn('if($actual -ne $expectedBlob)', source)
+        self.assertIn('}else{\n  $commit=Invoke-RestMethod', source)
+        block=re.search(r'\$auditedBlobs=@\{(.*?)\n\}', source, re.S)
+        self.assertIsNotNone(block)
+        hashes=dict(re.findall(r"'([^']+)'='([a-f0-9]{40})'", block.group(1)))
+        parts={part:re.search(r'\$'+part+r'=@\((.*?)\)\s*\n', source, re.S).group(1)
+               for part in ('news', 'shared')}
+        expected={'v2/ttittulares/'+name for name in re.findall(r"'([^']+)'", parts['news'])}
+        expected.update('v2/ttendencias/'+name for name in re.findall(r"'([^']+)'", parts['shared']))
+        expected.add('v2/ttittulares/Run-News-Editorial-Auto.ps1')
+        self.assertEqual(set(hashes), expected)
+        self.assertEqual(len(hashes), 50)
+
     def test_editorial_repair_updates_only_its_consumer_and_rolls_back_on_failure(self):
         directory=Path(__file__).parent
         repair=(directory/'Repair-News-Editorial-V2.ps1').read_text(encoding='utf-8')
