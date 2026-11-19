@@ -151,7 +151,7 @@ def recover(trend_id, revision, *, lock_held=False):
     # En el reinicio solo el proceso encargado puede rescatar un chat V2.
     with (contextlib.nullcontext() if lock_held else exclusive_v2_lock(LOCK)):
         journal, record = journal_for(trend_id, revision)
-        api = core.module("persist_capture_github.py", "ttv2_existing_api")
+        api = core.module("editorial_github_access_v2.py", "ttv2_existing_api")
         state = core.module("editorial_capture_state.py", "ttv2_existing_state")
         transcript = core.module("chatgpt_transcript.py", "ttv2_existing_transcript")
         auth = api.token()
@@ -226,7 +226,7 @@ def recover_closed_chat(trend_id, revision, *, lock_held=False):
     """
     with (contextlib.nullcontext() if lock_held else exclusive_v2_lock(LOCK)):
         journal, record = journal_for(trend_id, revision)
-        api = core.module("persist_capture_github.py", "ttv2_offline_api")
+        api = core.module("editorial_github_access_v2.py", "ttv2_offline_api")
         state = core.module("editorial_capture_state.py", "ttv2_offline_state")
         transcript = core.module("chatgpt_transcript.py", "ttv2_offline_transcript")
         tracker = core.module("chatgpt_target_tracker.py", "ttv2_offline_tracker")
@@ -343,7 +343,7 @@ def recover_orphan_automatically():
         print("TT_V2_RECOVERY_ORPHAN=NONE", flush=True)
         return "none"
     # Solo el worker previo pudo tener Chrome V2 abierto en este perfil.
-    api = core.module("persist_capture_github.py", "ttv2_orphan_github")
+    api = core.module("editorial_github_access_v2.py", "ttv2_orphan_github")
     auth = api.token()
     queue, _ = core.queue_read(api, auth)
     candidates = []

@@ -11,7 +11,7 @@ import json
 import pathlib
 import sys
 import time
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 import editorial_run_v2 as core
 from batch_contract_v2 import verify_persisted
@@ -27,6 +27,8 @@ ENABLED = ROOT / "auto-editorial-v2.enabled"
 STATUS = ROOT / "daemon-status.json"
 SENTINEL = "TT_V2_AUTO_EDITORIAL_ENABLED=YES"
 WEB_RETRY_SECONDS = 300
+ORPHAN_RETRY_SECONDS = 150
+MAX_CHAT_SECONDS = 480
 
 
 def flag_is_enabled(path=ENABLED):
@@ -92,6 +94,10 @@ def settle_failed_job(api, auth, trend_id, revision, *,
     if diagnostic in ("chat_target_identity_not_verified",
                       "response_not_stable", "assistant_turn_missing"):
         reason = "capture_" + diagnostic
+    elif "github_rate_limit_paused" in error:
+        reason = "github_rate_limit"
+    elif "github_forbidden_auth_or_policy" in error:
+        reason = "github_auth_or_policy"
     elif "403" in error or "rate limit" in error:
         reason = "github_access_or_rate_limit"
     elif "chatgpt no está listo" in error or "chatgpt not ready" in error:
@@ -153,10 +159,70 @@ def settle_failed_job(api, auth, trend_id, revision, *,
     return "settlement_deferred"
 
 
+def orphaned_attempts(queue, history, *, directory=core.DIAG_DIR, now=None):
+    """Only expired *current Top30* workers with matching durable local proof.
+
+    The remote lease lasts 40 minutes, but the actual child is limited to
+    eight. A daemon restarted during a GitHub 403 must not strand that lease.
+    """
+    now = now or datetime.now(timezone.utc)
+    if (queue.get("source_observed_at") != history.get("observed_at")
+            or history.get("step") != "03_movement"):
+        return []
+    active = {topic.get("trend_id") for topic in history.get("topics", {}).values()
+              if topic.get("active") is True and
+              topic.get("name") in (history.get("top30") or [])}
+    found = []
+    for row in queue.get("items", {}).values():
+        if row.get("trend_id") not in active or row.get("status") != "in_progress":
+            continue
+        lease = row.get("lease") or {}
+        token = lease.get("token")
+        try:
+            started = datetime.fromisoformat(lease["started_at"].replace("Z", "+00:00"))
+            aged = started.tzinfo is not None and started + timedelta(seconds=MAX_CHAT_SECONDS) <= now
+            revision = int(row["revision"])
+        except (KeyError, TypeError, ValueError):
+            continue
+        if not token or not aged:
+            continue
+        journal = pathlib.Path(directory) / ("run-" + row["trend_id"] + "-r" + str(revision) + ".json")
+        try:
+            evidence = json.loads(journal.read_text(encoding="utf-8-sig"))
+        except (OSError, ValueError):
+            continue
+        if (evidence.get("trend_id") == row["trend_id"] and
+                evidence.get("revision") == revision and
+                evidence.get("lease_token") == token):
+            found.append((started, row["trend_id"], revision, evidence))
+    return [(tid, rev, record) for _, tid, rev, record in sorted(found)]
+
+
+def recover_orphaned_attempt(api, auth):
+    """Finish one abandoned child after verifying NO owned V2 Chrome lives."""
+    queue, _ = core.queue_read(api, auth)
+    history = read_history(auth)
+    found = orphaned_attempts(queue, history)
+    if not found:
+        return False
+    # This is only called without local pool workers. No claim or retry is
+    # allowed if another owned Chrome survives a worker or daemon crash.
+    incident = core.module("incident_worker_v2.py", "ttv2_orphan_chrome_check")
+    incident.ensure_no_owned_chrome()
+    tid, rev, evidence = found[0]
+    if evidence.get("reply_captured") and evidence.get("answer"):
+        recovery = core.module("recover_existing_chat_v2.py", "ttv2_orphan_capture")
+        recovery.recover(tid, rev, lock_held=True)
+        return "captured_reply_recovered"
+    return settle_failed_job(api, auth, tid, rev,
+                             cleanup_verified=True,
+                             failure_reason="ended_child_after_github_pause")
+
+
 def run_forever(poll_seconds=90, max_jobs=0, workers=3):
     if not flag_is_enabled():
         raise RuntimeError("AUTORUN BLOQUEADO: instalar y habilitar primero V2")
-    api = core.module("persist_capture_github.py", "ttv2_auto_github")
+    api = core.module("editorial_github_access_v2.py", "ttv2_auto_github")
     auth = api.token()
     completed = 0
     attempts_started = 0
@@ -172,6 +238,7 @@ def run_forever(poll_seconds=90, max_jobs=0, workers=3):
         print("TT_V2_AUTO_PUBLICATION=NO", flush=True)
         last_sync = 0.0
         last_web_sync = time.monotonic()
+        last_orphan_scan = 0.0
         unsettled = {}
         try:
             while flag_is_enabled():
@@ -246,6 +313,16 @@ def run_forever(poll_seconds=90, max_jobs=0, workers=3):
                 # finish (or hit their 8-minute watchdog). This guarantees a
                 # Chrome-free checkpoint for incident recovery every wave.
                 if not pool.active and not max_jobs:
+                    if time.monotonic() - last_orphan_scan >= ORPHAN_RETRY_SECONDS:
+                        last_orphan_scan = time.monotonic()
+                        try:
+                            orphan_result = recover_orphaned_attempt(api, auth)
+                            if orphan_result:
+                                report("ORPHAN_RECOVERED", completed=completed,
+                                       last_error=str(orphan_result))
+                        except Exception as exc:
+                            report("ORPHAN_RETRY_DEFERRED", completed=completed,
+                                   last_error=str(exc)[:180])
                     try:
                         incident = core.module("incident_worker_v2.py", "ttv2_incident_worker")
                         if incident.process_one(api, auth):
@@ -328,7 +405,7 @@ def main():
     if not 30 <= args.poll_seconds <= 600 or args.max_jobs < 0 or not 1 <= args.workers <= 6:
         parser.error("poll-seconds entre 30 y 600; max-jobs >= 0; workers entre 1 y 6")
     if not args.run:
-        api = core.module("persist_capture_github.py", "ttv2_auto_preflight")
+        api = core.module("editorial_github_access_v2.py", "ttv2_auto_preflight")
         try:
             item, age, blocked = check(api, api.token())
             print("TT_V2_AUTO_MODE=DRY_RUN", flush=True)
