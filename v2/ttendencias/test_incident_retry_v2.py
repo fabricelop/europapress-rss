@@ -120,16 +120,17 @@ class IncidentRetryTests(unittest.TestCase):
         self.assertEqual(blocked, [])
         self.assertEqual(age, 3)
 
-    def test_retry_limit_prevents_infinite_loop(self):
+    def test_retry_count_remains_diagnostic_not_a_permanent_blocker(self):
         q, _ = sample()
         ident = "trv2-%024x" % 1
         q["items"][ident].update(status="capture_recovery",
                                   incident_retries=2,
                                   updated_at=(NOW-timedelta(hours=1)).isoformat())
-        self.assertFalse(eligible_incident(q["items"][ident], now=NOW))
-        with self.assertRaises(ValueError):
-            restart_as_new_revision(q, ident, now=NOW,
-                                    chrome_clear=True, recovery_checked=True)
+        self.assertTrue(eligible_incident(q["items"][ident], now=NOW))
+        newer = restart_as_new_revision(q, ident, now=NOW,
+                                        chrome_clear=True, recovery_checked=True)
+        self.assertEqual(newer["items"][ident]["incident_retries"], 3)
+        self.assertEqual(newer["items"][ident]["status"], "pending")
 
     def test_explicit_user_retry_after_exhaustion_starts_fresh_cycle(self):
         q, _ = sample()
