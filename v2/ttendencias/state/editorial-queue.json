@@ -17556,13 +17556,13 @@
       "trend_id": "trv2-c01c9754539e2b29f9fd1622",
       "name": "Nerea",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "fa13e8ac0cbe33ef",
       "requested_at": "2026-11-19T02:36:02.027085+00:00",
       "updated_at": "2026-11-19T02:36:02.027085+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -17575,7 +17575,13 @@
           "archived_at": "2026-11-19T02:36:02.027085+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "8ff35f0a19916e74f711711d000180a001c6ce73b84a8ee7",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-19T02:37:09.414336+00:00",
+        "expires_at": "2026-11-19T03:17:09.414336+00:00"
+      }
     },
     "trv2-add3fa1adb10adbe909202f5": {
       "trend_id": "trv2-add3fa1adb10adbe909202f5",
