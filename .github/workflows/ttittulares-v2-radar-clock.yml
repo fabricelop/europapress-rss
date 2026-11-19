@@ -50,10 +50,10 @@ jobs:
           PY
 
   materialize:
-    # This is NOT the radar clock. Failure to deliver new jobs must never
-    # roll back or block the independently verified source scan.
+    # Paused by editor 2026-11-19: news will be a source-only master list.
+    # Radar scan stays scheduled; no more editorial pending-job materialization.
     needs: radar
-    if: needs.radar.result == 'success'
+    if: ${{ false }}
     runs-on: ubuntu-latest
     timeout-minutes: 12
     concurrency:
