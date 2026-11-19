@@ -24,6 +24,9 @@ class InstallPackageTests(unittest.TestCase):
         self.assertIn('NEWS_EDITORIAL_GIT_HASH_MISMATCH=', repair)
         self.assertIn('[string]$ReleaseSha', repair)
         self.assertIn('NEWS_EDITORIAL_REQUESTED_RELEASE_MISMATCH', repair)
+        self.assertIn("$headers['Authorization']='Bearer '+$authToken", repair)
+        self.assertIn('-Headers $rawHeaders -OutFile $target', repair)
+        self.assertIn('NEWS_EDITORIAL_GITHUB_AUTH_REQUIRED', repair)
         self.assertIn('TTN2_EDITORIAL_DRAIN_WAIT=', repair)
         # The no-queue checks must ship with the repaired editorial release.
         # Otherwise a local probe may silently run old code, or not exist.
@@ -96,4 +99,5 @@ class InstallPackageTests(unittest.TestCase):
 
 
 if __name__ == '__main__': unittest.main()
+
 
