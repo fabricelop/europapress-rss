@@ -12082,13 +12082,13 @@
       "trend_id": "trv2-fa01f1afd0502f4f41a3c0de",
       "name": "Rafa Jódar",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "12bf5d3943620b34",
       "requested_at": "2026-11-19T16:04:24.631221+00:00",
       "updated_at": "2026-11-19T16:04:24.631221+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -12101,7 +12101,13 @@
           "archived_at": "2026-11-19T16:04:24.631221+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "b5638d92eea700c655aa3b7fbc893df8d6d468078f2490bb",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-19T16:09:11.124217+00:00",
+        "expires_at": "2026-11-19T16:49:11.124217+00:00"
+      }
     },
     "trv2-883b26773797a4e04e85bec5": {
       "trend_id": "trv2-883b26773797a4e04e85bec5",
