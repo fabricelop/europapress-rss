@@ -6,6 +6,7 @@ handles one job, --daemon keeps three slots while the local flag is enabled.
 from __future__ import annotations
 
 import argparse
+import copy
 import hashlib
 import json
 import os
@@ -17,8 +18,167 @@ import sys
 import time
 import uuid
 from datetime import datetime, timezone
+from urllib.error import HTTPError, URLError
+from urllib.parse import quote
+from urllib.request import Request
 
 from .editorial_browser_v2 import ChromeJob, common, write_private
+from .news_workflow_v2 import NewsStore, allowed as news_allowed
+from .radar_store_v2 import REPOSITORY, StoreError, UncertainCommit, _oid
+
+
+# Shared with Tendencias, but not imported by Images or the news radar.
+_GH_SHARED = Path(os.environ.get('LOCALAPPDATA', '.')) / 'TTActualidadV2'
+_GH_BUDGET = _GH_SHARED / 'github-api-budget.json'
+_GH_COOLDOWN = _GH_SHARED / 'github-api-cooldown.json'
+_GH_RESERVE = 800
+
+
+def _header(headers, name):
+    return next((str(value) for key, value in headers.items()
+                 if key.lower() == name.lower()), '')
+
+
+def _budget_low(*, clock=time.time):
+    try:
+        budget = json.loads(_GH_BUDGET.read_text(encoding='utf-8'))
+        if float(budget['reset']) > clock() and int(budget['remaining']) <= _GH_RESERVE:
+            return True
+    except (OSError, ValueError, TypeError, KeyError):
+        pass
+    try:
+        paused = json.loads(_GH_COOLDOWN.read_text(encoding='utf-8'))
+        return float(paused['until']) > clock()
+    except (OSError, ValueError, TypeError, KeyError):
+        return False
+
+
+def _cooldown_remaining(*, clock=time.time):
+    try:
+        return max(0, int(float(json.loads(_GH_COOLDOWN.read_text(
+            encoding='utf-8'))['until']) - clock()))
+    except (OSError, ValueError, TypeError, KeyError):
+        return 0
+
+
+def _atomic_json(path, value):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_name(path.name + '.' + uuid.uuid4().hex + '.tmp')
+    temporary.write_text(json.dumps(value) + '\n', encoding='utf-8')
+    temporary.replace(path)
+
+
+def _note_budget(headers, *, clock=time.time):
+    remaining = _header(headers, 'x-ratelimit-remaining')
+    reset = _header(headers, 'x-ratelimit-reset')
+    if not remaining.isdigit() or not reset.isdigit() or int(remaining) > _GH_RESERVE:
+        return
+    count, deadline = int(remaining), int(reset)
+    try:
+        previous = json.loads(_GH_BUDGET.read_text(encoding='utf-8'))
+        if int(previous['reset']) == deadline and deadline > clock():
+            count = min(count, int(previous['remaining']))
+    except (OSError, ValueError, TypeError, KeyError):
+        pass
+    try:
+        _atomic_json(_GH_BUDGET, {'remaining': count, 'reset': deadline})
+    except OSError:
+        pass  # Monitoring cannot corrupt or interrupt an editorial commit.
+
+
+def _remember_limit(exc, *, clock=time.time):
+    headers = exc.headers or {}
+    _note_budget(headers, clock=clock)
+    remaining = _header(headers, 'x-ratelimit-remaining')
+    reset = _header(headers, 'x-ratelimit-reset')
+    retry = _header(headers, 'retry-after')
+    try:
+        message = json.loads(exc.read(1024).decode('utf-8')).get('message', '')
+    except (ValueError, AttributeError, UnicodeError, OSError):
+        message = ''
+    if not (remaining == '0' or retry or 'rate limit' in str(message).lower()):
+        return False
+    seconds = max(75, int(retry) if retry.isdigit() else 0)
+    if remaining == '0' and reset.isdigit():
+        seconds = max(seconds, int(int(reset) - clock() + 3))
+    until = clock() + min(3600, seconds)
+    try:
+        previous = json.loads(_GH_COOLDOWN.read_text(encoding='utf-8'))
+        until = max(until, float(previous['until']))
+    except (OSError, ValueError, TypeError, KeyError):
+        pass
+    try:
+        _atomic_json(_GH_COOLDOWN, {'until': until})
+    except OSError:
+        pass
+    return True
+
+
+class EconomicalEditorialStore(NewsStore):
+    """Only editorial jobs use these economical, CAS-safe GitHub reads."""
+
+    def __init__(self, token, **kwargs):
+        self._branch_response = None
+        self._branch_etag = None
+        self._snapshot_head = None
+        self._snapshot_docs = None
+        super().__init__(token, **kwargs)
+
+    def _http_json(self, method, path, payload=None):
+        if not (path.startswith('/repos/' + REPOSITORY + '/') or path == '/graphql'):
+            raise StoreError('GITHUB_ENDPOINT_OUTSIDE_SCOPE')
+        if _cooldown_remaining():
+            raise StoreError('GITHUB_RATE_LIMIT_PAUSED')
+        body = json.dumps(payload).encode('utf-8') if payload is not None else None
+        headers = {'Authorization': 'Bearer ' + self._token,
+                   'Accept': 'application/vnd.github+json',
+                   'X-GitHub-Api-Version': '2022-11-28',
+                   'User-Agent': 'TTNoticiasV2-Editorial',
+                   'Content-Type': 'application/json'}
+        branch = method == 'GET' and path.startswith('/repos/' + REPOSITORY + '/branches/')
+        if branch and self._branch_etag:
+            headers['If-None-Match'] = self._branch_etag
+        request = Request('https://api.github.com' + path, data=body,
+                          method=method, headers=headers)
+        try:
+            with self._opener.open(request, timeout=60) as response:
+                raw = response.read(32_000_001)
+                _note_budget(response.headers)
+                if branch:
+                    self._branch_etag = response.headers.get('ETag')
+            if len(raw) > 32_000_000:
+                raise StoreError('GITHUB_RESPONSE_TOO_LARGE')
+            result = json.loads(raw)
+            if branch:
+                self._branch_response = copy.deepcopy(result)
+            return result
+        except HTTPError as exc:
+            if exc.code == 304 and branch and self._branch_response is not None:
+                _note_budget(exc.headers or {})
+                return copy.deepcopy(self._branch_response)
+            if method == 'POST' and exc.code >= 500:
+                raise UncertainCommit('GITHUB_COMMIT_RESPONSE_UNCERTAIN') from None
+            if exc.code in (403, 429) and _remember_limit(exc):
+                raise StoreError('GITHUB_RATE_LIMIT_PAUSED') from None
+            raise StoreError('GITHUB_HTTP_' + str(exc.code)) from None
+        except (URLError, TimeoutError, ConnectionError, OSError):
+            if method == 'POST':
+                raise UncertainCommit('GITHUB_COMMIT_RESPONSE_UNCERTAIN') from None
+            raise StoreError('GITHUB_READ_FAILED') from None
+        except (ValueError, UnicodeError):
+            if method == 'POST':
+                raise UncertainCommit('GITHUB_COMMIT_RESPONSE_UNCERTAIN') from None
+            raise StoreError('GITHUB_JSON_INVALID') from None
+
+    def read_editorial_snapshot(self):
+        head = self.head()
+        if head == self._snapshot_head and self._snapshot_docs is not None:
+            return head, copy.deepcopy(self._snapshot_docs)
+        inventory = self.inventory(head)
+        docs = self.read_documents(head, [path for path, entry in inventory.items()
+            if entry.get('type') != 'tree' and news_allowed(path)])
+        self._snapshot_head, self._snapshot_docs = head, copy.deepcopy(docs)
+        return head, docs
 
 
 def github_token():
@@ -268,6 +428,7 @@ def daemon(service, config, *, poll=30):
     unsafe_preflight_cleanup = False
     preflight_code = None
     preflight_stage = None
+    next_idle_preview = 0.0
     # The OS lock protects this PC; the GitHub CAS service protects all PCs.
     with common('process_lock_v2').exclusive_v2_lock(config['root'] / 'consumer.lock'):
         while enabled(config['root']) or pool:
@@ -298,6 +459,20 @@ def daemon(service, config, *, poll=30):
                             # guessed resend is permitted on an uncertain send.
                             pass
                     del pool[slot]
+            # All editorial consumers share the account's primary GitHub
+            # allowance. Stop new claims before exhausting the portion needed
+            # by jobs already in ChatGPT, including Tendencias jobs.
+            if enabled(config['root']) and _budget_low():
+                try:
+                    write_private(config['root'] / 'editorial-daemon-health.json', {
+                        'at': datetime.now(timezone.utc).isoformat(),
+                        'state': 'WAIT_GITHUB_BUDGET', 'workers': len(pool),
+                        'claims_authorized': False, 'error_code': 'GITHUB_BUDGET_RESERVED',
+                    })
+                except OSError:
+                    pass
+                time.sleep(poll)
+                continue
             if enabled(config['root']) and not preflight_verified:
                 now = time.monotonic()
                 if unsafe_preflight_cleanup:
@@ -341,6 +516,11 @@ def daemon(service, config, *, poll=30):
                     time.sleep(poll)
                     continue
             if enabled(config['root']):
+                if len(pool) >= 3 or time.monotonic() < next_idle_preview:
+                    # Active children perform their own CAS/heartbeats. The
+                    # supervisor needs no repository snapshot while full.
+                    time.sleep(poll)
+                    continue
                 from .news_workflow_v2 import sync_controls
                 try:
                     sync_controls(service)
@@ -360,6 +540,9 @@ def daemon(service, config, *, poll=30):
                     time.sleep(poll)
                     continue
                 pending = plan.get('pending_count', 0)
+                next_idle_preview = (time.monotonic() + 90
+                                     if not pending and not plan.get('maintenance_needed')
+                                     else 0.0)
                 try:
                     write_private(config['root'] / 'editorial-daemon-health.json', {
                         'at': datetime.now(timezone.utc).isoformat(),
@@ -406,9 +589,10 @@ def main():
     group.add_argument('--daemon', action='store_true')
     parser.add_argument('--run-id', help='Internal one-job UUID from the supervising daemon')
     args = parser.parse_args()
-    from .news_workflow_v2 import NewsService, NewsStore
+    from .news_workflow_v2 import NewsService
     config = settings(args.root)
-    service = NewsService(NewsStore(github_token()), min_requested_at=config['min_requested_at'])
+    service = NewsService(EconomicalEditorialStore(github_token()),
+                          min_requested_at=config['min_requested_at'])
     if args.check:
         print(json.dumps({'project': 'ttittulares-v2', 'preview': service.preview(),
                           'browser_opened': False, 'published': False}))

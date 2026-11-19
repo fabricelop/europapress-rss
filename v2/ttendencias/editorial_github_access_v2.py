@@ -28,6 +28,44 @@ API = "https://api.github.com/repos/fabricelop/europapress-rss/contents/v2/ttend
 BRANCH = "feature/ttactualidad-v2-clean"
 VALIDATION = "paired_turn_id_revision_footer_and_stable_idle"
 COOLDOWN = ROOT / "github-api-cooldown.json"
+BUDGET = ROOT / "github-api-budget.json"
+BUDGET_RESERVE = 800  # Save final CAS/capture writes for already active chats.
+
+
+def budget_low(*, clock=time.time):
+    try:
+        item = json.loads(BUDGET.read_text(encoding="utf-8"))
+        if float(item["reset"]) > clock() and int(item["remaining"]) <= BUDGET_RESERVE:
+            return True
+    except (FileNotFoundError, ValueError, TypeError, KeyError, OSError):
+        pass
+    try:
+        return float(json.loads(COOLDOWN.read_text(encoding="utf-8"))["until"]) > clock()
+    except (FileNotFoundError, ValueError, TypeError, KeyError, OSError):
+        return False
+
+
+def _remember_budget(headers, *, clock=time.time):
+    lower = {str(k).lower(): str(v) for k, v in headers.items()}
+    remaining, reset = lower.get("x-ratelimit-remaining", ""), lower.get("x-ratelimit-reset", "")
+    if not remaining.isdigit() or not reset.isdigit() or int(remaining) > BUDGET_RESERVE:
+        return
+    count, deadline = int(remaining), int(reset)
+    try:
+        previous = json.loads(BUDGET.read_text(encoding="utf-8"))
+        if int(previous["reset"]) == deadline and deadline > clock():
+            count = min(count, int(previous["remaining"]))
+    except (FileNotFoundError, ValueError, TypeError, KeyError, OSError):
+        pass
+    try:
+        BUDGET.parent.mkdir(parents=True, exist_ok=True)
+        with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", delete=False,
+                                         dir=BUDGET.parent, prefix="gh-budget-") as handle:
+            handle.write(json.dumps({"remaining": count, "reset": deadline}) + "\n")
+            temporary = pathlib.Path(handle.name)
+        temporary.replace(BUDGET)
+    except OSError:
+        pass  # Budget observability must not prevent an already-owned CAS write.
 
 
 def _rate_pause_seconds(headers, message, *, now=None):
@@ -75,6 +113,7 @@ def _check_cooldown(*, clock=time.time):
 
 
 def _github_http_failure(exc):
+    _remember_budget(exc.headers or {})
     if exc.code in (409, 412, 422):
         raise RuntimeError("GitHub conflict/changed revision (HTTP %d), no retry" % exc.code) from exc
     if exc.code in (403, 429):
@@ -124,6 +163,7 @@ def request(method, auth, payload=None):
     req = urllib.request.Request(url, headers=headers, data=body, method=method)
     try:
         with urllib.request.urlopen(req, timeout=30) as response:
+            _remember_budget(getattr(response, "headers", {}))
             return json.load(response)
     except urllib.error.HTTPError as exc:
         _github_http_failure(exc)
@@ -143,6 +183,7 @@ def blob_request(sha, auth):
     })
     try:
         with urllib.request.urlopen(req, timeout=45) as response:
+            _remember_budget(getattr(response, "headers", {}))
             return json.load(response)
     except urllib.error.HTTPError as exc:
         _github_http_failure(exc)
