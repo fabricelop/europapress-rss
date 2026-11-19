@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 """Pruebas aisladas: sin Chrome, sin red, sin GitHub y sin V1."""
 import unittest
+from unittest.mock import patch
 
 try:
-    from .chatgpt_transcript import extract_reply, read_status, read_dom_pair
+    from .chatgpt_transcript import extract_reply, read_status, read_dom_pair, capture_existing_page
 except ImportError:
-    from chatgpt_transcript import extract_reply, read_status, read_dom_pair
+    from chatgpt_transcript import extract_reply, read_status, read_dom_pair, capture_existing_page
 
 TREND = "trv2-dd5de9a892ab6b7007ef26b6"
 BODY = (
@@ -18,6 +19,23 @@ BODY = (
     "ChatGPT can make mistakes. Check important info.\nLatest response"
 )
 class TestTranscript(unittest.TestCase):
+    def test_complete_answer_is_captured_on_same_page_without_url(self):
+        class Locator:
+            def __init__(self, text): self.text = text
+            def inner_text(self, timeout=8000): return self.text
+            def count(self): return 0
+        class Page:
+            url = "https://chatgpt.com/"
+            def locator(self, selector):
+                return Locator(BODY if selector == "body" else "")
+        with (patch("time.monotonic", side_effect=[0, .1, .2, .3, .4, .5]),
+              patch("time.sleep")):
+            result = capture_existing_page(Page(), trend_id=TREND,
+                                           revision=1, seconds=2)
+        self.assertEqual(result["status"], "captured")
+        self.assertEqual(result["url"], "https://chatgpt.com/")
+        self.assertIn("#SVFinal", result["answer"])
+
     def test_existing_answer(self):
         answer, reason = extract_reply(BODY, trend_id=TREND, revision=1)
         self.assertIn("#SVFinal es tendencia", answer)

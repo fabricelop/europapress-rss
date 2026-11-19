@@ -34,6 +34,28 @@ class Browser:
     def new_browser_cdp_session(self): return CDP(self.urls)
 
 class TargetTests(unittest.TestCase):
+    def test_identifies_the_sent_turn_even_without_chat_url(self):
+        # Regression: a complete ChatGPT answer existed but CDP returned 0
+        # conversation URLs. The worker must not discard its own user turn.
+        page = Page("https://chatgpt.com/", "ChatGPT\nYou said:\nIdentificador: " +
+                    TREND + ". Revisión: 5.\nChatGPT said:\nRespuesta real")
+        browser = Browser([page], [])
+        matched, evidence = tracker.await_conversation(
+            browser, page, TREND, 5, seconds=0.2, baseline_urls=[])
+        self.assertIs(matched, page)
+        self.assertEqual(evidence["status"], "verified")
+        self.assertEqual(evidence["url"], "")
+        self.assertEqual(evidence["seen_urls"], [])
+
+    def test_rejects_an_old_turn_in_the_same_browser(self):
+        old = Page(URL, "You said:\nIdentificador: " + TREND + ". Revisión: 2.")
+        fresh = Page("https://chatgpt.com/", "You said:\nDime algo sin identificador")
+        browser = Browser([old, fresh], [URL])
+        matched, evidence = tracker.await_conversation(
+            browser, fresh, TREND, 5, seconds=0, baseline_urls=[URL])
+        self.assertIsNone(matched)
+        self.assertEqual(evidence["status"], "not_found")
+
     def test_canonical(self):
         self.assertEqual(tracker.canonical(URL + "?foo=bar"), URL)
 

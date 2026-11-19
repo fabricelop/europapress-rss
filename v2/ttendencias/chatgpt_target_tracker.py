@@ -51,7 +51,7 @@ def verify_conversation(page, trend_id, revision):
             return matches(users.first.inner_text(timeout=4500))
         if role_count > 1:
             return False
-        body = page.locator("body").inner_text(timeout=4500)
+        body = "\n" + page.locator("body").inner_text(timeout=4500)
         markers = ("\nYou said:\n", "\nTú dijiste:\n", "\nHas dicho:\n")
         positions = [(body.rfind(m),m) for m in markers]
         start, marker = max(positions, key=lambda x:x[0])
@@ -71,10 +71,10 @@ def verify_conversation(page, trend_id, revision):
 
 def await_conversation(browser, page, trend_id, revision, *, seconds=90,
                        baseline_urls=()):
-    """Encuentra URL tras Enter; valida ID antes de adoptar cualquier página.
+    """Encuentra el turno enviado aunque ChatGPT no exponga aún su URL.
 
-    Si una URL nueva solo está en los targets CDP, abre una pestaña de
-    lectura hacia esa URL. Nunca escribe ni pulsa Enviar.
+    La identidad del mensaje precede a la dirección: la URL es opcional.
+    Si una URL nueva solo está en CDP, abre una pestaña de lectura sin enviar.
     """
     baseline = set(baseline_urls)
     inspected = []
@@ -82,6 +82,21 @@ def await_conversation(browser, page, trend_id, revision, *, seconds=90,
     probe = None
     while time.monotonic() < deadline:
         urls = conversation_urls(browser)
+        # Inspeccionar primero la MISMA pestaña en que se pulsó Enviar.
+        # Puede haber ya un turno visible aunque el navegador aún muestre /.
+        # Buscar también otras páginas asociadas a esta sesión CDP.
+        candidates = [page]
+        for context in list(browser.contexts):
+            for candidate in list(context.pages):
+                if candidate is not page:
+                    candidates.append(candidate)
+        for candidate in candidates:
+            if verify_conversation(candidate, trend_id, revision):
+                found = canonical(candidate.url)
+                return candidate, {"status": "verified",
+                                   "url": found if CHAT_RE.fullmatch(found) else "",
+                                   "seen_urls": urls, "identity_source": "visible_user_turn",
+                                   "inspected": inspected[-15:]}
         # Priorizar URLs no presentes antes del envío; las antiguas no bastan.
         ordered = [u for u in urls if u not in baseline]
         for url in ordered:
@@ -99,7 +114,8 @@ def await_conversation(browser, page, trend_id, revision, *, seconds=90,
             for candidate in candidates:
                 if verify_conversation(candidate, trend_id, revision):
                     return candidate, {"status": "verified", "url": url,
-                                       "seen_urls": urls, "inspected": inspected[-15:]}
+                                       "seen_urls": urls, "identity_source": "visible_user_turn",
+                                       "inspected": inspected[-15:]}
             inspected.append({"url": url, "status": "identity_not_visible_yet"})
         time.sleep(1)
     return None, {"status": "not_found", "seen_urls": conversation_urls(browser),

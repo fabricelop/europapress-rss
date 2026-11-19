@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Retry V2 incidents as a NEW revision, never resend the previous one.
+"""Retry V2 incidents until the current trend has one captured explanation.
 
 Pure state transitions. The caller must confirm no V2 Chrome is running,
 must try recovering a known sent conversation first, and use GitHub SHA CAS.
@@ -7,7 +7,8 @@ must try recovering a known sent conversation first, and use GitHub SHA CAS.
 import copy
 from datetime import datetime, timedelta, timezone
 
-MAX_INCIDENT_RETRIES = 2
+# The counter remains an internal attempt fence, not an editorial limit.
+# A missing explanation must not become permanently stuck after two failures.
 GRACE_MINUTES = 8
 INCIDENT_STATUSES = frozenset(("in_progress", "capture_recovery"))
 ACTIVE = frozenset(("pending", "review_pending", "in_progress", "capture_recovery", "captured_review"))
@@ -25,9 +26,6 @@ def moment(value):
 def eligible_incident(item, *, now=None):
     """Incident has aged out and is not a currently leased/active response."""
     if item.get("status") not in INCIDENT_STATUSES:
-        return False
-    manual = bool(item.get("manual_retry_requested_at"))
-    if int(item.get("incident_retries", 0)) >= MAX_INCIDENT_RETRIES and not manual:
         return False
     if (item.get("capture") or {}).get("verified_complete") is True:
         return False
@@ -90,11 +88,9 @@ def restart_as_new_revision(queue, trend_id, *, now=None, chrome_clear=False,
     finished = bool(finished_lease_token and original
                     and original.get("status") == "in_progress"
                     and (original.get("lease") or {}).get("token") == finished_lease_token
-                    and not (original.get("capture") or {}).get("verified_complete")
-                    and (int(original.get("incident_retries", 0)) < MAX_INCIDENT_RETRIES
-                         or original.get("manual_retry_requested_at")))
+                    and not (original.get("capture") or {}).get("verified_complete"))
     if not original or not (finished or eligible_incident(original, now=now)):
-        raise ValueError("Incidencia no recuperable todavía o agotó reintentos")
+        raise ValueError("Incidencia todavía activa o captura ya verificada")
     now = now or datetime.now(timezone.utc)
     iso = now.astimezone(timezone.utc).isoformat()
     output = copy.deepcopy(queue)

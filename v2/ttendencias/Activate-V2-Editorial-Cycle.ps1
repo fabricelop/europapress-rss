@@ -9,11 +9,18 @@ $repo = 'fabricelop/europapress-rss'
 $branch = 'feature/ttactualidad-v2-clean'
 $headers = @{ 'Accept'='application/vnd.github+json'; 'User-Agent'='TTActualidadV2-Editorial-Cycle' }
 $utf8 = New-Object System.Text.UTF8Encoding($false)
-$modules = @('editorial_daemon_v2.py','parallel_dispatch_v2.py','incident_retry_v2.py')
+$modules = @('editorial_daemon_v2.py','editorial_run_v2.py',
+             'chatgpt_target_tracker.py','chatgpt_transcript.py',
+             'editorial_capture_state.py','recover_existing_chat_v2.py',
+             'editorial_pool_v2.py',
+             'incident_retry_v2.py')
 $tests = @('test_editorial_completion_v2.py','test_parallel_dispatch_v2.py',
            'test_incident_retry_v2.py','test_auto_editorial_v2.py',
-           'test_editorial_daemon_pilot_v2.py')
-$support = @('image_daemon_v2.py','Install-V2-Editorial-Auto.ps1')
+           'test_editorial_daemon_pilot_v2.py',
+           'test_chatgpt_target_tracker.py','test_chatgpt_transcript.py',
+           'test_editorial_capture_state.py','test_editorial_pool_v2.py',
+           'test_recover_unlinked_v2.py')
+$support = @('image_daemon_v2.py','parallel_dispatch_v2.py','Install-V2-Editorial-Auto.ps1')
 
 function Set-EditorialFlag([string]$value) {
     [IO.File]::WriteAllText($flag, $value + [Environment]::NewLine, $utf8)
@@ -55,7 +62,15 @@ foreach ($name in @($modules + $tests + $support)) {
 }
 $newDaemon = Get-Content -LiteralPath (Join-Path $stage 'editorial_daemon_v2.py') -Raw
 $newPool = Get-Content -LiteralPath (Join-Path $stage 'parallel_dispatch_v2.py') -Raw
-if (-not $newDaemon.Contains('settle_failed_job') -or -not $newDaemon.Contains('wave_ready') -or -not $newPool.Contains('MAX_JOB_SESSION_SECONDS = 480')) {
+$newRunner = Get-Content -LiteralPath (Join-Path $stage 'editorial_run_v2.py') -Raw
+$newTracker = Get-Content -LiteralPath (Join-Path $stage 'chatgpt_target_tracker.py') -Raw
+$newCapture = Get-Content -LiteralPath (Join-Path $stage 'editorial_capture_state.py') -Raw
+if (-not $newDaemon.Contains('settle_failed_job') -or -not $newDaemon.Contains('wave_ready') -or
+    -not $newDaemon.Contains('from editorial_pool_v2 import') -or
+    -not $newPool.Contains('MAX_JOB_SESSION_SECONDS = 480') -or
+    -not $newRunner.Contains('chat_identity_verified') -or
+    -not $newTracker.Contains('visible_user_turn') -or
+    -not $newCapture.Contains('allow_unlinked_capture')) {
     throw 'El SHA no contiene el nuevo ciclo editorial.'
 }
 $python = (Get-Command py.exe -ErrorAction Stop).Source
@@ -64,7 +79,12 @@ $env:PYTHONPATH = $stage + ';' + $root
 $stdout = Join-Path $stage 'preflight.stdout.log'
 $stderr = Join-Path $stage 'preflight.stderr.log'
 try {
-    $test = Start-Process -FilePath $python -ArgumentList @('-3','-m','unittest','-q','test_editorial_completion_v2','test_parallel_dispatch_v2','test_incident_retry_v2','test_auto_editorial_v2','test_editorial_daemon_pilot_v2') -Wait -PassThru -WindowStyle Hidden -RedirectStandardOutput $stdout -RedirectStandardError $stderr
+    $test = Start-Process -FilePath $python -ArgumentList @('-3','-m','unittest','-q',
+        'test_editorial_completion_v2','test_parallel_dispatch_v2','test_incident_retry_v2',
+        'test_auto_editorial_v2','test_editorial_daemon_pilot_v2',
+        'test_chatgpt_target_tracker','test_chatgpt_transcript',
+        'test_editorial_capture_state','test_editorial_pool_v2',
+        'test_recover_unlinked_v2') -Wait -PassThru -WindowStyle Hidden -RedirectStandardOutput $stdout -RedirectStandardError $stderr
     if ($test.ExitCode -ne 0) {
         Get-Content -LiteralPath $stderr -Tail 18 | ForEach-Object { Write-Host $_ }
         throw 'Fallo de pruebas: no se ha instalado nada.'
@@ -77,6 +97,7 @@ Write-Host ('TT_V2_EDITORIAL_CYCLE_STAGE_TESTS=OK sha=' + $sha.Substring(0,12))
 $backup = Join-Path $root ('editorial-cycle-backup-' + [DateTimeOffset]::UtcNow.ToString('yyyyMMddHHmmss'))
 $copied = $false
 $activated = $false
+$hadModule = @{}
 try {
     # Drenaje cooperativo. Nunca cerrar Chrome a la fuerza ni tocar V1/Noticias/Imagenes.
     Set-EditorialFlag 'TT_V2_AUTO_EDITORIAL_ENABLED=NO'
@@ -91,7 +112,11 @@ try {
     } while ($true)
     New-Item -ItemType Directory -Path $backup -Force | Out-Null
     foreach ($name in $modules) {
-        Copy-Item -LiteralPath (Join-Path $root $name) -Destination (Join-Path $backup $name) -ErrorAction Stop
+        $old = Join-Path $root $name
+        $hadModule[$name] = Test-Path -LiteralPath $old -PathType Leaf
+        if ($hadModule[$name]) {
+            Copy-Item -LiteralPath $old -Destination (Join-Path $backup $name) -ErrorAction Stop
+        }
     }
     $copied = $true
     foreach ($name in $modules) {
@@ -122,7 +147,14 @@ try {
     $reason = $_.Exception.Message
     if ($copied -and -not $activated -and @(Get-V2EditorialProcesses).Count -eq 0) {
         foreach ($name in $modules) {
-            Copy-Item -LiteralPath (Join-Path $backup $name) -Destination (Join-Path $root $name) -Force
+            if ($hadModule[$name]) {
+                Copy-Item -LiteralPath (Join-Path $backup $name) -Destination (Join-Path $root $name) -Force
+            } else {
+                $new = Join-Path $root $name
+                if (Test-Path -LiteralPath $new -PathType Leaf) {
+                    Remove-Item -LiteralPath $new -Force
+                }
+            }
         }
         Write-Host 'TT_V2_EDITORIAL_CYCLE_ROLLBACK=OK'
     }

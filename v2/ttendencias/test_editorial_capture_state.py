@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 """Unit tests paso 5B; no network, no ChatGPT, no V1."""
 import unittest
-from v2.ttendencias.editorial_capture_state import stage_capture, mark_ready
+try:
+    from v2.ttendencias.editorial_capture_state import stage_capture, mark_ready
+except ImportError:
+    from editorial_capture_state import stage_capture, mark_ready
 
 ID = "trv2-dd5de9a892ab6b7007ef26b6"
 URL = "https://chatgpt.com/c/6af6bf87-b004-83eb-acae-47268afcef15"
@@ -42,6 +45,22 @@ class TestCapture(unittest.TestCase):
         with self.assertRaises(ValueError):
             stage_capture(queue(), trend_id=ID, revision=1, answer=ANS,
                           chat_url=URL, validated_capture=False)
+    def test_url_free_capture_requires_matching_owned_session_and_explicit_flag(self):
+        q = queue()
+        row = q["items"][ID]
+        row["status"] = "in_progress"
+        row["lease"] = {"token": "owned", "worker_id": "ttv2-native-cdp"}
+        row["send_intent"] = {"token": "owned", "at": "2026-11-19T12:00:00Z"}
+        base = dict(trend_id=ID, revision=1, answer=ANS, chat_url="",
+                    validated_capture=True, lease_token="owned")
+        with self.assertRaisesRegex(ValueError, "Conversación no válida"):
+            stage_capture(q, **base)
+        with self.assertRaises(ValueError):
+            stage_capture(q, **{**base, "lease_token": "other"},
+                          allow_unlinked_capture=True)
+        saved, _ = stage_capture(q, **base, allow_unlinked_capture=True)
+        self.assertEqual(saved["items"][ID]["status"], "captured_review")
+        self.assertEqual(saved["items"][ID]["capture"]["chat_url"], "")
     def test_ready_requires_verified_sources(self):
         q, _ = self.stage()
         sha = q["items"][ID]["capture"]["sha256"]

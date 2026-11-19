@@ -137,6 +137,11 @@ def prompt_for(item):
             "PISTAS: «" + hints.strip() + "». "
         )
     return (
+        # Long prompts are collapsed by ChatGPT ("Mostrar más"). Put the
+        # identity FIRST so the visible user turn can be verified without
+        # opening that disclosure or relying on a conversation URL.
+        "Identificador: " + item["trend_id"] + ". Revisión: " +
+        str(item["revision"]) + ". "
         "TTActualidad V2. ELABORACIÓN EDITORIAL DE UNA SOLA TENDENCIA. "
         "NO PUBLICAR NI MODIFICAR GITHUB. Investiga por qué aparece entre las "
         "tendencias de España: " + item["name"] + ". "
@@ -165,7 +170,6 @@ def prompt_for(item):
         "sin poder leer posts. La ficha no autoriza publicación automática. "
         "El texto periodístico final no debe mencionar TTActualidad, V1, V2, "
         "el proceso de investigación, IDs internos, ni la revisión editorial. "
-        "Identificador: " + item["trend_id"] + ". Revisión: " + str(item["revision"]) + ". "
         + fresh + rex
     )
 
@@ -175,8 +179,10 @@ def persist_capture_live(api, state, auth, record, trend_id, revision, token):
         fresh, sha = queue_read(api, auth)
         staged, status = state.stage_capture(
             fresh, trend_id=trend_id, revision=revision, answer=record["answer"],
-            chat_url=record["chat_url"], validated_capture=True,
-            observed_at=record["observed_at"], lease_token=token)
+            chat_url=record.get("chat_url", ""), validated_capture=True,
+            observed_at=record["observed_at"], lease_token=token,
+            allow_unlinked_capture=(record.get("chat_identity_verified") is True
+                                    and not record.get("chat_url")))
         if status == "already_staged":
             break
         try:
@@ -346,10 +352,13 @@ def run_one(api, state, transcript, auth, item):
         with sync_playwright() as pw:
             browser = pw.chromium.connect_over_cdp(endpoint)
             context = browser.contexts[0]
-            page = next((p for p in context.pages if p.url.startswith("https://chatgpt.com/")), None)
+            # A restored /c/ conversation is NOT a blank new chat. Never
+            # append an editorial request to a previous conversation.
+            page = next((p for p in context.pages
+                         if p.url.split("?", 1)[0].rstrip("/") == "https://chatgpt.com"), None)
             if page is None:
                 page = context.new_page()
-                page.goto("https://chatgpt.com/", wait_until="domcontentloaded", timeout=45000)
+            page.goto("https://chatgpt.com/", wait_until="domcontentloaded", timeout=45000)
             composer = None
             until = time.monotonic() + 100
             while time.monotonic() < until:
@@ -403,8 +412,11 @@ def run_one(api, state, transcript, auth, item):
             record["chat_discovery"] = evidence
             if matched is not None:
                 page = matched
-                record["chat_url"] = evidence["url"]
-                print("TT_V2_CHAT_URL_RECORDED=YES", flush=True)
+                record["chat_url"] = evidence.get("url") or ""
+                record["chat_identity_verified"] = True
+                print("TT_V2_CHAT_IDENTITY_VERIFIED=YES", flush=True)
+                print("TT_V2_CHAT_URL_RECORDED=" +
+                      ("YES" if record["chat_url"] else "NO"), flush=True)
             else:
                 print("TT_V2_CHAT_URL_RECORDED=NO", flush=True)
             store(journal, record)

@@ -11,6 +11,18 @@ from test_incident_retry_v2 import sample
 
 
 class EditorialCompletionTests(unittest.TestCase):
+    def test_identity_is_visible_at_start_of_collapsed_chatgpt_prompt(self):
+        item = {"trend_id": "trv2-301a72a31b33d1e9180c082f",
+                "revision": 5, "name": "#CarrefourConGrandTheftAutoVI",
+                "reason": "retry_after_incident"}
+        prompt = daemon.core.prompt_for(item)
+        self.assertTrue(prompt.startswith(
+            "Identificador: trv2-301a72a31b33d1e9180c082f. Revisión: 5."))
+        self.assertIn("ELABORACIÓN EDITORIAL", prompt)
+        # ChatGPT often initially displays only the leading part of a prompt.
+        self.assertRegex(prompt[:110], r"Revisión: 5")
+        self.assertNotIn("INTENTO NUEVO", prompt[:110])
+
     def setUp(self):
         self.queue, _ = sample()
         self.ident = next(iter(self.queue["items"]))
@@ -109,13 +121,12 @@ class EditorialCompletionTests(unittest.TestCase):
         self.assertEqual(queue["items"][self.ident]["capture_recovery_reason"],
                          "session_journal_unverified")
 
-    def test_retry_budget_finite(self):
+    def test_a_third_failure_does_not_permanently_block_a_missing_explanation(self):
         self.row["incident_retries"] = 2
         outcome, queue = self.settle()
-        self.assertEqual(outcome, "quarantined")
-        self.assertEqual(queue["items"][self.ident]["revision"], 1)
-        self.assertEqual(queue["items"][self.ident]["capture_recovery_reason"],
-                         "automatic_retry_limit_reached")
+        self.assertEqual(outcome, "new_revision")
+        self.assertEqual(queue["items"][self.ident]["revision"], 2)
+        self.assertEqual(queue["items"][self.ident]["incident_retries"], 3)
 
     def test_confirmed_capture_wins_over_late_child_failure(self):
         self.row["status"] = "captured_review"
