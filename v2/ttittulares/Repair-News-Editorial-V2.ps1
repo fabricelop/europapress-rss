@@ -41,7 +41,7 @@ $headers['Authorization']='Bearer '+$authToken
 # An audited release can be installed entirely from GitHub Raw. In particular,
 # a GitHub API 403 cannot prevent its stage from even being downloaded. Every
 # blob remains checked against its known Git SHA-1 below.
-$auditedSha='ce47640143fff901249a1450c658d26d6ba5a8f1'
+$auditedSha='01530a271a75f07a1e3f4060546d8df041ef784c'
 $audited=($ReleaseSha -eq $auditedSha)
 if($audited){
   $sha=$auditedSha
@@ -59,7 +59,7 @@ $code=Join-Path $root ('releases\'+$sha)
 New-Item -ItemType Directory -Path $code -Force | Out-Null
 $news=@('news_workflow_v2.py','news_images_v2.py','test_news_workflow_v2.py','test_news_images_v2.py','editorial_browser_v2.py','news_process_inspection_v2.py','test_news_process_inspection_v2.py','editorial_consumer_v2.py','editorial_contract_v2.py','session_watchdog_v2.py','test_session_watchdog_v2.py',
   'pilot_one_v2.py',
-  'editorial_state_v2.py','editorial_setup_v2.py','test_editorial_consumer_v2.py',
+  'editorial_state_v2.py','editorial_setup_v2.py','test_editorial_consumer_v2.py','test_editorial_quota_v2.py',
   'test_editorial_state_v2.py','test_editorial_contract_v2.py','test_contract_examples.py',
   'test_radar_snapshot_v2.py','test_radar_ingest_v2.py','test_editorial_browser_v2.py','test_editorial_setup_v2.py',
   'radar_snapshot_v2.py','radar_store_v2.py','radar_ingest_v2.py','identity_v2.py',
@@ -80,7 +80,7 @@ $auditedBlobs=@{
   'v2/ttittulares/editorial_browser_v2.py'='b24b4106f2942a7958f998f9eda9f0c2f1ec7d61'
   'v2/ttittulares/news_process_inspection_v2.py'='3e8a851892f204d6cbb6c9192be1447c15663aba'
   'v2/ttittulares/test_news_process_inspection_v2.py'='806d6c41388b907dd9532918dad634add790f645'
-  'v2/ttittulares/editorial_consumer_v2.py'='dff66e953266e4d489b3c108b98f0f897b32c719'
+  'v2/ttittulares/editorial_consumer_v2.py'='b75798b30e6ff5bf893d104c5936ca93824fee3e'
   'v2/ttittulares/editorial_contract_v2.py'='81e11f02cef066b4498d5bc3f64777fcd5683d6d'
   'v2/ttittulares/session_watchdog_v2.py'='9924ab6127ce5a20ae9ca80d27cdee671858d6ad'
   'v2/ttittulares/test_session_watchdog_v2.py'='6cdcc7aa93377c0f8bc32810485478bfd7caec07'
@@ -88,6 +88,7 @@ $auditedBlobs=@{
   'v2/ttittulares/editorial_state_v2.py'='433097df050d80a30e389a6ca5760b18cfd6d869'
   'v2/ttittulares/editorial_setup_v2.py'='7cbd755612f3e9915243432773bc66f9c74a2045'
   'v2/ttittulares/test_editorial_consumer_v2.py'='be76c0a1051377085790c3d7e0ed1ea7f517a2ab'
+  'v2/ttittulares/test_editorial_quota_v2.py'='dc33576086a7df0371be8cacc1bde0803cdb6b15'
   'v2/ttittulares/test_editorial_state_v2.py'='ac1e17c2a30a5a802d1d48ea434647ab545e1863'
   'v2/ttittulares/test_editorial_contract_v2.py'='318cdf6717abf581da47157d9ef97f46bca48c0a'
   'v2/ttittulares/test_contract_examples.py'='67d16380e00874f7cadc6fbfd2f87f3976502445'
@@ -160,6 +161,7 @@ $testErr=Join-Path $root 'news-editorial-stage.stderr.log'
 $tests=Start-Process -FilePath $py -WorkingDirectory $code `
   -ArgumentList @('-3','-m','unittest','v2.ttittulares.test_editorial_browser_v2', `
                    'v2.ttittulares.test_editorial_consumer_v2', `
+                   'v2.ttittulares.test_editorial_quota_v2', `
                    'v2.ttittulares.test_news_process_inspection_v2', `
                    'v2.ttittulares.test_editorial_state_v2','-q') `
   -WindowStyle Hidden -Wait -PassThru -RedirectStandardOutput $testOut -RedirectStandardError $testErr
