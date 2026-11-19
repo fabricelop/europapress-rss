@@ -13,6 +13,20 @@ END_MARKERS = ("ChatGPT can make mistakes.", "ChatGPT puede cometer errores.",
                "Latest response", "Última respuesta")
 LOAD_ERRORS = ("Could not load this ChatGPT conversation",
                "No se ha podido cargar esta conversación de ChatGPT")
+ELAPSED_UI_LINE = re.compile(
+    r"(?im)^[ \t]*(?:Worked for[ \t]+\d+[ \t]*(?:s|sec|seconds?|m|min)|"
+    r"Ha pensado durante[ \t]+\d+[ \t]*(?:s|segundos?|m|minutos?))[ \t]*[›>]?[ \t]*$")
+
+
+def stable_reply_key(answer):
+    """Ignore changing ChatGPT UI timers, never ignore editorial text."""
+    return ELAPSED_UI_LINE.sub("", answer).strip()
+
+
+def assistant_is_busy(page, selectors):
+    """A hidden Stop button is part of the SPA, not proof of generation."""
+    controls = page.locator(selectors)
+    return any(controls.nth(i).is_visible() for i in range(controls.count()))
 
 
 def _marker_positions(text, markers, *, start=0):
@@ -145,16 +159,17 @@ def capture_existing_page(page, *, trend_id: str, revision: int, seconds=180,
                 answer, dom_reason = read_dom_pair(page, trend_id=trend_id,
                                                    revision=revision)
                 reason = dom_reason if answer else reason + "+" + dom_reason
-            busy = page.locator(stop).count() > 0
-            stable = stable + 1 if answer and answer == last else 0
-            last = answer
+            busy = assistant_is_busy(page, stop)
+            stable_key = stable_reply_key(answer)
+            stable = stable + 1 if answer and stable_key == last else 0
+            last = stable_key
             observations.append(reason)
             if on_observation and reason != previous_reason:
                 previous_reason = reason
                 on_observation(reason)
             # Tres comprobaciones consistentes + ausencia de botón Detener.
             if answer and stable >= 3 and not busy:
-                return {"status": "captured", "answer": answer, "reason": reason,
+                return {"status": "captured", "answer": stable_key, "reason": reason,
                         "reloads": int(reloaded), "url": page.url,
                         "observations": observations[-12:]}
         except Exception as exc:

@@ -39,6 +39,8 @@ STATUS = {
 # A bounded, reader-friendly diagnostic only. Never put raw errors, chat URLs,
 # tokens, journals or prompts into the public Top30 projection.
 EDITORIAL_FAILURES = {
+    "visible_transcript_bound_to_prompt_and_footer": ("Respuesta reconocida, pero no confirmada como terminada", "El chat tenía texto identificable. Es un problema de captura; RE-X no lo resuelve.", True),
+    "dom_single_pair_verified": ("Respuesta identificada en el chat, sin cierre confirmado", "Conviene recuperar la respuesta del mismo chat antes de volver a investigar.", True),
     "session_5min_inactivity": ("Sin actividad durante 5 minutos", "Se liberó la sesión. Se probará otra tendencia; no necesitas usar RE-X.", False),
     "session_20min_safety_limit": ("Límite excepcional de 20 minutos", "La sesión se liberó por seguridad; se retomará en otra vuelta.", False),
     "capture_not_recognized": ("Respuesta visible sin captura válida", "El problema es técnico. Primero hay que recuperar la respuesta; RE-X no lo soluciona.", True),
