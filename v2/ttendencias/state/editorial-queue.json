@@ -18024,13 +18024,13 @@
     "trv2-194f8050f5783e1436e93d4d": {
       "trend_id": "trv2-194f8050f5783e1436e93d4d",
       "name": "Puchi",
-      "revision": 4,
-      "status": "in_progress",
+      "revision": 5,
+      "status": "pending",
       "reason": "retry_after_incident",
       "episode_token": "bd3ef03516788c73",
-      "requested_at": "2026-11-19T12:38:31.707436+00:00",
-      "updated_at": "2026-11-19T12:38:31.707436+00:00",
-      "attempts": 1,
+      "requested_at": "2026-11-19T13:42:24.990863+00:00",
+      "updated_at": "2026-11-19T13:42:24.990863+00:00",
+      "attempts": 0,
       "previous_attempts": [
         {
           "revision": 1,
@@ -18059,16 +18059,20 @@
           "send_intent_at": null,
           "incident_reason": "chat_not_ready",
           "archived_at": "2026-11-19T12:38:31.707436+00:00"
+        },
+        {
+          "revision": 4,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-19T12:46:36.618527+00:00",
+          "send_intent_at": null,
+          "incident_reason": "github_access_or_rate_limit",
+          "archived_at": "2026-11-19T13:42:24.990863+00:00"
         }
       ],
       "review_mode": "standard",
-      "incident_retries": 1,
-      "lease": {
-        "token": "357f8bab9af35c3a5158c9164c937d823d406b03dc4e1777",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-19T12:46:36.618527+00:00",
-        "expires_at": "2026-11-19T13:26:36.618527+00:00"
-      }
+      "incident_retries": 2
     },
     "trv2-45a2a4546638cecd1ca41d35": {
       "trend_id": "trv2-45a2a4546638cecd1ca41d35",
@@ -18953,12 +18957,12 @@
     "trv2-816873b40767b47587efa12e",
     "trv2-d14ffd3ea0274c52e71a9b27",
     "trv2-f4d168c8086e144e1d14215a",
-    "trv2-194f8050f5783e1436e93d4d",
     "trv2-e01fe9c938981d1a6ef85e79",
     "trv2-47bc5ca08aab576fc5c89295",
     "trv2-09fc0cd37644687ef7a5cf1b",
     "trv2-301a72a31b33d1e9180c082f",
-    "trv2-93020536cd990b4ad7dd47c7"
+    "trv2-93020536cd990b4ad7dd47c7",
+    "trv2-194f8050f5783e1436e93d4d"
   ],
   "effects_enabled": false
 }
