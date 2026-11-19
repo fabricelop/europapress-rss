@@ -2024,12 +2024,12 @@
       "trend_id": "trv2-9463d64bc8f511f6da8b9c31",
       "name": "Belén",
       "revision": 2,
-      "status": "review_pending",
+      "status": "in_progress",
       "reason": "user_reset",
       "episode_token": "b602876d92571232",
       "requested_at": "2026-11-19T20:43:53.521287+00:00",
       "updated_at": "2026-11-19T20:43:53.521287+00:00",
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -2042,7 +2042,13 @@
         }
       ],
       "review_mode": "standard",
-      "incident_retries": 0
+      "incident_retries": 0,
+      "lease": {
+        "token": "b69c1d974d10a30a23cb9fd86a54cb0f212ea880c6629fe0",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-19T20:46:25.132941+00:00",
+        "expires_at": "2026-11-19T21:26:25.132941+00:00"
+      }
     },
     "trv2-cf3d922a0f38bab2efe403ff": {
       "trend_id": "trv2-cf3d922a0f38bab2efe403ff",
