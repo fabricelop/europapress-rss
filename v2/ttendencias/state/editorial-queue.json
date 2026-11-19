@@ -17915,13 +17915,13 @@
       "trend_id": "trv2-816873b40767b47587efa12e",
       "name": "#LaHora19N",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "6e7255bde916503f",
       "requested_at": "2026-11-19T10:41:58.335829+00:00",
       "updated_at": "2026-11-19T10:41:58.335829+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -17934,7 +17934,13 @@
           "archived_at": "2026-11-19T10:41:58.335829+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "fec4ff6a01f9e141995a544fc76de44ac52f70737e7cda1c",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-19T10:43:21.254331+00:00",
+        "expires_at": "2026-11-19T11:23:21.254331+00:00"
+      }
     },
     "trv2-9cd6cb337ca72039b9cae83e": {
       "trend_id": "trv2-9cd6cb337ca72039b9cae83e",
