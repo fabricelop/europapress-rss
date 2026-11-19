@@ -28,6 +28,16 @@ $api='https://api.github.com/repos/fabricelop/europapress-rss'
 $branch='feature/ttactualidad-v2-clean'
 $ref=if($ReleaseSha){$ReleaseSha}else{$branch}
 $headers=@{'User-Agent'='TTNoticiasV2-editorial-repair';'Accept'='application/vnd.github+json'}
+$rawHeaders=@{'User-Agent'='TTNoticiasV2-editorial-repair'}
+# GitHub's unauthenticated API has a much lower request budget. The previous
+# installer checked gh authentication but never actually sent it to GitHub.
+# Restrict this credential to api.github.com, never to unrelated endpoints or
+# the raw download CDN; do not write it into logs or console output.
+$authToken=if($env:GH_TOKEN){$env:GH_TOKEN.Trim()}elseif($env:GITHUB_TOKEN){$env:GITHUB_TOKEN.Trim()}else{
+  try{([string](& gh.exe auth token 2>$null)).Trim()}catch{''}
+}
+if(-not $authToken -or $authToken -match '\s'){throw 'NEWS_EDITORIAL_GITHUB_AUTH_REQUIRED'}
+$headers['Authorization']='Bearer '+$authToken
 $commit=Invoke-RestMethod -Uri ($api+'/commits/'+[Uri]::EscapeDataString($ref)) -Headers $headers
 $sha=[string]$commit.sha
 if($sha -notmatch '^[a-f0-9]{40}$'){throw 'NEWS_EDITORIAL_COMMIT_NOT_PINNED'}
@@ -56,7 +66,7 @@ foreach($path in $paths){
   if($entry.Count -ne 1){throw ('NEWS_EDITORIAL_MISSING_FILE='+$path)}
   $target=Join-Path $code ($path.Replace('/','\'))
   New-Item -ItemType Directory -Path (Split-Path -Parent $target) -Force | Out-Null
-  Invoke-WebRequest -UseBasicParsing -Uri ('https://raw.githubusercontent.com/fabricelop/europapress-rss/'+$sha+'/'+$path) -Headers $headers -OutFile $target
+  Invoke-WebRequest -UseBasicParsing -Uri ('https://raw.githubusercontent.com/fabricelop/europapress-rss/'+$sha+'/'+$path) -Headers $rawHeaders -OutFile $target
   $bytes=[IO.File]::ReadAllBytes($target)
   $prefix=[Text.Encoding]::UTF8.GetBytes('blob '+$bytes.Length+[char]0)
   $hash=[Security.Cryptography.SHA1]::Create()
