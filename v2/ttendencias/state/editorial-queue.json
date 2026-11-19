@@ -39,13 +39,13 @@
       "trend_id": "trv2-828ab70560e35dcdd7a3a075",
       "name": "#Horizonte",
       "revision": 7,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "739bf6e20d988bc0",
       "requested_at": "2026-11-19T23:00:54.585344+00:00",
       "updated_at": "2026-11-19T23:00:54.585344+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -110,7 +110,13 @@
       ],
       "incident_retries": 1,
       "review_mode": "x",
-      "review_hints": "Investiga el programa de television"
+      "review_hints": "Investiga el programa de television",
+      "lease": {
+        "token": "c41d9b4e8c6669d29981dfd55da3de74eff77ba2702415cf",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-19T23:01:47.126660+00:00",
+        "expires_at": "2026-11-19T23:41:47.126660+00:00"
+      }
     },
     "trv2-58fbbdf335068bc6bec6a883": {
       "trend_id": "trv2-58fbbdf335068bc6bec6a883",
