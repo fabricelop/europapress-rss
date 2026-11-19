@@ -65,7 +65,7 @@ jobs:
           npx --yes wrangler@4.162.0 deploy --keep-vars
           printf '%s' "$GH_DISPATCH_TOKEN" | npx --yes wrangler@4.162.0 secret put GITHUB_DISPATCH_TOKEN
           npx --yes wrangler@4.162.0 deploy --keep-vars
-          npx --yes wrangler@4.162.0 secret list --json > "$RUNNER_TEMP/ttn2-radar-clock-secrets.json"
+          npx --yes wrangler@4.162.0 secret list --format json > "$RUNNER_TEMP/ttn2-radar-clock-secrets.json"
           node --input-type=commonjs -e '
             const fs=require("node:fs");
             const a=JSON.parse(fs.readFileSync(process.argv[1],"utf8"));
@@ -79,7 +79,7 @@ jobs:
           node --input-type=commonjs -e '
             const fs=require("node:fs");
             const d=JSON.parse(fs.readFileSync(process.argv[1],"utf8"));
-            if(d.success!==true||!Array.isArray(d.result)||!d.result.some(x=>x.cron==="5,15,25,35,45,55 * * * *"))
+            if(d.success!==true||!Array.isArray(d.result?.schedules)||!d.result.schedules.some(x=>x.cron==="5,15,25,35,45,55 * * * *"))
               throw Error("TTN2_RADAR_CLOCK_CRON_NOT_VERIFIED");
             console.log("TTN2_RADAR_CLOUDFLARE_CRON_VERIFIED=YES");
           ' "$RUNNER_TEMP/ttn2-radar-clock-schedules.json"
