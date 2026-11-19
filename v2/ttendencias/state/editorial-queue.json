@@ -13576,12 +13576,12 @@
       "trend_id": "trv2-18a3188106d70e3e36c3e33e",
       "name": "Andalucía",
       "revision": 2,
-      "status": "review_pending",
+      "status": "in_progress",
       "reason": "user_reset",
       "episode_token": "05f2bed0f8f13a1d",
       "requested_at": "2026-11-19T20:43:53.521287+00:00",
       "updated_at": "2026-11-19T20:43:53.521287+00:00",
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -13594,7 +13594,13 @@
         }
       ],
       "review_mode": "standard",
-      "incident_retries": 0
+      "incident_retries": 0,
+      "lease": {
+        "token": "929519576bb1c3c019aba96117d7a107818613c41bfaadaf",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-19T20:44:55.399498+00:00",
+        "expires_at": "2026-11-19T21:24:55.399498+00:00"
+      }
     },
     "trv2-ba2dbaa70c1fe31a8d5c46d6": {
       "trend_id": "trv2-ba2dbaa70c1fe31a8d5c46d6",
