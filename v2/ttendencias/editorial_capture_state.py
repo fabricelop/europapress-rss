@@ -22,7 +22,7 @@ def _refresh(q):
     return q
 
 def stage_capture(queue, *, trend_id, revision, answer, chat_url, validated_capture,
-                  observed_at=None, lease_token=None):
+                  observed_at=None, lease_token=None, allow_unlinked_capture=False):
     if queue.get("step") != "04_editorial_queue" or queue.get("effects_enabled") is not False:
         raise ValueError("Cola V2 inválida o efectos activos")
     item = queue.get("items", {}).get(trend_id)
@@ -32,7 +32,15 @@ def stage_capture(queue, *, trend_id, revision, answer, chat_url, validated_capt
         raise ValueError("La tendencia ya está cerrada")
     if not validated_capture or not isinstance(answer, str) or len(answer.strip()) < 80:
         raise ValueError("Captura no validada")
-    if not chat_url.startswith("https://chatgpt.com/c/"):
+    has_canonical_url = (isinstance(chat_url, str)
+                         and chat_url.startswith("https://chatgpt.com/c/"))
+    # A validated turn and stable reply in the exact owned session may exist
+    # before ChatGPT exposes a conversation URL. Never reject its explanation
+    # solely for an absent optional link. Require an explicit same-lease flag.
+    unlinked_verified = (chat_url == "" and allow_unlinked_capture
+                         and lease_token and item.get("status") in
+                         ("in_progress", "capture_recovery"))
+    if not has_canonical_url and not unlinked_verified:
         raise ValueError("Conversación no válida")
     text = answer.strip()
     digest = hashlib.sha256(text.encode("utf-8")).hexdigest()
