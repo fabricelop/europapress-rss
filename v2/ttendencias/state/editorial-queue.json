@@ -1567,13 +1567,13 @@
       "trend_id": "trv2-e4d21d26294410f65eda4aa7",
       "name": "Fakejoo",
       "revision": 6,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "e7a5ad79f99bcfa0",
       "requested_at": "2026-11-19T22:51:27.201192+00:00",
       "updated_at": "2026-11-19T22:51:27.201192+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -1626,7 +1626,13 @@
           "archived_at": "2026-11-19T22:51:27.201192+00:00"
         }
       ],
-      "incident_retries": 5
+      "incident_retries": 5,
+      "lease": {
+        "token": "d82e9f6fdf842a32bad046312d24296110c449bf15b95d77",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-19T23:02:43.593327+00:00",
+        "expires_at": "2026-11-19T23:42:43.593327+00:00"
+      }
     },
     "trv2-d905c639b407b58a206be5b7": {
       "trend_id": "trv2-d905c639b407b58a206be5b7",
