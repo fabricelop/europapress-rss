@@ -184,3 +184,13 @@
 .bus-x-link:hover,.bus-x-link:focus-visible{background:#2b4766;border-color:#a8caef;outline-offset:2px}
 .title-details{min-width:0;flex:1}
 @media(max-width:450px){.bus-x-link{font-size:10px;padding:5px 6px;min-height:28px}.trend-head{gap:6px}}
+
+
+/* Radar-only news: fixed cards, all four actions visible on one row. */
+.news-view .news-card-head{cursor:default;padding:17px 17px 5px}
+.news-view .news-card-head::after{display:none}
+.news-view .news-actions{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin:9px 17px 17px}
+.news-view .news-actions .publish-action{min-width:0;min-height:42px;padding:8px 4px;font-size:12px}
+.news-view .news-card.marked-red{border-color:#d24444;box-shadow:inset 4px 0 #d24444;background:#27191d}
+.news-view .news-marked-label{font-size:12px;font-weight:700;color:#ffb4be}
+@media(max-width:450px){.news-view .news-card-head{padding:14px 12px 4px}.news-view .news-actions{gap:5px;margin:8px 12px 15px}.news-view .news-actions .publish-action{font-size:11px;padding:8px 2px}}

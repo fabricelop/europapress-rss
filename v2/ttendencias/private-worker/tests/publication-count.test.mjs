@@ -11,11 +11,13 @@ let status="explicada";
 globalThis.fetch=async()=>Response.json({project:"ttactualidad-v2",count:1,
   items:[{trend_id:id,revision:2,name:"Lc 18",status}]});
 function storage(){
- const events=[];
- return {events,prepare(sql){let args=[];return {bind(...values){args=values;return this;},
+ const events=[],marks=new Map();
+ return {events,marks,async batch(statements){for(const stmt of statements)await stmt.run();return [{success:true},{success:true}];},
+  prepare(sql){let args=[];return {bind(...values){args=values;return this;},
   async run(){
    if(sql.includes("INSERT INTO publication_clicks")&&!events.some(x=>x.event_id===args[0]))
     events.push({event_id:args[0],trend_id:args[1],revision:args[2],trend_name:args[3],pressed_at_ms:args[4]});
+   else if(sql.includes("INSERT INTO red_marks"))marks.set(args[0],args[1]);
    else if(!sql.includes("INSERT INTO publication_clicks"))assert.match(sql,/CREATE TABLE/);
    return {success:true};
   },
@@ -38,7 +40,10 @@ test("PU counts manual presses across sessions in an exact rolling 24-hour windo
  db.events.push({event_id:"old",trend_id:id,revision:2,trend_name:"Lc 18",pressed_at_ms:old});
  assert.equal((await worker.fetch(post("",crypto.randomUUID()),bound)).status,401);
  const uuid=crypto.randomUUID();
- assert.equal((await worker.fetch(post(a,uuid),bound)).status,200);
+ const first=await worker.fetch(post(a,uuid),bound);
+ assert.equal(first.status,200);
+ assert.equal((await first.json()).marked_red,true);
+ assert.ok(db.marks.has(id));
  assert.equal((await worker.fetch(post(a,uuid),bound)).status,200);
  let second=await worker.fetch(post(b,crypto.randomUUID()),bound);
  assert.equal(second.status,200);

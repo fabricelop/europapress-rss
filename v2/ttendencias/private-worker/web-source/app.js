@@ -780,8 +780,17 @@ function makePublishButtons(card,item){
    if(!response.ok)throw Error("HTTP "+response.status);
    const data=await response.json();
    if(!Number.isSafeInteger(data.count)||!Array.isArray(data.events))throw Error("Respuesta de PU no válida");
+   if(data.marked_red!==true)throw Error("El servidor no ha confirmado la marca roja");
    state.publications=data;renderPublications();
-   publishNotice("PU registrada para «"+item.name+"». Últimas 24 h: "+data.count+".");
+   redMarks[item.trend_id]=markStamp(item);
+   card.classList.add("marked-red");
+   const redButton=card.querySelector(".red-toggle");
+   if(redButton){
+    redButton.setAttribute("aria-pressed","true");
+    redButton.setAttribute("aria-label","Quitar marca roja de "+item.name);
+    redButton.title="Quitar marca roja";
+   }
+   publishNotice("PU registrada y marcada en rojo para «"+item.name+"». Últimas 24 h: "+data.count+".");
   }catch(error){publishNotice("No se pudo registrar PU para «"+item.name+"»: "+error.message)}
   finally{pu.disabled=false;}
  });

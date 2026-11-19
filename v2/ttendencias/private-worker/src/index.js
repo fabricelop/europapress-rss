@@ -375,13 +375,18 @@ async function publicationCount(request,env) {
       const item=ranking.find(x=>x.trend_id===trend_id&&x.revision===revision);
       if(!item||item.status!=="explicada"||item.re_in_progress===true)
         return json({error:"trend_not_current"},409);
-      await db.prepare("INSERT INTO publication_clicks(event_id,trend_id,revision,trend_name,pressed_at_ms) VALUES(?,?,?,?,?) ON CONFLICT(event_id) DO NOTHING")
-        .bind(event_id,trend_id,revision,String(item.name).slice(0,150),Date.now()).run();
+      // Registrar PU y R juntos; si falla una escritura, no registrar la otra.
+      await db.batch([
+        db.prepare("INSERT INTO publication_clicks(event_id,trend_id,revision,trend_name,pressed_at_ms) VALUES(?,?,?,?,?) ON CONFLICT(event_id) DO NOTHING")
+          .bind(event_id,trend_id,revision,String(item.name).slice(0,150),Date.now()),
+        db.prepare("INSERT INTO red_marks(trend_id,entered_top30_at) VALUES(?,?) ON CONFLICT(trend_id) DO UPDATE SET entered_top30_at=excluded.entered_top30_at")
+          .bind(trend_id,entryStamp(item)||new Date().toISOString())
+      ]);
     }
     const threshold=Date.now()-24*HOUR;
     const data=await db.prepare("SELECT event_id,trend_id,revision,trend_name,pressed_at_ms FROM publication_clicks WHERE pressed_at_ms > ? AND pressed_at_ms <= ? ORDER BY pressed_at_ms ASC,event_id ASC LIMIT 500").bind(threshold,Date.now()).all();
     const events=(data.results||[]).filter(x=>Number.isSafeInteger(x.pressed_at_ms));
-    return json({count:events.length,window_hours:24,events});
+    return json({count:events.length,window_hours:24,events,marked_red:request.method==="POST"});
   }catch{return json({error:"publication_counter_unavailable"},503);}
 }
 

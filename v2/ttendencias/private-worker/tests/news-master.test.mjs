@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import {validateMaster,projectMaster,actOnMaster,newsMasterPublicationCount} from "../src/news-master.js";
+import {validateMaster,projectMaster,actOnMaster,newsMasterPublicationCount} from "./news-master-worker.js";
 
 const t="2026-11-19T17:00:00Z";
 const id="ttn2-"+"a".repeat(24);
@@ -50,5 +50,32 @@ test("SUPRIMIR writes a single durable tombstone",async()=>{
   assert.ok(table.get(id).suppressed_at);
   const duplicate=await actOnMaster(request,{MARKS_DB:db},{json:(body,status=200)=>({body,status}),sameOrigin:()=>true});
   assert.equal(duplicate.status,409);
+ }finally{globalThis.fetch=previousFetch;}
+});
+
+test("PU records publication and activates R in the same write",async()=>{
+ const previousFetch=globalThis.fetch;
+ globalThis.fetch=async()=>({ok:true,text:async()=>JSON.stringify(sample())});
+ const table=new Map();
+ const db={prepare(sql){return {
+  bind(...args){return {
+   async first(){
+    if(sql.startsWith("SELECT suppressed_at"))return table.get(args[0])||null;
+    if(sql.startsWith("INSERT")){
+     const [eventId,at]=args;
+     table.set(eventId,{suppressed_at:null,published_at:at,marked_red:1});
+     return {event_id:eventId,action_at:at};
+    }
+    return null;
+   }
+  };},
+  async run(){return {success:true}}};}};
+ const request={method:"POST",headers:new Headers(),json:async()=>({id,action:"published"})};
+ try{
+  const result=await actOnMaster(request,{MARKS_DB:db},{json:(body,status=200)=>({body,status}),sameOrigin:()=>true});
+  assert.equal(result.status,200);
+  assert.equal(result.body.marked_red,true);
+  assert.ok(table.get(id).published_at);
+  assert.equal(projectMaster(validateMaster(sample()),[{event_id:id,...table.get(id)}]).items[0].marked_red,true);
  }finally{globalThis.fetch=previousFetch;}
 });
