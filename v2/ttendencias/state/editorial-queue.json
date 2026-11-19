@@ -17869,13 +17869,13 @@
     "trv2-301a72a31b33d1e9180c082f": {
       "trend_id": "trv2-301a72a31b33d1e9180c082f",
       "name": "#CarrefourConGrandTheftAutoVI",
-      "revision": 5,
-      "status": "capture_recovery",
+      "revision": 6,
+      "status": "pending",
       "reason": "retry_after_incident",
       "episode_token": "92d783022394dace",
-      "requested_at": "2026-11-19T11:40:15.539996+00:00",
-      "updated_at": "2026-11-19T11:46:56.512039+00:00",
-      "attempts": 1,
+      "requested_at": "2026-11-19T12:41:19.307066+00:00",
+      "updated_at": "2026-11-19T12:41:19.307066+00:00",
+      "attempts": 0,
       "previous_attempts": [
         {
           "revision": 1,
@@ -17915,15 +17915,20 @@
           "send_intent_at": null,
           "incident_reason": "chrome_or_cdp_failure",
           "archived_at": "2026-11-19T11:40:15.539996+00:00"
+        },
+        {
+          "revision": 5,
+          "status": "capture_recovery",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": null,
+          "send_intent_at": "2026-11-19T11:42:51.334065+00:00",
+          "incident_reason": "chat_target_identity_not_verified",
+          "archived_at": "2026-11-19T12:41:19.307066+00:00"
         }
       ],
-      "incident_retries": 2,
-      "review_mode": "standard",
-      "send_intent": {
-        "token": "145d5c2abe44adfbc41b45c2a8a4a3a9d4083ac91510e91d",
-        "at": "2026-11-19T11:42:51.334065+00:00"
-      },
-      "capture_recovery_reason": "chat_target_identity_not_verified"
+      "incident_retries": 3,
+      "review_mode": "standard"
     },
     "trv2-816873b40767b47587efa12e": {
       "trend_id": "trv2-816873b40767b47587efa12e",
@@ -18884,12 +18889,12 @@
     "trv2-5f4a4eb0d74bddcb7423bbeb",
     "trv2-816873b40767b47587efa12e",
     "trv2-09fc0cd37644687ef7a5cf1b",
-    "trv2-301a72a31b33d1e9180c082f",
     "trv2-d14ffd3ea0274c52e71a9b27",
     "trv2-f4d168c8086e144e1d14215a",
     "trv2-194f8050f5783e1436e93d4d",
     "trv2-93020536cd990b4ad7dd47c7",
-    "trv2-47bc5ca08aab576fc5c89295"
+    "trv2-47bc5ca08aab576fc5c89295",
+    "trv2-301a72a31b33d1e9180c082f"
   ],
   "effects_enabled": false
 }
