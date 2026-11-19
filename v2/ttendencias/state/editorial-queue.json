@@ -19242,12 +19242,19 @@
       "trend_id": "trv2-1dfedc05a410a0a7854b9304",
       "name": "NASDAQ",
       "revision": 1,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "first_explanation",
       "episode_token": "a2bc4831d9a1b81d",
       "requested_at": "2026-11-19T16:02:42.049781+00:00",
       "updated_at": "2026-11-19T16:02:42.049781+00:00",
-      "previous_explanation": null
+      "previous_explanation": null,
+      "attempts": 1,
+      "lease": {
+        "token": "bb4e3eae76fa4fca6c3b97b97d96bb20e039b6ee6d55bb2f",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-19T16:52:04.734862+00:00",
+        "expires_at": "2026-11-19T17:32:04.734862+00:00"
+      }
     }
   },
   "pending_count": 594,
