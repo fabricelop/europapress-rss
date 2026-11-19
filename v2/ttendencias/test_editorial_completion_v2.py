@@ -7,15 +7,33 @@ import unittest
 from unittest.mock import Mock, patch
 
 import editorial_daemon_v2 as daemon
+from web_top30_v2 import editorial_failure_summary
 from test_incident_retry_v2 import sample
 
 
 class EditorialCompletionTests(unittest.TestCase):
+    def test_last_technical_failure_is_safely_explained_on_web(self):
+        row={"status":"pending","previous_attempts":[
+            {"revision":2,"incident_reason":"chrome_or_cdp_failure"},
+            {"revision":3,"incident_reason":"capture_not_recognized"}]}
+        shown=editorial_failure_summary(row)
+        self.assertEqual(shown["code"],"capture_not_recognized")
+        self.assertTrue(shown["recovery_suggested"])
+        self.assertIn("RE-X no lo soluciona",shown["guidance"])
+        self.assertIsNone(editorial_failure_summary({**row,"status":"captured_review"}))
+
+    def test_never_show_raw_exception_or_private_chat_url_on_web(self):
+        row={"status":"capture_recovery",
+             "capture_recovery_reason":"token abc https://chatgpt.com/c/private"}
+        shown=editorial_failure_summary(row)
+        self.assertEqual(shown["code"],"technical_unknown")
+        self.assertNotIn("abc",str(shown))
+
     def test_capture_budget_leaves_time_for_cleanup_and_persistence(self):
-        self.assertEqual(daemon.core.remaining_capture_seconds(100, now=100), 240)
-        self.assertEqual(daemon.core.remaining_capture_seconds(100, now=159), 181)
-        self.assertEqual(daemon.core.remaining_capture_seconds(100, now=340), 0)
-        self.assertEqual(daemon.core.remaining_capture_seconds(100, now=700), 0)
+        self.assertEqual(daemon.core.remaining_capture_seconds(100, now=100), 1140)
+        self.assertEqual(daemon.core.remaining_capture_seconds(100, now=159), 1081)
+        self.assertEqual(daemon.core.remaining_capture_seconds(100, now=1240), 0)
+        self.assertEqual(daemon.core.remaining_capture_seconds(100, now=1700), 0)
 
     def test_identity_is_visible_at_start_of_collapsed_chatgpt_prompt(self):
         item = {"trend_id": "trv2-301a72a31b33d1e9180c082f",

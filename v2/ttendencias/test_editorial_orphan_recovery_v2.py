@@ -21,7 +21,7 @@ class OrphanRecoveryTests(unittest.TestCase):
         self.now = datetime(2026, 11, 19, 13, 10, tzinfo=timezone.utc)
         self.row = {"trend_id": "trv2-example", "name": "Example", "revision": 6,
                     "status": "in_progress", "lease": {"token": "lease-abc",
-                    "started_at": (self.now - timedelta(minutes=11)).isoformat()}}
+                    "started_at": (self.now - timedelta(minutes=21)).isoformat()}}
         self.queue = {"source_observed_at": "2026-11-19T13:00:00Z",
                       "items": {"trv2-example": self.row}}
         self.history = {"step": "03_movement", "observed_at": "2026-11-19T13:00:00Z",
@@ -39,7 +39,7 @@ class OrphanRecoveryTests(unittest.TestCase):
         self.assertEqual(found, [("trv2-example", 6, self.evidence)])
 
     def test_recent_claim_is_not_reset_while_chat_might_still_be_running(self):
-        self.row["lease"]["started_at"] = (self.now - timedelta(minutes=4)).isoformat()
+        self.row["lease"]["started_at"] = (self.now - timedelta(minutes=19)).isoformat()
         self.assertEqual(daemon.orphaned_attempts(self.queue, self.history,
                          directory=self.directory, now=self.now), [])
 

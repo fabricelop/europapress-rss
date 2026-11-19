@@ -28,7 +28,9 @@ STATUS = ROOT / "daemon-status.json"
 SENTINEL = "TT_V2_AUTO_EDITORIAL_ENABLED=YES"
 WEB_RETRY_SECONDS = 300
 ORPHAN_RETRY_SECONDS = 150
-MAX_CHAT_SECONDS = 300
+# Hard safety ceiling. EditorialWorkerPool separately enforces 300 seconds
+# since the last *meaningful* progress, not five minutes since process start.
+MAX_CHAT_SECONDS = 1200
 
 
 def flag_is_enabled(path=ENABLED):
@@ -89,11 +91,17 @@ def settle_failed_job(api, auth, trend_id, revision, *,
     token = evidence.get("lease_token")
     # Record a bounded, actionable category; never copy arbitrary exception
     # strings or transcript content into the public GitHub queue.
-    diagnostic = (evidence.get("capture_diagnostic") or {}).get("reason")
+    diagnostic = ((evidence.get("capture_diagnostic") or {}).get("reason")
+                  or evidence.get("capture_probe_reason"))
     error = str(evidence.get("error") or "").lower()
     if diagnostic in ("chat_target_identity_not_verified",
                       "response_not_stable", "assistant_turn_missing"):
         reason = "capture_" + diagnostic
+    elif diagnostic == "load_error" or "conversation_load_failed" in error:
+        reason = "chat_load_error"
+    elif (diagnostic and ("dom_" in diagnostic or "completion_footer_missing" in diagnostic)
+          and int(evidence.get("assistant_progress_chars") or 0) >= 80):
+        reason = "capture_not_recognized"
     elif "github_rate_limit_paused" in error:
         reason = "github_rate_limit"
     elif "github_forbidden_auth_or_policy" in error:
@@ -104,6 +112,9 @@ def settle_failed_job(api, auth, trend_id, revision, *,
         reason = "chat_not_ready"
     elif "cdp no disponible" in error or "chrome" in error:
         reason = "chrome_or_cdp_failure"
+    elif failure_reason == "session_5min_inactivity":
+        reason = ("capture_not_recognized" if int(evidence.get("assistant_progress_chars") or 0) >= 80
+                  else "session_5min_inactivity")
     else:
         reason = failure_reason
     for attempt in range(4):
@@ -163,7 +174,7 @@ def orphaned_attempts(queue, history, *, directory=core.DIAG_DIR, now=None):
     """Only expired *current Top30* workers with matching durable local proof.
 
     The remote lease lasts 40 minutes, but the actual child is limited to
-    five. A daemon restarted during a GitHub 403 must not strand that lease.
+    twenty. A daemon restarted during a GitHub 403 must not strand that lease.
     """
     now = now or datetime.now(timezone.utc)
     if (queue.get("source_observed_at") != history.get("observed_at")
@@ -219,7 +230,7 @@ def recover_orphaned_attempt(api, auth):
                              failure_reason="ended_child_after_github_pause")
 
 
-def run_forever(poll_seconds=90, max_jobs=0, workers=3):
+def run_forever(poll_seconds=90, max_jobs=0, workers=4):
     if not flag_is_enabled():
         raise RuntimeError("AUTORUN BLOQUEADO: instalar y habilitar primero V2")
     api = core.module("editorial_github_access_v2.py", "ttv2_auto_github")
@@ -248,7 +259,7 @@ def run_forever(poll_seconds=90, max_jobs=0, workers=3):
                     if (done.get("timed_out") or done.get("profile_cleanup_error")
                             or done["exit_code"]):
                         unsettled[(tid, rev)] = done
-                        report("SESSION_TIMEOUT_5MIN" if done.get("timed_out")
+                        report("SESSION_INACTIVITY_OR_SAFETY_LIMIT" if done.get("timed_out")
                                else "JOB_NEEDS_REVIEW",
                                trend_id=tid, revision=rev, completed=completed,
                                active_workers=len(pool.active),
@@ -279,7 +290,7 @@ def run_forever(poll_seconds=90, max_jobs=0, workers=3):
                             api, auth, tid, rev,
                             cleanup_verified=done.get("profile_deleted") is True
                                 and not done.get("profile_cleanup_error"),
-                            failure_reason=("session_5min_timeout" if done.get("timed_out")
+                            failure_reason=(done.get("timeout_reason", "session_20min_safety_limit") if done.get("timed_out")
                                             else "worker_or_capture_failed"))
                         del unsettled[key]
                         report("JOB_SETTLED", trend_id=tid, revision=rev,
@@ -318,7 +329,7 @@ def run_forever(poll_seconds=90, max_jobs=0, workers=3):
                         print("TT_V2_AUTO_RE_SYNC_DELAYED=" + type(exc).__name__, flush=True)
                 started = 0
                 # Simple waves: launch at most N chats, then let all of them
-                # finish (or hit their 5-minute watchdog). This guarantees a
+                # finish (or hit their idle/safety watchdog). This guarantees a
                 # Chrome-free checkpoint for incident recovery every wave.
                 if not reserve and not pool.active and not max_jobs:
                     if time.monotonic() - last_orphan_scan >= ORPHAN_RETRY_SECONDS:
@@ -407,7 +418,7 @@ def main():
     parser.add_argument("--poll-seconds", type=int, default=90)
     parser.add_argument("--max-jobs", type=int, default=0,
                         help="0 = ilimitado; en pilotos, máximo de chats lanzados")
-    parser.add_argument("--workers", type=int, default=3,
+    parser.add_argument("--workers", type=int, default=4,
                         help="Chats editoriales simultáneos, entre 1 y 6")
     args = parser.parse_args()
     if not 30 <= args.poll_seconds <= 600 or args.max_jobs < 0 or not 1 <= args.workers <= 6:

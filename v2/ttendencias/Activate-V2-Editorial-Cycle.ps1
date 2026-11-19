@@ -16,7 +16,8 @@ $modules = @('editorial_daemon_v2.py','editorial_run_v2.py',
              'chrome_visibility_v2.py',
              'chatgpt_target_tracker.py','chatgpt_transcript.py',
              'editorial_capture_state.py','recover_existing_chat_v2.py',
-             'editorial_pool_v2.py',
+             'editorial_pool_v2.py','parallel_dispatch_v2.py',
+             'web_top30_v2.py',
              'incident_retry_v2.py')
 $tests = @('test_editorial_completion_v2.py','test_parallel_dispatch_v2.py',
            'test_incident_retry_v2.py','test_auto_editorial_v2.py',
@@ -25,7 +26,7 @@ $tests = @('test_editorial_completion_v2.py','test_parallel_dispatch_v2.py',
            'test_editorial_capture_state.py','test_editorial_pool_v2.py',
            'test_recover_unlinked_v2.py','test_editorial_github_access_v2.py',
            'test_editorial_orphan_recovery_v2.py','test_editorial_budget_v2.py')
-$support = @('image_daemon_v2.py','parallel_dispatch_v2.py','Install-V2-Editorial-Auto.ps1',
+$support = @('image_daemon_v2.py','Install-V2-Editorial-Auto.ps1',
              'Activate-V2-Editorial-Cycle.ps1')
 
 function Set-EditorialFlag([string]$value) {
@@ -82,9 +83,11 @@ if (-not $newDaemon.Contains('settle_failed_job') -or -not $newDaemon.Contains('
     -not $newDaemon.Contains('from editorial_pool_v2 import') -or
     -not $newDaemon.Contains('recover_orphaned_attempt') -or
     -not $newDaemon.Contains('max_session_seconds=MAX_CHAT_SECONDS') -or
-    -not $newDaemon.Contains('MAX_CHAT_SECONDS = 300') -or
+    -not $newDaemon.Contains('MAX_CHAT_SECONDS = 1200') -or
+    -not $newDaemon.Contains('workers=4') -or
     -not $newPolicy.Contains('ranked.sort(key=') -or
     -not $newPool.Contains('MAX_JOB_SESSION_SECONDS = 480') -or
+    -not $newPool.Contains('MAX_ALLOWED_SESSION_SECONDS = 1200') -or
     -not $newApi.Contains('GITHUB_RATE_LIMIT_PAUSED') -or
     -not $newRunner.Contains('chat_identity_verified') -or
     -not $newTracker.Contains('visible_user_turn') -or

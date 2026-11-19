@@ -23,6 +23,9 @@ from chrome_cleanup_v2 import cleanup_v2_profile
 
 MIN_JOB_FREE_BYTES = 8 * 1024 ** 3
 MAX_JOB_SESSION_SECONDS = 480
+# Images keep the 8-minute default. Editorial may explicitly request a
+# longer safety ceiling, with a separate, progress-based idle watchdog.
+MAX_ALLOWED_SESSION_SECONDS = 1200
 EPHEMERAL_MARKER = "tt-v2-ephemeral-owned.marker"
 
 
@@ -167,7 +170,7 @@ class DisposableWorkerPool(WorkerPool):
             raise RuntimeError("V2_PARALLEL_AUTHENTICATED_BASE_PROFILE_MISSING")
         if source_running():
             raise RuntimeError("V2_PARALLEL_BASE_CHROME_BUSY")
-        if not 1 <= max_session_seconds <= MAX_JOB_SESSION_SECONDS:
+        if not 1 <= max_session_seconds <= MAX_ALLOWED_SESSION_SECONDS:
             raise ValueError("V2_SESSION_TIMEOUT_OUT_OF_BOUNDS")
         self.max_session_seconds = max_session_seconds
         self.clock = clock

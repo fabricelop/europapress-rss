@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Aislar el cierre de Tendencias: no afectar Imágenes ni Chrome personal."""
+import json
 import pathlib
 import tempfile
 import unittest
@@ -87,6 +88,56 @@ class EditorialPoolTests(unittest.TestCase):
                 self.assertFalse(job["profile_deleted"])
                 cleanup.assert_not_called()
             self.assertTrue((profile / "user-data").is_file())
+
+    def test_inactivity_resets_only_on_new_meaningful_progress(self):
+        with tempfile.TemporaryDirectory() as root:
+            pool = self.make_pool(root)
+            pool.max_session_seconds = 1200
+            clock = [100.0]
+            pool.clock = lambda: clock[0]
+            process = FakeProcess()
+            pool.active[0] = {"process": process, "trend_id": "trv2-test",
+                              "revision": 2, "slot": 0, "started_monotonic": 100.0}
+            directory = pathlib.Path(root) / "diagnostics"
+            directory.mkdir()
+            journal = directory / "run-trv2-test-r2.json"
+            journal.write_text(json.dumps({"trend_id": "trv2-test", "revision": 2,
+                                           "activity_seq": 1}))
+            with patch.object(pool, "_expire_slot") as expire:
+                clock[0] = 375.0
+                pool.reap()
+                expire.assert_not_called()
+                clock[0] = 650.0
+                pool.reap()
+                expire.assert_not_called()
+                journal.write_text(json.dumps({"trend_id": "trv2-test", "revision": 2,
+                                               "activity_seq": 2}))
+                clock[0] = 670.0
+                pool.reap()
+                clock[0] = 969.0
+                pool.reap()
+                expire.assert_not_called()
+                clock[0] = 970.0
+                pool.reap()
+                expire.assert_called_once_with(0, process)
+                self.assertEqual(pool.active[0]["timeout_reason"],
+                                 "session_5min_inactivity")
+
+    def test_no_heartbeat_expires_after_five_minutes_even_if_file_changes(self):
+        with tempfile.TemporaryDirectory() as root:
+            pool = self.make_pool(root)
+            clock = [100.0]
+            pool.clock = lambda: clock[0]
+            process = FakeProcess()
+            pool.active[0] = {"process": process, "trend_id": "trv2-test",
+                              "revision": 1, "slot": 0, "started_monotonic": 100.0}
+            with patch.object(pool, "_expire_slot") as expire:
+                clock[0] = 399.0
+                pool.reap()
+                expire.assert_not_called()
+                clock[0] = 400.0
+                pool.reap()
+                expire.assert_called_once_with(0, process)
 
 
 if __name__ == "__main__":
