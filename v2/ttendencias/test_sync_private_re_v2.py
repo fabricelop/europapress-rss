@@ -45,6 +45,32 @@ class PrivateRePlannerTest(unittest.TestCase):
         self.assertEqual(ignored, 0)
         self.assertEqual(updated, self.queue)
 
+    def test_explicit_re_resets_active_chat_immediately(self):
+        old = self.queue["items"][ID]
+        old.update(status="in_progress", lease={"token": "old"},
+                   send_intent={"token": "old"})
+        old.pop("capture")
+        req = {"trend_id": ID, "base_revision": 1}
+        updated, applied, ignored = plan_requested_reviews(self.queue, self.history, [req])
+        self.assertEqual((applied, ignored), ([ID], 0))
+        item = updated["items"][ID]
+        self.assertEqual((item["revision"], item["status"], item["reason"]),
+                         (2, "review_pending", "user_reset"))
+        self.assertNotIn("lease", item)
+        self.assertNotIn("send_intent", item)
+        self.assertEqual(old["revision"], 1)
+        again, applied, ignored = plan_requested_reviews(updated, self.history, [req])
+        self.assertEqual((applied, ignored), ([], 0))
+        self.assertEqual(again, updated)
+
+    def test_explicit_re_resets_interrupted_chat_immediately(self):
+        self.queue["items"][ID].update(status="capture_recovery")
+        self.queue["items"][ID].pop("capture")
+        req = {"trend_id": ID, "base_revision": 1}
+        updated, applied, ignored = plan_requested_reviews(self.queue, self.history, [req])
+        self.assertEqual((applied, ignored), ([ID], 0))
+        self.assertEqual(updated["items"][ID]["revision"], 2)
+
 
     def test_incident_hints_do_not_interrupt_active_or_expired_editorial_run(self):
         original = self.queue["items"][ID]
