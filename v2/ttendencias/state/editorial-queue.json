@@ -19884,26 +19884,28 @@
     "trv2-aecb102fd49009fac24030b7": {
       "trend_id": "trv2-aecb102fd49009fac24030b7",
       "name": "Danone",
-      "revision": 2,
-      "status": "in_progress",
-      "reason": "user_reexplanation",
+      "revision": 3,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "67c315a41e8dd8e5",
-      "requested_at": "2026-11-19T21:24:28.355389+00:00",
-      "updated_at": "2026-11-19T21:25:47.341706+00:00",
-      "attempts": 1,
+      "requested_at": "2026-11-19T21:33:31.340703+00:00",
+      "updated_at": "2026-11-19T21:33:31.340703+00:00",
+      "attempts": 0,
       "review_mode": "x",
       "review_hints": "Es por un tuit de @harryelsocio: ¿Y tú, qué fábrica visitaste de niño con el colegio?",
-      "incident_retries": 0,
-      "lease": {
-        "token": "56577303d816c813ca267179a7097135dff2efc47f9c15e9",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-19T21:25:15.802357+00:00",
-        "expires_at": "2026-11-19T22:05:15.802357+00:00"
-      },
-      "send_intent": {
-        "token": "56577303d816c813ca267179a7097135dff2efc47f9c15e9",
-        "at": "2026-11-19T21:25:47.341664+00:00"
-      }
+      "incident_retries": 1,
+      "previous_attempts": [
+        {
+          "revision": 2,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-19T21:25:15.802357+00:00",
+          "send_intent_at": "2026-11-19T21:25:47.341664+00:00",
+          "incident_reason": "session_8min_timeout",
+          "archived_at": "2026-11-19T21:33:31.340703+00:00"
+        }
+      ]
     },
     "trv2-3c805f0a1ae710fd576ce8ec": {
       "trend_id": "trv2-3c805f0a1ae710fd576ce8ec",
