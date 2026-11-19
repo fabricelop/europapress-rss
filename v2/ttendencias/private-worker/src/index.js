@@ -466,7 +466,7 @@ export default {
       try {
         const response=await fetch("https://ttactualidad.rainyraven22.chatgpt.site/api/automatic-trend-image-notifications",{
           method:"POST",headers:{"x-tt-v2-cron":"automatic-image-check"},
-          signal:AbortSignal.timeout(9000)
+          signal:AbortSignal.timeout(25000)
         });
         if(!response.ok)console.warn("V2_IMAGE_NOTIFICATION_CHECK_HTTP",response.status);
       }catch(error){console.warn("V2_IMAGE_NOTIFICATION_CHECK_FAILED",String(error?.message||error).slice(0,80));}
