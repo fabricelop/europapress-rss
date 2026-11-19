@@ -251,7 +251,7 @@ function incidentRetryRequested(item){
 function renderPublications(){
  const data=state.publications;
  const summary=$("publication-summary");
- summary.textContent=(newsViewMode?"PUB":"PU")+" · "+data.count+" / 24 h";
+ summary.textContent="PU · "+data.count+" / 24 h";
  summary.title="Ver "+data.count+" publicaciones de "+(newsViewMode?"Noticias":"Tendencias")+" registradas en las últimas 24 horas móviles";
  $("publication-heading").textContent="Publicaciones de "+(newsViewMode?"Noticias":"Tendencias")+" · últimas 24 horas";
  const list=$("publication-history");list.replaceChildren();
