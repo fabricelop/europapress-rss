@@ -2,6 +2,7 @@
 // NO V1 changes. Signed sessions; V2 D1 stores red marks and 15-minute radar.
 import {captureRadar,loadRadar,mergeEditorialRadar,radarAgeMinutes} from "./radar.js";
 import {readNews,readNewsRecord} from "./news.js";
+import {readNewsMaster,actOnMaster,newsMasterPublicationCount} from "./news-master.js";
 import {newsControls,newsView,newsAction,newsPublicationCount,newsManualImage,newsImage,publicNews,publicNewsImageVisibility,publicNewsArchivedIndex,newsWorkerControls} from "./news-actions.js";
 import {readImageIncident} from "./image-incidents.js";
 // All static assets require a session because run_worker_first=true.
@@ -476,6 +477,11 @@ export default {
       if(request.method!=="GET")return json({error:"method_not_allowed"},405);
       try{return json(await publicNews(env),200,{"Access-Control-Allow-Origin":"*"});}catch{return json({error:"news_unavailable"},503);}
     }
+    if(url.pathname==="/api/public-news-master"){
+      if(request.method!=="GET")return json({error:"method_not_allowed"},405);
+      try{return json(await readNewsMaster(env,url.searchParams),200,{"Access-Control-Allow-Origin":"*","Cache-Control":"no-store"});}
+      catch{return json({error:"news_master_unavailable"},503,{"Access-Control-Allow-Origin":"*"});}
+    }
     if(url.pathname==="/api/public-news-image")return newsImage(request,env,{json,headers},true);
     if (url.pathname === "/api/public-editorial-overrides") {
       if(request.method!=="GET")return json({error:"method_not_allowed"},405);
@@ -518,8 +524,15 @@ export default {
       try{return json(await readImageIncident({project:url.searchParams.get("project"),id:url.searchParams.get("id"),revision:Number(url.searchParams.get("revision"))}));}
       catch(error){const status=error.message==="IMAGE_INCIDENT_ID_INVALID"?400:error.message==="IMAGE_INCIDENT_REVISION_CHANGED"?409:503;return json({error:status===400?"invalid_image_identity":status===409?"image_revision_changed":"image_incident_unavailable"},status);}
     }
+    if(url.pathname==="/api/news-master-action")return actOnMaster(request,env,{json,sameOrigin});
+    if(url.pathname==="/api/news-master-publications")return newsMasterPublicationCount(env,{json});
+    if(url.pathname==="/api/news-master"){
+      if(request.method!=="GET")return json({error:"method_not_allowed"},405);
+      try{return json(await readNewsMaster(env,url.searchParams));}
+      catch{return json({error:"news_master_unavailable"},503);}
+    }
     if(url.pathname==="/api/news-actions")return newsAction(request,env,{json,sameOrigin});
-    if(url.pathname==="/api/news-publication-count")return newsPublicationCount(request,env,{json});
+    if(url.pathname==="/api/news-publication-count")return newsMasterPublicationCount(env,{json});
     if(url.pathname==="/api/news-manual-image")return newsManualImage(request,env,{json,sameOrigin});
     if(url.pathname==="/api/news-image")return newsImage(request,env,{json,headers});
     if (url.pathname.startsWith("/api/news/")) {

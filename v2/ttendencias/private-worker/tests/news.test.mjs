@@ -59,9 +59,10 @@ test("INC controls are separate from READY publication and preserve confirmed su
  assert.match(actions,/wire\(retry,"retry_editorial"\)/);
  assert.match(actions,/wire\(dismiss,"dismiss"/);
  assert.match(actions,/onChange\(item\)/);
- assert.match(page,/TTNewsActions\.attachIncident\(/);
- assert.match(page,/if\(state\.open===item\.event_id\)state\.open=null/);
- assert.match(page,/item\.status_label==="Suprimida"\)return;loaded=true/);
+ // The legacy incident state is still parsed for rollback, but the new UI
+ // has only the verified master list and no editorial retry buttons.
+ assert.match(page,/\/api\/news-master/);
+ assert.doesNotMatch(page,/TTNewsActions\.attachIncident/);
  const [index,queue]=fixture();queue.items[0].status="problematic";
  const projected=projectNews(index,queue);
  const controls={preferences:[{event_id:id,revision:1,archived:true,dismissed:true}]};
@@ -85,9 +86,7 @@ test("only verified image for the current revision is signalled on the closed ne
  index.items[id].image_progress={revision:1,expires_at:new Date(Date.now()+60000).toISOString()};
  assert.equal(projectNews(index,queue).items[0].image_in_progress,true);
  const js=readFileSync(new URL("../web-source/news.js",import.meta.url),"utf8");
- assert.match(js,/news-image-head-icon.*🖼️/u);
- assert.match(js,/news-image-head-progress.*🎨/u);
- assert.match(js,/Imagen generada y asociada a esta noticia/);
+ assert.doesNotMatch(js,/news-image-head-icon|Imagen generada|news-image-head-progress/);
  const actions=readFileSync(new URL("../web-source/news-actions.js",import.meta.url),"utf8");
  assert.match(actions,/if\(item\.image_available\)\{\s*const image=el\("img","news-original"\)/);
  assert.match(actions,/Imagen visible aquí en V2; oculta en la web V1/);
@@ -152,48 +151,23 @@ test("authorized news API returns only the read-only projection",async()=>{
   const data=await r.json();assert.equal(data.counts.pending,1);assert.equal(data.publication_allowed,false);
  }finally{globalThis.fetch=old;}
 });
-test("news UI uses text nodes, keeps trends and exposes no publish actions",()=>{
+test("Noticias shows one master list with red mark, suppress, X and PUB",()=>{
  const root=new URL("../web-source/",import.meta.url);
- const html=readFileSync(new URL("index.html",root),"utf8"),js=readFileSync(new URL("news.js",root),"utf8");
+ const html=readFileSync(new URL("index.html",root),"utf8");
+ const js=readFileSync(new URL("news.js",root),"utf8");
  const app=readFileSync(new URL("app.js",root),"utf8");
- assert.match(html,/id="nav-news"/);assert.match(html,/id="nav-trends"/);assert.match(html,/id="results"/);
- assert.match(html,/id="news-panel" hidden/);assert.match(js,/textContent=String/);
- assert.doesNotMatch(js,/innerHTML|P-X|publish_request|raw\.githubusercontent/);
+ assert.match(html,/id="nav-news"/);assert.match(html,/id="nav-trends"/);
+ assert.match(html,/id="results"/);assert.match(html,/id="news-panel" hidden/);
+ assert.match(js,/textContent=String/);
+ assert.doesNotMatch(js,/innerHTML|raw\.githubusercontent/);
+ assert.match(js,/\/api\/news-master\?/);
+ assert.match(js,/SUPRIMIR/);assert.match(js,/P-X/);assert.match(js,/PUB/);
+ assert.match(js,/news-red-mark/);assert.match(js,/item\.marked_red/);
+ assert.match(js,/Una sola lista/);
+ assert.doesNotMatch(js,/attachPending|attachIncident|RE-X|news-image-head-icon/);
  assert.match(js,/if\(!document.hidden&&!state.loading\)/);
- assert.match(js,/Último barrido/);assert.doesNotMatch(html,/La actualidad que entra|news-eyebrow|id="news-time"/);assert.match(js,/\?selected:"ready"/);assert.match(js,/const short=/);
  assert.match(js,/\$\("publication-summary"\)\.hidden=false/);
- assert.match(app,/newsViewMode\?"\/api\/news-publication-count":"\/api\/publication-count"/);
- assert.match(app,/event\.news_title/);
- assert.match(app,/"ttv2:publication-recorded"/);
- assert.match(js,/if\(item\.has_image===true\)/);
- assert.match(js,/news-image-head-icon/);
  assert.match(app,/newsViewMode\?"PUB":"PU"/);
-});
-test("Noticias groups clear PUB and Quitar actions, keeps R and RE-X, and marks image headers",()=>{
- const root=new URL("../web-source/",import.meta.url);
- const controls=readFileSync(new URL("news-actions.js",root),"utf8");
- const styles=readFileSync(new URL("styles.css",root),"utf8");
- const news=readFileSync(new URL("news.js",root),"utf8");
- for(const label of ["Publicación","Gestión y reelaboración","Imagen"])
-  assert.ok(controls.includes(label));
- assert.match(controls,/add\("PUB",[\s\S]{0,350}?action\(item,"publish"\)/);
- assert.match(controls,/add\("Quitar",[\s\S]{0,330}?action\(item,"archive"\)/);
- assert.doesNotMatch(controls,/add\("PU",/);
- assert.match(controls,/add\("R · Rojo",/);
- assert.match(controls,/add\("RE-X",/);
- assert.match(news,/news-image-head-icon/);
- assert.match(styles,/\.news-action-group\{display:flex;flex-wrap:wrap/);
- assert.match(styles,/@media\(max-width:450px\).*\.news-action-group/);
- assert.match(controls,/function attachPending\(/);
- assert.match(controls,/wire\(urgent,"urgent"\)/);
- assert.match(controls,/wire\(dismiss,"dismiss"\)/);
- assert.match(controls,/item\.group==="archived"&&item\.status_label!=="Suprimida"/);
- assert.match(controls,/attachPublicImageToggle\(item,artwork,onChange\)/);
- assert.match(controls,/await onChange\("archived",item\)/);
- // The private action changes the news status, never the selected UI list.
- assert.match(news,/if\(group==="archived"&&moved\?\.event_id===state\.open\)state\.open=null/);
- assert.doesNotMatch(news,/state\.filter="archived";state\.page=1/);
- assert.match(news,/const filter=Object\.hasOwn\(names,selected\)\?selected:"ready"/);
 });
 
 test("default is Elaboradas even when only pending candidates exist",()=>{
