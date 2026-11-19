@@ -18213,13 +18213,13 @@
     "trv2-d14ffd3ea0274c52e71a9b27": {
       "trend_id": "trv2-d14ffd3ea0274c52e71a9b27",
       "name": "Waterloo",
-      "revision": 4,
-      "status": "capture_recovery",
-      "reason": "retry_after_incident",
+      "revision": 5,
+      "status": "review_pending",
+      "reason": "user_reset",
       "episode_token": "1d6c890a929f712f",
-      "requested_at": "2026-11-19T12:30:57.855609+00:00",
-      "updated_at": "2026-11-19T15:40:32.546716+00:00",
-      "attempts": 1,
+      "requested_at": "2026-11-19T15:44:54.563798+00:00",
+      "updated_at": "2026-11-19T15:44:54.563798+00:00",
+      "attempts": 0,
       "previous_attempts": [
         {
           "revision": 1,
@@ -18249,14 +18249,19 @@
           "send_intent_at": null,
           "incident_reason": "chat_not_ready",
           "archived_at": "2026-11-19T12:30:57.855609+00:00"
+        },
+        {
+          "revision": 4,
+          "status": "capture_recovery",
+          "chat_url": "",
+          "capture_sha256": "",
+          "sent_at": "2026-11-19T15:37:46.969129+00:00",
+          "reset_at": "2026-11-19T15:44:54.563798+00:00",
+          "reason": "explicit_RE_reset"
         }
       ],
       "review_mode": "standard",
-      "incident_retries": 2,
-      "send_intent": {
-        "token": "b21a6a2df588cb75ee0d585b44a0ff719da13f550025e242",
-        "at": "2026-11-19T15:37:46.969129+00:00"
-      },
+      "incident_retries": 0,
       "capture_recovery_reason": "chat_target_identity_not_verified"
     },
     "trv2-09fc0cd37644687ef7a5cf1b": {
@@ -19247,7 +19252,6 @@
     "trv2-5ef514d4ad9a051534636612",
     "trv2-5f4a4eb0d74bddcb7423bbeb",
     "trv2-816873b40767b47587efa12e",
-    "trv2-d14ffd3ea0274c52e71a9b27",
     "trv2-e01fe9c938981d1a6ef85e79",
     "trv2-09fc0cd37644687ef7a5cf1b",
     "trv2-93020536cd990b4ad7dd47c7",
@@ -19255,7 +19259,8 @@
     "trv2-194f8050f5783e1436e93d4d",
     "trv2-47bc5ca08aab576fc5c89295",
     "trv2-4b062392372e7ed5e882a3b2",
-    "trv2-f4d168c8086e144e1d14215a"
+    "trv2-f4d168c8086e144e1d14215a",
+    "trv2-d14ffd3ea0274c52e71a9b27"
   ],
   "effects_enabled": false
 }
