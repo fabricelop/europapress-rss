@@ -19793,12 +19793,12 @@
       "trend_id": "trv2-7dd066463cbf73b298c73cbb",
       "name": "Peras",
       "revision": 2,
-      "status": "review_pending",
+      "status": "in_progress",
       "reason": "user_reset",
       "episode_token": "6127f7bd42feacf5",
       "requested_at": "2026-11-19T21:20:31.648112+00:00",
       "updated_at": "2026-11-19T21:20:31.648112+00:00",
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -19811,7 +19811,13 @@
         }
       ],
       "review_mode": "standard",
-      "incident_retries": 0
+      "incident_retries": 0,
+      "lease": {
+        "token": "243b31508670131c1996149145113cf8a29faf251dae5893",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-19T21:21:05.869802+00:00",
+        "expires_at": "2026-11-19T22:01:05.869802+00:00"
+      }
     },
     "trv2-612a2b7e9b04976ee85563bd": {
       "trend_id": "trv2-612a2b7e9b04976ee85563bd",
