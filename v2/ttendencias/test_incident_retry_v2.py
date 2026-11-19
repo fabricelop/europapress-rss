@@ -104,7 +104,7 @@ class IncidentRetryTests(unittest.TestCase):
         self.assertEqual(original["items"][ident]["status"], "pending")
         self.assertEqual(q["items"][ident]["revision"], 1)
 
-    def test_new_revision_reenters_top30_by_rank_with_fresh_journal_name(self):
+    def test_new_revision_waits_its_turn_with_fresh_journal_name(self):
         q, h = sample()
         ident = "trv2-%024x" % 1
         q["items"][ident].update(status="capture_recovery",
@@ -115,8 +115,17 @@ class IncidentRetryTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as path:
             pathlib.Path(path, "run-" + ident + "-r1.json").write_text("old")
             selected, age, blocked = eligible_plan(newer, h, directory=path, now=NOW)
-        self.assertEqual(selected["trend_id"], ident)
-        self.assertEqual(selected["revision"], 2)
+        self.assertNotEqual(selected["trend_id"], ident)
+        self.assertEqual(selected["revision"], 1)
+        # Tras la oportunidad de los demás, el reintento vuelve a estar
+        # disponible; su diario anterior no bloquea la revisión nueva.
+        for other in newer["items"].values():
+            if other["trend_id"] != ident and other.get("status") in ("pending", "review_pending"):
+                other["incident_retries"] = 1
+        with tempfile.TemporaryDirectory() as path:
+            chosen, _, _ = eligible_plan(newer, h, directory=path, now=NOW)
+        self.assertEqual(chosen["trend_id"], ident)
+        self.assertEqual(chosen["revision"], 2)
         self.assertEqual(blocked, [])
         self.assertEqual(age, 3)
 

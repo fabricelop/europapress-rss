@@ -43,6 +43,41 @@ class AutomaticEditorialTests(unittest.TestCase):
         self.assertEqual(age,4)
         self.assertEqual(blocked,[])
 
+    def test_failure_moves_behind_every_unattempted_top30_topic(self):
+        q,h=fixtures()
+        # Tres tendencias fallaron seis veces. La siguiente vuelta debe
+        # empezar por la primera sin intentar, aunque su puesto sea peor.
+        for rank in (1,2,3):
+            q["items"]["trv2-test-%02d" % rank].update(
+                revision=7, incident_retries=6, reason="retry_after_incident")
+        with tempfile.TemporaryDirectory() as temp:
+            first,_,_=eligible_plan(q,h,directory=temp,now=NOW)
+        self.assertEqual(first["name"], "Tema04")
+
+    def test_one_attempt_per_traversal_then_restart_at_top(self):
+        q,h=fixtures()
+        # Cuando todas llevan una tentativa, comienza una nueva ronda
+        # por el primer puesto; nunca vuelve antes la recién fallida.
+        for item in q["items"].values():
+            if item["trend_id"] != "old":
+                item["incident_retries"] = 1
+                item["revision"] = 2
+        with tempfile.TemporaryDirectory() as temp:
+            first,_,_=eligible_plan(q,h,directory=temp,now=NOW)
+            q["items"]["trv2-test-01"].update(revision=3, incident_retries=2)
+            second,_,_=eligible_plan(q,h,directory=temp,now=NOW)
+        self.assertEqual(first["name"], "Tema01")
+        self.assertEqual(second["name"], "Tema02")
+
+    def test_user_reset_is_prioritized_in_spite_of_automatic_round(self):
+        q,h=fixtures()
+        q["items"]["trv2-test-01"].update(
+            revision=4, incident_retries=3, status="review_pending",
+            reason="user_reset", attempts=0)
+        with tempfile.TemporaryDirectory() as temp:
+            selected,_,_=eligible_plan(q,h,directory=temp,now=NOW)
+        self.assertEqual(selected["name"], "Tema01")
+
     def test_does_not_resend_local_journal(self):
         q,h=fixtures()
         with tempfile.TemporaryDirectory() as temp:

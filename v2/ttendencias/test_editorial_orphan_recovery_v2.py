@@ -39,7 +39,7 @@ class OrphanRecoveryTests(unittest.TestCase):
         self.assertEqual(found, [("trv2-example", 6, self.evidence)])
 
     def test_recent_claim_is_not_reset_while_chat_might_still_be_running(self):
-        self.row["lease"]["started_at"] = (self.now - timedelta(minutes=7)).isoformat()
+        self.row["lease"]["started_at"] = (self.now - timedelta(minutes=4)).isoformat()
         self.assertEqual(daemon.orphaned_attempts(self.queue, self.history,
                          directory=self.directory, now=self.now), [])
 
