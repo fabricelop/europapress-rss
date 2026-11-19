@@ -18055,12 +18055,12 @@
       "trend_id": "trv2-194f8050f5783e1436e93d4d",
       "name": "Puchi",
       "revision": 5,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "bd3ef03516788c73",
       "requested_at": "2026-11-19T13:42:24.990863+00:00",
       "updated_at": "2026-11-19T13:42:24.990863+00:00",
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -18102,7 +18102,13 @@
         }
       ],
       "review_mode": "standard",
-      "incident_retries": 2
+      "incident_retries": 2,
+      "lease": {
+        "token": "f3b2377cf70a9889b4a80d10ef0044fceb00b3eba9a82c7c",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-19T14:36:56.535333+00:00",
+        "expires_at": "2026-11-19T15:16:56.535333+00:00"
+      }
     },
     "trv2-45a2a4546638cecd1ca41d35": {
       "trend_id": "trv2-45a2a4546638cecd1ca41d35",
