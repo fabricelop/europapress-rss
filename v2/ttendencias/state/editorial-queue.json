@@ -17869,13 +17869,13 @@
     "trv2-301a72a31b33d1e9180c082f": {
       "trend_id": "trv2-301a72a31b33d1e9180c082f",
       "name": "#CarrefourConGrandTheftAutoVI",
-      "revision": 8,
-      "status": "in_progress",
+      "revision": 9,
+      "status": "pending",
       "reason": "retry_after_incident",
       "episode_token": "92d783022394dace",
-      "requested_at": "2026-11-19T13:41:07.049567+00:00",
-      "updated_at": "2026-11-19T13:41:07.049567+00:00",
-      "attempts": 1,
+      "requested_at": "2026-11-19T13:46:20.624689+00:00",
+      "updated_at": "2026-11-19T13:46:20.624689+00:00",
+      "attempts": 0,
       "previous_attempts": [
         {
           "revision": 1,
@@ -17945,16 +17945,20 @@
           "send_intent_at": null,
           "incident_reason": "chrome_or_cdp_failure",
           "archived_at": "2026-11-19T13:41:07.049567+00:00"
+        },
+        {
+          "revision": 8,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-19T13:44:09.065037+00:00",
+          "send_intent_at": null,
+          "incident_reason": "chrome_or_cdp_failure",
+          "archived_at": "2026-11-19T13:46:20.624689+00:00"
         }
       ],
-      "incident_retries": 5,
-      "review_mode": "standard",
-      "lease": {
-        "token": "ceab0efc3cff75e85d6f2be7506fde765f16a3d01a6026bb",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-19T13:44:09.065037+00:00",
-        "expires_at": "2026-11-19T14:24:09.065037+00:00"
-      }
+      "incident_retries": 6,
+      "review_mode": "standard"
     },
     "trv2-816873b40767b47587efa12e": {
       "trend_id": "trv2-816873b40767b47587efa12e",
@@ -18966,9 +18970,9 @@
     "trv2-e01fe9c938981d1a6ef85e79",
     "trv2-47bc5ca08aab576fc5c89295",
     "trv2-09fc0cd37644687ef7a5cf1b",
-    "trv2-301a72a31b33d1e9180c082f",
     "trv2-93020536cd990b4ad7dd47c7",
-    "trv2-194f8050f5783e1436e93d4d"
+    "trv2-194f8050f5783e1436e93d4d",
+    "trv2-301a72a31b33d1e9180c082f"
   ],
   "effects_enabled": false
 }
