@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-19T17:54:44.398281+00:00",
+  "checked_at": "2026-11-19T18:05:05.572588+00:00",
   "before": [
     "elaborando_bloqueado_234"
   ],
@@ -8,7 +8,13 @@
     "elaborando_bloqueado_234"
   ],
   "healthy_source_count": 19,
-  "source_failures": [],
-  "events_bytes": 4059935,
+  "source_failures": [
+    {
+      "source": "AS",
+      "type": "sport",
+      "error": "HTTP Error 429: Too Many Requests"
+    }
+  ],
+  "events_bytes": 4084043,
   "ok": false
 }
