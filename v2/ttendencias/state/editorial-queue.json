@@ -20228,26 +20228,28 @@
     "trv2-87f2b1f675e5a90a6e716100": {
       "trend_id": "trv2-87f2b1f675e5a90a6e716100",
       "name": "Chupito",
-      "revision": 2,
-      "status": "in_progress",
-      "reason": "user_reexplanation",
+      "revision": 3,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "f48bd26e5a74dddc",
-      "requested_at": "2026-11-19T22:48:22.526790+00:00",
-      "updated_at": "2026-11-19T22:52:54.773133+00:00",
+      "requested_at": "2026-11-19T23:00:19.609157+00:00",
+      "updated_at": "2026-11-19T23:00:19.609157+00:00",
       "review_mode": "x",
       "review_hints": "Por la frase de ayuso obsesionada con sanchez",
-      "attempts": 1,
-      "incident_retries": 0,
-      "lease": {
-        "token": "f8390a4638d3aaee8f68979569f69895886fa88ca2bb9f23",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-19T22:52:14.101313+00:00",
-        "expires_at": "2026-11-19T23:32:14.101313+00:00"
-      },
-      "send_intent": {
-        "token": "f8390a4638d3aaee8f68979569f69895886fa88ca2bb9f23",
-        "at": "2026-11-19T22:52:54.773114+00:00"
-      }
+      "attempts": 0,
+      "incident_retries": 1,
+      "previous_attempts": [
+        {
+          "revision": 2,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": "https://chatgpt.com/c/6aff7dca-01b0-83ed-8c9c-1f38ab1bf20d",
+          "started_at": "2026-11-19T22:52:14.101313+00:00",
+          "send_intent_at": "2026-11-19T22:52:54.773114+00:00",
+          "incident_reason": "session_8min_timeout",
+          "archived_at": "2026-11-19T23:00:19.609157+00:00"
+        }
+      ]
     },
     "trv2-048f79151bff5e1e989af12d": {
       "trend_id": "trv2-048f79151bff5e1e989af12d",
@@ -20939,10 +20941,10 @@
     "trv2-e4758054ef86fe4d4540023f",
     "trv2-f3747df76de9cd3489c6d77a",
     "trv2-fa95ef6dc5e74f73b9981b9c",
-    "trv2-87f2b1f675e5a90a6e716100",
     "trv2-828ab70560e35dcdd7a3a075",
     "trv2-935bb3c66d4ac2626b07000b",
-    "trv2-e4d21d26294410f65eda4aa7"
+    "trv2-e4d21d26294410f65eda4aa7",
+    "trv2-87f2b1f675e5a90a6e716100"
   ],
   "effects_enabled": false
 }
