@@ -1,8 +1,19 @@
 #!/usr/bin/env python3
 """Contrato público del Top30 V2, sin red ni efectos."""
+import base64
+import hashlib
+import io
+import json
 import unittest
 from datetime import datetime, timezone
-from v2.ttendencias.web_top30_v2 import build
+from unittest.mock import patch
+from v2.ttendencias.web_top30_v2 import build, read_remote
+from v2.ttendencias.consume_re_requests import github_read
+
+
+def encoded_sha(payload):
+    return hashlib.sha1(b"blob " + str(len(payload)).encode("ascii")
+                        + b"\x00" + payload).hexdigest()
 
 
 def fixtures():
@@ -24,6 +35,55 @@ def fixtures():
 
 
 class Top30WebTests(unittest.TestCase):
+    def test_oversized_queue_reads_immutable_blob(self):
+        state = {"step": "04_editorial_queue", "items": {"Sanchez":
+                 {"status": "captured_review", "capture": {"verified_complete": True}}}}
+        payload = json.dumps(state).encode("utf-8")
+        sha = encoded_sha(payload)
+        metadata = {"encoding": "none", "content": "", "sha": sha}
+        blob = {"encoding": "base64", "content": base64.b64encode(payload).decode()}
+        with patch("v2.ttendencias.web_top30_v2.gh", return_value=metadata):
+            with patch("v2.ttendencias.web_top30_v2.urllib.request.urlopen",
+                       return_value=io.BytesIO(json.dumps(blob).encode())) as opened:
+                recovered, recovered_sha = read_remote("test-token", "editorial-queue.json")
+        self.assertEqual(recovered, state)
+        self.assertEqual(recovered_sha, sha)
+        self.assertEqual(opened.call_args[0][0].full_url,
+                         "https://api.github.com/repos/fabricelop/europapress-rss/git/blobs/" + sha)
+
+    def test_oversized_queue_rejects_blob_sha_mismatch(self):
+        payload = b'{"items": {}}'
+        metadata = {"encoding": "none", "content": "", "sha": "a" * 40}
+        blob = {"encoding": "base64", "content": base64.b64encode(payload).decode()}
+        with patch("v2.ttendencias.web_top30_v2.gh", return_value=metadata):
+            with patch("v2.ttendencias.web_top30_v2.urllib.request.urlopen",
+                       return_value=io.BytesIO(json.dumps(blob).encode())):
+                with self.assertRaisesRegex(RuntimeError, "SHA mismatch"):
+                    read_remote("test-token", "editorial-queue.json")
+
+    def test_standard_base64_content_still_works(self):
+        state = {"items": {"Sanchez": {"status": "captured_review"}}}
+        payload = json.dumps(state).encode()
+        metadata = {"encoding": "base64",
+                    "content": base64.b64encode(payload).decode(),
+                    "sha": encoded_sha(payload)}
+        with patch("v2.ttendencias.web_top30_v2.gh", return_value=metadata):
+            result, sha = read_remote("test-token", "editorial-queue.json")
+        self.assertEqual(result, state)
+        self.assertEqual(sha, metadata["sha"])
+
+    def test_github_actions_re_consumer_reads_oversized_editorial_queue(self):
+        state = {"items": {"trv2-test": {"status": "in_progress"}}}
+        raw = json.dumps(state).encode()
+        meta = {"encoding": "none", "content": "", "sha": encoded_sha(raw)}
+        blob = {"encoding": "base64", "content": base64.b64encode(raw).decode()}
+        with patch("v2.ttendencias.consume_re_requests.request_json", return_value=meta):
+            with patch("v2.ttendencias.web_top30_v2.urllib.request.urlopen",
+                       return_value=io.BytesIO(json.dumps(blob).encode())):
+                decoded, sha = github_read("test-token", "editorial-queue.json")
+        self.assertEqual(decoded, state)
+        self.assertEqual(sha, meta["sha"])
+
     def test_exact_order_and_count(self):
         h, q = fixtures()
         doc = build(h, q)

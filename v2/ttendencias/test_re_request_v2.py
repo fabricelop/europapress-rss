@@ -1,6 +1,7 @@
 import unittest
 
 from re_request_v2 import request_reexplanation
+from editorial_capture_state import stage_capture
 
 
 ID = "trv2-1234567890abcdef12345678"
@@ -34,6 +35,9 @@ class ReRequestTest(unittest.TestCase):
         row = updated["items"][ID]
         self.assertEqual(row["revision"], 2)
         self.assertEqual(row["status"], "review_pending")
+        self.assertEqual(row["reason"], "user_reset")
+        self.assertEqual(row["previous_attempts"][-1]["revision"], 1)
+        self.assertEqual(row["previous_attempts"][-1]["status"], "captured_review")
         self.assertEqual(row["attempts"], 0)
         self.assertNotIn("capture", row)
         self.assertNotIn("previous_capture", row)
@@ -118,11 +122,52 @@ class ReRequestTest(unittest.TestCase):
         self.assertEqual(next_rev["items"][ID]["review_hints"], hints)
         self.assertNotIn("deferred_re_request", next_rev["items"][ID])
 
-    def test_pending_with_send_evidence_is_not_overwritten(self):
+    def test_active_re_resets_immediately_and_fences_previous_chat(self):
+        old = self.queue["items"][ID]
+        old.update(status="in_progress", lease={"token": "LIVE", "worker_id": "worker"},
+                   send_intent={"token": "LIVE", "at": WHEN})
+        old.pop("capture")
+        result, action = self.invoke()
+        row = result["items"][ID]
+        self.assertEqual(action, "ENQUEUED")
+        self.assertEqual((row["revision"], row["status"], row["reason"]),
+                         (2, "review_pending", "user_reset"))
+        self.assertNotIn("lease", row)
+        self.assertNotIn("send_intent", row)
+        self.assertEqual(row["previous_attempts"][-1]["sent_at"], WHEN)
+        self.assertEqual(old["lease"]["token"], "LIVE")
+        self.assertEqual(old["status"], "in_progress")
+        with self.assertRaisesRegex(ValueError, "obsoletos"):
+            stage_capture(result, trend_id=ID, revision=1,
+                          answer="Una captura del chat antiguo " * 5,
+                          chat_url="https://chatgpt.com/c/old-chat",
+                          validated_capture=True, lease_token="LIVE")
+
+    def test_capture_recovery_can_be_reset_without_waiting(self):
+        old = self.queue["items"][ID]
+        old.update(status="capture_recovery", send_intent={"token": "sent"})
+        old.pop("capture")
+        result, action = self.invoke()
+        self.assertEqual(action, "ENQUEUED")
+        self.assertEqual(result["items"][ID]["revision"], 2)
+        self.assertNotIn("send_intent", result["items"][ID])
+
+    def test_cancelled_incident_can_be_reset(self):
+        self.queue["items"][ID].update(status="cancelled", incident_retries=2)
+        self.queue["items"][ID].pop("capture")
+        result, action = self.invoke()
+        self.assertEqual(action, "ENQUEUED")
+        self.assertEqual(result["items"][ID]["incident_retries"], 0)
+
+    def test_pending_with_send_evidence_can_be_explicitly_reset(self):
         self.queue["items"][ID].update(status="pending", send_intent={"token": "maybe-sent"})
         self.queue["items"][ID].pop("capture")
+        result, action = self.invoke()
+        self.assertEqual(action, "ENQUEUED")
+        self.assertEqual(result["items"][ID]["revision"], 2)
+        self.assertNotIn("send_intent", result["items"][ID])
         with self.assertRaisesRegex(ValueError, "evidencia"):
-            self.invoke()
+            self.invoke(mode="x", hints="Investiga los mensajes recientes en X con fuentes.")
 
     def test_unknown_historical_identity_rejected(self):
         self.history["topics"].clear()

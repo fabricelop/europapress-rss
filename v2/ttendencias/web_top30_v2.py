@@ -6,6 +6,7 @@ No expone tokens, leases, prompts, ID de sesión ni cola de producción.
 """
 import argparse
 import base64
+import hashlib
 import importlib.util
 import json
 import pathlib
@@ -284,11 +285,49 @@ def gh(method, auth, path, payload=None):
         raise RuntimeError("GitHub Top30 web HTTP %d" % exc.code) from None
 
 
+def decode_remote_content(auth, response, name):
+    """Read GitHub Contents including >1 MiB files returned with encoding=none.
+
+    Use the immutable blob SHA for oversized payloads and verify both paths
+    before trusting any state. This does not modify the editorial queue.
+    """
+    encoded = response.get("content") or ""
+    if response.get("encoding") == "base64" and encoded:
+        raw = base64.b64decode("".join(encoded.split()), validate=True)
+    elif response.get("encoding") == "none" and not encoded:
+        sha = response.get("sha")
+        if not isinstance(sha, str) or not re.fullmatch(r"[0-9a-f]{40}", sha):
+            raise RuntimeError("Top30 web blob SHA missing: " + name)
+        url = "https://api.github.com/repos/" + REPO + "/git/blobs/" + sha
+        headers = {"Accept": "application/vnd.github+json",
+                   "Authorization": "Bearer " + auth,
+                   "X-GitHub-Api-Version": "2022-11-28",
+                   "User-Agent": "TTActualidadV2-WebTop30"}
+        request = urllib.request.Request(url, headers=headers)
+        try:
+            with urllib.request.urlopen(request, timeout=45) as stream:
+                blob = json.load(stream)
+        except urllib.error.HTTPError as exc:
+            raise RuntimeError("Top30 web blob HTTP %d: %s" %
+                               (exc.code, name)) from None
+        if blob.get("encoding") != "base64" or not blob.get("content"):
+            raise RuntimeError("Top30 web blob encoding unavailable: " + name)
+        raw = base64.b64decode("".join(blob["content"].split()), validate=True)
+    else:
+        raise RuntimeError("Top30 web content unavailable: " + name)
+    actual_sha = hashlib.sha1(
+        b"blob " + str(len(raw)).encode("ascii") + b"\x00" + raw
+    ).hexdigest()
+    if actual_sha != response.get("sha"):
+        raise RuntimeError("Top30 web blob SHA mismatch: " + name)
+    return json.loads(raw.decode("utf-8-sig"))
+
+
 def read_remote(auth, name):
     response = gh("GET", auth, name)
     if response is None:
         raise RuntimeError("Falta estado V2: " + name)
-    return json.loads(base64.b64decode(response["content"])), response["sha"]
+    return decode_remote_content(auth, response, name), response["sha"]
 
 
 def sync_to_github(auth):
@@ -304,7 +343,7 @@ def sync_to_github(auth):
             queue, _ = read_remote(auth, "editorial-queue.json")
             expected = build(history, queue)
             current = gh("GET", auth, "web-top30.json")
-            stored = json.loads(base64.b64decode(current["content"])) if current else None
+            stored = decode_remote_content(auth, current, "web-top30.json") if current else None
             if stored != expected:
                 payload = {
                     "branch": BRANCH,

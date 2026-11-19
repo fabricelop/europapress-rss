@@ -46,7 +46,9 @@ test("RE queues exactly one request, and rejects obsolete revision",async()=>{
  assert.equal(rows.requests[0].trend_id,id);
  assert.equal((await worker.fetch(req(cookie,{...payload,revision:4}),bound)).status,409);
  item={...item,re_in_progress:true};
- assert.equal((await worker.fetch(req(cookie,payload),bound)).status,409);
+  // RE is a user-authorized reset even during an earlier re-explanation.
+  assert.equal((await worker.fetch(req(cookie,payload),bound)).status,202);
+  assert.equal((await worker.fetch(req(cookie,{...payload,mode:"x",hints:"Contrasta en X el origen y la fecha de esta tendencia."}),bound)).status,409);
 });
 
 test("RE and RE-X accept pending and in-progress trends without changing an active chat",async()=>{
@@ -61,4 +63,14 @@ test("RE and RE-X accept pending and in-progress trends without changing an acti
  assert.equal(db.contexts[0].hints,"Investiga este término en X y contrasta la fecha de hoy.");
  assert.equal(db.contexts[1].hints,active.hints);
  assert.equal((await worker.fetch(req(cookie,{...active,revision:3}),bound)).status,409);
+});
+
+test("RE accepts an interrupted incident for an immediate reset",async()=>{
+  const db=fakeDB(),bound={...env,MARKS_DB:db},cookie=await login();
+  item={...item,status:"incidencia",editorial_status:"in_progress",revision:5,re_in_progress:false};
+  const reset={...payload,revision:5};
+  assert.equal((await worker.fetch(req(cookie,reset),bound)).status,202);
+  assert.equal(db.saved.length,1);
+  const requests=await(await worker.fetch(req(cookie),bound)).json();
+  assert.equal(requests.requests[0].base_revision,5);
 });

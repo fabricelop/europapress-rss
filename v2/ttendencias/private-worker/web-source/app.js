@@ -559,24 +559,22 @@ function openReXDialog(item,onSubmit){
 function appendEditorialReButtons(editing,item){
  const re=el("button","publish-action re-explain-action","RE");
  re.type="button";
- re.title=item.status==="en_elaboracion"?"Programar una nueva investigación tras el chat actual":"Reiniciar investigación editorial";
- re.setAttribute("aria-label","Volver a investigar y explicar "+item.name);
- re.disabled=item.re_in_progress===true||reRequested(item);
+  re.title="RESET: crear una revisión nueva y mandarla a elaborar desde cero";
+  re.setAttribute("aria-label","Resetear y elaborar de nuevo "+item.name);
+  re.disabled=reRequested(item);
  re.addEventListener("click",async()=>{
   if(re.disabled)return;
-  const confirmText=item.status==="en_elaboracion"?
-    "«"+item.name+"» ya tiene un chat trabajando. ¿Pedir otra revisión cuando termine, sin interrumpirlo?":
-    item.status==="pendiente"?
-    "¿Priorizar una investigación nueva de «"+item.name+"»? Aún no tiene explicación guardada.":
-    "¿Reiniciar por completo la explicación de «"+item.name+"»? Se retirarán temporalmente el texto y la imagen actuales.";
+   const confirmText="¿Resetear «"+item.name+"» como una tendencia nueva y darle prioridad? " +
+     "El chat anterior puede seguir terminando, pero su resultado no reemplazará la nueva revisión. " +
+     "La explicación y la imagen anteriores dejarán de mostrarse.";
   if(!window.confirm(confirmText))return;
   re.disabled=true;
   try{
    const response=await fetch("/api/re-explain",{method:"POST",credentials:"same-origin",headers:{"content-type":"application/json","x-ttv2-action":"1"},body:JSON.stringify({trend_id:item.trend_id,revision:item.revision,entered_top30_at:markStamp(item)})});
    if(!response.ok)throw Error("HTTP "+response.status);
    state.reRequests.push({trend_id:item.trend_id,base_revision:item.revision,status:"requested"});
-   re.title="Nueva explicación solicitada; esperando procesamiento";
-   publishNotice("RE solicitada para «"+item.name+"». "+(item.status==="en_elaboracion"?"Se programará después del chat actual, sin interrumpirlo.":item.status==="pendiente"?"Se priorizará una investigación nueva.":"Se prepararán una explicación y una imagen nuevas."));
+    re.title="RESET solicitado; nueva revisión con prioridad";
+    publishNotice("RESET solicitado para «"+item.name+"». Se creará una revisión nueva y se enviará al próximo chat libre.");
    render();
   }catch(error){
    re.disabled=false;
@@ -631,24 +629,25 @@ function makePublishButtons(card,item){
   if(button.disabled)review.append(el("span","review-state","Pistas RE-X recibidas · esperando otro intento"));
   const retry=el("button","publish-action re-explain-action","RE");
   retry.type="button";
-  retry.title="Solicitar un nuevo intento desde cero y con un chat distinto";
+   retry.title="RESET: nueva revisión inmediata, aunque el intento anterior esté interrumpido";
   retry.setAttribute("aria-label","Reintentar la elaboración de "+item.name+" desde cero");
-  retry.disabled=incidentRetryRequested(item);
+   retry.disabled=incidentRetryRequested(item)||reRequested(item);
   retry.addEventListener("click",async()=>{
    if(retry.disabled)return;
    retry.disabled=true;
    try{
-    const response=await fetch("/api/incident-retry",{method:"POST",credentials:"same-origin",
+     const response=await fetch("/api/re-explain",{method:"POST",credentials:"same-origin",
      headers:{"content-type":"application/json","x-ttv2-action":"1"},
-     body:JSON.stringify({trend_id:item.trend_id,revision:item.revision})});
+      body:JSON.stringify({trend_id:item.trend_id,revision:item.revision,
+        entered_top30_at:markStamp(item)})});
     if(!response.ok)throw Error("HTTP "+response.status);
-    state.incidentRetryRequests.push({trend_id:item.trend_id,base_revision:item.revision});
-    publishNotice("Reintento solicitado para «"+item.name+"». Se abrirá otro chat después de comprobar el cierre seguro del intento anterior.");
+     state.reRequests.push({trend_id:item.trend_id,base_revision:item.revision,status:"requested"});
+     publishNotice("RESET solicitado para «"+item.name+"». Una revisión nueva tendrá prioridad sin esperar al chat anterior.");
     render();
    }catch(e){retry.disabled=false;publishNotice("No se pudo solicitar el reintento: "+e.message);}
   });
   review.append(retry);
-  if(retry.disabled)review.append(el("span","review-state","Reintento solicitado"));
+   if(retry.disabled)review.append(el("span","review-state","RESET solicitado"));
   actions.append(review);
   card.append(actions);
   return;
