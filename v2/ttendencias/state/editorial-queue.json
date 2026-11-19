@@ -17869,13 +17869,13 @@
     "trv2-301a72a31b33d1e9180c082f": {
       "trend_id": "trv2-301a72a31b33d1e9180c082f",
       "name": "#CarrefourConGrandTheftAutoVI",
-      "revision": 4,
-      "status": "in_progress",
+      "revision": 5,
+      "status": "pending",
       "reason": "retry_after_incident",
       "episode_token": "92d783022394dace",
-      "requested_at": "2026-11-19T11:30:41.976290+00:00",
-      "updated_at": "2026-11-19T11:30:41.976290+00:00",
-      "attempts": 1,
+      "requested_at": "2026-11-19T11:40:15.539996+00:00",
+      "updated_at": "2026-11-19T11:40:15.539996+00:00",
+      "attempts": 0,
       "previous_attempts": [
         {
           "revision": 1,
@@ -17905,16 +17905,20 @@
           "send_intent_at": "2026-11-19T10:33:35.997348+00:00",
           "incident_reason": "chat_target_identity_not_verified",
           "archived_at": "2026-11-19T11:30:41.976290+00:00"
+        },
+        {
+          "revision": 4,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-19T11:38:07.092537+00:00",
+          "send_intent_at": null,
+          "incident_reason": "chrome_or_cdp_failure",
+          "archived_at": "2026-11-19T11:40:15.539996+00:00"
         }
       ],
-      "incident_retries": 1,
-      "review_mode": "standard",
-      "lease": {
-        "token": "06b053d94db1d2c972ee5c5792340a496c7f2ce3de70d318",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-19T11:38:07.092537+00:00",
-        "expires_at": "2026-11-19T12:18:07.092537+00:00"
-      }
+      "incident_retries": 2,
+      "review_mode": "standard"
     },
     "trv2-816873b40767b47587efa12e": {
       "trend_id": "trv2-816873b40767b47587efa12e",
