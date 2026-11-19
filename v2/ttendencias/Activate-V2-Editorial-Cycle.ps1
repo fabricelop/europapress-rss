@@ -12,6 +12,7 @@ $headers = @{ 'Accept'='application/vnd.github+json'; 'User-Agent'='TTActualidad
 $utf8 = New-Object System.Text.UTF8Encoding($false)
 $modules = @('editorial_daemon_v2.py','editorial_run_v2.py',
              'editorial_github_access_v2.py',
+             'chrome_visibility_v2.py',
              'chatgpt_target_tracker.py','chatgpt_transcript.py',
              'editorial_capture_state.py','recover_existing_chat_v2.py',
              'editorial_pool_v2.py',
