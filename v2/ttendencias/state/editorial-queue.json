@@ -18483,12 +18483,12 @@
       "trend_id": "trv2-47bc5ca08aab576fc5c89295",
       "name": "Putin",
       "revision": 5,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "3c92706c02d607b0",
       "requested_at": "2026-11-19T14:50:48.722538+00:00",
       "updated_at": "2026-11-19T14:50:48.722538+00:00",
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -18523,7 +18523,13 @@
       ],
       "incident_retries": 2,
       "review_mode": "x",
-      "review_hints": "Algo xon los chinos y putin."
+      "review_hints": "Algo xon los chinos y putin.",
+      "lease": {
+        "token": "6eefafe83ecff864d85cf13f9ab711e6abe9bae3771eb5a9",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-19T14:54:31.785259+00:00",
+        "expires_at": "2026-11-19T15:34:31.785259+00:00"
+      }
     },
     "trv2-f4d168c8086e144e1d14215a": {
       "trend_id": "trv2-f4d168c8086e144e1d14215a",
