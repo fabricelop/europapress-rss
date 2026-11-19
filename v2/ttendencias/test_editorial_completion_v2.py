@@ -22,6 +22,14 @@ class EditorialCompletionTests(unittest.TestCase):
         self.assertIn("RE-X no lo soluciona",shown["guidance"])
         self.assertIsNone(editorial_failure_summary({**row,"status":"captured_review"}))
 
+    def test_recognized_transcript_reports_capture_issue_not_generic_failure(self):
+        shown=editorial_failure_summary({
+            "status":"capture_recovery",
+            "capture_recovery_reason":"visible_transcript_bound_to_prompt_and_footer"})
+        self.assertIn("Respuesta reconocida",shown["label"])
+        self.assertTrue(shown["recovery_suggested"])
+        self.assertNotEqual(shown["code"],"technical_unknown")
+
     def test_never_show_raw_exception_or_private_chat_url_on_web(self):
         row={"status":"capture_recovery",
              "capture_recovery_reason":"token abc https://chatgpt.com/c/private"}

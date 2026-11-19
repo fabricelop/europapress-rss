@@ -19,6 +19,59 @@ BODY = (
     "ChatGPT can make mistakes. Check important info.\nLatest response"
 )
 class TestTranscript(unittest.TestCase):
+    def test_hidden_stop_button_does_not_hold_a_complete_answer_forever(self):
+        clock = [0.0]
+
+        class Locator:
+            def __init__(self, kind, visible):
+                self.kind, self.visible = kind, visible
+            def count(self): return 1 if self.kind == "stop" else 0
+            def nth(self, index):
+                assert index == 0
+                return self
+            def is_visible(self): return self.visible
+            def inner_text(self, timeout=8000): return BODY
+
+        class Page:
+            url = "https://chatgpt.com/c/verified"
+            def __init__(self, stop_visible): self.stop_visible = stop_visible
+            def locator(self, selector):
+                return Locator("stop", self.stop_visible) if "stop-button" in selector else Locator("body", False)
+
+        def advance(seconds): clock[0] += seconds
+        with (patch("time.monotonic", side_effect=lambda: clock[0]),
+              patch("time.sleep", side_effect=advance)):
+            captured = capture_existing_page(Page(False), trend_id=TREND,
+                                             revision=1, seconds=12)
+        self.assertEqual(captured["status"], "captured")
+        clock[0] = 0
+        with (patch("time.monotonic", side_effect=lambda: clock[0]),
+              patch("time.sleep", side_effect=advance)):
+            unfinished = capture_existing_page(Page(True), trend_id=TREND,
+                                              revision=1, seconds=12)
+        self.assertEqual(unfinished["status"], "timeout")
+        self.assertEqual(unfinished["reason"], "visible_transcript_bound_to_prompt_and_footer")
+
+    def test_changing_chatgpt_elapsed_timer_does_not_break_stability(self):
+        clock = [0.0]
+        calls = [0]
+        class Locator:
+            def __init__(self, kind): self.kind=kind
+            def count(self): return 0
+            def inner_text(self, timeout=8000):
+                calls[0] += 1
+                return BODY.replace("VERIFICADO\n", "Worked for %ds\nVERIFICADO\n" % calls[0])
+        class Page:
+            url = "https://chatgpt.com/c/verified"
+            def locator(self, selector):return Locator("body")
+        def advance(seconds):clock[0] += seconds
+        with (patch("time.monotonic", side_effect=lambda: clock[0]),
+              patch("time.sleep", side_effect=advance)):
+            captured = capture_existing_page(Page(), trend_id=TREND,
+                                             revision=1, seconds=12)
+        self.assertEqual(captured["status"], "captured")
+        self.assertNotIn("Worked for", captured["answer"])
+
     def test_activity_callback_requires_new_assistant_text_not_spinners(self):
         clock=[0.0]
         progress=[]
