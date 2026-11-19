@@ -15,6 +15,7 @@ import threading
 import time
 
 from .editorial_browser_v2 import common
+from .news_process_inspection_v2 import chrome_profile_pids
 
 SESSION_LIMIT_SECONDS = 480
 MIN_NEW_SESSION_FREE_BYTES = 8 * 1024 ** 3
@@ -122,7 +123,8 @@ def reclaim_disposable_sessions(root, *, image=False, now=None, active_ids=None,
         if not candidates:
             return report
         active = set(active_ids) if active_ids is not None else active_news_worker_ids(image)
-        find = find_pids or common('chrome_profile_process_v2').exact_chrome_profile_pids
+        find = find_pids or (common('chrome_profile_process_v2').exact_chrome_profile_pids
+                             if image else chrome_profile_pids)
         for folder in candidates:
             profile = folder / 'Profile'
             if folder.name in active or find(profile):
@@ -158,7 +160,8 @@ class OwnedSessionWatchdog:
         self.process = process
         self.folder = self.root / ('image-sessions' if image else 'sessions') / run_id
         self.profile = self.folder / 'Profile'
-        self.find_pids = find_pids or common('chrome_profile_process_v2').exact_chrome_profile_pids
+        self.find_pids = find_pids or (common('chrome_profile_process_v2').exact_chrome_profile_pids
+                                      if image else chrome_profile_pids)
         self.cleanup = cleanup or common('chrome_cleanup_v2').cleanup_v2_profile
         self.timed_out = False
         self.cleanup_verified = False
@@ -219,3 +222,4 @@ class OwnedSessionWatchdog:
         return {'timed_out': self.timed_out,
                 'cleanup_verified': self.cleanup_verified,
                 'error_code': self.error_code}
+

@@ -32,7 +32,7 @@ $tree=Invoke-RestMethod -Uri ($api+'/git/trees/'+$sha+'?recursive=1') -Headers $
 if($tree.truncated){throw 'Inventario Git incompleto; no instalar'}
 $code=Join-Path $root ('releases\'+$sha)
 New-Item -ItemType Directory -Path $code -Force | Out-Null
-$news=@('news_workflow_v2.py','news_images_v2.py','test_news_workflow_v2.py','test_news_images_v2.py','editorial_browser_v2.py','editorial_consumer_v2.py','editorial_contract_v2.py','session_watchdog_v2.py','test_session_watchdog_v2.py',
+$news=@('news_workflow_v2.py','news_images_v2.py','test_news_workflow_v2.py','test_news_images_v2.py','editorial_browser_v2.py','news_process_inspection_v2.py','test_news_process_inspection_v2.py','editorial_consumer_v2.py','editorial_contract_v2.py','session_watchdog_v2.py','test_session_watchdog_v2.py',
   'pilot_one_v2.py',
   'probe_news_chat_response_v2.py','probe_news_editorial_shape_v2.py','probe_news_existing_chat_v2.py',
   'editorial_state_v2.py','editorial_setup_v2.py','test_editorial_consumer_v2.py',
@@ -77,8 +77,9 @@ if($dependency.ExitCode -ne 0){
   Invoke-NewsPython -arguments @('-m','pip','install','--user','jsonschema==4.23.0')
 }
 Invoke-NewsPython -arguments @('-m','pip','install','--user','Pillow')
-Invoke-NewsPython -arguments @('-c','"import playwright.sync_api, jsonschema, PIL"')
-Invoke-NewsPython -arguments @('-m','unittest','v2.ttittulares.test_contract_examples','v2.ttittulares.test_editorial_contract_v2','v2.ttittulares.test_editorial_state_v2','v2.ttittulares.test_editorial_consumer_v2','v2.ttittulares.test_editorial_browser_v2','v2.ttittulares.test_news_workflow_v2','v2.ttittulares.test_selection_v1_parity_v2','v2.ttittulares.test_news_images_v2','v2.ttittulares.test_session_watchdog_v2')
+Invoke-NewsPython -arguments @('-m','pip','install','--user','psutil')
+Invoke-NewsPython -arguments @('-c','"import playwright.sync_api, jsonschema, PIL, psutil"')
+Invoke-NewsPython -arguments @('-m','unittest','v2.ttittulares.test_contract_examples','v2.ttittulares.test_editorial_contract_v2','v2.ttittulares.test_editorial_state_v2','v2.ttittulares.test_editorial_consumer_v2','v2.ttittulares.test_editorial_browser_v2','v2.ttittulares.test_news_process_inspection_v2','v2.ttittulares.test_news_workflow_v2','v2.ttittulares.test_selection_v1_parity_v2','v2.ttittulares.test_news_images_v2','v2.ttittulares.test_session_watchdog_v2')
 $chrome=Join-Path $env:ProgramFiles 'Google\Chrome\Application\chrome.exe'
 $setup=@('-m','v2.ttittulares.editorial_setup_v2','--root',('"'+$root+'"'),'--chrome',('"'+$chrome+'"'))
 if($SeedProfile){$setup+=@('--seed-source',('"'+$SeedProfile+'"'))}
@@ -164,3 +165,4 @@ if($EnableImages){
     throw
   }
 }
+

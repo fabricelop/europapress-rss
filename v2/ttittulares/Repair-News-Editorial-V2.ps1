@@ -36,7 +36,7 @@ $tree=Invoke-RestMethod -Uri ($api+'/git/trees/'+$sha+'?recursive=1') -Headers $
 if($tree.truncated){throw 'NEWS_EDITORIAL_GIT_TREE_TRUNCATED'}
 $code=Join-Path $root ('releases\'+$sha)
 New-Item -ItemType Directory -Path $code -Force | Out-Null
-$news=@('news_workflow_v2.py','news_images_v2.py','test_news_workflow_v2.py','test_news_images_v2.py','editorial_browser_v2.py','editorial_consumer_v2.py','editorial_contract_v2.py','session_watchdog_v2.py','test_session_watchdog_v2.py',
+$news=@('news_workflow_v2.py','news_images_v2.py','test_news_workflow_v2.py','test_news_images_v2.py','editorial_browser_v2.py','news_process_inspection_v2.py','test_news_process_inspection_v2.py','editorial_consumer_v2.py','editorial_contract_v2.py','session_watchdog_v2.py','test_session_watchdog_v2.py',
   'pilot_one_v2.py',
   'editorial_state_v2.py','editorial_setup_v2.py','test_editorial_consumer_v2.py',
   'test_editorial_state_v2.py','test_editorial_contract_v2.py','test_contract_examples.py',
@@ -63,6 +63,32 @@ foreach($path in $paths){
   try{$actual=([BitConverter]::ToString($hash.ComputeHash([byte[]]($prefix+$bytes)))).Replace('-','').ToLowerInvariant()}finally{$hash.Dispose()}
   if($actual -ne $entry[0].sha){throw ('NEWS_EDITORIAL_GIT_HASH_MISMATCH='+$path)}
 }
+
+# psutil inspects the exact owned Chrome command lines natively. In this
+# Windows account it replaces the PowerShell/CIM loops that timed out while
+# several editorial jobs were starting. Validate before draining live chats.
+$dependencyOut=Join-Path $root 'news-psutil.stdout.log'
+$dependencyErr=Join-Path $root 'news-psutil.stderr.log'
+$dependency=Start-Process -FilePath $py -ArgumentList @('-3','-c','"import psutil"') `
+  -WindowStyle Hidden -Wait -PassThru -RedirectStandardOutput $dependencyOut -RedirectStandardError $dependencyErr
+if($dependency.ExitCode -ne 0){
+  $installDependency=Start-Process -FilePath $py -ArgumentList @('-3','-m','pip','install','--user','psutil') `
+    -WindowStyle Hidden -Wait -PassThru -RedirectStandardOutput $dependencyOut -RedirectStandardError $dependencyErr
+  if($installDependency.ExitCode -ne 0){throw 'NEWS_EDITORIAL_PSUTIL_INSTALL_FAILED'}
+}
+$testOut=Join-Path $root 'news-editorial-stage.stdout.log'
+$testErr=Join-Path $root 'news-editorial-stage.stderr.log'
+$tests=Start-Process -FilePath $py -WorkingDirectory $code `
+  -ArgumentList @('-3','-m','unittest','v2.ttittulares.test_editorial_browser_v2', `
+                   'v2.ttittulares.test_editorial_consumer_v2', `
+                   'v2.ttittulares.test_news_process_inspection_v2', `
+                   'v2.ttittulares.test_editorial_state_v2','-q') `
+  -WindowStyle Hidden -Wait -PassThru -RedirectStandardOutput $testOut -RedirectStandardError $testErr
+if($tests.ExitCode -ne 0){
+  if(Test-Path -LiteralPath $testErr){Get-Content -LiteralPath $testErr -Tail 15 | ForEach-Object {Write-Host $_}}
+  throw 'NEWS_EDITORIAL_STAGE_TESTS_FAILED: no se ha cambiado la instalación activa'
+}
+Write-Host 'TTN2_EDITORIAL_STAGE_TESTS=OK'
 
 $logs=Join-Path $root 'logs'
 New-Item -ItemType Directory -Path $logs -Force | Out-Null
@@ -105,6 +131,7 @@ try{
   Copy-Item -LiteralPath (Join-Path $code 'v2\ttittulares\Run-News-Editorial-Auto.ps1') -Destination $runner -Force
   [IO.File]::WriteAllText($pointer,$code,$utf8)
   Write-Host ('TTN2_EDITORIAL_RELEASE='+$sha)
+  Write-Host 'TTN2_EDITORIAL_NATIVE_CHROME_INSPECTION=YES'
   Write-Host ('TTN2_EDITORIAL_BACKUP='+$backup)
   Write-Host ('TTN2_EDITORIAL_RECOVERY_ISOLATED='+$check.preview.blocking_recovery_incident_count)
 }catch{
@@ -126,3 +153,4 @@ try{
 }
 Write-Host 'TTN2_IMAGE_WINDOWS_TASK_UNCHANGED=YES'
 Write-Host ('TTN2_EDITORIAL_LOGS='+ $logs)
+

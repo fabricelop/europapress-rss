@@ -172,11 +172,17 @@ def run_one(service, config, *, browser_factory=ChromeJob, parse=None, build=Non
                 journal['cleanup_error_type'] = type(exc).__name__
                 failure = failure or exc
         write_private(journal_path, journal)
+    # A session that is not proven closed may still be holding an owned Chrome.
+    # Never count it as a safely retryable pre-send failure, even if no Enter
+    # was observed. The exact-profile supervisor handles recovery separately.
+    if not journal['cleanup_verified'] and failure is None:
+        failure = RuntimeError('NEWS_OWN_CHROME_CLEANUP_UNVERIFIED')
     if failure is not None:
         failure_persisted = False
         try:
             failed = service.fail(job_id, worker_id, token, code=error_code(failure),
-                         safe_preflight=not journal['intent_durable'])
+                         safe_preflight=(not journal['intent_durable'] and
+                                         journal['cleanup_verified']))
             failure_persisted = isinstance(failed, dict) and failed.get('verified') is True
         except Exception:
             # Local journal + durable intent/lease are still the recovery truth.
@@ -422,3 +428,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
