@@ -198,6 +198,35 @@ class ConsumerTests(unittest.TestCase):
         self.assertNotIn('send', calls)
         self.assertNotIn('intent', calls)
 
+    def test_unclean_preflight_cannot_be_requeued_as_safe(self):
+        service = Service()
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            class UncleanBrowser(Browser):
+                def open(self): raise RuntimeError('NEWS_FRESH_CHAT_NOT_READY')
+                def close(self): raise RuntimeError('NEWS_OWN_CHROME_CLEANUP_UNVERIFIED')
+            report = run_one(service, {'root': root, 'chrome': root/'c', 'seed': root/'s'},
+                browser_factory=lambda **kw: UncleanBrowser(service.calls),
+                build=lambda *a: 'prompt', parse=lambda *a: {})
+            self.assertEqual(report['status'], 'incident')
+            self.assertFalse(report['cleanup_verified'])
+            self.assertIn(('fail', False), service.calls)
+
+    def test_close_returning_unverified_must_report_failure_to_queue(self):
+        service = Service()
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            class UnverifiedBrowser(Browser):
+                def close(self):
+                    self.calls.append('close')
+                    self.cleanup_verified = False
+            report = run_one(service, {'root': root, 'chrome': root/'c', 'seed': root/'s'},
+                browser_factory=lambda **kw: UnverifiedBrowser(service.calls),
+                build=lambda *a: 'prompt', parse=lambda *a: {})
+            self.assertEqual(report['status'], 'incident')
+            self.assertIn(('fail', False), service.calls)
+            self.assertNotIn('complete', service.calls)
+
     def test_unknown_exception_text_cannot_leak_into_a_public_error_code(self):
         self.assertEqual(error_code(RuntimeError('NEWS_CHATGPT_AUTH_REQUIRED')), 'NEWS_CHATGPT_AUTH_REQUIRED')
         self.assertEqual(error_code(RuntimeError('https://private.example/token=secret')), 'RUNTIMEERROR')
@@ -408,3 +437,4 @@ class ConsumerTests(unittest.TestCase):
 
 
 if __name__ == '__main__': unittest.main()
+
