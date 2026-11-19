@@ -4,9 +4,18 @@
 export const RADAR_SOURCE = "https://getdaytrends.com/es/spain/";
 const THIRTY = 30;
 
-export function trendKey(value) {
+// The ranking cell can contain a separate volume label, e.g. "280.1K tweets".
+// Never treat that volatile counter as part of a trend's name or identity.
+export function cleanTrendName(value) {
+  return String(value || "").replace(/\s+/g," ").trim()
+    .replace(/\s+\d[\d.,]*\s*[KMB]?\s+(?:tweets?|tuits?)$/iu,"").trim();
+}
+function legacyTrendKey(value) {
   return String(value || "").trim().replace(/^#/, "").toLowerCase()
     .normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/ß/g, "ss");
+}
+export function trendKey(value) {
+  return legacyTrendKey(cleanTrendName(value));
 }
 function fromHtml(value) {
   const entities = {amp:"&",lt:"<",gt:">",quot:'"',apos:"'",nbsp:" ",hellip:"…"};
@@ -38,7 +47,10 @@ export function parseGetDayTrends(html) {
       if(cells.length<2)continue;
       const raw = fromHtml(cells[0][1]).replace(/^#/, "");
       if(!/^\d{1,2}$/.test(raw))continue;
-      const rank=Number(raw),name=fromHtml(cells[1][1]);
+      const rank=Number(raw);
+      // Use the trend link; nearby counters and "View details" are not names.
+      const link=/<a\b[^>]*>([\s\S]*?)<\/a>/i.exec(cells[1][1]);
+      const name=cleanTrendName(fromHtml(link?link[1]:cells[1][1]));
       if(rank<1||rank>50||!name||name.length>100)continue;
       if(ranking.has(rank)&&trendKey(ranking.get(rank))!==trendKey(name))
         throw Error("RADAR_CONFLICTING_RANKS");
@@ -80,7 +92,12 @@ export async function captureRadar(db, {fetcher=fetch, now=new Date()}={}) {
   const old=await loadRadar(db);
   if(old&&Date.parse(old.captured_at)>=now.getTime())return old;
   const prior=new Map((old?.names||[]).map((name,index)=>[trendKey(name),index+1]));
-  const previousActive=new Map((old?.names||[]).map(name=>[trendKey(name),old.entered_at?.[trendKey(name)]||old.captured_at]));
+  // An old D1 snapshot may have been keyed with the appended tweet counter.
+  // Preserve first-entry times and movement when migrating that snapshot.
+  const oldNames=new Map((old?.names||[]).map(name=>[trendKey(name),name]));
+  const oldMeta=(map,key)=>map?.[key]??map?.[legacyTrendKey(oldNames.get(key))];
+  const previousActive=new Map((old?.names||[]).map(name=>
+    [trendKey(name),oldMeta(old.entered_at,trendKey(name))||old.captured_at]));
   const entered={};
   const previous_ranks={};
   const movement_kinds={};
@@ -105,12 +122,12 @@ export async function captureRadar(db, {fetcher=fetch, now=new Date()}={}) {
     }else{
       // A non-moving trend retains ITS last genuine delta even if other
       // trends changed. The previous cron tick is not a new movement.
-      const oldRank=old.previous_ranks?.[k];
-      const oldKind=old.movement_kinds?.[k];
+      const oldRank=oldMeta(old.previous_ranks,k);
+      const oldKind=oldMeta(old.movement_kinds,k);
       const kind=oldKind||(!Number.isInteger(oldRank)?"baseline":oldRank===rank?"baseline":oldRank>rank?"up":"down");
       movement_kinds[k]=kind;
       previous_ranks[k]=(kind==="up"||kind==="down")&&Number.isInteger(oldRank)&&oldRank!==rank?oldRank:null;
-      movement_at[k]=old.movement_at?.[k]||null;
+      movement_at[k]=oldMeta(old.movement_at,k)||null;
     }
   }
   const unchanged=old && names.every((name,index)=>trendKey(name)===trendKey(old.names[index]));
@@ -158,15 +175,17 @@ export async function mergeEditorialRadar(editorial, snapshot, clock=Date.now())
   const byName=new Map((editorial.items||[]).map(item=>[trendKey(item.name),item]));
   const rows=[];
   for(let i=0;i<THIRTY;i++){
-    const name=snapshot.names[i],key=trendKey(name),prev=snapshot.previous_ranks?.[key];
+    const rawName=snapshot.names[i],name=cleanTrendName(rawName),key=trendKey(name);
+    const field=(map)=>map?.[key]??map?.[legacyTrendKey(rawName)];
+    const prev=field(snapshot.previous_ranks);
     const source=byName.get(key)||{};
     const rank=i+1;
     const previous_rank=Number.isInteger(prev)?prev:null;
     const diff=previous_rank===null?null:previous_rank-rank;
-    const kind=snapshot.movement_kinds?.[key]||
+    const kind=field(snapshot.movement_kinds)||
       (diff===null?"entry":diff>0?"up":diff<0?"down":"baseline");
     rows.push({...source,rank,name,trend_id:source.trend_id||await stableId(key),
-      entered_top30_at:snapshot.entered_at?.[key]||snapshot.captured_at,
+      entered_top30_at:field(snapshot.entered_at)||snapshot.captured_at,
       revision:source.revision||1,
       status:source.status||"pendiente",
       status_label:source.status_label||"Pendiente",

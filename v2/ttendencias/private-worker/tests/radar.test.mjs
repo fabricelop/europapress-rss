@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import {captureRadar,loadRadar,mergeEditorialRadar,parseGetDayTrends,radarAgeMinutes} from "../src/radar.js";
+import {captureRadar,loadRadar,mergeEditorialRadar,parseGetDayTrends,radarAgeMinutes,cleanTrendName,trendKey} from "../src/radar.js";
 import worker from "../src/index.js";
 
 function html(names){
@@ -120,4 +120,45 @@ test("Third party errors never update or erase the last known good snapshot",asy
 
 test("Cloudflare Worker exposes real scheduled handler",()=>{
  assert.equal(typeof worker.scheduled,"function");
+});
+
+
+test("tweet counts beside a GetDayTrends link never enter the trend name",()=>{
+ const decorated=html(names)
+   .replace('<a href="/es/?q=x">Trend 1</a>','<a href="/es/?q=x">Trend 1 <small>280.1K tweets</small></a>')
+   .replace('<a href="/es/?q=x">Trend 2</a>','<a href="/es/?q=x">Trend 2</a><span>44.9K tweets</span>')
+   .replace('<a>Trend 16</a>','<a>Trend 16 19.6K tweets</a>');
+ assert.deepEqual(parseGetDayTrends(decorated),names);
+ assert.equal(cleanTrendName("Emilio Delgado 19.6K tweets"),"Emilio Delgado");
+ assert.equal(cleanTrendName("Peras"),"Peras");
+ assert.equal(trendKey("Rockstar 280.1K tweets"),trendKey("Rockstar"));
+});
+
+test("legacy D1 snapshots with tweet volumes keep identity, movement and original entry",async()=>{
+ const oldEntry="2026-11-14T19:50:00Z";
+ const snapshot={names:["Trend 1 280.1K tweets",...names.slice(1)],
+   captured_at:"2026-11-14T21:00:00.000Z",
+   entered_at:{"trend 1 280.1k tweets":oldEntry},
+   previous_ranks:{"trend 1 280.1k tweets":5},
+   movement_kinds:{"trend 1 280.1k tweets":"up"},
+   movement_at:{"trend 1 280.1k tweets":oldEntry},
+   identical_captures:2,unchanged_since:"2026-11-14T20:45:00Z",last_change_at:oldEntry};
+ let stored=JSON.stringify(snapshot);
+ const db={prepare(){let params=[];return {
+   bind(...values){params=values;return this},
+   async first(){return {payload:stored}},
+   async run(){stored=params[0];return {success:true}}
+ }}};
+ const merged=await mergeEditorialRadar(bare,snapshot,time("21:01").getTime());
+ assert.equal(merged.items[0].name,"Trend 1");
+ assert.equal(merged.items[0].trend_id,bare.items[0].trend_id);
+ assert.equal(merged.items[0].status,"explicada");
+ assert.equal(merged.items[0].explanation,bare.items[0].explanation);
+ assert.equal(merged.items[0].entered_top30_at,oldEntry);
+ const next=await captureRadar(db,{fetcher:fetcher(html(names)),now:time("21:15")});
+ assert.equal(next.names[0],"Trend 1");
+ assert.equal(next.entered_at["trend 1"],oldEntry);
+ assert.equal(next.previous_ranks["trend 1"],5);
+ assert.equal(next.movement_kinds["trend 1"],"up");
+ assert.equal(next.identical_captures,3);
 });
