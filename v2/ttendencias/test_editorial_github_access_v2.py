@@ -94,6 +94,7 @@ class GithubAccessTests(unittest.TestCase):
         text = (pathlib.Path(__file__).with_name("Activate-V2-Editorial-Cycle.ps1")
                 .read_text(encoding="utf-8"))
         self.assertIn("if ($CommitSha)", text)
+        self.assertIn("'Activate-V2-Editorial-Cycle.ps1')", text)
         self.assertIn("'editorial_github_access_v2.py'", text)
         self.assertIn("'test_editorial_orphan_recovery_v2.py'", text)
         self.assertNotIn("'persist_capture_github.py',", text)
