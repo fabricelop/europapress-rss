@@ -20718,24 +20718,27 @@
     "trv2-f8bf80d730945fadb32c6d6c": {
       "trend_id": "trv2-f8bf80d730945fadb32c6d6c",
       "name": "Simpson",
-      "revision": 1,
-      "status": "in_progress",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "e9fff674117e8ea0",
-      "requested_at": "2026-11-19T23:04:43.347354+00:00",
-      "updated_at": "2026-11-19T23:49:38.842064+00:00",
+      "requested_at": "2026-11-19T23:56:17.187630+00:00",
+      "updated_at": "2026-11-19T23:56:17.187630+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "lease": {
-        "token": "424c5135d6719ba68f33ec7862042ebea9b404e626969ae8",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-19T23:49:05.575232+00:00",
-        "expires_at": "2026-11-20T00:29:05.575232+00:00"
-      },
-      "send_intent": {
-        "token": "424c5135d6719ba68f33ec7862042ebea9b404e626969ae8",
-        "at": "2026-11-19T23:49:38.842042+00:00"
-      }
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-19T23:49:05.575232+00:00",
+          "send_intent_at": "2026-11-19T23:49:38.842042+00:00",
+          "incident_reason": "daemon_shutdown_after_child",
+          "archived_at": "2026-11-19T23:56:17.187630+00:00"
+        }
+      ],
+      "incident_retries": 1
     }
   },
   "pending_count": 631,
@@ -21358,7 +21361,6 @@
     "trv2-ae1bdc4aedba625172c967a7",
     "trv2-b564daad8b0c573bb89d1a6d",
     "trv2-d26c3bf26869ead6ce44add7",
-    "trv2-f8bf80d730945fadb32c6d6c",
     "trv2-fbfb8fdf6a279685d6de62c5",
     "trv2-828ab70560e35dcdd7a3a075",
     "trv2-935bb3c66d4ac2626b07000b",
@@ -21370,7 +21372,8 @@
     "trv2-7ae8c7c80ece3afc1f63abc5",
     "trv2-048f79151bff5e1e989af12d",
     "trv2-4ae3995271dd3b2b03c6d06a",
-    "trv2-8750108d6413f41a72eec0c3"
+    "trv2-8750108d6413f41a72eec0c3",
+    "trv2-f8bf80d730945fadb32c6d6c"
   ],
   "effects_enabled": false
 }
