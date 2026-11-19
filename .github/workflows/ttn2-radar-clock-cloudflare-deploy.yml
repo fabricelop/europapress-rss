@@ -1,0 +1,85 @@
+name: Noticias V2 - deploy isolated Cloudflare radar clock
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/ttn2-radar-clock-cloudflare-deploy.yml'
+      - 'v2/ttittulares/radar-clock-worker/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/ttn2-radar-clock-cloudflare-deploy.yml'
+      - 'v2/ttittulares/radar-clock-worker/**'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ttn2-radar-cloudflare-clock-deploy
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Verify isolated worker without secrets or deployment
+        run: |
+          node --check v2/ttittulares/radar-clock-worker/src/index.mjs
+          node --test v2/ttittulares/radar-clock-worker/tests/radar-clock.test.mjs
+  deploy:
+    needs: verify
+    if: github.repository == 'fabricelop/europapress-rss' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Refuse deployment when scoped credentials are not configured
+        env:
+          CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CF_ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          GH_DISPATCH_TOKEN: ${{ secrets.TTN2_RADAR_DISPATCH_TOKEN }}
+        run: |
+          test -n "$CF_TOKEN" || { echo '::error::CLOUDFLARE_API_TOKEN missing; nothing deployed'; exit 1; }
+          test -n "$CF_ACCOUNT" || { echo '::error::CLOUDFLARE_ACCOUNT_ID missing; nothing deployed'; exit 1; }
+          test -n "$GH_DISPATCH_TOKEN" || { echo '::error::TTN2_RADAR_DISPATCH_TOKEN missing; nothing deployed'; exit 1; }
+      - name: Deploy new cron-only Worker without editing Tendencias or existing Workers
+        working-directory: v2/ttittulares/radar-clock-worker
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          GH_DISPATCH_TOKEN: ${{ secrets.TTN2_RADAR_DISPATCH_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          # The Worker does nothing without the secret; no user-facing route exists.
+          npx --yes wrangler@4.162.0 deploy --keep-vars
+          printf '%s' "$GH_DISPATCH_TOKEN" | npx --yes wrangler@4.162.0 secret put GITHUB_DISPATCH_TOKEN
+          npx --yes wrangler@4.162.0 deploy --keep-vars
+          npx --yes wrangler@4.162.0 secret list --json > "$RUNNER_TEMP/ttn2-radar-clock-secrets.json"
+          node --input-type=commonjs -e '
+            const fs=require("node:fs");
+            const a=JSON.parse(fs.readFileSync(process.argv[1],"utf8"));
+            if(!Array.isArray(a)||!a.some(x=>x.name==="GITHUB_DISPATCH_TOKEN"))throw Error("WORKER_SECRET_NOT_VERIFIED");
+            console.log("TTN2_RADAR_CLOCK_SECRET_PRESENT=YES");
+          ' "$RUNNER_TEMP/ttn2-radar-clock-secrets.json"
+          curl --fail --silent --show-error \
+            -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+            "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/workers/scripts/ttactualidad-v2-noticias-radar-clock/schedules" \
+            -o "$RUNNER_TEMP/ttn2-radar-clock-schedules.json"
+          node --input-type=commonjs -e '
+            const fs=require("node:fs");
+            const d=JSON.parse(fs.readFileSync(process.argv[1],"utf8"));
+            if(d.success!==true||!Array.isArray(d.result)||!d.result.some(x=>x.cron==="5,15,25,35,45,55 * * * *"))
+              throw Error("TTN2_RADAR_CLOCK_CRON_NOT_VERIFIED");
+            console.log("TTN2_RADAR_CLOUDFLARE_CRON_VERIFIED=YES");
+          ' "$RUNNER_TEMP/ttn2-radar-clock-schedules.json"

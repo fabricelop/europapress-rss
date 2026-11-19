@@ -1,0 +1,10 @@
+{
+  "$schema": "https://raw.githubusercontent.com/cloudflare/workers-sdk/main/packages/wrangler/config-schema.json",
+  "name": "ttactualidad-v2-noticias-radar-clock",
+  "main": "src/index.mjs",
+  "compatibility_date": "2026-11-19",
+  "workers_dev": false,
+  "triggers": {
+    "crons": ["5,15,25,35,45,55 * * * *"]
+  }
+}
