@@ -20258,19 +20258,27 @@
     "trv2-7ae8c7c80ece3afc1f63abc5": {
       "trend_id": "trv2-7ae8c7c80ece3afc1f63abc5",
       "name": "Frijolito",
-      "revision": 1,
-      "status": "capture_recovery",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "8180ca78a2164c15",
-      "requested_at": "2026-11-19T22:02:24.684350+00:00",
-      "updated_at": "2026-11-19T23:21:51.662887+00:00",
+      "requested_at": "2026-11-19T23:47:17.916050+00:00",
+      "updated_at": "2026-11-19T23:47:17.916050+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "send_intent": {
-        "token": "560dc4e2ca8cd395c725b9ad30bdb11b3b680dd72e8e54d3",
-        "at": "2026-11-19T23:18:26.137633+00:00"
-      },
-      "capture_recovery_reason": "visible_transcript_bound_to_prompt_and_footer"
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "capture_recovery",
+          "attempts": 1,
+          "chat_url": "https://chatgpt.com/c/6aff83c5-6354-83eb-8488-4e83c90f5cbe",
+          "started_at": null,
+          "send_intent_at": "2026-11-19T23:18:26.137633+00:00",
+          "incident_reason": "visible_transcript_bound_to_prompt_and_footer",
+          "archived_at": "2026-11-19T23:47:17.916050+00:00"
+        }
+      ],
+      "incident_retries": 1
     },
     "trv2-87f2b1f675e5a90a6e716100": {
       "trend_id": "trv2-87f2b1f675e5a90a6e716100",
@@ -21281,7 +21289,6 @@
     "trv2-aecb102fd49009fac24030b7",
     "trv2-0226a489d8dd99b95cee0464",
     "trv2-048f79151bff5e1e989af12d",
-    "trv2-7ae8c7c80ece3afc1f63abc5",
     "trv2-af755c930c9c03523bfc458e",
     "trv2-c425d5928b9a3bea803f0e50",
     "trv2-dadf0f135591222dbc17228e",
@@ -21309,7 +21316,8 @@
     "trv2-65904552069b2710dc708a5f",
     "trv2-104610c6e8a080166c4d0c68",
     "trv2-9bc290564fa13fe252ac73f9",
-    "trv2-6521745076760c92f03a50e8"
+    "trv2-6521745076760c92f03a50e8",
+    "trv2-7ae8c7c80ece3afc1f63abc5"
   ],
   "effects_enabled": false
 }
