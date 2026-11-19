@@ -18,6 +18,8 @@ import subprocess
 import time
 from urllib.request import urlopen
 
+from .news_process_inspection_v2 import chrome_profile_pids, listener_pids as news_listener_pids
+
 COMPOSERS = ('#prompt-textarea', '[data-testid="prompt-textarea"]',
              '[contenteditable="true"][role="textbox"]')
 STOP = '[data-testid="stop-button"],button[aria-label*="Stop"],button[aria-label*="Detener"]'
@@ -265,7 +267,7 @@ def listener_process_ids(port, *, runner=subprocess.run):
     return set(values)
 
 
-def verify_endpoint_owned(port, profile, *, find_pids, listeners=listener_process_ids):
+def verify_endpoint_owned(port, profile, *, find_pids, listeners=news_listener_pids):
     """A free-port observation alone is not authority to attach or close CDP."""
     own = set(find_pids(profile))
     listening = set(listeners(port))
@@ -376,7 +378,9 @@ class ChromeJob:
         self.timeout = timeout
         self.process = self.browser = self.pw = self.hider = self.page = None
         self.composer = None
-        self.find = common('chrome_profile_process_v2').exact_chrome_profile_pids
+        # Native per-process argv inspection avoids the heavily contended
+        # PowerShell/Get-CimInstance timeout seen with parallel news workers.
+        self.find = chrome_profile_pids
         self.cleanup_verified = False
         self.sent = False
         self.port = None
@@ -437,8 +441,9 @@ class ChromeJob:
         self.page.bring_to_front()
         until = time.monotonic() + 90
         while time.monotonic() < until:
-            if self.hider.last_error:
-                raise RuntimeError('NEWS_CHROME_HIDE_FAILED')
+            # The background hider can record a transient Win32 error and
+            # recover on its next cycle. Verify real HWND visibility at the
+            # send boundary, as the now-working Trends V2 consumer does.
             for selector in COMPOSERS:
                 candidate = self.page.locator(selector).first
                 if candidate.count() and candidate.is_visible() and candidate.is_enabled():
@@ -469,6 +474,7 @@ class ChromeJob:
         self.sent = True  # Enter is never retried even if the transport raises.
         self.page.bring_to_front()
         self.composer.fill(prompt)
+        self.hider.ensure_hidden()  # Never press Enter with a visible own HWND.
         self.composer.press('Enter')
 
     def capture(self, event_id, revision, command_id, heartbeat):
@@ -550,3 +556,4 @@ class ChromeJob:
                 raise RuntimeError('NEWS_OWN_PROFILE_CLEANUP_UNVERIFIED') from None
         if failures:
             raise RuntimeError('NEWS_BROWSER_RESOURCE_CLOSE_FAILED')
+
