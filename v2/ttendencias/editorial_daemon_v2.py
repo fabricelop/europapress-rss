@@ -232,7 +232,8 @@ def run_forever(poll_seconds=90, max_jobs=0, workers=3):
         pool = DisposableWorkerPool(
             core.PROFILE, workers, source_running=core.profile_pids,
             env_key="TT_V2_EDITORIAL_PROFILE",
-            logs_dir=ROOT / "editorial-parallel-logs")
+            logs_dir=ROOT / "editorial-parallel-logs",
+            max_session_seconds=MAX_CHAT_SECONDS)
         report("STARTED", completed=completed, workers=workers)
         print("TT_V2_AUTO_START=YES", flush=True)
         print("TT_V2_AUTO_PUBLICATION=NO", flush=True)
