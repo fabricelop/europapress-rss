@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import {validateMaster,projectMaster,actOnMaster,newsMasterPublicationCount} from "./news-master-worker.js";
+import {validateMaster,projectMaster,actOnMaster,newsMasterPublicationCount} from "../src/news-master.js";
 
 const t="2026-11-19T17:00:00Z";
 const id="ttn2-"+"a".repeat(24);
