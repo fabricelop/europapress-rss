@@ -11578,13 +11578,13 @@
       "trend_id": "trv2-03226d9b1b11eb3e85feb051",
       "name": "Correos",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "bdb9035ee3aa0346",
       "requested_at": "2026-11-19T16:12:43.347011+00:00",
       "updated_at": "2026-11-19T16:12:43.347011+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -11597,7 +11597,13 @@
           "archived_at": "2026-11-19T16:12:43.347011+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "9fc9769e7deba666e8061b93d7694a8f82545b03b32c0738",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-19T16:55:48.397035+00:00",
+        "expires_at": "2026-11-19T17:35:48.397035+00:00"
+      }
     },
     "trv2-6d46e65822bbef3ea1cf20c5": {
       "trend_id": "trv2-6d46e65822bbef3ea1cf20c5",
