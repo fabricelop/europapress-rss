@@ -39,13 +39,13 @@
       "trend_id": "trv2-828ab70560e35dcdd7a3a075",
       "name": "#Horizonte",
       "revision": 3,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "739bf6e20d988bc0",
       "requested_at": "2026-11-19T22:21:49.079478+00:00",
       "updated_at": "2026-11-19T22:21:49.079478+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -68,7 +68,13 @@
           "archived_at": "2026-11-19T22:21:49.079478+00:00"
         }
       ],
-      "incident_retries": 2
+      "incident_retries": 2,
+      "lease": {
+        "token": "c42c62d230d5ff5f85289347b9cb99a72beda218f47ad42a",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-19T22:23:14.342196+00:00",
+        "expires_at": "2026-11-19T23:03:14.342196+00:00"
+      }
     },
     "trv2-58fbbdf335068bc6bec6a883": {
       "trend_id": "trv2-58fbbdf335068bc6bec6a883",
