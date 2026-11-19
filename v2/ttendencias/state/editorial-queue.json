@@ -18239,13 +18239,13 @@
       "trend_id": "trv2-93020536cd990b4ad7dd47c7",
       "name": "Aitana",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "1e0ef6c19dac4a8f",
       "requested_at": "2026-11-19T11:48:44.395001+00:00",
       "updated_at": "2026-11-19T11:48:44.395001+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -18258,7 +18258,13 @@
           "archived_at": "2026-11-19T11:48:44.395001+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "51e6a593252a4f864a74eb341d35f70297d96a66cf3d54e1",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-19T12:34:23.389052+00:00",
+        "expires_at": "2026-11-19T13:14:23.389052+00:00"
+      }
     },
     "trv2-47bc5ca08aab576fc5c89295": {
       "trend_id": "trv2-47bc5ca08aab576fc5c89295",
