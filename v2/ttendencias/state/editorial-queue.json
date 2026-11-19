@@ -20668,24 +20668,27 @@
     "trv2-4ae3995271dd3b2b03c6d06a": {
       "trend_id": "trv2-4ae3995271dd3b2b03c6d06a",
       "name": "Baño",
-      "revision": 1,
-      "status": "in_progress",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "b704ac0eda584179",
-      "requested_at": "2026-11-19T23:04:43.347354+00:00",
-      "updated_at": "2026-11-19T23:48:53.853010+00:00",
+      "requested_at": "2026-11-19T23:55:27.016858+00:00",
+      "updated_at": "2026-11-19T23:55:27.016858+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "lease": {
-        "token": "e83376dd3dd9cf07a6a77b76e74041b3d5eb9f8cec85e060",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-19T23:48:01.443709+00:00",
-        "expires_at": "2026-11-20T00:28:01.443709+00:00"
-      },
-      "send_intent": {
-        "token": "e83376dd3dd9cf07a6a77b76e74041b3d5eb9f8cec85e060",
-        "at": "2026-11-19T23:48:53.852983+00:00"
-      }
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": "https://chatgpt.com/c/6aff8aec-2ae4-83ed-978b-1caa3e7945b0",
+          "started_at": "2026-11-19T23:48:01.443709+00:00",
+          "send_intent_at": "2026-11-19T23:48:53.852983+00:00",
+          "incident_reason": "session_5min_inactivity",
+          "archived_at": "2026-11-19T23:55:27.016858+00:00"
+        }
+      ],
+      "incident_retries": 1
     },
     "trv2-8750108d6413f41a72eec0c3": {
       "trend_id": "trv2-8750108d6413f41a72eec0c3",
@@ -21346,7 +21349,6 @@
     "trv2-0303bbbf7c8ce647d728e36b",
     "trv2-0e14915b55b4726880d2b32d",
     "trv2-313984e6d31c673468c2fab0",
-    "trv2-4ae3995271dd3b2b03c6d06a",
     "trv2-576333afb8818f77944f4ab4",
     "trv2-5acc06085e98c6b2957e89f0",
     "trv2-6defe4885b0a3c38ab97d9f2",
@@ -21364,7 +21366,8 @@
     "trv2-9bc290564fa13fe252ac73f9",
     "trv2-6521745076760c92f03a50e8",
     "trv2-7ae8c7c80ece3afc1f63abc5",
-    "trv2-048f79151bff5e1e989af12d"
+    "trv2-048f79151bff5e1e989af12d",
+    "trv2-4ae3995271dd3b2b03c6d06a"
   ],
   "effects_enabled": false
 }
