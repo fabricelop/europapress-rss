@@ -6,7 +6,13 @@ from select_current_top30_v2 import select_current_top30
 
 
 def eligible_plan(queue, history, *, directory, now=None, active_keys=()):
-    """RE explícitos primero; después Top30 1→30, sin duplicar envíos."""
+    """RE explícitos primero; después vueltas justas del Top30, sin duplicados.
+
+    Cada incidencia cerrada eleva incident_retries y se queda detrás de
+    cualquier tendencia pendiente que haya tenido menos oportunidades. Entre
+    tendencias con el mismo número de intentos prevalece el puesto del Top30.
+    No necesita un cursor local, y sobrevive a reinicios del consumidor.
+    """
     now = now or datetime.now(timezone.utc)
     if (queue.get("step") != "04_editorial_queue"
             or queue.get("effects_enabled") is not False
@@ -41,6 +47,8 @@ def eligible_plan(queue, history, *, directory, now=None, active_keys=()):
     # An old ranking still blocks *new* automatic topics; explicit RE is
     # independent of the radar freshness once its identity is verified.
     ranked, age = select_current_top30(queue, history, 30, now=now)
+    ranked.sort(key=lambda item: max(0, int(item.get("incident_retries") or 0)))
+    # sort es estable: el desempate conserva el puesto 1→30.
     for item in ranked:
         if (item["trend_id"], item["revision"]) in active:
             continue

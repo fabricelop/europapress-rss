@@ -144,7 +144,7 @@ class ParallelDispatchTests(unittest.TestCase):
                     pool.spawn(__file__, [], trend_id="one", revision=1)
             self.assertFalse(slot.exists())
 
-    def test_session_watchdog_closes_only_owned_slot_after_eight_minutes(self):
+    def test_session_watchdog_closes_only_owned_slot_after_five_minutes(self):
         with tempfile.TemporaryDirectory() as root:
             pool = self.make_disposable_pool(root, count=1)
             now = [100.0]
@@ -154,10 +154,10 @@ class ParallelDispatchTests(unittest.TestCase):
                   patch("parallel_dispatch_v2.subprocess.Popen", return_value=proc),
                   patch("parallel_dispatch_v2.cleanup_v2_profile", return_value={"closed": True}) as cleanup):
                 self.assertTrue(pool.spawn(__file__, [], trend_id="slow", revision=1))
-                now[0] = 579.0
+                now[0] = 399.0
                 self.assertEqual(pool.reap(), [])
                 self.assertIsNone(proc.returncode)
-                now[0] = 580.0
+                now[0] = 400.0
                 finished = pool.reap()
                 self.assertEqual(len(finished), 1)
                 self.assertTrue(finished[0]["timed_out"])

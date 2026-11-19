@@ -11,6 +11,12 @@ from test_incident_retry_v2 import sample
 
 
 class EditorialCompletionTests(unittest.TestCase):
+    def test_capture_budget_leaves_time_for_cleanup_and_persistence(self):
+        self.assertEqual(daemon.core.remaining_capture_seconds(100, now=100), 240)
+        self.assertEqual(daemon.core.remaining_capture_seconds(100, now=159), 181)
+        self.assertEqual(daemon.core.remaining_capture_seconds(100, now=340), 0)
+        self.assertEqual(daemon.core.remaining_capture_seconds(100, now=700), 0)
+
     def test_identity_is_visible_at_start_of_collapsed_chatgpt_prompt(self):
         item = {"trend_id": "trv2-301a72a31b33d1e9180c082f",
                 "revision": 5, "name": "#CarrefourConGrandTheftAutoVI",
@@ -73,7 +79,7 @@ class EditorialCompletionTests(unittest.TestCase):
                                    "at": "2026-11-19T10:33:00Z"}
         self.journal["message_sent"] = True
         self.save_journal()
-        outcome, queue = self.settle(reason="session_8min_timeout")
+        outcome, queue = self.settle(reason="session_5min_timeout")
         self.assertEqual(outcome, "new_revision")
         row = queue["items"][self.ident]
         self.assertNotIn("send_intent", row)

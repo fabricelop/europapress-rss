@@ -31,6 +31,15 @@ HEADLESS = os.environ.get("TT_V2_CHROME_HEADLESS", "0").strip().lower() not in (
 COMPOSERS = ("#prompt-textarea", "[data-testid='prompt-textarea']", "[contenteditable='true'][role='textbox']")
 STOP = "[data-testid='stop-button'],button[aria-label*='Stop'],button[aria-label*='Detener']"
 BRANCH = "feature/ttactualidad-v2-clean"
+# El watchdog del padre termina a los cinco minutos desde el arranque del
+# proceso. Reservamos el último minuto para cerrar Chrome y guardar el estado.
+CAPTURE_JOB_BUDGET_SECONDS = 240
+
+
+def remaining_capture_seconds(started_monotonic, *, now=None):
+    """Tiempo de lectura restante dentro del presupuesto TOTAL del intento."""
+    elapsed = (time.monotonic() if now is None else now) - started_monotonic
+    return max(0, int(CAPTURE_JOB_BUDGET_SECONDS - max(0, elapsed)))
 
 def module(filename, name):
     spec = importlib.util.spec_from_file_location(name, pathlib.Path(__file__).with_name(filename))
@@ -264,6 +273,7 @@ def update_image_receipt(api, auth, trend_id, revision, expected_hash, image):
 
 
 def run_one(api, state, transcript, auth, item):
+    job_started_monotonic = time.monotonic()
     trend_id, revision = item["trend_id"], item["revision"]
     journal = DIAG_DIR / ("run-" + trend_id + "-r" + str(revision) + ".json")
     if journal.exists():
@@ -434,8 +444,15 @@ def run_one(api, state, transcript, auth, item):
                            "reloads": 0, "url": page.url,
                            "observations": ["target_discovery_failed"]}
             else:
-                capture = transcript.capture_existing_page(
-                    page, trend_id=trend_id, revision=revision, seconds=480)
+                remaining = remaining_capture_seconds(job_started_monotonic)
+                if remaining == 0:
+                    capture = {"status": "timeout", "answer": "",
+                               "reason": "editorial_total_budget_exhausted",
+                               "reloads": 0, "url": page.url,
+                               "observations": ["no_capture_time_left"]}
+                else:
+                    capture = transcript.capture_existing_page(
+                        page, trend_id=trend_id, revision=revision, seconds=remaining)
             record["capture_diagnostic"] = {
                 "status": capture["status"],
                 "reason": capture["reason"],

@@ -28,7 +28,7 @@ STATUS = ROOT / "daemon-status.json"
 SENTINEL = "TT_V2_AUTO_EDITORIAL_ENABLED=YES"
 WEB_RETRY_SECONDS = 300
 ORPHAN_RETRY_SECONDS = 150
-MAX_CHAT_SECONDS = 480
+MAX_CHAT_SECONDS = 300
 
 
 def flag_is_enabled(path=ENABLED):
@@ -163,7 +163,7 @@ def orphaned_attempts(queue, history, *, directory=core.DIAG_DIR, now=None):
     """Only expired *current Top30* workers with matching durable local proof.
 
     The remote lease lasts 40 minutes, but the actual child is limited to
-    eight. A daemon restarted during a GitHub 403 must not strand that lease.
+    five. A daemon restarted during a GitHub 403 must not strand that lease.
     """
     now = now or datetime.now(timezone.utc)
     if (queue.get("source_observed_at") != history.get("observed_at")
@@ -247,7 +247,7 @@ def run_forever(poll_seconds=90, max_jobs=0, workers=3):
                     if (done.get("timed_out") or done.get("profile_cleanup_error")
                             or done["exit_code"]):
                         unsettled[(tid, rev)] = done
-                        report("SESSION_TIMEOUT_8MIN" if done.get("timed_out")
+                        report("SESSION_TIMEOUT_5MIN" if done.get("timed_out")
                                else "JOB_NEEDS_REVIEW",
                                trend_id=tid, revision=rev, completed=completed,
                                active_workers=len(pool.active),
@@ -278,7 +278,7 @@ def run_forever(poll_seconds=90, max_jobs=0, workers=3):
                             api, auth, tid, rev,
                             cleanup_verified=done.get("profile_deleted") is True
                                 and not done.get("profile_cleanup_error"),
-                            failure_reason=("session_8min_timeout" if done.get("timed_out")
+                            failure_reason=("session_5min_timeout" if done.get("timed_out")
                                             else "worker_or_capture_failed"))
                         del unsettled[key]
                         report("JOB_SETTLED", trend_id=tid, revision=rev,
@@ -317,7 +317,7 @@ def run_forever(poll_seconds=90, max_jobs=0, workers=3):
                         print("TT_V2_AUTO_RE_SYNC_DELAYED=" + type(exc).__name__, flush=True)
                 started = 0
                 # Simple waves: launch at most N chats, then let all of them
-                # finish (or hit their 8-minute watchdog). This guarantees a
+                # finish (or hit their 5-minute watchdog). This guarantees a
                 # Chrome-free checkpoint for incident recovery every wave.
                 if not reserve and not pool.active and not max_jobs:
                     if time.monotonic() - last_orphan_scan >= ORPHAN_RETRY_SECONDS:
