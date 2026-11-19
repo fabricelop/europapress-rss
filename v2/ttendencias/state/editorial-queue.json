@@ -12478,12 +12478,12 @@
       "trend_id": "trv2-e651f01a044037e2006a3cbf",
       "name": "Rockstar",
       "revision": 2,
-      "status": "review_pending",
+      "status": "in_progress",
       "reason": "user_reset",
       "episode_token": "140dcf274f17b84a",
       "requested_at": "2026-11-19T20:43:53.521287+00:00",
       "updated_at": "2026-11-19T20:43:53.521287+00:00",
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -12496,7 +12496,13 @@
         }
       ],
       "review_mode": "standard",
-      "incident_retries": 0
+      "incident_retries": 0,
+      "lease": {
+        "token": "ec069dd1ba85ad4242b856339463207f579964282fa0d15c",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-19T20:50:21.892075+00:00",
+        "expires_at": "2026-11-19T21:30:21.892075+00:00"
+      }
     },
     "trv2-97b55265cce6e7057c65300b": {
       "trend_id": "trv2-97b55265cce6e7057c65300b",
