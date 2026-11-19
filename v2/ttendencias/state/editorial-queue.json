@@ -20365,19 +20365,27 @@
     "trv2-104610c6e8a080166c4d0c68": {
       "trend_id": "trv2-104610c6e8a080166c4d0c68",
       "name": "#CaraACara26",
-      "revision": 1,
-      "status": "capture_recovery",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "a369e5b52fd6c23a",
-      "requested_at": "2026-11-19T23:04:43.347354+00:00",
-      "updated_at": "2026-11-19T23:16:00.876590+00:00",
+      "requested_at": "2026-11-19T23:28:21.641940+00:00",
+      "updated_at": "2026-11-19T23:28:21.641940+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "send_intent": {
-        "token": "7108556a8e6f17028f1bf219eeed305d572b3f145bc8db54",
-        "at": "2026-11-19T23:12:33.726774+00:00"
-      },
-      "capture_recovery_reason": "visible_transcript_bound_to_prompt_and_footer"
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "capture_recovery",
+          "attempts": 1,
+          "chat_url": "https://chatgpt.com/c/6aff8264-b728-83ed-9a5a-e34343c7912d",
+          "started_at": null,
+          "send_intent_at": "2026-11-19T23:12:33.726774+00:00",
+          "incident_reason": "visible_transcript_bound_to_prompt_and_footer",
+          "archived_at": "2026-11-19T23:28:21.641940+00:00"
+        }
+      ],
+      "incident_retries": 1
     },
     "trv2-65904552069b2710dc708a5f": {
       "trend_id": "trv2-65904552069b2710dc708a5f",
@@ -21215,7 +21223,6 @@
     "trv2-0178989695c04345fd8dfd3d",
     "trv2-0303bbbf7c8ce647d728e36b",
     "trv2-0e14915b55b4726880d2b32d",
-    "trv2-104610c6e8a080166c4d0c68",
     "trv2-313984e6d31c673468c2fab0",
     "trv2-4ae3995271dd3b2b03c6d06a",
     "trv2-576333afb8818f77944f4ab4",
@@ -21232,7 +21239,8 @@
     "trv2-935bb3c66d4ac2626b07000b",
     "trv2-e4d21d26294410f65eda4aa7",
     "trv2-9bc290564fa13fe252ac73f9",
-    "trv2-65904552069b2710dc708a5f"
+    "trv2-65904552069b2710dc708a5f",
+    "trv2-104610c6e8a080166c4d0c68"
   ],
   "effects_enabled": false
 }
