@@ -18556,13 +18556,13 @@
     "trv2-f4d168c8086e144e1d14215a": {
       "trend_id": "trv2-f4d168c8086e144e1d14215a",
       "name": "Shenzhen",
-      "revision": 2,
-      "status": "in_progress",
-      "reason": "user_reset",
+      "revision": 3,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "093276b0882b28f8",
-      "requested_at": "2026-11-19T15:00:23.308565+00:00",
-      "updated_at": "2026-11-19T15:00:23.308565+00:00",
-      "attempts": 1,
+      "requested_at": "2026-11-19T15:30:43.781726+00:00",
+      "updated_at": "2026-11-19T15:30:43.781726+00:00",
+      "attempts": 0,
       "image_incident": {
         "project": "ttendencias-v2",
         "trend_id": "trv2-f4d168c8086e144e1d14215a",
@@ -18583,16 +18583,20 @@
           "sent_at": null,
           "reset_at": "2026-11-19T15:00:23.308565+00:00",
           "reason": "explicit_RE_reset"
+        },
+        {
+          "revision": 2,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-19T15:01:51.951981+00:00",
+          "send_intent_at": null,
+          "incident_reason": "github_rate_limit",
+          "archived_at": "2026-11-19T15:30:43.781726+00:00"
         }
       ],
       "review_mode": "standard",
-      "incident_retries": 0,
-      "lease": {
-        "token": "1688805edda01376156dd4d7a26956f65eb428d54d65ba5a",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-19T15:01:51.951981+00:00",
-        "expires_at": "2026-11-19T15:41:51.951981+00:00"
-      }
+      "incident_retries": 1
     },
     "trv2-e01fe9c938981d1a6ef85e79": {
       "trend_id": "trv2-e01fe9c938981d1a6ef85e79",
@@ -19197,8 +19201,8 @@
     "trv2-301a72a31b33d1e9180c082f",
     "trv2-194f8050f5783e1436e93d4d",
     "trv2-47bc5ca08aab576fc5c89295",
-    "trv2-f4d168c8086e144e1d14215a",
-    "trv2-4b062392372e7ed5e882a3b2"
+    "trv2-4b062392372e7ed5e882a3b2",
+    "trv2-f4d168c8086e144e1d14215a"
   ],
   "effects_enabled": false
 }
