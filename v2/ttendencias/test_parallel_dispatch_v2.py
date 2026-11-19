@@ -2,11 +2,12 @@
 """Local pure tests: slots, deduplication, simultaneous jobs, RE selection."""
 import pathlib
 import os
+import subprocess
 import tempfile
 import unittest
 from datetime import datetime, timezone
 from types import SimpleNamespace
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 from parallel_dispatch_v2 import (
     DisposableWorkerPool, EPHEMERAL_MARKER, WorkerPool, prepare_profiles,
@@ -312,6 +313,32 @@ class ParallelDispatchTests(unittest.TestCase):
               patch("chrome_visibility_v2.visible_windows_for_pids", return_value=1)):
             with self.assertRaisesRegex(RuntimeError, "WINDOW_VISIBLE"):
                 hider.ensure_hidden()
+
+    def test_hidden_chrome_uses_its_own_popen_pid_without_slow_cim(self):
+        discover = Mock(side_effect=subprocess.TimeoutExpired("powershell.exe", 20))
+        hider = V2WindowHider(discover, primary_pid=434343)
+        hider.last_error = "TimeoutExpired: stale discovery error"
+        with (patch("chrome_visibility_v2.hide_windows_for_pids") as hide,
+              patch("chrome_visibility_v2.visible_windows_for_pids", return_value=0)):
+            hider.ensure_hidden()
+            hide.assert_called_once_with({434343})
+        self.assertIsNone(hider.last_error)
+        discover.assert_not_called()
+
+    def test_hidden_chrome_observer_does_not_poll_cim_for_owned_pid(self):
+        discover = Mock(side_effect=subprocess.TimeoutExpired("powershell.exe", 20))
+        hider = V2WindowHider(discover, primary_pid=434343)
+
+        def hide_once(pids):
+            self.assertEqual(pids, {434343})
+            hider.closed.set()
+            return 1
+
+        with patch("chrome_visibility_v2.hide_windows_for_pids", side_effect=hide_once):
+            hider._watch()
+        self.assertEqual(hider.windows_hidden, 1)
+        self.assertIsNone(hider.last_error)
+        discover.assert_not_called()
 
 
 if __name__ == "__main__":
