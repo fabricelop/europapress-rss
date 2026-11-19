@@ -17555,24 +17555,27 @@
     "trv2-c01c9754539e2b29f9fd1622": {
       "trend_id": "trv2-c01c9754539e2b29f9fd1622",
       "name": "Nerea",
-      "revision": 1,
-      "status": "in_progress",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "fa13e8ac0cbe33ef",
-      "requested_at": "2026-11-19T01:32:07.515276+00:00",
-      "updated_at": "2026-11-19T01:35:13.595697+00:00",
+      "requested_at": "2026-11-19T02:36:02.027085+00:00",
+      "updated_at": "2026-11-19T02:36:02.027085+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "lease": {
-        "token": "7c58ef6f6ca0283373970c0ba8330443e1304b411c908140",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-19T01:34:06.321367+00:00",
-        "expires_at": "2026-11-19T02:14:06.321367+00:00"
-      },
-      "send_intent": {
-        "token": "7c58ef6f6ca0283373970c0ba8330443e1304b411c908140",
-        "at": "2026-11-19T01:35:13.595676+00:00"
-      }
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-19T01:34:06.321367+00:00",
+          "send_intent_at": "2026-11-19T01:35:13.595676+00:00",
+          "incident_reason": "lease_expired_without_capture",
+          "archived_at": "2026-11-19T02:36:02.027085+00:00"
+        }
+      ],
+      "incident_retries": 1
     },
     "trv2-add3fa1adb10adbe909202f5": {
       "trend_id": "trv2-add3fa1adb10adbe909202f5",
@@ -18199,8 +18202,8 @@
     "trv2-1542f4712e897fa721934714",
     "trv2-a50c6553f3ce2663544fc359",
     "trv2-add3fa1adb10adbe909202f5",
-    "trv2-c01c9754539e2b29f9fd1622",
-    "trv2-d852ad8231745a3579857d07"
+    "trv2-d852ad8231745a3579857d07",
+    "trv2-c01c9754539e2b29f9fd1622"
   ],
   "effects_enabled": false
 }
