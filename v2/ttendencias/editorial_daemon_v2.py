@@ -288,9 +288,16 @@ def run_forever(poll_seconds=90, max_jobs=0, workers=3):
                     except Exception as exc:
                         report("JOB_SETTLEMENT_RETRY", trend_id=tid, revision=rev,
                                active_workers=len(pool.active), last_error=str(exc)[:180])
+                # Reserve the last GitHub API calls for the CAS/readbacks of
+                # chats already running. Do not start more chats, refresh web
+                # projections or poll optional controls during this window.
+                reserve = getattr(api, "budget_low", lambda: False)() is True
+                if reserve and not pool.active:
+                    report("WAIT_GITHUB_BUDGET", completed=completed,
+                           active_workers=0, last_error="GITHUB_BUDGET_RESERVED")
                 # El cron de proyección no necesita Chrome. Si no hay trabajos,
                 # reparar el Top30 cada cinco minutos, sin relanzar ningún chat.
-                if (not max_jobs and not pool.active and
+                if (not reserve and not max_jobs and not pool.active and
                         time.monotonic() - last_web_sync >= WEB_RETRY_SECONDS):
                     last_web_sync = time.monotonic()
                     retry_web_projection(auth)
@@ -299,7 +306,7 @@ def run_forever(poll_seconds=90, max_jobs=0, workers=3):
                 # another chat merely because completed stayed at zero.
                 if max_jobs and attempts_started >= max_jobs and not pool.active:
                     break
-                if not max_jobs and time.monotonic() - last_sync >= poll_seconds:
+                if not reserve and not max_jobs and time.monotonic() - last_sync >= poll_seconds:
                     last_sync = time.monotonic()
                     try:
                         re_sync = core.module("sync_private_re_v2.py", "ttv2_direct_re")
@@ -312,7 +319,7 @@ def run_forever(poll_seconds=90, max_jobs=0, workers=3):
                 # Simple waves: launch at most N chats, then let all of them
                 # finish (or hit their 8-minute watchdog). This guarantees a
                 # Chrome-free checkpoint for incident recovery every wave.
-                if not pool.active and not max_jobs:
+                if not reserve and not pool.active and not max_jobs:
                     if time.monotonic() - last_orphan_scan >= ORPHAN_RETRY_SECONDS:
                         last_orphan_scan = time.monotonic()
                         try:
@@ -330,7 +337,7 @@ def run_forever(poll_seconds=90, max_jobs=0, workers=3):
                     except Exception as exc:
                         report("INCIDENT_REVIEW", completed=completed,
                                last_error=str(exc)[:180])
-                wave_ready = not pool.active
+                wave_ready = not pool.active and not reserve
                 while wave_ready and pool.available_slot() is not None and (
                     not max_jobs or attempts_started < max_jobs
                 ):
