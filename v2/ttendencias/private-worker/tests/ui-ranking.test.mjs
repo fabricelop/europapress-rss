@@ -46,10 +46,39 @@ test("private site shows entry date, explanation date, and full radar date",()=>
  assert.match(css,/\.movement-indicator\.up/);
  assert.match(css,/\.movement-indicator\.down/);
  assert.match(css,/\.movement-indicator\.return/);
- assert.match(app,/Regresó el /);
+ assert.match(app,/Regresó al Top 30 el:/);
  assert.match(index,/styles\.css/);
 });
 
+test("date labels distinguish current Top 30 entry from editorial capture and age is advisory",()=>{
+ const from=app.indexOf("function spanishStamp(value)");
+ const to=app.indexOf("\nfunction movementIndicator(item)",from);
+ assert.ok(from>=0&&to>from);
+ const {top30Since,explanationTime,explanationAgeIndicator}=new Function("el",app.slice(from,to)+
+  "\n"+app.slice(app.indexOf("function top30Since(item)"),app.indexOf("\nfunction attachGeneratedImage(",app.indexOf("function top30Since(item)")))+
+  "\nreturn {top30Since,explanationTime,explanationAgeIndicator};")(el);
+ const inAt="2026-11-19T18:16:00Z",earlier="2026-11-18T21:40:00Z";
+ const item={status:"explicada",entered_top30_at:inAt,captured_at:earlier,movement:"entry"};
+ assert.match(top30Since(item).textContent,/En el Top 30 desde: 19\/11.*19:16/);
+ assert.match(explanationTime(item).textContent,/Explicada el: 18\/11.*22:40/);
+ const review=explanationAgeIndicator(item);
+ assert.equal(review.textContent,"REVISAR");
+ assert.match(review.className,/age-review/);
+ assert.match(review.title,/Valora RE/);
+ const old=explanationAgeIndicator({...item,captured_at:"2026-11-17T17:00:00Z"});
+ assert.equal(old.textContent,"ANTIGUA");
+ assert.match(old.className,/age-old/);
+ const valid=explanationAgeIndicator({...item,captured_at:"2026-11-19T19:00:00Z"});
+ assert.equal(valid.textContent,"VIGENTE");
+ assert.match(valid.className,/age-current/);
+ assert.equal(explanationAgeIndicator({...item,status:"pendiente"}),null);
+ assert.equal(explanationAgeIndicator({...item,entered_top30_at:"invalid"}),null);
+ assert.match(top30Since({...item,movement:"reentry"}).textContent,/Regresó al Top 30 el:/);
+ assert.match(app,/const age=reset\?null:explanationAgeIndicator\(item\)/);
+ assert.match(css,/\.age-review/);
+ assert.match(css,/\.age-old/);
+ assert.match(built,/function explanationAgeIndicator\(item\)/);
+});
 test("private app only loads state through its authorized Worker proxy",()=>{
  assert.match(built,/const BASE="\/api\/state\/"/);
  assert.doesNotMatch(built,/const BASE="https:\/\/raw\.githubusercontent\.com/);
