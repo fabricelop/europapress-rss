@@ -4,6 +4,7 @@ const MASTER_URL="https://raw.githubusercontent.com/fabricelop/europapress-rss/t
 const ID=/^ttn2-[a-f0-9]{24}$/;
 const DAY=86400000;
 const PUBLICATION_LIMIT=51;
+let masterTableReady=false;
 
 export function validateMaster(raw){
  if(raw?.project!=="ttittulares-v2"||raw.schema_version!==1||raw.kind!=="master_news"||!Array.isArray(raw.items))
@@ -40,7 +41,9 @@ export async function fetchMaster(fetcher=fetch){
 
 export async function newsMasterTable(db){
  if(!db)throw Error("MASTER_NEWS_STORAGE_UNAVAILABLE");
+ if(masterTableReady)return;
  await db.prepare("CREATE TABLE IF NOT EXISTS news_master_flags (event_id TEXT PRIMARY KEY,suppressed_at TEXT,published_at TEXT,marked_red INTEGER NOT NULL DEFAULT 0)").run();
+ masterTableReady=true;
 }
 
 export function projectMaster(master,flags,params=new URLSearchParams()){
