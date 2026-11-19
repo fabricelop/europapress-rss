@@ -349,8 +349,6 @@ def run_one(api, state, transcript, auth, item):
         owned = profile_pids()
         if not owned:
             raise RuntimeError("No se identificaron procesos Chrome V2 propios")
-        if hider and hider.last_error:
-            raise RuntimeError("No se pudo ocultar Chrome V2: " + hider.last_error)
         if hider:
             hider.ensure_hidden()
         print("TT_V2_CDP_CONNECTED=YES", flush=True)
@@ -377,8 +375,10 @@ def run_one(api, state, transcript, auth, item):
                 time.sleep(2)
             if composer is None or not page.url.startswith("https://chatgpt.com/"):
                 raise RuntimeError("ChatGPT no está listo; no enviar")
-            if hider and hider.last_error:
-                raise RuntimeError("Chrome V2 no se puede mantener oculto; no enviar")
+            if hider:
+                # Check actual HWND visibility, not an earlier transient CIM
+                # timeout recorded by the background observer.
+                hider.ensure_hidden()
             # CRÍTICO: registrar intención en GitHub ANTES de pulsar Enter.
             # Si el proceso muere a continuación, NO puede reenviarse.
             # GitHub puede refrescar el Top30 entre la reserva y el envío.
