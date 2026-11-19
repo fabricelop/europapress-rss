@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-19T05:13:57.148722+00:00",
+  "checked_at": "2026-11-19T05:23:17.996144+00:00",
   "before": [
     "elaborando_bloqueado_193"
   ],
@@ -7,8 +7,14 @@
   "remaining": [
     "elaborando_bloqueado_193"
   ],
-  "healthy_source_count": 19,
-  "source_failures": [],
-  "events_bytes": 4041093,
+  "healthy_source_count": 18,
+  "source_failures": [
+    {
+      "source": "Telecinco Noticias",
+      "type": "general",
+      "error": "HTTP Error 429: Too Many Requests"
+    }
+  ],
+  "events_bytes": 4040863,
   "ok": false
 }
