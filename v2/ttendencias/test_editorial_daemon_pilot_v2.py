@@ -60,10 +60,11 @@ class OneShotPilotTests(unittest.TestCase):
                         installer.index("$headless = Join-Path"))
         self.assertIn("TT_V2_PILOT_INSTALL_OPENED_CHROME=NO", installer)
 
-    def _run(self, eligible):
+    def _run(self, eligible, *, reserve=False):
         pool = FakePool()
         api = Mock()
         api.token.return_value = "test-auth"
+        api.budget_low.return_value = reserve
         selection = ({"trend_id": "test-topic", "revision": 1}, 1, []) if eligible else (None, 1, [])
         with (patch.object(daemon, "flag_is_enabled", return_value=True),
               patch.object(daemon, "exclusive_v2_lock", return_value=contextlib.nullcontext()),
@@ -86,6 +87,11 @@ class OneShotPilotTests(unittest.TestCase):
         self.assertEqual(pool.spawned, [])
         self.assertEqual(check.call_count, 1)
         self.assertEqual(module.call_count, 1)
+
+    def test_near_quota_limit_does_not_launch_a_fresh_chat(self):
+        pool, check, _ = self._run(eligible=True, reserve=True)
+        self.assertFalse(pool.spawned)
+        check.assert_not_called()
 
 
 class PostPersistProjectionTests(unittest.TestCase):
