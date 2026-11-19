@@ -1,5 +1,6 @@
 # Ciclo simple Top30 -> chat -> captura -> liberacion. Solo Tendencias V2.
-param([ValidateRange(5,90)][int]$MaxWaitMinutes = 20)
+param([ValidateRange(5,90)][int]$MaxWaitMinutes = 20,
+      [string]$CommitSha = '')
 $ErrorActionPreference = 'Stop'
 $root = Join-Path $env:LOCALAPPDATA 'TTActualidadV2'
 $flag = Join-Path $root 'auto-editorial-v2.enabled'
@@ -10,6 +11,7 @@ $branch = 'feature/ttactualidad-v2-clean'
 $headers = @{ 'Accept'='application/vnd.github+json'; 'User-Agent'='TTActualidadV2-Editorial-Cycle' }
 $utf8 = New-Object System.Text.UTF8Encoding($false)
 $modules = @('editorial_daemon_v2.py','editorial_run_v2.py',
+             'editorial_github_access_v2.py',
              'chatgpt_target_tracker.py','chatgpt_transcript.py',
              'editorial_capture_state.py','recover_existing_chat_v2.py',
              'editorial_pool_v2.py',
@@ -19,7 +21,8 @@ $tests = @('test_editorial_completion_v2.py','test_parallel_dispatch_v2.py',
            'test_editorial_daemon_pilot_v2.py',
            'test_chatgpt_target_tracker.py','test_chatgpt_transcript.py',
            'test_editorial_capture_state.py','test_editorial_pool_v2.py',
-           'test_recover_unlinked_v2.py')
+           'test_recover_unlinked_v2.py','test_editorial_github_access_v2.py',
+           'test_editorial_orphan_recovery_v2.py')
 $support = @('image_daemon_v2.py','parallel_dispatch_v2.py','Install-V2-Editorial-Auto.ps1')
 
 function Set-EditorialFlag([string]$value) {
@@ -46,9 +49,14 @@ if ($oldFlag -ne 'TT_V2_AUTO_EDITORIAL_ENABLED=YES') {
     throw 'El consumidor estaba parado: no se modifica ni se reactiva.'
 }
 
-# Un solo SHA inmutable; tests antes de tocar la tarea o el flag.
-$head = Invoke-RestMethod -Uri ('https://api.github.com/repos/' + $repo + '/commits/' + [uri]::EscapeDataString($branch)) -Headers $headers -TimeoutSec 25
-$sha = [string]$head.sha
+# Un solo SHA inmutable; permitir SHA explicito evita depender del API
+# justo cuando el problema investigado es un 403 de rate limit.
+if ($CommitSha) {
+    $sha = $CommitSha.ToLowerInvariant()
+} else {
+    $head = Invoke-RestMethod -Uri ('https://api.github.com/repos/' + $repo + '/commits/' + [uri]::EscapeDataString($branch)) -Headers $headers -TimeoutSec 25
+    $sha = [string]$head.sha
+}
 if ($sha -notmatch '^[0-9a-f]{40}$') { throw 'GitHub no confirmó SHA.' }
 $stage = Join-Path $root ('editorial-cycle-stage-' + $sha.Substring(0,12))
 New-Item -ItemType Directory -Path $stage -Force | Out-Null
@@ -65,9 +73,12 @@ $newPool = Get-Content -LiteralPath (Join-Path $stage 'parallel_dispatch_v2.py')
 $newRunner = Get-Content -LiteralPath (Join-Path $stage 'editorial_run_v2.py') -Raw
 $newTracker = Get-Content -LiteralPath (Join-Path $stage 'chatgpt_target_tracker.py') -Raw
 $newCapture = Get-Content -LiteralPath (Join-Path $stage 'editorial_capture_state.py') -Raw
+$newApi = Get-Content -LiteralPath (Join-Path $stage 'editorial_github_access_v2.py') -Raw
 if (-not $newDaemon.Contains('settle_failed_job') -or -not $newDaemon.Contains('wave_ready') -or
     -not $newDaemon.Contains('from editorial_pool_v2 import') -or
+    -not $newDaemon.Contains('recover_orphaned_attempt') -or
     -not $newPool.Contains('MAX_JOB_SESSION_SECONDS = 480') -or
+    -not $newApi.Contains('GITHUB_RATE_LIMIT_PAUSED') -or
     -not $newRunner.Contains('chat_identity_verified') -or
     -not $newTracker.Contains('visible_user_turn') -or
     -not $newCapture.Contains('allow_unlinked_capture')) {
@@ -84,7 +95,8 @@ try {
         'test_auto_editorial_v2','test_editorial_daemon_pilot_v2',
         'test_chatgpt_target_tracker','test_chatgpt_transcript',
         'test_editorial_capture_state','test_editorial_pool_v2',
-        'test_recover_unlinked_v2') -Wait -PassThru -WindowStyle Hidden -RedirectStandardOutput $stdout -RedirectStandardError $stderr
+        'test_recover_unlinked_v2','test_editorial_github_access_v2',
+        'test_editorial_orphan_recovery_v2') -Wait -PassThru -WindowStyle Hidden -RedirectStandardOutput $stdout -RedirectStandardError $stderr
     if ($test.ExitCode -ne 0) {
         Get-Content -LiteralPath $stderr -Tail 18 | ForEach-Object { Write-Host $_ }
         throw 'Fallo de pruebas: no se ha instalado nada.'
@@ -135,7 +147,7 @@ try {
         if (-not (Test-Path -LiteralPath $statusPath)) { continue }
         try {
             $state = Get-Content -LiteralPath $statusPath -Raw | ConvertFrom-Json
-            if ($state.service -eq 'ttactualidad-v2' -and [DateTimeOffset]::Parse([string]$state.at).UtcDateTime -ge $startedAt -and $state.state -in @('STARTED','WORKING','WAIT_NO_CURRENT_JOB','WAIT_SOURCE','JOB_SETTLED','JOB_SETTLEMENT_RETRY','INCIDENT_REVIEW')) {
+            if ($state.service -eq 'ttactualidad-v2' -and [DateTimeOffset]::Parse([string]$state.at).UtcDateTime -ge $startedAt -and $state.state -in @('STARTED','WORKING','WAIT_NO_CURRENT_JOB','WAIT_SOURCE','JOB_SETTLED','JOB_SETTLEMENT_RETRY','INCIDENT_REVIEW','ORPHAN_RECOVERED','ORPHAN_RETRY_DEFERRED')) {
                 $healthy = $true
                 break
             }

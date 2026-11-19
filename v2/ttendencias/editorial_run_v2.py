@@ -55,20 +55,25 @@ def queue_read(api, auth):
     if fetched.get("encoding") == "base64" and content:
         raw = base64.b64decode("".join(content.split()), validate=True)
     elif fetched.get("encoding") == "none" and not content:
-        import urllib.request
         sha = fetched.get("sha")
         if not sha:
             raise RuntimeError("V2_QUEUE_SHA_MISSING")
-        headers = {"User-Agent": "TTActualidadV2-QueueReader",
-                   "Accept": "application/vnd.github+json"}
-        if auth:
-            headers["Authorization"] = "Bearer " + auth
-        req = urllib.request.Request(
-            "https://api.github.com/repos/fabricelop/europapress-rss/git/blobs/" + sha,
-            headers=headers,
-        )
-        with urllib.request.urlopen(req, timeout=45) as response:
-            blob = json.load(response)
+        if hasattr(api, "blob_request"):
+            blob = api.blob_request(sha, auth)
+        else:
+            # Images V2 keep their original GitHub adapter unchanged. Only
+            # editorial calls use the new rate-limited blob reader.
+            import urllib.request
+            headers = {"User-Agent": "TTActualidadV2-QueueReader",
+                       "Accept": "application/vnd.github+json"}
+            if auth:
+                headers["Authorization"] = "Bearer " + auth
+            req = urllib.request.Request(
+                "https://api.github.com/repos/fabricelop/europapress-rss/git/blobs/" + sha,
+                headers=headers,
+            )
+            with urllib.request.urlopen(req, timeout=45) as response:
+                blob = json.load(response)
         if blob.get("encoding") != "base64":
             raise RuntimeError("V2_QUEUE_BLOB_ENCODING_INVALID")
         raw = base64.b64decode("".join(blob["content"].split()), validate=True)
@@ -569,7 +574,7 @@ def main():
     parser.add_argument("--run", action="store_true", help="Habilita un único envío real")
     parser.add_argument("--revision", type=int, help="Revisión exacta seleccionada por el consumidor")
     args = parser.parse_args()
-    api = module("persist_capture_github.py", "ttv2_github")
+    api = module("editorial_github_access_v2.py", "ttv2_github")
     state = module("editorial_capture_state.py", "ttv2_state")
     transcript = module("chatgpt_transcript.py", "ttv2_transcript")
     auth = api.token()
