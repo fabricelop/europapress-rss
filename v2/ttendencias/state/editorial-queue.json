@@ -949,21 +949,28 @@
     "trv2-9bc290564fa13fe252ac73f9": {
       "trend_id": "trv2-9bc290564fa13fe252ac73f9",
       "name": "Anotop At",
-      "revision": 2,
-      "status": "capture_recovery",
-      "reason": "user_reexplanation",
+      "revision": 3,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "07ed9d04e37716fd",
-      "requested_at": "2026-11-19T23:16:18.002757+00:00",
-      "updated_at": "2026-11-19T23:21:33.815562+00:00",
-      "attempts": 1,
+      "requested_at": "2026-11-19T23:34:18.206798+00:00",
+      "updated_at": "2026-11-19T23:34:18.206798+00:00",
+      "attempts": 0,
       "review_mode": "x",
       "review_hints": "Busca algo más moderno. Tiene algo que ver con el debate que acaba de terminar?",
-      "incident_retries": 0,
-      "send_intent": {
-        "token": "d5e359eda4fea62170b1aa2a99bf21e4d1922333e9f18983",
-        "at": "2026-11-19T23:18:17.595010+00:00"
-      },
-      "capture_recovery_reason": "visible_transcript_bound_to_prompt_and_footer"
+      "incident_retries": 1,
+      "previous_attempts": [
+        {
+          "revision": 2,
+          "status": "capture_recovery",
+          "attempts": 1,
+          "chat_url": "https://chatgpt.com/c/6aff83be-272c-83ed-a7ee-82b6e5c2b6f1",
+          "started_at": null,
+          "send_intent_at": "2026-11-19T23:18:17.595010+00:00",
+          "incident_reason": "visible_transcript_bound_to_prompt_and_footer",
+          "archived_at": "2026-11-19T23:34:18.206798+00:00"
+        }
+      ]
     },
     "trv2-b2892ffed3a8e7ed537c3df5": {
       "trend_id": "trv2-b2892ffed3a8e7ed537c3df5",
@@ -21256,9 +21263,9 @@
     "trv2-828ab70560e35dcdd7a3a075",
     "trv2-935bb3c66d4ac2626b07000b",
     "trv2-e4d21d26294410f65eda4aa7",
-    "trv2-9bc290564fa13fe252ac73f9",
     "trv2-65904552069b2710dc708a5f",
-    "trv2-104610c6e8a080166c4d0c68"
+    "trv2-104610c6e8a080166c4d0c68",
+    "trv2-9bc290564fa13fe252ac73f9"
   ],
   "effects_enabled": false
 }
