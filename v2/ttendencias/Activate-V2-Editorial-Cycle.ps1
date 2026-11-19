@@ -23,7 +23,8 @@ $tests = @('test_editorial_completion_v2.py','test_parallel_dispatch_v2.py',
            'test_editorial_capture_state.py','test_editorial_pool_v2.py',
            'test_recover_unlinked_v2.py','test_editorial_github_access_v2.py',
            'test_editorial_orphan_recovery_v2.py')
-$support = @('image_daemon_v2.py','parallel_dispatch_v2.py','Install-V2-Editorial-Auto.ps1')
+$support = @('image_daemon_v2.py','parallel_dispatch_v2.py','Install-V2-Editorial-Auto.ps1',
+             'Activate-V2-Editorial-Cycle.ps1')
 
 function Set-EditorialFlag([string]$value) {
     [IO.File]::WriteAllText($flag, $value + [Environment]::NewLine, $utf8)
