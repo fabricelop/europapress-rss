@@ -175,6 +175,19 @@ class DisposableWorkerPool(WorkerPool):
                     for index in range(count)]
         super().__init__(profiles, env_key=env_key, logs_dir=logs_dir)
 
+    def available_slot(self):
+        # A failed Chrome cleanup must quarantine only its own slot. Other
+        # independent slots can continue processing the Top30; never clone
+        # over a profile that still has an owned Chrome process.
+        for slot, profile in enumerate(self.profiles):
+            if slot in self.active:
+                continue
+            if ((profile / EPHEMERAL_MARKER).is_file()
+                    and exact_chrome_profile_pids(profile)):
+                continue
+            return slot
+        return None
+
     def _remove_owned(self, slot):
         profile = self.profiles[slot]
         if not profile.exists() and not profile.is_symlink():
@@ -289,8 +302,10 @@ class DisposableWorkerPool(WorkerPool):
         return finished
 
     def wait_for_completion(self):
-        """Shutdown observes the same deadline as the normal polling loop."""
+        """Shutdown observes the watchdog and returns every finished child."""
+        finished = []
         while self.active:
-            self.reap()
+            finished.extend(self.reap())
             if self.active:
                 time.sleep(1)
+        return finished

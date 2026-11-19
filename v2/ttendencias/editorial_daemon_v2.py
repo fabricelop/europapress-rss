@@ -19,6 +19,7 @@ from process_lock_v2 import AlreadyRunning, exclusive_v2_lock
 from select_current_top30_v2 import read_history
 from auto_editorial_policy_v2 import eligible_plan, enabled_text
 from parallel_dispatch_v2 import DisposableWorkerPool
+from incident_retry_v2 import MAX_INCIDENT_RETRIES, restart_as_new_revision
 
 ROOT = core.ROOT
 LOCK = ROOT / "editorial_batch_v2.lock"
@@ -68,46 +69,90 @@ def retry_web_projection(auth):
     return True
 
 
-def release_timed_out_job(api, auth, trend_id, revision, *, cleanup_verified):
-    """Fence an interrupted attempt by its exact local lease, never resend it.
+def settle_failed_job(api, auth, trend_id, revision, *,
+                      cleanup_verified, failure_reason):
+    """Always close the remote claim after a child finishes or times out.
 
-    If a send was attempted, the interrupted chat moves to capture recovery;
-    only a proved pre-send failure can return to Pending.
+    A verified-clean child may receive a NEW revision (never reuse its journal).
+    Any uncertain Chrome cleanup, missing journal or captured local answer is
+    quarantined without another ChatGPT send. CAS fences concurrent RE resets.
     """
-    if not cleanup_verified:
-        return False
     journal = core.DIAG_DIR / ("run-" + trend_id + "-r" + str(revision) + ".json")
     try:
         evidence = json.loads(journal.read_text(encoding="utf-8-sig"))
-        token = evidence["lease_token"]
+        if evidence.get("trend_id") != trend_id or evidence.get("revision") != revision:
+            evidence = {}
     except (OSError, ValueError, KeyError):
-        return False
+        evidence = {}
+    token = evidence.get("lease_token")
+    # Record a bounded, actionable category; never copy arbitrary exception
+    # strings or transcript content into the public GitHub queue.
+    diagnostic = (evidence.get("capture_diagnostic") or {}).get("reason")
+    error = str(evidence.get("error") or "").lower()
+    if diagnostic in ("chat_target_identity_not_verified",
+                      "response_not_stable", "assistant_turn_missing"):
+        reason = "capture_" + diagnostic
+    elif "403" in error or "rate limit" in error:
+        reason = "github_access_or_rate_limit"
+    elif "chatgpt no está listo" in error or "chatgpt not ready" in error:
+        reason = "chat_not_ready"
+    elif "cdp no disponible" in error or "chrome" in error:
+        reason = "chrome_or_cdp_failure"
+    else:
+        reason = failure_reason
     for attempt in range(4):
         queue, sha = core.queue_read(api, auth)
         row = (queue.get("items") or {}).get(trend_id) or {}
-        if (row.get("status") != "in_progress" or row.get("revision") != revision
-                or (row.get("lease") or {}).get("token") != token):
-            return False
-        sent = bool(row.get("send_intent") or evidence.get("message_sent")
-                    or evidence.get("status") == "send_intent_recorded")
-        row["status"] = "capture_recovery" if sent else "pending"
-        if sent:
-            row["capture_recovery_reason"] = "session_8min_timeout_no_resend"
-        row.pop("lease", None)
-        row["updated_at"] = core.utcnow()
-        queue["pending_ids"] = [item["trend_id"] for item in sorted(
-            queue["items"].values(), key=lambda x: (x.get("requested_at", ""), x["trend_id"]))
-            if item["status"] in ("pending", "review_pending", "in_progress",
-                                  "capture_recovery", "captured_review")]
-        queue["pending_count"] = len(queue["pending_ids"])
+        if row.get("revision") != revision:
+            return "revision_changed"
+        if row.get("status") == "captured_review":
+            return "already_captured"
+        if row.get("status") != "in_progress":
+            return "already_released"
+        if token and (row.get("lease") or {}).get("token") != token:
+            return "lease_changed"
+        row["capture_recovery_reason"] = reason
+        can_retry = (cleanup_verified and token
+                     and not evidence.get("reply_captured")
+                     and (int(row.get("incident_retries", 0)) < MAX_INCIDENT_RETRIES
+                          or row.get("manual_retry_requested_at")))
+        if can_retry:
+            updated = restart_as_new_revision(
+                queue, trend_id, chrome_clear=True, recovery_checked=True,
+                finished_lease_token=token,
+                previous_chat_url=evidence.get("chat_url") or "")
+            result = "new_revision"
+        else:
+            # Even a failed Chrome cleanup must not leave an apparently live
+            # 40-minute lease. The quarantine cannot be retried until the
+            # separate incident worker proves all owned Chrome is closed.
+            row["status"] = "capture_recovery"
+            if not cleanup_verified:
+                row["capture_recovery_reason"] = "session_cleanup_unverified"
+            elif not token:
+                row["capture_recovery_reason"] = "session_journal_unverified"
+            elif evidence.get("reply_captured"):
+                row["capture_recovery_reason"] = "captured_locally_needs_persist"
+            else:
+                row["capture_recovery_reason"] = "automatic_retry_limit_reached"
+            row.pop("lease", None)
+            row["updated_at"] = core.utcnow()
+            queue["pending_ids"] = [item["trend_id"] for item in sorted(
+                queue["items"].values(),
+                key=lambda x: (x.get("requested_at", ""), x["trend_id"]))
+                if item["status"] in ("pending", "review_pending", "in_progress",
+                                      "capture_recovery", "captured_review")]
+            queue["pending_count"] = len(queue["pending_ids"])
+            updated = queue
+            result = "quarantined"
         try:
-            core.queue_write(api, auth, sha, queue, "bound V2 chat timeout " + trend_id)
-            return True
+            core.queue_write(api, auth, sha, updated, "finish V2 editorial attempt " + trend_id)
+            return result
         except RuntimeError as exc:
             if "GitHub conflict/changed revision" not in str(exc) or attempt == 3:
                 raise
             time.sleep(min(attempt + 1, 3))
-    return False
+    return "settlement_deferred"
 
 
 def run_forever(poll_seconds=90, max_jobs=0, workers=3):
@@ -129,24 +174,22 @@ def run_forever(poll_seconds=90, max_jobs=0, workers=3):
         print("TT_V2_AUTO_PUBLICATION=NO", flush=True)
         last_sync = 0.0
         last_web_sync = time.monotonic()
+        unsettled = {}
         try:
             while flag_is_enabled():
                 for done in pool.reap():
                     tid, rev = done["trend_id"], done["revision"]
+                    if (done.get("timed_out") or done.get("profile_cleanup_error")
+                            or done["exit_code"]):
+                        unsettled[(tid, rev)] = done
+                        report("SESSION_TIMEOUT_8MIN" if done.get("timed_out")
+                               else "JOB_NEEDS_REVIEW",
+                               trend_id=tid, revision=rev, completed=completed,
+                               active_workers=len(pool.active),
+                               last_error=done.get("profile_cleanup_error")
+                                   or "worker_exit_" + str(done["exit_code"]))
+                        continue
                     try:
-                        if done.get("timed_out"):
-                            staged = release_timed_out_job(api, auth, tid, rev,
-                                cleanup_verified=done.get("profile_deleted") is True
-                                and not done.get("profile_cleanup_error"))
-                            report("SESSION_TIMEOUT_8MIN", trend_id=tid, revision=rev,
-                                   completed=completed, active_workers=len(pool.active),
-                                   last_error="recovery_staged" if staged else "recovery_pending")
-                            continue
-                        if done.get("profile_cleanup_error"):
-                            raise RuntimeError("profile_cleanup=" + done["profile_cleanup_error"])
-                        if done["exit_code"]:
-                            raise RuntimeError("worker_exit_%d log=%s" %
-                                               (done["exit_code"], done["log"]))
                         final, _ = core.queue_read(api, auth)
                         journal = core.DIAG_DIR / ("run-" + tid + "-r" + str(rev) + ".json")
                         record = json.loads(journal.read_text(encoding="utf-8-sig"))
@@ -156,10 +199,30 @@ def run_forever(poll_seconds=90, max_jobs=0, workers=3):
                         report("COMPLETED", trend_id=tid, revision=rev,
                                completed=completed, active_workers=len(pool.active))
                     except Exception as exc:
+                        unsettled[(tid, rev)] = done
                         report("JOB_NEEDS_REVIEW", trend_id=tid, revision=rev,
                                completed=completed, active_workers=len(pool.active),
                                last_error=str(exc)[:180])
                         print("TT_V2_AUTO_JOB_NO_RESEND=%s:r%d" % (tid, rev), flush=True)
+                # Retain failed settlements in memory while GitHub is down.
+                # A transient 403/409 must not permanently strand a lease.
+                for key, done in list(unsettled.items()):
+                    tid, rev = key
+                    try:
+                        outcome = settle_failed_job(
+                            api, auth, tid, rev,
+                            cleanup_verified=done.get("profile_deleted") is True
+                                and not done.get("profile_cleanup_error"),
+                            failure_reason=("session_8min_timeout" if done.get("timed_out")
+                                            else "worker_or_capture_failed"))
+                        del unsettled[key]
+                        report("JOB_SETTLED", trend_id=tid, revision=rev,
+                               active_workers=len(pool.active), last_error=outcome)
+                        print("TT_V2_AUTO_SETTLED=%s:r%d:%s" %
+                              (tid, rev, outcome), flush=True)
+                    except Exception as exc:
+                        report("JOB_SETTLEMENT_RETRY", trend_id=tid, revision=rev,
+                               active_workers=len(pool.active), last_error=str(exc)[:180])
                 # El cron de proyección no necesita Chrome. Si no hay trabajos,
                 # reparar el Top30 cada cinco minutos, sin relanzar ningún chat.
                 if (not max_jobs and not pool.active and
@@ -181,7 +244,19 @@ def run_forever(poll_seconds=90, max_jobs=0, workers=3):
                     except Exception as exc:
                         print("TT_V2_AUTO_RE_SYNC_DELAYED=" + type(exc).__name__, flush=True)
                 started = 0
-                while pool.available_slot() is not None and (
+                # Simple waves: launch at most N chats, then let all of them
+                # finish (or hit their 8-minute watchdog). This guarantees a
+                # Chrome-free checkpoint for incident recovery every wave.
+                if not pool.active and not max_jobs:
+                    try:
+                        incident = core.module("incident_worker_v2.py", "ttv2_incident_worker")
+                        if incident.process_one(api, auth):
+                            print("TT_V2_AUTO_INCIDENT_PROCESSED=YES", flush=True)
+                    except Exception as exc:
+                        report("INCIDENT_REVIEW", completed=completed,
+                               last_error=str(exc)[:180])
+                wave_ready = not pool.active
+                while wave_ready and pool.available_slot() is not None and (
                     not max_jobs or attempts_started < max_jobs
                 ):
                     try:
@@ -191,18 +266,6 @@ def run_forever(poll_seconds=90, max_jobs=0, workers=3):
                                active_workers=len(pool.active), last_error=str(exc)[:180])
                         break
                     if item is None:
-                        if not max_jobs and not pool.active and not started:
-                            # La recuperación puede abrir el perfil base: solo
-                            # ejecutar cuando ningún chat independiente sigue vivo.
-                            try:
-                                incident = core.module("incident_worker_v2.py", "ttv2_incident_worker")
-                                if incident.process_one(api, auth):
-                                    print("TT_V2_AUTO_INCIDENT_PROCESSED=YES", flush=True)
-                                    started += 1
-                                    continue
-                            except Exception as exc:
-                                report("INCIDENT_REVIEW", completed=completed,
-                                       last_error=str(exc)[:180])
                         report("WAIT_NO_CURRENT_JOB", completed=completed,
                                active_workers=len(pool.active), top30_age_minutes=age,
                                skipped_local_journals=len(blocked))
@@ -232,7 +295,24 @@ def run_forever(poll_seconds=90, max_jobs=0, workers=3):
             if pool.active:
                 report("DRAINING_ACTIVE_CHATS", completed=completed,
                        active_workers=len(pool.active))
-                pool.wait_for_completion()
+                # The cooperative Windows updater disables the flag while
+                # children are running. Do not discard their completion
+                # records: they still need a remote settlement on exit.
+                for done in pool.wait_for_completion():
+                    unsettled[(done["trend_id"], done["revision"])] = done
+            for (tid, rev), done in list(unsettled.items()):
+                try:
+                    outcome = settle_failed_job(
+                        api, auth, tid, rev,
+                        cleanup_verified=done.get("profile_deleted") is True
+                            and not done.get("profile_cleanup_error"),
+                        failure_reason="daemon_shutdown_after_child")
+                    del unsettled[(tid, rev)]
+                    print("TT_V2_AUTO_DRAIN_SETTLED=%s:r%d:%s" %
+                          (tid, rev, outcome), flush=True)
+                except Exception as exc:
+                    report("DRAIN_SETTLEMENT_DEFERRED", trend_id=tid,
+                           revision=rev, last_error=str(exc)[:180])
     report("STOPPED", completed=completed)
     print("TT_V2_AUTO_STOPPED=YES", flush=True)
 
