@@ -21,7 +21,7 @@ def eligible_plan(queue, history, *, directory, now=None, active_keys=()):
     known_ids = {topic.get("trend_id") for topic in history.get("topics", {}).values()}
     reviews = sorted((item for item in queue.get("items", {}).values()
                       if item.get("status") == "review_pending"
-                      and item.get("reason") == "user_reexplanation"
+                      and item.get("reason") in ("user_reexplanation", "user_reset")
                       and item.get("trend_id") in known_ids
                       and isinstance(item.get("revision"), int) and item["revision"] >= 2
                       and not any(item.get(field) for field in ("send_intent", "lease", "capture"))
