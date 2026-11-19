@@ -17999,13 +17999,13 @@
     "trv2-194f8050f5783e1436e93d4d": {
       "trend_id": "trv2-194f8050f5783e1436e93d4d",
       "name": "Puchi",
-      "revision": 3,
-      "status": "in_progress",
-      "reason": "user_reset",
+      "revision": 4,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "bd3ef03516788c73",
-      "requested_at": "2026-11-19T12:31:04.230609+00:00",
-      "updated_at": "2026-11-19T12:31:04.230609+00:00",
-      "attempts": 1,
+      "requested_at": "2026-11-19T12:38:31.707436+00:00",
+      "updated_at": "2026-11-19T12:38:31.707436+00:00",
+      "attempts": 0,
       "previous_attempts": [
         {
           "revision": 1,
@@ -18024,17 +18024,20 @@
           "sent_at": null,
           "reset_at": "2026-11-19T12:31:04.230609+00:00",
           "reason": "explicit_RE_reset"
+        },
+        {
+          "revision": 3,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-19T12:32:55.339378+00:00",
+          "send_intent_at": null,
+          "incident_reason": "chat_not_ready",
+          "archived_at": "2026-11-19T12:38:31.707436+00:00"
         }
       ],
       "review_mode": "standard",
-      "incident_retries": 0,
-      "capture_recovery_reason": "session_cleanup_unverified",
-      "lease": {
-        "token": "3ff1ae8a3a435eafd2d5ee406b0f07ce9323c04830acd6fb",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-19T12:32:55.339378+00:00",
-        "expires_at": "2026-11-19T13:12:55.339378+00:00"
-      }
+      "incident_retries": 1
     },
     "trv2-45a2a4546638cecd1ca41d35": {
       "trend_id": "trv2-45a2a4546638cecd1ca41d35",
@@ -18873,9 +18876,9 @@
     "trv2-301a72a31b33d1e9180c082f",
     "trv2-93020536cd990b4ad7dd47c7",
     "trv2-d14ffd3ea0274c52e71a9b27",
-    "trv2-194f8050f5783e1436e93d4d",
     "trv2-47bc5ca08aab576fc5c89295",
-    "trv2-f4d168c8086e144e1d14215a"
+    "trv2-f4d168c8086e144e1d14215a",
+    "trv2-194f8050f5783e1436e93d4d"
   ],
   "effects_enabled": false
 }
