@@ -19559,12 +19559,12 @@
       "trend_id": "trv2-0f388212b35485dfe6a1eb43",
       "name": "#CaraACaraRTVE",
       "revision": 2,
-      "status": "review_pending",
+      "status": "in_progress",
       "reason": "user_reset",
       "episode_token": "20091573e1fdab09",
       "requested_at": "2026-11-19T20:40:44.228369+00:00",
       "updated_at": "2026-11-19T20:40:44.228369+00:00",
-      "attempts": 0,
+      "attempts": 1,
       "image_incident": {
         "project": "ttendencias-v2",
         "trend_id": "trv2-0f388212b35485dfe6a1eb43",
@@ -19588,7 +19588,13 @@
         }
       ],
       "review_mode": "standard",
-      "incident_retries": 0
+      "incident_retries": 0,
+      "lease": {
+        "token": "411de022f507d6420e4461884949893b1288bf2b18b5f305",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-19T20:41:45.364294+00:00",
+        "expires_at": "2026-11-19T21:21:45.364294+00:00"
+      }
     }
   },
   "pending_count": 598,
