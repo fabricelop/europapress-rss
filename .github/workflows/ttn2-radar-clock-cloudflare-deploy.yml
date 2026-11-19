@@ -7,6 +7,11 @@ on:
     paths:
       - '.github/workflows/ttn2-radar-clock-cloudflare-deploy.yml'
       - 'v2/ttittulares/radar-clock-worker/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/ttn2-radar-clock-cloudflare-deploy.yml'
+      - 'v2/ttittulares/radar-clock-worker/**'
 
 permissions:
   contents: read
@@ -16,7 +21,20 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Verify isolated worker without secrets or deployment
+        run: |
+          node --check v2/ttittulares/radar-clock-worker/src/index.mjs
+          node --test v2/ttittulares/radar-clock-worker/tests/radar-clock.test.mjs
   deploy:
+    needs: verify
     if: github.repository == 'fabricelop/europapress-rss' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -25,10 +43,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
-      - name: Verify isolated worker before touching Cloudflare
-        run: |
-          node --check v2/ttittulares/radar-clock-worker/src/index.mjs
-          node --test v2/ttittulares/radar-clock-worker/tests/radar-clock.test.mjs
       - name: Refuse deployment when scoped credentials are not configured
         env:
           CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
