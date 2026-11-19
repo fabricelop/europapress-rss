@@ -18214,12 +18214,12 @@
       "trend_id": "trv2-d14ffd3ea0274c52e71a9b27",
       "name": "Waterloo",
       "revision": 4,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "1d6c890a929f712f",
       "requested_at": "2026-11-19T12:30:57.855609+00:00",
       "updated_at": "2026-11-19T12:30:57.855609+00:00",
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -18252,7 +18252,13 @@
         }
       ],
       "review_mode": "standard",
-      "incident_retries": 2
+      "incident_retries": 2,
+      "lease": {
+        "token": "b21a6a2df588cb75ee0d585b44a0ff719da13f550025e242",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-19T15:36:14.159759+00:00",
+        "expires_at": "2026-11-19T16:16:14.159759+00:00"
+      }
     },
     "trv2-09fc0cd37644687ef7a5cf1b": {
       "trend_id": "trv2-09fc0cd37644687ef7a5cf1b",
