@@ -18147,13 +18147,13 @@
     "trv2-09fc0cd37644687ef7a5cf1b": {
       "trend_id": "trv2-09fc0cd37644687ef7a5cf1b",
       "name": "Junts",
-      "revision": 2,
-      "status": "capture_recovery",
-      "reason": "user_reset",
+      "revision": 3,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "d469b27287bec862",
-      "requested_at": "2026-11-19T11:30:13.061199+00:00",
-      "updated_at": "2026-11-19T11:37:04.139761+00:00",
-      "attempts": 1,
+      "requested_at": "2026-11-19T13:31:10.823452+00:00",
+      "updated_at": "2026-11-19T13:31:10.823452+00:00",
+      "attempts": 0,
       "previous_attempts": [
         {
           "revision": 1,
@@ -18163,11 +18163,20 @@
           "sent_at": null,
           "reset_at": "2026-11-19T11:30:13.061199+00:00",
           "reason": "explicit_RE_reset"
+        },
+        {
+          "revision": 2,
+          "status": "capture_recovery",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": null,
+          "send_intent_at": null,
+          "incident_reason": "session_cleanup_unverified",
+          "archived_at": "2026-11-19T13:31:10.823452+00:00"
         }
       ],
       "review_mode": "standard",
-      "incident_retries": 0,
-      "capture_recovery_reason": "session_cleanup_unverified"
+      "incident_retries": 1
     },
     "trv2-aa02d964df4c83408d7a7147": {
       "trend_id": "trv2-aa02d964df4c83408d7a7147",
@@ -18916,14 +18925,14 @@
     "trv2-5ef514d4ad9a051534636612",
     "trv2-5f4a4eb0d74bddcb7423bbeb",
     "trv2-816873b40767b47587efa12e",
-    "trv2-09fc0cd37644687ef7a5cf1b",
     "trv2-d14ffd3ea0274c52e71a9b27",
     "trv2-f4d168c8086e144e1d14215a",
     "trv2-194f8050f5783e1436e93d4d",
     "trv2-93020536cd990b4ad7dd47c7",
     "trv2-e01fe9c938981d1a6ef85e79",
     "trv2-47bc5ca08aab576fc5c89295",
-    "trv2-301a72a31b33d1e9180c082f"
+    "trv2-301a72a31b33d1e9180c082f",
+    "trv2-09fc0cd37644687ef7a5cf1b"
   ],
   "effects_enabled": false
 }
