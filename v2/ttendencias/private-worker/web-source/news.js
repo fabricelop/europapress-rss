@@ -10,7 +10,7 @@
  $("results").hidden=true;
  $("news-panel").hidden=false;
  $("publication-summary").hidden=false;
- $("publication-summary").textContent="PUB · — / 24 h";
+ $("publication-summary").textContent="PU · — / 24 h";
  $("radar-time").textContent="Noticias · cargando…";
  $("refresh").title="Actualizar noticias";
  const initial=new URLSearchParams(location.search);
@@ -18,13 +18,14 @@
  $("news-search").value=state.query;
  const node=(tag,cls,text)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(text!==undefined)n.textContent=String(text);return n;};
  const date=value=>{const d=new Date(value);return Number.isFinite(d.getTime())?new Intl.DateTimeFormat("es-ES",{timeZone:"Europe/Madrid",day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"}).format(d):"Sin fecha";};
- const filter=$("news-filters");filter.replaceChildren(node("span","news-meta","Una sola lista · mínimo cuatro fuentes independientes"));
- const errorText={news_suppressed:"Esta noticia ya está suprimida.",news_already_published:"La noticia ya se ha registrado como publicada.",news_changed:"El registro ha cambiado. Actualiza la lista.",news_not_current:"La noticia ya no figura en la lista maestra."};
+ const filter=$("news-filters");filter.replaceChildren(node("span","news-meta","Noticias del radar verificadas"));
+ const publicSite="https://ttactualidad.rainyraven22.chatgpt.site/";
+ const errorText={news_suppressed:"Esta noticia ya está suprimida.",news_already_published:"La noticia ya se ha registrado como publicada.",news_changed:"El registro ha cambiado. Actualiza la lista.",news_not_current:"La noticia ya no figura en la lista maestra.",method_not_allowed:"El servidor ha rechazado la solicitud de seguridad.",news_master_action_unavailable:"No se ha podido guardar el cambio. Inténtalo de nuevo."};
  async function action(item,choice){
-  const question=choice==="suppress"?"¿Suprimir esta noticia de V1 y V2?":"¿Confirmas que ya has publicado esta noticia en X? Esto sumará una publicación en las últimas 24 horas.";
+  const question=choice==="suppress"?"¿Suprimir esta noticia de V1 y V2?":"¿Confirmas que ya has publicado esta noticia en X? Se sumará al contador de 24 horas y quedará marcada en rojo.";
   if(!confirm(question))return;
   try{
-   const response=await fetch("/api/news-master-action",{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:item.id,action:choice})});
+   const response=await fetch("/api/news-master-action",{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json","x-ttv2-action":"1"},body:JSON.stringify({id:item.id,action:choice})});
    const result=await response.json();
    if(!response.ok)throw Error(errorText[result.error]||"No se pudo registrar la acción.");
    $("news-error").hidden=true;
@@ -34,7 +35,7 @@
  }
  async function refreshPublications(){
   try{const r=await fetch("/api/news-master-publications",{credentials:"same-origin",cache:"no-store"});if(!r.ok)return;
-   const data=await r.json();if(Number.isSafeInteger(data.count))$("publication-summary").textContent="PUB · "+data.count+" / 24 h";
+   const data=await r.json();if(Number.isSafeInteger(data.count))$("publication-summary").textContent="PU · "+data.count+" / 24 h";
   }catch{}
  }
  function render(data){
@@ -43,19 +44,13 @@
   $("news-count").textContent=data.total+" "+(data.total===1?"noticia":"noticias")+(state.query?" · coincidencias":"");
   if(!data.items.length)list.append(node("p","news-empty",state.query?"No hay coincidencias.":"Todavía no hay noticias que cumplan el filtro de fuentes."));
   for(const item of data.items){
-   const card=node("details","news-card");const summary=node("summary","news-card-head");
-   if(item.marked_red){card.style.borderColor="#a92f44";card.style.boxShadow="inset 4px 0 #a92f44";}
+   const card=node("article","news-card");const summary=node("div","news-card-head");
+   if(item.marked_red)card.classList.add("marked-red");
    const heading=node("span","news-title-wrap");heading.append(node("strong","news-title",item.title));
-   heading.append(node("span","news-meta","Verificada · "+date(item.verified_at)+" · "+item.source_count+" fuentes independientes"));
-   summary.append(heading,node("span","news-status ready",item.marked_red?"🔴 Marcada":item.published_at?"PUB ✓":"Noticia"));
+   heading.append(node("span","news-meta","Verificada · "+date(item.verified_at)));
+   if(item.marked_red)heading.append(node("span","news-marked-label","🔴 Marcada"));
+   summary.append(heading);
    card.append(summary);
-   const body=node("div","news-body");
-   const sources=node("ul","news-sources");
-   for(const source of item.sources){
-    const li=node("li",""),a=node("a","news-source-link",source.source||source.family);
-    a.href=source.url;a.target="_blank";a.rel="noopener noreferrer";li.append(a);sources.append(li);
-   }
-   body.append(sources);
    const controls=node("div","news-actions");
    const remove=node("button","publish-action","SUPRIMIR");remove.type="button";remove.addEventListener("click",()=>void action(item,"suppress"));
    const red=node("button","publish-action news-red-mark",item.marked_red?"R 🔴":"R");
@@ -63,22 +58,24 @@
    red.setAttribute("aria-pressed",String(item.marked_red));
    if(item.marked_red){red.style.background="#8e2435";red.style.color="#fff";red.style.borderColor="#a92f44";}
    red.addEventListener("click",async()=>{
-    try{const response=await fetch("/api/news-master-action",{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:item.id,action:"red",value:!item.marked_red})});
-     if(!response.ok)throw Error("No se pudo actualizar la marca roja.");
+    red.disabled=true;
+    try{const response=await fetch("/api/news-master-action",{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json","x-ttv2-action":"1"},body:JSON.stringify({id:item.id,action:"red",value:!item.marked_red})});
+     const result=await response.json();
+     if(!response.ok)throw Error(errorText[result.error]||"No se pudo actualizar la marca roja.");
      await refreshNews();
-    }catch(error){$("news-error").textContent=error.message;$("news-error").hidden=false;}
+    }catch(error){$("news-error").textContent=error.message;$("news-error").hidden=false;red.disabled=false;}
    });
    const post=node("button","publish-action","P-X");post.type="button";post.disabled=!!item.published_at;
    post.title="Abrir X con la noticia preparada; confirma la publicación allí";
    post.addEventListener("click",()=>{
-    const caption=item.title.slice(0,220)+" "+item.url;
+    const caption=item.title.slice(0,280-publicSite.length-1)+" "+publicSite;
     window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(caption),"_blank","noopener,noreferrer");
    });
-   const published=node("button","publish-action",item.published_at?"PUB ✓":"PUB");
+   const published=node("button","publish-action",item.published_at?"PU ✓":"PU");
    published.type="button";published.disabled=!!item.published_at;
    published.title="Registrar una publicación ya realizada en X";
    published.addEventListener("click",()=>void action(item,"published"));
-   controls.append(red,remove,post,published);body.append(controls);card.append(body);list.append(card);
+   controls.append(red,remove,post,published);card.append(controls);list.append(card);
   }
   $("news-page").textContent="Página "+data.page+" de "+data.pages;
   $("news-prev").disabled=data.page<=1;$("news-next").disabled=data.page>=data.pages;

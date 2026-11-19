@@ -86,16 +86,23 @@ export async function actOnMaster(request,env,{json,sameOrigin}){
    if(!changed)return json({error:"news_changed"},409);
    return json({ok:true,id,action,marked_red:changed.marked_red===1});
   }
-  if(action==="published"&&previous?.published_at)return json({ok:true,replay:true,id,published_at:previous.published_at});
+  if(action==="published"&&previous?.published_at){
+   // A previously registered publication must also be visibly red.
+   await env.MARKS_DB.prepare("UPDATE news_master_flags SET marked_red=1 WHERE event_id=? AND suppressed_at IS NULL").bind(id).run();
+   return json({ok:true,replay:true,id,published_at:previous.published_at,marked_red:true});
+  }
   if(action==="suppress"&&previous?.published_at)return json({error:"news_already_published"},409);
   const stamp=new Date().toISOString();
   // One atomic conditional upsert; concurrent tabs cannot erase each other's state.
   const column=action==="suppress"?"suppressed_at":"published_at";
+  const redInsert=action==="published"?",marked_red":"";
+  const redValue=action==="published"?",1":"";
+  const redUpdate=action==="published"?",marked_red=1":"";
   const row=await env.MARKS_DB.prepare(
-   `INSERT INTO news_master_flags(event_id,${column}) VALUES(?,?) ON CONFLICT(event_id) DO UPDATE SET ${column}=excluded.${column} WHERE news_master_flags.suppressed_at IS NULL AND news_master_flags.published_at IS NULL RETURNING event_id,${column} AS action_at`
+   `INSERT INTO news_master_flags(event_id,${column}${redInsert}) VALUES(?,?${redValue}) ON CONFLICT(event_id) DO UPDATE SET ${column}=excluded.${column}${redUpdate} WHERE news_master_flags.suppressed_at IS NULL AND news_master_flags.published_at IS NULL RETURNING event_id,${column} AS action_at`
   ).bind(id,stamp).first();
   if(!row)return json({error:"news_changed"},409);
-  return json({ok:true,id,action,at:row.action_at,publication_sent:false});
+  return json({ok:true,id,action,at:row.action_at,marked_red:action==="published",publication_sent:false});
  }catch{return json({error:"news_master_action_unavailable"},503);}
 }
 
