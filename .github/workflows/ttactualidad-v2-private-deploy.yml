@@ -4,6 +4,7 @@ name: TTActualidad V2 - comprobar Worker privado antes del despliegue
 
 # 2026-11-17: publish compact radar freshness summary and redeploy the verified V2 UI.
 # 2026-11-19: validate and deploy the radar-only Noticias master list with reversible R marks.
+# 2026-11-19: repair Noticias action security and couple PU with red mark for both projects.
 on:
   push:
     branches: [main]
