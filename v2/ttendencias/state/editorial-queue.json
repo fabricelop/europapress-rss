@@ -18241,14 +18241,14 @@
     "trv2-93020536cd990b4ad7dd47c7": {
       "trend_id": "trv2-93020536cd990b4ad7dd47c7",
       "name": "Aitana",
-      "revision": 2,
-      "status": "in_progress",
+      "revision": 3,
+      "status": "pending",
       "reason": "retry_after_incident",
       "episode_token": "1e0ef6c19dac4a8f",
-      "requested_at": "2026-11-19T11:48:44.395001+00:00",
-      "updated_at": "2026-11-19T11:48:44.395001+00:00",
+      "requested_at": "2026-11-19T12:39:47.366881+00:00",
+      "updated_at": "2026-11-19T12:39:47.366881+00:00",
       "previous_explanation": null,
-      "attempts": 1,
+      "attempts": 0,
       "previous_attempts": [
         {
           "revision": 1,
@@ -18259,15 +18259,19 @@
           "send_intent_at": null,
           "incident_reason": "chat_not_ready",
           "archived_at": "2026-11-19T11:48:44.395001+00:00"
+        },
+        {
+          "revision": 2,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-19T12:34:23.389052+00:00",
+          "send_intent_at": null,
+          "incident_reason": "chat_not_ready",
+          "archived_at": "2026-11-19T12:39:47.366881+00:00"
         }
       ],
-      "incident_retries": 1,
-      "lease": {
-        "token": "51e6a593252a4f864a74eb341d35f70297d96a66cf3d54e1",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-19T12:34:23.389052+00:00",
-        "expires_at": "2026-11-19T13:14:23.389052+00:00"
-      }
+      "incident_retries": 2
     },
     "trv2-47bc5ca08aab576fc5c89295": {
       "trend_id": "trv2-47bc5ca08aab576fc5c89295",
@@ -18874,11 +18878,11 @@
     "trv2-816873b40767b47587efa12e",
     "trv2-09fc0cd37644687ef7a5cf1b",
     "trv2-301a72a31b33d1e9180c082f",
-    "trv2-93020536cd990b4ad7dd47c7",
     "trv2-d14ffd3ea0274c52e71a9b27",
     "trv2-47bc5ca08aab576fc5c89295",
     "trv2-f4d168c8086e144e1d14215a",
-    "trv2-194f8050f5783e1436e93d4d"
+    "trv2-194f8050f5783e1436e93d4d",
+    "trv2-93020536cd990b4ad7dd47c7"
   ],
   "effects_enabled": false
 }
