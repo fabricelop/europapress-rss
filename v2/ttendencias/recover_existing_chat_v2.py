@@ -106,9 +106,11 @@ def persist_existing(api, auth, state, record, journal):
         queue, sha = core.queue_read(api, auth)
         staged, status = state.stage_capture(
             queue, trend_id=record["trend_id"], revision=record["revision"],
-            answer=record["answer"], chat_url=record["chat_url"],
+            answer=record["answer"], chat_url=record.get("chat_url") or "",
             validated_capture=True, observed_at=core.utcnow(),
-            lease_token=record["lease_token"])
+            lease_token=record["lease_token"],
+            allow_unlinked_capture=(record.get("chat_identity_verified") is True
+                                    and not record.get("chat_url")))
         if status == "already_staged":
             break
         try:
@@ -124,7 +126,7 @@ def persist_existing(api, auth, state, record, journal):
     cap = item.get("capture") or {}
     if (item["status"] != "captured_review" or cap.get("sha256") != digest
         or cap.get("answer") != record["answer"].strip()
-        or cap.get("chat_url") != record["chat_url"]):
+        or cap.get("chat_url") != (record.get("chat_url") or "")):
         raise RuntimeError("Persistencia GitHub de respuesta existente sin verificar")
     record["status"] = "persisted_captured_review"
     record["persisted"] = True
@@ -155,7 +157,9 @@ def recover(trend_id, revision, *, lock_held=False):
         auth = api.token()
         confirm_remote(api, auth, record)
         if record.get("reply_captured") and record.get("cleanup_verified"):
-            if not record.get("answer") or not record.get("chat_url"):
+            if (not record.get("answer") or
+                (not record.get("chat_url") and
+                 record.get("chat_identity_verified") is not True)):
                 raise RuntimeError("Diario de recuperación inconsistente")
             persist_existing(api, auth, state, record, journal)
             return
