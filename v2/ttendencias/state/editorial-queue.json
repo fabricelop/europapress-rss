@@ -18064,13 +18064,13 @@
     "trv2-d14ffd3ea0274c52e71a9b27": {
       "trend_id": "trv2-d14ffd3ea0274c52e71a9b27",
       "name": "Waterloo",
-      "revision": 3,
-      "status": "in_progress",
+      "revision": 4,
+      "status": "pending",
       "reason": "retry_after_incident",
       "episode_token": "1d6c890a929f712f",
-      "requested_at": "2026-11-19T11:40:51.610472+00:00",
-      "updated_at": "2026-11-19T11:40:51.610472+00:00",
-      "attempts": 1,
+      "requested_at": "2026-11-19T12:30:57.855609+00:00",
+      "updated_at": "2026-11-19T12:30:57.855609+00:00",
+      "attempts": 0,
       "previous_attempts": [
         {
           "revision": 1,
@@ -18090,16 +18090,20 @@
           "send_intent_at": null,
           "incident_reason": "lease_expired_without_capture",
           "archived_at": "2026-11-19T11:40:51.610472+00:00"
+        },
+        {
+          "revision": 3,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-19T11:43:07.565831+00:00",
+          "send_intent_at": null,
+          "incident_reason": "chat_not_ready",
+          "archived_at": "2026-11-19T12:30:57.855609+00:00"
         }
       ],
       "review_mode": "standard",
-      "incident_retries": 1,
-      "lease": {
-        "token": "071a75044f325db33e80fc231fcecb94345f9b7bb40e9dcb",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-19T11:43:07.565831+00:00",
-        "expires_at": "2026-11-19T12:23:07.565831+00:00"
-      }
+      "incident_retries": 2
     },
     "trv2-09fc0cd37644687ef7a5cf1b": {
       "trend_id": "trv2-09fc0cd37644687ef7a5cf1b",
@@ -18818,8 +18822,8 @@
     "trv2-09fc0cd37644687ef7a5cf1b",
     "trv2-194f8050f5783e1436e93d4d",
     "trv2-301a72a31b33d1e9180c082f",
-    "trv2-d14ffd3ea0274c52e71a9b27",
-    "trv2-93020536cd990b4ad7dd47c7"
+    "trv2-93020536cd990b4ad7dd47c7",
+    "trv2-d14ffd3ea0274c52e71a9b27"
   ],
   "effects_enabled": false
 }
