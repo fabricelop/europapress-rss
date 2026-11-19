@@ -18741,20 +18741,27 @@
     "trv2-4865261d4daf2cc06d894307": {
       "trend_id": "trv2-4865261d4daf2cc06d894307",
       "name": "#GHVIP19N",
-      "revision": 1,
-      "status": "in_progress",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "bb1ea0a6ab471109",
-      "requested_at": "2026-11-19T16:02:42.049781+00:00",
-      "updated_at": "2026-11-19T16:02:42.049781+00:00",
+      "requested_at": "2026-11-19T16:09:17.467986+00:00",
+      "updated_at": "2026-11-19T16:09:17.467986+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "lease": {
-        "token": "fa38adcf069e2c8818aadd6e1e527c1d2e6432628ed6b131",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-19T16:06:06.374852+00:00",
-        "expires_at": "2026-11-19T16:46:06.374852+00:00"
-      }
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-19T16:06:06.374852+00:00",
+          "send_intent_at": null,
+          "incident_reason": "chrome_or_cdp_failure",
+          "archived_at": "2026-11-19T16:09:17.467986+00:00"
+        }
+      ],
+      "incident_retries": 1
     },
     "trv2-b71d665c412561a67f9bca6f": {
       "trend_id": "trv2-b71d665c412561a67f9bca6f",
@@ -19490,7 +19497,6 @@
     "trv2-d14ffd3ea0274c52e71a9b27",
     "trv2-1dfedc05a410a0a7854b9304",
     "trv2-32619d495814eca592992540",
-    "trv2-4865261d4daf2cc06d894307",
     "trv2-6a4e0c689c3bf8aaf8b418ff",
     "trv2-7b0c3dbb14e57c4ffb1ed69b",
     "trv2-7dc9726a73e47f81c247e249",
@@ -19502,7 +19508,8 @@
     "trv2-f1d03738095648d3d5923eb7",
     "trv2-f5d04baa4bac4eefbc1a08a8",
     "trv2-f763727a2888388eee9800dc",
-    "trv2-fa01f1afd0502f4f41a3c0de"
+    "trv2-fa01f1afd0502f4f41a3c0de",
+    "trv2-4865261d4daf2cc06d894307"
   ],
   "effects_enabled": false
 }
