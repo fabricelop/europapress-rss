@@ -108,10 +108,9 @@ def capture_existing_page(page, *, trend_id: str, revision: int, seconds=180,
             "button[aria-label*='Detener']")
     observations = []
     while time.monotonic() < deadline:
-        if not page.url.startswith("https://chatgpt.com/c/"):
-            observations.append("await_chat_url")
-            time.sleep(2)
-            continue
+        # ChatGPT may render a complete response before it exposes /c/.
+        # The paired user turn plus stable, idle assistant text is stronger
+        # identity evidence than the URL; do not discard a finished reply.
         try:
             body = page.locator("body").inner_text(timeout=8000)
             state = read_status(body, trend_id=trend_id, revision=revision)
