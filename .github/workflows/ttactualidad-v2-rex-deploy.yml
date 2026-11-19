@@ -87,17 +87,17 @@ jobs:
         run: |
           python -m pip install playwright==1.57.0 jsonschema==4.23.0 Pillow psutil
           python -m unittest -v v2.ttendencias.test_image_incident_v2 v2.ttendencias.test_image_worker_v2 v2.ttendencias.test_image_github_v2 v2.ttendencias.test_image_retry_status_v2 v2.ttendencias.test_web_top30_v2 v2.ttittulares.test_news_workflow_v2 v2.ttittulares.test_news_images_v2
-      - name: Verificar Noticias en navegador de escritorio y movil
+      - name: Verificar fechas de Tendencias en navegador de escritorio y movil
         working-directory: v2/ttendencias/private-worker
         run: |
           npm install --no-save --package-lock=false --no-audit --no-fund playwright@1.62.1
           npx playwright install --with-deps chromium
-          node scripts/news-browser-check.mjs
-      - name: Conservar capturas de comprobacion de Noticias
+          node scripts/trend-dates-browser-check.mjs
+      - name: Conservar capturas de comprobacion de fechas de Tendencias
         uses: actions/upload-artifact@v4
         with:
-          name: ttactualidad-v2-news-visual-qa
-          path: ${{ runner.temp }}/ttv2-news-qa/
+          name: ttactualidad-v2-trend-dates-visual-qa
+          path: ${{ runner.temp }}/ttv2-trend-dates-qa/
           retention-days: 7
       - name: Verificar proyeccion Noticias con el estado real de V2
         working-directory: v2/ttendencias/private-worker
