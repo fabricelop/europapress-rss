@@ -20309,24 +20309,27 @@
     "trv2-048f79151bff5e1e989af12d": {
       "trend_id": "trv2-048f79151bff5e1e989af12d",
       "name": "Ley de Vivienda",
-      "revision": 1,
-      "status": "in_progress",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "45854495cb56a7fb",
-      "requested_at": "2026-11-19T22:02:24.684350+00:00",
-      "updated_at": "2026-11-19T23:48:59.236924+00:00",
+      "requested_at": "2026-11-19T23:55:22.316567+00:00",
+      "updated_at": "2026-11-19T23:55:22.316567+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "lease": {
-        "token": "7ae24c685255f7e3a9219b4775bd3cabaebee8f32674ce1b",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-19T23:47:44.137990+00:00",
-        "expires_at": "2026-11-20T00:27:44.137990+00:00"
-      },
-      "send_intent": {
-        "token": "7ae24c685255f7e3a9219b4775bd3cabaebee8f32674ce1b",
-        "at": "2026-11-19T23:48:59.236898+00:00"
-      }
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-19T23:47:44.137990+00:00",
+          "send_intent_at": "2026-11-19T23:48:59.236898+00:00",
+          "incident_reason": "session_5min_inactivity",
+          "archived_at": "2026-11-19T23:55:22.316567+00:00"
+        }
+      ],
+      "incident_retries": 1
     },
     "trv2-c425d5928b9a3bea803f0e50": {
       "trend_id": "trv2-c425d5928b9a3bea803f0e50",
@@ -21332,7 +21335,6 @@
     "trv2-7dd066463cbf73b298c73cbb",
     "trv2-aecb102fd49009fac24030b7",
     "trv2-0226a489d8dd99b95cee0464",
-    "trv2-048f79151bff5e1e989af12d",
     "trv2-af755c930c9c03523bfc458e",
     "trv2-c425d5928b9a3bea803f0e50",
     "trv2-dadf0f135591222dbc17228e",
@@ -21361,7 +21363,8 @@
     "trv2-104610c6e8a080166c4d0c68",
     "trv2-9bc290564fa13fe252ac73f9",
     "trv2-6521745076760c92f03a50e8",
-    "trv2-7ae8c7c80ece3afc1f63abc5"
+    "trv2-7ae8c7c80ece3afc1f63abc5",
+    "trv2-048f79151bff5e1e989af12d"
   ],
   "effects_enabled": false
 }
