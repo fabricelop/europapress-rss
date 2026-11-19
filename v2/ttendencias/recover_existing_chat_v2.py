@@ -256,7 +256,8 @@ def recover_closed_chat(trend_id, revision, *, lock_held=False):
                                     stderr=subprocess.DEVNULL,
                                     startupinfo=visibility.startupinfo_hidden(),
                                     creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
-            hider = visibility.V2WindowHider(core.profile_pids).start()
+            hider = visibility.V2WindowHider(core.profile_pids,
+                                              primary_pid=proc.pid).start()
             endpoint = "http://127.0.0.1:" + str(port)
             startup = core.module("chrome_startup_v2.py", "ttv2_closed_recovery_startup")
             def cdp_ready():

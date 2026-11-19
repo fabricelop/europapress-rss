@@ -94,7 +94,12 @@ class V2WindowHider:
         self.find_pids = find_pids
         self.interval = interval
         self.refresh_seconds = refresh_seconds
-        self.known_pids = {int(primary_pid)} if primary_pid else set()
+        # Popen returned this PID for the exact Chrome we launched. Browser
+        # top-level HWNDs belong to that browser PID. Polling Win32_Process via
+        # PowerShell on every refresh can time out under load (and compete with
+        # the real process-ownership checks), despite the HWND being hidden.
+        self.primary_pid = int(primary_pid) if primary_pid else None
+        self.known_pids = {self.primary_pid} if self.primary_pid else set()
         self.closed = threading.Event()
         self.thread = None
         self.last_error = None
@@ -105,23 +110,28 @@ class V2WindowHider:
         while not self.closed.is_set():
             try:
                 now = time.monotonic()
-                # PowerShell process discovery costs much more than ShowWindow.
-                # Reuse exact verified PIDs between scans while hiding new HWNDs
-                # four times per second without affecting a personal Chrome.
-                if now - last_refresh >= self.refresh_seconds:
+                # When the caller launched Chrome itself, never enumerate all
+                # Chrome processes just to hide its own browser HWND. Fallback
+                # profile enumeration is for callers without a trusted Popen PID.
+                if self.primary_pid is None and now - last_refresh >= self.refresh_seconds:
                     self.known_pids = {int(pid) for pid in self.find_pids()}
                     last_refresh = now
                 self.windows_hidden += hide_windows_for_pids(self.known_pids)
+                self.last_error = None
             except Exception as exc:
                 self.last_error = type(exc).__name__ + ": " + str(exc)[:120]
             self.closed.wait(self.interval)
 
     def ensure_hidden(self):
         """Fail closed if any HWND of this worker stays visible before send."""
-        pids = self.find_pids()
+        # The Popen PID is an ownership proof and cannot accidentally select a
+        # user's personal Chrome. Avoid a 20-second PowerShell CIM subprocess
+        # on the foreground send path; still fail if its window remains visible.
+        pids = set(self.known_pids) if self.primary_pid else self.find_pids()
         hide_windows_for_pids(pids)
         if visible_windows_for_pids(pids):
             raise RuntimeError("V2_CHROME_WINDOW_VISIBLE")
+        self.last_error = None
 
     def start(self):
         if os.name != "nt":
