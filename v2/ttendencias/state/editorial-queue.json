@@ -18872,12 +18872,12 @@
       "trend_id": "trv2-32619d495814eca592992540",
       "name": "#Mañaneros19N",
       "revision": 2,
-      "status": "review_pending",
+      "status": "in_progress",
       "reason": "user_reset",
       "episode_token": "c8af8b4f62a5cf34",
       "requested_at": "2026-11-19T16:48:10.957952+00:00",
       "updated_at": "2026-11-19T16:48:10.957952+00:00",
-      "attempts": 0,
+      "attempts": 1,
       "image_incident": {
         "project": "ttendencias-v2",
         "trend_id": "trv2-32619d495814eca592992540",
@@ -18901,7 +18901,13 @@
         }
       ],
       "review_mode": "standard",
-      "incident_retries": 0
+      "incident_retries": 0,
+      "lease": {
+        "token": "53e72aa2e628c854aed102f9ba6694db077461100ffb101a",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-19T16:50:26.345352+00:00",
+        "expires_at": "2026-11-19T17:30:26.345352+00:00"
+      }
     },
     "trv2-6a4e0c689c3bf8aaf8b418ff": {
       "trend_id": "trv2-6a4e0c689c3bf8aaf8b418ff",
