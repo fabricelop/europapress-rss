@@ -17869,14 +17869,13 @@
     "trv2-301a72a31b33d1e9180c082f": {
       "trend_id": "trv2-301a72a31b33d1e9180c082f",
       "name": "#CarrefourConGrandTheftAutoVI",
-      "revision": 2,
-      "status": "capture_recovery",
-      "reason": "retry_after_incident",
+      "revision": 3,
+      "status": "review_pending",
+      "reason": "user_reset",
       "episode_token": "92d783022394dace",
-      "requested_at": "2026-11-19T09:39:54.355957+00:00",
-      "updated_at": "2026-11-19T09:44:26.051157+00:00",
-      "previous_explanation": null,
-      "attempts": 1,
+      "requested_at": "2026-11-19T10:29:18.988410+00:00",
+      "updated_at": "2026-11-19T10:29:18.988410+00:00",
+      "attempts": 0,
       "previous_attempts": [
         {
           "revision": 1,
@@ -17887,14 +17886,20 @@
           "send_intent_at": null,
           "incident_reason": "lease_expired_without_capture",
           "archived_at": "2026-11-19T09:39:54.355957+00:00"
+        },
+        {
+          "revision": 2,
+          "status": "capture_recovery",
+          "chat_url": "",
+          "capture_sha256": "",
+          "sent_at": "2026-11-19T09:41:46.810408+00:00",
+          "reset_at": "2026-11-19T10:29:18.988410+00:00",
+          "reason": "explicit_RE_reset"
         }
       ],
-      "incident_retries": 1,
-      "send_intent": {
-        "token": "e1001c9bc3d6fef91e916576f050060161bb9dcdf83fe900",
-        "at": "2026-11-19T09:41:46.810408+00:00"
-      },
-      "capture_recovery_reason": "chat_target_identity_not_verified"
+      "incident_retries": 0,
+      "capture_recovery_reason": "chat_target_identity_not_verified",
+      "review_mode": "standard"
     },
     "trv2-816873b40767b47587efa12e": {
       "trend_id": "trv2-816873b40767b47587efa12e",
@@ -18015,20 +18020,26 @@
     "trv2-d14ffd3ea0274c52e71a9b27": {
       "trend_id": "trv2-d14ffd3ea0274c52e71a9b27",
       "name": "Waterloo",
-      "revision": 1,
-      "status": "in_progress",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "review_pending",
+      "reason": "user_reset",
       "episode_token": "1d6c890a929f712f",
-      "requested_at": "2026-11-19T08:32:11.962271+00:00",
-      "updated_at": "2026-11-19T08:32:11.962271+00:00",
-      "previous_explanation": null,
-      "attempts": 1,
-      "lease": {
-        "token": "afb1ceb7a2e64b4da7a60cbec8380caafc559b8117fc0ad2",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-19T08:42:00.579926+00:00",
-        "expires_at": "2026-11-19T09:22:00.579926+00:00"
-      }
+      "requested_at": "2026-11-19T10:29:18.988410+00:00",
+      "updated_at": "2026-11-19T10:29:18.988410+00:00",
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "in_progress",
+          "chat_url": "",
+          "capture_sha256": "",
+          "sent_at": null,
+          "reset_at": "2026-11-19T10:29:18.988410+00:00",
+          "reason": "explicit_RE_reset"
+        }
+      ],
+      "review_mode": "standard",
+      "incident_retries": 0
     },
     "trv2-09fc0cd37644687ef7a5cf1b": {
       "trend_id": "trv2-09fc0cd37644687ef7a5cf1b",
@@ -18683,11 +18694,11 @@
     "trv2-45a2a4546638cecd1ca41d35",
     "trv2-816873b40767b47587efa12e",
     "trv2-9cd6cb337ca72039b9cae83e",
-    "trv2-d14ffd3ea0274c52e71a9b27",
     "trv2-aa02d964df4c83408d7a7147",
-    "trv2-301a72a31b33d1e9180c082f",
     "trv2-5ef514d4ad9a051534636612",
-    "trv2-5f4a4eb0d74bddcb7423bbeb"
+    "trv2-5f4a4eb0d74bddcb7423bbeb",
+    "trv2-301a72a31b33d1e9180c082f",
+    "trv2-d14ffd3ea0274c52e71a9b27"
   ],
   "effects_enabled": false
 }
