@@ -12081,20 +12081,27 @@
     "trv2-fa01f1afd0502f4f41a3c0de": {
       "trend_id": "trv2-fa01f1afd0502f4f41a3c0de",
       "name": "Rafa Jódar",
-      "revision": 1,
-      "status": "in_progress",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "12bf5d3943620b34",
-      "requested_at": "2026-11-17T18:06:59.546385+00:00",
-      "updated_at": "2026-11-17T18:06:59.546385+00:00",
+      "requested_at": "2026-11-19T16:04:24.631221+00:00",
+      "updated_at": "2026-11-19T16:04:24.631221+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "lease": {
-        "token": "6a777de09dec4bc3e79e4e3906e8681f7a51d72e7050bbc7",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-17T18:22:19.367444+00:00",
-        "expires_at": "2026-11-17T19:02:19.367444+00:00"
-      }
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-17T18:22:19.367444+00:00",
+          "send_intent_at": null,
+          "incident_reason": "lease_expired_without_capture",
+          "archived_at": "2026-11-19T16:04:24.631221+00:00"
+        }
+      ],
+      "incident_retries": 1
     },
     "trv2-883b26773797a4e04e85bec5": {
       "trend_id": "trv2-883b26773797a4e04e85bec5",
@@ -19301,7 +19308,6 @@
     "trv2-8c272e7867c21c4a14bc5db6",
     "trv2-cf575ae3471ee4c286b91133",
     "trv2-e273d59785bd9f62894ac412",
-    "trv2-fa01f1afd0502f4f41a3c0de",
     "trv2-fc0d9d7e06c95703ecf51331",
     "trv2-90cab3c1a2084c8ce980de56",
     "trv2-03cf9ab311a017dcdc492e03",
@@ -19475,7 +19481,8 @@
     "trv2-e4d4890dbb36ad173789c8ee",
     "trv2-f1d03738095648d3d5923eb7",
     "trv2-f5d04baa4bac4eefbc1a08a8",
-    "trv2-f763727a2888388eee9800dc"
+    "trv2-f763727a2888388eee9800dc",
+    "trv2-fa01f1afd0502f4f41a3c0de"
   ],
   "effects_enabled": false
 }
