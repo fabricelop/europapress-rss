@@ -227,17 +227,44 @@ enum RainCompactData {
         if bin.snow && bin.rainyMinutes > 0 { return "Posible nieve" }
         return bin.rainyMinutes > 0 ? RainVisual.intensity(peak) : "Sin lluvia relevante prevista"
     }
+
+    // The short-range provider may have gaps. Preserve one explicit slot for
+    // every minute so the graph never joins two known points across missing data.
+    // A visual one-minute slot is not a fresh one-minute meteorological reading.
+    static func minuteWave(_ minutes: [RadarWeightedMinute],
+                           weather: RainSnapshot?, now: Date,
+                           horizon: Int = 60) -> [RainWavePoint] {
+        guard horizon >= 0 else { return [] }
+        let lookup = Dictionary(uniqueKeysWithValues: minutes.map { ($0.minute, $0) })
+        return (0...horizon).map { minute in
+            let sample = lookup[minute]
+            return RainWavePoint(
+                minute: minute,
+                rate: sample?.rate,
+                snow: sample.map { $0.rate >= 0.15 && weather?.phase(at: $0.at) == .snow } ?? false,
+                date: now.addingTimeInterval(Double(minute * 60))
+            )
+        }
+    }
 }
 
 struct RainCompactHoursCard: View {
     @ObservedObject var store: RainStore
     @State private var selection = 0
+    @State private var minuteMode = true
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Label("Próximas 3 horas", systemImage: "figure.walk")
+            Label("Lluvia a corto plazo", systemImage: "waveform.path")
                 .font(.headline)
-            if let weather = store.snapshot {
+            Picker("Horizonte de lluvia", selection: $minuteMode) {
+                Text("Minuto a minuto · 60 min").tag(true)
+                Text("3 horas").tag(false)
+            }
+            .pickerStyle(.segmented)
+            if minuteMode {
+                RainCompactMinuteDetail(store: store)
+            } else if let weather = store.snapshot {
                 let now = Date()
                 let samples = store.minuteForecast(now: now, horizon: 179)
                 let bins = RainVisualForecast.overview(samples, weather: weather,
@@ -321,6 +348,76 @@ struct RainCompactHoursCard: View {
         .padding(15)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(Color.white.opacity(0.065), in: RoundedRectangle(cornerRadius:20))
+    }
+}
+
+// A compact minute-by-minute look at the SAME short-range series used by
+// the countdown, Live Activity and detailed Pulse. This does not fetch or
+// manufacture higher-resolution measurements.
+struct RainCompactMinuteDetail: View {
+    @ObservedObject var store: RainStore
+    @State private var selectedMinute: Int?
+
+    var body: some View {
+        TimelineView(.periodic(from: .now, by: 60)) { clock in
+            if let weather = store.snapshot {
+                let now = clock.date
+                let minutes = store.minuteForecast(now: now, horizon: 60)
+                let points = RainCompactData.minuteWave(minutes, weather: weather, now: now)
+                if points.contains(where: { $0.rate != nil }) {
+                    let index = min(max(selectedMinute ?? 0, 0), 60)
+                    let selected = points[index]
+                    VStack(alignment: .leading, spacing: 10) {
+                        HStack(alignment: .firstTextBaseline, spacing: 8) {
+                            VStack(alignment: .leading, spacing: 3) {
+                                Text(index == 0 ? "Ahora" : "En +\(index) min")
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                                Text(selected.rate.map { RainVisual.intensity($0) } ??
+                                     "Sin datos para este minuto")
+                                    .font(.subheadline.bold())
+                            }
+                            Spacer(minLength: 0)
+                            if let rate = selected.rate {
+                                Text(String(format: "%.1f mm/h", rate))
+                                    .font(.subheadline.bold().monospacedDigit())
+                                    .foregroundStyle(.cyan)
+                            }
+                        }
+                        RainWavePlot(points: points, height: 118,
+                                     selectedIndex: selectedMinute,
+                                     onSelect: { selectedMinute = $0 })
+                        HStack {
+                            Text("Ahora")
+                            Spacer()
+                            Text("+15")
+                            Spacer()
+                            Text("+30")
+                            Spacer()
+                            Text("+45")
+                            Spacer()
+                            Text("+60 min")
+                        }
+                        .font(.system(size: 10, design: .rounded))
+                        .foregroundStyle(.secondary)
+                        RainWaveRibbon(points: points)
+                        Text("Azul: lluvia · Violeta: posible · Verde: seco · Gris: sin datos")
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+                        Text("1 punto por minuto, estimado. Radar local cuando es válido; el resto procede de modelos e interpolación. No es una medición nueva cada minuto.")
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                } else {
+                    Text("Sin datos suficientes para los próximos 60 minutos.")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                }
+            } else {
+                ProgressView("Consultando la próxima hora…")
+            }
+        }
     }
 }
 
