@@ -17012,14 +17012,14 @@
     "trv2-1542f4712e897fa721934714": {
       "trend_id": "trv2-1542f4712e897fa721934714",
       "name": "Cristina",
-      "revision": 2,
-      "status": "in_progress",
+      "revision": 3,
+      "status": "pending",
       "reason": "retry_after_incident",
       "episode_token": "dd618330ddf21a2f",
-      "requested_at": "2026-11-18T22:56:59.974934+00:00",
-      "updated_at": "2026-11-18T22:56:59.974934+00:00",
+      "requested_at": "2026-11-19T00:39:49.416349+00:00",
+      "updated_at": "2026-11-19T00:39:49.416349+00:00",
       "previous_explanation": null,
-      "attempts": 1,
+      "attempts": 0,
       "previous_attempts": [
         {
           "revision": 1,
@@ -17030,15 +17030,19 @@
           "send_intent_at": null,
           "incident_reason": "lease_expired_without_capture",
           "archived_at": "2026-11-18T22:56:59.974934+00:00"
+        },
+        {
+          "revision": 2,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-18T22:57:25.542226+00:00",
+          "send_intent_at": null,
+          "incident_reason": "lease_expired_without_capture",
+          "archived_at": "2026-11-19T00:39:49.416349+00:00"
         }
       ],
-      "incident_retries": 1,
-      "lease": {
-        "token": "93dc5fa00730b5a26096cf67d076b8580ce980aecccea832",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-18T22:57:25.542226+00:00",
-        "expires_at": "2026-11-18T23:37:25.542226+00:00"
-      }
+      "incident_retries": 2
     },
     "trv2-7523783ed08049a82b31874b": {
       "trend_id": "trv2-7523783ed08049a82b31874b",
@@ -18048,7 +18052,6 @@
     "trv2-cd5b6dc84a34487290167dc4",
     "trv2-d143e1db808fba3d69e5fd63",
     "trv2-e2686d18eabfbf4314e3430c",
-    "trv2-1542f4712e897fa721934714",
     "trv2-158095d616778e48fc27160a",
     "trv2-2ddfd9ef83da4ae914b22fc8",
     "trv2-453760bc04f18182c8d3a460",
@@ -18060,7 +18063,8 @@
     "trv2-df65b8669ab36e3830aee7a1",
     "trv2-3dad459a3d8204643c5fd4b4",
     "trv2-bb0dae270d41eeaa76aac702",
-    "trv2-fd32d2e70dfd575cd33d27ed"
+    "trv2-fd32d2e70dfd575cd33d27ed",
+    "trv2-1542f4712e897fa721934714"
   ],
   "effects_enabled": false
 }
