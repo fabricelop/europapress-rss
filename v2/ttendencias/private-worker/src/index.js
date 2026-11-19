@@ -459,9 +459,19 @@ async function sha256Bytes(bytes){return [...new Uint8Array(await crypto.subtle.
 const LOGIN = `<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex,nofollow"><meta name="color-scheme" content="dark"><title>TTActualidad V2 · Acceso privado</title><style>body{background:#090b0f;color:#f2f5fa;min-height:100vh;display:grid;place-items:center;font:16px system-ui;margin:0}main{padding:32px;width:min(380px,90vw);background:#171c26;border:1px solid #354052;border-radius:16px}h1{font-size:22px}input,button{font:inherit;padding:13px;border-radius:9px;width:100%;box-sizing:border-box;margin-top:10px}input{background:#0c111c;color:white;border:1px solid #667187}button{background:#e25d44;color:white;font-weight:700;border:0;cursor:pointer}p{color:#a6b4c7}#msg{color:#ffaaaa}</style></head><body><main><h1>TTActualidad V2</h1><p>Acceso privado</p><form id="f"><label for="p">Contraseña</label><input id="p" type="password" minlength="16" autocomplete="current-password" required autofocus><button type="submit">Entrar</button><p id="msg" role="status"></p></form></main><script>document.getElementById("f").addEventListener("submit",async e=>{e.preventDefault();const b=e.target.querySelector("button");b.disabled=true;try{const r=await fetch("/api/login",{method:"POST",headers:{"content-type":"application/json","x-ttv2-action":"1"},body:JSON.stringify({password:document.getElementById("p").value}),credentials:"same-origin"});document.getElementById("p").value="";if(!r.ok){document.getElementById("msg").textContent="Contraseña incorrecta o acceso no configurado.";return}location.replace("/")}catch{document.getElementById("msg").textContent="No se pudo iniciar sesión."}finally{b.disabled=false}})</script></body></html>`;
 export default {
   async scheduled(controller,env,ctx) {
-    // Cloudflare Cron Trigger: exactly one scheduled attempt every 15 minutes.
-    // A failed third-party read must fail visibly in Cron Events rather than
-    // writing a misleading fresh timestamp.
+    // The local ImageGen worker saves images straight to the V2 GitHub queue.
+    // V1 approval hooks never see that event. Reconcile the verified public
+    // projection on the existing 15-minute cron, without GitHub API calls.
+    if(ctx?.waitUntil)ctx.waitUntil((async()=>{
+      try {
+        const response=await fetch("https://ttactualidad.rainyraven22.chatgpt.site/api/automatic-trend-image-notifications",{
+          method:"POST",headers:{"x-tt-v2-cron":"automatic-image-check"},
+          signal:AbortSignal.timeout(9000)
+        });
+        if(!response.ok)console.warn("V2_IMAGE_NOTIFICATION_CHECK_HTTP",response.status);
+      }catch(error){console.warn("V2_IMAGE_NOTIFICATION_CHECK_FAILED",String(error?.message||error).slice(0,80));}
+    })());
+    // A failed radar read must still fail visibly in Cron Events.
     await captureRadar(env.MARKS_DB);
   },
   async fetch(request,env,ctx) {
