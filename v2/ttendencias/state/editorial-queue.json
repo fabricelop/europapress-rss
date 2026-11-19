@@ -20104,13 +20104,13 @@
       "trend_id": "trv2-935bb3c66d4ac2626b07000b",
       "name": "María Casado",
       "revision": 5,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "3c995b2876036f13",
       "requested_at": "2026-11-19T22:41:37.691270+00:00",
       "updated_at": "2026-11-19T22:41:37.691270+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -20153,7 +20153,13 @@
           "archived_at": "2026-11-19T22:41:37.691270+00:00"
         }
       ],
-      "incident_retries": 4
+      "incident_retries": 4,
+      "lease": {
+        "token": "d9136314f097dbca23ae19cd5c8c28ef217597783139b0e0",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-19T22:42:39.197759+00:00",
+        "expires_at": "2026-11-19T23:22:39.197759+00:00"
+      }
     },
     "trv2-fa95ef6dc5e74f73b9981b9c": {
       "trend_id": "trv2-fa95ef6dc5e74f73b9981b9c",
