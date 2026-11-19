@@ -20034,24 +20034,27 @@
     "trv2-935bb3c66d4ac2626b07000b": {
       "trend_id": "trv2-935bb3c66d4ac2626b07000b",
       "name": "María Casado",
-      "revision": 1,
-      "status": "in_progress",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "3c995b2876036f13",
-      "requested_at": "2026-11-19T22:02:24.684350+00:00",
-      "updated_at": "2026-11-19T22:04:45.786863+00:00",
+      "requested_at": "2026-11-19T22:12:31.719465+00:00",
+      "updated_at": "2026-11-19T22:12:31.719465+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "lease": {
-        "token": "29d805763fa2392279e156de816a499b514a5777a7efa8d2",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-19T22:04:18.556155+00:00",
-        "expires_at": "2026-11-19T22:44:18.556155+00:00"
-      },
-      "send_intent": {
-        "token": "29d805763fa2392279e156de816a499b514a5777a7efa8d2",
-        "at": "2026-11-19T22:04:45.786841+00:00"
-      }
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-19T22:04:18.556155+00:00",
+          "send_intent_at": "2026-11-19T22:04:45.786841+00:00",
+          "incident_reason": "session_8min_timeout",
+          "archived_at": "2026-11-19T22:12:31.719465+00:00"
+        }
+      ],
+      "incident_retries": 1
     },
     "trv2-fa95ef6dc5e74f73b9981b9c": {
       "trend_id": "trv2-fa95ef6dc5e74f73b9981b9c",
@@ -20772,14 +20775,14 @@
     "trv2-048f79151bff5e1e989af12d",
     "trv2-7ae8c7c80ece3afc1f63abc5",
     "trv2-87f2b1f675e5a90a6e716100",
-    "trv2-935bb3c66d4ac2626b07000b",
     "trv2-af755c930c9c03523bfc458e",
     "trv2-c425d5928b9a3bea803f0e50",
     "trv2-dadf0f135591222dbc17228e",
     "trv2-e4758054ef86fe4d4540023f",
     "trv2-f3747df76de9cd3489c6d77a",
     "trv2-fa95ef6dc5e74f73b9981b9c",
-    "trv2-828ab70560e35dcdd7a3a075"
+    "trv2-828ab70560e35dcdd7a3a075",
+    "trv2-935bb3c66d4ac2626b07000b"
   ],
   "effects_enabled": false
 }
