@@ -18563,12 +18563,12 @@
       "trend_id": "trv2-f4d168c8086e144e1d14215a",
       "name": "Shenzhen",
       "revision": 3,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "093276b0882b28f8",
       "requested_at": "2026-11-19T15:30:43.781726+00:00",
       "updated_at": "2026-11-19T15:30:43.781726+00:00",
-      "attempts": 0,
+      "attempts": 1,
       "image_incident": {
         "project": "ttendencias-v2",
         "trend_id": "trv2-f4d168c8086e144e1d14215a",
@@ -18602,7 +18602,13 @@
         }
       ],
       "review_mode": "standard",
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "d01592a968cee839b9ba7549673e56789ecb0f565ea06cf2",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-19T15:37:20.020974+00:00",
+        "expires_at": "2026-11-19T16:17:20.020974+00:00"
+      }
     },
     "trv2-e01fe9c938981d1a6ef85e79": {
       "trend_id": "trv2-e01fe9c938981d1a6ef85e79",
