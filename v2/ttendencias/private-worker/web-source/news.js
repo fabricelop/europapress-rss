@@ -44,6 +44,7 @@
   if(!data.items.length)list.append(node("p","news-empty",state.query?"No hay coincidencias.":"Todavía no hay noticias que cumplan el filtro de fuentes."));
   for(const item of data.items){
    const card=node("details","news-card");const summary=node("summary","news-card-head");
+   if(item.marked_red){card.style.borderColor="#a92f44";card.style.boxShadow="inset 4px 0 #a92f44";}
    const heading=node("span","news-title-wrap");heading.append(node("strong","news-title",item.title));
    heading.append(node("span","news-meta","Verificada · "+date(item.verified_at)+" · "+item.source_count+" fuentes independientes"));
    summary.append(heading,node("span","news-status ready",item.marked_red?"🔴 Marcada":item.published_at?"PUB ✓":"Noticia"));
