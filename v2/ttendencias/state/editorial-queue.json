@@ -17869,13 +17869,13 @@
     "trv2-301a72a31b33d1e9180c082f": {
       "trend_id": "trv2-301a72a31b33d1e9180c082f",
       "name": "#CarrefourConGrandTheftAutoVI",
-      "revision": 9,
-      "status": "in_progress",
+      "revision": 10,
+      "status": "pending",
       "reason": "retry_after_incident",
       "episode_token": "92d783022394dace",
-      "requested_at": "2026-11-19T13:46:20.624689+00:00",
-      "updated_at": "2026-11-19T13:46:20.624689+00:00",
-      "attempts": 1,
+      "requested_at": "2026-11-19T14:33:27.401345+00:00",
+      "updated_at": "2026-11-19T14:33:27.401345+00:00",
+      "attempts": 0,
       "previous_attempts": [
         {
           "revision": 1,
@@ -17955,16 +17955,20 @@
           "send_intent_at": null,
           "incident_reason": "chrome_or_cdp_failure",
           "archived_at": "2026-11-19T13:46:20.624689+00:00"
+        },
+        {
+          "revision": 9,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-19T13:53:39.382242+00:00",
+          "send_intent_at": null,
+          "incident_reason": "chrome_or_cdp_failure",
+          "archived_at": "2026-11-19T14:33:27.401345+00:00"
         }
       ],
-      "incident_retries": 6,
-      "review_mode": "standard",
-      "lease": {
-        "token": "9426408596621ef2e47ec4ff91f84f9fd0f49690e1014dd8",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-19T13:53:39.382242+00:00",
-        "expires_at": "2026-11-19T14:33:39.382242+00:00"
-      }
+      "incident_retries": 7,
+      "review_mode": "standard"
     },
     "trv2-816873b40767b47587efa12e": {
       "trend_id": "trv2-816873b40767b47587efa12e",
@@ -18981,8 +18985,8 @@
     "trv2-09fc0cd37644687ef7a5cf1b",
     "trv2-93020536cd990b4ad7dd47c7",
     "trv2-194f8050f5783e1436e93d4d",
-    "trv2-301a72a31b33d1e9180c082f",
-    "trv2-47bc5ca08aab576fc5c89295"
+    "trv2-47bc5ca08aab576fc5c89295",
+    "trv2-301a72a31b33d1e9180c082f"
   ],
   "effects_enabled": false
 }
