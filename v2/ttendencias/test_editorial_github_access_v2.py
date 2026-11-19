@@ -96,6 +96,8 @@ class GithubAccessTests(unittest.TestCase):
         self.assertIn("if ($CommitSha)", text)
         self.assertIn("'Activate-V2-Editorial-Cycle.ps1')", text)
         self.assertIn("'editorial_github_access_v2.py'", text)
+        self.assertIn("'auto_editorial_policy_v2.py'", text)
+        self.assertIn("$newPolicy.Contains('ranked.sort(key=')", text)
         self.assertIn("'chrome_visibility_v2.py'", text)
         self.assertIn("'test_editorial_orphan_recovery_v2.py'", text)
         self.assertNotIn("'persist_capture_github.py',", text)

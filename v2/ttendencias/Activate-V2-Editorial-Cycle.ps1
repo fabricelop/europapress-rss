@@ -11,6 +11,7 @@ $branch = 'feature/ttactualidad-v2-clean'
 $headers = @{ 'Accept'='application/vnd.github+json'; 'User-Agent'='TTActualidadV2-Editorial-Cycle' }
 $utf8 = New-Object System.Text.UTF8Encoding($false)
 $modules = @('editorial_daemon_v2.py','editorial_run_v2.py',
+             'auto_editorial_policy_v2.py',
              'editorial_github_access_v2.py',
              'chrome_visibility_v2.py',
              'chatgpt_target_tracker.py','chatgpt_transcript.py',
@@ -71,6 +72,7 @@ foreach ($name in @($modules + $tests + $support)) {
     }
 }
 $newDaemon = Get-Content -LiteralPath (Join-Path $stage 'editorial_daemon_v2.py') -Raw
+$newPolicy = Get-Content -LiteralPath (Join-Path $stage 'auto_editorial_policy_v2.py') -Raw
 $newPool = Get-Content -LiteralPath (Join-Path $stage 'parallel_dispatch_v2.py') -Raw
 $newRunner = Get-Content -LiteralPath (Join-Path $stage 'editorial_run_v2.py') -Raw
 $newTracker = Get-Content -LiteralPath (Join-Path $stage 'chatgpt_target_tracker.py') -Raw
@@ -79,6 +81,9 @@ $newApi = Get-Content -LiteralPath (Join-Path $stage 'editorial_github_access_v2
 if (-not $newDaemon.Contains('settle_failed_job') -or -not $newDaemon.Contains('wave_ready') -or
     -not $newDaemon.Contains('from editorial_pool_v2 import') -or
     -not $newDaemon.Contains('recover_orphaned_attempt') -or
+    -not $newDaemon.Contains('max_session_seconds=MAX_CHAT_SECONDS') -or
+    -not $newDaemon.Contains('MAX_CHAT_SECONDS = 300') -or
+    -not $newPolicy.Contains('ranked.sort(key=') -or
     -not $newPool.Contains('MAX_JOB_SESSION_SECONDS = 480') -or
     -not $newApi.Contains('GITHUB_RATE_LIMIT_PAUSED') -or
     -not $newRunner.Contains('chat_identity_verified') -or
