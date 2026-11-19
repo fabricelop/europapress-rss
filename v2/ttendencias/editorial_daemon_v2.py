@@ -18,8 +18,8 @@ from batch_contract_v2 import verify_persisted
 from process_lock_v2 import AlreadyRunning, exclusive_v2_lock
 from select_current_top30_v2 import read_history
 from auto_editorial_policy_v2 import eligible_plan, enabled_text
-from parallel_dispatch_v2 import DisposableWorkerPool
-from incident_retry_v2 import MAX_INCIDENT_RETRIES, restart_as_new_revision
+from editorial_pool_v2 import EditorialWorkerPool as DisposableWorkerPool
+from incident_retry_v2 import restart_as_new_revision
 
 ROOT = core.ROOT
 LOCK = ROOT / "editorial_batch_v2.lock"
@@ -113,9 +113,7 @@ def settle_failed_job(api, auth, trend_id, revision, *,
             return "lease_changed"
         row["capture_recovery_reason"] = reason
         can_retry = (cleanup_verified and token
-                     and not evidence.get("reply_captured")
-                     and (int(row.get("incident_retries", 0)) < MAX_INCIDENT_RETRIES
-                          or row.get("manual_retry_requested_at")))
+                     and not evidence.get("reply_captured"))
         if can_retry:
             updated = restart_as_new_revision(
                 queue, trend_id, chrome_clear=True, recovery_checked=True,
@@ -134,7 +132,7 @@ def settle_failed_job(api, auth, trend_id, revision, *,
             elif evidence.get("reply_captured"):
                 row["capture_recovery_reason"] = "captured_locally_needs_persist"
             else:
-                row["capture_recovery_reason"] = "automatic_retry_limit_reached"
+                row["capture_recovery_reason"] = "retry_preconditions_unverified"
             row.pop("lease", None)
             row["updated_at"] = core.utcnow()
             queue["pending_ids"] = [item["trend_id"] for item in sorted(
