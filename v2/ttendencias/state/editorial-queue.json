@@ -15064,12 +15064,12 @@
       "trend_id": "trv2-e317efa7bdfdfad78bfda10a",
       "name": "Jason",
       "revision": 4,
-      "status": "review_pending",
+      "status": "in_progress",
       "reason": "user_reset",
       "episode_token": "f1231c5a45877fc1",
       "requested_at": "2026-11-19T20:43:53.521287+00:00",
       "updated_at": "2026-11-19T20:43:53.521287+00:00",
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -15113,6 +15113,12 @@
         "code": "V2_IMAGE_GITHUB_CONFLICT_NO_REPLAY",
         "detail_safe": "El guardado coincidió con otro cambio y necesita revisión.",
         "retry_mode": "manual_only"
+      },
+      "lease": {
+        "token": "df482520c88338379efb521180a47d47c5a8de8f643ddccc",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-19T20:49:35.858603+00:00",
+        "expires_at": "2026-11-19T21:29:35.858603+00:00"
       }
     },
     "trv2-fca968ab5996fec3f3615447": {
