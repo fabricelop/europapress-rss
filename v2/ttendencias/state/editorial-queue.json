@@ -17700,12 +17700,19 @@
       "trend_id": "trv2-9bef6b878fd7802c0579fd51",
       "name": "Reverte",
       "revision": 1,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "first_explanation",
       "episode_token": "78cb3a6663978709",
       "requested_at": "2026-11-19T03:31:46.505156+00:00",
       "updated_at": "2026-11-19T03:31:46.505156+00:00",
-      "previous_explanation": null
+      "previous_explanation": null,
+      "attempts": 1,
+      "lease": {
+        "token": "9ef71a8c87e4ba0c0ef78b95db666dae5b4e75b1c7665d27",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-19T03:34:19.646868+00:00",
+        "expires_at": "2026-11-19T04:14:19.646868+00:00"
+      }
     }
   },
   "pending_count": 564,
