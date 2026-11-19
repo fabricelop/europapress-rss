@@ -1,4 +1,4 @@
-"""Solicitud RE V2: reinicio editorial, sin reutilizar texto ni imagen.
+"""RE resets a trend immediately; RE-X requests a guided re-explanation.
 
 Solo transforma una copia de la cola aislada y no publica contenido.
 """
@@ -12,7 +12,11 @@ IN_FLIGHT = {"in_progress", "capture_recovery"}
 
 
 def request_reexplanation(queue, history, *, trend_id, base_revision, entered_top30_at, requested_at, mode="standard", hints="", allow_cancelled_incident=False):
-    """RE or RE-X; hints are user-supplied search leads, not verified facts."""
+    """Make RE a new priority revision, even when the old chat is in flight.
+
+    RE-X preserves the existing in-flight chat and stages search hints. A stale
+    worker is fenced by the new revision and can no longer persist into it.
+    """
     if mode not in {"standard", "x"}:
         raise ValueError("Modalidad RE incorrecta")
     if mode == "x":
@@ -52,7 +56,7 @@ def request_reexplanation(queue, history, *, trend_id, base_revision, entered_to
         raise ValueError("La revisión editorial ha cambiado")
     if not isinstance(requested_at, str) or not requested_at:
         raise ValueError("Fecha de solicitud no válida")
-    if old.get("status") in IN_FLIGHT:
+    if mode == "x" and old.get("status") in IN_FLIGHT:
         # A live/sent chat is immutable. Stage the owner's request for a NEW
         # revision after normal completion or verified incident recovery.
         existing = old.get("deferred_re_request") or {}
@@ -72,10 +76,15 @@ def request_reexplanation(queue, history, *, trend_id, base_revision, entered_to
         else:
             row.pop("incident_review_hints_pending", None)
         return copy, "STAGED"
-    allowed = DISPLAYED | NOT_STARTED | ({"cancelled"} if allow_cancelled_incident else set())
+    allowed = DISPLAYED | NOT_STARTED
+    if mode == "standard":
+        allowed |= IN_FLIGHT | {"cancelled"}
+    elif allow_cancelled_incident:
+        allowed |= {"cancelled"}
     if old.get("status") not in allowed:
         raise ValueError("La revisión editorial no admite RE todavía")
-    if old.get("status") in NOT_STARTED and any(old.get(k) for k in ("lease", "send_intent", "capture")):
+    if (mode == "x" and old.get("status") in NOT_STARTED
+            and any(old.get(k) for k in ("lease", "send_intent", "capture"))):
         raise ValueError("La revisión ya tiene evidencia de envío; no reiniciar")
     copy = deepcopy(queue)
     item = copy["items"][trend_id]
@@ -84,9 +93,24 @@ def request_reexplanation(queue, history, *, trend_id, base_revision, entered_to
     for key in ("previous_revision", "previous_status", "previous_capture",
                 "previous_explanation"):
         item.pop(key, None)
+    if mode == "standard":
+        # A deliberate RESET is allowed to duplicate an earlier chat, but
+        # never destroys the evidence needed to trace what was superseded.
+        attempts = list(item.get("previous_attempts") or [])
+        capture = old.get("capture") or {}
+        attempts.append({
+            "revision": base_revision,
+            "status": old.get("status"),
+            "chat_url": capture.get("chat_url") or "",
+            "capture_sha256": capture.get("sha256") or "",
+            "sent_at": (old.get("send_intent") or {}).get("at"),
+            "reset_at": requested_at,
+            "reason": "explicit_RE_reset",
+        })
+        item["previous_attempts"] = attempts[-10:]
     item["revision"] = base_revision + 1
     item["status"] = "review_pending"
-    item["reason"] = "user_reexplanation"
+    item["reason"] = "user_reset" if mode == "standard" else "user_reexplanation"
     item["review_mode"] = mode
     if mode == "x":
         item["review_hints"] = hints
@@ -102,6 +126,7 @@ def request_reexplanation(queue, history, *, trend_id, base_revision, entered_to
     # The old revision's image progress marker must not block/display as the
     # newly requested image. The new image job starts with a fresh marker.
     item.pop("image_progress", None)
+    item.pop("image_retry_summary", None)
     item.pop("text", None)
     item.pop("completed_at", None)
     item.pop("lease", None)
