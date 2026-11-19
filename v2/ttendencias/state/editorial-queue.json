@@ -17985,20 +17985,26 @@
     "trv2-194f8050f5783e1436e93d4d": {
       "trend_id": "trv2-194f8050f5783e1436e93d4d",
       "name": "Puchi",
-      "revision": 1,
-      "status": "in_progress",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "review_pending",
+      "reason": "user_reset",
       "episode_token": "bd3ef03516788c73",
-      "requested_at": "2026-11-19T08:32:11.962271+00:00",
-      "updated_at": "2026-11-19T08:32:11.962271+00:00",
-      "previous_explanation": null,
-      "attempts": 1,
-      "lease": {
-        "token": "38e5712cf8ae53ad29d76a30d91df15c8fb35119038979fc",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-19T08:40:34.965276+00:00",
-        "expires_at": "2026-11-19T09:20:34.965276+00:00"
-      }
+      "requested_at": "2026-11-19T11:30:13.061199+00:00",
+      "updated_at": "2026-11-19T11:30:13.061199+00:00",
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "in_progress",
+          "chat_url": "",
+          "capture_sha256": "",
+          "sent_at": null,
+          "reset_at": "2026-11-19T11:30:13.061199+00:00",
+          "reason": "explicit_RE_reset"
+        }
+      ],
+      "review_mode": "standard",
+      "incident_retries": 0
     },
     "trv2-45a2a4546638cecd1ca41d35": {
       "trend_id": "trv2-45a2a4546638cecd1ca41d35",
@@ -18073,20 +18079,26 @@
     "trv2-09fc0cd37644687ef7a5cf1b": {
       "trend_id": "trv2-09fc0cd37644687ef7a5cf1b",
       "name": "Junts",
-      "revision": 1,
-      "status": "in_progress",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "review_pending",
+      "reason": "user_reset",
       "episode_token": "d469b27287bec862",
-      "requested_at": "2026-11-19T08:32:11.962271+00:00",
-      "updated_at": "2026-11-19T08:32:11.962271+00:00",
-      "previous_explanation": null,
-      "attempts": 1,
-      "lease": {
-        "token": "a73ba6c67d1a476c7c22a7e01998f06c002fb9aee05ec1d8",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-19T08:44:41.573612+00:00",
-        "expires_at": "2026-11-19T09:24:41.573612+00:00"
-      }
+      "requested_at": "2026-11-19T11:30:13.061199+00:00",
+      "updated_at": "2026-11-19T11:30:13.061199+00:00",
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "in_progress",
+          "chat_url": "",
+          "capture_sha256": "",
+          "sent_at": null,
+          "reset_at": "2026-11-19T11:30:13.061199+00:00",
+          "reason": "explicit_RE_reset"
+        }
+      ],
+      "review_mode": "standard",
+      "incident_retries": 0
     },
     "trv2-aa02d964df4c83408d7a7147": {
       "trend_id": "trv2-aa02d964df4c83408d7a7147",
@@ -18757,8 +18769,6 @@
     "trv2-b19a47df873cb1b14bf65663",
     "trv2-31d504798176cd4b88984507",
     "trv2-1542f4712e897fa721934714",
-    "trv2-09fc0cd37644687ef7a5cf1b",
-    "trv2-194f8050f5783e1436e93d4d",
     "trv2-45a2a4546638cecd1ca41d35",
     "trv2-9cd6cb337ca72039b9cae83e",
     "trv2-aa02d964df4c83408d7a7147",
@@ -18767,7 +18777,9 @@
     "trv2-301a72a31b33d1e9180c082f",
     "trv2-d14ffd3ea0274c52e71a9b27",
     "trv2-816873b40767b47587efa12e",
-    "trv2-93020536cd990b4ad7dd47c7"
+    "trv2-93020536cd990b4ad7dd47c7",
+    "trv2-09fc0cd37644687ef7a5cf1b",
+    "trv2-194f8050f5783e1436e93d4d"
   ],
   "effects_enabled": false
 }
