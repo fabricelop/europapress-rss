@@ -20168,14 +20168,14 @@
     "trv2-935bb3c66d4ac2626b07000b": {
       "trend_id": "trv2-935bb3c66d4ac2626b07000b",
       "name": "María Casado",
-      "revision": 7,
-      "status": "in_progress",
+      "revision": 8,
+      "status": "pending",
       "reason": "retry_after_incident",
       "episode_token": "3c995b2876036f13",
-      "requested_at": "2026-11-19T23:01:13.604305+00:00",
-      "updated_at": "2026-11-19T23:02:49.239888+00:00",
+      "requested_at": "2026-11-19T23:11:02.669913+00:00",
+      "updated_at": "2026-11-19T23:11:02.669913+00:00",
       "previous_explanation": null,
-      "attempts": 1,
+      "attempts": 0,
       "previous_attempts": [
         {
           "revision": 1,
@@ -20236,21 +20236,21 @@
           "send_intent_at": "2026-11-19T22:53:40.437672+00:00",
           "incident_reason": "session_8min_timeout",
           "archived_at": "2026-11-19T23:01:13.604305+00:00"
+        },
+        {
+          "revision": 7,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-19T23:02:07.501313+00:00",
+          "send_intent_at": "2026-11-19T23:02:49.239864+00:00",
+          "incident_reason": "daemon_shutdown_after_child",
+          "archived_at": "2026-11-19T23:11:02.669913+00:00"
         }
       ],
-      "incident_retries": 1,
+      "incident_retries": 2,
       "review_mode": "x",
-      "review_hints": "Presentadora del debate",
-      "lease": {
-        "token": "f28fd35afbdb1e71791884739fe81d7124dfd8dc57943f0d",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-19T23:02:07.501313+00:00",
-        "expires_at": "2026-11-19T23:42:07.501313+00:00"
-      },
-      "send_intent": {
-        "token": "f28fd35afbdb1e71791884739fe81d7124dfd8dc57943f0d",
-        "at": "2026-11-19T23:02:49.239864+00:00"
-      }
+      "review_hints": "Presentadora del debate"
     },
     "trv2-fa95ef6dc5e74f73b9981b9c": {
       "trend_id": "trv2-fa95ef6dc5e74f73b9981b9c",
@@ -21179,7 +21179,6 @@
     "trv2-fa95ef6dc5e74f73b9981b9c",
     "trv2-e4d21d26294410f65eda4aa7",
     "trv2-87f2b1f675e5a90a6e716100",
-    "trv2-935bb3c66d4ac2626b07000b",
     "trv2-0178989695c04345fd8dfd3d",
     "trv2-0303bbbf7c8ce647d728e36b",
     "trv2-0e14915b55b4726880d2b32d",
@@ -21197,7 +21196,8 @@
     "trv2-d26c3bf26869ead6ce44add7",
     "trv2-f8bf80d730945fadb32c6d6c",
     "trv2-fbfb8fdf6a279685d6de62c5",
-    "trv2-828ab70560e35dcdd7a3a075"
+    "trv2-828ab70560e35dcdd7a3a075",
+    "trv2-935bb3c66d4ac2626b07000b"
   ],
   "effects_enabled": false
 }
