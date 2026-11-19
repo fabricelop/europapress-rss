@@ -16874,12 +16874,12 @@
       "trend_id": "trv2-945d4277ffa6c42b80ce8ab4",
       "name": "#GHVIPEstreno",
       "revision": 3,
-      "status": "review_pending",
+      "status": "in_progress",
       "reason": "user_reset",
       "episode_token": "cb699ff501cee0cb",
       "requested_at": "2026-11-19T20:40:44.228369+00:00",
       "updated_at": "2026-11-19T20:40:44.228369+00:00",
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -16902,7 +16902,13 @@
         }
       ],
       "incident_retries": 0,
-      "review_mode": "standard"
+      "review_mode": "standard",
+      "lease": {
+        "token": "f4b0d06f0c2dea09e4e7f669bae7317a894783bd8db8f715",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-19T20:42:06.182215+00:00",
+        "expires_at": "2026-11-19T21:22:06.182215+00:00"
+      }
     },
     "trv2-7222657fa6e8c08856e9a10e": {
       "trend_id": "trv2-7222657fa6e8c08856e9a10e",
