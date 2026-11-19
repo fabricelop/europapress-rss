@@ -63,6 +63,16 @@ class AutomaticEditorialTests(unittest.TestCase):
         self.assertEqual(selected["trend_id"],"old")
         self.assertEqual(selected["revision"],2)
 
+    def test_reset_is_prioritized_even_with_old_chat_journal_and_stale_radar(self):
+        q,h=fixtures()
+        q["items"]["old"].update(status="review_pending",reason="user_reset",revision=2,
+                                 attempts=0,requested_at=STAMP)
+        h["topics"]["historical"]={"trend_id":"old","active":False,"rank":None}
+        with tempfile.TemporaryDirectory() as temp:
+            pathlib.Path(temp,"run-old-r1.json").write_text('{"message_sent":true}')
+            selected,_,_=eligible_plan(q,h,directory=temp,now=NOW+timedelta(hours=1))
+        self.assertEqual((selected["trend_id"],selected["revision"]),("old",2))
+
     def test_explicit_re_works_with_stale_top30_but_ordinary_does_not(self):
         q,h=fixtures()
         q["items"]["old"].update(status="review_pending",reason="user_reexplanation",revision=2)
