@@ -15,7 +15,7 @@ import urllib.parse
 import urllib.request
 
 from .re_request_v2 import request_reexplanation
-from .web_top30_v2 import build
+from .web_top30_v2 import build, decode_remote_content
 
 REPO = "fabricelop/europapress-rss"
 BRANCH = "feature/ttactualidad-v2-clean"
@@ -36,7 +36,9 @@ def request_json(url, *, token, method="GET", payload=None):
 def github_read(token, filename):
     url = "https://api.github.com/repos/" + REPO + "/contents/" + DIR + filename
     result = request_json(url + "?ref=" + urllib.parse.quote(BRANCH, safe=""), token=token)
-    return json.loads(base64.b64decode(result["content"])), result["sha"]
+    # The editorial queue is now >1 MiB: Contents API responds with
+    # encoding=none and empty content. Read its immutable blob by SHA.
+    return decode_remote_content(token, result, filename), result["sha"]
 
 
 def github_write(token, filename, content, sha):
