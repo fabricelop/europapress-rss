@@ -17869,13 +17869,13 @@
     "trv2-301a72a31b33d1e9180c082f": {
       "trend_id": "trv2-301a72a31b33d1e9180c082f",
       "name": "#CarrefourConGrandTheftAutoVI",
-      "revision": 3,
-      "status": "in_progress",
-      "reason": "user_reset",
+      "revision": 4,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "92d783022394dace",
-      "requested_at": "2026-11-19T10:29:18.988410+00:00",
-      "updated_at": "2026-11-19T10:33:35.997371+00:00",
-      "attempts": 1,
+      "requested_at": "2026-11-19T11:30:41.976290+00:00",
+      "updated_at": "2026-11-19T11:30:41.976290+00:00",
+      "attempts": 0,
       "previous_attempts": [
         {
           "revision": 1,
@@ -17895,21 +17895,20 @@
           "sent_at": "2026-11-19T09:41:46.810408+00:00",
           "reset_at": "2026-11-19T10:29:18.988410+00:00",
           "reason": "explicit_RE_reset"
+        },
+        {
+          "revision": 3,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-19T10:30:02.869783+00:00",
+          "send_intent_at": "2026-11-19T10:33:35.997348+00:00",
+          "incident_reason": "chat_target_identity_not_verified",
+          "archived_at": "2026-11-19T11:30:41.976290+00:00"
         }
       ],
-      "incident_retries": 0,
-      "capture_recovery_reason": "chat_target_identity_not_verified",
-      "review_mode": "standard",
-      "lease": {
-        "token": "da0014c2b837976579e4644917a7f3785d70c929217b9adf",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-19T10:30:02.869783+00:00",
-        "expires_at": "2026-11-19T11:10:02.869783+00:00"
-      },
-      "send_intent": {
-        "token": "da0014c2b837976579e4644917a7f3785d70c929217b9adf",
-        "at": "2026-11-19T10:33:35.997348+00:00"
-      }
+      "incident_retries": 1,
+      "review_mode": "standard"
     },
     "trv2-816873b40767b47587efa12e": {
       "trend_id": "trv2-816873b40767b47587efa12e",
@@ -18774,12 +18773,12 @@
     "trv2-aa02d964df4c83408d7a7147",
     "trv2-5ef514d4ad9a051534636612",
     "trv2-5f4a4eb0d74bddcb7423bbeb",
-    "trv2-301a72a31b33d1e9180c082f",
     "trv2-d14ffd3ea0274c52e71a9b27",
     "trv2-816873b40767b47587efa12e",
     "trv2-93020536cd990b4ad7dd47c7",
     "trv2-09fc0cd37644687ef7a5cf1b",
-    "trv2-194f8050f5783e1436e93d4d"
+    "trv2-194f8050f5783e1436e93d4d",
+    "trv2-301a72a31b33d1e9180c082f"
   ],
   "effects_enabled": false
 }
