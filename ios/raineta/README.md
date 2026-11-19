@@ -1,3 +1,15 @@
+# RainETA iPhone 0.13.3 — Pulso minuto a minuto en Inicio
+
+**Candidata de prueba sobre 0.13.2, conservando bundle ID, GPS, radar, favoritos, Live Activity y diseño compacto.** No altera PWA ni producción.
+
+- La tarjeta de lluvia inmediata permite alternar **«Minuto a minuto · 60 min»** y **«3 horas»** sin añadir bloques duplicados. La onda táctil muestra una posición por minuto, la intensidad prevista seleccionada y una franja que distingue lluvia, señal débil, tiempo seco y huecos desconocidos.
+- La escala de 3 h con doce tramos de 15 min y ventana para salir permanece íntegra.
+- La gráfica de 60 min reutiliza **RainStore.minuteForecast**, la misma serie radar/modelos del contador, Pulso y En Vivo; no introduce otra predicción ni simula radar futuro. La vista se desplaza temporalmente cada minuto, pero la observación de radar y los modelos conservan su propia frecuencia de actualización.
+- Los huecos de datos permanecen desconocidos, no se rellenan como lluvia cero. La portada explica expresamente que una curva por minuto puede contener interpolación, no mediciones meteorológicas independientes.
+- Pruebas nuevas para 61 posiciones 0–60, continuidad con huecos y ausencia de falsa lluvia/sequedad. IPA sin firmar para PlumeImpactor. No reemplazar 0.13.2 hasta CI verde e instalación de prueba.
+
+---
+
 # RainETA iPhone 0.13.2 — Inicio simplificado y gráficos compactos
 
 **Rama de prueba; no se modifica la instalación anterior ni la PWA.**

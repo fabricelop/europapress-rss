@@ -17,6 +17,36 @@ final class RainCompactHomeTests: XCTestCase {
                        [.hours,.days])
     }
 
+    func testMinuteWavePreservesAllSixtyMinutesAndUnknownGaps() {
+        let now = Date(timeIntervalSince1970: 1_790_000_000)
+        let known: [RadarWeightedMinute] = [
+            RadarWeightedMinute(minute: 0, at: now, rate: 0.2,
+                                radarInformed: true, radarEcho: 0.4),
+            RadarWeightedMinute(minute: 1, at: now.addingTimeInterval(60), rate: 0.5,
+                                radarInformed: true, radarEcho: 0.5),
+            RadarWeightedMinute(minute: 4, at: now.addingTimeInterval(240), rate: 0.7,
+                                radarInformed: false, radarEcho: nil)
+        ]
+        let points = RainCompactData.minuteWave(known, weather: nil, now: now)
+        XCTAssertEqual(points.count, 61)
+        XCTAssertEqual(points.map(\.minute), Array(0...60))
+        XCTAssertEqual(points[1].rate, 0.5)
+        XCTAssertNil(points[2].rate)
+        XCTAssertNil(points[3].rate)
+        XCTAssertEqual(points[4].rate, 0.7)
+        XCTAssertEqual(points[60].date, now.addingTimeInterval(3600))
+        XCTAssertEqual(RainWaveForecast.signal(points[2]), .unknown)
+    }
+
+    func testMinuteWaveNeverTreatsMissingForecastAsDryWeather() {
+        let now = Date(timeIntervalSince1970: 1_790_000_000)
+        let points = RainCompactData.minuteWave([], weather: nil, now: now)
+        XCTAssertEqual(points.count, 61)
+        XCTAssertTrue(points.allSatisfy { $0.rate == nil })
+        XCTAssertTrue(points.allSatisfy { RainWaveForecast.signal($0) == .unknown })
+        XCTAssertTrue(RainCompactData.minuteWave([], weather: nil, now: now, horizon: -1).isEmpty)
+    }
+
     func testDryWindowIsNeverBridgedAcrossUnknownOrRainyBin() {
         let points = [
             bin(0,rate:0),bin(15,rate:0),
