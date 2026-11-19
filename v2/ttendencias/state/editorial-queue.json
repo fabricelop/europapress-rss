@@ -19872,16 +19872,16 @@
     "trv2-aecb102fd49009fac24030b7": {
       "trend_id": "trv2-aecb102fd49009fac24030b7",
       "name": "Danone",
-      "revision": 3,
-      "status": "capture_recovery",
+      "revision": 4,
+      "status": "pending",
       "reason": "retry_after_incident",
       "episode_token": "67c315a41e8dd8e5",
-      "requested_at": "2026-11-19T21:33:31.340703+00:00",
-      "updated_at": "2026-11-19T21:36:10.319866+00:00",
-      "attempts": 1,
+      "requested_at": "2026-11-19T21:46:01.327367+00:00",
+      "updated_at": "2026-11-19T21:46:01.327367+00:00",
+      "attempts": 0,
       "review_mode": "x",
       "review_hints": "Es por un tuit de @harryelsocio: ¿Y tú, qué fábrica visitaste de niño con el colegio?",
-      "incident_retries": 1,
+      "incident_retries": 2,
       "previous_attempts": [
         {
           "revision": 2,
@@ -19892,13 +19892,18 @@
           "send_intent_at": "2026-11-19T21:25:47.341664+00:00",
           "incident_reason": "session_8min_timeout",
           "archived_at": "2026-11-19T21:33:31.340703+00:00"
+        },
+        {
+          "revision": 3,
+          "status": "capture_recovery",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": null,
+          "send_intent_at": "2026-11-19T21:34:29.438427+00:00",
+          "incident_reason": "chat_target_identity_not_verified",
+          "archived_at": "2026-11-19T21:46:01.327367+00:00"
         }
-      ],
-      "send_intent": {
-        "token": "24ff1fb88dd4d33db706b69cb38dfe4bad10d5afe2a045a1",
-        "at": "2026-11-19T21:34:29.438427+00:00"
-      },
-      "capture_recovery_reason": "chat_target_identity_not_verified"
+      ]
     },
     "trv2-3c805f0a1ae710fd576ce8ec": {
       "trend_id": "trv2-3c805f0a1ae710fd576ce8ec",
@@ -20543,9 +20548,9 @@
     "trv2-34c40e8b9d7d9efd48a4bea1",
     "trv2-3c805f0a1ae710fd576ce8ec",
     "trv2-612a2b7e9b04976ee85563bd",
-    "trv2-aecb102fd49009fac24030b7",
     "trv2-72a170e5d797bfa0c5a6ad70",
-    "trv2-7dd066463cbf73b298c73cbb"
+    "trv2-7dd066463cbf73b298c73cbb",
+    "trv2-aecb102fd49009fac24030b7"
   ],
   "effects_enabled": false
 }
