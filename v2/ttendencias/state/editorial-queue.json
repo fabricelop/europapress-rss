@@ -17870,12 +17870,12 @@
       "trend_id": "trv2-301a72a31b33d1e9180c082f",
       "name": "#CarrefourConGrandTheftAutoVI",
       "revision": 8,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "92d783022394dace",
       "requested_at": "2026-11-19T13:41:07.049567+00:00",
       "updated_at": "2026-11-19T13:41:07.049567+00:00",
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -17948,7 +17948,13 @@
         }
       ],
       "incident_retries": 5,
-      "review_mode": "standard"
+      "review_mode": "standard",
+      "lease": {
+        "token": "ceab0efc3cff75e85d6f2be7506fde765f16a3d01a6026bb",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-19T13:44:09.065037+00:00",
+        "expires_at": "2026-11-19T14:24:09.065037+00:00"
+      }
     },
     "trv2-816873b40767b47587efa12e": {
       "trend_id": "trv2-816873b40767b47587efa12e",
