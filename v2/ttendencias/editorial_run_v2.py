@@ -31,9 +31,9 @@ HEADLESS = os.environ.get("TT_V2_CHROME_HEADLESS", "0").strip().lower() not in (
 COMPOSERS = ("#prompt-textarea", "[data-testid='prompt-textarea']", "[contenteditable='true'][role='textbox']")
 STOP = "[data-testid='stop-button'],button[aria-label*='Stop'],button[aria-label*='Detener']"
 BRANCH = "feature/ttactualidad-v2-clean"
-# El watchdog del padre termina a los cinco minutos desde el arranque del
-# proceso. Reservamos el último minuto para cerrar Chrome y guardar el estado.
-CAPTURE_JOB_BUDGET_SECONDS = 240
+# Cinco minutos SIN actividad observable; protección extraordinaria de veinte
+# minutos. El lector termina un minuto antes para guardar y cerrar Chrome.
+CAPTURE_JOB_BUDGET_SECONDS = 1140
 
 
 def remaining_capture_seconds(started_monotonic, *, now=None):
@@ -322,8 +322,27 @@ def run_one(api, state, transcript, auth, item):
     record = {"trend_id": trend_id, "revision": revision, "lease_token": token,
               "message_sent": False, "reply_captured": False, "cleanup_verified": False,
               "queue_modified": True, "published": False,
-              "status": "claimed", "observed_at": utcnow()}
-    store(journal, record)
+              "status": "claimed", "observed_at": utcnow(),
+              "activity_seq": 0, "assistant_progress_chars": 0}
+    def note_activity(kind, chars=0):
+        # The parent only reads this increasing counter and the exact trend/
+        # revision. It never needs the prompt, answer or private browser URL.
+        record["activity_seq"] += 1
+        record["activity_kind"] = kind
+        record["activity_at"] = utcnow()
+        if kind == "assistant_progress" and chars > record["assistant_progress_chars"]:
+            record["assistant_progress_chars"] = chars
+        store(journal, record)
+
+    def note_observation(reason):
+        # A changed extraction reason is diagnostic evidence, NOT progress.
+        # Repeating the same spinner or the same parser failure cannot extend
+        # the five-minute inactivity window.
+        if reason != record.get("capture_probe_reason"):
+            record["capture_probe_reason"] = str(reason)[:120]
+            store(journal, record)
+
+    note_activity("claimed")
     proc = None
     browser = None
     hider = None
@@ -362,6 +381,7 @@ def run_one(api, state, transcript, auth, item):
         if hider:
             hider.ensure_hidden()
         print("TT_V2_CDP_CONNECTED=YES", flush=True)
+        note_activity("chrome_ready")
         with sync_playwright() as pw:
             browser = pw.chromium.connect_over_cdp(endpoint)
             context = browser.contexts[0]
@@ -385,6 +405,7 @@ def run_one(api, state, transcript, auth, item):
                 time.sleep(2)
             if composer is None or not page.url.startswith("https://chatgpt.com/"):
                 raise RuntimeError("ChatGPT no está listo; no enviar")
+            note_activity("chat_ready")
             if hider:
                 # Check actual HWND visibility, not an earlier transient CIM
                 # timeout recorded by the background observer.
@@ -418,7 +439,7 @@ def run_one(api, state, transcript, auth, item):
             composer.press("Enter")  # UNA sola pulsación. No reintentar.
             record["message_sent"] = True
             record["status"] = "sent_waiting_for_reply"
-            store(journal, record)
+            note_activity("prompt_sent")
             # Enumerar targets CDP: puede haber nuevas ventanas no asociadas
             # a la Page original. La URL solo se acepta tras validar prompt.
             matched, evidence = tracker.await_conversation(
@@ -429,6 +450,7 @@ def run_one(api, state, transcript, auth, item):
                 page = matched
                 record["chat_url"] = evidence.get("url") or ""
                 record["chat_identity_verified"] = True
+                note_activity("chat_verified")
                 print("TT_V2_CHAT_IDENTITY_VERIFIED=YES", flush=True)
                 print("TT_V2_CHAT_URL_RECORDED=" +
                       ("YES" if record["chat_url"] else "NO"), flush=True)
@@ -452,7 +474,9 @@ def run_one(api, state, transcript, auth, item):
                                "observations": ["no_capture_time_left"]}
                 else:
                     capture = transcript.capture_existing_page(
-                        page, trend_id=trend_id, revision=revision, seconds=remaining)
+                        page, trend_id=trend_id, revision=revision, seconds=remaining,
+                        on_activity=lambda chars: note_activity("assistant_progress", chars),
+                        on_observation=note_observation)
             record["capture_diagnostic"] = {
                 "status": capture["status"],
                 "reason": capture["reason"],
@@ -466,6 +490,7 @@ def run_one(api, state, transcript, auth, item):
                     "reply_captured": True, "answer": capture["answer"],
                     "status": "captured_needs_editorial_validation",
                     "validation": "paired_turn_id_revision_dom_or_footer_and_stable_idle"})
+                note_activity("answer_captured")
                 print("TT_V2_REPLY_CAPTURED=YES", flush=True)
             else:
                 record["status"] = "capture_recovery_required"
@@ -473,6 +498,7 @@ def run_one(api, state, transcript, auth, item):
                 print("TT_V2_CAPTURE_REASON=" + capture["reason"], flush=True)
             store(journal, record)
             if record["reply_captured"]:
+                note_activity("persisting")
                 # Editorial worker owns TEXT ONLY. The image worker has its
                 # own Chrome profile and independent ChatGPT conversation.
                 persist_capture_live(

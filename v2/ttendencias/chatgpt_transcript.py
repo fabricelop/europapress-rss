@@ -96,7 +96,8 @@ def read_dom_pair(page, *, trend_id, revision):
 
 
 def capture_existing_page(page, *, trend_id: str, revision: int, seconds=180,
-                          allow_single_reload=True):
+                          allow_single_reload=True, on_activity=None,
+                          on_observation=None):
     """Lectura únicamente de una conversación ya enviada; nunca reenviar."""
     import time
     last = ""
@@ -107,6 +108,8 @@ def capture_existing_page(page, *, trend_id: str, revision: int, seconds=180,
     stop = ("[data-testid='stop-button'],button[aria-label*='Stop'],"
             "button[aria-label*='Detener']")
     observations = []
+    previous_assistant_chars = 0
+    previous_reason = None
     while time.monotonic() < deadline:
         # ChatGPT may render a complete response before it exposes /c/.
         # The paired user turn plus stable, idle assistant text is stronger
@@ -126,6 +129,18 @@ def capture_existing_page(page, *, trend_id: str, revision: int, seconds=180,
                         "observations": observations[-12:]}
             answer = state["answer"]
             reason = state["reason"]
+            # Progress comes only from NEW visible assistant material, not a
+            # changing timer, an animated spinner, the prompt or page chrome.
+            assistant = page.locator('[data-message-author-role="assistant"]')
+            if assistant.count():
+                visible = assistant.last.inner_text(timeout=5000)
+                visible = re.sub(r"\b(?:Worked|Thinking|Thought|Pensando|Pensó)\s+for\s+\d+\s*(?:s|seconds?|m|min)\b", "", visible, flags=re.I)
+                visible = re.sub(r"\s+", " ", visible).strip()
+                size = len(visible)
+                if size >= previous_assistant_chars + 12:
+                    previous_assistant_chars = size
+                    if on_activity:
+                        on_activity(size)
             if not answer:
                 answer, dom_reason = read_dom_pair(page, trend_id=trend_id,
                                                    revision=revision)
@@ -134,6 +149,9 @@ def capture_existing_page(page, *, trend_id: str, revision: int, seconds=180,
             stable = stable + 1 if answer and answer == last else 0
             last = answer
             observations.append(reason)
+            if on_observation and reason != previous_reason:
+                previous_reason = reason
+                on_observation(reason)
             # Tres comprobaciones consistentes + ausencia de botón Detener.
             if answer and stable >= 3 and not busy:
                 return {"status": "captured", "answer": answer, "reason": reason,

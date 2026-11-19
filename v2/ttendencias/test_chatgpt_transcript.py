@@ -19,6 +19,33 @@ BODY = (
     "ChatGPT can make mistakes. Check important info.\nLatest response"
 )
 class TestTranscript(unittest.TestCase):
+    def test_activity_callback_requires_new_assistant_text_not_spinners(self):
+        clock=[0.0]
+        progress=[]
+        class Locator:
+            def __init__(self, kind, page): self.kind=kind;self.page=page
+            def count(self):return 1 if self.kind=="assistant" else 0
+            @property
+            def last(self):return self
+            def inner_text(self,timeout=8000):
+                if self.kind=="body":return "ChatGPT vacío"
+                self.page.calls+=1
+                return ("Investigando" if self.page.calls==1 else
+                        "Investigando con resultados contrastados")
+        class Page:
+            url="https://chatgpt.com/c/test"
+            calls=0
+            def locator(self, selector):
+                return Locator("body" if selector=="body" else
+                               "assistant" if 'assistant' in selector else "other", self)
+        def sleep(seconds):clock[0]+=seconds
+        with (patch("time.monotonic",side_effect=lambda:clock[0]),
+              patch("time.sleep",side_effect=sleep)):
+            result=capture_existing_page(Page(),trend_id=TREND,revision=1,
+                                         seconds=6,on_activity=progress.append)
+        self.assertEqual(result["status"],"timeout")
+        self.assertEqual(progress,[len("Investigando"),len("Investigando con resultados contrastados")])
+
     def test_complete_answer_is_captured_on_same_page_without_url(self):
         class Locator:
             def __init__(self, text): self.text = text

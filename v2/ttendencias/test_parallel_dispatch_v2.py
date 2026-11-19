@@ -56,7 +56,9 @@ class ParallelDispatchTests(unittest.TestCase):
             self.assertNotIn("pool = WorkerPool(", content)
         editorial = (directory / "editorial_daemon_v2.py").read_text(encoding="utf-8")
         self.assertIn("max_session_seconds=MAX_CHAT_SECONDS", editorial)
-        self.assertIn("MAX_CHAT_SECONDS = 300", editorial)
+        self.assertIn("MAX_CHAT_SECONDS = 1200", editorial)
+        self.assertIn("def run_forever(poll_seconds=90, max_jobs=0, workers=4)", editorial)
+        self.assertIn('parser.add_argument("--workers", type=int, default=4', editorial)
 
     def test_disposable_jobs_clone_seed_then_delete_after_worker_exits(self):
         with tempfile.TemporaryDirectory() as root:

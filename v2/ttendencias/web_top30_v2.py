@@ -36,6 +36,46 @@ STATUS = {
     "cancelled": ("incidencia", "Incidencia"),
 }
 
+# A bounded, reader-friendly diagnostic only. Never put raw errors, chat URLs,
+# tokens, journals or prompts into the public Top30 projection.
+EDITORIAL_FAILURES = {
+    "session_5min_inactivity": ("Sin actividad durante 5 minutos", "Se liberó la sesión. Se probará otra tendencia; no necesitas usar RE-X.", False),
+    "session_20min_safety_limit": ("Límite excepcional de 20 minutos", "La sesión se liberó por seguridad; se retomará en otra vuelta.", False),
+    "capture_not_recognized": ("Respuesta visible sin captura válida", "El problema es técnico. Primero hay que recuperar la respuesta; RE-X no lo soluciona.", True),
+    "captured_locally_needs_persist": ("Respuesta capturada; falta guardarla", "No es necesario volver a investigar. El sistema debe recuperar el guardado.", True),
+    "session_cleanup_unverified": ("Chrome no se pudo liberar con seguridad", "La tendencia esperará hasta comprobar que su sesión terminó.", False),
+    "chat_load_error": ("No se pudo cargar la conversación", "Problema de acceso al chat; no tiene relación con las pistas de investigación.", True),
+    "chat_target_identity_not_verified": ("No se pudo verificar la conversación", "Se requiere recuperación técnica; evita RE-X hasta resolver la identidad del chat.", True),
+    "github_rate_limit": ("GitHub sin cuota disponible", "La explicación se conservará si ya fue capturada. Esperar a que vuelva la cuota.", False),
+    "github_access_or_rate_limit": ("GitHub no disponible", "Problema de acceso o cuota. RE-X no puede arreglarlo.", False),
+    "github_auth_or_policy": ("Permiso de GitHub rechazado", "Hay que reparar el acceso a GitHub. RE-X no puede arreglarlo.", False),
+    "chrome_or_cdp_failure": ("Problema con Chrome", "Se liberará o verificará la sesión antes de volver a intentar.", False),
+    "chat_not_ready": ("ChatGPT no estaba listo", "Se intentará de nuevo en otra vuelta sin bloquear las demás tendencias.", False),
+    "chat_no_response_progress": ("Sin respuesta visible", "No se observó avance en el chat durante cinco minutos.", False),
+    "worker_or_capture_failed": ("Fallo técnico sin causa exacta", "Consultar el diagnóstico antes de volver a investigar.", False),
+    "session_8min_timeout": ("Tiempo agotado en versión anterior", "Intento antiguo; la siguiente ejecución utilizará los controles nuevos.", False),
+}
+
+
+def editorial_failure_summary(item):
+    if item.get("status") in ("captured_review", "ready", "published", "dismissed"):
+        return None
+    reason = item.get("capture_recovery_reason") or ""
+    if not reason:
+        attempts = item.get("previous_attempts") or []
+        if isinstance(attempts, list) and attempts and isinstance(attempts[-1], dict):
+            reason = attempts[-1].get("incident_reason") or ""
+    if not isinstance(reason, str) or not reason:
+        return None
+    if "dom_" in reason or "completion_footer_missing" in reason:
+        reason = "capture_not_recognized"
+    elif reason.startswith("session_8min_timeout"):
+        reason = "session_8min_timeout"
+    label, guidance, recoverable = EDITORIAL_FAILURES.get(
+        reason, ("Incidencia técnica en la elaboración", "El programa debe registrar y revisar el fallo; no uses RE-X para un error técnico.", False))
+    return {"code": reason if reason in EDITORIAL_FAILURES else "technical_unknown",
+            "label": label, "guidance": guidance, "recovery_suggested": recoverable}
+
 
 def cause_status(answer):
     match = re.search(r"(?im)^\s*ESTADO_CAUSA\s*:\s*(CONFIRMADA|NO_CONFIRMADA)\s*$", answer)
@@ -224,6 +264,7 @@ def build(history, queue):
             "status": category,
             "status_label": label,
             "editorial_status": tech,
+            "editorial_failure": editorial_failure_summary(item),
             "re_in_progress": re_in_progress,
             "pending_editorial_review": tech == "captured_review",
             "explanation": answer,
