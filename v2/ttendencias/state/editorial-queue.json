@@ -18561,13 +18561,13 @@
     "trv2-f4d168c8086e144e1d14215a": {
       "trend_id": "trv2-f4d168c8086e144e1d14215a",
       "name": "Shenzhen",
-      "revision": 3,
-      "status": "in_progress",
+      "revision": 4,
+      "status": "pending",
       "reason": "retry_after_incident",
       "episode_token": "093276b0882b28f8",
-      "requested_at": "2026-11-19T15:30:43.781726+00:00",
-      "updated_at": "2026-11-19T15:30:43.781726+00:00",
-      "attempts": 1,
+      "requested_at": "2026-11-19T15:40:57.533182+00:00",
+      "updated_at": "2026-11-19T15:40:57.533182+00:00",
+      "attempts": 0,
       "image_incident": {
         "project": "ttendencias-v2",
         "trend_id": "trv2-f4d168c8086e144e1d14215a",
@@ -18598,16 +18598,20 @@
           "send_intent_at": null,
           "incident_reason": "github_rate_limit",
           "archived_at": "2026-11-19T15:30:43.781726+00:00"
+        },
+        {
+          "revision": 3,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-19T15:37:20.020974+00:00",
+          "send_intent_at": null,
+          "incident_reason": "chat_not_ready",
+          "archived_at": "2026-11-19T15:40:57.533182+00:00"
         }
       ],
       "review_mode": "standard",
-      "incident_retries": 1,
-      "lease": {
-        "token": "d01592a968cee839b9ba7549673e56789ecb0f565ea06cf2",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-19T15:37:20.020974+00:00",
-        "expires_at": "2026-11-19T16:17:20.020974+00:00"
-      }
+      "incident_retries": 2
     },
     "trv2-e01fe9c938981d1a6ef85e79": {
       "trend_id": "trv2-e01fe9c938981d1a6ef85e79",
