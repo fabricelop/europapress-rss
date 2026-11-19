@@ -1,10 +1,5 @@
 #!/usr/bin/env python3
-"""Independent, observable news radar clock and scan.
-
-The only writable files are the current radar and its source-health report on
-the dedicated radar branch. Editorial/image commits cannot move this branch.
-The normal feature-branch materializer separately creates editorial jobs.
-"""
+"""Independent news radar clock, with an editorial-free verified master feed."""
 from __future__ import annotations
 
 import argparse
@@ -12,6 +7,7 @@ import copy
 import os
 from datetime import datetime, timezone
 
+from .master_news_v2 import project_master_news
 from .radar_ingest_v2 import ingest_scan
 from .radar_snapshot_v2 import BRANCH, PREFIX, encode, sha256
 from .radar_store_v2 import (Conflict, GitHubStore, RADAR_LIVE_BRANCH,
@@ -21,15 +17,12 @@ from .source_fetch_v2 import fetch_all_sources
 RADAR_PATH = PREFIX + "state/radar/current.json"
 HEALTH_PATH = PREFIX + "state/radar/source-health.json"
 SUMMARY_PATH = PREFIX + "state/radar/live-summary.json"
+MASTER_PATH = PREFIX + "state/radar/master-news.json"
 INDEX_PATH = PREFIX + "state/news-index.json"
 
 
 def persist_live(fetch_result, radar_store, editorial_store, *, now, max_attempts=4):
-    """Write an independently visible scan, never an editorial job or decision.
-
-    A feature-branch change while we read its index is harmless: this writer
-    never commits to that branch. The separate materializer is free to retry.
-    """
+    """Persist one radar scan plus the compact, verified news master feed."""
     if now.tzinfo is None or now.utcoffset() is None:
         raise StoreError("NOW_MUST_BE_TIMEZONE_AWARE")
     if radar_store.branch != RADAR_LIVE_BRANCH or editorial_store.branch != BRANCH:
@@ -39,6 +32,8 @@ def persist_live(fetch_result, radar_store, editorial_store, *, now, max_attempt
     if not any(x.get("ok") for x in fetch_result.get("source_statuses", [])):
         raise StoreError("NO_SOURCE_SUCCEEDED")
 
+    # Legacy index is used only to preserve the original radar's dedup semantics.
+    # It is never used to enqueue or carry out editorial work.
     editorial_head = editorial_store.head()
     editorial_index = editorial_store.read_documents(editorial_head, [INDEX_PATH])[INDEX_PATH]
     if editorial_index.get("project") != "ttittulares-v2":
@@ -50,29 +45,27 @@ def persist_live(fetch_result, radar_store, editorial_store, *, now, max_attempt
         if previous.get("project") != "ttittulares-v2":
             raise StoreError("RADAR_PROJECT_MISMATCH")
         earlier = previous.get("observed_at")
-        if earlier:
-            earlier_time = datetime.fromisoformat(earlier.replace("Z", "+00:00"))
-            if earlier_time >= now:
-                # A delayed, older run never replaces a newer successful scan.
-                return {"verified": True, "replayed": True, "observed_at": earlier,
-                        "branch": RADAR_LIVE_BRANCH, "commit_sha": head,
-                        "new_job_count": 0, "editorial_execution_enabled": False,
-                        "publication_enabled": False, "attempts": attempt}
+        if earlier and datetime.fromisoformat(earlier.replace("Z", "+00:00")) >= now:
+            return {"verified": True, "replayed": True, "observed_at": earlier,
+                    "branch": RADAR_LIVE_BRANCH, "commit_sha": head,
+                    "new_job_count": 0, "editorial_execution_enabled": False,
+                    "publication_enabled": False, "attempts": attempt}
+
         plan = ingest_scan(fetch_result["rows"], fetch_result["source_statuses"],
                            copy.deepcopy(previous), copy.deepcopy(editorial_index), now=now)
         radar = plan["radar_state"]
-        # The full radar is ~5 MB after several hours of monitoring. Serve this
-        # compact, verified clock to the private UI; only the ingest engine
-        # downloads the large historical state on the next pass.
+        master = project_master_news(radar, now=now)
         summary = {"schema_version": 1, "project": "ttittulares-v2",
                    "kind": "independent_radar_summary", "observed_at": radar["observed_at"],
                    "radar_sha256": sha256(radar), "source_health_sha256": sha256(radar["source_health"]),
                    "metrics": radar["metrics"],
-                   "editorial_index_read_at": editorial_index.get("updated_at")}
-        writes = {RADAR_PATH: radar, HEALTH_PATH: radar["source_health"], SUMMARY_PATH: summary}
+                   "editorial_index_read_at": editorial_index.get("updated_at"),
+                   "master_news_count": master["count"]}
+        writes = {RADAR_PATH: radar, HEALTH_PATH: radar["source_health"],
+                  SUMMARY_PATH: summary, MASTER_PATH: master}
         try:
             commit = radar_store.commit(head, writes,
-                                        "TTiTTulares V2: barrido de radar independiente")
+                                        "TTiTTulares V2: radar y noticias verificadas")
         except (Conflict, UncertainCommit):
             continue
         verified = radar_store.read_documents(commit, list(writes))
@@ -80,17 +73,17 @@ def persist_live(fetch_result, radar_store, editorial_store, *, now, max_attempt
             raise StoreError("LIVE_RADAR_READBACK_MISMATCH")
         return {"verified": True, "replayed": False, "observed_at": radar["observed_at"],
                 "branch": RADAR_LIVE_BRANCH, "commit_sha": commit,
-                "new_job_count": len(plan["newly_eligible"]) + len(plan["material_updates_eligible"]),
+                "new_job_count": 0, "master_news_count": master["count"],
                 "metrics": radar["metrics"], "editorial_execution_enabled": False,
                 "publication_enabled": False, "attempts": attempt}
     raise StoreError("LIVE_RADAR_RETRY_BUDGET_EXHAUSTED")
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Independent radar-only state; no editorial/browser")
+    parser = argparse.ArgumentParser(description="Radar and verified news; no editorial/browser")
     parser.add_argument("--live", action="store_true", required=True)
     parser.add_argument("--persist", action="store_true", required=True)
-    args = parser.parse_args()
+    parser.parse_args()
     now = datetime.now(timezone.utc)
     fetched = fetch_all_sources(now=now)
     token = os.environ.get("GITHUB_TOKEN")
