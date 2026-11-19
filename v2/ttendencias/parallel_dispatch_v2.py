@@ -22,7 +22,7 @@ from chrome_cleanup_v2 import cleanup_v2_profile
 
 
 MIN_JOB_FREE_BYTES = 8 * 1024 ** 3
-MAX_JOB_SESSION_SECONDS = 300
+MAX_JOB_SESSION_SECONDS = 480
 EPHEMERAL_MARKER = "tt-v2-ephemeral-owned.marker"
 
 

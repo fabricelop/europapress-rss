@@ -39,13 +39,14 @@ class ParallelDispatchTests(unittest.TestCase):
         disk.start()
         self.addCleanup(disk.stop)
 
-    def make_disposable_pool(self, root, *, count=2):
+    def make_disposable_pool(self, root, *, count=2, timeout=480):
         seed = pathlib.Path(root) / "ChromeProfile"
         seed.mkdir()
         (seed / "Local State").write_text("authenticated", encoding="utf-8")
         return DisposableWorkerPool(seed, count, source_running=lambda: set(),
                                     env_key="TT_V2_EDITORIAL_PROFILE",
-                                    logs_dir=pathlib.Path(root) / "logs")
+                                    logs_dir=pathlib.Path(root) / "logs",
+                                    max_session_seconds=timeout)
 
     def test_both_automatic_consumers_use_disposable_profiles(self):
         directory = pathlib.Path(__file__).parent
@@ -53,6 +54,9 @@ class ParallelDispatchTests(unittest.TestCase):
             content = (directory / script).read_text(encoding="utf-8")
             self.assertIn("pool = DisposableWorkerPool(", content)
             self.assertNotIn("pool = WorkerPool(", content)
+        editorial = (directory / "editorial_daemon_v2.py").read_text(encoding="utf-8")
+        self.assertIn("max_session_seconds=MAX_CHAT_SECONDS", editorial)
+        self.assertIn("MAX_CHAT_SECONDS = 300", editorial)
 
     def test_disposable_jobs_clone_seed_then_delete_after_worker_exits(self):
         with tempfile.TemporaryDirectory() as root:
@@ -146,7 +150,7 @@ class ParallelDispatchTests(unittest.TestCase):
 
     def test_session_watchdog_closes_only_owned_slot_after_five_minutes(self):
         with tempfile.TemporaryDirectory() as root:
-            pool = self.make_disposable_pool(root, count=1)
+            pool = self.make_disposable_pool(root, count=1, timeout=300)
             now = [100.0]
             pool.clock = lambda: now[0]
             proc = FakeProcess()
