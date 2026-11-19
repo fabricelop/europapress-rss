@@ -151,7 +151,7 @@ test("authorized news API returns only the read-only projection",async()=>{
   const data=await r.json();assert.equal(data.counts.pending,1);assert.equal(data.publication_allowed,false);
  }finally{globalThis.fetch=old;}
 });
-test("Noticias shows one master list with red mark, suppress, X and PUB",()=>{
+test("Noticias shows one fixed master list with red mark, suppress, X and PU",()=>{
  const root=new URL("../web-source/",import.meta.url);
  const html=readFileSync(new URL("index.html",root),"utf8");
  const js=readFileSync(new URL("news.js",root),"utf8");
@@ -161,13 +161,13 @@ test("Noticias shows one master list with red mark, suppress, X and PUB",()=>{
  assert.match(js,/textContent=String/);
  assert.doesNotMatch(js,/innerHTML|raw\.githubusercontent/);
  assert.match(js,/\/api\/news-master\?/);
- assert.match(js,/SUPRIMIR/);assert.match(js,/P-X/);assert.match(js,/PUB/);
+ assert.match(js,/SUPRIMIR/);assert.match(js,/P-X/);assert.match(js,/PU/);
  assert.match(js,/news-red-mark/);assert.match(js,/item\.marked_red/);
- assert.match(js,/Una sola lista/);
+ assert.match(js,/Noticias del radar verificadas/);
  assert.doesNotMatch(js,/attachPending|attachIncident|RE-X|news-image-head-icon/);
  assert.match(js,/if\(!document.hidden&&!state.loading\)/);
  assert.match(js,/\$\("publication-summary"\)\.hidden=false/);
- assert.match(app,/newsViewMode\?"PUB":"PU"/);
+ assert.match(app,/summary\.textContent="PU · "/);
 });
 
 test("default is Elaboradas even when only pending candidates exist",()=>{
