@@ -23,7 +23,7 @@ $tests = @('test_editorial_completion_v2.py','test_parallel_dispatch_v2.py',
            'test_chatgpt_target_tracker.py','test_chatgpt_transcript.py',
            'test_editorial_capture_state.py','test_editorial_pool_v2.py',
            'test_recover_unlinked_v2.py','test_editorial_github_access_v2.py',
-           'test_editorial_orphan_recovery_v2.py')
+           'test_editorial_orphan_recovery_v2.py','test_editorial_budget_v2.py')
 $support = @('image_daemon_v2.py','parallel_dispatch_v2.py','Install-V2-Editorial-Auto.ps1',
              'Activate-V2-Editorial-Cycle.ps1')
 
@@ -98,7 +98,7 @@ try {
         'test_chatgpt_target_tracker','test_chatgpt_transcript',
         'test_editorial_capture_state','test_editorial_pool_v2',
         'test_recover_unlinked_v2','test_editorial_github_access_v2',
-        'test_editorial_orphan_recovery_v2') -Wait -PassThru -WindowStyle Hidden -RedirectStandardOutput $stdout -RedirectStandardError $stderr
+        'test_editorial_orphan_recovery_v2','test_editorial_budget_v2') -Wait -PassThru -WindowStyle Hidden -RedirectStandardOutput $stdout -RedirectStandardError $stderr
     if ($test.ExitCode -ne 0) {
         Get-Content -LiteralPath $stderr -Tail 18 | ForEach-Object { Write-Host $_ }
         throw 'Fallo de pruebas: no se ha instalado nada.'
@@ -149,7 +149,7 @@ try {
         if (-not (Test-Path -LiteralPath $statusPath)) { continue }
         try {
             $state = Get-Content -LiteralPath $statusPath -Raw | ConvertFrom-Json
-            if ($state.service -eq 'ttactualidad-v2' -and [DateTimeOffset]::Parse([string]$state.at).UtcDateTime -ge $startedAt -and $state.state -in @('STARTED','WORKING','WAIT_NO_CURRENT_JOB','WAIT_SOURCE','JOB_SETTLED','JOB_SETTLEMENT_RETRY','INCIDENT_REVIEW','ORPHAN_RECOVERED','ORPHAN_RETRY_DEFERRED')) {
+            if ($state.service -eq 'ttactualidad-v2' -and [DateTimeOffset]::Parse([string]$state.at).UtcDateTime -ge $startedAt -and $state.state -in @('STARTED','WORKING','WAIT_NO_CURRENT_JOB','WAIT_SOURCE','WAIT_GITHUB_BUDGET','JOB_SETTLED','JOB_SETTLEMENT_RETRY','INCIDENT_REVIEW','ORPHAN_RECOVERED','ORPHAN_RETRY_DEFERRED')) {
                 $healthy = $true
                 break
             }
