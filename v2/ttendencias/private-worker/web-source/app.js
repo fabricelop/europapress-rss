@@ -319,11 +319,27 @@ function explanationTime(item){
  if(item.status!=="explicada"||!item.captured_at)return null;
  const stamp=spanishStamp(item.captured_at);
  if(!stamp)return null;
- const e=el("time","explained-at",stamp);
+ const e=el("time","explained-at","Explicada el: "+stamp);
  e.dateTime=item.captured_at;
  e.title="Explicación guardada: "+stamp+" (hora peninsular)";
  e.setAttribute("aria-label",e.title);
  return e;
+}
+function explanationAgeIndicator(item){
+ if(item.status!=="explicada"||!item.captured_at||!item.entered_top30_at)return null;
+ const entered=Date.parse(item.entered_top30_at),explained=Date.parse(item.captured_at);
+ if(!Number.isFinite(entered)||!Number.isFinite(explained))return null;
+ const delta=entered-explained;
+ let tone="current",label="VIGENTE",detail="La explicación se guardó durante la entrada actual al Top 30.";
+ if(delta>24*60*60*1000){
+  tone="old";label="ANTIGUA";detail="La explicación es más de 24 horas anterior a la entrada actual. Valora RE.";
+ }else if(delta>0){
+  tone="review";label="REVISAR";detail="La explicación es anterior a la entrada actual. Valora RE.";
+ }
+ const badge=el("span","explanation-age age-"+tone,label);
+ badge.title=detail;
+ badge.setAttribute("aria-label",label+". "+detail);
+ return badge;
 }
 function movementIndicator(item){
  const meta=item._rankingMeta||{};
@@ -352,7 +368,7 @@ function top30Since(item){
  const stamp=spanishStamp(item.entered_top30_at);
  if(!stamp)return null;
  const returning=["reentry","short_return"].includes(item.movement);
- const node=el("time","entered-top30",(returning?"Regresó el ":"Desde ")+stamp);
+ const node=el("time","entered-top30",(returning?"Regresó al Top 30 el: ":"En el Top 30 desde: ")+stamp);
  node.dateTime=item.entered_top30_at;
  node.title=(returning?"Último regreso al Top 30: ":"Entrada en el Top 30: ")+stamp+" (hora peninsular)";
  return node;
@@ -867,6 +883,8 @@ function render(){
   if(entered)title.append(entered);
   const time=reset?null:explanationTime(item);
   if(time)title.append(time);
+  const age=reset?null:explanationAgeIndicator(item);
+  if(age)title.append(age);
   head.append(el("span","rank","T"+item.rank),title,movementIndicator({...item,_rankingMeta:state}),icon);
   card.append(head);
   const flag=el("button","red-toggle","R");
