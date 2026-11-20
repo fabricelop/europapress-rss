@@ -20592,19 +20592,27 @@
     "trv2-0e14915b55b4726880d2b32d": {
       "trend_id": "trv2-0e14915b55b4726880d2b32d",
       "name": "Pedrito",
-      "revision": 1,
-      "status": "capture_recovery",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "cb40357964e90386",
-      "requested_at": "2026-11-19T23:04:43.347354+00:00",
-      "updated_at": "2026-11-19T23:27:51.200702+00:00",
+      "requested_at": "2026-11-20T00:04:55.502257+00:00",
+      "updated_at": "2026-11-20T00:04:55.502257+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "send_intent": {
-        "token": "8c662cef87c908fe03ab9fc82183934f064e7e3ee704a773",
-        "at": "2026-11-19T23:24:12.568812+00:00"
-      },
-      "capture_recovery_reason": "visible_transcript_bound_to_prompt_and_footer"
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "capture_recovery",
+          "attempts": 1,
+          "chat_url": "https://chatgpt.com/c/6aff8520-e65c-83ed-b7df-b23221c1e61a",
+          "started_at": null,
+          "send_intent_at": "2026-11-19T23:24:12.568812+00:00",
+          "incident_reason": "visible_transcript_bound_to_prompt_and_footer",
+          "archived_at": "2026-11-20T00:04:55.502257+00:00"
+        }
+      ],
+      "incident_retries": 1
     },
     "trv2-6defe4885b0a3c38ab97d9f2": {
       "trend_id": "trv2-6defe4885b0a3c38ab97d9f2",
@@ -21523,7 +21531,6 @@
     "trv2-87f2b1f675e5a90a6e716100",
     "trv2-0178989695c04345fd8dfd3d",
     "trv2-0303bbbf7c8ce647d728e36b",
-    "trv2-0e14915b55b4726880d2b32d",
     "trv2-313984e6d31c673468c2fab0",
     "trv2-576333afb8818f77944f4ab4",
     "trv2-5acc06085e98c6b2957e89f0",
@@ -21553,7 +21560,8 @@
     "trv2-896b40988967424a943ed95a",
     "trv2-9d51e8a3cd3e2a10cfd8905c",
     "trv2-9fff01cf089c75ff700ed597",
-    "trv2-eee687851c6d826927d30657"
+    "trv2-eee687851c6d826927d30657",
+    "trv2-0e14915b55b4726880d2b32d"
   ],
   "effects_enabled": false
 }
