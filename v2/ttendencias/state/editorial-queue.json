@@ -20678,19 +20678,27 @@
     "trv2-6defe4885b0a3c38ab97d9f2": {
       "trend_id": "trv2-6defe4885b0a3c38ab97d9f2",
       "name": "Pinocho",
-      "revision": 1,
-      "status": "capture_recovery",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "0b55ec15baf6bd13",
-      "requested_at": "2026-11-19T23:04:43.347354+00:00",
-      "updated_at": "2026-11-19T23:33:22.897206+00:00",
+      "requested_at": "2026-11-20T00:11:13.889333+00:00",
+      "updated_at": "2026-11-20T00:11:13.889333+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "send_intent": {
-        "token": "45bcd476a11600356ff92b43000b3fc1cb32c207ead2da1f",
-        "at": "2026-11-19T23:29:16.524569+00:00"
-      },
-      "capture_recovery_reason": "visible_transcript_bound_to_prompt_and_footer"
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "capture_recovery",
+          "attempts": 1,
+          "chat_url": "https://chatgpt.com/c/6aff8650-ce94-83eb-b350-fd3d62935855",
+          "started_at": null,
+          "send_intent_at": "2026-11-19T23:29:16.524569+00:00",
+          "incident_reason": "visible_transcript_bound_to_prompt_and_footer",
+          "archived_at": "2026-11-20T00:11:13.889333+00:00"
+        }
+      ],
+      "incident_retries": 1
     },
     "trv2-0303bbbf7c8ce647d728e36b": {
       "trend_id": "trv2-0303bbbf7c8ce647d728e36b",
@@ -21651,7 +21659,6 @@
     "trv2-313984e6d31c673468c2fab0",
     "trv2-576333afb8818f77944f4ab4",
     "trv2-5acc06085e98c6b2957e89f0",
-    "trv2-6defe4885b0a3c38ab97d9f2",
     "trv2-ae1bdc4aedba625172c967a7",
     "trv2-b564daad8b0c573bb89d1a6d",
     "trv2-fbfb8fdf6a279685d6de62c5",
@@ -21678,7 +21685,8 @@
     "trv2-9d51e8a3cd3e2a10cfd8905c",
     "trv2-9fff01cf089c75ff700ed597",
     "trv2-eee687851c6d826927d30657",
-    "trv2-0e14915b55b4726880d2b32d"
+    "trv2-0e14915b55b4726880d2b32d",
+    "trv2-6defe4885b0a3c38ab97d9f2"
   ],
   "effects_enabled": false
 }
