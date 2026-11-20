@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-20T11:24:39.529491+00:00",
+  "checked_at": "2026-11-20T11:35:01.335148+00:00",
   "before": [
     "elaborando_bloqueado_273"
   ],
@@ -7,8 +7,14 @@
   "remaining": [
     "elaborando_bloqueado_273"
   ],
-  "healthy_source_count": 19,
-  "source_failures": [],
-  "events_bytes": 3995245,
+  "healthy_source_count": 18,
+  "source_failures": [
+    {
+      "source": "Noticias Cuatro",
+      "type": "general",
+      "error": "HTTP Error 429: Too Many Requests"
+    }
+  ],
+  "events_bytes": 3982856,
   "ok": false
 }
