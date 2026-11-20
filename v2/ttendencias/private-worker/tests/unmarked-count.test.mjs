@@ -42,3 +42,24 @@ test("two distinct counters sit to the right of both tabs in a sticky double hea
  assert.match(app, /if\(!node\)return/);
  assert.match(app, /if\(!newsViewMode\)try\{await loadNewsAfterRedCounter\(\)\}catch\{\}/);
 });
+
+test("Noticias independently fetches Top 30 and R marks despite skipping the trend renderer",async()=>{
+ const start=app.indexOf("async function refreshTrendsBadgeOnly()");
+ const end=app.indexOf("\nasync function refresh()",start);
+ assert.ok(start>0&&end>start,"Noticias must have its own refresh for the shared Tendencias badge");
+ const state={items:[]};let gotMarks=false,updated=false;
+ const fetch=async url=>{
+  assert.match(url,/^\/api\/state\/web-top30\.json\?v=/);
+  return {ok:true,json:async()=>({items:top.slice().reverse()})};
+ };
+ const refresh=new Function("BASE","fetch","valid","loadSharedMarks","state","updateTop30WithoutRCounter",
+  app.slice(start,end)+"\nreturn refreshTrendsBadgeOnly;")(
+   "/api/state/",fetch,x=>x,async()=>{gotMarks=true},state,()=>{updated=true});
+ await refresh();
+ assert.equal(state.items.length,30);
+ assert.equal(state.items[0].rank,1);
+ assert.ok(gotMarks&&updated,"both real server marks and the badge must be refreshed");
+ assert.match(app,/if\(newsViewMode\)\{\s*updateTop30WithoutRCounter\(\);\s*void refreshTrendsBadgeOnly\(\)/);
+ assert.match(app,/if\(newsViewMode\)void refreshTrendsBadgeOnly\(\)/);
+ assert.match(app,/if\(remaining===null\)\{node\.textContent="—\/30";/);
+});
