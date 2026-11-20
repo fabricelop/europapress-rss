@@ -209,6 +209,26 @@ def eligible(row):
             and (cap.get("image") or {}).get("status") != "saved")
 
 
+def image_receipt(job, saved, conversation_url):
+    """Normalize verified GitHub receipts from old and current image adapters.
+
+    The Windows REI-IA updater installs the worker but does not replace the
+    image storage adapter. Older adapters saved the original without an
+    ``attempt`` field; the immutable job supplies that verified identity.
+    """
+    if (not isinstance(saved, dict) or saved.get("trend_id") != job["trend_id"]
+            or saved.get("revision") != job["revision"]
+            or saved.get("command_id") != job["command_id"]
+            or saved.get("attempt", job["attempt"]) != job["attempt"]):
+        raise RuntimeError("V2_IMAGE_REMOTE_RECEIPT_INVALID")
+    receipt = {key: saved[key] for key in
+               ("sha256", "path", "mime", "revision", "backend", "command_id")}
+    receipt["attempt"] = job["attempt"]
+    receipt["status"] = "saved"
+    receipt["image_chat_url"] = conversation_url
+    return receipt
+
+
 def manual_retry_for(row, requests):
     """Accept only a current, owner-requested incident for this same text.
 
@@ -645,10 +665,7 @@ def run_one(row, attempt, *, api, auth, manual_request=None):
                     editorial.store(journal, record)
                     return record
                 raise
-            receipt = {key: saved[key] for key in
-                       ("sha256", "path", "mime", "revision", "backend", "command_id", "attempt")}
-            receipt["status"] = "saved"
-            receipt["image_chat_url"] = url
+            receipt = image_receipt(job, saved, url)
             editorial.update_image_receipt(api, auth, tid, rev, job["editorial_sha256"], receipt)
             verified, _ = editorial.queue_read(api, auth)
             bound = ((verified["items"].get(tid) or {}).get("capture") or {}).get("image") or {}
