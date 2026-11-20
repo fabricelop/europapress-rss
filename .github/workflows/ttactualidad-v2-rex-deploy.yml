@@ -14,6 +14,9 @@ on:
       - 'v2/ttendencias/image_retry_status_v2.py'
       - 'v2/ttendencias/web_top30_v2.py'
       - 'v2/ttendencias/test_image_worker_v2.py'
+      - 'v2/ttendencias/recover_image_receipts_v2.py'
+      - 'v2/ttendencias/test_recover_image_receipts_v2.py'
+      - 'v2/ttendencias/Repair-V2-Images-After-REI-IA.ps1'
       - 'v2/ttendencias/test_image_github_v2.py'
       - 'v2/ttendencias/test_image_retry_status_v2.py'
       - 'v2/ttendencias/test_web_top30_v2.py'
@@ -37,6 +40,7 @@ jobs:
           sparse-checkout: |
             /v2/ttendencias/Update-V2-ImageIncidents.ps1
             /v2/ttendencias/Update-V2-REI-IA.ps1
+            /v2/ttendencias/Repair-V2-Images-After-REI-IA.ps1
             /v2/ttittulares/
             /v2/ttendencias/*.py
       - uses: actions/setup-python@v5
@@ -68,6 +72,13 @@ jobs:
           [Management.Automation.Language.Parser]::ParseFile((Join-Path (Get-Location) 'v2\ttendencias\Update-V2-REI-IA.ps1'),[ref]$tokens,[ref]$errors) | Out-Null
           if($errors.Count){throw ($errors | Out-String)}
           Write-Host 'TT_V2_REI_IA_UPDATER_PARSE=PASS'
+      - name: Parse image receipt recovery updater without modifying Windows
+        shell: powershell
+        run: |
+          $tokens=$null;$errors=$null
+          [Management.Automation.Language.Parser]::ParseFile((Join-Path (Get-Location) 'v2\ttendencias\Repair-V2-Images-After-REI-IA.ps1'),[ref]$tokens,[ref]$errors) | Out-Null
+          if($errors.Count){throw ($errors | Out-String)}
+          Write-Host 'TT_V2_REI_IA_RECEIPT_UPDATER_PARSE=PASS'
   deploy:
     needs: windows-package-check
     runs-on: ubuntu-latest
@@ -94,7 +105,7 @@ jobs:
       - name: Regresiones de persistencia e identidad de las incidencias de imagen
         run: |
           python -m pip install playwright==1.57.0 jsonschema==4.23.0 Pillow psutil
-          python -m unittest -v v2.ttendencias.test_image_incident_v2 v2.ttendencias.test_image_worker_v2 v2.ttendencias.test_image_github_v2 v2.ttendencias.test_image_retry_status_v2 v2.ttendencias.test_web_top30_v2 v2.ttittulares.test_news_workflow_v2 v2.ttittulares.test_news_images_v2
+          python -m unittest -v v2.ttendencias.test_image_incident_v2 v2.ttendencias.test_image_worker_v2 v2.ttendencias.test_recover_image_receipts_v2 v2.ttendencias.test_image_github_v2 v2.ttendencias.test_image_retry_status_v2 v2.ttendencias.test_web_top30_v2 v2.ttittulares.test_news_workflow_v2 v2.ttittulares.test_news_images_v2
       - name: Verificar fechas de Tendencias en navegador de escritorio y movil
         working-directory: v2/ttendencias/private-worker
         run: |
