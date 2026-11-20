@@ -209,6 +209,25 @@ class Top30WebTests(unittest.TestCase):
         row["status"] = "in_progress"
         self.assertFalse(build(h, q)["items"][0]["image_in_progress"])
 
+    def test_image_incident_timestamp_is_revision_bound_without_leaking_private_details(self):
+        h, q = fixtures()
+        row = q["items"]["trv2-id-01"]
+        row.update(status="captured_review",capture={"revision":1,"verified_complete":True,
+            "answer":"Texto editorial válido "*8,"sha256":"c"*64})
+        at="2026-11-18T08:12:33Z"
+        row["image_incident"]={"project":"ttendencias-v2","trend_id":row["trend_id"],
+            "revision":1,"editorial_sha256":"c"*64,"code":"V2_IMAGE_NOT_READY",
+            "at":at,"command_id":"PRIVATE_IMAGE_COMMAND","detail_safe":"PRIVATE_ERROR_DETAIL"}
+        item=build(h,q)["items"][0]
+        self.assertTrue(item["image_incident_available"])
+        self.assertEqual(item["image_incident_at"],at)
+        self.assertNotIn("PRIVATE_IMAGE_COMMAND",str(item))
+        self.assertNotIn("PRIVATE_ERROR_DETAIL",str(item))
+        row["image_incident"]["revision"]=2
+        item=build(h,q)["items"][0]
+        self.assertFalse(item["image_incident_available"])
+        self.assertIsNone(item["image_incident_at"])
+
     def test_image_retry_counters_are_revision_bound_and_fail_closed(self):
         h, q = fixtures()
         item = q["items"]["trv2-id-01"]

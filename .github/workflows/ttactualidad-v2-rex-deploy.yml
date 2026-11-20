@@ -36,6 +36,7 @@ jobs:
           sparse-checkout-cone-mode: false
           sparse-checkout: |
             /v2/ttendencias/Update-V2-ImageIncidents.ps1
+            /v2/ttendencias/Update-V2-REI-IA.ps1
             /v2/ttittulares/
             /v2/ttendencias/*.py
       - uses: actions/setup-python@v5
@@ -60,6 +61,13 @@ jobs:
           [Management.Automation.Language.Parser]::ParseFile((Join-Path (Get-Location) 'v2\ttendencias\Update-V2-ImageIncidents.ps1'),[ref]$tokens,[ref]$errors) | Out-Null
           if($errors.Count){throw ($errors | Out-String)}
           Write-Host 'TT_V2_IMAGE_INCIDENT_UPDATER_PARSE=PASS'
+      - name: Parse REI-IA image-only updater without modifying Windows
+        shell: powershell
+        run: |
+          $tokens=$null;$errors=$null
+          [Management.Automation.Language.Parser]::ParseFile((Join-Path (Get-Location) 'v2\ttendencias\Update-V2-REI-IA.ps1'),[ref]$tokens,[ref]$errors) | Out-Null
+          if($errors.Count){throw ($errors | Out-String)}
+          Write-Host 'TT_V2_REI_IA_UPDATER_PARSE=PASS'
   deploy:
     needs: windows-package-check
     runs-on: ubuntu-latest
