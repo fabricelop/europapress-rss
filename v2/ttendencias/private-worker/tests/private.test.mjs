@@ -20,7 +20,7 @@ test("no secrets: fail closed",async()=>{
 });
 
 test("anonymous cannot read app.js, assets, images or state",async()=>{
- for(const path of ["/app.js","/styles.css","/manifest.webmanifest","/api/state/web-top30.json","/photo.png"]) {
+ for(const path of ["/app.js","/styles.css","/api/state/web-top30.json","/photo.png"]) {
   const response=await worker.fetch(req(path),env);
   assert.equal(response.status,401,path);
   assert.equal(response.headers.get("cache-control").includes("no-store"),true);
@@ -89,4 +89,21 @@ test("session expiry is exactly 30 days, not more",async()=>{
  assert.ok(expires<=Date.now()+30*24*3600000);
  const ok=await worker.fetch(req("/api/me",{headers:{"cookie":token}}),env);
  assert.equal(ok.status,200);
+});
+
+test("only fixed icon and manifest paths are public, with no private data exposed",async()=>{
+ for(const [path,type] of [["/icon.svg","image/svg+xml"],["/favicon.ico","image/x-icon"],["/apple-touch-icon.png","image/png"],["/icon-192.png","image/png"],["/icon-512.png","image/png"],["/manifest.webmanifest","application/manifest+json"]]){
+  const response=await worker.fetch(req(path),env);
+  assert.equal(response.status,200,path);
+  assert.ok(response.headers.get("content-type").startsWith(type),path);
+  assert.match(response.headers.get("cache-control"),/^public,/);
+  const blocked=await worker.fetch(req(path,{method:"POST"}),env);
+  assert.equal(blocked.status,405,path+" POST");
+ }
+ const login=await worker.fetch(req("/"),env);
+ const page=await login.text();
+ assert.match(page,/rel="apple-touch-icon" href="\/apple-touch-icon\.png"/);
+ assert.match(page,/rel="icon" href="\/icon\.svg"/);
+ assert.equal((await worker.fetch(req("/app.js"),env)).status,401);
+ assert.equal((await worker.fetch(req("/api/state/web-top30.json"),env)).status,401);
 });
