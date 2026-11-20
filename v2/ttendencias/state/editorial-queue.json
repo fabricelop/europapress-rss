@@ -23887,12 +23887,12 @@
       "trend_id": "trv2-d69600be42f0e3eb439ecafb",
       "name": "Latre",
       "revision": 3,
-      "status": "review_pending",
+      "status": "in_progress",
       "reason": "user_reset",
       "episode_token": "fd20d9c4ba494549",
       "requested_at": "2026-11-20T21:42:37.750237+00:00",
       "updated_at": "2026-11-20T21:42:37.750237+00:00",
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -23925,6 +23925,12 @@
         "code": "V2_IMAGE_WORKER_FAILED",
         "detail_safe": "No se pudo completar la imagen. Revise el proceso local de imágenes.",
         "retry_mode": "manual_only"
+      },
+      "lease": {
+        "token": "fb9455dcef36e8fc3642cd3fdd720e2de19d5c25050e68d1",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-20T21:43:21.387026+00:00",
+        "expires_at": "2026-11-20T22:23:21.387026+00:00"
       }
     },
     "trv2-cf61e05bd26494e02c4eb205": {
