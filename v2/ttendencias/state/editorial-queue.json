@@ -20850,13 +20850,13 @@
       "trend_id": "trv2-b564daad8b0c573bb89d1a6d",
       "name": "Rufi",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "f92b99e2816549f9",
       "requested_at": "2026-11-20T01:02:53.742478+00:00",
       "updated_at": "2026-11-20T01:02:53.742478+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -20869,7 +20869,13 @@
           "archived_at": "2026-11-20T01:02:53.742478+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "585cbd7d79e2a2cea5649086ba9b9b3d5e6bed6102311c49",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-20T01:03:51.949643+00:00",
+        "expires_at": "2026-11-20T01:43:51.949643+00:00"
+      }
     },
     "trv2-0e14915b55b4726880d2b32d": {
       "trend_id": "trv2-0e14915b55b4726880d2b32d",
