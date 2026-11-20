@@ -43,6 +43,7 @@ RECEIPT_PATH = re.compile(r"v2/ttittulares/state/radar/receipts/txn-[a-f0-9]{24}
 LIVE_RETRY_BUDGET = 8  # Concurrent editorial and image commits can move the branch during reads.
 SNAPSHOT_READ_WORKERS = 24  # Bounded parallel reads shorten the vulnerable CAS window.
 SNAPSHOT_BLOB_CACHE_LIMIT = 512  # Git blobs are immutable; unchanged documents need one download per pass.
+PINNED_JSON_MAX_BYTES = 64_000_000  # Historical radar alone exceeded 16 MB on 20 Nov; never discard it.
 
 
 class StoreError(RuntimeError):
@@ -129,10 +130,10 @@ class GitHubStore:
                       headers={"User-Agent": "TTiTTulares-V2-Radar", "Accept": "application/json"})
         try:
             with self._opener.open(req, timeout=60) as response:
-                raw = response.read(16_000_001)
+                raw = response.read(PINNED_JSON_MAX_BYTES + 1)
         except (HTTPError, URLError, TimeoutError, ConnectionError, OSError):
             raise StoreError("PINNED_RAW_READ_FAILED") from None
-        if len(raw) > 16_000_000:
+        if len(raw) > PINNED_JSON_MAX_BYTES:
             raise StoreError("PINNED_RAW_READ_TOO_LARGE")
         return raw
 
