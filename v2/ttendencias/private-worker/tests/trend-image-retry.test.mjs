@@ -12,11 +12,17 @@ const safe={project:"ttendencias-v2",target_id:trend_id,revision,available:true,
  incident:{code:"V2_IMAGE_NOT_READY",retry_mode:"manual_only",at}};
 const request=body=>new Request("https://example.test/api/trend-image-retry",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(body)});
 function db(){
- const rows=[];
- return {rows,prepare(sql){let args=[];return {
+ const rows=[],publicPrefs=[];
+ return {rows,publicPrefs,prepare(sql){let args=[];return {
   bind(...values){args=values;return this;},
   async run(){
    if(sql.startsWith("INSERT INTO")){
+    if(sql.includes("public_image_prefs")){
+     const prior=publicPrefs.find(x=>x.trend_id===args[0]&&x.revision===args[1]);
+     if(prior)prior.visible=0;
+     else publicPrefs.push({trend_id:args[0],revision:args[1],visible:0});
+     return {success:true};
+    }
     if(!rows.some(x=>x.trend_id===args[0]&&x.revision===args[1]&&x.incident_at===args[2]))
      rows.push({trend_id:args[0],revision:args[1],incident_at:args[2],editorial_sha256:args[3],request_id:args[4]});
    }
@@ -30,10 +36,13 @@ const context=(storage,ranking=[item],incident=safe)=>({json,sameOrigin:()=>true
 
 test("REI-IA stores one idempotent exact-incident request and leaves explanation unchanged",async()=>{
  const store=db(),env={MARKS_DB:store};
+ // An opted-in older photo must not opt the replacement into V1/RSS.
+ store.publicPrefs.push({trend_id,revision,visible:1});
  const before=structuredClone(item);
  const first=await trendImageRetry(request({trend_id,revision}),env,context(store));
  const repeat=await trendImageRetry(request({trend_id,revision}),env,context(store));
  assert.equal(first.status,202);assert.equal(repeat.status,202);assert.equal(store.rows.length,1);
+ assert.deepEqual(store.publicPrefs,[{trend_id,revision,visible:0}]);
  assert.deepEqual(item,before);
  assert.equal(store.rows[0].editorial_sha256,hash);
  assert.match(store.rows[0].request_id,/^[a-f0-9]{32}$/);
