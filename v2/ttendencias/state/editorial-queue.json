@@ -20691,13 +20691,13 @@
       "trend_id": "trv2-313984e6d31c673468c2fab0",
       "name": "repaso",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "8f3a8070618f22bb",
       "requested_at": "2026-11-20T00:21:29.954500+00:00",
       "updated_at": "2026-11-20T00:21:29.954500+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -20710,7 +20710,13 @@
           "archived_at": "2026-11-20T00:21:29.954500+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "4c99bd34ab7d078aabb6afec30b81a24d0b950d2dcc3debc",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-20T00:27:27.149634+00:00",
+        "expires_at": "2026-11-20T01:07:27.149634+00:00"
+      }
     },
     "trv2-b564daad8b0c573bb89d1a6d": {
       "trend_id": "trv2-b564daad8b0c573bb89d1a6d",
