@@ -24,7 +24,7 @@ function db(){
      return {success:true};
     }
     if(!rows.some(x=>x.trend_id===args[0]&&x.revision===args[1]&&x.incident_at===args[2]))
-     rows.push({trend_id:args[0],revision:args[1],incident_at:args[2],editorial_sha256:args[3],request_id:args[4]});
+     rows.push({trend_id:args[0],revision:args[1],incident_at:args[2],editorial_sha256:args[3],request_id:args[4],requested_at:new Date().toISOString()});
    }
    return {success:true};
   },
@@ -46,10 +46,30 @@ test("REI-IA stores one idempotent exact-incident request and leaves explanation
  assert.deepEqual(item,before);
  assert.equal(store.rows[0].editorial_sha256,hash);
  assert.match(store.rows[0].request_id,/^[a-f0-9]{32}$/);
- const publicData=await publicTrendImageRetries(new Request("https://example.test/api/public-trend-image-retries"),env,{json});
+ const publicData=await publicTrendImageRetries(new Request("https://example.test/api/public-trend-image-retries"),env,{json,readIncident:async()=>safe});
  assert.equal(publicData.status,200);assert.deepEqual(publicData.body.requests,store.rows);
  const ownerData=await trendImageRetry(new Request("https://example.test/api/trend-image-retry"),env,context(store));
  assert.deepEqual(ownerData.body.requests,store.rows);
+});
+
+test("a newer safe failure of the SAME explanation cannot lose an already queued REI-IA",async()=>{
+ const storage=db(),env={MARKS_DB:storage};
+ await trendImageRetry(request({trend_id,revision}),env,context(storage));
+ const original=structuredClone(storage.rows[0]);
+ const newer={...safe,incident:{...safe.incident,at:"2026-11-20T22:18:59Z"}};
+ const current=await publicTrendImageRetries(new Request("https://example.test/api/public-trend-image-retries"),env,
+  {json,readIncident:async()=>newer,now:Date.now()+61000});
+ assert.equal(current.status,200);
+ assert.equal(current.body.requests.length,1);
+ assert.equal(current.body.requests[0].incident_at,newer.incident.at);
+ assert.equal(current.body.requests[0].request_id,original.request_id);
+ assert.deepEqual(storage.rows,[original]); // Reconciliation does not rewrite an owner's request.
+ const unsafe=await publicTrendImageRetries(new Request("https://example.test/api/public-trend-image-retries"),env,
+  {json,readIncident:async()=>({...newer,incident:{...newer.incident,code:"V2_IMAGE_PROFILE_LOGIN_REQUIRED"}}),now:Date.now()+61000});
+ assert.deepEqual(unsafe.body.requests,[]);
+ const wrongText=await publicTrendImageRetries(new Request("https://example.test/api/public-trend-image-retries"),env,
+  {json,readIncident:async()=>({...newer,editorial_sha256:"c".repeat(64)}),now:Date.now()+61000});
+ assert.deepEqual(wrongText.body.requests,[]);
 });
 
 test("REI-IA rejects obsolete revision, image already present, generation in progress and unsafe incidents",async()=>{

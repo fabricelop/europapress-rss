@@ -134,6 +134,24 @@ test("REI-IA appears only on explained image incidents and never requests a new 
  assert.doesNotMatch(block,/"publish-action re-explain-action","REI"/);
 });
 
+test("REI-IA replaces I with a durable waiting icon even on old Windows projections",()=>{
+ const from=app.indexOf("function imageRetryRequested(item){"),to=app.indexOf("\nfunction ",from+10);
+ assert.ok(from>=0&&to>from);
+ const state={imageRetryRequests:[{trend_id:"trv2-"+"a".repeat(24),revision:2,
+   incident_at:"2026-11-20T22:04:21Z",requested_at:new Date().toISOString()}]};
+ const requested=new Function("state",app.slice(from,to)+";return imageRetryRequested;")(state);
+ const item={trend_id:state.imageRetryRequests[0].trend_id,revision:2,image_incident_available:true};
+ assert.equal(requested(item),true,"missing image_incident_at must not hide a saved request");
+ assert.equal(requested({...item,revision:3}),false);
+ assert.equal(requested({...item,trend_id:"trv2-"+"c".repeat(24)}),false);
+ state.imageRetryRequests[0].requested_at=new Date(Date.now()-4*3600000).toISOString();
+ assert.equal(requested(item),false,"outdated requests show a new incident instead");
+ assert.match(app,/const imagePending=!reset&&!imageReady\(item\)&&imageRetryRequested\(item\)/);
+ assert.match(app,/if\(!reset&&!imagePending&&!imageReady\(item\)/);
+ assert.match(app,/"image-working-icon image-queued-icon","◷"/);
+ assert.match(css,/\.image-queued-icon\{/);
+});
+
 test("sticky Radar and PU header includes rolling 24-hour manual click history",()=>{
  assert.match(index,/id="top-bar"/);
  assert.match(index,/id="radar-time"/);
@@ -153,7 +171,7 @@ test("trend detail says whether automatic image retries remain or are blocked",(
  const from=app.indexOf("function imageRetryHint(item){"),to=app.indexOf("\nfunction ",from+10);
  assert.ok(from>=0&&to>from);
  const el=(tag,className,message)=>({tag,className,textContent:message,setAttribute(){}});
- const hint=new Function("imageReady","el",app.slice(from,to)+";return imageRetryHint;")(()=>false,el);
+ const hint=new Function("imageReady","imageRetryRequested","el",app.slice(from,to)+";return imageRetryHint;")(()=>false,()=>false,el);
  const row={status:"explicada",image_retry:{state:"retry_pending",remaining:2,pre_send_failures:1}};
  assert.match(hint(row).textContent,/reintento automático pendiente · 2 envíos disponibles/);
  assert.match(hint(row).textContent,/fallos previos al envío 1\/3/);
@@ -161,6 +179,9 @@ test("trend detail says whether automatic image retries remain or are blocked",(
  assert.match(hint({...row,image_retry:{state:"blocked"}}).textContent,/no habrá más intentos automáticos/);
  assert.match(hint({...row,image_retry:{state:"unknown"}}).textContent,/No se puede confirmar/);
  assert.equal(hint({...row,status:"pendiente"}),null);
+ const queuedHint=new Function("imageReady","imageRetryRequested","el",app.slice(from,to)+";return imageRetryHint;")(()=>false,()=>true,el);
+ assert.match(queuedHint({...row,image_retry:{state:"blocked"}}).textContent,/REI-IA solicitado: imagen en espera/);
+ assert.match(queuedHint({...row,image_in_progress:true}).textContent,/reintento automático pendiente/);
  assert.match(css,/\.image-retry-status\{/);
  assert.match(built,/const hint=imageRetryHint\(item\)/);
 });

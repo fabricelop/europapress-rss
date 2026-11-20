@@ -282,8 +282,14 @@ async function loadImageRetryRequests(){
  state.imageRetryRequests=data.requests;
 }
 function imageRetryRequested(item){
- return state.imageRetryRequests.some(row=>row.trend_id===item.trend_id&&row.revision===item.revision&&
-   row.incident_at===item.image_incident_at);
+ return state.imageRetryRequests.some(row=>{
+  if(row.trend_id!==item.trend_id||row.revision!==item.revision)return false;
+  const requested=Date.parse(row.requested_at);
+  // Older Windows projections may not yet contain image_incident_at. D1's
+  // persisted one-shot request, not that optional projection, owns the badge.
+  if(Number.isFinite(requested))return requested<=Date.now()&&Date.now()-requested<3*60*60*1000;
+  return row.incident_at===item.image_incident_at;
+ });
 }
 function incidentRequested(item){
  return state.incidentRequests.some(row=>row.trend_id===item.trend_id&&row.base_revision===item.revision);
@@ -459,7 +465,9 @@ function imageRetryHint(item){
  if(item.status!=="explicada"||imageReady(item)||item.image_suppressed===true)return null;
  const retry=item.image_retry||{};
  let message;
- switch(retry.state){
+ if(imageRetryRequested(item)&&item.image_in_progress!==true){
+  message="REI-IA solicitado: imagen en espera. La explicación sigue intacta; la generación comenzará cuando haya turno.";
+ }else switch(retry.state){
   case "generating":message="Imagen IA: generándose automáticamente.";break;
   case "retry_pending":
    message="Imagen IA: reintento automático pendiente · "+retry.remaining+" envíos disponibles de 3";
@@ -662,8 +670,8 @@ function appendEditorialReButtons(editing,item){
     if(!response.ok)throw Error(response.status===409?"La incidencia ya no permite este reintento; actualiza la ficha.":"HTTP "+response.status);
     const result=await response.json();
     item.image_incident_at=result.incident_at;
-    state.imageRetryRequests.push({trend_id:item.trend_id,revision:item.revision,incident_at:result.incident_at});
-    publishNotice("REI-IA solicitado para «"+item.name+"». Se generará solo una imagen nueva; la explicación no cambia.");
+    state.imageRetryRequests.push({trend_id:item.trend_id,revision:item.revision,incident_at:result.incident_at,requested_at:new Date().toISOString()});
+    publishNotice("REI-IA registrado para «"+item.name+"». Imagen en espera; la explicación no cambia.");
     render();
    }catch(error){imageRetry.disabled=false;publishNotice("No se pudo solicitar REI-IA para «"+item.name+"»: "+error.message);}
   });
@@ -931,6 +939,7 @@ function render(){
  const root=$("results");root.replaceChildren();
  for(const item of state.items){
   const reset=reResetPending(item);
+  const imagePending=!reset&&!imageReady(item)&&imageRetryRequested(item);
   const card=el("details","trend");
   card.classList.toggle("marked-red",isMarked(item));
   card.open=state.open===item.trend_id;
@@ -995,6 +1004,13 @@ function render(){
    generating.setAttribute("role","img");
    head.append(generating);
   }
+  if(imagePending&&item.image_in_progress!==true){
+   const queued=el("span","image-working-icon image-queued-icon","◷");
+   queued.title="REI-IA solicitado · imagen en espera";
+   queued.setAttribute("aria-label",queued.title);
+   queued.setAttribute("role","status");
+   head.append(queued);
+  }
   if(!reset&&(imageReady(item)||item.image_suppressed===true)){
    const photo=el("span","image-ready-icon","▣");
    photo.title=item.image_suppressed===true?"Imagen IA conservada pero retirada de las dos webs":"Imagen IA asociada a esta revisión";
@@ -1016,7 +1032,7 @@ function render(){
    card.append(diagnostic);
   }
   if(!reset){const hint=imageRetryHint(item);if(hint)card.append(hint);}
-  if(!reset&&!imageReady(item)&&item.image_suppressed!==true&&item.image_in_progress!==true)
+  if(!reset&&!imagePending&&!imageReady(item)&&item.image_suppressed!==true&&item.image_in_progress!==true)
    TTImageIncidents.attach({card,head,project:"ttendencias-v2",id:item.trend_id,revision:item.revision,available:item.image_incident_available===true});
   if(!reset||item.status!=="explicada")makePublishButtons(card,item);
   if(!reset)attachGeneratedImage(card,item);
