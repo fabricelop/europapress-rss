@@ -20216,13 +20216,13 @@
       "trend_id": "trv2-935bb3c66d4ac2626b07000b",
       "name": "María Casado",
       "revision": 8,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "3c995b2876036f13",
       "requested_at": "2026-11-19T23:11:02.669913+00:00",
       "updated_at": "2026-11-19T23:11:02.669913+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -20297,7 +20297,13 @@
       ],
       "incident_retries": 2,
       "review_mode": "x",
-      "review_hints": "Presentadora del debate"
+      "review_hints": "Presentadora del debate",
+      "lease": {
+        "token": "587c850ee0a82d9d3da6c735297897a642142dd26521f255",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-20T00:28:45.724546+00:00",
+        "expires_at": "2026-11-20T01:08:45.724546+00:00"
+      }
     },
     "trv2-fa95ef6dc5e74f73b9981b9c": {
       "trend_id": "trv2-fa95ef6dc5e74f73b9981b9c",
