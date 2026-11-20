@@ -357,11 +357,23 @@ def ingest_scan(rows, source_statuses, previous_state=None, news_index=None, *, 
     if index_doc.get("project") not in (None,"ttittulares-v2"):
         raise ValueError("NEWS_INDEX_PROJECT_MISMATCH")
     index=dict(index_doc.get("items") or {})
+    # Live radar keeps its own compact identity ledger for events whose full
+    # archived evidence has moved to immutable cold-storage batches. The
+    # editorial index can be stale; it is not the archive's source of truth.
+    archived_identity=copy.deepcopy(prior.get("archive_index") or {})
+    if not isinstance(archived_identity,dict):
+        raise ValueError("RADAR_ARCHIVE_INDEX_INVALID")
+    for event_id,identity in archived_identity.items():
+        if identity.get("event_id")!=event_id or identity.get("status")!="archived":
+            raise ValueError("RADAR_ARCHIVE_IDENTITY_INVALID")
+        index.setdefault(event_id,identity)
     old_events=prior.get("items") or {}
     if isinstance(old_events,list):
         old_events={x["event_id"]:x for x in old_events if x.get("event_id")}
     events=copy.deepcopy(old_events)
-    protected_event_ids=set(events)
+    if set(events)&set(archived_identity):
+        raise ValueError("RADAR_ARCHIVE_DUPLICATE_ID")
+    protected_event_ids=set(events)|set(archived_identity)
     updates=copy.deepcopy(prior.get("material_updates") or {})
     health=project_source_health(source_statuses,prior.get("source_health") or {},stamp,cat)
     new_events=[]
@@ -528,14 +540,18 @@ def ingest_scan(rows, source_statuses, previous_state=None, news_index=None, *, 
         "source_health":health,"items":events,"material_updates":updates,
         "metrics":{
             "input_rows":len(rows or []),"accepted_rows":len(accepted),"filtered_rows":len(filtered),
-            "candidate_count":len(events),"monitoring_count":sum(x.get("status")=="monitoring" for x in events.values()),
+            "candidate_count":len(events)+len(archived_identity),"monitoring_count":sum(x.get("status")=="monitoring" for x in events.values()),
             "eligible_count":sum(x.get("status")=="eligible" for x in events.values()),
-            "archived_count":sum(x.get("status")=="archived" for x in events.values()),
+            "archived_count":sum(x.get("status")=="archived" for x in events.values())+len(archived_identity),
             "material_update_waiting":sum(x.get("status")=="monitoring" for x in updates.values()),
             "material_update_eligible":len(material_eligible)
         },
         "effects_enabled":False
     }
+    if archived_identity:
+        radar_state["archive_index"]=archived_identity
+    if prior.get("archive_manifest"):
+        radar_state["archive_manifest"]=copy.deepcopy(prior["archive_manifest"])
     index_doc={"schema_version":1,"project":"ttittulares-v2","updated_at":stamp,"items":index}
     return {
         "radar_state":radar_state,"news_index":index_doc,
