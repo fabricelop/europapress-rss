@@ -18,6 +18,9 @@ test("image details are exclusively the exact persisted revision/hash, never a m
  let result=await readImageIncident({project:"ttendencias-v2",id:tid,revision:2,fetcher:fetcher(ledger())});
  assert.equal(result.available,true);assert.equal(result.incident.code,problem.code);assert.equal(result.incident.detail,problem.detail_safe);
  assert.deepEqual(Object.keys(result.incident).sort(),["at","code","detail","retry_mode"]);
+ const internal=await readImageIncident({project:"ttendencias-v2",id:tid,revision:2,fetcher:fetcher(ledger()),includeIdentity:true});
+ assert.equal(internal.editorial_sha256,hash);
+ assert.equal(result.editorial_sha256,undefined);
  for(const wrong of [null,{...problem,revision:1},{...problem,editorial_sha256:"d".repeat(64)},{...problem,trend_id:"trv2-"+"d".repeat(24)}]){
   result=await readImageIncident({project:"ttendencias-v2",id:tid,revision:2,fetcher:fetcher(ledger(wrong))});
   assert.equal(result.available,false);assert.equal(result.incident,null);

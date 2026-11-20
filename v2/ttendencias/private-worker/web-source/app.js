@@ -2,7 +2,7 @@
 // Ranking y marcas R comparten la misma instantánea validada por el Worker.
 const BASE="/api/state/";
 const $=id=>document.getElementById(id);
-const state={items:[],captured:null,open:null,rankingUnchanged:false,rankingChangeAt:null,reRequests:[],incidentRequests:[],incidentRetryRequests:[],publications:{count:0,events:[]},manualImages:[]};
+const state={items:[],captured:null,open:null,rankingUnchanged:false,rankingChangeAt:null,reRequests:[],incidentRequests:[],incidentRetryRequests:[],imageRetryRequests:[],publications:{count:0,events:[]},manualImages:[]};
 const newsViewMode=new URLSearchParams(location.search).get("view")==="noticias";
 const PUBLIC_SITE='https://ttactualidad.rainyraven22.chatgpt.site';
 function el(tag,className,content){const n=document.createElement(tag);if(className)n.className=className;if(content!==undefined)n.textContent=String(content);return n}
@@ -255,9 +255,9 @@ async function loadSharedMarks() {
 }
 async function loadReRequests(){
  const res=await fetch("/api/re-explain",{cache:"no-store",credentials:"same-origin"});
- if(!res.ok)throw Error("No se puede consultar REI (HTTP "+res.status+")");
+ if(!res.ok)throw Error("No se puede consultar REI-T (HTTP "+res.status+")");
  const data=await res.json();
- if(!Array.isArray(data.requests))throw Error("Respuesta REI no válida");
+ if(!Array.isArray(data.requests))throw Error("Respuesta REI-T no válida");
  state.reRequests=data.requests;
 }
 async function loadIncidentRequests(){
@@ -273,6 +273,17 @@ async function loadIncidentRetryRequests(){
  const data=await res.json();
  if(!Array.isArray(data.requests))throw Error("Respuesta de reintentos no válida");
  state.incidentRetryRequests=data.requests;
+}
+async function loadImageRetryRequests(){
+ const res=await fetch("/api/trend-image-retry",{cache:"no-store",credentials:"same-origin"});
+ if(!res.ok)throw Error("No se pueden consultar las solicitudes REI-IA");
+ const data=await res.json();
+ if(!Array.isArray(data.requests))throw Error("Respuesta REI-IA no válida");
+ state.imageRetryRequests=data.requests;
+}
+function imageRetryRequested(item){
+ return state.imageRetryRequests.some(row=>row.trend_id===item.trend_id&&row.revision===item.revision&&
+   row.incident_at===item.image_incident_at);
 }
 function incidentRequested(item){
  return state.incidentRequests.some(row=>row.trend_id===item.trend_id&&row.base_revision===item.revision);
@@ -368,9 +379,9 @@ function explanationAgeIndicator(item){
  const delta=entered-explained;
  let tone="current",label="VIGENTE",detail="La explicación se guardó durante la entrada actual al Top 30.";
  if(delta>24*60*60*1000){
-  tone="old";label="ANTIGUA";detail="La explicación es más de 24 horas anterior a la entrada actual. Valora REI.";
+  tone="old";label="ANTIGUA";detail="La explicación es más de 24 horas anterior a la entrada actual. Valora REI-T.";
  }else if(delta>0){
-  tone="review";label="REVISAR";detail="La explicación es anterior a la entrada actual. Valora REI.";
+  tone="review";label="REVISAR";detail="La explicación es anterior a la entrada actual. Valora REI-T.";
  }
  const badge=el("span","explanation-age age-"+tone,label);
  badge.title=detail;
@@ -609,9 +620,9 @@ function openReXDialog(item,onSubmit){
  document.body.append(dialog);dialog.showModal();textarea.focus();
 }
 function appendEditorialReButtons(editing,item){
- const re=el("button","publish-action re-explain-action","REI");
+ const re=el("button","publish-action re-explain-action","REI-T");
  re.type="button";
-  re.title="REI: reiniciar investigación desde cero";
+  re.title="REI-T: reiniciar investigación y generación de imagen desde cero";
   re.setAttribute("aria-label","Resetear y elaborar de nuevo "+item.name);
   re.disabled=reRequested(item);
  re.addEventListener("click",async()=>{
@@ -625,14 +636,40 @@ function appendEditorialReButtons(editing,item){
    const response=await fetch("/api/re-explain",{method:"POST",credentials:"same-origin",headers:{"content-type":"application/json","x-ttv2-action":"1"},body:JSON.stringify({trend_id:item.trend_id,revision:item.revision,entered_top30_at:markStamp(item)})});
    if(!response.ok)throw Error("HTTP "+response.status);
    state.reRequests.push({trend_id:item.trend_id,base_revision:item.revision,status:"requested"});
-    re.title="REI solicitado; nueva investigación con prioridad";
-    publishNotice("REI solicitado para «"+item.name+"». Se investigará de nuevo en el próximo chat libre.");
+    re.title="REI-T solicitado; nueva investigación con prioridad";
+    publishNotice("REI-T solicitado para «"+item.name+"». Se investigará de nuevo en el próximo chat libre.");
    render();
   }catch(error){
    re.disabled=false;
-   publishNotice("No se pudo solicitar REI para «"+item.name+"»: "+error.message);
+   publishNotice("No se pudo solicitar REI-T para «"+item.name+"»: "+error.message);
   }
  });
+ editing.append(re);
+ if(item.status==="explicada"&&item.image_incident_available===true&&
+    item.image_in_progress!==true&&!imageReady(item)){
+  const imageRetry=el("button","publish-action re-image-action","REI-IA");
+  imageRetry.type="button";
+  imageRetry.title="Reintentar solo la imagen, conservando íntegra la explicación y su revisión";
+  imageRetry.setAttribute("aria-label","Reintentar solo la imagen de "+item.name);
+  imageRetry.disabled=reRequested(item)||imageRetryRequested(item);
+  imageRetry.addEventListener("click",async()=>{
+   if(imageRetry.disabled)return;
+   imageRetry.disabled=true;
+   try{
+    const response=await fetch("/api/trend-image-retry",{method:"POST",credentials:"same-origin",
+      headers:{"content-type":"application/json","x-ttv2-action":"1"},
+      body:JSON.stringify({trend_id:item.trend_id,revision:item.revision})});
+    if(!response.ok)throw Error(response.status===409?"La incidencia ya no permite este reintento; actualiza la ficha.":"HTTP "+response.status);
+    const result=await response.json();
+    item.image_incident_at=result.incident_at;
+    state.imageRetryRequests.push({trend_id:item.trend_id,revision:item.revision,incident_at:result.incident_at});
+    publishNotice("REI-IA solicitado para «"+item.name+"». Se generará solo una imagen nueva; la explicación no cambia.");
+    render();
+   }catch(error){imageRetry.disabled=false;publishNotice("No se pudo solicitar REI-IA para «"+item.name+"»: "+error.message);}
+  });
+  editing.append(imageRetry);
+  if(imageRetry.disabled)editing.append(el("span","review-state","REI-IA solicitado"));
+ }
  const reX=el("button","publish-action re-x-action","RE-X");
  reX.type="button";reX.title="Reevaluar buscando en X con tus pistas";
  reX.setAttribute("aria-label","Investigar de nuevo "+item.name+" en X con pistas");
@@ -651,7 +688,7 @@ function appendEditorialReButtons(editing,item){
      render();
    });
  });
- editing.append(re,reX);
+ editing.append(reX);
 }
 function makePublishButtons(card,item){
  if(item.status==="incidencia"){
@@ -679,9 +716,9 @@ function makePublishButtons(card,item){
   });
   review.append(button);
   if(button.disabled)review.append(el("span","review-state","Pistas RE-X recibidas · esperando otro intento"));
-  const retry=el("button","publish-action re-explain-action","REI");
+  const retry=el("button","publish-action re-explain-action","REI-T");
   retry.type="button";
-   retry.title="REI: reiniciar investigación, aunque el intento anterior esté interrumpido";
+   retry.title="REI-T: reiniciar investigación e imagen, aunque el intento anterior esté interrumpido";
   retry.setAttribute("aria-label","Reintentar la elaboración de "+item.name+" desde cero");
    retry.disabled=incidentRetryRequested(item)||reRequested(item);
   retry.addEventListener("click",async()=>{
@@ -694,12 +731,12 @@ function makePublishButtons(card,item){
         entered_top30_at:markStamp(item)})});
     if(!response.ok)throw Error("HTTP "+response.status);
      state.reRequests.push({trend_id:item.trend_id,base_revision:item.revision,status:"requested"});
-     publishNotice("REI solicitado para «"+item.name+"». Una nueva investigación tendrá prioridad sin esperar al chat anterior.");
+     publishNotice("REI-T solicitado para «"+item.name+"». Una nueva investigación tendrá prioridad sin esperar al chat anterior.");
     render();
    }catch(e){retry.disabled=false;publishNotice("No se pudo solicitar el reintento: "+e.message);}
   });
   review.append(retry);
-   if(retry.disabled)review.append(el("span","review-state","REI solicitado"));
+   if(retry.disabled)review.append(el("span","review-state","REI-T solicitado"));
   actions.append(review);
   card.append(actions);
   return;
@@ -916,7 +953,7 @@ function render(){
    title.append(warning);
   }
   if(reset){
-   const note=el("span","review-state",item.re_in_progress?"En revisión · nueva explicación en preparación":"REI solicitada · reinicio pendiente");
+   const note=el("span","review-state",item.re_in_progress?"En revisión · nueva explicación en preparación":"REI-T solicitada · reinicio pendiente");
    note.setAttribute("role","status");
    title.append(note);
   }
@@ -971,7 +1008,7 @@ function render(){
     head.append(hidden);
    }
   }
-  const body=el("div","explanation",reset?(item.status==="explicada"?"Revisión editorial solicitada. Se preparará una nueva explicación e imagen.":item.status==="en_elaboracion"?"REI solicitada. El chat actual continúa; el próximo usará la nueva solicitud.":"REI solicitada. La nueva investigación está pendiente."):item.status==="explicada"?explanationText(item.explanation,item):({en_elaboracion:"En elaboración.",incidencia:"Incidencia en la elaboración.",desestimada:"Desestimada."})[item.status]||"Explicación pendiente.");
+  const body=el("div","explanation",reset?(item.status==="explicada"?"Revisión editorial solicitada. Se preparará una nueva explicación e imagen.":item.status==="en_elaboracion"?"REI-T solicitada. El chat actual continúa; el próximo usará la nueva solicitud.":"REI-T solicitada. La nueva investigación está pendiente."):item.status==="explicada"?explanationText(item.explanation,item):({en_elaboracion:"En elaboración.",incidencia:"Incidencia en la elaboración.",desestimada:"Desestimada."})[item.status]||"Explicación pendiente.");
   card.append(body);
   if(failure&&typeof failure.guidance==="string"){
    const diagnostic=el("p","editorial-failure-detail",failure.guidance);
@@ -1018,6 +1055,7 @@ async function refresh(){
   try{await loadReRequests()}catch{state.reRequests=[]}
   try{await loadIncidentRequests()}catch{state.incidentRequests=[]}
   try{await loadIncidentRetryRequests()}catch{state.incidentRetryRequests=[]}
+  try{await loadImageRetryRequests()}catch{state.imageRetryRequests=[]}
   try{await loadPublications()}catch{$("publication-summary").textContent="PU · — / 24 h"}
   if(!newsViewMode)try{await loadNewsAfterRedCounter()}catch{}
   try{await loadManualImages()}catch{}

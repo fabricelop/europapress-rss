@@ -35,6 +35,7 @@ COOLDOWN_SECONDS = 240
 IMAGE_SEND_PROTOCOL = 2
 MAX_PROTOCOL_ATTEMPTS = 3
 MAX_PRE_SEND_FAILURES = 3
+IMAGE_RETRY_ID = re.compile(r"[a-f0-9]{32}\Z")
 UNVERIFIED_SEND_COOLDOWN_SECONDS = COOLDOWN_SECONDS
 COMPOSERS = editorial.COMPOSERS
 SEND_BUTTONS = (
@@ -208,6 +209,46 @@ def eligible(row):
             and (cap.get("image") or {}).get("status") != "saved")
 
 
+def manual_retry_for(row, requests):
+    """Accept only a current, owner-requested incident for this same text.
+
+    The public control is a request, not an authority to alter the ledger.
+    Recheck the exact incident, revision, fingerprint and safe failure class.
+    """
+    if not eligible(row) or not isinstance(requests, list):
+        return None
+    incident, cap = row.get("image_incident") or {}, row.get("capture") or {}
+    if (incident.get("project") != "ttendencias-v2" or
+            incident.get("trend_id") != row.get("trend_id") or
+            incident.get("revision") != row.get("revision") or
+            incident.get("editorial_sha256") != cap.get("sha256") or
+            incident.get("retry_mode") == "none" or
+            not re.fullmatch(r"[A-Z][A-Z0-9_]{2,119}", str(incident.get("code", ""))) or
+            re.search(r"AUTH|LOGIN|CREDENTIAL|DISK|CLEANUP|CAPTCHA|LEASE_EXPIRED", incident["code"])):
+        return None
+    progress = row.get("image_progress") or {}
+    if (progress.get("status") == "in_progress" and
+            progress.get("revision") == row.get("revision") and
+            progress.get("editorial_sha256") == cap.get("sha256")):
+        try:
+            expires = datetime.fromisoformat(str(progress["expires_at"]).replace("Z", "+00:00"))
+            if expires.tzinfo and expires > datetime.now(timezone.utc):
+                return None
+        except (ValueError, TypeError, KeyError):
+            return None
+    for req in requests:
+        if not isinstance(req, dict):
+            continue
+        if (req.get("trend_id") == row.get("trend_id") and
+                type(req.get("revision")) is int and req["revision"] == row["revision"] and
+                req.get("editorial_sha256") == cap.get("sha256") and
+                req.get("incident_at") == incident.get("at") and
+                isinstance(req.get("request_id"), str) and
+                IMAGE_RETRY_ID.fullmatch(req["request_id"])):
+            return req
+    return None
+
+
 def ranked_candidates(queue, history, *, now=None):
     """Current Top30 plus recent RE/RE-X revisions that left the ranking.
 
@@ -318,7 +359,7 @@ def journal_path(trend_id, revision, attempt):
     return JOURNALS / ("%s-r%d-attempt-%03d.json" % (trend_id, revision, attempt))
 
 
-def next_attempt(row, *, now=None):
+def next_attempt(row, *, now=None, manual_request=None):
     """Retry in a NEW chat; a later successful image replaces the prior raster.
 
     A possibly-sent prompt is never replayed with the same command. A new
@@ -336,6 +377,10 @@ def next_attempt(row, *, now=None):
         except (ValueError, KeyError, json.JSONDecodeError):
             return None  # Corrupt/ambiguous journal identity: fail closed.
     attempts.sort(key=lambda item: item[0])
+    manual=manual_retry_for(row,[manual_request]) if manual_request else None
+    if manual and any(record.get("manual_retry_request_id") == manual["request_id"]
+                      for _,record in attempts):
+        return None  # one request authorizes exactly one new image chat
     if not attempts:
         return 1
     last_number, last = attempts[-1]
@@ -351,9 +396,9 @@ def next_attempt(row, *, now=None):
         return None
     pre_send_count = sum(status == "pre_send_failed" for status in statuses)
     send_count = sum(status != "pre_send_failed" for status in statuses)
-    if pre_send_count >= MAX_PRE_SEND_FAILURES and last.get("status") == "pre_send_failed":
+    if pre_send_count >= MAX_PRE_SEND_FAILURES and last.get("status") == "pre_send_failed" and not manual:
         return None
-    if send_count >= MAX_PROTOCOL_ATTEMPTS:
+    if send_count >= MAX_PROTOCOL_ATTEMPTS and not manual:
         return None
     try:
         stamp = datetime.fromisoformat(last["at"])
@@ -473,7 +518,7 @@ def submit_image_prompt(page, composer, prompt, command_id, *, before_click=None
     raise RuntimeError("V2_IMAGE_SEND_BUTTON_UNAVAILABLE")
 
 
-def run_one(row, attempt, *, api, auth):
+def run_one(row, attempt, *, api, auth, manual_request=None):
     """Isolated lifecycle, safe even while editorial Chrome is running."""
     tid, rev = row["trend_id"], row["revision"]
     # The job is immutable for this attempt. Its destination chat URL will be
@@ -502,6 +547,8 @@ def run_one(row, attempt, *, api, auth):
               "command_id": job["command_id"], "status": "starting",
               "send_protocol": IMAGE_SEND_PROTOCOL,
               "publication_allowed": False}
+    if manual_request:
+        record["manual_retry_request_id"] = manual_request["request_id"]
     editorial.store(journal, record)
     process = None
     browser = None
@@ -727,6 +774,8 @@ def main():
     parser.add_argument("--trend-id", help="ID reservado por el despachador paralelo")
     parser.add_argument("--revision", type=int)
     parser.add_argument("--attempt", type=int)
+    parser.add_argument("--manual-request-id")
+    parser.add_argument("--manual-incident-at")
     args = parser.parse_args()
     api = editorial.module("persist_capture_github.py", "ttv2_image_github_api")
     auth = api.token()
@@ -747,17 +796,25 @@ def main():
                     and candidate["revision"] == args.revision), None)
         if row is None:
             raise RuntimeError("V2_IMAGE_EXPLICIT_JOB_NOT_CURRENT_TOP30")
-        attempt = next_attempt(row)
+        manual = manual_retry_for(row,[{"trend_id":args.trend_id,"revision":args.revision,
+             "editorial_sha256":(row.get("capture") or {}).get("sha256"),
+             "incident_at":args.manual_incident_at,"request_id":args.manual_request_id}]) if args.manual_request_id else None
+        if args.manual_request_id and manual is None:
+            raise RuntimeError("V2_IMAGE_MANUAL_REQUEST_STALE_NO_RESEND")
+        attempt = next_attempt(row,manual_request=manual)
         if attempt != args.attempt:
             raise RuntimeError("V2_IMAGE_ATTEMPT_STALE_NO_RESEND")
     else:
+        if args.manual_request_id or args.manual_incident_at:
+            raise RuntimeError("V2_IMAGE_MANUAL_REQUEST_REQUIRES_EXPLICIT_JOB")
         row, attempt = pick_next(queue, history)
+        manual = None
     print("TT_V2_IMAGE_SELECTION=CURRENT_TOP30_RANK_ORDER")
     print("TT_V2_IMAGE_NEXT=" + ((row["name"] + ":r" + str(row["revision"])) if row else "NONE"))
     print("TT_V2_IMAGE_ATTEMPT=" + str(attempt or 0))
     print("TT_V2_IMAGE_PUBLICATION=NO")
     if row and args.run_one:
-        run_one(row, attempt, api=api, auth=auth)
+        run_one(row, attempt, api=api, auth=auth, manual_request=manual)
     else:
         print("TT_V2_IMAGE_DRY_RUN=YES")
 

@@ -5,6 +5,7 @@ import {readNews,readNewsRecord} from "./news.js";
 import {readNewsMaster,actOnMaster,newsMasterPublicationCount} from "./news-master.js";
 import {newsControls,newsView,newsAction,newsPublicationCount,newsManualImage,newsImage,publicNews,publicNewsImageVisibility,publicNewsArchivedIndex,newsWorkerControls} from "./news-actions.js";
 import {readImageIncident} from "./image-incidents.js";
+import {publicTrendImageRetries,trendImageRetry} from "./trend-image-retry.js";
 // Private application and API assets require a session; only fixed public branding files are exempt.
 const COOKIE = "__Host-ttv2";
 const SESSION_VERSION = "v1";
@@ -523,6 +524,7 @@ export default {
       try{return json({schema_version:1,...await publicEditorialOverrides(env)});}
       catch{return json({error:"editorial_overrides_unavailable"},503);}
     }
+    if(url.pathname==="/api/public-trend-image-retries")return publicTrendImageRetries(request,env,{json});
     if (!configured(env)) return result("Acceso privado no configurado",503);
     if (url.pathname === "/api/image-ingest-ready" || url.pathname === "/api/image-ingest") return json({error:"image_backend_migrated_to_github"},410);
     if (url.pathname === "/api/manual-image-ticket/redeem") return redeemManualImageTicket(request,env);
@@ -559,6 +561,7 @@ export default {
       try{return json(await readImageIncident({project:url.searchParams.get("project"),id:url.searchParams.get("id"),revision:Number(url.searchParams.get("revision"))}));}
       catch(error){const status=error.message==="IMAGE_INCIDENT_ID_INVALID"?400:error.message==="IMAGE_INCIDENT_REVISION_CHANGED"?409:503;return json({error:status===400?"invalid_image_identity":status===409?"image_revision_changed":"image_incident_unavailable"},status);}
     }
+    if(url.pathname==="/api/trend-image-retry")return trendImageRetry(request,env,{json,sameOrigin,currentRanking});
     if(url.pathname==="/api/news-master-action")return actOnMaster(request,env,{json,sameOrigin});
     if(url.pathname==="/api/news-master-publications")return newsMasterPublicationCount(env,{json});
     if(url.pathname==="/api/news-master"){

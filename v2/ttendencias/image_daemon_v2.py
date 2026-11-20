@@ -5,6 +5,7 @@ import json
 import pathlib
 import sys
 import time
+import urllib.request
 from datetime import datetime, timezone
 
 import editorial_run_v2 as editorial
@@ -15,6 +16,18 @@ from parallel_dispatch_v2 import DisposableWorkerPool
 FLAG = editorial.ROOT / "auto-images-v2.enabled"
 LOCK = editorial.ROOT / "image_batch_v2.lock"
 STATUS = editorial.ROOT / "image-daemon-status.json"
+MANUAL_RETRY_URL = "https://ttactualidad-v2-private-test.fabricelop.workers.dev/api/public-trend-image-retries"
+
+
+def fetch_manual_image_retries(url=MANUAL_RETRY_URL):
+    """Fetch only non-secret, exact-revision requests. Never mutate D1."""
+    request = urllib.request.Request(url, headers={
+        "Accept": "application/json", "User-Agent": "TTActualidadV2-Image-Retry-Poll"})
+    with urllib.request.urlopen(request, timeout=10) as response:
+        data = json.load(response)
+    if data.get("schema_version") != 1 or not isinstance(data.get("requests"), list) or len(data["requests"]) > 200:
+        raise ValueError("V2_IMAGE_RETRY_PUBLIC_SCHEMA_INVALID")
+    return data["requests"]
 
 
 def enabled():
@@ -69,6 +82,17 @@ def run_forever(*, poll_seconds=90, max_jobs=0, workers=2):
                            active_workers=len(pool.active), reason=str(exc)[:150])
                     time.sleep(12 if pool.active else poll_seconds)
                     continue
+                try:
+                    manual_requests = fetch_manual_image_retries()
+                except Exception as exc:
+                    # An image-retry control outage must not stall unrelated
+                    # automatic image generation or any editorial work.
+                    manual_requests = []
+                    report("IMAGE_RETRY_POLL_DELAY", completed=completed,
+                           reason=type(exc).__name__, active_workers=len(pool.active))
+                requested={row["trend_id"]:worker.manual_retry_for(row,manual_requests)
+                           for row in candidates}
+                candidates.sort(key=lambda row: 0 if requested[row["trend_id"]] else 1)
                 started = 0
                 for row in candidates:
                     if pool.available_slot() is None or (
@@ -78,13 +102,18 @@ def run_forever(*, poll_seconds=90, max_jobs=0, workers=2):
                     tid, rev = row["trend_id"], row["revision"]
                     if (tid, rev) in pool.busy_keys:
                         continue
-                    attempt = worker.next_attempt(row)
+                    manual=requested.get(tid)
+                    attempt = worker.next_attempt(row,manual_request=manual)
                     if attempt is None:
                         continue
                     try:
+                        argv=["--run-one", "--trend-id", tid, "--revision", rev,
+                              "--attempt", attempt]
+                        if manual:
+                            argv.extend(["--manual-request-id",manual["request_id"],
+                                         "--manual-incident-at",manual["incident_at"]])
                         launched = pool.spawn(pathlib.Path(__file__).with_name("image_worker_v2.py"),
-                                              ["--run-one", "--trend-id", tid, "--revision", rev,
-                                               "--attempt", attempt],
+                                              argv,
                                               trend_id=tid, revision=rev, attempt=attempt)
                     except (OSError, RuntimeError) as exc:
                         report("WORKER_LAUNCH_FAILED", trend_id=tid, revision=rev,
