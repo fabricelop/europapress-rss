@@ -64,7 +64,7 @@ test("date labels distinguish current Top 30 entry from editorial capture and ag
  const review=explanationAgeIndicator(item);
  assert.equal(review.textContent,"REVISAR");
  assert.match(review.className,/age-review/);
- assert.match(review.title,/Valora REI/);
+ assert.match(review.title,/Valora REI-T/);
  const old=explanationAgeIndicator({...item,captured_at:"2026-11-17T17:00:00Z"});
  assert.equal(old.textContent,"ANTIGUA");
  assert.match(old.className,/age-old/);
@@ -100,10 +100,10 @@ test("R remains clickable in collapsed card without toggling its disclosure",()=
  assert.match(built,/head\.append\(flag\)/);
 });
 
-test("REI requested has visible pending state and hides previous explanation and image",()=>{
+test("REI-T requested has visible pending state and hides previous explanation and image",()=>{
  assert.match(app,/function reResetPending\(item\)/);
  assert.match(app,/const reset=reResetPending\(item\)/);
- assert.match(app,/REI solicitada · reinicio pendiente/);
+ assert.match(app,/REI-T solicitada · reinicio pendiente/);
  assert.match(app,/En revisión · nueva explicación en preparación/);
  assert.match(app,/const time=reset\?null:explanationTime\(item\)/);
  assert.match(app,/if\(!reset&&\(imageReady\(item\)\|\|item\.image_suppressed===true\)\)/);
@@ -112,12 +112,26 @@ test("REI requested has visible pending state and hides previous explanation and
  assert.match(css,/\.review-state/);
 });
 
-test("REI is distinct from RE-X and a diagnostic is visible without leaking logs",()=>{
- assert.match(app,/"publish-action re-explain-action","REI"/);
+test("REI-T is distinct from RE-X and a diagnostic is visible without leaking logs",()=>{
+ assert.match(app,/"publish-action re-explain-action","REI-T"/);
  assert.match(app,/"publish-action re-x-action","RE-X"/);
  assert.match(app,/"editorial-failure-flag"/);
  assert.match(app,/"editorial-failure-detail"/);
  assert.match(css,/\.editorial-failure-flag/);
+});
+test("REI-IA appears only on explained image incidents and never requests a new editorial revision",()=>{
+ const start=app.indexOf("function appendEditorialReButtons(editing,item){"),end=app.indexOf("\nfunction makePublishButtons(",start);
+ assert.ok(start>=0&&end>start);
+ const block=app.slice(start,end);
+ assert.match(block,/item\.status==="explicada"&&item\.image_incident_available===true/);
+ assert.match(block,/item\.image_in_progress!==true&&!imageReady\(item\)/);
+ assert.match(block,/"publish-action re-image-action","REI-IA"/);
+ assert.match(block,/fetch\("\/api\/trend-image-retry",\{method:"POST"/);
+ assert.match(block,/JSON\.stringify\(\{trend_id:item\.trend_id,revision:item\.revision\}\)/);
+ assert.match(block,/la explicación no cambia/);
+ assert.match(built,/"REI-IA"/);
+ assert.match(css,/\.re-image-action\{/);
+ assert.doesNotMatch(block,/"publish-action re-explain-action","REI"/);
 });
 
 test("sticky Radar and PU header includes rolling 24-hour manual click history",()=>{

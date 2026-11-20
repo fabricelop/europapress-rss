@@ -36,16 +36,17 @@ async function document(path,fetcher,{optional=false}={}){
  try{return JSON.parse(text);}catch{throw Error("IMAGE_INCIDENT_SOURCE_INVALID");}
 }
 
-export async function readImageIncident({project,id,revision,fetcher=fetch}={}){
+export async function readImageIncident({project,id,revision,fetcher=fetch,includeIdentity=false}={}){
  if(!ID[project]?.test(id)||!Number.isSafeInteger(revision)||revision<1||revision>100000)
   throw Error("IMAGE_INCIDENT_ID_INVALID");
- let incident=null;
+ let incident=null,editorialSha256=null;
  if(project==="ttendencias-v2"){
   const ledger=await document("ttendencias/state/editorial-queue.json",fetcher);
   const row=ledger?.items?.[id],cap=row?.capture;
   if(ledger?.step!=="04_editorial_queue"||ledger.effects_enabled!==false)throw Error("IMAGE_INCIDENT_SOURCE_INVALID");
   if(!row||row.trend_id!==id||row.revision!==revision||cap?.revision!==revision||!HASH.test(cap?.sha256||""))
    throw Error("IMAGE_INCIDENT_REVISION_CHANGED");
+  editorialSha256=cap.sha256;
   const progress=row.image_progress;
   const generating=progress?.revision===revision&&progress.editorial_sha256===cap.sha256&&
    progress.status==="in_progress"&&Date.parse(progress.expires_at)>Date.now();
@@ -69,5 +70,6 @@ export async function readImageIncident({project,id,revision,fetcher=fetch}={}){
     {project,id,revision,editorialHash:record.editorial_sha256});
   }
  }
- return {project,target_id:id,revision,available:incident!==null,incident};
+ return {project,target_id:id,revision,available:incident!==null,incident,
+  ...(includeIdentity&&editorialSha256?{editorial_sha256:editorialSha256}:{})};
 }

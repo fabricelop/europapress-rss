@@ -15,6 +15,7 @@ sys.path.insert(0, str(pathlib.Path(__file__).parent))
 import editorial_run_v2 as editorial
 import image_same_chat_v2 as same_chat
 import image_worker_v2 as image
+import image_daemon_v2 as image_daemon
 import image_target_tracker_v2 as tracker
 import image_job_v2 as image_jobs
 from auto_editorial_policy_v2 import eligible_plan
@@ -152,6 +153,66 @@ class SplitTest(unittest.TestCase):
                                     {"at": "2026-11-16T04:00:00+00:00", "status": "failed"})
                 now = datetime.now(timezone.utc)
                 self.assertIsNone(image.next_attempt(row, now=now))
+
+    def test_rei_ia_one_image_chat_after_exhaustion_preserves_editorial_and_old_journals(self):
+        queue, _ = fixture()
+        row = queue["items"]["trv2-%024x" % 1]
+        original = copy.deepcopy(row["capture"])
+        incident_at = "2026-11-20T20:20:30Z"
+        row["image_incident"] = {"project": "ttendencias-v2", "trend_id": row["trend_id"],
+            "revision": 1, "editorial_sha256": original["sha256"],
+            "code": "V2_IMAGE_NOT_READY", "retry_mode": "manual_only", "at": incident_at}
+        request = {"trend_id": row["trend_id"], "revision": 1,
+            "editorial_sha256": original["sha256"], "incident_at": incident_at,
+            "request_id": "a" * 32}
+        self.assertEqual(image.manual_retry_for(row, [request]), request)
+        with tempfile.TemporaryDirectory() as folder:
+            with patch.object(image, "JOURNALS", pathlib.Path(folder)):
+                for attempt in range(1, 4):
+                    editorial.store(image.journal_path(row["trend_id"], 1, attempt),
+                                    {"at": "2026-11-19T18:00:00+00:00", "status": "failed"})
+                self.assertIsNone(image.next_attempt(row))
+                self.assertEqual(image.next_attempt(row, manual_request=request), 4)
+                editorial.store(image.journal_path(row["trend_id"], 1, 4),
+                    {"at": "2026-11-19T19:00:00+00:00", "status": "failed",
+                     "manual_retry_request_id": request["request_id"]})
+                self.assertIsNone(image.next_attempt(row, manual_request=request))
+                self.assertIsNone(image.next_attempt(row))
+                self.assertEqual(len(list(pathlib.Path(folder).glob("*.json"))), 4)
+        self.assertEqual(row["capture"], original)
+
+    def test_rei_ia_rejects_stale_unsafe_or_active_incident_without_affecting_auto_images(self):
+        queue, _ = fixture()
+        row = queue["items"]["trv2-%024x" % 2]
+        incident_at = "2026-11-20T20:20:30Z"
+        row["image_incident"] = {"project": "ttendencias-v2", "trend_id": row["trend_id"],
+            "revision": 1, "editorial_sha256": row["capture"]["sha256"],
+            "code": "V2_IMAGE_NOT_READY", "retry_mode": "manual_only", "at": incident_at}
+        request = {"trend_id": row["trend_id"], "revision": 1,
+            "editorial_sha256": row["capture"]["sha256"], "incident_at": incident_at,
+            "request_id": "b" * 32}
+        for bad in [{**request, "revision": 2},{**request, "incident_at": "2026-11-19T00:00:00Z"},
+                    {**request, "editorial_sha256": "d" * 64},{**request, "request_id": "../../"}]:
+            self.assertIsNone(image.manual_retry_for(row,[bad]))
+        row["image_incident"]["code"] = "V2_IMAGE_PROFILE_LOGIN_REQUIRED"
+        self.assertIsNone(image.manual_retry_for(row,[request]))
+        row["image_incident"]["code"] = "V2_IMAGE_NOT_READY"
+        row["image_progress"] = {"status":"in_progress", "revision":1,
+            "editorial_sha256": row["capture"]["sha256"],
+            "expires_at": (datetime.now(timezone.utc)+timedelta(minutes=10)).isoformat()}
+        self.assertIsNone(image.manual_retry_for(row,[request]))
+        row.pop("image_progress")
+        row["capture"]["image"] = {"status":"saved", "revision":1}
+        self.assertIsNone(image.manual_retry_for(row,[request]))
+
+    def test_manual_image_request_poll_rejects_invalid_schema(self):
+        import io
+        with patch.object(image_daemon.urllib.request, "urlopen", return_value=io.BytesIO(
+                b'{"schema_version":1,"requests":[{"request_id":"valid"}]}')):
+            self.assertEqual(image_daemon.fetch_manual_image_retries(),[{"request_id":"valid"}])
+        with patch.object(image_daemon.urllib.request, "urlopen", return_value=io.BytesIO(b'{"requests":[]}')):
+            with self.assertRaisesRegex(ValueError, "PUBLIC_SCHEMA_INVALID"):
+                image_daemon.fetch_manual_image_retries()
 
     def test_only_verified_pre_send_errors_have_a_bounded_retry_budget(self):
         queue, _ = fixture()

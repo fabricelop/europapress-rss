@@ -137,8 +137,9 @@ def live_image_progress_for_revision(item, *, now=None):
 def image_incident_for_revision(item, *, now=None):
     """Only signal a durable image failure of the exact visible editorial text.
 
-    Public snapshots carry a boolean; private details are fetched only on click.
-    Never project incident strings, commands, journals or conversation URLs here.
+    Public snapshots carry a boolean and, when valid, a timestamp for
+    one-shot retry matching. Private codes/details are fetched only on click.
+    Never project commands, journals or conversation URLs here.
     """
     incident = item.get("image_incident") or {}
     cap = item.get("capture") or {}
@@ -279,6 +280,9 @@ def build(history, queue):
                                   and live_image_progress_for_revision(item)),
             "image_incident_available": (category == "explicada" and not image_available
                                          and image_incident_for_revision(item)),
+            "image_incident_at": ((item.get("image_incident") or {}).get("at")
+                                  if category == "explicada" and not image_available
+                                  and image_incident_for_revision(item) else None),
             "movement": topic.get("last_change") or "",
             "previous_rank": topic.get("previous_rank") if isinstance(topic.get("previous_rank"), int) else None,
             "positions_changed": topic.get("positions_changed") if isinstance(topic.get("positions_changed"), int) else None,
