@@ -21187,12 +21187,19 @@
       "trend_id": "trv2-9d51e8a3cd3e2a10cfd8905c",
       "name": "Acuéstate",
       "revision": 1,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "first_explanation",
       "episode_token": "39fc00ae35c9f98c",
       "requested_at": "2026-11-20T00:01:30.992686+00:00",
       "updated_at": "2026-11-20T00:01:30.992686+00:00",
-      "previous_explanation": null
+      "previous_explanation": null,
+      "attempts": 1,
+      "lease": {
+        "token": "139f7ea6e66810cde1f52b1522b142a3273cc3e38c323033",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-20T00:17:35.535855+00:00",
+        "expires_at": "2026-11-20T00:57:35.535855+00:00"
+      }
     }
   },
   "pending_count": 641,
