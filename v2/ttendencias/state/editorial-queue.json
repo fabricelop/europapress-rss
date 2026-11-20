@@ -20687,13 +20687,13 @@
       "trend_id": "trv2-0e14915b55b4726880d2b32d",
       "name": "Pedrito",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "cb40357964e90386",
       "requested_at": "2026-11-20T00:04:55.502257+00:00",
       "updated_at": "2026-11-20T00:04:55.502257+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -20706,7 +20706,13 @@
           "archived_at": "2026-11-20T00:04:55.502257+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "084690a441e5f10ec122355b1b2e5f130ffcdf8346c9e823",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-20T00:21:53.159956+00:00",
+        "expires_at": "2026-11-20T01:01:53.159956+00:00"
+      }
     },
     "trv2-6defe4885b0a3c38ab97d9f2": {
       "trend_id": "trv2-6defe4885b0a3c38ab97d9f2",
