@@ -16915,12 +16915,12 @@
       "trend_id": "trv2-c0efe7e6fb44b284d08e84d2",
       "name": "Pradilla",
       "revision": 3,
-      "status": "review_pending",
+      "status": "in_progress",
       "reason": "user_reset",
       "episode_token": "072f22a2b0cfd626",
       "requested_at": "2026-11-20T21:36:52.218859+00:00",
       "updated_at": "2026-11-20T21:36:52.218859+00:00",
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -16943,7 +16943,13 @@
         }
       ],
       "incident_retries": 0,
-      "review_mode": "standard"
+      "review_mode": "standard",
+      "lease": {
+        "token": "cbc45ff4a6f9ceca7d12d3265f1f13c0bf343d3c38def050",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-20T21:39:04.133496+00:00",
+        "expires_at": "2026-11-20T22:19:04.133496+00:00"
+      }
     },
     "trv2-c2ae394d30eb8a3c4136f77d": {
       "trend_id": "trv2-c2ae394d30eb8a3c4136f77d",
