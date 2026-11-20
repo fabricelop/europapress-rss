@@ -223,7 +223,7 @@ function updateTop30WithoutRCounter(){
  const node=$("top30-without-r");
  if(!node)return;
  const remaining=countTop30WithoutR(state.items,redMarks);
- if(remaining===null){node.hidden=true;return;}
+ if(remaining===null){node.textContent="—/30";node.title="Contador de Tendencias pendiente de actualizar";node.hidden=false;return;}
  node.textContent=remaining+"/30";
  node.title=remaining+" tendencias del Top 30 sin marca roja R";
  node.setAttribute("aria-label",node.title);
@@ -988,6 +988,16 @@ function render(){
  }
  updateTop30WithoutRCounter();
 }
+async function refreshTrendsBadgeOnly(){
+ // The Noticias page intentionally skips the trend renderer. Fetch just the
+ // Top 30 and persisted R marks to keep its shared navigation badge accurate.
+ const response=await fetch(BASE+"web-top30.json?v="+Date.now(),{cache:"no-store",credentials:"same-origin"});
+ if(!response.ok)throw Error("Top 30 no disponible para contador");
+ const data=valid(await response.json());
+ await loadSharedMarks();
+ state.items=data.items.slice().sort((a,b)=>a.rank-b.rank);
+ updateTop30WithoutRCounter();
+}
 async function refresh(){
  if(new URLSearchParams(location.search).get("view")==="noticias")return;
  if(refreshing)return;
@@ -1028,12 +1038,15 @@ addEventListener("ttv2:publication-recorded",()=>void loadPublications().catch((
 $("publication-close").addEventListener("click",()=>$("publication-dialog").close());
 refresh();
 if(newsViewMode){
+ updateTop30WithoutRCounter();
+ void refreshTrendsBadgeOnly().catch(()=>{});
  $("publication-summary").textContent="PUB · — / 24 h";
  const note=$("publication-dialog").querySelector("p");
  if(note)note.textContent="Solo cuenta PUB (publicación manual confirmada). Quitar pasa a Archivo sin contar. Los PU anteriores se conservan durante 24 horas. Ninguna acción publica automáticamente.";
  void loadPublications().catch(()=>{$("publication-summary").textContent="PUB · — / 24 h"});
 }
-setInterval(()=>{if(!document.hidden)refresh()},90000);
+setInterval(()=>{if(!document.hidden){if(newsViewMode)void refreshTrendsBadgeOnly().catch(()=>{});else refresh()}},90000);
+document.addEventListener("visibilitychange",()=>{if(newsViewMode&&!document.hidden)void refreshTrendsBadgeOnly().catch(()=>{})});
 setInterval(()=>{if(!document.hidden)void loadPublications().catch(()=>{})},60000);
 
 
