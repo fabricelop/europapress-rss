@@ -1,14 +1,20 @@
 {
-  "checked_at": "2026-11-20T01:13:15.344443+00:00",
+  "checked_at": "2026-11-20T01:23:17.473543+00:00",
   "before": [
-    "elaborando_bloqueado_251"
+    "elaborando_bloqueado_253"
   ],
   "repair_actions": [],
   "remaining": [
-    "elaborando_bloqueado_251"
+    "elaborando_bloqueado_253"
   ],
-  "healthy_source_count": 19,
-  "source_failures": [],
-  "events_bytes": 4078544,
+  "healthy_source_count": 18,
+  "source_failures": [
+    {
+      "source": "Europa Press",
+      "type": "general",
+      "error": "HTTP Error 429: Too Many Requests"
+    }
+  ],
+  "events_bytes": 4078909,
   "ok": false
 }
