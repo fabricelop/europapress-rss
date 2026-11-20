@@ -26,6 +26,21 @@ test("a red mark survives the shared projection and can be removed",()=>{
  assert.equal(projectMaster(master,[{event_id:id,marked_red:0}],new URLSearchParams()).items[0].marked_red,false);
 });
 
+test("news badge counts only stories newer than the newest red mark across all pages",()=>{
+ const raw=sample();
+ raw.items=Array.from({length:45},(_,i)=>({...raw.items[0],id:"ttn2-"+String(i).padStart(24,"0"),title:"Noticia número "+i,
+  verified_at:new Date(Date.parse(t)-i*60000).toISOString()}));
+ const master=validateMaster(raw);
+ const redId=raw.items[3].id;
+ const flags=[{event_id:redId,marked_red:1},{event_id:raw.items[35].id,marked_red:1}];
+ assert.equal(projectMaster(master,flags).unmarked_since_last_red,3);
+ assert.equal(projectMaster(master,flags,new URLSearchParams({page:"2"})).unmarked_since_last_red,3);
+ assert.equal(projectMaster(master,flags,new URLSearchParams({q:"número 40"})).unmarked_since_last_red,3);
+ assert.equal(projectMaster(master,[{event_id:raw.items[1].id,marked_red:1}]).unmarked_since_last_red,1);
+ assert.equal(projectMaster(master,[]).unmarked_since_last_red,45);
+ assert.equal(projectMaster(master,[...flags,{event_id:raw.items[0].id,suppressed_at:t}]).unmarked_since_last_red,2);
+});
+
 test("search works without editorial text or images",()=>{
  const view=projectMaster(validateMaster(sample()),[],new URLSearchParams({q:"cuatro"}));
  assert.equal(view.total,1);

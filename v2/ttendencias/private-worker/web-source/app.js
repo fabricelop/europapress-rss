@@ -221,14 +221,31 @@ function countTop30WithoutR(items,marks){
 }
 function updateTop30WithoutRCounter(){
  const node=$("top30-without-r");
- if(!node||newsViewMode)return;
+ if(!node)return;
  const remaining=countTop30WithoutR(state.items,redMarks);
  if(remaining===null){node.hidden=true;return;}
- node.textContent="Sin R · "+remaining+"/30";
+ node.textContent=remaining+"/30";
  node.title=remaining+" tendencias del Top 30 sin marca roja R";
  node.setAttribute("aria-label",node.title);
  node.hidden=false;
 }
+function updateNewsAfterRedCounter(count){
+ const node=$("news-after-red");
+ if(!node)return;
+ if(!Number.isSafeInteger(count)||count<0){node.hidden=true;return;}
+ node.textContent=String(count);
+ node.title=count+" noticias nuevas sin R desde la más reciente marcada en rojo";
+ node.setAttribute("aria-label",node.title);
+ node.hidden=false;
+}
+async function loadNewsAfterRedCounter(){
+ const response=await fetch("/api/news-master?page=1",{cache:"no-store",credentials:"same-origin"});
+ if(!response.ok)throw Error("Contador de noticias no disponible");
+ const data=await response.json();
+ if(data.project!=="ttittulares-v2"||data.kind!=="master_news"||!Number.isSafeInteger(data.unmarked_since_last_red))throw Error("Contador de noticias incoherente");
+ updateNewsAfterRedCounter(data.unmarked_since_last_red);
+}
+addEventListener("ttv2:news-master-refreshed",event=>updateNewsAfterRedCounter(event.detail?.count));
 async function loadSharedMarks() {
  const res=await fetch("/api/marks",{cache:"no-store",credentials:"same-origin"});
  if(!res.ok)throw Error("No se pueden sincronizar las marcas R (HTTP "+res.status+")");
@@ -993,6 +1010,7 @@ async function refresh(){
   try{await loadIncidentRequests()}catch{state.incidentRequests=[]}
   try{await loadIncidentRetryRequests()}catch{state.incidentRetryRequests=[]}
   try{await loadPublications()}catch{$("publication-summary").textContent="PU · — / 24 h"}
+  if(!newsViewMode)try{await loadNewsAfterRedCounter()}catch{}
   try{await loadManualImages()}catch{}
   applyManualImages();
   render();
