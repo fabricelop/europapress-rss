@@ -23797,12 +23797,12 @@
       "trend_id": "trv2-074267a69d3df1d30b5e1e1f",
       "name": "Llull",
       "revision": 2,
-      "status": "review_pending",
+      "status": "in_progress",
       "reason": "user_reset",
       "episode_token": "38af7ac51e71111f",
       "requested_at": "2026-11-20T21:44:18.769958+00:00",
       "updated_at": "2026-11-20T21:44:18.769958+00:00",
-      "attempts": 0,
+      "attempts": 1,
       "image_incident": {
         "project": "ttendencias-v2",
         "trend_id": "trv2-074267a69d3df1d30b5e1e1f",
@@ -23826,7 +23826,13 @@
         }
       ],
       "review_mode": "standard",
-      "incident_retries": 0
+      "incident_retries": 0,
+      "lease": {
+        "token": "fea9481a735b40569521c373d3d8d4cb4120691b0cd8d7fa",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-20T21:45:20.950558+00:00",
+        "expires_at": "2026-11-20T22:25:20.950558+00:00"
+      }
     },
     "trv2-265a7c19d56ae1ca59578160": {
       "trend_id": "trv2-265a7c19d56ae1ca59578160",
