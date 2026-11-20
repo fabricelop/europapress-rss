@@ -22652,26 +22652,28 @@
     "trv2-764e4d52987c76bebc533156": {
       "trend_id": "trv2-764e4d52987c76bebc533156",
       "name": "Catástrofe",
-      "revision": 2,
-      "status": "in_progress",
-      "reason": "user_reexplanation",
+      "revision": 3,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "0e2c0c7398c50b02",
-      "requested_at": "2026-11-20T12:16:07.581842+00:00",
-      "updated_at": "2026-11-20T12:16:59.073012+00:00",
-      "attempts": 1,
+      "requested_at": "2026-11-20T12:22:39.187151+00:00",
+      "updated_at": "2026-11-20T12:22:39.187151+00:00",
+      "attempts": 0,
       "review_mode": "x",
       "review_hints": "Es por los comentarios de ambos bandos de que las elecciones las gane el otro bando.",
-      "incident_retries": 0,
-      "lease": {
-        "token": "1aff1ff314ec12c05451c32d5bf90f9793183a169fe3f5f8",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-20T12:16:35.375981+00:00",
-        "expires_at": "2026-11-20T12:56:35.375981+00:00"
-      },
-      "send_intent": {
-        "token": "1aff1ff314ec12c05451c32d5bf90f9793183a169fe3f5f8",
-        "at": "2026-11-20T12:16:59.072992+00:00"
-      }
+      "incident_retries": 1,
+      "previous_attempts": [
+        {
+          "revision": 2,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-20T12:16:35.375981+00:00",
+          "send_intent_at": "2026-11-20T12:16:59.072992+00:00",
+          "incident_reason": "session_5min_inactivity",
+          "archived_at": "2026-11-20T12:22:39.187151+00:00"
+        }
+      ]
     },
     "trv2-11a2084c7c6f396b21ba29b9": {
       "trend_id": "trv2-11a2084c7c6f396b21ba29b9",
@@ -23351,9 +23353,9 @@
     "trv2-65b2e56b0dfb23ed0387444c",
     "trv2-432ead761d508e75f4825b51",
     "trv2-c95288c8e7996351ec83b5ac",
-    "trv2-764e4d52987c76bebc533156",
     "trv2-11a2084c7c6f396b21ba29b9",
-    "trv2-d8103ada43d8a9ab78d27b6a"
+    "trv2-d8103ada43d8a9ab78d27b6a",
+    "trv2-764e4d52987c76bebc533156"
   ],
   "effects_enabled": false
 }
