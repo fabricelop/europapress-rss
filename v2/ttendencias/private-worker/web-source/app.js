@@ -505,7 +505,7 @@ function openManualPasteDialog(item){
  cancel.addEventListener('click',()=>dialog.close());
  save.addEventListener('click',async()=>{
   if(!chosen)return;
-  if(!window.confirm('¿Asociar la imagen de «'+item.name+'» a su revisión '+item.revision+' y mostrarla también en la web pública V1?'))return;
+  if(!window.confirm('¿Asociar la imagen de «'+item.name+'» a su revisión '+item.revision+'? Solo aparecerá en V2 hasta que actives «Mostrar Imagen».'))return;
   save.disabled=true;cancel.disabled=true;message.textContent='Verificando y asociando el original…';
   try{
    const buffer=await chosen.arrayBuffer();
@@ -513,6 +513,9 @@ function openManualPasteDialog(item){
    const claim=await fetch('/api/manual-image-ticket',{method:'POST',credentials:'same-origin',headers:{'content-type':'application/json','x-ttv2-action':'1'},body:JSON.stringify({trend_id:item.trend_id,revision:item.revision,sha256:sha,mime:chosen.type,bytes:buffer.byteLength})});
    if(!claim.ok)throw Error('La tendencia ha cambiado o no admite imagen (HTTP '+claim.status+'). Actualiza.');
    const ticket=(await claim.json()).ticket;
+   // A new manual image is private-to-V2 by default, even when replacing a previously shared image.
+   const visibility=await fetch('/api/image-visibility',{method:'POST',credentials:'same-origin',headers:{'content-type':'application/json','x-ttv2-action':'1'},body:JSON.stringify({trend_id:item.trend_id,revision:item.revision,scope:'public',visible:false})});
+   if(!visibility.ok)throw Error('No se pudo desactivar la visibilidad pública antes de guardar la imagen.');
    const form=new FormData();form.set('ticket',ticket);form.set('trend_id',item.trend_id);form.set('revision',String(item.revision));form.set('image',new File([buffer],'imagen.'+({'image/png':'png','image/jpeg':'jpg','image/webp':'webp'}[chosen.type]),{type:chosen.type}));
    const upload=await fetch(PUBLIC_SITE+'/api/manual-v2-image',{method:'POST',body:form,credentials:'omit'});
    const done=await upload.json();
@@ -520,11 +523,8 @@ function openManualPasteDialog(item){
    item.manual_image_url=done.image.image_url;
    state.manualImages=state.manualImages.filter(x=>x.trend_id!==item.trend_id||x.revision!==item.revision);
    state.manualImages.push(done.image);
-   // An explicit manual attachment is also the owner's public visibility choice.
-   const visibility=await fetch('/api/image-visibility',{method:'POST',credentials:'same-origin',headers:{'content-type':'application/json','x-ttv2-action':'1'},body:JSON.stringify({trend_id:item.trend_id,revision:item.revision,scope:'public',visible:true})});
-   if(!visibility.ok)throw Error('Imagen guardada en V1, pero no se pudo confirmar su visibilidad pública. Usa «Imagen en V1».');
-   item.public_image_visible=true;
-   publishNotice('Imagen real asociada a «'+item.name+'» (r'+item.revision+') en V2 y V1. Ninguna publicación automática.');
+   item.public_image_visible=false;
+   publishNotice('Imagen real asociada a «'+item.name+'» (r'+item.revision+') en V2. Activa «Mostrar Imagen» para verla también en V1 y RSS.');
    dialog.close();render();
   }catch(error){message.textContent='No se completó: '+error.message;save.disabled=false;cancel.disabled=false}
  });
@@ -733,16 +733,15 @@ function makePublishButtons(card,item){
   const switchInput=el("input");
   switchInput.type="checkbox";
   switchInput.setAttribute("role","switch");
-  switchInput.checked=item.image_suppressed!==true&&item.public_image_visible!==false;
+  switchInput.checked=item.image_suppressed!==true&&item.public_image_visible===true;
   switchInput.disabled=item.image_suppressed===true;
-  switchInput.setAttribute("aria-label","Mostrar imagen IA de "+item.name+" en V1 pública");
-  const switchText=el("span","image-public-label","Imagen en V1");
-  publicToggle.title=item.image_sensitivity_default===true?
-    "Tema sensible: imagen inicialmente oculta en V1 hasta tu autorización":"Solo afecta a la web pública V1; en V2 la imagen sigue visible";
+  switchInput.setAttribute("aria-label","Mostrar Imagen de "+item.name+" en V1 y RSS");
+  const switchText=el("span","image-public-label","Mostrar Imagen");
+  publicToggle.title="Apagado por defecto: solo V2. Al activarlo, la foto aparece también en V1 y RSS; los lectores RSS pueden guardar copias.";
   publicToggle.append(switchInput,switchText);
   if(item.image_sensitivity_default===true){
    const warning=el("small","image-sensitive-note","Sensible");
-   warning.title="Precaución automática basada en el tema; puedes decidir mostrarla en V1";
+   warning.title="Tema sensible: revisa la imagen antes de distribuirla públicamente en V1 y RSS";
    publicToggle.append(warning);
   }
   switchInput.addEventListener("change",async()=>{
@@ -754,7 +753,7 @@ function makePublishButtons(card,item){
       body:JSON.stringify({trend_id:item.trend_id,revision:item.revision,scope:"public",visible})});
     if(!response.ok)throw Error("HTTP "+response.status);
     item.public_image_visible=visible;
-    publishNotice("Imagen de «"+item.name+"»: "+(visible?"visible":"oculta")+" en V1. En V2 no cambia.");
+    publishNotice("Imagen de «"+item.name+"»: "+(visible?"visible":"oculta")+" en V1 y RSS. En V2 no cambia. Un lector RSS podría conservar una copia anterior.");
     render();
    }catch(error){
     switchInput.checked=!visible;
@@ -964,7 +963,7 @@ function render(){
    photo.title=item.image_suppressed===true?"Imagen IA conservada pero retirada de las dos webs":"Imagen IA asociada a esta revisión";
    photo.setAttribute("aria-label",photo.title);
    head.append(photo);
-   if(item.image_suppressed===true||item.public_image_visible===false){
+   if(item.image_suppressed===true||item.public_image_visible!==true){
     const hidden=el("span","image-ready-icon image-public-hidden-icon","▣");
     hidden.append(el("span","image-hidden-x","×"));
     hidden.title=item.image_suppressed===true?"Imagen IA retirada de V1 y V2":"Imagen IA oculta en V1; sigue disponible en V2";

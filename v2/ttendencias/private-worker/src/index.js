@@ -607,7 +607,8 @@ export default {
           const flags=await publicEditorialOverrides(env);
           for(const row of view.items){
             const preference=flags.visibility.find(x=>x.trend_id===row.trend_id&&x.revision===row.revision);
-            row.public_image_visible=preference?preference.visible===1:!sensitiveEditorial(row);
+            // No image appears in V1 or RSS until the owner enables Mostrar Imagen.
+            row.public_image_visible=preference?.visible===1;
             row.image_sensitivity_default=sensitiveEditorial(row);
             if(flags.re.some(x=>x.trend_id===row.trend_id&&x.base_revision===row.revision)){
               row.re_in_progress=true;row.image_available=false;row.explanation="";
