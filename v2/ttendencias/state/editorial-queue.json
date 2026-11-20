@@ -22899,13 +22899,13 @@
       "trend_id": "trv2-5718067468986b5e1e6486d1",
       "name": "Cobolli",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "72b323eada767c03",
       "requested_at": "2026-11-20T15:09:13.433582+00:00",
       "updated_at": "2026-11-20T15:09:13.433582+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -22918,7 +22918,13 @@
           "archived_at": "2026-11-20T15:09:13.433582+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "a7c7fc7f9e106b5308524053258ec25fe751fe819b6b64bc",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-20T15:09:43.149312+00:00",
+        "expires_at": "2026-11-20T15:49:43.149312+00:00"
+      }
     },
     "trv2-e44c7eb152d921ebdab7e9fb": {
       "trend_id": "trv2-e44c7eb152d921ebdab7e9fb",
