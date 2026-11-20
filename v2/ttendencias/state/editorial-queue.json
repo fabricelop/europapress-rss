@@ -20622,13 +20622,13 @@
       "trend_id": "trv2-d26c3bf26869ead6ce44add7",
       "name": "Menos Trump",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "bfb5513e40440887",
       "requested_at": "2026-11-19T23:59:53.806244+00:00",
       "updated_at": "2026-11-19T23:59:53.806244+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -20641,7 +20641,13 @@
           "archived_at": "2026-11-19T23:59:53.806244+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "f695d194ff7955da06f6130448f047a3b45868eed1b3f153",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-20T00:22:46.432503+00:00",
+        "expires_at": "2026-11-20T01:02:46.432503+00:00"
+      }
     },
     "trv2-313984e6d31c673468c2fab0": {
       "trend_id": "trv2-313984e6d31c673468c2fab0",
