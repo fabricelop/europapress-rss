@@ -702,9 +702,10 @@
       "captured_at": "2026-11-20T21:20:37.582193+00:00",
       "image_available": false,
       "image_retry": {
-        "state": "unknown",
-        "remaining": null,
-        "attempts": null
+        "state": "blocked",
+        "attempts": 1,
+        "remaining": 0,
+        "pre_send_failures": 0
       },
       "image_in_progress": false,
       "image_incident_available": true,
@@ -756,13 +757,13 @@
       "cause_status": "no_confirmada",
       "chat_url": "https://chatgpt.com/c/6b00b9e7-6428-83ed-8207-709bdf605dbd",
       "captured_at": "2026-11-20T21:21:13.562515+00:00",
-      "image_available": false,
+      "image_available": true,
       "image_retry": {
-        "state": "generating",
-        "remaining": null,
+        "state": "saved",
+        "remaining": 0,
         "attempts": null
       },
-      "image_in_progress": true,
+      "image_in_progress": false,
       "image_incident_available": false,
       "movement": "entry",
       "previous_rank": null,
