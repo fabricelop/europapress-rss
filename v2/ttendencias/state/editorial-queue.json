@@ -20861,19 +20861,27 @@
     "trv2-ae1bdc4aedba625172c967a7": {
       "trend_id": "trv2-ae1bdc4aedba625172c967a7",
       "name": "Macarra",
-      "revision": 1,
-      "status": "capture_recovery",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "6968e55236e95f14",
-      "requested_at": "2026-11-19T23:04:43.347354+00:00",
-      "updated_at": "2026-11-19T23:39:24.362916+00:00",
+      "requested_at": "2026-11-20T00:26:43.331394+00:00",
+      "updated_at": "2026-11-20T00:26:43.331394+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "send_intent": {
-        "token": "d742a1d998775d70e4dd6caf2b585d21e45bddd1e5f91e04",
-        "at": "2026-11-19T23:35:49.689653+00:00"
-      },
-      "capture_recovery_reason": "visible_transcript_bound_to_prompt_and_footer"
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "capture_recovery",
+          "attempts": 1,
+          "chat_url": "https://chatgpt.com/c/6aff87d8-8a54-83eb-810a-c33f94fab646",
+          "started_at": null,
+          "send_intent_at": "2026-11-19T23:35:49.689653+00:00",
+          "incident_reason": "visible_transcript_bound_to_prompt_and_footer",
+          "archived_at": "2026-11-20T00:26:43.331394+00:00"
+        }
+      ],
+      "incident_retries": 1
     },
     "trv2-0178989695c04345fd8dfd3d": {
       "trend_id": "trv2-0178989695c04345fd8dfd3d",
@@ -21997,7 +22005,6 @@
     "trv2-0178989695c04345fd8dfd3d",
     "trv2-576333afb8818f77944f4ab4",
     "trv2-5acc06085e98c6b2957e89f0",
-    "trv2-ae1bdc4aedba625172c967a7",
     "trv2-b564daad8b0c573bb89d1a6d",
     "trv2-fbfb8fdf6a279685d6de62c5",
     "trv2-935bb3c66d4ac2626b07000b",
@@ -22026,7 +22033,8 @@
     "trv2-828ab70560e35dcdd7a3a075",
     "trv2-0303bbbf7c8ce647d728e36b",
     "trv2-313984e6d31c673468c2fab0",
-    "trv2-d26c3bf26869ead6ce44add7"
+    "trv2-d26c3bf26869ead6ce44add7",
+    "trv2-ae1bdc4aedba625172c967a7"
   ],
   "effects_enabled": false
 }
