@@ -590,12 +590,13 @@
       "captured_at": "2026-11-20T22:14:17.698578+00:00",
       "image_available": false,
       "image_retry": {
-        "state": "generating",
-        "remaining": null,
-        "attempts": null
+        "state": "blocked",
+        "attempts": 2,
+        "remaining": 0,
+        "pre_send_failures": 0
       },
-      "image_in_progress": true,
-      "image_incident_available": false,
+      "image_in_progress": false,
+      "image_incident_available": true,
       "movement": "reentry",
       "previous_rank": null,
       "positions_changed": null
