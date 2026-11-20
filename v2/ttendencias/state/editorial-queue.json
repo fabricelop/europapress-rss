@@ -20649,14 +20649,14 @@
     "trv2-d26c3bf26869ead6ce44add7": {
       "trend_id": "trv2-d26c3bf26869ead6ce44add7",
       "name": "Menos Trump",
-      "revision": 2,
-      "status": "in_progress",
+      "revision": 3,
+      "status": "pending",
       "reason": "retry_after_incident",
       "episode_token": "bfb5513e40440887",
-      "requested_at": "2026-11-19T23:59:53.806244+00:00",
-      "updated_at": "2026-11-20T00:23:35.771146+00:00",
+      "requested_at": "2026-11-20T00:24:47.240800+00:00",
+      "updated_at": "2026-11-20T00:24:47.240800+00:00",
       "previous_explanation": null,
-      "attempts": 1,
+      "attempts": 0,
       "previous_attempts": [
         {
           "revision": 1,
@@ -20667,19 +20667,19 @@
           "send_intent_at": "2026-11-19T23:18:38.666726+00:00",
           "incident_reason": "visible_transcript_bound_to_prompt_and_footer",
           "archived_at": "2026-11-19T23:59:53.806244+00:00"
+        },
+        {
+          "revision": 2,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-20T00:22:46.432503+00:00",
+          "send_intent_at": "2026-11-20T00:23:35.771119+00:00",
+          "incident_reason": "worker_or_capture_failed",
+          "archived_at": "2026-11-20T00:24:47.240800+00:00"
         }
       ],
-      "incident_retries": 1,
-      "lease": {
-        "token": "f695d194ff7955da06f6130448f047a3b45868eed1b3f153",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-20T00:22:46.432503+00:00",
-        "expires_at": "2026-11-20T01:02:46.432503+00:00"
-      },
-      "send_intent": {
-        "token": "f695d194ff7955da06f6130448f047a3b45868eed1b3f153",
-        "at": "2026-11-20T00:23:35.771119+00:00"
-      }
+      "incident_retries": 2
     },
     "trv2-313984e6d31c673468c2fab0": {
       "trend_id": "trv2-313984e6d31c673468c2fab0",
@@ -21986,7 +21986,6 @@
     "trv2-4ae3995271dd3b2b03c6d06a",
     "trv2-8750108d6413f41a72eec0c3",
     "trv2-f8bf80d730945fadb32c6d6c",
-    "trv2-d26c3bf26869ead6ce44add7",
     "trv2-053bf52daf1a8779d7379879",
     "trv2-07ac709e8c6d10bec5abb241",
     "trv2-1dabecdfb9f921cd16654738",
@@ -22001,7 +22000,8 @@
     "trv2-6defe4885b0a3c38ab97d9f2",
     "trv2-828ab70560e35dcdd7a3a075",
     "trv2-0303bbbf7c8ce647d728e36b",
-    "trv2-313984e6d31c673468c2fab0"
+    "trv2-313984e6d31c673468c2fab0",
+    "trv2-d26c3bf26869ead6ce44add7"
   ],
   "effects_enabled": false
 }
