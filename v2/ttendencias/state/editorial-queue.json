@@ -20407,13 +20407,13 @@
       "trend_id": "trv2-104610c6e8a080166c4d0c68",
       "name": "#CaraACara26",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "a369e5b52fd6c23a",
       "requested_at": "2026-11-19T23:28:21.641940+00:00",
       "updated_at": "2026-11-19T23:28:21.641940+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -20426,7 +20426,13 @@
           "archived_at": "2026-11-19T23:28:21.641940+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "b7923019e515a86f0468bf0ab0dc3f31bbcedd45e98ae217",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-20T00:00:23.458322+00:00",
+        "expires_at": "2026-11-20T00:40:23.458322+00:00"
+      }
     },
     "trv2-65904552069b2710dc708a5f": {
       "trend_id": "trv2-65904552069b2710dc708a5f",
