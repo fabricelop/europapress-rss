@@ -75,7 +75,7 @@ export async function newsPublicationCount(request,env,{json}){
   const where="FROM news_actions WHERE created_at > ? AND created_at <= ? AND json_extract(body,'$.action') IN ('publish','publication')";
   const [total,history]=await Promise.all([
    env.MARKS_DB.prepare("SELECT COUNT(*) AS total "+where).bind(start,end).first(),
-   env.MARKS_DB.prepare("SELECT body "+where+" ORDER BY created_at ASC,action_id ASC LIMIT 500").bind(start,end).all()
+   env.MARKS_DB.prepare("SELECT body "+where+" ORDER BY created_at DESC,action_id DESC LIMIT 500").bind(start,end).all()
   ]);
   const events=(history.results||[]).map(x=>JSON.parse(x.body)).filter(x=>
    ID.test(x.event_id||"")&&Number.isSafeInteger(x.revision)&&

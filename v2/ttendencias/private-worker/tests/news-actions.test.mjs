@@ -121,7 +121,7 @@ test("old PEND and INC leave the active lists but audit-ready stories remain",()
  docs[0].items[id].status="ready";docs[1].items[0].status="ready";
  view=await newsView(env,new URLSearchParams({state:"ready"}));assert.equal(view.total,1);
 }));
-test("news PUB counter is a separate exact rolling 24-hour register; legacy PU remains counted until expiry",()=>scoped(async env=>{
+test("news PUB counter orders newest first in its exact rolling 24-hour window; legacy PU remains counted until expiry",()=>scoped(async env=>{
  const count=async()=>{
   const response=await newsPublicationCount(new Request("https://private.example/api/news-publication-count"),env,helpers);
   assert.equal(response.status,200);
@@ -130,7 +130,7 @@ test("news PUB counter is a separate exact rolling 24-hour register; legacy PU r
  assert.equal((await count()).count,0);
  // Existing PU records are kept for their remaining 24-hour window, without accepting new PU clicks.
  await newsControls(env);
- const oldPU={action_id:"1".repeat(32),event_id:id,revision:1,action:"publication",created_at:new Date().toISOString(),news_title:"Noticia histórica"};
+ const oldPU={action_id:"1".repeat(32),event_id:id,revision:1,action:"publication",created_at:new Date(Date.now()-60000).toISOString(),news_title:"Noticia histórica"};
  await env.MARKS_DB.prepare("INSERT INTO news_actions(action_id,event_id,revision,body,created_at) VALUES(?,?,?,?,?)")
   .bind(oldPU.action_id,id,1,JSON.stringify(oldPU),oldPU.created_at).run();
  assert.equal((await newsAction(request("mark",{action_id:"2".repeat(32),value:true}),env,helpers)).status,200);
@@ -138,7 +138,8 @@ test("news PUB counter is a separate exact rolling 24-hour register; legacy PU r
  assert.equal(receipt.status,200);
  let result=await count();assert.equal(result.count,2);
  assert.equal(result.events.length,2);
- assert.equal(result.events[0].news_title,"Noticia histórica");
+ assert.equal(result.events[1].news_title,"Noticia histórica");
+  assert.ok(result.events[0].pressed_at_ms>result.events[1].pressed_at_ms,"La publicación más reciente debe aparecer primero");
  assert.ok(result.events.every(x=>x.event_id===id&&x.pressed_at_ms>0));
  // A 25-hour-old PU leaves the window; the current PUB remains counted.
  const old=new Date(Date.now()-25*3600000).toISOString();
