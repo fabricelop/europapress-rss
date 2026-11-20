@@ -23822,12 +23822,12 @@
       "trend_id": "trv2-d69600be42f0e3eb439ecafb",
       "name": "Latre",
       "revision": 2,
-      "status": "review_pending",
+      "status": "in_progress",
       "reason": "user_reset",
       "episode_token": "fd20d9c4ba494549",
       "requested_at": "2026-11-20T21:27:53.308318+00:00",
       "updated_at": "2026-11-20T21:27:53.308318+00:00",
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -23840,7 +23840,13 @@
         }
       ],
       "review_mode": "standard",
-      "incident_retries": 0
+      "incident_retries": 0,
+      "lease": {
+        "token": "d4ba8b873d8e470f1c04e51ee788a789ff2f850c54ae5936",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-20T21:29:42.343718+00:00",
+        "expires_at": "2026-11-20T22:09:42.343718+00:00"
+      }
     },
     "trv2-cf61e05bd26494e02c4eb205": {
       "trend_id": "trv2-cf61e05bd26494e02c4eb205",
