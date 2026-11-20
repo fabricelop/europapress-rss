@@ -21148,19 +21148,27 @@
     "trv2-0178989695c04345fd8dfd3d": {
       "trend_id": "trv2-0178989695c04345fd8dfd3d",
       "name": "MINTIENDO",
-      "revision": 1,
-      "status": "capture_recovery",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "2be9458633a4bd5d",
-      "requested_at": "2026-11-19T23:04:43.347354+00:00",
-      "updated_at": "2026-11-19T23:44:36.906548+00:00",
+      "requested_at": "2026-11-20T01:05:39.487342+00:00",
+      "updated_at": "2026-11-20T01:05:39.487342+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "send_intent": {
-        "token": "b751fe3dcb8b94b4be801b5617ca09cf3551bc2553a7b21f",
-        "at": "2026-11-19T23:40:46.076010+00:00"
-      },
-      "capture_recovery_reason": "visible_transcript_bound_to_prompt_and_footer"
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "capture_recovery",
+          "attempts": 1,
+          "chat_url": "https://chatgpt.com/c/6aff8901-a7b0-83eb-9de3-768651a0c4d7",
+          "started_at": null,
+          "send_intent_at": "2026-11-19T23:40:46.076010+00:00",
+          "incident_reason": "visible_transcript_bound_to_prompt_and_footer",
+          "archived_at": "2026-11-20T01:05:39.487342+00:00"
+        }
+      ],
+      "incident_retries": 1
     },
     "trv2-5acc06085e98c6b2957e89f0": {
       "trend_id": "trv2-5acc06085e98c6b2957e89f0",
@@ -22340,7 +22348,6 @@
     "trv2-f3747df76de9cd3489c6d77a",
     "trv2-fa95ef6dc5e74f73b9981b9c",
     "trv2-87f2b1f675e5a90a6e716100",
-    "trv2-0178989695c04345fd8dfd3d",
     "trv2-576333afb8818f77944f4ab4",
     "trv2-935bb3c66d4ac2626b07000b",
     "trv2-e4d21d26294410f65eda4aa7",
@@ -22373,7 +22380,8 @@
     "trv2-fbfb8fdf6a279685d6de62c5",
     "trv2-5acc06085e98c6b2957e89f0",
     "trv2-98c09e8c106b38b1f1b1b4ef",
-    "trv2-b564daad8b0c573bb89d1a6d"
+    "trv2-b564daad8b0c573bb89d1a6d",
+    "trv2-0178989695c04345fd8dfd3d"
   ],
   "effects_enabled": false
 }
