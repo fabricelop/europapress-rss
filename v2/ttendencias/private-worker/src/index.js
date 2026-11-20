@@ -5,13 +5,21 @@ import {readNews,readNewsRecord} from "./news.js";
 import {readNewsMaster,actOnMaster,newsMasterPublicationCount} from "./news-master.js";
 import {newsControls,newsView,newsAction,newsPublicationCount,newsManualImage,newsImage,publicNews,publicNewsImageVisibility,publicNewsArchivedIndex,newsWorkerControls} from "./news-actions.js";
 import {readImageIncident} from "./image-incidents.js";
-// All static assets require a session because run_worker_first=true.
+// Private application and API assets require a session; only fixed public branding files are exempt.
 const COOKIE = "__Host-ttv2";
 const SESSION_VERSION = "v1";
 const HOUR = 3600000;
 const MAX_SESSION_HOURS = 30 * 24;
 const SOURCE = "https://raw.githubusercontent.com/fabricelop/europapress-rss/feature/ttactualidad-v2-clean/v2/ttendencias/state/";
 const ALLOWED = new Set(["web-top30.json", "listas.json"]);
+const PUBLIC_BRAND_ASSETS = new Map([
+  ["/icon.svg", "image/svg+xml; charset=utf-8"],
+  ["/favicon.ico", "image/x-icon"],
+  ["/apple-touch-icon.png", "image/png"],
+  ["/icon-192.png", "image/png"],
+  ["/icon-512.png", "image/png"],
+  ["/manifest.webmanifest", "application/manifest+json; charset=utf-8"]
+]);
 const encoder = new TextEncoder();
 
 function headers(extra = {}) {
@@ -456,7 +464,7 @@ async function imageRead(request,env,trendId) {
 }
 async function sha256Bytes(bytes){return [...new Uint8Array(await crypto.subtle.digest("SHA-256",bytes))].map(b=>b.toString(16).padStart(2,"0")).join("");}
 
-const LOGIN = `<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex,nofollow"><meta name="color-scheme" content="dark"><title>TTActualidad V2 · Acceso privado</title><style>body{background:#090b0f;color:#f2f5fa;min-height:100vh;display:grid;place-items:center;font:16px system-ui;margin:0}main{padding:32px;width:min(380px,90vw);background:#171c26;border:1px solid #354052;border-radius:16px}h1{font-size:22px}input,button{font:inherit;padding:13px;border-radius:9px;width:100%;box-sizing:border-box;margin-top:10px}input{background:#0c111c;color:white;border:1px solid #667187}button{background:#e25d44;color:white;font-weight:700;border:0;cursor:pointer}p{color:#a6b4c7}#msg{color:#ffaaaa}</style></head><body><main><h1>TTActualidad V2</h1><p>Acceso privado</p><form id="f"><label for="p">Contraseña</label><input id="p" type="password" minlength="16" autocomplete="current-password" required autofocus><button type="submit">Entrar</button><p id="msg" role="status"></p></form></main><script>document.getElementById("f").addEventListener("submit",async e=>{e.preventDefault();const b=e.target.querySelector("button");b.disabled=true;try{const r=await fetch("/api/login",{method:"POST",headers:{"content-type":"application/json","x-ttv2-action":"1"},body:JSON.stringify({password:document.getElementById("p").value}),credentials:"same-origin"});document.getElementById("p").value="";if(!r.ok){document.getElementById("msg").textContent="Contraseña incorrecta o acceso no configurado.";return}location.replace("/")}catch{document.getElementById("msg").textContent="No se pudo iniciar sesión."}finally{b.disabled=false}})</script></body></html>`;
+const LOGIN = `<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex,nofollow"><meta name="color-scheme" content="dark"><title>TTActualidad V2 · Acceso privado</title><meta name="theme-color" content="#090b0f"><meta name="apple-mobile-web-app-capable" content="yes"><link rel="icon" href="/icon.svg" type="image/svg+xml"><link rel="icon" href="/favicon.ico" sizes="32x32" type="image/x-icon"><link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180"><link rel="manifest" href="/manifest.webmanifest"><style>body{background:#090b0f;color:#f2f5fa;min-height:100vh;display:grid;place-items:center;font:16px system-ui;margin:0}main{padding:32px;width:min(380px,90vw);background:#171c26;border:1px solid #354052;border-radius:16px}h1{font-size:22px}input,button{font:inherit;padding:13px;border-radius:9px;width:100%;box-sizing:border-box;margin-top:10px}input{background:#0c111c;color:white;border:1px solid #667187}button{background:#e25d44;color:white;font-weight:700;border:0;cursor:pointer}p{color:#a6b4c7}#msg{color:#ffaaaa}</style></head><body><main><h1>TTActualidad V2</h1><p>Acceso privado</p><form id="f"><label for="p">Contraseña</label><input id="p" type="password" minlength="16" autocomplete="current-password" required autofocus><button type="submit">Entrar</button><p id="msg" role="status"></p></form></main><script>document.getElementById("f").addEventListener("submit",async e=>{e.preventDefault();const b=e.target.querySelector("button");b.disabled=true;try{const r=await fetch("/api/login",{method:"POST",headers:{"content-type":"application/json","x-ttv2-action":"1"},body:JSON.stringify({password:document.getElementById("p").value}),credentials:"same-origin"});document.getElementById("p").value="";if(!r.ok){document.getElementById("msg").textContent="Contraseña incorrecta o acceso no configurado.";return}location.replace("/")}catch{document.getElementById("msg").textContent="No se pudo iniciar sesión."}finally{b.disabled=false}})</script></body></html>`;
 export default {
   async scheduled(controller,env,ctx) {
     // The local ImageGen worker saves images straight to the V2 GitHub queue.
@@ -477,6 +485,18 @@ export default {
   async fetch(request,env,ctx) {
     const url = new URL(request.url);
     if (url.pathname === "/health") return json({ok:true,service:"ttactualidad-v2-private",configured:configured(env),image_storage:"github",image_flow:"same-chat",build:"v2-re-x-20261115",news_view:"v2-news-inbox-20261116",news_layout:"compact-ready-20261116",news_radar_interval_minutes:15,image_incidents:"v2-image-incidents-20261116",news_actions:"news-workflow-20261116"});
+    // El sistema puede solicitar iconos sin cookie al crear el acceso directo en iOS.
+    // Solo estos nombres fijos son públicos; nunca se sirven otros recursos sin sesión.
+    if (PUBLIC_BRAND_ASSETS.has(url.pathname)) {
+      if (request.method !== "GET" && request.method !== "HEAD") return json({error:"method_not_allowed"},405);
+      const response = await env.ASSETS.fetch(request);
+      const h = new Headers(response.headers);
+      h.set("Content-Type", PUBLIC_BRAND_ASSETS.get(url.pathname));
+      h.set("Cache-Control", "public, max-age=3600");
+      h.set("X-Content-Type-Options", "nosniff");
+      h.set("Cross-Origin-Resource-Policy", "same-origin");
+      return new Response(response.body,{status:response.status,headers:h});
+    }
     // Única ruta pública adicional: devuelve identificadores y revisiones,
     // nunca contraseñas, marcas privadas, explicaciones ni imágenes.
     if(url.pathname==="/api/news-worker-controls")return newsWorkerControls(request,env,{json});
@@ -530,7 +550,7 @@ export default {
     }
     if (!authorized) {
       if (request.method === "GET" && (url.pathname === "/" || url.pathname === "/index.html"))
-        return result(LOGIN,200,{"Content-Type":"text/html; charset=utf-8","Content-Security-Policy":"default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; form-action 'self'; base-uri 'none'; frame-ancestors 'none'"});
+        return result(LOGIN,200,{"Content-Type":"text/html; charset=utf-8","Content-Security-Policy":"default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self'; manifest-src 'self'; connect-src 'self'; form-action 'self'; base-uri 'none'; frame-ancestors 'none'"});
       return json({error:"unauthorized"},401);
     }
     if (url.pathname === "/api/me") return json({authenticated:true});

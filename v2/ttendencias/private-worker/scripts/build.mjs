@@ -5,7 +5,7 @@ const output = resolve(import.meta.dirname, "../dist");
 const source = resolve(import.meta.dirname, "../web-source");
 await rm(output, { recursive: true, force: true });
 await mkdir(output, { recursive: true });
-for (const filename of ["index.html", "styles.css", "image-incidents.js", "app.js", "news-actions.js", "news.js", "manifest.webmanifest"]) {
+for (const filename of ["index.html", "styles.css", "image-incidents.js", "app.js", "news-actions.js", "news.js", "manifest.webmanifest", "icon.svg", "favicon.ico", "apple-touch-icon.png", "icon-192.png", "icon-512.png"]) {
   await cp(resolve(source, filename), resolve(output, filename));
 }
 // Private UI sources live here; they no longer depend on docs/v2 on main.
