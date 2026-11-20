@@ -20367,14 +20367,14 @@
       "trend_id": "trv2-87f2b1f675e5a90a6e716100",
       "name": "Chupito",
       "revision": 3,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "f48bd26e5a74dddc",
       "requested_at": "2026-11-19T23:00:19.609157+00:00",
       "updated_at": "2026-11-19T23:00:19.609157+00:00",
       "review_mode": "x",
       "review_hints": "Por la frase de ayuso obsesionada con sanchez",
-      "attempts": 0,
+      "attempts": 1,
       "incident_retries": 1,
       "previous_attempts": [
         {
@@ -20387,7 +20387,13 @@
           "incident_reason": "session_8min_timeout",
           "archived_at": "2026-11-19T23:00:19.609157+00:00"
         }
-      ]
+      ],
+      "lease": {
+        "token": "ffdbacfdf9caaa8981e8b06ce1f6f7c94dcb2b026eca5ba3",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-20T00:27:09.182026+00:00",
+        "expires_at": "2026-11-20T01:07:09.182026+00:00"
+      }
     },
     "trv2-048f79151bff5e1e989af12d": {
       "trend_id": "trv2-048f79151bff5e1e989af12d",
