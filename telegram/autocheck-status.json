@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-20T12:53:31.373383+00:00",
+  "checked_at": "2026-11-20T13:03:29.726736+00:00",
   "before": [
     "elaborando_bloqueado_275"
   ],
@@ -17,7 +17,7 @@
     {
       "source": "Servimedia",
       "type": "general",
-      "error": "HTTP Error 503: Service Unavailable"
+      "error": "HTTP Error 429: Too Many Requests"
     },
     {
       "source": "Telecinco Noticias",
@@ -28,8 +28,13 @@
       "source": "Noticias Cuatro",
       "type": "general",
       "error": "HTTP Error 503: Service Unavailable"
+    },
+    {
+      "source": "EFE Deportes",
+      "type": "sport",
+      "error": "HTTP Error 503: Service Unavailable"
     }
   ],
-  "events_bytes": 4020776,
+  "events_bytes": 4018706,
   "ok": false
 }
