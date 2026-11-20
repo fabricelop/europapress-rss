@@ -214,6 +214,21 @@ let redMarks={};
 let refreshing=false;
 function markStamp(item){return typeof item.entered_top30_at==="string"?item.entered_top30_at:""}
 function isMarked(item){return Object.prototype.hasOwnProperty.call(redMarks,item.trend_id)}
+function countTop30WithoutR(items,marks){
+ const top=items.filter(item=>Number.isInteger(item.rank)&&item.rank>=1&&item.rank<=30);
+ if(top.length!==30)return null;
+ return top.reduce((count,item)=>count+(Object.prototype.hasOwnProperty.call(marks,item.trend_id)?0:1),0);
+}
+function updateTop30WithoutRCounter(){
+ const node=$("top30-without-r");
+ if(!node||newsViewMode)return;
+ const remaining=countTop30WithoutR(state.items,redMarks);
+ if(remaining===null){node.hidden=true;return;}
+ node.textContent="Sin R · "+remaining+"/30";
+ node.title=remaining+" tendencias del Top 30 sin marca roja R";
+ node.setAttribute("aria-label",node.title);
+ node.hidden=false;
+}
 async function loadSharedMarks() {
  const res=await fetch("/api/marks",{cache:"no-store",credentials:"same-origin"});
  if(!res.ok)throw Error("No se pueden sincronizar las marcas R (HTTP "+res.status+")");
@@ -304,6 +319,7 @@ async function toggleRedMark(item,card,button){
   button.setAttribute("aria-pressed",String(next));
   button.setAttribute("aria-label",next?"Quitar marca roja de "+item.name:"Marcar en rojo "+item.name);
   button.title=next?"Quitar marca roja":"Marcar en rojo";
+  updateTop30WithoutRCounter();
  }catch(error){
   $("notice").textContent=error.message==="HTTP 409"?
    "El Top 30 ha cambiado desde que abriste esta lista. Actualiza para marcar las tendencias vigentes.":
@@ -950,6 +966,7 @@ function render(){
   if(!reset)attachGeneratedImage(card,item);
   root.append(card);
  }
+ updateTop30WithoutRCounter();
 }
 async function refresh(){
  if(new URLSearchParams(location.search).get("view")==="noticias")return;
