@@ -21157,13 +21157,13 @@
       "trend_id": "trv2-0178989695c04345fd8dfd3d",
       "name": "MINTIENDO",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "2be9458633a4bd5d",
       "requested_at": "2026-11-20T01:05:39.487342+00:00",
       "updated_at": "2026-11-20T01:05:39.487342+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -21176,7 +21176,13 @@
           "archived_at": "2026-11-20T01:05:39.487342+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "5331bba73719e0f61eb5fa06f843f6be38bd7aff6635e211",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-20T01:06:39.240788+00:00",
+        "expires_at": "2026-11-20T01:46:39.240788+00:00"
+      }
     },
     "trv2-5acc06085e98c6b2957e89f0": {
       "trend_id": "trv2-5acc06085e98c6b2957e89f0",
