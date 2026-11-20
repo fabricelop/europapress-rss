@@ -31,12 +31,21 @@ test("collapsed card shows image indicator only when exact revision is bound",()
 test("a red crossed image icon marks images hidden in V1 and reacts to public switch changes",()=>{
  const src=readFileSync(new URL("../web-source/app.js",import.meta.url),"utf8");
  const css=readFileSync(new URL("../web-source/styles.css",import.meta.url),"utf8");
- assert.match(src,/item\.image_suppressed===true\|\|item\.public_image_visible===false/);
+ assert.match(src,/item\.image_suppressed===true\|\|item\.public_image_visible!==true/);
  assert.match(src,/"image-ready-icon image-public-hidden-icon","▣"/);
  assert.match(src,/hidden\.append\(el\("span","image-hidden-x","×"\)\)/);
  assert.match(src,/item\.public_image_visible=visible;\s*publishNotice\([^;]+;\s*render\(\)/);
  assert.match(css,/\.image-public-hidden-icon\{[^}]+color:#ff9aa4/);
  assert.match(css,/\.image-hidden-x\{[^}]+color:#ff4058/);
+});
+
+test("Mostrar Imagen publica solo tras permiso, también al pegar fotos manuales",()=>{
+ const src=readFileSync(new URL("../web-source/app.js",import.meta.url),"utf8");
+ assert.match(src,/"image-public-label","Mostrar Imagen"/);
+ assert.match(src,/switchInput\.checked=item\.image_suppressed!==true&&item\.public_image_visible===true/);
+ assert.match(src,/scope:'public',visible:false/);
+ assert.doesNotMatch(src,/scope:'public',visible:true/);
+ assert.match(src,/V1 y RSS/);
 });
 
 test("P-X and P-IA are manual, revision-bound and never mark a V2 trend published",()=>{

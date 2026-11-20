@@ -84,6 +84,20 @@ test("sensitive topics begin with public image off while private image stays on"
  assert.equal(feed.items[0].image_available,true);
 });
 
+test("all new images start V2-only, even in non-sensitive topics",async()=>{
+ editorial.items[0].explanation="El concierto del grupo se celebra esta noche en Madrid.";
+ const database=db(),env={...secrets,MARKS_DB:database},session=await cookie(env);
+ let feed=await (await worker.fetch(new Request(origin+"/api/state/web-top30.json",{headers:{cookie:session}}),env)).json();
+ assert.equal(feed.items[0].image_sensitivity_default,false);
+ assert.equal(feed.items[0].public_image_visible,false);
+ assert.equal(feed.items[0].image_available,true);
+ assert.equal(database.prefs.length,0);
+ const response=await worker.fetch(action(session,{trend_id:id,revision:1,scope:"public",visible:true}),env);
+ assert.equal(response.status,200);
+ feed=await (await worker.fetch(new Request(origin+"/api/state/web-top30.json",{headers:{cookie:session}}),env)).json();
+ assert.equal(feed.items[0].public_image_visible,true);
+});
+
 test("image controls require a signed session and same-origin action",async()=>{
  const database=db(),env={...secrets,MARKS_DB:database};
  const payload={trend_id:id,revision:1,scope:"both",hidden:true};
