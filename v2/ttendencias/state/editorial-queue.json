@@ -23365,23 +23365,13 @@
     "trv2-895591e871b469c339f58f41": {
       "trend_id": "trv2-895591e871b469c339f58f41",
       "name": "#IreneGabriel20N",
-      "revision": 1,
-      "status": "captured_review",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "review_pending",
+      "reason": "user_reset",
       "episode_token": "ad8bbc2d9ec43a9b",
-      "requested_at": "2026-11-20T19:02:42.091004+00:00",
-      "updated_at": "2026-11-20T19:04:14.199422+00:00",
-      "previous_explanation": null,
-      "attempts": 1,
-      "capture": {
-        "revision": 1,
-        "chat_url": "https://chatgpt.com/c/6b0099e9-13b0-83eb-99fc-7f9fb2a9b1fb",
-        "sha256": "06908e44a3f830eecc92eed6a5ca59077f89698e42f5bf34adf485fa793e7c91",
-        "answer": "#IreneGabriel20N — Montero y Rufián celebran un acto electoral conjunto en Madrid\n\n20 de noviembre de 2026 · España · Política · Elecciones generales del 29-N\n\nCausa identificada y corroborada: el hashtag #IreneGabriel20N corresponde al acto de campaña celebrado este viernes por Irene Montero y Gabriel Rufián en el auditorio del parque Enrique Tierno Galván de Madrid, a las 19:00 horas. Podemos ha utilizado expresamente la etiqueta para anunciar el comienzo del encuentro.\n\nExplicación principal — apta para X\n:::writing{variant=\"social_post\" id=\"58321\"}\nIrene Montero y Gabriel Rufián protagonizan un acto conjunto de campaña en Madrid, bajo el lema «Paz, casa y trabajo», de cara al 29-N.\n:::\n\nHashtags: #IreneGabriel20N #IreneMontero #GabrielRufián #Elecciones29N\n\nContexto de la noticia\n\nEl encuentro forma parte de la colaboración electoral entre Podemos y ERC para las elecciones generales del 29 de noviembre. Ambos dirigentes ya habían compartido escenario en Madrid el 7 de noviembre, en un acto que registró una afluencia superior a la capacidad del recinto.\n\nLa nueva convocatoria se trasladó al auditorio del parque Tierno Galván, con mayor capacidad. Entre los asuntos centrales de su campaña figuran la vivienda, los salarios, el coste de la vida y la cooperación entre fuerzas de izquierda.\n\nFuentes y verificación\nPodemos, 20 de noviembre, 19:00. El archivo de publicaciones de X de dicen29n recoge un mensaje de @PODEMOS con el hashtag exacto #IreneGabriel20N, anunciando el inicio del acto y su retransmisión. Archivo de publicaciones\nDiario Red, 20 de noviembre. Información sobre la convocatoria, el recinto y los antecedentes del encuentro. Consultar noticia\nEl Folio, 20 de noviembre. Confirma la presencia de ambos dirigentes en Madrid a las 19:00 horas. Consultar agenda electoral\nCadena SER, 11 de octubre. Antecedentes de la colaboración electoral entre ERC y Podemos. Consultar información\n\nComprobación de X: el acceso directo a x.com devolvió un error 403. El archivo externo recoge publicaciones atribuidas a Podemos, incluida una que utiliza literalmente el hashtag a las 19:00 del 20 de noviembre, pero no pude leer ese mensaje directamente en X ni verificar su URL canónica. No se aporta ningún enlace de publicación individual sin verificar.\n\nLa correspondencia entre la etiqueta y el acto está suficientemente acreditada por la convocatoria, las noticias y el registro del mensaje oficial. No se han comprobado independientemente las métricas de popularidad ni la posición del hashtag entre las tendencias españolas.\n\nEstado editorial\n\nESTADO_CAUSA: CONFIRMADA\n\nESTADO_X: INACCESIBLE\n\nConclusión: causa informativa identificada con respaldo periodístico y documental. Ficha apta para LISTAS, sin autorización de publicación automática.",
-        "verified_complete": true,
-        "editorial_validated": false,
-        "captured_at": "2026-11-20T19:04:14.199422+00:00"
-      },
+      "requested_at": "2026-11-20T19:31:53.477035+00:00",
+      "updated_at": "2026-11-20T19:31:53.477035+00:00",
+      "attempts": 0,
       "image_incident": {
         "project": "ttendencias-v2",
         "trend_id": "trv2-895591e871b469c339f58f41",
@@ -23393,15 +23383,19 @@
         "detail_safe": "No se pudo completar la imagen. Revise el proceso local de imágenes.",
         "retry_mode": "manual_only"
       },
-      "image_retry_summary": {
-        "revision": 1,
-        "editorial_sha256": "06908e44a3f830eecc92eed6a5ca59077f89698e42f5bf34adf485fa793e7c91",
-        "state": "blocked",
-        "send_attempts": 1,
-        "send_limit": 3,
-        "pre_send_failures": 0,
-        "pre_send_limit": 3
-      }
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "captured_review",
+          "chat_url": "https://chatgpt.com/c/6b0099e9-13b0-83eb-99fc-7f9fb2a9b1fb",
+          "capture_sha256": "06908e44a3f830eecc92eed6a5ca59077f89698e42f5bf34adf485fa793e7c91",
+          "sent_at": null,
+          "reset_at": "2026-11-20T19:31:53.477035+00:00",
+          "reason": "explicit_RE_reset"
+        }
+      ],
+      "review_mode": "standard",
+      "incident_retries": 0
     },
     "trv2-ce643003478174dcedac3b8f": {
       "trend_id": "trv2-ce643003478174dcedac3b8f",
@@ -24163,9 +24157,9 @@
     "trv2-453760bc04f18182c8d3a460",
     "trv2-f910d02bbf726bdbb0298b66",
     "trv2-13de4a42bc884eccd5e39114",
-    "trv2-895591e871b469c339f58f41",
     "trv2-ce643003478174dcedac3b8f",
-    "trv2-edb22055c3d0e286ad98926e"
+    "trv2-edb22055c3d0e286ad98926e",
+    "trv2-895591e871b469c339f58f41"
   ],
   "effects_enabled": false
 }
