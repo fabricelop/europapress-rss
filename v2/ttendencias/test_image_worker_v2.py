@@ -46,6 +46,41 @@ def fixture():
 
 
 class SplitTest(unittest.TestCase):
+    def test_legacy_github_adapter_receipt_without_attempt_is_associated(self):
+        queue, _ = fixture()
+        row = queue["items"]["trv2-%024x" % 1]
+        job = image_jobs.proposed_job(row, nonce="receiptcompat123456")
+        job["attempt"] = 4
+        legacy = {"trend_id": job["trend_id"], "revision": job["revision"],
+                  "command_id": job["command_id"], "sha256": "a" * 64,
+                  "path": "v2/ttendencias/generated-images/original.png",
+                  "mime": "image/png", "backend": "github_v1_style"}
+        url = "https://chatgpt.com/c/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
+        receipt = image.image_receipt(job, legacy, url)
+        self.assertEqual(receipt["attempt"], 4)
+        self.assertEqual(receipt["path"], legacy["path"])
+        self.assertEqual(receipt["image_chat_url"], url)
+        self.assertEqual(receipt["status"], "saved")
+        self.assertEqual(legacy.get("attempt"), None)
+        modern = dict(legacy, attempt=4)
+        self.assertEqual(image.image_receipt(job, modern, url), receipt)
+
+    def test_image_receipt_rejects_mismatched_identity_and_attempt(self):
+        queue, _ = fixture()
+        job = image_jobs.proposed_job(queue["items"]["trv2-%024x" % 1],
+                                      nonce="receiptidentity123456")
+        saved = {"trend_id": job["trend_id"], "revision": job["revision"],
+                 "command_id": job["command_id"], "sha256": "a" * 64,
+                 "path": "v2/ttendencias/generated-images/original.png",
+                 "mime": "image/png", "backend": "github_v1_style"}
+        for changed in ({"trend_id": "trv2-" + "f" * 24},
+                        {"revision": job["revision"] + 1},
+                        {"command_id": job["command_id"] + "-other"},
+                        {"attempt": job["attempt"] + 1}):
+            with self.subTest(changed=changed):
+                with self.assertRaisesRegex(RuntimeError, "V2_IMAGE_REMOTE_RECEIPT_INVALID"):
+                    image.image_receipt(job, dict(saved, **changed), "https://chatgpt.com/c/test")
+
     def test_recent_rex_outside_top30_is_still_image_eligible(self):
         queue, history = fixture()
         outside = "trv2-" + "f" * 24
