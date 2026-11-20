@@ -17890,14 +17890,13 @@
     "trv2-453760bc04f18182c8d3a460": {
       "trend_id": "trv2-453760bc04f18182c8d3a460",
       "name": "Puigdemont",
-      "revision": 2,
-      "status": "captured_review",
-      "reason": "retry_after_incident",
+      "revision": 3,
+      "status": "review_pending",
+      "reason": "user_reset",
       "episode_token": "7cae684c8e8ab2d0",
-      "requested_at": "2026-11-19T02:39:29.967489+00:00",
-      "updated_at": "2026-11-19T04:35:50.411956+00:00",
-      "previous_explanation": null,
-      "attempts": 1,
+      "requested_at": "2026-11-20T17:34:31.131738+00:00",
+      "updated_at": "2026-11-20T17:34:31.131738+00:00",
+      "attempts": 0,
       "previous_attempts": [
         {
           "revision": 1,
@@ -17908,37 +17907,19 @@
           "send_intent_at": "2026-11-18T23:29:52.739793+00:00",
           "incident_reason": "lease_expired_without_capture",
           "archived_at": "2026-11-19T02:39:29.967489+00:00"
+        },
+        {
+          "revision": 2,
+          "status": "captured_review",
+          "chat_url": "https://chatgpt.com/c/6afe61b2-428c-83eb-b1c9-eb340c89e666",
+          "capture_sha256": "655df28a1e41d762da33919d9ae13a0f0bae3453332b01e8204129e026d0d323",
+          "sent_at": null,
+          "reset_at": "2026-11-20T17:34:31.131738+00:00",
+          "reason": "explicit_RE_reset"
         }
       ],
-      "incident_retries": 1,
-      "capture": {
-        "revision": 2,
-        "chat_url": "https://chatgpt.com/c/6afe61b2-428c-83eb-b1c9-eb340c89e666",
-        "sha256": "655df28a1e41d762da33919d9ae13a0f0bae3453332b01e8204129e026d0d323",
-        "answer": "Puigdemont — Sus declaraciones sobre Sánchez y los acuerdos de investidura reavivan la polémica\nCausa probable, no confirmada\n\n19 de noviembre de 2026 · Política · Elecciones generales 29N · España / Cataluña\n\nESTADO_CAUSA: NO_CONFIRMADA\n\nESTADO_X: NO_NECESARIO\n\nExplicación principal — apta para X\nWriting\n\nPuigdemont podría ser tendencia por afirmar que aprovechó la ambición de Sánchez para «derrotar a España» mediante los acuerdos con Junts.\n\n143 caracteres · Una frase completa · Causa expresada con cautela\n\nContexto informativo\n\nCarles Puigdemont ha protagonizado una entrevista publicada por El Mundo el 18 de noviembre de 2026, en plena campaña de las elecciones generales del 29N. El líder de Junts sostiene que su partido aprovechó las aspiraciones políticas de Pedro Sánchez para conseguir concesiones que anteriormente parecían imposibles, especialmente la ley de amnistía y la aceptación de una mediación internacional.\n\nPuigdemont presenta esos acuerdos como victorias del independentismo y critica duramente al presidente del Gobierno. También afirma que nunca ha mantenido contacto directo con Sánchez desde que reside en Bélgica.\n\nLas declaraciones han recibido cobertura en varios medios entre el 18 y el 19 de noviembre y constituyen el acontecimiento reciente más relevante localizado sobre el dirigente catalán. \neuropapress.es\n+2\n\nFuentes y contraste\n\nEuropa Press — 19/11/2026, 01:24\n\nRecoge extensamente las declaraciones sobre Sánchez, la amnistía, la mediación internacional y las negociaciones con el PSOE.\n\nConsultar información\n\nEl Nacional — 18/11/2026\n\nConfirma la publicación de la entrevista y recoge la afirmación central sobre la ambición de Sánchez.\n\nConsultar información\n\nNació Digital — 18/11/2026\n\nDestaca la entrevista como noticia política relevante durante la campaña electoral.\n\nConsultar cobertura\n\nEFE — 09/11/2026\n\nAporta contexto sobre la decisión de Puigdemont de no regresar a Cataluña durante la campaña electoral.\n\nConsultar información\nResultado de la investigación\n\nHecho acreditado: Puigdemont realizó las declaraciones recogidas en una entrevista publicada el 18 de noviembre.\n\nMotivo predominante probable: la repercusión de sus palabras sobre Sánchez, el PSOE y las concesiones obtenidas por Junts.\n\nLímite de verificación: no se ha comprobado directamente la clasificación de tendencias de X ni existe una medición que atribuya el aumento de menciones a esa entrevista.\n\nConsulta de X: no fue necesaria para identificar un acontecimiento informativo reciente ampliamente documentado. No se han revisado publicaciones individuales ni se atribuyen reacciones a usuarios concretos.\n\nLa noticia está contrastada; su relación causal con la tendencia sigue siendo una hipótesis.\n\nHashtags pertinentes: #Puigdemont #PedroSánchez #Junts #29N\n\nRemate opcional: Una entrevista que vuelve a situar los pactos de investidura en el debate electoral.\n\nFicha informativa para LISTAS. No autoriza publicación automática.",
-        "verified_complete": true,
-        "editorial_validated": false,
-        "captured_at": "2026-11-19T03:37:43.793879+00:00",
-        "image": {
-          "sha256": "8e9ec4db10501e3fc52854b37913cda93c609b04f401f2cd14ddacd4f10485e9",
-          "path": "v2/ttendencias/generated-images/trv2-453760bc04f18182c8d3a460-r2-8e9ec4db10501e3fc52854b3.png",
-          "mime": "image/png",
-          "revision": 2,
-          "backend": "github_v1_style",
-          "command_id": "v2-img-trv2-453760bc04f18182c8d3a460-r2-a1-b00ea366e92d96e0c91033d3",
-          "status": "saved",
-          "image_chat_url": "https://chatgpt.com/c/6afe7c67-1ab8-83ed-9ed6-1f7191c97b7a"
-        }
-      },
-      "image_retry_summary": {
-        "revision": 2,
-        "editorial_sha256": "655df28a1e41d762da33919d9ae13a0f0bae3453332b01e8204129e026d0d323",
-        "state": "saved",
-        "send_attempts": 1,
-        "send_limit": 3,
-        "pre_send_failures": 0,
-        "pre_send_limit": 3
-      }
+      "incident_retries": 0,
+      "review_mode": "standard"
     },
     "trv2-4fd2d28124cae90919e4ceb9": {
       "trend_id": "trv2-4fd2d28124cae90919e4ceb9",
@@ -22080,42 +22061,26 @@
     "trv2-f910d02bbf726bdbb0298b66": {
       "trend_id": "trv2-f910d02bbf726bdbb0298b66",
       "name": "José Antonio Primo de Rivera",
-      "revision": 1,
-      "status": "captured_review",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "review_pending",
+      "reason": "user_reset",
       "episode_token": "158c93b0a8d95bf0",
-      "requested_at": "2026-11-20T07:02:36.627953+00:00",
-      "updated_at": "2026-11-20T07:10:58.056657+00:00",
-      "previous_explanation": null,
-      "attempts": 1,
-      "capture": {
-        "revision": 1,
-        "chat_url": "https://chatgpt.com/c/6afff178-b92c-83ed-89da-99d5c3e1d28b",
-        "sha256": "4eb81379cd0f8f252092a13223d7e6ddec9753e3714a71dbcdb52681af5b7405",
-        "answer": "José Antonio Primo de Rivera — El 90.º aniversario de su fusilamiento marca el 20-N\nCausa probable, no confirmada\n\n20 de noviembre de 2026 · Historia de España · Memoria democrática · Política nacional · 20-N\n\nExplicación principal — apta para X\nWriting\n\n«José Antonio Primo de Rivera» podría ser tendencia por el 90.º aniversario de su fusilamiento y los actos conmemorativos convocados este 20-N.\n\nHashtags: #JoséAntonioPrimoDeRivera #20N #MemoriaHistórica #HistoriaDeEspaña\n\nQué está ocurriendo\n\nEste viernes, 20 de noviembre de 2026, se cumplen exactamente 90 años del fusilamiento de José Antonio Primo de Rivera, fundador de Falange Española, ejecutado en la prisión de Alicante el 20 de noviembre de 1936.\n\nLa coincidencia de la efeméride con diversas convocatorias y controversias relacionadas con su figura ofrece una explicación sólida de su posible presencia entre las tendencias españolas.\n\nHay tres acontecimientos documentados:\n\n1. 90.º aniversario de su muerte. La fecha ha motivado nuevas publicaciones históricas, incluida una investigación de El Debate sobre los intentos de rescatarlo antes de su ejecución, publicada hoy a las 04:30. \neldebate.com\n\n2. Convocatorias de actos conmemorativos. Público informó el 31 de octubre de que Falange Española de las JONS preparaba movilizaciones para este 20-N, coincidiendo con la campaña electoral del 29 de noviembre. Entre las iniciativas anunciadas figura una marcha entre las inmediaciones de las sedes del PP y del PSOE en Madrid. \nPúblico\n\n3. Polémica en León. El 19 de noviembre, CGT, CCOO y UGT cuestionaron públicamente la convocatoria de una misa en memoria de Primo de Rivera. La prensa local también informó de que la iglesia anunciada tenía otras actividades programadas y de que las fuentes eclesiásticas negaban que fuera a celebrarse allí esa misa. \nheraldodeleon.es\n+1\n\nFuentes y contraste\n\nFuente\n\n\t\n\nFecha\n\n\t\n\nInformación acreditada\n\n\n\n\nBiblioteca Nacional de España\n\n\t\n\nFuente histórica\n\n\t\n\nEjecución el 20/11/1936\n\n\n\n\nGobierno de España — Cuelgamuros\n\n\t\n\nFuente institucional\n\n\t\n\nContexto histórico y trayectoria de sus restos\n\n\n\n\nPúblico\n\n\t\n\n31/10/2026\n\n\t\n\nActos previstos para el 20-N\n\n\n\n\nHeraldo de León\n\n\t\n\n19/11/2026\n\n\t\n\nControversia sobre la misa anunciada\n\n\n\n\nLa Nueva Crónica\n\n\t\n\n19/11/2026\n\n\t\n\nContraste de la convocatoria con fuentes eclesiásticas\n\n\n\n\nEl Debate\n\n\t\n\n20/11/2026\n\n\t\n\nArtículo histórico publicado por el aniversario\n\nLímites de la comprobación\n\nEfeméride: confirmada mediante fuentes institucionales e históricas.\n\nActualidad informativa: confirmada mediante noticias publicadas entre el 31 de octubre y el 20 de noviembre.\n\nActos anunciados: existen convocatorias documentadas, pero su celebración efectiva no queda acreditada en todos los casos.\n\nCausalidad en X: no se dispone de datos verificables de volumen de menciones ni de una muestra suficiente de publicaciones recientes que permita demostrar qué conversación ha impulsado exactamente el término.\n\nPresencia en tendencias: procede del término facilitado; no se ha verificado de forma independiente una clasificación de tendencias de X España.\n\nLa búsqueda de publicaciones recientes en X no permitió recuperar mensajes individuales con URL canónica y contenido directamente comprobable. Por tanto, no corresponde atribuir declaraciones a usuarios concretos ni presentar conversaciones como verificadas.\n\nValoración editorial\n\nLa hipótesis del aniversario es especialmente consistente: coinciden la fecha exacta, una efeméride de 90 años, publicaciones periodísticas actuales y movilizaciones anunciadas.\n\nNo obstante, falta evidencia directa para establecer que ese aniversario, y no alguna publicación viral o polémica particular, sea el desencadenante predominante de la tendencia.\n\nLa explicación propuesta es apta para una lista informativa, manteniendo la causalidad en condicional.\n\nRemate suave: Noventa años después, el 20-N sigue despertando controversia en España.\n\nESTADO_CAUSA: NO_CONFIRMADA\n\nESTADO_X: INACCESIBLE\n\nFicha informativa. No implica autorización de publicación automática.\n\nIs this conversation helpful so far?",
-        "verified_complete": true,
-        "editorial_validated": false,
-        "captured_at": "2026-11-20T07:04:49.440521+00:00",
-        "image": {
-          "sha256": "44ef7083159d155107d9d1e66d3deea3ce22c83c431ff4b50914c86a958c2d24",
-          "path": "v2/ttendencias/generated-images/trv2-f910d02bbf726bdbb0298b66-r1-44ef7083159d155107d9d1e6.png",
-          "mime": "image/png",
+      "requested_at": "2026-11-20T17:34:31.131738+00:00",
+      "updated_at": "2026-11-20T17:34:31.131738+00:00",
+      "attempts": 0,
+      "previous_attempts": [
+        {
           "revision": 1,
-          "backend": "github_v1_style",
-          "command_id": "v2-img-trv2-f910d02bbf726bdbb0298b66-r1-a1-4403815addb1b3706b843def",
-          "status": "saved",
-          "image_chat_url": "https://chatgpt.com/c/6afff20e-e370-83eb-b17f-0686dc158cc4"
+          "status": "captured_review",
+          "chat_url": "https://chatgpt.com/c/6afff178-b92c-83ed-89da-99d5c3e1d28b",
+          "capture_sha256": "4eb81379cd0f8f252092a13223d7e6ddec9753e3714a71dbcdb52681af5b7405",
+          "sent_at": null,
+          "reset_at": "2026-11-20T17:34:31.131738+00:00",
+          "reason": "explicit_RE_reset"
         }
-      },
-      "image_retry_summary": {
-        "revision": 1,
-        "editorial_sha256": "4eb81379cd0f8f252092a13223d7e6ddec9753e3714a71dbcdb52681af5b7405",
-        "state": "saved",
-        "send_attempts": 1,
-        "send_limit": 3,
-        "pre_send_failures": 0,
-        "pre_send_limit": 3
-      }
+      ],
+      "review_mode": "standard",
+      "incident_retries": 0
     },
     "trv2-01653647aff8b998239dff66": {
       "trend_id": "trv2-01653647aff8b998239dff66",
@@ -23898,7 +23863,6 @@
     "trv2-add3fa1adb10adbe909202f5",
     "trv2-d852ad8231745a3579857d07",
     "trv2-c01c9754539e2b29f9fd1622",
-    "trv2-453760bc04f18182c8d3a460",
     "trv2-9bef6b878fd7802c0579fd51",
     "trv2-b19a47df873cb1b14bf65663",
     "trv2-31d504798176cd4b88984507",
@@ -24001,7 +23965,6 @@
     "trv2-053bf52daf1a8779d7379879",
     "trv2-01653647aff8b998239dff66",
     "trv2-d60dc023ff3e9c95b6d6efd6",
-    "trv2-f910d02bbf726bdbb0298b66",
     "trv2-9603e9c6289215c19f5adcef",
     "trv2-9f555ec274e325f325939aaa",
     "trv2-e57bcaf84513484d733edbe2",
@@ -24031,7 +23994,9 @@
     "trv2-f6324fa9100402a5d23f6538",
     "trv2-34921a114bb41d9eac03dd19",
     "trv2-9b05833db0ff47a1d355271b",
-    "trv2-13de4a42bc884eccd5e39114"
+    "trv2-13de4a42bc884eccd5e39114",
+    "trv2-453760bc04f18182c8d3a460",
+    "trv2-f910d02bbf726bdbb0298b66"
   ],
   "effects_enabled": false
 }
