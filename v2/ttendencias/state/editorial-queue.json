@@ -23782,12 +23782,12 @@
       "trend_id": "trv2-265a7c19d56ae1ca59578160",
       "name": "Hamza",
       "revision": 2,
-      "status": "review_pending",
+      "status": "in_progress",
       "reason": "user_reset",
       "episode_token": "03dbab520c517a7d",
       "requested_at": "2026-11-20T21:27:53.308318+00:00",
       "updated_at": "2026-11-20T21:27:53.308318+00:00",
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -23800,7 +23800,13 @@
         }
       ],
       "review_mode": "standard",
-      "incident_retries": 0
+      "incident_retries": 0,
+      "lease": {
+        "token": "4279c7e8d34a02fe9e5e0063c6d93764748030ab2f73450e",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-20T21:28:55.960345+00:00",
+        "expires_at": "2026-11-20T22:08:55.960345+00:00"
+      }
     },
     "trv2-d69600be42f0e3eb439ecafb": {
       "trend_id": "trv2-d69600be42f0e3eb439ecafb",
