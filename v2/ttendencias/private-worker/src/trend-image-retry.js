@@ -53,6 +53,12 @@ export async function trendImageRetry(request,env,{json,sameOrigin,currentRankin
   const hash=detail.editorial_sha256;
   if(!/^[a-f0-9]{64}$/.test(hash))return json({error:"image_retry_unverified"},503);
   await table(env.MARKS_DB);
+  // A newly generated raster must remain V2-only until the owner explicitly
+  // switches on "Mostrar Imagen", even if an older photo had been opted in.
+  // Fail closed before recording the new image job: never leak a replacement.
+  await env.MARKS_DB.prepare("CREATE TABLE IF NOT EXISTS public_image_prefs (trend_id TEXT NOT NULL,revision INTEGER NOT NULL,visible INTEGER NOT NULL CHECK(visible IN (0,1)),updated_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ','now')),PRIMARY KEY(trend_id,revision))").run();
+  await env.MARKS_DB.prepare("INSERT INTO public_image_prefs(trend_id,revision,visible) VALUES(?,?,0) ON CONFLICT(trend_id,revision) DO UPDATE SET visible=0,updated_at=strftime('%Y-%m-%dT%H:%M:%fZ','now')")
+   .bind(trend_id,revision).run();
   const requestId=crypto.randomUUID().replaceAll("-","");
   await env.MARKS_DB.prepare("INSERT INTO trend_image_retry_requests(trend_id,revision,incident_at,editorial_sha256,request_id) VALUES(?,?,?,?,?) ON CONFLICT(trend_id,revision,incident_at) DO NOTHING")
    .bind(trend_id,revision,incident.at,hash,requestId).run();
