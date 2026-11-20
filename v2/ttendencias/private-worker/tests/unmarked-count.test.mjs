@@ -28,12 +28,17 @@ test("unmarked count uses current Top 30 and the same persisted R state",()=>{
  assert.equal(count(top.slice(0,29),marks),null,"incomplete ranking cannot claim 30");
 });
 
-test("counter sits to the right of Tendencias and Noticias, updates on R and refresh",()=>{
- assert.match(html, /id="nav-news"[^>]*>Noticias<\/a><span id="top30-without-r"/);
+test("two distinct counters sit to the right of both tabs in a sticky double header",()=>{
+ assert.match(html, /class="sticky-shell"><header id="top-bar"/);
+ assert.match(html, /id="nav-news"[^>]*>Noticias<\/a><div class="nav-counters"><span id="top30-without-r"/);
  assert.match(html, /id="top30-without-r"[^>]*aria-live="polite" hidden/);
- assert.match(css, /\.section-nav \.top30-without-r\{margin-left:auto/);
+ assert.match(html, /id="news-after-red"[^>]*aria-live="polite" hidden/);
+ assert.match(css, /\.sticky-shell\{position:sticky;top:env\(safe-area-inset-top\)/);
+ assert.match(css, /\.section-nav \.nav-counters\{margin-left:auto/);
+ assert.match(css, /\.section-nav \.news-after-red\{/);
  assert.match(built, /function countTop30WithoutR\(items,marks\)/);
  assert.match(app, /button\.title=next\?"Quitar marca roja":"Marcar en rojo";\s*updateTop30WithoutRCounter\(\)/);
  assert.match(app, /root\.append\(card\);\s*}\s*updateTop30WithoutRCounter\(\)/);
- assert.match(app, /if\(!node\|\|newsViewMode\)return/);
+ assert.match(app, /if\(!node\)return/);
+ assert.match(app, /if\(!newsViewMode\)try\{await loadNewsAfterRedCounter\(\)\}catch\{\}/);
 });

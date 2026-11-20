@@ -49,14 +49,20 @@ export async function newsMasterTable(db){
 export function projectMaster(master,flags,params=new URLSearchParams()){
  const states=new Map(flags.map(x=>[x.event_id,x]));
  const q=(params.get("q")||"").trim().toLocaleLowerCase("es").slice(0,120);
- const items=master.items.filter(row=>!states.get(row.id)?.suppressed_at).map(row=>({
+ const allItems=master.items.filter(row=>!states.get(row.id)?.suppressed_at).map(row=>({
   ...row,published_at:states.get(row.id)?.published_at||null,
   marked_red:states.get(row.id)?.marked_red===1
- })).filter(row=>!q||`${row.title} ${row.sources.map(s=>s.source).join(" ")}`.toLocaleLowerCase("es").includes(q));
+ }));
+ // The badge spans the entire current master, never just the visible page or
+ // a search result. Count stories newer than the most recently verified red R.
+ const newestFirst=allItems.slice().sort((a,b)=>Date.parse(b.verified_at)-Date.parse(a.verified_at)||a.id.localeCompare(b.id));
+ const latestRed=newestFirst.findIndex(item=>item.marked_red);
+ const unmarked_since_last_red=latestRed<0?newestFirst.length:latestRed;
+ const items=allItems.filter(row=>!q||`${row.title} ${row.sources.map(s=>s.source).join(" ")}`.toLocaleLowerCase("es").includes(q));
  const pageRaw=Number(params.get("page")||"1");
  const pages=Math.max(1,Math.ceil(items.length/40));
  const page=Math.min(pages,Number.isSafeInteger(pageRaw)&&pageRaw>0?pageRaw:1);
- return {...master,total:items.length,pages,page,items:items.slice((page-1)*40,page*40)};
+ return {...master,total:items.length,pages,page,unmarked_since_last_red,items:items.slice((page-1)*40,page*40)};
 }
 
 export async function readNewsMaster(env,params=new URLSearchParams(),{fetcher=fetch}={}){

@@ -205,3 +205,15 @@
 /* Contador de marcas R del Top 30; comparte línea con las dos pestañas. */
 .section-nav .top30-without-r{margin-left:auto;align-self:center;flex:none;padding:7px 11px;border:1px solid #3b536e;border-radius:999px;background:#1b2939;color:#e4edf8;font-size:12px;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap}
 @media(max-width:360px){.section-nav{gap:4px;padding:8px 10px}.section-nav a{padding:9px 10px;font-size:13px}.section-nav .top30-without-r{padding:6px 7px;font-size:11px}}
+
+/* Both rows scroll together, with no guesswork about the top bar's height. */
+.sticky-shell{position:sticky;top:env(safe-area-inset-top);z-index:24;box-shadow:0 3px 10px #0008}
+.sticky-shell .top-bar{position:static;top:auto;box-shadow:none}
+.section-nav{align-items:center;gap:7px}
+.section-nav .nav-counters{margin-left:auto;display:flex;align-items:center;gap:6px;flex:none}
+.section-nav .top30-without-r{margin-left:0;background:#1b3146;border-color:#487196;color:#c7e8ff}
+.section-nav .top30-without-r::before{content:"Tend. ";font-weight:700}
+.section-nav .news-after-red{align-self:center;flex:none;padding:7px 11px;border:1px solid #9b713f;border-radius:999px;background:#3a2a18;color:#ffe5b4;font-size:12px;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap}
+.section-nav .news-after-red::before{content:"Not. ";font-weight:700}
+@media(max-width:450px){.section-nav{gap:4px;padding:8px 9px}.section-nav a{padding:8px 9px;font-size:12px}.section-nav .nav-counters{gap:4px}.section-nav .top30-without-r,.section-nav .news-after-red{padding:6px 7px;font-size:11px}}
+@media(max-width:360px){.section-nav a{padding:8px 6px;font-size:11px}.section-nav .top30-without-r,.section-nav .news-after-red{padding:5px 6px;font-size:10px}.section-nav .top30-without-r::before{content:"T "}.section-nav .news-after-red::before{content:"N "}}

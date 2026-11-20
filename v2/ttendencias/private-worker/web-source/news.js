@@ -40,6 +40,7 @@
  }
  function render(data){
   $("radar-time").textContent="Último barrido · "+date(data.observed_at);
+  if(Number.isSafeInteger(data.unmarked_since_last_red))dispatchEvent(new CustomEvent("ttv2:news-master-refreshed",{detail:{count:data.unmarked_since_last_red}}));
   const list=$("news-list");list.replaceChildren();
   $("news-count").textContent=data.total+" "+(data.total===1?"noticia":"noticias")+(state.query?" · coincidencias":"");
   if(!data.items.length)list.append(node("p","news-empty",state.query?"No hay coincidencias.":"Todavía no hay noticias que cumplan el filtro de fuentes."));
