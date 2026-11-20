@@ -17891,12 +17891,12 @@
       "trend_id": "trv2-453760bc04f18182c8d3a460",
       "name": "Puigdemont",
       "revision": 3,
-      "status": "review_pending",
+      "status": "in_progress",
       "reason": "user_reset",
       "episode_token": "7cae684c8e8ab2d0",
       "requested_at": "2026-11-20T17:34:31.131738+00:00",
       "updated_at": "2026-11-20T17:34:31.131738+00:00",
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -17919,7 +17919,13 @@
         }
       ],
       "incident_retries": 0,
-      "review_mode": "standard"
+      "review_mode": "standard",
+      "lease": {
+        "token": "b1b87cd5de12f5b8701d662e0b755a1fea783e881c5826bc",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-20T17:35:06.805470+00:00",
+        "expires_at": "2026-11-20T18:15:06.805470+00:00"
+      }
     },
     "trv2-4fd2d28124cae90919e4ceb9": {
       "trend_id": "trv2-4fd2d28124cae90919e4ceb9",
