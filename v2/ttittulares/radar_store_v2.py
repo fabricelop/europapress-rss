@@ -39,6 +39,7 @@ FIXED_STATE = {PREFIX + path for path in (
 WRITE_PATH = re.compile(r"v2/ttittulares/(?:news/ttn2-[a-f0-9]{24}|"
                         r"jobs/editorial/ttn2-[a-f0-9]{24}-r[1-9][0-9]*-editorial|"
                         r"state/radar/scans/scan-[a-f0-9]{24})\.json\Z")
+ARCHIVE_PATH = re.compile(r"v2/ttittulares/state/radar/archive/batch-[a-f0-9]{24}\.json\Z")
 RECEIPT_PATH = re.compile(r"v2/ttittulares/state/radar/receipts/txn-[a-f0-9]{24}\.json\Z")
 LIVE_RETRY_BUDGET = 8  # Concurrent editorial and image commits can move the branch during reads.
 SNAPSHOT_READ_WORKERS = 24  # Bounded parallel reads shorten the vulnerable CAS window.
@@ -65,7 +66,7 @@ def _oid(value):
 
 
 def allowed_write(path):
-    return path in FIXED_STATE or bool(WRITE_PATH.fullmatch(path))
+    return path in FIXED_STATE or bool(WRITE_PATH.fullmatch(path)) or bool(ARCHIVE_PATH.fullmatch(path))
 
 
 class NoRedirect(HTTPRedirectHandler):

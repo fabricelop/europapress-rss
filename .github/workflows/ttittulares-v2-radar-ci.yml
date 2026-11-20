@@ -41,6 +41,8 @@ jobs:
           v2/ttittulares/identity_v2.py
           v2/ttittulares/source_health_v2.py
           v2/ttittulares/radar_ingest_v2.py
+          v2/ttittulares/radar_archive_v2.py
+          v2/ttittulares/radar_live_v2.py
           v2/ttittulares/source_fetch_v2.py
           v2/ttittulares/radar_snapshot_v2.py
           v2/ttittulares/radar_store_v2.py
@@ -51,7 +53,7 @@ jobs:
       - name: Validate catalog and pure radar regressions
         run: |
           python -m v2.ttittulares.source_catalog_v2
-          python -m unittest -v v2.ttittulares.test_contract_examples v2.ttittulares.test_radar_ingest_v2 v2.ttittulares.test_source_fetch_v2 v2.ttittulares.test_radar_snapshot_v2 v2.ttittulares.test_radar_store_v2
+          python -m unittest -v v2.ttittulares.test_contract_examples v2.ttittulares.test_radar_ingest_v2 v2.ttittulares.test_source_fetch_v2 v2.ttittulares.test_radar_snapshot_v2 v2.ttittulares.test_radar_store_v2 v2.ttittulares.test_radar_live_master_v2 v2.ttittulares.test_radar_archive_v2
       - name: Assert no external execution hooks in radar core
         run: |
           python - <<'PY'

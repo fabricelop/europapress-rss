@@ -40,7 +40,7 @@ jobs:
       - name: Validate source and all isolated regressions before writing
         run: |
           python -m compileall -q v2/ttittulares
-          python -m unittest -v v2.ttittulares.test_contract_examples v2.ttittulares.test_radar_ingest_v2 v2.ttittulares.test_source_fetch_v2 v2.ttittulares.test_radar_snapshot_v2 v2.ttittulares.test_radar_store_v2 v2.ttittulares.test_radar_live_v2
+          python -m unittest -v v2.ttittulares.test_contract_examples v2.ttittulares.test_radar_ingest_v2 v2.ttittulares.test_source_fetch_v2 v2.ttittulares.test_radar_snapshot_v2 v2.ttittulares.test_radar_store_v2 v2.ttittulares.test_radar_live_v2 v2.ttittulares.test_radar_live_master_v2 v2.ttittulares.test_radar_archive_v2
       - name: Persist independent source radar and verify readback
         env:
           GITHUB_TOKEN: ${{ github.token }}

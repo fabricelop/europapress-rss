@@ -7,6 +7,7 @@ import copy
 import os
 from datetime import datetime, timezone
 
+from .radar_archive_v2 import archive_expired_events
 from .master_news_v2 import project_master_news
 from .radar_ingest_v2 import ingest_scan
 from .radar_snapshot_v2 import BRANCH, PREFIX, encode, sha256
@@ -55,6 +56,14 @@ def persist_live(fetch_result, radar_store, editorial_store, *, now, max_attempt
                            copy.deepcopy(previous), copy.deepcopy(editorial_index), now=now)
         radar = plan["radar_state"]
         master = project_master_news(radar, now=now)
+        radar, archive_path, archive_document = archive_expired_events(radar, now=now)
+        if archive_path:
+            # Never overwrite a previous archive, including after a CAS retry.
+            if archive_path in radar_store.inventory(head):
+                raise StoreError("RADAR_ARCHIVE_FILE_EXISTS")
+            # A lossless rotation must not alter the currently verified feed.
+            if sha256(project_master_news(radar, now=now)) != sha256(master):
+                raise StoreError("RADAR_ARCHIVE_MASTER_FEED_CHANGED")
         summary = {"schema_version": 1, "project": "ttittulares-v2",
                    "kind": "independent_radar_summary", "observed_at": radar["observed_at"],
                    "radar_sha256": sha256(radar), "source_health_sha256": sha256(radar["source_health"]),
@@ -63,6 +72,8 @@ def persist_live(fetch_result, radar_store, editorial_store, *, now, max_attempt
                    "master_news_count": master["count"]}
         writes = {RADAR_PATH: radar, HEALTH_PATH: radar["source_health"],
                   SUMMARY_PATH: summary, MASTER_PATH: master}
+        if archive_path:
+            writes[archive_path] = archive_document
         try:
             commit = radar_store.commit(head, writes,
                                         "TTiTTulares V2: radar y noticias verificadas")
@@ -74,6 +85,7 @@ def persist_live(fetch_result, radar_store, editorial_store, *, now, max_attempt
         return {"verified": True, "replayed": False, "observed_at": radar["observed_at"],
                 "branch": RADAR_LIVE_BRANCH, "commit_sha": commit,
                 "new_job_count": 0, "master_news_count": master["count"],
+                "archived_in_batch": archive_document["count"] if archive_document else 0,
                 "metrics": radar["metrics"], "editorial_execution_enabled": False,
                 "publication_enabled": False, "attempts": attempt}
     raise StoreError("LIVE_RADAR_RETRY_BUDGET_EXHAUSTED")
