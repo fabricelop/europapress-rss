@@ -23753,12 +23753,12 @@
       "trend_id": "trv2-6583d6ff7f30f857c4677f31",
       "name": "Olympiacos",
       "revision": 3,
-      "status": "review_pending",
+      "status": "in_progress",
       "reason": "user_reset",
       "episode_token": "9032d7c99c89aaec",
       "requested_at": "2026-11-20T21:42:37.750237+00:00",
       "updated_at": "2026-11-20T21:42:37.750237+00:00",
-      "attempts": 0,
+      "attempts": 1,
       "review_mode": "standard",
       "incident_retries": 0,
       "image_incident": {
@@ -23782,7 +23782,13 @@
           "reset_at": "2026-11-20T21:42:37.750237+00:00",
           "reason": "explicit_RE_reset"
         }
-      ]
+      ],
+      "lease": {
+        "token": "a4cbb639b636c044ff4a69720587f717df120fa7aa745a9c",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-20T21:43:06.941187+00:00",
+        "expires_at": "2026-11-20T22:23:06.941187+00:00"
+      }
     },
     "trv2-074267a69d3df1d30b5e1e1f": {
       "trend_id": "trv2-074267a69d3df1d30b5e1e1f",
