@@ -22898,24 +22898,27 @@
     "trv2-5718067468986b5e1e6486d1": {
       "trend_id": "trv2-5718067468986b5e1e6486d1",
       "name": "Cobolli",
-      "revision": 1,
-      "status": "in_progress",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "72b323eada767c03",
-      "requested_at": "2026-11-20T15:02:08.930371+00:00",
-      "updated_at": "2026-11-20T15:03:22.546017+00:00",
+      "requested_at": "2026-11-20T15:09:13.433582+00:00",
+      "updated_at": "2026-11-20T15:09:13.433582+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "lease": {
-        "token": "98fc01cc2327eb66c534534342094ca8cbf67a2a2bbc278b",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-20T15:02:52.491392+00:00",
-        "expires_at": "2026-11-20T15:42:52.491392+00:00"
-      },
-      "send_intent": {
-        "token": "98fc01cc2327eb66c534534342094ca8cbf67a2a2bbc278b",
-        "at": "2026-11-20T15:03:22.545990+00:00"
-      }
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": "https://chatgpt.com/c/6b00613d-be74-83ed-9fa2-d4e11f915898",
+          "started_at": "2026-11-20T15:02:52.491392+00:00",
+          "send_intent_at": "2026-11-20T15:03:22.545990+00:00",
+          "incident_reason": "session_5min_inactivity",
+          "archived_at": "2026-11-20T15:09:13.433582+00:00"
+        }
+      ],
+      "incident_retries": 1
     },
     "trv2-e44c7eb152d921ebdab7e9fb": {
       "trend_id": "trv2-e44c7eb152d921ebdab7e9fb",
@@ -23667,9 +23670,9 @@
     "trv2-11c19c2114d3fd247c8cd654",
     "trv2-9182b9158b063f9f45a03e45",
     "trv2-18fc598f389264cb3c114dbc",
-    "trv2-5718067468986b5e1e6486d1",
     "trv2-8c460c5e628b0f0f63ed98c5",
-    "trv2-e44c7eb152d921ebdab7e9fb"
+    "trv2-e44c7eb152d921ebdab7e9fb",
+    "trv2-5718067468986b5e1e6486d1"
   ],
   "effects_enabled": false
 }
