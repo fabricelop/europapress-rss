@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-19T23:54:04.974541+00:00",
+  "checked_at": "2026-11-20T04:31:50.271007+00:00",
   "ok": false,
   "modules": {
     "editorial_config": {
@@ -40,14 +40,14 @@
       "required": false
     },
     "top10": {
-      "ok": false,
+      "ok": true,
       "count": 10,
       "non_stale_sources": 3,
       "verified_fresh_sources": [
         "xtrendsiamrohit"
       ],
-      "live_verified": false,
-      "captured_age_minutes": 0.1,
+      "live_verified": true,
+      "captured_age_minutes": 0.2,
       "noise_count": 0
     },
     "listener": {
@@ -59,8 +59,8 @@
       "ok": true,
       "status": "in_progress",
       "conclusion": null,
-      "age_minutes": 3.8,
-      "run_id": 44640931513,
+      "age_minutes": 6.4,
+      "run_id": 44674288621,
       "reason": null,
       "repairable": true,
       "require_active": false
@@ -82,70 +82,70 @@
     },
     "editorial_queue": {
       "ok": false,
-      "pending_count": 438,
-      "overdue_count": 438,
-      "oldest_age_minutes": 5976.5,
+      "pending_count": 457,
+      "overdue_count": 455,
+      "oldest_age_minutes": 6254.3,
       "warning_after_minutes": 30,
       "overdue_items": [
         {
           "id": "red-review-f82aef2544e34c9b9690",
           "name": "Revisar novedades: La Peter",
           "status": "preparing",
-          "age_minutes": 5976.5
+          "age_minutes": 6254.3
         },
         {
           "id": "red-review-fec6add765a364b5d614",
           "name": "Revisar novedades: Procida",
           "status": "preparing",
-          "age_minutes": 5976.5
+          "age_minutes": 6254.3
         },
         {
           "id": "5be067509b82",
           "name": "Cubarsí",
           "status": "preparing",
-          "age_minutes": 5923.4
+          "age_minutes": 6201.2
         },
         {
           "id": "225061d75a71",
           "name": "Zubimendi",
           "status": "preparing",
-          "age_minutes": 5923.4
+          "age_minutes": 6201.2
         },
         {
           "id": "16c870ea13f5",
           "name": "Cucurella",
           "status": "preparing",
-          "age_minutes": 5923.4
+          "age_minutes": 6201.2
         },
         {
           "id": "29542974bdf6",
           "name": "Pedri",
           "status": "preparing",
-          "age_minutes": 5923.4
+          "age_minutes": 6201.2
         },
         {
           "id": "f5d53c5e2fdc",
           "name": "Kane",
           "status": "preparing",
-          "age_minutes": 5923.4
+          "age_minutes": 6201.2
         },
         {
           "id": "8a769b0e310c",
           "name": "Fabián",
           "status": "preparing",
-          "age_minutes": 5923.4
+          "age_minutes": 6201.2
         },
         {
           "id": "bfb4a8ec2206",
           "name": "Unai Simón",
           "status": "preparing",
-          "age_minutes": 5923.4
+          "age_minutes": 6201.2
         },
         {
           "id": "8cd57a90d122",
           "name": "#NationsLeague",
           "status": "preparing",
-          "age_minutes": 5923.4
+          "age_minutes": 6201.2
         }
       ],
       "repairable": false
@@ -592,7 +592,26 @@
         "994e96a43b7d",
         "ef4c199d47d3",
         "90a8a85e7192",
-        "bd74846f1a86"
+        "bd74846f1a86",
+        "283ba03d6b24",
+        "1f495cbb1ac3",
+        "ee4ee605d2e7",
+        "6835285de417",
+        "fedef620340b",
+        "afc128a65f23",
+        "e6e98f73f0f6",
+        "298565f8acfb",
+        "51785a43fa07",
+        "7af20f4b1478",
+        "b018ad2786f9",
+        "b1a6af7ac953",
+        "91ce7d8f81a8",
+        "09bce85677eb",
+        "9406eecce6c5",
+        "0d8d2647a12b",
+        "a0820e902731",
+        "8925b55b5998",
+        "5ff8b430e1c6"
       ],
       "contradictory_success": false
     },
@@ -604,11 +623,10 @@
   },
   "repairs_started": [],
   "blocking": [
-    "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos",
     "cola con 290 estado(s) inválido(s)",
-    "cola de explicaciones retrasada: 438 pendiente(s) superan 30 min; más antigua 5976.5 min"
+    "cola de explicaciones retrasada: 455 pendiente(s) superan 30 min; más antigua 6254.3 min"
   ],
   "warnings": [],
   "alert_sent": false,
-  "last_alert_signature": "Top 30 no verificado en X: captura reciente pero sin fuente fechada <=45 minutos | cola con 290 estado(s) inválido(s) | cola de explicaciones retrasada: 438 pendiente(s) superan 30 min; más antigua 5976.5 min"
+  "last_alert_signature": "cola con 290 estado(s) inválido(s) | cola de explicaciones retrasada: 455 pendiente(s) superan 30 min; más antigua 6254.3 min"
 }
