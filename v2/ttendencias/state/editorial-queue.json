@@ -20718,13 +20718,13 @@
       "trend_id": "trv2-6defe4885b0a3c38ab97d9f2",
       "name": "Pinocho",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "0b55ec15baf6bd13",
       "requested_at": "2026-11-20T00:11:13.889333+00:00",
       "updated_at": "2026-11-20T00:11:13.889333+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -20737,7 +20737,13 @@
           "archived_at": "2026-11-20T00:11:13.889333+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "9bafe258f01ac6cd8cf8c26e795be6231c4850a191890bec",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-20T00:22:13.802780+00:00",
+        "expires_at": "2026-11-20T01:02:13.802780+00:00"
+      }
     },
     "trv2-0303bbbf7c8ce647d728e36b": {
       "trend_id": "trv2-0303bbbf7c8ce647d728e36b",
