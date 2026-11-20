@@ -22659,12 +22659,12 @@
       "trend_id": "trv2-764e4d52987c76bebc533156",
       "name": "Catástrofe",
       "revision": 3,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "0e2c0c7398c50b02",
       "requested_at": "2026-11-20T12:22:39.187151+00:00",
       "updated_at": "2026-11-20T12:22:39.187151+00:00",
-      "attempts": 0,
+      "attempts": 1,
       "review_mode": "x",
       "review_hints": "Es por los comentarios de ambos bandos de que las elecciones las gane el otro bando.",
       "incident_retries": 1,
@@ -22679,7 +22679,13 @@
           "incident_reason": "session_5min_inactivity",
           "archived_at": "2026-11-20T12:22:39.187151+00:00"
         }
-      ]
+      ],
+      "lease": {
+        "token": "8e838ef813ee2bfb23d680e43aa00509df133aaaab7d2b0b",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-20T12:24:10.362681+00:00",
+        "expires_at": "2026-11-20T13:04:10.362681+00:00"
+      }
     },
     "trv2-11a2084c7c6f396b21ba29b9": {
       "trend_id": "trv2-11a2084c7c6f396b21ba29b9",
