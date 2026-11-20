@@ -263,6 +263,9 @@ function incidentRequested(item){
 function incidentRetryRequested(item){
  return state.incidentRetryRequests.some(row=>row.trend_id===item.trend_id&&row.base_revision===item.revision);
 }
+function publicationEventsForDisplay(events,news){
+ return news?events.slice().sort((a,b)=>a.pressed_at_ms-b.pressed_at_ms):events;
+}
 function renderPublications(){
  const data=state.publications;
  const summary=$("publication-summary");
@@ -270,7 +273,7 @@ function renderPublications(){
  summary.title="Ver "+data.count+" publicaciones de "+(newsViewMode?"Noticias":"Tendencias")+" registradas en las últimas 24 horas móviles";
  $("publication-heading").textContent="Publicaciones de "+(newsViewMode?"Noticias":"Tendencias")+" · últimas 24 horas";
  const list=$("publication-history");list.replaceChildren();
- for(const event of data.events){
+ for(const event of publicationEventsForDisplay(data.events,newsViewMode)){
   const date=new Date(event.pressed_at_ms);
   if(!Number.isFinite(date.getTime()))continue;
   const when=new Intl.DateTimeFormat("es-ES",{timeZone:"Europe/Madrid",dateStyle:"short",timeStyle:"medium"}).format(date);
