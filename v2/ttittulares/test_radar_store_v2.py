@@ -9,7 +9,7 @@ from pathlib import Path
 
 from .radar_store_v2 import (GitHubStore, StoreError, Conflict, UncertainCommit,
                              REPOSITORY, BRANCH, PREFIX, persist_snapshot, validate_plan,
-                             LIVE_RETRY_BUDGET, SNAPSHOT_READ_WORKERS)
+                             LIVE_RETRY_BUDGET, SNAPSHOT_READ_WORKERS, PINNED_JSON_MAX_BYTES)
 from .radar_snapshot_v2 import encode, plan_snapshot, sha256
 from .test_radar_snapshot_v2 import fixture
 from .test_radar_ingest_v2 import BASE
@@ -397,6 +397,44 @@ class WireTests(unittest.TestCase):
         self.assertIn("/" + "b" * 40 + "/" + path, calls[0].full_url)
         with self.assertRaisesRegex(StoreError, "OUTSIDE_SCOPE"):
             store._http_raw("b" * 40, "ttittulares/prepared.json")
+
+    def test_pinned_historical_radar_larger_than_old_limit_is_read_intact(self):
+        from io import BytesIO
+        # The real radar crossed the former 16 MB cap. Preserve every byte:
+        # no truncation or deletion of archived candidates is permissible here.
+        payload = b'{"history":"' + b'x' * 16_100_000 + b'"}'
+        calls = []
+        class Opener:
+            def open(self, req, timeout):
+                return BytesIO(payload)
+        store = GitHubStore("fixture")
+        store._opener = Opener()
+        result = store._http_raw("a" * 40, PREFIX + "state/radar/current.json")
+        self.assertEqual(result, payload)
+        self.assertGreater(len(result), 16_000_000)
+        self.assertEqual(PINNED_JSON_MAX_BYTES, 64_000_000)
+
+    def test_pinned_historical_radar_still_rejects_an_oversized_response(self):
+        class TooLargeBytes(bytes):
+            def __len__(self):
+                return PINNED_JSON_MAX_BYTES + 1
+        class Response:
+            def __enter__(self):
+                return self
+            def __exit__(self, *args):
+                return None
+            def read(self, n):
+                self.limit_seen = n
+                return TooLargeBytes(b'{}')
+        response = Response()
+        class Opener:
+            def open(self, req, timeout):
+                return response
+        store = GitHubStore("fixture")
+        store._opener = Opener()
+        with self.assertRaisesRegex(StoreError, "PINNED_RAW_READ_TOO_LARGE"):
+            store._http_raw("a" * 40, PREFIX + "state/radar/current.json")
+        self.assertEqual(response.limit_seen, PINNED_JSON_MAX_BYTES + 1)
 
     def test_replay_reads_only_receipt_before_origin_verification(self):
         store = GitHubStore("fixture")
