@@ -20483,13 +20483,13 @@
       "trend_id": "trv2-6521745076760c92f03a50e8",
       "name": "Borja Sémper",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "4bd12db0b0a556b9",
       "requested_at": "2026-11-19T23:39:53.627047+00:00",
       "updated_at": "2026-11-19T23:39:53.627047+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -20502,7 +20502,13 @@
           "archived_at": "2026-11-19T23:39:53.627047+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "ae22e4b05b76b69624bc596bba418e412a4025bd304d349d",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-20T00:01:49.116382+00:00",
+        "expires_at": "2026-11-20T00:41:49.116382+00:00"
+      }
     },
     "trv2-d26c3bf26869ead6ce44add7": {
       "trend_id": "trv2-d26c3bf26869ead6ce44add7",
