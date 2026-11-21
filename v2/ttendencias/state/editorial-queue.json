@@ -29292,13 +29292,13 @@
       "trend_id": "trv2-4ae305e225f30cf2987c0d91",
       "name": "Sanse",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "1a1c72b6279e5091",
       "requested_at": "2026-11-21T18:20:21.798493+00:00",
       "updated_at": "2026-11-21T18:20:21.798493+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -29311,7 +29311,13 @@
           "archived_at": "2026-11-21T18:20:21.798493+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "20025a0bb7e7eb0c576b211ad009f71bf7295cb5ef2dd2a8",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-21T18:30:07.759263+00:00",
+        "expires_at": "2026-11-21T19:10:07.759263+00:00"
+      }
     },
     "trv2-8466d803f5beeae9c0f7227d": {
       "trend_id": "trv2-8466d803f5beeae9c0f7227d",
