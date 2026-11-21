@@ -27060,12 +27060,12 @@
       "trend_id": "trv2-804c35888cb0d7e5595909eb",
       "name": "Alavés",
       "revision": 2,
-      "status": "review_pending",
+      "status": "in_progress",
       "reason": "user_reset",
       "episode_token": "d35872fcb661be78",
       "requested_at": "2026-11-21T15:31:51.074423+00:00",
       "updated_at": "2026-11-21T15:31:51.074423+00:00",
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -27078,7 +27078,13 @@
         }
       ],
       "review_mode": "standard",
-      "incident_retries": 0
+      "incident_retries": 0,
+      "lease": {
+        "token": "a3e79cf33dfaecbab501c7d7ea21d215f558f87924e90e78",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-21T15:32:45.178403+00:00",
+        "expires_at": "2026-11-21T16:12:45.178403+00:00"
+      }
     },
     "trv2-712a78aeff106f0ee2245f1c": {
       "trend_id": "trv2-712a78aeff106f0ee2245f1c",
