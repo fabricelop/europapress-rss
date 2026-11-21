@@ -268,16 +268,42 @@ async function currentRanking(env) {
   try{live=await loadRadar(env?.MARKS_DB);}catch(error){console.warn("TT_V2_RADAR_READ_FALLBACK",String(error));}
   return (await mergeEditorialRadar(data,live)).items;
 }
+// Red R history belongs to the user; cache a copy of the complete map without
+// deleting or truncating any mark. All owner R/PU writes invalidate this copy.
+async function cachedRedMarks(db){
+  let available=false;
+  try{
+    await db.prepare("CREATE TABLE IF NOT EXISTS red_marks_snapshot (id INTEGER PRIMARY KEY CHECK(id=1),payload TEXT NOT NULL,cached_at_ms INTEGER NOT NULL)").run();
+    available=true;
+    const row=await db.prepare("SELECT payload,cached_at_ms FROM red_marks_snapshot WHERE id=1").first();
+    if(row&&Number.isSafeInteger(row.cached_at_ms)&&row.cached_at_ms>0&&Date.now()-row.cached_at_ms>=0&&Date.now()-row.cached_at_ms<600000){
+      const parsed=JSON.parse(row.payload);
+      if(Array.isArray(parsed))return parsed;
+    }
+  }catch(error){console.warn("TT_V2_MARKS_SNAPSHOT_READ_FALLBACK",String(error));}
+  const rows=(await db.prepare("SELECT trend_id, entered_top30_at FROM red_marks").all()).results||[];
+  if(available){
+    try{await db.prepare("INSERT INTO red_marks_snapshot(id,payload,cached_at_ms) VALUES(1,?,?) ON CONFLICT(id) DO UPDATE SET payload=excluded.payload,cached_at_ms=excluded.cached_at_ms")
+      .bind(JSON.stringify(rows),Date.now()).run();}
+    catch(error){console.warn("TT_V2_MARKS_SNAPSHOT_WRITE_FALLBACK",String(error));}
+  }
+  return rows;
+}
+async function invalidateMarksSnapshot(db){
+  try{await db.prepare("UPDATE red_marks_snapshot SET cached_at_ms=0 WHERE id=1").run();}
+  catch(error){console.warn("TT_V2_MARKS_SNAPSHOT_EVICT_PENDING",String(error));}
+}
 async function redMarks(request,env) {
   if(!env.MARKS_DB) return json({error:"marks_storage_not_configured"},503);
   if(request.method!=="GET" && (request.method!=="POST" || !sameOrigin(request))) return json({error:"method_not_allowed"},405);
   try {
-    const rows=(await env.MARKS_DB.prepare("SELECT trend_id, entered_top30_at FROM red_marks").all()).results || [];
-    // Cloudflare/GitHub capturan en momentos distintos y pueden discrepar sobre
-    // entered_top30_at. Consultar NUNCA debe borrar una preferencia del usuario.
-    // La marca pertenece al ID estable hasta que el usuario la quite con R.
-    const valid=new Map(rows.filter(row=>TREND_ID.test(row.trend_id)).map(row=>[row.trend_id,row.entered_top30_at]));
-    if(request.method==="GET") return json({marks:Object.fromEntries(valid),captured_at:new Date().toISOString()});
+    if(request.method==="GET"){
+      // Cloudflare/GitHub may differ about entered_top30_at. Reading NEVER
+      // deletes a mark; the mark follows the stable ID until R removes it.
+      const rows=await cachedRedMarks(env.MARKS_DB);
+      const valid=new Map(rows.filter(row=>TREND_ID.test(row.trend_id)).map(row=>[row.trend_id,row.entered_top30_at]));
+      return json({marks:Object.fromEntries(valid),captured_at:new Date().toISOString()});
+    }
     if(Number(request.headers.get("content-length")||0)>1024) return json({error:"invalid_payload"},413);
     let body;
     try{body=await request.json();}catch{return json({error:"invalid_payload"},400);}
@@ -290,6 +316,7 @@ async function redMarks(request,env) {
     const stamp=body.entered_top30_at;
     if(body.marked) await env.MARKS_DB.prepare("INSERT INTO red_marks (trend_id, entered_top30_at) VALUES (?,?) ON CONFLICT(trend_id) DO UPDATE SET entered_top30_at=excluded.entered_top30_at").bind(body.trend_id,stamp).run();
     else await env.MARKS_DB.prepare("DELETE FROM red_marks WHERE trend_id=?").bind(body.trend_id).run();
+    await invalidateMarksSnapshot(env.MARKS_DB);
     return json({ok:true,trend_id:body.trend_id,marked:body.marked});
   }catch{return json({error:"marks_storage_unavailable"},503);}
 }
@@ -459,6 +486,34 @@ async function trendTopicLinksTable(db){
 async function invalidateTrendTopicLinks(db,trendId){
   await db.prepare("UPDATE trend_topic_links SET invalidated_at_ms=? WHERE invalidated_at_ms IS NULL AND (trend_id=? OR origin_trend_id=?)").bind(Date.now(),trendId,trendId).run();
 }
+// Publication history is immutable. Cache the exact 24-hour answer until the
+// next event expires or ten minutes, whichever is sooner. PU evicts it.
+async function cachedTrendPublications(db){
+  let available=false;
+  const now=Date.now();
+  try{
+    await db.prepare("CREATE TABLE IF NOT EXISTS trend_publication_snapshot (id INTEGER PRIMARY KEY CHECK(id=1),payload TEXT NOT NULL,cached_at_ms INTEGER NOT NULL,expires_at_ms INTEGER NOT NULL)").run();
+    available=true;
+    const row=await db.prepare("SELECT payload,cached_at_ms,expires_at_ms FROM trend_publication_snapshot WHERE id=1").first();
+    if(row&&Number.isSafeInteger(row.cached_at_ms)&&row.cached_at_ms>0&&now-row.cached_at_ms>=0&&now-row.cached_at_ms<600000&&Number.isSafeInteger(row.expires_at_ms)&&now<row.expires_at_ms){
+      const parsed=JSON.parse(row.payload);
+      if(Array.isArray(parsed))return parsed;
+    }
+  }catch(error){console.warn("TT_V2_PU_SNAPSHOT_READ_FALLBACK",String(error));}
+  const data=await db.prepare("SELECT event_id,trend_id,revision,trend_name,pressed_at_ms FROM publication_clicks WHERE pressed_at_ms > ? AND pressed_at_ms <= ? ORDER BY pressed_at_ms ASC,event_id ASC LIMIT 500").bind(now-24*HOUR,now).all();
+  const events=(data.results||[]).filter(x=>Number.isSafeInteger(x.pressed_at_ms));
+  const expiry=Math.min(now+600000,...events.map(event=>event.pressed_at_ms+24*HOUR+1).filter(x=>x>now));
+  if(available){
+    try{await db.prepare("INSERT INTO trend_publication_snapshot(id,payload,cached_at_ms,expires_at_ms) VALUES(1,?,?,?) ON CONFLICT(id) DO UPDATE SET payload=excluded.payload,cached_at_ms=excluded.cached_at_ms,expires_at_ms=excluded.expires_at_ms")
+      .bind(JSON.stringify(events),now,expiry).run();}
+    catch(error){console.warn("TT_V2_PU_SNAPSHOT_WRITE_FALLBACK",String(error));}
+  }
+  return events;
+}
+async function invalidateTrendPublicationsSnapshot(db){
+  try{await db.prepare("UPDATE trend_publication_snapshot SET cached_at_ms=0 WHERE id=1").run();}
+  catch(error){console.warn("TT_V2_PU_SNAPSHOT_EVICT_PENDING",String(error));}
+}
 async function publicationCount(request,env) {
   if(!env.MARKS_DB)return json({error:"publication_storage_not_configured"},503);
   if(request.method!=="GET"&&(request.method!=="POST"||!sameOrigin(request)))
@@ -490,10 +545,9 @@ async function publicationCount(request,env) {
         ...related.map(row=>db.prepare("INSERT INTO trend_topic_links(trend_id,revision,origin_trend_id,origin_revision,origin_name,created_at_ms) VALUES(?,?,?,?,?,?) ON CONFLICT(trend_id,revision,origin_trend_id,origin_revision) DO NOTHING")
           .bind(row.trend_id,row.revision,trend_id,revision,String(item.name).slice(0,150),Date.now()))
       ]);
+      await Promise.all([invalidateMarksSnapshot(db),invalidateTrendPublicationsSnapshot(db)]);
     }
-    const threshold=Date.now()-24*HOUR;
-    const data=await db.prepare("SELECT event_id,trend_id,revision,trend_name,pressed_at_ms FROM publication_clicks WHERE pressed_at_ms > ? AND pressed_at_ms <= ? ORDER BY pressed_at_ms ASC,event_id ASC LIMIT 500").bind(threshold,Date.now()).all();
-    const events=(data.results||[]).filter(x=>Number.isSafeInteger(x.pressed_at_ms));
+    const events=await cachedTrendPublications(db);
     const linked=await db.prepare("SELECT trend_id,revision,origin_trend_id,origin_revision,origin_name FROM trend_topic_links WHERE invalidated_at_ms IS NULL LIMIT 300").all();
     let links=(linked.results||[]).filter(row=>TREND_ID.test(row.trend_id)&&TREND_ID.test(row.origin_trend_id));
     if(links.length){
