@@ -1,0 +1,93 @@
+name: TTActualidad V2 - segundo acceso privado sin duplicar datos
+
+on:
+  push:
+    branches: [feature/v2-acceso-alternativo-20261121]
+    paths:
+      - '.github/workflows/ttactualidad-v2-access-gateway.yml'
+      - 'v2/ttendencias/access-gateway/**'
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Probar que el acceso alternativo no cambia la autenticación ni PU/R
+        working-directory: v2/ttendencias/access-gateway
+        run: node --test test/*.test.mjs
+      - name: No sobrescribir un Worker ajeno con el mismo nombre
+        run: |
+          python3 - <<'PY'
+          import os,json,urllib.request,urllib.error
+          account=os.environ.get('CLOUDFLARE_ACCOUNT_ID','')
+          token=os.environ.get('CLOUDFLARE_API_TOKEN','')
+          if not account or not token:raise SystemExit('CLOUDFLARE_DEPLOY_SECRETS_MISSING')
+          uri='https://api.cloudflare.com/client/v4/accounts/'+account+'/workers/scripts/ttactualidad-v2-acceso/settings'
+          request=urllib.request.Request(uri,headers={'Authorization':'Bearer '+token})
+          try:
+            with urllib.request.urlopen(request,timeout=25) as response:settings=json.load(response)
+          except urllib.error.HTTPError as exc:
+            if exc.code==404:
+              print('TT_V2_ALTERNATE_NAME_AVAILABLE=YES')
+              raise SystemExit(0)
+            raise
+          bindings=(settings.get('result') or {}).get('bindings') or []
+          ok=any(b.get('name')=='V2_ORIGIN' and b.get('type')=='service'
+                 and b.get('service')=='ttactualidad-v2-private-test' for b in bindings)
+          if not ok:raise SystemExit('TT_V2_ALTERNATE_NAME_ALREADY_OWNED_BY_DIFFERENT_SCRIPT')
+          print('TT_V2_ALTERNATE_EXISTING_SERVICE_BINDING_VERIFIED=YES')
+          PY
+      - name: Publicar solo la segunda dirección mediante vínculo interno
+        working-directory: v2/ttendencias/access-gateway
+        run: npx --yes wrangler@4.49.0 deploy --config wrangler.json
+      - name: Verificar acceso, publicación de controles y protección privada
+        run: |
+          python3 - <<'PY'
+          import json,time,urllib.request,urllib.error
+          origin='https://ttactualidad-v2-acceso.fabricelop.workers.dev'
+          def get(path):
+            with urllib.request.urlopen(urllib.request.Request(origin+path,headers={'User-Agent':'V2-alternate-readonly-check'}),timeout=15) as response:
+              return response.status,response.read(100000)
+          for attempt in range(7):
+            try:
+              status,body=get('/')
+              if status!=200 or b'Acceso privado' not in body:raise ValueError('private_login_missing')
+              status,body=get('/health')
+              health=json.loads(body)
+              if status!=200 or health.get('configured') is not True:raise ValueError('target_worker_missing')
+              status,body=get('/api/public-editorial-overrides')
+              controls=json.loads(body)
+              if status!=200 or controls.get('schema_version')!=1 or not isinstance(controls.get('re'),list):raise ValueError('shared_D1_missing')
+              for route in ('/api/me','/api/marks','/api/publication-count'):
+                try:
+                  get(route)
+                  raise ValueError('private_route_not_protected:'+route)
+                except urllib.error.HTTPError as exc:
+                  if exc.code!=401:raise ValueError('private_route_unexpected_status:'+route+':'+str(exc.code))
+              req=urllib.request.Request(origin+'/api/login',method='POST',data=b'{"password":"valor-ficticio-largo-para-prueba"}',
+                  headers={'Origin':origin,'Content-Type':'application/json','X-TTv2-Action':'1'})
+              try:
+                urllib.request.urlopen(req,timeout=15)
+                raise ValueError('wrong_password_was_accepted')
+              except urllib.error.HTTPError as exc:
+                if exc.code!=401:raise ValueError('login_origin_rejected:'+str(exc.code))
+              print('TT_V2_ALTERNATE_PRIVATE_LOGIN=YES')
+              print('TT_V2_ALTERNATE_SAME_BACKEND_D1=YES')
+              print('TT_V2_ALTERNATE_PU_R_PRIVACY=YES')
+              print('TT_V2_ALTERNATE_LOGIN_POST_ORIGIN=YES')
+              break
+            except Exception as exc:
+              print('TT_V2_ALTERNATE_VERIFY_RETRY='+type(exc).__name__+':'+str(exc)[:100],flush=True)
+              if attempt==6:raise
+              time.sleep(8)
+          PY
