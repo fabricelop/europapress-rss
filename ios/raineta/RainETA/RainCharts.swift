@@ -203,16 +203,46 @@ struct MinuteRainGraph:View {
                     Text("Sin cobertura radar local válida · previsión por modelos")
                         .font(.caption2).foregroundStyle(.secondary)
                 }
-                RainMinuteBars(data:bars,horizon:horizon,
-                               selectedMinute:$selectedMinute)
-                HStack(spacing:6) {
-                    Text("Gris: sin precipitación")
-                    Spacer()
-                    Text("Color: intensidad")
-                    Spacer()
-                    Image(systemName:"hand.draw").foregroundStyle(.secondary)
+                let wavePoints=bars.map {
+                    RainWavePoint(minute:$0.minute,rate:$0.mmh,snow:$0.snow,
+                                  date:now.addingTimeInterval(Double($0.minute*60)))
                 }
-                .font(.caption2).foregroundStyle(.secondary)
+                HStack {
+                    Text("Evolución de la intensidad")
+                        .font(.subheadline.bold())
+                    Spacer()
+                    Text(String(format:"Pico ~%.1f mm/h",
+                         RainWaveForecast.peak(wavePoints)))
+                        .font(.caption2.bold())
+                        .foregroundStyle(.cyan)
+                }
+                RainWavePlot(points:wavePoints,height:150,
+                             selectedIndex:wavePoints.firstIndex(where:{
+                                 $0.minute==(selectedMinute ?? 0)
+                             }),
+                             onSelect:{ index in
+                                 if wavePoints.indices.contains(index) {
+                                     selectedMinute=wavePoints[index].minute
+                                 }
+                             })
+                HStack {
+                    Text("Ahora")
+                    Spacer()
+                    Text("+\(horizon/2) min")
+                    Spacer()
+                    Text("+\(horizon) min")
+                }
+                .font(.system(size:10,design:.rounded))
+                .foregroundStyle(.secondary)
+                RainWaveRibbon(points:wavePoints)
+                RainWaveWindows(points:wavePoints,stepMinutes:1,limit:4)
+                RainWaveLegend()
+                DisclosureGroup("Detalle técnico · un minuto por barra") {
+                    RainMinuteBars(data:bars,horizon:horizon,
+                                   selectedMinute:$selectedMinute)
+                }
+                .font(.caption2)
+                .foregroundStyle(.secondary)
                 Text("Radar prioritario hasta 60 min. Precipitación equivalente en mm/h; tipo nieve según modelo. Cada minuto es visual, no una medición nueva.")
                     
                     .font(.caption2).foregroundStyle(.secondary)
@@ -331,21 +361,27 @@ struct ThreeHourRainView:View {
 
     var body:some View {
         VStack(alignment:.leading,spacing:12) {
-            Label("Próximas 3 horas",systemImage:"chart.bar.fill")
+            Label("Próximas 3 horas",systemImage:"waveform.path")
                 .font(.headline)
             if store.snapshot != nil {
                 let now=Date()
                 let series=store.minuteForecast(now:now,horizon:180)
-                let slots=stride(from:0,through:180,by:15).compactMap { minute in
+                let slots=stride(from:0,to:180,by:15).compactMap { minute in
                     series.first(where:{$0.minute==minute})
                 }
                 if slots.isEmpty {
                     Text("Sin datos para las próximas horas").foregroundStyle(.secondary)
                 } else {
                     let selected=slots.min(by:{abs($0.minute-chosen)<abs($1.minute-chosen)}) ?? slots[0]
+                    let points=slots.map {
+                        RainWavePoint(minute:$0.minute,rate:$0.rate,
+                                      snow:$0.rate>=0.15 &&
+                                           store.snapshot?.phase(at:$0.at)==(.snow),
+                                      date:$0.at)
+                    }
                     Text(store.radarLocal?.isFresh(at:now)==true ?
-                         "Radar local de 0 a 60 min; influencia decreciente hasta 90 min. Después, modelos." :
-                         "Radar local no disponible · previsión de modelos")
+                         "Radar local en el plazo fiable; después, modelos. Horizonte orientativo." :
+                         "Radar local no disponible · previsión según modelos")
                         .font(.caption2).foregroundStyle(.cyan)
                     HStack(spacing:6) {
                         Text(selected.at.formatted(date:.omitted,time:.shortened))
@@ -357,37 +393,27 @@ struct ThreeHourRainView:View {
                         Text(selected.radarInformed ? "Radar" : "Modelo")
                             .font(.caption).foregroundStyle(.secondary)
                     }
-                    GeometryReader { geo in
-                        let width=max(4,(geo.size.width-CGFloat(slots.count-1)*5)/CGFloat(slots.count))
-                        let peak=max(0.7,slots.map(\.rate).max() ?? 0)
-                        HStack(alignment:.bottom,spacing:5) {
-                            ForEach(slots) { point in
-                                Button {chosen=point.minute} label:{
-                                    VStack(spacing:5) {
-                                        Spacer(minLength:0)
-                                        RoundedRectangle(cornerRadius:3)
-                                            .fill(RainVisual.color(point.rate))
-                                            .frame(height:max(point.rate>0.1 ? 6:2,
-                                                              CGFloat(point.rate/peak)*120))
-                                            .overlay(alignment:.top) {
-                                                if chosen==point.minute {
-                                                    RoundedRectangle(cornerRadius:3)
-                                                        .stroke(.white,lineWidth:1.5)
-                                                }
-                                            }
-                                        Text(point.minute%30==0 ? "+\(point.minute)" : " ")
-                                            .font(.system(size:9))
-                                            .foregroundStyle(.secondary)
-                                            .frame(height:15)
-                                    }
-                                    .frame(width:width)
-                                }
-                                .buttonStyle(.plain)
-                            }
-                        }
+                    RainWavePlot(points:points,height:150,
+                                 selectedIndex:slots.firstIndex(where:{$0.minute==chosen}),
+                                 onSelect:{ index in
+                                     if slots.indices.contains(index) {
+                                         chosen=slots[index].minute
+                                     }
+                                 })
+                    HStack {
+                        Text("Ahora")
+                        Spacer()
+                        Text("+60")
+                        Spacer()
+                        Text("+120")
+                        Spacer()
+                        Text("+180 min")
                     }
-                    .frame(height:155)
-                    RainIntensityLegend()
+                    .font(.system(size:10,design:.rounded))
+                    .foregroundStyle(.secondary)
+                    RainWaveRibbon(points:points)
+                    RainWaveWindows(points:points,stepMinutes:15,limit:5)
+                    RainWaveLegend()
                     HStack {
                         let wet=series.filter{$0.rate>=0.15}.count
                         Label("~\(wet) min con precipitación estimada",systemImage:"clock")
@@ -395,6 +421,9 @@ struct ThreeHourRainView:View {
                         Text("Radar + modelos")
                     }
                     .font(.caption2).foregroundStyle(.secondary)
+                    Text("Cada punto representa un intervalo visual de 15 minutos. " +
+                         "No es una predicción independiente para cada minuto.")
+                        .font(.caption2).foregroundStyle(.secondary)
                 }
             } else {
                 ProgressView("Consultando previsión…")
@@ -426,9 +455,17 @@ struct LongRainForecast: View {
             let data=shown
             if !data.isEmpty {
                 Chart(data) { item in
-                    BarMark(x:.value("Hora",item.time),
-                            y:.value("mm",item.millimeters))
-                        .foregroundStyle(RainVisual.color(item.millimeters))
+                    AreaMark(x:.value("Hora",item.time),
+                             y:.value("mm",item.millimeters))
+                        .foregroundStyle(
+                            LinearGradient(colors:[Color.cyan.opacity(0.45),
+                                                   Color.blue.opacity(0.04)],
+                                           startPoint:.top,endPoint:.bottom))
+                    LineMark(x:.value("Hora",item.time),
+                             y:.value("mm",item.millimeters))
+                        .foregroundStyle(Color.cyan)
+                        .lineStyle(StrokeStyle(lineWidth:2.6,lineCap:.round,
+                                               lineJoin:.round))
                 }
                 .chartXAxis {
                     AxisMarks(values:.stride(by:hours == 168 ? .day : .hour,
@@ -438,7 +475,18 @@ struct LongRainForecast: View {
                     }
                 }
                 .frame(height:155)
-                Text("Barras: acumulación prevista por hora (mm). El detalle y la incertidumbre dependen del plazo.")
+                let timeline=Array(data.enumerated()).map { index,hour in
+                    RainWavePoint(minute:index*60,
+                                  rate:hour.millimeters,
+                                  probability:Double(hour.probability),
+                                  date:hour.time.addingTimeInterval(-3600))
+                }
+                RainWaveRibbon(points:timeline)
+                RainWaveWindows(points:timeline,stepMinutes:60,limit:5)
+                RainWaveLegend()
+                Text("Onda: acumulación prevista por hora (mm). Las franjas separan lluvia, " +
+                     "riesgo posible y periodos sin precipitación relevante. " +
+                     "La incertidumbre aumenta con el plazo.")
                     .font(.caption2).foregroundStyle(.secondary)
             }
             if let weather {

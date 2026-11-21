@@ -1,3 +1,15 @@
+# RainETA para iPhone — v0.13.0
+
+## v0.13.0 — Ondas de lluvia y ventanas secas nativas (SwiftUI)
+- El **Pulso local** muestra una onda de intensidad continua y una banda explícita de lluvia estimada, señal posible, tiempo seco o datos insuficientes. El detalle de una barra por minuto sigue accesible en un desplegable técnico.
+- El **Panorama de 2 horas** pasa de doce columnas a una onda con tramos de 10 minutos, tarjetas temporales y selección táctil de intervalos.
+- El gráfico de **3 horas** utiliza una onda de quince minutos y presenta ventanas de lluvia y de tiempo seco; no finge que las horas de los modelos sean observaciones minuto a minuto.
+- Las **24 horas** muestran onda y banda de riesgo con una separación clara entre precipitación probable, posible y ausencia de lluvia relevante. Se mantiene el detalle horario, nieve y acumulación.
+- La vista de **24/72 h y 7 días** sustituye las columnas de acumulación por una curva con relleno, banda de intervalos y ventanas temporales.
+- La onda es **solo visualización**: no cambia el motor de predicción, GPS, fuentes, radar animado, favoritos, ni la extensión de Actividad en Vivo. Si hay datos insuficientes, no se presenta un falso intervalo seco.
+- IPA **sin firmar** para Sideloadly o equivalente. Los cambios PWA v0.17.51 no se incrustan como navegador: esta implementación es SwiftUI real.
+- La fiabilidad de la representación debe comprobarse en un iPhone y en episodios reales; las pruebas de simulador y proveedores son puertas de calidad, no prueba de precisión meteorológica.
+
 # RainETA para iPhone — v0.12.0
 
 ## v0.12.0 — Rediseño visual de lluvia y nieve
@@ -181,7 +193,7 @@ Open-Meteo may interpolate hourly precipitation into 15-minute steps outside are
 
 Workflow: [RainETA iPhone IPA](https://github.com/fabricelop/europapress-rss/actions/workflows/raineta-ios.yml)
 
-La acción compila sin firma en macOS el bundle `RainETA.app` con `RainETALive.appex` y genera `RainETA-0.8.1-unsigned.ipa`. La IPA debe firmarse en Impactor; usar Apple ID y mantener la opción de autorrenovación si corresponde.
+La acción compila sin firma en macOS el bundle `RainETA.app` con `RainETALive.appex` y genera `RainETA-0.13.0-unsigned.ipa`. La IPA debe firmarse en Impactor; usar Apple ID y mantener la opción de autorrenovación si corresponde.
 
 ## Instalación y prueba
 
