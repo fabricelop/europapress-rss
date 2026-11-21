@@ -86,7 +86,7 @@ jobs:
         run: |
           python3 - <<'PY'
           import subprocess,json,re
-          cmd=["npx","--yes","wrangler@4.49.0","d1","insights","--time-period","1h","--sort-type","sum","--sort-by","reads","--sort-direction","DESC","--limit","20","--json"]
+          cmd=["npx","--yes","wrangler@4.49.0","d1","insights","ttactualidad-v2-marks","--time-period","1h","--sort-type","sum","--sort-by","reads","--sort-direction","DESC","--limit","20","--json"]
           try: r=subprocess.run(cmd,capture_output=True,text=True,timeout=180)
           except Exception as exc:print("D1_INSIGHTS_RUNTIME_ERROR",type(exc).__name__);raise SystemExit(2)
           if r.returncode:
