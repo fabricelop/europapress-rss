@@ -1,0 +1,9 @@
+{
+  "name": "ttactualidad-v2-acceso",
+  "main": "./src/worker.mjs",
+  "compatibility_date": "2026-11-21",
+  "workers_dev": true,
+  "services": [
+    {"binding": "V2_ORIGIN", "service": "ttactualidad-v2-private-test"}
+  ]
+}
