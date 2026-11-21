@@ -27791,20 +27791,27 @@
     "trv2-591b5c7aae5ed07da7b6074b": {
       "trend_id": "trv2-591b5c7aae5ed07da7b6074b",
       "name": "portimão",
-      "revision": 1,
-      "status": "in_progress",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "3916eb9751fa5d35",
-      "requested_at": "2026-11-21T15:01:36.128951+00:00",
-      "updated_at": "2026-11-21T15:01:36.128951+00:00",
+      "requested_at": "2026-11-21T15:23:17.666141+00:00",
+      "updated_at": "2026-11-21T15:23:17.666141+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "lease": {
-        "token": "563f6388c5cbf39f4d94d7a17e3d9df983fdbb0d66945549",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-21T15:21:49.480912+00:00",
-        "expires_at": "2026-11-21T16:01:49.480912+00:00"
-      }
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-21T15:21:49.480912+00:00",
+          "send_intent_at": null,
+          "incident_reason": "worker_or_capture_failed",
+          "archived_at": "2026-11-21T15:23:17.666141+00:00"
+        }
+      ],
+      "incident_retries": 1
     }
   },
   "pending_count": 770,
@@ -28570,7 +28577,6 @@
     "trv2-45bc87c71496f36098e30d37",
     "trv2-474fd08707238edba731e1ae",
     "trv2-4df573df5b9c0958154b8c27",
-    "trv2-591b5c7aae5ed07da7b6074b",
     "trv2-6ca0ae8f676d765d4141fa5f",
     "trv2-767a757b9a27dc95768d204e",
     "trv2-816cc0c1fb3c946712de921c",
@@ -28578,7 +28584,8 @@
     "trv2-debf9b35b9b535e2420cca10",
     "trv2-e6d483041956c1c969d4aebf",
     "trv2-f2cb755a0c1129f71c7cb294",
-    "trv2-fa5a64d433ec5a0239bbffd8"
+    "trv2-fa5a64d433ec5a0239bbffd8",
+    "trv2-591b5c7aae5ed07da7b6074b"
   ],
   "effects_enabled": false
 }
