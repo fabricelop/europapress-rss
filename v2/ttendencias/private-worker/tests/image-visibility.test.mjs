@@ -90,6 +90,35 @@ test("frequent V2 and public polling shares a short D1 snapshot and writes inval
  assert.equal(database.counters.preferenceScans,2);
 });
 
+test("edge cache shares override reads between Worker instances and a switch evicts it",async()=>{
+ const entries=new Map();
+ const old=globalThis.caches;
+ globalThis.caches={default:{
+  async match(request){const entry=entries.get(request.url);return entry?new Response(entry.body,{headers:entry.headers}):undefined;},
+  async put(request,response){entries.set(request.url,{body:await response.text(),headers:Object.fromEntries(response.headers)});},
+  async delete(request){return entries.delete(request.url);}
+ }};
+ try{
+  const a=db(),envA={...secrets,MARKS_DB:a};
+  const b=db(),envB={...secrets,MARKS_DB:b};
+  const endpoint=new Request(origin+"/api/public-editorial-overrides");
+  assert.equal((await worker.fetch(endpoint,envA)).status,200);
+  assert.equal(a.counters.preferenceScans,1);
+  assert.equal((await worker.fetch(endpoint,envB)).status,200);
+  assert.equal(b.counters.preferenceScans,0,"a different instance reuses the edge snapshot");
+  const session=await cookie(envB);
+  assert.equal((await worker.fetch(action(session,{trend_id:id,revision:1,scope:"public",visible:true}),envB)).status,200);
+  const refreshed=await (await worker.fetch(endpoint,envA)).json();
+  // A separate instance can retain its own 45-second memory snapshot. The
+  // edge key is evicted immediately and a fresh instance sees the new value.
+  assert.equal(entries.size,0);
+  const c=db(),envC={...secrets,MARKS_DB:c};
+  assert.equal((await worker.fetch(endpoint,envC)).status,200);
+  assert.equal(c.counters.preferenceScans,1);
+  assert.ok(Array.isArray(refreshed.visibility));
+ }finally{globalThis.caches=old;}
+});
+
 test("sensitive topics begin with public image off while private image stays on",async()=>{
  const database=db(),env={...secrets,MARKS_DB:database},session=await cookie(env);
  editorial.items[0].explanation="La tragedia dejó víctimas mortales tras un naufragio.";
