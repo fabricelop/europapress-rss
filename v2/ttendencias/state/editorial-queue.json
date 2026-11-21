@@ -28677,13 +28677,13 @@
       "trend_id": "trv2-42263849572395178bc27d84",
       "name": "#ElGranDerbi",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "8d47484e985ef173",
       "requested_at": "2026-11-21T17:19:13.221383+00:00",
       "updated_at": "2026-11-21T17:19:13.221383+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -28696,7 +28696,13 @@
           "archived_at": "2026-11-21T17:19:13.221383+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "710f397b5427232c0a5365396766bc5bc4117d6bad972b1e",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-21T17:24:45.025640+00:00",
+        "expires_at": "2026-11-21T18:04:45.025640+00:00"
+      }
     },
     "trv2-64697fb69006417f89af377f": {
       "trend_id": "trv2-64697fb69006417f89af377f",
