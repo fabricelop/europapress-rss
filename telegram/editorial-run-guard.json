@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "checked_at": "2026-11-20T21:29:24.109842+00:00",
+  "checked_at": "2026-11-21T02:38:28.139529+00:00",
   "projects": {
     "ttittulares": {
       "project": "ttittulares",
-      "checked_at": "2026-11-20T21:29:24.109842+00:00",
-      "pending_count": 303,
+      "checked_at": "2026-11-21T02:38:28.139529+00:00",
+      "pending_count": 306,
       "pending_ids": [
         "ed24a7af6dd5",
         "6e6ad4c9360e",
@@ -47,8 +47,8 @@
       "latest_run": {},
       "control_command": "tt-autoguard-1795209947",
       "last_command_at": "2026-11-20T21:25:47.647323Z",
-      "status": "dispatch_pending_ack",
-      "should_dispatch": false,
+      "status": "dispatch_requested_awaiting_run",
+      "should_dispatch": true,
       "item_execution": [
         {
           "id": "ed24a7af6dd5",
@@ -296,16 +296,22 @@
           "final_telegram_delivery_confirmed": false
         }
       ],
-      "backlog_signature": "74a9c2a2089a2add",
+      "backlog_signature": "d22e3aa8e4608584",
       "expected_start_by": "2026-11-16T10:10:51.249884+00:00",
       "attempts": 1,
       "previous_target_completed_or_superseded": false,
-      "last_request_at": "2026-11-20T21:25:47.647323+00:00"
+      "dispatch": {
+        "requested": true,
+        "command_id": "tt-autoguard-1795228708",
+        "requested_at": "2026-11-21T02:38:28.139529Z"
+      },
+      "last_request_at": "2026-11-21T02:38:28.139529+00:00",
+      "last_requested_command_id": "tt-autoguard-1795228708"
     },
     "ttendencias": {
       "project": "ttendencias",
-      "checked_at": "2026-11-20T21:29:24.109842+00:00",
-      "pending_count": 502,
+      "checked_at": "2026-11-21T02:38:28.139529+00:00",
+      "pending_count": 530,
       "pending_ids": [
         "red-review-f82aef2544e34c9b9690",
         "red-review-fec6add765a364b5d614",
@@ -354,8 +360,8 @@
       },
       "control_command": "tr-autoguard-1795209947",
       "last_command_at": "2026-11-20T21:25:47.647323Z",
-      "status": "dispatch_pending_ack",
-      "should_dispatch": false,
+      "status": "dispatch_requested_awaiting_run",
+      "should_dispatch": true,
       "item_execution": [
         {
           "id": "red-review-f82aef2544e34c9b9690",
@@ -603,11 +609,17 @@
           "final_telegram_delivery_confirmed": false
         }
       ],
-      "backlog_signature": "1c891e9f63cabf37",
+      "backlog_signature": "f6b479e54ba2f366",
       "expected_start_by": "2026-11-15T20:22:32.942595+00:00",
       "attempts": 1,
       "previous_target_completed_or_superseded": false,
-      "last_request_at": "2026-11-20T21:25:47.647323+00:00"
+      "dispatch": {
+        "requested": true,
+        "command_id": "tr-autoguard-1795228708",
+        "requested_at": "2026-11-21T02:38:28.139529Z"
+      },
+      "last_request_at": "2026-11-21T02:38:28.139529+00:00",
+      "last_requested_command_id": "tr-autoguard-1795228708"
     }
   },
   "policy": {
