@@ -25960,13 +25960,13 @@
       "trend_id": "trv2-0857b82e7a297cf5e00b8cbe",
       "name": "#FelizSábado",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "050e0810e5042952",
       "requested_at": "2026-11-21T07:04:49.932057+00:00",
       "updated_at": "2026-11-21T07:04:49.932057+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -25979,7 +25979,13 @@
           "archived_at": "2026-11-21T07:04:49.932057+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "7936597d7a12b3f073bc042d1cd748ed034d8dc6865dc8bf",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-21T07:05:51.293013+00:00",
+        "expires_at": "2026-11-21T07:45:51.293013+00:00"
+      }
     }
   },
   "pending_count": 729,
