@@ -29147,12 +29147,12 @@
       "trend_id": "trv2-81430401e2ff2c76f046fa98",
       "name": "Ruibal",
       "revision": 3,
-      "status": "review_pending",
+      "status": "in_progress",
       "reason": "user_reset",
       "episode_token": "ce4e0d86e6ae35f5",
       "requested_at": "2026-11-21T19:40:48.249Z",
       "updated_at": "2026-11-21T19:40:48.249Z",
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -29175,7 +29175,13 @@
         }
       ],
       "incident_retries": 0,
-      "review_mode": "standard"
+      "review_mode": "standard",
+      "lease": {
+        "token": "b951ff99c438cc92272b4e10e90400f2166ba96ca5019d1b",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-21T19:46:27.563235+00:00",
+        "expires_at": "2026-11-21T20:26:27.563235+00:00"
+      }
     },
     "trv2-240429809cc54173f9654fea": {
       "trend_id": "trv2-240429809cc54173f9654fea",
