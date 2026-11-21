@@ -1,0 +1,83 @@
+name: TTActualidad D1 - diagnóstico de consumo solo lectura
+on:
+  push:
+    branches: [diag/d1-usage-20261121]
+    paths: [.github/workflows/ttactualidad-d1-usage-snapshot.yml]
+permissions:
+  contents: read
+jobs:
+  usage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - name: Comparar lecturas D1 antes y despues de la reparación
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import datetime as dt,json,os,urllib.request,urllib.error
+          token=os.environ.get("CLOUDFLARE_API_TOKEN","")
+          account=os.environ.get("CLOUDFLARE_ACCOUNT_ID","")
+          if not token or not account:
+              print("D1_ANALYTICS=NO_SECRETS");raise SystemExit(2)
+          now=dt.datetime.now(dt.timezone.utc)
+          day=now.replace(hour=0,minute=0,second=0,microsecond=0)
+          time=lambda v:v.strftime("%Y-%m-%dT%H:%M:%SZ")
+          headers={"Authorization":"Bearer "+token,"Content-Type":"application/json"}
+          # Account-wide limits count every D1 database, not just V2.
+          query='''query {
+            viewer { accounts(filter: {accountTag: "%s"}) {
+              d1AnalyticsAdaptiveGroups(limit: 10000,
+                filter: { datetime_geq: "%s", datetime_leq: "%s" }) {
+                dimensions { databaseId datetimeFifteenMinutes }
+                sum { rowsRead rowsWritten readQueries writeQueries }
+              }
+            }}
+          }'''%(account,time(day),time(now))
+          req=urllib.request.Request("https://api.cloudflare.com/client/v4/graphql",
+              data=json.dumps({"query":query}).encode(),headers=headers,method="POST")
+          try:
+              with urllib.request.urlopen(req,timeout=25) as resp: payload=json.load(resp)
+          except urllib.error.HTTPError as exc:
+              print("D1_ANALYTICS_HTTP_ERROR",exc.code);raise SystemExit(3)
+          if payload.get("errors"):
+              print("D1_ANALYTICS_GRAPHQL_ERROR",json.dumps([x.get("message","")[:140] for x in payload["errors"]]))
+              raise SystemExit(4)
+          accounts=payload.get("data",{}).get("viewer",{}).get("accounts") or []
+          if len(accounts)!=1:
+              print("D1_ANALYTICS_ACCOUNT_COUNT",len(accounts));raise SystemExit(5)
+          groups=accounts[0].get("d1AnalyticsAdaptiveGroups") or []
+          byslot={};bydb={}
+          for row in groups:
+              stamp=row.get("dimensions",{}).get("datetimeFifteenMinutes")
+              db=row.get("dimensions",{}).get("databaseId")
+              read=int(float(row.get("sum",{}).get("rowsRead") or 0))
+              byslot[stamp]=byslot.get(stamp,0)+read
+              bydb[db]=bydb.get(db,0)+read
+          total=sum(byslot.values())
+          print("D1_USAGE_SNAPSHOT_UTC",time(now))
+          print("D1_ROWS_READ_TODAY",total)
+          print("D1_FREE_LIMIT",5000000)
+          print("D1_ROWS_REMAINING",max(0,5000000-total))
+          print("D1_PERCENT",round(total*100/5000000,2))
+          print("D1_DATABASE_COUNT",len(bydb))
+          for stamp,read in sorted(byslot.items()):
+              print("D1_15MIN",stamp,read)
+          # Identify the private Trends DB without disclosing account secrets.
+          settings="https://api.cloudflare.com/client/v4/accounts/"+account+"/workers/scripts/ttactualidad-v2-private-test/settings"
+          try:
+              with urllib.request.urlopen(urllib.request.Request(settings,headers={"Authorization":"Bearer "+token}),timeout=20) as resp: s=json.load(resp)
+              binding=next((b for b in (s.get("result") or {}).get("bindings",[]) if b.get("name")=="MARKS_DB"),{})
+              dbid=binding.get("id") or binding.get("database_id")
+              if dbid:
+                  print("D1_V2_ROWS_READ_TODAY",bydb.get(dbid,0))
+                  for stamp in sorted(byslot):
+                      part=sum(int(float(r.get("sum",{}).get("rowsRead") or 0)) for r in groups
+                               if r.get("dimensions",{}).get("datetimeFifteenMinutes")==stamp
+                               and r.get("dimensions",{}).get("databaseId")==dbid)
+                      if part: print("D1_V2_15MIN",stamp,part)
+              else: print("D1_V2_DB_ID=UNAVAILABLE")
+          except Exception as exc:print("D1_V2_DB_LOOKUP_UNAVAILABLE",type(exc).__name__)
+          PY
