@@ -29627,12 +29627,12 @@
       "trend_id": "trv2-cd9af28b88ba488a4210036d",
       "name": "Fornals",
       "revision": 2,
-      "status": "review_pending",
+      "status": "in_progress",
       "reason": "user_reset",
       "episode_token": "6732b2ac3756b9e4",
       "requested_at": "2026-11-21T19:40:48.249Z",
       "updated_at": "2026-11-21T19:40:48.249Z",
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -29645,7 +29645,13 @@
         }
       ],
       "review_mode": "standard",
-      "incident_retries": 0
+      "incident_retries": 0,
+      "lease": {
+        "token": "93178418ef48f6a52a501e6a367f7423e3b47ed7d0671ee9",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-21T19:53:31.180433+00:00",
+        "expires_at": "2026-11-21T20:33:31.180433+00:00"
+      }
     },
     "trv2-b28657f1dc3e98b4f882a09f": {
       "trend_id": "trv2-b28657f1dc3e98b4f882a09f",
