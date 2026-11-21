@@ -27873,12 +27873,12 @@
       "trend_id": "trv2-43f916bb5a01784e82c7a519",
       "name": "Betis",
       "revision": 2,
-      "status": "review_pending",
+      "status": "in_progress",
       "reason": "user_reset",
       "episode_token": "364110dada70d706",
       "requested_at": "2026-11-21T19:40:48.249Z",
       "updated_at": "2026-11-21T19:40:48.249Z",
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -27891,7 +27891,13 @@
         }
       ],
       "review_mode": "standard",
-      "incident_retries": 0
+      "incident_retries": 0,
+      "lease": {
+        "token": "26821e2ea8e7a900a6cb6a34fae2c2a064700eb89d2f3c50",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-21T19:43:05.041500+00:00",
+        "expires_at": "2026-11-21T20:23:05.041500+00:00"
+      }
     },
     "trv2-e6d483041956c1c969d4aebf": {
       "trend_id": "trv2-e6d483041956c1c969d4aebf",
