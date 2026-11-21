@@ -133,6 +133,10 @@ const EDITORIAL_CACHE_URL="https://ttactualidad-v2-private-test.fabricelop.worke
 function editorialEdgeCache(){return globalThis.caches?.default||null;}
 async function clearEditorialOverridesCache(db){
   editorialOverridesCache.delete(db);
+  // The shared D1 snapshot serves all Worker instances and locations. This
+  // changes only materialized cache metadata, never any historic control.
+  try{await db.prepare("UPDATE editorial_overrides_snapshot SET cached_at_ms=0 WHERE id=1").run();}
+  catch(error){console.warn("TT_V2_EDITORIAL_SNAPSHOT_EVICT_PENDING",String(error));}
   const cache=editorialEdgeCache();
   if(cache){
     try{await cache.delete(new Request(EDITORIAL_CACHE_URL));}
@@ -156,6 +160,21 @@ async function publicEditorialOverrides(env) {
       }
     }catch(error){console.warn("TT_V2_EDITORIAL_CACHE_READ_UNAVAILABLE",String(error));}
   }
+  // A single indexed D1 row replaces six historical scans per polling client.
+  // Unlike the edge cache, this works on workers.dev and across all POPs.
+  let snapshotTableReady=false;
+  try{
+    await env.MARKS_DB.prepare("CREATE TABLE IF NOT EXISTS editorial_overrides_snapshot (id INTEGER PRIMARY KEY CHECK(id=1),payload TEXT NOT NULL,cached_at_ms INTEGER NOT NULL)").run();
+    snapshotTableReady=true;
+    const row=await env.MARKS_DB.prepare("SELECT payload,cached_at_ms FROM editorial_overrides_snapshot WHERE id=1").first();
+    if(row&&Number.isSafeInteger(row.cached_at_ms)&&Date.now()-row.cached_at_ms>=0&&Date.now()-row.cached_at_ms<45000){
+      const snapshot=JSON.parse(row.payload);
+      if(Array.isArray(snapshot.re)&&Array.isArray(snapshot.visibility)){
+        editorialOverridesCache.set(env.MARKS_DB,{expires:Date.now()+15000,value:Promise.resolve(snapshot)});
+        return snapshot;
+      }
+    }
+  }catch(error){console.warn("TT_V2_EDITORIAL_SNAPSHOT_READ_FALLBACK",String(error));}
   const pending=(async()=>{
   await imageSuppressionsTable(env.MARKS_DB);
   await reXTable(env.MARKS_DB);
@@ -183,6 +202,11 @@ async function publicEditorialOverrides(env) {
   editorialOverridesCache.set(env.MARKS_DB,{expires:Date.now()+45000,value:pending});
   try{
     const snapshot=await pending;
+    if(snapshotTableReady){
+      try{await env.MARKS_DB.prepare("INSERT INTO editorial_overrides_snapshot(id,payload,cached_at_ms) VALUES(1,?,?) ON CONFLICT(id) DO UPDATE SET payload=excluded.payload,cached_at_ms=excluded.cached_at_ms")
+        .bind(JSON.stringify(snapshot),Date.now()).run();}
+      catch(error){console.warn("TT_V2_EDITORIAL_SNAPSHOT_WRITE_FALLBACK",String(error));}
+    }
     if(edge){
       try{await edge.put(new Request(EDITORIAL_CACHE_URL),new Response(JSON.stringify(snapshot),
         {headers:{"Content-Type":"application/json; charset=utf-8","Cache-Control":"public, max-age=45"}}));}
