@@ -74,17 +74,12 @@ jobs:
                   raise ValueError('private_route_not_protected:'+route)
                 except urllib.error.HTTPError as exc:
                   if exc.code!=401:raise ValueError('private_route_unexpected_status:'+route+':'+str(exc.code))
-              req=urllib.request.Request(origin+'/api/login',method='POST',data=b'{"password":"valor-ficticio-largo-para-prueba"}',
-                  headers={'Origin':origin,'Content-Type':'application/json','X-TTv2-Action':'1'})
-              try:
-                urllib.request.urlopen(req,timeout=15)
-                raise ValueError('wrong_password_was_accepted')
-              except urllib.error.HTTPError as exc:
-                if exc.code!=401:raise ValueError('login_origin_rejected:'+str(exc.code))
               print('TT_V2_ALTERNATE_PRIVATE_LOGIN=YES')
               print('TT_V2_ALTERNATE_SAME_BACKEND_D1=YES')
               print('TT_V2_ALTERNATE_PU_R_PRIVACY=YES')
-              print('TT_V2_ALTERNATE_LOGIN_POST_ORIGIN=YES')
+              # Cloudflare 1010 protege el login frente a urllib; no evadirlo.
+              # La conservación íntegra de Origin/acción se prueba con Node.
+              print('TT_V2_ALTERNATE_LOGIN_POST=UNIT_TEST_ONLY')
               break
             except Exception as exc:
               print('TT_V2_ALTERNATE_VERIFY_RETRY='+type(exc).__name__+':'+str(exc)[:100],flush=True)
