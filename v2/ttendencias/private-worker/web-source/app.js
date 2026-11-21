@@ -327,6 +327,33 @@ async function loadPublications(){
  if(!Number.isSafeInteger(data.count)||!Array.isArray(data.events))throw Error("Contador de publicaciones incoherente");
  state.publications=data;
  renderPublications();
+ updateTopicIcons();
+}
+function updateTopicIcons(){
+ const live=new Map(state.items.map(item=>[item.trend_id,item]));
+ for(const card of document.querySelectorAll("details.trend")){
+  card.querySelectorAll(".topic-link-icon").forEach(node=>node.remove());
+  const item=live.get(card.dataset.trendId);
+  if(!item||item.re_in_progress===true||reResetPending(item)||incidentRequested(item)||incidentRetryRequested(item)||imageRetryRequested(item))continue;
+  const names=[...new Set((state.publications?.links||[]).filter(link=>{
+   const source=live.get(link.origin_trend_id);
+   return link.trend_id===item.trend_id&&link.revision===item.revision&&
+    source?.revision===link.origin_revision&&source.status==="explicada"&&
+    source.re_in_progress!==true&&!reResetPending(source)&&!incidentRequested(source)&&!incidentRetryRequested(source)&&!imageRetryRequested(source);
+  }).map(link=>link.origin_name).filter(Boolean))];
+  if(!names.length)continue;
+  const head=card.querySelector(".trend-head");
+  if(!head)continue;
+  const icon=el("button","topic-link-icon","🔗");
+  icon.type="button";
+  icon.title="Mismo tema que una tendencia publicada: "+names.join(", ");
+  icon.setAttribute("aria-label",icon.title);
+  icon.addEventListener("click",event=>{
+   event.preventDefault();event.stopPropagation();
+   window.alert("Relacionada con "+(names.length===1?"la tendencia publicada":"las tendencias publicadas")+":\n"+names.map(name=>"• "+name).join("\n"));
+  });
+  head.insertBefore(icon,head.querySelector(".red-toggle"));
+ }
 }
 async function loadManualImages(){
  const res=await fetch(PUBLIC_SITE+'/api/manual-v2-image/catalog',{cache:'no-store',credentials:'omit'});
@@ -881,7 +908,7 @@ function makePublishButtons(card,item){
    const data=await response.json();
    if(!Number.isSafeInteger(data.count)||!Array.isArray(data.events))throw Error("Respuesta de PU no válida");
    if(data.marked_red!==true)throw Error("El servidor no ha confirmado la marca roja");
-   state.publications=data;renderPublications();
+   state.publications=data;renderPublications();updateTopicIcons();
    redMarks[item.trend_id]=markStamp(item);
    card.classList.add("marked-red");
    const redButton=card.querySelector(".red-toggle");
@@ -945,6 +972,7 @@ function render(){
   const reset=reResetPending(item);
   const imagePending=!reset&&!imageReady(item)&&imageRetryRequested(item);
   const card=el("details","trend");
+  card.dataset.trendId=item.trend_id;
   card.classList.toggle("marked-red",isMarked(item));
   card.open=state.open===item.trend_id;
   card.addEventListener("toggle",()=>{
@@ -1042,6 +1070,7 @@ function render(){
   if(!reset)attachGeneratedImage(card,item);
   root.append(card);
  }
+ updateTopicIcons();
  updateTop30WithoutRCounter();
 }
 async function refreshTrendsBadgeOnly(){

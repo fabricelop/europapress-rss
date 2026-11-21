@@ -21,7 +21,8 @@ function storage(){
    else if(!sql.includes("INSERT INTO publication_clicks"))assert.match(sql,/CREATE TABLE/);
    return {success:true};
   },
-  async all(){assert.match(sql,/FROM publication_clicks/);return {results:events
+  async all(){if(sql.includes("FROM trend_topic_links"))return {results:[]};
+   assert.match(sql,/FROM publication_clicks/);return {results:events
    .filter(x=>x.pressed_at_ms>args[0]&&x.pressed_at_ms<=args[1])
    .sort((a,b)=>a.pressed_at_ms-b.pressed_at_ms).slice(0,500)};}
  };}};

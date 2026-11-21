@@ -6,6 +6,7 @@ import {readNewsMaster,actOnMaster,newsMasterPublicationCount} from "./news-mast
 import {newsControls,newsView,newsAction,newsPublicationCount,newsManualImage,newsImage,publicNews,publicNewsImageVisibility,publicNewsArchivedIndex,newsWorkerControls} from "./news-actions.js";
 import {readImageIncident} from "./image-incidents.js";
 import {publicTrendImageRetries,trendImageRetry} from "./trend-image-retry.js";
+import {clearlySameTrendTopic} from "./trend-topic-links.js";
 // Private application and API assets require a session; only fixed public branding files are exempt.
 const COOKIE = "__Host-ttv2";
 const SESSION_VERSION = "v1";
@@ -276,6 +277,7 @@ async function reRequests(request,env) {
       "ON CONFLICT(trend_id,base_revision) DO NOTHING"
     ).bind(trend_id,revision,entered_top30_at).run();
     editorialOverridesCache.delete(env.MARKS_DB);
+    try{await invalidateTrendTopicLinks(env.MARKS_DB,trend_id);}catch(error){console.warn("TT_V2_TOPIC_LINK_INVALIDATION_PENDING",String(error));}
     return json({ok:true,queued:true,trend_id,base_revision:revision,mode},202);
   }catch{return json({error:"re_storage_unavailable"},503);}
 }
@@ -313,6 +315,7 @@ async function incidentReX(request,env) {
     await incidentRetryTable(env.MARKS_DB);
     await env.MARKS_DB.prepare("INSERT INTO incident_retry_requests(trend_id,base_revision,instructions) VALUES(?,?,?) ON CONFLICT(trend_id,base_revision) DO NOTHING").bind(trend_id,revision,"").run();
     editorialOverridesCache.delete(env.MARKS_DB);
+    try{await invalidateTrendTopicLinks(env.MARKS_DB,trend_id);}catch(error){console.warn("TT_V2_TOPIC_LINK_INVALIDATION_PENDING",String(error));}
     return json({ok:true,queued:true,trend_id,base_revision:revision},202);
   }catch{return json({error:"incident_rex_unavailable"},503);}
 }
@@ -344,6 +347,7 @@ async function incidentRetry(request,env) {
     // previous lease, journal and exact Chrome shutdown before a new revision.
     await env.MARKS_DB.prepare("INSERT INTO incident_retry_requests(trend_id,base_revision,instructions) VALUES(?,?,?) ON CONFLICT(trend_id,base_revision) DO NOTHING").bind(trend_id,revision,instructions).run();
     editorialOverridesCache.delete(env.MARKS_DB);
+    try{await invalidateTrendTopicLinks(env.MARKS_DB,trend_id);}catch(error){console.warn("TT_V2_TOPIC_LINK_INVALIDATION_PENDING",String(error));}
     return json({ok:true,queued:true,trend_id,base_revision:revision},202);
   }catch{return json({error:"incident_retry_unavailable"},503);}
 }
@@ -392,6 +396,14 @@ async function redeemManualImageTicket(request,env){
     return row?json({...row,ok:true}):json({error:"ticket_expired_or_redeemed"},409);
   }catch{return json({error:"ticket_redemption_unavailable"},503);}
 }
+async function trendTopicLinksTable(db){
+  await db.prepare("CREATE TABLE IF NOT EXISTS trend_topic_links (trend_id TEXT NOT NULL,revision INTEGER NOT NULL,origin_trend_id TEXT NOT NULL,origin_revision INTEGER NOT NULL,origin_name TEXT NOT NULL,created_at_ms INTEGER NOT NULL,invalidated_at_ms INTEGER,PRIMARY KEY(trend_id,revision,origin_trend_id,origin_revision))").run();
+}
+// Keep historic associations for audit, but never revive their icons after
+// either end exits Top30, changes revision, or starts a new investigation.
+async function invalidateTrendTopicLinks(db,trendId){
+  await db.prepare("UPDATE trend_topic_links SET invalidated_at_ms=? WHERE invalidated_at_ms IS NULL AND (trend_id=? OR origin_trend_id=?)").bind(Date.now(),trendId,trendId).run();
+}
 async function publicationCount(request,env) {
   if(!env.MARKS_DB)return json({error:"publication_storage_not_configured"},503);
   if(request.method!=="GET"&&(request.method!=="POST"||!sameOrigin(request)))
@@ -399,6 +411,7 @@ async function publicationCount(request,env) {
   try {
     const db=env.MARKS_DB;
     await db.prepare("CREATE TABLE IF NOT EXISTS publication_clicks (event_id TEXT PRIMARY KEY, trend_id TEXT NOT NULL, revision INTEGER NOT NULL, trend_name TEXT NOT NULL, pressed_at_ms INTEGER NOT NULL)").run();
+    await trendTopicLinksTable(db);
     if(request.method==="POST"){
       if(Number(request.headers.get("content-length")||0)>1024)return json({error:"invalid_payload"},413);
       let body;
@@ -412,18 +425,35 @@ async function publicationCount(request,env) {
       const item=ranking.find(x=>x.trend_id===trend_id&&x.revision===revision);
       if(!item||item.status!=="explicada"||item.re_in_progress===true)
         return json({error:"trend_not_current"},409);
+      const related=ranking.filter(row=>clearlySameTrendTopic(item,row));
       // Registrar PU y R juntos; si falla una escritura, no registrar la otra.
       await db.batch([
         db.prepare("INSERT INTO publication_clicks(event_id,trend_id,revision,trend_name,pressed_at_ms) VALUES(?,?,?,?,?) ON CONFLICT(event_id) DO NOTHING")
           .bind(event_id,trend_id,revision,String(item.name).slice(0,150),Date.now()),
         db.prepare("INSERT INTO red_marks(trend_id,entered_top30_at) VALUES(?,?) ON CONFLICT(trend_id) DO UPDATE SET entered_top30_at=excluded.entered_top30_at")
-          .bind(trend_id,entryStamp(item)||new Date().toISOString())
+          .bind(trend_id,entryStamp(item)||new Date().toISOString()),
+        ...related.map(row=>db.prepare("INSERT INTO trend_topic_links(trend_id,revision,origin_trend_id,origin_revision,origin_name,created_at_ms) VALUES(?,?,?,?,?,?) ON CONFLICT(trend_id,revision,origin_trend_id,origin_revision) DO NOTHING")
+          .bind(row.trend_id,row.revision,trend_id,revision,String(item.name).slice(0,150),Date.now()))
       ]);
     }
     const threshold=Date.now()-24*HOUR;
     const data=await db.prepare("SELECT event_id,trend_id,revision,trend_name,pressed_at_ms FROM publication_clicks WHERE pressed_at_ms > ? AND pressed_at_ms <= ? ORDER BY pressed_at_ms ASC,event_id ASC LIMIT 500").bind(threshold,Date.now()).all();
     const events=(data.results||[]).filter(x=>Number.isSafeInteger(x.pressed_at_ms));
-    return json({count:events.length,window_hours:24,events,marked_red:request.method==="POST"});
+    const linked=await db.prepare("SELECT trend_id,revision,origin_trend_id,origin_revision,origin_name FROM trend_topic_links WHERE invalidated_at_ms IS NULL LIMIT 300").all();
+    let links=(linked.results||[]).filter(row=>TREND_ID.test(row.trend_id)&&TREND_ID.test(row.origin_trend_id));
+    if(links.length){
+      try{
+        const ranking=await currentRanking(env);
+        const valid=new Map(ranking.filter(row=>row.re_in_progress!==true).map(row=>[row.trend_id,row.revision]));
+        const expired=links.filter(row=>valid.get(row.trend_id)!==row.revision||valid.get(row.origin_trend_id)!==row.origin_revision);
+        if(expired.length){
+          await db.batch(expired.map(row=>db.prepare("UPDATE trend_topic_links SET invalidated_at_ms=? WHERE trend_id=? AND revision=? AND origin_trend_id=? AND origin_revision=? AND invalidated_at_ms IS NULL")
+            .bind(Date.now(),row.trend_id,row.revision,row.origin_trend_id,row.origin_revision)));
+          links=links.filter(row=>!expired.includes(row));
+        }
+      }catch(error){console.warn("TT_V2_TOPIC_LINK_RECONCILE_PENDING",String(error));}
+    }
+    return json({count:events.length,window_hours:24,events,links,marked_red:request.method==="POST"});
   }catch{return json({error:"publication_counter_unavailable"},503);}
 }
 
