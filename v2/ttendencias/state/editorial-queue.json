@@ -28751,12 +28751,12 @@
       "trend_id": "trv2-42263849572395178bc27d84",
       "name": "#ElGranDerbi",
       "revision": 3,
-      "status": "review_pending",
+      "status": "in_progress",
       "reason": "user_reset",
       "episode_token": "8d47484e985ef173",
       "requested_at": "2026-11-21T19:40:48.249Z",
       "updated_at": "2026-11-21T19:40:48.249Z",
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -28790,7 +28790,13 @@
         "detail_safe": "El guardado coincidió con otro cambio y necesita revisión.",
         "retry_mode": "manual_only"
       },
-      "review_mode": "standard"
+      "review_mode": "standard",
+      "lease": {
+        "token": "8019efd186a30fbd8db8cfca0ad5ec8823fad4221f75229d",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-21T19:42:44.408433+00:00",
+        "expires_at": "2026-11-21T20:22:44.408433+00:00"
+      }
     },
     "trv2-64697fb69006417f89af377f": {
       "trend_id": "trv2-64697fb69006417f89af377f",
