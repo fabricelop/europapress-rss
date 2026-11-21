@@ -19,6 +19,12 @@ export async function newsTables(db){
  await db.prepare("CREATE TABLE IF NOT EXISTS news_preferences(event_id TEXT NOT NULL,revision INTEGER NOT NULL,body TEXT NOT NULL,PRIMARY KEY(event_id,revision))").run();
  await db.prepare("CREATE TABLE IF NOT EXISTS news_actions(action_id TEXT PRIMARY KEY,event_id TEXT NOT NULL,revision INTEGER NOT NULL,body TEXT NOT NULL,created_at TEXT NOT NULL)").run();
  await db.prepare("CREATE TABLE IF NOT EXISTS news_manual_images(image_key TEXT NOT NULL,chunk_no INTEGER NOT NULL,data TEXT NOT NULL,PRIMARY KEY(image_key,chunk_no))").run();
+ // Historical news actions must not be scanned on every 24-hour counter
+ // request. Both ordering and the date window use this covering prefix.
+ await db.prepare("CREATE INDEX IF NOT EXISTS idx_news_actions_created_at_action_id ON news_actions(created_at,action_id)").run();
+ // The public archive index is polled by V1. Filter archived rows via a
+ // SQLite expression index without changing or deleting any news record.
+ await db.prepare("CREATE INDEX IF NOT EXISTS idx_news_preferences_archived ON news_preferences(json_extract(body,'$.archived'),event_id,revision DESC)").run();
 }
 export async function newsControls(env){
  await newsTables(env.MARKS_DB);
@@ -57,6 +63,7 @@ export async function publicNewsImageVisibility(request,env,{json}){
 export async function publicNewsArchivedIndex(request,env,{json}){
  if(request.method!=="GET")return json({error:"method_not_allowed"},405);
  try{
+  await newsTables(env.MARKS_DB);
   const rows=await env.MARKS_DB.prepare("SELECT event_id,revision FROM news_preferences WHERE json_extract(body,'$.archived')=1 AND COALESCE(json_extract(body,'$.dismissed'),0)<>1 ORDER BY event_id,revision DESC LIMIT 500").all();
   const items=(rows.results||[]).filter(x=>ID.test(x.event_id)&&Number.isSafeInteger(x.revision)&&x.revision>0)
    .map(x=>({event_id:x.event_id,revision:x.revision}));

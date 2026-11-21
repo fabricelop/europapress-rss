@@ -43,6 +43,8 @@ export async function newsMasterTable(db){
  if(!db)throw Error("MASTER_NEWS_STORAGE_UNAVAILABLE");
  if(masterTableReady)return;
  await db.prepare("CREATE TABLE IF NOT EXISTS news_master_flags (event_id TEXT PRIMARY KEY,suppressed_at TEXT,published_at TEXT,marked_red INTEGER NOT NULL DEFAULT 0)").run();
+ // The counter is refreshed on both V2 tabs: bound the scan to 24 hours.
+ await db.prepare("CREATE INDEX IF NOT EXISTS idx_news_master_flags_published_at ON news_master_flags(published_at DESC)").run();
  masterTableReady=true;
 }
 

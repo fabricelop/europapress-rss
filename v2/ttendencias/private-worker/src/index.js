@@ -149,6 +149,19 @@ async function publicEditorialOverrides(env) {
   const incident_retry=(retries.results||[]).filter(x=>TREND_ID.test(x.trend_id)&&Number.isSafeInteger(x.base_revision)&&x.base_revision>0&&typeof x.instructions==="string"&&x.instructions.length<=1200);
   return {re,incident_rex,incident_retry,suppressed,visibility};
 }
+// A Top 30 refresh may request 20-30 separate images. Never load six
+// complete override tables for EACH raster: two indexed identity lookups
+// preserve the same privacy/re-elaboration checks with constant D1 cost.
+async function imageBlocked(db,trendId,revision) {
+  await imageSuppressionsTable(db);
+  const [suppressed,re]=await Promise.all([
+    db.prepare("SELECT 1 AS blocked FROM image_suppressions WHERE trend_id=? AND revision=? LIMIT 1")
+      .bind(trendId,revision).first(),
+    db.prepare("SELECT 1 AS blocked FROM re_requests WHERE trend_id=? AND base_revision=? AND status IN ('requested','applied') LIMIT 1")
+      .bind(trendId,revision).first()
+  ]);
+  return Boolean(suppressed||re);
+}
 async function imageVisibility(request,env) {
   if (!env.MARKS_DB)return json({error:"image_storage_not_configured"},503);
   if (request.method!=="POST"||!sameOrigin(request))return json({error:"method_not_allowed"},405);
@@ -411,9 +424,7 @@ async function imageRead(request,env,trendId) {
   if(!Number.isSafeInteger(revision)||revision<1||revision>100000)return json({error:"revision_invalid"},400);
   try {
     if(env.MARKS_DB){
-      const flags=await publicEditorialOverrides(env);
-      if(flags.suppressed.some(row=>row.trend_id===trendId&&row.revision===revision)||
-         flags.re.some(row=>row.trend_id===trendId&&row.base_revision===revision))
+      if(await imageBlocked(env.MARKS_DB,trendId,revision))
         return json({error:"image_hidden"},404);
     }
     const response=await fetch(SOURCE+"editorial-queue.json",{
