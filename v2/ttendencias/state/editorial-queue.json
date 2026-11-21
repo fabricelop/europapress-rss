@@ -29850,12 +29850,12 @@
       "trend_id": "trv2-b1bdf44dfe5928d218772652",
       "name": "Abde",
       "revision": 3,
-      "status": "review_pending",
+      "status": "in_progress",
       "reason": "user_reset",
       "episode_token": "e3ad11e9a75082cd",
       "requested_at": "2026-11-21T19:40:48.249Z",
       "updated_at": "2026-11-21T19:40:48.249Z",
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -29878,7 +29878,13 @@
         }
       ],
       "incident_retries": 0,
-      "review_mode": "standard"
+      "review_mode": "standard",
+      "lease": {
+        "token": "11cdd779f4c2bf47b314f73c89adf8ce9afb138e223b9d90",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-21T19:52:44.808557+00:00",
+        "expires_at": "2026-11-21T20:32:44.808557+00:00"
+      }
     },
     "trv2-68935a7242a39bb31e008978": {
       "trend_id": "trv2-68935a7242a39bb31e008978",
