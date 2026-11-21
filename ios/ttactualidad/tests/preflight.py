@@ -307,7 +307,7 @@ assert 'quickLink("ChatGPT Images", "photo.artframe", "https://chatgpt.com/image
 print("TT_ACTUALIDAD_IOS_0420_PERFORMANCE_PREFLIGHT_OK")
 
 
-# 0.4.21: the compact Dynamic Island itself exposes all six verified metrics.
+# 0.4.22: the compact Dynamic Island itself exposes all six verified metrics.
 # +working is not a GitHub write receipt; it counts editorial work in progress.
 assert 'private func compactCounts(' in activity
 assert 'prefix: "N", ready: context.state.newsReady' in activity
