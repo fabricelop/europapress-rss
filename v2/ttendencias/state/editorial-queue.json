@@ -28934,12 +28934,12 @@
       "trend_id": "trv2-e3c5d8496663d0345eb5eca0",
       "name": "Sánchez Martínez",
       "revision": 2,
-      "status": "review_pending",
+      "status": "in_progress",
       "reason": "user_reset",
       "episode_token": "57ced38a5b7491d3",
       "requested_at": "2026-11-21T19:40:48.249Z",
       "updated_at": "2026-11-21T19:40:48.249Z",
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -28952,7 +28952,13 @@
         }
       ],
       "review_mode": "standard",
-      "incident_retries": 0
+      "incident_retries": 0,
+      "lease": {
+        "token": "6bbb28c9e5db555036c59b6b0511ac55ad7041a23363ca41",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-21T19:54:10.763422+00:00",
+        "expires_at": "2026-11-21T20:34:10.763422+00:00"
+      }
     },
     "trv2-1b813fb28097e7756861c8de": {
       "trend_id": "trv2-1b813fb28097e7756861c8de",
