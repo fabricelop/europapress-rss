@@ -27612,12 +27612,12 @@
       "trend_id": "trv2-058750e68f4c1a04d4d78bc0",
       "name": "Riki",
       "revision": 2,
-      "status": "review_pending",
+      "status": "in_progress",
       "reason": "user_reset",
       "episode_token": "e713e38454a75bd2",
       "requested_at": "2026-11-21T15:36:24.386148+00:00",
       "updated_at": "2026-11-21T15:36:24.386148+00:00",
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -27630,7 +27630,13 @@
         }
       ],
       "review_mode": "standard",
-      "incident_retries": 0
+      "incident_retries": 0,
+      "lease": {
+        "token": "ef8b3ef5a9e946b3ed8a8ea4889ca69aceba8d1a78904724",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-21T15:36:56.188322+00:00",
+        "expires_at": "2026-11-21T16:16:56.188322+00:00"
+      }
     },
     "trv2-474fd08707238edba731e1ae": {
       "trend_id": "trv2-474fd08707238edba731e1ae",
