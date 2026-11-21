@@ -50,6 +50,23 @@ test('Piqué: remove the repetitive no se confirma que impulsa la tendencia suff
  const legitimate='Piqué reaparece en la conversación. No se confirma la identidad del denunciante.';
  assert.match(explanationText('ESTADO_CAUSA: NO_CONFIRMADA\nExplicación principal — apta para X\n'+legitimate+'\n\nFuentes',item),/No se confirma la identidad del denunciante/);
 });
+test('remove repetitive speculation about the trend cause without erasing the news',()=>{
+ const item={rank:8,name:'Lorca',cause_status:'no_confirmada'};
+ const examples=[
+  'Lorca celebra las fiestas de San Clemente con su tradicional desfile medieval. Esto podría ser el motivo de la tendencia.',
+  'Lorca celebra las fiestas de San Clemente con su tradicional desfile medieval, lo que podría explicar la tendencia.',
+  'Lorca celebra las fiestas de San Clemente con su tradicional desfile medieval; podría ser la razón de esta tendencia.'
+ ];
+ for(const lead of examples){
+  const raw='ESTADO_CAUSA: NO_CONFIRMADA\nExplicación principal — apta para X\n'+lead;
+  const shown=explanationText(raw,item);
+  assert.match(shown,/celebra las fiestas de San Clemente/);
+  assert.doesNotMatch(shown,/motivo de la tendencia|explicar la tendencia|razón de esta tendencia/i);
+  assert.ok(xLength(shown)<=280);
+ }
+ const legitimate='Lorca celebra las fiestas de San Clemente, pero el desfile todavía no está confirmado.';
+ assert.match(explanationText('ESTADO_CAUSA: NO_CONFIRMADA\nExplicación principal — apta para X\n'+legitimate,item),/desfile todavía no está confirmado/);
+});
 test('Markdown headings and writing blocks preserve the recognised lead',()=>{
  const lead='El estreno de la nueva temporada devuelve al personaje al centro de la conversación pública.';
  const raw='ESTADO_CAUSA: CONFIRMADA\n### **Explicación principal — apta para X (100 caracteres)**\n:::writing{variant="social_post"}\n'+lead+'\n:::\n\n## Qué sabemos\nOtro contexto.';
