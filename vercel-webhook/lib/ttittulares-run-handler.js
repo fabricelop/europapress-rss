@@ -663,10 +663,17 @@ async function requestImageRun(req,res){
   if(!eligible.eligible)return res.status(409).json({ok:false,error:"target_no_elegible",reason:eligible.reason,target_id});
   const row=eligible.row||{},revision=Number(row.revision||1);
   if(revision!==requestedRevision)return res.status(409).json({ok:false,error:"target_no_elegible",reason:"revision_changed",target_id,revision});
+  // The private image inbox binds the original PNG to the exact editorial
+  // episode, including its preparation timestamp. It cannot safely recover
+  // this date after Telegram clears prepared.json and the READY ledger rolls.
+  // Reject a malformed source instead of creating an unrecoverable job.
+  const prepared_at=String(row.prepared_at||"").trim();
+  if(!Number.isFinite(Date.parse(prepared_at)))
+    return res.status(409).json({ok:false,error:"target_no_elegible",reason:"prepared_at_missing",target_id,revision});
   const target_name=String(row.title||req.body?.target_name||"").trim().slice(0,240);
   const stylePick=imageStyleFor("ttittulares|"+target_id+"|r"+revision+"|"+Date.now());
   const context_snapshot={
-    title:target_name,revision,
+    title:target_name,revision,prepared_at,
     factual_summary:String(row.factual_summary||"").trim(),
     tweet_text:String(row.tweet?.text||"").trim(),
     remate:String(row.tweet?.remate||"").trim(),
