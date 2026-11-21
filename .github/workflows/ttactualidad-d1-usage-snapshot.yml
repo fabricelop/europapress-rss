@@ -3,6 +3,7 @@ name: TTActualidad D1 - diagnóstico de consumo solo lectura
 # Comprobar el gasto acumulado en el intervalo 16:45-17:00 UTC.
 # Primera muestra tras publicar instantánea compartida D1 (#529).
 # Segunda muestra tras varios minutos activos de caché D1.
+# Nueva medición de cuota tras optimizar marcas R y PU; con despliegues secuenciales.
 on:
   push:
     branches: [diag/d1-usage-20261121]
