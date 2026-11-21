@@ -129,10 +129,33 @@ async function manualImageTicketsTable(db) {
 // every few seconds. Reusing the read-only snapshot briefly saves the D1 free
 // tier without deleting history or slowing the Windows editorial queue.
 const editorialOverridesCache=new WeakMap();
+const EDITORIAL_CACHE_URL="https://ttactualidad-v2-private-test.fabricelop.workers.dev/__ttv2_internal/overrides-snapshot-v2";
+function editorialEdgeCache(){return globalThis.caches?.default||null;}
+async function clearEditorialOverridesCache(db){
+  editorialOverridesCache.delete(db);
+  const cache=editorialEdgeCache();
+  if(cache){
+    try{await cache.delete(new Request(EDITORIAL_CACHE_URL));}
+    catch(error){console.warn("TT_V2_EDITORIAL_CACHE_EVICT_UNAVAILABLE",String(error));}
+  }
+}
 async function publicEditorialOverrides(env) {
   if (!env.MARKS_DB) throw Error("OVERRIDES_STORAGE_UNAVAILABLE");
   const cached=editorialOverridesCache.get(env.MARKS_DB);
   if(cached&&cached.expires>Date.now())return cached.value;
+  const edge=editorialEdgeCache();
+  if(edge){
+    try{
+      const response=await edge.match(new Request(EDITORIAL_CACHE_URL));
+      if(response?.ok){
+        const snapshot=await response.json();
+        if(Array.isArray(snapshot.re)&&Array.isArray(snapshot.visibility)){
+          editorialOverridesCache.set(env.MARKS_DB,{expires:Date.now()+15000,value:Promise.resolve(snapshot)});
+          return snapshot;
+        }
+      }
+    }catch(error){console.warn("TT_V2_EDITORIAL_CACHE_READ_UNAVAILABLE",String(error));}
+  }
   const pending=(async()=>{
   await imageSuppressionsTable(env.MARKS_DB);
   await reXTable(env.MARKS_DB);
@@ -158,7 +181,15 @@ async function publicEditorialOverrides(env) {
   return {re,incident_rex,incident_retry,suppressed,visibility};
   })();
   editorialOverridesCache.set(env.MARKS_DB,{expires:Date.now()+45000,value:pending});
-  try{return await pending;}
+  try{
+    const snapshot=await pending;
+    if(edge){
+      try{await edge.put(new Request(EDITORIAL_CACHE_URL),new Response(JSON.stringify(snapshot),
+        {headers:{"Content-Type":"application/json; charset=utf-8","Cache-Control":"public, max-age=45"}}));}
+      catch(error){console.warn("TT_V2_EDITORIAL_CACHE_WRITE_UNAVAILABLE",String(error));}
+    }
+    return snapshot;
+  }
   catch(error){if(editorialOverridesCache.get(env.MARKS_DB)?.value===pending)editorialOverridesCache.delete(env.MARKS_DB);throw error;}
 }
 // A Top 30 refresh may request 20-30 separate images. Never load six
@@ -198,7 +229,7 @@ async function imageVisibility(request,env) {
     }else{
       await env.MARKS_DB.prepare("INSERT INTO public_image_prefs(trend_id,revision,visible) VALUES(?,?,?) ON CONFLICT(trend_id,revision) DO UPDATE SET visible=excluded.visible,updated_at=strftime('%Y-%m-%dT%H:%M:%fZ','now')").bind(trend_id,revision,visible?1:0).run();
     }
-    editorialOverridesCache.delete(env.MARKS_DB);
+    await clearEditorialOverridesCache(env.MARKS_DB);
     return json({ok:true,trend_id,revision,scope,hidden:scope==="both"?hidden:undefined,visible:scope==="public"?visible:undefined});
   }catch{return json({error:"image_visibility_unavailable"},503);}
 }
@@ -276,7 +307,7 @@ async function reRequests(request,env) {
       "INSERT INTO re_requests (trend_id, base_revision, entered_top30_at, status) VALUES (?,?,?,'requested') " +
       "ON CONFLICT(trend_id,base_revision) DO NOTHING"
     ).bind(trend_id,revision,entered_top30_at).run();
-    editorialOverridesCache.delete(env.MARKS_DB);
+    await clearEditorialOverridesCache(env.MARKS_DB);
     try{await invalidateTrendTopicLinks(env.MARKS_DB,trend_id);}catch(error){console.warn("TT_V2_TOPIC_LINK_INVALIDATION_PENDING",String(error));}
     return json({ok:true,queued:true,trend_id,base_revision:revision,mode},202);
   }catch{return json({error:"re_storage_unavailable"},503);}
@@ -314,7 +345,7 @@ async function incidentReX(request,env) {
     // responsible for checking lease, journal and exact Chrome cleanup.
     await incidentRetryTable(env.MARKS_DB);
     await env.MARKS_DB.prepare("INSERT INTO incident_retry_requests(trend_id,base_revision,instructions) VALUES(?,?,?) ON CONFLICT(trend_id,base_revision) DO NOTHING").bind(trend_id,revision,"").run();
-    editorialOverridesCache.delete(env.MARKS_DB);
+    await clearEditorialOverridesCache(env.MARKS_DB);
     try{await invalidateTrendTopicLinks(env.MARKS_DB,trend_id);}catch(error){console.warn("TT_V2_TOPIC_LINK_INVALIDATION_PENDING",String(error));}
     return json({ok:true,queued:true,trend_id,base_revision:revision},202);
   }catch{return json({error:"incident_rex_unavailable"},503);}
@@ -346,7 +377,7 @@ async function incidentRetry(request,env) {
     // Only record explicit user intent. The local worker must verify the
     // previous lease, journal and exact Chrome shutdown before a new revision.
     await env.MARKS_DB.prepare("INSERT INTO incident_retry_requests(trend_id,base_revision,instructions) VALUES(?,?,?) ON CONFLICT(trend_id,base_revision) DO NOTHING").bind(trend_id,revision,instructions).run();
-    editorialOverridesCache.delete(env.MARKS_DB);
+    await clearEditorialOverridesCache(env.MARKS_DB);
     try{await invalidateTrendTopicLinks(env.MARKS_DB,trend_id);}catch(error){console.warn("TT_V2_TOPIC_LINK_INVALIDATION_PENDING",String(error));}
     return json({ok:true,queued:true,trend_id,base_revision:revision},202);
   }catch{return json({error:"incident_retry_unavailable"},503);}
