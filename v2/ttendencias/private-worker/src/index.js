@@ -130,6 +130,12 @@ async function manualImageTicketsTable(db) {
 // tier without deleting history or slowing the Windows editorial queue.
 const editorialOverridesCache=new WeakMap();
 const EDITORIAL_CACHE_URL="https://ttactualidad-v2-private-test.fabricelop.workers.dev/__ttv2_internal/overrides-snapshot-v2";
+function editorialSnapshotTtlMs(){
+  // Emergency D1 read budget until tonight's free-tier reset at 00:00 UTC.
+  // Owner changes evict the shared copy immediately; Windows-side status
+  // changes may be visible up to five minutes late during this short period.
+  return Date.now()<Date.parse("2026-11-22T00:00:00Z")?300000:45000;
+}
 function editorialEdgeCache(){return globalThis.caches?.default||null;}
 async function clearEditorialOverridesCache(db){
   editorialOverridesCache.delete(db);
@@ -167,7 +173,7 @@ async function publicEditorialOverrides(env) {
     await env.MARKS_DB.prepare("CREATE TABLE IF NOT EXISTS editorial_overrides_snapshot (id INTEGER PRIMARY KEY CHECK(id=1),payload TEXT NOT NULL,cached_at_ms INTEGER NOT NULL)").run();
     snapshotTableReady=true;
     const row=await env.MARKS_DB.prepare("SELECT payload,cached_at_ms FROM editorial_overrides_snapshot WHERE id=1").first();
-    if(row&&Number.isSafeInteger(row.cached_at_ms)&&Date.now()-row.cached_at_ms>=0&&Date.now()-row.cached_at_ms<45000){
+    if(row&&Number.isSafeInteger(row.cached_at_ms)&&Date.now()-row.cached_at_ms>=0&&Date.now()-row.cached_at_ms<editorialSnapshotTtlMs()){
       const snapshot=JSON.parse(row.payload);
       if(Array.isArray(snapshot.re)&&Array.isArray(snapshot.visibility)){
         editorialOverridesCache.set(env.MARKS_DB,{expires:Date.now()+15000,value:Promise.resolve(snapshot)});
