@@ -29107,24 +29107,27 @@
     "trv2-81430401e2ff2c76f046fa98": {
       "trend_id": "trv2-81430401e2ff2c76f046fa98",
       "name": "Ruibal",
-      "revision": 1,
-      "status": "in_progress",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "ce4e0d86e6ae35f5",
-      "requested_at": "2026-11-21T18:01:59.758277+00:00",
-      "updated_at": "2026-11-21T18:15:49.607344+00:00",
+      "requested_at": "2026-11-21T18:20:07.526946+00:00",
+      "updated_at": "2026-11-21T18:20:07.526946+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "lease": {
-        "token": "76f88f37c090d68bb8ba83a6988162d7327adc37b41343b9",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-21T18:13:48.347280+00:00",
-        "expires_at": "2026-11-21T18:53:48.347280+00:00"
-      },
-      "send_intent": {
-        "token": "76f88f37c090d68bb8ba83a6988162d7327adc37b41343b9",
-        "at": "2026-11-21T18:15:49.607304+00:00"
-      }
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-21T18:13:48.347280+00:00",
+          "send_intent_at": "2026-11-21T18:15:49.607304+00:00",
+          "incident_reason": "worker_or_capture_failed",
+          "archived_at": "2026-11-21T18:20:07.526946+00:00"
+        }
+      ],
+      "incident_retries": 1
     },
     "trv2-240429809cc54173f9654fea": {
       "trend_id": "trv2-240429809cc54173f9654fea",
@@ -30012,7 +30015,6 @@
     "trv2-1b813fb28097e7756861c8de",
     "trv2-240429809cc54173f9654fea",
     "trv2-4ae305e225f30cf2987c0d91",
-    "trv2-81430401e2ff2c76f046fa98",
     "trv2-8466d803f5beeae9c0f7227d",
     "trv2-a4e5105870299b2a5f43db22",
     "trv2-a7cd301ca33abb0fe147da3c",
@@ -30020,7 +30022,8 @@
     "trv2-e3c5d8496663d0345eb5eca0",
     "trv2-f332fb1db3d01134a647a2f1",
     "trv2-f626ae7bd21126439576549d",
-    "trv2-f9bfc551990ca44ddf385fc2"
+    "trv2-f9bfc551990ca44ddf385fc2",
+    "trv2-81430401e2ff2c76f046fa98"
   ],
   "effects_enabled": false
 }
