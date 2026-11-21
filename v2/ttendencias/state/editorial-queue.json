@@ -29242,13 +29242,13 @@
       "trend_id": "trv2-a4e5105870299b2a5f43db22",
       "name": "Dimitrievski",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "5bf2f65f711291d7",
       "requested_at": "2026-11-21T18:20:15.105071+00:00",
       "updated_at": "2026-11-21T18:20:15.105071+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -29261,7 +29261,13 @@
           "archived_at": "2026-11-21T18:20:15.105071+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "ca39b097f3618115b1985c09b7cb56331666d5b070f19230",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-21T18:29:33.846285+00:00",
+        "expires_at": "2026-11-21T19:09:33.846285+00:00"
+      }
     },
     "trv2-4ae305e225f30cf2987c0d91": {
       "trend_id": "trv2-4ae305e225f30cf2987c0d91",
