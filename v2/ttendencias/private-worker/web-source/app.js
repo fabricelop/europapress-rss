@@ -117,7 +117,11 @@ function trimTrendBoilerplate(text){
  // Only remove caveats about why a term is trending, never uncertainty about
  // the underlying facts. The stored editorial dossier stays unchanged.
  const trailing=/(?:\s+|^)(?:No se confirma que [^.]{0,70}(?:impuls[ae]|explique|provoque|motive) (?:la|esta) tendencia|No (?:se confirma|est[aá] confirmado) (?:el motivo|la causa) de (?:la|esta) tendencia|La causa concreta de (?:la|esta) tendencia no est[aá] confirmada)\.?\s*$/iu;
- const shortened=String(text||"").replace(trailing,"").trim();
+ const redundant=String.raw`(?:ser (?:el|la) (?:motivo|causa|raz[oó]n) de (?:la|esta) tendencia|explicar (?:la|esta|su) tendencia|explicar por qu[eé] (?:es|aparece como) tendencia|explicar su presencia entre las tendencias)`;
+ const sentence=new RegExp(String.raw`\.\s+(?:(?:Esto|Eso|Este hecho|Esta noticia|Esta coincidencia|Todo ello)\s+)?(?:podr[ií]a|puede)\s+${redundant}\.\s*$`,"iu");
+ const clause=new RegExp(String.raw`(?:,\s*|;\s*|\s+[—–]\s+)(?:(?:lo que|algo que|que|y eso|y esto)\s+)?(?:podr[ií]a|puede)\s+${redundant}\.\s*$`,"iu");
+ let shortened=String(text||"").replace(trailing,"").trim();
+ shortened=shortened.replace(sentence,".").replace(clause,".").trim();
  return shortened.length>=25?shortened:text;
 }
 function tweetText(raw,item){

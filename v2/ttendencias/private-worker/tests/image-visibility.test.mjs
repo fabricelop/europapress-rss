@@ -13,7 +13,8 @@ const editorial={project:"ttactualidad-v2",country:"ES",count:1,items:[{
 
 function db(){
  const hidden=[],prefs=[];
- return {hidden,prefs,prepare(sql){
+ const counters={preferenceScans:0};
+ return {hidden,prefs,counters,prepare(sql){
   let args=[];
   return {bind(...params){args=params;return this;},
    async run(){
@@ -31,7 +32,7 @@ function db(){
     if(sql.includes("FROM incident_rex_requests"))return {results:[]};
     if(sql.includes("FROM incident_retry_requests"))return {results:[]};
     if(sql.includes("FROM image_suppressions"))return {results:hidden.slice()};
-    if(sql.includes("FROM public_image_prefs"))return {results:prefs.slice()};
+    if(sql.includes("FROM public_image_prefs")){counters.preferenceScans++;return {results:prefs.slice()};}
     throw Error("no radar in fake DB");
    },
    async first(){throw Error("no radar in fake DB");}
@@ -73,6 +74,20 @@ test("two independent controls: public switch leaves V2 image intact, remove hid
  response=await worker.fetch(action(session,{trend_id:id,revision:1,scope:"both",hidden:false}),env);
  assert.equal(response.status,200);
  assert.equal(database.hidden.length,0);
+});
+
+test("frequent V2 and public polling shares a short D1 snapshot and writes invalidate it",async()=>{
+ const database=db(),env={...secrets,MARKS_DB:database};
+ const first=await (await worker.fetch(new Request(origin+"/api/public-editorial-overrides"),env)).json();
+ const second=await (await worker.fetch(new Request(origin+"/api/public-editorial-overrides"),env)).json();
+ assert.deepEqual(first,second);
+ assert.equal(database.counters.preferenceScans,1);
+ const session=await cookie(env);
+ const response=await worker.fetch(action(session,{trend_id:id,revision:1,scope:"public",visible:true}),env);
+ assert.equal(response.status,200);
+ const after=await (await worker.fetch(new Request(origin+"/api/public-editorial-overrides"),env)).json();
+ assert.deepEqual(after.visibility,[{trend_id:id,revision:1,visible:1}]);
+ assert.equal(database.counters.preferenceScans,2);
 });
 
 test("sensitive topics begin with public image off while private image stays on",async()=>{
