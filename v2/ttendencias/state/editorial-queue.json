@@ -2847,12 +2847,12 @@
       "trend_id": "trv2-562fb26fffab36168cb7d809",
       "name": "día de partido",
       "revision": 2,
-      "status": "review_pending",
+      "status": "in_progress",
       "reason": "user_reset",
       "episode_token": "3652a939006d79a6",
       "requested_at": "2026-11-21T10:38:22.918115+00:00",
       "updated_at": "2026-11-21T10:38:22.918115+00:00",
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -2865,7 +2865,13 @@
         }
       ],
       "review_mode": "standard",
-      "incident_retries": 0
+      "incident_retries": 0,
+      "lease": {
+        "token": "df2d4ccf2b64aec84d315a804acef50db29e60b77c22c4c4",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-21T10:39:00.313534+00:00",
+        "expires_at": "2026-11-21T11:19:00.313534+00:00"
+      }
     },
     "trv2-d016116e89acbce5c5f3f6b5": {
       "trend_id": "trv2-d016116e89acbce5c5f3f6b5",
