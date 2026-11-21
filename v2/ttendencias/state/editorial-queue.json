@@ -25951,20 +25951,27 @@
     "trv2-0857b82e7a297cf5e00b8cbe": {
       "trend_id": "trv2-0857b82e7a297cf5e00b8cbe",
       "name": "#FelizSábado",
-      "revision": 1,
-      "status": "in_progress",
-      "reason": "first_explanation",
+      "revision": 2,
+      "status": "pending",
+      "reason": "retry_after_incident",
       "episode_token": "050e0810e5042952",
-      "requested_at": "2026-11-21T07:02:17.116224+00:00",
-      "updated_at": "2026-11-21T07:02:17.116224+00:00",
+      "requested_at": "2026-11-21T07:04:49.932057+00:00",
+      "updated_at": "2026-11-21T07:04:49.932057+00:00",
       "previous_explanation": null,
-      "attempts": 1,
-      "lease": {
-        "token": "78ac7d532501485d6b97523b302300931588300a51e2bd5d",
-        "worker_id": "ttv2-native-cdp",
-        "started_at": "2026-11-21T07:04:22.650463+00:00",
-        "expires_at": "2026-11-21T07:44:22.650463+00:00"
-      }
+      "attempts": 0,
+      "previous_attempts": [
+        {
+          "revision": 1,
+          "status": "in_progress",
+          "attempts": 1,
+          "chat_url": null,
+          "started_at": "2026-11-21T07:04:22.650463+00:00",
+          "send_intent_at": null,
+          "incident_reason": "worker_or_capture_failed",
+          "archived_at": "2026-11-21T07:04:49.932057+00:00"
+        }
+      ],
+      "incident_retries": 1
     }
   },
   "pending_count": 729,
