@@ -12,16 +12,22 @@ const env={
 };
 function fakeDB(){
  const db=new Map();
+ const snapshot={row:null};
+ const stats={fullScans:0};
  return {
-  db,
+  db,snapshot,stats,
   prepare(sql){
    let args=[];
    return {
     bind(...values){args=values;return this;},
-    async all(){assert.match(sql,/SELECT trend_id/);return {results:[...db.entries()].map(([trend_id,entered_top30_at])=>({trend_id,entered_top30_at}))};},
+    async first(){if(sql.includes("FROM red_marks_snapshot"))return snapshot.row;throw Error("Unexpected lookup: "+sql);},
+    async all(){assert.match(sql,/SELECT trend_id/);stats.fullScans++;return {results:[...db.entries()].map(([trend_id,entered_top30_at])=>({trend_id,entered_top30_at}))};},
     async run(){
-     if(sql.startsWith("DELETE")) {const [id]=args;db.delete(id);}
-     else if(sql.startsWith("INSERT")){const [id,stamp]=args;db.set(id,stamp);}
+     if(sql.startsWith("CREATE TABLE IF NOT EXISTS red_marks_snapshot")){}
+     else if(sql.startsWith("INSERT INTO red_marks_snapshot"))snapshot.row={payload:args[0],cached_at_ms:args[1]};
+     else if(sql.startsWith("UPDATE red_marks_snapshot")&&snapshot.row)snapshot.row.cached_at_ms=0;
+     else if(sql.startsWith("DELETE FROM red_marks")) {const [id]=args;db.delete(id);}
+     else if(sql.startsWith("INSERT INTO red_marks")){const [id,stamp]=args;db.set(id,stamp);}
      else throw Error("Unexpected SQL: "+sql);
      return {success:true};
     }
@@ -51,6 +57,10 @@ test("R mark is shared and survives source-date changes, a Top30 exit and reentr
  assert.equal((await worker.fetch(req("/api/marks",a,marked),bound)).status,200);
  let res=await worker.fetch(req("/api/marks",b),bound);
  assert.equal((await res.json()).marks[id],stamp);
+ assert.equal(storage.stats.fullScans,1);
+ res=await worker.fetch(req("/api/marks",b),bound);
+ assert.equal((await res.json()).marks[id],stamp);
+ assert.equal(storage.stats.fullScans,1,"two reads reuse one D1 snapshot");
  // A temporarily missing trend must not erase the user's stored red mark.
  top30=[{trend_id:"trv2-000000000000000000000001",entered_top30_at:"2026-11-14T01:00:00Z"}];
  res=await worker.fetch(req("/api/marks",a),bound);
@@ -59,6 +69,8 @@ test("R mark is shared and survives source-date changes, a Top30 exit and reentr
  // La ficha pudo quedar abierta mientras Top30 se actualizaba.
  assert.equal((await worker.fetch(req("/api/marks",a,{...marked,marked:false}),bound)).status,200);
  assert.equal(storage.db.has(id),false);
+ res=await worker.fetch(req("/api/marks",b),bound);
+ assert.equal((await res.json()).marks[id],undefined,"R removal invalidates the snapshot");
  assert.equal((await worker.fetch(req("/api/marks",a,marked),bound)).status,200);
  assert.equal(storage.db.has(id),true);
  top30=[{trend_id:id,entered_top30_at:"2026-11-14T02:00:00Z"}];
