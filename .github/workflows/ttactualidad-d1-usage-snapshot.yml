@@ -106,3 +106,41 @@ jobs:
               sql=re.sub(r"\s+"," ",str(x.get("query",""))).strip()[:300]
               print("D1_COSTLY_SQL",json.dumps({"sql":sql,"reads":x.get("totalRowsRead"),"avg":x.get("avgRowsRead"),"runs":x.get("numberOfTimesRun")},ensure_ascii=False))
           PY
+
+      - name: Revisar errores recientes del Worker privado por tipo
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import datetime as dt,json,os,urllib.request
+          token=os.environ["CLOUDFLARE_API_TOKEN"]
+          account=os.environ["CLOUDFLARE_ACCOUNT_ID"]
+          now=dt.datetime.now(dt.timezone.utc)
+          start=now-dt.timedelta(minutes=70)
+          stamp=lambda t:t.strftime("%Y-%m-%dT%H:%M:%SZ")
+          query="""query($accountTag: string,$start: string,$end: string,$script: string){
+            viewer{accounts(filter:{accountTag:$accountTag}){
+              workersInvocationsAdaptive(limit:10000,filter:{scriptName:$script,datetime_geq:$start,datetime_leq:$end}){
+                dimensions{status}
+                sum{requests errors}
+              }
+            }}
+          }"""
+          body={"query":query,"variables":{"accountTag":account,"start":stamp(start),"end":stamp(now),"script":"ttactualidad-v2-private-test"}}
+          req=urllib.request.Request("https://api.cloudflare.com/client/v4/graphql",data=json.dumps(body).encode(),headers={"Authorization":"Bearer "+token,"Content-Type":"application/json"},method="POST")
+          try:
+            with urllib.request.urlopen(req,timeout=30) as resp: out=json.load(resp)
+            if out.get("errors"):
+              print("V2_INVOCATIONS_QUERY_UNAVAILABLE",[e.get("message","")[:100] for e in out["errors"]])
+            else:
+              rows=((out.get("data") or {}).get("viewer") or {}).get("accounts") or []
+              events=(rows[0] if rows else {}).get("workersInvocationsAdaptive") or []
+              bystatus={}
+              for row in events:
+                status=(row.get("dimensions") or {}).get("status") or "unknown"
+                total=by_status= bystatus.setdefault(status,{"requests":0,"errors":0})
+                total["requests"]+=int((row.get("sum") or {}).get("requests") or 0)
+                total["errors"]+=int((row.get("sum") or {}).get("errors") or 0)
+              print("V2_INVOCATIONS_WINDOW",stamp(start),stamp(now))
+              print("V2_INVOCATIONS_STATUS",json.dumps(bystatus,sort_keys=True))
+          except Exception as exc: print("V2_INVOCATIONS_ERROR",type(exc).__name__)
+          PY
