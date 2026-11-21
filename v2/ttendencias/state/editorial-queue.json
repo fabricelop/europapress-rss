@@ -27098,13 +27098,13 @@
       "trend_id": "trv2-712a78aeff106f0ee2245f1c",
       "name": "Yeremay",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "7beb43434ad5f7dd",
       "requested_at": "2026-11-21T14:14:19.629038+00:00",
       "updated_at": "2026-11-21T14:14:19.629038+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -27117,7 +27117,13 @@
           "archived_at": "2026-11-21T14:14:19.629038+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "43407f90ada152d4c8bc9a3953a1890e1302364c0ab5f02e",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-21T14:16:10.235434+00:00",
+        "expires_at": "2026-11-21T14:56:10.235434+00:00"
+      }
     },
     "trv2-36665a62df81231f6e487567": {
       "trend_id": "trv2-36665a62df81231f6e487567",
