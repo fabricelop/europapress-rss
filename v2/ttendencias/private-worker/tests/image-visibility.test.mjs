@@ -14,7 +14,8 @@ const editorial={project:"ttactualidad-v2",country:"ES",count:1,items:[{
 function db(){
  const hidden=[],prefs=[];
  const counters={preferenceScans:0};
- return {hidden,prefs,counters,prepare(sql){
+ const snapshot={row:null};
+ return {hidden,prefs,counters,snapshot,prepare(sql){
   let args=[];
   return {bind(...params){args=params;return this;},
    async run(){
@@ -23,7 +24,9 @@ function db(){
     }else if(sql.startsWith("DELETE FROM image_suppressions"))hidden.splice(0,hidden.length);
     else if(sql.startsWith("INSERT INTO public_image_prefs")){
      prefs.splice(0,prefs.length,{trend_id:args[0],revision:args[1],visible:args[2]});
-    }else assert.match(sql,/CREATE TABLE IF NOT EXISTS/);
+    }else if(sql.startsWith("INSERT INTO editorial_overrides_snapshot"))snapshot.row={payload:args[0],cached_at_ms:args[1]};
+    else if(sql.startsWith("UPDATE editorial_overrides_snapshot")&&snapshot.row)snapshot.row.cached_at_ms=0;
+    else assert.match(sql,/CREATE TABLE IF NOT EXISTS|UPDATE editorial_overrides_snapshot/);
     return {success:true};
    },
    async all(){
@@ -35,7 +38,7 @@ function db(){
     if(sql.includes("FROM public_image_prefs")){counters.preferenceScans++;return {results:prefs.slice()};}
     throw Error("no radar in fake DB");
    },
-   async first(){throw Error("no radar in fake DB");}
+   async first(){if(sql.includes("FROM editorial_overrides_snapshot"))return snapshot.row;throw Error("no radar in fake DB");}
   };
  }};
 }
@@ -117,6 +120,26 @@ test("edge cache shares override reads between Worker instances and a switch evi
   assert.equal(c.counters.preferenceScans,1);
   assert.ok(Array.isArray(refreshed.visibility));
  }finally{globalThis.caches=old;}
+});
+
+test("shared D1 snapshot avoids historical scans even when edge caching is absent",async()=>{
+ const a=db(),envA={...secrets,MARKS_DB:a};
+ const endpoint=new Request(origin+"/api/public-editorial-overrides");
+ assert.equal((await worker.fetch(endpoint,envA)).status,200);
+ assert.equal(a.counters.preferenceScans,1);
+ assert.equal(typeof a.snapshot.row?.payload,"string");
+ const b=db();b.snapshot.row=a.snapshot.row;
+ const envB={...secrets,MARKS_DB:b};
+ assert.equal((await worker.fetch(endpoint,envB)).status,200);
+ assert.equal(b.counters.preferenceScans,0,"the primary-key snapshot replaces six history scans");
+ const session=await cookie(envB);
+ assert.equal((await worker.fetch(action(session,{trend_id:id,revision:1,scope:"public",visible:true}),envB)).status,200);
+ assert.equal(b.snapshot.row.cached_at_ms,0,"a user edit invalidates the shared D1 snapshot");
+ const c=db();c.snapshot.row=b.snapshot.row;
+ const envC={...secrets,MARKS_DB:c};
+ const fresh=await (await worker.fetch(endpoint,envC)).json();
+ assert.equal(c.counters.preferenceScans,1,"the next reader rebuilds an invalidated snapshot");
+ assert.equal(fresh.visibility.length,0,"a new instance reads its own control tables after invalidation");
 });
 
 test("sensitive topics begin with public image off while private image stays on",async()=>{
