@@ -1,0 +1,81 @@
+name: TTActualidad V2 - rescate de acceso fuera de workers.dev
+
+on:
+  push:
+    branches: [feature/v2-acceso-alternativo-20261121]
+    paths:
+      - '.github/workflows/ttactualidad-v2-pages-gateway.yml'
+      - 'v2/ttendencias/pages-gateway/**'
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 13
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validar aislamiento de sesiones PU/R y error cerrado
+        working-directory: v2/ttendencias/pages-gateway
+        run: node --test test/*.test.mjs
+      - name: Comprobar que no se pisa ningún proyecto Pages existente
+        run: |
+          python3 - <<'PY'
+          import os,urllib.request,urllib.error
+          account=os.environ.get('CLOUDFLARE_ACCOUNT_ID','')
+          token=os.environ.get('CLOUDFLARE_API_TOKEN','')
+          if not account or not token:raise SystemExit('CLOUDFLARE_DEPLOY_SECRETS_MISSING')
+          url='https://api.cloudflare.com/client/v4/accounts/'+account+'/pages/projects/ttactualidad-v2-rescate'
+          try:
+            with urllib.request.urlopen(urllib.request.Request(url,headers={'Authorization':'Bearer '+token}),timeout=25):
+              raise SystemExit('V2_PAGES_NAME_IN_USE_ABORT_NO_OVERWRITE')
+          except urllib.error.HTTPError as exc:
+            if exc.code==404:print('V2_PAGES_NEW_PROJECT_NAME_AVAILABLE=YES')
+            else:raise
+          PY
+      - name: Crear proyecto Pages independiente sin tocar la web original
+        working-directory: v2/ttendencias/pages-gateway
+        run: npx --yes wrangler@4.49.0 pages project create ttactualidad-v2-rescate --production-branch main
+      - name: Desplegar Pages con acceso al mismo Worker privado
+        working-directory: v2/ttendencias/pages-gateway
+        run: npx --yes wrangler@4.49.0 pages deploy dist --project-name ttactualidad-v2-rescate --branch main --config wrangler.json
+      - name: Verificar que la segunda plataforma mantiene sesión y controles privados
+        run: |
+          python3 - <<'PY'
+          import json,time,urllib.request,urllib.error
+          origin='https://ttactualidad-v2-rescate.pages.dev'
+          def get(path):
+            with urllib.request.urlopen(urllib.request.Request(origin+path,headers={'User-Agent':'TTActualidadV2-Private-Health'}),timeout=15) as response:
+              return response.status,response.read(100000)
+          for attempt in range(8):
+            try:
+              status,html=get('/')
+              if status!=200 or b'Acceso privado' not in html:raise ValueError('private_login_missing')
+              status,raw=get('/health')
+              health=json.loads(raw)
+              if status!=200 or health.get('configured') is not True or health.get('service')!='ttactualidad-v2-private':raise ValueError('target_worker_missing')
+              status,raw=get('/api/public-editorial-overrides')
+              flags=json.loads(raw)
+              if status!=200 or flags.get('schema_version')!=1 or not isinstance(flags.get('re'),list):raise ValueError('same_D1_controls_missing')
+              for path in ('/api/me','/api/marks','/api/publication-count'):
+                try:
+                  get(path)
+                  raise ValueError('private_route_bypassed:'+path)
+                except urllib.error.HTTPError as exc:
+                  if exc.code!=401:raise ValueError('privacy_status_'+str(exc.code)+':'+path)
+              print('TT_V2_PAGES_ORIGIN_PRIVATE_LOGIN=YES')
+              print('TT_V2_PAGES_ORIGIN_SAME_BACKEND_AND_D1=YES')
+              print('TT_V2_PAGES_ORIGIN_PU_R_REQUIRES_AUTH=YES')
+              break
+            except Exception as exc:
+              print('TT_V2_PAGES_ORIGIN_VERIFY_RETRY='+type(exc).__name__+':'+str(exc)[:110],flush=True)
+              if attempt==7:raise
+              time.sleep(8)
+          PY
