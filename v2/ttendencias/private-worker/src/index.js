@@ -124,8 +124,15 @@ async function incidentRetryTable(db) {
 async function manualImageTicketsTable(db) {
   await db.prepare("CREATE TABLE IF NOT EXISTS manual_image_tickets (token_hash TEXT PRIMARY KEY, trend_id TEXT NOT NULL, revision INTEGER NOT NULL, sha256 TEXT NOT NULL, mime TEXT NOT NULL, bytes INTEGER NOT NULL, expires_at_ms INTEGER NOT NULL, redeemed_at_ms INTEGER)").run();
 }
+// The Top 30 UI and the public V1 bridge poll these same historical controls
+// every few seconds. Reusing the read-only snapshot briefly saves the D1 free
+// tier without deleting history or slowing the Windows editorial queue.
+const editorialOverridesCache=new WeakMap();
 async function publicEditorialOverrides(env) {
   if (!env.MARKS_DB) throw Error("OVERRIDES_STORAGE_UNAVAILABLE");
+  const cached=editorialOverridesCache.get(env.MARKS_DB);
+  if(cached&&cached.expires>Date.now())return cached.value;
+  const pending=(async()=>{
   await imageSuppressionsTable(env.MARKS_DB);
   await reXTable(env.MARKS_DB);
   await incidentReXTable(env.MARKS_DB);
@@ -148,6 +155,10 @@ async function publicEditorialOverrides(env) {
   const incident_rex=(incidents.results||[]).filter(x=>TREND_ID.test(x.trend_id)&&Number.isSafeInteger(x.base_revision)&&x.base_revision>0&&typeof x.hints==="string"&&x.hints.trim().length>=10&&x.hints.length<=1200);
   const incident_retry=(retries.results||[]).filter(x=>TREND_ID.test(x.trend_id)&&Number.isSafeInteger(x.base_revision)&&x.base_revision>0&&typeof x.instructions==="string"&&x.instructions.length<=1200);
   return {re,incident_rex,incident_retry,suppressed,visibility};
+  })();
+  editorialOverridesCache.set(env.MARKS_DB,{expires:Date.now()+45000,value:pending});
+  try{return await pending;}
+  catch(error){if(editorialOverridesCache.get(env.MARKS_DB)?.value===pending)editorialOverridesCache.delete(env.MARKS_DB);throw error;}
 }
 // A Top 30 refresh may request 20-30 separate images. Never load six
 // complete override tables for EACH raster: two indexed identity lookups
@@ -186,6 +197,7 @@ async function imageVisibility(request,env) {
     }else{
       await env.MARKS_DB.prepare("INSERT INTO public_image_prefs(trend_id,revision,visible) VALUES(?,?,?) ON CONFLICT(trend_id,revision) DO UPDATE SET visible=excluded.visible,updated_at=strftime('%Y-%m-%dT%H:%M:%fZ','now')").bind(trend_id,revision,visible?1:0).run();
     }
+    editorialOverridesCache.delete(env.MARKS_DB);
     return json({ok:true,trend_id,revision,scope,hidden:scope==="both"?hidden:undefined,visible:scope==="public"?visible:undefined});
   }catch{return json({error:"image_visibility_unavailable"},503);}
 }
@@ -263,6 +275,7 @@ async function reRequests(request,env) {
       "INSERT INTO re_requests (trend_id, base_revision, entered_top30_at, status) VALUES (?,?,?,'requested') " +
       "ON CONFLICT(trend_id,base_revision) DO NOTHING"
     ).bind(trend_id,revision,entered_top30_at).run();
+    editorialOverridesCache.delete(env.MARKS_DB);
     return json({ok:true,queued:true,trend_id,base_revision:revision,mode},202);
   }catch{return json({error:"re_storage_unavailable"},503);}
 }
@@ -299,6 +312,7 @@ async function incidentReX(request,env) {
     // responsible for checking lease, journal and exact Chrome cleanup.
     await incidentRetryTable(env.MARKS_DB);
     await env.MARKS_DB.prepare("INSERT INTO incident_retry_requests(trend_id,base_revision,instructions) VALUES(?,?,?) ON CONFLICT(trend_id,base_revision) DO NOTHING").bind(trend_id,revision,"").run();
+    editorialOverridesCache.delete(env.MARKS_DB);
     return json({ok:true,queued:true,trend_id,base_revision:revision},202);
   }catch{return json({error:"incident_rex_unavailable"},503);}
 }
@@ -329,6 +343,7 @@ async function incidentRetry(request,env) {
     // Only record explicit user intent. The local worker must verify the
     // previous lease, journal and exact Chrome shutdown before a new revision.
     await env.MARKS_DB.prepare("INSERT INTO incident_retry_requests(trend_id,base_revision,instructions) VALUES(?,?,?) ON CONFLICT(trend_id,base_revision) DO NOTHING").bind(trend_id,revision,instructions).run();
+    editorialOverridesCache.delete(env.MARKS_DB);
     return json({ok:true,queued:true,trend_id,base_revision:revision},202);
   }catch{return json({error:"incident_retry_unavailable"},503);}
 }
