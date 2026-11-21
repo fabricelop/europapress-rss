@@ -27140,13 +27140,13 @@
       "trend_id": "trv2-36665a62df81231f6e487567",
       "name": "Ángel Pérez",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "59d4a30c27ace599",
       "requested_at": "2026-11-21T14:14:24.016794+00:00",
       "updated_at": "2026-11-21T14:14:24.016794+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -27159,7 +27159,13 @@
           "archived_at": "2026-11-21T14:14:24.016794+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "b163450e6840d4c283e1cde04018351292e38f206c9f8506",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-21T14:16:50.885921+00:00",
+        "expires_at": "2026-11-21T14:56:50.885921+00:00"
+      }
     },
     "trv2-d242b8fe1236b106a6b9a7c3": {
       "trend_id": "trv2-d242b8fe1236b106a6b9a7c3",
