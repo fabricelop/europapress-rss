@@ -8,7 +8,7 @@ permissions:
 jobs:
   usage:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 7
     env:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
@@ -80,4 +80,23 @@ jobs:
                       if part: print("D1_V2_15MIN",stamp,part)
               else: print("D1_V2_DB_ID=UNAVAILABLE")
           except Exception as exc:print("D1_V2_DB_LOOKUP_UNAVAILABLE",type(exc).__name__)
+          PY
+      - name: Identificar las consultas que consumen más filas
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import subprocess,json,re
+          cmd=["npx","--yes","wrangler@4.49.0","d1","insights","--time-period","1h","--sort-type","sum","--sort-by","reads","--sort-direction","DESC","--limit","20","--json"]
+          try: r=subprocess.run(cmd,capture_output=True,text=True,timeout=180)
+          except Exception as exc:print("D1_INSIGHTS_RUNTIME_ERROR",type(exc).__name__);raise SystemExit(2)
+          if r.returncode:
+              print("D1_INSIGHTS_ERROR",r.returncode,re.sub(r"\s+"," ",r.stderr)[-300:]);raise SystemExit(r.returncode)
+          text=r.stdout
+          start=text.find("[")
+          try: rows=json.loads(text[start:])
+          except Exception:
+              print("D1_INSIGHTS_PARSE_ERROR",text[-500:]);raise SystemExit(4)
+          for x in rows:
+              sql=re.sub(r"\s+"," ",str(x.get("query",""))).strip()[:300]
+              print("D1_COSTLY_SQL",json.dumps({"sql":sql,"reads":x.get("totalRowsRead"),"avg":x.get("avgRowsRead"),"runs":x.get("numberOfTimesRun")},ensure_ascii=False))
           PY
