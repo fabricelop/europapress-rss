@@ -27588,12 +27588,12 @@
       "trend_id": "trv2-fa5a64d433ec5a0239bbffd8",
       "name": "Mendizorroza",
       "revision": 2,
-      "status": "review_pending",
+      "status": "in_progress",
       "reason": "user_reset",
       "episode_token": "2a4ad0e6c2e5a181",
       "requested_at": "2026-11-21T15:36:24.386148+00:00",
       "updated_at": "2026-11-21T15:36:24.386148+00:00",
-      "attempts": 0,
+      "attempts": 1,
       "image_incident": {
         "project": "ttendencias-v2",
         "trend_id": "trv2-fa5a64d433ec5a0239bbffd8",
@@ -27617,7 +27617,13 @@
         }
       ],
       "review_mode": "standard",
-      "incident_retries": 0
+      "incident_retries": 0,
+      "lease": {
+        "token": "f22b2e7c53dc78b22b6b6ab44103e30ada9d94a15c14ad0a",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-21T15:37:27.712692+00:00",
+        "expires_at": "2026-11-21T16:17:27.712692+00:00"
+      }
     },
     "trv2-058750e68f4c1a04d4d78bc0": {
       "trend_id": "trv2-058750e68f4c1a04d4d78bc0",
