@@ -27813,13 +27813,13 @@
       "trend_id": "trv2-591b5c7aae5ed07da7b6074b",
       "name": "portimão",
       "revision": 2,
-      "status": "pending",
+      "status": "in_progress",
       "reason": "retry_after_incident",
       "episode_token": "3916eb9751fa5d35",
       "requested_at": "2026-11-21T15:23:17.666141+00:00",
       "updated_at": "2026-11-21T15:23:17.666141+00:00",
       "previous_explanation": null,
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -27832,7 +27832,13 @@
           "archived_at": "2026-11-21T15:23:17.666141+00:00"
         }
       ],
-      "incident_retries": 1
+      "incident_retries": 1,
+      "lease": {
+        "token": "41677ab8619d8ec734dba3b1521416a5a5d6caf9f3854294",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-21T15:25:43.783863+00:00",
+        "expires_at": "2026-11-21T16:05:43.783863+00:00"
+      }
     }
   },
   "pending_count": 770,
