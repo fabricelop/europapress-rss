@@ -93,3 +93,49 @@ test("V2 image path from editorial ledger cannot point outside fixed generated-i
   assert.equal(response.status,409);
  }finally{globalThis.fetch=fetchBefore;}
 });
+
+test("each private image checks only its own D1 suppression and RE identity",async()=>{
+ const fetchBefore=globalThis.fetch,cookie=await authorized();
+ let suppressed=false,reRequested=false;
+ const statements=[];
+ const db={prepare(sql){
+  statements.push(sql);
+  let params=[];
+  return {bind(...values){params=values;return this;},
+   async run(){assert.match(sql,/^CREATE TABLE IF NOT EXISTS/);return {success:true};},
+   async all(){throw Error("IMAGE_MUST_NOT_SCAN_OVERRIDE_TABLES");},
+   async first(){
+    assert.deepEqual(params,[ID,REV]);
+    if(sql.includes("FROM image_suppressions"))return suppressed?{blocked:1}:null;
+    if(sql.includes("FROM re_requests"))return reRequested?{blocked:1}:null;
+    throw Error("UNEXPECTED_IMAGE_QUERY");
+   }};
+ }};
+ let rasterFetches=0;
+ try{
+  globalThis.fetch=async url=>{
+   if(String(url).endsWith("editorial-queue.json"))return Response.json(ledger());
+   if(String(url).endsWith(path)){rasterFetches++;return new Response(raw);}
+   return new Response("not found",{status:404});
+  };
+  const envWithDb={...env,MARKS_DB:db};
+  const request=()=>worker.fetch(new Request(origin+"/api/image/"+ID+"?revision=1",{headers:{cookie}}),envWithDb);
+  let response=await request();
+  assert.equal(response.status,200);
+  assert.equal(rasterFetches,1);
+  assert.equal(statements.filter(x=>x.startsWith("SELECT")).length,2);
+  assert.ok(statements.filter(x=>x.startsWith("SELECT")).every(x=>x.includes("trend_id=?")&&x.includes("revision=?")));
+
+  suppressed=true;
+  response=await request();
+  assert.equal(response.status,404);
+  assert.equal((await response.json()).error,"image_hidden");
+  assert.equal(rasterFetches,1);
+
+  suppressed=false;reRequested=true;
+  response=await request();
+  assert.equal(response.status,404);
+  assert.equal((await response.json()).error,"image_hidden");
+  assert.equal(rasterFetches,1);
+ }finally{globalThis.fetch=fetchBefore;}
+});
