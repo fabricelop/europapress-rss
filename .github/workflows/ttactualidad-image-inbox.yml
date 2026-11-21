@@ -1,0 +1,39 @@
+name: TTActualidad private image inbox checks
+on:
+  pull_request:
+    paths:
+      - 'image-inbox-worker/**'
+      - 'shared/image-approval-policy.cjs'
+      - 'tests/image-approval-policy.test.cjs'
+      - 'ios/ttactualidad/TTActualidad/ImageApprovalInbox.swift'
+      - 'ios/ttactualidad/TTActualidad/GitHubEditor.swift'
+      - 'ios/ttactualidad/TTActualidad/TTDashboard.swift'
+      - 'ios/ttactualidad/project.yml'
+      - 'ios/ttactualidad/tests/test_image_approval_ui.py'
+      - '.github/workflows/ttactualidad-image-inbox.yml'
+  workflow_dispatch:
+jobs:
+  inbox-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Private Worker syntax and behavior
+        run: |
+          if [ -f image-inbox-worker/src/index.mjs ]; then
+            node --check image-inbox-worker/src/index.mjs
+            node --test image-inbox-worker/test/*.test.mjs
+          fi
+      - name: Standalone approval policy
+        run: |
+          if [ -f shared/image-approval-policy.cjs ]; then
+            node --check shared/image-approval-policy.cjs
+            node --test tests/image-approval-policy.test.cjs
+          fi
+      - name: Native inbox integration static checks
+        run: |
+          if [ -f ios/ttactualidad/TTActualidad/ImageApprovalInbox.swift ]; then
+            python3 ios/ttactualidad/tests/test_image_approval_ui.py
+          fi

@@ -1,0 +1,8 @@
+{
+  "name": "ttactualidad-image-approval-private",
+  "main": "src/index.mjs",
+  "compatibility_date": "2026-10-15",
+  "workers_dev": false,
+  "r2_buckets": [{ "binding": "ORIGINALS", "bucket_name": "ttactualidad-inbox-private" }],
+  "d1_databases": [{ "binding": "DB", "database_name": "ttactualidad-inbox-private", "database_id": "REPLACE_WITH_REAL_D1_ID", "migrations_dir": "migrations" }]
+}
