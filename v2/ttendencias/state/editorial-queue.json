@@ -1458,12 +1458,12 @@
       "trend_id": "trv2-408b033fa24c5fbe95b27668",
       "name": "Feijoo",
       "revision": 2,
-      "status": "review_pending",
+      "status": "in_progress",
       "reason": "user_reset",
       "episode_token": "b77c09ca15bc86c7",
       "requested_at": "2026-11-21T09:00:36.764407+00:00",
       "updated_at": "2026-11-21T09:00:36.764407+00:00",
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -1476,7 +1476,13 @@
         }
       ],
       "review_mode": "standard",
-      "incident_retries": 0
+      "incident_retries": 0,
+      "lease": {
+        "token": "1314fb2bdd2b3ab1fcecb334bfe06bd92aa60773f00ecd42",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-21T09:01:08.334154+00:00",
+        "expires_at": "2026-11-21T09:41:08.334154+00:00"
+      }
     },
     "trv2-e6c085c66abefb4fa5660db5": {
       "trend_id": "trv2-e6c085c66abefb4fa5660db5",
