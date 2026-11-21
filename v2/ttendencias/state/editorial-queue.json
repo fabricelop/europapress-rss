@@ -29790,12 +29790,12 @@
       "trend_id": "trv2-68935a7242a39bb31e008978",
       "name": "Pellegrini",
       "revision": 2,
-      "status": "review_pending",
+      "status": "in_progress",
       "reason": "user_reset",
       "episode_token": "7867b01421f0108e",
       "requested_at": "2026-11-21T19:40:48.249Z",
       "updated_at": "2026-11-21T19:40:48.249Z",
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -29808,7 +29808,13 @@
         }
       ],
       "review_mode": "standard",
-      "incident_retries": 0
+      "incident_retries": 0,
+      "lease": {
+        "token": "fc569b51552283e03549884b220d05949362b2949b54df1d",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-21T19:43:26.303983+00:00",
+        "expires_at": "2026-11-21T20:23:26.303983+00:00"
+      }
     },
     "trv2-9c311c4f1f55d037ede164ac": {
       "trend_id": "trv2-9c311c4f1f55d037ede164ac",
