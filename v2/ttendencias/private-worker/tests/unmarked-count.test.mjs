@@ -38,7 +38,7 @@ test("two distinct counters sit to the right of both tabs in a sticky double hea
  assert.match(css, /\.section-nav \.news-after-red\{/);
  assert.match(built, /function countTop30WithoutR\(items,marks\)/);
  assert.match(app, /button\.title=next\?"Quitar marca roja":"Marcar en rojo";\s*updateTop30WithoutRCounter\(\)/);
- assert.match(app, /root\.append\(card\);\s*}\s*updateTop30WithoutRCounter\(\)/);
+ assert.match(app, /root\.append\(card\);\s*}\s*updateTopicIcons\(\);\s*updateTop30WithoutRCounter\(\)/);
  assert.match(app, /if\(!node\)return/);
  assert.match(app, /if\(!newsViewMode\)try\{await loadNewsAfterRedCounter\(\)\}catch\{\}/);
 });
