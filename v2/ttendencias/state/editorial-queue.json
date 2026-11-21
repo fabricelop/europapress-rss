@@ -1915,12 +1915,12 @@
       "trend_id": "trv2-b19a47df873cb1b14bf65663",
       "name": "Ayuso",
       "revision": 3,
-      "status": "review_pending",
+      "status": "in_progress",
       "reason": "user_reset",
       "episode_token": "7fce44889b68c709",
       "requested_at": "2026-11-21T07:01:12.346550+00:00",
       "updated_at": "2026-11-21T07:01:12.346550+00:00",
-      "attempts": 0,
+      "attempts": 1,
       "review_mode": "standard",
       "incident_retries": 0,
       "previous_attempts": [
@@ -1933,7 +1933,13 @@
           "reset_at": "2026-11-21T07:01:12.346550+00:00",
           "reason": "explicit_RE_reset"
         }
-      ]
+      ],
+      "lease": {
+        "token": "156f0e07babae1d5dc102ed16c630e97eaaa327ddf7fb08c",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-21T07:01:48.249077+00:00",
+        "expires_at": "2026-11-21T07:41:48.249077+00:00"
+      }
     },
     "trv2-d38fc799c442941efc098692": {
       "trend_id": "trv2-d38fc799c442941efc098692",
