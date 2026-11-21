@@ -29163,12 +29163,12 @@
       "trend_id": "trv2-240429809cc54173f9654fea",
       "name": "Sevilla",
       "revision": 2,
-      "status": "review_pending",
+      "status": "in_progress",
       "reason": "user_reset",
       "episode_token": "c8be5cf660490c35",
       "requested_at": "2026-11-21T19:40:48.249Z",
       "updated_at": "2026-11-21T19:40:48.249Z",
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -29181,7 +29181,13 @@
         }
       ],
       "review_mode": "standard",
-      "incident_retries": 0
+      "incident_retries": 0,
+      "lease": {
+        "token": "111c2e828f9e45525e7e8506bdb03986f46288883612c9a3",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-21T19:42:10.416708+00:00",
+        "expires_at": "2026-11-21T20:22:10.416708+00:00"
+      }
     },
     "trv2-a4e5105870299b2a5f43db22": {
       "trend_id": "trv2-a4e5105870299b2a5f43db22",
