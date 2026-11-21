@@ -318,12 +318,12 @@
       "trend_id": "trv2-a0827ce715f881b32b37cc14",
       "name": "Isco",
       "revision": 2,
-      "status": "review_pending",
+      "status": "in_progress",
       "reason": "user_reset",
       "episode_token": "5bf7d7c8a62f557d",
       "requested_at": "2026-11-21T19:40:48.249Z",
       "updated_at": "2026-11-21T19:40:48.249Z",
-      "attempts": 0,
+      "attempts": 1,
       "previous_attempts": [
         {
           "revision": 1,
@@ -336,7 +336,13 @@
         }
       ],
       "review_mode": "standard",
-      "incident_retries": 0
+      "incident_retries": 0,
+      "lease": {
+        "token": "20ed08bfcd3a04f00e0961f8366a891878c758f6dbfe32bf",
+        "worker_id": "ttv2-native-cdp",
+        "started_at": "2026-11-21T19:48:37.744589+00:00",
+        "expires_at": "2026-11-21T20:28:37.744589+00:00"
+      }
     },
     "trv2-d4c3570ebe56f4c6dd6ceaf5": {
       "trend_id": "trv2-d4c3570ebe56f4c6dd6ceaf5",
